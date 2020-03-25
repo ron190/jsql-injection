@@ -10,13 +10,9 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
  * Start refreshing the progress bar of an element in the database tree.
@@ -32,30 +28,13 @@ public class StartProgress implements InteractionCommand {
      * @param interactionParams Element in the database tree to update
      */
     public StartProgress(Object[] interactionParams) {
+        
         this.dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
     }
 
     @Override
     public void execute() {
-        if (MediatorGui.treeDatabase() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.treeDatabase() in "+ this.getClass());
-        }
         
-        // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
-
-        DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(this.dataElementDatabase);
-        
-        // Fix rare #73981
-        if (node != null) {
-            // Get the node
-            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
-            // Mark the node model as 'display progress bar'
-            progressingTreeNodeModel.setLoading(true);
-    
-            // Update the node
-            treeModel.nodeChanged(node);
-        }
+        MediatorGui.treeDatabase().startProgess(this.dataElementDatabase);
     }
-    
 }

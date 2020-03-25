@@ -25,17 +25,13 @@ public class SetVendor implements InteractionCommand {
      * @param interactionParams
      */
     public SetVendor(Object[] interactionParams) {
+        
         this.vendor = (Vendor) interactionParams[0];
     }
 
     @Override
     public void execute() {
-        if (MediatorGui.panelAddressBar() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
-        }
         
-        MediatorGui.panelAddressBar().getAddressMenuBar().getMenuVendor().setText(this.vendor.toString());
-        MediatorGui.panelAddressBar().getAddressMenuBar().initErrorMethods(this.vendor);
+        MediatorGui.panelAddressBar().getAddressMenuBar().setVendor(this.vendor);
     }
-    
 }

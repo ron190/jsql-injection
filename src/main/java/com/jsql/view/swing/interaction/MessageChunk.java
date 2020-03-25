@@ -10,9 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import java.awt.Component;
-import java.awt.Font;
-
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
@@ -30,31 +27,15 @@ public class MessageChunk implements InteractionCommand {
      * @param interactionParams Text to append
      */
     public MessageChunk(Object[] interactionParams) {
+        
         this.text = (String) interactionParams[0];
     }
 
     @Override
     public void execute() {
-        if (MediatorGui.panelConsoles() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.panelConsoles() in "+ this.getClass());
-        }
         
-        try {
-            MediatorGui.panelConsoles().getChunkTab().append(this.text +"\n");
-            MediatorGui.panelConsoles().getChunkTab().setCaretPosition(MediatorGui.panelConsoles().getChunkTab().getDocument().getLength());
-            
-            int tabIndex = MediatorGui.tabConsoles().indexOfTab("Chunk");
-            if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
-                Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
-                if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
-                    tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
-                }
-            }
-        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
-            // Fix #67063: NullPointerException on chunkTab.append()
-            // Fix #4770 on chunkTab.append()
-            LOGGER.error(e.getMessage(), e);
-        }
+        MediatorGui.panelConsoles().messageChunk(this.text);
+        
+        MediatorGui.tabConsoles().highlightTab("Chunk");
     }
-    
 }

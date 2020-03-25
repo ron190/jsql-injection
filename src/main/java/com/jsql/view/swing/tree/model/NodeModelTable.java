@@ -94,7 +94,7 @@ public class NodeModelTable extends AbstractNodeModel {
             return;
         }
             
-        DefaultMutableTreeNode treeNode = MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase());
+        DefaultMutableTreeNode treeNode = MediatorGui.treeDatabase().getTreeNodeModels().get(this.getElementDatabase());
         treeNode.removeAllChildren();
         
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();

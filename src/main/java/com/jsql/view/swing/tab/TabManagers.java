@@ -43,6 +43,11 @@ import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 @SuppressWarnings("serial")
 public class TabManagers extends MouseTabbedPane {
     
+    private ManagerWebShell managerWebShell = new ManagerWebShell();
+    private ManagerFile managerFile = new ManagerFile();
+    private ManagerUpload managerUpload = new ManagerUpload();
+    private ManagerSqlShell managerSqlShell = new ManagerSqlShell();
+    
     /**
      * Create manager panel.
      */
@@ -57,22 +62,17 @@ public class TabManagers extends MouseTabbedPane {
             }
         });
         
-        ManagerWebShell managerWebShell = new ManagerWebShell();
         ManagerScan managerScanList = new ManagerScan();
         ManagerDatabase managerDatabase = new ManagerDatabase();
         ManagerAdminPage managerAdminPage = new ManagerAdminPage();
-        ManagerFile managerFile = new ManagerFile();
-        ManagerUpload managerUpload = new ManagerUpload();
-        ManagerSqlShell managerSqlShell = new ManagerSqlShell();
         ManagerBruteForce managerBruteForce = new ManagerBruteForce();
         
-        MediatorGui.register(managerWebShell);
+        MediatorGui.register(this.managerWebShell);
+        MediatorGui.register(this.managerFile);
+        MediatorGui.register(this.managerUpload);
+        MediatorGui.register(this.managerSqlShell);
         MediatorGui.register(managerScanList);
-        MediatorGui.register(managerDatabase);
         MediatorGui.register(managerAdminPage);
-        MediatorGui.register(managerFile);
-        MediatorGui.register(managerUpload);
-        MediatorGui.register(managerSqlShell);
         MediatorGui.register(managerBruteForce);
         
         this.setMinimumSize(new Dimension(100, 0));
@@ -80,13 +80,57 @@ public class TabManagers extends MouseTabbedPane {
         
         this.buildI18nTab("DATABASE_TAB", "DATABASE_TOOLTIP", HelperUi.ICON_DATABASE_SERVER, managerDatabase);
         this.buildI18nTab("ADMINPAGE_TAB", "ADMINPAGE_TOOLTIP", HelperUi.ICON_ADMIN_SERVER, managerAdminPage);
-        this.buildI18nTab("FILE_TAB", "FILE_TOOLTIP", HelperUi.ICON_FILE_SERVER, managerFile);
-        this.buildI18nTab("WEBSHELL_TAB", "WEBSHELL_TOOLTIP", HelperUi.ICON_SHELL_SERVER, managerWebShell);
-        this.buildI18nTab("SQLSHELL_TAB", "SQLSHELL_TOOLTIP", HelperUi.ICON_SHELL_SERVER, managerSqlShell);
-        this.buildI18nTab("UPLOAD_TAB", "UPLOAD_TOOLTIP", HelperUi.ICON_UPLOAD, managerUpload);
+        this.buildI18nTab("FILE_TAB", "FILE_TOOLTIP", HelperUi.ICON_FILE_SERVER, this.managerFile);
+        this.buildI18nTab("WEBSHELL_TAB", "WEBSHELL_TOOLTIP", HelperUi.ICON_SHELL_SERVER, this.managerWebShell);
+        this.buildI18nTab("SQLSHELL_TAB", "SQLSHELL_TOOLTIP", HelperUi.ICON_SHELL_SERVER, this.managerSqlShell);
+        this.buildI18nTab("UPLOAD_TAB", "UPLOAD_TOOLTIP", HelperUi.ICON_UPLOAD, this.managerUpload);
         this.buildI18nTab("BRUTEFORCE_TAB", "BRUTEFORCE_TOOLTIP", HelperUi.ICON_BRUTER, managerBruteForce);
         this.buildI18nTab("CODER_TAB", "CODER_TOOLTIP", HelperUi.ICON_CODER, new ManagerCoder());
         this.buildI18nTab("SCANLIST_TAB", "SCANLIST_TOOLTIP", HelperUi.ICON_SCANLIST, managerScanList);
+    }
+    
+    public void createFileTab(String path, String name) {
+        
+        // Add the path String to the list of files only if there is no same StringObject value already
+        this.managerWebShell.addToList(path.replace(name, ""));
+        this.managerUpload.addToList(path.replace(name, ""));
+        this.managerSqlShell.addToList(path.replace(name, ""));
+    }
+    
+    public void markFileSystemInvulnerable() {
+        
+        this.managerFile.changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
+        this.managerFile.setButtonEnable(true);
+        this.managerFile.restoreButtonText();
+        this.managerFile.hideLoader();
+        
+        this.managerWebShell.changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
+        this.managerWebShell.setButtonEnable(true);
+        this.managerWebShell.restoreButtonText();
+        
+        this.managerUpload.changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
+        this.managerUpload.setButtonEnable(true);
+        this.managerUpload.restoreButtonText();
+        
+        this.managerSqlShell.changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
+        this.managerSqlShell.setButtonEnable(true);
+        this.managerSqlShell.restoreButtonText();
+    }
+    
+    public void endPreparation() {
+        
+        this.managerFile.setButtonEnable(true);
+        this.managerWebShell.setButtonEnable(true);
+        this.managerSqlShell.setButtonEnable(true);
+        this.managerUpload.setButtonEnable(true);
+    }
+    
+    public void markFileSystemVulnerable() {
+        
+        this.managerFile.changePrivilegeIcon(HelperUi.ICON_TICK);
+        this.managerWebShell.changePrivilegeIcon(HelperUi.ICON_TICK);
+        this.managerSqlShell.changePrivilegeIcon(HelperUi.ICON_TICK);
+        this.managerUpload.changePrivilegeIcon(HelperUi.ICON_TICK);
     }
     
     private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, Component manager) {

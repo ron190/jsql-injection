@@ -96,16 +96,6 @@ public class Menubar extends JMenuBar {
     private JCheckBoxMenuItem chunkMenu;
 
     /**
-     * Checkbox item to show/hide binary console.
-     */
-    private JCheckBoxMenuItem binaryMenu;
-
-    /**
-     * Checkbox item to show/hide network panel.
-     */
-    private JCheckBoxMenuItem networkMenu;
-
-    /**
      * Checkbox item to show/hide java console.
      */
     private JCheckBoxMenuItem javaDebugMenu;
@@ -149,7 +139,6 @@ public class Menubar extends JMenuBar {
     private JMenuItem itemIntoJapanese;
     private JMenuItem itemIntoRomanian;
     private JMenuItem itemIntoTamil;
-    private JMenuItem itemIntoOther;
 
     /**
      * Create a menubar on main frame.
@@ -249,21 +238,21 @@ public class Menubar extends JMenuBar {
         I18nView.addComponentForKey("CONSOLE_CHUNK_LABEL", this.chunkMenu);
         menuPanel.add(this.chunkMenu);
         
-        this.binaryMenu = new JCheckBoxMenuItem(
+        JCheckBoxMenuItem binaryMenu = new JCheckBoxMenuItem(
             I18n.valueByKey("CONSOLE_BINARY_LABEL"),
             HelperUi.ICON_BINARY,
             prefs.getBoolean(HelperUi.BINARY_VISIBLE, true)
         );
-        I18nView.addComponentForKey("CONSOLE_BINARY_LABEL", this.binaryMenu);
-        menuPanel.add(this.binaryMenu);
+        I18nView.addComponentForKey("CONSOLE_BINARY_LABEL", binaryMenu);
+        menuPanel.add(binaryMenu);
         
-        this.networkMenu = new JCheckBoxMenuItem(
+        JCheckBoxMenuItem networkMenu = new JCheckBoxMenuItem(
             I18n.valueByKey("CONSOLE_NETWORK_LABEL"),
             HelperUi.ICON_HEADER,
             prefs.getBoolean(HelperUi.NETWORK_VISIBLE, true)
         );
-        I18nView.addComponentForKey("CONSOLE_NETWORK_LABEL", this.networkMenu);
-        menuPanel.add(this.networkMenu);
+        I18nView.addComponentForKey("CONSOLE_NETWORK_LABEL", networkMenu);
+        menuPanel.add(networkMenu);
         
         this.javaDebugMenu = new JCheckBoxMenuItem(
             I18n.valueByKey("CONSOLE_JAVA_LABEL"),
@@ -272,7 +261,7 @@ public class Menubar extends JMenuBar {
         );
         I18nView.addComponentForKey("CONSOLE_JAVA_LABEL", this.javaDebugMenu);
 
-        for (JCheckBoxMenuItem menuItem: new JCheckBoxMenuItem[]{this.chunkMenu, this.binaryMenu, this.networkMenu, this.javaDebugMenu}) {
+        for (JCheckBoxMenuItem menuItem: new JCheckBoxMenuItem[]{this.chunkMenu, binaryMenu, networkMenu, this.javaDebugMenu}) {
             menuItem.setUI(
                 new BasicCheckBoxMenuItemUI() {
                     
@@ -293,18 +282,18 @@ public class Menubar extends JMenuBar {
             }
         });
         
-        this.binaryMenu.addActionListener(actionEvent -> {
+        binaryMenu.addActionListener(actionEvent -> {
             
-            if (this.binaryMenu.isSelected()) {
+            if (binaryMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertBooleanTab();
             } else {
                 MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_BINARY));
             }
         });
         
-        this.networkMenu.addActionListener(actionEvent -> {
+        networkMenu.addActionListener(actionEvent -> {
             
-            if (this.networkMenu.isSelected()) {
+            if (networkMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertNetworkTab();
             } else {
                 MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_HEADER));
@@ -401,7 +390,9 @@ public class Menubar extends JMenuBar {
         itemSqlEngine.addActionListener(actionEvent -> {
             
             for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
+                
                 if (titleTabSqlEngine.equals(MediatorGui.tabResults().getTitleAt(i))) {
+                    
                     MediatorGui.tabResults().setSelectedIndex(i);
                     return;
                 }
@@ -439,7 +430,9 @@ public class Menubar extends JMenuBar {
         itemPreferences.addActionListener(actionEvent -> {
             
             for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
+                
                 if (titleTabPreferences.equals(MediatorGui.tabResults().getTitleAt(i))) {
+                    
                     MediatorGui.tabResults().setSelectedIndex(i);
                     return;
                 }
@@ -451,6 +444,7 @@ public class Menubar extends JMenuBar {
                 
                 // The user scrolled the List (using the bar, mouse wheel or something else):
                 if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK){
+                    
                     // Jump to the next "block" (which is a row".
                     adjustmentEvent.getAdjustable().setBlockIncrement(100);
                     adjustmentEvent.getAdjustable().setUnitIncrement(100);
@@ -706,8 +700,8 @@ public class Menubar extends JMenuBar {
         this.itemIntoJapanese = new JMenuItem("<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ja").getDisplayLanguage(new Locale("ja")) +"</span>...</html>", HelperUi.ICON_FLAG_JA);
         this.itemIntoKorean = new JMenuItem("<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ko").getDisplayLanguage(new Locale("ko")) +"</span>...</html>", HelperUi.ICON_FLAG_KO);
         this.itemIntoSwedish = new JMenuItem(new Locale("se").getDisplayLanguage(new Locale("se")) +"...", HelperUi.ICON_FLAG_SE);
-        this.itemIntoOther = new JMenuItem(I18n.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
-        I18nView.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", this.itemIntoOther);
+        JMenuItem itemIntoOther = new JMenuItem(I18n.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
+        I18nView.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", itemIntoOther);
         
         this.itemIntoArabic.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         
@@ -733,7 +727,7 @@ public class Menubar extends JMenuBar {
             this.itemIntoDutch,
             this.itemIntoTamil,
             new JSeparator(),
-            this.itemIntoOther
+            itemIntoOther
         )
         .forEach(menuI18nContribution::add);
         
@@ -758,7 +752,7 @@ public class Menubar extends JMenuBar {
             new SimpleEntry<>(this.itemIntoKorean, Language.KO),
             new SimpleEntry<>(this.itemIntoJapanese, Language.JA),
             new SimpleEntry<>(this.itemIntoSwedish, Language.SE),
-            new SimpleEntry<>(this.itemIntoOther, Language.OT)
+            new SimpleEntry<>(itemIntoOther, Language.OT)
         )
         .forEach(
             entry -> entry.getKey().addActionListener(
@@ -905,14 +899,7 @@ public class Menubar extends JMenuBar {
         this.switchOrientation(oldLocale, newLocale, isStartup);
         this.switchMenuItems();
         
-        // I18n of tree empty node
-        if (MediatorGui.treeDatabase().isRootVisible()) {
-            
-            DefaultTreeModel model = (DefaultTreeModel) MediatorGui.managerDatabase().getTree().getModel();
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-            model.reload(root);
-            MediatorGui.managerDatabase().getTree().revalidate();
-        }
+        MediatorGui.treeDatabase().reloadNodes();
         
         // Fix glitches on Linux
         MediatorGui.frame().revalidate();

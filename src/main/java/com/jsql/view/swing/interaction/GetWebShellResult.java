@@ -17,7 +17,7 @@ package com.jsql.view.swing.interaction;
 public class GetWebShellResult extends AbstractGetShellResult {
 
     public GetWebShellResult(Object[] interactionParams) {
+        
         super(interactionParams);
     }
-
 }

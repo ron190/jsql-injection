@@ -12,7 +12,6 @@ package com.jsql.view.swing.interaction;
 
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.manager.util.StateButton;
 
 /**
  * End the refreshing of administration page search button.
@@ -28,14 +27,7 @@ public class EndAdminSearch implements InteractionCommand {
 
     @Override
     public void execute() {
-        if (MediatorGui.managerAdminPage() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.managerAdminPage() in "+ this.getClass());
-        }
         
-        MediatorGui.managerAdminPage().restoreButtonText();
-        MediatorGui.managerAdminPage().setButtonEnable(true);
-        MediatorGui.managerAdminPage().hideLoader();
-        MediatorGui.managerAdminPage().setStateButton(StateButton.STARTABLE);
+        MediatorGui.managerAdminPage().endAdminSearch();
     }
-    
 }

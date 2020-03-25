@@ -26,11 +26,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.view.interaction.ObserverInteraction;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.menubar.Menubar;
@@ -61,12 +59,12 @@ public class JFrameView extends JFrame {
      */
     private Map<UUID, AbstractShell> mapShells = new HashMap<>();
 
-    /**
-     *  Map a database element with the corresponding tree node.<br>
-     *  The injection model send a database element to the view, then
-     *  the view access its graphic component to update.
-     */
-    private transient Map<AbstractElementDatabase, DefaultMutableTreeNode> mapNodes = new HashMap<>();
+//    /**
+//     *  Map a database element with the corresponding tree node.<br>
+//     *  The injection model send a database element to the view, then
+//     *  the view access its graphic component to update.
+//     */
+//    private transient Map<AbstractElementDatabase, DefaultMutableTreeNode> mapNodes = new HashMap<>();
     
     private transient ObserverInteraction observer = new ObserverInteraction("com.jsql.view.swing.interaction");
     
@@ -176,7 +174,7 @@ public class JFrameView extends JFrame {
         
         MediatorGui.panelAddressBar().getAddressMenuBar().reset();
         
-        this.mapNodes.clear();
+        MediatorGui.treeDatabase().getTreeNodeModels().clear();
         this.mapShells.clear();
         
         MediatorGui.panelConsoles().reset();
@@ -210,13 +208,13 @@ public class JFrameView extends JFrame {
         return this.mapShells;
     }
     
-    /**
-     *  Get the database tree model.
-     *  @return Tree model
-     */
-    public final Map<AbstractElementDatabase, DefaultMutableTreeNode> getTreeNodeModels() {
-        return this.mapNodes;
-    }
+//    /**
+//     *  Get the database tree model.
+//     *  @return Tree model
+//     */
+//    public final Map<AbstractElementDatabase, DefaultMutableTreeNode> getTreeNodeModels() {
+//        return this.mapNodes;
+//    }
 
     public ObserverInteraction getObserver() {
         return this.observer;

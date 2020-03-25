@@ -46,7 +46,7 @@ public class PanelPreferences extends JPanel {
     private static final JPanel panelGeneral = new JPanel(new BorderLayout());
     private static final JPanel panelTampering = new JPanel(new BorderLayout());
     
-    private Border panelBorder = BorderFactory.createEmptyBorder(10, 15, 0, 15);
+    private transient Border panelBorder = BorderFactory.createEmptyBorder(10, 15, 0, 15);
     
     private enum CategoryPreference {
         

@@ -14,6 +14,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.MenuElement;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.strategy.AbstractStrategy;
@@ -28,6 +30,11 @@ import com.jsql.view.swing.ui.ComponentBorder;
 
 @SuppressWarnings("serial")
 public class AddressMenuBar extends JMenuBar {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     private JMenu[] itemRadioStrategyError = new JMenu[1];
 
@@ -109,25 +116,37 @@ public class AddressMenuBar extends JMenuBar {
         this.loader.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
     }
 
+    public void endPreparation() {
+        
+        this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_START_TOOLTIP"));
+        this.buttonInUrl.setInjectionReady();
+        this.loader.setVisible(false);
+    }
+    
     public void initErrorMethods(Vendor vendor) {
         
         this.itemRadioStrategyError[0].removeAll();
 
         Integer[] i = { 0 };
+        
         if (vendor != MediatorModel.model().getMediatorVendor().getAuto() && vendor.instance().getModelYaml().getStrategy().getError() != null) {
             
             for (Method methodError: vendor.instance().getModelYaml().getStrategy().getError().getMethod()) {
                 
                 JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
                 itemRadioVendor.setEnabled(false);
+                
                 this.itemRadioStrategyError[0].add(itemRadioVendor);
                 this.groupStrategy.add(itemRadioVendor);
 
                 final int indexError = i[0];
+                
                 itemRadioVendor.addActionListener(actionEvent -> {
                     
                     this.menuStrategy.setText(methodError.getName());
+                    
                     MediatorModel.model().getMediatorStrategy().setStrategy(MediatorModel.model().getMediatorStrategy().getError());
+                    
                     ((StrategyInjectionError) MediatorModel.model().getMediatorStrategy().getError()).setIndexMethod(indexError);
                 });
 
@@ -152,10 +171,138 @@ public class AddressMenuBar extends JMenuBar {
         ((JMenu) this.menuStrategy.getItem(2)).removeAll();
         this.groupStrategy.clearSelection();
     }
+    
+    public void setVendor(Vendor vendor) {
+        
+        this.menuVendor.setText(vendor.toString());
+        
+        this.initErrorMethods(vendor);
+    }
+    
+    public void resetLabelStrategy() {
+        
+        for (int i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
+            
+            this.menuStrategy.getItem(i).setEnabled(false);
+            this.menuStrategy.getItem(i).setSelected(false);
+        }
+    }
 
     public JMenu[] getItemRadioStrategyError() {
         return this.itemRadioStrategyError;
     }
+    
+    public void markStrategy(AbstractStrategy strategy) {
+        
+        this.menuStrategy.setText(strategy.toString());
+        
+        for (int i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
+            
+            if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {
+                
+                this.menuStrategy.getItem(i).setSelected(true);
+                break;
+            }
+        }
+    }
+    
+    public void markStrategyInvulnerable(AbstractStrategy strategy) {
+        
+        for (int i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
+            
+            if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {
+                
+                this.menuStrategy.getItem(i).setEnabled(false);
+                break;
+            }
+        }
+    }
+    
+    public void markErrorInvulnerable(int indexMethodError) {
+        
+        AbstractStrategy strategy = MediatorModel.model().getMediatorStrategy().getError();
+        
+        // Fix #36975: ArrayIndexOutOfBoundsException on getItem()
+        // Fix #40352: NullPointerException on ?
+        try {
+            for (int i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
+                
+                if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {
+                    
+                    ((JMenu) this.menuStrategy.getItem(i)).getItem(indexMethodError).setEnabled(false);
+                    
+                    break;
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+            LOGGER.error(e, e);
+        }
+    }
+    
+    public void markError() {
+
+        AbstractStrategy strategy = MediatorModel.model().getMediatorStrategy().getError();
+        this.menuStrategy.setText(strategy.toString());
+        
+        // TODO magic number
+        JMenu menuError = (JMenu) this.menuStrategy.getMenuComponent(2);
+        
+        int indexError = strategy.getIndexMethodError();
+        String nameError = MediatorModel.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();
+        
+        for (int i = 0 ; i < menuError.getItemCount() ; i++) {
+            
+            // Fix #44635: ArrayIndexOutOfBoundsException on getItem()
+            try {
+                if (menuError.getItem(i).getText().equals(nameError)) {
+                    
+                    menuError.getItem(i).setSelected(true);
+                    this.menuStrategy.setText(nameError);
+                    
+                    break;
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                LOGGER.error(e, e);
+            }
+        }
+    }
+    
+    public void markErrorVulnerable(int indexMethodError) {
+        
+        AbstractStrategy strategy = MediatorModel.model().getMediatorStrategy().getError();
+        
+        for (int i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
+            
+            JMenuItem menuItemStrategy = this.menuStrategy.getItem(i);
+            
+            if (menuItemStrategy.getText().equals(strategy.toString())) {
+                
+                JMenu menuError = (JMenu) menuItemStrategy;
+                menuError.setEnabled(true);
+                
+                // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
+                if (0 <= indexMethodError && indexMethodError < menuError.getItemCount()) {
+                    menuError.getItem(indexMethodError).setEnabled(true);
+                }
+                
+                break;
+            }
+        }
+    }
+    
+    public void markStrategyVulnerable(AbstractStrategy strategy) {
+        
+        for (int i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
+            
+            if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {
+                
+                this.menuStrategy.getItem(i).setEnabled(true);
+                break;
+            }
+        }
+    }
+    
+    // Getter and setter
 
     public JMenu getMenuVendor() {
         return this.menuVendor;

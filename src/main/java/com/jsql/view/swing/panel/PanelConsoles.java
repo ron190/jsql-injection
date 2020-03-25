@@ -392,13 +392,39 @@ public class PanelConsoles extends JPanel {
         labelTab.setToolTipText(I18nView.valueByKey(keyTooltip));
     }
     
+    public void messageChunk(String text) {
+        
+        try {
+            this.chunkTextArea.append(text +"\n");
+            this.chunkTextArea.setCaretPosition(this.chunkTextArea.getDocument().getLength());
+            
+        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
+            
+            // Fix #67063: NullPointerException on chunkTab.append()
+            // Fix #4770 on chunkTab.append()
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+    
+    public void messageBinary(String text) {
+        
+        try {
+            this.binaryTextArea.append("\t"+ text);
+            this.binaryTextArea.setCaretPosition(this.binaryTextArea.getDocument().getLength());
+        
+        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
+            
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+    
     // Getter and setter
 
     public JTextArea getChunkTab() {
         return this.chunkTextArea;
     }
 
-    public JSplitPaneWithZeroSizeDivider getNetwork() {
+    public JSplitPaneWithZeroSizeDivider getNetworkSplitPane() {
         return this.networkSplitPane;
     }
 

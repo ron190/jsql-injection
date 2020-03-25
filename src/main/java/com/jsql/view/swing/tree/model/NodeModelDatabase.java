@@ -50,10 +50,10 @@ public class NodeModelDatabase extends AbstractNodeModel {
             return;
         }
     
-        MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();
+        MediatorGui.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();
         
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
-        treeModel.reload(MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase()));
+        treeModel.reload(MediatorGui.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()));
         
         new SwingWorker<Object, Object>() {
             

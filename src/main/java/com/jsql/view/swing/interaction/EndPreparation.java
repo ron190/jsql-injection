@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
@@ -29,20 +28,12 @@ public class EndPreparation implements InteractionCommand {
 
     @Override
     public void execute() {
-        if (MediatorGui.panelAddressBar() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
-        }
         
-        MediatorGui.panelAddressBar().getAddressMenuBar().getButtonInUrl().setToolTipText(I18n.valueByKey("BUTTON_START_TOOLTIP"));
-        MediatorGui.panelAddressBar().getAddressMenuBar().getButtonInUrl().setInjectionReady();
-        MediatorGui.panelAddressBar().getAddressMenuBar().getLoader().setVisible(false);
+        MediatorGui.panelAddressBar().getAddressMenuBar().endPreparation();
 
         if (MediatorModel.model().isInjectionAlreadyBuilt()) {
-            MediatorGui.managerFile().setButtonEnable(true);
-            MediatorGui.managerWebshell().setButtonEnable(true);
-            MediatorGui.managerSqlshell().setButtonEnable(true);
-            MediatorGui.managerUpload().setButtonEnable(true);
+            
+            MediatorGui.tabManagers().endPreparation();
         }
     }
-    
 }

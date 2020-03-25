@@ -114,5 +114,4 @@ public abstract class AbstractStrategy {
     public void setVisibleIndex(String visibleIndex) {
         this.visibleIndex = visibleIndex;
     }
-    
 }

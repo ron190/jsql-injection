@@ -11,6 +11,7 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.model.MediatorModel;
+import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
@@ -28,16 +29,9 @@ public class MarkTimeVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        if (MediatorGui.panelAddressBar() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
-        }
         
-        for (int i = 0 ; i < MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItemCount() ; i++) {
-            if (MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().getMediatorStrategy().getTime().toString())) {
-                MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItem(i).setEnabled(true);
-                break;
-            }
-        }
+        AbstractStrategy strategy = MediatorModel.model().getMediatorStrategy().getTime();
+        
+        MediatorGui.panelAddressBar().getAddressMenuBar().markStrategyVulnerable(strategy);
     }
-    
 }

@@ -10,17 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import java.net.MalformedURLException;
-import java.util.UUID;
-
-import com.jsql.model.MediatorModel;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.scrollpane.LightScrollPaneShell;
-import com.jsql.view.swing.shell.ShellWeb;
-import com.jsql.view.swing.tab.TabHeader;
 
 /**
  * Create a new tab for the terminal.
@@ -41,44 +32,14 @@ public class CreateShellTab extends CreateTab implements InteractionCommand {
      * @param interactionParams The local path and url for the shell
      */
     public CreateShellTab(Object[] interactionParams) {
+        
         this.path = (String) interactionParams[0];
         this.url = (String) interactionParams[1];
     }
 
     @Override
     public void execute() {
-        if (MediatorGui.frame() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.frame() in "+ this.getClass());
-        }
         
-        try {
-            UUID terminalID = UUID.randomUUID();
-            ShellWeb terminal = new ShellWeb(terminalID, this.url);
-            MediatorGui.frame().getConsoles().put(terminalID, terminal);
-            
-            LightScrollPane scroller = new LightScrollPaneShell(terminal);
-    
-            MediatorGui.tabResults().addTab("Web shell ", scroller);
-    
-            // Focus on the new tab
-            MediatorGui.tabResults().setSelectedComponent(scroller);
-    
-            // Create a custom tab header with close button
-            TabHeader header = new TabHeader("Web shell", HelperUi.ICON_SHELL_SERVER);
-    
-            MediatorGui.tabResults().setToolTipTextAt(
-                MediatorGui.tabResults().indexOfComponent(scroller),
-                "<html><b>URL</b><br>" + this.url + MediatorModel.model().getResourceAccess().filenameWebshell
-                + "<br><b>Path</b><br>" + this.path + MediatorModel.model().getResourceAccess().filenameWebshell + "</html>"
-            );
-    
-            // Apply the custom header to the tab
-            MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
-    
-            terminal.requestFocusInWindow();
-        } catch (MalformedURLException e) {
-            LOGGER.warn("Incorrect shell Url", e);
-        }
+        MediatorGui.tabResults().createShell(this.url, this.path);
     }
-    
 }

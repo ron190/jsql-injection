@@ -11,6 +11,7 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.model.MediatorModel;
+import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
@@ -28,17 +29,9 @@ public class MarkNormalStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        if (MediatorGui.panelAddressBar() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
-        }
         
-        MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().setText(MediatorModel.model().getMediatorStrategy().getNormal().toString());
-        for (int i = 0 ; i < MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItemCount() ; i++) {
-            if (MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().getMediatorStrategy().getNormal().toString())) {
-                MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItem(i).setSelected(true);
-                break;
-            }
-        }
+        AbstractStrategy strategy = MediatorModel.model().getMediatorStrategy().getNormal();
+        
+        MediatorGui.panelAddressBar().getAddressMenuBar().markStrategy(strategy);
     }
-    
 }

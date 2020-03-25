@@ -27,11 +27,7 @@ public class ResetInterface implements InteractionCommand {
 
     @Override
     public void execute() {
-        if (MediatorGui.frame() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.frame() in "+ this.getClass());
-        }
         
         MediatorGui.frame().resetInterface();
     }
-    
 }

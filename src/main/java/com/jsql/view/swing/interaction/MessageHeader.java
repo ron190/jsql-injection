@@ -10,8 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import java.awt.Component;
-import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Map;
@@ -39,6 +37,7 @@ public class MessageHeader implements InteractionCommand {
     private String source;
 
     Map<String, Object> params;
+    
     /**
      * @param interactionParams Text to append
      */
@@ -56,13 +55,9 @@ public class MessageHeader implements InteractionCommand {
     @Override
     public void execute() {
         
-        if (MediatorGui.panelConsoles() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.panelConsoles() in "+ this.getClass());
-        }
-        
         MediatorGui.panelConsoles().getNetworkTable().addHeader(new HttpHeader(this.url, this.post, this.header, this.response, this.source));
         
-        JViewport viewport = ((JScrollIndicator) MediatorGui.panelConsoles().getNetwork().getLeftComponent()).scrollPane.getViewport();
+        JViewport viewport = ((JScrollIndicator) MediatorGui.panelConsoles().getNetworkSplitPane().getLeftComponent()).scrollPane.getViewport();
         JTable table = (JTable) viewport.getView();
         
         DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -75,14 +70,10 @@ public class MessageHeader implements InteractionCommand {
             rect.translate(-pt.x, -pt.y);
             viewport.scrollRectToVisible(rect);
             
-            int tabIndex = MediatorGui.tabConsoles().indexOfTab("Network");
-            if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
-                Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
-                if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
-                    tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
-                }
-            }
+            MediatorGui.tabConsoles().highlightTab("Network");
+            
         } catch(NullPointerException | IndexOutOfBoundsException e) {
+            
             // Fix #4658, #2224, #1797 on model.addRow()
             LOGGER.error(e.getMessage(), e);
         }

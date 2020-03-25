@@ -10,9 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import java.awt.Component;
-import java.awt.Font;
-
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
@@ -30,25 +27,15 @@ public class MessageBinary implements InteractionCommand {
      * @param interactionParams Text to append
      */
     public MessageBinary(Object[] interactionParams) {
+        
         this.text = (String) interactionParams[0];
     }
 
     @Override
     public void execute() {
-        if (MediatorGui.panelConsoles() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.panelConsoles() in "+ this.getClass());
-        }
         
-        MediatorGui.panelConsoles().getBinaryTab().append("\t"+ this.text);
-        MediatorGui.panelConsoles().getBinaryTab().setCaretPosition(MediatorGui.panelConsoles().getBinaryTab().getDocument().getLength());
+        MediatorGui.panelConsoles().messageBinary(this.text);
         
-        int tabIndex = MediatorGui.tabConsoles().indexOfTab("Boolean");
-        if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
-            Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
-            if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
-                tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
-            }
-        }
+        MediatorGui.tabConsoles().highlightTab("Boolean");
     }
-    
 }

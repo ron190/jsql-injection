@@ -195,4 +195,12 @@ public class ManagerAdminPage extends AbstractManagerList {
 
         this.loader.setVisible(false);
     }
+    
+    public void endAdminSearch() {
+        
+        this.restoreButtonText();
+        this.setButtonEnable(true);
+        this.hideLoader();
+        this.setStateButton(StateButton.STARTABLE);
+    }
 }

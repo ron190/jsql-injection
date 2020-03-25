@@ -76,7 +76,6 @@ public class StrategyInjectionTime extends AbstractStrategy {
                 this.unallow();
             }
         }
-        
     }
     
     @Override
@@ -118,5 +117,4 @@ public class StrategyInjectionTime extends AbstractStrategy {
     public String getName() {
         return "Time";
     }
-    
 }

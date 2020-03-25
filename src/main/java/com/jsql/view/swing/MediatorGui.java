@@ -31,7 +31,6 @@ public final class MediatorGui {
     private static TabConsoles tabConsoles;
     private static PanelConsoles panelConsoles;
     
-    private static ManagerDatabase managerDatabase;
     private static ManagerScan managerScan;
     private static ManagerAdminPage managerAdminPage;
     private static ManagerWebShell managerWebshell;
@@ -104,10 +103,6 @@ public final class MediatorGui {
         return managerScan;
     }
     
-    public static ManagerDatabase managerDatabase() {
-        return managerDatabase;
-    }
-    
     public static ManagerBruteForce managerBruteForce() {
         return managerBruteForce;
     }
@@ -168,10 +163,6 @@ public final class MediatorGui {
     
     public static void register(ManagerScan managerScan) {
         MediatorGui.managerScan = managerScan;
-    }
-    
-    public static void register(ManagerDatabase managerDatabase) {
-        MediatorGui.managerDatabase = managerDatabase;
     }
     
     public static void register(ManagerBruteForce managerBruteForce) {

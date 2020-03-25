@@ -10,13 +10,9 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
  * Stop refreshing the progress bar of an untracked
@@ -33,32 +29,13 @@ public class EndIndeterminateProgress implements InteractionCommand {
      * @param interactionParams Element to update
      */
     public EndIndeterminateProgress(Object[] interactionParams) {
+        
         this.dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
     }
 
     @Override
     public void execute() {
-        if (MediatorGui.treeDatabase() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.treeDatabase() in "+ this.getClass());
-        }
-        
-        // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
 
-        DefaultMutableTreeNode nodeModel = MediatorGui.frame().getTreeNodeModels().get(this.dataElementDatabase);
-        
-        // Fix #1806 : NullPointerException on ...odels().get(dataElementDatabase).getUserObject()
-        if (nodeModel != null) {
-            // Get the node
-            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) nodeModel.getUserObject();
-            // Mark the node model as 'no loading bar'
-            progressingTreeNodeModel.setProgressing(false);
-            // Mark the node model as 'no stop/pause/resume button'
-            progressingTreeNodeModel.setRunning(false);
-            
-            // Update the node
-            treeModel.nodeChanged(nodeModel);
-        }
+        MediatorGui.treeDatabase().endIndeterminateProgess(this.dataElementDatabase);
     }
-    
 }

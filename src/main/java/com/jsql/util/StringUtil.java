@@ -310,12 +310,12 @@ public final class StringUtil {
         return new String(hex, StandardCharsets.UTF_8.name());
     }
     
-    public static String toHexZip(String text) throws UnsupportedEncodingException, IOException {
+    public static String toHexZip(String text) throws IOException {
         byte[] zip = StringUtil.compress(text).getBytes(StandardCharsets.UTF_8.name());
         return Hex.encodeHexString(zip).trim();
     }
     
-    public static String fromHexZip(String text) throws UnsupportedEncodingException, IOException, DecoderException {
+    public static String fromHexZip(String text) throws IOException, DecoderException {
         byte[] hex = Hex.decodeHex(text.toCharArray());
         String zip = new String(hex, StandardCharsets.UTF_8.name());
         return StringUtil.decompress(zip);
@@ -366,9 +366,8 @@ public final class StringUtil {
         byte[] passwordSHA1Bytes = passwordSHA1.getBytes();
         md.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);
         byte[] hashSHA1SH1 = md.digest();
-        String mysqlHash = StringUtil.digestToHexString(hashSHA1SH1);
         
-        return mysqlHash;
+        return StringUtil.digestToHexString(hashSHA1SH1);
     }
 
     public static String toCrc32(String textInput) {
@@ -389,9 +388,8 @@ public final class StringUtil {
         byte[] passwordByte = passwordString.getBytes();
         md.update(passwordByte, 0, passwordByte.length);
         byte[] encodedPassword = md.digest();
-        String encodedPasswordInString = StringUtil.digestToHexString(encodedPassword);
         
-        return encodedPasswordInString;
+        return StringUtil.digestToHexString(encodedPassword);
     }
 
     public static String toHash(String nameMethod, String textInput) throws NoSuchAlgorithmException {
@@ -402,8 +400,7 @@ public final class StringUtil {
         byte[] passwordByte = passwordString.getBytes();
         md.update(passwordByte, 0, passwordByte.length);
         byte[] encodedPassword = md.digest();
-        String encodedPasswordInString = StringUtil.digestToHexString(encodedPassword);
         
-        return encodedPasswordInString;
+        return StringUtil.digestToHexString(encodedPassword);
     }
 }

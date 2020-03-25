@@ -22,18 +22,12 @@ public class EndUpload implements InteractionCommand {
      * @param interactionParams
      */
     public EndUpload(Object[] interactionParams) {
-     // Do nothing
+        // Do nothing
     }
 
     @Override
     public void execute() {
-        if (MediatorGui.managerUpload() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.managerUpload() in "+ this.getClass());
-        }
         
-        MediatorGui.managerUpload().restoreButtonText();
-        MediatorGui.managerUpload().setButtonEnable(true);
-        MediatorGui.managerUpload().hideLoader();
+        MediatorGui.managerUpload().endUpload();
     }
-    
 }

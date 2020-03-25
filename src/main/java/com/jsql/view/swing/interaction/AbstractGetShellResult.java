@@ -22,7 +22,7 @@ import com.jsql.view.swing.shell.AbstractShell;
 public class AbstractGetShellResult implements InteractionCommand {
     
     /**
-     * Unique identifier for the terminal. Used for outputing results of
+     * Unique identifier for the terminal. Used to output results of
      * commands in the right shell tab (in case of multiple shell opened).
      */
     private UUID terminalID;
@@ -36,15 +36,13 @@ public class AbstractGetShellResult implements InteractionCommand {
      * @param interactionParams The unique identifier of the terminal and the command's result to display
      */
     public AbstractGetShellResult(Object[] interactionParams) {
+        
         this.terminalID = (UUID) interactionParams[0];
         this.result = (String) interactionParams[1];
     }
 
     @Override
     public void execute() {
-        if (MediatorGui.frame() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.frame() in "+ this.getClass());
-        }
         
         AbstractShell terminal = MediatorGui.frame().getConsoles().get(this.terminalID);
         
@@ -53,5 +51,4 @@ public class AbstractGetShellResult implements InteractionCommand {
         terminal.append("\n");
         terminal.reset();
     }
-    
 }

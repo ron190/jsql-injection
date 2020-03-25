@@ -180,4 +180,11 @@ public class ManagerUpload extends AbstractManagerList {
             }
         });
     }
+    
+    public void  endUpload() {
+        
+        this.restoreButtonText();
+        this.setButtonEnable(true);
+        this.hideLoader();
+    }
 }

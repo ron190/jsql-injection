@@ -57,16 +57,15 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
      * @param interactionParams Url of the webpage
      */
     public CreateAdminPageTab(Object[] interactionParams) {
+        
         this.url = (String) interactionParams[0];
     }
 
     @Override
     public void execute() {
-        if (MediatorGui.tabResults() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.tabResults() in "+ this.getClass());
-        }
         
         String htmlSource = "";
+        
         // Fix #4081: SocketTimeoutException on get()
         // Fix #44642: NoClassDefFoundError on get()
         // Fix #44641: ExceptionInInitializerError on get()
@@ -85,8 +84,10 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
                     .addAttributes(":all", "style")
             );
         } catch (IOException e) {
+            
             LOGGER.error(e.getMessage(), e);
         } catch (ExceptionInInitializerError | NoClassDefFoundError e) {
+            
             LOGGER.warn("Jsoup not properly configured, please update jsql", e);
         }
 
@@ -131,6 +132,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
 
         itemCopyUrl.addActionListener(actionEvent -> {
+            
             StringSelection stringSelection = new StringSelection(CreateAdminPageTab.this.url);
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(stringSelection, null);
@@ -139,25 +141,33 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         itemSelectAll.addActionListener(actionEvent -> browser.selectAll());
         
         browser.addFocusListener(new FocusAdapter() {
+            
             @Override
             public void focusGained(FocusEvent arg0) {
+                
                 browser.getCaret().setVisible(true);
                 browser.getCaret().setSelectionVisible(true);
             }
         });
         
         browser.addMouseListener(new MouseAdapter() {
+            
             @Override
             public void mousePressed(MouseEvent evt) {
+                
                 browser.requestFocusInWindow();
+                
                 if (evt.isPopupTrigger()) {
+                    
                     menu.show(evt.getComponent(), evt.getX(), evt.getY());
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent evt) {
+                
                 if (evt.isPopupTrigger()) {
+                    
                     // Fix #45348: IllegalComponentStateException on show()
                     try {
                         menu.show(evt.getComponent(), evt.getX(), evt.getY());
@@ -197,5 +207,4 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
             scroller.scrollPane.getViewport().setViewPosition(new java.awt.Point(0, 0))
         );
     }
-    
 }

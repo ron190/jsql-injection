@@ -12,10 +12,6 @@ package com.jsql.view.swing.interaction;
 
 import java.util.Map;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
@@ -33,29 +29,14 @@ public class MarkErrorVulnerable implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public MarkErrorVulnerable(Object[] interactionParams) {
+        
         this.mapHeader = (Map<Header, Object>) interactionParams[0];
         this.indexMethodError = (int) this.mapHeader.get(Header.SOURCE);
     }
 
     @Override
     public void execute() {
-        if (MediatorGui.panelAddressBar() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
-        }
         
-        for (int i = 0 ; i < MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItemCount() ; i++) {
-            JMenuItem menuItemStrategy = MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItem(i);
-            if (menuItemStrategy.getText().equals(MediatorModel.model().getMediatorStrategy().getError().toString())) {
-                JMenu menuError = (JMenu) menuItemStrategy;
-                menuError.setEnabled(true);
-                
-                // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
-                if (0 <= this.indexMethodError && this.indexMethodError < menuError.getItemCount()) {
-                    menuError.getItem(this.indexMethodError).setEnabled(true);
-                }
-                break;
-            }
-        }
+        MediatorGui.panelAddressBar().getAddressMenuBar().markErrorVulnerable(this.indexMethodError);
     }
-    
 }

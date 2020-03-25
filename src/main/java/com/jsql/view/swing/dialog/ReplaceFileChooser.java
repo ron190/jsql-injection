@@ -28,6 +28,7 @@ public class ReplaceFileChooser extends JFileChooser {
      * @param s
      */
     public ReplaceFileChooser(String s) {
+        
         super(s);
     }
     
@@ -48,22 +49,26 @@ public class ReplaceFileChooser extends JFileChooser {
                 );
                 
                 switch (result) {
+                
                     case JOptionPane.YES_OPTION:
                         super.approveSelection();
                         return;
+                        
                     case JOptionPane.NO_OPTION:
                     case JOptionPane.CLOSED_OPTION:
                         return;
+                        
                     case JOptionPane.CANCEL_OPTION:
                         this.cancelSelection();
                         return;
+                        
                     default:
                         break;
                 }
             } else {
+                
                 super.approveSelection();
             }
         }
     }
-    
 }

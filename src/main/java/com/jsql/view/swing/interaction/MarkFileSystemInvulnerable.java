@@ -11,7 +11,6 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 
 /**
@@ -28,26 +27,7 @@ public class MarkFileSystemInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        if (MediatorGui.managerFile() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.managerFile() in "+ this.getClass());
-        }
         
-        MediatorGui.managerFile().changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
-        MediatorGui.managerFile().setButtonEnable(true);
-        MediatorGui.managerFile().restoreButtonText();
-        MediatorGui.managerFile().hideLoader();
-        
-        MediatorGui.managerWebshell().changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
-        MediatorGui.managerWebshell().setButtonEnable(true);
-        MediatorGui.managerWebshell().restoreButtonText();
-        
-        MediatorGui.managerUpload().changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
-        MediatorGui.managerUpload().setButtonEnable(true);
-        MediatorGui.managerUpload().restoreButtonText();
-        
-        MediatorGui.managerSqlshell().changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
-        MediatorGui.managerSqlshell().setButtonEnable(true);
-        MediatorGui.managerSqlshell().restoreButtonText();
+        MediatorGui.tabManagers().markFileSystemInvulnerable();
     }
-    
 }
