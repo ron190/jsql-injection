@@ -2,7 +2,6 @@ package com.jsql.view.swing;
 
 import com.jsql.view.swing.manager.ManagerAdminPage;
 import com.jsql.view.swing.manager.ManagerBruteForce;
-import com.jsql.view.swing.manager.ManagerDatabase;
 import com.jsql.view.swing.manager.ManagerFile;
 import com.jsql.view.swing.manager.ManagerScan;
 import com.jsql.view.swing.manager.ManagerSqlShell;

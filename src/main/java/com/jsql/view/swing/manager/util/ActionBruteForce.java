@@ -20,8 +20,8 @@ import javax.swing.text.BadLocationException;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
+import com.jsql.util.bruter.HashBruter;
 import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.bruteforce.HashBruter;
 import com.jsql.view.swing.manager.ManagerBruteForce;
 
 /**

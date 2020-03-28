@@ -1,4 +1,4 @@
-package com.jsql.view.swing.bruteforce;
+package com.jsql.util.bruter;
 
 /*************************************************************************
  *  Compilation:  javac CRC16.java
@@ -23,6 +23,7 @@ public class Crc16 {
     }
     
     public static String generateCRC16(String baseString) {
+        
         int[] table = {
             0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,
             0xC601, 0x06C0, 0x0780, 0xC741, 0x0500, 0xC5C1, 0xC481, 0x0440,
@@ -67,5 +68,4 @@ public class Crc16 {
 
         return Integer.toHexString(crc);
     }
-    
 }

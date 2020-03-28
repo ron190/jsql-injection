@@ -44,8 +44,10 @@ public abstract class JColoredConsole extends JPopupTextPane {
         this.tabName = tabName;
         
         this.addFocusListener(new FocusAdapter() {
+            
             @Override
             public void focusGained(FocusEvent arg0) {
+                
                 JColoredConsole.this.getProxy().getCaret().setVisible(true);
                 JColoredConsole.this.getProxy().getCaret().setSelectionVisible(true);
             }
@@ -53,6 +55,8 @@ public abstract class JColoredConsole extends JPopupTextPane {
 
         this.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
     }
+    
+    abstract SimpleAttributeSet getColorAttribute();
 
     /**
      * Add a string to the end of JTextPane.
@@ -64,10 +68,10 @@ public abstract class JColoredConsole extends JPopupTextPane {
         try {
             boolean isCaretAtEnd = this.getProxy().getCaretPosition() == this.getProxy().getDocument().getLength();
             
-            JScrollPane v = (JScrollPane) this.getProxy().getParent().getParent();
-            JScrollBar vertical = v.getVerticalScrollBar();
-            int extent = vertical.getModel().getExtent();
-            boolean isScrollBarAtEnd = vertical.getValue() >= vertical.getMaximum() - extent;
+            JScrollPane scrollPane = (JScrollPane) this.getProxy().getParent().getParent();
+            JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
+            int extent = scrollBar.getModel().getExtent();
+            boolean isScrollBarAtEnd = scrollBar.getValue() >= scrollBar.getMaximum() - extent;
             
             String logMessage = message.substring(15);
             String logTimestamp = message.substring(0, 15);
@@ -85,22 +89,25 @@ public abstract class JColoredConsole extends JPopupTextPane {
             );
             
             if (isCaretAtEnd || isScrollBarAtEnd) {
-                vertical.setValue(vertical.getMaximum() + 1);
+                scrollBar.setValue(scrollBar.getMaximum() + 1);
             }
 
-            Color color = Color.BLACK;
+            Color foregroundColor = Color.BLACK;
             if (attribut == SwingAppender.WARN) {
-                color = Color.RED;
+                foregroundColor = Color.RED;
             } else if (attribut == SwingAppender.DEBUG) {
-                color = HelperUi.COLOR_GREEN;
+                foregroundColor = HelperUi.COLOR_GREEN;
             }
             
             int tabIndex = MediatorGui.tabConsoles().indexOfTab(this.tabName);
+            
             if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
+                
                 Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
                 if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
+                    
                     tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
-                    tabHeader.setForeground(color);
+                    tabHeader.setForeground(foregroundColor);
                 }
             }
         } catch (Exception e) {
@@ -109,7 +116,4 @@ public abstract class JColoredConsole extends JPopupTextPane {
             LOGGER.trace(message, e);
         }
     }
-    
-    abstract SimpleAttributeSet getColorAttribute();
-    
 }

@@ -50,8 +50,6 @@ import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import javax.swing.text.StyleConstants;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
@@ -69,7 +67,7 @@ import com.jsql.view.swing.action.ActionSaveTab;
 import com.jsql.view.swing.console.SwingAppender;
 import com.jsql.view.swing.dialog.DialogAbout;
 import com.jsql.view.swing.dialog.DialogTranslate;
-import com.jsql.view.swing.dialog.Language;
+import com.jsql.view.swing.dialog.translate.Language;
 import com.jsql.view.swing.interaction.CreateTab;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -362,7 +360,7 @@ public class Menubar extends JMenuBar {
             // Center the dialog
             if (!aboutDiag.isVisible()) {
                 
-                aboutDiag.reinit();
+                aboutDiag.initializeDialog();
                 // needed here for button focus
                 aboutDiag.setVisible(true);
                 aboutDiag.requestButtonFocus();
@@ -668,10 +666,11 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 
-                dialogTranslate.reinit(this.language);
+                dialogTranslate.initializeDialog(this.language);
                 
                 // Center the dialog
                 if (!dialogTranslate.isVisible()) {
+                    
                     dialogTranslate.setSize(640, 460);
                     dialogTranslate.setLocationRelativeTo(MediatorGui.frame());
                     dialogTranslate.getRootPane().setDefaultButton(dialogTranslate.buttonSend);

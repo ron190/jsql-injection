@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.util.StringUtil;
+import com.jsql.util.bruter.HashUtil;
 import com.jsql.view.swing.manager.ManagerCoder;
 
 /**
@@ -71,25 +72,25 @@ public class ActionCoder implements ActionListener {
                 result = "<span style=\"color:red;\">Empty string to convert</span>";
                 
             } else if (Arrays.asList("Md2", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512").contains(nameMethod)) {
-                result = StringUtil.toHash(nameMethod, textInput);
+                result = HashUtil.toHash(nameMethod, textInput);
                 
             } else if ("Md4".contains(nameMethod)) {
-                result = StringUtil.toMd4(textInput);
+                result = HashUtil.toMd4(textInput);
                 
             } else if ("Adler32".contains(nameMethod)) {
-                result = StringUtil.toAdler32(textInput);
+                result = HashUtil.toAdler32(textInput);
                 
             } else if ("Crc16".contains(nameMethod)) {
-                result = StringUtil.toCrc16(textInput);
+                result = HashUtil.toCrc16(textInput);
                 
             } else if ("Crc32".contains(nameMethod)) {
-                result = StringUtil.toCrc32(textInput);
+                result = HashUtil.toCrc32(textInput);
                 
             } else if ("Crc64".contains(nameMethod)) {
-                result = StringUtil.toCrc64(textInput);
+                result = HashUtil.toCrc64(textInput);
                 
             } else if ("Mysql".equals(nameMethod)) {
-                result = StringUtil.toMySql(textInput);
+                result = HashUtil.toMySql(textInput);
                 
             } else if ("Encode to Hex".equalsIgnoreCase(nameMethod)) {
                 result = StringUtil.toHex(textInput);

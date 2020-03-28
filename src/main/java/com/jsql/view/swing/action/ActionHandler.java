@@ -58,7 +58,9 @@ public final class ActionHandler {
             "permanentFocusOwner",
             propertyChangeEvent -> {
                 if (propertyChangeEvent.getNewValue() instanceof JTextField) {
+                    
                     SwingUtilities.invokeLater(() -> {
+                        
                         JTextField textField = (JTextField) propertyChangeEvent.getNewValue();
                         textField.selectAll();
                     });
@@ -100,10 +102,14 @@ public final class ActionHandler {
         Action closeTab = new ActionCloseTabResult();
         
         Action nextTab = new AbstractAction() {
+            
             @Override
             public void actionPerformed(ActionEvent e) {
+                
                 if (valuesTabbedPane.getTabCount() > 0) {
+                    
                     int selectedIndex = valuesTabbedPane.getSelectedIndex();
+                    
                     if (selectedIndex + 1 < valuesTabbedPane.getTabCount()) {
                         valuesTabbedPane.setSelectedIndex(selectedIndex + 1);
                     } else {
@@ -114,10 +120,14 @@ public final class ActionHandler {
         };
         
         Action previousTab = new AbstractAction() {
+            
             @Override
             public void actionPerformed(ActionEvent e) {
+                
                 if (valuesTabbedPane.getTabCount() > 0) {
+                    
                     int selectedIndex = valuesTabbedPane.getSelectedIndex();
+                    
                     if (selectedIndex - 1 > -1) {
                         valuesTabbedPane.setSelectedIndex(selectedIndex - 1);
                     } else {
@@ -149,13 +159,16 @@ public final class ActionHandler {
         
         int i = MediatorGui.tabManagers().getTabCount();
         for (int k = 1 ; k <= i ; k++) {
+            
             inputMap.put(KeyStroke.getKeyStroke("ctrl "+ k), STR_SELECT_TAB + k);
             inputMap.put(KeyStroke.getKeyStroke("ctrl NUMPAD"+ k), STR_SELECT_TAB + k);
             
             final int l = k;
             actionMap.put(STR_SELECT_TAB + k, new AbstractAction(){
+                
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    
                     MediatorGui.tabManagers().setSelectedIndex(l-1);
                 }
             });
@@ -174,10 +187,11 @@ public final class ActionHandler {
         /* Hide Menubar when focusing any component */
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner",
             propertyChangeEvent -> SwingUtilities.invokeLater(() -> {
+                
                 if (
                     // Fix #40924: NullPointerException on MediatorGui.panelAddressBar()
                     MediatorGui.panelAddressBar() != null
-                    && !MediatorGui.panelAddressBar().isAdvanceIsActivated()
+                    && !MediatorGui.panelAddressBar().isAdvanceActivated()
                 ) {
                     menubar.setVisible(false);
                 }
@@ -189,5 +203,4 @@ public final class ActionHandler {
             new AltKeyEventDispatcher()
         );
     }
-    
 }

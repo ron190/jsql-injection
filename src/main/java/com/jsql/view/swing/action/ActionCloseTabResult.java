@@ -15,6 +15,7 @@ public class ActionCloseTabResult extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         ActionCloseTabResult.perform(MediatorGui.tabResults().getSelectedIndex());
     }
     
@@ -24,27 +25,30 @@ public class ActionCloseTabResult extends AbstractAction {
             
             Component tab = MediatorGui.tabResults().getTabComponentAt(closeTabNumber);
             
+            // Stop syntax color highlighter
             if (tab instanceof TabHeader && ((TabHeader) tab).getCleanableTab() != null) {
                 ((TabHeader) tab).getCleanableTab().clean();
             }
 
             MediatorGui.tabResults().removeTabAt(closeTabNumber);
             
-            ActionCloseTabResult.perform();
+            ActionCloseTabResult.displayPlaceholder();
         }
     }
     
-    public static void perform() {
+    private static void displayPlaceholder() {
         
         if (MediatorGui.tabResults().getTabCount() == 0) {
             
             int i = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation();
             
             if (ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.LEFT_TO_RIGHT) {
+                
                 MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(
                     MediatorGui.frame().getSplitHorizontalTopBottom().getLabelPlaceholderResult()
                 );
             } else {
+                
                 MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(
                     MediatorGui.frame().getSplitHorizontalTopBottom().getLabelPlaceholderResult()
                 );

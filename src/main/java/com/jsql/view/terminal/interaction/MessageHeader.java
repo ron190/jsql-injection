@@ -42,7 +42,7 @@ public class MessageHeader implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
         
-        Map<String, Object> params = (Map<String, Object>) interactionParams[0];
+        Map<Header, Object> params = (Map<Header, Object>) interactionParams[0];
         this.url = (String) params.get(Header.URL);
         this.post = (String) params.get(Header.POST);
         this.header = (String) params.get(Header.HEADER);

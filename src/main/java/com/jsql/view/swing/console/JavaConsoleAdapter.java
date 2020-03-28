@@ -18,6 +18,7 @@ public class JavaConsoleAdapter extends JColoredConsole {
      * @param tabName Default text
      */
     public JavaConsoleAdapter(String tabName, String placeholder) {
+        
         super(tabName, placeholder);
         
         StyleConstants.setForeground(this.attributeTimestamp, Color.RED);
@@ -27,5 +28,4 @@ public class JavaConsoleAdapter extends JColoredConsole {
     public SimpleAttributeSet getColorAttribute() {
         return this.attributeTimestamp;
     }
-    
 }

@@ -81,5 +81,4 @@ public class ActionNewWindow extends AbstractAction {
             LOGGER.error(I18n.valueByKey("NEW_WINDOW_ERROR"), e);
         }
     }
-    
 }

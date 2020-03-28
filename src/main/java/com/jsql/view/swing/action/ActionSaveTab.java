@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
@@ -62,82 +63,94 @@ public class ActionSaveTab extends AbstractAction {
         this.filechooser.setDialogTitle("Save Tab As");
 
         Component component = MediatorGui.tabResults().getSelectedComponent();
+        
         if (component instanceof PanelTable) {
-            this.saveTablePanel();
+            
+            JTable table = ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).getTableValues();
+            this.saveToFile(table);
         } else if (
             component instanceof LightScrollPane
             && ((LightScrollPane) component).scrollPane.getViewport().getView() instanceof JTextComponent
         ) {
-            this.saveJTextComponent();
+            
+            JTextComponent textarea = (JTextComponent) ((LightScrollPane) MediatorGui.tabResults().getSelectedComponent()).scrollPane.getViewport().getView();
+            this.saveToFile(textarea);
         }
     }
     
-    private void saveTablePanel() {
+    private void saveToFile(JComponent textarea) {
         
-        JTable table = ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).getTableValues();
-        
-        if (table == null) {
+        if (textarea == null) {
             return;
         }
-
-        int returnVal = this.filechooser.showSaveDialog(MediatorGui.frame());
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = this.filechooser.getSelectedFile();
+        
+        int stateSave = this.filechooser.showSaveDialog(MediatorGui.frame());
+        
+        if (stateSave == JFileChooser.APPROVE_OPTION) {
             
-            MediatorModel.model().getMediatorUtils().getPreferencesUtil().set(this.filechooser.getCurrentDirectory().toString());
+            String folderSelectedFile = this.filechooser.getCurrentDirectory().toString();
+            MediatorModel.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);
+            
+            if (textarea instanceof JTextComponent) {
+                
+                this.saveTextToFile((JTextComponent) textarea);
+            } else if (textarea instanceof JTable) {
+                
+                this.saveTableToFile((JTable) textarea);
+            }
+        }
+    }
 
-            try (FileWriter excel = new FileWriter(file)) {
-                TableModel model = table.getModel();
+    private void saveTableToFile(JTable tableResults) {
+        
+        File fileSelected = this.filechooser.getSelectedFile();
+        
+        try (FileWriter fileWriterExcel = new FileWriter(fileSelected)) {
+            
+            TableModel tableModel = tableResults.getModel();
+            
+            for (int i = 2 ; i < tableModel.getColumnCount() ; i++) {
+                fileWriterExcel.write(tableModel.getColumnName(i) + "\t");
+            }
+            
+            fileWriterExcel.write("\n");
+            
+            for (int i = 0 ; i < tableModel.getRowCount() ; i++) {
                 
-                for (int i = 2 ; i < model.getColumnCount() ; i++) {
-                    excel.write(model.getColumnName(i) + "\t");
-                }
-                
-                excel.write("\n");
-                
-                for (int i = 0 ; i < model.getRowCount() ; i++) {
-                    for (int j = 2 ; j < model.getColumnCount() ; j++) {
-                        /*
-                         * Cell empty when string was too long to be injected (columnTooLong|cellEmpty|cellEmpty).
-                         */
-                        if (model.getValueAt(i, j) == null) {
-                            excel.write("\t");
-                        /*
-                         * Remove line break.
-                         */
-                        } else {
-                            excel.write(model.getValueAt(i, j).toString().replaceAll("\n", "\\n").replaceAll("\t", "\\t") + "\t");
-                        }
+                for (int j = 2 ; j < tableModel.getColumnCount() ; j++) {
+                    
+                    // Cell empty when string was too long to be injected (columnTooLong|cellEmpty|cellEmpty).
+                    if (tableModel.getValueAt(i, j) == null) {
+                        
+                        fileWriterExcel.write("\t");
+                    } else {
+                        
+                        // Encode line break.
+                        String line = tableModel.getValueAt(i, j).toString();
+                        line = line.replaceAll("\n", "\\n").replaceAll("\t", "\\t");
+                        line = line + "\t";
+                        fileWriterExcel.write(line);
                     }
-                    excel.write("\n");
                 }
-            } catch (IOException e) {
-                LOGGER.warn("Error writing to "+ file.getName(), e);
+                
+                fileWriterExcel.write("\n");
             }
+        } catch (IOException e) {
+            LOGGER.warn("Error writing to "+ fileSelected.getName(), e);
         }
     }
-    
-    private void saveJTextComponent() {
+
+    private void saveTextToFile(JTextComponent textarea) {
         
-        JTextComponent textArea =
-            (JTextComponent) ((LightScrollPane) MediatorGui.tabResults().getSelectedComponent()).scrollPane.getViewport().getView();
+        File file = this.filechooser.getSelectedFile();
         
-        if (textArea == null) {
-            return;
-        }
-        
-        int returnVal = this.filechooser.showSaveDialog(MediatorGui.frame());
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = this.filechooser.getSelectedFile();
-            
-            MediatorModel.model().getMediatorUtils().getPreferencesUtil().set(this.filechooser.getCurrentDirectory().toString());
-            
-            try (BufferedWriter fileOut = new BufferedWriter(new FileWriter(file))) {
-                textArea.write(fileOut);
-            } catch (IOException e) {
-                LOGGER.warn("Error writing to "+ file.getName(), e);
-            }
+        try (
+            FileWriter fileWriter = new FileWriter(file);
+            BufferedWriter fileOut = new BufferedWriter(fileWriter)
+        ) {
+            textarea.write(fileOut);
+        } catch (IOException e) {
+            LOGGER.warn("Error writing to "+ file.getName(), e);
         }
     }
-    
 }

@@ -50,6 +50,7 @@ public class SwingAppender extends WriterAppender {
             new AbstractMap.SimpleEntry<>(TRACE, Color.BLACK),
             new AbstractMap.SimpleEntry<>(ALL, Color.BLACK)
         ).forEach(entry -> {
+            
             StyleConstants.setFontFamily(entry.getKey(), HelperUi.FONT_NAME_UBUNTU_MONO);
             StyleConstants.setFontSize(entry.getKey(), 14);
             StyleConstants.setForeground(entry.getKey(), entry.getValue());
@@ -57,6 +58,7 @@ public class SwingAppender extends WriterAppender {
     }
 
     public SwingAppender() {
+        
         this.setLayout(new PatternLayout("[%-5p] (%F:%L) - %m%n"));
         this.setWriter(new StringWriter());
     }
@@ -68,6 +70,7 @@ public class SwingAppender extends WriterAppender {
      */
     @Override
     public void append(final LoggingEvent event) {
+        
         SwingUtilities.invokeLater(() -> this.insertText(
             this.layout.format(event),
             event.getLevel(),
@@ -97,6 +100,7 @@ public class SwingAppender extends WriterAppender {
      * Colorizes the specified message for the specified log4j level.
      */
     private void insertText(String message, Level level, ThrowableInformation throwableInformation) {
+        
         // Avoid errors which might occur in headless mode
         if (consoleTextPane == null || javaTextPane == null) {
             return;
@@ -158,5 +162,4 @@ public class SwingAppender extends WriterAppender {
     public static void register(SimpleConsoleAdapter consoleColored) {
         SwingAppender.consoleTextPane = consoleColored;
     }
-    
 }

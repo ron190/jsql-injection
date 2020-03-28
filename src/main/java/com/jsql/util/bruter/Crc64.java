@@ -1,4 +1,4 @@
-package com.jsql.view.swing.bruteforce;
+package com.jsql.util.bruter;
 
 /*******************************************************************************
  * Copyright (c) 2009, 2012 Mountainminds GmbH & Co. KG and Contributors
@@ -33,15 +33,19 @@ public class Crc64 {
 
     static {
         LOOKUPTABLE = new long[0x100];
+        
         for (int i = 0; i < 0x100; i++) {
+            
             long v = i;
             for (int j = 0; j < 8; j++) {
+                
                 if ((v & 1) == 1) {
                     v = (v >>> 1) ^ POLY64REV;
                 } else {
                     v = v >>> 1;
                 }
             }
+            
             LOOKUPTABLE[i] = v;
         }
     }
@@ -54,12 +58,13 @@ public class Crc64 {
      * @return checksum value
      */
     public static String generateCRC64(final byte[] data) {
+        
         long sum = 0;
         for (byte element : data) {
             final int lookupidx = ((int) sum ^ element) & 0xff;
             sum = (sum >>> 8) ^ LOOKUPTABLE[lookupidx];
         }
+        
         return String.valueOf(sum);
     }
-    
 }

@@ -93,22 +93,62 @@ public class DialogAbout extends JDialog {
             KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
             JComponent.WHEN_IN_FOCUSED_WINDOW
         );
+        
+        this.setLayout(new BorderLayout());
+        Container dialogPane = this.getContentPane();
 
+        JPanel lastLine = this.initializeLastLine(escapeListener);
+
+        JLabel iconJsql = new JLabel(new ImageIcon(HelperUi.URL_ICON_96));
+        dialogPane.add(iconJsql, BorderLayout.WEST);
+        dialogPane.add(lastLine, BorderLayout.SOUTH);
+
+        // Contact info, use HTML text
+        final JEditorPane[] text = this.initializeEditorPane();
+
+        this.scrollPane = new LightScrollPane(1, 1, 1, 0, text[0]);
+        dialogPane.add(this.scrollPane, BorderLayout.CENTER);
+
+        this.initializeDialog();
+    }
+
+    private JPanel initializeLastLine(ActionListener escapeListener) {
+        
         JPanel lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));
         lastLine.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        
+        final JButton buttonWebpage = this.initializeButtonWebpage();
+        
+        this.initializeButtonClose(escapeListener);
+        
+        lastLine.add(buttonWebpage);
+        lastLine.add(Box.createGlue());
+        lastLine.add(this.buttonClose);
+        
+        return lastLine;
+    }
 
+    private void initializeButtonClose(ActionListener escapeListener) {
+        
         this.buttonClose = new JButton("Close");
         this.buttonClose.setBorder(BorderFactory.createCompoundBorder(
-            HelperUi.BORDER_FOCUS_GAINED,
-            BorderFactory.createEmptyBorder(2, 20, 2, 20))
-        );
+                HelperUi.BORDER_FOCUS_GAINED,
+                BorderFactory.createEmptyBorder(2, 20, 2, 20))
+                );
         this.buttonClose.addActionListener(escapeListener);
+        
+        this.buttonClose.setContentAreaFilled(false);
+        this.buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        this.buttonClose.setBackground(new Color(200, 221, 242));
+        
+        this.buttonClose.addMouseListener(new FlatButtonMouseAdapter(this.buttonClose));
+    }
 
-        this.setLayout(new BorderLayout());
-        Container dialogPane = this.getContentPane();
+    private JButton initializeButtonWebpage() {
         
         final JButton buttonWebpage = new JButton("Webpage");
+        
         buttonWebpage.setBorder(BorderFactory.createCompoundBorder(
             HelperUi.BORDER_FOCUS_GAINED,
             BorderFactory.createEmptyBorder(2, 20, 2, 20))
@@ -133,25 +173,15 @@ public class DialogAbout extends JDialog {
         
         buttonWebpage.addMouseListener(new FlatButtonMouseAdapter(buttonWebpage));
         
-        this.buttonClose.setContentAreaFilled(false);
-        this.buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        this.buttonClose.setBackground(new Color(200, 221, 242));
-        
-        this.buttonClose.addMouseListener(new FlatButtonMouseAdapter(this.buttonClose));
-        
-        lastLine.add(buttonWebpage);
-        lastLine.add(Box.createGlue());
-        lastLine.add(this.buttonClose);
+        return buttonWebpage;
+    }
 
-        JLabel iconJSQL = new JLabel(new ImageIcon(HelperUi.URL_ICON_96));
-        dialogPane.add(iconJSQL, BorderLayout.WEST);
-        dialogPane.add(lastLine, BorderLayout.SOUTH);
-
-        // Contact info, use HTML text
-        final JEditorPane[] text = new JEditorPane[1];
+    private JEditorPane[] initializeEditorPane() {
+        
+        final JEditorPane[] editorPane = new JEditorPane[1];
         try {
-            text[0] = new JEditorPane();
-            text[0].setContentType("text/html");
+            editorPane[0] = new JEditorPane();
+            editorPane[0].setContentType("text/html");
 
             StringBuilder result = new StringBuilder();
             
@@ -165,38 +195,38 @@ public class DialogAbout extends JDialog {
                 }
             }
 
-            text[0].setText(result.toString().replace("%JSQLVERSION%", MediatorModel.model().getVersionJsql()));
+            editorPane[0].setText(result.toString().replace("%JSQLVERSION%", MediatorModel.model().getVersionJsql()));
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        text[0].addMouseListener(new MouseAdapter() {
+        editorPane[0].addMouseListener(new MouseAdapter() {
             
             @Override
             public void mousePressed(MouseEvent e) {
                 
                 super.mousePressed(e);
-                text[0].requestFocusInWindow();
+                editorPane[0].requestFocusInWindow();
             }
         });
 
-        text[0].addFocusListener(new FocusAdapter() {
+        editorPane[0].addFocusListener(new FocusAdapter() {
             
             @Override
             public void focusGained(FocusEvent arg0) {
                 
-                text[0].getCaret().setVisible(true);
-                text[0].getCaret().setSelectionVisible(true);
+                editorPane[0].getCaret().setVisible(true);
+                editorPane[0].getCaret().setSelectionVisible(true);
             }
         });
 
-        text[0].setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        text[0].setDragEnabled(true);
-        text[0].setEditable(false);
+        editorPane[0].setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        editorPane[0].setDragEnabled(true);
+        editorPane[0].setEditable(false);
 
-        text[0].setComponentPopupMenu(new JPopupMenuText(text[0]));
+        editorPane[0].setComponentPopupMenu(new JPopupMenuText(editorPane[0]));
 
-        text[0].addHyperlinkListener(linkEvent -> {
+        editorPane[0].addHyperlinkListener(linkEvent -> {
             
             if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {
                 
@@ -211,25 +241,24 @@ public class DialogAbout extends JDialog {
                 }
             }
         });
-
-        this.scrollPane = new LightScrollPane(1, 1, 1, 0, text[0]);
-        dialogPane.add(this.scrollPane, BorderLayout.CENTER);
-
-        this.reinit();
+        
+        return editorPane;
     }
 
     /**
      * Set back default setting for About frame.
      */
-    public final void reinit() {
+    public final void initializeDialog() {
+        
         this.scrollPane.scrollPane.getViewport().setViewPosition(new Point(0, 0));
-        this.setSize(460, 300);
+        this.setSize(533, 400);
         this.setLocationRelativeTo(MediatorGui.frame());
         this.buttonClose.requestFocusInWindow();
         this.getRootPane().setDefaultButton(this.buttonClose);
     }
 
     public void requestButtonFocus() {
+        
         this.buttonClose.requestFocusInWindow();
     }
 }

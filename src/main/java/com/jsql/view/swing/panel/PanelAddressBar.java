@@ -61,7 +61,7 @@ public class PanelAddressBar extends JPanel {
     private AddressMenuBar addressMenuBar;
     private RequestPanel requestPanel;
 
-    private boolean advanceIsActivated = false;
+    private boolean isAdvanceActivated = false;
     
     public PanelAddressBar() {
         
@@ -272,7 +272,7 @@ public class PanelAddressBar extends JPanel {
             PanelAddressBar.this.textFieldHeader.setVisible(isVisible);
             this.radioHeader.setVisible(isVisible);
             
-            this.advanceIsActivated = isVisible;
+            this.isAdvanceActivated = isVisible;
             MediatorGui.menubar().setVisible(isVisible);
 
             advancedButton.setDirection(isVisible ? SwingConstants.NORTH : SwingConstants.SOUTH);
@@ -293,8 +293,8 @@ public class PanelAddressBar extends JPanel {
         return this.textFieldAddress;
     }
 
-    public boolean isAdvanceIsActivated() {
-        return this.advanceIsActivated;
+    public boolean isAdvanceActivated() {
+        return this.isAdvanceActivated;
     }
 
     public JTextField getTextFieldRequest() {

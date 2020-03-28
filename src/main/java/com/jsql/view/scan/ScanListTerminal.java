@@ -25,5 +25,4 @@ public class ScanListTerminal extends ObserverInteraction {
     public ScanListTerminal() {
         super("com.jsql.view.scan.interaction");
     }
-    
 }

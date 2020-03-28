@@ -36,7 +36,7 @@ public class MessageHeader implements InteractionCommand {
     private Map<String, String> response;
     private String source;
 
-    Map<String, Object> params;
+    Map<Header, Object> params;
     
     /**
      * @param interactionParams Text to append
@@ -44,7 +44,7 @@ public class MessageHeader implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
         
-        this.params = (Map<String, Object>) interactionParams[0];
+        this.params = (Map<Header, Object>) interactionParams[0];
         this.url = (String) this.params.get(Header.URL);
         this.post = (String) this.params.get(Header.POST);
         this.header = (String) this.params.get(Header.HEADER);

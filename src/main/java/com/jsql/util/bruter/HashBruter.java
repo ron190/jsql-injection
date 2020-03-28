@@ -1,4 +1,4 @@
-package com.jsql.view.swing.bruteforce;
+package com.jsql.util.bruter;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -62,25 +62,20 @@ public class HashBruter extends Bruter {
             
             if (baseString.length() == length) {
                 
-                if("adler32".equalsIgnoreCase(this.type)) {
-                    this.generatedHash = Adler32.generateAdler32(baseString);
-                } else if("crc16".equalsIgnoreCase(this.type)) {
-                    this.generatedHash = Crc16.generateCRC16(baseString);
-                } else if("crc32".equalsIgnoreCase(this.type)) {
-                    this.generatedHash = Crc32.generateCRC32(baseString);
-                } else if("crc64".equalsIgnoreCase(this.type)) {
-                    this.generatedHash = Crc64.generateCRC64(baseString.getBytes());
-                } else if("mysql".equalsIgnoreCase(this.type)) {
-                    this.generatedHash = Hash.generateMySQL(baseString.toCharArray());
-                } else if("md4".equalsIgnoreCase(this.type)) {
-                    this.generatedHash = MD4.generateMd4(baseString);
-                } else {
-                    this.generatedHash = Hash.generateHash(this.type, baseString.toCharArray());
+                switch (this.type.toLowerCase()) {
+                case "adler32": this.generatedHash = Adler32.generateAdler32(baseString); break;
+                case "crc16":   this.generatedHash = Crc16.generateCRC16(baseString); break;
+                case "crc32":   this.generatedHash = HashUtil.toCrc32(baseString); break;
+                case "crc64":   this.generatedHash = Crc64.generateCRC64(baseString.getBytes()); break;
+                case "mysql":   this.generatedHash = HashUtil.toMySql(baseString); break;
+                case "md4":     this.generatedHash = MD4.generateMd4(baseString); break;
+                default:        this.generatedHash = HashUtil.toHash(this.type, baseString);
                 }
                 
                 this.password = baseString;
                 
                 if (this.hash.equals(this.generatedHash)) {
+                    
                     this.found = true;
                     this.done = true;
                 }

@@ -1,14 +1,15 @@
-package com.jsql.view.swing.bruteforce;
+package com.jsql.util.bruter;
 
 import java.util.zip.Checksum;
 
 public class Adler32 {
     
     private Adler32() {
-        
+        // nothing
     }
 
     public static String generateAdler32(String baseString) {
+        
         //Convert string to bytes
         byte[] bytes = baseString.getBytes();
        
@@ -29,5 +30,4 @@ public class Adler32 {
          */
         return String.valueOf(checksum.getValue());
     }
-    
 }

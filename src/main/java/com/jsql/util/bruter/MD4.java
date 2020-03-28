@@ -1,11 +1,11 @@
-package com.jsql.view.swing.bruteforce;
+package com.jsql.util.bruter;
 
 import java.security.MessageDigest;
 
 public class MD4 {
     
     private MD4() {
-        
+        // Nothing
     }
 
     public static String generateMd4(String passwordString) {
@@ -15,7 +15,6 @@ public class MD4 {
         md.update(passwordByte, 0, passwordByte.length);
         byte[] encodedPassword = md.digest();
 
-        return Hash.digestToHexString(encodedPassword);
+        return HashUtil.digestToHexString(encodedPassword);
     }
-    
 }

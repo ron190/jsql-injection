@@ -17,7 +17,7 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
     @Override
     public boolean dispatchKeyEvent(KeyEvent keyEvent) {
         
-        boolean shouldTakeNoFurtherAction = false;
+        boolean shouldNotTakeFurtherAction = false;
         
         // Alt key press/release generates 2 events
         // AltGr key press/release generates 4 events including an Alt press/release
@@ -29,68 +29,75 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
         
         boolean isAltDPressed =
             keyEvent.isAltDown()
-            && keyEvent.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)
-        ;
+            && keyEvent.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D);
         
         boolean isAltReleased =
             keyEvent.getKeyCode() == KeyEvent.VK_ALT
-            && keyEvent.getModifiersEx() == (InputEvent.ALT_DOWN_MASK & KeyEvent.KEY_RELEASED)
-        ;
+            && keyEvent.getModifiersEx() == (InputEvent.ALT_DOWN_MASK & KeyEvent.KEY_RELEASED);
         
         boolean isAltPressed =
             keyEvent.isAltDown()
             && keyEvent.getKeyCode() == KeyEvent.VK_ALT
-            && !this.wasAltGraphPressed[0]
-        ;
+            && !this.wasAltGraphPressed[0];
         
         boolean wasAltPressedAlready =
             !this.wasAltDPressed[0]
             && !this.wasAltPressed[0]
-            && !this.wasAltGraphPressed[0]
-        ;
+            && !this.wasAltGraphPressed[0];
         
         if (isAltDPressed) {
-            
-            MediatorGui.panelAddressBar().getTextFieldAddress().requestFocusInWindow();
-            MediatorGui.panelAddressBar().getTextFieldAddress().selectAll();
-            this.wasAltDPressed[0] = true;
-            
-            shouldTakeNoFurtherAction = true;
+            this.selectAddressBar();
+            shouldNotTakeFurtherAction = true;
             
         } else if (isAltReleased) {
-            
-            // Avoid flickering and AltGr pollution
-            if (wasAltPressedAlready) {
-                
-                if (MenuSelectionManager.defaultManager().getSelectedPath().length > 0) {
-                    MenuSelectionManager.defaultManager().clearSelectedPath();
-                } else if (!MediatorGui.panelAddressBar().isAdvanceIsActivated()) {
-                    MediatorGui.menubar().setVisible(!MediatorGui.menubar().isVisible());
-                    this.wasAltGraphPressed[0] = false;
-                }
-            } else {
-                this.wasAltDPressed[0] = false;
-                this.wasAltPressed[0] = false;
-                this.wasAltGraphPressed[0] = false;
-            }
-            
-            shouldTakeNoFurtherAction = true;
+            this.showMenuBar(wasAltPressedAlready);
+            shouldNotTakeFurtherAction = true;
             
         } else if (isAltPressed) {
-            
-            // Avoid flickering and AltGr pollution
-            if (!MediatorGui.panelAddressBar().isAdvanceIsActivated() && MediatorGui.menubar().isVisible()) {
-                
-                MenuSelectionManager.defaultManager().clearSelectedPath();
-                MediatorGui.menubar().setVisible(false);
-                this.wasAltPressed[0] = true;
-                this.wasAltGraphPressed[0] = false;
-            }
-            
-            shouldTakeNoFurtherAction = true;
+            this.hideMenuBar();
+            shouldNotTakeFurtherAction = true;
         }
         
-        return shouldTakeNoFurtherAction;
+        return shouldNotTakeFurtherAction;
     }
-    
+
+    private void selectAddressBar() {
+        
+        MediatorGui.panelAddressBar().getTextFieldAddress().requestFocusInWindow();
+        MediatorGui.panelAddressBar().getTextFieldAddress().selectAll();
+        this.wasAltDPressed[0] = true;
+    }
+
+    private void showMenuBar(boolean wasAltPressedAlready) {
+        
+        // Avoid flickering and AltGr pollution
+        if (wasAltPressedAlready) {
+            
+            if (MenuSelectionManager.defaultManager().getSelectedPath().length > 0) {
+                
+                MenuSelectionManager.defaultManager().clearSelectedPath();
+            } else if (!MediatorGui.panelAddressBar().isAdvanceActivated()) {
+                
+                MediatorGui.menubar().setVisible(!MediatorGui.menubar().isVisible());
+                this.wasAltGraphPressed[0] = false;
+            }
+        } else {
+            
+            this.wasAltDPressed[0] = false;
+            this.wasAltPressed[0] = false;
+            this.wasAltGraphPressed[0] = false;
+        }
+    }
+
+    private void hideMenuBar() {
+        
+        // Avoid flickering and AltGr pollution
+        if (!MediatorGui.panelAddressBar().isAdvanceActivated() && MediatorGui.menubar().isVisible()) {
+            
+            MenuSelectionManager.defaultManager().clearSelectedPath();
+            MediatorGui.menubar().setVisible(false);
+            this.wasAltPressed[0] = true;
+            this.wasAltGraphPressed[0] = false;
+        }
+    }
 }

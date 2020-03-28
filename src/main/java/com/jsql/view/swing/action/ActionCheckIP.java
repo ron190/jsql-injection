@@ -36,11 +36,11 @@ public class ActionCheckIP implements ActionListener, Runnable {
             LOGGER.trace("Checking ip address...");
             String addressIp = MediatorModel.model().getMediatorUtils().getConnectionUtil().getSource("http://checkip.amazonaws.com");
             LOGGER.info("Your public IP address is " + addressIp);
+            
         } catch (MalformedURLException e) {
             LOGGER.warn("Malformed URL: "+ e.getMessage(), e);
         } catch (IOException e) {
             LOGGER.warn("Error during AWS test: "+ e.getMessage(), e);
         }
     }
-    
 }

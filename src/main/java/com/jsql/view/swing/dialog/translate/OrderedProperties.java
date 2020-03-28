@@ -1,4 +1,4 @@
-package com.jsql.view.swing.dialog;
+package com.jsql.view.swing.dialog.translate;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -148,6 +148,7 @@ public final class OrderedProperties {
      * See {@link Properties#load(InputStream)}.
      */
     public void load(InputStream stream) throws IOException {
+        
         CustomProperties customProperties = new CustomProperties(this.properties);
         customProperties.load(stream);
     }
@@ -156,6 +157,7 @@ public final class OrderedProperties {
      * See {@link Properties#load(Reader)}.
      */
     public void load(Reader reader) throws IOException {
+        
         CustomProperties customProperties = new CustomProperties(this.properties);
         customProperties.load(reader);
     }
@@ -164,6 +166,7 @@ public final class OrderedProperties {
      * See {@link Properties#loadFromXML(InputStream)}.
      */
     public void loadFromXML(InputStream stream) throws IOException {
+        
         CustomProperties customProperties = new CustomProperties(this.properties);
         customProperties.loadFromXML(stream);
     }
@@ -172,7 +175,9 @@ public final class OrderedProperties {
      * See {@link Properties#store(OutputStream, String)}.
      */
     public void store(OutputStream stream, String comments) throws IOException {
+        
         CustomProperties customProperties = new CustomProperties(this.properties);
+        
         if (this.suppressDate) {
             customProperties.store(new DateSuppressingPropertiesBufferedWriter(new OutputStreamWriter(stream, StandardCharsets.ISO_8859_1)), comments);
         } else {
@@ -184,7 +189,9 @@ public final class OrderedProperties {
      * See {@link Properties#store(Writer, String)}.
      */
     public void store(Writer writer, String comments) throws IOException {
+        
         CustomProperties customProperties = new CustomProperties(this.properties);
+        
         if (this.suppressDate) {
             customProperties.store(new DateSuppressingPropertiesBufferedWriter(writer), comments);
         } else {
@@ -196,6 +203,7 @@ public final class OrderedProperties {
      * See {@link Properties#storeToXML(OutputStream, String)}.
      */
     public void storeToXML(OutputStream stream, String comment) throws IOException {
+        
         CustomProperties customProperties = new CustomProperties(this.properties);
         customProperties.storeToXML(stream, comment);
     }
@@ -204,6 +212,7 @@ public final class OrderedProperties {
      * See {@link Properties#storeToXML(OutputStream, String, String)}.
      */
     public void storeToXML(OutputStream stream, String comment, String encoding) throws IOException {
+        
         CustomProperties customProperties = new CustomProperties(this.properties);
         customProperties.storeToXML(stream, comment, encoding);
     }
@@ -212,6 +221,7 @@ public final class OrderedProperties {
      * See {@link Properties#list(PrintStream)}.
      */
     public void list(PrintStream stream) {
+        
         CustomProperties customProperties = new CustomProperties(this.properties);
         customProperties.list(stream);
     }
@@ -220,6 +230,7 @@ public final class OrderedProperties {
      * See {@link Properties#list(PrintWriter)}.
      */
     public void list(PrintWriter writer) {
+        
         CustomProperties customProperties = new CustomProperties(this.properties);
         customProperties.list(writer);
     }
@@ -230,15 +241,19 @@ public final class OrderedProperties {
      * @return the {@link Properties} instance
      */
     public Properties toJdkProperties() {
+        
         Properties jdkProperties = new Properties();
+        
         for (Map.Entry<String, String> entry : this.entrySet()) {
             jdkProperties.put(entry.getKey(), entry.getValue());
         }
+        
         return jdkProperties;
     }
 
     @Override
     public boolean equals(Object other) {
+        
         if (this == other) {
             return true;
         }
@@ -248,6 +263,7 @@ public final class OrderedProperties {
         }
 
         OrderedProperties that = (OrderedProperties) other;
+        
         return Arrays.equals(this.properties.entrySet().toArray(), that.properties.entrySet().toArray());
     }
 
@@ -258,6 +274,7 @@ public final class OrderedProperties {
 
     @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        
         stream.defaultReadObject();
         this.properties = (Map<String, String>) stream.readObject();
         this.suppressDate = stream.readBoolean();
@@ -282,18 +299,24 @@ public final class OrderedProperties {
      * @return the copy
      */
     public static OrderedProperties copyOf(OrderedProperties source) {
+        
         // create a copy that has the same behaviour
         OrderedPropertiesBuilder builder = new OrderedPropertiesBuilder();
         builder.withSuppressDateInComment(source.suppressDate);
+        
         if (source.properties instanceof TreeMap) {
+            
             builder.withOrdering(((TreeMap<String, String>) source.properties).comparator());
         }
+        
         OrderedProperties result = builder.build();
 
         // copy the properties from the source to the target
         for (Map.Entry<String, String> entry : source.entrySet()) {
+            
             result.setProperty(entry.getKey(), entry.getValue());
         }
+        
         return result;
     }
 
@@ -312,6 +335,7 @@ public final class OrderedProperties {
          * @return the builder
          */
         public OrderedPropertiesBuilder withOrdering(Comparator<? super String> comparator) {
+            
             this.comparator = comparator;
             return this;
         }
@@ -323,6 +347,7 @@ public final class OrderedProperties {
          * @return the builder
          */
         public OrderedPropertiesBuilder withSuppressDateInComment(boolean suppressDate) {
+            
             this.suppressDate = suppressDate;
             return this;
         }
@@ -336,9 +361,9 @@ public final class OrderedProperties {
             Map<String, String> properties = this.comparator != null ?
                     new TreeMap<>(this.comparator) :
                     new LinkedHashMap<>();
+                    
             return new OrderedProperties(properties, this.suppressDate);
         }
-
     }
 
     /**
@@ -378,7 +403,6 @@ public final class OrderedProperties {
         public Set<Object> keySet() {
             return new LinkedHashSet<>(this.targetProperties.keySet());
         }
-
     }
 
     /**
@@ -399,9 +423,13 @@ public final class OrderedProperties {
 
         @Override
         public void write(String string) throws IOException {
+            
             if (this.currentComment != null) {
+                
                 this.currentComment.append(string);
+                
                 if (string.endsWith(LINE_SEPARATOR)) {
+                    
                     if (this.previousComment != null) {
                         super.write(this.previousComment);
                     }
@@ -410,13 +438,13 @@ public final class OrderedProperties {
                     this.currentComment = null;
                 }
             } else if (string.startsWith("#")) {
+                
                 this.currentComment = new StringBuilder(string);
             } else {
+                
                 super.write(string);
             }
         }
-
     }
-
 }
 

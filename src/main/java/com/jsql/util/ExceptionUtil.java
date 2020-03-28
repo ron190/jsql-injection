@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.IgnoreMessageException;
+import com.jsql.util.bruter.HashUtil;
 
 /**
  * Utility class managing an exception reporting mechanism.
@@ -60,7 +61,7 @@ public class ExceptionUtil {
                     byte[] passwordByte = passwordString.getBytes();
                     md.update(passwordByte, 0, passwordByte.length);
                     byte[] encodedPassword = md.digest();
-                    String encodedPasswordInString = StringUtil.digestToHexString(encodedPassword);
+                    String encodedPasswordInString = HashUtil.digestToHexString(encodedPassword);
                     
                     String md5Exception = encodedPasswordInString;
                     

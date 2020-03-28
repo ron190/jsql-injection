@@ -25,10 +25,12 @@ public class ArrowIcon implements Icon, SwingConstants {
     private BasicArrowButton iconRenderer;
 
     public ArrowIcon(int direction, boolean isPressedView) {
+        
         this(DEFAULT_SIZE, direction, isPressedView);
     }
 
     public ArrowIcon(int iconSize, int direction, boolean isEnabled) {
+        
         this.size = iconSize / 2;
         this.iconSize = iconSize;
         this.direction = direction;
@@ -38,6 +40,7 @@ public class ArrowIcon implements Icon, SwingConstants {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
+        
         // Fix #4731: ClassCastException on paintTriangle()
         // Implementation by sun.awt.image
         try {
@@ -49,6 +52,7 @@ public class ArrowIcon implements Icon, SwingConstants {
 
     @Override
     public int getIconWidth() {
+        
         switch (this.direction) {
             case NORTH:
             case SOUTH: return this.iconSize;
@@ -60,6 +64,7 @@ public class ArrowIcon implements Icon, SwingConstants {
 
     @Override
     public int getIconHeight() {
+        
         switch (this.direction) {
             case NORTH:
             case SOUTH: return this.size;
@@ -68,5 +73,4 @@ public class ArrowIcon implements Icon, SwingConstants {
             default: return this.iconSize;
         }
     }
-    
 }

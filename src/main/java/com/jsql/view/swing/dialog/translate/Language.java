@@ -1,4 +1,4 @@
-package com.jsql.view.swing.dialog;
+package com.jsql.view.swing.dialog.translate;
 
 import javax.swing.Icon;
 
@@ -28,14 +28,15 @@ public enum Language {
     SE("Swedish", "se", HelperUi.ICON_FLAG_SE),
     OT("another language", null, null);
 
-    private String stringLang;
+    private String nameEnglish;
     private Icon flag;
-    private String nameLocale;
+    private String labelLocale;
     
-    private Language(String stringLang, String nameLocale, Icon flag) {
-        this.stringLang = stringLang;
+    private Language(String nameEnglish, String labelLocale, Icon flag) {
+        
+        this.nameEnglish = nameEnglish;
         this.flag = flag;
-        this.nameLocale = nameLocale;
+        this.labelLocale = labelLocale;
     }
     
     public Icon getFlag() {
@@ -44,10 +45,10 @@ public enum Language {
     
     @Override
     public String toString() {
-        return this.stringLang;
+        return this.nameEnglish;
     }
     
-    public String getNameLocale() {
-        return this.nameLocale;
+    public String getLabelLocale() {
+        return this.labelLocale;
     }
 }
