@@ -24,6 +24,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.ListModel;
 
 import org.apache.log4j.Logger;
 
@@ -135,12 +136,45 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
             listModel.addElement(itemList);
         }
     }
-
-    /**
-     * Hide the loader icon.
-     */
-    public void hideLoader() {
+    
+    public void addTag(String url, String tag) {
+        
+        ListModel<ItemList> listModel = this.listPaths.getModel();
+        
+        for (int i = 0 ; i < listModel.getSize() ; i++) {
+            
+            if (url.contains(listModel.getElementAt(i).getOriginalString())) {
+                
+                listModel.getElementAt(i).setIsDatabaseConfirmed(true);
+                listModel.getElementAt(i).setInternalString(listModel.getElementAt(i).getInternalString() +" ["+tag+"]");
+                
+                ((DefaultListModel<ItemList>) listModel).setElementAt(listModel.getElementAt(i), i);
+            }
+        }
+    }
+    
+    public void highlight(String url, String strategy) {
+        
+        ListModel<ItemList> listModel = this.listPaths.getModel();
+        
+        for (int i = 0 ; i < listModel.getSize() ; i++) {
+            
+            if (url.contains(listModel.getElementAt(i).getOriginalString())) {
+                
+                listModel.getElementAt(i).setIsVulnerable(true);
+                listModel.getElementAt(i).setInternalString(listModel.getElementAt(i).getInternalString().replace(" ["+ strategy +"]", "") +" ["+ strategy +"]");
+                
+                ((DefaultListModel<ItemList>) listModel).setElementAt(listModel.getElementAt(i), i);
+            }
+        }
+    }
+    
+    public void endProcess() {
+        
+        this.run.setText(I18nView.valueByKey(this.defaultText));
+        this.setButtonEnable(true);
         this.loader.setVisible(false);
+        this.run.setState(StateButton.STARTABLE);
     }
 
     /**
@@ -165,19 +199,8 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     public void changePrivilegeIcon(Icon icon) {
         this.privilege.setIcon(icon);
     }
-
-    /**
-     * Restore the default text to the button after a search.
-     */
-    public void restoreButtonText() {
-        this.run.setText(I18nView.valueByKey(this.defaultText));
-    }
     
     // Getter and setter
-    
-    public void setStateButton(StateButton stateButton) {
-        this.run.setState(stateButton);
-    }
 
     public DnDList getListPaths() {
         return this.listPaths;

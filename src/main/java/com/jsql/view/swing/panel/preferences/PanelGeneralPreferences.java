@@ -70,7 +70,8 @@ public class PanelGeneralPreferences extends JPanel {
             label.setContentAreaFilled(false);
         });
         
-        groupLayoutGeneral.setHorizontalGroup(
+        groupLayoutGeneral
+        .setHorizontalGroup(
             groupLayoutGeneral
             .createSequentialGroup()
             .addGroup(
@@ -88,7 +89,8 @@ public class PanelGeneralPreferences extends JPanel {
             )
         );
 
-        groupLayoutGeneral.setVerticalGroup(
+        groupLayoutGeneral
+        .setVerticalGroup(
             groupLayoutGeneral
             .createSequentialGroup()
             .addGroup(

@@ -25,8 +25,8 @@ public class HeaderTestSuite extends ConcreteMySQLTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-header?tenant=mysql");
-        model.getMediatorUtils().getParameterUtil().setHeader(Arrays.asList(
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-header?tenant=mysql");
+        model.getMediatorUtils().getParameterUtil().setListHeader(Arrays.asList(
             new SimpleEntry<>("name", "0'")
         ));
         

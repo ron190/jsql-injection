@@ -29,32 +29,32 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
 
         if (isEnabled) {
             if (isPressed || isArmed) {
-                g.setColor( MetalLookAndFeel.getControlInfo()  );
+                g.setColor( MetalLookAndFeel.getControlInfo() );
                 g.drawLine( 0, 0, 8, 0 );
                 g.drawLine( 0, 0, 0, 8 );
                 g.drawLine( 8, 2, 8, 8 );
                 g.drawLine( 2, 8, 8, 8 );
 
-                g.setColor( MetalLookAndFeel.getPrimaryControl()  );
+                g.setColor( MetalLookAndFeel.getPrimaryControl() );
                 g.drawLine( 1, 1, 7, 1 );
                 g.drawLine( 1, 1, 1, 7 );
                 g.drawLine( 9, 1, 9, 9 );
                 g.drawLine( 1, 9, 9, 9 );
             } else {
-                g.setColor( MetalLookAndFeel.getControlDarkShadow()  );
+                g.setColor( MetalLookAndFeel.getControlDarkShadow() );
                 g.drawLine( 0, 0, 8, 0 );
                 g.drawLine( 0, 0, 0, 8 );
                 g.drawLine( 8, 2, 8, 8 );
                 g.drawLine( 2, 8, 8, 8 );
 
-                g.setColor( MetalLookAndFeel.getControlHighlight()  );
+                g.setColor( MetalLookAndFeel.getControlHighlight() );
                 g.drawLine( 1, 1, 7, 1 );
                 g.drawLine( 1, 1, 1, 7 );
                 g.drawLine( 9, 1, 9, 9 );
                 g.drawLine( 1, 9, 9, 9 );
             }
         } else {
-            g.setColor( MetalLookAndFeel.getMenuDisabledForeground()  );
+            g.setColor( MetalLookAndFeel.getMenuDisabledForeground() );
             g.drawRect( 0, 0, 8, 8 );
         }
 
@@ -74,7 +74,7 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
                 g.setColor( b.getForeground() );
             }
         } else {
-            g.setColor( MetalLookAndFeel.getMenuDisabledForeground()  );
+            g.setColor( MetalLookAndFeel.getMenuDisabledForeground() );
         }
 
         g.drawLine( 2, 2, 2, 6 );

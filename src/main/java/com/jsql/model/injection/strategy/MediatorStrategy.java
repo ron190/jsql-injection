@@ -1,11 +1,25 @@
 package com.jsql.model.injection.strategy;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.JSqlException;
+import com.jsql.model.suspendable.SuspendableGetCharInsertion;
+import com.jsql.model.suspendable.SuspendableGetVendor;
+import com.jsql.util.JsonUtil;
 
 public class MediatorStrategy {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     private AbstractStrategy time;
     private AbstractStrategy blind;
@@ -30,13 +44,80 @@ public class MediatorStrategy {
         this.error = new StrategyInjectionError(this.injectionModel);
         this.normal = new StrategyInjectionNormal(this.injectionModel);
         
-        this.strategies = Arrays.asList(
-            this.time,
-            this.blind,
-            this.error,
-            this.normal
-        );
+        this.strategies = Arrays.asList(this.time, this.blind, this.error, this.normal);
     }
+    
+    /**
+     * Find the insertion character, test each strategy, inject metadata and list databases.
+     * @param isNotInjectionPoint true if mode standard/JSON/full, false if injection point
+     * @param isJson true if param contains JSON
+     * @param parameterToInject to be tested, null when injection point
+     * @return true when successful injection
+     * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
+     */
+    // TODO Merge isParamByUser and parameter: isParamByUser = parameter != null
+    public boolean testStrategies(SimpleEntry<String, String> parameterToInject) throws JSqlException {
+        
+        // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
+        LOGGER.trace(I18n.valueByKey("LOG_GET_INSERTION_CHARACTER"));
+        
+        // If not an injection point then find insertion character.
+        // Force to 1 if no insertion char works and empty value from user,
+        // Force to user's value if no insertion char works,
+        // Force to insertion char otherwise.
+        // TODO Use also on Json injection where parameter == null
+        if (parameterToInject != null) {
+            
+            // Test for params integrity
+            String characterInsertionByUser = this.injectionModel.getMediatorUtils().getParameterUtil().initializeStar(parameterToInject);
+            
+            String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(characterInsertionByUser);
+            
+            if (!JsonUtil.isJson(parameterToInject.getValue())) {
+                characterInsertion = characterInsertion + InjectionModel.STAR;
+            }
+            
+            parameterToInject.setValue(characterInsertion);
+            
+            LOGGER.info(I18n.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ characterInsertion.replace(InjectionModel.STAR, "") +"]");
+        }
+        
+        // Fingerprint database
+        this.injectionModel.getMediatorVendor().setVendor(new SuspendableGetVendor(this.injectionModel).run());
+
+        // Test each injection strategies: time < blind < error < normal
+        // Choose the most efficient strategy: normal > error > blind > time
+        this.time.checkApplicability();
+        this.blind.checkApplicability();
+        this.error.checkApplicability();
+        this.normal.checkApplicability();
+
+        // Choose the most efficient strategy: normal > error > blind > time
+        if (this.normal.isApplicable()) {
+            
+            this.normal.activateStrategy();
+            
+        } else if (this.error.isApplicable()) {
+            
+            this.error.activateStrategy();
+            
+        } else if (this.blind.isApplicable()) {
+            
+            this.blind.activateStrategy();
+            
+        } else if (this.time.isApplicable()) {
+            
+            this.time.activateStrategy();
+            
+        } else {
+            
+            throw new InjectionFailureException("No injection found");
+        }
+        
+        return true;
+    }
+    
+    // Getter and setter
 
     public AbstractStrategy getNormal() {
         return this.normal;
@@ -65,5 +146,4 @@ public class MediatorStrategy {
     public void setStrategy(AbstractStrategy strategy) {
         this.strategy = strategy;
     }
-
 }

@@ -23,6 +23,7 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
@@ -92,7 +93,7 @@ public class RequestPanel extends JPanel {
         
         radioCustomMethod.addActionListener(actionEvent -> {
             
-            if (!"".equals(inputCustomMethod.getText())) {
+            if (StringUtils.isNotEmpty(inputCustomMethod.getText())) {
                 this.typeRequest = (inputCustomMethod.getText());
                 panelAddressBar.getRadioMethod().setText(this.typeRequest);
             } else {

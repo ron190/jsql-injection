@@ -322,7 +322,7 @@ strategy:
       )
      capacity: 64
      
-   - name: BIGINT::exp in Delete Update Insert
+   - name: BIGINT::exp in SQL::or
      query: |
       ' or (
           select !(
@@ -360,7 +360,7 @@ strategy:
       )
      capacity: 64
      
-   - name: DOUBLE::exp in Delete Update Insert
+   - name: DOUBLE::exp in SQL::or
      query: |
       ' or (
           select exp(

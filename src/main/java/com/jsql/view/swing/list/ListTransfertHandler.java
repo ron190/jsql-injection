@@ -25,6 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -135,7 +136,7 @@ public class ListTransfertHandler extends TransferHandler {
         if (this.dragPaths != null && !this.dragPaths.isEmpty()) {
             
             for (ItemList value: this.dragPaths) {
-                if (!"".equals(value.toString())) {
+                if (StringUtils.isNotEmpty(value.toString())) {
                     //! FUUuu
                     ItemList newValue = new ItemList(value.toString().replace("\\", "/"));
                     listSelectedIndices.add(childIndex);
@@ -149,7 +150,7 @@ public class ListTransfertHandler extends TransferHandler {
                 String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
                 
                 for (String value: importString.split("\\n")) {
-                    if (!"".equals(value)) {
+                    if (StringUtils.isNotEmpty(value)) {
                         listSelectedIndices.add(childIndex);
                         listModel.add(childIndex++, new ItemList(value.replace("\\", "/")));
                     }
@@ -198,7 +199,7 @@ public class ListTransfertHandler extends TransferHandler {
 
             List<Integer> selectedIndexes = new ArrayList<>();
             for (String line: clipboardText.split("\\n")) {
-                if (!"".equals(line)) {
+                if (StringUtils.isNotEmpty(line)) {
                     String newLine = line.replace("\\", "/");
                     ItemList newItem = new ItemList(newLine);
                     selectedIndexes.add(selectedIndex);

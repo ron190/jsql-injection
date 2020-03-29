@@ -1,4 +1,4 @@
-package com.test.vendor.cubrid;
+package com.test.vendor._ingres;
 
 import java.sql.SQLException;
 
@@ -8,9 +8,9 @@ import org.junit.Ignore;
 import com.jsql.model.exception.InjectionFailureException;
 
 @Ignore
-public class CubridNormalGetTestSuite extends ConcreteCubridTestSuite {
+public class IngresNormalGetTestNopeSuite extends ConcreteIngresTestNopeSuite {
 
-    public CubridNormalGetTestSuite() throws ClassNotFoundException, SQLException {
+    public IngresNormalGetTestNopeSuite() throws ClassNotFoundException, SQLException {
         super();
     }
 
@@ -23,7 +23,7 @@ public class CubridNormalGetTestSuite extends ConcreteCubridTestSuite {
 //
 //        MediatorModel.model().addObserver(new SystemOutTerminal());
 //
-//        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/cubrid_simulate_get.php");
+//        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +":81/ingres_simulate_get.php");
 //        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("lib", "0")));
 //        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 //

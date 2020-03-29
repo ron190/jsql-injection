@@ -58,33 +58,35 @@ public class ManagerSqlShell extends AbstractManagerShell {
         panelPassword.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
         panelPassword.add(this.password);
         
-        userPassLayout.setHorizontalGroup(
+        userPassLayout
+        .setHorizontalGroup(
             userPassLayout
-                .createSequentialGroup()
-                .addGroup(
-                    userPassLayout
-                        .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                )
-                .addGroup(
-                    userPassLayout.createParallelGroup()
-                        .addComponent(this.username)
-                        .addComponent(panelPassword)
-                )
+            .createSequentialGroup()
+            .addGroup(
+                userPassLayout
+                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+            )
+            .addGroup(
+                userPassLayout.createParallelGroup()
+                .addComponent(this.username)
+                .addComponent(panelPassword)
+            )
         );
 
-        userPassLayout.setVerticalGroup(
+        userPassLayout
+        .setVerticalGroup(
             userPassLayout
-                .createSequentialGroup()
-                .addGroup(
-                    userPassLayout
-                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(this.username)
-                )
-                .addGroup(
-                    userPassLayout
-                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(panelPassword)
-                )
+            .createSequentialGroup()
+            .addGroup(
+                userPassLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.username)
+            )
+            .addGroup(
+                userPassLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(panelPassword)
+            )
         );
         
         this.add(userPassPanel, BorderLayout.NORTH);

@@ -7,6 +7,7 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
@@ -76,10 +77,10 @@ public class TamperingUtil {
             Invocable nashornInvocable = (Invocable) nashornEngine;
             resultSqlTampered = nashornInvocable.invokeFunction("tampering", sqlQuery);
         } catch (ScriptException e) {
-            LOGGER.warn("Tampering context contains errors: " + e.getMessage(), e);
+            LOGGER.warn("Tampering context contains errors: " + e, e);
             resultSqlTampered = sqlQuery;
         } catch (NoSuchMethodException e) {
-            LOGGER.warn("Tampering context is not properly defined: " + e.getMessage(), e);
+            LOGGER.warn("Tampering context is not properly defined: " + e, e);
             LOGGER.warn("Minimal tampering context is: var tampering = function(sql) {return sql}");
             resultSqlTampered = sqlQuery;
         }
@@ -101,6 +102,11 @@ public class TamperingUtil {
            lead = m.group(1);
            sqlQuery = m.group(2);
            trail = m.group(3);
+        }
+        
+        // Empty when checking character insertion
+        if (StringUtils.isEmpty(sqlQuery)) {
+            return StringUtils.EMPTY;
         }
 
         if (this.isHexToChar) {

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
@@ -51,7 +52,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         this.visibleIndex = this.getVisibleIndex(this.injectionModel.getSrcSuccess());
         
         this.isApplicable =
-            !"".equals(this.injectionModel.getIndexesInUrl())
+            StringUtils.isNotEmpty(this.injectionModel.getIndexesInUrl())
             && Integer.parseInt(this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength()) > 0
             && this.visibleIndex != null
         ;

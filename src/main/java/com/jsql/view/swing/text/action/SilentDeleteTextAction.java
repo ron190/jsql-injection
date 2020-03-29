@@ -34,7 +34,7 @@ public class SilentDeleteTextAction extends TextAction {
         if (Objects.nonNull(target) && target.isEditable()) {
             
             Caret caret = target.getCaret();
-            int dot  = caret.getDot();
+            int dot = caret.getDot();
             int mark = caret.getMark();
             
             if (DefaultEditorKit.deletePrevCharAction.equals(this.getValue(Action.NAME))) {

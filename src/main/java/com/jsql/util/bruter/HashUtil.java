@@ -91,7 +91,7 @@ public class HashUtil {
      */
     public static String digestToHexString(byte[] block) {
         
-        StringBuilder  buf = new StringBuilder();
+        StringBuilder buf = new StringBuilder();
         int len = block.length;
         
         for (int i = 0; i < len; i++) {

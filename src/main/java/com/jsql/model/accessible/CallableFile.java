@@ -2,6 +2,7 @@ package com.jsql.model.accessible;
 
 import java.util.concurrent.Callable;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
@@ -74,9 +75,9 @@ public class CallableFile implements Callable<CallableFile> {
         } catch (StoppedByUserSlidingException e) {
             
             // Get partial source
-            if (!"".equals(e.getSlidingWindowAllRows())) {
+            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
-            } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
+            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
             

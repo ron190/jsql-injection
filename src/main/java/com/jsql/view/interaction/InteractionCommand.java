@@ -60,5 +60,4 @@ public interface InteractionCommand {
      * Do the action ordered by the model.
      */
     void execute();
-    
 }

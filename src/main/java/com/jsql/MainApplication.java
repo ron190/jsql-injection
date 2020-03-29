@@ -58,7 +58,7 @@ public class MainApplication {
         // Configure global environment settings
         CertificateUtil.ignoreCertificationChain();
         injectionModel.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();
-        injectionModel.getMediatorUtils().getProxyUtil().setProxy();
+        injectionModel.getMediatorUtils().getProxyUtil().initializeProxy();
         injectionModel.getMediatorUtils().getAuthenticationUtil().setKerberosCifs();
         
         try {
@@ -67,11 +67,11 @@ public class MainApplication {
             
             injectionModel.addObserver(view.getObserver());
         } catch (HeadlessException e) {
-            LOGGER.error("HeadlessException, command line execution in jSQL not supported yet: "+ e.getMessage(), e);
+            LOGGER.error("HeadlessException, command line execution in jSQL not supported yet: "+ e, e);
             return;
         } catch (AWTError e) {
             // Fix #22668: Assistive Technology not found
-            LOGGER.error("Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: "+ e.getMessage(), e);
+            LOGGER.error("Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: "+ e, e);
             return;
         }
         

@@ -1,12 +1,12 @@
-package com.test.vendor.db2;
+package com.test.vendor._db2;
 
 import java.sql.SQLException;
 
 import com.test.AbstractTestSuite;
 
-public abstract class ConcreteDB2TestSuite extends AbstractTestSuite {
+public abstract class ConcreteDB2TestNopeSuite extends AbstractTestSuite {
 
-    public ConcreteDB2TestSuite() throws SQLException {
+    public ConcreteDB2TestNopeSuite() throws SQLException {
         
         this.jdbcURL = "jdbc:db2://"+ AbstractTestSuite.HOSTNAME +":50000/DB2";
         this.jdbcUser = "db2admin";

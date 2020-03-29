@@ -226,12 +226,4 @@ public class ManagerScan extends AbstractManagerList {
             }, "ThreadScan").start();
         });
     }
-    
-    public void endScan() {
-        
-        this.restoreButtonText();
-        this.setButtonEnable(true);
-        this.hideLoader();
-        this.setStateButton(StateButton.STARTABLE);
-    }
 }

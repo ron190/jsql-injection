@@ -15,7 +15,7 @@ import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class JsonTestSuite extends ConcreteMySQLTestSuite {
+public class TamperingTestSuite extends ConcreteMySQLTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
@@ -25,17 +25,15 @@ public class JsonTestSuite extends ConcreteMySQLTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-json");
-        model.getMediatorUtils().getParameterUtil().setQueryString(Arrays.asList(
-            new SimpleEntry<>("name", "{\"b\":{\"b\":[null,null,{\"a\":{\"a\":\"0'\"}}]}}"),
-            new SimpleEntry<>("tenant", "mysql")
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-post?tenant=mysql");
+        model.getMediatorUtils().getParameterUtil().setListRequest(Arrays.asList(
+            new SimpleEntry<>("name", "0'")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllURLParam(true);
-        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllJSONParam(true);
+        model.getMediatorUtils().getTamperingUtil().set(false, true, false, true, true, true, false, false, true, false, false);
         model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
-        model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getRequest());
+        model.getMediatorUtils().getConnectionUtil().setTypeRequest("POST");
         
         model.setIsScanning(true);
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());

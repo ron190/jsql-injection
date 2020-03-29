@@ -77,6 +77,7 @@ public final class StringUtil {
      * @return string encoded in html entities
      */
     public static String decimalHtmlEncode(String text) {
+        
         return decimalHtmlEncode(text, false);
     }
     
@@ -107,6 +108,7 @@ public final class StringUtil {
                 buff.append(text.charAt(i));
             }
         }
+        
         return ""+ buff;
     }
 
@@ -121,14 +123,17 @@ public final class StringUtil {
         for (int i = 0 ; i < bytes.length ; i++) {
             bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
+        
         return new String(bytes);
     }
     
     public static String detectUtf8Html(String text) {
+        
         return StringUtil.detectUtf8Html(text, false);
     }
     
     public static String detectUtf8HtmlNoWrap(String text) {
+        
         return StringUtil.detectUtf8Html(text, true);
     }
     
@@ -192,6 +197,7 @@ public final class StringUtil {
      * @return Base64 decoded string
      */
     public static String base64Decode(String s) {
+        
         return StringUtils.newStringUtf8(Base64.decodeBase64(s));
     }
 
@@ -201,6 +207,7 @@ public final class StringUtil {
      * @return Base64 encoded string
      */
     public static String base64Encode(String s) {
+        
         return Base64.encodeBase64String(StringUtils.getBytesUtf8(s));
     }
 
@@ -212,7 +219,7 @@ public final class StringUtil {
      */
     public static String compress(String str) throws IOException {
         
-        if (str == null || str.length() == 0) {
+        if (org.apache.commons.lang3.StringUtils.isEmpty(str)) {
             return str;
         }
         
@@ -232,7 +239,7 @@ public final class StringUtil {
      */
     public static String decompress(String str) throws IOException {
         
-        if (str == null || str.length() == 0) {
+        if (org.apache.commons.lang3.StringUtils.isEmpty(str)) {
             return str;
         }
         
@@ -252,34 +259,44 @@ public final class StringUtil {
     }
     
     public static String toHex(String text) throws UnsupportedEncodingException {
+        
         return Hex.encodeHexString(text.getBytes(StandardCharsets.UTF_8.name())).trim();
     }
     
     public static String fromHex(String text) throws UnsupportedEncodingException, DecoderException {
+        
         byte[] hex = Hex.decodeHex(text.toCharArray());
+        
         return new String(hex, StandardCharsets.UTF_8.name());
     }
     
     public static String toHexZip(String text) throws IOException {
+        
         byte[] zip = StringUtil.compress(text).getBytes(StandardCharsets.UTF_8.name());
+        
         return Hex.encodeHexString(zip).trim();
     }
     
     public static String fromHexZip(String text) throws IOException, DecoderException {
+        
         byte[] hex = Hex.decodeHex(text.toCharArray());
         String zip = new String(hex, StandardCharsets.UTF_8.name());
+        
         return StringUtil.decompress(zip);
     }
     
     public static String toBase64Zip(String text) throws IOException {
+        
         return StringUtil.base64Encode(StringUtil.compress(text));
     }
     
     public static String fromBase64Zip(String text) throws IOException {
+        
         return StringUtil.decompress(StringUtil.base64Decode(text));
     }
     
     public static String toHtml(String text) {
+        
         return StringEscapeUtils
             .escapeHtml4(text)
             .replace("<", "&lt;")
@@ -288,6 +305,7 @@ public final class StringUtil {
     }
     
     public static String fromHtml(String text) {
+        
         return StringEscapeUtils
             .unescapeHtml4(text)
             .replace("<", "&lt;")
@@ -295,10 +313,12 @@ public final class StringUtil {
     }
     
     public static String toUrl(String text) throws UnsupportedEncodingException {
+        
         return URLEncoder.encode(text, StandardCharsets.UTF_8.name());
     }
     
     public static String fromUrl(String text) throws UnsupportedEncodingException {
+        
         return URLDecoder.decode(text, StandardCharsets.UTF_8.name());
     }
 }

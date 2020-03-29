@@ -1,22 +1,20 @@
-package com.test.vendor.oracle;
+package com.test.vendor._oracle;
 
 import java.sql.SQLException;
 
-import org.junit.BeforeClass;
 import org.junit.Ignore;
-import org.junit.Test;
 
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 
 @Ignore
-public class OracleBlindGetTestSuite extends ConcreteOracleTestSuite {
+public class OracleBlindGetTestNopeSuite extends ConcreteOracleTestNopeSuite {
 
-    public OracleBlindGetTestSuite() throws SQLException {
+    public OracleBlindGetTestNopeSuite() throws SQLException {
         super();
     }
 
-    @BeforeClass
+//    @BeforeClass
     @Override
     public void setupInjection() throws InjectionFailureException {
 //        InjectionModel model = new InjectionModel();
@@ -35,13 +33,13 @@ public class OracleBlindGetTestSuite extends ConcreteOracleTestSuite {
     }
     
     @Override
-    @Test
+//    @Test
     public void listDatabases() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }
     
     @Override
-    @Test
+//    @Test
     public void listTables() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }

@@ -25,8 +25,8 @@ public class StarTestSuite extends ConcreteMySQLTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting");
-        model.getMediatorUtils().getParameterUtil().setQueryString(Arrays.asList(
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting");
+        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("fake", "empty"),
             new SimpleEntry<>("name", "0'*"),
             new SimpleEntry<>("tenant", "mysql")

@@ -69,5 +69,4 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     public String getInsertionCharacter() {
         return this.insertionCharacter;
     }
-    
 }

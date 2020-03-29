@@ -1,12 +1,12 @@
-package com.test.vendor.informix;
+package com.test.vendor._informix;
 
 import java.sql.SQLException;
 
 import com.test.AbstractTestSuite;
 
-public abstract class ConcreteInformixTestSuite extends AbstractTestSuite {
+public abstract class ConcreteInformixTestNopeSuite extends AbstractTestSuite {
 
-    public ConcreteInformixTestSuite() throws ClassNotFoundException, SQLException {
+    public ConcreteInformixTestNopeSuite() throws ClassNotFoundException, SQLException {
         
         this.jdbcURL = "jdbc:informix-sqli://fe80::1125:78c0:ef17:8ab5%17:7360/sysmaster:user=informix;password=test;INFORMIXSERVER=ol_informix1210_2";
         

@@ -115,12 +115,4 @@ public class ManagerFile extends AbstractManagerList {
             }, "ThreadReadFile").start();
         });
     }
-    
-    public void endFileSearch() {
-        
-        this.restoreButtonText();
-        this.setButtonEnable(true);
-        this.hideLoader();
-        this.setStateButton(StateButton.STARTABLE);
-    }
 }

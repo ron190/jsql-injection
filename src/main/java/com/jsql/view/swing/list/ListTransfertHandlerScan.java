@@ -25,6 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -146,7 +147,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
         if (this.dragPaths != null && !this.dragPaths.isEmpty()) {
             
             for (ItemList itemPath: this.dragPaths) {
-                if (!"".equals(itemPath.toString())) {
+                if (StringUtils.isNotEmpty(itemPath.toString())) {
                     //! FUUuu
                     ItemListScan itemDrag = (ItemListScan) itemPath;
                     ItemListScan itemDrop = new ItemListScan(itemDrag.getBeanInjection());

@@ -73,7 +73,7 @@ public abstract class AbstractShell extends JTextPane {
     private transient Style style = this.addStyle("Necrophagist's next album is 2014.", null);
 
     /**
-     *  Length of prompt.
+     * Length of prompt.
      */
     private String prompt = "";
 

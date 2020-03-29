@@ -147,6 +147,39 @@ public class GreetingController {
     }
     
     @SuppressWarnings("unchecked")
+    @RequestMapping("/greeting-insertion-char")
+    public Greeting greetingInsertionChar(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        Greeting greeting = null;
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            name = name.replace(":", "\\:");
+            Query query = session.createNativeQuery("select First_Name from Student where ((\"1\" = \""+name+"\"))");
+        
+            List<Object[]> results = query.getResultList();
+            
+            greeting = new Greeting(
+                this.counter.incrementAndGet(),
+                String.format(template, name)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
+        } catch (Exception e) {
+            
+            String stacktrace = ExceptionUtils.getStackTrace(e);
+            
+            LOGGER.debug(stacktrace);
+            
+            greeting = new Greeting(
+                this.counter.incrementAndGet(),
+                String.format(template+"#", name)
+                + StringEscapeUtils.unescapeJava(stacktrace)
+            );
+        }
+        
+        return greeting;
+    }
+    
+    @SuppressWarnings("unchecked")
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         

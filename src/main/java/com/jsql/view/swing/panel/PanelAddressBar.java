@@ -211,45 +211,51 @@ public class PanelAddressBar extends JPanel {
         this.add(panelTextFields);
 
         // Horizontal column rules
-        layoutTextFields.setHorizontalGroup(
-            layoutTextFields.createSequentialGroup()
-                // Label width fixed
-                .addGroup(
-                    layoutTextFields.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(this.radioQueryString)
-                        .addComponent(this.requestPanel)
-                        .addComponent(this.radioHeader)
-                // Resizable textfields
-                ).addGroup(
-                    layoutTextFields.createParallelGroup()
-                        .addComponent(this.textFieldAddress)
-                        .addComponent(this.textFieldRequest)
-                        .addComponent(this.textFieldHeader)
-                // Radio width fixed
-                ).addGroup(
-                    layoutTextFields.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                        .addComponent(advancedButton)
-                )
+        layoutTextFields
+        .setHorizontalGroup(
+            layoutTextFields
+            .createSequentialGroup()
+            .addGroup(
+                layoutTextFields
+                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                .addComponent(this.radioQueryString)
+                .addComponent(this.requestPanel)
+                .addComponent(this.radioHeader)
+            ).addGroup(
+                layoutTextFields
+                .createParallelGroup()
+                .addComponent(this.textFieldAddress)
+                .addComponent(this.textFieldRequest)
+                .addComponent(this.textFieldHeader)
+            ).addGroup(
+                layoutTextFields
+                .createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                .addComponent(advancedButton)
+            )
         );
 
         // Vertical line rules
-        layoutTextFields.setVerticalGroup(
-            layoutTextFields.createSequentialGroup()
-                .addGroup(
-                    layoutTextFields.createParallelGroup(GroupLayout.Alignment.CENTER, false)
-                        .addComponent(this.radioQueryString)
-                        .addComponent(this.textFieldAddress)
-                        .addComponent(advancedButton)
-                ).addGroup(
-                    layoutTextFields.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(this.requestPanel)
-                        .addComponent(this.textFieldRequest)
-                ).addGroup(
-                    layoutTextFields
-                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(this.radioHeader)
-                        .addComponent(this.textFieldHeader)
-                )
+        layoutTextFields
+        .setVerticalGroup(
+            layoutTextFields
+            .createSequentialGroup()
+            .addGroup(
+                layoutTextFields
+                .createParallelGroup(GroupLayout.Alignment.CENTER, false)
+                .addComponent(this.radioQueryString)
+                .addComponent(this.textFieldAddress)
+                .addComponent(advancedButton)
+            ).addGroup(
+                layoutTextFields
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.requestPanel)
+                .addComponent(this.textFieldRequest)
+            ).addGroup(
+                layoutTextFields
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.radioHeader)
+                .addComponent(this.textFieldHeader)
+            )
         );
     }
 

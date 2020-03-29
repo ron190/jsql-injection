@@ -23,8 +23,8 @@ public class PostgresErrorTestSuite extends ConcretePostgresTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-error");
-        model.getMediatorUtils().getParameterUtil().setQueryString(Arrays.asList(
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-error");
+        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "postgres"),
             new SimpleEntry<>("name", "0'")
         ));

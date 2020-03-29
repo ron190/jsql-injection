@@ -20,6 +20,7 @@ public class ObserverInteraction implements Observer {
     private String packageInteraction;
     
     public ObserverInteraction(String packageInteraction) {
+        
         this.packageInteraction = packageInteraction;
     }
         
@@ -41,10 +42,13 @@ public class ObserverInteraction implements Observer {
 
             InteractionCommand o2 = (InteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
             o2.execute();
+            
         } catch (ClassNotFoundException e) {
+            
             // Ignore unused interaction message
             IgnoreMessageException ignore = new IgnoreMessageException(e);
             LOGGER.trace(ignore, ignore);
+            
         } catch (
             InstantiationException | IllegalAccessException | NoSuchMethodException |
             SecurityException | IllegalArgumentException | InvocationTargetException e
@@ -52,5 +56,4 @@ public class ObserverInteraction implements Observer {
             LOGGER.error(e.getMessage(), e);
         }
     }
-    
 }

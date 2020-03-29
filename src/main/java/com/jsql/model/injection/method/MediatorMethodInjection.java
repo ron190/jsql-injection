@@ -8,87 +8,88 @@ import com.jsql.model.InjectionModel;
 
 public class MediatorMethodInjection {
 
-    @SuppressWarnings("serial")
-    private MethodInjection query = new MethodInjection() {
-        
-        @Override
-        public boolean isCheckingAllParam() {
-            return MediatorMethodInjection.this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam();
-        }
-
-        @Override
-        public String getParamsAsString() {
-            return MediatorMethodInjection.this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();
-        }
-
-        @Override
-        public List<SimpleEntry<String, String>> getParams() {
-            return MediatorMethodInjection.this.injectionModel.getMediatorUtils().getParameterUtil().getQueryString();
-        }
-
-        @Override
-        public String name() {
-            return "QUERY";
-        }
-        
-    };
+    private MethodInjection query;
+    private MethodInjection request;
+    private MethodInjection header;
+    
+    private List<MethodInjection> methods;
     
     @SuppressWarnings("serial")
-    private MethodInjection request = new MethodInjection() {
-        
-        @Override
-        public boolean isCheckingAllParam() {
-            return MediatorMethodInjection.this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam();
-        }
-
-        @Override
-        public String getParamsAsString() {
-            return MediatorMethodInjection.this.injectionModel.getMediatorUtils().getParameterUtil().getRequestFromEntries();
-        }
-
-        @Override
-        public List<SimpleEntry<String, String>> getParams() {
-            return MediatorMethodInjection.this.injectionModel.getMediatorUtils().getParameterUtil().getRequest();
-        }
-
-        @Override
-        public String name() {
-            return "REQUEST";
-        }
-        
-    };
-    
-    @SuppressWarnings("serial")
-    private MethodInjection header = new MethodInjection() {
-        
-        @Override
-        public boolean isCheckingAllParam() {
-            return MediatorMethodInjection.this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam();
-        }
-
-        @Override
-        public String getParamsAsString() {
-            return MediatorMethodInjection.this.injectionModel.getMediatorUtils().getParameterUtil().getHeaderFromEntries();
-        }
-
-        @Override
-        public List<SimpleEntry<String, String>> getParams() {
-            return MediatorMethodInjection.this.injectionModel.getMediatorUtils().getParameterUtil().getHeader();
-        }
-
-        @Override
-        public String name() {
-            return "HEADER";
-        }
-        
-    };
-    
-    private List<MethodInjection> methods = Arrays.asList(this.getQuery(), this.getRequest(), this.getHeader());
-    
-    private InjectionModel injectionModel;
-    
     public MediatorMethodInjection(InjectionModel injectionModel) {
-        this.injectionModel = injectionModel;
+        
+        this.query = new MethodInjection(injectionModel) {
+            
+            @Override
+            public boolean isCheckingAllParam() {
+                return this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam();
+            }
+
+            @Override
+            public String getParamsAsString() {
+                return this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();
+            }
+
+            @Override
+            public List<SimpleEntry<String, String>> getParams() {
+                return this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString();
+            }
+
+            @Override
+            public String name() {
+                return "QUERY";
+            }
+            
+        };
+        
+        this.request = new MethodInjection(injectionModel) {
+            
+            @Override
+            public boolean isCheckingAllParam() {
+                return this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam();
+            }
+
+            @Override
+            public String getParamsAsString() {
+                return this.injectionModel.getMediatorUtils().getParameterUtil().getRequestFromEntries();
+            }
+
+            @Override
+            public List<SimpleEntry<String, String>> getParams() {
+                return this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest();
+            }
+
+            @Override
+            public String name() {
+                return "REQUEST";
+            }
+            
+        };
+        
+        this.header = new MethodInjection(injectionModel) {
+            
+            @Override
+            public boolean isCheckingAllParam() {
+                return this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam();
+            }
+
+            @Override
+            public String getParamsAsString() {
+                return this.injectionModel.getMediatorUtils().getParameterUtil().getHeaderFromEntries();
+            }
+
+            @Override
+            public List<SimpleEntry<String, String>> getParams() {
+                return this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader();
+            }
+
+            @Override
+            public String name() {
+                return "HEADER";
+            }
+            
+        };
+        
+        this.methods = Arrays.asList(this.getQuery(), this.getRequest(), this.getHeader());
     }
 
     public MethodInjection getQuery() {
@@ -106,5 +107,4 @@ public class MediatorMethodInjection {
     public List<MethodInjection> getMethods() {
         return this.methods;
     }
-
 }

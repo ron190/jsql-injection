@@ -76,5 +76,4 @@ public class I18nView {
         
         return result;
     }
-
 }

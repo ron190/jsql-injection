@@ -39,9 +39,11 @@ public final class ThreadUtil {
      */
     private final Map<AbstractElementDatabase, AbstractSuspendable<?>> suspendables = new HashMap<>();
     
-    InjectionModel injectionModel;
+    private InjectionModel injectionModel;
+    
     // Utility class
     public ThreadUtil(InjectionModel injectionModel) {
+        
         this.injectionModel = injectionModel;
     }
 
@@ -52,6 +54,7 @@ public final class ThreadUtil {
      * @param suspendable active job to act on
      */
     public void put(AbstractElementDatabase elementDatabase, AbstractSuspendable<String> suspendable) {
+        
         this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.put(elementDatabase, suspendable);
     }
     
@@ -63,6 +66,7 @@ public final class ThreadUtil {
      * @return job currently running
      */
     public AbstractSuspendable<?> get(AbstractElementDatabase elementDatabase) {
+        
         return this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.get(elementDatabase);
     }
     
@@ -72,6 +76,7 @@ public final class ThreadUtil {
      * @param elementDatabase component associated to thread
      */
     public void remove(AbstractElementDatabase elementDatabase) {
+        
         this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.remove(elementDatabase);
     }
     
@@ -83,13 +88,10 @@ public final class ThreadUtil {
         
         // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()
         try {
-            for (AbstractSuspendable<?> suspendable : this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.values()) {
-                suspendable.stop();
-            }
+            this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.values().stream().forEach(AbstractSuspendable::stop);
             this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.clear();
         } catch (ConcurrentModificationException e) {
             LOGGER.error(e, e);
         }
     }
-    
 }

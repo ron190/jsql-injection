@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
@@ -172,11 +173,11 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                 }
             }
             
-            if (!"".equals(refUrlShell[0])) {
+            if (StringUtils.isNotEmpty(refUrlShell[0])) {
                 try {
                     new URL(refUrlShell[0]);
                 } catch (MalformedURLException e) {
-                    LOGGER.warn("Incorrect URL: "+ e.getMessage(), e);
+                    LOGGER.warn("Incorrect URL: "+ e, e);
                     return;
                 }
             }
@@ -190,7 +191,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                             refUrlShell[0]
                         );
                     } catch (JSqlException | InterruptedException e) {
-                        LOGGER.warn("Payload creation error: "+ e.getMessage(), e);
+                        LOGGER.warn("Payload creation error: "+ e, e);
                         Thread.currentThread().interrupt();
                     }
                 }, "ThreadGetShell").start();

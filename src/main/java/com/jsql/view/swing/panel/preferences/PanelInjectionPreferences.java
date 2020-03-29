@@ -226,7 +226,8 @@ public class PanelInjectionPreferences extends JPanel {
         GroupLayout groupLayoutInjection = new GroupLayout(this);
         this.setLayout(groupLayoutInjection);
 
-        groupLayoutInjection.setHorizontalGroup(
+        groupLayoutInjection
+        .setHorizontalGroup(
             groupLayoutInjection
             .createSequentialGroup()
             .addGroup(
@@ -278,7 +279,8 @@ public class PanelInjectionPreferences extends JPanel {
             )
         );
         
-        groupLayoutInjection.setVerticalGroup(
+        groupLayoutInjection
+        .setVerticalGroup(
             groupLayoutInjection
             .createSequentialGroup()
             .addGroup(

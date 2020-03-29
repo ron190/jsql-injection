@@ -25,8 +25,8 @@ public class PostTestSuite extends ConcreteMySQLTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-post?tenant=mysql");
-        model.getMediatorUtils().getParameterUtil().setRequest(Arrays.asList(
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-post?tenant=mysql");
+        model.getMediatorUtils().getParameterUtil().setListRequest(Arrays.asList(
             new SimpleEntry<>("name", "0'")
         ));
         

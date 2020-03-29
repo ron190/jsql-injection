@@ -9,8 +9,6 @@ import spock.lang.Specification
 
 class StringUtilSpock extends Specification {
     
-    def stringUtil
-
     def 'Check decimalHtmlEncode'() {
         
         expect:

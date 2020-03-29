@@ -41,7 +41,7 @@ public class RadioMenuItemIconCustom implements Icon, UIResource, Serializable {
                 g.setColor(MetalLookAndFeel.getControlDarkShadow());
             }
         } else {
-            g.setColor( MetalLookAndFeel.getMenuDisabledForeground()  );
+            g.setColor( MetalLookAndFeel.getMenuDisabledForeground() );
         }
         g.drawLine( 2, 0, 6, 0 );
         g.drawLine( 2, 8, 6, 8 );

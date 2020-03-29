@@ -72,14 +72,20 @@ public class AddressMenuBar extends JMenuBar {
             MenuElement itemRadioStrategy;
 
             if (strategy == MediatorModel.model().getMediatorStrategy().getError()) {
+                
                 itemRadioStrategy = new JMenu(strategy.toString());
                 this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
+                
             } else {
+                
                 itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString());
+                
                 ((AbstractButton) itemRadioStrategy).addActionListener(actionEvent -> {
+                    
                     this.menuStrategy.setText(strategy.toString());
                     MediatorModel.model().getMediatorStrategy().setStrategy(strategy);
                 });
+                
                 this.groupStrategy.add((AbstractButton) itemRadioStrategy);
             }
 
@@ -98,6 +104,7 @@ public class AddressMenuBar extends JMenuBar {
             
             JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().getMediatorVendor().getAuto());
             itemRadioVendor.addActionListener(actionEvent -> {
+                
                 this.menuVendor.setText(vendor.toString());
                 MediatorModel.model().getMediatorVendor().setVendorByUser(vendor);
             });
@@ -158,12 +165,14 @@ public class AddressMenuBar extends JMenuBar {
     public void reset() {
         
         if (MediatorModel.model().getMediatorVendor().getVendorByUser() == MediatorModel.model().getMediatorVendor().getAuto()) {
+            
             this.menuVendor.setText(MediatorModel.model().getMediatorVendor().getAuto().toString());
         }
         
         this.menuStrategy.setText("Strategy auto");
         
         for (int i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
+            
             this.menuStrategy.getItem(i).setEnabled(false);
         }
         
@@ -230,7 +239,6 @@ public class AddressMenuBar extends JMenuBar {
                 if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {
                     
                     ((JMenu) this.menuStrategy.getItem(i)).getItem(indexMethodError).setEnabled(false);
-                    
                     break;
                 }
             }

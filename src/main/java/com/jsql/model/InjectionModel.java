@@ -21,7 +21,6 @@ import java.nio.file.Paths;
 import java.security.PrivilegedActionException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +31,6 @@ import javax.security.auth.login.LoginException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.ietf.jgss.GSSException;
-import org.json.JSONException;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.DataAccess;
@@ -40,14 +38,11 @@ import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.MediatorMethodInjection;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.strategy.MediatorStrategy;
 import com.jsql.model.injection.vendor.MediatorVendor;
-import com.jsql.model.suspendable.SuspendableGetCharInsertion;
-import com.jsql.model.suspendable.SuspendableGetVendor;
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.ExceptionUtil;
@@ -124,7 +119,7 @@ public class InjectionModel extends AbstractModelObservable {
     
     private boolean isScanning = false;
     
-    public static final boolean IS_PARAM_BY_USER = true;
+    public static final boolean IS_NOT_INJECTION_POINT = true;
     public static final boolean IS_JSON = true;
 
     public InjectionModel() {
@@ -197,7 +192,7 @@ public class InjectionModel extends AbstractModelObservable {
             
             boolean hasFoundInjection = false;
             
-            hasFoundInjection = this.testParameters(this.getMediatorMethodInjection().getQuery());
+            hasFoundInjection = this.getMediatorMethodInjection().getQuery().testParameters();
 
             if (!hasFoundInjection) {
                 hasFoundInjection = this.getMediatorUtils().getSoapUtil().testParameters();
@@ -205,11 +200,11 @@ public class InjectionModel extends AbstractModelObservable {
             
             if (!hasFoundInjection) {
                 LOGGER.trace("Checking standard Request parameters");
-                hasFoundInjection = this.testParameters(this.getMediatorMethodInjection().getRequest());
+                hasFoundInjection = this.getMediatorMethodInjection().getRequest().testParameters();
             }
             
             if (!hasFoundInjection) {
-                hasFoundInjection = this.testParameters(this.getMediatorMethodInjection().getHeader());
+                hasFoundInjection = this.getMediatorMethodInjection().getHeader().testParameters();
             }
             
             if (!this.isScanning) {
@@ -222,166 +217,17 @@ public class InjectionModel extends AbstractModelObservable {
             LOGGER.trace(I18n.valueByKey("LOG_DONE"));
             
             this.injectionAlreadyBuilt = true;
+            
         } catch (JSqlException e) {
             
             LOGGER.warn(e.getMessage(), e);
+            
         } finally {
             
             Request request = new Request();
             request.setMessage(Interaction.END_PREPARATION);
             this.sendToViews(request);
         }
-    }
-    
-    /**
-     * Verify if injection works for specific Method using 3 modes: standard (last param), injection point
-     * and full params injection. Special injections like JSON and SOAP are checked.
-     * @param methodInjection currently tested (Query, Request or Header)
-     * @param paramsAsString to verify if contains injection point
-     * @param params from Query, Request or Header as a list of key/value to be tested for insertion character ;
-     * Mode standard: last param, mode injection point: no test, mode full: every params.
-     * @return true if injection didn't failed
-     * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
-     */
-    public boolean testParameters(MethodInjection methodInjection) throws JSqlException {
-        
-        boolean hasFoundInjection = false;
-        
-        // Injects URL, Request or Header params only if user tests every params
-        // or method is selected by user.
-        if (
-            !this.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
-            && this.getMediatorUtils().getConnectionUtil().getMethodInjection() != methodInjection
-        ) {
-            return hasFoundInjection;
-        }
-        
-        // Force injection method of model to current running method
-        this.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);
-        
-        // Injection by injection point
-        if (methodInjection.getParamsAsString().contains(InjectionModel.STAR)) {
-            
-            LOGGER.info("Checking single "+ methodInjection.name() +" parameter with injection point at *");
-            
-            // Will keep param value as is,
-            // Does not test for insertion character (param is null)
-            hasFoundInjection = this.testStrategies(!InjectionModel.IS_PARAM_BY_USER, !InjectionModel.IS_JSON, null);
-        // Default injection: last param tested only
-        } else if (!methodInjection.isCheckingAllParam()) {
-            
-            // Injection point defined on last parameter
-            methodInjection.getParams().stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
-
-            // Will check param value by user.
-            // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
-            // for JSON injection of last param
-            hasFoundInjection = this.testStrategies(InjectionModel.IS_PARAM_BY_USER, !InjectionModel.IS_JSON, methodInjection.getParams().stream().reduce((a, b) -> b).orElseThrow(NullPointerException::new));
-        // Injection of every params: isCheckingAllParam() == true.
-        // Params are tested one by one in two loops:
-        //  - inner loop erases * from previous param
-        //  - outer loop adds * to current param
-        } else {
-            
-            // This param will be marked by * if injection is found,
-            // inner loop will erase mark * otherwise
-            injectionSuccessful:
-            for (SimpleEntry<String, String> paramBase: methodInjection.getParams()) {
-
-                // This param is the current tested one.
-                // For JSON value attributes are traversed one by one to test every values.
-                // For standard value mark * is simply added to the end of its value.
-                for (SimpleEntry<String, String> paramStar: methodInjection.getParams()) {
-                    
-                    if (paramStar == paramBase) {
-                        try {
-                            // Will test if current value is a JSON entity
-                            Object jsonEntity = JsonUtil.getJson(paramStar.getValue());
-                            
-                            // Define a tree of JSON attributes with path as the key: root.a => value of a
-                            List<SimpleEntry<String, String>> attributesJson = JsonUtil.createEntries(jsonEntity, "root", null);
-                            
-                            // When option 'Inject JSON' is selected and there's a JSON entity to inject
-                            // then loop through each paths to add * at the end of value and test each strategies.
-                            // Marks * are erased between each tests.
-                            if (this.getMediatorUtils().getPreferencesUtil().isCheckingAllJSONParam() && !attributesJson.isEmpty()) {
-                                hasFoundInjection = this.getMediatorUtils().getJsonUtil().testJsonParameter(methodInjection, paramStar);
-                                
-                            // Standard non JSON injection
-                            } else {
-                                hasFoundInjection = this.getMediatorUtils().getJsonUtil().testStandardParameter(methodInjection, paramStar);
-                            }
-                            
-                            if (hasFoundInjection) {
-                                break injectionSuccessful;
-                            }
-                        } catch (JSONException e) {
-                            LOGGER.error("Error parsing JSON parameters", e);
-                        }
-                        
-                    }
-                }
-                
-            }
-        }
-        
-        return hasFoundInjection;
-    }
-    
-    /**
-     * Find the insertion character, test each strategy, inject metadata and list databases.
-     * @param isParamByUser true if mode standard/JSON/full, false if injection point
-     * @param isJson true if param contains JSON
-     * @param parameter to be tested, null when injection point
-     * @return true when successful injection
-     * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
-     */
-    // TODO Merge isParamByUser and parameter: isParamByUser = parameter != null
-    public boolean testStrategies(boolean isParamByUser, boolean isJson, SimpleEntry<String, String> parameter) throws JSqlException {
-        
-        // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
-        LOGGER.trace(I18n.valueByKey("LOG_GET_INSERTION_CHARACTER"));
-        
-        // Test for params integrity
-        String characterInsertionByUser = this.getMediatorUtils().getParameterUtil().getCharacterInsertion(isParamByUser, parameter);
-        
-        // If not an injection point then find insertion character.
-        // Force to 1 if no insertion char works and empty value from user,
-        // Force to user's value if no insertion char works,
-        // Force to insertion char otherwise.
-        if (parameter != null) {
-            String charInsertion = new SuspendableGetCharInsertion(this).run(characterInsertionByUser, parameter, isJson);
-            LOGGER.info(I18n.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ charInsertion.replace(InjectionModel.STAR, "") +"]");
-        }
-        
-        // Fingerprint database
-        this.getMediatorVendor().setVendor(new SuspendableGetVendor(this).run());
-
-        // Test each injection strategies: time < blind < error < normal
-        // Choose the most efficient strategy: normal > error > blind > time
-        this.getMediatorStrategy().getTime().checkApplicability();
-        this.getMediatorStrategy().getBlind().checkApplicability();
-        this.getMediatorStrategy().getError().checkApplicability();
-        this.getMediatorStrategy().getNormal().checkApplicability();
-
-        // Choose the most efficient strategy: normal > error > blind > time
-        if (this.getMediatorStrategy().getNormal().isApplicable()) {
-            this.getMediatorStrategy().getNormal().activateStrategy();
-            
-        } else if (this.getMediatorStrategy().getError().isApplicable()) {
-            this.getMediatorStrategy().getError().activateStrategy();
-            
-        } else if (this.getMediatorStrategy().getBlind().isApplicable()) {
-            this.getMediatorStrategy().getBlind().activateStrategy();
-            
-        } else if (this.getMediatorStrategy().getTime().isApplicable()) {
-            this.getMediatorStrategy().getTime().activateStrategy();
-            
-        } else {
-            throw new InjectionFailureException("No injection found");
-        }
-        
-        return true;
     }
     
     /**
@@ -416,7 +262,7 @@ public class InjectionModel extends AbstractModelObservable {
         try {
             urlObject = new URL(urlInjection);
         } catch (MalformedURLException e) {
-            LOGGER.warn("Incorrect Query Url: "+ e.getMessage(), e);
+            LOGGER.warn("Incorrect Query Url: "+ e, e);
             return "";
         }
 
@@ -424,7 +270,7 @@ public class InjectionModel extends AbstractModelObservable {
          * Build the GET query string infos
          */
         // TODO Extract in method
-        if (!this.getMediatorUtils().getParameterUtil().getQueryString().isEmpty()) {
+        if (!this.getMediatorUtils().getParameterUtil().getListQueryString().isEmpty()) {
             
             // URL without querystring like Request and Header can receive
             // new params from <form> parsing, in that case add the '?' to URL
@@ -441,7 +287,7 @@ public class InjectionModel extends AbstractModelObservable {
             try {
                 urlObject = new URL(urlInjection);
             } catch (MalformedURLException e) {
-                LOGGER.warn("Incorrect Url: "+ e.getMessage(), e);
+                LOGGER.warn("Incorrect Url: "+ e, e);
             }
         } else {
             if (this.getMediatorUtils().getConnectionUtil().getTokenCsrf() != null) {
@@ -495,7 +341,7 @@ public class InjectionModel extends AbstractModelObservable {
              * Build the HEADER and logs infos
              */
             // TODO Extract in method
-            if (!this.getMediatorUtils().getParameterUtil().getHeader().isEmpty()) {
+            if (!this.getMediatorUtils().getParameterUtil().getListHeader().isEmpty()) {
                 Stream.of(this.buildQuery(this.getMediatorMethodInjection().getHeader(), this.getMediatorUtils().getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
                 .forEach(e -> {
                     if (e.split(":").length == 2) {
@@ -510,7 +356,7 @@ public class InjectionModel extends AbstractModelObservable {
              * Build the POST and logs infos
              */
             // TODO Extract in method
-            if (!this.getMediatorUtils().getParameterUtil().getRequest().isEmpty() || this.getMediatorUtils().getConnectionUtil().getTokenCsrf() != null) {
+            if (!this.getMediatorUtils().getParameterUtil().getListRequest().isEmpty() || this.getMediatorUtils().getConnectionUtil().getTokenCsrf() != null) {
                 try {
                     ConnectionUtil.fixCustomRequestMethod(connection, this.getMediatorUtils().getConnectionUtil().getTypeRequest());
                     
@@ -537,7 +383,7 @@ public class InjectionModel extends AbstractModelObservable {
                         msgHeader.put(Header.POST, this.buildQuery(this.getMediatorMethodInjection().getRequest(), this.getMediatorUtils().getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
                     }
                 } catch (IOException e) {
-                    LOGGER.warn("Error during Request connection: "+ e.getMessage(), e);
+                    LOGGER.warn("Error during Request connection: "+ e, e);
                 }
             }
             
@@ -563,7 +409,7 @@ public class InjectionModel extends AbstractModelObservable {
             // Exception for General and Spnego Opening Connection
             IOException | LoginException | GSSException | PrivilegedActionException e
         ) {
-            LOGGER.warn("Error during connection: "+ e.getMessage(), e);
+            LOGGER.warn("Error during connection: "+ e, e);
         }
 
         // return the source code of the page
@@ -571,11 +417,9 @@ public class InjectionModel extends AbstractModelObservable {
     }
     
     /**
-     * Build correct data for GET, POST, HEADER.<br>
-     * Each can be:<br>
-     *  - raw data (no injection)<br>
-     *  - SQL query without index requirement<br>
-     *  - SQL query with index requirement.
+     * Build correct data for GET, POST, HEADER.
+     * Each can be either raw data (no injection), SQL query without index requirement,
+     * or SQL query with index requirement.
      * @param dataType Current method to build
      * @param urlBase Beginning of the request data
      * @param isUsingIndex False if request doesn't use indexes
@@ -732,6 +576,7 @@ public class InjectionModel extends AbstractModelObservable {
             query = query.replace(">", "%3E");
             query = query.replace("<", "%3C");
             query = query.replace("?", "%3F");
+            query = query.replace("_", "%5F");
             query = query.replace(" ", "+");
         } else {
             // For cookies in Spring
@@ -779,9 +624,9 @@ public class InjectionModel extends AbstractModelObservable {
                 }
             }
                      
-            this.getMediatorUtils().getParameterUtil().initQueryString(urlQuery);
-            this.getMediatorUtils().getParameterUtil().initRequest(dataRequest);
-            this.getMediatorUtils().getParameterUtil().initHeader(dataHeader);
+            this.getMediatorUtils().getParameterUtil().initializeQueryString(urlQuery);
+            this.getMediatorUtils().getParameterUtil().initializeRequest(dataRequest);
+            this.getMediatorUtils().getParameterUtil().initializeHeader(dataHeader);
             
             this.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);
             this.getMediatorUtils().getConnectionUtil().setTypeRequest(typeRequest);
@@ -795,7 +640,7 @@ public class InjectionModel extends AbstractModelObservable {
             }
         } catch (MalformedURLException e) {
             
-            LOGGER.warn("Incorrect Url: "+ e.getMessage(), e);
+            LOGGER.warn("Incorrect Url: "+ e, e);
             
             // Incorrect URL, reset the start button
             Request request = new Request();

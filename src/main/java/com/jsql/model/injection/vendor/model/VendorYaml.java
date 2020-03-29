@@ -422,7 +422,7 @@ public class VendorYaml implements AbstractVendor {
         List<String> fields = new ArrayList<>();
         
         int indice = 1;
-        for (  ; indice <= nbFields ; indice++) {
+        for ( ; indice <= nbFields ; indice++) {
             fields.add(this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(INDICE, Integer.toString(indice)));
             replaceTag = this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(INDICE, Integer.toString(indice));
         }

@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import org.apache.commons.codec.DecoderException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.exception.IgnoreMessageException;
@@ -66,7 +67,7 @@ public class ActionCoder implements ActionListener {
         
         try {
             if (
-                "".equals(textInput)
+                StringUtils.isEmpty(textInput)
                 && !Arrays.asList("Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql").contains(nameMethod)
             ) {
                 result = "<span style=\"color:red;\">Empty string to convert</span>";

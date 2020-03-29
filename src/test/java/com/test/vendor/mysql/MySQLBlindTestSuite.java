@@ -24,8 +24,8 @@ public class MySQLBlindTestSuite extends ConcreteMySQLTestSuite {
 
         model.addObserver(new SystemOutTerminal());
         
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-blind");
-        model.getMediatorUtils().getParameterUtil().setQueryString(Arrays.asList(
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-blind");
+        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql"),
             new SimpleEntry<>("name", "1'")
         ));

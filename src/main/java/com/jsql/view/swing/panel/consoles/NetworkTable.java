@@ -81,12 +81,12 @@ public class NetworkTable extends JTable {
                     
                     // TODO Not finished
                     // Get the ListSelectionModel of the JTable
-                    DefaultListSelectionModel  model = (DefaultListSelectionModel) NetworkTable.this.getSelectionModel();
-                    DefaultListSelectionModel  model2 = (DefaultListSelectionModel) NetworkTable.this.getColumnModel().getSelectionModel();
+                    DefaultListSelectionModel modelRow = (DefaultListSelectionModel) NetworkTable.this.getSelectionModel();
+                    DefaultListSelectionModel modelColumn = (DefaultListSelectionModel) NetworkTable.this.getColumnModel().getSelectionModel();
 
                     NetworkTable.this.setRowSelectionInterval(rowNumber, rowNumber);
-                    model.moveLeadSelectionIndex(rowNumber);
-                    model2.moveLeadSelectionIndex(colNumber);
+                    modelRow.moveLeadSelectionIndex(rowNumber);
+                    modelColumn.moveLeadSelectionIndex(colNumber);
                 }
             }
         });
@@ -117,14 +117,13 @@ public class NetworkTable extends JTable {
         this.getColumnModel().getColumn(2).setCellRenderer(centerHorizontalAlignment);
         this.getColumnModel().getColumn(3).setCellRenderer(centerHorizontalAlignment);
         
-        this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), null);
-        this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), null);
+        this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), null);
+        this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), null);
         
         Set<AWTKeyStroke> forward = new HashSet<>(this.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         forward.add(KeyStroke.getKeyStroke("TAB"));
         this.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forward);
+        
         Set<AWTKeyStroke> backward = new HashSet<>(this.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
         backward.add(KeyStroke.getKeyStroke("shift TAB"));
         this.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backward);
@@ -162,12 +161,15 @@ public class NetworkTable extends JTable {
     public void changeTextNetwork() {
         
         HttpHeader networkData = this.getListHttpHeader().get(this.getSelectedRow());
+        
         this.tabbedPaneNetworkTab.getTextAreaNetworkTabHeader().setText(networkData.getHeader());
         this.tabbedPaneNetworkTab.getTextAreaNetworkTabParams().setText(networkData.getPost());
         this.tabbedPaneNetworkTab.getTextAreaNetworkTabUrl().setText(networkData.getUrl());
         
         this.tabbedPaneNetworkTab.getTextAreaNetworkTabResponse().setText("");
+        
         for (String key: networkData.getResponse().keySet()) {
+            
             this.tabbedPaneNetworkTab.getTextAreaNetworkTabResponse().append(key + ": " + networkData.getResponse().get(key));
             this.tabbedPaneNetworkTab.getTextAreaNetworkTabResponse().append("\n");
         }
@@ -176,9 +178,10 @@ public class NetworkTable extends JTable {
         // Fix #54573: NullPointerException on setText()
         try {
             this.tabbedPaneNetworkTab.getTextAreaNetworkTabSource().setText(
-                StringUtil.detectUtf8(networkData.getSource())
-                    .replaceAll("#{5,}", "#*")
-                    .trim()
+                StringUtil
+                .detectUtf8(networkData.getSource())
+                .replaceAll("#{5,}", "#*")
+                .trim()
             );
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
             LOGGER.error(e, e);

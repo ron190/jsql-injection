@@ -218,7 +218,7 @@ public class SystemUtils {
         try {
             return System.getProperty(key);
         } catch (SecurityException e) {
-            LOGGER.error("Can't access the System property "+ key +": "+ e.getMessage(), e);
+            LOGGER.error("Can't access the System property "+ key +": "+ e, e);
             return "";
         }
     }
@@ -274,7 +274,7 @@ public class SystemUtils {
         try {
             return Toolkit.getDefaultToolkit().getScreenResolution() < 120;
         } catch (HeadlessException e) {
-            LOGGER.error("This environment cannot support a display, keyboard, and mouse: "+ e.getMessage(), e);
+            LOGGER.error("This environment cannot support a display, keyboard, and mouse: "+ e, e);
             return true;
         }
     }

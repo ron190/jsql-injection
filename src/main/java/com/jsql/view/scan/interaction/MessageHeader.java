@@ -18,7 +18,7 @@ import com.jsql.view.interaction.InteractionCommand;
 public class MessageHeader extends com.jsql.view.swing.interaction.MessageHeader implements InteractionCommand {
 
     public MessageHeader(Object[] interactionParams) {
+        
         super(interactionParams);
     }
-    
 }

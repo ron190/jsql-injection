@@ -11,6 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Table;
@@ -111,7 +113,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     .compile("(?s)"+ LEAD +"(?i)"+ TRAIL_RGX)
                     .matcher(sourcePage[0]);
             
-            if (regexEndOfLine.find() && isUsingLimit && !"".equals(slidingWindowAllRows.toString())) {
+            if (regexEndOfLine.find() && isUsingLimit && StringUtils.isNotEmpty(slidingWindowAllRows.toString())) {
                 // Update the view only if there are value to find, and if it's not the root (empty tree)
                 if (numberToFind > 0 && searchName != null) {
                     Request request = new Request();
@@ -127,7 +129,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
              * One row could be very long, longer than the database can provide
              * TODO Need verification
              */
-            if (!regexAtLeastOneRow.find() && isUsingLimit && !"".equals(slidingWindowAllRows.toString())) {
+            if (!regexAtLeastOneRow.find() && isUsingLimit && StringUtils.isNotEmpty(slidingWindowAllRows.toString())) {
                 // Update the view only if there are value to find, and if it's not the root (empty tree)
                 if (numberToFind > 0 && searchName != null) {
                     Request request = new Request();
@@ -368,10 +370,8 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         break;
                     }
 
-                    /*
-                     *  Add the LIMIT statement to the next SQL query and reset variables.
-                     *  Put the character cursor to the beginning of the line, and reset the result of the current query
-                     */
+                    // Add the LIMIT statement to the next SQL query and reset variables.
+                    // Put the character cursor to the beginning of the line, and reset the result of the current query
                     sqlQuery =
                         Pattern
                             .compile(MODE +"\\{limit\\}")

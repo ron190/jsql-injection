@@ -17,6 +17,7 @@ import java.util.Locale;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
@@ -52,7 +53,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
             this.isStopped = true;
         } else {
 
-            if ("".equals(this.bruteForceManager.getHash().getText())) {
+            if (StringUtils.isEmpty(this.bruteForceManager.getHash().getText())) {
                 
                 LOGGER.warn(I18n.valueByKey("BRUTEFORCE_EMPTY_HASH"));
                 return;
@@ -186,7 +187,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         if (this.bruteForceManager.getNumericCharacters().isSelected()) {
             hashBruter.addDigits();
         }
-        if (!"".equals(this.bruteForceManager.getExclude().getText())) {
+        if (StringUtils.isNotEmpty(this.bruteForceManager.getExclude().getText())) {
             hashBruter.excludeChars(this.bruteForceManager.getExclude().getText());
         }
 

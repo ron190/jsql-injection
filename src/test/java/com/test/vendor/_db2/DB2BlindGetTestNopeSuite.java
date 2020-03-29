@@ -1,4 +1,4 @@
-package com.test.vendor.db2;
+package com.test.vendor._db2;
 
 import java.sql.SQLException;
 
@@ -10,9 +10,9 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 
 @Ignore
-public class DB2BlindGetTestSuite extends ConcreteDB2TestSuite {
+public class DB2BlindGetTestNopeSuite extends ConcreteDB2TestNopeSuite {
 
-    public DB2BlindGetTestSuite() throws SQLException {
+    public DB2BlindGetTestNopeSuite() throws SQLException {
         super();
         // TODO Auto-generated constructor stub
     }

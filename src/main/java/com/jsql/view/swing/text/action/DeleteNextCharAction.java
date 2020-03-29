@@ -24,7 +24,7 @@ public class DeleteNextCharAction extends TextAction {
     private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
-     *  Create this object with the appropriate identifier.
+     * Create this object with the appropriate identifier.
      */
     public DeleteNextCharAction() {
         

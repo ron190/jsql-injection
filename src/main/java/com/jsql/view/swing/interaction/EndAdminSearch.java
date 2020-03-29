@@ -28,6 +28,6 @@ public class EndAdminSearch implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.managerAdminPage().endAdminSearch();
+        MediatorGui.managerAdminPage().endProcess();
     }
 }

@@ -221,7 +221,8 @@ public class PanelTamperingPreferences extends JPanel {
         GroupLayout groupLayoutTampering = new GroupLayout(this);
         this.setLayout(groupLayoutTampering);
         
-        groupLayoutTampering.setHorizontalGroup(
+        groupLayoutTampering
+        .setHorizontalGroup(
             groupLayoutTampering
             .createSequentialGroup()
             .addGroup(
@@ -255,7 +256,8 @@ public class PanelTamperingPreferences extends JPanel {
             )
         );
         
-        groupLayoutTampering.setVerticalGroup(
+        groupLayoutTampering
+        .setVerticalGroup(
             groupLayoutTampering
             .createSequentialGroup()
             .addGroup(

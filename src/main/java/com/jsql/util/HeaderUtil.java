@@ -36,6 +36,10 @@ public class HeaderUtil {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
+    
+    private static final String HEADER_WWW_AUTHENTICATE = "WWW-Authenticate";
+    private static final String REGEX_HTTP_STATUS = "4\\d\\d";
+    private static final String FOUND_STATUS_HTTP = "Found status HTTP ";
 
     private InjectionModel injectionModel;
     
@@ -83,10 +87,10 @@ public class HeaderUtil {
 
         Map<String, String> mapResponse = (Map<String, String>) msgHeader.get(Header.RESPONSE);
         if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))
-            && mapResponse.containsKey("WWW-Authenticate")
-            && mapResponse.get("WWW-Authenticate") != null
-            && mapResponse.get("WWW-Authenticate").startsWith("Basic ")
+            Pattern.matches(REGEX_HTTP_STATUS, Integer.toString(connection.getResponseCode()))
+            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
+            && mapResponse.get(HEADER_WWW_AUTHENTICATE) != null
+            && mapResponse.get(HEADER_WWW_AUTHENTICATE).startsWith("Basic ")
         ) {
             LOGGER.warn(
                 "Basic Authentication detected.\n"
@@ -95,9 +99,9 @@ public class HeaderUtil {
             );
         
         } else if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))
-            && mapResponse.containsKey("WWW-Authenticate")
-            && "NTLM".equals(mapResponse.get("WWW-Authenticate"))
+            Pattern.matches(REGEX_HTTP_STATUS, Integer.toString(connection.getResponseCode()))
+            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
+            && "NTLM".equals(mapResponse.get(HEADER_WWW_AUTHENTICATE))
         ) {
             LOGGER.warn(
                 "NTLM Authentication detected.\n"
@@ -106,10 +110,10 @@ public class HeaderUtil {
             );
         
         } else if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))
-            && mapResponse.containsKey("WWW-Authenticate")
-            && mapResponse.get("WWW-Authenticate") != null
-            && mapResponse.get("WWW-Authenticate").startsWith("Digest ")
+            Pattern.matches(REGEX_HTTP_STATUS, Integer.toString(connection.getResponseCode()))
+            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
+            && mapResponse.get(HEADER_WWW_AUTHENTICATE) != null
+            && mapResponse.get(HEADER_WWW_AUTHENTICATE).startsWith("Digest ")
         ) {
             LOGGER.warn(
                 "Digest Authentication detected.\n"
@@ -117,9 +121,9 @@ public class HeaderUtil {
             );
         
         } else if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))
-            && mapResponse.containsKey("WWW-Authenticate")
-            && "Negotiate".equals(mapResponse.get("WWW-Authenticate"))
+            Pattern.matches(REGEX_HTTP_STATUS, Integer.toString(connection.getResponseCode()))
+            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
+            && "Negotiate".equals(mapResponse.get(HEADER_WWW_AUTHENTICATE))
         ) {
             LOGGER.warn(
                 "Negotiate Authentication detected.\n"
@@ -127,13 +131,13 @@ public class HeaderUtil {
             );
             
         } else if (Pattern.matches("1\\d\\d", Integer.toString(connection.getResponseCode()))) {
-            LOGGER.trace("Found status HTTP "+ connection.getResponseCode() +" Informational");
+            LOGGER.trace(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Informational");
             
         } else if (Pattern.matches("2\\d\\d", Integer.toString(connection.getResponseCode()))) {
-            LOGGER.debug("Found status HTTP "+ connection.getResponseCode() +" Success");
+            LOGGER.debug(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Success");
             
         } else if (Pattern.matches("3\\d\\d", Integer.toString(connection.getResponseCode()))) {
-            LOGGER.warn("Found status HTTP "+ connection.getResponseCode() +" Redirection");
+            LOGGER.warn(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Redirection");
             
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()) {
                 LOGGER.warn("If injection fails please test again with option 'Follow HTTP redirection' enabled.");
@@ -141,14 +145,14 @@ public class HeaderUtil {
                 LOGGER.info("Redirecting to the next page...");
             }
             
-        } else if (Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))) {
-            LOGGER.warn("Found status HTTP "+ connection.getResponseCode() +" Client Error");
+        } else if (Pattern.matches(REGEX_HTTP_STATUS, Integer.toString(connection.getResponseCode()))) {
+            LOGGER.warn(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Client Error");
             
         } else if (Pattern.matches("5\\d\\d", Integer.toString(connection.getResponseCode()))) {
-            LOGGER.warn("Found status HTTP "+ connection.getResponseCode() +" Server Error");
+            LOGGER.warn(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Server Error");
             
         } else {
-            LOGGER.trace("Found status HTTP "+ connection.getResponseCode() +" Unknown");
+            LOGGER.trace(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Unknown");
             
         }
         
@@ -236,9 +240,9 @@ public class HeaderUtil {
                 for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
                     for (Element input: form.getValue()) {
                         if ("get".equalsIgnoreCase(form.getKey().attr("method"))) {
-                            this.injectionModel.getMediatorUtils().getParameterUtil().getQueryString().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
+                            this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
                         } else if ("post".equalsIgnoreCase(form.getKey().attr("method"))) {
-                            this.injectionModel.getMediatorUtils().getParameterUtil().getRequest().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
+                            this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
                         }
                     }
                 }

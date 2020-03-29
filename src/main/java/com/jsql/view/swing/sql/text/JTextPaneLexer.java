@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JTextPane;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 @SuppressWarnings("serial")
@@ -19,7 +20,7 @@ public class JTextPaneLexer extends JTextPane implements JTextPaneObjectMethod {
     public void setAttribute() {
         
         try {
-            if (this.attributeSetter != null && !"".equals(this.getText())) {
+            if (this.attributeSetter != null && StringUtils.isNotEmpty(this.getText())) {
                 this.attributeSetter.getMethod().invoke(this.attributeSetter.getAttribute(), this.getText());
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {

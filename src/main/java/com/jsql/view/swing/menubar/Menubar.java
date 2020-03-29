@@ -52,6 +52,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.text.StyleConstants;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
@@ -812,7 +813,7 @@ public class Menubar extends JMenuBar {
                 I18n.valueByKey("LIST_ADD_VALUE_CANCEL")
             );
 
-            if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
+            if (StringUtils.isNotEmpty(textarea.getText()) && result == JOptionPane.YES_OPTION) {
                 MediatorModel.model().getMediatorUtils().getGitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
             }
         });

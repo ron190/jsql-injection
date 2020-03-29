@@ -86,7 +86,7 @@ public class MediatorVendor {
                 resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
                 
                 for (String columnNameAndType: resultTmp.split(",")) {
-                    // Some recent SQLite use tabulation character as a separator => split() by any  white space \s
+                    // Some recent SQLite use tabulation character as a separator => split() by any white space \s
                     String columnName = columnNameAndType.trim().split("\\s")[0];
                     
                     // Some recent SQLite enclose names with ` => strip those `

@@ -32,11 +32,11 @@ public abstract class AbstractModelObservable extends Observable {
     private boolean isStoppedByUser = false;
 
     /**
-     *  Function header for the inject() methods, definition needed by call(),
-     *  dataInjection: SQL query,
-     *  responseHeader unused,
-     *  useVisibleIndex false if injection indexes aren't needed,
-     *  return source page after the HTTP call.
+     * Function header for the inject() methods, definition needed by call(),
+     * dataInjection: SQL query,
+     * responseHeader unused,
+     * useVisibleIndex false if injection indexes aren't needed,
+     * return source page after the HTTP call.
      */
     public abstract String inject(String dataInjection, boolean isUsingIndex);
     

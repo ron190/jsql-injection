@@ -30,6 +30,9 @@ public class PanelAuthenticationPreferences extends JPanel {
     private final JTextField textKerberosLoginConf = new JPopupTextField("Path to login.conf", MediatorModel.model().getMediatorUtils().getAuthenticationUtil().getPathKerberosLogin()).getProxy();
     private final JTextField textKerberosKrb5Conf = new JPopupTextField("Path to krb5.conf", MediatorModel.model().getMediatorUtils().getAuthenticationUtil().getPathKerberosKrb5()).getProxy();
 
+    private static final String TAG_HTML_ON = "<html>";
+    private static final String TAG_HTML_OFF = "</html>";
+    
     public PanelAuthenticationPreferences(PanelPreferences panelPreferences) {
 
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
@@ -42,11 +45,11 @@ public class PanelAuthenticationPreferences extends JPanel {
         JLabel labelDigestAuthenticationPassword = new JLabel("Password  ");
         final JButton labelUseDigestAuthentication = new JButton("Enable Basic, Digest, NTLM");
         String tooltipUseDigestAuthentication =
-            "<html>"
+            TAG_HTML_ON
             + "Enable <b>Basic</b>, <b>Digest</b>, <b>NTLM</b> authentication (e.g. WWW-Authenticate).<br>"
             + "Then define username and password for the host.<br>"
             + "<i><b>Negotiate</b> authentication is defined in URL.</i>"
-            + "</html>";
+            + TAG_HTML_OFF;
         labelUseDigestAuthentication.setToolTipText(tooltipUseDigestAuthentication);
         
         // Proxy setting: IP, port, checkbox to activate proxy
@@ -58,17 +61,17 @@ public class PanelAuthenticationPreferences extends JPanel {
         JLabel labelKerberosKrb5Conf = new JLabel("krb5.conf  ");
         final JButton labelUseKerberos = new JButton("Enable Kerberos");
         String tooltipUseKerberos =
-            "<html>"
+            TAG_HTML_ON
             + "Activate Kerberos authentication, then define path to <b>login.conf</b> and <b>krb5.conf</b>.<br>"
             + "Path to <b>.keytab</b> file is defined in login.conf ; name of <b>principal</b> must be correct.<br>"
             + "<b>Realm</b> and <b>kdc</b> are defined in krb5.conf.<br>"
             + "Finally use the <b>correct hostname</b> in URL, e.g. http://servicename.corp.test/[..]"
-            + "</html>";
+            + TAG_HTML_OFF;
         labelUseKerberos.setToolTipText(tooltipUseKerberos);
         
         // Proxy setting: IP, port, checkbox to activate proxy
         this.getTextKerberosLoginConf().setToolTipText(
-            "<html>"
+            TAG_HTML_ON
             + "Define the path to <b>login.conf</b>. Sample :<br>"
             + "&emsp;<b>entry-name</b> {<br>"
             + "&emsp;&emsp;com.sun.security.auth.module.Krb5LoginModule<br>"
@@ -79,9 +82,9 @@ public class PanelAuthenticationPreferences extends JPanel {
             + "&emsp;&emsp;debug=false;<br>"
             + "&emsp;}<br>"
             + "<i>Principal name is case sensitive ; entry-name is read automatically.</i>"
-            + "</html>");
+            + TAG_HTML_OFF);
         this.getTextKerberosKrb5Conf().setToolTipText(
-            "<html>"
+            TAG_HTML_ON
             + "Define the path to <b>krb5.conf</b>. Sample :<br>"
             + "&emsp;[libdefaults]<br>"
             + "&emsp;&emsp;default_realm = <b>CORP.TEST</b><br>"
@@ -91,7 +94,7 @@ public class PanelAuthenticationPreferences extends JPanel {
             + "&emsp;&emsp;&emsp;kdc = <b>127.0.0.1:88</b><br>"
             + "&emsp;&emsp;}<br>"
             + "<i>Realm and kdc are case sensitives.</i>"
-            + "</html>");
+            + TAG_HTML_OFF);
         this.getCheckboxUseKerberos().setToolTipText(tooltipUseKerberos);
         this.getCheckboxUseKerberos().setFocusable(false);
         
@@ -153,7 +156,8 @@ public class PanelAuthenticationPreferences extends JPanel {
             label.setContentAreaFilled(false);
         });
         
-        groupLayoutAuthentication.setHorizontalGroup(
+        groupLayoutAuthentication
+        .setHorizontalGroup(
             groupLayoutAuthentication
             .createSequentialGroup()
             .addGroup(
@@ -177,7 +181,8 @@ public class PanelAuthenticationPreferences extends JPanel {
             )
         );
         
-        groupLayoutAuthentication.setVerticalGroup(
+        groupLayoutAuthentication
+        .setVerticalGroup(
             groupLayoutAuthentication
             .createSequentialGroup()
             .addGroup(

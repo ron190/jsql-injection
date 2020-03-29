@@ -22,6 +22,7 @@ public class PropertiesUtil {
         try {
             String filename = "config.properties";
             input = PropertiesUtil.class.getClassLoader().getResourceAsStream(filename);
+            
             if (input == null) {
                 LOGGER.warn("Properties file "+ filename +" not found");
                 return;
@@ -32,6 +33,7 @@ public class PropertiesUtil {
         } catch (IOException e) {
             
             LOGGER.error(e, e);
+            
         } finally {
             
             if (input != null) {
@@ -42,11 +44,9 @@ public class PropertiesUtil {
                 }
             }
         }
-        
     }
 
     public Properties getProperties() {
         return this.properties;
     }
-
 }

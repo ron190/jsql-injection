@@ -97,21 +97,18 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             Thread.currentThread().interrupt();
         }
 
-        /*
-         *  Parallelize the call to the TRUE statements,
-         *  it will use inject() from the model
-         */
+        
+        // Parallelize the call to the TRUE statements,
+        // it will use inject() from the model
         ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagTrue"));
         Collection<CallableTime> listCallableTagTrue = new ArrayList<>();
         for (String urlTest: this.trueTest) {
             listCallableTagTrue.add(new CallableTime(urlTest, injectionModel, this, booleanMode));
         }
 
-        /*
-         * If one TRUE query makes more than X seconds,
-         * then the test is a failure => exit.
-         * Allow the user to stop the loop
-         */
+        // If one TRUE query makes more than X seconds,
+        // then the test is a failure => exit.
+        // Allow the user to stop the loop
         try {
             List<Future<CallableTime>> listTagTrue = executorTagTrue.invokeAll(listCallableTagTrue);
             

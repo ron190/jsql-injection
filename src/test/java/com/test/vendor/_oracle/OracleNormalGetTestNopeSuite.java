@@ -1,21 +1,20 @@
-package com.test.vendor.informix;
+package com.test.vendor._oracle;
 
 import java.sql.SQLException;
 
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 
 import com.jsql.model.exception.InjectionFailureException;
 
 @Ignore
-public class InformixNormalGetTestSuite extends ConcreteInformixTestSuite {
+public class OracleNormalGetTestNopeSuite extends ConcreteOracleTestNopeSuite {
 
-    public InformixNormalGetTestSuite() throws ClassNotFoundException, SQLException {
+    public OracleNormalGetTestNopeSuite() throws SQLException {
         super();
     }
 
     @Override
-    @BeforeClass
+//    @BeforeClass
     public void setupInjection() throws InjectionFailureException {
 //        InjectionModel model = new InjectionModel();
 //        MediatorModel.register(model);
@@ -23,7 +22,7 @@ public class InformixNormalGetTestSuite extends ConcreteInformixTestSuite {
 //
 //        MediatorModel.model().addObserver(new SystemOutTerminal());
 //
-//        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/informix_simulate_get.php");
+//        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/oracle_simulate_get.php");
 //        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("lib", "0")));
 //        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 //

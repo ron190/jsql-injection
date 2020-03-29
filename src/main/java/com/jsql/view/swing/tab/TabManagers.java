@@ -100,21 +100,16 @@ public class TabManagers extends MouseTabbedPane {
     public void markFileSystemInvulnerable() {
         
         this.managerFile.changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
-        this.managerFile.setButtonEnable(true);
-        this.managerFile.restoreButtonText();
-        this.managerFile.hideLoader();
+        this.managerFile.endProcess();
         
         this.managerWebShell.changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
-        this.managerWebShell.setButtonEnable(true);
-        this.managerWebShell.restoreButtonText();
+        this.managerWebShell.endProcess();
         
         this.managerUpload.changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
-        this.managerUpload.setButtonEnable(true);
-        this.managerUpload.restoreButtonText();
+        this.managerUpload.endProcess();
         
         this.managerSqlShell.changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
-        this.managerSqlShell.setButtonEnable(true);
-        this.managerSqlShell.restoreButtonText();
+        this.managerSqlShell.endProcess();
     }
     
     public void endPreparation() {

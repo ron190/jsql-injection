@@ -70,8 +70,8 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
      */
     public String inject(String inj, AbstractSuspendable<String> suspendable) throws StoppedByUserSlidingException {
         /**
-         *  List of the characters, each one represented by an array of 8 bits
-         *  e.g SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
+         * List of the characters, each one represented by an array of 8 bits
+         * e.g SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
          */
         List<char[]> bytes = new ArrayList<>();
         

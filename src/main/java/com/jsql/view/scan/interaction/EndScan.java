@@ -31,11 +31,8 @@ public class EndScan implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.managerScan().restoreButtonText();
-        MediatorGui.managerScan().setButtonEnable(true);
-        MediatorGui.managerScan().hideLoader();
         
+        MediatorGui.managerScan().endProcess();
         LOGGER.trace("Scan finished");
     }
-    
 }

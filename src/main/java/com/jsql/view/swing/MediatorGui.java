@@ -77,7 +77,6 @@ public final class MediatorGui {
         return panelConsoles;
     }
      
-    // Registering Managers
     public static ManagerWebShell managerWebshell() {
         return managerWebshell;
     }
@@ -107,6 +106,7 @@ public final class MediatorGui {
     }
     
     // Registering GUI components
+    
     public static void register(JFrameView frame) {
         MediatorGui.frame = frame;
     }
@@ -140,6 +140,7 @@ public final class MediatorGui {
     }
     
     // Registering Managers
+    
     public static void register(ManagerWebShell managerWebshell) {
         MediatorGui.managerWebshell = managerWebshell;
     }

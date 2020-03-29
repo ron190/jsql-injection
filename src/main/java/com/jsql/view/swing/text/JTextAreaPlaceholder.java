@@ -8,6 +8,7 @@ import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultEditorKit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.HelperUi;
@@ -90,7 +91,7 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
         try {
             super.paint(g);
             
-            if ("".equals(this.getText())) {
+            if (StringUtils.isEmpty(this.getText())) {
                 this.drawPlaceholder(this, g, this.placeholderText);
             }
         } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {

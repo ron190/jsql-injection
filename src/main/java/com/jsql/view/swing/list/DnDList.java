@@ -35,6 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
@@ -307,7 +308,7 @@ public class DnDList extends JList<ItemList> {
                 while ((line = bufferedReader.readLine()) != null) {
                     
                     if (
-                        !"".equals(line)
+                        StringUtils.isNotEmpty(line)
                         // Fix Report #60
                         && 0 <= endPosition[0] && endPosition[0] <= this.listModel.size()
                     ) {

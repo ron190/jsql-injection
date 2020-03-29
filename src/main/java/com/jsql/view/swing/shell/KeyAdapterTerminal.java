@@ -19,6 +19,7 @@ import java.util.List;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -181,7 +182,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
             if (
                 this.cmds.size() > 1 &&
                 this.cmdsIndex == this.cmds.size() - 1 &&
-                !"".equals(command[0].trim())
+                StringUtils.isNotEmpty(command[0].trim())
             ) {
                 this.cmdsIndex--;
             }
@@ -202,7 +203,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
         this.terminal.setEditable(false);
    
         // Populate cmd list for key up/down
-        if (!"".equals(command[0].trim())) {
+        if (StringUtils.isNotEmpty(command[0].trim())) {
             this.cmds.add(command[0].trim());
             this.cmdsIndex = this.cmds.size();
         }
@@ -214,7 +215,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
             
             // Inside Swing thread to avoid flickering
             terminalCommand.append("\n");
-            if (!"".equals(command[0].trim())) {
+            if (StringUtils.isNotEmpty(command[0].trim())) {
                 terminalCommand.setCaretPosition(terminalCommand.getDocument().getLength());
                 terminalCommand.action(
                     command[0],

@@ -1,12 +1,12 @@
-package com.test.vendor.ingres;
+package com.test.vendor._ingres;
 
 import java.sql.SQLException;
 
 import com.test.AbstractTestSuite;
 
-public abstract class ConcreteIngresTestSuite extends AbstractTestSuite {
+public abstract class ConcreteIngresTestNopeSuite extends AbstractTestSuite {
 
-    public ConcreteIngresTestSuite() throws ClassNotFoundException, SQLException {
+    public ConcreteIngresTestNopeSuite() throws ClassNotFoundException, SQLException {
         
         this.jdbcURL = "jdbc:ingres://"+ AbstractTestSuite.HOSTNAME +":II7/demodb";
         

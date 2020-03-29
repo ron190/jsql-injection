@@ -28,6 +28,6 @@ public class EndFileSearch implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.managerFile().endFileSearch();
+        MediatorGui.managerFile().endProcess();
     }
 }

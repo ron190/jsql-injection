@@ -166,10 +166,10 @@ public class ManagerUpload extends AbstractManagerList {
                             try {
                                 ManagerUpload.this.loader.setVisible(true);
                                 MediatorModel.model().getResourceAccess().uploadFile(path.toString(), shellURL.getText(), file);
-                            } catch (JSqlException ex) {
-                                LOGGER.warn("Payload creation error: "+ ex, ex);
-                            } catch (IOException ex) {
-                                LOGGER.warn("Posting file failed: "+ ex, ex);
+                            } catch (JSqlException e) {
+                                LOGGER.warn("Payload creation error: "+ e, e);
+                            } catch (IOException e) {
+                                LOGGER.warn("Posting file failed: "+ e, e);
                             }
                         }, "ThreadUpload").start();
                         
@@ -179,12 +179,5 @@ public class ManagerUpload extends AbstractManagerList {
                 LOGGER.error(ex, ex);
             }
         });
-    }
-    
-    public void  endUpload() {
-        
-        this.restoreButtonText();
-        this.setButtonEnable(true);
-        this.hideLoader();
     }
 }

@@ -38,9 +38,9 @@ public class ActionCheckIP implements ActionListener, Runnable {
             LOGGER.info("Your public IP address is " + addressIp);
             
         } catch (MalformedURLException e) {
-            LOGGER.warn("Malformed URL: "+ e.getMessage(), e);
+            LOGGER.warn("Malformed URL: "+ e, e);
         } catch (IOException e) {
-            LOGGER.warn("Error during AWS test: "+ e.getMessage(), e);
+            LOGGER.warn("Error during AWS test: "+ e, e);
         }
     }
 }

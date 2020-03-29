@@ -58,13 +58,6 @@ public class JFrameView extends JFrame {
      * List of terminal by unique identifier.
      */
     private Map<UUID, AbstractShell> mapShells = new HashMap<>();
-
-//    /**
-//     *  Map a database element with the corresponding tree node.<br>
-//     *  The injection model send a database element to the view, then
-//     *  the view access its graphic component to update.
-//     */
-//    private transient Map<AbstractElementDatabase, DefaultMutableTreeNode> mapNodes = new HashMap<>();
     
     private transient ObserverInteraction observer = new ObserverInteraction("com.jsql.view.swing.interaction");
     
@@ -207,14 +200,6 @@ public class JFrameView extends JFrame {
     public final Map<UUID, AbstractShell> getConsoles() {
         return this.mapShells;
     }
-    
-//    /**
-//     *  Get the database tree model.
-//     *  @return Tree model
-//     */
-//    public final Map<AbstractElementDatabase, DefaultMutableTreeNode> getTreeNodeModels() {
-//        return this.mapNodes;
-//    }
 
     public ObserverInteraction getObserver() {
         return this.observer;

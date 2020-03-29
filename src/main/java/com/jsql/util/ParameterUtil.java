@@ -11,27 +11,30 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.injection.method.MethodInjection;
 
 public class ParameterUtil {
     
     /**
      * Query string built from the URL submitted by user.
      */
-    private List<SimpleEntry<String, String>> queryString = new ArrayList<>();
+    private List<SimpleEntry<String, String>> listQueryString = new ArrayList<>();
 
     /**
      * Request submitted by user.
      */
-    private List<SimpleEntry<String, String>> request = new ArrayList<>();
-    
-    private String requestAsText = "";
+    private List<SimpleEntry<String, String>> listRequest = new ArrayList<>();
 
     /**
      * Header submitted by user.
      */
-    private List<SimpleEntry<String, String>> header = new ArrayList<>();
+    private List<SimpleEntry<String, String>> listHeader = new ArrayList<>();
+    
+    private String requestAsText = "";
 
     private InjectionModel injectionModel;
     
@@ -40,231 +43,206 @@ public class ParameterUtil {
     }
 
     /**
-     * Verify integrity of parameters defined by user.
-     * @param isParamByUser true if no injection point is defined
-     * @param parameter currently injected from Query/Request/Header, is null if simply tests integrity
-     * @throws InjectionFailureException when params' integrity is failure
+     * Check integrity of parameters defined by user.
+     * @throws InjectionFailureException when params integrity is failure
      */
     public void checkParametersFormat() throws InjectionFailureException {
+        
+        this.checkOneOrLessStar();
+        this.checkStarMatchMethod();
+        this.checkMethodNotEmpty();
+    }
+
+    private void checkOneOrLessStar() throws InjectionFailureException {
         
         int nbStarInParameter = 0;
         
         if (this.getQueryStringFromEntries().contains(InjectionModel.STAR)) {
             nbStarInParameter++;
         }
+        
         if (this.getRequestFromEntries().contains(InjectionModel.STAR)) {
             nbStarInParameter++;
         }
+        
         if (this.getHeaderFromEntries().contains(InjectionModel.STAR)) {
             nbStarInParameter++;
         }
         
         // Injection Point
         if (nbStarInParameter >= 2) {
-            throw new InjectionFailureException("Character * must be used once in Query String, Request or Header parameters");
             
-        } else if (
+            throw new InjectionFailureException("Insertion character [*] must be used once in Query String, Request or Header parameters");
+        }
+    }
+    
+    public void checkStarMatchMethod() throws InjectionFailureException {
+        
+        MethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();
+        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();
+
+        if (
             this.getQueryStringFromEntries().contains(InjectionModel.STAR)
-            && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this.injectionModel.getMediatorMethodInjection().getQuery()
-            && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
+            && methodInjection != this.injectionModel.getMediatorMethodInjection().getQuery()
+            && !isCheckingAllParam
         ) {
+            
             throw new InjectionFailureException("Select method GET to use character [*] or remove [*] from GET parameters");
             
         } else if (
             this.getRequestFromEntries().contains(InjectionModel.STAR)
-            && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this.injectionModel.getMediatorMethodInjection().getRequest()
-            && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
+            && methodInjection != this.injectionModel.getMediatorMethodInjection().getRequest()
+            && !isCheckingAllParam
         ) {
+            
             throw new InjectionFailureException("Select a Request method (like POST) to use [*], or remove [*] from Request parameters");
             
         } else if (
             this.getHeaderFromEntries().contains(InjectionModel.STAR)
-            && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this.injectionModel.getMediatorMethodInjection().getHeader()
-            && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
+            && methodInjection != this.injectionModel.getMediatorMethodInjection().getHeader()
+            && !isCheckingAllParam
         ) {
+            
             throw new InjectionFailureException("Select method Header to use character [*] or remove [*] from Header parameters");
-        }
-        
-        // Query String
-        else if (
-            this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getQuery()
-            && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
-            && this.getQueryString().isEmpty()
-            && !this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
-        ) {
-            throw new InjectionFailureException("No query string");
-        }
-        
-        // Request/Header data
-        else if (
-            this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getRequest()
-            && this.getRequest().isEmpty()
-        ) {
-            throw new InjectionFailureException("Incorrect Request format");
-            
-        } else if (
-            this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getHeader()
-            && this.getHeader().isEmpty()
-        ) {
-            throw new InjectionFailureException("Incorrect Header format");
-            
         }
     }
     
-    public String getCharacterInsertion(boolean isParamByUser, SimpleEntry<String, String> parameter) {
+    public void checkMethodNotEmpty() throws InjectionFailureException {
+        
+        MethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();
+        boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();
+        
+        if (
+            methodInjection == this.injectionModel.getMediatorMethodInjection().getQuery()
+            && !isCheckingAllParam
+            && this.getListQueryString().isEmpty()
+            && !this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
+        ) {
+            
+            throw new InjectionFailureException("No query string");
+        
+        } else if (
+            methodInjection == this.injectionModel.getMediatorMethodInjection().getRequest()
+            && this.getListRequest().isEmpty()
+        ) {
+            
+            throw new InjectionFailureException("Incorrect Request format");
+            
+        } else if (
+            methodInjection == this.injectionModel.getMediatorMethodInjection().getHeader()
+            && this.getListHeader().isEmpty()
+        ) {
+            
+            throw new InjectionFailureException("Incorrect Header format");
+        }
+    }
+    
+    public String initializeStar(SimpleEntry<String, String> parameterToInject) {
         
         String characterInsertionByUser = "";
         
-        // Parse query information: url=>everything before the sign '=',
-        // start of query string=>everything after '='
-        if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getQuery()) {
+        // TODO path param injection
+        if (parameterToInject == null) {
             
-            if (
-                !isParamByUser
-                && (
-                    this.getQueryStringFromEntries().contains(InjectionModel.STAR)
-                    || this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
-                )
-            ) {
-                if (parameter != null) {
-                    parameter.setValue(InjectionModel.STAR);
-                }
-                return InjectionModel.STAR;
-            } else if (parameter != null) {
-                characterInsertionByUser = parameter.getValue();
-                parameter.setValue(InjectionModel.STAR);
-            }
+            characterInsertionByUser = InjectionModel.STAR;
             
-        // Parse post information
-        } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getRequest()) {
+        } else {
             
-            if (
-                !isParamByUser
-                && this.getRequestFromEntries().contains(InjectionModel.STAR)
-            ) {
-                if (parameter != null) {
-                    parameter.setValue(InjectionModel.STAR);
-                }
-                return InjectionModel.STAR;
-            } else if (parameter != null) {
-                characterInsertionByUser = parameter.getValue();
-                parameter.setValue(InjectionModel.STAR);
-            }
-            
-        // Parse header information
-        } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getHeader()) {
-            
-            if (
-                !isParamByUser
-                && this.getHeaderFromEntries().contains(InjectionModel.STAR)
-            ) {
-                if (parameter != null) {
-                    parameter.setValue(InjectionModel.STAR);
-                }
-                return InjectionModel.STAR;
-            } else if (parameter != null) {
-                characterInsertionByUser = parameter.getValue();
-                parameter.setValue(InjectionModel.STAR);
-            }
+            characterInsertionByUser = parameterToInject.getValue();
+            parameterToInject.setValue(InjectionModel.STAR);
         }
         
         return characterInsertionByUser;
     }
+
+    public void initializeQueryString(String urlQuery) throws MalformedURLException {
+        
+        URL url = new URL(urlQuery);
+        
+        if (StringUtils.isEmpty(urlQuery) || StringUtils.isEmpty(url.getHost())) {
+            throw new MalformedURLException("empty URL");
+        }
+        
+        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlByUser(urlQuery);
+        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(urlQuery);
+        
+        this.listQueryString.clear();
+        
+        // Parse url and GET query string
+        Matcher regexQueryString = Pattern.compile("(.*\\?)(.*)").matcher(urlQuery);
+        if (!regexQueryString.find()) {
+            return;
+        }
+        
+        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(regexQueryString.group(1));
+        
+        if (StringUtils.isNotEmpty(url.getQuery())) {
+            
+            this.listQueryString = Pattern
+                .compile("&")
+                .splitAsStream(regexQueryString.group(2))
+                .map(s -> Arrays.copyOf(s.split("="), 2))
+                .map(o -> new SimpleEntry<>(o[0], o[1] == null ? "" : o[1]))
+                .collect(Collectors.toList());
+        }
+    }
+
+    public void initializeRequest(String request) {
+        
+        this.requestAsText = request;
+        this.listRequest.clear();
+        
+        if (StringUtils.isNotEmpty(request)) {
+            
+            this.listRequest = Pattern
+                .compile("&")
+                .splitAsStream(request)
+                .map(s -> Arrays.copyOf(s.split("="), 2))
+                .map(o -> new SimpleEntry<>(o[0], o[1] == null ? "" : o[1]))
+                .collect(Collectors.toList());
+        }
+    }
+
+    public void initializeHeader(String header) {
+        
+        this.listHeader.clear();
+        
+        if (StringUtils.isNotEmpty(header)) {
+            
+            this.listHeader = Pattern
+                .compile("\\\\r\\\\n")
+                .splitAsStream(header)
+                .map(commaEntry -> Arrays.copyOf(commaEntry.split(":"), 2))
+                .map(arrayEntry -> new SimpleEntry<>(arrayEntry[0], arrayEntry[1] == null ? "" : arrayEntry[1]))
+                .collect(Collectors.toList());
+        }
+    }
     
     public String getQueryStringFromEntries() {
         
-        return this.queryString
+        return this.listQueryString
             .stream()
             .filter(Objects::nonNull)
-            .map(e -> e.getKey() +"="+ e.getValue())
+            .map(entry -> entry.getKey() +"="+ entry.getValue())
             .collect(Collectors.joining("&"));
     }
 
     public String getRequestFromEntries() {
         
-        return this.request
+        return this.listRequest
             .stream()
             .filter(Objects::nonNull)
-            .map(e -> e.getKey() +"="+ e.getValue())
+            .map(entry -> entry.getKey() +"="+ entry.getValue())
             .collect(Collectors.joining("&"));
     }
     
     public String getHeaderFromEntries() {
         
-        return this.header
+        return this.listHeader
             .stream()
             .filter(Objects::nonNull)
-            .map(e -> e.getKey() +":"+ e.getValue())
+            .map(entry -> entry.getKey() +":"+ entry.getValue())
             .collect(Collectors.joining("\\r\\n"));
-    }
-
-    public void initQueryString(String urlQuery) throws MalformedURLException {
-        
-        URL url = new URL(urlQuery);
-        if ("".equals(urlQuery) || "".equals(url.getHost())) {
-            throw new MalformedURLException("empty URL");
-        }
-        
-        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlByUser(urlQuery);
-        
-        // Parse url and GET query string
-        this.setQueryString(new ArrayList<SimpleEntry<String, String>>());
-        Matcher regexSearch = Pattern.compile("(.*\\?)(.*)").matcher(urlQuery);
-        
-        if (regexSearch.find()) {
-            
-            this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(regexSearch.group(1));
-            
-            if (!"".equals(url.getQuery())) {
-                this.setQueryString(
-                    Pattern
-                    .compile("&")
-                    .splitAsStream(regexSearch.group(2))
-                    .map(s -> Arrays.copyOf(s.split("="), 2))
-                    .map(o -> new SimpleEntry<>(o[0], o[1] == null ? "" : o[1]))
-                    .collect(Collectors.toList())
-                );
-            } else {
-                this.queryString.clear();
-            }
-        } else {
-            this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(urlQuery);
-        }
-    }
-
-    public void initRequest(String request) {
-        
-        this.requestAsText = request;
-        
-        if (!"".equals(request)) {
-            this.setRequest(
-                Pattern
-                .compile("&")
-                .splitAsStream(request)
-                .map(s -> Arrays.copyOf(s.split("="), 2))
-                .map(o -> new SimpleEntry<>(o[0], o[1] == null ? "" : o[1]))
-                .collect(Collectors.toList())
-            );
-        } else {
-            this.request.clear();
-        }
-    }
-
-    public void initHeader(String header) {
-        
-        if (!"".equals(header)) {
-            
-            this.setHeader(
-                Pattern
-                .compile("\\\\r\\\\n")
-                .splitAsStream(header)
-                .map(s -> Arrays.copyOf(s.split(":"), 2))
-                .map(o -> new SimpleEntry<>(o[0], o[1] == null ? "" : o[1]))
-                .collect(Collectors.toList())
-            );
-        } else {
-            this.header.clear();
-        }
     }
 
     public boolean isRequestSoap() {
@@ -273,32 +251,31 @@ public class ParameterUtil {
 
     // Getters / setters
     
-    public List<SimpleEntry<String, String>> getRequest() {
-        return this.request;
-    }
-
-    public void setRequest(List<SimpleEntry<String, String>> request) {
-        this.request = request;
-    }
-
-    public List<SimpleEntry<String, String>> getHeader() {
-        return this.header;
-    }
-
-    public void setHeader(List<SimpleEntry<String, String>> header) {
-        this.header = header;
-    }
-    
-    public List<SimpleEntry<String, String>> getQueryString() {
-        return this.queryString;
-    }
-    
-    public void setQueryString(List<SimpleEntry<String, String>> queryString) {
-        this.queryString = queryString;
-    }
-
     public String getRawRequest() {
         return this.requestAsText;
     }
+    
+    public List<SimpleEntry<String, String>> getListRequest() {
+        return this.listRequest;
+    }
 
+    public void setListRequest(List<SimpleEntry<String, String>> listRequest) {
+        this.listRequest = listRequest;
+    }
+
+    public List<SimpleEntry<String, String>> getListHeader() {
+        return this.listHeader;
+    }
+
+    public void setListHeader(List<SimpleEntry<String, String>> listHeader) {
+        this.listHeader = listHeader;
+    }
+    
+    public List<SimpleEntry<String, String>> getListQueryString() {
+        return this.listQueryString;
+    }
+    
+    public void setListQueryString(List<SimpleEntry<String, String>> listQueryString) {
+        this.listQueryString = listQueryString;
+    }
 }

@@ -52,7 +52,7 @@ public class ActionListenerSave implements ActionListener {
             this.panelPreferences.getPanelTamperingPreferences().getRadioIsTamperingSpaceToSharpComment().isSelected()
         );
         
-        MediatorModel.model().getMediatorUtils().getProxyUtil().set(
+        MediatorModel.model().getMediatorUtils().getProxyUtil().setPreferences(
             this.panelPreferences.getPanelProxyPreferences().getCheckboxIsUsingProxy().isSelected(),
             this.panelPreferences.getPanelProxyPreferences().getTextProxyAddress().getText(),
             this.panelPreferences.getPanelProxyPreferences().getTextProxyPort().getText(),

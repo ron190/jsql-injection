@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
@@ -64,9 +65,9 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
         }
         
         if (
-                this.injectionModel.getResourceAccess().isSearchAdminStopped()
+            this.injectionModel.getResourceAccess().isSearchAdminStopped()
             || isUrlIncorrect
-            || "".equals(targetUrl.getHost())
+            || StringUtils.isEmpty(targetUrl.getHost())
         ) {
             LOGGER.warn("Incorrect URL: "+ this.urlAdminPage);
             return this;

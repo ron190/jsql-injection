@@ -398,9 +398,9 @@ public class RessourceAccess {
                 result = "No result.\nTry \""+ command.trim() +" 2>&1\" to get a system error message.\n";
             }
         } catch (UnsupportedEncodingException e) {
-            LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e.getMessage(), e);
+            LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e, e);
         } catch (IOException e) {
-            LOGGER.warn("Shell execution error: "+ e.getMessage(), e);
+            LOGGER.warn("Shell execution error: "+ e, e);
         } finally {
             // Unfroze interface
             Request request = new Request();
@@ -591,7 +591,7 @@ public class RessourceAccess {
                         listFieldsLength.add(listRows.get(0).get(indexLongestRowSearch[0]).length());
                     }
 
-                    if (!"".equals(result)) {
+                    if (StringUtils.isNotEmpty(result)) {
                         StringBuilder tableText = new StringBuilder("+");
                         for (Integer fieldLength: listFieldsLength) {
                             tableText.append("-"+ StringUtils.repeat("-", fieldLength) +"-+");
@@ -624,10 +624,10 @@ public class RessourceAccess {
             }
         } catch (UnsupportedEncodingException e) {
             
-            LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e.getMessage(), e);
+            LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e, e);
         } catch (IOException e) {
             
-            LOGGER.warn("Shell execution error: "+ e.getMessage(), e);
+            LOGGER.warn("Shell execution error: "+ e, e);
         } finally {
             
             // Unfroze interface
@@ -862,7 +862,7 @@ public class RessourceAccess {
         ) {
             
             CallableFile currentCallable = taskCompletionService.take().get();
-            if (!"".equals(currentCallable.getSourceFile())) {
+            if (StringUtils.isNotEmpty(currentCallable.getSourceFile())) {
                 
                 String name = currentCallable.getPathFile().substring(currentCallable.getPathFile().lastIndexOf('/') + 1, currentCallable.getPathFile().length());
                 String content = currentCallable.getSourceFile();

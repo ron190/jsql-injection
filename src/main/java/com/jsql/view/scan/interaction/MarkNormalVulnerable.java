@@ -12,13 +12,9 @@ package com.jsql.view.scan.interaction;
 
 import java.util.Map;
 
-import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
-
 import com.jsql.model.bean.util.Header;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.list.ItemList;
 
 /**
  * Mark the injection as vulnerable to a basic injection.
@@ -32,20 +28,13 @@ public class MarkNormalVulnerable implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public MarkNormalVulnerable(Object[] interactionParams) {
+        
         Map<Header, Object> params = (Map<Header, Object>) interactionParams[0];
         this.url = (String) params.get(Header.URL);
     }
 
     @Override
     public void execute() {
-        ListModel<ItemList> listModel = MediatorGui.managerScan().getListPaths().getModel();
-        for (int i = 0 ; i < listModel.getSize() ; i++) {
-            if (this.url.contains(listModel.getElementAt(i).getOriginalString())) {
-                listModel.getElementAt(i).setIsVulnerable(true);
-                listModel.getElementAt(i).setInternalString(listModel.getElementAt(i).getInternalString().replace(" [Normal]", "") +" [Normal]");
-                ((DefaultListModel<ItemList>) listModel).setElementAt(listModel.getElementAt(i), i);
-            }
-        }
+        MediatorGui.managerScan().highlight(this.url, "Normal");
     }
-    
 }

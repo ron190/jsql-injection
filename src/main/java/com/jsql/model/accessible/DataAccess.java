@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
@@ -152,7 +153,7 @@ public class DataAccess {
             null
         );
 
-        if ("".equals(resultToParse)) {
+        if (StringUtils.isEmpty(resultToParse)) {
             this.injectionModel.sendResponseFromSite("Incorrect database informations", sourcePage[0].trim());
         }
 
@@ -199,9 +200,9 @@ public class DataAccess {
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
             // Get pieces of data already retrieved instead of losing them
-            if (!"".equals(e.getSlidingWindowAllRows())) {
+            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
-            } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
+            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
         } catch (Exception e) {
@@ -281,9 +282,9 @@ public class DataAccess {
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
             // Get pieces of data already retrieved instead of losing them
-            if (!"".equals(e.getSlidingWindowAllRows())) {
+            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
-            } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
+            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
         } catch (Exception e) {
@@ -315,7 +316,7 @@ public class DataAccess {
         // Build an array of Table objects from the data we have parsed
         while (regexSearch.find()) {
             String tableName = regexSearch.group(1);
-            String rowCount  = regexSearch.group(2);
+            String rowCount = regexSearch.group(2);
             
             Table newTable = new Table(tableName, rowCount, database);
             tables.add(newTable);
@@ -363,9 +364,9 @@ public class DataAccess {
             
             LOGGER.warn(e.getMessage(), e);
             // Get pieces of data already retrieved instead of losing them
-            if (!"".equals(e.getSlidingWindowAllRows())) {
+            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
-            } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
+            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
         } catch (Exception e) {
@@ -445,7 +446,7 @@ public class DataAccess {
 
         /*
          * From that array, build the SQL fields nicely
-         * =>  col1{%}col2...
+         * => col1{%}col2...
          * ==> trim(ifnull(`col1`,0x00)),0x7f,trim(ifnull(`Col2`,0x00))...
          */
         String[] arrayColumns = columnsName.toArray(new String[columnsName.size()]);
@@ -465,9 +466,9 @@ public class DataAccess {
             LOGGER.warn(e.getMessage(), e);
             
             // Get pieces of data already retrieved instead of losing them
-            if (!"".equals(e.getSlidingWindowAllRows())) {
+            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
-            } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
+            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
         } catch (Exception e) {

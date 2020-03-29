@@ -46,7 +46,7 @@ public class ExceptionUtil {
             // for other uncaught exceptions
             LOGGER.error("Unhandled Exception on "+ thread.getName(), throwable);
 
-            //  Report #214: ignore if OutOfMemoryError: Java heap space
+            // Report #214: ignore if OutOfMemoryError: Java heap space
             if (
                 ExceptionUtil.this.injectionModel.getMediatorUtils().getPreferencesUtil().isReportingBugs()
                 && ExceptionUtils.getStackTrace(throwable).contains("com.jsql")

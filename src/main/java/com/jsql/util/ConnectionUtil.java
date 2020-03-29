@@ -73,7 +73,8 @@ public class ConnectionUtil {
      * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.
      */
     private static final Integer TIMEOUT = 15000;
-    
+    private static final String NO_CACHE = "no-cache";
+
     private SimpleEntry<String, String> tokenCsrf = null;
     
     private InjectionModel injectionModel;
@@ -129,15 +130,15 @@ public class ConnectionUtil {
             connection.setReadTimeout(this.getTimeout());
             connection.setConnectTimeout(this.getTimeout());
             connection.setDefaultUseCaches(false);
-            connection.setRequestProperty("Pragma", "no-cache");
-            connection.setRequestProperty("Cache-Control", "no-cache");
+            connection.setRequestProperty("Pragma", NO_CACHE);
+            connection.setRequestProperty("Cache-Control", NO_CACHE);
             connection.setRequestProperty("Expires", "-1");
             connection.setRequestProperty("Content-Type", "text/plain");
             
             this.fixJcifsTimeout(connection);
             
             // Add headers if exists (Authorization:Basic, etc)
-            for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().getParameterUtil().getHeader()) {
+            for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()) {
                 HeaderUtil.sanitizeHeaders(connection, header);
             }
 
@@ -172,8 +173,8 @@ public class ConnectionUtil {
         connection.setConnectTimeout(this.getTimeout());
         connection.setUseCaches(false);
         
-        connection.setRequestProperty("Pragma", "no-cache");
-        connection.setRequestProperty("Cache-Control", "no-cache");
+        connection.setRequestProperty("Pragma", NO_CACHE);
+        connection.setRequestProperty("Cache-Control", NO_CACHE);
         connection.setRequestProperty("Expires", "-1");
         
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
@@ -330,7 +331,7 @@ public class ConnectionUtil {
                 privateFieldReadTimeout.setAccessible(true);
                 privateFieldReadTimeout.setInt(privateURLConnection, this.getTimeout());
             } catch (Exception e) {
-                LOGGER.warn("Fix jcifs timeout failed: "+ e.getMessage(), e);
+                LOGGER.warn("Fix jcifs timeout failed: "+ e, e);
             }
         }
     }

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.jsql.model.injection.strategy;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
@@ -43,7 +44,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
         
-        if ("".equals(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization())) {
+        if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization())) {
             LOGGER.info("No Blind strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
         } else {
             

@@ -24,6 +24,7 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
@@ -165,7 +166,7 @@ public class ManagerAdminPage extends AbstractManagerList {
                 
                 if (ManagerAdminPage.this.run.getState() == StateButton.STARTABLE) {
                     
-                    if ("".equals(refUrlQuery[0])) {
+                    if (StringUtils.isEmpty(refUrlQuery[0])) {
                         LOGGER.warn("Enter the main address");
                     } else {
                         
@@ -194,13 +195,5 @@ public class ManagerAdminPage extends AbstractManagerList {
         });
 
         this.loader.setVisible(false);
-    }
-    
-    public void endAdminSearch() {
-        
-        this.restoreButtonText();
-        this.setButtonEnable(true);
-        this.hideLoader();
-        this.setStateButton(StateButton.STARTABLE);
     }
 }

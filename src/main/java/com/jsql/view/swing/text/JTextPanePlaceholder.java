@@ -9,6 +9,7 @@ import javax.swing.JTextPane;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultEditorKit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 
@@ -93,7 +94,7 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
         try {
             super.paint(g);
             
-            if ("".equals(Jsoup.parse(this.getText()).text().trim())) {
+            if (StringUtils.isEmpty(Jsoup.parse(this.getText()).text().trim())) {
                 this.drawPlaceholder(this, g, this.placeholderText);
             }
         } catch (ConcurrentModificationException | IndexOutOfBoundsException | ClassCastException e) {

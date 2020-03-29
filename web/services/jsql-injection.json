@@ -2,8 +2,8 @@
     "version": "0.82",
     "news": [
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer.",
-        "[Hiring] ProGuard shrinking. Apache PHP, Python and Node API Devops integration on Travis CI.",
-        "[Roadmap] Burp integration, Dump to a file, Full Path Disclosure, WAF detection.",
-        "[Done] Bypass WAF with tamper, Devops pipeline with dockerized SQL Server."
+        "[Hiring] ProGuard shrinking. Apache PHP, Python and Node API Devops integration on Travis CI",
+        "[Roadmap] Burp integration, Dump to a file, Full Path Disclosure, WAF detection",
+        "[Done] Bypass WAF with tamper, Devops pipeline with dockerized SQL Server"
     ]
 }

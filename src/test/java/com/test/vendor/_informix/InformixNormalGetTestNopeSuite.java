@@ -1,4 +1,4 @@
-package com.test.vendor.ingres;
+package com.test.vendor._informix;
 
 import java.sql.SQLException;
 
@@ -8,9 +8,9 @@ import org.junit.Ignore;
 import com.jsql.model.exception.InjectionFailureException;
 
 @Ignore
-public class IngresNormalGetTestSuite extends ConcreteIngresTestSuite {
+public class InformixNormalGetTestNopeSuite extends ConcreteInformixTestNopeSuite {
 
-    public IngresNormalGetTestSuite() throws ClassNotFoundException, SQLException {
+    public InformixNormalGetTestNopeSuite() throws ClassNotFoundException, SQLException {
         super();
     }
 
@@ -23,7 +23,7 @@ public class IngresNormalGetTestSuite extends ConcreteIngresTestSuite {
 //
 //        MediatorModel.model().addObserver(new SystemOutTerminal());
 //
-//        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +":81/ingres_simulate_get.php");
+//        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/informix_simulate_get.php");
 //        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("lib", "0")));
 //        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 //

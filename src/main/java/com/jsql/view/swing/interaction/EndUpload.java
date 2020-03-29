@@ -28,6 +28,6 @@ public class EndUpload implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.managerUpload().endUpload();
+        MediatorGui.managerUpload().endProcess();
     }
 }

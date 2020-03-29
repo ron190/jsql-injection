@@ -74,7 +74,7 @@ public class GitUtil {
      * Define the body of an issue to send to Github for an unhandled exception.
      * It adds different system data to the body and remove sensible data like
      * injection URL.
-     * @param threadName name of thread where the exception occured
+     * @param threadName name of thread where the exception occurred
      * @param throwable unhandled exception to report to Gihub
      */
     public void sendUnhandledException(String threadName, Throwable throwable) {
@@ -162,7 +162,7 @@ public class GitUtil {
             // Fix #27623: NoClassDefFoundError on getOutputStream()
             // Implemented by jcifs.http.NtlmHttpURLConnection.getOutputStream()
             if (showOnConsole == ShowOnConsole.YES) {
-                LOGGER.warn("Error during Github report connection: "+ e.getMessage(), e);
+                LOGGER.warn("Error during Github report connection: "+ e, e);
             }
         }
     }

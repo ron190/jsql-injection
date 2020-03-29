@@ -28,6 +28,6 @@ public class EndScan implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.managerScan().endScan();
+        MediatorGui.managerScan().endProcess();
     }
 }

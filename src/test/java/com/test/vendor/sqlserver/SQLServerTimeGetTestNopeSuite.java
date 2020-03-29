@@ -17,7 +17,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 @Ignore
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class SQLServerTimeGetTestSuite extends ConcreteSQLServerTestSuite {
+public class SQLServerTimeGetTestNopeSuite extends ConcreteSQLServerTestSuite {
 
     @Override
     public void setupInjection() throws Exception {
@@ -27,8 +27,8 @@ public class SQLServerTimeGetTestSuite extends ConcreteSQLServerTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-time");
-        model.getMediatorUtils().getParameterUtil().setQueryString(Arrays.asList(
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-time");
+        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "sqlserver"),
             new SimpleEntry<>("name", "1'")
         ));

@@ -1,4 +1,4 @@
-package com.test.vendor.oracle;
+package com.test.vendor._cubrid;
 
 import java.sql.SQLException;
 
@@ -8,9 +8,9 @@ import org.junit.Ignore;
 import com.jsql.model.exception.InjectionFailureException;
 
 @Ignore
-public class OracleNormalGetTestSuite extends ConcreteOracleTestSuite {
+public class CubridNormalGetTestNopeSuite extends ConcreteCubridTestNopeSuite {
 
-    public OracleNormalGetTestSuite() throws SQLException {
+    public CubridNormalGetTestNopeSuite() throws ClassNotFoundException, SQLException {
         super();
     }
 
@@ -23,7 +23,7 @@ public class OracleNormalGetTestSuite extends ConcreteOracleTestSuite {
 //
 //        MediatorModel.model().addObserver(new SystemOutTerminal());
 //
-//        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/oracle_simulate_get.php");
+//        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/cubrid_simulate_get.php");
 //        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("lib", "0")));
 //        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 //

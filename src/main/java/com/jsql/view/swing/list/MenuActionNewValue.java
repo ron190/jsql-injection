@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
@@ -95,7 +96,7 @@ public class MenuActionNewValue implements ActionListener {
             LOGGER.error(e, e);
         }
 
-        if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
+        if (StringUtils.isNotEmpty(textarea.getText()) && result == JOptionPane.YES_OPTION) {
             
             int lastIndex = 0;
             if (this.myList.getSelectedIndex() > 0) {
@@ -116,7 +117,7 @@ public class MenuActionNewValue implements ActionListener {
             } else {
                 
                 for (String newItem: textarea.getText().split("\\n")) {
-                    if (!"".equals(newItem)) {
+                    if (StringUtils.isNotEmpty(newItem)) {
                         ((DefaultListModel<ItemList>) this.myList.getModel()).add(
                             lastIndex++,
                             new ItemList(newItem.replace("\\", "/"))

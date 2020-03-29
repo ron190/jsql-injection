@@ -30,9 +30,9 @@ public class TreeDatabase extends JTree {
     private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
-     *  Map a database element with the corresponding tree node.<br>
-     *  The injection model send a database element to the view, then
-     *  the view access its graphic component to update.
+     * Map a database element with the corresponding tree node.<br>
+     * The injection model send a database element to the view, then
+     * the view access its graphic component to update.
      */
     private transient Map<AbstractElementDatabase, DefaultMutableTreeNode> mapNodes = new HashMap<>();
 
