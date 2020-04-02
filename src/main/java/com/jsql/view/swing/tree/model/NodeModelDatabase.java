@@ -17,8 +17,8 @@ import javax.swing.tree.TreePath;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.Database;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Database model displaying the database icon on the label.

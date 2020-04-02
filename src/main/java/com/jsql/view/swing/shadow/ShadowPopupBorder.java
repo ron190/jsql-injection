@@ -40,7 +40,7 @@ import javax.swing.border.AbstractBorder;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A border with a drop shadow intended to be used as the outer border

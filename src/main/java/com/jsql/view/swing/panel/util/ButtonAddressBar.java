@@ -14,8 +14,8 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.manager.util.StateButton;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A button displayed in address.

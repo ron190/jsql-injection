@@ -21,7 +21,7 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Tab UI to remove inner borders on empty tabbedpane and force header height on Linux.

@@ -29,14 +29,14 @@ import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
-import com.jsql.view.i18n.I18nViewUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.ActionLoadStop;
 import com.jsql.view.swing.tree.ActionPauseUnpause;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
 import com.jsql.view.swing.tree.ImageOverlap;
 import com.jsql.view.swing.tree.PanelNode;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Model adding functional layer to the node ; used by renderer and editor.

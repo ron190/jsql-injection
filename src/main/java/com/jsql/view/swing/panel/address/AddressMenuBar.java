@@ -22,11 +22,11 @@ import com.jsql.model.injection.strategy.StrategyInjectionError;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.manager.util.ComboMenu;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.util.ButtonAddressBar;
 import com.jsql.view.swing.ui.ComponentBorder;
+import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
 public class AddressMenuBar extends JMenuBar {

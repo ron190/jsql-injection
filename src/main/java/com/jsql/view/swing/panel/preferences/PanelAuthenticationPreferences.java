@@ -14,10 +14,10 @@ import javax.swing.SwingConstants;
 import javax.swing.event.DocumentListener;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
+import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
 public class PanelAuthenticationPreferences extends JPanel {

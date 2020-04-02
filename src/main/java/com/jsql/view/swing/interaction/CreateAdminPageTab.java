@@ -36,12 +36,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.i18n.I18nViewUtil;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabHeader;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Create a new tab for an administration webpage.

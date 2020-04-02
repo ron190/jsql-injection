@@ -39,7 +39,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A list supporting drag and drop.

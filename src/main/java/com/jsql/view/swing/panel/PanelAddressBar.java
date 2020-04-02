@@ -24,8 +24,6 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.i18n.I18nViewUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.address.ActionEnterAddressBar;
 import com.jsql.view.swing.panel.address.AddressMenuBar;
@@ -37,6 +35,8 @@ import com.jsql.view.swing.text.JTextFieldPlaceholder;
 import com.jsql.view.swing.text.JTextFieldWithIcon;
 import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.ui.ComponentBorder;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Create panel at the top of the window.

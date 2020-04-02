@@ -29,8 +29,8 @@ import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A Terminal completely built from swing text pane.

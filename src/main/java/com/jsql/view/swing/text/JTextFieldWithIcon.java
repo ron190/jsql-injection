@@ -22,7 +22,7 @@ import javax.swing.border.Border;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A JTextField with globe icon displayed on the left.

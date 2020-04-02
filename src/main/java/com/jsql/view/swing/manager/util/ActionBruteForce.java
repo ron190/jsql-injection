@@ -22,8 +22,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.util.bruter.HashBruter;
-import com.jsql.view.i18n.I18nViewUtil;
 import com.jsql.view.swing.manager.ManagerBruteForce;
+import com.jsql.view.swing.util.I18nViewUtil;
 
 /**
  * Run a brute force attack.

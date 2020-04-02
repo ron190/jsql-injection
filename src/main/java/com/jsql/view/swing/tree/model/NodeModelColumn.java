@@ -26,7 +26,7 @@ import javax.swing.tree.TreePath;
 import com.jsql.model.bean.database.Column;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Column model creating a checkbox.

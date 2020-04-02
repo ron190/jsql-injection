@@ -2,7 +2,7 @@ package com.jsql.view.swing.dialog.translate;
 
 import javax.swing.Icon;
 
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 public enum Language {
     

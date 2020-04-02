@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.MainApplication;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Open another jSQL instance in new process.

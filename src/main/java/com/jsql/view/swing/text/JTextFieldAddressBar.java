@@ -12,7 +12,7 @@ package com.jsql.view.swing.text;
 
 import javax.swing.JTextField;
 
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A JTextField displaying an icon and buttons.

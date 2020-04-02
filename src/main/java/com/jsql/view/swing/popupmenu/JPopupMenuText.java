@@ -18,7 +18,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Default popup menu for textfield and texteditor.

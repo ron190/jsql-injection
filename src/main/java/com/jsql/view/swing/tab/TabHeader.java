@@ -20,9 +20,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionCloseTabResult;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Panel displayed as a header for tabs.

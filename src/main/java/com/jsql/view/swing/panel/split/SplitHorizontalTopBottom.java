@@ -25,12 +25,12 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.PanelConsoles;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.tab.TabResults;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * SplitPane composed of tree and tabs on top, and info tabs on bottom.

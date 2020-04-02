@@ -28,9 +28,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.i18n.I18nViewUtil;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.util.I18nViewUtil;
 
 /**
  * Action to add a new item to a JList.

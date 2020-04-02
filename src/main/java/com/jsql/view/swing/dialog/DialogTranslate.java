@@ -41,7 +41,6 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.util.GitUtil.ShowOnConsole;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.dialog.translate.Language;
 import com.jsql.view.swing.dialog.translate.SwingWorkerGithubLocale;
@@ -50,6 +49,7 @@ import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A dialog displaying current locale translation percentage.

@@ -24,8 +24,8 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.i18n.I18nViewUtil;
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Default popup menu and shortcuts for a table.

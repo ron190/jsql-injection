@@ -34,8 +34,6 @@ import org.json.JSONObject;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.i18n.I18nViewUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.BeanInjection;
 import com.jsql.view.swing.list.DnDList;
@@ -46,6 +44,8 @@ import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Manager to display webpages frequently used as backoffice administration.

@@ -15,7 +15,7 @@ import java.awt.Component;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Scroller with border.

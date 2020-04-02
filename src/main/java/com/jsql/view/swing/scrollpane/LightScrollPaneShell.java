@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
 public class LightScrollPaneShell extends LightScrollPane {

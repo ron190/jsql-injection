@@ -37,14 +37,14 @@ import javax.swing.tree.TreePath;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.view.i18n.I18nViewUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.tree.CheckBoxMenuItemIconCustom;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
 import com.jsql.view.swing.tree.ImageOverlap;
 import com.jsql.view.swing.tree.PanelNode;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Table model displaying the table icon on the label.

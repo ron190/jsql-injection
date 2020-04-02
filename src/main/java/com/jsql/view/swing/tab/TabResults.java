@@ -26,7 +26,6 @@ import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -37,6 +36,7 @@ import com.jsql.view.swing.tab.dnd.DnDTabbedPane;
 import com.jsql.view.swing.tab.dnd.TabTransferHandler;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * TabbedPane containing result injection panels.

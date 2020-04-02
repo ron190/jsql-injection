@@ -28,13 +28,13 @@ import javax.swing.ListModel;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.i18n.I18nViewUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Abstract manager containing a drag and drop list of item.

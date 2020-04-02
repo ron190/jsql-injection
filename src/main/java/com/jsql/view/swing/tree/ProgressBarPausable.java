@@ -19,7 +19,7 @@ import javax.swing.JProgressBar;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A progress bar with a Pause icon over it.

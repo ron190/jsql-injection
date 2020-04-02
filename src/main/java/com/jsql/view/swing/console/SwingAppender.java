@@ -17,7 +17,7 @@ import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
 
 import com.jsql.model.exception.IgnoreMessageException;
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Log4j swing appender to display console message to respective textareas.

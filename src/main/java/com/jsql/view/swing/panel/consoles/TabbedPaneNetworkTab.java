@@ -18,7 +18,6 @@ import org.jsoup.safety.Whitelist;
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
-import com.jsql.view.i18n.I18nViewUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -26,6 +25,7 @@ import com.jsql.view.swing.tab.MouseTabbedPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
+import com.jsql.view.swing.util.I18nViewUtil;
 
 @SuppressWarnings("serial")
 public class TabbedPaneNetworkTab extends MouseTabbedPane {

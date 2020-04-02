@@ -39,8 +39,6 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.i18n.I18nViewUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.console.JavaConsoleAdapter;
 import com.jsql.view.swing.console.SimpleConsoleAdapter;
@@ -56,6 +54,8 @@ import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
 import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A panel with different consoles displayed on the bottom.

@@ -46,11 +46,11 @@ import javax.swing.event.HyperlinkEvent;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A dialog displaying information on jSQL.

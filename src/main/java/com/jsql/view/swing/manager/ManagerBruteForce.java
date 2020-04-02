@@ -28,14 +28,14 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.i18n.I18nViewUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.manager.util.ActionBruteForce;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.text.JPopupTextPane;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Manager to brute force a hash of various types.

@@ -29,7 +29,7 @@ import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.mozilla.universalchardet.UniversalDetector;
 
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Utility class adding String operations like join() which are not

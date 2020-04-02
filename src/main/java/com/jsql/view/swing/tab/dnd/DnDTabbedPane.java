@@ -19,9 +19,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
+import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
 public class DnDTabbedPane extends JTabbedPane {

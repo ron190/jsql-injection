@@ -23,7 +23,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.AbstractBorder;
 
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Item renderer for JList.

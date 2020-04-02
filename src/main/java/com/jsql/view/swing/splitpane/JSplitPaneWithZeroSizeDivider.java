@@ -32,7 +32,7 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A JSplitPane that uses a 1 pixel thin visible divider,

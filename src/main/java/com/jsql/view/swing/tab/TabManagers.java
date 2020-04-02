@@ -22,8 +22,6 @@ import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.i18n.I18nViewUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.ManagerAdminPage;
 import com.jsql.view.swing.manager.ManagerBruteForce;
@@ -36,6 +34,8 @@ import com.jsql.view.swing.manager.ManagerUpload;
 import com.jsql.view.swing.manager.ManagerWebShell;
 import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Panel on the left with functionalities like webshell, file reading and admin page finder.

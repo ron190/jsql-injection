@@ -13,9 +13,9 @@ import javax.swing.text.SimpleAttributeSet;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.text.JPopupTextPane;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A JTextPane which displays colored strings.

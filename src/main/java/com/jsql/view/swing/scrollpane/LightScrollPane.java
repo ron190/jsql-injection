@@ -26,7 +26,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.exception.IgnoreMessageException;
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
 public class LightScrollPane extends JComponent {

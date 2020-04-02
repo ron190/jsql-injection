@@ -30,11 +30,11 @@ import javax.swing.text.JTextComponent;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.table.PanelTable;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Save the content of tab in a file.

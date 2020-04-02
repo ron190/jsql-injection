@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.swing.JLabel;
 
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A label to mimic a radiobox contained in a group.

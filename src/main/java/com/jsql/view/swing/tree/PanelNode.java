@@ -34,8 +34,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A tree Node composed of an icon, a GIF loader, a progress bar, a label.

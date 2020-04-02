@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.swing;
+package com.jsql.view.swing.util;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

@@ -27,8 +27,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import com.jsql.view.i18n.I18nViewUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tree.CellEditorNode;
@@ -36,6 +34,8 @@ import com.jsql.view.swing.tree.CellRendererNode;
 import com.jsql.view.swing.tree.TreeDatabase;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.tree.model.NodeModelEmpty;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Manager to code/decode string in various methods.

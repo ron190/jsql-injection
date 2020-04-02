@@ -13,9 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.text.action.DeleteNextCharAction;
 import com.jsql.view.swing.text.action.DeletePrevCharAction;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Textfield with information text displayed when empty.

@@ -19,7 +19,6 @@ import javax.swing.border.Border;
 
 import org.apache.commons.text.WordUtils;
 
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.action.ActionCheckIP;
 import com.jsql.view.swing.panel.preferences.ActionListenerSave;
 import com.jsql.view.swing.panel.preferences.PanelAuthenticationPreferences;
@@ -28,6 +27,7 @@ import com.jsql.view.swing.panel.preferences.PanelInjectionPreferences;
 import com.jsql.view.swing.panel.preferences.PanelProxyPreferences;
 import com.jsql.view.swing.panel.preferences.PanelTamperingPreferences;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
+import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
 public class PanelPreferences extends JPanel {

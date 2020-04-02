@@ -33,8 +33,6 @@ import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.i18n.I18nViewUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.ComboMenu;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -44,6 +42,8 @@ import com.jsql.view.swing.sql.text.JTextPaneLexer;
 import com.jsql.view.swing.sql.text.JTextPaneObjectMethod;
 import com.jsql.view.swing.tab.TabHeader.Cleanable;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
 public class SqlEngine extends JPanel implements Cleanable {

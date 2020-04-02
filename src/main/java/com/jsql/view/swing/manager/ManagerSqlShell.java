@@ -21,8 +21,8 @@ import javax.swing.JTextField;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.text.JPopupTextField;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Manager for uploading PHP SQL shell to the host and send queries.

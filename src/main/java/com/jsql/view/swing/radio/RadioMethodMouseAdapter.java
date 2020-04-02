@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-import com.jsql.view.swing.UiUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Mouse adapter for radio link effect (hover and click).

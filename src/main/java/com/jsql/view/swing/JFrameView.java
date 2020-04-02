@@ -36,6 +36,7 @@ import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.split.SplitHorizontalTopBottom;
 import com.jsql.view.swing.shadow.ShadowPopupFactory;
 import com.jsql.view.swing.shell.AbstractShell;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * View in the MVC pattern, defines all the components

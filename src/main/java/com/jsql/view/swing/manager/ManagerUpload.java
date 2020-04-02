@@ -34,8 +34,6 @@ import org.apache.log4j.Logger;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.i18n.I18nViewUtil;
-import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ItemList;
@@ -43,6 +41,8 @@ import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Manager to upload files to the host.
