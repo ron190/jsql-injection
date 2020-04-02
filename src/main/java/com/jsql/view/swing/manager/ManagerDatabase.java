@@ -38,7 +38,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.tree.model.NodeModelEmpty;
 
 /**
- * Manager to code/uncode string in various methods.
+ * Manager to code/decode string in various methods.
  */
 @SuppressWarnings("serial")
 public class ManagerDatabase extends JPanel implements Manager {
@@ -71,7 +71,9 @@ public class ManagerDatabase extends JPanel implements Manager {
         // Graphic manager for components
         this.tree.setCellRenderer(new CellRendererNode());
 
-        this.initializeTreeListeners();
+        this.tree.addFocusListener(this.getTreeFocusListener());
+        this.tree.addMouseListener(this.getTreeMouseListener());
+        this.tree.addKeyListener(this.getTreeKeyListener());
 
         // Action manager for components
         this.tree.setCellEditor(new CellEditorNode());
@@ -82,15 +84,63 @@ public class ManagerDatabase extends JPanel implements Manager {
         this.tree.setShowsRootHandles(true);
         this.tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-        // Repaint Gif progressbar
+        // Repaint Gif progress bar
         this.tree.getModel().addTreeModelListener(new TreeModelGifListener());
 
         this.tree.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
     }
 
-    private void initializeTreeListeners() {
+    private KeyAdapter getTreeKeyListener() {
         
-        this.tree.addFocusListener(new FocusListener() {
+        return new KeyAdapter() {
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                
+                if (e.getKeyCode() == KeyEvent.VK_F2) {
+                    
+                    DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) ManagerDatabase.this.tree.getLastSelectedPathComponent();
+                    
+                    if (treeNode != null) {
+                        
+                        AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
+                        if (nodeModel != null && nodeModel.getPanel() != null && !nodeModel.isRunning()) {
+                            
+                            nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
+                            nodeModel.getPanel().getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
+                            nodeModel.setIsEdited(true);
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    private MouseAdapter getTreeMouseListener() {
+        
+        return new MouseAdapter() {
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                
+                int selRow = ManagerDatabase.this.tree.getRowForLocation(e.getX(), e.getY());
+                TreePath selPath = ManagerDatabase.this.tree.getPathForLocation(e.getX(), e.getY());
+                
+                if (selRow != -1 && e.getClickCount() == 2) {
+                    
+                    if (ManagerDatabase.this.tree.isExpanded(selPath)) {
+                        ManagerDatabase.this.tree.collapsePath(selPath);
+                    } else {
+                        ManagerDatabase.this.tree.expandPath(selPath);
+                    }
+                }
+            }
+        };
+    }
+
+    private FocusListener getTreeFocusListener() {
+        
+        return new FocusListener() {
 
             @Override
             public void focusLost(FocusEvent e) {
@@ -123,49 +173,7 @@ public class ManagerDatabase extends JPanel implements Manager {
                     }
                 }
             }
-        });
-
-        this.tree.addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                
-                int selRow = ManagerDatabase.this.tree.getRowForLocation(e.getX(), e.getY());
-                TreePath selPath = ManagerDatabase.this.tree.getPathForLocation(e.getX(), e.getY());
-                
-                if (selRow != -1 && e.getClickCount() == 2) {
-                    
-                    if (ManagerDatabase.this.tree.isExpanded(selPath)) {
-                        ManagerDatabase.this.tree.collapsePath(selPath);
-                    } else {
-                        ManagerDatabase.this.tree.expandPath(selPath);
-                    }
-                }
-            }
-        });
-
-        this.tree.addKeyListener(new KeyAdapter() {
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                
-                if (e.getKeyCode() == KeyEvent.VK_F2) {
-                    
-                    DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) ManagerDatabase.this.tree.getLastSelectedPathComponent();
-                    
-                    if (treeNode != null) {
-                        
-                        AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
-                        if (nodeModel != null && nodeModel.getPanel() != null && !nodeModel.isRunning()) {
-                            
-                            nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
-                            nodeModel.getPanel().getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
-                            nodeModel.setIsEdited(true);
-                        }
-                    }
-                }
-            }
-        });
+        };
     }
     
     private class TreeModelGifListener implements TreeModelListener {

@@ -31,7 +31,7 @@ public class EndPreparation implements InteractionCommand {
         
         MediatorGui.panelAddressBar().getAddressMenuBar().endPreparation();
 
-        if (MediatorModel.model().isInjectionAlreadyBuilt()) {
+        if (MediatorModel.model().shouldErasePreviousInjection()) {
             
             MediatorGui.tabManagers().endPreparation();
         }

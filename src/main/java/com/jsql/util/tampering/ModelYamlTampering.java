@@ -40,5 +40,4 @@ public class ModelYamlTampering {
     public void setJavascript(String javascript) {
         this.javascript = javascript;
     }
-
 }

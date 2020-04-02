@@ -12,12 +12,20 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.util.Interaction;
+import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.injection.method.MethodInjection;
 
 public class ParameterUtil {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Query string built from the URL submitted by user.
@@ -40,6 +48,56 @@ public class ParameterUtil {
     
     public ParameterUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
+    }
+    
+    /**
+     * Send each parameters from the GUI to the model in order to
+     * start the preparation of injection, the injection process is
+     * started in a new thread via model function inputValidation().
+     */
+    public void controlInput(
+        String urlQuery,
+        String dataRequest,
+        String dataHeader,
+        MethodInjection methodInjection,
+        String typeRequest,
+        boolean isScanning
+    ) {
+        try {
+                
+            if (!urlQuery.isEmpty() && !urlQuery.matches("(?i)^https?://.*")) {
+                
+                if (!urlQuery.matches("(?i)^\\w+://.*")) {
+                    LOGGER.info("Undefined URL protocol, forcing to [http://]");
+                    urlQuery = "http://"+ urlQuery;
+                } else {
+                    throw new MalformedURLException("unknown URL protocol");
+                }
+            }
+                     
+            this.initializeQueryString(urlQuery);
+            this.initializeRequest(dataRequest);
+            this.initializeHeader(dataHeader);
+            
+            this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);
+            this.injectionModel.getMediatorUtils().getConnectionUtil().setTypeRequest(typeRequest);
+            
+            // TODO separate method
+            if (isScanning) {
+                this.injectionModel.beginInjection();
+            } else {
+                // Start the model injection process in a thread
+                new Thread(this.injectionModel::beginInjection, "ThreadBeginInjection").start();
+            }
+        } catch (MalformedURLException e) {
+            
+            LOGGER.warn("Incorrect Url: "+ e, e);
+            
+            // Incorrect URL, reset the start button
+            Request request = new Request();
+            request.setMessage(Interaction.END_PREPARATION);
+            this.injectionModel.sendToViews(request);
+        }
     }
 
     /**

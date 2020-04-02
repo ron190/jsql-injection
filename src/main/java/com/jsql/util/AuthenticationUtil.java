@@ -58,6 +58,7 @@ public class AuthenticationUtil {
     private InjectionModel injectionModel;
     
     public AuthenticationUtil(InjectionModel injectionModel) {
+        
         this.injectionModel = injectionModel;
     }
 
@@ -111,10 +112,12 @@ public class AuthenticationUtil {
         
         // Check krb integrity
         if (this.isKerberos) {
+            
             // Fix #23877: NoClassDefFoundError on java/nio/file/Paths
             if (!new File(this.pathKerberosKrb5).exists()) {
                 LOGGER.warn("Krb5 file not found: " + this.pathKerberosKrb5);
             }
+            
             if (!new File(this.pathKerberosLogin).exists()) {
                 LOGGER.warn("Login file not found: " + this.pathKerberosLogin);
             }
@@ -128,15 +131,19 @@ public class AuthenticationUtil {
 //        AuthCacheValue.setAuthCache(new AuthCacheImpl());
         
         if (this.isAuthentication) {
+            
             Authenticator.setDefault(new Authenticator() {
+                
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
+                    
                     return new PasswordAuthentication (
                         AuthenticationUtil.this.usernameAuthentication,
                         AuthenticationUtil.this.passwordAuthentication.toCharArray()
                     );
                 }
             });
+            
         } else {
             Authenticator.setDefault(null);
         }
@@ -169,9 +176,12 @@ public class AuthenticationUtil {
 //        AuthCacheValue.setAuthCache(new AuthCacheImpl());
         
         if (this.isAuthentication) {
+            
             Authenticator.setDefault(new Authenticator() {
+                
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
+                    
                     return new PasswordAuthentication (
                         AuthenticationUtil.this.usernameAuthentication,
                         AuthenticationUtil.this.passwordAuthentication.toCharArray()
@@ -205,6 +215,7 @@ public class AuthenticationUtil {
             System.setProperty("java.security.auth.login.config", this.pathKerberosLogin);
             System.setProperty("spnego.krb5.conf", this.pathKerberosKrb5);
             System.setProperty("spnego.login.conf", this.pathKerberosLogin);
+            
         } else {
             
             System.setProperty(STR_JAVA_PROTO_HDL_PKGS, "");

@@ -14,55 +14,31 @@ public class Bruter {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    List<String> characters = new ArrayList<>();
-    
-    boolean found = false;
-    
-    int maxLength;
-    int minLength;
-    
-    int count;
-    
-    long starttime;
-    long endtime;
-    
-    int minutes;
-    int seconds;
-    int hours;
-    int days;
-    
+    protected List<String> characters = new ArrayList<>();
+     
+    protected boolean found = false;
+     
+    protected int maxLength;
+    protected int minLength;
+     
+    protected int count;
+     
+    protected long starttime;
+    protected long endtime;
+     
+    protected int minutes;
+    protected int seconds;
+    protected int hours;
+    protected int days;
+     
     private static final char[] specialCharacters = {
         '~', '`', '!', '@', '#', '$', '%', '^',
         '&', '*', '(', ')', '_', '-', '+', '=', '{', '}', '[', ']', '|', '\\',
         ';', ':', '\'', '"', '<', '.', ',', '>', '/', '?', ' '
     };
-    
-    boolean done = false;
-    boolean paused = false;
-
-    public boolean isFound() {
-        return this.found;
-    }
-
-    public void setPaused(boolean paused) {
-        this.paused = paused;
-    }
-
-    public boolean isPaused() {
-        return this.paused;
-    }
-
-    public void setFound(boolean found) {
-        this.found = found;
-    }
-
-    public synchronized void setEndtime(long endtime) {
-        this.endtime = endtime;
-    }
-
-    public int getCounter() {
-        return this.count;
-    }
+     
+    protected boolean done = false;
+    protected boolean paused = false;
 
     public long getRemainder() {
         return this.getNumberOfPossibilities() - this.count;
@@ -122,19 +98,14 @@ public class Bruter {
         }
     }
 
-    public void setMaxLength(int i) {
-        this.maxLength = i;
-    }
-
-    public void setMinLength(int i) {
-        this.minLength = i;
-    }
-
     public int getPerSecond() {
         
         int i;
+        
         try {
+            
             i = (int) (this.getCounter() / this.calculateTimeDifference());
+            
         } catch (Exception e) {
             
             // Ignore
@@ -176,6 +147,7 @@ public class Bruter {
                     this.days = this.days - 1;
                 }
             }
+            
             this.seconds -= this.minutes * 60;
             this.minutes -= this.hours * 60;
             this.hours -= this.days * 24;
@@ -199,6 +171,40 @@ public class Bruter {
         }
         
         return this.characters.size() >= this.maxLength;
+    }
+    
+    // Getter and setter
+
+    public synchronized void setEndtime(long endtime) {
+        this.endtime = endtime;
+    }
+
+    public void setMaxLength(int i) {
+        this.maxLength = i;
+    }
+
+    public void setMinLength(int i) {
+        this.minLength = i;
+    }
+
+    public boolean isFound() {
+        return this.found;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    public boolean isPaused() {
+        return this.paused;
+    }
+
+    public void setFound(boolean found) {
+        this.found = found;
+    }
+
+    public int getCounter() {
+        return this.count;
     }
 
     public int getMaxLength() {

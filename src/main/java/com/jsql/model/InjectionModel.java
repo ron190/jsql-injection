@@ -70,6 +70,11 @@ import net.sourceforge.spnego.SpnegoHttpURLConnection;
  */
 public class InjectionModel extends AbstractModelObservable {
     
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
+    
     private MediatorVendor mediatorVendor = new MediatorVendor(InjectionModel.this);
     private MediatorMethodInjection mediatorMethodInjection = new MediatorMethodInjection(this);
     private MediatorUtils mediatorUtils;
@@ -78,51 +83,23 @@ public class InjectionModel extends AbstractModelObservable {
     private DataAccess dataAccess = new DataAccess(this);
     private RessourceAccess resourceAccess = new RessourceAccess(this);
     
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
-    
     public static final String STAR = "*";
-    
-    /**
-     * HTML body of page successfully responding to
-     * multiple fields selection (select 1,2,3,..).
-     */
-    private String srcSuccess = "";
     
     /**
      * initialUrl transformed to a correct injection url.
      */
     private String indexesInUrl = "";
-
-    /**
-     * Current version of database.
-     */
-    private String versionDatabase;
-    
-    /**
-     * Selected database.
-     */
-    private String nameDatabase;
-    
-    /**
-     * User connected to database.
-     */
-    private String username;
     
     /**
      * Allow to directly start an injection after a failed one
      * without asking the user 'Start a new injection?'.
      */
-    private boolean injectionAlreadyBuilt = false;
+    private boolean shouldErasePreviousInjection = false;
     
     private boolean isScanning = false;
     
-    public static final boolean IS_NOT_INJECTION_POINT = true;
-    public static final boolean IS_JSON = true;
-
     public InjectionModel() {
+        
         this.mediatorUtils = new MediatorUtils();
         
         this.mediatorStrategy = new MediatorStrategy(this);
@@ -148,23 +125,19 @@ public class InjectionModel extends AbstractModelObservable {
     public void resetModel() {
         
         // TODO make injection pojo for all fields
-        this.getMediatorStrategy().getNormal().setVisibleIndex(null);
+        this.mediatorStrategy.getNormal().setVisibleIndex(null);
         this.indexesInUrl = "";
         
-        this.getMediatorUtils().getConnectionUtil().setTokenCsrf(null);
-        
-        this.versionDatabase = null;
-        this.nameDatabase = null;
-        this.username = null;
+        this.mediatorUtils.getConnectionUtil().setTokenCsrf(null);
         
         this.setIsStoppedByUser(false);
-        this.injectionAlreadyBuilt = false;
+        this.shouldErasePreviousInjection = false;
         
-        this.getMediatorStrategy().setStrategy(null);
+        this.mediatorStrategy.setStrategy(null);
         
         this.resourceAccess.setReadingIsAllowed(false);
         
-        this.getMediatorUtils().getThreadUtil().reset();
+        this.mediatorUtils.getThreadUtil().reset();
     }
 
     /**
@@ -177,46 +150,46 @@ public class InjectionModel extends AbstractModelObservable {
         this.resetModel();
         
         try {
-            if (!this.getMediatorUtils().getProxyUtil().isLive(ShowOnConsole.YES)) {
+            if (!this.mediatorUtils.getProxyUtil().isLive(ShowOnConsole.YES)) {
                 return;
             }
             
-            LOGGER.info(I18n.valueByKey("LOG_START_INJECTION") +": "+ this.getMediatorUtils().getConnectionUtil().getUrlByUser());
+            LOGGER.info(I18n.valueByKey("LOG_START_INJECTION") +": "+ this.mediatorUtils.getConnectionUtil().getUrlByUser());
             
             // Check general integrity if user's parameters
-            this.getMediatorUtils().getParameterUtil().checkParametersFormat();
+            this.mediatorUtils.getParameterUtil().checkParametersFormat();
             
             // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
             LOGGER.trace(I18n.valueByKey("LOG_CONNECTION_TEST"));
-            this.getMediatorUtils().getConnectionUtil().testConnection();
+            this.mediatorUtils.getConnectionUtil().testConnection();
             
-            boolean hasFoundInjection = false;
-            
-            hasFoundInjection = this.getMediatorMethodInjection().getQuery().testParameters();
+            boolean hasFoundInjection = this.mediatorMethodInjection.getQuery().testParameters();
 
             if (!hasFoundInjection) {
-                hasFoundInjection = this.getMediatorUtils().getSoapUtil().testParameters();
+                hasFoundInjection = this.mediatorUtils.getSoapUtil().testParameters();
             }
             
             if (!hasFoundInjection) {
                 LOGGER.trace("Checking standard Request parameters");
-                hasFoundInjection = this.getMediatorMethodInjection().getRequest().testParameters();
+                hasFoundInjection = this.mediatorMethodInjection.getRequest().testParameters();
             }
             
             if (!hasFoundInjection) {
-                hasFoundInjection = this.getMediatorMethodInjection().getHeader().testParameters();
+                hasFoundInjection = this.mediatorMethodInjection.getHeader().testParameters();
             }
             
             if (!this.isScanning) {
-                if (!this.getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata()) {
-                    this.getDataAccess().getDatabaseInfos();
+                
+                if (!this.mediatorUtils.getPreferencesUtil().isNotInjectingMetadata()) {
+                    this.dataAccess.getDatabaseInfos();
                 }
-                this.getDataAccess().listDatabases();
+                
+                this.dataAccess.listDatabases();
             }
             
             LOGGER.trace(I18n.valueByKey("LOG_DONE"));
             
-            this.injectionAlreadyBuilt = true;
+            this.shouldErasePreviousInjection = true;
             
         } catch (JSqlException e) {
             
@@ -240,11 +213,11 @@ public class InjectionModel extends AbstractModelObservable {
     public String inject(String newDataInjection, boolean isUsingIndex) {
         
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
-        String urlInjection = this.getMediatorUtils().getConnectionUtil().getUrlBase();
+        String urlInjection = this.mediatorUtils.getConnectionUtil().getUrlBase();
         
         String dataInjection = " "+ newDataInjection;
         
-        urlInjection = this.buildURL(urlInjection, isUsingIndex, dataInjection);
+        urlInjection = this.mediatorStrategy.buildURL(urlInjection, isUsingIndex, dataInjection);
         
         // TODO merge into function
         urlInjection = urlInjection
@@ -259,6 +232,7 @@ public class InjectionModel extends AbstractModelObservable {
             .replaceAll("\\s+", "+");
 
         URL urlObject = null;
+        
         try {
             urlObject = new URL(urlInjection);
         } catch (MalformedURLException e) {
@@ -266,126 +240,28 @@ public class InjectionModel extends AbstractModelObservable {
             return "";
         }
 
-        /**
-         * Build the GET query string infos
-         */
-        // TODO Extract in method
-        if (!this.getMediatorUtils().getParameterUtil().getListQueryString().isEmpty()) {
-            
-            // URL without querystring like Request and Header can receive
-            // new params from <form> parsing, in that case add the '?' to URL
-            if (!urlInjection.contains("?")) {
-                urlInjection += "?";
-            }
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
 
-            urlInjection += this.buildQuery(this.getMediatorMethodInjection().getQuery(), this.getMediatorUtils().getParameterUtil().getQueryStringFromEntries(), isUsingIndex, dataInjection);
-            
-            if (this.getMediatorUtils().getConnectionUtil().getTokenCsrf() != null) {
-                urlInjection += "&"+ this.getMediatorUtils().getConnectionUtil().getTokenCsrf().getKey() +"="+ this.getMediatorUtils().getConnectionUtil().getTokenCsrf().getValue();
-            }
-            
-            try {
-                urlObject = new URL(urlInjection);
-            } catch (MalformedURLException e) {
-                LOGGER.warn("Incorrect Url: "+ e, e);
-            }
-        } else {
-            if (this.getMediatorUtils().getConnectionUtil().getTokenCsrf() != null) {
-                urlInjection += "?"+ this.getMediatorUtils().getConnectionUtil().getTokenCsrf().getKey() +"="+ this.getMediatorUtils().getConnectionUtil().getTokenCsrf().getValue();
-            }
-        }
+        urlObject = this.initializeQueryString(isUsingIndex, urlInjection, dataInjection, urlObject, msgHeader);
         
-        HttpURLConnection connection;
         String pageSource = "";
         
         // Define the connection
         try {
-            
-            // TODO separate method
-            // Block Opening Connection
-            if (this.getMediatorUtils().getAuthenticationUtil().isKerberos()) {
-                String kerberosConfiguration =
-                    Pattern
-                        .compile("(?s)\\{.*")
-                        .matcher(StringUtils.join(Files.readAllLines(Paths.get(this.getMediatorUtils().getAuthenticationUtil().getPathKerberosLogin()), Charset.defaultCharset()), ""))
-                        .replaceAll("")
-                        .trim();
-                
-                SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(kerberosConfiguration);
-                connection = spnego.connect(urlObject);
-            } else {
-                connection = (HttpURLConnection) urlObject.openConnection();
-            }
-            
-            connection.setReadTimeout(this.getMediatorUtils().getConnectionUtil().getTimeout());
-            connection.setConnectTimeout(this.getMediatorUtils().getConnectionUtil().getTimeout());
-            connection.setDefaultUseCaches(false);
-            
-            connection.setRequestProperty("Pragma", "no-cache");
-            connection.setRequestProperty("Cache-Control", "no-cache");
-            connection.setRequestProperty("Expires", "-1");
-            connection.setRequestProperty("Content-Type", "text/plain");
+            HttpURLConnection connection = this.initializeConnection(urlObject);
             
             // Csrf
             
-            if (this.getMediatorUtils().getConnectionUtil().getTokenCsrf() != null) {
-                connection.setRequestProperty(this.getMediatorUtils().getConnectionUtil().getTokenCsrf().getKey(), this.getMediatorUtils().getConnectionUtil().getTokenCsrf().getValue());
-            }
-            
-            this.getMediatorUtils().getConnectionUtil().fixJcifsTimeout(connection);
-
-            Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-            msgHeader.put(Header.URL, urlInjection);
-            
-            /**
-             * Build the HEADER and logs infos
-             */
-            // TODO Extract in method
-            if (!this.getMediatorUtils().getParameterUtil().getListHeader().isEmpty()) {
-                Stream.of(this.buildQuery(this.getMediatorMethodInjection().getHeader(), this.getMediatorUtils().getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
-                .forEach(e -> {
-                    if (e.split(":").length == 2) {
-                        HeaderUtil.sanitizeHeaders(connection, new SimpleEntry<>(e.split(":")[0], e.split(":")[1]));
-                    }
-                });
+            if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
                 
-                msgHeader.put(Header.HEADER, this.buildQuery(this.getMediatorMethodInjection().getHeader(), this.getMediatorUtils().getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection));
+                connection.setRequestProperty(this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey(), this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue());
             }
+            
+            this.mediatorUtils.getConnectionUtil().fixJcifsTimeout(connection);
+            
+            this.initializeHeader(isUsingIndex, dataInjection, connection, msgHeader);
     
-            /**
-             * Build the POST and logs infos
-             */
-            // TODO Extract in method
-            if (!this.getMediatorUtils().getParameterUtil().getListRequest().isEmpty() || this.getMediatorUtils().getConnectionUtil().getTokenCsrf() != null) {
-                try {
-                    ConnectionUtil.fixCustomRequestMethod(connection, this.getMediatorUtils().getConnectionUtil().getTypeRequest());
-                    
-                    connection.setDoOutput(true);
-                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-    
-                    DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
-                    if (this.getMediatorUtils().getConnectionUtil().getTokenCsrf() != null) {
-                        dataOut.writeBytes(this.getMediatorUtils().getConnectionUtil().getTokenCsrf().getKey() +"="+ this.getMediatorUtils().getConnectionUtil().getTokenCsrf().getValue() +"&");
-                    }
-                    if (this.getMediatorUtils().getConnectionUtil().getTypeRequest().matches("PUT|POST")) {
-                        if (this.getMediatorUtils().getParameterUtil().isRequestSoap()) {
-                            dataOut.writeBytes(this.buildQuery(this.getMediatorMethodInjection().getRequest(), this.getMediatorUtils().getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
-                        } else {
-                            dataOut.writeBytes(this.buildQuery(this.getMediatorMethodInjection().getRequest(), this.getMediatorUtils().getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
-                        }
-                    }
-                    dataOut.flush();
-                    dataOut.close();
-                    
-                    if (this.getMediatorUtils().getParameterUtil().isRequestSoap()) {
-                        msgHeader.put(Header.POST, this.buildQuery(this.getMediatorMethodInjection().getRequest(), this.getMediatorUtils().getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
-                    } else {
-                        msgHeader.put(Header.POST, this.buildQuery(this.getMediatorMethodInjection().getRequest(), this.getMediatorUtils().getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
-                    }
-                } catch (IOException e) {
-                    LOGGER.warn("Error during Request connection: "+ e, e);
-                }
-            }
+            this.initializeRequest(isUsingIndex, dataInjection, connection, msgHeader);
             
             msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
             
@@ -415,55 +291,152 @@ public class InjectionModel extends AbstractModelObservable {
         // return the source code of the page
         return pageSource;
     }
-    
-    /**
-     * Build correct data for GET, POST, HEADER.
-     * Each can be either raw data (no injection), SQL query without index requirement,
-     * or SQL query with index requirement.
-     * @param dataType Current method to build
-     * @param urlBase Beginning of the request data
-     * @param isUsingIndex False if request doesn't use indexes
-     * @param sqlTrail SQL statement
-     * @return Final data
-     */
-    private String buildURL(String urlBase, boolean isUsingIndex, String sqlTrail) {
+
+    private URL initializeQueryString(boolean isUsingIndex, String urlInjection, String dataInjection, URL urlObject, Map<Header, Object> msgHeader) {
         
-        if (urlBase.contains(InjectionModel.STAR)) {
+        /**
+         * Build the GET query string infos
+         */
+        // TODO Extract in method
+        if (!this.mediatorUtils.getParameterUtil().getListQueryString().isEmpty()) {
             
-            if (!isUsingIndex) {
-                return urlBase.replace(InjectionModel.STAR, sqlTrail);
-            } else {
-                return
-                    urlBase.replace(
-                        InjectionModel.STAR,
-                        this.indexesInUrl.replaceAll(
-                            "1337" + this.getMediatorStrategy().getNormal().getVisibleIndex() + "7331",
-                            /**
-                             * Oracle column often contains $, which is reserved for regex.
-                             * => need to be escape with quoteReplacement()
-                             */
-                            Matcher.quoteReplacement(sqlTrail)
-                        )
-                    )
-                ;
+            // URL without querystring like Request and Header can receive
+            // new params from <form> parsing, in that case add the '?' to URL
+            if (!urlInjection.contains("?")) {
+                urlInjection += "?";
+            }
+
+            urlInjection += this.buildQuery(this.mediatorMethodInjection.getQuery(), this.mediatorUtils.getParameterUtil().getQueryStringFromEntries(), isUsingIndex, dataInjection);
+            
+            if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
+                urlInjection += "&"+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey() +"="+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue();
+            }
+            
+            try {
+                urlObject = new URL(urlInjection);
+            } catch (MalformedURLException e) {
+                LOGGER.warn("Incorrect Url: "+ e, e);
+            }
+        } else {
+            
+            if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
+                urlInjection += "?"+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey() +"="+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue();
             }
         }
+
+        msgHeader.put(Header.URL, urlInjection);
         
-        return urlBase;
+        return urlObject;
+    }
+
+    private HttpURLConnection initializeConnection(URL urlObject) throws IOException, LoginException, GSSException, PrivilegedActionException {
+        
+        HttpURLConnection connection;
+        
+        // TODO separate method
+        // Block Opening Connection
+        if (this.mediatorUtils.getAuthenticationUtil().isKerberos()) {
+            
+            String kerberosConfiguration =
+                Pattern
+                    .compile("(?s)\\{.*")
+                    .matcher(StringUtils.join(Files.readAllLines(Paths.get(this.mediatorUtils.getAuthenticationUtil().getPathKerberosLogin()), Charset.defaultCharset()), ""))
+                    .replaceAll("")
+                    .trim();
+            
+            SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(kerberosConfiguration);
+            connection = spnego.connect(urlObject);
+            
+        } else {
+            connection = (HttpURLConnection) urlObject.openConnection();
+        }
+        
+        connection.setReadTimeout(this.mediatorUtils.getConnectionUtil().getTimeout());
+        connection.setConnectTimeout(this.mediatorUtils.getConnectionUtil().getTimeout());
+        connection.setDefaultUseCaches(false);
+        
+        connection.setRequestProperty("Pragma", "no-cache");
+        connection.setRequestProperty("Cache-Control", "no-cache");
+        connection.setRequestProperty("Expires", "-1");
+        connection.setRequestProperty("Content-Type", "text/plain");
+        
+        return connection;
+    }
+
+    private void initializeHeader(boolean isUsingIndex, String dataInjection, HttpURLConnection connection, Map<Header, Object> msgHeader) {
+        
+        /**
+         * Build the HEADER and logs infos
+         */
+        // TODO Extract in method
+        if (!this.mediatorUtils.getParameterUtil().getListHeader().isEmpty()) {
+            
+            Stream.of(this.buildQuery(this.mediatorMethodInjection.getHeader(), this.mediatorUtils.getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
+            .forEach(e -> {
+                
+                if (e.split(":").length == 2) {
+                    
+                    HeaderUtil.sanitizeHeaders(connection, new SimpleEntry<>(e.split(":")[0], e.split(":")[1]));
+                }
+            });
+            
+            msgHeader.put(Header.HEADER, this.buildQuery(this.mediatorMethodInjection.getHeader(), this.mediatorUtils.getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection));
+        }
+    }
+
+    private void initializeRequest(boolean isUsingIndex, String dataInjection, HttpURLConnection connection, Map<Header, Object> msgHeader) {
+        
+        /**
+         * Build the POST and logs infos
+         */
+        // TODO Extract in method
+        if (!this.mediatorUtils.getParameterUtil().getListRequest().isEmpty() || this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
+            
+            try {
+                ConnectionUtil.fixCustomRequestMethod(connection, this.mediatorUtils.getConnectionUtil().getTypeRequest());
+                
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+   
+                DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
+                if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
+                    dataOut.writeBytes(this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey() +"="+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue() +"&");
+                }
+                
+                if (this.mediatorUtils.getConnectionUtil().getTypeRequest().matches("PUT|POST")) {
+                    if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
+                        dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
+                    } else {
+                        dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
+                    }
+                }
+                
+                dataOut.flush();
+                dataOut.close();
+                
+                if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
+                    msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
+                } else {
+                    msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
+                }
+            } catch (IOException e) {
+                LOGGER.warn("Error during Request connection: "+ e, e);
+            }
+        }
     }
     
     private String buildQuery(MethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
         
         String query;
         
-        paramLead = paramLead.replace("*", "SlQqLs*lSqQsL");
+        paramLead = paramLead.replace("*", "<tampering>*</tampering>");
         
         // TODO simplify
         if (
             // No parameter transformation if method is not selected by user
-            this.getMediatorUtils().getConnectionUtil().getMethodInjection() != methodInjection
+            this.mediatorUtils.getConnectionUtil().getMethodInjection() != methodInjection
             // No parameter transformation if injection point in URL
-            || this.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
+            || this.mediatorUtils.getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
         ) {
             
             // Just pass parameters without any transformation
@@ -476,74 +449,110 @@ public class InjectionModel extends AbstractModelObservable {
             paramLead.contains(InjectionModel.STAR)
         ) {
             
-            // Several SQL expressions does not use indexes in SELECT,
-            // like Boolean, Error, Shell and search for Insertion character,
-            // in that case replace injection point by SQL expression.
-            // Injection point is always at the end?
-            if (!isUsingIndex) {
-                query = paramLead.replace(InjectionModel.STAR, sqlTrail + this.getMediatorVendor().getVendor().instance().endingComment());
-                
-            } else {
-                
-                // Replace injection point by indexes found for Normal strategy
-                // and use visible Index for injection
-                query = paramLead.replace(
-                    InjectionModel.STAR,
-                    this.indexesInUrl.replaceAll(
-                        "1337" + this.getMediatorStrategy().getNormal().getVisibleIndex() + "7331",
-                        /**
-                         * Oracle column often contains $, which is reserved for regex.
-                         * => need to be escape with quoteReplacement()
-                         */
-                        Matcher.quoteReplacement(sqlTrail)
-                    ) + this.getMediatorVendor().getVendor().instance().endingComment()
-                );
-            }
+            query = this.initializeStarInjection(paramLead, isUsingIndex, sqlTrail);
             
         } else {
             
-            // Method is selected by user and there's no injection point
-            if (
-                // Several SQL expressions does not use indexes in SELECT,
-                // like Boolean, Error, Shell and search for Insertion character,
-                // in that case concat SQL expression to the end of param.
-                !isUsingIndex
-            ) {
-                
-                query = paramLead + sqlTrail;
-                
-                // Add ending line comment by vendor
-                query = query + this.getMediatorVendor().getVendor().instance().endingComment();
-                
-            } else {
-                
-                // Concat indexes found for Normal strategy to params
-                // and use visible Index for injection
-                query = paramLead + this.indexesInUrl.replaceAll(
-                    "1337" + this.getMediatorStrategy().getNormal().getVisibleIndex() + "7331",
+            query = this.initializeRawInjection(paramLead, isUsingIndex, sqlTrail);
+        }
+        
+        // TODO merge into function
+        
+        query = this.clean(methodInjection, query);
+        
+        if (this.mediatorUtils.getConnectionUtil().getMethodInjection() == methodInjection) {
+            
+            query = this.mediatorUtils.getTamperingUtil().tamper(query);
+        }
+        
+        query = this.applyRfcEncoding(methodInjection, query);
+        
+        query = query.trim();
+        
+        return query;
+    }
+
+    private String initializeRawInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
+        
+        String query;
+        
+        // Method is selected by user and there's no injection point
+        if (
+            // Several SQL expressions does not use indexes in SELECT,
+            // like Boolean, Error, Shell and search for Insertion character,
+            // in that case concat SQL expression to the end of param.
+            !isUsingIndex
+        ) {
+            
+            query = paramLead + sqlTrail;
+            
+            // Add ending line comment by vendor
+            query = query + this.mediatorVendor.getVendor().instance().endingComment();
+            
+        } else {
+            
+            // Concat indexes found for Normal strategy to params
+            // and use visible Index for injection
+            query = paramLead + this.indexesInUrl.replaceAll(
+                "1337" + this.mediatorStrategy.getNormal().getVisibleIndex() + "7331",
+                /**
+                 * Oracle column often contains $, which is reserved for regex.
+                 * => need to be escape with quoteReplacement()
+                 */
+                Matcher.quoteReplacement(sqlTrail)
+            );
+            
+            // Add ending line comment by vendor
+            query = query + this.mediatorVendor.getVendor().instance().endingComment();
+        }
+        
+        return query;
+    }
+
+    private String initializeStarInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
+        
+        String query;
+        
+        // Several SQL expressions does not use indexes in SELECT,
+        // like Boolean, Error, Shell and search for Insertion character,
+        // in that case replace injection point by SQL expression.
+        // Injection point is always at the end?
+        if (!isUsingIndex) {
+            
+            query = paramLead.replace(InjectionModel.STAR, sqlTrail + this.mediatorVendor.getVendor().instance().endingComment());
+            
+        } else {
+            
+            // Replace injection point by indexes found for Normal strategy
+            // and use visible Index for injection
+            query = paramLead.replace(
+                InjectionModel.STAR,
+                this.indexesInUrl.replaceAll(
+                    "1337" + this.mediatorStrategy.getNormal().getVisibleIndex() + "7331",
                     /**
                      * Oracle column often contains $, which is reserved for regex.
                      * => need to be escape with quoteReplacement()
                      */
                     Matcher.quoteReplacement(sqlTrail)
-                );
-                
-                // Add ending line comment by vendor
-                query = query + this.getMediatorVendor().getVendor().instance().endingComment();
-            }
+                ) + this.mediatorVendor.getVendor().instance().endingComment()
+            );
         }
         
-        // TODO merge into function
+        return query;
+    }
+
+    private String clean(MethodInjection methodInjection, String query) {
         
         // Remove SQL comments
         query = query.replaceAll("(?s)/\\*.*?\\*/", "");
         
         if (
-            methodInjection == this.getMediatorMethodInjection().getRequest()
-            && this.getMediatorUtils().getParameterUtil().isRequestSoap()
+            methodInjection == this.mediatorMethodInjection.getRequest()
+            && this.mediatorUtils.getParameterUtil().isRequestSoap()
         ) {
             
             query = query.replace("%2b", "+");
+            
         } else {
             
             // Remove spaces after a word
@@ -556,11 +565,12 @@ public class InjectionModel extends AbstractModelObservable {
             query = query.replaceAll("\\s+", "+");
         }
         
-        if (this.getMediatorUtils().getConnectionUtil().getMethodInjection() == methodInjection) {
-            query = this.getMediatorUtils().getTamperingUtil().tamper(query);
-        }
+        return query;
+    }
+
+    private String applyRfcEncoding(MethodInjection methodInjection, String query) {
         
-        if (methodInjection != this.getMediatorMethodInjection().getHeader()) {
+        if (methodInjection != this.mediatorMethodInjection.getHeader()) {
             
             // URL encode each character because no query parameter context
             query = query.replace("\"", "%22");
@@ -578,14 +588,14 @@ public class InjectionModel extends AbstractModelObservable {
             query = query.replace("?", "%3F");
             query = query.replace("_", "%5F");
             query = query.replace(" ", "+");
+            
         } else {
+            
             // For cookies in Spring
             // Replace spaces
             query = query.replace("+", "%20");
             query = query.replace(",", "%2C");
         }
-        
-        query = query.trim();
         
         return query;
     }
@@ -596,57 +606,9 @@ public class InjectionModel extends AbstractModelObservable {
      * @param source Text to display in console
      */
     public void sendResponseFromSite(String message, String source) {
+        
         LOGGER.warn(message + ", response from site:");
         LOGGER.warn(">>>" + source);
-    }
-
-    /**
-     * Send each parameters from the GUI to the model in order to
-     * start the preparation of injection, the injection process is
-     * started in a new thread via model function inputValidation().
-     */
-    public void controlInput(
-        String urlQuery,
-        String dataRequest,
-        String dataHeader,
-        MethodInjection methodInjection,
-        String typeRequest,
-        boolean isScanning
-    ) {
-        try {
-                
-            if (!urlQuery.isEmpty() && !urlQuery.matches("(?i)^https?://.*")) {
-                if (!urlQuery.matches("(?i)^\\w+://.*")) {
-                    LOGGER.info("Undefined URL protocol, forcing to [http://]");
-                    urlQuery = "http://"+ urlQuery;
-                } else {
-                    throw new MalformedURLException("unknown URL protocol");
-                }
-            }
-                     
-            this.getMediatorUtils().getParameterUtil().initializeQueryString(urlQuery);
-            this.getMediatorUtils().getParameterUtil().initializeRequest(dataRequest);
-            this.getMediatorUtils().getParameterUtil().initializeHeader(dataHeader);
-            
-            this.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);
-            this.getMediatorUtils().getConnectionUtil().setTypeRequest(typeRequest);
-            
-            // TODO separate method
-            if (isScanning) {
-                this.beginInjection();
-            } else {
-                // Start the model injection process in a thread
-                new Thread(InjectionModel.this::beginInjection, "ThreadBeginInjection").start();
-            }
-        } catch (MalformedURLException e) {
-            
-            LOGGER.warn("Incorrect Url: "+ e, e);
-            
-            // Incorrect URL, reset the start button
-            Request request = new Request();
-            request.setMessage(Interaction.END_PREPARATION);
-            this.sendToViews(request);
-        }
     }
     
     // TODO Util
@@ -654,38 +616,16 @@ public class InjectionModel extends AbstractModelObservable {
         
         String versionJava = System.getProperty("java.version");
         String nameSystemArchitecture = System.getProperty("os.arch");
+        
         LOGGER.trace(
-            "jSQL Injection v" + this.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("jsql.version")
+            "jSQL Injection v" + this.getVersionJsql()
             + " on Java "+ versionJava
             +"-"+ nameSystemArchitecture
             +"-"+ System.getProperty("user.language")
         );
     }
     
-    public String getDatabaseInfos() {
-        
-        return
-            "Database ["+ this.nameDatabase +"] "
-            + "on "+ this.getMediatorVendor().getVendor() +" ["+ this.versionDatabase +"] "
-            + "for user ["+ this.username +"]";
-    }
-
-    public void setDatabaseInfos(String versionDatabase, String nameDatabase, String username) {
-        
-        this.versionDatabase = versionDatabase;
-        this.nameDatabase = nameDatabase;
-        this.username = username;
-    }
-    
     // Getters and setters
-
-    public String getSrcSuccess() {
-        return this.srcSuccess;
-    }
-
-    public void setSrcSuccess(String srcSuccess) {
-        this.srcSuccess = srcSuccess;
-    }
 
     public String getIndexesInUrl() {
         return this.indexesInUrl;
@@ -695,8 +635,8 @@ public class InjectionModel extends AbstractModelObservable {
         this.indexesInUrl = indexesInUrl;
     }
 
-    public boolean isInjectionAlreadyBuilt() {
-        return this.injectionAlreadyBuilt;
+    public boolean shouldErasePreviousInjection() {
+        return this.shouldErasePreviousInjection;
     }
 
     public void setIsScanning(boolean isScanning) {
@@ -704,7 +644,7 @@ public class InjectionModel extends AbstractModelObservable {
     }
 
     public String getVersionJsql() {
-        return this.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("jsql.version");
+        return this.mediatorUtils.getPropertiesUtil().getProperties().getProperty("jsql.version");
     }
 
     public MediatorUtils getMediatorUtils() {
@@ -730,5 +670,4 @@ public class InjectionModel extends AbstractModelObservable {
     public MediatorStrategy getMediatorStrategy() {
         return this.mediatorStrategy;
     }
-
 }

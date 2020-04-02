@@ -31,6 +31,7 @@ public class ExceptionUtil {
     private Set<String> exceptionsMd5Cached = new CopyOnWriteArraySet<>();
     
     public ExceptionUtil(InjectionModel injectionModel) {
+        
         this.injectionModel = injectionModel;
     }
 
@@ -58,25 +59,29 @@ public class ExceptionUtil {
                     
                     String stackTrace = ExceptionUtils.getStackTrace(throwable).trim();
                     String passwordString = new String(stackTrace.toCharArray());
+                    
                     byte[] passwordByte = passwordString.getBytes();
                     md.update(passwordByte, 0, passwordByte.length);
+                    
                     byte[] encodedPassword = md.digest();
                     String encodedPasswordInString = HashUtil.digestToHexString(encodedPassword);
                     
                     String md5Exception = encodedPasswordInString;
                     
                     if (!ExceptionUtil.this.exceptionsMd5Cached.contains(md5Exception)) {
+                        
                         ExceptionUtil.this.exceptionsMd5Cached.add(md5Exception);
                         ExceptionUtil.this.injectionModel.getMediatorUtils().getGitUtil().sendUnhandledException(thread.getName(), throwable);
                     }
+                    
                 } catch (NoSuchAlgorithmException e) {
+                    
                     // Ignore
                     IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                     LOGGER.trace(exceptionIgnored, exceptionIgnored);
                 }
             }
         }
-        
     }
     
     /**
@@ -90,15 +95,16 @@ public class ExceptionUtil {
 
         // Event dispatching thread Exception
         try {
+            
             SwingUtilities.invokeAndWait(() ->
                 // We are in the event dispatching thread
                 Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())
             );
+            
         } catch (InvocationTargetException | InterruptedException e) {
+            
             LOGGER.error("Unhandled Exception on ExceptionUtil", e);
             Thread.currentThread().interrupt();
         }
-        
     }
-    
 }

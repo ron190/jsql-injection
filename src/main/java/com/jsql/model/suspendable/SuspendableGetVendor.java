@@ -50,6 +50,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             
             vendor = this.injectionModel.getMediatorVendor().getVendorByUser();
             LOGGER.info(I18n.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendor +"]");
+            
         } else {
         
             // Parallelize the search and let the user stops the process if needed.
@@ -58,8 +59,11 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             //         Unknown column '1337' in 'order clause'
             // or   supplied argument is not a valid MySQL result resource
             ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetVendor"));
+            
             CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
+            
             for (String insertionCharacter : new String[] {"'\"#-)'\""}) {
+                
                 taskCompletionService.submit(
                     new CallablePageSource(
                         insertionCharacter,

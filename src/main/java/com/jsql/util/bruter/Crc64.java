@@ -32,6 +32,7 @@ public class Crc64 {
     }
 
     static {
+        
         LOOKUPTABLE = new long[0x100];
         
         for (int i = 0; i < 0x100; i++) {

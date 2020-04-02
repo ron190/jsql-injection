@@ -915,9 +915,9 @@ public class RessourceAccess {
      * respond appropriately to GUI message with simple text result instead of
      * build complex graphical components during the multi website injections.
      * At the end of the scan it plugs again the normal view.
-     * @param urlList contains a list of String URL
+     * @param urlsItemList contains a list of String URL
      */
-    public void scanList(List<ItemList> urlList) {
+    public void scanList(List<ItemList> urlsItemList) {
         
         // Erase everything in the view from a previous injection
         Request requests = new Request();
@@ -939,18 +939,18 @@ public class RessourceAccess {
         this.injectionModel.setIsScanning(true);
         this.isScanStopped = false;
         
-        for (ItemList url: urlList) {
-            ItemListScan urlurl = (ItemListScan) url;
+        for (ItemList urlItemList: urlsItemList) {
+            ItemListScan urlItemListScan = (ItemListScan) urlItemList;
             if (this.injectionModel.isStoppedByUser() || this.isScanStopped) {
                 break;
             }
-            LOGGER.info("Scanning "+ urlurl.getBeanInjection().getUrl());
-            this.injectionModel.controlInput(
-                urlurl.getBeanInjection().getUrl(),
-                urlurl.getBeanInjection().getRequest(),
-                urlurl.getBeanInjection().getHeader(),
-                urlurl.getBeanInjection().getInjectionTypeAsEnum(),
-                urlurl.getBeanInjection().getRequestType(),
+            LOGGER.info("Scanning "+ urlItemListScan.getBeanInjection().getUrl());
+            this.injectionModel.getMediatorUtils().getParameterUtil().controlInput(
+                urlItemListScan.getBeanInjection().getUrl(),
+                urlItemListScan.getBeanInjection().getRequest(),
+                urlItemListScan.getBeanInjection().getHeader(),
+                urlItemListScan.getBeanInjection().getInjectionTypeAsEnum(),
+                urlItemListScan.getBeanInjection().getRequestType(),
                 true
             );
             
@@ -1011,5 +1011,4 @@ public class RessourceAccess {
     public void setReadingIsAllowed(boolean readingIsAllowed) {
         this.readingIsAllowed = readingIsAllowed;
     }
-    
 }

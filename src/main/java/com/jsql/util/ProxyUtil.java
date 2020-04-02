@@ -145,11 +145,8 @@ public class ProxyUtil {
     }
     
     /**
-     * Check if enabled proxies are up when:
-     * - application starts,
-     * - injection begins,
-     * - checking IP,
-     * - sending reports.
+     * Check if enabled proxies are up when application starts,
+     * injection begins,- checking IP, sending reports.
      * Display logs except when sending unhandled exception.
      * @param showOnConsole whether the message should be presented to the user
      * @return true if enabled proxies are up

@@ -1,5 +1,9 @@
 package com.jsql.util.tampering;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 public enum TamperingType {
@@ -15,12 +19,25 @@ public enum TamperingType {
     HEX_TO_CHAR("hex-to-char.yml"),
     QUOTE_TO_UTF8("quote-to-utf8.yml");
     
-    private final ModelYamlTampering instanceModelYaml;
+    /**
+     * Log4j logger sent to view.
+     */
+    private final Logger logger = Logger.getRootLogger();
+    
+    private ModelYamlTampering instanceModelYaml;
     
     private TamperingType(String fileYaml) {
         
         Yaml yaml = new Yaml();
-        this.instanceModelYaml = yaml.loadAs(TamperingType.class.getClassLoader().getResourceAsStream("tamper/"+ fileYaml), ModelYamlTampering.class);
+        
+        try (InputStream inputStream = TamperingType.class.getClassLoader().getResourceAsStream("tamper/"+ fileYaml)) {
+        
+            this.instanceModelYaml = yaml.loadAs(inputStream, ModelYamlTampering.class);
+            
+        } catch (IOException e) {
+
+            this.logger.error(e, e);
+        }
     }
     
     public ModelYamlTampering instance() {

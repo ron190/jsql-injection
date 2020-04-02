@@ -45,6 +45,7 @@ public class GitUtil {
     private InjectionModel injectionModel;
     
     public GitUtil(InjectionModel injectionModel) {
+        
         this.injectionModel = injectionModel;
     }
 
@@ -60,9 +61,13 @@ public class GitUtil {
         
         try {
             Float versionGit = Float.parseFloat(this.getJSONObject().getString("version"));
+            
             if (versionGit > Float.parseFloat(this.injectionModel.getVersionJsql())) {
+                
                 LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION"));
+                
             } else if(displayUpdateMessage == ShowOnConsole.YES) {
+                
                 LOGGER.debug(I18n.valueByKey("UPDATE_UPTODATE"));
             }
         } catch (NumberFormatException | IOException | JSONException e) {
@@ -117,6 +122,7 @@ public class GitUtil {
 
         // Connect to Github webservice
         HttpURLConnection connection = null;
+        
         try {
             URL githubUrl = new URL(
                 this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.issues.url")
@@ -157,6 +163,7 @@ public class GitUtil {
             dataOut.close();
             
             this.readGithubResponse(connection, showOnConsole);
+            
         } catch (IOException | NoClassDefFoundError | JSONException e) {
             
             // Fix #27623: NoClassDefFoundError on getOutputStream()
@@ -174,6 +181,7 @@ public class GitUtil {
             String sourcePage = ConnectionUtil.getSourceLineFeed(connection);
 
             if (showOnConsole == ShowOnConsole.YES) {
+                
                 JSONObject jsonObjectResponse = new JSONObject(sourcePage);
                 String urlIssue = jsonObjectResponse.getString("html_url");
                 LOGGER.debug("Sent to Github: "+ urlIssue);
@@ -192,6 +200,7 @@ public class GitUtil {
         
         try {
             JSONArray news = this.getJSONObject().getJSONArray("news");
+            
             for (int index = 0 ; index < news.length() ; index++) {
                 LOGGER.info(news.get(index));
             }
@@ -208,24 +217,31 @@ public class GitUtil {
     public JSONObject getJSONObject() throws IOException {
         
         if (this.jsonObject == null) {
+            
             String json = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(
                 this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.webservice.url")
             );
             
             // Fix #45349: JSONException on new JSONObject(json)
             try {
+                
                 this.jsonObject = new JSONObject(json);
+                
             } catch (JSONException e) {
+                
                 try {
+                    
                     this.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
+                    
                 } catch (JSONException e1) {
                     // TODO Simplify
                     LOGGER.warn("Fetching default JSON failed", e);
                 }
+                
                 LOGGER.warn("Fetching JSON configuration from Github failed, check your connection or update jsql", e);
             }
         }
+        
         return this.jsonObject;
     }
-    
 }

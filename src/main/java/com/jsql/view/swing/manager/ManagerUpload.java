@@ -141,43 +141,51 @@ public class ManagerUpload extends AbstractManagerList {
         
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
         
-        this.run.addActionListener(actionEvent -> {
+        this.run.addActionListener(actionEvent -> this.initializeRunAction(shellURL));
+    }
+
+    private void initializeRunAction(final JTextField shellURL) {
+        
+        if (ManagerUpload.this.getListPaths().getSelectedValuesList().isEmpty()) {
+            LOGGER.warn("Select directory(ies) to upload a file into");
+            return;
+        }
+
+        final JFileChooser filechooser = new JFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+        filechooser.setDialogTitle(I18n.valueByKey("UPLOAD_DIALOG_TEXT"));
+        
+        // Fix #2402: NullPointerException on showOpenDialog()
+        // Fix #40547: ClassCastException on showOpenDialog()
+        try {
+            int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
             
-            if (ManagerUpload.this.getListPaths().getSelectedValuesList().isEmpty()) {
-                LOGGER.warn("Select directory(ies) to upload a file into");
+            if (returnVal != JFileChooser.APPROVE_OPTION) {
                 return;
             }
-
-            final JFileChooser filechooser = new JFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile());
-            filechooser.setDialogTitle(I18n.valueByKey("UPLOAD_DIALOG_TEXT"));
-            
-            // Fix #2402: NullPointerException on showOpenDialog()
-            // Fix #40547: ClassCastException on showOpenDialog()
-            try {
-                int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
                 
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    
-                    for (final Object path: ManagerUpload.this.getListPaths().getSelectedValuesList()) {
-                        
-                        new Thread(() -> {
-                            
-                            File file = filechooser.getSelectedFile();
-                            try {
-                                ManagerUpload.this.loader.setVisible(true);
-                                MediatorModel.model().getResourceAccess().uploadFile(path.toString(), shellURL.getText(), file);
-                            } catch (JSqlException e) {
-                                LOGGER.warn("Payload creation error: "+ e, e);
-                            } catch (IOException e) {
-                                LOGGER.warn("Posting file failed: "+ e, e);
-                            }
-                        }, "ThreadUpload").start();
-                        
-                    }
+            this.uploadFiles(shellURL, filechooser);
+        } catch (NullPointerException | ClassCastException ex) {
+            LOGGER.error(ex, ex);
+        }
+    }
+
+    private void uploadFiles(final JTextField shellURL, final JFileChooser filechooser) {
+        
+        for (final Object path: ManagerUpload.this.getListPaths().getSelectedValuesList()) {
+            
+            new Thread(() -> {
+                
+                File file = filechooser.getSelectedFile();
+                
+                try {
+                    ManagerUpload.this.loader.setVisible(true);
+                    MediatorModel.model().getResourceAccess().uploadFile(path.toString(), shellURL.getText(), file);
+                } catch (JSqlException e) {
+                    LOGGER.warn("Payload creation error: "+ e, e);
+                } catch (IOException e) {
+                    LOGGER.warn("Posting file failed: "+ e, e);
                 }
-            } catch (NullPointerException | ClassCastException ex) {
-                LOGGER.error(ex, ex);
-            }
-        });
+            }, "ThreadUpload").start();
+        }
     }
 }

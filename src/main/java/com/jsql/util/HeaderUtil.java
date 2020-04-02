@@ -44,6 +44,7 @@ public class HeaderUtil {
     private InjectionModel injectionModel;
     
     public HeaderUtil(InjectionModel injectionModel) {
+        
         this.injectionModel = injectionModel;
     }
 
@@ -57,12 +58,16 @@ public class HeaderUtil {
         
         String keyHeader = header.getKey().trim();
         String valueHeader = header.getValue().trim();
+        
         // Fix #2124: NullPointerException on addRequestProperty()
         try {
             if ("Cookie".equalsIgnoreCase(keyHeader)) {
+                
                 // TODO enclose value in "" => Cookie: a="a"; b="b"
                 connection.addRequestProperty(keyHeader, valueHeader);
+                
             } else {
+                
                 connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, StandardCharsets.UTF_8.name()));
             }
         } catch (NullPointerException | UnsupportedEncodingException e) {
@@ -77,15 +82,189 @@ public class HeaderUtil {
      * @param urlByUser the website to request
      * @throws IOException when an error occurs during connection
      */
-    @SuppressWarnings("unchecked")
     public void checkResponseHeader(HttpURLConnection connection, String urlByUser) throws IOException {
         
-        // TODO Extract
+        Map<String, String> mapResponse = HeaderUtil.getHttpHeaders(connection);
+
+        this.checkResponse(connection, mapResponse);
+        
+        // Request the web page to the server
+        Exception exception = null;
+        
+        StringBuilder pageSource = new StringBuilder();
+        
+        exception = this.readSource(connection, pageSource);
+        
+        // TODO Extract FormUtil
+        this.parseForms(connection, pageSource);
+        
+        // Csrf
+        // TODO Extract CsrfUtil
+        exception = this.parseCsrf(exception, pageSource);
+
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, urlByUser);
-        msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
+        msgHeader.put(Header.RESPONSE, mapResponse);
+        msgHeader.put(Header.SOURCE, pageSource.toString());
+        
+        // Inform the view about the log info
+        Request request = new Request();
+        request.setMessage(Interaction.MESSAGE_HEADER);
+        request.setParameters(msgHeader);
+        this.injectionModel.sendToViews(request);
+        
+        if (exception != null) {
+            throw new IOException(exception);
+        }
+    }
 
-        Map<String, String> mapResponse = (Map<String, String>) msgHeader.get(Header.RESPONSE);
+    private Exception parseCsrf(Exception exception, StringBuilder pageSource) {
+        
+        // TODO csrf in HTTP
+        Optional<SimpleEntry<String, String>> optionalTokenCsrf = Jsoup
+            .parse(pageSource.toString())
+            .select("input")
+            .select("[name=csrf_token], [name=csrfToken]")
+            .stream()
+            .findFirst()
+            .map(input -> new SimpleEntry<>(input.attr("name"), input.attr("value")));
+        
+        if (optionalTokenCsrf.isPresent()) {
+            
+            SimpleEntry<String, String> tokenCsrfFound = optionalTokenCsrf.get();
+            
+            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()) {
+                
+                LOGGER.debug("Found Csrf token "+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +" in HTML body, adding token to querystring, request and header");
+                this.injectionModel.getMediatorUtils().getConnectionUtil().setTokenCsrf(tokenCsrfFound);
+                
+            } else {
+                
+                LOGGER.warn("Found Csrf token '"+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +"' in HTML body");
+                exception = new IOException("please activate Csrf processing in Preferences");
+            }
+        }
+        
+        return exception;
+    }
+
+    private void parseForms(HttpURLConnection connection, StringBuilder pageSource) throws IOException {
+        
+        Elements elementsForm = Jsoup.parse(pageSource.toString()).select("form");
+        
+        StringBuilder result = new StringBuilder();
+        Map<Element, List<Element>> mapForms = new HashMap<>();
+        
+        for (Element form: elementsForm) {
+            
+            mapForms.put(form, new ArrayList<>());
+            
+            result.append("\n<form action=\"");
+            result.append(form.attr("action"));
+            result.append("\" method=\"");
+            result.append(form.attr("method"));
+            result.append("\" />");
+            
+            for (Element input: form.select("input")) {
+                
+                result.append("\n    <input name=\"");
+                result.append(input.attr("name"));
+                result.append("\" value=\"");
+                result.append(input.attr("value"));
+                result.append("\" />");
+                
+                mapForms.get(form).add(input);
+            }
+            
+            Collections.reverse(mapForms.get(form));
+        }
+        
+        if (elementsForm.isEmpty()) {
+            return;
+        }
+            
+        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isParsingForm()) {
+            
+            if (connection.getResponseCode() != 200) {
+                
+                LOGGER.trace("Found "+ elementsForm.size() +" ignored <form> in HTML body:"+ result);
+                LOGGER.info("WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
+                
+            } else {
+                
+                LOGGER.trace("Found "+ elementsForm.size() +" <form> in HTML body while status 200 Success:"+ result);
+            }
+        } else {
+            
+            LOGGER.debug("Found "+ elementsForm.size() +" <form> in HTML body, adding input(s) to requests:"+ result);
+            
+            for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
+                
+                for (Element input: form.getValue()) {
+                    
+                    if ("get".equalsIgnoreCase(form.getKey().attr("method"))) {
+                        
+                        this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
+                        
+                    } else if ("post".equalsIgnoreCase(form.getKey().attr("method"))) {
+                        
+                        this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
+                    }
+                }
+            }
+        }
+    }
+
+    private Exception readSource(HttpURLConnection connection, StringBuilder pageSource) throws IOException {
+        
+        Exception exception = null;
+        
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            
+            char[] buffer = new char[4096];
+            while (reader.read(buffer) > 0) {
+                pageSource.append(buffer);
+            }
+            
+        } catch (IOException errorInputStream) {
+            
+            exception = errorInputStream;
+            
+            InputStream errorStream = connection.getErrorStream();
+            
+            if (errorStream != null) {
+                
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream))) {
+                    
+                    char[] buffer = new char[4096];
+                    while (reader.read(buffer) > 0) {
+                        pageSource.append(buffer);
+                    }
+                    
+                } catch (Exception errorErrorStream) {
+                    exception = new IOException("Exception reading Error Stream", errorErrorStream);
+                }
+            }
+        }
+        
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
+            
+            if (exception != null) {
+                LOGGER.debug("Connection test disabled, ignoring response HTTP "+ connection.getResponseCode() +"...");
+            }
+            
+            exception = null;
+            
+        } else if (exception != null) {
+            
+            LOGGER.info("Please select option 'Disable connection test' and run again");
+        }
+        
+        return exception;
+    }
+
+    private void checkResponse(HttpURLConnection connection, Map<String, String> mapResponse) throws IOException {
+        
         if (
             Pattern.matches(REGEX_HTTP_STATUS, Integer.toString(connection.getResponseCode()))
             && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
@@ -131,12 +310,15 @@ public class HeaderUtil {
             );
             
         } else if (Pattern.matches("1\\d\\d", Integer.toString(connection.getResponseCode()))) {
+            
             LOGGER.trace(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Informational");
             
         } else if (Pattern.matches("2\\d\\d", Integer.toString(connection.getResponseCode()))) {
+            
             LOGGER.debug(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Success");
             
         } else if (Pattern.matches("3\\d\\d", Integer.toString(connection.getResponseCode()))) {
+            
             LOGGER.warn(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Redirection");
             
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()) {
@@ -146,141 +328,16 @@ public class HeaderUtil {
             }
             
         } else if (Pattern.matches(REGEX_HTTP_STATUS, Integer.toString(connection.getResponseCode()))) {
+            
             LOGGER.warn(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Client Error");
             
         } else if (Pattern.matches("5\\d\\d", Integer.toString(connection.getResponseCode()))) {
+            
             LOGGER.warn(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Server Error");
             
         } else {
+            
             LOGGER.trace(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Unknown");
-            
-        }
-        
-        // Request the web page to the server
-        Exception exception = null;
-        
-        StringBuilder pageSource = new StringBuilder();
-        
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            
-            char[] buffer = new char[4096];
-            while (reader.read(buffer) > 0) {
-                pageSource.append(buffer);
-            }
-        } catch (IOException errorInputStream) {
-            
-            exception = errorInputStream;
-            
-            InputStream errorStream = connection.getErrorStream();
-            
-            if (errorStream != null) {
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream))) {
-                    char[] buffer = new char[4096];
-                    while (reader.read(buffer) > 0) {
-                        pageSource.append(buffer);
-                    }
-                    
-                } catch (Exception errorErrorStream) {
-                    exception = new IOException("Exception reading Error Stream", errorErrorStream);
-                }
-            }
-        }
-        
-        // Connection test
-        
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
-            if (exception != null) {
-                LOGGER.debug("Connection test disabled, ignoring response HTTP "+ connection.getResponseCode() +"...");
-            }
-            exception = null;
-        } else if (exception != null) {
-            LOGGER.info("Please select option 'Disable connection test' and run again");
-        }
-        
-        // TODO Extract FormUtil
-        Elements elementsForm = Jsoup.parse(pageSource.toString()).select("form");
-        
-        StringBuilder result = new StringBuilder();
-        
-        Map<Element, List<Element>> mapForms = new HashMap<>();
-        for (Element form: elementsForm) {
-            mapForms.put(form, new ArrayList<>());
-            
-            result.append("\n<form action=\"");
-            result.append(form.attr("action"));
-            result.append("\" method=\"");
-            result.append(form.attr("method"));
-            result.append("\" />");
-            
-            for (Element input: form.select("input")) {
-                result.append("\n    <input name=\"");
-                result.append(input.attr("name"));
-                result.append("\" value=\"");
-                result.append(input.attr("value"));
-                result.append("\" />");
-                
-                mapForms.get(form).add(input);
-            }
-            
-            Collections.reverse(mapForms.get(form));
-            
-        }
-        
-        if (!elementsForm.isEmpty()) {
-            if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isParsingForm()) {
-                if (connection.getResponseCode() != 200) {
-                    LOGGER.trace("Found "+ elementsForm.size() +" ignored <form> in HTML body:"+ result);
-                    LOGGER.info("WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
-                } else {
-                    LOGGER.trace("Found "+ elementsForm.size() +" <form> in HTML body while status 200 Success:"+ result);
-                }
-            } else {
-                LOGGER.debug("Found "+ elementsForm.size() +" <form> in HTML body, adding input(s) to requests:"+ result);
-                
-                for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
-                    for (Element input: form.getValue()) {
-                        if ("get".equalsIgnoreCase(form.getKey().attr("method"))) {
-                            this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
-                        } else if ("post".equalsIgnoreCase(form.getKey().attr("method"))) {
-                            this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
-                        }
-                    }
-                }
-            }
-        }
-        
-        // Csrf
-        // TODO Extract CsrfUtil
-        Optional<SimpleEntry<String, String>> optionalTokenCsrf = Jsoup
-        .parse(pageSource.toString())
-        .select("input")
-        .select("[name=csrf_token], [name=csrfToken]")
-        .stream()
-        .findFirst()
-        .map(input -> new SimpleEntry<>(input.attr("name"), input.attr("value")));
-        
-        if (optionalTokenCsrf.isPresent()) {
-            SimpleEntry<String, String> tokenCsrfFound = optionalTokenCsrf.get();
-            
-            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()) {
-                LOGGER.debug("Found Csrf token "+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +" in HTML body, adding token to querystring, request and header");
-                this.injectionModel.getMediatorUtils().getConnectionUtil().setTokenCsrf(tokenCsrfFound);
-            } else {
-                LOGGER.warn("Found Csrf token '"+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +"' in HTML body");
-                exception = new IOException("please activate Csrf processing in Preferences");
-            }
-        }
-
-        msgHeader.put(Header.SOURCE, pageSource.toString());
-        
-        // Inform the view about the log info
-        Request request = new Request();
-        request.setMessage(Interaction.MESSAGE_HEADER);
-        request.setParameters(msgHeader);
-        this.injectionModel.sendToViews(request);
-        
-        if (exception != null) {
-            throw new IOException(exception);
         }
     }
     
@@ -294,10 +351,10 @@ public class HeaderUtil {
         Map<String, String> mapHeaders = new HashMap<>();
         
         for (Map.Entry<String, List<String>> entries : connection.getHeaderFields().entrySet()) {
+            
             mapHeaders.put(entries.getKey() == null ? "Status code" : entries.getKey(), String.join(",", entries.getValue()));
         }
 
         return mapHeaders;
     }
-
 }

@@ -156,20 +156,24 @@ public class DataAccess {
         if (StringUtils.isEmpty(resultToParse)) {
             this.injectionModel.sendResponseFromSite("Incorrect database informations", sourcePage[0].trim());
         }
-
-        // Check if parsing is failing
+        
         try {
-            this.injectionModel.setDatabaseInfos(
-                resultToParse.split(ENCLOSE_VALUE_RGX)[0].replaceAll("\\s+"," "),
-                resultToParse.split(ENCLOSE_VALUE_RGX)[1],
-                resultToParse.split(ENCLOSE_VALUE_RGX)[2]
-            );
+            String versionDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[0].replaceAll("\\s+"," ");
+            String nameDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[1];
+            String username = resultToParse.split(ENCLOSE_VALUE_RGX)[2];
+            
+            String infos =
+                "Database ["+ nameDatabase +"] "
+                + "on "+ this.injectionModel.getMediatorVendor().getVendor() +" ["+ versionDatabase +"] "
+                + "for user ["+ username +"]";
+            
+            LOGGER.debug(infos);
+            
         } catch (ArrayIndexOutOfBoundsException e) {
+            
             LOGGER.warn("Incorrect or incomplete data: "+ resultToParse, e);
             LOGGER.info("Processing but failure is expected...");
         }
-        
-        LOGGER.debug(this.injectionModel.getDatabaseInfos());
     }
     
     /**

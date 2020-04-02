@@ -92,8 +92,10 @@ public class ConnectionUtil {
     public void testConnection() throws InjectionFailureException {
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCookies()) {
+            
             CookieManager cookieManager = new CookieManager();
             CookieHandler.setDefault(cookieManager);
+            
         } else {
             CookieHandler.setDefault(null);
         }
@@ -104,18 +106,18 @@ public class ConnectionUtil {
             if (this.injectionModel.getMediatorUtils().getAuthenticationUtil().isKerberos()) {
                 String loginKerberos =
                     Pattern
-                        .compile("(?s)\\{.*")
-                        .matcher(
-                            StringUtils.join(
-                                Files.readAllLines(
-                                    Paths.get(this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPathKerberosLogin()),
-                                    Charset.defaultCharset()
-                                ),
-                                ""
-                            )
+                    .compile("(?s)\\{.*")
+                    .matcher(
+                        StringUtils.join(
+                            Files.readAllLines(
+                                Paths.get(this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPathKerberosLogin()),
+                                Charset.defaultCharset()
+                            ),
+                            ""
                         )
-                        .replaceAll("")
-                        .trim();
+                    )
+                    .replaceAll("")
+                    .trim();
                 
                 SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(loginKerberos);
                 connection = spnego.connect(new URL(this.getUrlByUser()));
@@ -145,6 +147,7 @@ public class ConnectionUtil {
             this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(connection, this.getUrlByUser().replace(InjectionModel.STAR, ""));
             
             // Calling connection.disconnect() is not required, more calls will happen
+            
         } catch (Exception e) {
             
             String message = Optional.ofNullable(e.getMessage()).orElse("");
@@ -189,6 +192,7 @@ public class ConnectionUtil {
                 pageSource = ConnectionUtil.getSource(connection);
             }
         } finally {
+            
             msgHeader.put(Header.SOURCE, pageSource);
             
             // Inform the view about the log infos
@@ -226,12 +230,15 @@ public class ConnectionUtil {
             while (reader.read(buffer) > 0) {
                 pageSource.append(buffer);
             }
+            
         } catch (IOException errorInputStream) {
             
             InputStream errorStream = connection.getErrorStream();
             
             if (errorStream != null) {
+                
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream))) {
+                    
                     char[] buffer = new char[4096];
                     while (reader.read(buffer) > 0) {
                         pageSource.append(buffer);
@@ -255,7 +262,9 @@ public class ConnectionUtil {
         
         // Add a default or custom method : check whether we are running on a buggy JRE
         try {
+            
             connection.setRequestMethod(customMethod);
+            
         } catch (final ProtocolException pe) {
             
             // Ignore
@@ -279,9 +288,12 @@ public class ConnectionUtil {
                 } else {
                     methodField = parentClass.getDeclaredField("method");
                 }
+                
                 methodField.setAccessible(true);
                 methodField.set(connection, customMethod);
+                
             } catch (Exception e) {
+                
                 LOGGER.warn("Custom Request method definition failed, forcing method GET", e);
                 connection.setRequestMethod("GET");
             }
@@ -300,9 +312,13 @@ public class ConnectionUtil {
         boolean connectionIsWrapped = true;
         
         Field privateFieldURLConnection = null;
+        
         try {
+            
             privateFieldURLConnection = classConnection.getDeclaredField("connection");
+            
         } catch (Exception e) {
+            
             // Ignore Fix
             connectionIsWrapped = false;
 
@@ -312,6 +328,7 @@ public class ConnectionUtil {
         }
         
         if (connectionIsWrapped) {
+            
             try {
                 privateFieldURLConnection.setAccessible(true);
                 
@@ -330,6 +347,7 @@ public class ConnectionUtil {
                 Field privateFieldReadTimeout = classURLConnectionPrivate.getDeclaredField("readTimeout");
                 privateFieldReadTimeout.setAccessible(true);
                 privateFieldReadTimeout.setInt(privateURLConnection, this.getTimeout());
+                
             } catch (Exception e) {
                 LOGGER.warn("Fix jcifs timeout failed: "+ e, e);
             }

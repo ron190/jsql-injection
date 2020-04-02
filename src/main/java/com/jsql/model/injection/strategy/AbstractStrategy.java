@@ -22,6 +22,12 @@ public abstract class AbstractStrategy {
      */
     protected String visibleIndex;
     
+    /**
+     * HTML body of page successfully responding to
+     * multiple fields selection (select 1,2,3,..).
+     */
+    protected String sourceIndexesFound = "";
+    
     protected InjectionModel injectionModel;
     
     public AbstractStrategy(InjectionModel injectionModel) {
@@ -113,5 +119,13 @@ public abstract class AbstractStrategy {
 
     public void setVisibleIndex(String visibleIndex) {
         this.visibleIndex = visibleIndex;
+    }
+
+    public String getSourceIndexesFound() {
+        return this.sourceIndexesFound;
+    }
+
+    public void setSourceIndexesFound(String sourceIndexesFound) {
+        this.sourceIndexesFound = sourceIndexesFound;
     }
 }

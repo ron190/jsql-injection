@@ -46,10 +46,12 @@ public abstract class AbstractModelObservable extends Observable {
      * @return source code of current page
      */
     public String injectWithoutIndex(String dataInjection) {
+        
         return this.inject(dataInjection, false);
     }
 
     public String injectWithIndexes(String dataInjection) {
+        
         return this.inject(dataInjection, true);
     }
 
@@ -61,8 +63,11 @@ public abstract class AbstractModelObservable extends Observable {
         
         // Display model thread name in logs instead of the observer name
         String nameThread = Thread.currentThread().getName();
+        
         SwingUtilities.invokeLater(() -> {
+            
             Thread.currentThread().setName("from " + nameThread);
+            
             AbstractModelObservable.this.setChanged();
             AbstractModelObservable.this.notifyObservers(interaction);
         });
@@ -77,5 +82,4 @@ public abstract class AbstractModelObservable extends Observable {
     public void setIsStoppedByUser(boolean processStopped) {
         this.isStoppedByUser = processStopped;
     }
-    
 }

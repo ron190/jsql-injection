@@ -27,25 +27,31 @@ public class HashBruter extends Bruter {
             
             if (this.found || this.done) {
                 break;
-            } else {
-                
-                while (this.paused) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        LOGGER.error("Interruption while sleeping for brute force", e);
-                        Thread.currentThread().interrupt();
-                    }
-                }
+            }
+            
+            while (this.paused) {
                 
                 try {
-                    this.generateAllPossibleCombinations("", size);
-                } catch (NoSuchAlgorithmException e) {
-                    LOGGER.error("Coding algorithm not found", e);
+                    Thread.sleep(500);
+                    
                 } catch (InterruptedException e) {
-                    LOGGER.error("Interruption while generating brute force combinations", e);
+                    
+                    LOGGER.error("Interruption while sleeping for brute force", e);
                     Thread.currentThread().interrupt();
                 }
+            }
+            
+            try {
+                this.generateAllPossibleCombinations("", size);
+                
+            } catch (NoSuchAlgorithmException e) {
+                
+                LOGGER.error("Coding algorithm not found", e);
+                
+            } catch (InterruptedException e) {
+                
+                LOGGER.error("Interruption while generating brute force combinations", e);
+                Thread.currentThread().interrupt();
             }
         }
         
@@ -63,12 +69,12 @@ public class HashBruter extends Bruter {
             if (baseString.length() == length) {
                 
                 switch (this.type.toLowerCase()) {
-                case "adler32": this.generatedHash = Adler32.generateAdler32(baseString); break;
+                case "adler32": this.generatedHash = HashUtil.toAdler32(baseString); break;
                 case "crc16":   this.generatedHash = Crc16.generateCRC16(baseString); break;
                 case "crc32":   this.generatedHash = HashUtil.toCrc32(baseString); break;
                 case "crc64":   this.generatedHash = Crc64.generateCRC64(baseString.getBytes()); break;
                 case "mysql":   this.generatedHash = HashUtil.toMySql(baseString); break;
-                case "md4":     this.generatedHash = MD4.generateMd4(baseString); break;
+                case "md4":     this.generatedHash = HashUtil.toMd4(baseString); break;
                 default:        this.generatedHash = HashUtil.toHash(this.type, baseString);
                 }
                 
@@ -81,6 +87,7 @@ public class HashBruter extends Bruter {
                 }
                 
                 this.count++;
+                
             } else if (baseString.length() < length) {
                 
                 for (String element : this.characters) {

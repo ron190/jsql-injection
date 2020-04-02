@@ -43,10 +43,10 @@ public class ActionStart implements ActionListener {
     
     protected void startInjection() {
         
-        int option = 0;
+        int option = JOptionPane.OK_OPTION;
         
         // Ask the user confirmation if injection already built
-        if (MediatorModel.model().isInjectionAlreadyBuilt()) {
+        if (MediatorModel.model().shouldErasePreviousInjection()) {
             
             // Fix #33930: ClassCastException on showConfirmDialog()
             // Implementation by sun.awt.image
@@ -63,7 +63,7 @@ public class ActionStart implements ActionListener {
         }
 
         // Then start injection
-        if (!MediatorModel.model().isInjectionAlreadyBuilt() || option == JOptionPane.OK_OPTION) {
+        if (option == JOptionPane.OK_OPTION) {
             
             this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setToolTipText(I18n.valueByKey("BUTTON_STOP_TOOLTIP"));
             this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setInjectionRunning();
@@ -74,7 +74,7 @@ public class ActionStart implements ActionListener {
             requests.setMessage(Interaction.RESET_INTERFACE);
             MediatorModel.model().sendToViews(requests);
 
-            MediatorModel.model().controlInput(
+            MediatorModel.model().getMediatorUtils().getParameterUtil().controlInput(
                 this.panelAddressBar.getTextFieldAddress().getText().trim(),
                 this.panelAddressBar.getTextFieldRequest().getText().trim(),
                 this.panelAddressBar.getTextFieldHeader().getText().trim(),

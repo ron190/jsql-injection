@@ -14,5 +14,4 @@ public class ThreadFactoryCallable implements ThreadFactory {
     public Thread newThread(Runnable runnable) {
         return new Thread(runnable, this.nameThread);
     }
-    
 }

@@ -64,6 +64,7 @@ public class TamperingUtil {
     
     
     private static String eval(String sqlQuery, String jsTampering) {
+        
         Object resultSqlTampered = null;
         
         try {
@@ -76,10 +77,14 @@ public class TamperingUtil {
             
             Invocable nashornInvocable = (Invocable) nashornEngine;
             resultSqlTampered = nashornInvocable.invokeFunction("tampering", sqlQuery);
+            
         } catch (ScriptException e) {
+            
             LOGGER.warn("Tampering context contains errors: " + e, e);
             resultSqlTampered = sqlQuery;
+            
         } catch (NoSuchMethodException e) {
+            
             LOGGER.warn("Tampering context is not properly defined: " + e, e);
             LOGGER.warn("Minimal tampering context is: var tampering = function(sql) {return sql}");
             resultSqlTampered = sqlQuery;
@@ -88,20 +93,19 @@ public class TamperingUtil {
         return resultSqlTampered.toString();
     }
     
-    public String tamper(String in) {
-        
-        String sqlQueryDefault = in;
+    public String tamper(String sqlQueryDefault) {
         
         String lead = null;
         String sqlQuery = null;
         String trail = null;
         
+        Matcher matcherSql = Pattern.compile("(?s)(.*<tampering>)(.*)(</tampering>.*)").matcher(sqlQueryDefault);
         
-        Matcher m = Pattern.compile("(?s)(.*SlQqLs)(.*)(lSqQsL.*)").matcher(sqlQueryDefault);
-        if (m.find()) {
-           lead = m.group(1);
-           sqlQuery = m.group(2);
-           trail = m.group(3);
+        if (matcherSql.find()) {
+            
+           lead = matcherSql.group(1);
+           sqlQuery = matcherSql.group(2);
+           trail = matcherSql.group(3);
         }
         
         // Empty when checking character insertion
@@ -127,12 +131,15 @@ public class TamperingUtil {
         
         // Dependency to: EQUAL_TO_LIKE
         if (this.isSpaceToDashComment) {
+            
             sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_DASH_COMMENT.instance().getJavascript());
             
         } else if (this.isSpaceToMultilineComment) {
+            
             sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getJavascript());
             
         } else if (this.isSpaceToSharpComment) {
+            
             sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_SHARP_COMMENT.instance().getJavascript());
         }
         
@@ -156,8 +163,8 @@ public class TamperingUtil {
         }
         
         // Problème si le tag contient des caractères spéciaux
-        sqlQuery = sqlQuery.replaceAll("(?i)SlQqLs", "");
-        sqlQuery = sqlQuery.replaceAll("(?i)lSqQsL", "");
+        sqlQuery = sqlQuery.replaceAll("(?i)<tampering>", "");
+        sqlQuery = sqlQuery.replaceAll("(?i)</tampering>", "");
         
         return sqlQuery;
     }

@@ -54,6 +54,7 @@ public class MediatorVendor {
     private List<Vendor> vendors;
     
     public MediatorVendor(InjectionModel injectionModel) {
+        
         this.injectionModel = injectionModel;
         
         this.auto = new Vendor("Database auto", null);
@@ -86,6 +87,7 @@ public class MediatorVendor {
                 resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
                 
                 for (String columnNameAndType: resultTmp.split(",")) {
+                    
                     // Some recent SQLite use tabulation character as a separator => split() by any white space \s
                     String columnName = columnNameAndType.trim().split("\\s")[0];
                     
@@ -93,6 +95,7 @@ public class MediatorVendor {
                     columnName = StringUtils.strip(columnName, "`");
                     
                     if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
+                        
                         resultSQLite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
                     }
                 }

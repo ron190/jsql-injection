@@ -3,6 +3,7 @@ package com.jsql.model.injection.strategy;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import org.apache.log4j.Logger;
 
@@ -45,6 +46,45 @@ public class MediatorStrategy {
         this.normal = new StrategyInjectionNormal(this.injectionModel);
         
         this.strategies = Arrays.asList(this.time, this.blind, this.error, this.normal);
+    }
+    
+    /**
+     * Build correct data for GET, POST, HEADER.
+     * Each can be either raw data (no injection), SQL query without index requirement,
+     * or SQL query with index requirement.
+     * @param dataType Current method to build
+     * @param urlBase Beginning of the request data
+     * @param isUsingIndex False if request doesn't use indexes
+     * @param sqlTrail SQL statement
+     * @return Final data
+     */
+    public String buildURL(String urlBase, boolean isUsingIndex, String sqlTrail) {
+        
+        if (urlBase.contains(InjectionModel.STAR)) {
+            
+            if (!isUsingIndex) {
+                
+                return urlBase.replace(InjectionModel.STAR, sqlTrail);
+                
+            } else {
+                
+                return
+                    urlBase.replace(
+                        InjectionModel.STAR,
+                        this.injectionModel.getIndexesInUrl().replaceAll(
+                            "1337" + this.normal.getVisibleIndex() + "7331",
+                            /**
+                             * Oracle column often contains $, which is reserved for regex.
+                             * => need to be escape with quoteReplacement()
+                             */
+                            Matcher.quoteReplacement(sqlTrail)
+                        )
+                    )
+                ;
+            }
+        }
+        
+        return urlBase;
     }
     
     /**

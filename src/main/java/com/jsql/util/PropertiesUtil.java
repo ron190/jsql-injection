@@ -17,32 +17,22 @@ public class PropertiesUtil {
     
     public PropertiesUtil() {
         
-        InputStream input = null;
+        String filename = "config.properties";
 
-        try {
-            String filename = "config.properties";
-            input = PropertiesUtil.class.getClassLoader().getResourceAsStream(filename);
+        try (InputStream input = PropertiesUtil.class.getClassLoader().getResourceAsStream(filename)) {
             
             if (input == null) {
+                
                 LOGGER.warn("Properties file "+ filename +" not found");
                 return;
             }
 
             // load a properties file from class path, inside static method
             this.getProperties().load(input);
+            
         } catch (IOException e) {
             
             LOGGER.error(e, e);
-            
-        } finally {
-            
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    LOGGER.error(e, e);
-                }
-            }
         }
     }
 

@@ -44,21 +44,15 @@ public class CertificateUtil {
                 }
                 
                 @Override
-                public void checkClientTrusted(
-                    X509Certificate[] certs, String authType
-                ) {
+                public void checkClientTrusted(X509Certificate[] certs, String authType) {
                     // Ignore
                 }
                 
                 @Override
-                public void checkServerTrusted(
-                    X509Certificate[] certs, String authType
-                ) {
+                public void checkServerTrusted(X509Certificate[] certs, String authType) {
                     // Ignore
                 }
-                
             }
-            
         };
 
         // Install the all-trusting trust manager
@@ -66,6 +60,7 @@ public class CertificateUtil {
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            
         } catch (Exception e) {
             LOGGER.warn("Error ignoring untrusted SSL: "+ e, e);
         }
@@ -73,5 +68,4 @@ public class CertificateUtil {
         // Ignore CertificateException: No subject alternative names present
         HttpsURLConnection.setDefaultHostnameVerifier((String hostname, SSLSession sslSession) -> true);
     }
-    
 }

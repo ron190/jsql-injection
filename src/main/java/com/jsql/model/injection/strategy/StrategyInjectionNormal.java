@@ -49,7 +49,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         this.injectionModel.setIndexesInUrl(new SuspendableGetIndexes(this.injectionModel).run());
 
         // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body
-        this.visibleIndex = this.getVisibleIndex(this.injectionModel.getSrcSuccess());
+        this.visibleIndex = this.getVisibleIndex(this.sourceIndexesFound);
         
         this.isApplicable =
             StringUtils.isNotEmpty(this.injectionModel.getIndexesInUrl())
@@ -172,10 +172,6 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         return this.performanceLength;
     }
     
-    public void setPerformanceLength(String performanceLength) {
-        this.performanceLength = performanceLength;
-    }
-    
     @Override
     public String getVisibleIndex() {
         return this.visibleIndex;
@@ -190,5 +186,4 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     public String getName() {
         return "Normal";
     }
-    
 }

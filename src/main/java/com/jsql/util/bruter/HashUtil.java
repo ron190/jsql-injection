@@ -14,7 +14,12 @@ public class HashUtil {
     }
     
     public static String toAdler32(String text) {
-        return Adler32.generateAdler32(text);
+
+        byte[] bytes = text.getBytes();
+        Checksum checksum = new java.util.zip.Adler32();
+        checksum.update(bytes,0,bytes.length);
+        
+        return String.valueOf(checksum.getValue());
     }
     
     public static String toCrc16(String text) {
