@@ -119,7 +119,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             vendor = initializeVendor(vendor);
         }
         
-        Request requestSetVendor = new Request();
+        Request requestSetVendor = new Request(); 
         requestSetVendor.setMessage(Interaction.SET_VENDOR);
         requestSetVendor.setParameters(vendor);
         this.injectionModel.sendToViews(requestSetVendor);
