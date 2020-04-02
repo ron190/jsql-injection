@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 
 @SuppressWarnings("serial")
 public class LightScrollPaneShell extends LightScrollPane {
@@ -14,7 +14,7 @@ public class LightScrollPaneShell extends LightScrollPane {
         
         super(component);
         
-        this.colorThumb = HelperUi.COLOR_FOCUS_GAINED;
+        this.colorThumb = UiUtil.COLOR_FOCUS_GAINED;
         this.scrollBarAlphaRollover = 175;
         this.scrollBarAlpha = 100;
         

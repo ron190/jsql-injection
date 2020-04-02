@@ -21,7 +21,6 @@ import com.jsql.view.interaction.InteractionCommand;
  */
 public class MarkErrorVulnerable implements InteractionCommand {
     
-    private Map<Header, Object> mapHeader;
     private int indexMethodError;
     private InjectionModel injectionModel;
     
@@ -31,13 +30,14 @@ public class MarkErrorVulnerable implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MarkErrorVulnerable(Object[] interactionParams) {
         
-        this.mapHeader = (Map<Header, Object>) interactionParams[0];
-        this.indexMethodError = (int) this.mapHeader.get(Header.SOURCE);
-        this.injectionModel = (InjectionModel) this.mapHeader.get(Header.INJECTION_MODEL);
+        Map<Header, Object> mapHeader = (Map<Header, Object>) interactionParams[0];
+        this.indexMethodError = (int) mapHeader.get(Header.SOURCE);
+        this.injectionModel = (InjectionModel) mapHeader.get(Header.INJECTION_MODEL);
     }
 
     @Override
     public void execute() {
+        
         LOGGER.info(InteractionCommand.addGreenColor(this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(this.indexMethodError).getName()));
     }
 }

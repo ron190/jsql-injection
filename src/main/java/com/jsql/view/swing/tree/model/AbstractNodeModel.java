@@ -24,13 +24,13 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.StringUtil;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.ActionLoadStop;
 import com.jsql.view.swing.tree.ActionPauseUnpause;
@@ -162,18 +162,18 @@ public abstract class AbstractNodeModel {
 
     private void displayPopupMenu(MouseEvent e, JPopupMenuCustomExtract popupMenu) {
         
-        popupMenu.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
+        popupMenu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
 
         popupMenu.show(
             MediatorGui.treeDatabase(),
-            ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+            ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
             ? e.getX() - popupMenu.getWidth()
             : e.getX(),
             e.getY()
         );
         
         popupMenu.setLocation(
-            ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+            ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
             ? e.getXOnScreen() - popupMenu.getWidth()
             : e.getXOnScreen(),
             e.getYOnScreen()
@@ -187,21 +187,21 @@ public abstract class AbstractNodeModel {
         String textReload;
         
         if (this instanceof NodeModelDatabase) {
-            textReload = I18nView.valueByKey("RELOAD_TABLES");
+            textReload = I18nViewUtil.valueByKey("RELOAD_TABLES");
         } else if (this instanceof NodeModelTable) {
-            textReload = I18nView.valueByKey("RELOAD_COLUMNS");
+            textReload = I18nViewUtil.valueByKey("RELOAD_COLUMNS");
         } else {
             textReload = "?";
         }
         
         JMenuItem menuItemReload = new JMenuItem(textReload);
-        menuItemReload.setIcon(HelperUi.ICON_EMPTY);
+        menuItemReload.setIcon(UiUtil.ICON_EMPTY);
 
         menuItemReload.setEnabled(!this.isRunning);
         menuItemReload.addActionListener(actionEvent -> AbstractNodeModel.this.runAction());
         
-        JMenuItem menuItemRename = new JMenuItem(I18nView.valueByKey("RENAME_NODE"));
-        menuItemRename.setIcon(HelperUi.ICON_EMPTY);
+        JMenuItem menuItemRename = new JMenuItem(I18nViewUtil.valueByKey("RENAME_NODE"));
+        menuItemRename.setIcon(UiUtil.ICON_EMPTY);
         
         menuItemRename.setEnabled(!this.isRunning);
         menuItemRename.addActionListener(actionEvent -> {
@@ -225,11 +225,11 @@ public abstract class AbstractNodeModel {
         
         JMenuItem menuItemLoad = new JMenuItem(
             this.isRunning
-                ? I18nView.valueByKey("THREAD_STOP")
-                : I18nView.valueByKey("THREAD_LOAD"),
+                ? I18nViewUtil.valueByKey("THREAD_STOP")
+                : I18nViewUtil.valueByKey("THREAD_LOAD"),
             'o'
         );
-        menuItemLoad.setIcon(HelperUi.ICON_EMPTY);
+        menuItemLoad.setIcon(UiUtil.ICON_EMPTY);
         
         if (!this.isContainingSelection && !this.isRunning) {
             menuItemLoad.setEnabled(false);
@@ -239,11 +239,11 @@ public abstract class AbstractNodeModel {
         JMenuItem menuItemPause = new JMenuItem(
             // Report #133: ignore if thread not found
             suspendableTask != null && suspendableTask.isPaused()
-                ? I18nView.valueByKey("THREAD_RESUME")
-                : I18nView.valueByKey("THREAD_PAUSE"),
+                ? I18nViewUtil.valueByKey("THREAD_RESUME")
+                : I18nViewUtil.valueByKey("THREAD_PAUSE"),
             's'
         );
-        menuItemPause.setIcon(HelperUi.ICON_EMPTY);
+        menuItemPause.setIcon(UiUtil.ICON_EMPTY);
 
         if (!this.isRunning) {
             menuItemPause.setEnabled(false);
@@ -302,7 +302,7 @@ public abstract class AbstractNodeModel {
 
             AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
             if (suspendableTask != null && suspendableTask.isPaused()) {
-                ImageIcon animatedGIFPaused = new ImageOverlap(HelperUi.PATH_PROGRESSBAR, HelperUi.PATH_PAUSE);
+                ImageIcon animatedGIFPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(
                     new ImageObserverAnimated(
                         MediatorGui.treeDatabase(),
@@ -323,11 +323,11 @@ public abstract class AbstractNodeModel {
 
         if (isSelected) {
             if (hasFocus) {
-                this.panelNode.getLabel().setBackground(HelperUi.COLOR_FOCUS_GAINED);
-                this.panelNode.getLabel().setBorder(HelperUi.BORDER_FOCUS_GAINED);
+                this.panelNode.getLabel().setBackground(UiUtil.COLOR_FOCUS_GAINED);
+                this.panelNode.getLabel().setBorder(UiUtil.BORDER_FOCUS_GAINED);
             } else {
-                this.panelNode.getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
-                this.panelNode.getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
+                this.panelNode.getLabel().setBackground(UiUtil.COLOR_FOCUS_LOST);
+                this.panelNode.getLabel().setBorder(UiUtil.BORDER_FOCUS_LOST);
             }
         } else {
             this.panelNode.getLabel().setBackground(Color.WHITE);
@@ -338,9 +338,9 @@ public abstract class AbstractNodeModel {
     private void initializeEditable(boolean isEdited) {
         
         if (StringUtil.isUtf8(this.getElementDatabase().toString())) {
-            this.panelNode.getEditable().setFont(HelperUi.FONT_UBUNTU_REGULAR);
+            this.panelNode.getEditable().setFont(UiUtil.FONT_UBUNTU_REGULAR);
         } else {
-            this.panelNode.getEditable().setFont(HelperUi.FONT_SEGOE);
+            this.panelNode.getEditable().setFont(UiUtil.FONT_SEGOE);
         }
         
         this.panelNode.getEditable().setText(StringUtil.detectUtf8(this.getElementDatabase().toString()));

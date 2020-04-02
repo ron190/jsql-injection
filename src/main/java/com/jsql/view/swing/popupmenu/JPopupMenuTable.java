@@ -23,9 +23,9 @@ import javax.swing.KeyStroke;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import com.jsql.i18n.I18n;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.i18n.I18nUtil;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * Default popup menu and shortcuts for a table.
@@ -50,10 +50,10 @@ public class JPopupMenuTable extends JPopupMenu {
 
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(new ActionCopy());
-        copyItem.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
-        I18nView.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
+        copyItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_COPY"));
+        I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
         copyItem.setMnemonic('C');
-        copyItem.setIcon(HelperUi.ICON_EMPTY);
+        copyItem.setIcon(UiUtil.ICON_EMPTY);
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         this.add(copyItem);
 
@@ -61,10 +61,10 @@ public class JPopupMenuTable extends JPopupMenu {
 
         JMenuItem selectAllItem = new JMenuItem();
         selectAllItem.setAction(new ActionSelectAll());
-        selectAllItem.setText(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
-        I18nView.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
+        selectAllItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"));
+        I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
         selectAllItem.setMnemonic('A');
-        selectAllItem.setIcon(HelperUi.ICON_EMPTY);
+        selectAllItem.setIcon(UiUtil.ICON_EMPTY);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         this.add(selectAllItem);
 
@@ -101,7 +101,7 @@ public class JPopupMenuTable extends JPopupMenu {
         search.setAction(actionShowSearchTable);
         search.setText("Search...");
         search.setMnemonic('S');
-        search.setIcon(HelperUi.ICON_EMPTY);
+        search.setIcon(UiUtil.ICON_EMPTY);
         search.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
         this.add(search);
     }

@@ -27,8 +27,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tree.CellEditorNode;
@@ -61,9 +61,9 @@ public class ManagerDatabase extends JPanel implements Manager {
     private void initializeTree() {
         
         // First node in tree
-        AbstractNodeModel nodeModelEmpty = new NodeModelEmpty(I18nView.valueByKey("DATABASE_EMPTY"));
+        AbstractNodeModel nodeModelEmpty = new NodeModelEmpty(I18nViewUtil.valueByKey("DATABASE_EMPTY"));
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(nodeModelEmpty);
-        I18nView.addComponentForKey("DATABASE_EMPTY", nodeModelEmpty);
+        I18nViewUtil.addComponentForKey("DATABASE_EMPTY", nodeModelEmpty);
         
         this.tree = new TreeDatabase(root);
         MediatorGui.register(this.tree);
@@ -106,8 +106,8 @@ public class ManagerDatabase extends JPanel implements Manager {
                         AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
                         if (nodeModel != null && nodeModel.getPanel() != null && !nodeModel.isRunning()) {
                             
-                            nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
-                            nodeModel.getPanel().getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
+                            nodeModel.getPanel().getLabel().setBackground(UiUtil.COLOR_FOCUS_LOST);
+                            nodeModel.getPanel().getLabel().setBorder(UiUtil.BORDER_FOCUS_LOST);
                             nodeModel.setIsEdited(true);
                         }
                     }
@@ -152,8 +152,8 @@ public class ManagerDatabase extends JPanel implements Manager {
                     AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
                     
                     if (nodeModel != null && nodeModel.getPanel() != null) {
-                        nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
-                        nodeModel.getPanel().getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
+                        nodeModel.getPanel().getLabel().setBackground(UiUtil.COLOR_FOCUS_LOST);
+                        nodeModel.getPanel().getLabel().setBorder(UiUtil.BORDER_FOCUS_LOST);
                     }
                 }
             }
@@ -168,8 +168,8 @@ public class ManagerDatabase extends JPanel implements Manager {
                     AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
                     
                     if (nodeModel != null && nodeModel.getPanel() != null) {
-                        nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_FOCUS_GAINED);
-                        nodeModel.getPanel().getLabel().setBorder(HelperUi.BORDER_FOCUS_GAINED);
+                        nodeModel.getPanel().getLabel().setBackground(UiUtil.COLOR_FOCUS_GAINED);
+                        nodeModel.getPanel().getLabel().setBorder(UiUtil.BORDER_FOCUS_GAINED);
                     }
                 }
             }

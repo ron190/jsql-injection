@@ -13,7 +13,7 @@ package com.jsql.model.injection.strategy;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
@@ -48,22 +48,22 @@ public class StrategyInjectionTime extends AbstractStrategy {
             LOGGER.info("No Time strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
         } else {
             
-            LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Time with operator AND...");
+            LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Time with operator AND...");
             
             this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.AND);
             this.isApplicable = this.injectionTime.isInjectable();
             
             if (!this.isApplicable) {
-                LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Time with operator OR...");
+                LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Time with operator OR...");
                 
                 this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.OR);
                 this.isApplicable = this.injectionTime.isInjectable();
                 
                 if (this.isApplicable) {
-                    LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Time injection with operator OR");
+                    LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Time injection with operator OR");
                 }
             } else {
-                LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Time injection with operator AND");
+                LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Time injection with operator AND");
             }
             
             if (this.isApplicable) {
@@ -101,7 +101,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         
-        LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
+        LOGGER.info(I18nUtil.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getTime());
         
         Request requestMarkTimeStrategy = new Request();

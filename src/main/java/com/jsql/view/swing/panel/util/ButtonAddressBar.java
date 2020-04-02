@@ -14,7 +14,7 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.manager.util.StateButton;
 
 /**
@@ -40,9 +40,9 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setIcon(HelperUi.ICON_ARROW_DEFAULT);
-        this.setRolloverIcon(HelperUi.ICON_ARROW_ROLLOVER);
-        this.setPressedIcon(HelperUi.ICON_ARROW_PRESSED);
+        this.setIcon(UiUtil.ICON_ARROW_DEFAULT);
+        this.setRolloverIcon(UiUtil.ICON_ARROW_ROLLOVER);
+        this.setPressedIcon(UiUtil.ICON_ARROW_PRESSED);
     }
 
     /**
@@ -63,9 +63,9 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setIcon(HelperUi.ICON_ARROW_DEFAULT);
-        this.setRolloverIcon(HelperUi.ICON_ARROW_ROLLOVER);
-        this.setPressedIcon(HelperUi.ICON_ARROW_PRESSED);
+        this.setIcon(UiUtil.ICON_ARROW_DEFAULT);
+        this.setRolloverIcon(UiUtil.ICON_ARROW_ROLLOVER);
+        this.setPressedIcon(UiUtil.ICON_ARROW_PRESSED);
     }
 
     /**
@@ -78,9 +78,9 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setIcon(HelperUi.IMG_STOP_DEFAULT);
-        this.setRolloverIcon(HelperUi.IMG_STOP_ROLLOVER);
-        this.setPressedIcon(HelperUi.IMG_STOP_PPRESSED);
+        this.setIcon(UiUtil.IMG_STOP_DEFAULT);
+        this.setRolloverIcon(UiUtil.IMG_STOP_ROLLOVER);
+        this.setPressedIcon(UiUtil.IMG_STOP_PPRESSED);
     }
 
     /**
@@ -93,7 +93,7 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(false);
-        this.setIcon(HelperUi.ICON_LOADER_GIF);
+        this.setIcon(UiUtil.ICON_LOADER_GIF);
         this.setEnabled(false);
     }
 }

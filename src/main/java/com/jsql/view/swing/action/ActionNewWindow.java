@@ -24,8 +24,8 @@ import javax.swing.KeyStroke;
 import org.apache.log4j.Logger;
 
 import com.jsql.MainApplication;
-import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.i18n.I18nUtil;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * Open another jSQL instance in new process.
@@ -57,12 +57,12 @@ public class ActionNewWindow extends AbstractAction {
         this.commands.addAll(COMMANDS_DEFAULT);
         
         this.putValue(Action.NAME, name);
-        this.putValue(Action.SMALL_ICON, HelperUi.ICON_EMPTY);
+        this.putValue(Action.SMALL_ICON, UiUtil.ICON_EMPTY);
     }
     
     public ActionNewWindow() {
         
-        this(I18n.valueByKey("NEW_WINDOW_MENU"), new String[0]);
+        this(I18nUtil.valueByKey("NEW_WINDOW_MENU"), new String[0]);
         
         this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
@@ -71,14 +71,14 @@ public class ActionNewWindow extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent event) {
         
-        LOGGER.info(I18n.valueByKey("NEW_WINDOW_START"));
+        LOGGER.info(I18nUtil.valueByKey("NEW_WINDOW_START"));
         
         ProcessBuilder processBuilder = new ProcessBuilder(this.commands.toArray(new String[0]));
         
         try {
             processBuilder.start();
         } catch (IOException e) {
-            LOGGER.error(I18n.valueByKey("NEW_WINDOW_ERROR"), e);
+            LOGGER.error(I18nUtil.valueByKey("NEW_WINDOW_ERROR"), e);
         }
     }
 }

@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.PanelConsoles;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
@@ -85,7 +85,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         this.splitVerticalLeftRight = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
         this.splitVerticalLeftRight.setLeftComponent(MediatorGui.tabManagers());
         
-        this.labelPlaceholderResult = new JLabel(HelperUi.IMG_BUG);
+        this.labelPlaceholderResult = new JLabel(UiUtil.IMG_BUG);
         this.labelPlaceholderResult.setMinimumSize(new Dimension(100, 0));
 
         this.labelPlaceholderResult.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -94,7 +94,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         this.splitVerticalLeftRight.setRightComponent(this.labelPlaceholderResult);
         this.splitVerticalLeftRight.setDividerLocation(verticalSplitter);
         this.splitVerticalLeftRight.setDividerSize(0);
-        this.splitVerticalLeftRight.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
+        this.splitVerticalLeftRight.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
 
         this.setDividerSize(0);
         this.setBorder(null);
@@ -114,7 +114,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         
         PANEL_HIDDEN_CONSOLES.add(Box.createHorizontalGlue());
         PANEL_HIDDEN_CONSOLES.add(buttonShowConsoles, BorderLayout.LINE_END);
-        PANEL_HIDDEN_CONSOLES.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
+        PANEL_HIDDEN_CONSOLES.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
         PANEL_HIDDEN_CONSOLES.setVisible(false);
 
         panelManagerResult.add(PANEL_HIDDEN_CONSOLES, BorderLayout.SOUTH);

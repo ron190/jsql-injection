@@ -36,7 +36,7 @@ import com.jsql.view.swing.menubar.Menubar;
  * - ctrl shift TAB: switch to previous tab, <br>
  * - ctrl W: delete tab
  */
-public final class ActionHandler {
+public final class HotkeyUtil {
     
     private static final String STR_CTRL_TAB = "ctrl TAB";
     private static final String STR_CTRL_SHIFT_TAB = "ctrl shift TAB";
@@ -45,7 +45,7 @@ public final class ActionHandler {
     /**
      * Utility class without constructor.
      */
-    private ActionHandler() {
+    private HotkeyUtil() {
         //not called
     }
     
@@ -57,6 +57,7 @@ public final class ActionHandler {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
             "permanentFocusOwner",
             propertyChangeEvent -> {
+                
                 if (propertyChangeEvent.getNewValue() instanceof JTextField) {
                     
                     SwingUtilities.invokeLater(() -> {
@@ -157,14 +158,15 @@ public final class ActionHandler {
         inputMap.put(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB), "actionString-previousTab");
         actionMap.put("actionString-previousTab", previousTab);
         
-        int i = MediatorGui.tabManagers().getTabCount();
-        for (int k = 1 ; k <= i ; k++) {
+        int tabCount = MediatorGui.tabManagers().getTabCount();
+        
+        for (int currentTab = 1 ; currentTab <= tabCount ; currentTab++) {
             
-            inputMap.put(KeyStroke.getKeyStroke("ctrl "+ k), STR_SELECT_TAB + k);
-            inputMap.put(KeyStroke.getKeyStroke("ctrl NUMPAD"+ k), STR_SELECT_TAB + k);
+            inputMap.put(KeyStroke.getKeyStroke("ctrl "+ currentTab), STR_SELECT_TAB + currentTab);
+            inputMap.put(KeyStroke.getKeyStroke("ctrl NUMPAD"+ currentTab), STR_SELECT_TAB + currentTab);
             
-            final int l = k;
-            actionMap.put(STR_SELECT_TAB + k, new AbstractAction(){
+            final int l = currentTab;
+            actionMap.put(STR_SELECT_TAB + currentTab, new AbstractAction(){
                 
                 @Override
                 public void actionPerformed(ActionEvent e) {

@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
@@ -94,10 +94,10 @@ public class NetworkTable extends JTable {
         this.setModel(new DefaultTableModel() {
             
             private String[] columns = {
-                I18n.valueByKey("NETWORK_TAB_METHOD_COLUMN"),
-                I18n.valueByKey("NETWORK_TAB_URL_COLUMN"),
-                I18n.valueByKey("NETWORK_TAB_SIZE_COLUMN"),
-                I18n.valueByKey("NETWORK_TAB_TYPE_COLUMN")
+                I18nUtil.valueByKey("NETWORK_TAB_METHOD_COLUMN"),
+                I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"),
+                I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN"),
+                I18nUtil.valueByKey("NETWORK_TAB_TYPE_COLUMN")
             };
 
             @Override

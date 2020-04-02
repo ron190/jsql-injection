@@ -15,7 +15,7 @@ import javax.swing.SwingConstants;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.util.tampering.TamperingType;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.sql.lexer.HighlightedDocument;
@@ -88,7 +88,7 @@ public class PanelTamperingPreferences extends JPanel {
         
         JTextPane textPaneEval = new JPopupTextPane(new JTextPanePlaceholder(tooltipIsTamperingEval)).getProxy();
         LightScrollPane textAreaIsTamperingEval = new LightScrollPane(textPaneEval);
-        textAreaIsTamperingEval.setBorder(HelperUi.BORDER_FOCUS_LOST);
+        textAreaIsTamperingEval.setBorder(UiUtil.BORDER_FOCUS_LOST);
         textAreaIsTamperingEval.setMinimumSize(new Dimension(400, 100));
         
         ButtonGroup groupSpaceToComment = new ButtonGroup();

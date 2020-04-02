@@ -27,10 +27,10 @@ import javax.swing.JRadioButtonMenuItem;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.MenuBarCoder;
@@ -66,7 +66,7 @@ public class ManagerAdminPage extends AbstractManagerList {
         
         this.lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
@@ -75,7 +75,7 @@ public class ManagerAdminPage extends AbstractManagerList {
         panelRunButton.setLayout(new BoxLayout(panelRunButton, BoxLayout.X_AXIS));
         panelRunButton.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
@@ -131,8 +131,8 @@ public class ManagerAdminPage extends AbstractManagerList {
         
         this.defaultText = "ADMIN_PAGE_RUN_BUTTON_LABEL";
         this.run = new JButtonStateful(this.defaultText);
-        I18nView.addComponentForKey("ADMIN_PAGE_RUN_BUTTON_LABEL", this.run);
-        this.run.setToolTipText(I18n.valueByKey("ADMIN_PAGE_RUN_BUTTON_TOOLTIP"));
+        I18nViewUtil.addComponentForKey("ADMIN_PAGE_RUN_BUTTON_LABEL", this.run);
+        this.run.setToolTipText(I18nUtil.valueByKey("ADMIN_PAGE_RUN_BUTTON_TOOLTIP"));
         
         this.run.setContentAreaFilled(false);
         this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
@@ -140,60 +140,64 @@ public class ManagerAdminPage extends AbstractManagerList {
         
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
 
-        this.run.addActionListener(actionEvent -> {
-            
-            if (this.listFile.getSelectedValuesList().isEmpty()) {
-                LOGGER.warn("Select at least one admin page in the list");
-                return;
-            }
-            
-            String[] refUrlQuery = new String[]{MediatorGui.panelAddressBar().getTextFieldAddress().getText()};
-            
-            if (!refUrlQuery[0].isEmpty() && !refUrlQuery[0].matches("(?i)^https?://.*")) {
-                
-                if (!refUrlQuery[0].matches("(?i)^\\w+://.*")) {
-                    
-                    LOGGER.info("Undefined URL protocol, forcing to [http://]");
-                    refUrlQuery[0] = "http://"+ refUrlQuery[0];
-                } else {
-                    
-                    LOGGER.info("Unknown URL protocol");
-                    return;
-                }
-            }
-            
-            new Thread(() -> {
-                
-                if (ManagerAdminPage.this.run.getState() == StateButton.STARTABLE) {
-                    
-                    if (StringUtils.isEmpty(refUrlQuery[0])) {
-                        LOGGER.warn("Enter the main address");
-                    } else {
-                        
-                        LOGGER.trace("Checking admin page(s)...");
-                        ManagerAdminPage.this.run.setText(I18nView.valueByKey("ADMIN_PAGE_RUN_BUTTON_STOP"));
-                        ManagerAdminPage.this.run.setState(StateButton.STOPPABLE);
-                        ManagerAdminPage.this.loader.setVisible(true);
-                        
-                        try {
-                            MediatorModel.model().getResourceAccess().createAdminPages(
-                                refUrlQuery[0],
-                                this.listFile.getSelectedValuesList()
-                            );
-                        } catch (InterruptedException ex) {
-                            LOGGER.error("Interruption while waiting for Opening Admin Page termination", ex);
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                } else if (this.run.getState() == StateButton.STOPPABLE) {
-                    
-                    MediatorModel.model().getResourceAccess().setSearchAdminStopped(true);
-                    ManagerAdminPage.this.run.setEnabled(false);
-                    ManagerAdminPage.this.run.setState(StateButton.STOPPING);
-                }
-            }, "ThreadAdminPage").start();
-        });
+        this.run.addActionListener(actionEvent -> { runSearch(); });
 
         this.loader.setVisible(false);
+    }
+
+    private void runSearch() {
+        
+        if (this.listFile.getSelectedValuesList().isEmpty()) {
+            LOGGER.warn("Select at least one admin page in the list");
+            return;
+        }
+        
+        String[] refUrlQuery = new String[]{MediatorGui.panelAddressBar().getTextFieldAddress().getText()};
+        
+        if (!refUrlQuery[0].isEmpty() && !refUrlQuery[0].matches("(?i)^https?://.*")) {
+            
+            if (!refUrlQuery[0].matches("(?i)^\\w+://.*")) {
+                
+                LOGGER.info("Undefined URL protocol, forcing to [http://]");
+                refUrlQuery[0] = "http://"+ refUrlQuery[0];
+            } else {
+                
+                LOGGER.info("Unknown URL protocol");
+                return;
+            }
+        }
+        
+        new Thread(() -> { searchAdminPages(refUrlQuery); }, "ThreadAdminPage").start();
+    }
+
+    private void searchAdminPages(String[] refUrlQuery) {
+        
+        if (ManagerAdminPage.this.run.getState() == StateButton.STARTABLE) {
+            
+            if (StringUtils.isEmpty(refUrlQuery[0])) {
+                LOGGER.warn("Enter the main address");
+            } else {
+                
+                LOGGER.trace("Checking admin page(s)...");
+                ManagerAdminPage.this.run.setText(I18nViewUtil.valueByKey("ADMIN_PAGE_RUN_BUTTON_STOP"));
+                ManagerAdminPage.this.run.setState(StateButton.STOPPABLE);
+                ManagerAdminPage.this.loader.setVisible(true);
+                
+                try {
+                    MediatorModel.model().getResourceAccess().createAdminPages(
+                        refUrlQuery[0],
+                        this.listFile.getSelectedValuesList()
+                    );
+                } catch (InterruptedException ex) {
+                    LOGGER.error("Interruption while waiting for Opening Admin Page termination", ex);
+                    Thread.currentThread().interrupt();
+                }
+            }
+        } else if (this.run.getState() == StateButton.STOPPABLE) {
+            
+            MediatorModel.model().getResourceAccess().setSearchAdminStopped(true);
+            ManagerAdminPage.this.run.setEnabled(false);
+            ManagerAdminPage.this.run.setState(StateButton.STOPPING);
+        }
     }
 }

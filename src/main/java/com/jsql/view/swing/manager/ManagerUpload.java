@@ -31,11 +31,11 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ItemList;
@@ -67,7 +67,7 @@ public class ManagerUpload extends AbstractManagerList {
         List<ItemList> pathsList = new ArrayList<>();
         
         try (
-            InputStream inputStream = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.PATH_WEB_FOLDERS);
+            InputStream inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader reader = new BufferedReader(inputStreamReader);
         ) {
@@ -87,17 +87,17 @@ public class ManagerUpload extends AbstractManagerList {
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 
-        final JTextField shellURL = new JPopupTextField(I18n.valueByKey("UPLOAD_URL_LABEL")).getProxy();
-        String urlTooltip = I18n.valueByKey("UPLOAD_URL_TOOLTIP");
+        final JTextField shellURL = new JPopupTextField(I18nUtil.valueByKey("UPLOAD_URL_LABEL")).getProxy();
+        String urlTooltip = I18nUtil.valueByKey("UPLOAD_URL_TOOLTIP");
         
         shellURL.setToolTipText(urlTooltip);
         shellURL.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
-                    BorderFactory.createMatteBorder(1, 1, 0, 1, HelperUi.COLOR_DEFAULT_BACKGROUND)
+                    BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
+                    BorderFactory.createMatteBorder(1, 1, 0, 1, UiUtil.COLOR_DEFAULT_BACKGROUND)
                 ),
-                HelperUi.BORDER_BLU
+                UiUtil.BORDER_BLU
             )
         );
 
@@ -105,17 +105,17 @@ public class ManagerUpload extends AbstractManagerList {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
 
         this.initializeRunButton(shellURL);
 
-        this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.ICON_SQUARE_GREY, SwingConstants.LEFT);
-        I18nView.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
-        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND));
-        this.privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
+        this.privilege = new JLabel(I18nUtil.valueByKey("PRIVILEGE_LABEL"), UiUtil.ICON_SQUARE_GREY, SwingConstants.LEFT);
+        I18nViewUtil.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));
+        this.privilege.setToolTipText(I18nUtil.valueByKey("PRIVILEGE_TOOLTIP"));
 
         this.loader.setVisible(false);
 
@@ -131,8 +131,8 @@ public class ManagerUpload extends AbstractManagerList {
     private void initializeRunButton(final JTextField shellURL) {
         
         this.run = new JButtonStateful("UPLOAD_RUN_BUTTON_LABEL");
-        I18nView.addComponentForKey("UPLOAD_RUN_BUTTON_LABEL", this.run);
-        this.run.setToolTipText(I18n.valueByKey("UPLOAD_RUN_BUTTON_TOOLTIP"));
+        I18nViewUtil.addComponentForKey("UPLOAD_RUN_BUTTON_LABEL", this.run);
+        this.run.setToolTipText(I18nUtil.valueByKey("UPLOAD_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
         
         this.run.setContentAreaFilled(false);
@@ -152,7 +152,7 @@ public class ManagerUpload extends AbstractManagerList {
         }
 
         final JFileChooser filechooser = new JFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile());
-        filechooser.setDialogTitle(I18n.valueByKey("UPLOAD_DIALOG_TEXT"));
+        filechooser.setDialogTitle(I18nUtil.valueByKey("UPLOAD_DIALOG_TEXT"));
         
         // Fix #2402: NullPointerException on showOpenDialog()
         // Fix #40547: ClassCastException on showOpenDialog()

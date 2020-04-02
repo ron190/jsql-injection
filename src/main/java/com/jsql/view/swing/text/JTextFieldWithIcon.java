@@ -21,8 +21,8 @@ import javax.swing.border.Border;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.i18n.I18nUtil;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * A JTextField with globe icon displayed on the left.
@@ -44,7 +44,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
         
         super.paintComponent(g);
 
-        URL url = HelperUi.URL_GLOBE;
+        URL url = UiUtil.URL_GLOBE;
         if (url == null) {
             // Fix NullPointerException in constructor ImageIcon()
             return;
@@ -67,7 +67,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
         try {
             g.drawImage(
                 image,
-                ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
                 ? JTextFieldWithIcon.this.getWidth() - (16 + x + 4)
                 : x + 4,
                 y + 1,

@@ -19,7 +19,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
@@ -129,7 +129,7 @@ public class DnDTabbedPane extends JTabbedPane {
         
         // UIManager.put() is not enough
         this.setUI(new CustomMetalTabbedPaneUI());
-        this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
+        this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
     }
     
     public DnDDropLocation dropLocationForPointDnD(Point p) {

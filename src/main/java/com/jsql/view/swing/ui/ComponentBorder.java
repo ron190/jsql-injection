@@ -10,7 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 
 /**
  * The ComponentBorder class allows you to place a real component in
@@ -175,7 +175,7 @@ public class ComponentBorder implements Border {
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         
         float x2 =
-            ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+            ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
             ? (0 + this.component.getWidth()) * this.component.getAlignmentX() + x
             : (width - this.component.getWidth()) * this.component.getAlignmentX() + x;
         float y2 = (height - this.component.getHeight()) * this.component.getAlignmentY() + y;

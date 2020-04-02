@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Column;
@@ -140,7 +140,7 @@ public class DataAccess {
      */
     public void getDatabaseInfos() throws JSqlException {
         
-        LOGGER.trace(I18n.valueByKey("LOG_FETCHING_INFORMATIONS"));
+        LOGGER.trace(I18nUtil.valueByKey("LOG_FETCHING_INFORMATIONS"));
         
         String[] sourcePage = {""};
 
@@ -187,7 +187,7 @@ public class DataAccess {
      */
     public List<Database> listDatabases() throws JSqlException {
         
-        LOGGER.trace(I18n.valueByKey("LOG_FETCHING_DATABASES"));
+        LOGGER.trace(I18nUtil.valueByKey("LOG_FETCHING_DATABASES"));
         
         List<Database> databases = new ArrayList<>();
         
@@ -455,11 +455,39 @@ public class DataAccess {
          */
         String[] arrayColumns = columnsName.toArray(new String[columnsName.size()]);
 
+        List<List<String>> listValues = getRows(database, table, rowCount, arrayColumns);
+
+        // Add the default title to the columns: row number, occurrence
+        columnsName.add(0, "");
+        columnsName.add(0, "");
+
+        String[][] tableDatas = build2D(columnsName, listValues);
+
+        arrayColumns = columnsName.toArray(new String[columnsName.size()]);
+        
+        // Group the columns names, values and Table object in one array
+        Object[] objectData = {arrayColumns, tableDatas, table};
+
+        Request requestCreateValuesTab = new Request();
+        requestCreateValuesTab.setMessage(Interaction.CREATE_VALUES_TAB);
+        requestCreateValuesTab.setParameters(objectData);
+        this.injectionModel.sendToViews(requestCreateValuesTab);
+
+        Request requestEndProgress = new Request();
+        requestEndProgress.setMessage(Interaction.END_PROGRESS);
+        requestEndProgress.setParameters(table);
+        this.injectionModel.sendToViews(requestEndProgress);
+        
+        return tableDatas;
+    }
+
+    private List<List<String>> getRows(Database database, Table table, int rowCount, String[] columns) throws InjectionFailureException {
+        
         String resultToParse = "";
         try {
             String[] pageSource = {""};
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlRows(arrayColumns, database, table),
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlRows(columns, database, table),
                 pageSource,
                 true,
                 rowCount,
@@ -479,6 +507,13 @@ public class DataAccess {
             LOGGER.warn(e.getMessage(), e);
         }
 
+        List<List<String>> listValues = parse(resultToParse);
+        
+        return listValues;
+    }
+
+    private List<List<String>> parse(String rows) throws InjectionFailureException {
+        
         // Parse all the data we have retrieved
         Matcher regexSearch =
             Pattern
@@ -491,7 +526,7 @@ public class DataAccess {
                     + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"
                     + ENCLOSE_VALUE_RGX
                 )
-                .matcher(resultToParse);
+                .matcher(rows);
 
         if (!regexSearch.find()) {
             throw new InjectionFailureException();
@@ -518,11 +553,12 @@ public class DataAccess {
 
             rowsFound++;
         }
+        
+        return listValues;
+    }
 
-        // Add the default title to the columns: row number, occurrence
-        columnsName.add(0, "");
-        columnsName.add(0, "");
-
+    private String[][] build2D(List<String> columnsName, List<List<String>> listValues) {
+        
         // Build a proper 2D array from the data
         String[][] tableDatas = new String[listValues.size()][columnsName.size()];
         
@@ -549,21 +585,6 @@ public class DataAccess {
                 LOGGER.warn(String.join(", ", listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()])));
             }
         }
-
-        arrayColumns = columnsName.toArray(new String[columnsName.size()]);
-        
-        // Group the columns names, values and Table object in one array
-        Object[] objectData = {arrayColumns, tableDatas, table};
-
-        Request requestCreateValuesTab = new Request();
-        requestCreateValuesTab.setMessage(Interaction.CREATE_VALUES_TAB);
-        requestCreateValuesTab.setParameters(objectData);
-        this.injectionModel.sendToViews(requestCreateValuesTab);
-
-        Request requestEndProgress = new Request();
-        requestEndProgress.setMessage(Interaction.END_PROGRESS);
-        requestEndProgress.setParameters(table);
-        this.injectionModel.sendToViews(requestEndProgress);
         
         return tableDatas;
     }

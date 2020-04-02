@@ -28,8 +28,8 @@ import javax.swing.ListModel;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
@@ -77,7 +77,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     /**
      * A animated GIF displayed during processing.
      */
-    protected JLabel loader = new JLabel(HelperUi.ICON_LOADER_GIF);
+    protected JLabel loader = new JLabel(UiUtil.ICON_LOADER_GIF);
     
     public AbstractManagerList() {
         // Nothing
@@ -88,7 +88,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         this.setLayout(new BorderLayout());
 
         try (
-            InputStream inputStream = HelperUi.class.getClassLoader().getResourceAsStream(nameFile);
+            InputStream inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader reader = new BufferedReader(inputStreamReader);
         ) {
@@ -110,7 +110,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
 
         this.lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
@@ -171,7 +171,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     
     public void endProcess() {
         
-        this.run.setText(I18nView.valueByKey(this.defaultText));
+        this.run.setText(I18nViewUtil.valueByKey(this.defaultText));
         this.setButtonEnable(true);
         this.loader.setVisible(false);
         this.run.setState(StateButton.STARTABLE);

@@ -17,7 +17,7 @@ import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
 
 import com.jsql.model.exception.IgnoreMessageException;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * Log4j swing appender to display console message to respective textareas.
@@ -46,12 +46,12 @@ public class SwingAppender extends WriterAppender {
             new AbstractMap.SimpleEntry<>(ERROR, Color.RED),
             new AbstractMap.SimpleEntry<>(WARN, Color.RED),
             new AbstractMap.SimpleEntry<>(INFO, Color.BLUE),
-            new AbstractMap.SimpleEntry<>(DEBUG, HelperUi.COLOR_GREEN),
+            new AbstractMap.SimpleEntry<>(DEBUG, UiUtil.COLOR_GREEN),
             new AbstractMap.SimpleEntry<>(TRACE, Color.BLACK),
             new AbstractMap.SimpleEntry<>(ALL, Color.BLACK)
         ).forEach(entry -> {
             
-            StyleConstants.setFontFamily(entry.getKey(), HelperUi.FONT_NAME_UBUNTU_MONO);
+            StyleConstants.setFontFamily(entry.getKey(), UiUtil.FONT_NAME_UBUNTU_MONO);
             StyleConstants.setFontSize(entry.getKey(), 14);
             StyleConstants.setForeground(entry.getKey(), entry.getValue());
         });

@@ -16,13 +16,13 @@ import javax.swing.MenuElement;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.model.injection.strategy.StrategyInjectionError;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.manager.util.ComboMenu;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.util.ButtonAddressBar;
@@ -45,7 +45,7 @@ public class AddressMenuBar extends JMenuBar {
     /**
      * Animated GIF displayed during injection.
      */
-    private JLabel loader = new JLabel(HelperUi.ICON_LOADER_GIF);
+    private JLabel loader = new JLabel(UiUtil.ICON_LOADER_GIF);
 
     /**
      * Connection button.
@@ -54,7 +54,7 @@ public class AddressMenuBar extends JMenuBar {
     
     public AddressMenuBar(PanelAddressBar panelAddressBar) {
         
-        this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_START_TOOLTIP"));
+        this.buttonInUrl.setToolTipText(I18nUtil.valueByKey("BUTTON_START_TOOLTIP"));
         this.buttonInUrl.addActionListener(new ActionStart(panelAddressBar));
 
         ComponentBorder buttonInTextfield = new ComponentBorder(this.buttonInUrl, 17, 0);
@@ -92,7 +92,7 @@ public class AddressMenuBar extends JMenuBar {
             this.menuStrategy.add((JMenuItem) itemRadioStrategy);
             
             // TODO i18n dynamic tooltip missing
-            ((JComponent) itemRadioStrategy).setToolTipText(I18n.valueByKey("STRATEGY_" + strategy.getName().toUpperCase(Locale.ROOT) + "_TOOLTIP"));
+            ((JComponent) itemRadioStrategy).setToolTipText(I18nUtil.valueByKey("STRATEGY_" + strategy.getName().toUpperCase(Locale.ROOT) + "_TOOLTIP"));
             ((JComponent) itemRadioStrategy).setEnabled(false);
         }
 
@@ -125,7 +125,7 @@ public class AddressMenuBar extends JMenuBar {
 
     public void endPreparation() {
         
-        this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_START_TOOLTIP"));
+        this.buttonInUrl.setToolTipText(I18nUtil.valueByKey("BUTTON_START_TOOLTIP"));
         this.buttonInUrl.setInjectionReady();
         this.loader.setVisible(false);
     }

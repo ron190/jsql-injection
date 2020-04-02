@@ -27,9 +27,9 @@ import javax.swing.JTextPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
-import com.jsql.i18n.I18n;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.i18n.I18nUtil;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.manager.util.ActionBruteForce;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -128,14 +128,14 @@ public class ManagerBruteForce extends JPanel implements Manager {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
         
         this.run = new JButtonStateful("BRUTEFORCE_RUN_BUTTON_LABEL");
-        I18nView.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", this.run);
-        this.run.setToolTipText(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
+        I18nViewUtil.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", this.run);
+        this.run.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
         
         this.run.setContentAreaFilled(false);
         this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
@@ -145,7 +145,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
         
         this.run.addActionListener(new ActionBruteForce(this));
 
-        this.loader = new JLabel(HelperUi.ICON_LOADER_GIF);
+        this.loader = new JLabel(UiUtil.ICON_LOADER_GIF);
         this.loader.setVisible(false);
 
         lastLine.add(Box.createHorizontalGlue());
@@ -178,16 +178,16 @@ public class ManagerBruteForce extends JPanel implements Manager {
         
         JPanel firstLine = new JPanel(new BorderLayout());
 
-        this.hash = new JPopupTextField(I18n.valueByKey("BRUTEFORCE_HASH_LABEL")).getProxy();
+        this.hash = new JPopupTextField(I18nUtil.valueByKey("BRUTEFORCE_HASH_LABEL")).getProxy();
         
-        this.hash.setToolTipText(I18n.valueByKey("BRUTEFORCE_HASH_TOOLTIP"));
+        this.hash.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_HASH_TOOLTIP"));
         
         firstLine.add(this.hash, BorderLayout.CENTER);
         
         this.hash.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 1, 1, HelperUi.COLOR_DEFAULT_BACKGROUND),
-                HelperUi.BORDER_BLU
+                BorderFactory.createMatteBorder(0, 0, 1, 1, UiUtil.COLOR_DEFAULT_BACKGROUND),
+                UiUtil.BORDER_BLU
             )
         );
         
@@ -212,7 +212,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
         );
         
         this.hashTypes.setSelectedIndex(6);
-        this.hashTypes.setToolTipText(I18n.valueByKey("BRUTEFORCE_HASH_TYPE_TOOLTIP"));
+        this.hashTypes.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_HASH_TYPE_TOOLTIP"));
 
         secondLine.add(this.hashTypes);
         secondLine.add(this.lowerCaseCharacters);
@@ -220,10 +220,10 @@ public class ManagerBruteForce extends JPanel implements Manager {
         secondLine.add(this.numericCharacters);
         secondLine.add(this.specialCharacters);
 
-        this.lowerCaseCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_LCASE_TOOLTIP"));
-        this.upperCaseCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_UCASE_TOOLTIP"));
-        this.numericCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_NUM_TOOLTIP"));
-        this.specialCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_SPEC_TOOLTIP"));
+        this.lowerCaseCharacters.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_LCASE_TOOLTIP"));
+        this.upperCaseCharacters.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_UCASE_TOOLTIP"));
+        this.numericCharacters.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_NUM_TOOLTIP"));
+        this.specialCharacters.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_SPEC_TOOLTIP"));
         
         return secondLine;
     }
@@ -233,12 +233,12 @@ public class ManagerBruteForce extends JPanel implements Manager {
         JPanel thirdLine = new JPanel();
         thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
         
-        this.exclude = new JPopupTextField(I18n.valueByKey("BRUTEFORCE_EXCLUDE_LABEL")).getProxy();
-        this.exclude.setToolTipText(I18n.valueByKey("BRUTEFORCE_EXCLUDE_TOOLTIP"));
+        this.exclude = new JPopupTextField(I18nUtil.valueByKey("BRUTEFORCE_EXCLUDE_LABEL")).getProxy();
+        this.exclude.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_EXCLUDE_TOOLTIP"));
         this.exclude.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 0, 1, 1, HelperUi.COLOR_DEFAULT_BACKGROUND),
-                HelperUi.BORDER_BLU
+                BorderFactory.createMatteBorder(1, 0, 1, 1, UiUtil.COLOR_DEFAULT_BACKGROUND),
+                UiUtil.BORDER_BLU
             )
         );
         thirdLine.add(this.exclude);
@@ -250,8 +250,8 @@ public class ManagerBruteForce extends JPanel implements Manager {
             new SpinnerNumberModel(5, 1, 10000, 1)
         );
         
-        this.minimumLength.setToolTipText(I18n.valueByKey("BRUTEFORCE_MIN_TOOLTIP"));
-        this.maximumLength.setToolTipText(I18n.valueByKey("BRUTEFORCE_MAX_TOOLTIP"));
+        this.minimumLength.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_MIN_TOOLTIP"));
+        this.maximumLength.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_MAX_TOOLTIP"));
         
         this.minimumLength.setPreferredSize(new Dimension(38, (int) this.minimumLength.getPreferredSize().getHeight()));
         this.maximumLength.setPreferredSize(new Dimension(38, (int) this.maximumLength.getPreferredSize().getHeight()));
@@ -260,13 +260,13 @@ public class ManagerBruteForce extends JPanel implements Manager {
         this.minimumLength.setMinimumSize(new Dimension(38, (int) this.minimumLength.getPreferredSize().getHeight()));
         this.maximumLength.setMinimumSize(new Dimension(38, (int) this.maximumLength.getPreferredSize().getHeight()));
 
-        JLabel labelMin = new JLabel(" "+I18n.valueByKey("BRUTEFORCE_MIN_LABEL"), SwingConstants.RIGHT);
+        JLabel labelMin = new JLabel(" "+I18nUtil.valueByKey("BRUTEFORCE_MIN_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMin);
-        I18nView.addComponentForKey("BRUTEFORCE_MIN_LABEL", labelMin);
+        I18nViewUtil.addComponentForKey("BRUTEFORCE_MIN_LABEL", labelMin);
         thirdLine.add(this.minimumLength);
-        JLabel labelMax = new JLabel(" "+I18n.valueByKey("BRUTEFORCE_MAX_LABEL"), SwingConstants.RIGHT);
+        JLabel labelMax = new JLabel(" "+I18nUtil.valueByKey("BRUTEFORCE_MAX_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMax);
-        I18nView.addComponentForKey("BRUTEFORCE_MAX_LABEL", labelMax);
+        I18nViewUtil.addComponentForKey("BRUTEFORCE_MAX_LABEL", labelMax);
         thirdLine.add(this.maximumLength);
         
         return thirdLine;

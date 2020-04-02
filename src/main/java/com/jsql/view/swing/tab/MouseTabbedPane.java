@@ -17,7 +17,7 @@ import javax.swing.JTabbedPane;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.action.ActionHandler;
+import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
 /**
@@ -46,7 +46,7 @@ public class MouseTabbedPane extends JTabbedPane {
         this.addChangeListener(changeEvent -> MouseTabbedPane.this.requestFocusInWindow());
 
         // Hotkeys ctrl-TAB, ctrl-shift-TAB
-        ActionHandler.addShortcut(this);
+        HotkeyUtil.addShortcut(this);
     }
 
     /**

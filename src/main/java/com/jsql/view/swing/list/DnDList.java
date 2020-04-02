@@ -38,8 +38,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.i18n.I18nUtil;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * A list supporting drag and drop.
@@ -62,7 +62,7 @@ public class DnDList extends JList<ItemList> {
      */
     private transient List<ItemList> defaultList;
     
-    public boolean isScan = false;
+    private boolean isScan = false;
     
     /**
      * Create a JList decorated with drag/drop features.
@@ -232,10 +232,10 @@ public class DnDList extends JList<ItemList> {
                 try {
                     JOptionPane.showMessageDialog(
                         this.getTopLevelAncestor(),
-                        I18n.valueByKey("LIST_IMPORT_ERROR_LABEL"),
-                        I18n.valueByKey("LIST_IMPORT_ERROR_TITLE"),
+                        I18nUtil.valueByKey("LIST_IMPORT_ERROR_LABEL"),
+                        I18nUtil.valueByKey("LIST_IMPORT_ERROR_TITLE"),
                         JOptionPane.ERROR_MESSAGE,
-                        HelperUi.ICON_ERROR
+                        UiUtil.ICON_ERROR
                     );
                 } catch (ClassCastException e) {
                     LOGGER.error(e, e);
@@ -245,15 +245,15 @@ public class DnDList extends JList<ItemList> {
         }
 
         String[] options = {
-            I18n.valueByKey("LIST_IMPORT_CONFIRM_REPLACE"),
-            I18n.valueByKey("LIST_IMPORT_CONFIRM_ADD"),
-            I18n.valueByKey("LIST_ADD_VALUE_CANCEL")
+            I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_REPLACE"),
+            I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_ADD"),
+            I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
         };
         
         int answer = JOptionPane.showOptionDialog(
             this.getTopLevelAncestor(),
-            I18n.valueByKey("LIST_IMPORT_CONFIRM_LABEL"),
-            I18n.valueByKey("LIST_IMPORT_CONFIRM_TITLE"),
+            I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_LABEL"),
+            I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_TITLE"),
             JOptionPane.YES_NO_CANCEL_OPTION,
             JOptionPane.QUESTION_MESSAGE,
             null,
@@ -334,5 +334,13 @@ public class DnDList extends JList<ItemList> {
         for (ItemList path: this.defaultList) {
             this.listModel.addElement(path);
         }
+    }
+
+    public boolean isScan() {
+        return isScan;
+    }
+
+    public void setScan(boolean isScan) {
+        this.isScan = isScan;
     }
 }

@@ -31,11 +31,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.method.MethodInjection;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.BeanInjection;
 import com.jsql.view.swing.list.DnDList;
@@ -69,7 +69,7 @@ public class ManagerScan extends AbstractManagerList {
         
         final DnDList dndListScan = new DnDList(itemsList);
         
-        dndListScan.isScan = true;
+        dndListScan.setScan(true);
         dndListScan.setName("scan");
         dndListScan.setTransferHandler(null);
         dndListScan.setTransferHandler(new ListTransfertHandlerScan());
@@ -120,7 +120,7 @@ public class ManagerScan extends AbstractManagerList {
 
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
@@ -141,7 +141,7 @@ public class ManagerScan extends AbstractManagerList {
         
         StringBuilder jsonScan = new StringBuilder();
         try (
-            InputStream inputStream = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.INPUT_STREAM_PAGES_SCAN);
+            InputStream inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.INPUT_STREAM_PAGES_SCAN);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader reader = new BufferedReader(inputStreamReader);
         ) {
@@ -186,8 +186,8 @@ public class ManagerScan extends AbstractManagerList {
         
         this.defaultText = "SCAN_RUN_BUTTON_LABEL";
         this.run = new JButtonStateful(this.defaultText);
-        I18nView.addComponentForKey("SCAN_RUN_BUTTON_LABEL", this.run);
-        this.run.setToolTipText(I18n.valueByKey("SCAN_RUN_BUTTON_TOOLTIP"));
+        I18nViewUtil.addComponentForKey("SCAN_RUN_BUTTON_LABEL", this.run);
+        this.run.setToolTipText(I18nUtil.valueByKey("SCAN_RUN_BUTTON_TOOLTIP"));
 
         this.run.setContentAreaFilled(false);
         this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
@@ -206,7 +206,7 @@ public class ManagerScan extends AbstractManagerList {
                 
                 if (ManagerScan.this.run.getState() == StateButton.STARTABLE) {
                     
-                    ManagerScan.this.run.setText(I18nView.valueByKey("SCAN_RUN_BUTTON_STOP"));
+                    ManagerScan.this.run.setText(I18nViewUtil.valueByKey("SCAN_RUN_BUTTON_STOP"));
                     ManagerScan.this.run.setState(StateButton.STOPPABLE);
                     ManagerScan.this.loader.setVisible(true);
                     

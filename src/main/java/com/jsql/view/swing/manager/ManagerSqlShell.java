@@ -18,10 +18,10 @@ import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.text.JPopupTextField;
 
 /**
@@ -30,9 +30,9 @@ import com.jsql.view.swing.text.JPopupTextField;
 @SuppressWarnings("serial")
 public class ManagerSqlShell extends AbstractManagerShell {
     
-    private final JTextField username = new JPopupTextField(I18n.valueByKey("SQL_SHELL_USERNAME_LABEL")).getProxy();
+    private final JTextField username = new JPopupTextField(I18nUtil.valueByKey("SQL_SHELL_USERNAME_LABEL")).getProxy();
     
-    private final JTextField password = new JPopupTextField(I18n.valueByKey("SQL_SHELL_PASSWORD_LABEL")).getProxy();
+    private final JTextField password = new JPopupTextField(I18nUtil.valueByKey("SQL_SHELL_PASSWORD_LABEL")).getProxy();
     
     /**
      * Build the manager panel.
@@ -48,11 +48,11 @@ public class ManagerSqlShell extends AbstractManagerShell {
         userPassPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         userPassPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 1, 1));
         
-        this.username.setToolTipText(I18n.valueByKey("SQL_SHELL_USERNAME_TOOLTIP"));
-        this.password.setToolTipText(I18n.valueByKey("SQL_SHELL_PASSWORD_TOOLTIP"));
+        this.username.setToolTipText(I18nUtil.valueByKey("SQL_SHELL_USERNAME_TOOLTIP"));
+        this.password.setToolTipText(I18nUtil.valueByKey("SQL_SHELL_PASSWORD_TOOLTIP"));
         
-        this.username.setBorder(HelperUi.BORDER_BLU);
-        this.password.setBorder(HelperUi.BORDER_BLU);
+        this.username.setBorder(UiUtil.BORDER_BLU);
+        this.password.setBorder(UiUtil.BORDER_BLU);
         
         JPanel panelPassword = new JPanel(new BorderLayout());
         panelPassword.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));

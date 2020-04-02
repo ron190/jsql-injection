@@ -15,7 +15,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 
 /**
  * File chooser for supporting 'file already exists'.
@@ -43,8 +43,8 @@ public class ReplaceFileChooser extends JFileChooser {
                 
                 int result = JOptionPane.showConfirmDialog(
                     this,
-                    this.getSelectedFile().getName() + " " + I18n.valueByKey("SAVE_TAB_CONFIRM_LABEL"),
-                    I18n.valueByKey("SAVE_TAB_CONFIRM_TITLE"),
+                    this.getSelectedFile().getName() + " " + I18nUtil.valueByKey("SAVE_TAB_CONFIRM_LABEL"),
+                    I18nUtil.valueByKey("SAVE_TAB_CONFIRM_TITLE"),
                     JOptionPane.YES_NO_OPTION
                 );
                 

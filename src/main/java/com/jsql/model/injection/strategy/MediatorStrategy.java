@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
@@ -99,7 +99,7 @@ public class MediatorStrategy {
     public boolean testStrategies(SimpleEntry<String, String> parameterToInject) throws JSqlException {
         
         // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
-        LOGGER.trace(I18n.valueByKey("LOG_GET_INSERTION_CHARACTER"));
+        LOGGER.trace(I18nUtil.valueByKey("LOG_GET_INSERTION_CHARACTER"));
         
         // If not an injection point then find insertion character.
         // Force to 1 if no insertion char works and empty value from user,
@@ -119,7 +119,7 @@ public class MediatorStrategy {
             
             parameterToInject.setValue(characterInsertion);
             
-            LOGGER.info(I18n.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ characterInsertion.replace(InjectionModel.STAR, "") +"]");
+            LOGGER.info(I18nUtil.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ characterInsertion.replace(InjectionModel.STAR, "") +"]");
         }
         
         // Fingerprint database

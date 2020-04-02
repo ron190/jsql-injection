@@ -27,10 +27,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.interaction.ObserverInteraction;
-import com.jsql.view.swing.action.ActionHandler;
+import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.menubar.Menubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.split.SplitHorizontalTopBottom;
@@ -71,7 +71,7 @@ public class JFrameView extends JFrame {
         MediatorGui.register(this);
 
         // Load UI before any component
-        HelperUi.prepareGUI();
+        UiUtil.prepareGUI();
         ShadowPopupFactory.install();
         
         this.initializePaneComponents();
@@ -82,7 +82,7 @@ public class JFrameView extends JFrame {
     private void initializeWindow() {
         
         // Define a small and large app icon
-        this.setIconImages(HelperUi.getIcons());
+        this.setIconImages(UiUtil.getIcons());
 
         this.addWindowListener(new WindowAdapter() {
             
@@ -101,20 +101,20 @@ public class JFrameView extends JFrame {
                     JFrameView.this.splitHorizontalTopBottom.getHeight() - JFrameView.this.splitHorizontalTopBottom.getDividerLocation()
                 );
                 
-                prefs.putBoolean(HelperUi.BINARY_VISIBLE, false);
-                prefs.putBoolean(HelperUi.CHUNK_VISIBLE, false);
-                prefs.putBoolean(HelperUi.NETWORK_VISIBLE, false);
-                prefs.putBoolean(HelperUi.JAVA_VISIBLE, false);
+                prefs.putBoolean(UiUtil.BINARY_VISIBLE, false);
+                prefs.putBoolean(UiUtil.CHUNK_VISIBLE, false);
+                prefs.putBoolean(UiUtil.NETWORK_VISIBLE, false);
+                prefs.putBoolean(UiUtil.JAVA_VISIBLE, false);
                 
                 for (int i = 0 ; i < MediatorGui.tabConsoles().getTabCount() ; i++) {
                     if ("CONSOLE_BINARY_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
-                        prefs.putBoolean(HelperUi.BINARY_VISIBLE, true);
+                        prefs.putBoolean(UiUtil.BINARY_VISIBLE, true);
                     } else if ("CONSOLE_CHUNK_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
-                        prefs.putBoolean(HelperUi.CHUNK_VISIBLE, true);
+                        prefs.putBoolean(UiUtil.CHUNK_VISIBLE, true);
                     } else if ("CONSOLE_NETWORK_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
-                        prefs.putBoolean(HelperUi.NETWORK_VISIBLE, true);
+                        prefs.putBoolean(UiUtil.NETWORK_VISIBLE, true);
                     } else if ("CONSOLE_JAVA_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
-                        prefs.putBoolean(HelperUi.JAVA_VISIBLE, true);
+                        prefs.putBoolean(UiUtil.JAVA_VISIBLE, true);
                     }
                 }
             }
@@ -132,8 +132,8 @@ public class JFrameView extends JFrame {
     private void initializeShortcuts() {
         
         // Define the keyword shortcuts for tabs #Need to work even if the focus is not on tabs
-        ActionHandler.addShortcut(this.getRootPane(), MediatorGui.tabResults());
-        ActionHandler.addTextFieldShortcutSelectAll();
+        HotkeyUtil.addShortcut(this.getRootPane(), MediatorGui.tabResults());
+        HotkeyUtil.addTextFieldShortcutSelectAll();
     }
 
     private void initializePaneComponents() {
@@ -157,7 +157,7 @@ public class JFrameView extends JFrame {
         mainPanel.add(this.splitHorizontalTopBottom);
         this.add(mainPanel);
         
-        menubar.switchLocale(Locale.ENGLISH, I18n.getLocaleDefault(), true);
+        menubar.switchLocale(Locale.ENGLISH, I18nUtil.getLocaleDefault(), true);
     }
 
     /**
@@ -187,7 +187,7 @@ public class JFrameView extends JFrame {
             MediatorGui.managerSqlshell()
         ).forEach(managerList -> {
             managerList.setButtonEnable(false);
-            managerList.changePrivilegeIcon(HelperUi.ICON_SQUARE_GREY);
+            managerList.changePrivilegeIcon(UiUtil.ICON_SQUARE_GREY);
         });
     }
     

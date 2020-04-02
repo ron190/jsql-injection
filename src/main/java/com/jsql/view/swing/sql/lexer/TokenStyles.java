@@ -24,7 +24,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 
 class TokenStyles {
     
@@ -68,8 +68,8 @@ class TokenStyles {
     private static void addStyle(String name, Color bg, Color fg, boolean bold,
             boolean italic) {
         SimpleAttributeSet style = new SimpleAttributeSet();
-        StyleConstants.setFontFamily(style, HelperUi.FONT_UBUNTU_MONO.getFontName());
-        StyleConstants.setFontSize(style, HelperUi.FONT_UBUNTU_MONO.getSize());
+        StyleConstants.setFontFamily(style, UiUtil.FONT_UBUNTU_MONO.getFontName());
+        StyleConstants.setFontSize(style, UiUtil.FONT_UBUNTU_MONO.getSize());
         StyleConstants.setBackground(style, bg);
         StyleConstants.setForeground(style, fg);
         StyleConstants.setBold(style, bold);

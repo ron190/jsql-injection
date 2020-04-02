@@ -10,7 +10,7 @@ import org.apache.log4j.Appender;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.util.CertificateUtil;
@@ -86,7 +86,7 @@ public class MainApplication {
             injectionModel.getMediatorUtils().getGitUtil().checkUpdate(ShowOnConsole.NO);
         }
         
-        I18n.checkCurrentLanguage();
+        I18nUtil.checkCurrentLanguage();
         injectionModel.getMediatorUtils().getGitUtil().showNews();
         
         MainApplication.check4K();

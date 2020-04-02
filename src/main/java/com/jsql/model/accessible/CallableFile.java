@@ -37,16 +37,18 @@ public class CallableFile implements Callable<CallableFile> {
      */
     private SuspendableGetRows suspendableReadFile;
 
+    private InjectionModel injectionModel;
+    
     /**
      * Create Callable to read a file.
      * @param pathFile
      */
     public CallableFile(String pathFile, InjectionModel injectionModel) {
+        
         this.pathFile = pathFile;
         this.injectionModel= injectionModel;
         this.suspendableReadFile = new SuspendableGetRows(injectionModel);
     }
-    InjectionModel injectionModel;
     
     /**
      * Read a file on the server using SQL injection.
@@ -54,6 +56,7 @@ public class CallableFile implements Callable<CallableFile> {
      */
     @Override
     public CallableFile call() throws Exception {
+        
         String[] sourcePage = {""};
 
         String resultToParse = "";
@@ -65,6 +68,7 @@ public class CallableFile implements Callable<CallableFile> {
                 1,
                 null
             );
+            
         } catch (InjectionFailureException e) {
             
             // Usually thrown if File does not exist
@@ -72,6 +76,7 @@ public class CallableFile implements Callable<CallableFile> {
             // Ignore
             IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
             LOGGER.trace(exceptionIgnored, exceptionIgnored);
+            
         } catch (StoppedByUserSlidingException e) {
             
             // Get partial source
@@ -85,6 +90,7 @@ public class CallableFile implements Callable<CallableFile> {
             IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
             LOGGER.trace(exceptionIgnored, exceptionIgnored);
         }
+        
         this.sourceFile = resultToParse;
         
         return this;
@@ -104,5 +110,4 @@ public class CallableFile implements Callable<CallableFile> {
     public SuspendableGetRows getSuspendableReadFile() {
         return this.suspendableReadFile;
     }
-    
 }

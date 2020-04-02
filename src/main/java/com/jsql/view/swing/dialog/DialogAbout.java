@@ -46,7 +46,7 @@ import javax.swing.event.HyperlinkEvent;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -83,7 +83,7 @@ public class DialogAbout extends JDialog {
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         // Define a small and large app icon
-        this.setIconImages(HelperUi.getIcons());
+        this.setIconImages(UiUtil.getIcons());
 
         // Action for ESCAPE key
         ActionListener escapeListener = actionEvent -> DialogAbout.this.dispose();
@@ -99,7 +99,7 @@ public class DialogAbout extends JDialog {
 
         JPanel lastLine = this.initializeLastLine(escapeListener);
 
-        JLabel iconJsql = new JLabel(new ImageIcon(HelperUi.URL_ICON_96));
+        JLabel iconJsql = new JLabel(new ImageIcon(UiUtil.URL_ICON_96));
         dialogPane.add(iconJsql, BorderLayout.WEST);
         dialogPane.add(lastLine, BorderLayout.SOUTH);
 
@@ -133,7 +133,7 @@ public class DialogAbout extends JDialog {
         
         this.buttonClose = new JButton("Close");
         this.buttonClose.setBorder(BorderFactory.createCompoundBorder(
-                HelperUi.BORDER_FOCUS_GAINED,
+                UiUtil.BORDER_FOCUS_GAINED,
                 BorderFactory.createEmptyBorder(2, 20, 2, 20))
                 );
         this.buttonClose.addActionListener(escapeListener);
@@ -150,7 +150,7 @@ public class DialogAbout extends JDialog {
         final JButton buttonWebpage = new JButton("Webpage");
         
         buttonWebpage.setBorder(BorderFactory.createCompoundBorder(
-            HelperUi.BORDER_FOCUS_GAINED,
+            UiUtil.BORDER_FOCUS_GAINED,
             BorderFactory.createEmptyBorder(2, 20, 2, 20))
         );
         

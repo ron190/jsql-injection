@@ -32,7 +32,7 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * A JSplitPane that uses a 1 pixel thin visible divider,
@@ -128,7 +128,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
         public ZeroSizeDivider(BasicSplitPaneUI ui) {
             super(ui);
             super.setBorder(null);
-            this.setBackground(HelperUi.COLOR_COMPONENT_BORDER);
+            this.setBackground(UiUtil.COLOR_COMPONENT_BORDER);
         }
 
         @Override

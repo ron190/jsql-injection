@@ -86,7 +86,9 @@ public class HeaderUtil {
         
         Map<String, String> mapResponse = HeaderUtil.getHttpHeaders(connection);
 
-        this.checkResponse(connection, mapResponse);
+        String responseCode = Integer.toString(connection.getResponseCode());
+        
+        this.checkResponse(responseCode, mapResponse);
         
         // Request the web page to the server
         Exception exception = null;
@@ -152,7 +154,12 @@ public class HeaderUtil {
         
         Elements elementsForm = Jsoup.parse(pageSource.toString()).select("form");
         
+        if (elementsForm.isEmpty()) {
+            return;
+        }
+        
         StringBuilder result = new StringBuilder();
+        
         Map<Element, List<Element>> mapForms = new HashMap<>();
         
         for (Element form: elementsForm) {
@@ -178,40 +185,47 @@ public class HeaderUtil {
             
             Collections.reverse(mapForms.get(form));
         }
-        
-        if (elementsForm.isEmpty()) {
-            return;
-        }
             
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isParsingForm()) {
             
-            if (connection.getResponseCode() != 200) {
-                
-                LOGGER.trace("Found "+ elementsForm.size() +" ignored <form> in HTML body:"+ result);
-                LOGGER.info("WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
-                
-            } else {
-                
-                LOGGER.trace("Found "+ elementsForm.size() +" <form> in HTML body while status 200 Success:"+ result);
-            }
+            logForms(connection, elementsForm, result);
+            
         } else {
             
-            LOGGER.debug("Found "+ elementsForm.size() +" <form> in HTML body, adding input(s) to requests:"+ result);
+            addForms(elementsForm, result, mapForms);
+        }
+    }
+
+    private void addForms(Elements elementsForm, StringBuilder result, Map<Element, List<Element>> mapForms) {
+        
+        LOGGER.debug("Found "+ elementsForm.size() +" <form> in HTML body, adding input(s) to requests:"+ result);
+        
+        for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
             
-            for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
+            for (Element input: form.getValue()) {
                 
-                for (Element input: form.getValue()) {
+                if ("get".equalsIgnoreCase(form.getKey().attr("method"))) {
                     
-                    if ("get".equalsIgnoreCase(form.getKey().attr("method"))) {
-                        
-                        this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
-                        
-                    } else if ("post".equalsIgnoreCase(form.getKey().attr("method"))) {
-                        
-                        this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
-                    }
+                    this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
+                    
+                } else if ("post".equalsIgnoreCase(form.getKey().attr("method"))) {
+                    
+                    this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
                 }
             }
+        }
+    }
+
+    private void logForms(HttpURLConnection connection, Elements elementsForm, StringBuilder result) throws IOException {
+        
+        if (connection.getResponseCode() != 200) {
+            
+            LOGGER.trace("Found "+ elementsForm.size() +" ignored <form> in HTML body:"+ result);
+            LOGGER.info("WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
+            
+        } else {
+            
+            LOGGER.trace("Found "+ elementsForm.size() +" <form> in HTML body while status 200 Success:"+ result);
         }
     }
 
@@ -263,63 +277,49 @@ public class HeaderUtil {
         return exception;
     }
 
-    private void checkResponse(HttpURLConnection connection, Map<String, String> mapResponse) throws IOException {
+    private void checkResponse(String responseCode, Map<String, String> mapResponse) throws IOException {
         
-        if (
-            Pattern.matches(REGEX_HTTP_STATUS, Integer.toString(connection.getResponseCode()))
-            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
-            && mapResponse.get(HEADER_WWW_AUTHENTICATE) != null
-            && mapResponse.get(HEADER_WWW_AUTHENTICATE).startsWith("Basic ")
-        ) {
+        if (isBasicAuth(responseCode, mapResponse)) {
+            
             LOGGER.warn(
                 "Basic Authentication detected.\n"
                 + "Please define and enable authentication information in the panel Preferences.\n"
                 + "Or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with the string 'osUserName:osPassword' encoded in Base64. You can use the Coder in jSQL to encode the string."
             );
         
-        } else if (
-            Pattern.matches(REGEX_HTTP_STATUS, Integer.toString(connection.getResponseCode()))
-            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
-            && "NTLM".equals(mapResponse.get(HEADER_WWW_AUTHENTICATE))
-        ) {
+        } else if (isNtlm(responseCode, mapResponse)) {
+            
             LOGGER.warn(
                 "NTLM Authentication detected.\n"
                 + "Please define and enable authentication information in the panel Preferences.\n"
                 + "Or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
             );
         
-        } else if (
-            Pattern.matches(REGEX_HTTP_STATUS, Integer.toString(connection.getResponseCode()))
-            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
-            && mapResponse.get(HEADER_WWW_AUTHENTICATE) != null
-            && mapResponse.get(HEADER_WWW_AUTHENTICATE).startsWith("Digest ")
-        ) {
+        } else if (isDigest(responseCode, mapResponse)) {
+            
             LOGGER.warn(
                 "Digest Authentication detected.\n"
                 + "Please define and enable authentication information in the panel Preferences."
             );
         
-        } else if (
-            Pattern.matches(REGEX_HTTP_STATUS, Integer.toString(connection.getResponseCode()))
-            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
-            && "Negotiate".equals(mapResponse.get(HEADER_WWW_AUTHENTICATE))
-        ) {
+        } else if (isNegotiate(responseCode, mapResponse)) {
+            
             LOGGER.warn(
                 "Negotiate Authentication detected.\n"
                 + "Please add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
             );
             
-        } else if (Pattern.matches("1\\d\\d", Integer.toString(connection.getResponseCode()))) {
+        } else if (Pattern.matches("1\\d\\d", responseCode)) {
             
-            LOGGER.trace(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Informational");
+            LOGGER.trace(FOUND_STATUS_HTTP+ responseCode +" Informational");
             
-        } else if (Pattern.matches("2\\d\\d", Integer.toString(connection.getResponseCode()))) {
+        } else if (Pattern.matches("2\\d\\d", responseCode)) {
             
-            LOGGER.debug(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Success");
+            LOGGER.debug(FOUND_STATUS_HTTP+ responseCode +" Success");
             
-        } else if (Pattern.matches("3\\d\\d", Integer.toString(connection.getResponseCode()))) {
+        } else if (Pattern.matches("3\\d\\d", responseCode)) {
             
-            LOGGER.warn(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Redirection");
+            LOGGER.warn(FOUND_STATUS_HTTP+ responseCode +" Redirection");
             
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()) {
                 LOGGER.warn("If injection fails please test again with option 'Follow HTTP redirection' enabled.");
@@ -327,18 +327,52 @@ public class HeaderUtil {
                 LOGGER.info("Redirecting to the next page...");
             }
             
-        } else if (Pattern.matches(REGEX_HTTP_STATUS, Integer.toString(connection.getResponseCode()))) {
+        } else if (Pattern.matches(REGEX_HTTP_STATUS, responseCode)) {
             
-            LOGGER.warn(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Client Error");
+            LOGGER.warn(FOUND_STATUS_HTTP+ responseCode +" Client Error");
             
-        } else if (Pattern.matches("5\\d\\d", Integer.toString(connection.getResponseCode()))) {
+        } else if (Pattern.matches("5\\d\\d", responseCode)) {
             
-            LOGGER.warn(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Server Error");
+            LOGGER.warn(FOUND_STATUS_HTTP+ responseCode +" Server Error");
             
         } else {
             
-            LOGGER.trace(FOUND_STATUS_HTTP+ connection.getResponseCode() +" Unknown");
+            LOGGER.trace(FOUND_STATUS_HTTP+ responseCode +" Unknown");
         }
+    }
+
+    private boolean isNegotiate(String responseCode, Map<String, String> mapResponse) {
+        
+        return 
+            Pattern.matches(REGEX_HTTP_STATUS, responseCode)
+            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
+            && "Negotiate".equals(mapResponse.get(HEADER_WWW_AUTHENTICATE));
+    }
+
+    private boolean isDigest(String responseCode, Map<String, String> mapResponse) {
+        
+        return 
+            Pattern.matches(REGEX_HTTP_STATUS, responseCode)
+            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
+            && mapResponse.get(HEADER_WWW_AUTHENTICATE) != null
+            && mapResponse.get(HEADER_WWW_AUTHENTICATE).startsWith("Digest ");
+    }
+
+    private boolean isNtlm(String responseCode, Map<String, String> mapResponse) {
+        
+        return 
+            Pattern.matches(REGEX_HTTP_STATUS, responseCode)
+            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
+            && "NTLM".equals(mapResponse.get(HEADER_WWW_AUTHENTICATE));
+    }
+
+    private boolean isBasicAuth(String responseCode, Map<String, String> mapResponse) {
+        
+        return 
+            Pattern.matches(REGEX_HTTP_STATUS, responseCode)
+            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
+            && mapResponse.get(HEADER_WWW_AUTHENTICATE) != null
+            && mapResponse.get(HEADER_WWW_AUTHENTICATE).startsWith("Basic ");
     }
     
     /**

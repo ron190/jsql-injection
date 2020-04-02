@@ -49,6 +49,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         // Search if the source contains 1337[index]7331, this notation allows to exclude
         // pages that display our own url in the source
         for (nbIndex = 1 ; nbIndex <= 10 ; nbIndex++) {
+            
             taskCompletionService.submit(
                 new CallablePageSource(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),
@@ -69,10 +70,13 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
 
                 // Found a correct mark 1337[index]7331 in the source
                 if (Pattern.compile("(?s).*1337\\d+7331.*").matcher(currentCallable.getContent()).matches()) {
+                    
                     this.injectionModel.getMediatorStrategy().getNormal().setSourceIndexesFound(currentCallable.getContent());
                     initialQuery = currentCallable.getUrl().replace("0%2b1", "1");
                     isRequestFound = true;
+                    
                 } else {
+                    
                     // Else add a new index
                     taskCompletionService.submit(
                         new CallablePageSource(
@@ -80,24 +84,19 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                             this.injectionModel
                         )
                     );
+                    
                     nbIndex++;
                 }
-                
             }
             
             // End the job
-            try {
-                taskExecutor.shutdown();
-                if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
-                    taskExecutor.shutdownNow();
-                }
-            } catch (InterruptedException e) {
-                LOGGER.error(e.getMessage(), e);
-                Thread.currentThread().interrupt();
+            taskExecutor.shutdown();
+            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
+                taskExecutor.shutdownNow();
             }
         } catch (InterruptedException | ExecutionException e) {
             
-            LOGGER.error("Interruption while determining injection indexes", e);
+            LOGGER.error("Interruption while searching for injection indexes", e);
             Thread.currentThread().interrupt();
         }
 
@@ -108,5 +107,4 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         // TODO optional
         return "";
     }
-    
 }

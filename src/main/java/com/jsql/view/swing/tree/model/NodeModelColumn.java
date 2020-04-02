@@ -23,10 +23,10 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.bean.database.Column;
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * Column model creating a checkbox.
@@ -59,18 +59,18 @@ public class NodeModelColumn extends AbstractNodeModel {
 
         if (isSelected) {
             if (hasFocus) {
-                checkbox.setBackground(HelperUi.COLOR_FOCUS_GAINED);
-                checkbox.setBorder(HelperUi.BORDER_FOCUS_GAINED);
+                checkbox.setBackground(UiUtil.COLOR_FOCUS_GAINED);
+                checkbox.setBorder(UiUtil.BORDER_FOCUS_GAINED);
             } else {
-                checkbox.setBackground(HelperUi.COLOR_FOCUS_LOST);
-                checkbox.setBorder(HelperUi.BORDER_FOCUS_LOST);
+                checkbox.setBackground(UiUtil.COLOR_FOCUS_LOST);
+                checkbox.setBorder(UiUtil.BORDER_FOCUS_LOST);
             }
         } else {
             checkbox.setBackground(Color.WHITE);
             checkbox.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }
         
-        checkbox.setComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
+        checkbox.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
         
         return checkbox;
     }

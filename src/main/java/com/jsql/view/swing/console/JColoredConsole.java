@@ -13,7 +13,7 @@ import javax.swing.text.SimpleAttributeSet;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.text.JPopupTextPane;
 
@@ -96,7 +96,7 @@ public abstract class JColoredConsole extends JPopupTextPane {
             if (attribut == SwingAppender.WARN) {
                 foregroundColor = Color.RED;
             } else if (attribut == SwingAppender.DEBUG) {
-                foregroundColor = HelperUi.COLOR_GREEN;
+                foregroundColor = UiUtil.COLOR_GREEN;
             }
             
             int tabIndex = MediatorGui.tabConsoles().indexOfTab(this.tabName);

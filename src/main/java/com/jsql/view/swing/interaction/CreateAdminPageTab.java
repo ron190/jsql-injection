@@ -35,10 +35,10 @@ import javax.swing.text.DefaultEditorKit;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import com.jsql.i18n.I18n;
-import com.jsql.view.i18n.I18nView;
+import com.jsql.i18n.I18nUtil;
+import com.jsql.view.i18n.I18nViewUtil;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabHeader;
@@ -104,24 +104,24 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
 
         final JPopupMenu menu = new JPopupMenu();
         
-        JMenuItem itemCopyUrl = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_COPY_PAGE_URL"));
-        I18nView.addComponentForKey("CONTEXT_MENU_COPY_PAGE_URL", itemCopyUrl);
-        itemCopyUrl.setIcon(HelperUi.ICON_EMPTY);
+        JMenuItem itemCopyUrl = new JMenuItem(I18nUtil.valueByKey("CONTEXT_MENU_COPY_PAGE_URL"));
+        I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY_PAGE_URL", itemCopyUrl);
+        itemCopyUrl.setIcon(UiUtil.ICON_EMPTY);
         
         JMenuItem itemCopy = new JMenuItem();
         itemCopy.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         itemCopy.setMnemonic('C');
-        itemCopy.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
-        I18nView.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
-        itemCopy.setIcon(HelperUi.ICON_EMPTY);
+        itemCopy.setText(I18nUtil.valueByKey("CONTEXT_MENU_COPY"));
+        I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
+        itemCopy.setIcon(UiUtil.ICON_EMPTY);
         
         JMenuItem itemSelectAll = new JMenuItem();
-        itemSelectAll.setIcon(HelperUi.ICON_EMPTY);
+        itemSelectAll.setIcon(UiUtil.ICON_EMPTY);
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-        itemSelectAll.setText(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
-        I18nView.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
+        itemSelectAll.setText(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"));
+        I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
         itemSelectAll.setMnemonic('A');
         
         menu.add(itemCopyUrl);
@@ -129,7 +129,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         menu.add(itemCopy);
         menu.add(itemSelectAll);
         
-        menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
+        menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
 
         itemCopyUrl.addActionListener(actionEvent -> {
             
@@ -176,7 +176,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
                     }
                     
                     menu.setLocation(
-                        ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                        ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
                         ? evt.getXOnScreen() - menu.getWidth()
                         : evt.getXOnScreen(),
                         evt.getYOnScreen()
@@ -192,7 +192,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(this.url.replaceAll(".*/", ""), HelperUi.ICON_ADMIN_SERVER);
+        TabHeader header = new TabHeader(this.url.replaceAll(".*/", ""), UiUtil.ICON_ADMIN_SERVER);
 
         MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), "<html>"+ this.url +"</html>");
 

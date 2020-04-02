@@ -50,6 +50,7 @@ public class BlockCaret extends DefaultCaret {
         this.x = r.x;
         this.y = r.y;
         this.height = r.height;
+        
         // A value for width was probably set by paint(), which we leave alone.
         // But the first call to damage() precedes the first call to paint(), so
         // in this case we must be prepared to set a valid width, or else
@@ -61,6 +62,7 @@ public class BlockCaret extends DefaultCaret {
 
         //Calls getComponent().repaint(x, y, width, height) to erase
         this.repaint();
+        
         // previous location of caret. Sometimes one call isn't enough.
         this.repaint();
     }
@@ -84,7 +86,9 @@ public class BlockCaret extends DefaultCaret {
                 return;
             }
             dotChar = comp.getText(dot, 1).charAt(0);
+            
         } catch (BadLocationException e) {
+            
             LOGGER.error(e.getMessage(), e);
             return;
         }
@@ -94,6 +98,7 @@ public class BlockCaret extends DefaultCaret {
         }
 
         if (this.x != r.x || this.y != r.y) {
+            
             // paint() has been called directly, without a previous call to
             // damage(), so do some cleanup. (This happens, for example, when
             // the text component is resized.)
@@ -107,6 +112,7 @@ public class BlockCaret extends DefaultCaret {
         g.setXORMode(comp.getBackground());
 
         this.width = g.getFontMetrics().charWidth(dotChar);
+        
         if (this.isVisible()) {
             g.fillRect(r.x, r.y, this.width, r.height);
         }

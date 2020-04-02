@@ -26,7 +26,7 @@ import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.util.RadioMenuItemIconCustom;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -110,8 +110,8 @@ public class RequestPanel extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 
-                popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
-                if (ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT) {
+                popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
+                if (ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT) {
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
                 } else {
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
@@ -119,14 +119,14 @@ public class RequestPanel extends JPanel {
                 
                 popup.show(
                     e.getComponent(),
-                    ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                    ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
                     ? e.getComponent().getX() - e.getComponent().getWidth() - popup.getWidth()
                     : e.getComponent().getX(),
                     e.getComponent().getY() + e.getComponent().getWidth()
                 );
                 
                 popup.setLocation(
-                    ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                    ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
                     ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popup.getWidth()
                     : e.getComponent().getLocationOnScreen().x,
                     e.getComponent().getLocationOnScreen().y + e.getComponent().getWidth()

@@ -20,7 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionCloseTabResult;
 
@@ -30,11 +30,11 @@ import com.jsql.view.swing.action.ActionCloseTabResult;
 @SuppressWarnings("serial")
 public class TabHeader extends JPanel implements MouseListener {
     
+    private transient Cleanable cleanableTab;
+    
     public interface Cleanable {
         void clean();
     }
-    
-    private transient Cleanable cleanableTab;
     
     private JLabel tabTitleLabel = new JLabel() {
         
@@ -49,7 +49,7 @@ public class TabHeader extends JPanel implements MouseListener {
      * Tab header with default tab icon.
      */
     public TabHeader() {
-        this(HelperUi.ICON_TABLE);
+        this(UiUtil.ICON_TABLE);
     }
 
     /**

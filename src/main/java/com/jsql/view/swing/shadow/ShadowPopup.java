@@ -352,65 +352,9 @@ public final class ShadowPopup extends Popup {
             POINT.y = this.y;
             SwingUtilities.convertPointFromScreen(POINT, layeredPane);
 
-            // If needed paint dirty region of the horizontal snapshot.
-            RECT.x = POINT.x;
-            RECT.y = POINT.y + height - SHADOW_SIZE;
-            RECT.width = width;
-            RECT.height = SHADOW_SIZE;
+            paintHorizontalSnapshot(width, height, hShadowBg, layeredPane, layeredPaneWidth, layeredPaneHeight);
 
-            if ((RECT.x + RECT.width) > layeredPaneWidth) {
-                RECT.width = layeredPaneWidth - RECT.x;
-            }
-            if ((RECT.y + RECT.height) > layeredPaneHeight) {
-                RECT.height = layeredPaneHeight - RECT.y;
-            }
-            
-            if (!RECT.isEmpty()) {
-                
-                Graphics g = hShadowBg.createGraphics();
-                g.translate(-RECT.x, -RECT.y);
-                g.setClip(RECT);
-                if (layeredPane instanceof JComponent) {
-                    JComponent c = (JComponent) layeredPane;
-                    boolean doubleBuffered = c.isDoubleBuffered();
-                    c.setDoubleBuffered(false);
-                    ShadowPopup.paintAll(c, g);
-                    c.setDoubleBuffered(doubleBuffered);
-                } else {
-                    layeredPane.paintAll(g);
-                }
-                g.dispose();
-            }
-
-            // If needed paint dirty region of the vertical snapshot.
-            RECT.x = POINT.x + width - SHADOW_SIZE;
-            RECT.y = POINT.y;
-            RECT.width = SHADOW_SIZE;
-            RECT.height = height - SHADOW_SIZE;
-
-            if ((RECT.x + RECT.width) > layeredPaneWidth) {
-                RECT.width = layeredPaneWidth - RECT.x;
-            }
-            if ((RECT.y + RECT.height) > layeredPaneHeight) {
-                RECT.height = layeredPaneHeight - RECT.y;
-            }
-            
-            if (!RECT.isEmpty()) {
-                
-                Graphics g = vShadowBg.createGraphics();
-                g.translate(-RECT.x, -RECT.y);
-                g.setClip(RECT);
-                if (layeredPane instanceof JComponent) {
-                    JComponent c = (JComponent) layeredPane;
-                    boolean doubleBuffered = c.isDoubleBuffered();
-                    c.setDoubleBuffered(false);
-                    c.paintAll(g);
-                    c.setDoubleBuffered(doubleBuffered);
-                } else {
-                    layeredPane.paintAll(g);
-                }
-                g.dispose();
-            }
+            paintVerticalSnapshot(width, height, vShadowBg, layeredPane, layeredPaneWidth, layeredPaneHeight);
         } catch (AWTException | SecurityException | IllegalArgumentException e) {
             
             this.canSnapshot = false;
@@ -418,6 +362,72 @@ public final class ShadowPopup extends Popup {
             // Ignore
             IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
             LOGGER.trace(exceptionIgnored, exceptionIgnored);
+        }
+    }
+
+    private void paintVerticalSnapshot(int width, int height, BufferedImage vShadowBg, Container layeredPane, int layeredPaneWidth, int layeredPaneHeight) {
+        
+        // If needed paint dirty region of the vertical snapshot.
+        RECT.x = POINT.x + width - SHADOW_SIZE;
+        RECT.y = POINT.y;
+        RECT.width = SHADOW_SIZE;
+        RECT.height = height - SHADOW_SIZE;
+
+        if ((RECT.x + RECT.width) > layeredPaneWidth) {
+            RECT.width = layeredPaneWidth - RECT.x;
+        }
+        if ((RECT.y + RECT.height) > layeredPaneHeight) {
+            RECT.height = layeredPaneHeight - RECT.y;
+        }
+        
+        if (!RECT.isEmpty()) {
+            
+            Graphics g = vShadowBg.createGraphics();
+            g.translate(-RECT.x, -RECT.y);
+            g.setClip(RECT);
+            if (layeredPane instanceof JComponent) {
+                JComponent c = (JComponent) layeredPane;
+                boolean doubleBuffered = c.isDoubleBuffered();
+                c.setDoubleBuffered(false);
+                c.paintAll(g);
+                c.setDoubleBuffered(doubleBuffered);
+            } else {
+                layeredPane.paintAll(g);
+            }
+            g.dispose();
+        }
+    }
+
+    private void paintHorizontalSnapshot(int width, int height, BufferedImage hShadowBg, Container layeredPane, int layeredPaneWidth, int layeredPaneHeight) {
+        
+        // If needed paint dirty region of the horizontal snapshot.
+        RECT.x = POINT.x;
+        RECT.y = POINT.y + height - SHADOW_SIZE;
+        RECT.width = width;
+        RECT.height = SHADOW_SIZE;
+
+        if ((RECT.x + RECT.width) > layeredPaneWidth) {
+            RECT.width = layeredPaneWidth - RECT.x;
+        }
+        if ((RECT.y + RECT.height) > layeredPaneHeight) {
+            RECT.height = layeredPaneHeight - RECT.y;
+        }
+        
+        if (!RECT.isEmpty()) {
+            
+            Graphics g = hShadowBg.createGraphics();
+            g.translate(-RECT.x, -RECT.y);
+            g.setClip(RECT);
+            if (layeredPane instanceof JComponent) {
+                JComponent c = (JComponent) layeredPane;
+                boolean doubleBuffered = c.isDoubleBuffered();
+                c.setDoubleBuffered(false);
+                ShadowPopup.paintAll(c, g);
+                c.setDoubleBuffered(doubleBuffered);
+            } else {
+                layeredPane.paintAll(g);
+            }
+            g.dispose();
         }
     }
     

@@ -39,8 +39,8 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.console.JavaConsoleAdapter;
 import com.jsql.view.swing.console.SimpleConsoleAdapter;
@@ -71,7 +71,7 @@ public class PanelConsoles extends JPanel {
     /**
      * Console for java exception messages.
      */
-    public JavaConsoleAdapter javaTextPane = new JavaConsoleAdapter("Java", "Java unhandled exception");
+    public static final JavaConsoleAdapter javaTextPane = new JavaConsoleAdapter("Java", "Java unhandled exception");
     
     /**
      * Console for raw SQL results.
@@ -193,23 +193,23 @@ public class PanelConsoles extends JPanel {
         this.buildI18nTab(
             "CONSOLE_MAIN_LABEL",
             "CONSOLE_MAIN_TOOLTIP",
-            HelperUi.ICON_CONSOLE,
+            UiUtil.ICON_CONSOLE,
             new LightScrollPane(1, 0, 0, 0, consoleTextPane.getProxy()),
             0
         );
 
         // Order is important
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-        if (prefs.getBoolean(HelperUi.JAVA_VISIBLE, false)) {
+        if (prefs.getBoolean(UiUtil.JAVA_VISIBLE, false)) {
             this.insertJavaTab();
         }
-        if (prefs.getBoolean(HelperUi.NETWORK_VISIBLE, true)) {
+        if (prefs.getBoolean(UiUtil.NETWORK_VISIBLE, true)) {
             this.insertNetworkTab();
         }
-        if (prefs.getBoolean(HelperUi.CHUNK_VISIBLE, true)) {
+        if (prefs.getBoolean(UiUtil.CHUNK_VISIBLE, true)) {
             this.insertChunkTab();
         }
-        if (prefs.getBoolean(HelperUi.BINARY_VISIBLE, true)) {
+        if (prefs.getBoolean(UiUtil.BINARY_VISIBLE, true)) {
             this.insertBooleanTab();
         }
 
@@ -311,7 +311,7 @@ public class PanelConsoles extends JPanel {
         this.buildI18nTab(
             "CONSOLE_CHUNK_LABEL",
             "CONSOLE_CHUNK_TOOLTIP",
-            HelperUi.ICON_CHUNK,
+            UiUtil.ICON_CHUNK,
             new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.chunkTextArea),
             1
         );
@@ -325,7 +325,7 @@ public class PanelConsoles extends JPanel {
         this.buildI18nTab(
             "CONSOLE_BINARY_LABEL",
             "CONSOLE_BINARY_TOOLTIP",
-            HelperUi.ICON_BINARY,
+            UiUtil.ICON_BINARY,
             new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.binaryTextArea),
             1 + (MediatorGui.menubar().getChunkMenu().isSelected() ? 1 : 0)
         );
@@ -339,7 +339,7 @@ public class PanelConsoles extends JPanel {
         this.buildI18nTab(
             "CONSOLE_NETWORK_LABEL",
             "CONSOLE_NETWORK_TOOLTIP",
-            HelperUi.ICON_HEADER,
+            UiUtil.ICON_HEADER,
             new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.networkSplitPane),
             this.tabConsoles.getTabCount() - (MediatorGui.menubar().getJavaDebugMenu().isSelected() ? 1 : 0)
         );
@@ -353,7 +353,7 @@ public class PanelConsoles extends JPanel {
         this.buildI18nTab(
             "CONSOLE_JAVA_LABEL",
             "CONSOLE_JAVA_TOOLTIP",
-            HelperUi.ICON_CUP,
+            UiUtil.ICON_CUP,
             new LightScrollPane(1, 0, 0, 0, this.javaTextPane.getProxy()),
             this.tabConsoles.getTabCount()
         );
@@ -361,12 +361,12 @@ public class PanelConsoles extends JPanel {
     
     private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, Component manager, int position) {
         
-        final JToolTipI18n[] refJToolTipI18n = new JToolTipI18n[]{new JToolTipI18n(I18nView.valueByKey(keyTooltip))};
+        final JToolTipI18n[] refJToolTipI18n = new JToolTipI18n[]{new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip))};
         
-        JLabel labelTab = new JLabel(I18nView.valueByKey(keyLabel), icon, SwingConstants.CENTER){
+        JLabel labelTab = new JLabel(I18nViewUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER){
             @Override
             public JToolTip createToolTip() {
-                JToolTip tipI18n = new JToolTipI18n(I18nView.valueByKey(keyTooltip));
+                JToolTip tipI18n = new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip));
                 refJToolTipI18n[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
             }
@@ -381,15 +381,15 @@ public class PanelConsoles extends JPanel {
             }
         });
         
-        this.tabConsoles.insertTab(I18nView.valueByKey(keyLabel), icon, manager, null, position);
+        this.tabConsoles.insertTab(I18nViewUtil.valueByKey(keyLabel), icon, manager, null, position);
         this.tabConsoles.setTabComponentAt(
-            this.tabConsoles.indexOfTab(I18nView.valueByKey(keyLabel)),
+            this.tabConsoles.indexOfTab(I18nViewUtil.valueByKey(keyLabel)),
             labelTab
         );
         
-        I18nView.addComponentForKey(keyLabel, labelTab);
-        I18nView.addComponentForKey(keyTooltip, refJToolTipI18n[0]);
-        labelTab.setToolTipText(I18nView.valueByKey(keyTooltip));
+        I18nViewUtil.addComponentForKey(keyLabel, labelTab);
+        I18nViewUtil.addComponentForKey(keyTooltip, refJToolTipI18n[0]);
+        labelTab.setToolTipText(I18nViewUtil.valueByKey(keyTooltip));
     }
     
     public void messageChunk(String text) {

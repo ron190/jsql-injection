@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  * If the current system language is not supported then the user is proposed to use
  * the community translation protocol.
  */
-public class I18n {
+public class I18nUtil {
     
     /**
      * Using default log4j.properties from root /
@@ -36,7 +36,7 @@ public class I18n {
     private static ResourceBundle localeDefault = ResourceBundle.getBundle("i18n.jsql", Locale.getDefault());
     
     // Utility class
-    private I18n() {
+    private I18nUtil() {
         // not used
     }
     
@@ -46,7 +46,7 @@ public class I18n {
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
-        return (String) I18n.localeDefault.getObject(key);
+        return (String) I18nUtil.localeDefault.getObject(key);
     }
     
     /**
@@ -56,7 +56,7 @@ public class I18n {
      */
     public static void checkCurrentLanguage() {
         
-        URL path = I18n.class.getClassLoader().getResource("i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
+        URL path = I18nUtil.class.getClassLoader().getResource("i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
         if (!"en".equals(Locale.getDefault().getLanguage()) && path == null) {
             String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
             LOGGER.debug(
@@ -77,11 +77,11 @@ public class I18n {
     // Getters and setters
     
     public static void setLocaleDefault(ResourceBundle localeDefault) {
-        I18n.localeDefault = localeDefault;
+        I18nUtil.localeDefault = localeDefault;
     }
     
     public static Locale getLocaleDefault() {
-        return I18n.localeDefault.getLocale();
+        return I18nUtil.localeDefault.getLocale();
     }
 
     public static ResourceBundle getLocaleRoot() {

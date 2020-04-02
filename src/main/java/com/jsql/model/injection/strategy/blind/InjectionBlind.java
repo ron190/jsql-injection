@@ -50,17 +50,12 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         super(injectionModel, blindMode);
         
         // No blind
-        if (this.falseTest.isEmpty()) {
+        if (this.falseTest.isEmpty() || this.injectionModel.isStoppedByUser()) {
             return;
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
         this.blankTrueMark = this.callUrl("");
-
-        // Check if the user wants to stop the preparation
-        if (this.injectionModel.isStoppedByUser()) {
-            return;
-        }
 
         /*
          *  Parallelize the call to the FALSE statements,

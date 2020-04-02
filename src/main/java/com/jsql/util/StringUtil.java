@@ -29,7 +29,7 @@ import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.mozilla.universalchardet.UniversalDetector;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * Utility class adding String operations like join() which are not
@@ -152,7 +152,7 @@ public final class StringUtil {
         String result = text;
         if (encoding != null) {
             // TODO move to View, remove from model
-            result = "<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"';"+( nowrap ? "white-space:nowrap;" : "" )+"\">"+ new String(text.getBytes(), StandardCharsets.UTF_8) +"</span></html>";
+            result = "<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"';"+( nowrap ? "white-space:nowrap;" : "" )+"\">"+ new String(text.getBytes(), StandardCharsets.UTF_8) +"</span></html>";
         }
         
         return result;

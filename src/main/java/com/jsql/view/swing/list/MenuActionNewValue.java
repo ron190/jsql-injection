@@ -27,8 +27,8 @@ import javax.swing.JTextArea;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
-import com.jsql.view.i18n.I18nView;
+import com.jsql.i18n.I18nUtil;
+import com.jsql.view.i18n.I18nViewUtil;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 
@@ -60,9 +60,9 @@ public class MenuActionNewValue implements ActionListener {
         
         JPanel panel = new JPanel(new BorderLayout());
         final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
-        JLabel labelAddValue = new JLabel(I18n.valueByKey("LIST_ADD_VALUE_LABEL") + ":");
+        JLabel labelAddValue = new JLabel(I18nUtil.valueByKey("LIST_ADD_VALUE_LABEL") + ":");
         panel.add(labelAddValue, BorderLayout.NORTH);
-        I18nView.addComponentForKey("LIST_ADD_VALUE_LABEL", labelAddValue);
+        I18nViewUtil.addComponentForKey("LIST_ADD_VALUE_LABEL", labelAddValue);
         panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
         
         panel.setPreferredSize(new Dimension(600, 400));
@@ -85,56 +85,73 @@ public class MenuActionNewValue implements ActionListener {
             result = JOptionPane.showOptionDialog(
                 this.myList.getTopLevelAncestor(),
                 panel,
-                I18n.valueByKey("LIST_ADD_VALUE_TITLE"),
+                I18nUtil.valueByKey("LIST_ADD_VALUE_TITLE"),
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
-                new String[]{I18n.valueByKey("LIST_ADD_VALUE_OK"), I18n.valueByKey("LIST_ADD_VALUE_CANCEL")},
-                I18n.valueByKey("LIST_ADD_VALUE_CANCEL")
+                new String[]{I18nUtil.valueByKey("LIST_ADD_VALUE_OK"), I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")},
+                I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
             );
         } catch (ClassCastException e) {
             LOGGER.error(e, e);
         }
 
-        if (StringUtils.isNotEmpty(textarea.getText()) && result == JOptionPane.YES_OPTION) {
-            
-            int lastIndex = 0;
-            if (this.myList.getSelectedIndex() > 0) {
-                lastIndex = this.myList.getSelectedIndex();
-            }
-
-            int firstIndex = lastIndex;
-            
-            if ("scan".equals(this.myList.getName())) {
-                
-                List<ItemListScan> listParsedItems = ListTransfertHandlerScan.parse(textarea.getText().replace("\\", "/"));
-                for (ItemListScan item: listParsedItems) {
-                    ((DefaultListModel<ItemList>) this.myList.getModel()).add(
-                        lastIndex++,
-                        item
-                    );
-                }
-            } else {
-                
-                for (String newItem: textarea.getText().split("\\n")) {
-                    if (StringUtils.isNotEmpty(newItem)) {
-                        ((DefaultListModel<ItemList>) this.myList.getModel()).add(
-                            lastIndex++,
-                            new ItemList(newItem.replace("\\", "/"))
-                        );
-                    }
-                }
-            }
-
-            this.myList.setSelectionInterval(firstIndex, lastIndex - 1);
-            this.myList.scrollRectToVisible(
-                this.myList.getCellBounds(
-                    this.myList.getMinSelectionIndex(),
-                    this.myList.getMaxSelectionIndex()
-                )
-            );
-
-            textarea.setText(null);
+        if (StringUtils.isEmpty(textarea.getText()) || result != JOptionPane.YES_OPTION) {
+            return;
         }
+            
+        int lastIndex = 0;
+        if (this.myList.getSelectedIndex() > 0) {
+            lastIndex = this.myList.getSelectedIndex();
+        }
+
+        int firstIndex = lastIndex;
+        
+        if ("scan".equals(this.myList.getName())) {
+            
+            lastIndex = addToScanList(textarea, lastIndex);
+            
+        } else {
+            
+            lastIndex = addToList(textarea, lastIndex);
+        }
+
+        this.myList.setSelectionInterval(firstIndex, lastIndex - 1);
+        this.myList.scrollRectToVisible(
+            this.myList.getCellBounds(
+                this.myList.getMinSelectionIndex(),
+                this.myList.getMaxSelectionIndex()
+            )
+        );
+
+        textarea.setText(null);
+    }
+
+    private int addToList(final JTextArea textarea, int lastIndex) {
+        
+        for (String newItem: textarea.getText().split("\\n")) {
+            
+            if (StringUtils.isNotEmpty(newItem)) {
+                
+                ((DefaultListModel<ItemList>) this.myList.getModel()).add(
+                    lastIndex++,
+                    new ItemList(newItem.replace("\\", "/"))
+                );
+            }
+        }
+        
+        return lastIndex;
+    }
+
+    private int addToScanList(final JTextArea textarea, int lastIndex) {
+        
+        List<ItemListScan> listParsedItems = ListTransfertHandlerScan.parse(textarea.getText().replace("\\", "/"));
+        
+        for (ItemListScan item: listParsedItems) {
+            
+            ((DefaultListModel<ItemList>) this.myList.getModel()).add(lastIndex++, item);
+        }
+        
+        return lastIndex;
     }
 }

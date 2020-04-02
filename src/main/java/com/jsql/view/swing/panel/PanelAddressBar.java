@@ -21,11 +21,11 @@ import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.method.MethodInjection;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.address.ActionEnterAddressBar;
 import com.jsql.view.swing.panel.address.AddressMenuBar;
@@ -65,73 +65,73 @@ public class PanelAddressBar extends JPanel {
     
     public PanelAddressBar() {
         
-        final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_QUERYSTRING_TOOLTIP"))};
-        JTextFieldWithIcon fieldWithIcon = new JTextFieldWithIcon(I18n.valueByKey("ADDRESS_BAR")){
+        final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("FIELD_QUERYSTRING_TOOLTIP"))};
+        JTextFieldWithIcon fieldWithIcon = new JTextFieldWithIcon(I18nUtil.valueByKey("ADDRESS_BAR")){
             @Override
             public JToolTip createToolTip() {
-                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("FIELD_QUERYSTRING_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("FIELD_QUERYSTRING_TOOLTIP"));
                 j[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
             }
         };
         this.textFieldAddress = new JTextFieldAddressBar(fieldWithIcon).getProxy();
-        I18nView.addComponentForKey("ADDRESS_BAR", fieldWithIcon);
-        I18nView.addComponentForKey("FIELD_QUERYSTRING_TOOLTIP", j[0]);
+        I18nViewUtil.addComponentForKey("ADDRESS_BAR", fieldWithIcon);
+        I18nViewUtil.addComponentForKey("FIELD_QUERYSTRING_TOOLTIP", j[0]);
         
-        final JToolTipI18n[] j2 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_REQUEST_TOOLTIP"))};
+        final JToolTipI18n[] j2 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("FIELD_REQUEST_TOOLTIP"))};
         this.textFieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe="){
             @Override
             public JToolTip createToolTip() {
-                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("FIELD_REQUEST_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("FIELD_REQUEST_TOOLTIP"));
                 j2[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
             }
         }).getProxy();
-        I18nView.addComponentForKey("FIELD_REQUEST_TOOLTIP", j2[0]);
+        I18nViewUtil.addComponentForKey("FIELD_REQUEST_TOOLTIP", j2[0]);
         
-        final JToolTipI18n[] j3 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_HEADER_TOOLTIP"))};
+        final JToolTipI18n[] j3 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("FIELD_HEADER_TOOLTIP"))};
         this.textFieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key: value\\r\\nCookie: cKey1=cValue1; cKey2=cValue2\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:"){
             @Override
             public JToolTip createToolTip() {
-                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("FIELD_HEADER_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("FIELD_HEADER_TOOLTIP"));
                 j3[0] = (JToolTipI18n) tipI18n;
                 return j3[0];
             }
         }).getProxy();
-        I18nView.addComponentForKey("FIELD_HEADER_TOOLTIP", j3[0]);
+        I18nViewUtil.addComponentForKey("FIELD_HEADER_TOOLTIP", j3[0]);
         
-        final JToolTipI18n[] j4 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("METHOD_QUERYSTRING_TOOLTIP"))};
+        final JToolTipI18n[] j4 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("METHOD_QUERYSTRING_TOOLTIP"))};
         this.radioQueryString = new RadioLinkMethod("GET", true, MediatorModel.model().getMediatorMethodInjection().getQuery()){
             @Override
             public JToolTip createToolTip() {
-                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("METHOD_QUERYSTRING_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("METHOD_QUERYSTRING_TOOLTIP"));
                 j4[0] = (JToolTipI18n) tipI18n;
                 return j4[0];
             }
         };
-        I18nView.addComponentForKey("METHOD_QUERYSTRING_TOOLTIP", j4[0]);
+        I18nViewUtil.addComponentForKey("METHOD_QUERYSTRING_TOOLTIP", j4[0]);
         
-        final JToolTipI18n[] j5 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("METHOD_REQUEST_TOOLTIP"))};
+        final JToolTipI18n[] j5 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("METHOD_REQUEST_TOOLTIP"))};
         this.radioMethod = new RadioLinkMethod("POST", MediatorModel.model().getMediatorMethodInjection().getRequest()){
             @Override
             public JToolTip createToolTip() {
-                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("METHOD_REQUEST_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("METHOD_REQUEST_TOOLTIP"));
                 j5[0] = (JToolTipI18n) tipI18n;
                 return j5[0];
             }
         };
-        I18nView.addComponentForKey("METHOD_REQUEST_TOOLTIP", j5[0]);
+        I18nViewUtil.addComponentForKey("METHOD_REQUEST_TOOLTIP", j5[0]);
         
-        final JToolTipI18n[] j6 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("METHOD_HEADER_TOOLTIP"))};
+        final JToolTipI18n[] j6 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("METHOD_HEADER_TOOLTIP"))};
         this.radioHeader = new RadioLinkMethod("Header", MediatorModel.model().getMediatorMethodInjection().getHeader()){
             @Override
             public JToolTip createToolTip() {
-                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("METHOD_HEADER_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("METHOD_HEADER_TOOLTIP"));
                 j6[0] = (JToolTipI18n) tipI18n;
                 return j6[0];
             }
         };
-        I18nView.addComponentForKey("METHOD_HEADER_TOOLTIP", j6[0]);
+        I18nViewUtil.addComponentForKey("METHOD_HEADER_TOOLTIP", j6[0]);
                 
         this.requestPanel = new RequestPanel(this);
 
@@ -140,13 +140,13 @@ public class PanelAddressBar extends JPanel {
         this.radioHeader.setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));
 
         // Tooltip setting
-        this.textFieldAddress.setToolTipText(I18n.valueByKey("FIELD_QUERYSTRING_TOOLTIP"));
-        this.textFieldRequest.setToolTipText(I18n.valueByKey("FIELD_REQUEST_TOOLTIP"));
-        this.textFieldHeader.setToolTipText(I18n.valueByKey("FIELD_HEADER_TOOLTIP"));
+        this.textFieldAddress.setToolTipText(I18nUtil.valueByKey("FIELD_QUERYSTRING_TOOLTIP"));
+        this.textFieldRequest.setToolTipText(I18nUtil.valueByKey("FIELD_REQUEST_TOOLTIP"));
+        this.textFieldHeader.setToolTipText(I18nUtil.valueByKey("FIELD_HEADER_TOOLTIP"));
 
-        this.radioQueryString.setToolTipText(I18n.valueByKey("METHOD_QUERYSTRING_TOOLTIP"));
-        this.radioMethod.setToolTipText(I18n.valueByKey("METHOD_REQUEST_TOOLTIP"));
-        this.radioHeader.setToolTipText(I18n.valueByKey("METHOD_HEADER_TOOLTIP"));
+        this.radioQueryString.setToolTipText(I18nUtil.valueByKey("METHOD_QUERYSTRING_TOOLTIP"));
+        this.radioMethod.setToolTipText(I18nUtil.valueByKey("METHOD_REQUEST_TOOLTIP"));
+        this.radioHeader.setToolTipText(I18nUtil.valueByKey("METHOD_HEADER_TOOLTIP"));
 
         /**
          * Define UI and the left padding for addressBar
@@ -154,8 +154,8 @@ public class PanelAddressBar extends JPanel {
         this.textFieldAddress.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(4, 2, 3, 0, HelperUi.COLOR_DEFAULT_BACKGROUND),
-                    BorderFactory.createLineBorder(HelperUi.COLOR_BLU)
+                    BorderFactory.createMatteBorder(4, 2, 3, 0, UiUtil.COLOR_DEFAULT_BACKGROUND),
+                    BorderFactory.createLineBorder(UiUtil.COLOR_BLU)
                 ),
                 BorderFactory.createEmptyBorder(2, 23, 2, 23)
             )
@@ -163,22 +163,22 @@ public class PanelAddressBar extends JPanel {
 
         this.textFieldRequest.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND),
-                HelperUi.BORDER_BLU
+                BorderFactory.createMatteBorder(1, 2, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND),
+                UiUtil.BORDER_BLU
             )
         );
         
         this.textFieldHeader.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND),
-                HelperUi.BORDER_BLU
+                BorderFactory.createMatteBorder(1, 2, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND),
+                UiUtil.BORDER_BLU
             )
         );
 
         this.textFieldRequest.setPreferredSize(new Dimension(0, 27));
-        this.textFieldRequest.setFont(HelperUi.FONT_SEGOE_BIG);
+        this.textFieldRequest.setFont(UiUtil.FONT_SEGOE_BIG);
         this.textFieldHeader.setPreferredSize(new Dimension(0, 27));
-        this.textFieldHeader.setFont(HelperUi.FONT_SEGOE_BIG);
+        this.textFieldHeader.setFont(UiUtil.FONT_SEGOE_BIG);
 
         this.textFieldAddress.addActionListener(new ActionEnterAddressBar(this));
         this.textFieldRequest.addActionListener(new ActionEnterAddressBar(this));
@@ -265,7 +265,7 @@ public class PanelAddressBar extends JPanel {
         advancedButton.setBorderPainted(false);
         advancedButton.setOpaque(false);
 
-        advancedButton.setToolTipText(I18n.valueByKey("BUTTON_ADVANCED"));
+        advancedButton.setToolTipText(I18nUtil.valueByKey("BUTTON_ADVANCED"));
         advancedButton.addActionListener(actionEvent -> {
             
             boolean isVisible = advancedButton.getDirection() == SwingConstants.SOUTH;

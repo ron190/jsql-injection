@@ -34,10 +34,10 @@ import javax.swing.SwingConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
@@ -56,7 +56,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    private final JTextField textfieldUrlShell = new JPopupTextField(I18n.valueByKey("SHELL_URL_LABEL")).getProxy();
+    private final JTextField textfieldUrlShell = new JPopupTextField(I18nUtil.valueByKey("SHELL_URL_LABEL")).getProxy();
     
     /**
      * Build the manager panel.
@@ -68,7 +68,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         List<ItemList> itemsList = new ArrayList<>();
         
         try (
-            InputStream inputStream = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.PATH_WEB_FOLDERS);
+            InputStream inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader reader = new BufferedReader(inputStreamReader);
         ) {
@@ -89,16 +89,16 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 
-        String urlTooltip = I18n.valueByKey("SHELL_URL_TOOLTIP");
+        String urlTooltip = I18nUtil.valueByKey("SHELL_URL_TOOLTIP");
         
         this.textfieldUrlShell.setToolTipText(urlTooltip);
         this.textfieldUrlShell.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
-                    BorderFactory.createMatteBorder(1, 1, 0, 1, HelperUi.COLOR_DEFAULT_BACKGROUND)
+                    BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
+                    BorderFactory.createMatteBorder(1, 1, 0, 1, UiUtil.COLOR_DEFAULT_BACKGROUND)
                 ),
-                HelperUi.BORDER_BLU
+                UiUtil.BORDER_BLU
             )
         );
 
@@ -120,14 +120,14 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
         
         this.run = new JButtonStateful("SHELL_RUN_BUTTON_LABEL");
-        I18nView.addComponentForKey("SHELL_RUN_BUTTON_LABEL", this.run);
-        this.run.setToolTipText(I18n.valueByKey("SHELL_RUN_BUTTON_TOOLTIP"));
+        I18nViewUtil.addComponentForKey("SHELL_RUN_BUTTON_LABEL", this.run);
+        this.run.setToolTipText(I18nUtil.valueByKey("SHELL_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
 
         this.run.setContentAreaFilled(false);
@@ -138,10 +138,10 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
 
         this.run.addActionListener(new ActionCreationShell());
 
-        this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.ICON_SQUARE_GREY, SwingConstants.LEFT);
-        I18nView.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
-        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND));
-        this.privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
+        this.privilege = new JLabel(I18nUtil.valueByKey("PRIVILEGE_LABEL"), UiUtil.ICON_SQUARE_GREY, SwingConstants.LEFT);
+        I18nViewUtil.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));
+        this.privilege.setToolTipText(I18nUtil.valueByKey("PRIVILEGE_TOOLTIP"));
 
         lastLine.add(this.privilege);
         lastLine.add(Box.createHorizontalStrut(5));

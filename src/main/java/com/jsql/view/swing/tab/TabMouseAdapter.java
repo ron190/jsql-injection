@@ -13,7 +13,7 @@ import org.apache.commons.lang3.SerializationException;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.view.swing.MediatorGui;
 
 /**
@@ -55,7 +55,7 @@ public class TabMouseAdapter extends MouseAdapter {
         menu.show(componentSource, e.getX(), e.getY());
         
         menu.setLocation(
-            ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+            ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
             ? e.getXOnScreen() - menu.getWidth()
             : e.getXOnScreen(),
             e.getYOnScreen()

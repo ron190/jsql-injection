@@ -11,7 +11,7 @@ import javax.swing.text.DefaultEditorKit;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.text.action.DeleteNextCharAction;
 import com.jsql.view.swing.text.action.DeletePrevCharAction;
 
@@ -65,7 +65,7 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
             @Override
             public void focusLost(FocusEvent e) {
                 
-                JTextAreaPlaceholder.this.setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
+                JTextAreaPlaceholder.this.setSelectionColor(UiUtil.COLOR_FOCUS_LOST);
                 JTextAreaPlaceholder.this.revalidate();
                 JTextAreaPlaceholder.this.repaint();
             }
@@ -73,7 +73,7 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
             @Override
             public void focusGained(FocusEvent e) {
                 
-                JTextAreaPlaceholder.this.setSelectionColor(HelperUi.COLOR_FOCUS_GAINED);
+                JTextAreaPlaceholder.this.setSelectionColor(UiUtil.COLOR_FOCUS_GAINED);
                 JTextAreaPlaceholder.this.revalidate();
                 JTextAreaPlaceholder.this.repaint();
             }

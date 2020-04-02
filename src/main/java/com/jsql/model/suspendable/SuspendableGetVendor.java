@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
@@ -49,7 +49,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
         if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAuto()) {
             
             vendor = this.injectionModel.getMediatorVendor().getVendorByUser();
-            LOGGER.info(I18n.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendor +"]");
+            LOGGER.info(I18nUtil.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendor +"]");
             
         } else {
         
@@ -132,10 +132,10 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
         if (vendor == null) {
             
             vendor = this.injectionModel.getMediatorVendor().getMySQL();
-            LOGGER.warn(I18n.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
+            LOGGER.warn(I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
         } else {
             
-            LOGGER.info(I18n.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");
+            LOGGER.info(I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");
             
             Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
             msgHeader.put(

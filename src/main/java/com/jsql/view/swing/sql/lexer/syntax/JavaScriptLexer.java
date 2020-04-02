@@ -764,9 +764,9 @@ public class JavaScriptLexer implements Lexer {
    *
    * @return      <code>false</code>, iff there was new input.
    * 
-   * @exception   java.io.IOException  if any I/O-Error occurs
+   * @exception   IOException  if any I/O-Error occurs
    */
-  private boolean zzRefill() throws java.io.IOException {
+  private boolean zzRefill() throws IOException {
 
     /* first: make room (if you can) */
     if (this.zzStartRead > 0) {
@@ -799,7 +799,7 @@ public class JavaScriptLexer implements Lexer {
 
     /* not supposed to occur according to specification of java.io.Reader */
     if (numRead == 0) {
-      throw new java.io.IOException("Reader returned 0 characters. See JFlex examples for workaround.");
+      throw new IOException("Reader returned 0 characters. See JFlex examples for workaround.");
     }
     if (numRead > 0) {
       this.zzEndRead += numRead;
@@ -824,7 +824,7 @@ public class JavaScriptLexer implements Lexer {
   /**
    * Closes the input stream.
    */
-  public final void yyclose() throws java.io.IOException {
+  public final void yyclose() throws IOException {
     this.zzAtEOF = true;            /* indicate end of file */
     this.zzEndRead = this.zzStartRead;  /* invalidate buffer    */
 
@@ -956,10 +956,10 @@ public class JavaScriptLexer implements Lexer {
    * the end of input is encountered or an I/O-Error occurs.
    *
    * @return      the next token
-   * @exception   java.io.IOException  if any I/O-Error occurs
+   * @exception   IOException  if any I/O-Error occurs
    */
   @Override
-public Token getNextToken() throws java.io.IOException {
+public Token getNextToken() throws IOException {
     int zzInput;
     int zzAction;
 

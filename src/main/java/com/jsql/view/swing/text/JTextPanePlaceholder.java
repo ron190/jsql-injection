@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.text.action.DeleteNextCharAction;
 import com.jsql.view.swing.text.action.DeletePrevCharAction;
 
@@ -66,7 +66,7 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
             @Override
             public void focusLost(FocusEvent e) {
                 
-                JTextPanePlaceholder.this.setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
+                JTextPanePlaceholder.this.setSelectionColor(UiUtil.COLOR_FOCUS_LOST);
                 JTextPanePlaceholder.this.revalidate();
                 JTextPanePlaceholder.this.repaint();
             }
@@ -74,7 +74,7 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
             @Override
             public void focusGained(FocusEvent e) {
                 
-                JTextPanePlaceholder.this.setSelectionColor(HelperUi.COLOR_FOCUS_GAINED);
+                JTextPanePlaceholder.this.setSelectionColor(UiUtil.COLOR_FOCUS_GAINED);
                 JTextPanePlaceholder.this.revalidate();
                 JTextPanePlaceholder.this.repaint();
             }

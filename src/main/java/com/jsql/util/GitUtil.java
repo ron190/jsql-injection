@@ -13,7 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 
 /**
@@ -56,7 +56,7 @@ public class GitUtil {
     public void checkUpdate(ShowOnConsole displayUpdateMessage) {
         
         if (displayUpdateMessage == ShowOnConsole.YES) {
-            LOGGER.trace(I18n.valueByKey("UPDATE_LOADING"));
+            LOGGER.trace(I18nUtil.valueByKey("UPDATE_LOADING"));
         }
         
         try {
@@ -64,14 +64,14 @@ public class GitUtil {
             
             if (versionGit > Float.parseFloat(this.injectionModel.getVersionJsql())) {
                 
-                LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION"));
+                LOGGER.warn(I18nUtil.valueByKey("UPDATE_NEW_VERSION"));
                 
             } else if(displayUpdateMessage == ShowOnConsole.YES) {
                 
-                LOGGER.debug(I18n.valueByKey("UPDATE_UPTODATE"));
+                LOGGER.debug(I18nUtil.valueByKey("UPDATE_UPTODATE"));
             }
         } catch (NumberFormatException | IOException | JSONException e) {
-            LOGGER.warn(I18n.valueByKey("UPDATE_EXCEPTION"), e);
+            LOGGER.warn(I18nUtil.valueByKey("UPDATE_EXCEPTION"), e);
         }
     }
     

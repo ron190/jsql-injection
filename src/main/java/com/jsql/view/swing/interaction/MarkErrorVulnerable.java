@@ -21,7 +21,6 @@ import com.jsql.view.swing.MediatorGui;
  */
 public class MarkErrorVulnerable implements InteractionCommand {
     
-    private Map<Header, Object> mapHeader;
     private int indexMethodError;
     
     /**
@@ -30,8 +29,8 @@ public class MarkErrorVulnerable implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MarkErrorVulnerable(Object[] interactionParams) {
         
-        this.mapHeader = (Map<Header, Object>) interactionParams[0];
-        this.indexMethodError = (int) this.mapHeader.get(Header.SOURCE);
+        Map<Header, Object> mapHeader = (Map<Header, Object>) interactionParams[0];
+        this.indexMethodError = (int) mapHeader.get(Header.SOURCE);
     }
 
     @Override

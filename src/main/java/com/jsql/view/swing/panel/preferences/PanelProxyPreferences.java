@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.DocumentListener;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
@@ -68,10 +68,10 @@ public class PanelProxyPreferences extends JPanel {
         this.getTextProxyAddressHttps().setMaximumSize(new Dimension(200, 0));
         this.getTextProxyPortHttps().setMaximumSize(new Dimension(200, 0));
         
-        this.getTextProxyAddress().setFont(HelperUi.FONT_SEGOE_BIG);
-        this.getTextProxyPort().setFont(HelperUi.FONT_SEGOE_BIG);
-        this.getTextProxyAddressHttps().setFont(HelperUi.FONT_SEGOE_BIG);
-        this.getTextProxyPortHttps().setFont(HelperUi.FONT_SEGOE_BIG);
+        this.getTextProxyAddress().setFont(UiUtil.FONT_SEGOE_BIG);
+        this.getTextProxyPort().setFont(UiUtil.FONT_SEGOE_BIG);
+        this.getTextProxyAddressHttps().setFont(UiUtil.FONT_SEGOE_BIG);
+        this.getTextProxyPortHttps().setFont(UiUtil.FONT_SEGOE_BIG);
         
         Stream.of(
             this.getCheckboxIsUsingProxy()

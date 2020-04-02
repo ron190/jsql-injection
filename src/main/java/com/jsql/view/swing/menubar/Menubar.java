@@ -55,14 +55,14 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.util.GitUtil.ShowOnConsole;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.action.ActionHandler;
+import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.action.ActionSaveTab;
 import com.jsql.view.swing.console.SwingAppender;
@@ -160,12 +160,12 @@ public class Menubar extends JMenuBar {
     private JMenu initializeMenuWindows() {
         
         // Window Menu > Preferences
-        JMenu menuWindows = new JMenu(I18n.valueByKey("MENUBAR_WINDOWS"));
-        I18nView.addComponentForKey("MENUBAR_WINDOWS", menuWindows);
+        JMenu menuWindows = new JMenu(I18nUtil.valueByKey("MENUBAR_WINDOWS"));
+        I18nViewUtil.addComponentForKey("MENUBAR_WINDOWS", menuWindows);
         menuWindows.setMnemonic('W');
 
         JMenuItem itemNewWindows = new JMenuItem(new ActionNewWindow());
-        I18nView.addComponentForKey("NEW_WINDOW_MENU", itemNewWindows);
+        I18nViewUtil.addComponentForKey("NEW_WINDOW_MENU", itemNewWindows);
         
         menuWindows.add(itemNewWindows);
         JMenu menuAppearance = new JMenu("Appearance");
@@ -182,83 +182,83 @@ public class Menubar extends JMenuBar {
         menuWindows.add(menuTranslation);
         menuWindows.add(new JSeparator());
         
-        this.menuView = new JMenu(I18n.valueByKey("MENUBAR_VIEW"));
-        I18nView.addComponentForKey("MENUBAR_VIEW", this.menuView);
+        this.menuView = new JMenu(I18nUtil.valueByKey("MENUBAR_VIEW"));
+        I18nViewUtil.addComponentForKey("MENUBAR_VIEW", this.menuView);
         this.menuView.setMnemonic('V');
         
-        JMenuItem database = new JMenuItem(I18n.valueByKey("DATABASE_TAB"), HelperUi.ICON_DATABASE_SERVER);
-        I18nView.addComponentForKey("DATABASE_TAB", database);
+        JMenuItem database = new JMenuItem(I18nUtil.valueByKey("DATABASE_TAB"), UiUtil.ICON_DATABASE_SERVER);
+        I18nViewUtil.addComponentForKey("DATABASE_TAB", database);
         this.menuView.add(database);
         
-        JMenuItem adminPage = new JMenuItem(I18n.valueByKey("ADMINPAGE_TAB"), HelperUi.ICON_ADMIN_SERVER);
-        I18nView.addComponentForKey("ADMINPAGE_TAB", adminPage);
+        JMenuItem adminPage = new JMenuItem(I18nUtil.valueByKey("ADMINPAGE_TAB"), UiUtil.ICON_ADMIN_SERVER);
+        I18nViewUtil.addComponentForKey("ADMINPAGE_TAB", adminPage);
         this.menuView.add(adminPage);
         
-        JMenuItem file = new JMenuItem(I18n.valueByKey("FILE_TAB"), HelperUi.ICON_FILE_SERVER);
-        I18nView.addComponentForKey("FILE_TAB", file);
+        JMenuItem file = new JMenuItem(I18nUtil.valueByKey("FILE_TAB"), UiUtil.ICON_FILE_SERVER);
+        I18nViewUtil.addComponentForKey("FILE_TAB", file);
         this.menuView.add(file);
         
-        JMenuItem webshell = new JMenuItem(I18n.valueByKey("WEBSHELL_TAB"), HelperUi.ICON_SHELL_SERVER);
-        I18nView.addComponentForKey("WEBSHELL_TAB", webshell);
+        JMenuItem webshell = new JMenuItem(I18nUtil.valueByKey("WEBSHELL_TAB"), UiUtil.ICON_SHELL_SERVER);
+        I18nViewUtil.addComponentForKey("WEBSHELL_TAB", webshell);
         this.menuView.add(webshell);
         
-        JMenuItem sqlshell = new JMenuItem(I18n.valueByKey("SQLSHELL_TAB"), HelperUi.ICON_SHELL_SERVER);
-        I18nView.addComponentForKey("SQLSHELL_TAB", sqlshell);
+        JMenuItem sqlshell = new JMenuItem(I18nUtil.valueByKey("SQLSHELL_TAB"), UiUtil.ICON_SHELL_SERVER);
+        I18nViewUtil.addComponentForKey("SQLSHELL_TAB", sqlshell);
         this.menuView.add(sqlshell);
         
-        JMenuItem upload = new JMenuItem(I18n.valueByKey("UPLOAD_TAB"), HelperUi.ICON_UPLOAD);
-        I18nView.addComponentForKey("UPLOAD_TAB", upload);
+        JMenuItem upload = new JMenuItem(I18nUtil.valueByKey("UPLOAD_TAB"), UiUtil.ICON_UPLOAD);
+        I18nViewUtil.addComponentForKey("UPLOAD_TAB", upload);
         this.menuView.add(upload);
         
-        JMenuItem bruteforce = new JMenuItem(I18n.valueByKey("BRUTEFORCE_TAB"), HelperUi.ICON_BRUTER);
-        I18nView.addComponentForKey("BRUTEFORCE_TAB", bruteforce);
+        JMenuItem bruteforce = new JMenuItem(I18nUtil.valueByKey("BRUTEFORCE_TAB"), UiUtil.ICON_BRUTER);
+        I18nViewUtil.addComponentForKey("BRUTEFORCE_TAB", bruteforce);
         this.menuView.add(bruteforce);
         
-        JMenuItem coder = new JMenuItem(I18n.valueByKey("CODER_TAB"), HelperUi.ICON_CODER);
-        I18nView.addComponentForKey("CODER_TAB", coder);
+        JMenuItem coder = new JMenuItem(I18nUtil.valueByKey("CODER_TAB"), UiUtil.ICON_CODER);
+        I18nViewUtil.addComponentForKey("CODER_TAB", coder);
         this.menuView.add(coder);
         
-        JMenuItem scanList = new JMenuItem(I18n.valueByKey("SCANLIST_TAB"), HelperUi.ICON_SCANLIST);
-        I18nView.addComponentForKey("SCANLIST_TAB", scanList);
+        JMenuItem scanList = new JMenuItem(I18nUtil.valueByKey("SCANLIST_TAB"), UiUtil.ICON_SCANLIST);
+        I18nViewUtil.addComponentForKey("SCANLIST_TAB", scanList);
         this.menuView.add(scanList);
         menuWindows.add(this.menuView);
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 
-        JMenu menuPanel = new JMenu(I18n.valueByKey("MENUBAR_PANEL"));
-        I18nView.addComponentForKey("MENUBAR_PANEL", menuPanel);
+        JMenu menuPanel = new JMenu(I18nUtil.valueByKey("MENUBAR_PANEL"));
+        I18nViewUtil.addComponentForKey("MENUBAR_PANEL", menuPanel);
         this.menuView.setMnemonic('V');
         
         this.chunkMenu = new JCheckBoxMenuItem(
-            I18n.valueByKey("CONSOLE_CHUNK_LABEL"),
-            HelperUi.ICON_CHUNK,
-            prefs.getBoolean(HelperUi.CHUNK_VISIBLE, true)
+            I18nUtil.valueByKey("CONSOLE_CHUNK_LABEL"),
+            UiUtil.ICON_CHUNK,
+            prefs.getBoolean(UiUtil.CHUNK_VISIBLE, true)
         );
-        I18nView.addComponentForKey("CONSOLE_CHUNK_LABEL", this.chunkMenu);
+        I18nViewUtil.addComponentForKey("CONSOLE_CHUNK_LABEL", this.chunkMenu);
         menuPanel.add(this.chunkMenu);
         
         JCheckBoxMenuItem binaryMenu = new JCheckBoxMenuItem(
-            I18n.valueByKey("CONSOLE_BINARY_LABEL"),
-            HelperUi.ICON_BINARY,
-            prefs.getBoolean(HelperUi.BINARY_VISIBLE, true)
+            I18nUtil.valueByKey("CONSOLE_BINARY_LABEL"),
+            UiUtil.ICON_BINARY,
+            prefs.getBoolean(UiUtil.BINARY_VISIBLE, true)
         );
-        I18nView.addComponentForKey("CONSOLE_BINARY_LABEL", binaryMenu);
+        I18nViewUtil.addComponentForKey("CONSOLE_BINARY_LABEL", binaryMenu);
         menuPanel.add(binaryMenu);
         
         JCheckBoxMenuItem networkMenu = new JCheckBoxMenuItem(
-            I18n.valueByKey("CONSOLE_NETWORK_LABEL"),
-            HelperUi.ICON_HEADER,
-            prefs.getBoolean(HelperUi.NETWORK_VISIBLE, true)
+            I18nUtil.valueByKey("CONSOLE_NETWORK_LABEL"),
+            UiUtil.ICON_HEADER,
+            prefs.getBoolean(UiUtil.NETWORK_VISIBLE, true)
         );
-        I18nView.addComponentForKey("CONSOLE_NETWORK_LABEL", networkMenu);
+        I18nViewUtil.addComponentForKey("CONSOLE_NETWORK_LABEL", networkMenu);
         menuPanel.add(networkMenu);
         
         this.javaDebugMenu = new JCheckBoxMenuItem(
-            I18n.valueByKey("CONSOLE_JAVA_LABEL"),
-            HelperUi.ICON_CUP,
-            prefs.getBoolean(HelperUi.JAVA_VISIBLE, false)
+            I18nUtil.valueByKey("CONSOLE_JAVA_LABEL"),
+            UiUtil.ICON_CUP,
+            prefs.getBoolean(UiUtil.JAVA_VISIBLE, false)
         );
-        I18nView.addComponentForKey("CONSOLE_JAVA_LABEL", this.javaDebugMenu);
+        I18nViewUtil.addComponentForKey("CONSOLE_JAVA_LABEL", this.javaDebugMenu);
 
         for (JCheckBoxMenuItem menuItem: new JCheckBoxMenuItem[]{this.chunkMenu, binaryMenu, networkMenu, this.javaDebugMenu}) {
             menuItem.setUI(
@@ -277,7 +277,7 @@ public class Menubar extends JMenuBar {
             if (this.chunkMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertChunkTab();
             } else {
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_CHUNK));
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(UiUtil.ICON_CHUNK));
             }
         });
         
@@ -286,7 +286,7 @@ public class Menubar extends JMenuBar {
             if (binaryMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertBooleanTab();
             } else {
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_BINARY));
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(UiUtil.ICON_BINARY));
             }
         });
         
@@ -295,7 +295,7 @@ public class Menubar extends JMenuBar {
             if (networkMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertNetworkTab();
             } else {
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_HEADER));
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(UiUtil.ICON_HEADER));
             }
         });
         
@@ -304,7 +304,7 @@ public class Menubar extends JMenuBar {
             if (this.javaDebugMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertJavaTab();
             } else {
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_CUP));
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(UiUtil.ICON_CUP));
             }
         });
 
@@ -342,17 +342,17 @@ public class Menubar extends JMenuBar {
     private JMenu initializeMenuHelp() {
         
         // Help Menu > about
-        JMenu menuHelp = new JMenu(I18n.valueByKey("MENUBAR_HELP"));
+        JMenu menuHelp = new JMenu(I18nUtil.valueByKey("MENUBAR_HELP"));
         menuHelp.setMnemonic('H');
-        I18nView.addComponentForKey("MENUBAR_HELP", menuHelp);
+        I18nViewUtil.addComponentForKey("MENUBAR_HELP", menuHelp);
         
-        JMenuItem itemHelp = new JMenuItem(I18n.valueByKey("MENUBAR_HELP_ABOUT"), 'A');
-        itemHelp.setIcon(HelperUi.ICON_EMPTY);
-        I18nView.addComponentForKey("MENUBAR_HELP_ABOUT", itemHelp);
+        JMenuItem itemHelp = new JMenuItem(I18nUtil.valueByKey("MENUBAR_HELP_ABOUT"), 'A');
+        itemHelp.setIcon(UiUtil.ICON_EMPTY);
+        I18nViewUtil.addComponentForKey("MENUBAR_HELP_ABOUT", itemHelp);
         
-        JMenuItem itemUpdate = new JMenuItem(I18n.valueByKey("MENUBAR_HELP_UPDATE"), 'U');
-        itemUpdate.setIcon(HelperUi.ICON_EMPTY);
-        I18nView.addComponentForKey("MENUBAR_HELP_UPDATE", itemUpdate);
+        JMenuItem itemUpdate = new JMenuItem(I18nUtil.valueByKey("MENUBAR_HELP_UPDATE"), 'U');
+        itemUpdate.setIcon(UiUtil.ICON_EMPTY);
+        I18nViewUtil.addComponentForKey("MENUBAR_HELP_UPDATE", itemUpdate);
 
         // Render the About dialog behind scene
         final DialogAbout aboutDiag = new DialogAbout();
@@ -380,8 +380,8 @@ public class Menubar extends JMenuBar {
 
     private JMenuItem initializeItemSqlEngine() {
         
-        JMenuItem itemSqlEngine = new JMenuItem(I18n.valueByKey("MENUBAR_SQL_ENGINE"));
-        I18nView.addComponentForKey("MENUBAR_SQL_ENGINE", itemSqlEngine);
+        JMenuItem itemSqlEngine = new JMenuItem(I18nUtil.valueByKey("MENUBAR_SQL_ENGINE"));
+        I18nViewUtil.addComponentForKey("MENUBAR_SQL_ENGINE", itemSqlEngine);
         
         // Render the SQL Engine dialog behind scene
         String titleTabSqlEngine = "SQL Engine";
@@ -407,8 +407,8 @@ public class Menubar extends JMenuBar {
             MediatorGui.tabResults().setSelectedComponent(panelSqlEngine);
 
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_SQL_ENGINE"), HelperUi.ICON_COG, panelSqlEngine);
-            I18nView.addComponentForKey("MENUBAR_SQL_ENGINE", header.getTabTitleLabel());
+            TabHeader header = new TabHeader(I18nViewUtil.valueByKey("MENUBAR_SQL_ENGINE"), UiUtil.ICON_COG, panelSqlEngine);
+            I18nViewUtil.addComponentForKey("MENUBAR_SQL_ENGINE", header.getTabTitleLabel());
 
             // Apply the custom header to the tab
             MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(panelSqlEngine), header);
@@ -419,9 +419,9 @@ public class Menubar extends JMenuBar {
 
     private JMenuItem initializeItemPreferences() {
         
-        JMenuItem itemPreferences = new JMenuItem(I18n.valueByKey("MENUBAR_PREFERENCES"), 'P');
-        itemPreferences.setIcon(HelperUi.ICON_EMPTY);
-        I18nView.addComponentForKey("MENUBAR_PREFERENCES", itemPreferences);
+        JMenuItem itemPreferences = new JMenuItem(I18nUtil.valueByKey("MENUBAR_PREFERENCES"), 'P');
+        itemPreferences.setIcon(UiUtil.ICON_EMPTY);
+        I18nViewUtil.addComponentForKey("MENUBAR_PREFERENCES", itemPreferences);
         
         // Render the Preferences dialog behind scene
         String titleTabPreferences = "Preferences";
@@ -459,8 +459,8 @@ public class Menubar extends JMenuBar {
             MediatorGui.tabResults().setSelectedComponent(scroller);
 
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_PREFERENCES"), HelperUi.ICON_COG);
-            I18nView.addComponentForKey("MENUBAR_PREFERENCES", header.getTabTitleLabel());
+            TabHeader header = new TabHeader(I18nViewUtil.valueByKey("MENUBAR_PREFERENCES"), UiUtil.ICON_COG);
+            I18nViewUtil.addComponentForKey("MENUBAR_PREFERENCES", header.getTabTitleLabel());
 
             // Apply the custom header to the tab
             MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
@@ -472,9 +472,9 @@ public class Menubar extends JMenuBar {
     private JMenu initializeMenuCommunity() {
         
         // Help Menu > about
-        JMenu menuCommunity = new JMenu(I18n.valueByKey("MENUBAR_COMMUNITY"));
+        JMenu menuCommunity = new JMenu(I18nUtil.valueByKey("MENUBAR_COMMUNITY"));
         menuCommunity.setMnemonic('C');
-        I18nView.addComponentForKey("MENUBAR_COMMUNITY", menuCommunity);
+        I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY", menuCommunity);
         
         JMenu menuI18nContribution = this.initializeMenuI18nContribution();
         JMenuItem itemReportIssue = this.initializeItemReportIssue();
@@ -488,8 +488,8 @@ public class Menubar extends JMenuBar {
 
     private JMenu initializeMenuTranslation() {
         
-        JMenu menuTranslation = new JMenu(I18n.valueByKey("MENUBAR_LANGUAGE"));
-        I18nView.addComponentForKey("MENUBAR_LANGUAGE", menuTranslation);
+        JMenu menuTranslation = new JMenu(I18nUtil.valueByKey("MENUBAR_LANGUAGE"));
+        I18nViewUtil.addComponentForKey("MENUBAR_LANGUAGE", menuTranslation);
         
         Object[] languages = Stream
             .of("ru zh es fr tr ko se ar cs it pt pl in nl ro de".split(" "))
@@ -501,14 +501,14 @@ public class Menubar extends JMenuBar {
     
         this.itemEnglish = new JRadioButtonMenuItem(
             new Locale("en").getDisplayLanguage(new Locale("en")),
-            HelperUi.ICON_FLAG_EN,
+            UiUtil.ICON_FLAG_EN,
             isEnglish
         );
         this.itemEnglish.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.ROOT));
         
         this.itemArabic = new JRadioButtonMenuItem(
-            "<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span></html>",
-            HelperUi.ICON_FLAG_AR,
+            "<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span></html>",
+            UiUtil.ICON_FLAG_AR,
             new Locale("ar").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemArabic.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ar")));
@@ -516,105 +516,105 @@ public class Menubar extends JMenuBar {
         
         this.itemRussian = new JRadioButtonMenuItem(
             new Locale("ru").getDisplayLanguage(new Locale("ru")),
-            HelperUi.ICON_FLAG_RU,
+            UiUtil.ICON_FLAG_RU,
             new Locale("ru").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemRussian.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ru")));
         
         this.itemCzech = new JRadioButtonMenuItem(
             new Locale("cs").getDisplayLanguage(new Locale("cs")),
-            HelperUi.ICON_FLAG_CS,
+            UiUtil.ICON_FLAG_CS,
             new Locale("cs").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemCzech.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("cs")));
         
         this.itemItalian = new JRadioButtonMenuItem(
             new Locale("it").getDisplayLanguage(new Locale("it")),
-            HelperUi.ICON_FLAG_IT,
+            UiUtil.ICON_FLAG_IT,
             new Locale("it").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemItalian.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("it")));
         
         this.itemIndonesian = new JRadioButtonMenuItem(
             new Locale("in", "ID").getDisplayLanguage(new Locale("in", "ID")),
-            HelperUi.ICON_FLAG_IN_ID,
+            UiUtil.ICON_FLAG_IN_ID,
             new Locale("in", "ID").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemIndonesian.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("in", "ID")));
         
         this.itemDutch = new JRadioButtonMenuItem(
             new Locale("nl").getDisplayLanguage(new Locale("nl")),
-            HelperUi.ICON_FLAG_NL,
+            UiUtil.ICON_FLAG_NL,
             new Locale("nl").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemDutch.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("nl")));
         
         this.itemGerman = new JRadioButtonMenuItem(
             new Locale("de").getDisplayLanguage(new Locale("de")),
-            HelperUi.ICON_FLAG_DE,
+            UiUtil.ICON_FLAG_DE,
             new Locale("de").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemGerman.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("de")));
         
         this.itemTurkish = new JRadioButtonMenuItem(
             new Locale("tr").getDisplayLanguage(new Locale("tr")),
-            HelperUi.ICON_FLAG_TR,
+            UiUtil.ICON_FLAG_TR,
             new Locale("tr").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemTurkish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("tr")));
         
         this.itemFrench = new JRadioButtonMenuItem(
             new Locale("fr").getDisplayLanguage(new Locale("fr")),
-            HelperUi.ICON_FLAG_FR,
+            UiUtil.ICON_FLAG_FR,
             new Locale("fr").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemFrench.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("fr")));
         
         this.itemSpanish = new JRadioButtonMenuItem(
             new Locale("es").getDisplayLanguage(new Locale("es")),
-            HelperUi.ICON_FLAG_ES,
+            UiUtil.ICON_FLAG_ES,
             new Locale("es").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemSpanish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("es")));
         
         this.itemPortuguese = new JRadioButtonMenuItem(
             new Locale("pt").getDisplayLanguage(new Locale("pt")),
-            HelperUi.ICON_FLAG_PT,
+            UiUtil.ICON_FLAG_PT,
             new Locale("pt").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemPortuguese.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("pt")));
         
         this.itemChinese = new JRadioButtonMenuItem(
-            "<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span></html>",
-            HelperUi.ICON_FLAG_ZH,
+            "<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span></html>",
+            UiUtil.ICON_FLAG_ZH,
             new Locale("zh").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemChinese.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("zh")));
         
         this.itemPolish = new JRadioButtonMenuItem(
             new Locale("pl").getDisplayLanguage(new Locale("pl")),
-            HelperUi.ICON_FLAG_PL,
+            UiUtil.ICON_FLAG_PL,
             new Locale("pl").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemPolish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("pl")));
         
         this.itemRomanian = new JRadioButtonMenuItem(
             new Locale("ro").getDisplayLanguage(new Locale("ro")),
-            HelperUi.ICON_FLAG_RO,
+            UiUtil.ICON_FLAG_RO,
             new Locale("ro").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemRomanian.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ro")));
         
         this.itemSwedish = new JRadioButtonMenuItem(
             new Locale("se").getDisplayLanguage(new Locale("se")),
-            HelperUi.ICON_FLAG_SE,
+            UiUtil.ICON_FLAG_SE,
             new Locale("se").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemSwedish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("se")));
         
         this.itemKorean = new JRadioButtonMenuItem(
-            "<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ko").getDisplayLanguage(new Locale("ko")) +"</span></html>",
-            HelperUi.ICON_FLAG_KO,
+            "<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ko").getDisplayLanguage(new Locale("ko")) +"</span></html>",
+            UiUtil.ICON_FLAG_KO,
             new Locale("ko").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemKorean.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ko")));
@@ -650,8 +650,8 @@ public class Menubar extends JMenuBar {
 
     private JMenu initializeMenuI18nContribution() {
         
-        JMenu menuI18nContribution = new JMenu(I18n.valueByKey("MENUBAR_COMMUNITY_HELPTRANSLATE"));
-        I18nView.addComponentForKey("MENUBAR_COMMUNITY_HELPTRANSLATE", menuI18nContribution);
+        JMenu menuI18nContribution = new JMenu(I18nUtil.valueByKey("MENUBAR_COMMUNITY_HELPTRANSLATE"));
+        I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_HELPTRANSLATE", menuI18nContribution);
         
         // Render the About dialog behind scene
         final DialogTranslate dialogTranslate = new DialogTranslate();
@@ -681,27 +681,27 @@ public class Menubar extends JMenuBar {
             }
         }
         
-        this.itemIntoHindi = new JMenuItem("<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("hi").getDisplayLanguage(new Locale("hi")) +"</span>...</html>", HelperUi.ICON_FLAG_HI);
-        this.itemIntoArabic = new JMenuItem("<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span>...</html>", HelperUi.ICON_FLAG_AR);
-        this.itemIntoRussia = new JMenuItem(new Locale("ru").getDisplayLanguage(new Locale("ru")) +"...", HelperUi.ICON_FLAG_RU);
-        this.itemIntoChina = new JMenuItem("<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span>...</html>", HelperUi.ICON_FLAG_ZH);
-        this.itemIntoFrench = new JMenuItem(new Locale("fr").getDisplayLanguage(new Locale("fr")) +"...", HelperUi.ICON_FLAG_FR);
-        this.itemIntoTurkish = new JMenuItem(new Locale("tr").getDisplayLanguage(new Locale("tr")) +"...", HelperUi.ICON_FLAG_TR);
-        this.itemIntoCzech = new JMenuItem(new Locale("cs").getDisplayLanguage(new Locale("cs")) +"...", HelperUi.ICON_FLAG_CS);
-        this.itemIntoDutch = new JMenuItem(new Locale("nl").getDisplayLanguage(new Locale("nl")) +"...", HelperUi.ICON_FLAG_NL);
-        this.itemIntoGerman = new JMenuItem(new Locale("de").getDisplayLanguage(new Locale("de")) +"...", HelperUi.ICON_FLAG_DE);
-        this.itemIntoIndonesian = new JMenuItem(new Locale("in", "ID").getDisplayLanguage(new Locale("in", "ID")) +"...", HelperUi.ICON_FLAG_IN_ID);
-        this.itemIntoItalian = new JMenuItem(new Locale("it").getDisplayLanguage(new Locale("it")) +"...", HelperUi.ICON_FLAG_IT);
-        this.itemIntoSpanish = new JMenuItem(new Locale("es").getDisplayLanguage(new Locale("es")) +"...", HelperUi.ICON_FLAG_ES);
-        this.itemIntoPortuguese = new JMenuItem(new Locale("pt").getDisplayLanguage(new Locale("pt")) +"...", HelperUi.ICON_FLAG_PT);
-        this.itemIntoPolish = new JMenuItem(new Locale("pl").getDisplayLanguage(new Locale("pl")) +"...", HelperUi.ICON_FLAG_PL);
-        this.itemIntoRomanian = new JMenuItem(new Locale("ro").getDisplayLanguage(new Locale("ro")) +"...", HelperUi.ICON_FLAG_RO);
-        this.itemIntoTamil = new JMenuItem(new Locale("ta").getDisplayLanguage(new Locale("ta")) +"...", HelperUi.ICON_FLAG_LK);
-        this.itemIntoJapanese = new JMenuItem("<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ja").getDisplayLanguage(new Locale("ja")) +"</span>...</html>", HelperUi.ICON_FLAG_JA);
-        this.itemIntoKorean = new JMenuItem("<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ko").getDisplayLanguage(new Locale("ko")) +"</span>...</html>", HelperUi.ICON_FLAG_KO);
-        this.itemIntoSwedish = new JMenuItem(new Locale("se").getDisplayLanguage(new Locale("se")) +"...", HelperUi.ICON_FLAG_SE);
-        JMenuItem itemIntoOther = new JMenuItem(I18n.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
-        I18nView.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", itemIntoOther);
+        this.itemIntoHindi = new JMenuItem("<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("hi").getDisplayLanguage(new Locale("hi")) +"</span>...</html>", UiUtil.ICON_FLAG_HI);
+        this.itemIntoArabic = new JMenuItem("<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span>...</html>", UiUtil.ICON_FLAG_AR);
+        this.itemIntoRussia = new JMenuItem(new Locale("ru").getDisplayLanguage(new Locale("ru")) +"...", UiUtil.ICON_FLAG_RU);
+        this.itemIntoChina = new JMenuItem("<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span>...</html>", UiUtil.ICON_FLAG_ZH);
+        this.itemIntoFrench = new JMenuItem(new Locale("fr").getDisplayLanguage(new Locale("fr")) +"...", UiUtil.ICON_FLAG_FR);
+        this.itemIntoTurkish = new JMenuItem(new Locale("tr").getDisplayLanguage(new Locale("tr")) +"...", UiUtil.ICON_FLAG_TR);
+        this.itemIntoCzech = new JMenuItem(new Locale("cs").getDisplayLanguage(new Locale("cs")) +"...", UiUtil.ICON_FLAG_CS);
+        this.itemIntoDutch = new JMenuItem(new Locale("nl").getDisplayLanguage(new Locale("nl")) +"...", UiUtil.ICON_FLAG_NL);
+        this.itemIntoGerman = new JMenuItem(new Locale("de").getDisplayLanguage(new Locale("de")) +"...", UiUtil.ICON_FLAG_DE);
+        this.itemIntoIndonesian = new JMenuItem(new Locale("in", "ID").getDisplayLanguage(new Locale("in", "ID")) +"...", UiUtil.ICON_FLAG_IN_ID);
+        this.itemIntoItalian = new JMenuItem(new Locale("it").getDisplayLanguage(new Locale("it")) +"...", UiUtil.ICON_FLAG_IT);
+        this.itemIntoSpanish = new JMenuItem(new Locale("es").getDisplayLanguage(new Locale("es")) +"...", UiUtil.ICON_FLAG_ES);
+        this.itemIntoPortuguese = new JMenuItem(new Locale("pt").getDisplayLanguage(new Locale("pt")) +"...", UiUtil.ICON_FLAG_PT);
+        this.itemIntoPolish = new JMenuItem(new Locale("pl").getDisplayLanguage(new Locale("pl")) +"...", UiUtil.ICON_FLAG_PL);
+        this.itemIntoRomanian = new JMenuItem(new Locale("ro").getDisplayLanguage(new Locale("ro")) +"...", UiUtil.ICON_FLAG_RO);
+        this.itemIntoTamil = new JMenuItem(new Locale("ta").getDisplayLanguage(new Locale("ta")) +"...", UiUtil.ICON_FLAG_LK);
+        this.itemIntoJapanese = new JMenuItem("<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ja").getDisplayLanguage(new Locale("ja")) +"</span>...</html>", UiUtil.ICON_FLAG_JA);
+        this.itemIntoKorean = new JMenuItem("<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ko").getDisplayLanguage(new Locale("ko")) +"</span>...</html>", UiUtil.ICON_FLAG_KO);
+        this.itemIntoSwedish = new JMenuItem(new Locale("se").getDisplayLanguage(new Locale("se")) +"...", UiUtil.ICON_FLAG_SE);
+        JMenuItem itemIntoOther = new JMenuItem(I18nUtil.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
+        I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", itemIntoOther);
         
         this.itemIntoArabic.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         
@@ -765,16 +765,16 @@ public class Menubar extends JMenuBar {
 
     private JMenuItem initializeItemReportIssue() {
         
-        JMenuItem itemReportIssue = new JMenuItem(I18n.valueByKey("MENUBAR_COMMUNITY_REPORTISSUE"), 'R');
-        itemReportIssue.setIcon(HelperUi.ICON_EMPTY);
-        I18nView.addComponentForKey("MENUBAR_COMMUNITY_REPORTISSUE", itemReportIssue);
+        JMenuItem itemReportIssue = new JMenuItem(I18nUtil.valueByKey("MENUBAR_COMMUNITY_REPORTISSUE"), 'R');
+        itemReportIssue.setIcon(UiUtil.ICON_EMPTY);
+        I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_REPORTISSUE", itemReportIssue);
         
         itemReportIssue.addActionListener(actionEvent -> {
             
             JPanel panel = new JPanel(new BorderLayout());
             final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
             textarea.setFont(new Font(
-                HelperUi.FONT_NAME_MONOSPACED,
+                UiUtil.FONT_NAME_MONOSPACED,
                 Font.PLAIN,
                 UIManager.getDefaults().getFont("TextField.font").getSize()
             ));
@@ -809,8 +809,8 @@ public class Menubar extends JMenuBar {
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
-                new String[]{"Report", I18n.valueByKey("LIST_ADD_VALUE_CANCEL")},
-                I18n.valueByKey("LIST_ADD_VALUE_CANCEL")
+                new String[]{"Report", I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")},
+                I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
             );
 
             if (StringUtils.isNotEmpty(textarea.getText()) && result == JOptionPane.YES_OPTION) {
@@ -824,13 +824,13 @@ public class Menubar extends JMenuBar {
     private JMenu initializeMenuEdit() {
         
         // Edit Menu > copy | select all
-        JMenu menuEdit = new JMenu(I18n.valueByKey("MENUBAR_EDIT"));
-        I18nView.addComponentForKey("MENUBAR_EDIT", menuEdit);
+        JMenu menuEdit = new JMenu(I18nUtil.valueByKey("MENUBAR_EDIT"));
+        I18nViewUtil.addComponentForKey("MENUBAR_EDIT", menuEdit);
         menuEdit.setMnemonic('E');
 
-        JMenuItem itemCopy = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_COPY"), 'C');
-        I18nView.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
-        itemCopy.setIcon(HelperUi.ICON_EMPTY);
+        JMenuItem itemCopy = new JMenuItem(I18nUtil.valueByKey("CONTEXT_MENU_COPY"), 'C');
+        I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
+        itemCopy.setIcon(UiUtil.ICON_EMPTY);
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         itemCopy.addActionListener(actionEvent -> {
             
@@ -841,9 +841,9 @@ public class Menubar extends JMenuBar {
             }
         });
 
-        JMenuItem itemSelectAll = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"), 'A');
-        I18nView.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
-        itemSelectAll.setIcon(HelperUi.ICON_EMPTY);
+        JMenuItem itemSelectAll = new JMenuItem(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"), 'A');
+        I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
+        itemSelectAll.setIcon(UiUtil.ICON_EMPTY);
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.addActionListener(actionEvent -> {
             
@@ -866,19 +866,19 @@ public class Menubar extends JMenuBar {
     private JMenu initializeMenuFile() {
         
         // File Menu > save tab | exit
-        JMenu menuFile = new JMenu(I18n.valueByKey("MENUBAR_FILE"));
-        I18nView.addComponentForKey("MENUBAR_FILE", menuFile);
+        JMenu menuFile = new JMenu(I18nUtil.valueByKey("MENUBAR_FILE"));
+        I18nViewUtil.addComponentForKey("MENUBAR_FILE", menuFile);
         menuFile.setMnemonic('F');
 
         JMenuItem itemSave = new JMenuItem(new ActionSaveTab());
-        I18nView.addComponentForKey("MENUBAR_FILE_SAVETABAS", itemSave);
+        I18nViewUtil.addComponentForKey("MENUBAR_FILE_SAVETABAS", itemSave);
 
-        JMenuItem itemExit = new JMenuItem(I18n.valueByKey("MENUBAR_FILE_EXIT"), 'x');
-        I18nView.addComponentForKey("MENUBAR_FILE_EXIT", itemExit);
-        itemExit.setIcon(HelperUi.ICON_EMPTY);
+        JMenuItem itemExit = new JMenuItem(I18nUtil.valueByKey("MENUBAR_FILE_EXIT"), 'x');
+        I18nViewUtil.addComponentForKey("MENUBAR_FILE_EXIT", itemExit);
+        itemExit.setIcon(UiUtil.ICON_EMPTY);
         itemExit.addActionListener(actionEvent -> MediatorGui.frame().dispose());
 
-        ActionHandler.addShortcut(Menubar.this);
+        HotkeyUtil.addShortcut(Menubar.this);
 
         menuFile.add(itemSave);
         menuFile.add(new JSeparator());
@@ -888,12 +888,12 @@ public class Menubar extends JMenuBar {
     }
     
     public void switchLocale(Locale newLocale) {
-        this.switchLocale(I18n.getLocaleDefault(), newLocale, false);
+        this.switchLocale(I18nUtil.getLocaleDefault(), newLocale, false);
     }
     
     public void switchLocale(Locale oldLocale, Locale newLocale, boolean isStartup) {
         
-        I18n.setLocaleDefault(ResourceBundle.getBundle("i18n.jsql", newLocale));
+        I18nUtil.setLocaleDefault(ResourceBundle.getBundle("i18n.jsql", newLocale));
         this.switchNetworkTable(newLocale);
         this.switchI18nComponents(newLocale);
         this.switchOrientation(oldLocale, newLocale, isStartup);
@@ -907,7 +907,7 @@ public class Menubar extends JMenuBar {
 
     private void switchOrientation(Locale oldLocale, Locale newLocale, boolean isStartup) {
         
-        ComponentOrientation componentOrientation = ComponentOrientation.getOrientation(I18n.getLocaleDefault());
+        ComponentOrientation componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault());
         MediatorGui.frame().applyComponentOrientation(componentOrientation);
         
         if (ComponentOrientation.getOrientation(oldLocale) != ComponentOrientation.getOrientation(newLocale)) {
@@ -940,24 +940,24 @@ public class Menubar extends JMenuBar {
     private void switchI18nComponents(Locale newLocale) {
         
         // TODO stream
-        for (String key: I18nView.keys()) {
-            for (Object componentSwing: I18nView.componentsByKey(key)) {
+        for (String key: I18nViewUtil.keys()) {
+            for (Object componentSwing: I18nViewUtil.componentsByKey(key)) {
                 
                 Class<?> classComponent = componentSwing.getClass();
                 try {
                     if (componentSwing instanceof JTextFieldPlaceholder) {
                         
                         Method setPlaceholderText = classComponent.getMethod("setPlaceholderText", String.class);
-                        setPlaceholderText.invoke(componentSwing, I18n.valueByKey(key));
+                        setPlaceholderText.invoke(componentSwing, I18nUtil.valueByKey(key));
                     } else {
                         
                         Method methodSetText = classComponent.getMethod("setText", String.class);
                         methodSetText.setAccessible(true);
                         
-                        if (I18n.isAsian(newLocale)) {
-                            methodSetText.invoke(componentSwing, I18nView.valueByKey(key));
+                        if (I18nUtil.isAsian(newLocale)) {
+                            methodSetText.invoke(componentSwing, I18nViewUtil.valueByKey(key));
                         } else {
-                            methodSetText.invoke(componentSwing, I18n.valueByKey(key));
+                            methodSetText.invoke(componentSwing, I18nUtil.valueByKey(key));
                         }
                     }
                 } catch (
@@ -1022,7 +1022,7 @@ public class Menubar extends JMenuBar {
         JTableHeader header = MediatorGui.panelConsoles().getNetworkTable().getTableHeader();
         TableColumnModel colMod = header.getColumnModel();
         
-        if (I18n.isAsian(newLocale)) {
+        if (I18nUtil.isAsian(newLocale)) {
             Stream
             .of(
                 SwingAppender.ERROR,
@@ -1032,14 +1032,14 @@ public class Menubar extends JMenuBar {
                 SwingAppender.TRACE,
                 SwingAppender.ALL
             )
-            .forEach(attribute -> StyleConstants.setFontFamily(attribute, HelperUi.FONT_NAME_UBUNTU_REGULAR));
+            .forEach(attribute -> StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_UBUNTU_REGULAR));
             
-            MediatorGui.managerBruteForce().getResult().setFont(HelperUi.FONT_UBUNTU_REGULAR);
+            MediatorGui.managerBruteForce().getResult().setFont(UiUtil.FONT_UBUNTU_REGULAR);
             
-            colMod.getColumn(0).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_METHOD_COLUMN"));
-            colMod.getColumn(1).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_URL_COLUMN"));
-            colMod.getColumn(2).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
-            colMod.getColumn(3).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
+            colMod.getColumn(0).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_METHOD_COLUMN"));
+            colMod.getColumn(1).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
+            colMod.getColumn(2).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
+            colMod.getColumn(3).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
         } else {
             Stream
             .of(
@@ -1050,14 +1050,14 @@ public class Menubar extends JMenuBar {
                 SwingAppender.TRACE,
                 SwingAppender.ALL
             )
-            .forEach(attribute -> StyleConstants.setFontFamily(attribute, HelperUi.FONT_NAME_UBUNTU_MONO));
+            .forEach(attribute -> StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_UBUNTU_MONO));
             
-            MediatorGui.managerBruteForce().getResult().setFont(HelperUi.FONT_UBUNTU_MONO);
+            MediatorGui.managerBruteForce().getResult().setFont(UiUtil.FONT_UBUNTU_MONO);
             
-            colMod.getColumn(0).setHeaderValue(I18n.valueByKey("NETWORK_TAB_METHOD_COLUMN"));
-            colMod.getColumn(1).setHeaderValue(I18n.valueByKey("NETWORK_TAB_URL_COLUMN"));
-            colMod.getColumn(2).setHeaderValue(I18n.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
-            colMod.getColumn(3).setHeaderValue(I18n.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
+            colMod.getColumn(0).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_METHOD_COLUMN"));
+            colMod.getColumn(1).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
+            colMod.getColumn(2).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
+            colMod.getColumn(3).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
         }
         
         header.repaint();

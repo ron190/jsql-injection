@@ -12,7 +12,7 @@ package com.jsql.view.swing.text;
 
 import javax.swing.JTextField;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * A JTextField displaying an icon and buttons.
@@ -28,6 +28,6 @@ public class JTextFieldAddressBar extends JPopupTextField implements DecoratorJC
         
         super(c);
 
-        this.getProxy().setFont(HelperUi.FONT_SEGOE_BIG);
+        this.getProxy().setFont(UiUtil.FONT_SEGOE_BIG);
     }
 }

@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tab.TabHeader;
 
@@ -42,7 +42,7 @@ public class ActionCloseTabResult extends AbstractAction {
             
             int i = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation();
             
-            if (ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.LEFT_TO_RIGHT) {
+            if (ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.LEFT_TO_RIGHT) {
                 
                 MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(
                     MediatorGui.frame().getSplitHorizontalTopBottom().getLabelPlaceholderResult()

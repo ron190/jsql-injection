@@ -23,7 +23,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.AbstractBorder;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * Item renderer for JList.
@@ -42,15 +42,15 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
         
         JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, isFocused);
 
-        renderer.setFont(HelperUi.FONT_SEGOE);
+        renderer.setFont(UiUtil.FONT_SEGOE);
 
         // setBackground
         if (isSelected) {
             
             if (list.isFocusOwner()) {
-                renderer.setBackground(HelperUi.COLOR_FOCUS_GAINED);
+                renderer.setBackground(UiUtil.COLOR_FOCUS_GAINED);
             } else {
-                renderer.setBackground(HelperUi.COLOR_FOCUS_LOST);
+                renderer.setBackground(UiUtil.COLOR_FOCUS_LOST);
             }
         } else {
             renderer.setBackground(Color.WHITE);
@@ -58,7 +58,7 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
         
         // setForeground
         if (value.getIsVulnerable()) {
-            renderer.setForeground(HelperUi.COLOR_GREEN);
+            renderer.setForeground(UiUtil.COLOR_GREEN);
         } else if (value.getIsDatabaseConfirmed()) {
             renderer.setForeground(Color.BLUE);
         }
@@ -67,9 +67,9 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
         if (isSelected) {
             
             if (list.isFocusOwner()) {
-                renderer.setBorder(HelperUi.BORDER_FOCUS_GAINED);
+                renderer.setBorder(UiUtil.BORDER_FOCUS_GAINED);
             } else {
-                renderer.setBorder(HelperUi.BORDER_FOCUS_LOST);
+                renderer.setBorder(UiUtil.BORDER_FOCUS_LOST);
             }
         } else if (isFocused) {
             

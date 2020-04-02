@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
@@ -53,8 +53,8 @@ public class ActionStart implements ActionListener {
             try {
                 option = JOptionPane.showConfirmDialog(
                     null,
-                    I18n.valueByKey("DIALOG_NEW_INJECTION_TEXT"),
-                    I18n.valueByKey("DIALOG_NEW_INJECTION_TITLE"),
+                    I18nUtil.valueByKey("DIALOG_NEW_INJECTION_TEXT"),
+                    I18nUtil.valueByKey("DIALOG_NEW_INJECTION_TITLE"),
                     JOptionPane.OK_CANCEL_OPTION
                 );
             } catch (ClassCastException e) {
@@ -65,7 +65,7 @@ public class ActionStart implements ActionListener {
         // Then start injection
         if (option == JOptionPane.OK_OPTION) {
             
-            this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setToolTipText(I18n.valueByKey("BUTTON_STOP_TOOLTIP"));
+            this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setToolTipText(I18nUtil.valueByKey("BUTTON_STOP_TOOLTIP"));
             this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setInjectionRunning();
             this.panelAddressBar.getAddressMenuBar().getLoader().setVisible(true);
 
@@ -89,7 +89,7 @@ public class ActionStart implements ActionListener {
         
         this.panelAddressBar.getAddressMenuBar().getLoader().setVisible(false);
         this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setInjectionStopping();
-        this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setToolTipText(I18n.valueByKey("BUTTON_STOPPING_TOOLTIP"));
+        this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setToolTipText(I18nUtil.valueByKey("BUTTON_STOPPING_TOOLTIP"));
         
         MediatorModel.model().setIsStoppedByUser(true);
     }

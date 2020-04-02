@@ -19,7 +19,7 @@ import javax.swing.border.Border;
 
 import org.apache.commons.text.WordUtils;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.action.ActionCheckIP;
 import com.jsql.view.swing.panel.preferences.ActionListenerSave;
 import com.jsql.view.swing.panel.preferences.PanelAuthenticationPreferences;
@@ -117,7 +117,7 @@ public class PanelPreferences extends JPanel {
             + "like TOR then your public IP is hidden and another one is used instead.</html>"
         );
         buttonCheckIp.setContentAreaFilled(true);
-        buttonCheckIp.setBorder(HelperUi.BORDER_ROUND_BLU);
+        buttonCheckIp.setBorder(UiUtil.BORDER_ROUND_BLU);
         
         FlatButtonMouseAdapter flatButtonMouseAdapter = new FlatButtonMouseAdapter(buttonCheckIp);
         flatButtonMouseAdapter.setContentVisible(true);
@@ -145,7 +145,7 @@ public class PanelPreferences extends JPanel {
         categories.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         categories.setSelectedIndex(0);
         
-        categories.setBorder(BorderFactory.createLineBorder(HelperUi.COLOR_COMPONENT_BORDER));
+        categories.setBorder(BorderFactory.createLineBorder(UiUtil.COLOR_COMPONENT_BORDER));
         categories.addListSelectionListener(e -> {
             PanelPreferences.this.remove(borderLayoutPreferences.getLayoutComponent(BorderLayout.CENTER));
             PanelPreferences.this.add(categories.getSelectedValue().getPanel(), BorderLayout.CENTER);

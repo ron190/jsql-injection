@@ -15,7 +15,7 @@ import java.awt.Component;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * Scroller with border.
@@ -32,8 +32,8 @@ public class JScrollPanePixelBorder extends JScrollPane {
         
         super(c);
         
-        this.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
-        this.setViewportBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
+        this.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
+        this.setViewportBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
     }
 
     /**
@@ -48,7 +48,7 @@ public class JScrollPanePixelBorder extends JScrollPane {
         
         this(c);
 
-        this.setBorder(BorderFactory.createMatteBorder(top, 0, bottom, 0, HelperUi.COLOR_COMPONENT_BORDER));
-        this.setViewportBorder(BorderFactory.createMatteBorder(0, left, 0, right, HelperUi.COLOR_COMPONENT_BORDER));
+        this.setBorder(BorderFactory.createMatteBorder(top, 0, bottom, 0, UiUtil.COLOR_COMPONENT_BORDER));
+        this.setViewportBorder(BorderFactory.createMatteBorder(0, left, 0, right, UiUtil.COLOR_COMPONENT_BORDER));
     }
 }

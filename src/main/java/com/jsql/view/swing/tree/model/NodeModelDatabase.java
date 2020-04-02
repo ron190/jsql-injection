@@ -17,7 +17,7 @@ import javax.swing.tree.TreePath;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.Database;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 
 /**
@@ -37,9 +37,9 @@ public class NodeModelDatabase extends AbstractNodeModel {
     protected Icon getLeafIcon(boolean leaf) {
         
         if (leaf) {
-            return HelperUi.ICON_DATABASE_GO;
+            return UiUtil.ICON_DATABASE_GO;
         } else {
-            return HelperUi.ICON_DATABASE;
+            return UiUtil.ICON_DATABASE;
         }
     }
 

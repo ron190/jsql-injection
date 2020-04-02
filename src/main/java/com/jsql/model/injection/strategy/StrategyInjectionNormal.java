@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Interaction;
@@ -45,7 +45,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     @Override
     public void checkApplicability() throws JSqlException {
         
-        LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Normal...");
+        LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Normal...");
         this.injectionModel.setIndexesInUrl(new SuspendableGetIndexes(this.injectionModel).run());
 
         // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body
@@ -58,7 +58,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         ;
         
         if (this.isApplicable) {
-            LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Normal injection using "+ this.performanceLength +" characters");
+            LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Normal injection using "+ this.performanceLength +" characters");
             this.allow();
         } else {
             this.unallow();
@@ -83,7 +83,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         
-        LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
+        LOGGER.info(I18nUtil.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getNormal());
         
         Request request = new Request();

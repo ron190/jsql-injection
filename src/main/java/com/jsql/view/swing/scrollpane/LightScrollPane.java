@@ -26,7 +26,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.exception.IgnoreMessageException;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 
 @SuppressWarnings("serial")
 public class LightScrollPane extends JComponent {
@@ -64,7 +64,7 @@ public class LightScrollPane extends JComponent {
     public LightScrollPane(int top, int left, int bottom, int right, JComponent c) {
         this(c);
 
-        this.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, HelperUi.COLOR_COMPONENT_BORDER));
+        this.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, UiUtil.COLOR_COMPONENT_BORDER));
     }
     
     public LightScrollPane(JComponent component) {

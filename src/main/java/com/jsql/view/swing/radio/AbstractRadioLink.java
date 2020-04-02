@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.swing.JLabel;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * A label to mimic a radiobox contained in a group.
@@ -87,7 +87,7 @@ public abstract class AbstractRadioLink extends JLabel {
         
         for (JLabel label: this.getGroup()) {
             if (this != label) {
-                label.setFont(HelperUi.FONT_SEGOE);
+                label.setFont(UiUtil.FONT_SEGOE);
             } else {
                 this.action();
             }

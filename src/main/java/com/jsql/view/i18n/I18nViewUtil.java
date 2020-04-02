@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.i18n.I18nUtil;
+import com.jsql.view.swing.UiUtil;
 
-public class I18nView {
+public class I18nViewUtil {
 
     /**
      * A list of graphical components for each i18n keys in the main properties
@@ -20,13 +20,13 @@ public class I18nView {
      * Initialize the list of graphical components
      */
     static {
-        for (String keyI18n: I18n.getLocaleRoot().keySet()) {
-            I18nView.componentsLocalized.put(keyI18n, new ArrayList<>());
+        for (String keyI18n: I18nUtil.getLocaleRoot().keySet()) {
+            I18nViewUtil.componentsLocalized.put(keyI18n, new ArrayList<>());
         }
     }
     
     // Utility class
-    private I18nView() {
+    private I18nViewUtil() {
         // Ignore
     }
     
@@ -36,7 +36,7 @@ public class I18nView {
      * @return a list of key names of a i18n key in the properties
      */
     public static Set<String> keys() {
-        return I18nView.componentsLocalized.keySet();
+        return I18nViewUtil.componentsLocalized.keySet();
     }
     
     /**
@@ -46,7 +46,7 @@ public class I18nView {
      * @return a list of graphical components
      */
     public static List<Object> componentsByKey(String key) {
-        return I18nView.componentsLocalized.get(key);
+        return I18nViewUtil.componentsLocalized.get(key);
     }
     
     /**
@@ -56,7 +56,7 @@ public class I18nView {
      * @param component graphical component which will receive the translated text
      */
     public static void addComponentForKey(String key, Object component) {
-        I18nView.componentsLocalized.get(key).add(component);
+        I18nViewUtil.componentsLocalized.get(key).add(component);
     }
     
     /**
@@ -68,10 +68,10 @@ public class I18nView {
         
         String result;
         
-        if (I18n.isAsian(I18n.getLocaleDefault())) {
-            result = "<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ I18n.valueByKey(key) +"</span></html>";
+        if (I18nUtil.isAsian(I18nUtil.getLocaleDefault())) {
+            result = "<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ I18nUtil.valueByKey(key) +"</span></html>";
         } else {
-            result = I18n.valueByKey(key);
+            result = I18nUtil.valueByKey(key);
         }
         
         return result;

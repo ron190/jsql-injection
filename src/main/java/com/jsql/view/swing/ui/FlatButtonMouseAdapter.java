@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * Define behavior to set on button.
@@ -26,7 +26,7 @@ public class FlatButtonMouseAdapter extends MouseAdapter {
         
         if (this.buttonFlat.isEnabled() && !this.isVisible) {
             this.buttonFlat.setContentAreaFilled(true);
-            this.buttonFlat.setBorder(HelperUi.BORDER_ROUND_BLU);
+            this.buttonFlat.setBorder(UiUtil.BORDER_ROUND_BLU);
         }
     }
 

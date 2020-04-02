@@ -12,6 +12,7 @@ package com.jsql.model;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,7 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.ietf.jgss.GSSException;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.bean.util.Header;
@@ -68,7 +69,8 @@ import net.sourceforge.spnego.SpnegoHttpURLConnection;
  * databases, tables, columns and values, and it can also retrieve resources like files and shell.<br>
  * Tasks are run in multi-threads in general to speed the process.
  */
-public class InjectionModel extends AbstractModelObservable {
+@SuppressWarnings("serial")
+public class InjectionModel extends AbstractModelObservable implements Serializable {
     
     /**
      * Log4j logger sent to view.
@@ -154,13 +156,13 @@ public class InjectionModel extends AbstractModelObservable {
                 return;
             }
             
-            LOGGER.info(I18n.valueByKey("LOG_START_INJECTION") +": "+ this.mediatorUtils.getConnectionUtil().getUrlByUser());
+            LOGGER.info(I18nUtil.valueByKey("LOG_START_INJECTION") +": "+ this.mediatorUtils.getConnectionUtil().getUrlByUser());
             
             // Check general integrity if user's parameters
             this.mediatorUtils.getParameterUtil().checkParametersFormat();
             
             // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
-            LOGGER.trace(I18n.valueByKey("LOG_CONNECTION_TEST"));
+            LOGGER.trace(I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
             this.mediatorUtils.getConnectionUtil().testConnection();
             
             boolean hasFoundInjection = this.mediatorMethodInjection.getQuery().testParameters();
@@ -187,7 +189,7 @@ public class InjectionModel extends AbstractModelObservable {
                 this.dataAccess.listDatabases();
             }
             
-            LOGGER.trace(I18n.valueByKey("LOG_DONE"));
+            LOGGER.trace(I18nUtil.valueByKey("LOG_DONE"));
             
             this.shouldErasePreviousInjection = true;
             
@@ -260,18 +262,12 @@ public class InjectionModel extends AbstractModelObservable {
             this.mediatorUtils.getConnectionUtil().fixJcifsTimeout(connection);
             
             this.initializeHeader(isUsingIndex, dataInjection, connection, msgHeader);
-    
             this.initializeRequest(isUsingIndex, dataInjection, connection, msgHeader);
             
             msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
             
-            try {
-                pageSource = ConnectionUtil.getSource(connection);
-            } catch (Exception e) {
-                LOGGER.error(e, e);
-            }
-            
             // Calling connection.disconnect() is not required, further calls will follow
+            pageSource = ConnectionUtil.getSource(connection);
             
             msgHeader.put(Header.SOURCE, pageSource);
             

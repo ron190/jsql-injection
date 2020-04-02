@@ -15,10 +15,10 @@ import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.util.StringUtil;
-import com.jsql.view.i18n.I18nView;
+import com.jsql.view.i18n.I18nViewUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -66,13 +66,13 @@ public class TabbedPaneNetworkTab extends MouseTabbedPane {
             new SimpleEntry<>("NETWORK_TAB_PARAMS_LABEL", this.textAreaNetworkTabParams)
         ).forEach(entry -> {
             
-            this.addTab(I18n.valueByKey(entry.getKey()), new LightScrollPane(1, 1, 0, 0, entry.getValue()));
-            JLabel label = new JLabel(I18n.valueByKey(entry.getKey()));
+            this.addTab(I18nUtil.valueByKey(entry.getKey()), new LightScrollPane(1, 1, 0, 0, entry.getValue()));
+            JLabel label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
             this.setTabComponentAt(
-                this.indexOfTab(I18n.valueByKey(entry.getKey())),
+                this.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
                 label
             );
-            I18nView.addComponentForKey(entry.getKey(), label);
+            I18nViewUtil.addComponentForKey(entry.getKey(), label);
             
             DefaultCaret caret = (DefaultCaret) entry.getValue().getCaret();
             caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);

@@ -32,9 +32,9 @@ import javax.swing.JTree;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
@@ -71,7 +71,7 @@ public class PanelNode extends JPanel {
      */
     public PanelNode(final JTree tree, final DefaultMutableTreeNode currentNode) {
         
-        ImageIcon animatedGIF = new ImageIcon(PanelNode.class.getClassLoader().getResource(HelperUi.PATH_PROGRESSBAR));
+        ImageIcon animatedGIF = new ImageIcon(PanelNode.class.getClassLoader().getResource(UiUtil.PATH_PROGRESSBAR));
         animatedGIF.setImageObserver(new ImageObserverAnimated(tree, currentNode));
         
         this.loader.setIcon(animatedGIF);
@@ -88,7 +88,7 @@ public class PanelNode extends JPanel {
         ));
         
         this.label.setOpaque(true);
-        this.label.setBorder(HelperUi.BORDER_FOCUS_GAINED);
+        this.label.setBorder(UiUtil.BORDER_FOCUS_GAINED);
 
         this.icon.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         
@@ -106,7 +106,7 @@ public class PanelNode extends JPanel {
             jcomponent.setVisible(false);
         });
         
-        this.setComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
+        this.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
         
         this.initializeTextFieldEditable(tree, currentNode);
 
@@ -114,22 +114,22 @@ public class PanelNode extends JPanel {
             
             @Override
             public void focusLost(FocusEvent e) {
-                PanelNode.this.label.setBackground(HelperUi.COLOR_FOCUS_LOST);
-                PanelNode.this.label.setBorder(HelperUi.BORDER_FOCUS_LOST);
+                PanelNode.this.label.setBackground(UiUtil.COLOR_FOCUS_LOST);
+                PanelNode.this.label.setBorder(UiUtil.BORDER_FOCUS_LOST);
             }
             
             @Override
             public void focusGained(FocusEvent e) {
-                PanelNode.this.label.setBackground(HelperUi.COLOR_FOCUS_GAINED);
-                PanelNode.this.label.setBorder(HelperUi.BORDER_FOCUS_GAINED);
+                PanelNode.this.label.setBackground(UiUtil.COLOR_FOCUS_GAINED);
+                PanelNode.this.label.setBorder(UiUtil.BORDER_FOCUS_GAINED);
             }
         });
     }
 
     private void initializeTextFieldEditable(final JTree tree, final DefaultMutableTreeNode currentNode) {
         
-        this.textFieldEditable.setFont(HelperUi.FONT_SEGOE);
-        this.textFieldEditable.setBorder(BorderFactory.createLineBorder(HelperUi.COLOR_FOCUS_GAINED, 1, false));
+        this.textFieldEditable.setFont(UiUtil.FONT_SEGOE);
+        this.textFieldEditable.setBorder(BorderFactory.createLineBorder(UiUtil.COLOR_FOCUS_GAINED, 1, false));
         this.textFieldEditable.addActionListener(e -> {
             
             AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();

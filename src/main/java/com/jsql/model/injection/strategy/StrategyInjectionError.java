@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Interaction;
@@ -52,7 +52,7 @@ public class StrategyInjectionError extends AbstractStrategy {
             return;
         }
 
-        LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Error...");
+        LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Error...");
         
         this.tabCapacityMethod = new String[strategyYaml.getError().getMethod().size()];
         int indexErrorMethod = 0;
@@ -61,7 +61,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         for (Method errorMethod: strategyYaml.getError().getMethod()) {
             
             boolean methodIsApplicable = false;
-            LOGGER.trace(I18n.valueByKey("LOG_CHECKING") +" "+ errorMethod.getName() +"...");
+            LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING") +" "+ errorMethod.getName() +"...");
         
             String performanceSourcePage = this.injectionModel.injectWithoutIndex(
                 " "+ VendorYaml.replaceTags(
@@ -111,9 +111,9 @@ public class StrategyInjectionError extends AbstractStrategy {
                         errorCapacity = regexSearch.group(1).length();
                         this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacity);
                     }
-                    LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" "+ errorMethod.getName() +" using "+ Integer.toString(errorCapacity) +" characters");
+                    LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" "+ errorMethod.getName() +" using "+ Integer.toString(errorCapacity) +" characters");
                 } else {
-                    LOGGER.warn(I18n.valueByKey("LOG_VULNERABLE") +" "+ errorMethod.getName() +" but injectable size is incorrect");
+                    LOGGER.warn(I18nUtil.valueByKey("LOG_VULNERABLE") +" "+ errorMethod.getName() +" but injectable size is incorrect");
                     methodIsApplicable = false;
                 }
             }
@@ -150,7 +150,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     public void activateStrategy() {
         
         LOGGER.info(
-            I18n.valueByKey("LOG_USING_STRATEGY") +" ["
+            I18nUtil.valueByKey("LOG_USING_STRATEGY") +" ["
                 + this.getName() +" "
                 + this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(this.indexMethod).getName()
             +"]"

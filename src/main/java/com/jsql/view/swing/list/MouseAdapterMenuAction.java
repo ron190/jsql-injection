@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.swing.list;
 
+import java.util.AbstractMap.SimpleEntry;
+
 import java.awt.ComponentOrientation;
 import java.awt.IllegalComponentStateException;
 import java.awt.event.ActionEvent;
@@ -17,6 +19,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 import javax.swing.Action;
 import javax.swing.JFileChooser;
@@ -30,10 +33,10 @@ import javax.swing.TransferHandler;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * A Mouse action to display a popupmenu on a JList.
@@ -72,13 +75,13 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
             JPopupMenu popupMenuList = this.initializeMenu(mouseEvent);
             
-            popupMenuList.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
+            popupMenuList.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
 
             // Fix #26274: IllegalComponentStateException on show()
             try {
                 popupMenuList.show(
                     list,
-                    ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                    ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
                     ? mouseEvent.getX() - popupMenuList.getWidth()
                     : mouseEvent.getX(),
                     mouseEvent.getY()
@@ -88,7 +91,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             }
             
             popupMenuList.setLocation(
-                ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
                 ? mouseEvent.getXOnScreen() - popupMenuList.getWidth()
                 : mouseEvent.getXOnScreen(),
                 mouseEvent.getYOnScreen()
@@ -100,80 +103,40 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         
         JPopupMenu popupMenuList = new JPopupMenu();
         
-        boolean isAsian = I18n.isAsian(I18n.getLocaleDefault());
+        boolean isAsian = I18nUtil.isAsian(I18nUtil.getLocaleDefault());
         
-        JMenuItem mnImport = new JMenuItem(
-            isAsian
-            ? I18nView.valueByKey("LIST_IMPORT_CONFIRM_TITLE")
-            : I18n.valueByKey("LIST_IMPORT_CONFIRM_TITLE")
-        );
-        I18nView.addComponentForKey("LIST_IMPORT_CONFIRM_TITLE", mnImport);
+        JMenuItem mnImport = new JMenuItem();
+        JMenuItem mnExport = new JMenuItem();
+        JMenuItem mnCut = new JMenuItem();
+        JMenuItem mnCopy = new JMenuItem();
+        JMenuItem mnPaste = new JMenuItem();
+        JMenuItem mnDelete = new JMenuItem();
+        JMenuItem mnNew = new JMenuItem();
+        JMenuItem mnRestoreDefault = new JMenuItem();
+        JMenuItem mnSelectAll = new JMenuItem();
         
-        JMenuItem mnExport = new JMenuItem(
-            isAsian
-            ? I18nView.valueByKey("LIST_EXPORT_TITLE")
-            : I18n.valueByKey("LIST_EXPORT_TITLE")
-        );
-        I18nView.addComponentForKey("LIST_EXPORT_TITLE", mnExport);
-        
-        JMenuItem mnCut = new JMenuItem(
-            isAsian
-            ? I18nView.valueByKey("LIST_CUT")
-            : I18n.valueByKey("LIST_CUT")
-        );
-        I18nView.addComponentForKey("LIST_CUT", mnCut);
-        
-        JMenuItem mnCopy = new JMenuItem(
-            isAsian
-            ? I18nView.valueByKey("CONTEXT_MENU_COPY")
-            : I18n.valueByKey("CONTEXT_MENU_COPY")
-        );
-        I18nView.addComponentForKey("CONTEXT_MENU_COPY", mnCopy);
-        
-        JMenuItem mnPaste = new JMenuItem(
-            isAsian
-            ? I18nView.valueByKey("LIST_PASTE")
-            : I18n.valueByKey("LIST_PASTE")
-        );
-        I18nView.addComponentForKey("LIST_PASTE", mnPaste);
-        
-        JMenuItem mnDelete = new JMenuItem(
-            isAsian
-            ? I18nView.valueByKey("LIST_DELETE")
-            : I18n.valueByKey("LIST_DELETE")
-        );
-        I18nView.addComponentForKey("LIST_DELETE", mnDelete);
-        
-        JMenuItem mnNew = new JMenuItem(
-            isAsian
-            ? I18nView.valueByKey("LIST_NEW_VALUE")
-            : I18n.valueByKey("LIST_NEW_VALUE")
-        );
-        I18nView.addComponentForKey("LIST_NEW_VALUE", mnNew);
-        
-        JMenuItem mnRestoreDefault = new JMenuItem(
-            isAsian
-            ? I18nView.valueByKey("LIST_RESTORE_DEFAULT")
-            : I18n.valueByKey("LIST_RESTORE_DEFAULT")
-        );
-        I18nView.addComponentForKey("LIST_RESTORE_DEFAULT", mnRestoreDefault);
-        
-        JMenuItem mnSelectAll = new JMenuItem(
-            isAsian
-            ? I18nView.valueByKey("CONTEXT_MENU_SELECT_ALL")
-            : I18n.valueByKey("CONTEXT_MENU_SELECT_ALL")
-        );
-        I18nView.addComponentForKey("CONTEXT_MENU_SELECT_ALL", mnSelectAll);
-        
-        mnImport.setIcon(HelperUi.ICON_EMPTY);
-        mnExport.setIcon(HelperUi.ICON_EMPTY);
-        mnCut.setIcon(HelperUi.ICON_EMPTY);
-        mnCopy.setIcon(HelperUi.ICON_EMPTY);
-        mnPaste.setIcon(HelperUi.ICON_EMPTY);
-        mnDelete.setIcon(HelperUi.ICON_EMPTY);
-        mnNew.setIcon(HelperUi.ICON_EMPTY);
-        mnRestoreDefault.setIcon(HelperUi.ICON_EMPTY);
-        mnSelectAll.setIcon(HelperUi.ICON_EMPTY);
+        Stream
+        .of(
+            new SimpleEntry<>(mnImport, "LIST_IMPORT_CONFIRM_TITLE"),
+            new SimpleEntry<>(mnExport, "LIST_EXPORT_TITLE"),
+            new SimpleEntry<>(mnCut, "LIST_CUT"),
+            new SimpleEntry<>(mnCopy, "CONTEXT_MENU_COPY"),
+            new SimpleEntry<>(mnPaste, "LIST_PASTE"),
+            new SimpleEntry<>(mnDelete, "LIST_DELETE"),
+            new SimpleEntry<>(mnNew, "LIST_NEW_VALUE"),
+            new SimpleEntry<>(mnRestoreDefault, "LIST_RESTORE_DEFAULT"),
+            new SimpleEntry<>(mnSelectAll, "CONTEXT_MENU_SELECT_ALL")
+        )
+        .forEach(entry -> {
+            entry.getKey().setText(
+                isAsian
+                ? I18nViewUtil.valueByKey(entry.getValue())
+                : I18nUtil.valueByKey(entry.getValue())
+            );
+            I18nViewUtil.addComponentForKey(entry.getValue(), entry.getKey());
+            
+            entry.getKey().setIcon(UiUtil.ICON_EMPTY);
+        });
 
         mnCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
         mnCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
@@ -182,7 +145,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         
         //Create a file chooser
         final JFileChooser importFileDialog = new JFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile());
-        importFileDialog.setDialogTitle(I18n.valueByKey("LIST_IMPORT_CONFIRM_TITLE"));
+        importFileDialog.setDialogTitle(I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_TITLE"));
         importFileDialog.setMultiSelectionEnabled(true);
 
         mnNew.addActionListener(new MenuActionNewValue(this.dndList));

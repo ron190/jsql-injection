@@ -49,12 +49,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         super(injectionModel, booleanMode);
         
         // No blind
-        if (this.falseTest.isEmpty()) {
-            return;
-        }
-        
-        // Check if the user wants to stop the preparation
-        if (this.injectionModel.isStoppedByUser()) {
+        if (this.falseTest.isEmpty() || this.injectionModel.isStoppedByUser()) {
             return;
         }
 
@@ -64,7 +59,9 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
          */
         ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagFalse"));
         Collection<CallableTime> listCallableTagFalse = new ArrayList<>();
+        
         for (String urlTest: this.falseTest) {
+            
             listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this, booleanMode));
         }
         
@@ -77,22 +74,30 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             List<Future<CallableTime>> listTagFalse = executorTagFalse.invokeAll(listCallableTagFalse);
             
             executorTagFalse.shutdown();
+            
             if (!executorTagFalse.awaitTermination(15, TimeUnit.SECONDS)) {
+                
                 executorTagFalse.shutdownNow();
             }
         
             for (Future<CallableTime> tagFalse: listTagFalse) {
+                
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
+                
                 if (tagFalse.get().isTrue()) {
+                    
                     this.isTimeInjectable = false;
                     return;
                 }
             }
         } catch (ExecutionException e) {
+            
             LOGGER.error("Searching fails for Time False tags", e);
+            
         } catch (InterruptedException e) {
+            
             LOGGER.error("Interruption while searching for Time False tags", e);
             Thread.currentThread().interrupt();
         }
@@ -102,7 +107,9 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         // it will use inject() from the model
         ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagTrue"));
         Collection<CallableTime> listCallableTagTrue = new ArrayList<>();
+        
         for (String urlTest: this.trueTest) {
+            
             listCallableTagTrue.add(new CallableTime(urlTest, injectionModel, this, booleanMode));
         }
 
@@ -118,17 +125,22 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             }
         
             for (Future<CallableTime> falseMark: listTagTrue) {
+                
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
+                
                 if (!falseMark.get().isTrue()) {
                     this.isTimeInjectable = false;
                     return;
                 }
             }
         } catch (ExecutionException e) {
+            
             LOGGER.error("Searching fails for Time True tags", e);
+            
         } catch (InterruptedException e) {
+            
             LOGGER.error("Interruption while searching for Time True tags", e);
             Thread.currentThread().interrupt();
         }
@@ -165,5 +177,4 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
     public String getInfoMessage() {
         return "Time strategy: request is true if delay does not exceed 5 seconds.";
     }
-    
 }

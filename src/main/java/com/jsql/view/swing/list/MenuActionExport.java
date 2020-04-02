@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
 
 /**
@@ -63,8 +63,8 @@ public class MenuActionExport implements ActionListener {
                     
                     int replace = JOptionPane.showConfirmDialog(
                         this,
-                        file.getName() +" "+ I18n.valueByKey("LIST_EXPORT_CONFIRM_LABEL"),
-                        I18n.valueByKey("LIST_EXPORT_CONFIRM_TITLE"),
+                        file.getName() +" "+ I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_LABEL"),
+                        I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_TITLE"),
                         JOptionPane.YES_NO_OPTION
                     );
                     
@@ -87,7 +87,7 @@ public class MenuActionExport implements ActionListener {
             }
         };
         
-        importFileDialog.setDialogTitle(I18n.valueByKey("LIST_EXPORT_TITLE"));
+        importFileDialog.setDialogTitle(I18nUtil.valueByKey("LIST_EXPORT_TITLE"));
         int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());
         
         if (choice != JFileChooser.APPROVE_OPTION) {

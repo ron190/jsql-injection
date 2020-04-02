@@ -21,9 +21,9 @@ import javax.swing.JLabel;
 import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
 
-import com.jsql.i18n.I18n;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.i18n.I18nUtil;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.ManagerAdminPage;
 import com.jsql.view.swing.manager.ManagerBruteForce;
@@ -78,15 +78,15 @@ public class TabManagers extends MouseTabbedPane {
         this.setMinimumSize(new Dimension(100, 0));
         this.addMouseClickMenu();
         
-        this.buildI18nTab("DATABASE_TAB", "DATABASE_TOOLTIP", HelperUi.ICON_DATABASE_SERVER, managerDatabase);
-        this.buildI18nTab("ADMINPAGE_TAB", "ADMINPAGE_TOOLTIP", HelperUi.ICON_ADMIN_SERVER, managerAdminPage);
-        this.buildI18nTab("FILE_TAB", "FILE_TOOLTIP", HelperUi.ICON_FILE_SERVER, this.managerFile);
-        this.buildI18nTab("WEBSHELL_TAB", "WEBSHELL_TOOLTIP", HelperUi.ICON_SHELL_SERVER, this.managerWebShell);
-        this.buildI18nTab("SQLSHELL_TAB", "SQLSHELL_TOOLTIP", HelperUi.ICON_SHELL_SERVER, this.managerSqlShell);
-        this.buildI18nTab("UPLOAD_TAB", "UPLOAD_TOOLTIP", HelperUi.ICON_UPLOAD, this.managerUpload);
-        this.buildI18nTab("BRUTEFORCE_TAB", "BRUTEFORCE_TOOLTIP", HelperUi.ICON_BRUTER, managerBruteForce);
-        this.buildI18nTab("CODER_TAB", "CODER_TOOLTIP", HelperUi.ICON_CODER, new ManagerCoder());
-        this.buildI18nTab("SCANLIST_TAB", "SCANLIST_TOOLTIP", HelperUi.ICON_SCANLIST, managerScanList);
+        this.buildI18nTab("DATABASE_TAB", "DATABASE_TOOLTIP", UiUtil.ICON_DATABASE_SERVER, managerDatabase);
+        this.buildI18nTab("ADMINPAGE_TAB", "ADMINPAGE_TOOLTIP", UiUtil.ICON_ADMIN_SERVER, managerAdminPage);
+        this.buildI18nTab("FILE_TAB", "FILE_TOOLTIP", UiUtil.ICON_FILE_SERVER, this.managerFile);
+        this.buildI18nTab("WEBSHELL_TAB", "WEBSHELL_TOOLTIP", UiUtil.ICON_SHELL_SERVER, this.managerWebShell);
+        this.buildI18nTab("SQLSHELL_TAB", "SQLSHELL_TOOLTIP", UiUtil.ICON_SHELL_SERVER, this.managerSqlShell);
+        this.buildI18nTab("UPLOAD_TAB", "UPLOAD_TOOLTIP", UiUtil.ICON_UPLOAD, this.managerUpload);
+        this.buildI18nTab("BRUTEFORCE_TAB", "BRUTEFORCE_TOOLTIP", UiUtil.ICON_BRUTER, managerBruteForce);
+        this.buildI18nTab("CODER_TAB", "CODER_TOOLTIP", UiUtil.ICON_CODER, new ManagerCoder());
+        this.buildI18nTab("SCANLIST_TAB", "SCANLIST_TOOLTIP", UiUtil.ICON_SCANLIST, managerScanList);
     }
     
     public void createFileTab(String path, String name) {
@@ -99,16 +99,16 @@ public class TabManagers extends MouseTabbedPane {
     
     public void markFileSystemInvulnerable() {
         
-        this.managerFile.changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
+        this.managerFile.changePrivilegeIcon(UiUtil.ICON_SQUARE_RED);
         this.managerFile.endProcess();
         
-        this.managerWebShell.changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
+        this.managerWebShell.changePrivilegeIcon(UiUtil.ICON_SQUARE_RED);
         this.managerWebShell.endProcess();
         
-        this.managerUpload.changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
+        this.managerUpload.changePrivilegeIcon(UiUtil.ICON_SQUARE_RED);
         this.managerUpload.endProcess();
         
-        this.managerSqlShell.changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
+        this.managerSqlShell.changePrivilegeIcon(UiUtil.ICON_SQUARE_RED);
         this.managerSqlShell.endProcess();
     }
     
@@ -122,22 +122,22 @@ public class TabManagers extends MouseTabbedPane {
     
     public void markFileSystemVulnerable() {
         
-        this.managerFile.changePrivilegeIcon(HelperUi.ICON_TICK);
-        this.managerWebShell.changePrivilegeIcon(HelperUi.ICON_TICK);
-        this.managerSqlShell.changePrivilegeIcon(HelperUi.ICON_TICK);
-        this.managerUpload.changePrivilegeIcon(HelperUi.ICON_TICK);
+        this.managerFile.changePrivilegeIcon(UiUtil.ICON_TICK);
+        this.managerWebShell.changePrivilegeIcon(UiUtil.ICON_TICK);
+        this.managerSqlShell.changePrivilegeIcon(UiUtil.ICON_TICK);
+        this.managerUpload.changePrivilegeIcon(UiUtil.ICON_TICK);
     }
     
     private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, Component manager) {
         
-        final JToolTipI18n[] refTooltip = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey(keyTooltip))};
+        final JToolTipI18n[] refTooltip = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey(keyTooltip))};
         
-        JLabel labelTab = new JLabel(I18n.valueByKey(keyLabel), icon, SwingConstants.CENTER){
+        JLabel labelTab = new JLabel(I18nUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER){
             
             @Override
             public JToolTip createToolTip() {
                 
-                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey(keyTooltip));
+                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey(keyTooltip));
                 refTooltip[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
             }
@@ -153,16 +153,16 @@ public class TabManagers extends MouseTabbedPane {
             }
         });
         
-        this.addTab(I18n.valueByKey(keyLabel), icon, manager);
+        this.addTab(I18nUtil.valueByKey(keyLabel), icon, manager);
         this.setTabComponentAt(
-            this.indexOfTab(I18n.valueByKey(keyLabel)),
+            this.indexOfTab(I18nUtil.valueByKey(keyLabel)),
             labelTab
         );
         
-        I18nView.addComponentForKey(keyLabel, labelTab);
-        I18nView.addComponentForKey(keyTooltip, refTooltip[0]);
+        I18nViewUtil.addComponentForKey(keyLabel, labelTab);
+        I18nViewUtil.addComponentForKey(keyTooltip, refTooltip[0]);
         
-        labelTab.setToolTipText(I18n.valueByKey(keyTooltip));
+        labelTab.setToolTipText(I18nUtil.valueByKey(keyTooltip));
         labelTab.addMouseListener(new TabMouseAdapter());
     }
 }

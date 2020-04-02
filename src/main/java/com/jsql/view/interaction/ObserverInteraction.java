@@ -37,10 +37,10 @@ public class ObserverInteraction implements Observer {
 
         try {
             Class<?> cl = Class.forName(this.packageInteraction +"."+ interaction.getMessage());
-            Class<?>[] types = new Class[]{Object[].class};
+            Class<?>[] types = new Class[]{ Object[].class };
             Constructor<?> ct = cl.getConstructor(types);
 
-            InteractionCommand o2 = (InteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
+            InteractionCommand o2 = (InteractionCommand) ct.newInstance(new Object[]{ interaction.getParameters() });
             o2.execute();
             
         } catch (ClassNotFoundException e) {

@@ -21,10 +21,10 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
@@ -50,10 +50,10 @@ public class ManagerFile extends AbstractManagerList {
         
         this.initializeRunButton();
 
-        this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.ICON_SQUARE_GREY, SwingConstants.LEFT);
-        I18nView.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
-        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND));
-        this.privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
+        this.privilege = new JLabel(I18nUtil.valueByKey("PRIVILEGE_LABEL"), UiUtil.ICON_SQUARE_GREY, SwingConstants.LEFT);
+        I18nViewUtil.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));
+        this.privilege.setToolTipText(I18nUtil.valueByKey("PRIVILEGE_TOOLTIP"));
 
         this.loader.setVisible(false);
 
@@ -70,8 +70,8 @@ public class ManagerFile extends AbstractManagerList {
         
         this.defaultText = "FILE_RUN_BUTTON_LABEL";
         this.run = new JButtonStateful(this.defaultText);
-        I18nView.addComponentForKey("FILE_RUN_BUTTON_LABEL", this.run);
-        this.run.setToolTipText(I18n.valueByKey("FILE_RUN_BUTTON_TOOLTIP"));
+        I18nViewUtil.addComponentForKey("FILE_RUN_BUTTON_LABEL", this.run);
+        this.run.setToolTipText(I18nUtil.valueByKey("FILE_RUN_BUTTON_TOOLTIP"));
         
         this.run.setEnabled(false);
         this.run.setContentAreaFilled(false);
@@ -91,7 +91,7 @@ public class ManagerFile extends AbstractManagerList {
                 
                 if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {
                     
-                    ManagerFile.this.run.setText(I18nView.valueByKey("FILE_RUN_BUTTON_STOP"));
+                    ManagerFile.this.run.setText(I18nViewUtil.valueByKey("FILE_RUN_BUTTON_STOP"));
                     ManagerFile.this.run.setState(StateButton.STOPPABLE);
                     ManagerFile.this.loader.setVisible(true);
                     

@@ -23,7 +23,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 
 /**
  * Model for default item used on an empty tree.
@@ -50,8 +50,8 @@ public class NodeModelEmpty extends AbstractNodeModel {
         labelEmpty.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         
         if (isSelected) {
-            panelEmpty.setBackground(HelperUi.COLOR_FOCUS_GAINED);
-            labelEmpty.setBorder(HelperUi.BORDER_FOCUS_GAINED);
+            panelEmpty.setBackground(UiUtil.COLOR_FOCUS_GAINED);
+            labelEmpty.setBorder(UiUtil.BORDER_FOCUS_GAINED);
         } else {
             panelEmpty.setBackground(Color.WHITE);
             labelEmpty.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));

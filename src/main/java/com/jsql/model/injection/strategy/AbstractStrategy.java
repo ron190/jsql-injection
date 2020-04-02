@@ -28,16 +28,16 @@ public abstract class AbstractStrategy {
      */
     protected String sourceIndexesFound = "";
     
+    /**
+     * True if injection can be used, false otherwise.
+     */
+    protected boolean isApplicable = false;
+    
     protected InjectionModel injectionModel;
     
     public AbstractStrategy(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
-    
-    /**
-     * True if injection can be used, false otherwise.
-     */
-    protected boolean isApplicable = false;
 
     /**
      * Return if this strategy can be used to inject SQL.

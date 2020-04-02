@@ -2,7 +2,7 @@ package com.jsql.view.swing.interaction;
 
 import java.awt.ComponentOrientation;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.view.swing.MediatorGui;
 
 /**
@@ -25,7 +25,7 @@ public class CreateTab {
             
             int dividerLocation = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation();
             
-            if (ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT) {
+            if (ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT) {
                 
                 MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(MediatorGui.tabResults());
             } else {

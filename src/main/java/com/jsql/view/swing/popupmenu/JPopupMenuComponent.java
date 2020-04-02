@@ -27,9 +27,9 @@ import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
-import com.jsql.view.i18n.I18nView;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.i18n.I18nUtil;
+import com.jsql.view.i18n.I18nViewUtil;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
 import com.jsql.view.swing.text.JTextPanePlaceholderConsole;
 
@@ -58,16 +58,16 @@ public class JPopupMenuComponent extends JPopupMenu {
         copyItem.setAction(component.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
-        copyItem.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
-        I18nView.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
-        copyItem.setIcon(HelperUi.ICON_EMPTY);
+        copyItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_COPY"));
+        I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
+        copyItem.setIcon(UiUtil.ICON_EMPTY);
         this.setLightWeightPopupEnabled(false);
 
         JMenuItem selectAllItem = new JMenuItem();
-        selectAllItem.setIcon(HelperUi.ICON_EMPTY);
+        selectAllItem.setIcon(UiUtil.ICON_EMPTY);
         selectAllItem.setAction(component.getActionMap().get(DefaultEditorKit.selectAllAction));
-        selectAllItem.setText(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
-        I18nView.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
+        selectAllItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"));
+        I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         selectAllItem.setMnemonic('A');
         
@@ -80,7 +80,7 @@ public class JPopupMenuComponent extends JPopupMenu {
             || component instanceof JTextPanePlaceholderConsole
         ) {
             JMenuItem clearItem = new JMenuItem();
-            clearItem.setIcon(HelperUi.ICON_EMPTY);
+            clearItem.setIcon(UiUtil.ICON_EMPTY);
             clearItem.setAction(new AbstractAction() {
                 
                 @Override
@@ -89,8 +89,8 @@ public class JPopupMenuComponent extends JPopupMenu {
                 }
             });
             
-            clearItem.setText(I18n.valueByKey("CONTEXT_MENU_CLEAR"));
-            I18nView.addComponentForKey("CONTEXT_MENU_CLEAR", clearItem);
+            clearItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_CLEAR"));
+            I18nViewUtil.addComponentForKey("CONTEXT_MENU_CLEAR", clearItem);
             clearItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
             clearItem.setMnemonic('E');
             
@@ -111,7 +111,7 @@ public class JPopupMenuComponent extends JPopupMenu {
                 JPopupMenuComponent.this.setLocation(MouseInfo.getPointerInfo().getLocation());
                 
                 JPopupMenuComponent.this.setLocation(
-                    ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                    ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
                     ? MouseInfo.getPointerInfo().getLocation().x - JPopupMenuComponent.this.getWidth()
                     : MouseInfo.getPointerInfo().getLocation().x,
                     MouseInfo.getPointerInfo().getLocation().y

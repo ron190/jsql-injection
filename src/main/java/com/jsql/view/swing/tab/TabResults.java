@@ -22,13 +22,13 @@ import javax.swing.TransferHandler;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
+import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.action.ActionHandler;
+import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.scrollpane.LightScrollPaneShell;
 import com.jsql.view.swing.shell.ShellSql;
@@ -61,14 +61,14 @@ public class TabResults extends DnDTabbedPane {
         this.setTransferHandler(handler);
 
         // Add hotkeys to rootpane ctrl-tab, ctrl-shift-tab, ctrl-w
-        ActionHandler.addShortcut(this);
+        HotkeyUtil.addShortcut(this);
     }
     
     public void createFileTab(String name, String content, String path) {
         
         JTextArea fileText = new JPopupTextArea().getProxy();
         fileText.setText(content);
-        fileText.setFont(new Font(HelperUi.FONT_NAME_UBUNTU_MONO, Font.PLAIN, 14));
+        fileText.setFont(new Font(UiUtil.FONT_NAME_UBUNTU_MONO, Font.PLAIN, 14));
         LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, fileText);
         
         fileText.setCaretPosition(0);
@@ -78,7 +78,7 @@ public class TabResults extends DnDTabbedPane {
         this.setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(name, HelperUi.ICON_FILE_SERVER);
+        TabHeader header = new TabHeader(name, UiUtil.ICON_FILE_SERVER);
 
         this.setToolTipTextAt(this.indexOfComponent(scroller), path);
 
@@ -103,7 +103,7 @@ public class TabResults extends DnDTabbedPane {
             this.setSelectedComponent(scroller);
     
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader("Web shell", HelperUi.ICON_SHELL_SERVER);
+            TabHeader header = new TabHeader("Web shell", UiUtil.ICON_SHELL_SERVER);
     
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
@@ -138,7 +138,7 @@ public class TabResults extends DnDTabbedPane {
             this.setSelectedComponent(scroller);
     
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader("SQL shell", HelperUi.ICON_SHELL_SERVER);
+            TabHeader header = new TabHeader("SQL shell", UiUtil.ICON_SHELL_SERVER);
     
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
@@ -163,7 +163,7 @@ public class TabResults extends DnDTabbedPane {
         
         // Create a new tab: add header and table
         this.addTab(StringUtil.detectUtf8(table.toString()), newTableJPanel);
-        newTableJPanel.setComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
+        newTableJPanel.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
         
         // Focus on the new tab
         this.setSelectedComponent(newTableJPanel);

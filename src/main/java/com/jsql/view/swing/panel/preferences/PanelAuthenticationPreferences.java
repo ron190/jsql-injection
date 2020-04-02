@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.DocumentListener;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
@@ -119,11 +119,11 @@ public class PanelAuthenticationPreferences extends JPanel {
         this.getTextDigestAuthenticationUsername().setMaximumSize(new Dimension(200, 0));
         this.getTextDigestAuthenticationPassword().setMaximumSize(new Dimension(200, 0));
 
-        this.getTextKerberosLoginConf().setFont(HelperUi.FONT_SEGOE_BIG);
-        this.getTextKerberosKrb5Conf().setFont(HelperUi.FONT_SEGOE_BIG);
+        this.getTextKerberosLoginConf().setFont(UiUtil.FONT_SEGOE_BIG);
+        this.getTextKerberosKrb5Conf().setFont(UiUtil.FONT_SEGOE_BIG);
         
-        this.getTextDigestAuthenticationUsername().setFont(HelperUi.FONT_SEGOE_BIG);
-        this.getTextDigestAuthenticationPassword().setFont(HelperUi.FONT_SEGOE_BIG);
+        this.getTextDigestAuthenticationUsername().setFont(UiUtil.FONT_SEGOE_BIG);
+        this.getTextDigestAuthenticationPassword().setFont(UiUtil.FONT_SEGOE_BIG);
         
         Stream.of(
             this.getCheckboxUseDigestAuthentication(),

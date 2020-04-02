@@ -156,21 +156,7 @@ public class RessourceAccess {
             tasksHandled < submittedTasks && !this.isSearchAdminStopped;
             tasksHandled++
         ) {
-            try {
-                CallableHttpHead currentCallable = taskCompletionService.take().get();
-                if (currentCallable.isHttpResponseOk()) {
-                    Request request = new Request();
-                    request.setMessage(Interaction.CREATE_ADMIN_PAGE_TAB);
-                    request.setParameters(currentCallable.getUrl());
-                    this.injectionModel.sendToViews(request);
-
-                    nbAdminPagesFound++;
-                    LOGGER.debug("Found admin page: "+ currentCallable.getUrl());
-                }
-            } catch (InterruptedException | ExecutionException e) {
-                LOGGER.error("Interruption while checking Admin pages", e);
-                Thread.currentThread().interrupt();
-            }
+            nbAdminPagesFound = callAdminPage(taskCompletionService, nbAdminPagesFound);
         }
 
         taskExecutor.shutdown();
@@ -178,20 +164,47 @@ public class RessourceAccess {
 
         this.isSearchAdminStopped = false;
 
+        logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);
+
+        Request request = new Request();
+        request.setMessage(Interaction.END_ADMIN_SEARCH);
+        this.injectionModel.sendToViews(request);
+    }
+
+    private int callAdminPage(CompletionService<CallableHttpHead> taskCompletionService, int nbAdminPagesFound) {
+        
+        try {
+            CallableHttpHead currentCallable = taskCompletionService.take().get();
+            if (currentCallable.isHttpResponseOk()) {
+                Request request = new Request();
+                request.setMessage(Interaction.CREATE_ADMIN_PAGE_TAB);
+                request.setParameters(currentCallable.getUrl());
+                this.injectionModel.sendToViews(request);
+
+                nbAdminPagesFound++;
+                LOGGER.debug("Found admin page: "+ currentCallable.getUrl());
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            LOGGER.error("Interruption while checking Admin pages", e);
+            Thread.currentThread().interrupt();
+        }
+        
+        return nbAdminPagesFound;
+    }
+
+    private void logSearchAdminPage(int nbAdminPagesFound, int submittedTasks, int tasksHandled) {
+        
         String result =
             "Found "+ nbAdminPagesFound +" admin page"+( nbAdminPagesFound > 1 ? 's' : "" )+" "
             + (tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : "")
             + "on "+ submittedTasks +" page"+ ( submittedTasks > 1 ? 's' : "" ) +" searched"
         ;
+        
         if (nbAdminPagesFound > 0) {
             LOGGER.debug(result);
         } else {
             LOGGER.warn(result);
         }
-
-        Request request = new Request();
-        request.setMessage(Interaction.END_ADMIN_SEARCH);
-        this.injectionModel.sendToViews(request);
     }
     
     /**

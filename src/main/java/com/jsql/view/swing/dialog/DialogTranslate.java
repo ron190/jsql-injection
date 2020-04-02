@@ -41,7 +41,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.util.GitUtil.ShowOnConsole;
-import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.dialog.translate.Language;
 import com.jsql.view.swing.dialog.translate.SwingWorkerGithubLocale;
@@ -87,7 +87,7 @@ public class DialogTranslate extends JDialog {
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         // Define a small and large app icon
-        this.setIconImages(HelperUi.getIcons());
+        this.setIconImages(UiUtil.getIcons());
 
         // Action for ESCAPE key
         ActionListener escapeListener = actionEvent -> DialogTranslate.this.dispose();
@@ -145,7 +145,7 @@ public class DialogTranslate extends JDialog {
         // Only Monospaced works both for copy/paste utf8 foreign characters in JTextArea and
         // it's a technical Mono Font.
         this.textToTranslate[0].setFont(new Font(
-            HelperUi.FONT_NAME_MONOSPACED,
+            UiUtil.FONT_NAME_MONOSPACED,
             Font.PLAIN,
             UIManager.getDefaults().getFont("TextField.font").getSize()
         ));
