@@ -62,87 +62,93 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             
             CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
             
-            for (String insertionCharacter : new String[] {"'\"#-)'\""}) {
-                
-                taskCompletionService.submit(
-                    new CallablePageSource(
-                        insertionCharacter,
-                        insertionCharacter,
-                        this.injectionModel
-                    )
-                );
-            }
-    
-            int total = 1;
-            while (0 < total) {
-    
-                if (this.isSuspended()) {
-                    throw new StoppedByUserSlidingException();
-                }
-                
-                try {
-                    CallablePageSource currentCallable = taskCompletionService.take().get();
-                    total--;
-                    String pageSource = currentCallable.getContent();
-                    
-                    // Test each vendor except Auto with skip(1)
-                    for (Vendor vendorTest: this.injectionModel.getMediatorVendor().getVendors().stream().skip(1).toArray(Vendor[]::new)) {
-                      if (
-                          pageSource.matches(
-                              "(?si).*("
-                              + vendorTest.instance().fingerprintErrorsAsRegex()
-                              + ").*"
-                          )
-                      ) {
-                          vendor = vendorTest;
-                          LOGGER.debug("Found database ["+ vendor +"]");
-                          break;
-                      }
-                    }
-                } catch (InterruptedException | ExecutionException e) {
-                    LOGGER.error("Interruption while determining the type of database", e);
-                    Thread.currentThread().interrupt();
-                }
-                
+            String insertionCharacter = "'\"#-)'\"";
+            
+            taskCompletionService.submit(
+                new CallablePageSource(
+                    insertionCharacter,
+                    insertionCharacter,
+                    this.injectionModel
+                )
+            );
+
+            if (this.isSuspended()) {
+                throw new StoppedByUserSlidingException();
             }
             
+            try {
+                CallablePageSource currentCallable = taskCompletionService.take().get();
+
+                String pageSource = currentCallable.getContent();
+                
+                // TODO magic number skip(1)
+                // Test each vendor except Auto with skip(1)
+                for (Vendor vendorTest: this.injectionModel.getMediatorVendor().getVendors().stream().skip(1).toArray(Vendor[]::new)) {
+                    
+                  if (
+                      pageSource.matches(
+                          "(?si).*("
+                          + vendorTest.instance().fingerprintErrorsAsRegex()
+                          + ").*"
+                      )
+                  ) {
+                      vendor = vendorTest;
+                      LOGGER.debug("Found database ["+ vendor +"]");
+                      break;
+                  }
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                
+                LOGGER.error("Interruption while determining the type of database", e);
+                Thread.currentThread().interrupt();
+            }
+                
             // End the job
             try {
                 taskExecutor.shutdown();
+                
                 if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
                     taskExecutor.shutdownNow();
                 }
             } catch (InterruptedException e) {
+                
                 LOGGER.error(e.getMessage(), e);
                 Thread.currentThread().interrupt();
             }
             
-            if (vendor == null) {
-                
-                vendor = this.injectionModel.getMediatorVendor().getMySQL();
-                LOGGER.warn(I18n.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
-            } else {
-                
-                LOGGER.info(I18n.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");
-                
-                Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-                msgHeader.put(
-                    Header.URL,
-                    this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()
-                );
-                msgHeader.put(Header.VENDOR, vendor);
-                
-                Request requestDatabaseIdentified = new Request();
-                requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);
-                requestDatabaseIdentified.setParameters(msgHeader);
-                this.injectionModel.sendToViews(requestDatabaseIdentified);
-            }
+            vendor = initializeVendor(vendor);
         }
         
         Request requestSetVendor = new Request();
         requestSetVendor.setMessage(Interaction.SET_VENDOR);
         requestSetVendor.setParameters(vendor);
         this.injectionModel.sendToViews(requestSetVendor);
+        
+        return vendor;
+    }
+
+    private Vendor initializeVendor(Vendor vendor) {
+        
+        if (vendor == null) {
+            
+            vendor = this.injectionModel.getMediatorVendor().getMySQL();
+            LOGGER.warn(I18n.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
+        } else {
+            
+            LOGGER.info(I18n.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");
+            
+            Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+            msgHeader.put(
+                Header.URL,
+                this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()
+            );
+            msgHeader.put(Header.VENDOR, vendor);
+            
+            Request requestDatabaseIdentified = new Request();
+            requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);
+            requestDatabaseIdentified.setParameters(msgHeader);
+            this.injectionModel.sendToViews(requestDatabaseIdentified);
+        }
         
         return vendor;
     }
