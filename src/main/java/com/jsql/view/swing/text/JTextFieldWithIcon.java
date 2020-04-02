@@ -21,7 +21,7 @@ import javax.swing.border.Border;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18nUtil;
+import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.UiUtil;
 
 /**

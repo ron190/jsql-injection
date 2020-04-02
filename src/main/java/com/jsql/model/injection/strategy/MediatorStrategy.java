@@ -7,12 +7,12 @@ import java.util.regex.Matcher;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetVendor;
+import com.jsql.util.I18nUtil;
 import com.jsql.util.JsonUtil;
 
 public class MediatorStrategy {

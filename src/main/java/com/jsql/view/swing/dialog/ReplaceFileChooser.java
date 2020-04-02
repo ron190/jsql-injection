@@ -15,7 +15,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import com.jsql.i18n.I18nUtil;
+import com.jsql.util.I18nUtil;
 
 /**
  * File chooser for supporting 'file already exists'.

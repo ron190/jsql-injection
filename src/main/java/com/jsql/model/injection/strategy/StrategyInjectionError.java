@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Interaction;
@@ -16,6 +15,7 @@ import com.jsql.model.injection.vendor.model.yaml.Configuration;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.Strategy;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.I18nUtil;
 
 /**
  * Injection strategy using error attack.

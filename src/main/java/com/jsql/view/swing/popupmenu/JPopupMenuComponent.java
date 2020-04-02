@@ -27,7 +27,7 @@ import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18nUtil;
+import com.jsql.util.I18nUtil;
 import com.jsql.view.i18n.I18nViewUtil;
 import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;

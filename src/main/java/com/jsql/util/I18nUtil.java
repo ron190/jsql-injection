@@ -1,4 +1,4 @@
-package com.jsql.i18n;
+package com.jsql.util;
 
 import java.net.URISyntaxException;
 import java.net.URL;

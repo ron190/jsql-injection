@@ -31,9 +31,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.util.I18nUtil;
 import com.jsql.view.i18n.I18nViewUtil;
 import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;

@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Column;
@@ -31,6 +30,7 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.SlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
+import com.jsql.util.I18nUtil;
 
 /**
  * Database resource object to read name of databases, tables, columns and values

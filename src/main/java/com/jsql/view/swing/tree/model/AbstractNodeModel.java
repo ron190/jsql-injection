@@ -24,10 +24,10 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.i18n.I18nViewUtil;
 import com.jsql.view.swing.UiUtil;

@@ -2,7 +2,7 @@ package com.jsql.view.swing.interaction;
 
 import java.awt.ComponentOrientation;
 
-import com.jsql.i18n.I18nUtil;
+import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.MediatorGui;
 
 /**

@@ -32,7 +32,7 @@ import javax.swing.JTree;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.jsql.i18n.I18nUtil;
+import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;

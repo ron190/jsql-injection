@@ -10,7 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
-import com.jsql.i18n.I18nUtil;
+import com.jsql.util.I18nUtil;
 
 /**
  * The ComponentBorder class allows you to place a real component in

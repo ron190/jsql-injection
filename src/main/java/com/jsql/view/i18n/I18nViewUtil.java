@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.jsql.i18n.I18nUtil;
+import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.UiUtil;
 
 public class I18nViewUtil {

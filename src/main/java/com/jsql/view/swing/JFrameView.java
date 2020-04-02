@@ -27,8 +27,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
+import com.jsql.util.I18nUtil;
 import com.jsql.view.interaction.ObserverInteraction;
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.menubar.Menubar;

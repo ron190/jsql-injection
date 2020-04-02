@@ -33,7 +33,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.ietf.jgss.GSSException;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.bean.util.Header;
@@ -50,6 +49,7 @@ import com.jsql.util.ExceptionUtil;
 import com.jsql.util.GitUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.HeaderUtil;
+import com.jsql.util.I18nUtil;
 import com.jsql.util.JsonUtil;
 import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;

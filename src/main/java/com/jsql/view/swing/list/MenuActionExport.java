@@ -22,8 +22,8 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
+import com.jsql.util.I18nUtil;
 
 /**
  * Action to export a JList.

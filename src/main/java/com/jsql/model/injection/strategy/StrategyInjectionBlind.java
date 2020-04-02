@@ -13,7 +13,6 @@ package com.jsql.model.injection.strategy;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
@@ -21,6 +20,7 @@ import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.strategy.blind.InjectionBlind;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.I18nUtil;
 
 /**
  * Injection strategy using blind attack.

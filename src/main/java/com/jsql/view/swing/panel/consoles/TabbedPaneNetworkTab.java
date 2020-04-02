@@ -15,8 +15,8 @@ import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.bean.util.HttpHeader;
+import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.i18n.I18nViewUtil;
 import com.jsql.view.swing.MediatorGui;

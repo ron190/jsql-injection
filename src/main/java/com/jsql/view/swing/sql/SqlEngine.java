@@ -28,11 +28,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
+import com.jsql.util.I18nUtil;
 import com.jsql.view.i18n.I18nViewUtil;
 import com.jsql.view.swing.UiUtil;
 import com.jsql.view.swing.MediatorGui;

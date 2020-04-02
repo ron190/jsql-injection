@@ -10,10 +10,10 @@ import org.apache.log4j.Appender;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.util.CertificateUtil;
+import com.jsql.util.I18nUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.view.swing.JFrameView;
 import com.jsql.view.swing.MediatorGui;

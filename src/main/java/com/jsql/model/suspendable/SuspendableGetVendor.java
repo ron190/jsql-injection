@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
@@ -20,6 +19,7 @@ import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
+import com.jsql.util.I18nUtil;
 
 /**
  * Runnable class, define insertionCharacter that will be used by all futures requests,

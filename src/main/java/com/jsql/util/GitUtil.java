@@ -13,7 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.jsql.i18n.I18nUtil;
 import com.jsql.model.InjectionModel;
 
 /**

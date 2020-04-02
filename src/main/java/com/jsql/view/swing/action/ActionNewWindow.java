@@ -24,7 +24,7 @@ import javax.swing.KeyStroke;
 import org.apache.log4j.Logger;
 
 import com.jsql.MainApplication;
-import com.jsql.i18n.I18nUtil;
+import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.UiUtil;
 
 /**
