@@ -507,9 +507,7 @@ public class DataAccess {
             LOGGER.warn(e.getMessage(), e);
         }
 
-        List<List<String>> listValues = parse(resultToParse);
-        
-        return listValues;
+        return parse(resultToParse);
     }
 
     private List<List<String>> parse(String rows) throws InjectionFailureException {

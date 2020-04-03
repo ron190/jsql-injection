@@ -77,13 +77,13 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    private MediatorVendor mediatorVendor = new MediatorVendor(InjectionModel.this);
-    private MediatorMethodInjection mediatorMethodInjection = new MediatorMethodInjection(this);
-    private MediatorUtils mediatorUtils;
-    private MediatorStrategy mediatorStrategy;
-    
-    private DataAccess dataAccess = new DataAccess(this);
-    private RessourceAccess resourceAccess = new RessourceAccess(this);
+    private transient MediatorVendor mediatorVendor = new MediatorVendor(InjectionModel.this);
+    private transient MediatorMethodInjection mediatorMethodInjection = new MediatorMethodInjection(this);
+    private transient MediatorUtils mediatorUtils;
+    private transient MediatorStrategy mediatorStrategy;
+             
+    private transient DataAccess dataAccess = new DataAccess(this);
+    private transient RessourceAccess resourceAccess = new RessourceAccess(this);
     
     public static final String STAR = "*";
     
@@ -425,9 +425,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     
     private String buildQuery(MethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
         
-        String query, paramLeadFixed;
-        
-        paramLeadFixed = paramLead.replace("*", "<tampering>*</tampering>");
+        String query;
+        String paramLeadFixed = paramLead.replace("*", "<tampering>*</tampering>");
         
         // TODO simplify
         if (

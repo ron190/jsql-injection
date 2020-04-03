@@ -103,8 +103,12 @@ public class Bruter {
     public String calculateTimeElapsed() {
         
         long timeTaken = this.calculateTimeDifference();
+        
         int seconds = (int) timeTaken;
-        int minutes = 0, hours = 0, days = 0;
+        
+        int minutes = 0;
+        int hours = 0;
+        int days = 0;
         
         if (seconds > 60) {
             

@@ -76,9 +76,11 @@ public class DnDTabbedPane extends JTabbedPane {
         }
         
         JButton button = "scrollTabsForwardAction".equals(actionKey) ? scrollForwardButton : scrollBackwardButton;
-        Optional.ofNullable(button)
-            .filter(JButton::isEnabled)
-            .ifPresent(JButton::doClick);
+    
+        Optional
+        .ofNullable(button)
+        .filter(JButton::isEnabled)
+        .ifPresent(JButton::doClick);
     }
     
     public void autoScrollTest(Point pt) {

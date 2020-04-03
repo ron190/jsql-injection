@@ -279,7 +279,7 @@ public class HeaderUtil {
         return exception;
     }
 
-    private void checkResponse(String responseCode, Map<String, String> mapResponse) throws IOException {
+    private void checkResponse(String responseCode, Map<String, String> mapResponse) {
         
         if (isBasicAuth(responseCode, mapResponse)) {
             

@@ -71,7 +71,7 @@ public class PanelConsoles extends JPanel {
     /**
      * Console for java exception messages.
      */
-    public static final JavaConsoleAdapter javaTextPane = new JavaConsoleAdapter("Java", "Java unhandled exception");
+    public JavaConsoleAdapter javaTextPane = new JavaConsoleAdapter("Java", "Java unhandled exception");
     
     /**
      * Console for raw SQL results.

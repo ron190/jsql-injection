@@ -140,7 +140,7 @@ public class ManagerAdminPage extends AbstractManagerList {
         
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
 
-        this.run.addActionListener(actionEvent -> { runSearch(); });
+        this.run.addActionListener(actionEvent -> runSearch());
 
         this.loader.setVisible(false);
     }
@@ -167,7 +167,7 @@ public class ManagerAdminPage extends AbstractManagerList {
             }
         }
         
-        new Thread(() -> { searchAdminPages(refUrlQuery); }, "ThreadAdminPage").start();
+        new Thread(() -> searchAdminPages(refUrlQuery), "ThreadAdminPage").start();
     }
 
     private void searchAdminPages(String[] refUrlQuery) {
