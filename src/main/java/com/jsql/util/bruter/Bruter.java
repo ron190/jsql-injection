@@ -26,11 +26,6 @@ public class Bruter {
     protected long starttime;
     protected long endtime;
      
-    protected int minutes;
-    protected int seconds;
-    protected int hours;
-    protected int days;
-     
     private static final char[] specialCharacters = {
         '~', '`', '!', '@', '#', '$', '%', '^',
         '&', '*', '(', ')', '_', '-', '+', '=', '{', '}', '[', ']', '|', '\\',
@@ -54,20 +49,6 @@ public class Bruter {
         }
         
         return possibilities;
-    }
-
-    public void addExtendedSet() {
-        
-        for (char c = (char) 0; c <= (char) 31; c++) {
-            this.characters.add(String.valueOf(c));
-        }
-    }
-
-    public void addStandardCharacterSet() {
-        
-        for (char c = (char) 32; c <= (char) 127; c++) {
-            this.characters.add(String.valueOf(c));
-        }
     }
 
     public void addLowerCaseLetters() {
@@ -104,7 +85,7 @@ public class Bruter {
         
         try {
             
-            i = (int) (this.getCounter() / this.calculateTimeDifference());
+            i = (int) (this.count / this.calculateTimeDifference());
             
         } catch (Exception e) {
             
@@ -122,39 +103,40 @@ public class Bruter {
     public String calculateTimeElapsed() {
         
         long timeTaken = this.calculateTimeDifference();
-        this.seconds = (int) timeTaken;
+        int seconds = (int) timeTaken;
+        int minutes = 0, hours = 0, days = 0;
         
-        if (this.seconds > 60) {
+        if (seconds > 60) {
             
-            this.minutes = this.seconds / 60;
+            minutes = seconds / 60;
             
-            if (this.minutes * 60 > this.seconds) {
-                this.minutes = this.minutes - 1;
+            if (minutes * 60 > seconds) {
+                minutes = minutes - 1;
             }
 
-            if (this.minutes > 60) {
+            if (minutes > 60) {
                 
-                this.hours = this.minutes / 60;
-                if (this.hours * 60 > this.minutes) {
-                    this.hours = this.hours - 1;
+                hours = minutes / 60;
+                if (hours * 60 > minutes) {
+                    hours = hours - 1;
                 }
             }
 
-            if (this.hours > 24) {
+            if (hours > 24) {
                 
-                this.days = this.hours / 24;
-                if (this.days * 24 > this.hours) {
-                    this.days = this.days - 1;
+                days = hours / 24;
+                if (days * 24 > hours) {
+                    days = days - 1;
                 }
             }
             
-            this.seconds -= this.minutes * 60;
-            this.minutes -= this.hours * 60;
-            this.hours -= this.days * 24;
-            this.days -= this.hours * 24;
+            seconds -= minutes * 60;
+            minutes -= hours * 60;
+            hours -= days * 24;
+            days -= hours * 24;
         }
         
-        return "Time elapsed: "+ this.days +"days "+ this.hours +"h "+ this.minutes +"min "+ this.seconds +"s";
+        return "Time elapsed: "+ days +"days "+ hours +"h "+ minutes +"min "+ seconds +"s";
     }
 
     private long calculateTimeDifference() {

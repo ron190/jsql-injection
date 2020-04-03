@@ -122,6 +122,8 @@ public class HeaderUtil {
 
     private Exception parseCsrf(Exception exception, StringBuilder pageSource) {
         
+        Exception exceptionCsrf = exception;
+        
         // TODO csrf in HTTP
         Optional<SimpleEntry<String, String>> optionalTokenCsrf = Jsoup
             .parse(pageSource.toString())
@@ -143,11 +145,11 @@ public class HeaderUtil {
             } else {
                 
                 LOGGER.warn("Found Csrf token '"+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +"' in HTML body");
-                exception = new IOException("please activate Csrf processing in Preferences");
+                exceptionCsrf = new IOException("please activate Csrf processing in Preferences");
             }
         }
         
-        return exception;
+        return exceptionCsrf;
     }
 
     private void parseForms(HttpURLConnection connection, StringBuilder pageSource) throws IOException {

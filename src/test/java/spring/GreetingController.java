@@ -46,19 +46,21 @@ public class GreetingController {
         
         Greeting greeting = null;
         
+        String inject = request.getParameterMap().get("name")[0];
+        inject = inject.replace(":", "\\:");
+        
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            String name = request.getParameterMap().get("name")[0];
-            name = name.replace(":", "\\:");
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
             
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
                 this.counter.incrementAndGet(),
-                String.format(template, name)
+                String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
+            
         } catch (Exception e) {
             // Hide useless SQL error messages
         }
@@ -71,19 +73,20 @@ public class GreetingController {
     public Greeting greetingCookie(HttpServletRequest request, @CookieValue("name") String name) throws IOException {
 
         Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            name = name.replace(":", "\\:");
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+inject+"'");
             
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
                 this.counter.incrementAndGet(),
-                String.format(template, name)
+                String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
+            
         } catch (Exception e) {
             // Hide useless SQL error messages
         }
@@ -93,23 +96,25 @@ public class GreetingController {
     
     @SuppressWarnings("unchecked")
     @RequestMapping("/greeting-header")
-    public Greeting greetingHeader(@RequestHeader Map<String, String> a) throws IOException {
+    public Greeting greetingHeader(@RequestHeader Map<String, String> name) throws IOException {
         
         Greeting greeting = null;
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            String name = a.get("name");
-            name = name.replace(":", "\\:");
+            String inject = name.get("name");
+            inject = inject.replace(":", "\\:");
 
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+            
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
                 this.counter.incrementAndGet(),
-                String.format(template, name)
+                String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
+            
         } catch (Exception e) {
             // Hide useless SQL error messages
         }
@@ -122,23 +127,24 @@ public class GreetingController {
     public Greeting greetingJson(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
+        String inject = name.replaceAll("\\\\:", ":");
 
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            name = name.replaceAll("\\\\:", ":");
-            String param = new JSONObject(name).getJSONObject("b").getJSONArray("b").getJSONObject(2).getJSONObject("a").getString("a");
-            param = param.replaceAll(":", "\\\\:");
-            String a = param.replace(":", "\\:");
+            inject = new JSONObject(inject).getJSONObject("b").getJSONArray("b").getJSONObject(2).getJSONObject("a").getString("a");
+            inject = inject.replaceAll(":", "\\\\:");
+            inject = inject.replace(":", "\\:");
             
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ a +"'");
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
             
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
                 this.counter.incrementAndGet(),
-                String.format(template, name)
+                String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
+            
         } catch (Exception e) {
             // Hide useless SQL error messages
         }
@@ -151,18 +157,20 @@ public class GreetingController {
     public Greeting greetingInsertionChar(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
-            name = name.replace(":", "\\:");
-            Query query = session.createNativeQuery("select First_Name from Student where ((\"1\" = \""+name+"\"))");
+            
+            Query query = session.createNativeQuery("select First_Name from Student where ((\"1\" = \""+ inject +"\"))");
         
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
                 this.counter.incrementAndGet(),
-                String.format(template, name)
+                String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
+            
         } catch (Exception e) {
             
             String stacktrace = ExceptionUtils.getStackTrace(e);
@@ -171,7 +179,7 @@ public class GreetingController {
             
             greeting = new Greeting(
                 this.counter.incrementAndGet(),
-                String.format(template+"#", name)
+                String.format(template+"#", inject)
                 + StringEscapeUtils.unescapeJava(stacktrace)
             );
         }
@@ -184,18 +192,20 @@ public class GreetingController {
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
-            name = name.replace(":", "\\:");
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+            
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
         
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
                 this.counter.incrementAndGet(),
-                String.format(template, name)
+                String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
+            
         } catch (Exception e) {
             // Hide useless SQL error messages
         }
@@ -207,20 +217,23 @@ public class GreetingController {
     public Greeting greetingError(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
-            name = name.replace(":", "\\:");
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+            
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
             
             query.getResultList();
+            
         } catch (Exception e) {
+            
             String stacktrace = ExceptionUtils.getStackTrace(e);
             
             LOGGER.debug(stacktrace);
             
             greeting = new Greeting(
                 this.counter.incrementAndGet(),
-                String.format(template+"#", name)
+                String.format(template+"#", inject)
                 + StringEscapeUtils.unescapeJava(stacktrace)
             );
         }
@@ -233,27 +246,31 @@ public class GreetingController {
     public Greeting greetingBlind(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            name = name.replace(":", "\\:");
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
         
             List<Object[]> results = query.getResultList();
             
             if (results.isEmpty()) {
+                
                 greeting = new Greeting(
                     this.counter.incrementAndGet(),
-                    String.format(template+"#", name)
+                    String.format(template+"#", inject)
                     + StringEscapeUtils.unescapeJava("PREFIX It's true SUFFIX")
                 );
+                
             } else {
+                
                 greeting = new Greeting(
                     this.counter.incrementAndGet(),
-                    String.format(template+"#", name)
+                    String.format(template+"#", inject)
                     + StringEscapeUtils.unescapeJava("PREFIX It's false SUFFIX")
                 );
             }
+            
         } catch (Exception e) {
             // Hide useless SQL error messages
         }
@@ -265,12 +282,14 @@ public class GreetingController {
     public Greeting greetingTime(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            name = name.replace(":", "\\:");
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+            
             query.getResultList();
+            
         } catch (Exception e) {
             // Hide useless SQL error messages
         }

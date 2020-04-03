@@ -127,7 +127,9 @@ public class MenuActionNewValue implements ActionListener {
         textarea.setText(null);
     }
 
-    private int addToList(final JTextArea textarea, int lastIndex) {
+    private int addToList(final JTextArea textarea, int index) {
+        
+        int lastIndex = index;
         
         for (String newItem: textarea.getText().split("\\n")) {
             

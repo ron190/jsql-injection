@@ -129,20 +129,23 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
 
     private Vendor initializeVendor(Vendor vendor) {
         
-        if (vendor == null) {
+        Vendor vendorFixed = vendor;
+        
+        if (vendorFixed == null) {
             
-            vendor = this.injectionModel.getMediatorVendor().getMySQL();
-            LOGGER.warn(I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
+            vendorFixed = this.injectionModel.getMediatorVendor().getMySQL();
+            LOGGER.warn(I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendorFixed +"]");
+            
         } else {
             
-            LOGGER.info(I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");
+            LOGGER.info(I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendorFixed +"]");
             
             Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
             msgHeader.put(
                 Header.URL,
                 this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()
             );
-            msgHeader.put(Header.VENDOR, vendor);
+            msgHeader.put(Header.VENDOR, vendorFixed);
             
             Request requestDatabaseIdentified = new Request();
             requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);
@@ -150,6 +153,6 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             this.injectionModel.sendToViews(requestDatabaseIdentified);
         }
         
-        return vendor;
+        return vendorFixed;
     }
 }

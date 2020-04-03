@@ -1,5 +1,5 @@
 ## Description
-**jSQL Injection** is a lightweight application used to find database information from a distant server with speed.
+**jSQL Injection** is a lightweight application used to find database information from a distant server.
 
 It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X).
 
@@ -7,10 +7,10 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 
 This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration.
 
-Each program update is tested in the cloud on Travis CI using Java version 8 through 13, and against various MySQL, PostgreSQL and H2 databases. Source code is open to pull request and to any contribution about multi-threading, devops, optimization, unit and integration tests. 
+Each program update is tested in the cloud on Travis CI using Java version 8 through 13, and against various MySQL, PostgreSQL, SQL Server and H2 databases. Source code is open to pull request and to any contribution about multi-threading, devops, optimization, unit and integration tests. 
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)<br>
-[![Java 8 to 13](https://img.shields.io/badge/Java-8%20to%2013-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)
+[![Java 8 to 15](https://img.shields.io/badge/Java-8%20to%2013-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)
 [![JUnit 5](https://img.shields.io/badge/JUnit-5-50940f)](http://junit.org)
 [![Maven 3.1](https://img.shields.io/badge/Maven-3.1-a2265a)](https://maven.apache.org/)
 [![GitHub](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
@@ -25,9 +25,9 @@ Each program update is tested in the cloud on Travis CI using Java version 8 thr
 - Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Blind and Time
 - Multiple injection structures: Standard, Zipped, Dump In One Shot
-- SQL injection expressions programming at runtime
-- JavaScript/Java tampering methods programming at runtime
-- Injection of multiple targets
+- SQL expressions programming at runtime
+- JavaScript/Java tampering programming at runtime
+- Injection of a list of targets
 - Search for administration pages
 - Creation and visualization of Web shell and SQL shell
 - Read and write files on host using injection
@@ -69,13 +69,13 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## [[Roadmap](https://github.com/ron190/jsql-injection/projects)]
-`Burp integration, Crawler, Database: Netezza, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB, Dictionnary attack, WAF detection.`
+`Burp integration, Crawler, Database: Netezza, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB, Dictionary attack, WAF detection.`
 
 ## In progress
-`Tampering.`
+`Devops, User agent, Custom rows fetching.`
 
 ## Since latest release
-`Test-bed scripts for php5 and php7 shared on Github, SOAP injection, Fix multi-params injection, Fix adding items to Scan list, Fix translation dialog`
+`Tampering.`
 
 ## Change log
 

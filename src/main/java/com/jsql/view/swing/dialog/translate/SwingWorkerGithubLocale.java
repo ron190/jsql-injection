@@ -52,7 +52,9 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
 
     private void displayDiff() {
         
-        this.propertiesRoot.entrySet().stream()
+        this.propertiesRoot
+        .entrySet()
+        .stream()
         .filter(key ->
             this.dialogTranslate.getLanguage() == Language.OT
             || this.propertiesLanguageToTranslate.size() == 0
@@ -110,6 +112,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             this.propertiesRoot.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}")));
             
             LOGGER.info("Reference language loaded from Github");
+            
         } catch (IOException e) {
             
             this.propertiesRoot.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql.properties"))))).replaceAll("{@|@}")));
@@ -125,12 +128,13 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
         
         try {
             String pageSourceLanguage = MediatorModel.model().getMediatorUtils().getConnectionUtil().getSourceLineFeed(
-                "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql_"+ this.dialogTranslate.getLanguage().getLabelLocale() +".properties"
+                "https://raw.githubusercontent.com/ron190/jsql-injection/master/src/main/resources/i18n/jsql_"+ this.dialogTranslate.getLanguage().getLabelLocale() +".properties"
             );
             
             this.propertiesLanguageToTranslate.load(new StringReader(pageSourceLanguage));
             
             LOGGER.info("Text for "+ this.dialogTranslate.getLanguage() +" translation loaded from Github");
+            
         } catch (IOException e) {
             
             this.propertiesLanguageToTranslate.load(new StringReader(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql_"+ this.dialogTranslate.getLanguage().getLabelLocale() +".properties")))));

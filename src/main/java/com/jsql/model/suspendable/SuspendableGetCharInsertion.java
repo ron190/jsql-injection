@@ -145,22 +145,24 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
 
     private String initializeCharacterInsertion(String characterInsertionByUser, String characterInsertionDetected) {
         
-        if (characterInsertionDetected == null) {
+        String characterInsertionDetectedFixed = characterInsertionDetected;
+        
+        if (characterInsertionDetectedFixed == null) {
             
             if (StringUtils.isEmpty(characterInsertionByUser) || InjectionModel.STAR.equals(characterInsertionByUser)) {
-                characterInsertionDetected = "1";
+                characterInsertionDetectedFixed = "1";
             } else {
-                characterInsertionDetected = characterInsertionByUser;
+                characterInsertionDetectedFixed = characterInsertionByUser;
             }
-            LOGGER.warn("No character insertion activates ORDER BY error, forcing to ["+ characterInsertionDetected.replace(InjectionModel.STAR, "") +"]");
+            LOGGER.warn("No character insertion activates ORDER BY error, forcing to ["+ characterInsertionDetectedFixed.replace(InjectionModel.STAR, "") +"]");
             
-        } else if (!characterInsertionByUser.replace(InjectionModel.STAR, "").equals(characterInsertionDetected)) {
+        } else if (!characterInsertionByUser.replace(InjectionModel.STAR, "").equals(characterInsertionDetectedFixed)) {
             
             String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, "");
-            LOGGER.debug("Found character insertion ["+ characterInsertionDetected +"] in place of ["+ characterInsertionByUserFormat +"] to detect error on ORDER BY");
+            LOGGER.debug("Found character insertion ["+ characterInsertionDetectedFixed +"] in place of ["+ characterInsertionByUserFormat +"] to detect error on ORDER BY");
             LOGGER.trace("Add manually the character * like ["+ characterInsertionByUserFormat +"*] to force the value ["+ characterInsertionByUserFormat +"]");
         }
         
-        return characterInsertionDetected;
+        return characterInsertionDetectedFixed;
     }
 }

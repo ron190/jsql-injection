@@ -64,18 +64,22 @@ public class ParameterUtil {
         boolean isScanning
     ) {
         try {
+            
+            String urlQueryFixed = urlQuery;
                 
-            if (!urlQuery.isEmpty() && !urlQuery.matches("(?i)^https?://.*")) {
+            if (!urlQueryFixed.isEmpty() && !urlQueryFixed.matches("(?i)^https?://.*")) {
                 
-                if (!urlQuery.matches("(?i)^\\w+://.*")) {
+                if (!urlQueryFixed.matches("(?i)^\\w+://.*")) {
+                    
                     LOGGER.info("Undefined URL protocol, forcing to [http://]");
-                    urlQuery = "http://"+ urlQuery;
+                    urlQueryFixed = "http://"+ urlQueryFixed;
+                    
                 } else {
                     throw new MalformedURLException("unknown URL protocol");
                 }
             }
                      
-            this.initializeQueryString(urlQuery);
+            this.initializeQueryString(urlQueryFixed);
             this.initializeRequest(dataRequest);
             this.initializeHeader(dataHeader);
             
@@ -89,6 +93,7 @@ public class ParameterUtil {
                 // Start the model injection process in a thread
                 new Thread(this.injectionModel::beginInjection, "ThreadBeginInjection").start();
             }
+            
         } catch (MalformedURLException e) {
             
             LOGGER.warn("Incorrect Url: "+ e, e);

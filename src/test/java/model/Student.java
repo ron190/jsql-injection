@@ -28,11 +28,6 @@ public class Student {
     private String rollNo;
     private int age;
  
-    //no-argument constructor
-    public Student() {
- 
-    }
- 
     //getter and setter methods
     public int getStudentId() {
         return this.studentId;

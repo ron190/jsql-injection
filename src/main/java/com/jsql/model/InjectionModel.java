@@ -290,6 +290,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
     private URL initializeQueryString(boolean isUsingIndex, String urlInjection, String dataInjection, URL urlObject, Map<Header, Object> msgHeader) {
         
+        URL urlObjectFixed = urlObject;
+        
         /**
          * Build the GET query string infos
          */
@@ -309,7 +311,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
             
             try {
-                urlObject = new URL(urlInjection);
+                urlObjectFixed = new URL(urlInjection);
             } catch (MalformedURLException e) {
                 LOGGER.warn("Incorrect Url: "+ e, e);
             }
@@ -322,7 +324,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
         msgHeader.put(Header.URL, urlInjection);
         
-        return urlObject;
+        return urlObjectFixed;
     }
 
     private HttpURLConnection initializeConnection(URL urlObject) throws IOException, LoginException, GSSException, PrivilegedActionException {
@@ -423,9 +425,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     
     private String buildQuery(MethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
         
-        String query;
+        String query, paramLeadFixed;
         
-        paramLead = paramLead.replace("*", "<tampering>*</tampering>");
+        paramLeadFixed = paramLead.replace("*", "<tampering>*</tampering>");
         
         // TODO simplify
         if (
@@ -436,20 +438,20 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         ) {
             
             // Just pass parameters without any transformation
-            query = paramLead;
+            query = paramLeadFixed;
             
         } else if (
             // If method is selected by user and URL does not contains injection point
             // but parameters contain an injection point
             // then replace injection point by SQL expression in those parameter
-            paramLead.contains(InjectionModel.STAR)
+            paramLeadFixed.contains(InjectionModel.STAR)
         ) {
             
-            query = this.initializeStarInjection(paramLead, isUsingIndex, sqlTrail);
+            query = this.initializeStarInjection(paramLeadFixed, isUsingIndex, sqlTrail);
             
         } else {
             
-            query = this.initializeRawInjection(paramLead, isUsingIndex, sqlTrail);
+            query = this.initializeRawInjection(paramLeadFixed, isUsingIndex, sqlTrail);
         }
         
         // TODO merge into function
@@ -463,9 +465,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         query = this.applyRfcEncoding(methodInjection, query);
         
-        query = query.trim();
-        
-        return query;
+        return query.trim();
     }
 
     private String initializeRawInjection(String paramLead, boolean isUsingIndex, String sqlTrail) {
@@ -539,61 +539,65 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
     private String clean(MethodInjection methodInjection, String query) {
         
+        String queryFixed = query;
+        
         // Remove SQL comments
-        query = query.replaceAll("(?s)/\\*.*?\\*/", "");
+        queryFixed = queryFixed.replaceAll("(?s)/\\*.*?\\*/", "");
         
         if (
             methodInjection == this.mediatorMethodInjection.getRequest()
             && this.mediatorUtils.getParameterUtil().isRequestSoap()
         ) {
             
-            query = query.replace("%2b", "+");
+            queryFixed = queryFixed.replace("%2b", "+");
             
         } else {
             
             // Remove spaces after a word
-            query = query.replaceAll("([^\\s\\w])(\\s+)", "$1");
+            queryFixed = queryFixed.replaceAll("([^\\s\\w])(\\s+)", "$1");
             
             // Remove spaces before a word
-            query = query.replaceAll("(\\s+)([^\\s\\w])", "$2");
+            queryFixed = queryFixed.replaceAll("(\\s+)([^\\s\\w])", "$2");
             
             // Replace spaces
-            query = query.replaceAll("\\s+", "+");
+            queryFixed = queryFixed.replaceAll("\\s+", "+");
         }
         
-        return query;
+        return queryFixed;
     }
 
     private String applyRfcEncoding(MethodInjection methodInjection, String query) {
         
+        String queryFixed = query;
+        
         if (methodInjection != this.mediatorMethodInjection.getHeader()) {
             
             // URL encode each character because no query parameter context
-            query = query.replace("\"", "%22");
-            query = query.replace("'", "%27");
-            query = query.replace("(", "%28");
-            query = query.replace(")", "%29");
-            query = query.replace("{", "%7B");
-            query = query.replace("[", "%5B");
-            query = query.replace("|", "%7C");
-            query = query.replace("`", "%60");
-            query = query.replace("]", "%5D");
-            query = query.replace("}", "%7D");
-            query = query.replace(">", "%3E");
-            query = query.replace("<", "%3C");
-            query = query.replace("?", "%3F");
-            query = query.replace("_", "%5F");
-            query = query.replace(" ", "+");
+            queryFixed = queryFixed.replace("\"", "%22");
+            queryFixed = queryFixed.replace("'", "%27");
+            queryFixed = queryFixed.replace("(", "%28");
+            queryFixed = queryFixed.replace(")", "%29");
+            queryFixed = queryFixed.replace("{", "%7B");
+            queryFixed = queryFixed.replace("[", "%5B");
+            queryFixed = queryFixed.replace("|", "%7C");
+            queryFixed = queryFixed.replace("`", "%60");
+            queryFixed = queryFixed.replace("]", "%5D");
+            queryFixed = queryFixed.replace("}", "%7D");
+            queryFixed = queryFixed.replace(">", "%3E");
+            queryFixed = queryFixed.replace("<", "%3C");
+            queryFixed = queryFixed.replace("?", "%3F");
+            queryFixed = queryFixed.replace("_", "%5F");
+            queryFixed = queryFixed.replace(" ", "+");
             
         } else {
             
             // For cookies in Spring
             // Replace spaces
-            query = query.replace("+", "%20");
-            query = query.replace(",", "%2C");
+            queryFixed = queryFixed.replace("+", "%20");
+            queryFixed = queryFixed.replace(",", "%2C");
         }
         
-        return query;
+        return queryFixed;
     }
     
     /**

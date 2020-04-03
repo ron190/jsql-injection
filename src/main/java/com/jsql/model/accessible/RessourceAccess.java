@@ -173,23 +173,28 @@ public class RessourceAccess {
 
     private int callAdminPage(CompletionService<CallableHttpHead> taskCompletionService, int nbAdminPagesFound) {
         
+        int nbAdminPagesFoundFixed = nbAdminPagesFound;
+        
         try {
             CallableHttpHead currentCallable = taskCompletionService.take().get();
+            
             if (currentCallable.isHttpResponseOk()) {
+                
                 Request request = new Request();
                 request.setMessage(Interaction.CREATE_ADMIN_PAGE_TAB);
                 request.setParameters(currentCallable.getUrl());
                 this.injectionModel.sendToViews(request);
 
-                nbAdminPagesFound++;
+                nbAdminPagesFoundFixed++;
                 LOGGER.debug("Found admin page: "+ currentCallable.getUrl());
             }
+            
         } catch (InterruptedException | ExecutionException e) {
             LOGGER.error("Interruption while checking Admin pages", e);
             Thread.currentThread().interrupt();
         }
         
-        return nbAdminPagesFound;
+        return nbAdminPagesFoundFixed;
     }
 
     private void logSearchAdminPage(int nbAdminPagesFound, int submittedTasks, int tasksHandled) {
@@ -256,7 +261,9 @@ public class RessourceAccess {
             urlShell = urlShell.replaceAll("/*$", "") +"/";
         }
         
-        String url = urlShell;
+        String urlShellFixed = urlShell;
+        
+        String url = urlShellFixed;
         if ("".equals(url)) {
             url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
         }
@@ -308,7 +315,7 @@ public class RessourceAccess {
                         urlSuccess = currentCallable.getUrl();
 
                         if (
-                            !urlShell.isEmpty() && urlSuccess.replace(this.filenameWebshell, "").equals(urlShell)
+                            !urlShellFixed.isEmpty() && urlSuccess.replace(this.filenameWebshell, "").equals(urlShellFixed)
                             || urlSuccess.replace(this.filenameWebshell, "").equals(urlProtocol + urlWithoutFileName)
                         ) {
                             LOGGER.debug("Connection to payload found at expected location \""+ urlSuccess +"\"");
@@ -470,11 +477,13 @@ public class RessourceAccess {
             throw new JSqlException("injected payload does not match source", e);
         }
         
-        if (!urlShell.isEmpty()) {
-            urlShell = urlShell.replaceAll("/*$", "") +"/";
+        String urlShellFixed = urlShell;
+        
+        if (!urlShellFixed.isEmpty()) {
+            urlShellFixed = urlShellFixed.replaceAll("/*$", "") +"/";
         }
         
-        String url = urlShell;
+        String url = urlShellFixed;
         if ("".equals(url)) {
             url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
         }
@@ -525,7 +534,7 @@ public class RessourceAccess {
                         urlSuccess = currentCallable.getUrl();
 
                         if (
-                            !urlShell.isEmpty() && urlSuccess.replace(this.filenameSqlshell, "").equals(urlShell)
+                            !urlShellFixed.isEmpty() && urlSuccess.replace(this.filenameSqlshell, "").equals(urlShellFixed)
                             || urlSuccess.replace(this.filenameSqlshell, "").equals(urlProtocol + urlWithoutFileName)
                         ) {
                             LOGGER.debug("Connection to payload found at expected location \""+ urlSuccess +"\"");
