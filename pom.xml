@@ -130,32 +130,7 @@
                     <includes>
                         <include>**/*Spock</include>
                         <include>**/*TestSuite</include>
-                          
-<!--                         <include>MySQLBlindTestSuite</include> -->
-<!--                         <include>MySQLTimeTestSuite</include>  -->
-<!--                         <include>MySQLNormalTestSuite</include> -->
-<!--                         <include>MySQLErrorTestSuite</include> -->
-
-<!--                         <include>PostgresBlindGetTestSuite</include> -->
-<!--                         <include>PostgresTimeGetTestSuite</include> -->
-<!--                         <include>PostgresNormalGetTestSuite</include> -->
-<!--                         <include>PostgresErrorTestSuite</include> -->
-                        
-<!--                         <include>H2NormalGetTestSuite</include> -->
-                        
-<!--                         <include>PostTestSuite</include> -->
-<!--                         <include>HeaderTestSuite</include> -->
-<!--                         <include>CookieTestSuite</include> -->
-<!--                         <include>TamperingTestSuite</include> -->
-
-<!--                         <include>CheckAllTestSuite</include> -->
-<!--                         <include>JsonTestSuite</include> -->
-<!--                         <include>StarTestSuite</include> -->
-                        
-<!--                         <include>SQLServerBlindGetTestSuite</include> -->
-<!--                         <include>SQLServerNormalGetTestSuite</include> -->
                     </includes>        
-
                     <parallel>classes</parallel>
                     <threadCount>3</threadCount>
                     <threadCountClasses>2</threadCountClasses>

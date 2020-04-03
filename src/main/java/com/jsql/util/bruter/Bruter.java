@@ -179,12 +179,12 @@ public class Bruter {
         this.endtime = endtime;
     }
 
-    public void setMaxLength(int i) {
-        this.maxLength = i;
+    public void setMaxLength(int maxLength) {
+        this.maxLength = maxLength;
     }
 
-    public void setMinLength(int i) {
-        this.minLength = i;
+    public void setMinLength(int minLength) {
+        this.minLength = minLength;
     }
 
     public boolean isFound() {
@@ -215,8 +215,8 @@ public class Bruter {
         return this.minLength;
     }
 
-    public void setIsDone(Boolean b) {
-        this.done = b;
+    public void setIsDone(Boolean done) {
+        this.done = done;
     }
 
     public boolean isDone() {

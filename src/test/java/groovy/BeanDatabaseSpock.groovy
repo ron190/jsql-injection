@@ -23,8 +23,8 @@ class BeanDatabaseSpock extends Specification {
             column.getLabelCount() == "column"
         
         where:
-            database = new Database("database", "5"); 
-            table = new Table("table", "10", database); 
-            column = new Column("column", table); 
+            database = new Database("database", "5")
+            table = new Table("table", "10", database)
+            column = new Column("column", table)
     }
 }
