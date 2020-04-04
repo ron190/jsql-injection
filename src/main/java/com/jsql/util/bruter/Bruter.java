@@ -110,35 +110,12 @@ public class Bruter {
         int hours = 0;
         int days = 0;
         
-        if (seconds > 60) {
-            
-            minutes = seconds / 60;
-            
-            if (minutes * 60 > seconds) {
-                minutes = minutes - 1;
-            }
-
-            if (minutes > 60) {
-                
-                hours = minutes / 60;
-                if (hours * 60 > minutes) {
-                    hours = hours - 1;
-                }
-            }
-
-            if (hours > 24) {
-                
-                days = hours / 24;
-                if (days * 24 > hours) {
-                    days = days - 1;
-                }
-            }
-            
-            seconds -= minutes * 60;
-            minutes -= hours * 60;
-            hours -= days * 24;
-            days -= hours * 24;
-        }
+        minutes = seconds / 60;
+        seconds = seconds % 60;
+        hours = minutes / 60;
+        minutes = minutes % 60;
+        days = hours / 24;
+        hours = hours % 24;
         
         return "Time elapsed: "+ days +"days "+ hours +"h "+ minutes +"min "+ seconds +"s";
     }

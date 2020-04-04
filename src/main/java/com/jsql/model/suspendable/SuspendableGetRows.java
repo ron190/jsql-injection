@@ -399,6 +399,4 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
 
         return slidingWindowAllRows.toString();
     }
-    
 }
-

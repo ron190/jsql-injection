@@ -37,11 +37,14 @@ public class JsonUtil {
             // Test for JSON Object
             new JSONObject(param);
             isJson = true;
+            
         } catch (JSONException exceptionJSONObject) {
+            
             try {
                 // Test for JSON Array
                 new JSONArray(param);
                 isJson = true;
+                
             } catch (JSONException exceptionJSONArray) {
                 // Not a JSON entity
             }
@@ -58,11 +61,15 @@ public class JsonUtil {
         try {
             // Test for JSON Object
             jsonEntity = new JSONObject(param);
+            
         } catch (JSONException exceptionJSONObject) {
+            
             try {
                 // Test for JSON Array
                 jsonEntity = new JSONArray(param);
+                
             } catch (JSONException exceptionJSONArray) {
+                
                 // Not a JSON entity
                 jsonEntity = new Object();
             }

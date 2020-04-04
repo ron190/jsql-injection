@@ -52,6 +52,7 @@ public class SoapUtil {
                 LOGGER.trace("Parsing SOAP from Request...");
                 
                 hasFoundInjection = this.injectTextNodes(doc, doc.getDocumentElement());
+                
             } catch (Exception e) {
                 LOGGER.trace("SOAP not detected");
             }
@@ -151,6 +152,7 @@ public class SoapUtil {
             StringWriter writer = new StringWriter();
             transformer.transform(new DOMSource(doc), new StreamResult(writer));
             output = writer.getBuffer().toString();
+            
         } catch (TransformerException e) {
             // ignore
         }

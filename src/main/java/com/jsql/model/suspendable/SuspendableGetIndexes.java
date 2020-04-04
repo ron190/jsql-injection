@@ -94,6 +94,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
             if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
                 taskExecutor.shutdownNow();
             }
+            
         } catch (InterruptedException | ExecutionException e) {
             
             LOGGER.error("Interruption while searching for injection indexes", e);

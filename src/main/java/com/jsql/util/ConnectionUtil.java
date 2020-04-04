@@ -80,6 +80,7 @@ public class ConnectionUtil {
     private InjectionModel injectionModel;
     
     public ConnectionUtil(InjectionModel injectionModel) {
+        
         this.injectionModel = injectionModel;
     }
 
@@ -104,6 +105,7 @@ public class ConnectionUtil {
         HttpURLConnection connection = null;
         try {
             if (this.injectionModel.getMediatorUtils().getAuthenticationUtil().isKerberos()) {
+                
                 String loginKerberos =
                     Pattern
                     .compile("(?s)\\{.*")
@@ -121,7 +123,9 @@ public class ConnectionUtil {
                 
                 SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(loginKerberos);
                 connection = spnego.connect(new URL(this.getUrlByUser()));
+                
             } else {
+                
                 connection = (HttpURLConnection) new URL(
                     this.getUrlByUser()
                     // Ignore injection point during the test
@@ -141,6 +145,7 @@ public class ConnectionUtil {
             
             // Add headers if exists (Authorization:Basic, etc)
             for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()) {
+                
                 HeaderUtil.sanitizeHeaders(connection, header);
             }
 
@@ -153,20 +158,6 @@ public class ConnectionUtil {
             String message = Optional.ofNullable(e.getMessage()).orElse("");
             throw new InjectionFailureException("Connection failed: "+ message.replace(e.getClass().getName() +": ", ""), e);
         }
-    }
-    
-    /**
-     * Call an URL and return the source page.
-     * @param url to call
-     * @return the source page of the URL
-     * @throws IOException when the reading of source page fails
-     */
-    public String getSourceLineFeed(String url) throws IOException {
-        return this.getSource(url, true);
-    }
-    
-    public String getSource(String url) throws IOException {
-        return this.getSource(url, false);
     }
     
     public String getSource(String url, boolean lineFeed) throws IOException {
@@ -248,6 +239,20 @@ public class ConnectionUtil {
         }
         
         return pageSource.toString();
+    }
+    
+    /**
+     * Call an URL and return the source page.
+     * @param url to call
+     * @return the source page of the URL
+     * @throws IOException when the reading of source page fails
+     */
+    public String getSourceLineFeed(String url) throws IOException {
+        return this.getSource(url, true);
+    }
+    
+    public String getSource(String url) throws IOException {
+        return this.getSource(url, false);
     }
     
     /**

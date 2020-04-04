@@ -13,7 +13,7 @@ import com.jsql.model.InjectionModel;
  * Manage authentication protocols Basic, Digest, NTLM and Kerberos.
  * Java class Authenticator processes Basic, Digest and NTLM, library spnego
  * processes kerberos. Library jcifs eases the configuration by providing
- * a way to define authent directly in the URL and it's also compatible
+ * a way to define authentication directly in the URL and it's also compatible
  * with protocol Negotiate.
  */
 public class AuthenticationUtil {
@@ -26,22 +26,22 @@ public class AuthenticationUtil {
     private static final String STR_JAVA_PROTO_HDL_PKGS = "java.protocol.handler.pkgs";
     
     /**
-     * True if standard authent Basic, Digest, NTLM is activated.
+     * True if standard authentication Basic, Digest, NTLM is activated.
      */
     private boolean isAuthentication = false;
 
     /**
-     * Login for standard authent.
+     * Login for standard authentication.
      */
     private String usernameAuthentication;
 
     /**
-     * Pass for standard authent.
+     * Pass for standard authentication.
      */
     private String passwordAuthentication;
     
     /**
-     * True if kerberos authent is activated.
+     * True if kerberos authentication is activated.
      */
     private boolean isKerberos = false;
 
@@ -65,10 +65,10 @@ public class AuthenticationUtil {
     /**
      * Get new authentication settings from the view, update the utility class,
      * persist settings to the JVM and apply changes to the system.
-     * @param isAuthentication true if non-kerberos authent is activated
-     * @param usernameAuthentication login for standard authent
-     * @param passwordAuthentication pass for standard authent
-     * @param isKerberos true if krb authent is activated
+     * @param isAuthentication true if non-kerberos authentication is activated
+     * @param usernameAuthentication login for standard authentication
+     * @param passwordAuthentication pass for standard authentication
+     * @param isKerberos true if krb authentication is activated
      * @param kerberosKrb5Conf path to the file krb5
      * @param kerberosLoginConf path to the file login
      */
@@ -203,11 +203,13 @@ public class AuthenticationUtil {
         if (this.isKerberos) {
             
             if (System.getProperty(STR_JAVA_PROTO_HDL_PKGS) != null) {
+                
                 System.setProperty(
                     STR_JAVA_PROTO_HDL_PKGS,
-                    System.getProperty(STR_JAVA_PROTO_HDL_PKGS)
-                        .replace("|jcifs", "")
-                        .replace("jcifs", "")
+                    System
+                    .getProperty(STR_JAVA_PROTO_HDL_PKGS)
+                    .replace("|jcifs", "")
+                    .replace("jcifs", "")
                 );
             }
             

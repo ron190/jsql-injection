@@ -128,11 +128,13 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         // TODO make injection pojo for all fields
         this.mediatorStrategy.getNormal().setVisibleIndex(null);
+        
         this.indexesInUrl = "";
         
         this.mediatorUtils.getConnectionUtil().setTokenCsrf(null);
         
         this.setIsStoppedByUser(false);
+        
         this.shouldErasePreviousInjection = false;
         
         this.mediatorStrategy.setStrategy(null);
@@ -221,7 +223,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         urlInjection = this.mediatorStrategy.buildURL(urlInjection, isUsingIndex, dataInjection);
         
-        // TODO merge into function
+        // TODO merge into function, duplicate
         urlInjection = urlInjection
             .trim()
             // Remove comments
@@ -298,7 +300,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         // TODO Extract in method
         if (!this.mediatorUtils.getParameterUtil().getListQueryString().isEmpty()) {
             
-            // URL without querystring like Request and Header can receive
+            // URL without query string like Request and Header can receive
             // new params from <form> parsing, in that case add the '?' to URL
             if (!urlInjection.contains("?")) {
                 urlInjection += "?";
@@ -337,10 +339,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             String kerberosConfiguration =
                 Pattern
-                    .compile("(?s)\\{.*")
-                    .matcher(StringUtils.join(Files.readAllLines(Paths.get(this.mediatorUtils.getAuthenticationUtil().getPathKerberosLogin()), Charset.defaultCharset()), ""))
-                    .replaceAll("")
-                    .trim();
+                .compile("(?s)\\{.*")
+                .matcher(StringUtils.join(Files.readAllLines(Paths.get(this.mediatorUtils.getAuthenticationUtil().getPathKerberosLogin()), Charset.defaultCharset()), ""))
+                .replaceAll("")
+                .trim();
             
             SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(kerberosConfiguration);
             connection = spnego.connect(urlObject);
@@ -398,10 +400,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
    
                 DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
                 if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
+                    
                     dataOut.writeBytes(this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey() +"="+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue() +"&");
                 }
                 
                 if (this.mediatorUtils.getConnectionUtil().getTypeRequest().matches("PUT|POST")) {
+                    
                     if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
                         dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
                     } else {

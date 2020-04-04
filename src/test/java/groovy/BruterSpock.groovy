@@ -109,6 +109,33 @@ class BruterSpock extends Specification {
             bruter.getPerSecond() > 0
     }
     
+    def 'Check elapsed time format'() {
+        
+        when:
+            bruter.starttime = 0000000000000000d;
+            bruter.endtime =   0003600000000000d;
+        then:
+            bruter.calculateTimeElapsed() =~ /Time elapsed: 0days 1h 0min 0s/
+        
+        when:
+            bruter.starttime = 0000000000000000d;
+            bruter.endtime =   0000060000000000d;
+        then:
+            bruter.calculateTimeElapsed() =~ /Time elapsed: 0days 0h 1min 0s/
+        
+        when:
+            bruter.starttime = 0000000000000000d;
+            bruter.endtime =   0093784000000000d;
+        then:
+            bruter.calculateTimeElapsed() =~ /Time elapsed: 1days 2h 3min 4s/
+        
+        when:
+            bruter.starttime = 0000000000000000d;
+            bruter.endtime =   0090061000000000d;
+        then:
+            bruter.calculateTimeElapsed() =~ /Time elapsed: 1days 1h 1min 1s/
+    }
+    
     def setup() {
         
         bruter = new HashBruter()

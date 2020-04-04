@@ -69,6 +69,7 @@ public class TamperingUtil {
         
         try {
             if (jsTampering == null || jsTampering.trim().isEmpty()) {
+                
                 throw new ScriptException("Tampering context is empty");
             }
             
@@ -110,22 +111,27 @@ public class TamperingUtil {
         
         // Empty when checking character insertion
         if (StringUtils.isEmpty(sqlQuery)) {
+            
             return StringUtils.EMPTY;
         }
 
         if (this.isHexToChar) {
+            
             sqlQuery = eval(sqlQuery, TamperingType.HEX_TO_CHAR.instance().getJavascript());
         }
 
         if (this.isFunctionComment) {
+            
             sqlQuery = eval(sqlQuery, TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getJavascript());
         }
 
         if (this.isVersionComment) {
+            
             sqlQuery = eval(sqlQuery, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getJavascript());
         }
         
         if (this.isEqualToLike) {
+            
             sqlQuery = eval(sqlQuery, TamperingType.EQUAL_TO_LIKE.instance().getJavascript());
         }
         
@@ -144,14 +150,17 @@ public class TamperingUtil {
         }
         
         if (this.isRandomCase) {
+            
             sqlQuery = eval(sqlQuery, TamperingType.RANDOM_CASE.instance().getJavascript());
         }
         
         if (this.isEval) {
+            
             sqlQuery = eval(sqlQuery, this.customTamper);
         }
         
         if (this.isBase64) {
+            
             sqlQuery = eval(sqlQuery, TamperingType.BASE64.instance().getJavascript());
         }
         
@@ -159,6 +168,7 @@ public class TamperingUtil {
         
         // Include character insertion at the beginning of query
         if (this.isQuoteToUtf8) {
+            
             sqlQuery = eval(sqlQuery, TamperingType.QUOTE_TO_UTF8.instance().getJavascript());
         }
         

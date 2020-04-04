@@ -30,6 +30,14 @@ public abstract class AbstractSuspendable<T> {
     public AbstractSuspendable(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
+    
+    /**
+     * The pausable/stoppable action.
+     * @param args
+     * @return
+     * @throws JSqlException
+     */
+    public abstract T run(Object... args) throws JSqlException;
 
     /**
      * Thread's states Pause and Stop are processed by this method.<br>
@@ -92,13 +100,5 @@ public abstract class AbstractSuspendable<T> {
     public synchronized void resume() {
         this.notifyAll();
     }
-    
-    /**
-     * The pausable/stoppable action.
-     * @param args
-     * @return
-     * @throws JSqlException
-     */
-    public abstract T run(Object... args) throws JSqlException;
     
 }
