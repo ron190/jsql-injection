@@ -42,5 +42,4 @@ public class Strategy implements Serializable {
     public void setError(Error error) {
         this.error = error;
     }
-
 }

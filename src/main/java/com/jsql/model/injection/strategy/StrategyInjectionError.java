@@ -34,6 +34,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     private int indexMethod = 0;
 
     public StrategyInjectionError(InjectionModel injectionModel) {
+        
         super(injectionModel);
     }
 
@@ -48,6 +49,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         Configuration configurationYaml = strategyYaml.getConfiguration();
         
         if (strategyYaml.getError() == null) {
+            
             LOGGER.info("No Error strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
             return;
         }
@@ -64,25 +66,27 @@ public class StrategyInjectionError extends AbstractStrategy {
             LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING") +" "+ errorMethod.getName() +"...");
         
             String performanceSourcePage = this.injectionModel.injectWithoutIndex(
-                " "+ VendorYaml.replaceTags(
-                    errorMethod.getQuery()
-                    .replace("${WINDOW}", configurationYaml.getSlidingWindow())
-                    .replace("${INJECTION}", configurationYaml.getFailsafe().replace("${INDICE}","0"))
-                    .replace("${INDEX}", "1")
-                    .replace("${CAPACITY}", Integer.toString(errorMethod.getCapacity()))
+                " "
+                + VendorYaml.replaceTags(
+                    errorMethod
+                    .getQuery()
+                    .replace("${window}", configurationYaml.getSlidingWindow())
+                    .replace("${injection}", configurationYaml.getFailsafe().replace("${indice}","0"))
+                    .replace("${index}", "1")
+                    .replace("${capacity}", Integer.toString(errorMethod.getCapacity()))
                 )
             );
     
             if (performanceSourcePage.matches(
                 VendorYaml.replaceTags(
-                    "(?s).*"+
-                    configurationYaml.getFailsafe()
-                    .replace("${INDICE}","0")
+                    "(?s).*"
+                    + configurationYaml.getFailsafe()
+                    .replace("${indice}","0")
                     .replace("0%2b1", "1")
                     // TODO postgres
                     .replace("(133707331)::text", "133707331")
 //                    .replace("(cast(133707331 as text))", "133707331")
-                    +".*"
+                    + ".*"
                 )
             )) {
                 methodIsApplicable = true;
@@ -92,27 +96,35 @@ public class StrategyInjectionError extends AbstractStrategy {
             if (methodIsApplicable) {
                 
                 String performanceErrorSourcePage = this.injectionModel.injectWithoutIndex(
-                    " "+ VendorYaml.replaceTags(
+                    " "
+                    + VendorYaml.replaceTags(
                         errorMethod.getQuery()
-                        .replace("${WINDOW}", configurationYaml.getSlidingWindow())
-                        .replace("${INJECTION}", configurationYaml.getCalibrator())
-                        .replace("${INDEX}", "1")
-                        .replace("${CAPACITY}", Integer.toString(errorMethod.getCapacity()))
+                        .replace("${window}", configurationYaml.getSlidingWindow())
+                        .replace("${injection}", configurationYaml.getCalibrator())
+                        .replace("${index}", "1")
+                        .replace("${capacity}", Integer.toString(errorMethod.getCapacity()))
                     )
                 );
                 
                 Matcher regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(#+)").matcher(performanceErrorSourcePage);
+                
                 if (regexSearch.find()) {
+                    
                     regexSearch.reset();
                     while (regexSearch.find()) {
+                        
                         if (errorCapacity < regexSearch.group(1).length()) {
                             this.indexMethod = indexErrorMethod;
                         }
+                        
                         errorCapacity = regexSearch.group(1).length();
                         this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacity);
                     }
+                    
                     LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" "+ errorMethod.getName() +" using "+ Integer.toString(errorCapacity) +" characters");
+                    
                 } else {
+                    
                     LOGGER.warn(I18nUtil.valueByKey("LOG_VULNERABLE") +" "+ errorMethod.getName() +" but injectable size is incorrect");
                     methodIsApplicable = false;
                 }
@@ -150,9 +162,11 @@ public class StrategyInjectionError extends AbstractStrategy {
     public void activateStrategy() {
         
         LOGGER.info(
-            I18nUtil.valueByKey("LOG_USING_STRATEGY") +" ["
-                + this.getName() +" "
-                + this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(this.indexMethod).getName()
+            I18nUtil.valueByKey("LOG_USING_STRATEGY") 
+            +" ["
+            + this.getName() 
+            + " "
+            + this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(this.indexMethod).getName()
             +"]"
         );
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());
@@ -180,5 +194,4 @@ public class StrategyInjectionError extends AbstractStrategy {
     public void setIndexMethod(int i) {
         this.indexMethod = i;
     }
-    
 }

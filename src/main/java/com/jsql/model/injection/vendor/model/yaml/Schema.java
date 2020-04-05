@@ -51,5 +51,4 @@ public class Schema implements Serializable {
     public void setLimit(String limit) {
         this.limit = limit;
     }
-
 }

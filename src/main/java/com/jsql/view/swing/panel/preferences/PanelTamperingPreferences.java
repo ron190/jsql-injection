@@ -13,8 +13,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.util.tampering.TamperingType;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.sql.lexer.HighlightedDocument;
@@ -212,11 +212,11 @@ public class PanelTamperingPreferences extends JPanel {
             @Override
             public void process() {
                 
-                MediatorModel.model().getMediatorUtils().getTamperingUtil().setCustomTamper(textPaneEval.getText());
+                MediatorGui.model().getMediatorUtils().getTamperingUtil().setCustomTamper(textPaneEval.getText());
             }
         });
         
-        textPaneEval.setText(MediatorModel.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
+        textPaneEval.setText(MediatorGui.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
         
         GroupLayout groupLayoutTampering = new GroupLayout(this);
         this.setLayout(groupLayoutTampering);

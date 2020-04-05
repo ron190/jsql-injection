@@ -2,9 +2,9 @@ package com.jsql.view.swing.list;
 
 import java.util.NoSuchElementException;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.vendor.model.Vendor;
+import com.jsql.view.swing.MediatorGui;
 
 public class BeanInjection {
     
@@ -18,8 +18,8 @@ public class BeanInjection {
     public BeanInjection(String url) {
         
         this.url = url;
-        this.injectionType = MediatorModel.model().getMediatorMethodInjection().getQuery();
-        this.vendor = MediatorModel.model().getMediatorVendor().getAuto();
+        this.injectionType = MediatorGui.model().getMediatorMethodInjection().getQuery();
+        this.vendor = MediatorGui.model().getMediatorVendor().getAuto();
         this.requestType = "POST";
     }
     
@@ -31,15 +31,15 @@ public class BeanInjection {
         this.header = header;
         
         try {
-            this.injectionType = MediatorModel.model().getMediatorMethodInjection().getMethods().stream().filter(m -> m.name().equalsIgnoreCase(injectionType)).findAny().orElse(MediatorModel.model().getMediatorMethodInjection().getQuery());
+            this.injectionType = MediatorGui.model().getMediatorMethodInjection().getMethods().stream().filter(m -> m.name().equalsIgnoreCase(injectionType)).findAny().orElse(MediatorGui.model().getMediatorMethodInjection().getQuery());
         } catch (IllegalArgumentException | NoSuchElementException e) {
-            this.injectionType = MediatorModel.model().getMediatorMethodInjection().getQuery();
+            this.injectionType = MediatorGui.model().getMediatorMethodInjection().getQuery();
         }
         
         try {
-            this.vendor = MediatorModel.model().getMediatorVendor().getVendors().stream().filter(m -> m.toString().equals(vendor)).findAny().orElse(MediatorModel.model().getMediatorVendor().getAuto());
+            this.vendor = MediatorGui.model().getMediatorVendor().getVendors().stream().filter(m -> m.toString().equals(vendor)).findAny().orElse(MediatorGui.model().getMediatorVendor().getAuto());
         } catch (IllegalArgumentException | NoSuchElementException e) {
-            this.vendor = MediatorModel.model().getMediatorVendor().getAuto();
+            this.vendor = MediatorGui.model().getMediatorVendor().getAuto();
         }
         
         this.requestType = requestType.isEmpty() ? "POST" : requestType;

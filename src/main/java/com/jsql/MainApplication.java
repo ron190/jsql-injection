@@ -11,10 +11,9 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.util.CertificateUtil;
-import com.jsql.util.I18nUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
+import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.JFrameView;
 import com.jsql.view.swing.MediatorGui;
 
@@ -24,18 +23,20 @@ import com.jsql.view.swing.MediatorGui;
  */
 public class MainApplication {
     
-    static InjectionModel injectionModel;
+    /**
+     * Using default log4j.properties from root /
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
+    
+    private static InjectionModel injectionModel;
+    
     static {
+        
         injectionModel = new InjectionModel();
         injectionModel.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();
         
         MainApplication.apply4K();
     }
-    
-    /**
-     * Using default log4j.properties from root /
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
     
     // Keep referenced class for Maven shade minimizeJar
     @SuppressWarnings("unused")
@@ -53,7 +54,7 @@ public class MainApplication {
     public static void main(String[] args) {
         
         // Initialize MVC
-        MediatorModel.register(injectionModel);
+        MediatorGui.register(injectionModel);
         
         // Configure global environment settings
         CertificateUtil.ignoreCertificationChain();
@@ -66,10 +67,14 @@ public class MainApplication {
             MediatorGui.register(view);
             
             injectionModel.addObserver(view.getObserver());
+            
         } catch (HeadlessException e) {
+            
             LOGGER.error("HeadlessException, command line execution in jSQL not supported yet: "+ e, e);
             return;
+            
         } catch (AWTError e) {
+            
             // Fix #22668: Assistive Technology not found
             LOGGER.error("Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: "+ e, e);
             return;
@@ -83,6 +88,7 @@ public class MainApplication {
         }
         
         if (injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingUpdate()) {
+            
             injectionModel.getMediatorUtils().getGitUtil().checkUpdate(ShowOnConsole.NO);
         }
         
@@ -90,20 +96,23 @@ public class MainApplication {
         injectionModel.getMediatorUtils().getGitUtil().showNews();
         
         MainApplication.check4K();
-        
     }
     
     private static void apply4K() {
+        
         if (injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {
+            
             System.setProperty("sun.java2d.uiScale", "2.5");
         }
     }
     
     private static void check4K() {
+        
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) screenSize.getWidth();
         
         if (width >= 3840 && !injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {
+            
             LOGGER.warn("Your screen seems compatible with 4K resolution, please activate high-definition mode in Preferences");
         }
     }

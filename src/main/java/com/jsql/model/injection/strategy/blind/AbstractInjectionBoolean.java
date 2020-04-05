@@ -60,6 +60,23 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         this.falseTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListFalseTest();
         this.trueTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
     }
+    
+    public abstract T getCallable(String string, int indexCharacter, boolean isTestingLength);
+    
+    public abstract T getCallable(String string, int indexCharacter, int bit);
+    
+    /**
+     * Start one test to verify if boolean works.
+     * @return true if boolean method is confirmed
+     * @throws InjectionFailureException
+     */
+    public abstract boolean isInjectable() throws StoppedByUserSlidingException;
+    
+    /**
+     * Display a message to explain how is blid/time working.
+     * @return
+     */
+    public abstract String getInfoMessage();
 
     /**
      * Process the whole boolean injection, character by character, bit by bit.
@@ -69,16 +86,15 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
      * @throws StoppedByUserSlidingException
      */
     public String inject(String inj, AbstractSuspendable<String> suspendable) throws StoppedByUserSlidingException {
-        /**
-         * List of the characters, each one represented by an array of 8 bits
-         * e.g SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
-         */
+
+        // List of the characters, each one represented by an array of 8 bits
+        // e.g SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
         List<char[]> bytes = new ArrayList<>();
         
         // Cursor for current character position
         int indexCharacter = 0;
 
-        // Parallelize the URL requests
+        // Concurrent URL requests
         ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableAbstractBoolean"));
         CompletionService<T> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
@@ -97,6 +113,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
             
             // TODO Coverage with pausable multithreading
             if (suspendable.isSuspended()) {
+                
                 taskExecutor.shutdown();
 
                 // Await for termination
@@ -104,12 +121,15 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 
                 try {
                     isTerminated = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);
+                    
                 } catch (InterruptedException e) {
+                    
                     LOGGER.error(e.getMessage(), e);
                     Thread.currentThread().interrupt();
                 }
                 
                 if (!isTerminated) {
+                    
                     // awaitTermination timed out, interrupt everything
                     taskExecutor.shutdownNow();
                 }
@@ -117,10 +137,12 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 // Get current progress and display
                 StringBuilder result = new StringBuilder();
                 for (char[] c: bytes) {
+                    
                     try {
                         int charCode = Integer.parseInt(new String(c), 2);
                         String str = Character.toString((char) charCode);
                         result.append(str);
+                        
                     } catch (NumberFormatException err) {
                         // Byte string not fully constructed : 0x1x010x
                         // Ignore
@@ -133,8 +155,10 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
             try {
                 // The URL call is done, bring back the finished task
                 T currentCallable = taskCompletionService.take().get();
+                
                 // One task has just ended, decrease active tasks by 1
                 submittedTasks--;
+                
                 /*
                  * If SQL result is not empty, then add a new unknown character,
                  * and define a new array of 8 undefined bit.
@@ -144,24 +168,29 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 if (currentCallable.isTestingLength()) {
                     
                     if (currentCallable.isTrue()) {
+                        
                         indexCharacter++;
+                        
                         // New undefined bits of the next character
                         bytes.add(new char[]{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'});
+                        
                         // Test if it's the end of the line
                         taskCompletionService.submit(this.getCallable(inj, indexCharacter, IS_TESTING_LENGTH));
+                        
                         // Test the 8 bits for the next character, save its position and current bit for later
                         for (int bit: new int[]{1, 2, 4, 8, 16, 32, 64, 128}) {
                             taskCompletionService.submit(this.getCallable(inj, indexCharacter, bit));
                         }
+                        
                         // Add all 9 new tasks
                         submittedTasks += 9;
                     }
-                /*
-                 * Process the url that has just checked a bit,
-                 * Retrieve the bits for that character, and
-                 * change the bit from undefined to 0 or 1
-                 */
                 } else {
+                    /*
+                     * Process the url that has just checked a bit,
+                     * Retrieve the bits for that character, and
+                     * change the bit from undefined to 0 or 1
+                     */
                     
                     // The bits linked to the url
                     char[] codeAsciiInBinary = bytes.get(currentCallable.getCurrentIndex() - 1);
@@ -173,10 +202,12 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                      * Inform the View if a array of bits is complete, else nothing #Need fix
                      */
                     if (new String(codeAsciiInBinary).matches("^\\d+$")) {
+                        
                         int codeAscii = Integer.parseInt(new String(codeAsciiInBinary), 2);
                         String charText = Character.toString((char) codeAscii);
                         
                         if (codeAscii == 255 || codeAscii == 0) {
+                            
                             if (
                                 submittedTasks != 0
                                 && countAsciiCode255 > 9
@@ -196,6 +227,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                     }
                 }
             } catch (InterruptedException | ExecutionException e) {
+                
                 LOGGER.error(e.getMessage(), e);
                 Thread.currentThread().interrupt();
             }
@@ -206,7 +238,9 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         try {
             taskExecutor.shutdown();
             taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
+            
         } catch (InterruptedException e) {
+            
             LOGGER.error(e.getMessage(), e);
             Thread.currentThread().interrupt();
         }
@@ -214,10 +248,12 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         // Build the complete final string from array of bits
         StringBuilder result = new StringBuilder();
         for (char[] c: bytes) {
+            
             try {
                 int charCode = Integer.parseInt(new String(c), 2);
                 String str = Character.toString((char) charCode);
                 result.append(str);
+                
             } catch (NumberFormatException err) {
                 // In case of too much False positives
                 // Byte string not fully constructed : 0x1x010x
@@ -236,36 +272,4 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     public String callUrl(String urlString) {
         return this.injectionModel.injectWithoutIndex(urlString);
     }
-    
-    /**
-     * 
-     * @param string
-     * @param indexCharacter
-     * @param isTestingLength
-     * @return
-     */
-    public abstract T getCallable(String string, int indexCharacter, boolean isTestingLength);
-    
-    /**
-     * 
-     * @param string
-     * @param indexCharacter
-     * @param bit
-     * @return
-     */
-    public abstract T getCallable(String string, int indexCharacter, int bit);
-    
-    /**
-     * Start one test to verify if boolean works.
-     * @return true if boolean method is confirmed
-     * @throws InjectionFailureException
-     */
-    public abstract boolean isInjectable() throws StoppedByUserSlidingException;
-    
-    /**
-     * Display a message to explain how is blid/time working.
-     * @return
-     */
-    public abstract String getInfoMessage();
-    
 }

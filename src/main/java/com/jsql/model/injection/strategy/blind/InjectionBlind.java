@@ -58,7 +58,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         this.blankTrueMark = this.callUrl("");
 
         /*
-         *  Parallelize the call to the FALSE statements,
+         *  Concurrent calls to the FALSE statements,
          *  it will use inject() from the model
          */
         ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagFalse"));
@@ -84,14 +84,19 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             this.constantFalseMark = listTagFalse.get(0).get().getOpcodes();
             
             for (Future<CallableBlind> falseMark: listTagFalse) {
+                
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
+                
                 this.constantFalseMark.retainAll(falseMark.get().getOpcodes());
             }
         } catch (ExecutionException e) {
+            
             LOGGER.error("Searching fails for Blind False tags", e);
+            
         } catch (InterruptedException e) {
+            
             LOGGER.error("Interruption while searching for Blind False tags", e);
             Thread.currentThread().interrupt();
         }
@@ -101,7 +106,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         }
 
         /*
-         *  Parallelize the call to the TRUE statements,
+         *  Concurrent calls to the TRUE statements,
          *  it will use inject() from the model.
          */
         ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagTrue"));
@@ -120,18 +125,24 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             
             executorTagTrue.shutdown();
             if (!executorTagTrue.awaitTermination(15, TimeUnit.SECONDS)) {
+                
                 executorTagTrue.shutdownNow();
             }
         
             for (Future<CallableBlind> trueTag: listTagTrue) {
+                
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
                 this.constantFalseMark.removeAll(trueTag.get().getOpcodes());
             }
+            
         } catch (ExecutionException e) {
+            
             LOGGER.error("Searching fails for Blind True tags", e);
+            
         } catch (InterruptedException e) {
+            
             LOGGER.error("Interruption while searching for Blind True tags", e);
             Thread.currentThread().interrupt();
         }
@@ -168,27 +179,20 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
     public String getInfoMessage() {
         
         return
-            "Blind strategy: a request is true if the diff between "
-            + "a correct page (e.g existing id) and current page "
-            + "is not as the following: "
+            "Blind strategy: a request is true if the diff between"
+            + " a correct page (e.g existing id) and current page"
+            + " is not as the following: "
             + this.constantFalseMark
         ;
     }
+    
+    // Getter and setter
 
-    /**
-     * Get source code of the TRUE web page.
-     * @return Source code in HTML
-     */
     public String getBlankTrueMark() {
         return this.blankTrueMark;
     }
     
-    /**
-     *  Get False Marks.
-     *  @return False marks
-     */
     public List<Diff> getConstantFalseMark() {
         return this.constantFalseMark;
     }
-    
 }

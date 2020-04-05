@@ -38,6 +38,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     private InjectionBlind injectionBlind;
     
     public StrategyInjectionBlind(InjectionModel injectionModel) {
+        
         super(injectionModel);
     }
 
@@ -45,7 +46,9 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     public void checkApplicability() throws StoppedByUserSlidingException {
         
         if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization())) {
+            
             LOGGER.info("No Blind strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
+            
         } else {
             
             LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Blind with operator AND...");
@@ -54,6 +57,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
             this.isApplicable = this.injectionBlind.isInjectable();
             
             if (!this.isApplicable) {
+                
                 LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Blind with operator OR...");
                 
                 this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.OR);
@@ -62,18 +66,23 @@ public class StrategyInjectionBlind extends AbstractStrategy {
                 if (this.isApplicable) {
                     LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Blind injection with operator OR");
                 }
+                
             } else {
+                
                 LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Blind injection with operator AND");
             }
             
             if (this.isApplicable) {
+                
                 this.allow();
                 
                 Request requestMessageBinary = new Request();
                 requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
                 requestMessageBinary.setParameters(this.injectionBlind.getInfoMessage());
                 this.injectionModel.sendToViews(requestMessageBinary);
+                
             } else {
+                
                 this.unallow();
             }
         }
@@ -118,5 +127,4 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     public String getName() {
         return "Blind";
     }
-    
 }

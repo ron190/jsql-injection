@@ -21,7 +21,6 @@ import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.MediatorGui;
@@ -56,7 +55,7 @@ public class PanelAddressBar extends JPanel {
     /**
      * Current injection method.
      */
-    private MethodInjection methodInjection = MediatorModel.model().getMediatorMethodInjection().getQuery();
+    private MethodInjection methodInjection = MediatorGui.model().getMediatorMethodInjection().getQuery();
 
     private AddressMenuBar addressMenuBar;
     private RequestPanel requestPanel;
@@ -101,7 +100,7 @@ public class PanelAddressBar extends JPanel {
         I18nViewUtil.addComponentForKey("FIELD_HEADER_TOOLTIP", j3[0]);
         
         final JToolTipI18n[] j4 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("METHOD_QUERYSTRING_TOOLTIP"))};
-        this.radioQueryString = new RadioLinkMethod("GET", true, MediatorModel.model().getMediatorMethodInjection().getQuery()){
+        this.radioQueryString = new RadioLinkMethod("GET", true, MediatorGui.model().getMediatorMethodInjection().getQuery()){
             @Override
             public JToolTip createToolTip() {
                 JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("METHOD_QUERYSTRING_TOOLTIP"));
@@ -112,7 +111,7 @@ public class PanelAddressBar extends JPanel {
         I18nViewUtil.addComponentForKey("METHOD_QUERYSTRING_TOOLTIP", j4[0]);
         
         final JToolTipI18n[] j5 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("METHOD_REQUEST_TOOLTIP"))};
-        this.radioMethod = new RadioLinkMethod("POST", MediatorModel.model().getMediatorMethodInjection().getRequest()){
+        this.radioMethod = new RadioLinkMethod("POST", MediatorGui.model().getMediatorMethodInjection().getRequest()){
             @Override
             public JToolTip createToolTip() {
                 JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("METHOD_REQUEST_TOOLTIP"));
@@ -123,7 +122,7 @@ public class PanelAddressBar extends JPanel {
         I18nViewUtil.addComponentForKey("METHOD_REQUEST_TOOLTIP", j5[0]);
         
         final JToolTipI18n[] j6 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("METHOD_HEADER_TOOLTIP"))};
-        this.radioHeader = new RadioLinkMethod("Header", MediatorModel.model().getMediatorMethodInjection().getHeader()){
+        this.radioHeader = new RadioLinkMethod("Header", MediatorGui.model().getMediatorMethodInjection().getHeader()){
             @Override
             public JToolTip createToolTip() {
                 JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("METHOD_HEADER_TOOLTIP"));

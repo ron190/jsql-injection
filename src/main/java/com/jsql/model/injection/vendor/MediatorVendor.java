@@ -82,7 +82,7 @@ public class MediatorVendor {
             @Override
             public String transformSQLite(String resultToParse) {
                 
-                StringBuilder resultSQLite = new StringBuilder();
+                StringBuilder resultSqlite = new StringBuilder();
                 String resultTmp = resultToParse.replaceFirst(".+?\\(", "").trim().replaceAll("\\)$", "");
                 resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
                 
@@ -96,11 +96,13 @@ public class MediatorVendor {
                     
                     if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
                         
-                        resultSQLite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
+                        // Build \4\5\4\6
+                        // TODO join with \6
+                        resultSqlite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
                     }
                 }
          
-                return resultSQLite.toString();
+                return resultSqlite.toString();
             }
         };
         this.sqlServer = new Vendor("SQL Server", new VendorYaml("sqlserver.yml", this.injectionModel));

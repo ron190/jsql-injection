@@ -33,5 +33,4 @@ public class Normal implements Serializable {
     public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
     }
-
 }

@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
@@ -30,7 +29,7 @@ public class MarkBlindVulnerable implements InteractionCommand {
     @Override
     public void execute() {
         
-        AbstractStrategy strategy = MediatorModel.model().getMediatorStrategy().getBlind();
+        AbstractStrategy strategy = MediatorGui.model().getMediatorStrategy().getBlind();
         
         MediatorGui.panelAddressBar().getAddressMenuBar().markStrategyVulnerable(strategy);
     }

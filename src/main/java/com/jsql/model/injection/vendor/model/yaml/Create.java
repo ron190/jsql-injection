@@ -24,5 +24,4 @@ public class Create implements Serializable {
     public void setQuery(String query) {
         this.query = query;
     }
-
 }

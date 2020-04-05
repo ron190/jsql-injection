@@ -22,7 +22,6 @@ import javax.swing.TransferHandler;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
@@ -107,8 +106,8 @@ public class TabResults extends DnDTabbedPane {
     
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
-                "<html><b>URL</b><br>" + url + MediatorModel.model().getResourceAccess().filenameWebshell
-                + "<br><b>Path</b><br>" + path + MediatorModel.model().getResourceAccess().filenameWebshell + "</html>"
+                "<html><b>URL</b><br>" + url + MediatorGui.model().getResourceAccess().filenameWebshell
+                + "<br><b>Path</b><br>" + path + MediatorGui.model().getResourceAccess().filenameWebshell + "</html>"
             );
     
             // Apply the custom header to the tab
@@ -142,8 +141,8 @@ public class TabResults extends DnDTabbedPane {
     
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
-                "<html><b>URL</b><br>" + url + MediatorModel.model().getResourceAccess().filenameSqlshell
-                + "<br><b>Path</b><br>" + path + MediatorModel.model().getResourceAccess().filenameSqlshell + "</html>"
+                "<html><b>URL</b><br>" + url + MediatorGui.model().getResourceAccess().filenameSqlshell
+                + "<br><b>Path</b><br>" + path + MediatorGui.model().getResourceAccess().filenameSqlshell + "</html>"
             );
     
             // Apply the custom header to the tab

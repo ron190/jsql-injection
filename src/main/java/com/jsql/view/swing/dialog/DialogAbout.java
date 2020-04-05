@@ -45,7 +45,6 @@ import javax.swing.event.HyperlinkEvent;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -157,7 +156,7 @@ public class DialogAbout extends JDialog {
         buttonWebpage.addActionListener(ev -> {
             
             try {
-                Desktop.getDesktop().browse(new URI((String) MediatorModel.model().getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")));
+                Desktop.getDesktop().browse(new URI((String) MediatorGui.model().getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")));
             } catch (IOException e) {
                 LOGGER.warn("Browsing to Url failed", e);
             } catch (URISyntaxException e) {
@@ -195,7 +194,7 @@ public class DialogAbout extends JDialog {
                 }
             }
 
-            editorPane[0].setText(result.toString().replace("%JSQLVERSION%", MediatorModel.model().getVersionJsql()));
+            editorPane[0].setText(result.toString().replace("%JSQLVERSION%", MediatorGui.model().getVersionJsql()));
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }

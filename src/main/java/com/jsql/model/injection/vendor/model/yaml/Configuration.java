@@ -69,5 +69,4 @@ public class Configuration implements Serializable {
     public void setFingerprint(Fingerprint fingerprint) {
         this.fingerprint = fingerprint;
     }
-
 }

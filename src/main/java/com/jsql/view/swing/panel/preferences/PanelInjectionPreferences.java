@@ -11,27 +11,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import com.jsql.model.MediatorModel;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.PanelPreferences;
 
 @SuppressWarnings("serial")
 public class PanelInjectionPreferences extends JPanel {
 
-    private final JCheckBox checkboxIsFollowingRedirection = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection());
-    private final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata());
-    private final JCheckBox checkboxIsNotTestingConnection = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection());
-    private final JCheckBox checkboxIsParsingForm = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isParsingForm());
+    private final JCheckBox checkboxIsFollowingRedirection = new JCheckBox("", MediatorGui.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection());
+    private final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox("", MediatorGui.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata());
+    private final JCheckBox checkboxIsNotTestingConnection = new JCheckBox("", MediatorGui.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection());
+    private final JCheckBox checkboxIsParsingForm = new JCheckBox("", MediatorGui.model().getMediatorUtils().getPreferencesUtil().isParsingForm());
     
-    private final JCheckBox checkboxIsCheckingAllParam = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isCheckingAllParam());
-    private final JCheckBox checkboxIsCheckingAllURLParam = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam());
-    private final JCheckBox checkboxIsCheckingAllRequestParam = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam());
-    private final JCheckBox checkboxIsCheckingAllHeaderParam = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam());
-    private final JCheckBox checkboxIsCheckingAllJSONParam = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJSONParam());
-    private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
-    private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSOAPParam());
+    private final JCheckBox checkboxIsCheckingAllParam = new JCheckBox("", MediatorGui.model().getMediatorUtils().getPreferencesUtil().isCheckingAllParam());
+    private final JCheckBox checkboxIsCheckingAllURLParam = new JCheckBox("", MediatorGui.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam());
+    private final JCheckBox checkboxIsCheckingAllRequestParam = new JCheckBox("", MediatorGui.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam());
+    private final JCheckBox checkboxIsCheckingAllHeaderParam = new JCheckBox("", MediatorGui.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam());
+    private final JCheckBox checkboxIsCheckingAllJSONParam = new JCheckBox("", MediatorGui.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJSONParam());
+    private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox("", MediatorGui.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
+    private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox("", MediatorGui.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSOAPParam());
 
-    private final JCheckBox checkboxProcessCookies = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isProcessingCookies());
-    private final JCheckBox checkboxProcessCsrf = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf());
+    private final JCheckBox checkboxProcessCookies = new JCheckBox("", MediatorGui.model().getMediatorUtils().getPreferencesUtil().isProcessingCookies());
+    private final JCheckBox checkboxProcessCsrf = new JCheckBox("", MediatorGui.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf());
     
     public PanelInjectionPreferences(PanelPreferences panelPreferences) {
         

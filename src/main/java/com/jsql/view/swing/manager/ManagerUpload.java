@@ -31,7 +31,6 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.MediatorGui;
@@ -151,7 +150,7 @@ public class ManagerUpload extends AbstractManagerList {
             return;
         }
 
-        final JFileChooser filechooser = new JFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+        final JFileChooser filechooser = new JFileChooser(MediatorGui.model().getMediatorUtils().getPreferencesUtil().getPathFile());
         filechooser.setDialogTitle(I18nUtil.valueByKey("UPLOAD_DIALOG_TEXT"));
         
         // Fix #2402: NullPointerException on showOpenDialog()
@@ -179,7 +178,7 @@ public class ManagerUpload extends AbstractManagerList {
                 
                 try {
                     ManagerUpload.this.loader.setVisible(true);
-                    MediatorModel.model().getResourceAccess().uploadFile(path.toString(), shellURL.getText(), file);
+                    MediatorGui.model().getResourceAccess().uploadFile(path.toString(), shellURL.getText(), file);
                 } catch (JSqlException e) {
                     LOGGER.warn("Payload creation error: "+ e, e);
                 } catch (IOException e) {

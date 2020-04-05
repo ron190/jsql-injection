@@ -17,5 +17,4 @@ public class Fingerprint implements Serializable {
     public void setErrorMessage(List<String> errorMessage) {
         this.errorMessage = errorMessage;
     }
-
 }

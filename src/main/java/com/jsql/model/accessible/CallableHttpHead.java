@@ -45,6 +45,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
      * @param urlAdminPage URL of admin page
      */
     public CallableHttpHead(String urlAdminPage, InjectionModel injectionModel) {
+        
         this.urlAdminPage = urlAdminPage;
         this.injectionModel= injectionModel;
     }
@@ -110,5 +111,4 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
     public String getUrl() {
         return this.urlAdminPage;
     }
-    
 }

@@ -53,7 +53,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             
         } else {
         
-            // Parallelize the search and let the user stops the process if needed.
+            // Concurrent search and let the user stops the process if needed.
             // SQL: force a wrong ORDER BY clause with an inexistent column, order by 1337,
             // and check if a correct error message is sent back by the server:
             //         Unknown column '1337' in 'order clause'

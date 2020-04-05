@@ -16,12 +16,16 @@ public abstract class SlidingException extends JSqlException {
     }
     
     public SlidingException(String string, String slidingWindowAllRows) {
+        
         this(string);
+        
         this.slidingWindowAllRows = slidingWindowAllRows;
     }
 
     public SlidingException(String string, String slidingWindowAllRows, String slidingWindowCurrentRows) {
+        
         this(string);
+        
         this.slidingWindowAllRows = slidingWindowAllRows;
         this.slidingWindowCurrentRows = slidingWindowCurrentRows;
     }
@@ -33,5 +37,4 @@ public abstract class SlidingException extends JSqlException {
     public String getSlidingWindowAllRows() {
         return this.slidingWindowAllRows;
     }
-    
 }

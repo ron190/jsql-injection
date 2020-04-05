@@ -10,14 +10,13 @@
  ******************************************************************************/
 package com.jsql.view.swing.list;
 
-import java.util.AbstractMap.SimpleEntry;
-
 import java.awt.ComponentOrientation;
 import java.awt.IllegalComponentStateException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -33,8 +32,8 @@ import javax.swing.TransferHandler;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.util.I18nUtil;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -144,7 +143,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         
         //Create a file chooser
-        final JFileChooser importFileDialog = new JFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+        final JFileChooser importFileDialog = new JFileChooser(MediatorGui.model().getMediatorUtils().getPreferencesUtil().getPathFile());
         importFileDialog.setDialogTitle(I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_TITLE"));
         importFileDialog.setMultiSelectionEnabled(true);
 

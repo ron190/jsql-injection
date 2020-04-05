@@ -57,6 +57,5 @@ public class Column extends AbstractElementDatabase {
     public String getLabelCount() {
         return this.toString();
     }
-    
 }
 

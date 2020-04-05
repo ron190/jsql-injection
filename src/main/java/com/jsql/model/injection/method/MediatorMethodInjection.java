@@ -38,7 +38,6 @@ public class MediatorMethodInjection {
             public String name() {
                 return "QUERY";
             }
-            
         };
         
         this.request = new MethodInjection(injectionModel) {
@@ -62,7 +61,6 @@ public class MediatorMethodInjection {
             public String name() {
                 return "REQUEST";
             }
-            
         };
         
         this.header = new MethodInjection(injectionModel) {
@@ -86,7 +84,6 @@ public class MediatorMethodInjection {
             public String name() {
                 return "HEADER";
             }
-            
         };
         
         this.methods = Arrays.asList(this.getQuery(), this.getRequest(), this.getHeader());

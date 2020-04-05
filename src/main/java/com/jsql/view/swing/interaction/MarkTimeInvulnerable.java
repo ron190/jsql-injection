@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
@@ -30,7 +29,7 @@ public class MarkTimeInvulnerable implements InteractionCommand {
     @Override
     public void execute() {
         
-        AbstractStrategy strategy = MediatorModel.model().getMediatorStrategy().getTime();
+        AbstractStrategy strategy = MediatorGui.model().getMediatorStrategy().getTime();
         
         MediatorGui.panelAddressBar().getAddressMenuBar().markStrategyInvulnerable(strategy);
     }

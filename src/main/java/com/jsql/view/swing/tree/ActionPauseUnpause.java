@@ -13,8 +13,8 @@ package com.jsql.view.swing.tree;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
@@ -31,7 +31,7 @@ public class ActionPauseUnpause implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
+        AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
         
         if (suspendableTask == null) {
             return;

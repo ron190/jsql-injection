@@ -18,7 +18,7 @@ import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
  * Runnable class, search the correct number of fields in the SQL query.
- * Parallelizes the search, provides the stop capability
+ * Concurrent search with stop capability
  */
 public class SuspendableGetIndexes extends AbstractSuspendable<String> {
     
@@ -37,7 +37,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
     @Override
     public String run(Object... args) throws JSqlException {
         
-        // Parallelize the search
+        // Concurrent search
         ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetIndexes"));
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
@@ -69,6 +69,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                 CallablePageSource currentCallable = taskCompletionService.take().get();
 
                 // Found a correct mark 1337[index]7331 in the source
+                // TODO 1337 0%2b1
                 if (Pattern.compile("(?s).*1337\\d+7331.*").matcher(currentCallable.getContent()).matches()) {
                     
                     this.injectionModel.getMediatorStrategy().getNormal().setSourceIndexesFound(currentCallable.getContent());
@@ -102,6 +103,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         }
 
         if (isRequestFound) {
+            // TODO
             return initialQuery.replaceAll("\\+\\+union\\+select\\+.*?--\\+$", "+");
         }
         

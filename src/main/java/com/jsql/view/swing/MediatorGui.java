@@ -1,5 +1,6 @@
 package com.jsql.view.swing;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.manager.ManagerAdminPage;
 import com.jsql.view.swing.manager.ManagerBruteForce;
 import com.jsql.view.swing.manager.ManagerFile;
@@ -19,6 +20,8 @@ import com.jsql.view.swing.tree.TreeDatabase;
  * Mediator for loosely coupled components.
  */
 public final class MediatorGui {
+    
+    private static InjectionModel model;
     
     private static TreeDatabase treeDatabase;
     private static TabResults tabResults;
@@ -43,6 +46,10 @@ public final class MediatorGui {
      */
     private MediatorGui() {
         //not called
+    }
+
+    public static InjectionModel model() {
+        return model;
     }
     
     public static TreeDatabase treeDatabase() {
@@ -167,5 +174,9 @@ public final class MediatorGui {
     
     public static void register(ManagerBruteForce managerBruteForce) {
         MediatorGui.managerBruteForce = managerBruteForce;
+    }
+
+    public static void register(InjectionModel model) {
+        MediatorGui.model = model;
     }
 }

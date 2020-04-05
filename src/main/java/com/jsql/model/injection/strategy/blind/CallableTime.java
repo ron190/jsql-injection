@@ -82,11 +82,14 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
         this.calendar1.setTime(new Date());
         this.injectionTime.callUrl(this.booleanUrl);
         this.calendar2.setTime(new Date());
+        
         long milliseconds1 = this.calendar1.getTimeInMillis();
         long milliseconds2 = this.calendar2.getTimeInMillis();
+        
         long diff = milliseconds2 - milliseconds1;
+        
         this.diffSeconds = diff / 1000;
+        
         return this;
     }
-    
 }

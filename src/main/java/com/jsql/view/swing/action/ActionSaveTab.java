@@ -29,7 +29,6 @@ import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -47,7 +46,7 @@ public class ActionSaveTab extends AbstractAction {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+    final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorGui.model().getMediatorUtils().getPreferencesUtil().getPathFile());
 
     public ActionSaveTab() {
         
@@ -89,7 +88,7 @@ public class ActionSaveTab extends AbstractAction {
         if (stateSave == JFileChooser.APPROVE_OPTION) {
             
             String folderSelectedFile = this.filechooser.getCurrentDirectory().toString();
-            MediatorModel.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);
+            MediatorGui.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);
             
             if (textarea instanceof JTextComponent) {
                 

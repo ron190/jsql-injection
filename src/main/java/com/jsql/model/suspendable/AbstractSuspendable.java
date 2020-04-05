@@ -49,9 +49,12 @@ public abstract class AbstractSuspendable<T> {
         
         // Make application loop until shouldPauseThread is set to false by another user action
         while (this.isPaused) {
+            
             try {
                 this.wait();
+                
             } catch (InterruptedException e) {
+                
                 LOGGER.error("Interruption while suspendable is waiting", e);
                 Thread.currentThread().interrupt();
             }
@@ -80,6 +83,7 @@ public abstract class AbstractSuspendable<T> {
      * Mark as unpaused.
      */
     public void unpause() {
+        
         this.isPaused = false;
         
         // Restart the action after an unpause
@@ -95,10 +99,9 @@ public abstract class AbstractSuspendable<T> {
     }
     
     /**
-     * Un-wait the thread.
+     * Wake threads.
      */
     public synchronized void resume() {
         this.notifyAll();
     }
-    
 }

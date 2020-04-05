@@ -83,11 +83,11 @@ public class Table extends AbstractElementDatabase {
                 sPlural = "s";
             }
         } catch (NumberFormatException e) {
+            
             this.rowCount = "0";
             LOGGER.warn("Incorrect number of rows.");
         }
         
         return this.elementValue +" ("+ nbRow +" row"+ sPlural +")";
     }
-    
 }

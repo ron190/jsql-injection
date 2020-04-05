@@ -29,5 +29,4 @@ public class InjectionFailureException extends SlidingException {
     public InjectionFailureException(String message, Throwable e) {
         super(message, e);
     }
-    
 }

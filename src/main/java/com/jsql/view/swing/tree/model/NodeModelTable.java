@@ -34,7 +34,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.view.swing.MediatorGui;
@@ -75,7 +74,7 @@ public class NodeModelTable extends AbstractNodeModel {
         if ("information_schema".equals(this.getParent().toString())) {
             panelNode.showLoader();
             
-            AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
+            AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 ImageIcon animatedGifPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);
                 animatedGifPaused.setImageObserver(new ImageObserverAnimated(MediatorGui.treeDatabase(), currentNode));
@@ -107,7 +106,7 @@ public class NodeModelTable extends AbstractNodeModel {
                 
                 Thread.currentThread().setName("SwingWorkerNodeModelTable");
                 Table selectedTable = (Table) NodeModelTable.this.getElementDatabase();
-                return MediatorModel.model().getDataAccess().listColumns(selectedTable);
+                return MediatorGui.model().getDataAccess().listColumns(selectedTable);
             }
         }.execute();
         

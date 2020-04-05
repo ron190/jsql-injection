@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
@@ -31,7 +30,7 @@ public class EndPreparation implements InteractionCommand {
         
         MediatorGui.panelAddressBar().getAddressMenuBar().endPreparation();
 
-        if (MediatorModel.model().shouldErasePreviousInjection()) {
+        if (MediatorGui.model().shouldErasePreviousInjection()) {
             
             MediatorGui.tabManagers().endPreparation();
         }

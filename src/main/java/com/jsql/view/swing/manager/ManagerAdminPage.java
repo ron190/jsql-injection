@@ -27,7 +27,6 @@ import javax.swing.JRadioButtonMenuItem;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.JButtonStateful;
@@ -140,7 +139,7 @@ public class ManagerAdminPage extends AbstractManagerList {
         
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
 
-        this.run.addActionListener(actionEvent -> runSearch());
+        this.run.addActionListener(actionEvent -> this.runSearch());
 
         this.loader.setVisible(false);
     }
@@ -167,7 +166,7 @@ public class ManagerAdminPage extends AbstractManagerList {
             }
         }
         
-        new Thread(() -> searchAdminPages(refUrlQuery), "ThreadAdminPage").start();
+        new Thread(() -> this.searchAdminPages(refUrlQuery), "ThreadAdminPage").start();
     }
 
     private void searchAdminPages(String[] refUrlQuery) {
@@ -184,7 +183,7 @@ public class ManagerAdminPage extends AbstractManagerList {
                 ManagerAdminPage.this.loader.setVisible(true);
                 
                 try {
-                    MediatorModel.model().getResourceAccess().createAdminPages(
+                    MediatorGui.model().getResourceAccess().createAdminPages(
                         refUrlQuery[0],
                         this.listFile.getSelectedValuesList()
                     );
@@ -195,7 +194,7 @@ public class ManagerAdminPage extends AbstractManagerList {
             }
         } else if (this.run.getState() == StateButton.STOPPABLE) {
             
-            MediatorModel.model().getResourceAccess().setSearchAdminStopped(true);
+            MediatorGui.model().getResourceAccess().setSearchAdminStopped(true);
             ManagerAdminPage.this.run.setEnabled(false);
             ManagerAdminPage.this.run.setState(StateButton.STOPPING);
         }

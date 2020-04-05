@@ -55,5 +55,4 @@ public abstract class AbstractElementDatabase {
     public void setElementValue(String elementValue) {
         this.elementValue = elementValue;
     }
-    
 }

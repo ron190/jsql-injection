@@ -24,5 +24,4 @@ public class Fields implements Serializable {
     public void setConcat(String concat) {
         this.concat = concat;
     }
-
 }

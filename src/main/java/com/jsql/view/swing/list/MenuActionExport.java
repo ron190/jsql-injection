@@ -22,8 +22,8 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.util.I18nUtil;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Action to export a JList.
@@ -52,7 +52,7 @@ public class MenuActionExport implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         
         @SuppressWarnings("serial")
-        final JFileChooser importFileDialog = new JFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile()) {
+        final JFileChooser importFileDialog = new JFileChooser(MediatorGui.model().getMediatorUtils().getPreferencesUtil().getPathFile()) {
             
             @Override
             public void approveSelection() {

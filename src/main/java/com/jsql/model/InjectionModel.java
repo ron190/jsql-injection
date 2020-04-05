@@ -81,6 +81,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     private transient MediatorMethodInjection mediatorMethodInjection = new MediatorMethodInjection(this);
     private transient MediatorUtils mediatorUtils;
     private transient MediatorStrategy mediatorStrategy;
+
+    private transient PropertiesUtil propertiesUtil = new PropertiesUtil();
              
     private transient DataAccess dataAccess = new DataAccess(this);
     private transient RessourceAccess resourceAccess = new RessourceAccess(this);
@@ -106,7 +108,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         this.mediatorStrategy = new MediatorStrategy(this);
 
-        this.mediatorUtils.setPropertiesUtil(new PropertiesUtil());
+        this.mediatorUtils.setPropertiesUtil(propertiesUtil);
         this.mediatorUtils.setConnectionUtil(new ConnectionUtil(this));
         this.mediatorUtils.setAuthenticationUtil(new AuthenticationUtil(this));
         this.mediatorUtils.setGitUtil(new GitUtil(this));
@@ -457,14 +459,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             query = this.initializeRawInjection(paramLeadFixed, isUsingIndex, sqlTrail);
         }
         
-        // TODO merge into function
-        
-        query = this.clean(methodInjection, query);
-        
         if (this.mediatorUtils.getConnectionUtil().getMethodInjection() == methodInjection) {
             
             query = this.mediatorUtils.getTamperingUtil().tamper(query);
         }
+        
+        query = this.clean(methodInjection, query);
         
         query = this.applyRfcEncoding(methodInjection, query);
         
@@ -647,7 +647,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     }
 
     public String getVersionJsql() {
-        return this.mediatorUtils.getPropertiesUtil().getProperties().getProperty("jsql.version");
+        return this.propertiesUtil.getProperties().getProperty("jsql.version");
     }
 
     public MediatorUtils getMediatorUtils() {

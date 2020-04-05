@@ -33,5 +33,4 @@ public class Method implements Serializable {
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
-
 }

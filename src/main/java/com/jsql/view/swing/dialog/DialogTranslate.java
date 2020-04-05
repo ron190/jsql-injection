@@ -39,7 +39,6 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.dialog.translate.Language;
@@ -189,7 +188,7 @@ public class DialogTranslate extends JDialog {
                     .replace("<", "\\\\<")
             ;
               
-            MediatorModel.model().getMediatorUtils().getGitUtil().sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language +" translation");
+            MediatorGui.model().getMediatorUtils().getGitUtil().sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language +" translation");
             DialogTranslate.this.setVisible(false);
         });
 

@@ -51,5 +51,4 @@ public class Boolean implements Serializable {
     public void setModeOr(String modeOr) {
         this.modeOr = modeOr;
     }
-
 }

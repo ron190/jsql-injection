@@ -53,5 +53,4 @@ public class Test implements Serializable {
     public void setLength(String length) {
         this.length = length;
     }
-
 }

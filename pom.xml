@@ -126,7 +126,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M4</version>
                 <configuration>
-                    <!-- <argLine>-Dspring.output.ansi.enabled=ALWAYS -Dspring.main.banner-mode=off -Dstyle.color=always</argLine>-->
                     <rerunFailingTestsCount>3</rerunFailingTestsCount>
                     <includes>
                         <include>**/*Spock</include>
@@ -382,6 +381,13 @@
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
         </dependency>
+        
+        <dependency>
+		  <groupId>com.jcabi</groupId>
+		  <artifactId>jcabi-log</artifactId>
+		  <version>0.17.1</version>
+		  <scope>test</scope>
+		</dependency>
      
     </dependencies>
 </project>

@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 import com.jsql.model.InjectionModel;
 
 /**
- * Callable for parallelized HTTP tasks
+ * Callable for concurrent HTTP tasks
  * url: SQL query
  * content: source code of the web page
  * tag: store user information (ex. current index)

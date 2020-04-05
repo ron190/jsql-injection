@@ -80,12 +80,14 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     public boolean isTrue() {
         
         for (Diff falseDiff: this.injectionBlind.getConstantFalseMark()) {
+            
             // Fix #4386: NullPointerException on contains()
             // opcodes is initialized to an empty new LinkedList<>()
             if (this.opcodes.contains(falseDiff)) {
                 return false;
             }
         }
+        
         return true;
     }
 
@@ -98,13 +100,15 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     public CallableBlind call() throws Exception {
         
         String ctnt = this.injectionBlind.callUrl(this.booleanUrl);
+        
         this.opcodes = DIFFMATCHPATCH.diffMain(this.injectionBlind.getBlankTrueMark(), ctnt, true);
+        
         DIFFMATCHPATCH.diffCleanupEfficiency(this.opcodes);
+        
         return this;
     }
     
     public List<Diff> getOpcodes() {
         return this.opcodes;
     }
-    
 }

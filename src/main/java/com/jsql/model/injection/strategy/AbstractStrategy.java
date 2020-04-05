@@ -36,15 +36,8 @@ public abstract class AbstractStrategy {
     protected InjectionModel injectionModel;
     
     public AbstractStrategy(InjectionModel injectionModel) {
+        
         this.injectionModel = injectionModel;
-    }
-
-    /**
-     * Return if this strategy can be used to inject SQL.
-     * @return True if strategy can be used, false otherwise.
-     */
-    public boolean isApplicable() {
-        return this.isApplicable;
     }
 
     /**
@@ -64,23 +57,6 @@ public abstract class AbstractStrategy {
      * Inform the view that this strategy can't be used.
      */
     protected abstract void unallow(int... i);
-    
-    public void markVulnerability(Interaction message, int... i) {
-        
-        Request request = new Request();
-        request.setMessage(message);
-        
-        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
-        
-        if (i != null && i.length > 0) {
-            msgHeader.put(Header.SOURCE, i[0]);
-            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);
-        }
-
-        request.setParameters(msgHeader);
-        this.injectionModel.sendToViews(request);
-    }
     
     /**
      * Start the strategy work.
@@ -102,6 +78,30 @@ public abstract class AbstractStrategy {
      * Get the injection strategy name.
      */
     public abstract String getName();
+    
+    public void markVulnerability(Interaction message, int... i) {
+        
+        Request request = new Request();
+        request.setMessage(message);
+        
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
+        
+        if (i != null && i.length > 0) {
+            
+            msgHeader.put(Header.SOURCE, i[0]);
+            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);
+        }
+
+        request.setParameters(msgHeader);
+        this.injectionModel.sendToViews(request);
+    }
+
+    // Getter and setter
+    
+    public boolean isApplicable() {
+        return this.isApplicable;
+    }
     
     @Override
     public String toString() {

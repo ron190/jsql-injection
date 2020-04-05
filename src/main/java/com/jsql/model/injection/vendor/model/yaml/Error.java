@@ -17,5 +17,4 @@ public class Error implements Serializable {
     public void setMethod(List<Method> method) {
         this.method = method;
     }
-
 }

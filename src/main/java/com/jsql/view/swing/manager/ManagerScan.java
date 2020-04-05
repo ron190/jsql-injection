@@ -31,7 +31,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.MediatorGui;
@@ -102,9 +101,9 @@ public class ManagerScan extends AbstractManagerList {
             
             MethodInjection injectionType = beanInjection.getInjectionTypeAsEnum();
             
-            if (injectionType == MediatorModel.model().getMediatorMethodInjection().getHeader()) {
+            if (injectionType == MediatorGui.model().getMediatorMethodInjection().getHeader()) {
                 MediatorGui.panelAddressBar().getRadioHeader().setSelected();
-            } else if (injectionType == MediatorModel.model().getMediatorMethodInjection().getRequest()) {
+            } else if (injectionType == MediatorGui.model().getMediatorMethodInjection().getRequest()) {
                 MediatorGui.panelAddressBar().getRadioMethod().setSelected();
             } else {
                 MediatorGui.panelAddressBar().getRadioQueryString().setSelected();
@@ -215,11 +214,11 @@ public class ManagerScan extends AbstractManagerList {
                         listModel.get(i).reset();
                     }
                     
-                    MediatorModel.model().getResourceAccess().scanList(dndListScan.getSelectedValuesList());
+                    MediatorGui.model().getResourceAccess().scanList(dndListScan.getSelectedValuesList());
                 } else {
                     
-                    MediatorModel.model().getResourceAccess().setScanStopped(true);
-                    MediatorModel.model().setIsStoppedByUser(true);
+                    MediatorGui.model().getResourceAccess().setScanStopped(true);
+                    MediatorGui.model().setIsStoppedByUser(true);
                     ManagerScan.this.run.setEnabled(false);
                     ManagerScan.this.run.setState(StateButton.STOPPING);
                 }

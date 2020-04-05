@@ -38,6 +38,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
     private InjectionTime injectionTime;
     
     public StrategyInjectionTime(InjectionModel injectionModel) {
+        
         super(injectionModel);
     }
 
@@ -45,7 +46,9 @@ public class StrategyInjectionTime extends AbstractStrategy {
     public void checkApplicability() throws StoppedByUserSlidingException {
         
         if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization())) {
+            
             LOGGER.info("No Time strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
+            
         } else {
             
             LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Time with operator AND...");
@@ -54,6 +57,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
             this.isApplicable = this.injectionTime.isInjectable();
             
             if (!this.isApplicable) {
+                
                 LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Time with operator OR...");
                 
                 this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.OR);
@@ -62,18 +66,23 @@ public class StrategyInjectionTime extends AbstractStrategy {
                 if (this.isApplicable) {
                     LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Time injection with operator OR");
                 }
+                
             } else {
+                
                 LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Time injection with operator AND");
             }
             
             if (this.isApplicable) {
+                
                 this.allow();
                 
                 Request requestMessageBinary = new Request();
                 requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
                 requestMessageBinary.setParameters(this.injectionTime.getInfoMessage());
                 this.injectionModel.sendToViews(requestMessageBinary);
+                
             } else {
+                
                 this.unallow();
             }
         }

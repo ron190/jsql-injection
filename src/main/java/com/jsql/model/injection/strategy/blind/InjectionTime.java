@@ -50,11 +50,12 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         
         // No blind
         if (this.falseTest.isEmpty() || this.injectionModel.isStoppedByUser()) {
+            
             return;
         }
 
         /*
-         *  Parallelize the call to the FALSE statements,
+         *  Concurrent calls to the FALSE statements,
          *  it will use inject() from the model
          */
         ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagFalse"));
@@ -103,7 +104,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         }
 
         
-        // Parallelize the call to the TRUE statements,
+        // Concurrent calls to the TRUE statements,
         // it will use inject() from the model
         ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagTrue"));
         Collection<CallableTime> listCallableTagTrue = new ArrayList<>();
@@ -121,6 +122,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             
             executorTagTrue.shutdown();
             if (!executorTagTrue.awaitTermination(15, TimeUnit.SECONDS)) {
+                
                 executorTagTrue.shutdownNow();
             }
         
@@ -131,10 +133,12 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
                 }
                 
                 if (!falseMark.get().isTrue()) {
+                    
                     this.isTimeInjectable = false;
                     return;
                 }
             }
+            
         } catch (ExecutionException e) {
             
             LOGGER.error("Searching fails for Time True tags", e);
@@ -163,7 +167,13 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             throw new StoppedByUserSlidingException();
         }
         
-        CallableTime timeTest = new CallableTime(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(), this.injectionModel, this, this.booleanMode);
+        CallableTime timeTest = new CallableTime(
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(), 
+            this.injectionModel, 
+            this, 
+            this.booleanMode
+        );
+        
         try {
             timeTest.call();
         } catch (Exception e) {

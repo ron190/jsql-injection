@@ -51,5 +51,4 @@ public class Resource implements Serializable {
     public void setFile(File file) {
         this.file = file;
     }
-
 }

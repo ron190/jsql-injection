@@ -24,7 +24,6 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
@@ -150,7 +149,7 @@ public abstract class AbstractNodeModel {
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
         
         JPopupMenuCustomExtract popupMenu = new JPopupMenuCustomExtract();
-        AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
+        AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
 
         this.initializeItemLoadPause(currentTableNode, popupMenu, suspendableTask);
         this.initializeItemRenameReload(currentTableNode, path, popupMenu);
@@ -300,7 +299,7 @@ public abstract class AbstractNodeModel {
             this.panelNode.showLoader();
             this.panelNode.hideIcon();
 
-            AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
+            AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 ImageIcon animatedGIFPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(
@@ -360,7 +359,7 @@ public abstract class AbstractNodeModel {
         panelNode.getProgressBar().setVisible(true);
         
         // Report #135: ignore if thread not found
-        AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
+        AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
         if (suspendableTask != null && suspendableTask.isPaused()) {
             panelNode.getProgressBar().pause();
         }

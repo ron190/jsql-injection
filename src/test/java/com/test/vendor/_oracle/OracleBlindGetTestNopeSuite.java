@@ -21,15 +21,15 @@ public class OracleBlindGetTestNopeSuite extends ConcreteOracleTestNopeSuite {
 //        MediatorModel.register(model);
 //        model.displayVersion();
 //
-//        MediatorModel.model().addObserver(new SystemOutTerminal());
+//        MediatorGui.model().addObserver(new SystemOutTerminal());
 //
 //        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/oracle_simulate_get.php");
 //        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("lib", "1")));
 //        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 //
-//        MediatorModel.model().beginInjection();
+//        MediatorGui.model().beginInjection();
 //
-//        MediatorModel.model().setStrategy(StrategyInjection.BLIND);
+//        MediatorGui.model().setStrategy(StrategyInjection.BLIND);
     }
     
     @Override

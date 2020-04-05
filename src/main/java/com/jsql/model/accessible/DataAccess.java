@@ -45,17 +45,18 @@ public class DataAccess {
     
     /**
      * SQL characters marking the end of the result of an injection.
-     * Process stops when this schema is encountered: SQLix01x03x03x07
+     * Process stops when this schema is encountered: 
+     * <pre>SQLix01x03x03x07
      */
     // TODO idem XML
+    public static final String LEAD_HEX = "0x53714c69";
     public static final String TRAIL_SQL = "%01%03%03%07";
     public static final String TRAIL_HEX = "0x01030307";
-    public static final String TRAIL = "iLQS";
-    public static final String TRAIL_IN_SHELL = "${JSQL.TRAIL}";
     
     /**
      * Regex characters marking the end of the result of an injection.
-     * Process stops when this schema is encountered: SQLix01x03x03x07
+     * Process stops when this schema is encountered: 
+     * <pre>SQLix01x03x03x07
      */
     public static final String TRAIL_RGX = "\\x01\\x03\\x03\\x07";
     
@@ -65,6 +66,7 @@ public class DataAccess {
     /**
      * Regex character used between each table cells.
      * Expected schema of multiple table cells :
+     * <pre>
      * x04[table cell]x05[number of occurrences]x04x06x04[table cell]x05[number of occurrences]x04
      */
     public static final String SEPARATOR_CELL_RGX = "\\x06";
@@ -72,20 +74,23 @@ public class DataAccess {
     /**
      * SQL character used between each table cells.
      * Expected schema of multiple table cells :
+     * <pre>
      * %04[table cell]%05[number of occurrences]%04%06%04[table cell]%05[number of occurrences]%04
      */
     public static final String SEPARATOR_CELL_SQL = "%06";
     public static final String SEPARATOR_CELL_HEX = "0x06";
     
     /**
-     * SQL character used between the table cell and the number of occurence of the cell text.
-     * Expected schema of a table cell data is %04[table cell]%05[number of occurrences]%04
+     * SQL character used between the table cell and the number of occurrence of the cell text.
+     * Expected schema of a table cell data is 
+     * <pre>%04[table cell]%05[number of occurrences]%04
      */
     public static final String SEPARATOR_QTE_SQL = "%05";
     
     /**
-     * Regex character used between the table cell and the number of occurence of the cell text.
-     * Expected schema of a table cell data is x04[table cell]x05[number of occurrences]x04
+     * Regex character used between the table cell and the number of occurrence of the cell text.
+     * Expected schema of a table cell data is 
+     * <pre>x04[table cell]x05[number of occurrences]x04
      */
     public static final String SEPARATOR_QTE_RGX = "\\x05";
     public static final String SEPARATOR_QTE_HEX = "0x05";
@@ -93,7 +98,8 @@ public class DataAccess {
     /**
      * Regex character enclosing a table cell returned by injection.
      * It allows to detect the correct end of a table cell data during parsing.
-     * Expected schema of a table cell data is x04[table cell]x05[number of occurrences]x04
+     * Expected schema of a table cell data is 
+     * <pre>x04[table cell]x05[number of occurrences]x04
      */
     public static final String ENCLOSE_VALUE_RGX = "\\x04";
     public static final String ENCLOSE_VALUE_HEX = "0x04";
@@ -101,16 +107,18 @@ public class DataAccess {
     /**
      * SQL character enclosing a table cell returned by injection.
      * It allows to detect the correct end of a table cell data during parsing.
-     * Expected schema of a table cell data is %04[table cell]%05[number of occurrences]%04
+     * Expected schema of a table cell data is 
+     * <pre>%04[table cell]%05[number of occurrences]%04
      */
     public static final String ENCLOSE_VALUE_SQL = "%04";
     
     public static final String CALIBRATOR_SQL = "%23";
     public static final String CALIBRATOR_HEX = "0x23";
     
-    public static final String LEAD_HEX = "0x53714c69";
     public static final String LEAD = "SqLi";
-    public static final String LEAD_IN_SHELL = "${JSQL.LEAD}";
+    public static final String SHELL_LEAD = "${shell.lead}";
+    public static final String TRAIL = "iLQS";
+    public static final String SHELL_TRAIL = "${shell.trail}";
     
     /**
      * Regex keywords corresponding to multiline and case insensitive match.
@@ -122,14 +130,15 @@ public class DataAccess {
      * of the cell text, separated by the reserved character x05 in hexadecimal.
      * The range of characters from x01 to x1F are not printable ASCII characters used to parse the data and exclude
      * printable characters during parsing.
-     * Expected schema of a table cell data is x04[table cell]x05[number of occurrences]x04
+     * Expected schema of a table cell data is 
+     * <pre>x04[table cell]x05[number of occurrences]x04
      */
     public static final String CELL_TABLE = "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)"+ SEPARATOR_QTE_RGX +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?";
     
     private InjectionModel injectionModel;
     
-    // Utility class
     public DataAccess(InjectionModel injectionModel) {
+        
         this.injectionModel = injectionModel;
     }
     
@@ -154,6 +163,7 @@ public class DataAccess {
         );
 
         if (StringUtils.isEmpty(resultToParse)) {
+            
             this.injectionModel.sendResponseFromSite("Incorrect database informations", sourcePage[0].trim());
         }
         
@@ -163,9 +173,17 @@ public class DataAccess {
             String username = resultToParse.split(ENCLOSE_VALUE_RGX)[2];
             
             String infos =
-                "Database ["+ nameDatabase +"] "
-                + "on "+ this.injectionModel.getMediatorVendor().getVendor() +" ["+ versionDatabase +"] "
-                + "for user ["+ username +"]";
+                "Database ["
+                + nameDatabase 
+                + "] "
+                + "on "
+                + this.injectionModel.getMediatorVendor().getVendor() 
+                + " ["
+                + versionDatabase 
+                + "] "
+                + "for user ["
+                + username 
+                + "]";
             
             LOGGER.debug(infos);
             
@@ -192,6 +210,7 @@ public class DataAccess {
         List<Database> databases = new ArrayList<>();
         
         String resultToParse = "";
+        
         try {
             String[] sourcePage = {""};
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
@@ -201,14 +220,21 @@ public class DataAccess {
                 0,
                 null
             );
+            
         } catch (SlidingException e) {
+            
             LOGGER.warn(e.getMessage(), e);
+            
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
+                
                 resultToParse = e.getSlidingWindowAllRows();
+                
             } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
+                
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
+            
         } catch (Exception e) {
             LOGGER.warn(e.getMessage(), e);
         }
@@ -216,13 +242,13 @@ public class DataAccess {
         // Parse all data we have retrieved
         Matcher regexSearch =
             Pattern
-                .compile(
-                    MODE
-                    + ENCLOSE_VALUE_RGX
-                    + CELL_TABLE
-                    + ENCLOSE_VALUE_RGX
-                )
-                .matcher(resultToParse);
+            .compile(
+                MODE
+                + ENCLOSE_VALUE_RGX
+                + CELL_TABLE
+                + ENCLOSE_VALUE_RGX
+            )
+            .matcher(resultToParse);
 
         if (!regexSearch.find()) {
             throw new InjectionFailureException();
@@ -232,6 +258,7 @@ public class DataAccess {
 
         // Build an array of Database objects from the data we have parsed
         while (regexSearch.find()) {
+            
             String databaseName = regexSearch.group(1);
             String tableCount = regexSearch.group(2);
 
@@ -274,6 +301,7 @@ public class DataAccess {
         String tableCount = Integer.toString(database.getChildCount());
         
         String resultToParse = "";
+        
         try {
             String[] pageSource = {""};
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
@@ -283,14 +311,21 @@ public class DataAccess {
                 Integer.parseInt(tableCount),
                 database
             );
+            
         } catch (SlidingException e) {
+            
             LOGGER.warn(e.getMessage(), e);
+            
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
+                
                 resultToParse = e.getSlidingWindowAllRows();
+                
             } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
+                
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
+            
         } catch (Exception e) {
             LOGGER.warn(e.getMessage(), e);
         }
@@ -298,13 +333,13 @@ public class DataAccess {
         // Parse all the data we have retrieved
         Matcher regexSearch =
             Pattern
-                .compile(
-                    MODE
-                    + ENCLOSE_VALUE_RGX
-                    + CELL_TABLE
-                    + ENCLOSE_VALUE_RGX
-                )
-                .matcher(resultToParse);
+            .compile(
+                MODE
+                + ENCLOSE_VALUE_RGX
+                + CELL_TABLE
+                + ENCLOSE_VALUE_RGX
+            )
+            .matcher(resultToParse);
         
         Request requestEndProgress = new Request();
         requestEndProgress.setMessage(Interaction.END_PROGRESS);
@@ -319,6 +354,7 @@ public class DataAccess {
         
         // Build an array of Table objects from the data we have parsed
         while (regexSearch.find()) {
+            
             String tableName = regexSearch.group(1);
             String rowCount = regexSearch.group(2);
             
@@ -355,6 +391,7 @@ public class DataAccess {
         this.injectionModel.sendToViews(requestStartProgress);
 
         String resultToParse = "";
+        
         try {
             String[] pageSource = {""};
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
@@ -364,34 +401,41 @@ public class DataAccess {
                 0,
                 table
             );
+            
         } catch (SlidingException e) {
             
             LOGGER.warn(e.getMessage(), e);
+            
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
+                
                 resultToParse = e.getSlidingWindowAllRows();
+                
             } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
+                
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
+            
         } catch (Exception e) {
             LOGGER.warn(e.getMessage(), e);
         }
 
         // Build SQLite columns
         if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getSqlite()) {
+            
             resultToParse = this.injectionModel.getMediatorVendor().getSqlite().transformSQLite(resultToParse);
         }
         
         // Parse all the data we have retrieved
         Matcher regexSearch =
             Pattern
-                .compile(
-                    MODE
-                    + ENCLOSE_VALUE_RGX
-                    + CELL_TABLE
-                    + ENCLOSE_VALUE_RGX
-                )
-                .matcher(resultToParse);
+            .compile(
+                MODE
+                + ENCLOSE_VALUE_RGX
+                + CELL_TABLE
+                + ENCLOSE_VALUE_RGX
+            )
+            .matcher(resultToParse);
 
         Request requestEndProgress = new Request();
         requestEndProgress.setMessage(Interaction.END_INDETERMINATE_PROGRESS);
@@ -406,6 +450,7 @@ public class DataAccess {
 
         // Build an array of Column objects from the data we have parsed
         while (regexSearch.find()) {
+            
             String nameColumn = regexSearch.group(1);
 
             Column column = new Column(nameColumn, table);
@@ -484,8 +529,10 @@ public class DataAccess {
     private List<List<String>> getRows(Database database, Table table, int rowCount, String[] columns) throws InjectionFailureException {
         
         String resultToParse = "";
+        
         try {
             String[] pageSource = {""};
+            
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlRows(columns, database, table),
                 pageSource,
@@ -493,66 +540,26 @@ public class DataAccess {
                 rowCount,
                 table
             );
+            
         } catch (SlidingException e) {
             
             LOGGER.warn(e.getMessage(), e);
             
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
+                
                 resultToParse = e.getSlidingWindowAllRows();
+                
             } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
+                
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
+            
         } catch (Exception e) {
             LOGGER.warn(e.getMessage(), e);
         }
 
-        return parse(resultToParse);
-    }
-
-    private List<List<String>> parse(String rows) throws InjectionFailureException {
-        
-        // Parse all the data we have retrieved
-        Matcher regexSearch =
-            Pattern
-                // TODO requete differente
-                .compile(
-                    MODE
-                    + ENCLOSE_VALUE_RGX
-                    + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)"
-                    + SEPARATOR_QTE_RGX
-                    + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"
-                    + ENCLOSE_VALUE_RGX
-                )
-                .matcher(rows);
-
-        if (!regexSearch.find()) {
-            throw new InjectionFailureException();
-        }
-        
-        regexSearch.reset();
-
-        int rowsFound = 0;
-        List<List<String>> listValues = new ArrayList<>();
-
-        // Build a 2D array of strings from the data we have parsed
-        // => row number, occurrence, value1, value2...
-        while (regexSearch.find()) {
-            
-            String values = regexSearch.group(1);
-            int instances = Integer.parseInt(regexSearch.group(2));
-
-            listValues.add(new ArrayList<String>());
-            listValues.get(rowsFound).add(Integer.toString(rowsFound + 1));
-            listValues.get(rowsFound).add("x"+ instances);
-            for (String cellValue: values.split("\\x7F", -1)) {
-                listValues.get(rowsFound).add(cellValue);
-            }
-
-            rowsFound++;
-        }
-        
-        return listValues;
+        return SuspendableGetRows.parse(resultToParse);
     }
 
     private String[][] build2D(List<String> columnsName, List<List<String>> listValues) {
@@ -568,7 +575,9 @@ public class DataAccess {
                 
                 try {
                     tableDatas[indexRow][indexColumn] = listValues.get(indexRow).get(indexColumn);
+                    
                 } catch (IndexOutOfBoundsException e) {
+                    
                     isIncomplete = true;
                     LOGGER.trace("Incomplete line found");
                     
@@ -579,6 +588,7 @@ public class DataAccess {
             }
             
             if (isIncomplete) {
+                
                 LOGGER.warn("String is too long, row #"+ (indexRow + 1) +" is incomplete:");
                 LOGGER.warn(String.join(", ", listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()])));
             }
@@ -586,5 +596,4 @@ public class DataAccess {
         
         return tableDatas;
     }
-    
 }

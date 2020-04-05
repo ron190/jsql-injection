@@ -36,6 +36,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     private String performanceLength = "0";
     
     public StrategyInjectionNormal(InjectionModel injectionModel) {
+        
         super(injectionModel);
     }
 
@@ -58,9 +59,12 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         ;
         
         if (this.isApplicable) {
+            
             LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Normal injection using "+ this.performanceLength +" characters");
             this.allow();
+            
         } else {
+            
             this.unallow();
         }
     }
@@ -77,7 +81,9 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
-        return this.injectionModel.injectWithIndexes(this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(sqlQuery, startPosition));
+        return this.injectionModel.injectWithIndexes(
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(sqlQuery, startPosition)
+        );
     }
 
     @Override
@@ -106,6 +112,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         
         List<String> foundIndexes = new ArrayList<>();
         while (regexSearch.find()) {
+            
             foundIndexes.add(regexSearch.group(1));
         }
 
@@ -118,7 +125,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         );
 
         // Replace correct indexes from 1337(index)7331 to
-        // ==> ${LEAD}(index)######...######
+        // ==> ${lead}(index)######...######
         // Search for index that displays the most #
         String performanceQuery = this.injectionModel.getMediatorVendor().getVendor().instance().sqlCapacity(indexes);
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(performanceQuery);
@@ -128,12 +135,14 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         //     column 2: # found, so #######...#######
         regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(\\d+)(#+)").matcher(performanceSourcePage);
         List<String[]> performanceResults = new ArrayList<>();
+        
         while (regexSearch.find()) {
             performanceResults.add(new String[]{regexSearch.group(1), regexSearch.group(2)});
         }
 
         // Fix #16243: NullPointerException on this.initialQuery.replaceAll() at end of method
         if (performanceResults.isEmpty() || indexesInUrl == null) {
+            
             this.performanceLength = "0";
             // TODO optional
             return null;
@@ -143,7 +152,9 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         //     column 1: length of #######...#######
         //     column 2: index
         Integer[][] lengthFields = new Integer[performanceResults.size()][2];
+        
         for (int i = 0; i < performanceResults.size(); i++) {
+            
             lengthFields[i] = new Integer[]{
                 performanceResults.get(i)[1].length() + performanceResults.get(i)[0].length(),
                 Integer.parseInt(performanceResults.get(i)[0])

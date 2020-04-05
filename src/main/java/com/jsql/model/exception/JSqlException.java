@@ -10,5 +10,4 @@ public class JSqlException extends Exception {
     public JSqlException(String message, Throwable e) {
         super(message, e);
     }
-    
 }

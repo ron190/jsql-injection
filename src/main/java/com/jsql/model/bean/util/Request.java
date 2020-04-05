@@ -17,43 +17,29 @@ package com.jsql.model.bean.util;
 public class Request {
     
     /**
-     * Class identifier for the interaction.
+     * Message identifier for the interaction.
      */
     private Interaction message;
     
     /**
-     * List of parameters.
+     * List of custom parameters.
      */
     private Object[] parameters;
+    
+    // Getter and setter
 
-    /**
-     * Get identifier class name for this interaction.
-     * @return Name of interaction
-     */
     public Interaction getMessage() {
         return this.message;
     }
 
-    /**
-     * Get the list of custom parameters for this request.
-     * @return List of parameter(s).
-     */
     public Object[] getParameters() {
         return this.parameters;
     }
 
-    /**
-     * Identifier message for this request.
-     * @param message Text identifier
-     */
     public void setMessage(Interaction message) {
         this.message = message;
     }
 
-    /**
-     * Set custom parameters for the request.
-     * @param parameters List of parameters
-     */
     public void setParameters(Object... parameters) {
         this.parameters = parameters;
     }

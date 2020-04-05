@@ -7,8 +7,8 @@ import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.util.GitUtil.ShowOnConsole;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Action performing a IP localisation test.
@@ -28,13 +28,13 @@ public class ActionCheckIP implements ActionListener, Runnable {
     @Override
     public void run() {
         
-        if (!MediatorModel.model().getMediatorUtils().getProxyUtil().isLive(ShowOnConsole.YES)) {
+        if (!MediatorGui.model().getMediatorUtils().getProxyUtil().isLive(ShowOnConsole.YES)) {
             return;
         }
 
         try {
             LOGGER.trace("Checking ip address...");
-            String addressIp = MediatorModel.model().getMediatorUtils().getConnectionUtil().getSource("http://checkip.amazonaws.com");
+            String addressIp = MediatorGui.model().getMediatorUtils().getConnectionUtil().getSource("http://checkip.amazonaws.com");
             LOGGER.info("Your public IP address is " + addressIp);
             
         } catch (MalformedURLException e) {

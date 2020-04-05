@@ -21,7 +21,6 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.JButtonStateful;
@@ -99,7 +98,7 @@ public class ManagerFile extends AbstractManagerList {
                     MediatorGui.managerSqlshell().clearSelection();
                     
                     try {
-                        MediatorModel.model().getResourceAccess().readFile(this.listFile.getSelectedValuesList());
+                        MediatorGui.model().getResourceAccess().readFile(this.listFile.getSelectedValuesList());
                     } catch (InterruptedException ex) {
                         LOGGER.warn("Interruption while waiting for Reading File termination", ex);
                         Thread.currentThread().interrupt();
@@ -108,7 +107,7 @@ public class ManagerFile extends AbstractManagerList {
                     }
                 } else {
                     
-                    MediatorModel.model().getResourceAccess().stopSearchingFile();
+                    MediatorGui.model().getResourceAccess().stopSearchingFile();
                     ManagerFile.this.run.setEnabled(false);
                     ManagerFile.this.run.setState(StateButton.STOPPING);
                 }

@@ -15,7 +15,6 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.Database;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.util.UiUtil;
@@ -62,7 +61,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
                 
                 Thread.currentThread().setName("SwingWorkerNodeModelDatabase");
                 Database selectedDatabase = (Database) NodeModelDatabase.this.getElementDatabase();
-                return MediatorModel.model().getDataAccess().listTables(selectedDatabase);
+                return MediatorGui.model().getDataAccess().listTables(selectedDatabase);
             }
         }.execute();
         

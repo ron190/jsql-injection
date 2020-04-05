@@ -33,5 +33,4 @@ public class ModelYaml implements Serializable {
     public void setStrategy(Strategy strategy) {
         this.strategy = strategy;
     }
-
 }

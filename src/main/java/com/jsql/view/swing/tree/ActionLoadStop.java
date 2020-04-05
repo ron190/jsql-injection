@@ -19,7 +19,6 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.view.swing.MediatorGui;
@@ -64,7 +63,7 @@ public class ActionLoadStop implements ActionListener {
             protected Object doInBackground() throws Exception {
                 
                 Thread.currentThread().setName("SwingWorkerActionLoadStop");
-                MediatorModel.model().getDataAccess().listValues(columnsToSearch);
+                MediatorGui.model().getDataAccess().listValues(columnsToSearch);
                 return null;
             }
         }.execute();
@@ -72,7 +71,7 @@ public class ActionLoadStop implements ActionListener {
 
     private void stopAbstractNode() {
         
-        AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
+        AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
         
         // Fix #21394: NullPointerException on stop()
         if (suspendableTask != null) {
@@ -83,7 +82,7 @@ public class ActionLoadStop implements ActionListener {
         this.nodeModel.setProgressing(false);
         this.nodeModel.setLoading(false);
         
-        MediatorModel.model().getMediatorUtils().getThreadUtil().remove(this.nodeModel.getElementDatabase());
+        MediatorGui.model().getMediatorUtils().getThreadUtil().remove(this.nodeModel.getElementDatabase());
     }
 
     private List<Column> getSelectedColumns() {

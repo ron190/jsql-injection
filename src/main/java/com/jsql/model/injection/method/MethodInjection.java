@@ -66,8 +66,8 @@ public abstract class MethodInjection implements Serializable {
             // Does not test for insertion character (param is null)
             hasFoundInjection = this.injectionModel.getMediatorStrategy().testStrategies(null);
             
-        // Default injection: last param tested only
         } else if (!this.isCheckingAllParam()) {
+            // Default injection: last param tested only
             
             // Injection point defined on last parameter
             // TODO ADD STAR
@@ -80,11 +80,11 @@ public abstract class MethodInjection implements Serializable {
 
             hasFoundInjection = this.injectionModel.getMediatorStrategy().testStrategies(parameterToInject);
             
-        // Injection of every params: isCheckingAllParam() == true.
-        // Params are tested one by one in two loops:
-        // - inner loop erases * from previous param
-        // - outer loop adds * to current param
         } else {
+            // Injection of every params: isCheckingAllParam() == true.
+            // Params are tested one by one in two loops:
+            // - inner loop erases * from previous param
+            // - outer loop adds * to current param
             
             // This param will be marked by * if injection is found,
             // inner loop will erase mark * otherwise

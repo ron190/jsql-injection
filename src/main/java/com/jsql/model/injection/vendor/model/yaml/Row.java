@@ -24,5 +24,4 @@ public class Row implements Serializable {
     public void setFields(Fields fields) {
         this.fields = fields;
     }
-
 }

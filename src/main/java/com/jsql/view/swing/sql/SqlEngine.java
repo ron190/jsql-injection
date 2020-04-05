@@ -28,7 +28,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
@@ -48,7 +47,7 @@ import com.jsql.view.swing.util.UiUtil;
 @SuppressWarnings("serial")
 public class SqlEngine extends JPanel implements Cleanable {
     
-    private ModelYaml modelYaml = MediatorModel.model().getMediatorVendor().getVendor().instance().getModelYaml();
+    private ModelYaml modelYaml = MediatorGui.model().getMediatorVendor().getVendor().instance().getModelYaml();
 
     private static final JTabbedPane TAB_ERROR = new JTabbedPane(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
 
@@ -535,16 +534,16 @@ public class SqlEngine extends JPanel implements Cleanable {
         menuBarVendor.setOpaque(false);
         menuBarVendor.setBorder(null);
         
-        JMenu comboMenuVendor = new ComboMenu(MediatorModel.model().getMediatorVendor().getVendor().toString());
+        JMenu comboMenuVendor = new ComboMenu(MediatorGui.model().getMediatorVendor().getVendor().toString());
         menuBarVendor.add(comboMenuVendor);
 
         ButtonGroup groupVendor = new ButtonGroup();
 
-        List<Vendor> listVendors = new LinkedList<>(MediatorModel.model().getMediatorVendor().getVendors());
-        listVendors.removeIf(i -> i == MediatorModel.model().getMediatorVendor().getAuto());
+        List<Vendor> listVendors = new LinkedList<>(MediatorGui.model().getMediatorVendor().getVendors());
+        listVendors.removeIf(i -> i == MediatorGui.model().getMediatorVendor().getAuto());
         
         for (final Vendor vendor: listVendors) {
-            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().getMediatorVendor().getVendor());
+            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorGui.model().getMediatorVendor().getVendor());
             
             itemRadioVendor.addActionListener(actionEvent -> {
                 this.modelYaml = vendor.instance().getModelYaml();

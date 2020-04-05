@@ -46,10 +46,11 @@ public class GreetingController {
         
         Greeting greeting = null;
         
-        String inject = request.getParameterMap().get("name")[0];
-        inject = inject.replace(":", "\\:");
-        
         try (Session session = this.sessionFactory.getCurrentSession()) {
+            
+            // TODO Inside try because test connection do not send param
+            String inject = request.getParameterMap().get("name")[0];
+            inject = inject.replace(":", "\\:");
             
             Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
             
@@ -137,6 +138,32 @@ public class GreetingController {
             
             Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
             
+            List<Object[]> results = query.getResultList();
+            
+            greeting = new Greeting(
+                this.counter.incrementAndGet(),
+                String.format(template, inject)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
+            
+        } catch (Exception e) {
+            // Hide useless SQL error messages
+        }
+        
+        return greeting;
+    }
+    
+    @SuppressWarnings("unchecked")
+    @RequestMapping("/greeting-integer-insertion-char")
+    public Greeting greetingIntegerInsertionChar(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            
+            Query query = session.createNativeQuery("select First_Name from Student where 1 = "+ inject);
+        
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(

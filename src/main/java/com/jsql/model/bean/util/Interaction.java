@@ -64,5 +64,4 @@ public enum Interaction {
     public String toString() {
         return this.name;
     }
-    
 }
