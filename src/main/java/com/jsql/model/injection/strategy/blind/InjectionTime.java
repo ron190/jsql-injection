@@ -168,9 +168,9 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         }
         
         CallableTime timeTest = new CallableTime(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(), 
-            this.injectionModel, 
-            this, 
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(),
+            this.injectionModel,
+            this,
             this.booleanMode
         );
         

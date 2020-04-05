@@ -173,7 +173,7 @@ resource:
      LTRIM(
          RTRIM(
              coalesce(
-                 ${field}, 
+                 ${field.value}, 
                  ''
              )
          )
@@ -188,7 +188,7 @@ strategy:
            '${lead}'
            %2Bsubstring(
                (${injection}), 
-               ${index}, 
+               ${window.char}, 
                65536
            )
    )
@@ -229,13 +229,13 @@ strategy:
         ascii(
             substring(
                 ${injection}, 
-                ${index}, 
+                ${window.char}, 
                 1
             )
         ) 
         %26 ${bit}
     )
-   length: len(${injection}) > ${index}
+   length: len(${injection}) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}

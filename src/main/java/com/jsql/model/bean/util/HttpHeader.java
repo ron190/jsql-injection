@@ -37,10 +37,10 @@ public class HttpHeader {
      * @param response RESPONSE header sent by url
      */
     public HttpHeader(
-        String url, 
-        String post, 
+        String url,
+        String post,
         String header,
-        Map<String, String> response, 
+        Map<String, String> response,
         String source
     ) {
         

@@ -74,7 +74,7 @@ resource:
     field: |
      trim(
          ifnull(
-             ${field}, 
+             ${field.value}, 
              ''
          )
      )
@@ -88,7 +88,7 @@ strategy:
            '${lead}' 
            || substr(
                (${injection}), 
-               ${index}, 
+               ${window.char}, 
                65536
            )
    )
@@ -140,12 +140,12 @@ strategy:
     unicode(
         substr(
             ${injection}, 
-            ${index}, 
+            ${window.char}, 
             1
         )
     ) 
     %26 ${bit}
-   length: length(${injection}) > ${index}
+   length: length(${injection}) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}

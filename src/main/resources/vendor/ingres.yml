@@ -88,7 +88,7 @@ resource:
         ${limit}
     ) a
    fields: 
-    field: trim(ifnull(varchar(${field}), ''))"
+    field: trim(ifnull(varchar(${field.value}), ''))"
     concat: "|| 0x7f ||"
     
 strategy: 
@@ -97,7 +97,7 @@ strategy:
    '${lead}'
    ||substr(
        r,
-       ${index},
+       ${window.char},
        65536
    ) r
    from (

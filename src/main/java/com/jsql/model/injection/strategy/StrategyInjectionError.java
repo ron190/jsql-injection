@@ -72,7 +72,7 @@ public class StrategyInjectionError extends AbstractStrategy {
                     .getQuery()
                     .replace("${window}", configurationYaml.getSlidingWindow())
                     .replace("${injection}", configurationYaml.getFailsafe().replace("${indice}","0"))
-                    .replace("${index}", "1")
+                    .replace("${window.char}", "1")
                     .replace("${capacity}", Integer.toString(errorMethod.getCapacity()))
                 )
             );
@@ -82,8 +82,8 @@ public class StrategyInjectionError extends AbstractStrategy {
                     "(?s).*"
                     + configurationYaml.getFailsafe()
                     .replace("${indice}","0")
-                    .replace("0%2b1", "1")
                     // TODO postgres
+                    .replace("0%2b1", "1")
                     .replace("(133707331)::text", "133707331")
 //                    .replace("(cast(133707331 as text))", "133707331")
                     + ".*"
@@ -101,7 +101,7 @@ public class StrategyInjectionError extends AbstractStrategy {
                         errorMethod.getQuery()
                         .replace("${window}", configurationYaml.getSlidingWindow())
                         .replace("${injection}", configurationYaml.getCalibrator())
-                        .replace("${index}", "1")
+                        .replace("${window.char}", "1")
                         .replace("${capacity}", Integer.toString(errorMethod.getCapacity()))
                     )
                 );
@@ -162,9 +162,9 @@ public class StrategyInjectionError extends AbstractStrategy {
     public void activateStrategy() {
         
         LOGGER.info(
-            I18nUtil.valueByKey("LOG_USING_STRATEGY") 
+            I18nUtil.valueByKey("LOG_USING_STRATEGY")
             +" ["
-            + this.getName() 
+            + this.getName()
             + " "
             + this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(this.indexMethod).getName()
             +"]"

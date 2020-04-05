@@ -45,7 +45,7 @@ public class DataAccess {
     
     /**
      * SQL characters marking the end of the result of an injection.
-     * Process stops when this schema is encountered: 
+     * Process stops when this schema is encountered:
      * <pre>SQLix01x03x03x07
      */
     // TODO idem XML
@@ -55,7 +55,7 @@ public class DataAccess {
     
     /**
      * Regex characters marking the end of the result of an injection.
-     * Process stops when this schema is encountered: 
+     * Process stops when this schema is encountered:
      * <pre>SQLix01x03x03x07
      */
     public static final String TRAIL_RGX = "\\x01\\x03\\x03\\x07";
@@ -82,14 +82,14 @@ public class DataAccess {
     
     /**
      * SQL character used between the table cell and the number of occurrence of the cell text.
-     * Expected schema of a table cell data is 
+     * Expected schema of a table cell data is
      * <pre>%04[table cell]%05[number of occurrences]%04
      */
     public static final String SEPARATOR_QTE_SQL = "%05";
     
     /**
      * Regex character used between the table cell and the number of occurrence of the cell text.
-     * Expected schema of a table cell data is 
+     * Expected schema of a table cell data is
      * <pre>x04[table cell]x05[number of occurrences]x04
      */
     public static final String SEPARATOR_QTE_RGX = "\\x05";
@@ -98,7 +98,7 @@ public class DataAccess {
     /**
      * Regex character enclosing a table cell returned by injection.
      * It allows to detect the correct end of a table cell data during parsing.
-     * Expected schema of a table cell data is 
+     * Expected schema of a table cell data is
      * <pre>x04[table cell]x05[number of occurrences]x04
      */
     public static final String ENCLOSE_VALUE_RGX = "\\x04";
@@ -107,7 +107,7 @@ public class DataAccess {
     /**
      * SQL character enclosing a table cell returned by injection.
      * It allows to detect the correct end of a table cell data during parsing.
-     * Expected schema of a table cell data is 
+     * Expected schema of a table cell data is
      * <pre>%04[table cell]%05[number of occurrences]%04
      */
     public static final String ENCLOSE_VALUE_SQL = "%04";
@@ -130,7 +130,7 @@ public class DataAccess {
      * of the cell text, separated by the reserved character x05 in hexadecimal.
      * The range of characters from x01 to x1F are not printable ASCII characters used to parse the data and exclude
      * printable characters during parsing.
-     * Expected schema of a table cell data is 
+     * Expected schema of a table cell data is
      * <pre>x04[table cell]x05[number of occurrences]x04
      */
     public static final String CELL_TABLE = "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)"+ SEPARATOR_QTE_RGX +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?";
@@ -174,15 +174,15 @@ public class DataAccess {
             
             String infos =
                 "Database ["
-                + nameDatabase 
+                + nameDatabase
                 + "] "
                 + "on "
-                + this.injectionModel.getMediatorVendor().getVendor() 
+                + this.injectionModel.getMediatorVendor().getVendor()
                 + " ["
-                + versionDatabase 
+                + versionDatabase
                 + "] "
                 + "for user ["
-                + username 
+                + username
                 + "]";
             
             LOGGER.debug(infos);
@@ -500,13 +500,13 @@ public class DataAccess {
          */
         String[] arrayColumns = columnsName.toArray(new String[columnsName.size()]);
 
-        List<List<String>> listValues = getRows(database, table, rowCount, arrayColumns);
+        List<List<String>> listValues = this.getRows(database, table, rowCount, arrayColumns);
 
         // Add the default title to the columns: row number, occurrence
         columnsName.add(0, "");
         columnsName.add(0, "");
 
-        String[][] tableDatas = build2D(columnsName, listValues);
+        String[][] tableDatas = this.build2D(columnsName, listValues);
 
         arrayColumns = columnsName.toArray(new String[columnsName.size()]);
         

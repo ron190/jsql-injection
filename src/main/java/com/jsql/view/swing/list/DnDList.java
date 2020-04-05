@@ -337,7 +337,7 @@ public class DnDList extends JList<ItemList> {
     }
 
     public boolean isScan() {
-        return isScan;
+        return this.isScan;
     }
 
     public void setScan(boolean isScan) {

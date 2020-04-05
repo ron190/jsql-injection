@@ -163,7 +163,7 @@ resource:
         ${limit}
     )
    fields: 
-    field: trim(to_char(${field}))
+    field: trim(to_char(${field.value}))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -174,7 +174,7 @@ strategy:
            '${lead}'
            || substr(
                (${injection}),
-               ${index},
+               ${window.char},
                ${capacity}
            ) from dual
    )
@@ -230,13 +230,13 @@ strategy:
         ascii(
             substr(
                 ${injection}, 
-                ${index}, 
+                ${window.char}, 
                 1
             )
         ), 
         ${bit}
     )
-   length: length(${injection}) > ${index}
+   length: length(${injection}) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}

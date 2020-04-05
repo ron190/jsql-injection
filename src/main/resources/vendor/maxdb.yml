@@ -89,7 +89,7 @@ resource:
         ${limit}
     ) a
    fields: 
-    field: trim(ifnull(chr(${field}), ''))
+    field: trim(ifnull(chr(${field.value}), ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -99,7 +99,7 @@ strategy:
        '${lead}'
        ||SUBSTR(
            r,
-           ${index},
+           ${window.char},
            1500
        )
    from (

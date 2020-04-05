@@ -88,7 +88,7 @@ resource:
         ${limit}
     ) a
    fields: 
-    field: trim(coalesce(${field}, ''))
+    field: trim(coalesce(${field.value}, ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -97,7 +97,7 @@ strategy:
    '${lead}'
    ||substring(
        r,
-       ${index},
+       ${window.char},
        65536
    ) rrr
    from (

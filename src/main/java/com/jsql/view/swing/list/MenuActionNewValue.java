@@ -109,11 +109,11 @@ public class MenuActionNewValue implements ActionListener {
         
         if ("scan".equals(this.myList.getName())) {
             
-            lastIndex = addToScanList(textarea, lastIndex);
+            lastIndex = this.addToScanList(textarea, lastIndex);
             
         } else {
             
-            lastIndex = addToList(textarea, lastIndex);
+            lastIndex = this.addToList(textarea, lastIndex);
         }
 
         this.myList.setSelectionInterval(firstIndex, lastIndex - 1);

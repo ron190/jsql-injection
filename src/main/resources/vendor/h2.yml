@@ -94,7 +94,7 @@ resource:
         ${limit}
     ) x
    fields: 
-    field: trim(ifnull(`${field}`, ''))
+    field: trim(ifnull(`${field.value}`, ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -109,7 +109,7 @@ strategy:
                '${lead}',
                substr(
                    (${injection}),
-                   ${index},
+                   ${window.char},
                    /**
                     * Minus '${lead}' should apply
                     */

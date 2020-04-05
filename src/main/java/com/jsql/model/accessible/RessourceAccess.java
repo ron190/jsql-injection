@@ -163,7 +163,7 @@ public class RessourceAccess {
             tasksHandled < submittedTasks && !this.isSearchAdminStopped;
             tasksHandled++
         ) {
-            nbAdminPagesFound = callAdminPage(taskCompletionService, nbAdminPagesFound);
+            nbAdminPagesFound = this.callAdminPage(taskCompletionService, nbAdminPagesFound);
         }
 
         taskExecutor.shutdown();
@@ -171,7 +171,7 @@ public class RessourceAccess {
 
         this.isSearchAdminStopped = false;
 
-        logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);
+        this.logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);
 
         Request request = new Request();
         request.setMessage(Interaction.END_ADMIN_SEARCH);
@@ -209,13 +209,13 @@ public class RessourceAccess {
         
         String result =
             "Found "
-            + nbAdminPagesFound 
+            + nbAdminPagesFound
             + " admin page" +( nbAdminPagesFound > 1 ? 's' : "" )
             + " "
             + (tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : "")
-            + "on " 
-            + submittedTasks 
-            + " page" + ( submittedTasks > 1 ? 's' : "" ) 
+            + "on "
+            + submittedTasks
+            + " page" + ( submittedTasks > 1 ? 's' : "" )
             + " searched"
         ;
         
@@ -1006,12 +1006,12 @@ public class RessourceAccess {
         
         String result =
             "Found "
-            + countFileFound 
+            + countFileFound
             + " file" +( countFileFound > 1 ? 's' : "" )
             + " "
             + (tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : "")
-            + "on " 
-            + submittedTasks 
+            + "on "
+            + submittedTasks
             +" files checked"
         ;
         if (countFileFound > 0) {

@@ -63,7 +63,7 @@ resource:
     from ${database}.${table}
     ${limit}
    fields: 
-    field: trim(coalesce(${field}, ''))
+    field: trim(coalesce(${field.value}, ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -77,7 +77,7 @@ strategy:
        || NULLIF(
            substr(
                (${injection}),
-               ${index}
+               ${window.char}
            ),
            '${trail_sql}'
        )

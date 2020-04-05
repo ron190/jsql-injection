@@ -190,11 +190,11 @@ public class HeaderUtil {
             
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isParsingForm()) {
             
-            logForms(connection, elementsForm, result);
+            this.logForms(connection, elementsForm, result);
             
         } else {
             
-            addForms(elementsForm, result, mapForms);
+            this.addForms(elementsForm, result, mapForms);
         }
     }
 
@@ -281,7 +281,7 @@ public class HeaderUtil {
 
     private void checkResponse(String responseCode, Map<String, String> mapResponse) {
         
-        if (isBasicAuth(responseCode, mapResponse)) {
+        if (this.isBasicAuth(responseCode, mapResponse)) {
             
             LOGGER.warn(
                 "Basic Authentication detected.\n"
@@ -289,7 +289,7 @@ public class HeaderUtil {
                 + "Or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with the string 'osUserName:osPassword' encoded in Base64. You can use the Coder in jSQL to encode the string."
             );
         
-        } else if (isNtlm(responseCode, mapResponse)) {
+        } else if (this.isNtlm(responseCode, mapResponse)) {
             
             LOGGER.warn(
                 "NTLM Authentication detected.\n"
@@ -297,14 +297,14 @@ public class HeaderUtil {
                 + "Or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
             );
         
-        } else if (isDigest(responseCode, mapResponse)) {
+        } else if (this.isDigest(responseCode, mapResponse)) {
             
             LOGGER.warn(
                 "Digest Authentication detected.\n"
                 + "Please define and enable authentication information in the panel Preferences."
             );
         
-        } else if (isNegotiate(responseCode, mapResponse)) {
+        } else if (this.isNegotiate(responseCode, mapResponse)) {
             
             LOGGER.warn(
                 "Negotiate Authentication detected.\n"
@@ -345,7 +345,7 @@ public class HeaderUtil {
 
     private boolean isNegotiate(String responseCode, Map<String, String> mapResponse) {
         
-        return 
+        return
             Pattern.matches(REGEX_HTTP_STATUS, responseCode)
             && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
             && "Negotiate".equals(mapResponse.get(HEADER_WWW_AUTHENTICATE));
@@ -353,7 +353,7 @@ public class HeaderUtil {
 
     private boolean isDigest(String responseCode, Map<String, String> mapResponse) {
         
-        return 
+        return
             Pattern.matches(REGEX_HTTP_STATUS, responseCode)
             && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
             && mapResponse.get(HEADER_WWW_AUTHENTICATE) != null
@@ -362,7 +362,7 @@ public class HeaderUtil {
 
     private boolean isNtlm(String responseCode, Map<String, String> mapResponse) {
         
-        return 
+        return
             Pattern.matches(REGEX_HTTP_STATUS, responseCode)
             && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
             && "NTLM".equals(mapResponse.get(HEADER_WWW_AUTHENTICATE));
@@ -370,7 +370,7 @@ public class HeaderUtil {
 
     private boolean isBasicAuth(String responseCode, Map<String, String> mapResponse) {
         
-        return 
+        return
             Pattern.matches(REGEX_HTTP_STATUS, responseCode)
             && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
             && mapResponse.get(HEADER_WWW_AUTHENTICATE) != null

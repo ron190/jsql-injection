@@ -44,18 +44,18 @@ public class VendorYaml implements AbstractVendor {
     
     private static final String BOOLEAN_MODE = "${boolean.mode}";
     
-    private static final String LIMIT_VALUE = "${limit.value}";
     public static final String LIMIT = "${limit}";
+    private static final String LIMIT_VALUE = "${limit.value}";
 
     private static final String RESULT_RANGE = "${result_range}";
 
     private static final String INDICE_UNIQUE = "${indice_unique}";
 
-    private static final String INDICES = "${indices}";
-
     private static final String CALIBRATOR = "${calibrator}";
 
+    private static final String INDICES = "${indices}";
     private static final String INDICE = "${indice}";
+    private static final String WINDOW_CHAR = "${window.char}";
 
     private static final String WINDOW = "${window}";
 
@@ -65,28 +65,22 @@ public class VendorYaml implements AbstractVendor {
 
     private static final String BIT = "${bit}";
 
-    private static final String INDEX = "${index}";
-
     private static final String INJECTION = "${injection}";
 
     private static final String TEST = "${test}";
 
-    private static final String FILEPATH_HEX = "${filepath.hex}";
-
     private static final String FILEPATH = "${filepath}";
+    private static final String FILEPATH_HEX = "${filepath.hex}";
 
     private static final String CONTENT_HEX = "${content.hex}";
 
     private static final String FIELDS = "${fields}";
-
-    private static final String FIELD = "${field}";
+    private static final String FIELD = "${field.value}";
 
     private static final String TABLE = "${table}";
-
-    private static final String TABLE_HEX = "${table.hex}";
-
     private static final String DATABASE = "${database}";
 
+    private static final String TABLE_HEX = "${table.hex}";
     private static final String DATABASE_HEX = "${database.hex}";
     
     private ModelYaml modelYaml;
@@ -220,7 +214,7 @@ public class VendorYaml implements AbstractVendor {
                     Hex.encodeHexString(content.getBytes())
                 )
             )
-            .replaceAll("--++", "") 
+            .replaceAll("--++", "")
             + StringUtils.SPACE
             + this.modelYaml.getResource().getFile().getCreate()
             .getQuery()
@@ -250,7 +244,7 @@ public class VendorYaml implements AbstractVendor {
             + this.modelYaml.getStrategy().getBoolean()
             .getBlind()
             .replace(BOOLEAN_MODE,
-                blindMode == BooleanMode.AND 
+                blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
                 : this.modelYaml.getStrategy().getBoolean().getModeOr()
             )
@@ -265,14 +259,14 @@ public class VendorYaml implements AbstractVendor {
             + this.modelYaml.getStrategy().getBoolean()
             .getBlind()
             .replace(BOOLEAN_MODE,
-                blindMode == BooleanMode.AND 
+                blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
                 : this.modelYaml.getStrategy().getBoolean().getModeOr()
             )
             .replace(TEST,
                 this.modelYaml.getStrategy().getBoolean().getTest().getBit()
                 .replace(INJECTION, inj)
-                .replace(INDEX, Integer.toString(indexCharacter))
+                .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
                 .replace(BIT, Integer.toString(bit))
             );
     }
@@ -285,7 +279,7 @@ public class VendorYaml implements AbstractVendor {
             + this.modelYaml.getStrategy().getBoolean()
             .getBlind()
             .replace(BOOLEAN_MODE,
-                blindMode == BooleanMode.AND 
+                blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
                 : this.modelYaml.getStrategy().getBoolean().getModeOr()
             )
@@ -293,7 +287,7 @@ public class VendorYaml implements AbstractVendor {
                 this.modelYaml.getStrategy().getBoolean().getTest()
                 .getLength()
                 .replace(INJECTION, inj)
-                .replace(INDEX, Integer.toString(indexCharacter))
+                .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
             );
     }
 
@@ -305,7 +299,7 @@ public class VendorYaml implements AbstractVendor {
             + this.modelYaml.getStrategy().getBoolean()
             .getTime()
             .replace(BOOLEAN_MODE,
-                blindMode == BooleanMode.AND 
+                blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
                 : this.modelYaml.getStrategy().getBoolean().getModeOr()
             )
@@ -321,7 +315,7 @@ public class VendorYaml implements AbstractVendor {
             + this.modelYaml.getStrategy().getBoolean()
             .getTime()
             .replace(BOOLEAN_MODE,
-                blindMode == BooleanMode.AND 
+                blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
                 : this.modelYaml.getStrategy().getBoolean().getModeOr()
             )
@@ -330,7 +324,7 @@ public class VendorYaml implements AbstractVendor {
                 this.modelYaml.getStrategy().getBoolean().getTest()
                 .getBit()
                 .replace(INJECTION, inj)
-                .replace(INDEX, Integer.toString(indexCharacter))
+                .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
                 .replace(BIT, Integer.toString(bit))
             )
             .replace(
@@ -347,7 +341,7 @@ public class VendorYaml implements AbstractVendor {
             + this.modelYaml.getStrategy().getBoolean()
             .getTime()
             .replace(BOOLEAN_MODE,
-                blindMode == BooleanMode.AND 
+                blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
                 : this.modelYaml.getStrategy().getBoolean().getModeOr()
             )
@@ -356,7 +350,7 @@ public class VendorYaml implements AbstractVendor {
                 this.modelYaml.getStrategy().getBoolean().getTest()
                 .getLength()
                 .replace(INJECTION, inj)
-                .replace(INDEX, Integer.toString(indexCharacter))
+                .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
             )
             .replace(
                 SLEEP_TIME,
@@ -372,7 +366,7 @@ public class VendorYaml implements AbstractVendor {
                 this.modelYaml.getStrategy().getConfiguration()
                 .getSlidingWindow()
                 .replace(INJECTION, sqlQuery)
-                .replace(INDEX, ""+ startPosition)
+                .replace(WINDOW_CHAR, ""+ startPosition)
                 .replace(CAPACITY, "65565")
             );
     }
@@ -385,7 +379,7 @@ public class VendorYaml implements AbstractVendor {
                 this.modelYaml.getStrategy().getConfiguration()
                 .getSlidingWindow()
                 .replace(INJECTION, sqlQuery)
-                .replace(INDEX, ""+ startPosition)
+                .replace(WINDOW_CHAR, ""+ startPosition)
                 .replace(CAPACITY, "65565")
             );
     }
@@ -399,7 +393,7 @@ public class VendorYaml implements AbstractVendor {
             .getQuery()
             .replace(WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
             .replace(INJECTION, this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(INDICE, "0"))
-            .replace(INDEX, "1");
+            .replace(WINDOW_CHAR, "1");
     }
 
     @Override
@@ -412,7 +406,7 @@ public class VendorYaml implements AbstractVendor {
                 .getQuery()
                 .replace(WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
                 .replace(INJECTION, sqlQuery)
-                .replace(INDEX, ""+startPosition)
+                .replace(WINDOW_CHAR, ""+startPosition)
                 .replace(CAPACITY, Integer.toString(this.modelYaml.getStrategy().getError().getMethod().get(this.injectionModel.getMediatorStrategy().getError().getIndexMethodError()).getCapacity()))
             );
     }
@@ -425,7 +419,7 @@ public class VendorYaml implements AbstractVendor {
                 this.modelYaml.getStrategy().getConfiguration()
                 .getSlidingWindow()
                 .replace(INJECTION, sqlQuery)
-                .replace(INDEX, ""+startPosition)
+                .replace(WINDOW_CHAR, ""+startPosition)
                 .replace(CAPACITY, ""+this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength())
             );
     }

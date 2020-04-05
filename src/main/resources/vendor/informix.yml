@@ -89,7 +89,7 @@ resource:
         ${limit}
     ) a
    fields: 
-    field: trim(nvl(${field}, ''))
+    field: trim(nvl(${field.value}, ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -99,7 +99,7 @@ strategy:
        '${lead}'
        ||substr(
            r,
-           ${index},
+           ${window.char},
            32767
        ) r 
    from (

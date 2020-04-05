@@ -6,6 +6,7 @@ import static com.jsql.model.accessible.DataAccess.MODE;
 import static com.jsql.model.accessible.DataAccess.SEPARATOR_CELL_RGX;
 import static com.jsql.model.accessible.DataAccess.SEPARATOR_QTE_RGX;
 import static com.jsql.model.accessible.DataAccess.TRAIL_RGX;
+import static com.jsql.model.injection.vendor.model.VendorYaml.LIMIT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,6 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.LoopDetectedSlidingException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.AbstractStrategy;
-import static com.jsql.model.injection.vendor.model.VendorYaml.LIMIT;
 import com.jsql.util.StringUtil;
 
 /**
@@ -36,7 +36,7 @@ import com.jsql.util.StringUtil;
  * Row separator: \6
  * Tape example: \4xxRow#Xxx\5x\4\6\4xxRow#X+1xx\5x\4\6...\4\1\3\3\7</pre>
  * 
- * MID and LIMIT move two sliding windows in a 2D array tape in that order. 
+ * MID and LIMIT move two sliding windows in a 2D array tape in that order.
  * MID skips characters when collected, then LIMIT skips lines when collected.
  * The process can be interrupted by the user (stop/pause).
  */
@@ -75,7 +75,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         int charPositionInCurrentRow = 1;
         int countInfiniteLoop = 0;
         
-        String queryGetRows = getQuery(initialSqlQuery, countAllRows);
+        String queryGetRows = this.getQuery(initialSqlQuery, countAllRows);
         
         while (true) {
 
@@ -146,7 +146,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
 
                     // Add the LIMIT statement to the next SQL query and reset variables.
                     // Put the character cursor to the beginning of the line, and reset the result of the current query
-                    queryGetRows = getQuery(initialSqlQuery, countAllRows);
+                    queryGetRows = this.getQuery(initialSqlQuery, countAllRows);
 
                     slidingWindowCurrentRow.setLength(0);
                     
@@ -299,10 +299,10 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
     // TODO pb for same char string like aaaaaaaaaaaaa...aaaaaaaaaaaaa
     // detected as infinite
     private int checkInfinite(
-        int infiniteLoop, 
+        int infiniteLoop,
         String previousChunk,
-        String currentChunk, 
-        StringBuilder slidingWindowCurrentRow, 
+        String currentChunk,
+        StringBuilder slidingWindowCurrentRow,
         StringBuilder slidingWindowAllRows
     ) throws LoopDetectedSlidingException {
         
@@ -361,8 +361,8 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
     }
 
     private void checkSuspend(
-        AbstractStrategy strategy, 
-        StringBuilder slidingWindowAllRows, 
+        AbstractStrategy strategy,
+        StringBuilder slidingWindowAllRows,
         StringBuilder slidingWindowCurrentRow
     ) throws StoppedByUserSlidingException, InjectionFailureException {
         

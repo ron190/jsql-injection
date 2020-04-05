@@ -103,7 +103,7 @@ resource:
         ${limit}
     ) x
    fields: 
-    field: trim(ifnull(convert(${field}, SQL_VARCHAR), ''))
+    field: trim(ifnull(convert(${field.value}, SQL_VARCHAR), ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -113,7 +113,7 @@ strategy:
        '${lead}' 
        || substr(
            r,
-           ${index},
+           ${window.char},
            /**
             * Minus '${lead}' should apply
             */

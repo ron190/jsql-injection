@@ -50,7 +50,7 @@ resource:
     from ${table}
     ${limit}
    fields: 
-    field: trim(coalesce(${field}, ''))
+    field: trim(coalesce(${field.value}, ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -64,7 +64,7 @@ strategy:
        || NULLIF(
            substring(
                (${injection})
-               from ${index} 
+               from ${window.char} 
                for 65536
            ),
            '${trail_sql}'

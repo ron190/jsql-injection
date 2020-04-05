@@ -93,7 +93,7 @@ resource:
          ltrim(
              convert(
                  varchar, 
-                 ${field}
+                 ${field.value}
                  %2b ''
              )
          )
@@ -107,7 +107,7 @@ strategy:
        '${lead}'
        %2bsubstring(
            r,
-           ${index},
+           ${window.char},
            65536
        )
    from (

@@ -75,7 +75,7 @@ resource:
      trim(
          coalesce(
              varchar(
-                 ${field} 
+                 ${field.value} 
                  || ''
              ), 
              ''
@@ -93,7 +93,7 @@ strategy:
                    '${lead}'
                    || substr (
                        (${injection}),
-                       ${index}
+                       ${window.char}
                    ),
                    '${lead}${trail_sql}',
                    '${lead}'
@@ -150,13 +150,13 @@ strategy:
         ascii(
             substr(
                 ${injection}, 
-                ${index}, 
+                ${window.char}, 
                 1
             )
         ), 
         ${bit}
     )
-   length: length(${injection}) > ${index}
+   length: length(${injection}) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}

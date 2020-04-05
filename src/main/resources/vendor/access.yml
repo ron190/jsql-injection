@@ -84,7 +84,7 @@ resource:
         ${limit}
     ) a
    fields: 
-    field: ${field}
+    field: ${field.value}
     concat: "%26 '%7f' %26"
     
 strategy: 
@@ -94,7 +94,7 @@ strategy:
        '${lead}' 
        %26substring(
            r, 
-           ${index},
+           ${window.char},
            65536
        ) r 
    from (${injection})x

@@ -88,7 +88,7 @@ resource:
         ${limit}
     ) a
    fields: 
-    field: ${field}
+    field: ${field.value}
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -98,7 +98,7 @@ strategy:
        '${lead}' 
        || substr(
            r, 
-           ${index},
+           ${window.char},
            ${capacity}
        ) r
    from (${injection})x
@@ -137,12 +137,12 @@ strategy:
     0 != (unicode(
         substr(
             (${injection}), 
-            ${index}, 
+            ${window.char}, 
             1
         )
     ) 
     %26 ${bit})
-   length: char_length((${injection})) > ${index}
+   length: char_length((${injection})) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}

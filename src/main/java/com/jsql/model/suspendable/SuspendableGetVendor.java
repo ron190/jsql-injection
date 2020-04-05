@@ -116,10 +116,10 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                 Thread.currentThread().interrupt();
             }
             
-            vendor = initializeVendor(vendor);
+            vendor = this.initializeVendor(vendor);
         }
         
-        Request requestSetVendor = new Request(); 
+        Request requestSetVendor = new Request();
         requestSetVendor.setMessage(Interaction.SET_VENDOR);
         requestSetVendor.setParameters(vendor);
         this.injectionModel.sendToViews(requestSetVendor);

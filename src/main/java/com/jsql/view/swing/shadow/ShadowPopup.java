@@ -352,9 +352,9 @@ public final class ShadowPopup extends Popup {
             POINT.y = this.y;
             SwingUtilities.convertPointFromScreen(POINT, layeredPane);
 
-            paintHorizontalSnapshot(width, height, hShadowBg, layeredPane, layeredPaneWidth, layeredPaneHeight);
+            this.paintHorizontalSnapshot(width, height, hShadowBg, layeredPane, layeredPaneWidth, layeredPaneHeight);
 
-            paintVerticalSnapshot(width, height, vShadowBg, layeredPane, layeredPaneWidth, layeredPaneHeight);
+            this.paintVerticalSnapshot(width, height, vShadowBg, layeredPane, layeredPaneWidth, layeredPaneHeight);
         } catch (AWTException | SecurityException | IllegalArgumentException e) {
             
             this.canSnapshot = false;
