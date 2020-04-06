@@ -31,7 +31,7 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
     /**
      * Text to display when empty.
      */
-    private String placeholderText = "";
+    private String placeholderText = StringUtils.EMPTY;
     
     /**
      * Create a textfield with hint and default value.

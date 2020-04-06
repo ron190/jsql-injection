@@ -1,5 +1,6 @@
 package com.test.vendor.h2;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
@@ -12,7 +13,7 @@ public abstract class ConcreteH2TestSuite extends AbstractTestSuite {
         
         this.jdbcURL = "jdbc:h2:tcp://127.0.0.1/mem:public;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;";
         this.jdbcUser = "sa";
-        this.jdbcPass = "";
+        this.jdbcPass = StringUtils.EMPTY;
         this.jsqlDatabaseName = "PUBLIC";
         this.jsqlTableName = "STUDENT";
         this.jsqlColumnName = "STUDENT_ID";

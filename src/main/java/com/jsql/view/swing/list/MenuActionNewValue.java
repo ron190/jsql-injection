@@ -145,7 +145,9 @@ public class MenuActionNewValue implements ActionListener {
         return lastIndex;
     }
 
-    private int addToScanList(final JTextArea textarea, int lastIndex) {
+    private int addToScanList(final JTextArea textarea, int index) {
+        
+        int lastIndex = index;
         
         List<ItemListScan> listParsedItems = ListTransfertHandlerScan.parse(textarea.getText().replace("\\", "/"));
         

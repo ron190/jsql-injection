@@ -3,6 +3,7 @@ package com.test.insertion;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
@@ -27,7 +28,7 @@ public class EmptyErrorTestSuite extends ConcreteMySQLErrorTestSuite {
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-error");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "")
+            new SimpleEntry<>("name", StringUtils.EMPTY)
         ));
 
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());

@@ -1,21 +1,20 @@
-package com.test.insertion;
+package com.test.vendor.sqlite;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class EmptyIntegerNormalTestSuite extends ConcreteMySQLTestSuite {
+public class SqliteNormalTestSuite extends ConcreteSqliteTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
@@ -25,10 +24,10 @@ public class EmptyIntegerNormalTestSuite extends ConcreteMySQLTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-integer-insertion-char");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
-            new SimpleEntry<>("name", StringUtils.EMPTY)
+            new SimpleEntry<>("tenant", "sqlite"),
+            new SimpleEntry<>("name", "0'")
         ));
         
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
@@ -36,6 +35,13 @@ public class EmptyIntegerNormalTestSuite extends ConcreteMySQLTestSuite {
         
         model.setIsScanning(true);
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlite());
         model.beginInjection();
+    }
+    
+    // TODO Special parsing required
+    @Override
+    public void listColumns() throws JSqlException {
+        LOGGER.info("Special parsing required");
     }
 }

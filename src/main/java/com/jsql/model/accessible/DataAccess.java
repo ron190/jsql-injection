@@ -48,7 +48,6 @@ public class DataAccess {
      * Process stops when this schema is encountered:
      * <pre>SQLix01x03x03x07
      */
-    // TODO idem XML
     public static final String LEAD_HEX = "0x53714c69";
     public static final String TRAIL_SQL = "%01%03%03%07";
     public static final String TRAIL_HEX = "0x01030307";
@@ -151,7 +150,7 @@ public class DataAccess {
         
         LOGGER.trace(I18nUtil.valueByKey("LOG_FETCHING_INFORMATIONS"));
         
-        String[] sourcePage = {""};
+        String[] sourcePage = {StringUtils.EMPTY};
 
         String resultToParse;
         resultToParse = new SuspendableGetRows(this.injectionModel).run(
@@ -168,7 +167,7 @@ public class DataAccess {
         }
         
         try {
-            String versionDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[0].replaceAll("\\s+"," ");
+            String versionDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[0].replaceAll("\\s+", StringUtils.SPACE);
             String nameDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[1];
             String username = resultToParse.split(ENCLOSE_VALUE_RGX)[2];
             
@@ -209,10 +208,10 @@ public class DataAccess {
         
         List<Database> databases = new ArrayList<>();
         
-        String resultToParse = "";
+        String resultToParse = StringUtils.EMPTY;
         
         try {
-            String[] sourcePage = {""};
+            String[] sourcePage = {StringUtils.EMPTY};
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlDatabases(),
                 sourcePage,
@@ -300,10 +299,10 @@ public class DataAccess {
 
         String tableCount = Integer.toString(database.getChildCount());
         
-        String resultToParse = "";
+        String resultToParse = StringUtils.EMPTY;
         
         try {
-            String[] pageSource = {""};
+            String[] pageSource = {StringUtils.EMPTY};
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTables(database),
                 pageSource,
@@ -390,10 +389,10 @@ public class DataAccess {
         requestStartProgress.setParameters(table);
         this.injectionModel.sendToViews(requestStartProgress);
 
-        String resultToParse = "";
+        String resultToParse = StringUtils.EMPTY;
         
         try {
-            String[] pageSource = {""};
+            String[] pageSource = {StringUtils.EMPTY};
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlColumns(table),
                 pageSource,
@@ -503,8 +502,8 @@ public class DataAccess {
         List<List<String>> listValues = this.getRows(database, table, rowCount, arrayColumns);
 
         // Add the default title to the columns: row number, occurrence
-        columnsName.add(0, "");
-        columnsName.add(0, "");
+        columnsName.add(0, StringUtils.EMPTY);
+        columnsName.add(0, StringUtils.EMPTY);
 
         String[][] tableDatas = this.build2D(columnsName, listValues);
 
@@ -528,10 +527,10 @@ public class DataAccess {
 
     private List<List<String>> getRows(Database database, Table table, int rowCount, String[] columns) throws InjectionFailureException {
         
-        String resultToParse = "";
+        String resultToParse = StringUtils.EMPTY;
         
         try {
-            String[] pageSource = {""};
+            String[] pageSource = {StringUtils.EMPTY};
             
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlRows(columns, database, table),

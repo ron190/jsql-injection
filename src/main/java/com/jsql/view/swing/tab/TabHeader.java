@@ -20,6 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.util.UiUtil;
@@ -41,7 +43,7 @@ public class TabHeader extends JPanel implements MouseListener {
         @Override
         public void setText(String text) {
             
-            super.setText(text +" ");
+            super.setText(text + StringUtils.SPACE);
         }
     };
     

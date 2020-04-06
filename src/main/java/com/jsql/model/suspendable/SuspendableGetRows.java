@@ -63,14 +63,14 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         if (this.injectionModel.getMediatorStrategy().getStrategy() != null) {
             strategy = this.injectionModel.getMediatorStrategy().getStrategy();
         } else {
-            return "";
+            return StringUtils.EMPTY;
         }
         
         // Stop injection if all rows are found, skip rows and characters collected
         StringBuilder slidingWindowAllRows = new StringBuilder();
         StringBuilder slidingWindowCurrentRow = new StringBuilder();
         
-        String previousChunk = "";
+        String previousChunk = StringUtils.EMPTY;
         int countAllRows = 0;
         int charPositionInCurrentRow = 1;
         int countInfiniteLoop = 0;
@@ -208,7 +208,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
                 )
                 .matcher(allLine)
-                .replaceAll("")
+                .replaceAll(StringUtils.EMPTY)
             );
             
         } else if (regexRowIncomplete.find()) {
@@ -226,7 +226,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             Pattern
             .compile(MODE + TRAIL_RGX +".*")
             .matcher(currentRow)
-            .replaceAll("")
+            .replaceAll(StringUtils.EMPTY)
         );
     }
 
@@ -287,7 +287,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             Pattern
             .compile(MODE + TRAIL_RGX +".*")
             .matcher(currentChunk)
-            .replaceAll("")
+            .replaceAll(StringUtils.EMPTY)
             .replaceAll("\\n", "\\\\\\n")
             .replaceAll("\\r", "\\\\\\r")
             .replaceAll("\\t", "\\\\\\t")
@@ -299,12 +299,14 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
     // TODO pb for same char string like aaaaaaaaaaaaa...aaaaaaaaaaaaa
     // detected as infinite
     private int checkInfinite(
-        int infiniteLoop,
+        int loop,
         String previousChunk,
         String currentChunk,
         StringBuilder slidingWindowCurrentRow,
         StringBuilder slidingWindowAllRows
     ) throws LoopDetectedSlidingException {
+        
+        int infiniteLoop = loop;
         
         if (previousChunk.equals(currentChunk)) {
             
@@ -327,12 +329,9 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         
         // TODO: prevent to find the last line directly: MODE + LEAD + .* + TRAIL_RGX
         // It creates extra query which can be endless if not nullified
-        Matcher regexEndOfLine =
-            Pattern
+        return Pattern
             .compile("(?s)"+ LEAD +"(?i)"+ TRAIL_RGX)
             .matcher(sourcePage);
-        
-        return regexEndOfLine;
     }
 
     /**
@@ -399,7 +398,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 +")$"
             )
             .matcher(allRowsLimit)
-            .replaceAll("")
+            .replaceAll(StringUtils.EMPTY)
         );
     }
 
@@ -419,7 +418,6 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         // Parse all the data we have retrieved
         Matcher regexSearch =
             Pattern
-            // TODO requete differente
             .compile(
                 MODE
                 + ENCLOSE_VALUE_RGX

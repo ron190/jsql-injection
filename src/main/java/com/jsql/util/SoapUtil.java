@@ -15,6 +15,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -65,8 +66,8 @@ public class SoapUtil {
         
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         
-        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, StringUtils.EMPTY);
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, StringUtils.EMPTY);
         factory.setAttribute(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
         factory.setExpandEntityReferences(false);
 
@@ -102,7 +103,7 @@ public class SoapUtil {
                 this.injectionModel.getMediatorUtils().getParameterUtil().initializeRequest(SoapUtil.convertDocumentToString(doc));
                 
                 try {
-                    LOGGER.info("Checking SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, ""));
+                    LOGGER.info("Checking SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY));
                     
                     this.injectionModel.getMediatorMethodInjection().getRequest().testParameters();
                     hasFoundInjection = true;
@@ -112,7 +113,7 @@ public class SoapUtil {
                     
                 } catch (JSqlException e) {
                     // Injection failure
-                    LOGGER.warn("No SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, ""), e);
+                    LOGGER.warn("No SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY), e);
                 }
             }
         }
@@ -135,7 +136,11 @@ public class SoapUtil {
                 
             } else if (currentNode.getNodeType() == Node.TEXT_NODE) {
                 
-                currentNode.setTextContent(currentNode.getTextContent().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", ""));
+                currentNode.setTextContent(
+                    currentNode
+                    .getTextContent()
+                    .replaceAll(Pattern.quote(InjectionModel.STAR) + "$", StringUtils.EMPTY)
+                );
             }
         }
     }
@@ -143,8 +148,8 @@ public class SoapUtil {
     private static String convertDocumentToString(Document doc) {
         
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, StringUtils.EMPTY);
+        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, StringUtils.EMPTY);
         
         String output = null;
         try {

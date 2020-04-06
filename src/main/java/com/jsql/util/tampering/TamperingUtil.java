@@ -173,8 +173,8 @@ public class TamperingUtil {
         }
         
         // Problème si le tag contient des caractères spéciaux
-        sqlQuery = sqlQuery.replaceAll("(?i)<tampering>", "");
-        sqlQuery = sqlQuery.replaceAll("(?i)</tampering>", "");
+        sqlQuery = sqlQuery.replaceAll("(?i)<tampering>", StringUtils.EMPTY);
+        sqlQuery = sqlQuery.replaceAll("(?i)</tampering>", StringUtils.EMPTY);
         
         return sqlQuery;
     }

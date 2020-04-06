@@ -93,7 +93,7 @@ public class ManagerSqlShell extends AbstractManagerShell {
     }
 
     @Override
-    void createPayload(String shellPath, String shellURL) throws JSqlException, InterruptedException {
+    protected void createPayload(String shellPath, String shellURL) throws JSqlException, InterruptedException {
         
         MediatorGui.model().getResourceAccess().createSqlShell(shellPath, shellURL, this.username.getText(), this.password.getText());
     }

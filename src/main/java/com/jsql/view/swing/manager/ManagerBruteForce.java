@@ -27,6 +27,8 @@ import javax.swing.JTextPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.manager.util.ActionBruteForce;
 import com.jsql.view.swing.manager.util.JButtonStateful;
@@ -260,11 +262,11 @@ public class ManagerBruteForce extends JPanel implements Manager {
         this.minimumLength.setMinimumSize(new Dimension(38, (int) this.minimumLength.getPreferredSize().getHeight()));
         this.maximumLength.setMinimumSize(new Dimension(38, (int) this.maximumLength.getPreferredSize().getHeight()));
 
-        JLabel labelMin = new JLabel(" "+I18nUtil.valueByKey("BRUTEFORCE_MIN_LABEL"), SwingConstants.RIGHT);
+        JLabel labelMin = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey("BRUTEFORCE_MIN_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMin);
         I18nViewUtil.addComponentForKey("BRUTEFORCE_MIN_LABEL", labelMin);
         thirdLine.add(this.minimumLength);
-        JLabel labelMax = new JLabel(" "+I18nUtil.valueByKey("BRUTEFORCE_MAX_LABEL"), SwingConstants.RIGHT);
+        JLabel labelMax = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey("BRUTEFORCE_MAX_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMax);
         I18nViewUtil.addComponentForKey("BRUTEFORCE_MAX_LABEL", labelMax);
         thirdLine.add(this.maximumLength);

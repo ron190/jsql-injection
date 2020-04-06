@@ -80,13 +80,16 @@ public class TabTransferHandler extends TransferHandler {
         support.setDropAction(TransferHandler.MOVE);
         DropLocation tdl = support.getDropLocation();
         Point pt = tdl.getDropPoint();
+        
         DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
+        
         target.autoScrollTest(pt);
         DnDTabbedPane.DnDDropLocation dl = target.dropLocationForPointDnD(pt);
         int idx = dl.getIndex();
 
         boolean isDroppable = false;
         boolean isAreaContains = target.getTabAreaBounds().contains(pt) && idx >= 0;
+        
         if (target.equals(this.source)) {
             isDroppable = isAreaContains && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
         } else {
@@ -168,6 +171,7 @@ public class TabTransferHandler extends TransferHandler {
             DnDTabData data = (DnDTabData) support.getTransferable().getTransferData(this.localObjectFlavor);
             DnDTabbedPane src = data.tabbedPane;
             int index = dl.getIndex();
+            
             if (target.equals(src)) {
                 src.convertTab(src.dragTabIndex, index);
             } else {
@@ -175,6 +179,7 @@ public class TabTransferHandler extends TransferHandler {
             }
             
             return true;
+            
         } catch (UnsupportedFlavorException | IOException e) {
             LOGGER.error("Dragging tab failed", e);
         }

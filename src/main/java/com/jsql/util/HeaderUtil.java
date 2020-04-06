@@ -97,10 +97,8 @@ public class HeaderUtil {
         
         exception = this.readSource(connection, pageSource);
         
-        // TODO Extract FormUtil
         this.parseForms(connection, pageSource);
         
-        // Csrf
         // TODO Extract CsrfUtil
         exception = this.parseCsrf(exception, pageSource);
 

@@ -30,7 +30,7 @@ public class CallableFile implements Callable<CallableFile> {
     /**
      * Source of file.
      */
-    private String sourceFile = "";
+    private String sourceFile = StringUtils.EMPTY;
     
     /**
      * Suspendable task that reads lines of the file by injection.
@@ -57,9 +57,9 @@ public class CallableFile implements Callable<CallableFile> {
     @Override
     public CallableFile call() throws Exception {
         
-        String[] sourcePage = {""};
+        String[] sourcePage = {StringUtils.EMPTY};
 
-        String resultToParse = "";
+        String resultToParse = StringUtils.EMPTY;
         try {
             resultToParse = this.suspendableReadFile.run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(this.pathFile),
@@ -103,7 +103,6 @@ public class CallableFile implements Callable<CallableFile> {
     }
 
     public String getSourceFile() {
-        // TODO optional
         return this.sourceFile;
     }
 

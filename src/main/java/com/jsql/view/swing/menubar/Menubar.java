@@ -491,7 +491,7 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("MENUBAR_LANGUAGE", menuTranslation);
         
         Object[] languages = Stream
-            .of("ru zh es fr tr ko se ar cs it pt pl in nl ro de".split(" "))
+            .of("ru zh es fr tr ko se ar cs it pt pl in nl ro de".split(StringUtils.SPACE))
             .map(flag -> new Locale(flag).getLanguage())
             .collect(Collectors.toList())
             .toArray();
@@ -657,7 +657,7 @@ public class Menubar extends JMenuBar {
         
         class ActionTranslate implements ActionListener {
             
-            Language language;
+            private Language language;
             
             ActionTranslate(Language language) {
                 this.language = language;
@@ -943,11 +943,13 @@ public class Menubar extends JMenuBar {
             for (Object componentSwing: I18nViewUtil.componentsByKey(key)) {
                 
                 Class<?> classComponent = componentSwing.getClass();
+                
                 try {
                     if (componentSwing instanceof JTextFieldPlaceholder) {
                         
                         Method setPlaceholderText = classComponent.getMethod("setPlaceholderText", String.class);
                         setPlaceholderText.invoke(componentSwing, I18nUtil.valueByKey(key));
+                        
                     } else {
                         
                         Method methodSetText = classComponent.getMethod("setText", String.class);
@@ -959,6 +961,7 @@ public class Menubar extends JMenuBar {
                             methodSetText.invoke(componentSwing, I18nUtil.valueByKey(key));
                         }
                     }
+                    
                 } catch (
                     NoSuchMethodException | SecurityException | IllegalAccessException |
                     IllegalArgumentException | InvocationTargetException e
@@ -1022,6 +1025,7 @@ public class Menubar extends JMenuBar {
         TableColumnModel colMod = header.getColumnModel();
         
         if (I18nUtil.isAsian(newLocale)) {
+            
             Stream
             .of(
                 SwingAppender.ERROR,
@@ -1039,7 +1043,9 @@ public class Menubar extends JMenuBar {
             colMod.getColumn(1).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
             colMod.getColumn(2).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
             colMod.getColumn(3).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
+            
         } else {
+            
             Stream
             .of(
                 SwingAppender.ERROR,

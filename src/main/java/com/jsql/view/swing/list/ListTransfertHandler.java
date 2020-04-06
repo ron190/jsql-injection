@@ -135,39 +135,55 @@ public class ListTransfertHandler extends TransferHandler {
         // DnD from list
         if (this.dragPaths != null && !this.dragPaths.isEmpty()) {
             
-            for (ItemList value: this.dragPaths) {
-                if (StringUtils.isNotEmpty(value.toString())) {
-                    //! FUUuu
-                    ItemList newValue = new ItemList(value.toString().replace("\\", "/"));
-                    listSelectedIndices.add(childIndex);
-                    listModel.add(childIndex++, newValue);
-                }
-            }
+            this.addFromList(listModel, childIndex, listSelectedIndices);
+            
         } else {
             
-            // DnD from outside
-            try {
-                String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
-                
-                for (String value: importString.split("\\n")) {
-                    if (StringUtils.isNotEmpty(value)) {
-                        listSelectedIndices.add(childIndex);
-                        listModel.add(childIndex++, new ItemList(value.replace("\\", "/")));
-                    }
-                }
-            } catch (UnsupportedFlavorException | IOException e) {
-                LOGGER.error(e.getMessage(), e);
-            }
+            this.addFromOutside(support, listModel, childIndex, listSelectedIndices);
         }
 
         int[] selectedIndices = new int[listSelectedIndices.size()];
         int i = 0;
+        
         for (Integer integer: listSelectedIndices) {
+            
             selectedIndices[i] = integer;
             i++;
         }
         
         list.setSelectedIndices(selectedIndices);
+    }
+
+    private void addFromOutside(TransferSupport support, DefaultListModel<ItemList> listModel, int childIndex, List<Integer> listSelectedIndices) {
+        
+        try {
+            String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
+            
+            for (String value: importString.split("\\n")) {
+                
+                if (StringUtils.isNotEmpty(value)) {
+                    
+                    listSelectedIndices.add(childIndex);
+                    listModel.add(childIndex++, new ItemList(value.replace("\\", "/")));
+                }
+            }
+        } catch (UnsupportedFlavorException | IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    private void addFromList(DefaultListModel<ItemList> listModel, int childIndex, List<Integer> listSelectedIndices) {
+        
+        for (ItemList value: this.dragPaths) {
+            
+            if (StringUtils.isNotEmpty(value.toString())) {
+                
+                //! FUUuu
+                ItemList newValue = new ItemList(value.toString().replace("\\", "/"));
+                listSelectedIndices.add(childIndex);
+                listModel.add(childIndex++, newValue);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")

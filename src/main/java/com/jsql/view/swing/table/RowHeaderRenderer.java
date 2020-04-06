@@ -13,15 +13,13 @@ public class RowHeaderRenderer extends DefaultTableCellRenderer {
     public RowHeaderRenderer() {
         
         this.setHorizontalAlignment(SwingConstants.CENTER);
+        this.setBackground(new Color(230, 230, 230));
     }
 
     @Override
     public Component getTableCellRendererComponent(
         JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
     ) {
-        
-        // TODO move to constructor
-        this.setBackground(new Color(230, 230, 230));
         
         // Report #218: ignore if value is null
         if (value != null) {

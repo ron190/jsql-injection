@@ -36,6 +36,7 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
@@ -71,7 +72,7 @@ public class PanelConsoles extends JPanel {
     /**
      * Console for java exception messages.
      */
-    public JavaConsoleAdapter javaTextPane = new JavaConsoleAdapter("Java", "Java unhandled exception");
+    private JavaConsoleAdapter javaTextPane = new JavaConsoleAdapter("Java", "Java unhandled exception");
     
     /**
      * Console for raw SQL results.
@@ -271,8 +272,8 @@ public class PanelConsoles extends JPanel {
         this.networkTable.getListHttpHeader().clear();
         
         // Empty infos tabs
-        this.getChunkTab().setText("");
-        this.getBinaryTab().setText("");
+        this.getChunkTab().setText(StringUtils.EMPTY);
+        this.getBinaryTab().setText(StringUtils.EMPTY);
         
         // Fix #4657, Fix #1860: Multiple Exceptions on setRowCount()
         try {
@@ -281,23 +282,23 @@ public class PanelConsoles extends JPanel {
             LOGGER.error(e.getMessage(), e);
         }
         
-        this.javaTextPane.getProxy().setText("");
+        this.javaTextPane.getProxy().setText(StringUtils.EMPTY);
         
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabUrl().setText("");
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabHeader().setText("");
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabParams().setText("");
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabResponse().setText("");
+        this.tabbedPaneNetworkTab.getTextAreaNetworkTabUrl().setText(StringUtils.EMPTY);
+        this.tabbedPaneNetworkTab.getTextAreaNetworkTabHeader().setText(StringUtils.EMPTY);
+        this.tabbedPaneNetworkTab.getTextAreaNetworkTabParams().setText(StringUtils.EMPTY);
+        this.tabbedPaneNetworkTab.getTextAreaNetworkTabResponse().setText(StringUtils.EMPTY);
         
         // Fix #54572: NullPointerException on setText()
         try {
-            this.tabbedPaneNetworkTab.getTextAreaNetworkTabSource().setText("");
+            this.tabbedPaneNetworkTab.getTextAreaNetworkTabSource().setText(StringUtils.EMPTY);
         } catch (NullPointerException e) {
             LOGGER.error(e, e);
         }
         
         // Fix #41879: ArrayIndexOutOfBoundsException on setText()
         try {
-            this.tabbedPaneNetworkTab.getTextAreaNetworkTabPreview().setText("");
+            this.tabbedPaneNetworkTab.getTextAreaNetworkTabPreview().setText(StringUtils.EMPTY);
         } catch (ArrayIndexOutOfBoundsException e) {
             LOGGER.error(e, e);
         }

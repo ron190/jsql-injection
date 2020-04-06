@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentListener;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -22,8 +24,8 @@ import com.jsql.view.swing.util.UiUtil;
 @SuppressWarnings("serial")
 public class PanelAuthenticationPreferences extends JPanel {
 
-    private final JCheckBox checkboxUseDigestAuthentication = new JCheckBox("", MediatorGui.model().getMediatorUtils().getAuthenticationUtil().isDigestAuthentication());
-    private final JCheckBox checkboxUseKerberos = new JCheckBox("", MediatorGui.model().getMediatorUtils().getAuthenticationUtil().isKerberos());
+    private final JCheckBox checkboxUseDigestAuthentication = new JCheckBox(StringUtils.EMPTY, MediatorGui.model().getMediatorUtils().getAuthenticationUtil().isDigestAuthentication());
+    private final JCheckBox checkboxUseKerberos = new JCheckBox(StringUtils.EMPTY, MediatorGui.model().getMediatorUtils().getAuthenticationUtil().isKerberos());
 
     private final JTextField textDigestAuthenticationUsername = new JPopupTextField("Host system user", MediatorGui.model().getMediatorUtils().getAuthenticationUtil().getUsernameDigest()).getProxy();
     private final JTextField textDigestAuthenticationPassword = new JPopupTextField("Host system password", MediatorGui.model().getMediatorUtils().getAuthenticationUtil().getPasswordDigest()).getProxy();

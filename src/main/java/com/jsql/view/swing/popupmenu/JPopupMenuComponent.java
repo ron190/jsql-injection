@@ -44,7 +44,7 @@ public class JPopupMenuComponent extends JPopupMenu {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    JComponent component;
+    private JComponent component;
     
     /**
      * Create a popup menu for editable component.

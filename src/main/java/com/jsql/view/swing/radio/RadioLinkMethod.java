@@ -57,12 +57,12 @@ public class RadioLinkMethod extends AbstractRadioLink {
     }
 
     @Override
-    void action() {
+    public void action() {
         MediatorGui.panelAddressBar().setMethodInjection(this.methodInjection);
     }
 
     @Override
-    List<JLabel> getGroup() {
+    public List<JLabel> getGroup() {
         return RadioLinkMethod.groupMethod;
     }
 }

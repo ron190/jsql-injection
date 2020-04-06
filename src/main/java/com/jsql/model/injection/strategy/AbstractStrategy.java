@@ -3,6 +3,8 @@ package com.jsql.model.injection.strategy;
 import java.util.EnumMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
@@ -26,7 +28,7 @@ public abstract class AbstractStrategy {
      * HTML body of page successfully responding to
      * multiple fields selection (select 1,2,3,..).
      */
-    protected String sourceIndexesFound = "";
+    protected String sourceIndexesFound = StringUtils.EMPTY;
     
     /**
      * True if injection can be used, false otherwise.
@@ -106,11 +108,6 @@ public abstract class AbstractStrategy {
     @Override
     public String toString() {
         return this.getName();
-    }
-    
-    // TODO strategy Error
-    public Integer getIndexMethodError() {
-        return null;
     }
     
     public String getVisibleIndex() {

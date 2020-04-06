@@ -25,6 +25,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -79,7 +80,6 @@ public class NetworkTable extends JTable {
                     int rowNumber = NetworkTable.this.rowAtPoint(p);
                     int colNumber = NetworkTable.this.columnAtPoint(p);
                     
-                    // TODO Not finished
                     // Get the ListSelectionModel of the JTable
                     DefaultListSelectionModel modelRow = (DefaultListSelectionModel) NetworkTable.this.getSelectionModel();
                     DefaultListSelectionModel modelColumn = (DefaultListSelectionModel) NetworkTable.this.getColumnModel().getSelectionModel();
@@ -166,7 +166,7 @@ public class NetworkTable extends JTable {
         this.tabbedPaneNetworkTab.getTextAreaNetworkTabParams().setText(networkData.getPost());
         this.tabbedPaneNetworkTab.getTextAreaNetworkTabUrl().setText(networkData.getUrl());
         
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabResponse().setText("");
+        this.tabbedPaneNetworkTab.getTextAreaNetworkTabResponse().setText(StringUtils.EMPTY);
         
         for (String key: networkData.getResponse().keySet()) {
             
@@ -199,12 +199,15 @@ public class NetworkTable extends JTable {
         try {
             this.tabbedPaneNetworkTab.getTextAreaNetworkTabPreview().setText(
                 Jsoup.clean(
-                    "<html>"+ StringUtil.detectUtf8(networkData.getSource()).replaceAll("#{5,}", "#*") + "</html>"
-                        .replaceAll("<img.*>", "")
-                        .replaceAll("<input.*type=\"?hidden\"?.*>", "")
+                    "<html>"
+                    + StringUtil.detectUtf8(networkData.getSource()).replaceAll("#{5,}", "#*")
+                    + "</html>"
+                        .replaceAll("<img.*>", StringUtils.EMPTY)
+                        .replaceAll("<input.*type=\"?hidden\"?.*>", StringUtils.EMPTY)
                         .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
                         .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
-                    Whitelist.relaxed()
+                    Whitelist
+                        .relaxed()
                         .addTags("center", "div", "span")
                         .addAttributes(":all", "style")
                 )

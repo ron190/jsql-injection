@@ -60,7 +60,7 @@ public class ManagerCoder extends JPanel implements Manager {
     
     private class ChangeMenuListener implements ChangeListener {
         
-        String nameMethod;
+        private String nameMethod;
         
         ChangeMenuListener(String nameMethod) {
             this.nameMethod = nameMethod;

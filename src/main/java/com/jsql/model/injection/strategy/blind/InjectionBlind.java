@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
@@ -51,11 +52,12 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         
         // No blind
         if (this.falseTest.isEmpty() || this.injectionModel.isStoppedByUser()) {
+            
             return;
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-        this.blankTrueMark = this.callUrl("");
+        this.blankTrueMark = this.callUrl(StringUtils.EMPTY);
 
         /*
          *  Concurrent calls to the FALSE statements,
@@ -63,7 +65,9 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
          */
         ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagFalse"));
         Collection<CallableBlind> listCallableTagFalse = new ArrayList<>();
+        
         for (String urlTest: this.falseTest) {
+            
             listCallableTagFalse.add(new CallableBlind(urlTest, injectionModel, this, blindMode));
         }
         
@@ -77,7 +81,9 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             List<Future<CallableBlind>> listTagFalse = executorTagFalse.invokeAll(listCallableTagFalse);
             
             executorTagFalse.shutdown();
+            
             if (!executorTagFalse.awaitTermination(15, TimeUnit.SECONDS)) {
+                
                 executorTagFalse.shutdownNow();
             }
             
@@ -104,22 +110,25 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         if (this.injectionModel.isStoppedByUser()) {
             return;
         }
+        
+        this.initializeTrueMarks(injectionModel, blindMode);
+    }
 
-        /*
-         *  Concurrent calls to the TRUE statements,
-         *  it will use inject() from the model.
-         */
+    private void initializeTrueMarks(InjectionModel injectionModel, BooleanMode blindMode) {
+        
+        // Concurrent calls to the TRUE statements,
+        // it will use inject() from the model.
         ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagTrue"));
         Collection<CallableBlind> listCallableTagTrue = new ArrayList<>();
+        
         for (String urlTest: this.trueTest) {
+            
             listCallableTagTrue.add(new CallableBlind(urlTest, injectionModel, this, blindMode));
         }
         
-        /*
-         * Remove TRUE opcodes in the FALSE opcodes, because
-         * a significant FALSE statement shouldn't contain any TRUE opcode.
-         * Allow the user to stop the loop.
-         */
+        // Remove TRUE opcodes in the FALSE opcodes, because
+        // a significant FALSE statement shouldn't contain any TRUE opcode.
+        // Allow the user to stop the loop.
         try {
             List<Future<CallableBlind>> listTagTrue = executorTagTrue.invokeAll(listCallableTagTrue);
             
@@ -165,7 +174,13 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             throw new StoppedByUserSlidingException();
         }
         
-        CallableBlind blindTest = new CallableBlind(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(), this.injectionModel, this, this.booleanMode);
+        CallableBlind blindTest = new CallableBlind(
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(),
+            this.injectionModel,
+            this,
+            this.booleanMode
+        );
+        
         try {
             blindTest.call();
         } catch (Exception e) {

@@ -48,7 +48,7 @@ public class GreetingController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            // TODO Inside try because test connection do not send param
+            // Inside try because test connection do not send param
             String inject = request.getParameterMap().get("name")[0];
             inject = inject.replace(":", "\\:");
             

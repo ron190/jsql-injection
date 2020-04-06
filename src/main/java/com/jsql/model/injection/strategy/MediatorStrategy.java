@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
@@ -24,7 +25,7 @@ public class MediatorStrategy {
     
     private AbstractStrategy time;
     private AbstractStrategy blind;
-    private AbstractStrategy error;
+    private StrategyInjectionError error;
     private AbstractStrategy normal;
     
     private List<AbstractStrategy> strategies;
@@ -95,7 +96,6 @@ public class MediatorStrategy {
      * @return true when successful injection
      * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
      */
-    // TODO Merge isParamByUser and parameter: isParamByUser = parameter != null
     public boolean testStrategies(SimpleEntry<String, String> parameterToInject) throws JSqlException {
         
         // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
@@ -113,13 +113,20 @@ public class MediatorStrategy {
             
             String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(characterInsertionByUser);
             
+            // TODO double star on normal last param, not on json or error
             if (!JsonUtil.isJson(parameterToInject.getValue())) {
                 characterInsertion = characterInsertion + InjectionModel.STAR;
             }
             
-            parameterToInject.setValue(characterInsertion);
+            // TODO Fix double star on normal last param
+            parameterToInject.setValue(characterInsertion.replace("**", "*"));
             
-            LOGGER.info(I18nUtil.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ characterInsertion.replace(InjectionModel.STAR, "") +"]");
+            LOGGER.info(
+                I18nUtil.valueByKey("LOG_USING_INSERTION_CHARACTER")
+                + " ["
+                + characterInsertion.replace(InjectionModel.STAR, StringUtils.EMPTY)
+                + "]"
+            );
         }
         
         // Fingerprint database
@@ -163,7 +170,7 @@ public class MediatorStrategy {
         return this.normal;
     }
 
-    public AbstractStrategy getError() {
+    public StrategyInjectionError getError() {
         return this.error;
     }
 

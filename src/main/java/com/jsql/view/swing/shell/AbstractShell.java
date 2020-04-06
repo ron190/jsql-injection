@@ -27,6 +27,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -75,7 +76,7 @@ public abstract class AbstractShell extends JTextPane {
     /**
      * Length of prompt.
      */
-    private String prompt = "";
+    private String prompt = StringUtils.EMPTY;
 
     /**
      * Text to display next caret.
@@ -121,7 +122,7 @@ public abstract class AbstractShell extends JTextPane {
      * @param wbhPath URL of shell
      * @param arg Additional parameters (User and password for SQLShell)
      */
-    abstract void action(String cmd, UUID terminalID, String wbhPath, String... arg);
+    public abstract void action(String cmd, UUID terminalID, String wbhPath, String... arg);
     
     /**
      * Update terminal and use default behavior.
@@ -159,12 +160,12 @@ public abstract class AbstractShell extends JTextPane {
         this.appendPrompt("jsql", Color.LIGHT_GRAY, isAddingPrompt);
         StyleConstants.setUnderline(this.style, false);
 
-        this.appendPrompt(" " + this.labelShell, Color.LIGHT_GRAY, isAddingPrompt);
+        this.appendPrompt(StringUtils.SPACE + this.labelShell, Color.LIGHT_GRAY, isAddingPrompt);
         this.appendPrompt("[", new Color(50, 191, 50), isAddingPrompt);
         this.appendPrompt(this.host, new Color(191, 191, 25), isAddingPrompt);
         this.appendPrompt("]", new Color(50, 191, 50), isAddingPrompt);
         this.appendPrompt(" >", new Color(191, 100, 100), isAddingPrompt);
-        this.appendPrompt(" ", Color.LIGHT_GRAY, isAddingPrompt);
+        this.appendPrompt(StringUtils.SPACE, Color.LIGHT_GRAY, isAddingPrompt);
     }
 
     /**

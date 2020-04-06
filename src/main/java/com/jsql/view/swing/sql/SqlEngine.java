@@ -28,6 +28,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
@@ -579,7 +581,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         this.getTextPanes().forEach(SqlEngine::resetLexer);
         this.getTextPanes().forEach(JTextPaneObjectMethod::switchSetterToVendor);
-        this.getTextPanes().forEach(textPaneLexer -> textPaneLexer.setText(""));
+        this.getTextPanes().forEach(textPaneLexer -> textPaneLexer.setText(StringUtils.EMPTY));
         
         Stream.of(
             new SimpleEntry<>(this.textareaDatabase, this.modelYaml.getResource().getSchema().getDatabase()),

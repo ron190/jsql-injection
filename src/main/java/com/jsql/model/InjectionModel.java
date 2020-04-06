@@ -56,6 +56,7 @@ import com.jsql.util.PreferencesUtil;
 import com.jsql.util.PropertiesUtil;
 import com.jsql.util.ProxyUtil;
 import com.jsql.util.SoapUtil;
+import com.jsql.util.StringUtil;
 import com.jsql.util.ThreadUtil;
 import com.jsql.util.tampering.TamperingUtil;
 
@@ -92,7 +93,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     /**
      * initialUrl transformed to a correct injection url.
      */
-    private String indexesInUrl = "";
+    private String indexesInUrl = StringUtils.EMPTY;
     
     /**
      * Allow to directly start an injection after a failed one
@@ -128,10 +129,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      */
     public void resetModel() {
         
-        // TODO make injection pojo for all fields
         this.mediatorStrategy.getNormal().setVisibleIndex(null);
         
-        this.indexesInUrl = "";
+        this.indexesInUrl = StringUtils.EMPTY;
         
         this.mediatorUtils.getConnectionUtil().setTokenCsrf(null);
         
@@ -221,21 +221,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
         String urlInjection = this.mediatorUtils.getConnectionUtil().getUrlBase();
         
-        String dataInjection = " "+ newDataInjection;
+        String dataInjection = StringUtils.SPACE + newDataInjection;
         
         urlInjection = this.mediatorStrategy.buildURL(urlInjection, isUsingIndex, dataInjection);
         
-        // TODO merge into function, duplicate
-        urlInjection = urlInjection
-            .trim()
-            // Remove comments
-            .replaceAll("(?s)/\\*.*?\\*/", "")
-            // Remove spaces after a word
-            .replaceAll("([^\\s\\w])(\\s+)", "$1")
-            // Remove spaces before a word
-            .replaceAll("(\\s+)([^\\s\\w])", "$2")
-            // Replace spaces
-            .replaceAll("\\s+", "+");
+        urlInjection = StringUtil.clean(urlInjection.trim());
 
         URL urlObject = null;
         
@@ -243,14 +233,15 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             urlObject = new URL(urlInjection);
         } catch (MalformedURLException e) {
             LOGGER.warn("Incorrect Query Url: "+ e, e);
-            return "";
+            return StringUtils.EMPTY;
         }
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
 
+        // TODO identique urlInjection == urlObject
         urlObject = this.initializeQueryString(isUsingIndex, urlInjection, dataInjection, urlObject, msgHeader);
         
-        String pageSource = "";
+        String pageSource = StringUtils.EMPTY;
         
         // Define the connection
         try {
@@ -294,39 +285,36 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
     private URL initializeQueryString(boolean isUsingIndex, String urlInjection, String dataInjection, URL urlObject, Map<Header, Object> msgHeader) {
         
+        String urlInjectionFixed = urlInjection;
         URL urlObjectFixed = urlObject;
         
-        /**
-         * Build the GET query string infos
-         */
-        // TODO Extract in method
         if (!this.mediatorUtils.getParameterUtil().getListQueryString().isEmpty()) {
             
             // URL without query string like Request and Header can receive
             // new params from <form> parsing, in that case add the '?' to URL
-            if (!urlInjection.contains("?")) {
-                urlInjection += "?";
+            if (!urlInjectionFixed.contains("?")) {
+                urlInjectionFixed += "?";
             }
 
-            urlInjection += this.buildQuery(this.mediatorMethodInjection.getQuery(), this.mediatorUtils.getParameterUtil().getQueryStringFromEntries(), isUsingIndex, dataInjection);
+            urlInjectionFixed += this.buildQuery(this.mediatorMethodInjection.getQuery(), this.mediatorUtils.getParameterUtil().getQueryStringFromEntries(), isUsingIndex, dataInjection);
             
             if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
-                urlInjection += "&"+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey() +"="+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue();
+                urlInjectionFixed += "&"+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey() +"="+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue();
             }
             
             try {
-                urlObjectFixed = new URL(urlInjection);
+                urlObjectFixed = new URL(urlInjectionFixed);
             } catch (MalformedURLException e) {
                 LOGGER.warn("Incorrect Url: "+ e, e);
             }
         } else {
             
             if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
-                urlInjection += "?"+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey() +"="+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue();
+                urlInjectionFixed += "?"+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey() +"="+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue();
             }
         }
 
-        msgHeader.put(Header.URL, urlInjection);
+        msgHeader.put(Header.URL, urlInjectionFixed);
         
         return urlObjectFixed;
     }
@@ -335,15 +323,22 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         HttpURLConnection connection;
         
-        // TODO separate method
         // Block Opening Connection
         if (this.mediatorUtils.getAuthenticationUtil().isKerberos()) {
             
             String kerberosConfiguration =
                 Pattern
                 .compile("(?s)\\{.*")
-                .matcher(StringUtils.join(Files.readAllLines(Paths.get(this.mediatorUtils.getAuthenticationUtil().getPathKerberosLogin()), Charset.defaultCharset()), ""))
-                .replaceAll("")
+                .matcher(
+                    StringUtils.join(
+                        Files.readAllLines(
+                            Paths.get(this.mediatorUtils.getAuthenticationUtil().getPathKerberosLogin()),
+                            Charset.defaultCharset()
+                        ),
+                        StringUtils.EMPTY
+                    )
+                )
+                .replaceAll(StringUtils.EMPTY)
                 .trim();
             
             SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(kerberosConfiguration);
@@ -367,10 +362,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
     private void initializeHeader(boolean isUsingIndex, String dataInjection, HttpURLConnection connection, Map<Header, Object> msgHeader) {
         
-        /**
-         * Build the HEADER and logs infos
-         */
-        // TODO Extract in method
         if (!this.mediatorUtils.getParameterUtil().getListHeader().isEmpty()) {
             
             Stream.of(this.buildQuery(this.mediatorMethodInjection.getHeader(), this.mediatorUtils.getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
@@ -388,10 +379,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
     private void initializeRequest(boolean isUsingIndex, String dataInjection, HttpURLConnection connection, Map<Header, Object> msgHeader) {
         
-        /**
-         * Build the POST and logs infos
-         */
-        // TODO Extract in method
         if (!this.mediatorUtils.getParameterUtil().getListRequest().isEmpty() || this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
             
             try {
@@ -434,7 +421,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         String query;
         String paramLeadFixed = paramLead.replace("*", "<tampering>*</tampering>");
         
-        // TODO simplify
         if (
             // No parameter transformation if method is not selected by user
             this.mediatorUtils.getConnectionUtil().getMethodInjection() != methodInjection
@@ -527,14 +513,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             query = paramLead.replace(
                 InjectionModel.STAR,
                 this.indexesInUrl.replace(
-                    // TODO
+                    // TODO 1337
                     "1337" + this.mediatorStrategy.getNormal().getVisibleIndex() + "7331",
-                    
-                    // Oracle column often contains $, which is reserved for regex.
-                    // => need to be escape with quoteReplacement()
-//                    Matcher.quoteReplacement(sqlTrail)
                     sqlTrail
-                ) 
+                )
                 + this.mediatorVendor.getVendor().instance().endingComment()
             );
         }
@@ -546,27 +528,20 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         String queryFixed = query;
         
-        // Remove SQL comments
-        queryFixed = queryFixed.replaceAll("(?s)/\\*.*?\\*/", "");
-        
         if (
             methodInjection == this.mediatorMethodInjection.getRequest()
             && this.mediatorUtils.getParameterUtil().isRequestSoap()
         ) {
             
-            // TODO
-            queryFixed = queryFixed.replace("%2b", "+");
+            // Remove SQL comments
+            queryFixed =
+                queryFixed
+                .replaceAll("(?s)/\\*.*?\\*/", StringUtils.EMPTY)
+                .replace("%2b", "+");
             
         } else {
             
-            // Remove spaces after a word
-            queryFixed = queryFixed.replaceAll("([^\\s\\w])(\\s+)", "$1");
-            
-            // Remove spaces before a word
-            queryFixed = queryFixed.replaceAll("(\\s+)([^\\s\\w])", "$2");
-            
-            // Replace spaces
-            queryFixed = queryFixed.replaceAll("\\s+", "+");
+            queryFixed = StringUtil.clean(queryFixed);
         }
         
         return queryFixed;
@@ -593,7 +568,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             queryFixed = queryFixed.replace("<", "%3C");
             queryFixed = queryFixed.replace("?", "%3F");
             queryFixed = queryFixed.replace("_", "%5F");
-            queryFixed = queryFixed.replace(" ", "+");
+            queryFixed = queryFixed.replace("\\", "%5C");
+            queryFixed = queryFixed.replace(",", "%2C");
+            queryFixed = queryFixed.replace(StringUtils.SPACE, "+");
             
         } else {
             
@@ -617,16 +594,15 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         LOGGER.warn(">>>" + source);
     }
     
-    // TODO Util
     public void displayVersion() {
         
         String versionJava = System.getProperty("java.version");
-        String nameSystemArchitecture = System.getProperty("os.arch");
+        String architecture = System.getProperty("os.arch");
         
         LOGGER.trace(
             "jSQL Injection v" + this.getVersionJsql()
             + " on Java "+ versionJava
-            +"-"+ nameSystemArchitecture
+            +"-"+ architecture
             +"-"+ System.getProperty("user.language")
         );
     }

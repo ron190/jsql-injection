@@ -2,6 +2,8 @@ package com.jsql.model.suspendable.callable;
 
 import java.util.concurrent.Callable;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.jsql.model.InjectionModel;
 
 /**
@@ -20,7 +22,7 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     /**
      * Source code for current page.
      */
-    private String content = "";
+    private String content = StringUtils.EMPTY;
 
     /**
      * Character used for current page.

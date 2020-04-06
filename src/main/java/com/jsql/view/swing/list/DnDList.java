@@ -84,7 +84,6 @@ public class DnDList extends JList<ItemList> {
         this.setCellRenderer(renderer);
         
         this.initializeActionMap();
-        
         this.initializeListener();
         
         this.setDragEnabled(true);
@@ -129,6 +128,7 @@ public class DnDList extends JList<ItemList> {
         
         // Transform Cut, selects next value
         ActionMap listActionMap = this.getActionMap();
+        
         listActionMap.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
             
             @Override
@@ -142,6 +142,7 @@ public class DnDList extends JList<ItemList> {
                 List<ItemList> siblings = new ArrayList<>();
                 
                 for (ItemList value: selectedValues) {
+                    
                     int valueIndex = DnDList.this.listModel.indexOf(value);
 
                     if (valueIndex < DnDList.this.listModel.size() - 1) {
@@ -172,7 +173,7 @@ public class DnDList extends JList<ItemList> {
     /**
      * Delete selected items from the list.
      */
-    void removeSelectedItem() {
+    public void removeSelectedItem() {
         
         if (this.getSelectedValuesList().isEmpty()) {
             return;
@@ -199,6 +200,7 @@ public class DnDList extends JList<ItemList> {
             );
             
             if (rectangle != null) {
+                
                 this.scrollRectToVisible(
                     this.getCellBounds(
                         this.getMinSelectionIndex(),
@@ -206,7 +208,9 @@ public class DnDList extends JList<ItemList> {
                     )
                 );
             }
+            
         } catch (NullPointerException e) {
+            
             // Report NullPointerException #1571 : manual scroll elsewhere then run action
             LOGGER.error(e.getMessage(), e);
         }
@@ -217,7 +221,7 @@ public class DnDList extends JList<ItemList> {
      * @param filesToImport
      * @param position
      */
-    void dropPasteFile(final List<File> filesToImport, int position) {
+    public void dropPasteFile(final List<File> filesToImport, int position) {
         
         if (filesToImport.isEmpty()) {
             return;
@@ -269,6 +273,7 @@ public class DnDList extends JList<ItemList> {
         }
         
         if (answer == JOptionPane.YES_OPTION) {
+            
             this.listModel.clear();
             startPosition[0] = 0;
             endPosition[0] = 0;
@@ -299,6 +304,7 @@ public class DnDList extends JList<ItemList> {
     private void addItems(final List<File> filesToImport, final int[] endPosition) {
         
         for (File file : filesToImport) {
+            
             try (
                 FileReader fileReader = new FileReader(file);
                 BufferedReader bufferedReader = new BufferedReader(fileReader)
@@ -334,10 +340,6 @@ public class DnDList extends JList<ItemList> {
         for (ItemList path: this.defaultList) {
             this.listModel.addElement(path);
         }
-    }
-
-    public boolean isScan() {
-        return this.isScan;
     }
 
     public void setScan(boolean isScan) {

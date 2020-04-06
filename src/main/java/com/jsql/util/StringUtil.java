@@ -29,8 +29,6 @@ import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.mozilla.universalchardet.UniversalDetector;
 
-import com.jsql.view.swing.util.UiUtil;
-
 /**
  * Utility class adding String operations like join() which are not
  * part of standard JVM.
@@ -48,9 +46,9 @@ public final class StringUtil {
      */
     private static class CharEncoder {
         
-        String prefix;
-        String suffix;
-        int radix;
+        private String prefix;
+        private String suffix;
+        private int radix;
         
         public CharEncoder(String prefix, String suffix, int radix) {
             this.prefix = prefix;
@@ -101,15 +99,20 @@ public final class StringUtil {
     private static String encode(String text, CharEncoder encoder) {
         
         StringBuilder buff = new StringBuilder();
+        
         for (int i = 0 ; i < text.length() ; i++) {
+            
             if (text.charAt(i) > 128) {
+                
                 encoder.encode(text.charAt(i), buff);
+                
             } else {
+                
                 buff.append(text.charAt(i));
             }
         }
         
-        return ""+ buff;
+        return buff.toString();
     }
 
     /**
@@ -125,37 +128,6 @@ public final class StringUtil {
         }
         
         return new String(bytes);
-    }
-    
-    public static String detectUtf8Html(String text) {
-        
-        return StringUtil.detectUtf8Html(text, false);
-    }
-    
-    public static String detectUtf8HtmlNoWrap(String text) {
-        
-        return StringUtil.detectUtf8Html(text, true);
-    }
-    
-    public static String detectUtf8Html(String text, boolean nowrap) {
-        
-        // Fix #35217: NullPointerException on getBytes()
-        if (text == null) {
-            return "";
-        }
-        
-        UniversalDetector detector = new UniversalDetector(null);
-        detector.handleData(text.getBytes(), 0, text.length() - 1);
-        detector.dataEnd();
-        String encoding = detector.getDetectedCharset();
-        
-        String result = text;
-        if (encoding != null) {
-            // TODO move to View, remove from model
-            result = "<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"';"+( nowrap ? "white-space:nowrap;" : "" )+"\">"+ new String(text.getBytes(), StandardCharsets.UTF_8) +"</span></html>";
-        }
-        
-        return result;
     }
     
     public static boolean isUtf8(String text) {
@@ -175,7 +147,7 @@ public final class StringUtil {
     public static String detectUtf8(String text) {
         
         if (text == null) {
-            return "";
+            return org.apache.commons.lang3.StringUtils.EMPTY;
         }
         
         UniversalDetector detector = new UniversalDetector(null);
@@ -320,5 +292,19 @@ public final class StringUtil {
     public static String fromUrl(String text) throws UnsupportedEncodingException {
         
         return URLDecoder.decode(text, StandardCharsets.UTF_8.name());
+    }
+    
+    public static String clean(String query) {
+        
+        return
+            query
+            // Remove comments
+            .replaceAll("(?s)/\\*.*?\\*/", org.apache.commons.lang3.StringUtils.EMPTY)
+            // Remove spaces after a word
+            .replaceAll("([^\\s\\w])(\\s+)", "$1")
+            // Remove spaces before a word
+            .replaceAll("(\\s+)([^\\s\\w])", "$2")
+            // Replace spaces
+            .replaceAll("\\s+", "+");
     }
 }

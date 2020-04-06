@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.model.bean.database;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -61,7 +62,7 @@ public class Database extends AbstractElementDatabase {
     public String getLabelCount() {
         
         // Report #1500: detect incorrect number of tables
-        String sPlural = "";
+        String sPlural = StringUtils.EMPTY;
         try {
             if (Integer.parseInt(this.tableCount) > 1) {
                 sPlural = "s";

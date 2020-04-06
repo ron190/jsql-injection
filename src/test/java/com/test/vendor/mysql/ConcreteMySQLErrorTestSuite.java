@@ -9,10 +9,6 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 @Execution(ExecutionMode.CONCURRENT)
 public abstract class ConcreteMySQLErrorTestSuite extends ConcreteMySQLTestSuite {
 
-    public ConcreteMySQLErrorTestSuite() {
-        super();
-    }
-    
     @Override
     public void config() {
         super.config();

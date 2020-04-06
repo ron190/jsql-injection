@@ -2,6 +2,8 @@ package com.test.vendor._informix;
 
 import java.sql.SQLException;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.test.AbstractTestSuite;
 
 public abstract class ConcreteInformixTestNopeSuite extends AbstractTestSuite {
@@ -10,8 +12,8 @@ public abstract class ConcreteInformixTestNopeSuite extends AbstractTestSuite {
         
         this.jdbcURL = "jdbc:informix-sqli://fe80::1125:78c0:ef17:8ab5%17:7360/sysmaster:user=informix;password=test;INFORMIXSERVER=ol_informix1210_2";
         
-        this.jdbcUser = "";
-        this.jdbcPass = "";
+        this.jdbcUser = StringUtils.EMPTY;
+        this.jdbcPass = StringUtils.EMPTY;
         this.jsqlDatabaseName = "sysutils";
         this.jsqlTableName = "sysusers";
         this.jsqlColumnName = "username";

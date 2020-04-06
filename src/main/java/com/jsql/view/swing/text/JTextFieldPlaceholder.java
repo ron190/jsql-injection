@@ -11,6 +11,7 @@ import java.awt.RenderingHints;
 
 import javax.swing.JTextField;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -27,7 +28,7 @@ public class JTextFieldPlaceholder extends JTextField {
     /**
      * Text to display when empty.
      */
-    private String placeholderText = "";
+    private String placeholderText = StringUtils.EMPTY;
     
     /**
      * Create a textfield with hint and default value.
@@ -61,15 +62,20 @@ public class JTextFieldPlaceholder extends JTextField {
             // TODO use InterfaceTextPlaceholder
             int h = this.getHeight();
             int w = this.getWidth();
+            
             ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             Insets ins = this.getInsets();
+            
             int c0 = this.getBackground().getRGB();
             int c1 = this.getForeground().getRGB();
             int m = 0xfefefefe;
             int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
+            
             g.setColor(new Color(c2, true));
             g.setFont(this.getFont().deriveFont(Font.ITALIC));
+            
             FontMetrics fm = g.getFontMetrics();
+            
             g.drawString(
                 this.placeholderText,
                 this.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT

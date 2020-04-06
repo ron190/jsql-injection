@@ -105,7 +105,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
 
     private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService) {
         
-        List<String> roots = Arrays.asList("-1", "0", "1", "");
+        List<String> roots = Arrays.asList("-1", "0", "1", StringUtils.EMPTY);
         List<String> prefixes = Arrays.asList(
                 "prefix",
                 "prefix'", "'prefix'",
@@ -113,7 +113,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 "prefix%bf'", "%bf'prefix%bf'",
                 "prefix%bf\"", "%bf\"prefix%bf\""
             );
-        List<String> suffixes = Arrays.asList("", ")", "))");
+        List<String> suffixes = Arrays.asList(StringUtils.EMPTY, ")", "))");
         
         List<String> charactersInsertion = new ArrayList<>();
         
@@ -130,7 +130,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             taskCompletionService.submit(
                 new CallablePageSource(
                     characterInsertion
-                    + " "
+                    + StringUtils.SPACE
                     + this.injectionModel.getMediatorVendor().getVendor().instance().sqlOrderBy(),
                     characterInsertion,
                     this.injectionModel
@@ -152,11 +152,11 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             } else {
                 characterInsertionDetectedFixed = characterInsertionByUser;
             }
-            LOGGER.warn("No character insertion activates ORDER BY error, forcing to ["+ characterInsertionDetectedFixed.replace(InjectionModel.STAR, "") +"]");
+            LOGGER.warn("No character insertion activates ORDER BY error, forcing to ["+ characterInsertionDetectedFixed.replace(InjectionModel.STAR, StringUtils.EMPTY) +"]");
             
-        } else if (!characterInsertionByUser.replace(InjectionModel.STAR, "").equals(characterInsertionDetectedFixed)) {
+        } else if (!characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY).equals(characterInsertionDetectedFixed)) {
             
-            String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, "");
+            String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY);
             LOGGER.debug("Found character insertion ["+ characterInsertionDetectedFixed +"] in place of ["+ characterInsertionByUserFormat +"] to detect error on ORDER BY");
             LOGGER.trace("Add manually the character * like ["+ characterInsertionByUserFormat +"*] to force the value ["+ characterInsertionByUserFormat +"]");
         }

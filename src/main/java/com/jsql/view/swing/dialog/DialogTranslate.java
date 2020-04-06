@@ -37,6 +37,7 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.GitUtil.ShowOnConsole;
@@ -74,7 +75,7 @@ public class DialogTranslate extends JDialog {
     
     private final JProgressBar progressBarTranslation = new JProgressBar();
 
-    private String textBeforeChange = "";
+    private String textBeforeChange = StringUtils.EMPTY;
 
     /**
      * Create a dialog for general information on project jsql.

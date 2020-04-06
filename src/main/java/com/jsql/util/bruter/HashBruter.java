@@ -2,6 +2,7 @@ package com.jsql.util.bruter;
 
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 public class HashBruter extends Bruter {
@@ -42,7 +43,7 @@ public class HashBruter extends Bruter {
             }
             
             try {
-                this.generateAllPossibleCombinations("", size);
+                this.generateAllPossibleCombinations(StringUtils.EMPTY, size);
                 
             } catch (NoSuchAlgorithmException e) {
                 
@@ -75,7 +76,7 @@ public class HashBruter extends Bruter {
                 case "crc64":   this.generatedHash = Crc64.generateCRC64(baseString.getBytes()); break;
                 case "mysql":   this.generatedHash = HashUtil.toMySql(baseString); break;
                 case "md4":     this.generatedHash = HashUtil.toMd4(baseString); break;
-                default:        this.generatedHash = HashUtil.toHash(this.type, baseString);
+                default:        this.generatedHash = HashUtil.toHash(this.type, baseString); break;
                 }
                 
                 this.password = baseString;

@@ -3,14 +3,16 @@ package com.jsql.model.injection.vendor.model.yaml;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 @SuppressWarnings("serial")
 public class Boolean implements Serializable {
 
     private Test test = new Test();
-    private String blind = "";
-    private String time = "";
-    private String modeAnd = "";
-    private String modeOr = "";
+    private String blind = StringUtils.EMPTY;
+    private String time = StringUtils.EMPTY;
+    private String modeAnd = StringUtils.EMPTY;
+    private String modeOr = StringUtils.EMPTY;
 
     public Test getTest() {
         return this.test;

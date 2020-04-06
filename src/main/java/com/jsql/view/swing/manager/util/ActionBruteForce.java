@@ -154,9 +154,9 @@ public class ActionBruteForce implements ActionListener, Runnable {
             
             this.append(this.bruteForceManager.getResult(), (
                 I18nUtil.valueByKey("BRUTEFORCE_TRAVERSING_REMAINING") + ": "
-                + Math.round(Math.floor(remainingDuration / 60f / 60.0f / 24f))   + I18nUtil.valueByKey("BRUTEFORCE_DAYS") + " "
-                + Math.round(Math.floor(remainingDuration / 60f / 60f % 24))      + I18nUtil.valueByKey("BRUTEFORCE_HOURS") + " "
-                + Math.round(Math.floor(remainingDuration / 60f % 60))            + I18nUtil.valueByKey("BRUTEFORCE_MINUTES") + " "
+                + Math.round(Math.floor(remainingDuration / 60f / 60.0f / 24f))   + I18nUtil.valueByKey("BRUTEFORCE_DAYS") + StringUtils.SPACE
+                + Math.round(Math.floor(remainingDuration / 60f / 60f % 24))      + I18nUtil.valueByKey("BRUTEFORCE_HOURS") + StringUtils.SPACE
+                + Math.round(Math.floor(remainingDuration / 60f % 60))            + I18nUtil.valueByKey("BRUTEFORCE_MINUTES") + StringUtils.SPACE
                 + Math.round(remainingDuration % 60)                              + I18nUtil.valueByKey("BRUTEFORCE_SECONDS")
             ));
         }
@@ -192,7 +192,14 @@ public class ActionBruteForce implements ActionListener, Runnable {
         }
 
         hashBruter.setType((String) this.bruteForceManager.getHashTypes().getSelectedItem());
-        hashBruter.setHash(this.bruteForceManager.getHash().getText().toUpperCase(Locale.ROOT).replaceAll("[^a-zA-Z0-9]", "").trim());
+        hashBruter.setHash(
+            this.bruteForceManager
+            .getHash()
+            .getText()
+            .toUpperCase(Locale.ROOT)
+            .replaceAll("[^a-zA-Z0-9]", StringUtils.EMPTY)
+            .trim()
+        );
     }
 
     private void displayResult(final HashBruter hashBruter) {
@@ -227,7 +234,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         try {
             textPane.getDocument().insertString(
                 textPane.getDocument().getLength(),
-                (textPane.getDocument().getLength() == 0 ? "" : "\n") + text,
+                (textPane.getDocument().getLength() == 0 ? StringUtils.EMPTY : "\n") + text,
                 null
             );
         } catch (BadLocationException e) {

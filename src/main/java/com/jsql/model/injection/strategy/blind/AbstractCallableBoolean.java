@@ -31,7 +31,7 @@ public abstract class AbstractCallableBoolean<T extends AbstractCallableBoolean<
      * Check if a response time means the SQL query is true.
      * @return true if the current SQL test is confirmed
      */
-    abstract boolean isTrue();
+    protected abstract boolean isTrue();
     
     public boolean isTestingLength() {
         return this.isTestingLength;

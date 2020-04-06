@@ -2,18 +2,20 @@ package com.jsql.view.swing.list;
 
 import java.util.NoSuchElementException;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.view.swing.MediatorGui;
 
 public class BeanInjection {
     
-    private String url = "";
-    private String request = "";
-    private String header = "";
+    private String url = StringUtils.EMPTY;
+    private String request = StringUtils.EMPTY;
+    private String header = StringUtils.EMPTY;
     private MethodInjection injectionType;
     private Vendor vendor;
-    private String requestType = "";
+    private String requestType = StringUtils.EMPTY;
 
     public BeanInjection(String url) {
         

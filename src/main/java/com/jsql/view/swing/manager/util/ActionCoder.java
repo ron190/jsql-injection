@@ -60,7 +60,7 @@ public class ActionCoder implements ActionListener {
     
     private void transform(String labelMethodMenu) {
 
-        String nameMethod = labelMethodMenu.replace("Hash to ", "");
+        String nameMethod = labelMethodMenu.replace("Hash to ", StringUtils.EMPTY);
         
         String result;
         String textInput = this.coderManager.getTextInput().getText();

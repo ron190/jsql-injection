@@ -115,10 +115,10 @@ public class ConnectionUtil {
                                 Paths.get(this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPathKerberosLogin()),
                                 Charset.defaultCharset()
                             ),
-                            ""
+                            StringUtils.EMPTY
                         )
                     )
-                    .replaceAll("")
+                    .replaceAll(StringUtils.EMPTY)
                     .trim();
                 
                 SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(loginKerberos);
@@ -129,7 +129,7 @@ public class ConnectionUtil {
                 connection = (HttpURLConnection) new URL(
                     this.getUrlByUser()
                     // Ignore injection point during the test
-                    .replace(InjectionModel.STAR, "")
+                    .replace(InjectionModel.STAR, StringUtils.EMPTY)
                 ).openConnection();
             }
             
@@ -149,14 +149,14 @@ public class ConnectionUtil {
                 HeaderUtil.sanitizeHeaders(connection, header);
             }
 
-            this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(connection, this.getUrlByUser().replace(InjectionModel.STAR, ""));
+            this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(connection, this.getUrlByUser().replace(InjectionModel.STAR, StringUtils.EMPTY));
             
             // Calling connection.disconnect() is not required, more calls will happen
             
         } catch (Exception e) {
             
-            String message = Optional.ofNullable(e.getMessage()).orElse("");
-            throw new InjectionFailureException("Connection failed: "+ message.replace(e.getClass().getName() +": ", ""), e);
+            String message = Optional.ofNullable(e.getMessage()).orElse(StringUtils.EMPTY);
+            throw new InjectionFailureException("Connection failed: "+ message.replace(e.getClass().getName() +": ", StringUtils.EMPTY), e);
         }
     }
     
@@ -182,6 +182,7 @@ public class ConnectionUtil {
             } else {
                 pageSource = ConnectionUtil.getSource(connection);
             }
+            // TODO catch
         } finally {
             
             msgHeader.put(Header.SOURCE, pageSource);
@@ -193,7 +194,6 @@ public class ConnectionUtil {
             this.injectionModel.sendToViews(request);
         }
         
-        // TODO optional
         return pageSource.trim();
     }
     

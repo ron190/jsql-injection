@@ -3,10 +3,12 @@ package com.jsql.model.injection.vendor.model.yaml;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 @SuppressWarnings("serial")
 public class Row implements Serializable {
 
-    private String query = "";
+    private String query = StringUtils.EMPTY;
     private Fields fields = new Fields();
 
     public String getQuery() {

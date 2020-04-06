@@ -47,11 +47,13 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import com.jsql.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
 import com.jsql.view.swing.tab.ButtonClose;
 import com.jsql.view.swing.text.JTextFieldPlaceholder;
+import com.jsql.view.swing.util.UiStringUtil;
 
 /**
  * Display a table for database values. Add keyboard shortcut, mouse icon, text
@@ -154,7 +156,12 @@ public class PanelTable extends JPanel {
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
                 
                 JLabel label = (JLabel) cellRendererHeader.getTableCellRendererComponent(
-                    table, StringUtil.detectUtf8HtmlNoWrap(" "+ value +" "), isSelected, hasFocus, row, column
+                    table,
+                    UiStringUtil.detectUtf8HtmlNoWrap(StringUtils.SPACE + value + StringUtils.SPACE),
+                    isSelected,
+                    hasFocus,
+                    row,
+                    column
                 );
                 
                 label.setBorder(
@@ -172,10 +179,10 @@ public class PanelTable extends JPanel {
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
                 
                 // Prepare cell value to be utf8 inspected
-                String cellValue = value != null ? value.toString() : "";
+                String cellValue = value != null ? value.toString() : StringUtils.EMPTY;
                 
                 return cellRendererDefault.getTableCellRendererComponent(
-                    table, StringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column
+                    table, UiStringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column
                 );
             }
         );

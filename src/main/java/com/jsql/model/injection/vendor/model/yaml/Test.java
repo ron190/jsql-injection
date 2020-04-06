@@ -5,14 +5,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 @SuppressWarnings("serial")
 public class Test implements Serializable {
 
     private List<String> falses = new ArrayList<>();
     private List<String> trues = new ArrayList<>();
-    private String initialization = "";
-    private String bit = "";
-    private String length = "";
+    private String initialization = StringUtils.EMPTY;
+    private String bit = StringUtils.EMPTY;
+    private String length = StringUtils.EMPTY;
 
     public List<String> getTrues() {
         return this.trues;

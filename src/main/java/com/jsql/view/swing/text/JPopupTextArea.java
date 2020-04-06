@@ -17,6 +17,8 @@ import java.awt.event.FocusEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * A JTextArea decorated with popup menu and border.
  */
@@ -28,7 +30,7 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
      */
     public JPopupTextArea() {
         
-        this("");
+        this(StringUtils.EMPTY);
     }
     
     /**

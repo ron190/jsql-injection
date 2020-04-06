@@ -110,7 +110,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         this.add(southPanel, BorderLayout.SOUTH);
     }
     
-    abstract void createPayload(String pathShell, String urlShell) throws JSqlException, InterruptedException;
+    protected abstract void createPayload(String pathShell, String urlShell) throws JSqlException, InterruptedException;
 
     private JPanel initializeRunButtonPanel() {
 

@@ -204,12 +204,14 @@ public class ProxyUtil {
         
         if (showOnConsole == ShowOnConsole.YES) {
             
-            String message = Optional.ofNullable(e.getMessage()).orElse("");
+            String message = Optional.ofNullable(e.getMessage()).orElse(StringUtils.EMPTY);
+            
             ProxyUtil.LOGGER.warn(
                 "Connection to proxy "
-                + address +":"
+                + address
+                + ":"
                 + port
-                +" failed with error \""+ message.replace(e.getClass().getName() +": ", "")
+                +" failed with error \""+ message.replace(e.getClass().getName() +": ", StringUtils.EMPTY)
                 +"\", verify your proxy settings",
                 e
             );

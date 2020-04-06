@@ -33,8 +33,8 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.util.StringUtil;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
+import com.jsql.view.swing.util.UiStringUtil;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -140,7 +140,7 @@ public class PanelNode extends JPanel {
             tree.requestFocusInWindow();
             
             nodeModel.getElementDatabase().setElementValue(new String(PanelNode.this.textFieldEditable.getText().getBytes(StandardCharsets.UTF_8)));
-            PanelNode.this.label.setText(StringUtil.detectUtf8Html(nodeModel.getElementDatabase().getLabelCount()));
+            PanelNode.this.label.setText(UiStringUtil.detectUtf8Html(nodeModel.getElementDatabase().getLabelCount()));
             
             tree.revalidate();
             tree.repaint();

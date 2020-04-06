@@ -26,6 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.ListModel;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.list.DnDList;
@@ -162,7 +163,15 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
             if (url.contains(listModel.getElementAt(i).getOriginalString())) {
                 
                 listModel.getElementAt(i).setIsVulnerable(true);
-                listModel.getElementAt(i).setInternalString(listModel.getElementAt(i).getInternalString().replace(" ["+ strategy +"]", "") +" ["+ strategy +"]");
+                listModel.getElementAt(i).setInternalString(
+                    listModel
+                    .getElementAt(i)
+                    .getInternalString()
+                    .replace(" ["+ strategy +"]", StringUtils.EMPTY)
+                    + " ["
+                    + strategy
+                    + "]"
+                );
                 
                 ((DefaultListModel<ItemList>) listModel).setElementAt(listModel.getElementAt(i), i);
             }

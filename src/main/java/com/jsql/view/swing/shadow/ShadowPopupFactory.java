@@ -73,8 +73,8 @@ public final class ShadowPopupFactory extends PopupFactory {
      *
      * @see com.jgoodies.looks.common.ShadowPopupBorder
      */
-    static final String PROP_HORIZONTAL_BACKGROUND = "jgoodies.hShadowBg";
-    static final String PROP_VERTICAL_BACKGROUND   = "jgoodies.vShadowBg";
+    public static final String PROP_HORIZONTAL_BACKGROUND = "jgoodies.hShadowBg";
+    public static final String PROP_VERTICAL_BACKGROUND   = "jgoodies.vShadowBg";
 
     /**
      * The PopupFactory used before this PopupFactory has been installed

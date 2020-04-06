@@ -5,6 +5,7 @@ import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.util.prefs.Preferences;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
@@ -166,12 +167,12 @@ public class AuthenticationUtil {
         this.isAuthentication = prefs.getBoolean("isDigestAuthentication", false);
 
         // Default TOR config
-        this.usernameAuthentication = prefs.get("usernameDigest", "");
-        this.passwordAuthentication = prefs.get("passwordDigest", "");
+        this.usernameAuthentication = prefs.get("usernameDigest", StringUtils.EMPTY);
+        this.passwordAuthentication = prefs.get("passwordDigest", StringUtils.EMPTY);
         
         this.isKerberos = prefs.getBoolean("enableKerberos", false);
-        this.pathKerberosKrb5 = prefs.get("kerberosKrb5Conf", "");
-        this.pathKerberosLogin = prefs.get("kerberosLoginConf", "");
+        this.pathKerberosKrb5 = prefs.get("kerberosKrb5Conf", StringUtils.EMPTY);
+        this.pathKerberosLogin = prefs.get("kerberosLoginConf", StringUtils.EMPTY);
 
 //        AuthCacheValue.setAuthCache(new AuthCacheImpl());
         
@@ -208,8 +209,8 @@ public class AuthenticationUtil {
                     STR_JAVA_PROTO_HDL_PKGS,
                     System
                     .getProperty(STR_JAVA_PROTO_HDL_PKGS)
-                    .replace("|jcifs", "")
-                    .replace("jcifs", "")
+                    .replace("|jcifs", StringUtils.EMPTY)
+                    .replace("jcifs", StringUtils.EMPTY)
                 );
             }
             
@@ -220,11 +221,11 @@ public class AuthenticationUtil {
             
         } else {
             
-            System.setProperty(STR_JAVA_PROTO_HDL_PKGS, "");
-            System.setProperty("java.security.krb5.conf", "");
-            System.setProperty("java.security.auth.login.config", "");
-            System.setProperty("spnego.krb5.conf", "");
-            System.setProperty("spnego.login.conf", "");
+            System.setProperty(STR_JAVA_PROTO_HDL_PKGS, StringUtils.EMPTY);
+            System.setProperty("java.security.krb5.conf", StringUtils.EMPTY);
+            System.setProperty("java.security.auth.login.config", StringUtils.EMPTY);
+            System.setProperty("spnego.krb5.conf", StringUtils.EMPTY);
+            System.setProperty("spnego.login.conf", StringUtils.EMPTY);
             
             System.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
             System.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());

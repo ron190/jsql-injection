@@ -3,6 +3,7 @@ package com.jsql.view.swing.shadow;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 /*
  * Copyright (c) 2009-2013 JGoodies Software GmbH. All Rights Reserved.
@@ -217,9 +218,11 @@ public class SystemUtils {
         
         try {
             return System.getProperty(key);
+            
         } catch (SecurityException e) {
+            
             LOGGER.error("Can't access the System property "+ key +": "+ e, e);
-            return "";
+            return StringUtils.EMPTY;
         }
     }
 

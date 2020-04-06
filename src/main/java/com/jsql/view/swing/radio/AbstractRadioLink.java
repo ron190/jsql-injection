@@ -41,13 +41,13 @@ public abstract class AbstractRadioLink extends JLabel {
     /**
      * An action run when radio is checked by user.
      */
-    abstract void action();
+    public abstract void action();
     
     /**
      * Group of radio components, either the radio for HTTP method or the one for injection strategy.
      * @return
      */
-    abstract List<JLabel> getGroup();
+    public abstract List<JLabel> getGroup();
 
     /**
      * Radio is selectable/hoverable if it is not already selected (bold).

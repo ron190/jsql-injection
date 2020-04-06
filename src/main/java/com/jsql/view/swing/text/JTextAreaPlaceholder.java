@@ -29,7 +29,7 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
     /**
      * Text to display when empty.
      */
-    private String placeholderText = "";
+    private String placeholderText = StringUtils.EMPTY;
     
     /**
      * Create a textfield with hint and default value.
@@ -49,6 +49,7 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
     public JTextAreaPlaceholder(String placeholder) {
         
         // TODO duplicated in JTextPanePlaceholder
+        // but diamond inheritance textpane and textarea
         this.placeholderText = placeholder;
         
         this.setCaret(new DefaultCaret() {

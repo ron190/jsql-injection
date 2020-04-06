@@ -91,7 +91,7 @@ public class ManagerAdminPage extends AbstractManagerList {
 
     private void initializeMenuUserAgent() {
         
-        // TODO
+        // TODO user agent
         JMenu menuUserAgent = MenuBarCoder.createMenu("<User-Agent default>");
         MenuBarCoder comboMenubar = new MenuBarCoder(menuUserAgent);
         comboMenubar.setOpaque(false);

@@ -83,8 +83,12 @@ public class MediatorVendor {
             public String transformSQLite(String resultToParse) {
                 
                 StringBuilder resultSqlite = new StringBuilder();
-                String resultTmp = resultToParse.replaceFirst(".+?\\(", "").trim().replaceAll("\\)$", "");
-                resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
+                String resultTmp =
+                    resultToParse
+                    .replaceFirst(".+?\\(", StringUtils.EMPTY)
+                    .trim()
+                    .replaceAll("\\)$", StringUtils.EMPTY);
+                resultTmp = resultTmp.replaceAll("\\(.+?\\)", StringUtils.EMPTY);
                 
                 for (String columnNameAndType: resultTmp.split(",")) {
                     

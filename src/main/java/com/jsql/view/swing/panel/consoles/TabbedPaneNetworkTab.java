@@ -11,6 +11,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.text.DefaultCaret;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -96,7 +97,7 @@ public class TabbedPaneNetworkTab extends MouseTabbedPane {
         this.textAreaNetworkTabParams.setText(networkData.getPost());
         this.textAreaNetworkTabUrl.setText(networkData.getUrl());
         
-        this.textAreaNetworkTabResponse.setText("");
+        this.textAreaNetworkTabResponse.setText(StringUtils.EMPTY);
         for (String key: networkData.getResponse().keySet()) {
             this.textAreaNetworkTabResponse.append(key + ": " + networkData.getResponse().get(key));
             this.textAreaNetworkTabResponse.append("\n");
@@ -127,8 +128,8 @@ public class TabbedPaneNetworkTab extends MouseTabbedPane {
             this.textAreaNetworkTabPreview.setText(
                 Jsoup.clean(
                     "<html>"+ StringUtil.detectUtf8(networkData.getSource()).replaceAll("#{5,}", "#*") + "</html>"
-                        .replaceAll("<img.*>", "")
-                        .replaceAll("<input.*type=\"?hidden\"?.*>", "")
+                        .replaceAll("<img.*>", StringUtils.EMPTY)
+                        .replaceAll("<input.*type=\"?hidden\"?.*>", StringUtils.EMPTY)
                         .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
                         .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
                     Whitelist.relaxed()

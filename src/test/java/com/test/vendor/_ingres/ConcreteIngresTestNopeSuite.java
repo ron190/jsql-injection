@@ -2,6 +2,8 @@ package com.test.vendor._ingres;
 
 import java.sql.SQLException;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.test.AbstractTestSuite;
 
 public abstract class ConcreteIngresTestNopeSuite extends AbstractTestSuite {
@@ -10,8 +12,8 @@ public abstract class ConcreteIngresTestNopeSuite extends AbstractTestSuite {
         
         this.jdbcURL = "jdbc:ingres://"+ AbstractTestSuite.HOSTNAME +":II7/demodb";
         
-        this.jdbcUser = "";
-        this.jdbcPass = "";
+        this.jdbcUser = StringUtils.EMPTY;
+        this.jdbcPass = StringUtils.EMPTY;
         this.jsqlDatabaseName = "watthieu-x64";
         this.jsqlTableName = "country";
         this.jsqlColumnName = "ct_code";

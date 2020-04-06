@@ -3,15 +3,17 @@ package com.jsql.model.injection.vendor.model.yaml;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 @SuppressWarnings("serial")
 public class Configuration implements Serializable {
 
-    private String slidingWindow = "";
-    private String limit = "";
-    private String failsafe = "";
-    private String calibrator = "";
+    private String slidingWindow = StringUtils.EMPTY;
+    private String limit = StringUtils.EMPTY;
+    private String failsafe = StringUtils.EMPTY;
+    private String calibrator = StringUtils.EMPTY;
     private Integer limitBoundary = 0;
-    private String endingComment = "";
+    private String endingComment = StringUtils.EMPTY;
     private Fingerprint fingerprint = new Fingerprint();
 
     public String getSlidingWindow() {

@@ -72,12 +72,14 @@ public class KeyAdapterTerminal extends KeyAdapter {
             }
     
             // Get user input
-            final String[] command = {""};
+            final String[] command = {StringUtils.EMPTY};
             command[0] =
-                this.terminal.getText(
+                this.terminal
+                .getText(
                     root.getElement(lineNumber).getStartOffset(),
                     root.getElement(lineNumber).getEndOffset() - root.getElement(lineNumber).getStartOffset()
-                ).replace(this.terminal.getPrompt(), "");
+                )
+                .replace(this.terminal.getPrompt(), StringUtils.EMPTY);
     
             // Validate user input ; disable text editing
             if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {

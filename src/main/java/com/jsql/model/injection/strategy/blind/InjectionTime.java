@@ -102,7 +102,11 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             LOGGER.error("Interruption while searching for Time False tags", e);
             Thread.currentThread().interrupt();
         }
+        
+        this.initializeTrueMarks(injectionModel, booleanMode);
+    }
 
+    private void initializeTrueMarks(InjectionModel injectionModel, BooleanMode booleanMode) {
         
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model

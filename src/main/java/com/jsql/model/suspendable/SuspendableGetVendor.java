@@ -16,6 +16,7 @@ import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.vendor.MediatorVendor;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
@@ -81,9 +82,11 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
 
                 String pageSource = currentCallable.getContent();
                 
-                // TODO magic number skip(1)
-                // Test each vendor except Auto with skip(1)
-                for (Vendor vendorTest: this.injectionModel.getMediatorVendor().getVendors().stream().skip(1).toArray(Vendor[]::new)) {
+                MediatorVendor mediatorVendor = this.injectionModel.getMediatorVendor();
+                Vendor[] vendors = mediatorVendor.getVendors().stream().filter(v -> v != mediatorVendor.getAuto()).toArray(Vendor[]::new);
+                
+                // Test each vendor
+                for (Vendor vendorTest: vendors) {
                     
                   if (
                       pageSource.matches(

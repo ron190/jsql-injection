@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
+import javax.swing.text.StyledDocument;
 
 import com.jsql.util.tampering.TamperingType;
 import com.jsql.view.swing.MediatorGui;
@@ -198,8 +199,9 @@ public class PanelTamperingPreferences extends JPanel {
         });
         
         // TODO create group for cleanable textpanelexer
-        if (textPaneEval.getStyledDocument() instanceof HighlightedDocument) {
-            HighlightedDocument oldDocument = (HighlightedDocument) textPaneEval.getStyledDocument();
+        StyledDocument styledDocument = textPaneEval.getStyledDocument();
+        if (styledDocument instanceof HighlightedDocument) {
+            HighlightedDocument oldDocument = (HighlightedDocument) styledDocument;
             oldDocument.stopColorer();
         }
         

@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
@@ -42,7 +43,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         boolean isRequestFound = false;
-        String initialQuery = "";
+        String initialQuery = StringUtils.EMPTY;
         int nbIndex;
 
         // SQL: each field is built has the following 1337[index]7330+1
@@ -108,6 +109,6 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         }
         
         // TODO optional
-        return "";
+        return StringUtils.EMPTY;
     }
 }

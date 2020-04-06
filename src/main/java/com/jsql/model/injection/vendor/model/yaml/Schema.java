@@ -3,14 +3,16 @@ package com.jsql.model.injection.vendor.model.yaml;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 @SuppressWarnings("serial")
 public class Schema implements Serializable {
 
-    private String database = "";
-    private String table = "";
-    private String column = "";
+    private String database = StringUtils.EMPTY;
+    private String table = StringUtils.EMPTY;
+    private String column = StringUtils.EMPTY;
     private Row row = new Row();
-    private String limit = "";
+    private String limit = StringUtils.EMPTY;
 
     public String getDatabase() {
         return this.database;

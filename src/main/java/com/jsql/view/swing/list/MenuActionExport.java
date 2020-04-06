@@ -20,6 +20,7 @@ import java.io.PrintStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
@@ -63,7 +64,7 @@ public class MenuActionExport implements ActionListener {
                     
                     int replace = JOptionPane.showConfirmDialog(
                         this,
-                        file.getName() +" "+ I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_LABEL"),
+                        file.getName() + StringUtils.SPACE + I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_LABEL"),
                         I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_TITLE"),
                         JOptionPane.YES_NO_OPTION
                     );

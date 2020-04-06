@@ -3,11 +3,13 @@ package com.jsql.model.injection.vendor.model.yaml;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 @SuppressWarnings("serial")
 public class Method implements Serializable {
 
-    private String name = "";
-    private String query = "";
+    private String name = StringUtils.EMPTY;
+    private String query = StringUtils.EMPTY;
     private Integer capacity = 0;
 
     public String getName() {

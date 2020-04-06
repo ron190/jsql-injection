@@ -21,17 +21,7 @@ public abstract class ConcreteDB2TestNopeSuite extends AbstractTestSuite {
         
         this.jdbcQueryForDatabaseNames = "select trim("+ this.jdbcColumnForDatabaseName +") "+ this.jdbcColumnForDatabaseName +" from syscat.schemata";
         this.jdbcQueryForTableNames = "select "+ this.jdbcColumnForTableName +" from sysibm.systables where creator = '"+ this.jsqlDatabaseName +"'";
-        
-        this.jdbcQueryForColumnNames = ""
-            + "select "
-                + this.jdbcColumnForColumnName +" "
-            + "from "
-                + "sysibm.syscolumns "
-            + "where "
-                + "coltype != 'BLOB'"
-                + "and tbcreator = '"+ this.jsqlDatabaseName +"'"
-                + "and tbname = '"+ this.jsqlTableName +"'";
-        
+        this.jdbcQueryForColumnNames = "select "+ this.jdbcColumnForColumnName + " from sysibm.syscolumns where coltype != 'BLOB' and tbcreator = '"+ this.jsqlDatabaseName +"' and tbname = '"+ this.jsqlTableName +"'";
         this.jdbcQueryForValues = "SELECT "+ this.jsqlColumnName +" FROM "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;
         
         this.requestJdbc();

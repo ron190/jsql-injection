@@ -14,25 +14,21 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Font;
-import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.database.Column;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.StringUtil;
+import com.jsql.view.swing.util.UiStringUtil;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Column model creating a checkbox.
  * Used by renderer and editor.
  */
-public class NodeModelColumn extends AbstractNodeModel {
+public class NodeModelColumn extends NodeModelEmpty {
     
     /**
      * Node as a column model.
@@ -55,7 +51,7 @@ public class NodeModelColumn extends AbstractNodeModel {
             )
         );
         
-        checkbox.setText(StringUtil.detectUtf8HtmlNoWrap(this.toString()));
+        checkbox.setText(UiStringUtil.detectUtf8HtmlNoWrap(this.toString()));
 
         if (isSelected) {
             if (hasFocus) {
@@ -73,31 +69,5 @@ public class NodeModelColumn extends AbstractNodeModel {
         checkbox.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
         
         return checkbox;
-    }
-
-    @Override
-    protected Icon getLeafIcon(boolean leaf) {
-        // Do nothing
-        return null;
-    }
-    
-    @Override
-    public void runAction() {
-        // Do nothing
-    }
-    
-    @Override
-    protected void buildMenu(JPopupMenuCustomExtract tablePopupMenu, TreePath path) {
-        // Do nothing
-    }
-    
-    @Override
-    public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
-        // Do nothing
-    }
-    
-    @Override
-    public boolean isPopupDisplayable() {
-        return false;
     }
 }

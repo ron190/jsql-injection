@@ -3,10 +3,12 @@ package com.jsql.model.injection.vendor.model.yaml;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 @SuppressWarnings("serial")
 public class ModelYaml implements Serializable {
 
-    private String vendor = "";
+    private String vendor = StringUtils.EMPTY;
     private Resource resource = new Resource();
     private Strategy strategy = new Strategy();
 

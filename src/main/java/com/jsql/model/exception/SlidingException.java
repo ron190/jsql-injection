@@ -1,11 +1,13 @@
 package com.jsql.model.exception;
 
+import org.apache.commons.lang3.StringUtils;
+
 @SuppressWarnings("serial")
 public abstract class SlidingException extends JSqlException {
     
-    private String slidingWindowAllRows = "";
+    private String slidingWindowAllRows = StringUtils.EMPTY;
     
-    private String slidingWindowCurrentRows = "";
+    private String slidingWindowCurrentRows = StringUtils.EMPTY;
     
     public SlidingException(String message) {
         super(message);

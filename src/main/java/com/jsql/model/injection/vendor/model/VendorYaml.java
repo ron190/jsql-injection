@@ -132,8 +132,8 @@ public class VendorYaml implements AbstractVendor {
         
         String sqlField = this.modelYaml.getResource().getSchema().getRow().getFields().getField();
         Matcher matcherSqlField = Pattern.compile("(?s)(.*)"+ Pattern.quote(FIELD) +"(.*)").matcher(sqlField);
-        String leadSqlField = "";
-        String trailSqlField = "";
+        String leadSqlField = StringUtils.EMPTY;
+        String trailSqlField = StringUtils.EMPTY;
         
         if (matcherSqlField.find()) {
             
@@ -214,7 +214,7 @@ public class VendorYaml implements AbstractVendor {
                     Hex.encodeHexString(content.getBytes())
                 )
             )
-            .replaceAll("--++", "")
+            .replaceAll("--++", StringUtils.EMPTY)
             + StringUtils.SPACE
             + this.modelYaml.getResource().getFile().getCreate()
             .getQuery()
@@ -366,7 +366,7 @@ public class VendorYaml implements AbstractVendor {
                 this.modelYaml.getStrategy().getConfiguration()
                 .getSlidingWindow()
                 .replace(INJECTION, sqlQuery)
-                .replace(WINDOW_CHAR, ""+ startPosition)
+                .replace(WINDOW_CHAR, startPosition)
                 .replace(CAPACITY, "65565")
             );
     }
@@ -379,7 +379,7 @@ public class VendorYaml implements AbstractVendor {
                 this.modelYaml.getStrategy().getConfiguration()
                 .getSlidingWindow()
                 .replace(INJECTION, sqlQuery)
-                .replace(WINDOW_CHAR, ""+ startPosition)
+                .replace(WINDOW_CHAR, startPosition)
                 .replace(CAPACITY, "65565")
             );
     }
@@ -399,15 +399,17 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlError(String sqlQuery, String startPosition) {
         
+        int indexMethodError = this.injectionModel.getMediatorStrategy().getError().getIndexMethodError();
+        
         return
             StringUtils.SPACE
             + VendorYaml.replaceTags(
-                this.modelYaml.getStrategy().getError().getMethod().get(this.injectionModel.getMediatorStrategy().getError().getIndexMethodError())
+                this.modelYaml.getStrategy().getError().getMethod().get(indexMethodError)
                 .getQuery()
                 .replace(WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
                 .replace(INJECTION, sqlQuery)
-                .replace(WINDOW_CHAR, ""+startPosition)
-                .replace(CAPACITY, Integer.toString(this.modelYaml.getStrategy().getError().getMethod().get(this.injectionModel.getMediatorStrategy().getError().getIndexMethodError()).getCapacity()))
+                .replace(WINDOW_CHAR, startPosition)
+                .replace(CAPACITY, Integer.toString(this.modelYaml.getStrategy().getError().getMethod().get(indexMethodError).getCapacity()))
             );
     }
 
@@ -419,8 +421,8 @@ public class VendorYaml implements AbstractVendor {
                 this.modelYaml.getStrategy().getConfiguration()
                 .getSlidingWindow()
                 .replace(INJECTION, sqlQuery)
-                .replace(WINDOW_CHAR, ""+startPosition)
-                .replace(CAPACITY, ""+this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength())
+                .replace(WINDOW_CHAR, startPosition)
+                .replace(CAPACITY, this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength())
             );
     }
 

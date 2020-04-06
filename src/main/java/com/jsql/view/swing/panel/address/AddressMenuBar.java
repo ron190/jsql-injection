@@ -154,7 +154,7 @@ public class AddressMenuBar extends JMenuBar {
                     
                     MediatorGui.model().getMediatorStrategy().setStrategy(MediatorGui.model().getMediatorStrategy().getError());
                     
-                    ((StrategyInjectionError) MediatorGui.model().getMediatorStrategy().getError()).setIndexMethod(indexError);
+                    MediatorGui.model().getMediatorStrategy().getError().setIndexMethod(indexError);
                 });
 
                 i[0]++;
@@ -176,8 +176,7 @@ public class AddressMenuBar extends JMenuBar {
             this.menuStrategy.getItem(i).setEnabled(false);
         }
         
-        // TODO remove Error strategy magic number 2
-        ((JMenu) this.menuStrategy.getItem(2)).removeAll();
+        this.getMenuError().removeAll();
         this.groupStrategy.clearSelection();
     }
     
@@ -249,11 +248,10 @@ public class AddressMenuBar extends JMenuBar {
     
     public void markError() {
 
-        AbstractStrategy strategy = MediatorGui.model().getMediatorStrategy().getError();
+        StrategyInjectionError strategy = MediatorGui.model().getMediatorStrategy().getError();
         this.menuStrategy.setText(strategy.toString());
         
-        // TODO magic number
-        JMenu menuError = (JMenu) this.menuStrategy.getMenuComponent(2);
+        JMenu menuError = this.getMenuError();
         
         int indexError = strategy.getIndexMethodError();
         String nameError = MediatorGui.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();
@@ -273,6 +271,11 @@ public class AddressMenuBar extends JMenuBar {
                 LOGGER.error(e, e);
             }
         }
+    }
+
+    private JMenu getMenuError() {
+        
+        return (JMenu) this.menuStrategy.getMenuComponent(2);
     }
     
     public void markErrorVulnerable(int indexMethodError) {

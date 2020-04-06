@@ -274,12 +274,12 @@ public class ListTransfertHandlerScan extends TransferHandler {
             JSONObject itemJsonObject = itemsJsonArray.getJSONObject(i);
             
             BeanInjection beanInjection = new BeanInjection(
-                itemJsonObject.optString("url", ""),
-                itemJsonObject.optString("request", ""),
-                itemJsonObject.optString("header", ""),
-                itemJsonObject.optString("injectionType", ""),
-                itemJsonObject.optString("vendor", ""),
-                itemJsonObject.optString("requestType", "")
+                itemJsonObject.optString("url", StringUtils.EMPTY),
+                itemJsonObject.optString("request", StringUtils.EMPTY),
+                itemJsonObject.optString("header", StringUtils.EMPTY),
+                itemJsonObject.optString("injectionType", StringUtils.EMPTY),
+                itemJsonObject.optString("vendor", StringUtils.EMPTY),
+                itemJsonObject.optString("requestType", StringUtils.EMPTY)
             );
             
             ItemListScan newItem = new ItemListScan(beanInjection);
@@ -293,12 +293,12 @@ public class ListTransfertHandlerScan extends TransferHandler {
             JSONObject itemsJsonObject = new JSONObject(clipboardText);
             
             BeanInjection beanInjection = new BeanInjection(
-                itemsJsonObject.optString("url", ""),
-                itemsJsonObject.optString("request", ""),
-                itemsJsonObject.optString("header", ""),
-                itemsJsonObject.optString("injectionType", ""),
-                itemsJsonObject.optString("vendor", ""),
-                itemsJsonObject.optString("requestType", "")
+                itemsJsonObject.optString("url", StringUtils.EMPTY),
+                itemsJsonObject.optString("request", StringUtils.EMPTY),
+                itemsJsonObject.optString("header", StringUtils.EMPTY),
+                itemsJsonObject.optString("injectionType", StringUtils.EMPTY),
+                itemsJsonObject.optString("vendor", StringUtils.EMPTY),
+                itemsJsonObject.optString("requestType", StringUtils.EMPTY)
             );
             
             ItemListScan newItem = new ItemListScan(beanInjection);

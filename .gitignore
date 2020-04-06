@@ -13,3 +13,4 @@ test-output/
 .pmd
 dependency-reduced-pom.xml
 build.xml
+jsql-sqlite-its.db

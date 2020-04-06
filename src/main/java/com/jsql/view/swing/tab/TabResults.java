@@ -20,6 +20,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.TransferHandler;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.bean.database.AbstractElementDatabase;
@@ -35,6 +36,7 @@ import com.jsql.view.swing.tab.dnd.DnDTabbedPane;
 import com.jsql.view.swing.tab.dnd.TabTransferHandler;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.util.UiStringUtil;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -71,7 +73,7 @@ public class TabResults extends DnDTabbedPane {
         LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, fileText);
         
         fileText.setCaretPosition(0);
-        this.addTab(name +" ", scroller);
+        this.addTab(name + StringUtils.SPACE, scroller);
 
         // Focus on the new tab
         this.setSelectedComponent(scroller);
@@ -168,7 +170,7 @@ public class TabResults extends DnDTabbedPane {
         this.setSelectedComponent(newTableJPanel);
         
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(StringUtil.detectUtf8Html(table.toString()));
+        TabHeader header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()));
         
         this.setToolTipTextAt(
             this.indexOfComponent(newTableJPanel),

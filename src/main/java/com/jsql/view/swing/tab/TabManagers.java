@@ -21,6 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.ManagerAdminPage;
@@ -92,9 +94,9 @@ public class TabManagers extends MouseTabbedPane {
     public void createFileTab(String path, String name) {
         
         // Add the path String to the list of files only if there is no same StringObject value already
-        this.managerWebShell.addToList(path.replace(name, ""));
-        this.managerUpload.addToList(path.replace(name, ""));
-        this.managerSqlShell.addToList(path.replace(name, ""));
+        this.managerWebShell.addToList(path.replace(name, StringUtils.EMPTY));
+        this.managerUpload.addToList(path.replace(name, StringUtils.EMPTY));
+        this.managerSqlShell.addToList(path.replace(name, StringUtils.EMPTY));
     }
     
     public void markFileSystemInvulnerable() {

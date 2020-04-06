@@ -214,7 +214,7 @@ public class ManagerScan extends AbstractManagerList {
                         listModel.get(i).reset();
                     }
                     
-                    MediatorGui.model().getResourceAccess().scanList(dndListScan.getSelectedValuesList());
+                    MediatorGui.model().getResourceAccess().scan(dndListScan.getSelectedValuesList());
                 } else {
                     
                     MediatorGui.model().getResourceAccess().setScanStopped(true);

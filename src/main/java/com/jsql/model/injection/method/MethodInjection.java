@@ -5,6 +5,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 
@@ -60,75 +61,95 @@ public abstract class MethodInjection implements Serializable {
         // Injection by injection point
         if (this.getParamsAsString().contains(InjectionModel.STAR)) {
             
-            LOGGER.info("Checking single "+ this.name() +" parameter with injection point at [*]");
-            
-            // Will keep param value as is,
-            // Does not test for insertion character (param is null)
-            hasFoundInjection = this.injectionModel.getMediatorStrategy().testStrategies(null);
+            hasFoundInjection = this.checkParamWithStar();
             
         } else if (!this.isCheckingAllParam()) {
-            // Default injection: last param tested only
             
-            // Injection point defined on last parameter
-            // TODO ADD STAR
-            this.getParams().stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
-
-            // Will check param value by user.
-            // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
-            // for JSON injection of last param
-            SimpleEntry<String, String> parameterToInject = this.getParams().stream().reduce((a, b) -> b).orElseThrow(NullPointerException::new);
-
-            hasFoundInjection = this.injectionModel.getMediatorStrategy().testStrategies(parameterToInject);
+            hasFoundInjection = this.checkLastParam();
             
         } else {
-            // Injection of every params: isCheckingAllParam() == true.
-            // Params are tested one by one in two loops:
-            // - inner loop erases * from previous param
-            // - outer loop adds * to current param
             
-            // This param will be marked by * if injection is found,
-            // inner loop will erase mark * otherwise
-            injectionSuccessful:
-            for (SimpleEntry<String, String> paramBase: this.getParams()) {
+            hasFoundInjection = this.checkAllParams();
+        }
+        
+        return hasFoundInjection;
+    }
 
-                // This param is the current tested one.
-                // For JSON value attributes are traversed one by one to test every values.
-                // For standard value mark * is simply added to the end of its value.
-                for (SimpleEntry<String, String> paramStar: this.getParams()) {
+    private boolean checkParamWithStar() throws JSqlException {
+        
+        LOGGER.info("Checking single "+ this.name() +" parameter with injection point at [*]");
+        
+        // Will keep param value as is,
+        // Does not test for insertion character (param is null)
+        return this.injectionModel.getMediatorStrategy().testStrategies(null);
+    }
+
+    private boolean checkLastParam() throws JSqlException {
+        
+        // Default injection: last param tested only
+        
+        // Injection point defined on last parameter
+        this.getParams().stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
+
+        // Will check param value by user.
+        // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
+        // for JSON injection of last param
+        SimpleEntry<String, String> parameterToInject = this.getParams().stream().reduce((a, b) -> b).orElseThrow(NullPointerException::new);
+
+        return this.injectionModel.getMediatorStrategy().testStrategies(parameterToInject);
+    }
+
+    private boolean checkAllParams() {
+        
+        // Injection of every params: isCheckingAllParam() == true.
+        // Params are tested one by one in two loops:
+        // - inner loop erases * from previous param
+        // - outer loop adds * to current param
+        
+        boolean hasFoundInjection = false;
+        
+        // This param will be marked by * if injection is found,
+        // inner loop will erase mark * otherwise
+        injectionSuccessful:
+        for (SimpleEntry<String, String> paramBase: this.getParams()) {
+
+            // This param is the current tested one.
+            // For JSON value attributes are traversed one by one to test every values.
+            // For standard value mark * is simply added to the end of its value.
+            for (SimpleEntry<String, String> paramStar: this.getParams()) {
+                
+                if (paramStar == paramBase) {
                     
-                    if (paramStar == paramBase) {
+                    try {
+                        // Will test if current value is a JSON entity
+                        Object jsonEntity = JsonUtil.getJson(paramStar.getValue());
                         
-                        try {
-                            // Will test if current value is a JSON entity
-                            Object jsonEntity = JsonUtil.getJson(paramStar.getValue());
+                        // Define a tree of JSON attributes with path as the key: root.a => value of a
+                        List<SimpleEntry<String, String>> attributesJson = JsonUtil.createEntries(jsonEntity, "root", null);
+                        
+                        // When option 'Inject JSON' is selected and there's a JSON entity to inject
+                        // then loop through each paths to add * at the end of value and test each strategies.
+                        // Marks * are erased between each tests.
+                        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJSONParam() && !attributesJson.isEmpty()) {
                             
-                            // Define a tree of JSON attributes with path as the key: root.a => value of a
-                            List<SimpleEntry<String, String>> attributesJson = JsonUtil.createEntries(jsonEntity, "root", null);
+                            hasFoundInjection = this.injectionModel.getMediatorUtils().getJsonUtil().testJsonParameter(this, paramStar);
                             
-                            // When option 'Inject JSON' is selected and there's a JSON entity to inject
-                            // then loop through each paths to add * at the end of value and test each strategies.
-                            // Marks * are erased between each tests.
-                            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJSONParam() && !attributesJson.isEmpty()) {
-                                
-                                hasFoundInjection = this.injectionModel.getMediatorUtils().getJsonUtil().testJsonParameter(this, paramStar);
-                                
-                            } else {
-                                
-                                // Standard non JSON injection
-                                hasFoundInjection = this.testStandardParameter(paramStar);
-                            }
+                        } else {
                             
-                            if (hasFoundInjection) {
-                                break injectionSuccessful;
-                            }
-                        } catch (JSONException e) {
-                            LOGGER.error("Error parsing JSON parameters", e);
+                            // Standard non JSON injection
+                            hasFoundInjection = this.testStandardParameter(paramStar);
                         }
+                        
+                        if (hasFoundInjection) {
+                            break injectionSuccessful;
+                        }
+                    } catch (JSONException e) {
+                        LOGGER.error("Error parsing JSON parameters", e);
                     }
                 }
             }
         }
-        
+    
         return hasFoundInjection;
     }
     
@@ -137,11 +158,10 @@ public abstract class MethodInjection implements Serializable {
         boolean hasFoundInjection = false;
         
         // Add * to end of value
-        // TODO ADD STAR
         paramStar.setValue(paramStar.getValue() + InjectionModel.STAR);
         
         try {
-            LOGGER.info("Checking "+ this.name() +" parameter "+ paramStar.getKey() +"="+ paramStar.getValue().replace(InjectionModel.STAR, ""));
+            LOGGER.info("Checking "+ this.name() +" parameter "+ paramStar.getKey() +"="+ paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));
             
             // Test current standard value marked with * for injection
             // Keep original param
@@ -152,7 +172,7 @@ public abstract class MethodInjection implements Serializable {
             // Injection failure
             LOGGER.warn(
                 "No "+ this.name() +" injection found for parameter "
-                + paramStar.getKey() +"="+ paramStar.getValue().replace(InjectionModel.STAR, "")
+                + paramStar.getKey() +"="+ paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
                 + " (" + e +")", e
             );
             
@@ -162,10 +182,10 @@ public abstract class MethodInjection implements Serializable {
             if (!hasFoundInjection) {
                 
                 // Erase * at the end of each params
-                this.getParams().stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", "")));
+                this.getParams().stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY)));
                 
                 // TODO It erases STAR from value => * can't be used in parameter
-                paramStar.setValue(paramStar.getValue().replace("*", ""));
+                paramStar.setValue(paramStar.getValue().replace("*", StringUtils.EMPTY));
             }
         }
         

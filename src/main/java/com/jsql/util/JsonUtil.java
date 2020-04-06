@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -135,11 +136,10 @@ public class JsonUtil {
                 
                 if (parentXPath == null) {
                     
-                    jsonObjectEntity.put(key, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", ""));
+                    jsonObjectEntity.put(key, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY));
                     
                 } else if (stringValue.equals(parentXPath)) {
                     
-                    // TODO ADD STAR
                     jsonObjectEntity.put(key, value + InjectionModel.STAR);
                 }
             }
@@ -169,7 +169,7 @@ public class JsonUtil {
             paramStar.setValue(jsonEntity.toString());
             
             try {
-                LOGGER.info("Checking JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, ""));
+                LOGGER.info("Checking JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));
                 
                 // Test current JSON value marked with * for injection
                 // Keep original param
@@ -181,17 +181,17 @@ public class JsonUtil {
             } catch (JSqlException e) {
                 
                 // Injection failure
-                LOGGER.warn("No "+ methodInjection.name() +" injection found for JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, ""), e);
+                LOGGER.warn("No "+ methodInjection.name() +" injection found for JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY), e);
                 
             } finally {
                 
                 // Erase * at the end of each params
                 // TODO useless
-                methodInjection.getParams().stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", "")));
+                methodInjection.getParams().stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY)));
                 
                 // Erase * from JSON if failure
                 if (!hasFoundInjection) {
-                    paramStar.setValue(paramStar.getValue().replace("*", ""));
+                    paramStar.setValue(paramStar.getValue().replace("*", StringUtils.EMPTY));
                 }
             }
         }

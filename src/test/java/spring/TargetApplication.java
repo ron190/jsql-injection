@@ -25,6 +25,7 @@ public class TargetApplication {
     static Properties propsMysqlError = new Properties();
     static Properties propsPostgres = new Properties();
     static Properties propsSqlServer = new Properties();
+    static Properties propsSqlite = new Properties();
 
     static {
         
@@ -35,7 +36,8 @@ public class TargetApplication {
             new SimpleEntry<>(propsMysql, "spring/hibernate.mysql.properties"),
             new SimpleEntry<>(propsMysqlError, "spring/hibernate.mysql-5.5.40.properties"),
             new SimpleEntry<>(propsPostgres, "spring/hibernate.postgres.properties"),
-            new SimpleEntry<>(propsSqlServer, "spring/hibernate.sqlserver.properties")
+            new SimpleEntry<>(propsSqlServer, "spring/hibernate.sqlserver.properties"),
+            new SimpleEntry<>(propsSqlite, "spring/hibernate.sqlite.properties")
         ).forEach(simpleEntry -> {
             try (InputStream inputStream = classloader.getResourceAsStream(simpleEntry.getValue())) {
                 simpleEntry.getKey().load(inputStream);
@@ -52,7 +54,8 @@ public class TargetApplication {
             propsMysql,
             propsMysqlError,
             propsPostgres,
-            propsSqlServer
+            propsSqlServer,
+            propsSqlite
         ).forEach(props -> {
             Configuration configuration = new Configuration();
             configuration.addProperties(props).configure("spring/hibernate.cfg.xml");

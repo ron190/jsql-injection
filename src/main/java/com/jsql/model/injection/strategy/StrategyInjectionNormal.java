@@ -29,10 +29,6 @@ public class StrategyInjectionNormal extends AbstractStrategy {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    /**
-     * 
-     */
-    // TODO Pojo injection
     private String performanceLength = "0";
     
     public StrategyInjectionNormal(InjectionModel injectionModel) {
@@ -40,9 +36,6 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         super(injectionModel);
     }
 
-    /**
-     * 
-     */
     @Override
     public void checkApplicability() throws JSqlException {
         
@@ -55,8 +48,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         this.isApplicable =
             StringUtils.isNotEmpty(this.injectionModel.getIndexesInUrl())
             && Integer.parseInt(this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength()) > 0
-            && this.visibleIndex != null
-        ;
+            && StringUtils.isNotBlank(this.visibleIndex);
         
         if (this.isApplicable) {
             
@@ -107,7 +99,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     public String getVisibleIndex(String firstSuccessPageSource) {
         
         // Parse all indexes found
-        // Fix #4007 (initialize firstSuccessPageSource to "" instead of null)
+        // Fix #4007 (initialize firstSuccessPageSource to empty String instead of null)
         Matcher regexSearch = Pattern.compile("(?s)1337(\\d+?)7331").matcher(firstSuccessPageSource);
         
         List<String> foundIndexes = new ArrayList<>();
@@ -144,7 +136,6 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         if (performanceResults.isEmpty() || indexesInUrl == null) {
             
             this.performanceLength = "0";
-            // TODO optional
             return null;
         }
         

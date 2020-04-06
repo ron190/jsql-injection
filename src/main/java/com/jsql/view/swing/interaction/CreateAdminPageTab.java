@@ -32,6 +32,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultEditorKit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -64,7 +65,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
     @Override
     public void execute() {
         
-        String htmlSource = "";
+        String htmlSource = StringUtils.EMPTY;
         
         // Fix #4081: SocketTimeoutException on get()
         // Fix #44642: NoClassDefFoundError on get()
@@ -75,8 +76,8 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
             // Proxy is used by jsoup
             htmlSource = Jsoup.clean(
                 Jsoup.connect(this.url).get().html()
-                    .replaceAll("<img.*>", "")
-                    .replaceAll("<input.*type=\"?hidden\"?.*>", "")
+                    .replaceAll("<img.*>", StringUtils.EMPTY)
+                    .replaceAll("<input.*type=\"?hidden\"?.*>", StringUtils.EMPTY)
                     .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
                     .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
                 Whitelist.relaxed()
@@ -186,13 +187,13 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         });
 
         final LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, browser);
-        MediatorGui.tabResults().addTab(this.url.replaceAll(".*/", "") +" ", scroller);
+        MediatorGui.tabResults().addTab(this.url.replaceAll(".*/", StringUtils.EMPTY) + StringUtils.SPACE, scroller);
 
         // Focus on the new tab
         MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(this.url.replaceAll(".*/", ""), UiUtil.ICON_ADMIN_SERVER);
+        TabHeader header = new TabHeader(this.url.replaceAll(".*/", StringUtils.EMPTY), UiUtil.ICON_ADMIN_SERVER);
 
         MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), "<html>"+ this.url +"</html>");
 

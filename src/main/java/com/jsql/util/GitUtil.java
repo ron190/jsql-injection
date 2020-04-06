@@ -100,7 +100,7 @@ public class GitUtil {
             + ExceptionUtils.getStackTrace(throwable).trim() +"\n"
             + "```";
         
-        clientDescription = clientDescription.replaceAll("(https?://[.a-zA-Z_0-9]*)+", "");
+        clientDescription = clientDescription.replaceAll("(https?://[.a-zA-Z_0-9]*)+", org.apache.commons.lang3.StringUtils.EMPTY);
           
         this.sendReport(clientDescription, ShowOnConsole.NO, "Unhandled "+ throwable.getClass().getSimpleName());
     }
@@ -233,7 +233,7 @@ public class GitUtil {
                     this.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
                     
                 } catch (JSONException e1) {
-                    // TODO Simplify
+
                     LOGGER.warn("Fetching default JSON failed", e);
                 }
                 

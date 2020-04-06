@@ -3,10 +3,12 @@ package com.jsql.model.injection.vendor.model.yaml;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 @SuppressWarnings("serial")
 public class Resource implements Serializable {
 
-    private String info = "";
+    private String info = StringUtils.EMPTY;
     private Schema schema = new Schema();
     private Schema zipped = new Schema();
     private Schema dios = new Schema();

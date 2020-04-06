@@ -36,7 +36,7 @@ public class MessageHeader implements InteractionCommand {
     private Map<String, String> response;
     private String source;
 
-    Map<Header, Object> params;
+    private Map<Header, Object> params;
     
     /**
      * @param interactionParams Text to append

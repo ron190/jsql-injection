@@ -36,7 +36,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
     /**
      * HTTP header response code.
      */
-    private String responseCodeHttp = "";
+    private String responseCodeHttp = StringUtils.EMPTY;
 
     private InjectionModel injectionModel;
     
@@ -81,12 +81,12 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
         connection.setRequestProperty("Expires", "-1");
         
         connection.setRequestMethod("HEAD");
-        this.responseCodeHttp = ObjectUtils.firstNonNull(connection.getHeaderField(0), "");
+        this.responseCodeHttp = ObjectUtils.firstNonNull(connection.getHeaderField(0), StringUtils.EMPTY);
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, this.urlAdminPage);
-        msgHeader.put(Header.POST, "");
-        msgHeader.put(Header.HEADER, "");
+        msgHeader.put(Header.POST, StringUtils.EMPTY);
+        msgHeader.put(Header.HEADER, StringUtils.EMPTY);
         msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
 
         Request request = new Request();

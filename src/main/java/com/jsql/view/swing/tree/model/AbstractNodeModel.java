@@ -35,6 +35,7 @@ import com.jsql.view.swing.tree.ImageObserverAnimated;
 import com.jsql.view.swing.tree.ImageOverlap;
 import com.jsql.view.swing.tree.PanelNode;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.UiStringUtil;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -139,7 +140,6 @@ public abstract class AbstractNodeModel {
     public abstract void runAction();
 
     /**
-     * TODO Extract in other class
      * Display a popup menu for a database or table node.
      * @param currentTableNode Current node
      * @param path Path of current node
@@ -179,9 +179,7 @@ public abstract class AbstractNodeModel {
         );
     }
 
-    private void initializeItemRenameReload(
-        DefaultMutableTreeNode currentTableNode, TreePath path, JPopupMenuCustomExtract popupMenu
-    ) {
+    private void initializeItemRenameReload(DefaultMutableTreeNode currentTableNode, TreePath path, JPopupMenuCustomExtract popupMenu) {
         
         String textReload;
         
@@ -204,6 +202,7 @@ public abstract class AbstractNodeModel {
         
         menuItemRename.setEnabled(!this.isRunning);
         menuItemRename.addActionListener(actionEvent -> {
+            
             AbstractNodeModel nodeModel = (AbstractNodeModel) currentTableNode.getUserObject();
             nodeModel.setIsEdited(true);
             
@@ -315,7 +314,7 @@ public abstract class AbstractNodeModel {
 
     private void initializeLabel(final boolean isSelected, boolean hasFocus, boolean isEdited) {
         
-        this.panelNode.getLabel().setText(StringUtil.detectUtf8Html(this.toString()));
+        this.panelNode.getLabel().setText(UiStringUtil.detectUtf8Html(this.toString()));
         this.panelNode.getLabel().setVisible(true);
         
         this.panelNode.getLabel().setVisible(!isEdited);

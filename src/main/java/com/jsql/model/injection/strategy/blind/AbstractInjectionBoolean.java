@@ -100,56 +100,21 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
 
         // Send the first binary question: is the SQL result empty?
         taskCompletionService.submit(this.getCallable(inj, 0, IS_TESTING_LENGTH));
+        
         // Increment the number of active tasks
         int submittedTasks = 1;
-        
         int countAsciiCode255 = 0;
 
-        /*
-         * Process the job until there is no more active task,
-         * in other word until all HTTP requests are done
-         */
+        
+        // Process the job until there is no more active task,
+        // in other word until all HTTP requests are done
         while (submittedTasks > 0) {
             
             // TODO Coverage with pausable multithreading
             if (suspendable.isSuspended()) {
                 
-                taskExecutor.shutdown();
-
-                // Await for termination
-                boolean isTerminated = false;
-                
-                try {
-                    isTerminated = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);
-                    
-                } catch (InterruptedException e) {
-                    
-                    LOGGER.error(e.getMessage(), e);
-                    Thread.currentThread().interrupt();
-                }
-                
-                if (!isTerminated) {
-                    
-                    // awaitTermination timed out, interrupt everything
-                    taskExecutor.shutdownNow();
-                }
-
-                // Get current progress and display
-                StringBuilder result = new StringBuilder();
-                for (char[] c: bytes) {
-                    
-                    try {
-                        int charCode = Integer.parseInt(new String(c), 2);
-                        String str = Character.toString((char) charCode);
-                        result.append(str);
-                        
-                    } catch (NumberFormatException err) {
-                        // Byte string not fully constructed : 0x1x010x
-                        // Ignore
-                    }
-                }
-                
-                throw new StoppedByUserSlidingException(result.toString());
+                String result = this.stop(bytes, taskExecutor);
+                throw new StoppedByUserSlidingException(result);
             }
             
             try {
@@ -159,12 +124,10 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 // One task has just ended, decrease active tasks by 1
                 submittedTasks--;
                 
-                /*
-                 * If SQL result is not empty, then add a new unknown character,
-                 * and define a new array of 8 undefined bit.
-                 * Then add a new length verification, and all 8 bits
-                 * requests for that new character.
-                 */
+                // If SQL result is not empty, then add a new unknown character,
+                // and define a new array of 8 undefined bit.
+                // Then add a new length verification, and all 8 bits
+                // requests for that new character.
                 if (currentCallable.isTestingLength()) {
                     
                     if (currentCallable.isTrue()) {
@@ -179,18 +142,18 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                         
                         // Test the 8 bits for the next character, save its position and current bit for later
                         for (int bit: new int[]{1, 2, 4, 8, 16, 32, 64, 128}) {
+                            
                             taskCompletionService.submit(this.getCallable(inj, indexCharacter, bit));
                         }
                         
                         // Add all 9 new tasks
                         submittedTasks += 9;
                     }
+                    
                 } else {
-                    /*
-                     * Process the url that has just checked a bit,
-                     * Retrieve the bits for that character, and
-                     * change the bit from undefined to 0 or 1
-                     */
+                    // Process the url that has just checked a bit,
+                    // Retrieve the bits for that character, and
+                    // change the bit from undefined to 0 or 1
                     
                     // The bits linked to the url
                     char[] codeAsciiInBinary = bytes.get(currentCallable.getCurrentIndex() - 1);
@@ -231,21 +194,33 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 LOGGER.error(e.getMessage(), e);
                 Thread.currentThread().interrupt();
             }
-            
         }
 
-        // End the job
+        return this.stop(bytes, taskExecutor);
+    }
+
+    private String stop(List<char[]> bytes, ExecutorService taskExecutor) throws StoppedByUserSlidingException {
+        
+        // Await for termination
+        boolean isTerminated = false;
+        
         try {
             taskExecutor.shutdown();
-            taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
+            isTerminated = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);
             
         } catch (InterruptedException e) {
             
             LOGGER.error(e.getMessage(), e);
             Thread.currentThread().interrupt();
         }
+        
+        if (!isTerminated) {
+            
+            // awaitTermination timed out, interrupt everything
+            taskExecutor.shutdownNow();
+        }
 
-        // Build the complete final string from array of bits
+        // Get current progress and display
         StringBuilder result = new StringBuilder();
         for (char[] c: bytes) {
             
@@ -255,7 +230,6 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 result.append(str);
                 
             } catch (NumberFormatException err) {
-                // In case of too much False positives
                 // Byte string not fully constructed : 0x1x010x
                 // Ignore
             }

@@ -23,6 +23,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import com.jsql.model.bean.database.Column;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -36,6 +37,10 @@ public class NodeModelEmpty extends AbstractNodeModel {
      */
     public NodeModelEmpty(String textNode) {
         super(textNode);
+    }
+
+    public NodeModelEmpty(Column column) {
+        super(column);
     }
 
     @Override

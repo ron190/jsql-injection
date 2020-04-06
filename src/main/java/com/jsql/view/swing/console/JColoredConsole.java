@@ -11,6 +11,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.text.SimpleAttributeSet;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.MediatorGui;
@@ -56,7 +57,7 @@ public abstract class JColoredConsole extends JPopupTextPane {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
     }
     
-    abstract SimpleAttributeSet getColorAttribute();
+    protected abstract SimpleAttributeSet getColorAttribute();
 
     /**
      * Add a string to the end of JTextPane.
@@ -78,7 +79,7 @@ public abstract class JColoredConsole extends JPopupTextPane {
             
             this.getProxy().getDocument().insertString(
                 this.getProxy().getDocument().getLength(),
-                (this.getProxy().getDocument().getLength() == 0 ? "" : "\n") + logTimestamp,
+                (this.getProxy().getDocument().getLength() == 0 ? StringUtils.EMPTY : "\n") + logTimestamp,
                 this.getColorAttribute()
             );
             

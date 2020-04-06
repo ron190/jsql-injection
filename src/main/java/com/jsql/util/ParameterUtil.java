@@ -42,7 +42,7 @@ public class ParameterUtil {
      */
     private List<SimpleEntry<String, String>> listHeader = new ArrayList<>();
     
-    private String requestAsText = "";
+    private String requestAsText = StringUtils.EMPTY;
 
     private InjectionModel injectionModel;
     
@@ -75,6 +75,7 @@ public class ParameterUtil {
                     urlQueryFixed = "http://"+ urlQueryFixed;
                     
                 } else {
+                    
                     throw new MalformedURLException("unknown URL protocol");
                 }
             }
@@ -86,10 +87,12 @@ public class ParameterUtil {
             this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);
             this.injectionModel.getMediatorUtils().getConnectionUtil().setTypeRequest(typeRequest);
             
-            // TODO separate method
             if (isScanning) {
+                
                 this.injectionModel.beginInjection();
+                
             } else {
+                
                 // Start the model injection process in a thread
                 new Thread(this.injectionModel::beginInjection, "ThreadBeginInjection").start();
             }
@@ -202,7 +205,7 @@ public class ParameterUtil {
     
     public String initializeStar(SimpleEntry<String, String> parameterToInject) {
         
-        String characterInsertionByUser = "";
+        String characterInsertionByUser = StringUtils.EMPTY;
         
         // TODO path param injection
         if (parameterToInject == null) {
@@ -245,7 +248,7 @@ public class ParameterUtil {
                 .compile("&")
                 .splitAsStream(regexQueryString.group(2))
                 .map(s -> Arrays.copyOf(s.split("="), 2))
-                .map(o -> new SimpleEntry<>(o[0], o[1] == null ? "" : o[1]))
+                .map(o -> new SimpleEntry<>(o[0], o[1] == null ? StringUtils.EMPTY : o[1]))
                 .collect(Collectors.toList());
         }
     }
@@ -261,7 +264,7 @@ public class ParameterUtil {
                 .compile("&")
                 .splitAsStream(request)
                 .map(s -> Arrays.copyOf(s.split("="), 2))
-                .map(o -> new SimpleEntry<>(o[0], o[1] == null ? "" : o[1]))
+                .map(o -> new SimpleEntry<>(o[0], o[1] == null ? StringUtils.EMPTY : o[1]))
                 .collect(Collectors.toList());
         }
     }
@@ -276,7 +279,7 @@ public class ParameterUtil {
                 .compile("\\\\r\\\\n")
                 .splitAsStream(header)
                 .map(commaEntry -> Arrays.copyOf(commaEntry.split(":"), 2))
-                .map(arrayEntry -> new SimpleEntry<>(arrayEntry[0], arrayEntry[1] == null ? "" : arrayEntry[1]))
+                .map(arrayEntry -> new SimpleEntry<>(arrayEntry[0], arrayEntry[1] == null ? StringUtils.EMPTY : arrayEntry[1]))
                 .collect(Collectors.toList());
         }
     }
