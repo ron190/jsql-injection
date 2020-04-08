@@ -71,6 +71,7 @@ class ParameterUtilSpock extends Specification {
     }
     
     def setup() {
+        
         injectionModel = new InjectionModel()
         parameterUtil = injectionModel.mediatorUtils.parameterUtil
     }

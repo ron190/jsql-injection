@@ -199,7 +199,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         return this.stop(bytes, taskExecutor);
     }
 
-    private String stop(List<char[]> bytes, ExecutorService taskExecutor) throws StoppedByUserSlidingException {
+    private String stop(List<char[]> bytes, ExecutorService taskExecutor) {
         
         // Await for termination
         boolean isTerminated = false;

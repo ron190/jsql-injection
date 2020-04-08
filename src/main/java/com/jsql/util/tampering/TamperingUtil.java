@@ -62,7 +62,6 @@ public class TamperingUtil {
         this.isSpaceToSharpComment = isSpaceToSharpComment;
     }
     
-    
     private static String eval(String sqlQuery, String jsTampering) {
         
         Object resultSqlTampered = null;
@@ -178,6 +177,8 @@ public class TamperingUtil {
         
         return sqlQuery;
     }
+    
+    // Getter and setter
 
     public String getCustomTamper() {
         return this.customTamper;

@@ -102,8 +102,16 @@ class JsonUtilSpock extends Specification {
     }
     
     def 'Convert json string to Java JSON'() {
+        
         expect: JsonUtil.getJson("{}") instanceof JSONObject
         and: JsonUtil.getJson("[]") instanceof JSONArray
         and: JsonUtil.getJson("0") instanceof Object
+    }
+    
+    def 'Test json container'() {
+        
+        expect: JsonUtil.isJson("{}") == true
+        and: JsonUtil.isJson("[]") == true
+        and: JsonUtil.isJson("0") == false
     }
 }

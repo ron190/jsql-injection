@@ -85,6 +85,24 @@ class TamperingUtilSpock extends Specification {
         then: result == 'a%23%0Ab'
     }
     
+    def 'Check no tampering'() {
+        
+        when: result = tamperingUtil.tamper('abc')
+        then: result == ''
+    }
+    
+    def 'Check eval'() {
+        
+        when: tamperingUtil.set(false, false, false, false, false, false, false, true, false, false, false)
+        and: tamperingUtil.customTamper = '''
+            var tampering = function(sql) {
+                return sql.replace(/a/, 'b')
+            }            
+        '''
+        and: result = tamperingUtil.tamper('<tampering>'+ 'a' +'</tampering>')
+        then: result == 'b'
+    }
+    
     def setup() {
         
         tamperingUtil = new TamperingUtil()

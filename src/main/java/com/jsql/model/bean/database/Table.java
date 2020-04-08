@@ -86,6 +86,7 @@ public class Table extends AbstractElementDatabase {
         } catch (NumberFormatException e) {
             
             this.rowCount = "0";
+            nbRow = "0";
             LOGGER.warn("Incorrect number of rows.");
         }
         

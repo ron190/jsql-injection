@@ -1,5 +1,6 @@
 package groovy
 
+import org.apache.commons.lang3.StringUtils
 import org.apache.commons.text.StringEscapeUtils
 
 import com.jsql.util.StringUtil
@@ -47,5 +48,8 @@ class StringUtilSpock extends Specification {
             // Additional & for html parsing in textpane
             StringUtil.toHtml('יאח') == '&amp;eacute;&amp;agrave;&amp;ccedil;'
             StringUtil.decimalHtmlEncode('<>&יאח', true) == '&amp;lt;&amp;gt;&amp;&amp;#233;&amp;#224;&amp;#231;'
+            
+            StringUtil.detectUtf8(null) == StringUtils.EMPTY
+            StringUtil.detectUtf8("י") == "י"
     }
 }

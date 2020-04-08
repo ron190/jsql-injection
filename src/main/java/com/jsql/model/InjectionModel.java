@@ -120,7 +120,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.mediatorUtils.setJsonUtil(new JsonUtil(this));
         this.mediatorUtils.setPreferencesUtil(new PreferencesUtil());
         this.mediatorUtils.setProxyUtil(new ProxyUtil(this));
-        this.mediatorUtils.setThreadUtil(new ThreadUtil(this));
+        this.mediatorUtils.setThreadUtil(new ThreadUtil());
         this.mediatorUtils.setTamperingUtil(new TamperingUtil());
     }
 
@@ -419,7 +419,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     private String buildQuery(MethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
         
         String query;
-        String paramLeadFixed = paramLead.replace("*", "<tampering>*</tampering>");
+        String paramLeadFixed = paramLead.replace(InjectionModel.STAR, "<tampering>*</tampering>");
         
         if (
             // No parameter transformation if method is not selected by user

@@ -89,6 +89,7 @@ public abstract class AbstractStrategy {
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
         
+        // TODO CollectionUtils.isNotEmpty()
         if (i != null && i.length > 0) {
             
             msgHeader.put(Header.SOURCE, i[0]);
@@ -98,16 +99,16 @@ public abstract class AbstractStrategy {
         request.setParameters(msgHeader);
         this.injectionModel.sendToViews(request);
     }
+    
+    @Override
+    public String toString() {
+        return this.getName();
+    }
 
     // Getter and setter
     
     public boolean isApplicable() {
         return this.isApplicable;
-    }
-    
-    @Override
-    public String toString() {
-        return this.getName();
     }
     
     public String getVisibleIndex() {

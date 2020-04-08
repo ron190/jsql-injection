@@ -185,7 +185,7 @@ public abstract class MethodInjection implements Serializable {
                 this.getParams().stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY)));
                 
                 // TODO It erases STAR from value => * can't be used in parameter
-                paramStar.setValue(paramStar.getValue().replace("*", StringUtils.EMPTY));
+                paramStar.setValue(paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));
             }
         }
         

@@ -39,14 +39,6 @@ public final class ThreadUtil {
      */
     private final Map<AbstractElementDatabase, AbstractSuspendable<?>> suspendables = new HashMap<>();
     
-    private InjectionModel injectionModel;
-    
-    // Utility class
-    public ThreadUtil(InjectionModel injectionModel) {
-        
-        this.injectionModel = injectionModel;
-    }
-
     /**
      * Add a job to the list of ongoing tasks. It is used to allow the user to act
      * on the job and stop/pause a running process.
@@ -55,7 +47,7 @@ public final class ThreadUtil {
      */
     public void put(AbstractElementDatabase elementDatabase, AbstractSuspendable<String> suspendable) {
         
-        this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.put(elementDatabase, suspendable);
+        this.suspendables.put(elementDatabase, suspendable);
     }
     
     /**
@@ -67,7 +59,7 @@ public final class ThreadUtil {
      */
     public AbstractSuspendable<?> get(AbstractElementDatabase elementDatabase) {
         
-        return this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.get(elementDatabase);
+        return this.suspendables.get(elementDatabase);
     }
     
     /**
@@ -77,7 +69,7 @@ public final class ThreadUtil {
      */
     public void remove(AbstractElementDatabase elementDatabase) {
         
-        this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.remove(elementDatabase);
+        this.suspendables.remove(elementDatabase);
     }
     
     /**
@@ -88,8 +80,8 @@ public final class ThreadUtil {
         
         // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()
         try {
-            this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.values().stream().forEach(AbstractSuspendable::stop);
-            this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.clear();
+            this.suspendables.values().stream().forEach(AbstractSuspendable::stop);
+            this.suspendables.clear();
         } catch (ConcurrentModificationException e) {
             LOGGER.error(e, e);
         }

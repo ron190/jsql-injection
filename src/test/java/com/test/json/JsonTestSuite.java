@@ -27,7 +27,7 @@ public class JsonTestSuite extends ConcreteMySQLTestSuite {
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-json");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("name", "{\"b\":{\"b\":[null,null,{\"a\":{\"a\":\"0'\"}}]}}"),
+            new SimpleEntry<>("name", "{\"c\": 1, \"b\": {\"b\": [1, true, null, {\"a\": {\"a\": \"0'\"}}]}}"),
             new SimpleEntry<>("tenant", "mysql")
         ));
         

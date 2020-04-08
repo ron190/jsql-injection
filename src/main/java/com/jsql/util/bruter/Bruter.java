@@ -79,6 +79,15 @@ public class Bruter {
         }
     }
 
+    public void excludeChars(String s) {
+        
+        char[] arrayChars = s.toCharArray();
+        
+        for (char arrayChar : arrayChars) {
+            this.characters.remove(Character.toString(arrayChar));
+        }
+    }
+
     public int getPerSecond() {
         
         int i;
@@ -123,17 +132,6 @@ public class Bruter {
     private long calculateTimeDifference() {
         
         return (long) ((this.endtime - this.starttime) * (1 * Math.pow(10, -9)));
-    }
-
-    public boolean excludeChars(String s) {
-        
-        char[] arrayChars = s.toCharArray();
-        
-        for (char arrayChar : arrayChars) {
-            this.characters.remove(Character.toString(arrayChar));
-        }
-        
-        return this.characters.size() >= this.maxLength;
     }
     
     // Getter and setter

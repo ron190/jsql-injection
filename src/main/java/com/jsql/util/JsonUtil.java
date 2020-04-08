@@ -191,7 +191,7 @@ public class JsonUtil {
                 
                 // Erase * from JSON if failure
                 if (!hasFoundInjection) {
-                    paramStar.setValue(paramStar.getValue().replace("*", StringUtils.EMPTY));
+                    paramStar.setValue(paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));
                 }
             }
         }

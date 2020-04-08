@@ -74,5 +74,4 @@ public class Database extends AbstractElementDatabase {
         
         return this.elementValue +" ("+ this.tableCount +" table"+ sPlural +")";
     }
-    
 }

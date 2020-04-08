@@ -132,7 +132,7 @@ public class GreetingController {
 
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            inject = new JSONObject(inject).getJSONObject("b").getJSONArray("b").getJSONObject(2).getJSONObject("a").getString("a");
+            inject = new JSONObject(inject).getJSONObject("b").getJSONArray("b").getJSONObject(3).getJSONObject("a").getString("a");
             inject = inject.replaceAll(":", "\\\\:");
             inject = inject.replace(":", "\\:");
             
