@@ -44,6 +44,9 @@ before_install:
   - docker build -t sqlserver 
     -f src/test/resources/docker/Dockerfile.sqlserver .
     
+  - docker build -t neo4j 
+    -f src/test/resources/docker/Dockerfile.neo4j .
+    
   - docker run --name jsql-mysql  
     --publish 3306:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
@@ -68,6 +71,11 @@ before_install:
     -e "SA_PASSWORD=yourStrong(!)Password"
     -u 0:0
     -d sqlserver 
+    
+  - docker run --name jsql-neo4j 
+    --publish 7687:7687 
+    -e NEO4J_AUTH=neo4j/test
+    -d neo4j 
     
   - docker images && docker ps && pwd
   
