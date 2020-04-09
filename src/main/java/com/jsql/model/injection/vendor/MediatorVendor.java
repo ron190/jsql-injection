@@ -142,24 +142,8 @@ public class MediatorVendor {
             this.vertica
         );
         
-        this.setVendor(this.getMySQL());
-        this.vendorByUser = this.getAuto();
-    }
-    
-    public Vendor getVendor() {
-        return this.vendor;
-    }
-
-    public Vendor getVendorByUser() {
-        return this.vendorByUser;
-    }
-
-    public void setVendorByUser(Vendor vendorByUser) {
-        this.vendorByUser = vendorByUser;
-    }
-
-    public List<Vendor> getVendors() {
-        return this.vendors;
+        this.setVendor(this.mySQL);
+        this.vendorByUser = this.auto;
     }
 
     public Vendor getH2() {
@@ -184,6 +168,26 @@ public class MediatorVendor {
 
     public Vendor getSqlServer() {
         return this.sqlServer;
+    }
+
+    public Vendor getNeo4j() {
+        return neo4j;
+    }
+    
+    public Vendor getVendor() {
+        return this.vendor;
+    }
+
+    public Vendor getVendorByUser() {
+        return this.vendorByUser;
+    }
+
+    public void setVendorByUser(Vendor vendorByUser) {
+        this.vendorByUser = vendorByUser;
+    }
+
+    public List<Vendor> getVendors() {
+        return this.vendors;
     }
 
     public void setVendor(Vendor vendor) {

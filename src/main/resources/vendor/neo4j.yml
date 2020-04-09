@@ -78,7 +78,7 @@ resource:
             b 
             %2b '${enclose_value_sql}'
             %2b ${fields}
-            %2b '${separator_qte_sql}0${enclose_value_sql}'
+            %2b '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
         )
     %2b '${trail_sql}'
     AS A

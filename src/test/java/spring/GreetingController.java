@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,10 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.json.JSONObject;
+import org.neo4j.driver.AuthTokens;
+import org.neo4j.driver.Driver;
+import org.neo4j.driver.GraphDatabase;
+import org.neo4j.driver.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -231,6 +236,34 @@ public class GreetingController {
                 this.counter.incrementAndGet(),
                 String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
+            
+        } catch (Exception e) {
+            // Hide useless SQL error messages
+        }
+        
+        return greeting;
+    }
+    
+    Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
+    @RequestMapping("/greeting-neo4j")
+    public Greeting greetingNeo4j(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        Greeting greeting = null;
+        
+        try (org.neo4j.driver.Session session = driver.session()) {
+            Result result = session.run("MATCH (n:Person) where 1="+ name +" RETURN n.name, n.from, n.title, n.hobby");
+            
+            String a = result.stream().map(record -> 
+                record.keys().stream()
+                .map(key -> key + "=" + record.get(key))
+                .collect(Collectors.joining(", ", "{", "}"))
+            ).collect(Collectors.joining());
+            
+            greeting = new Greeting(
+                this.counter.incrementAndGet(),
+                String.format(template, name)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(a))
             );
             
         } catch (Exception e) {

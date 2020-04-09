@@ -1,0 +1,38 @@
+package com.test.vendor.neo4j;
+
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
+
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+
+import com.jsql.model.InjectionModel;
+import com.jsql.view.terminal.SystemOutTerminal;
+
+@TestInstance(Lifecycle.PER_CLASS)
+@Execution(ExecutionMode.CONCURRENT)
+public class Neo4jNormalGetTestNotSuite extends ConcreteNeo4jTestNotSuite {
+    
+    @Override
+    public void setupInjection() throws Exception {
+        
+        InjectionModel model = new InjectionModel();
+        this.injectionModel = model;
+
+        model.addObserver(new SystemOutTerminal());
+
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-neo4j");
+        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
+            new SimpleEntry<>("name", "1")
+        ));
+        
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
+        model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
+
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getNeo4j());
+        model.beginInjection();
+    }
+}

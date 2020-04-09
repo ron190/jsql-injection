@@ -110,7 +110,6 @@ public abstract class MethodInjection implements Serializable {
         
         // This param will be marked by * if injection is found,
         // inner loop will erase mark * otherwise
-        injectionSuccessful:
         for (SimpleEntry<String, String> paramBase: this.getParams()) {
 
             // This param is the current tested one.
@@ -141,7 +140,7 @@ public abstract class MethodInjection implements Serializable {
                         }
                         
                         if (hasFoundInjection) {
-                            break injectionSuccessful;
+                            return hasFoundInjection;
                         }
                     } catch (JSONException e) {
                         LOGGER.error("Error parsing JSON parameters", e);

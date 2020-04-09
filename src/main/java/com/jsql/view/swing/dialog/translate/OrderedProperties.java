@@ -403,6 +403,11 @@ public final class OrderedProperties {
         public Set<Object> keySet() {
             return new LinkedHashSet<>(this.targetProperties.keySet());
         }
+        
+        @Override
+        public synchronized boolean equals(Object o) {
+            return super.equals(o) && o instanceof OrderedProperties;
+        }
     }
 
     /**

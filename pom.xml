@@ -300,22 +300,26 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
+        
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>test</scope>
         </dependency>
+        
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>test</scope>
         </dependency>
+        
 		<dependency>
 		    <groupId>com.microsoft.sqlserver</groupId>
 		    <artifactId>mssql-jdbc</artifactId>
 		    <version>8.2.1.jre8</version>
             <scope>test</scope>
 		</dependency>
+		
 		<dependency>
 		    <groupId>org.xerial</groupId>
 		    <artifactId>sqlite-jdbc</artifactId>
@@ -328,7 +332,18 @@
             <version>0.1.0</version>
             <scope>test</scope>
 		</dependency>
-		        
+		
+        <dependency>
+		    <groupId>org.neo4j</groupId>
+		    <artifactId>neo4j-jdbc-driver</artifactId>
+		    <version>4.0.0</version>
+            <scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.neo4j.driver</groupId>
+		    <artifactId>neo4j-java-driver</artifactId>
+		    <version>4.0.1</version>
+		</dependency>
 
         <!-- jSQL purpose -->
         
