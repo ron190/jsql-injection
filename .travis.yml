@@ -33,7 +33,6 @@ before_install:
     
   # Docker configuration
   - echo Docker build...
-  - jobs
   
   - docker build -t mysql 
     -f src/test/resources/docker/Dockerfile.mysql . &
@@ -98,7 +97,6 @@ before_install:
     
   - for pid in ${pids[*]}; do wait $pid; done
   - unset pids
-  - jobs
   - echo Docker run done
 
   - docker images && docker ps && pwd
