@@ -81,31 +81,51 @@ public class AuthenticationUtil {
         String kerberosKrb5Conf,
         String kerberosLoginConf
     ) {
+
+        boolean isRestartRequired = this.initializeKerberos(isKerberos, kerberosKrb5Conf, kerberosLoginConf);
         
-        // Check if krb file has change
-        boolean isRestartRequired = false;
-        if (
-            this.isKerberos
-            && !new File(this.pathKerberosKrb5).exists()
-            && !kerberosKrb5Conf.equals(this.pathKerberosKrb5)
-        ) {
-            isRestartRequired = true;
-        }
+        this.initializeSimpleAuthorization(isAuthentication, usernameAuthentication, passwordAuthentication);
+        
+        this.setAuthentication();
+        
+        return isRestartRequired;
+    }
+
+    public void initializeSimpleAuthorization(boolean isAuthentication, String usernameAuthentication, String passwordAuthentication) {
+        
+        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+        
+        preferences.putBoolean("isDigestAuthentication", this.isAuthentication);
+        preferences.put("usernameDigest", this.usernameAuthentication);
+        preferences.put("passwordDigest", this.passwordAuthentication);
         
         // Define proxy settings
         this.isAuthentication = isAuthentication;
         this.usernameAuthentication = usernameAuthentication;
         this.passwordAuthentication = passwordAuthentication;
         
+        // Activate standard authentication
+        // TODO: java.lang.IllegalAccessError: class com.jsql.tool.AuthenticationTools (in unnamed module @0x266d09)
+        // cannot access class sun.net.www.protocol.http.AuthCacheImpl (in module java.base) because module java.base
+        // does not export sun.net.www.protocol.http to unnamed module @0x266d09
+        // Use Authenticator.setDefault(null); or a bad Authenticator
+        // AuthCacheValue.setAuthCache(new AuthCacheImpl());
+    }
+
+    private boolean initializeKerberos(boolean isKerberos, String kerberosKrb5Conf, String kerberosLoginConf) {
+        
+        // Persist to JVM
+        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+        
         this.isKerberos = isKerberos;
         this.pathKerberosKrb5 = kerberosKrb5Conf;
         this.pathKerberosLogin = kerberosLoginConf;
-
-        // Persist to JVM
-        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
-        preferences.putBoolean("isDigestAuthentication", this.isAuthentication);
-        preferences.put("usernameDigest", this.usernameAuthentication);
-        preferences.put("passwordDigest", this.passwordAuthentication);
+        
+        // Check if krb file has change
+        boolean isRestartRequired =
+            this.isKerberos
+            && !new File(this.pathKerberosKrb5).exists()
+            && !kerberosKrb5Conf.equals(this.pathKerberosKrb5);
         
         preferences.putBoolean("enableKerberos", this.isKerberos);
         preferences.put("kerberosKrb5Conf", this.pathKerberosKrb5);
@@ -123,33 +143,6 @@ public class AuthenticationUtil {
                 LOGGER.warn("Login file not found: " + this.pathKerberosLogin);
             }
         }
-        
-        // Activate standard authentication
-        // TODO: java.lang.IllegalAccessError: class com.jsql.tool.AuthenticationTools (in unnamed module @0x266d09)
-        // cannot access class sun.net.www.protocol.http.AuthCacheImpl (in module java.base) because module java.base
-        // does not export sun.net.www.protocol.http to unnamed module @0x266d09
-        // Use Authenticator.setDefault(null); or a bad Authenticator
-//        AuthCacheValue.setAuthCache(new AuthCacheImpl());
-        
-        if (this.isAuthentication) {
-            
-            Authenticator.setDefault(new Authenticator() {
-                
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    
-                    return new PasswordAuthentication (
-                        AuthenticationUtil.this.usernameAuthentication,
-                        AuthenticationUtil.this.passwordAuthentication.toCharArray()
-                    );
-                }
-            });
-            
-        } else {
-            Authenticator.setDefault(null);
-        }
-        
-        this.setAuthentication();
         
         return isRestartRequired;
     }
@@ -199,7 +192,26 @@ public class AuthenticationUtil {
      * In case of jcifs, which is the default connection processing, it also defines
      * standard timeout configuration.
      */
-    private void setAuthentication() {
+    public void setAuthentication() {
+
+        if (this.isAuthentication) {
+            
+            Authenticator.setDefault(new Authenticator() {
+                
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    
+                    return new PasswordAuthentication (
+                        AuthenticationUtil.this.usernameAuthentication,
+                        AuthenticationUtil.this.passwordAuthentication.toCharArray()
+                    );
+                }
+            });
+            
+        } else {
+            
+            Authenticator.setDefault(null);
+        }
         
         if (this.isKerberos) {
             
@@ -260,5 +272,17 @@ public class AuthenticationUtil {
 
     public boolean isKerberos() {
         return this.isKerberos;
+    }
+
+    public void setAuthentication(boolean isAuthentication) {
+        this.isAuthentication = isAuthentication;
+    }
+
+    public void setUsernameAuthentication(String usernameAuthentication) {
+        this.usernameAuthentication = usernameAuthentication;
+    }
+
+    public void setPasswordAuthentication(String passwordAuthentication) {
+        this.passwordAuthentication = passwordAuthentication;
     }
 }

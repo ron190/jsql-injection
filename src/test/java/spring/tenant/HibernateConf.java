@@ -1,4 +1,4 @@
-package spring;
+package spring.tenant;
 
 import java.util.Properties;
 
@@ -24,8 +24,8 @@ public class HibernateConf {
         
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-        hibernateProperties.setProperty("hibernate.multi_tenant_connection_provider", "spring.MultiTenantConnectionProviderImpl");
-        hibernateProperties.setProperty("hibernate.tenant_identifier_resolver", "spring.CurrentTenantIdentifierResolverImpl");
+        hibernateProperties.setProperty("hibernate.multi_tenant_connection_provider", "spring.tenant.MultiTenantConnectionProviderImpl");
+        hibernateProperties.setProperty("hibernate.tenant_identifier_resolver", "spring.tenant.CurrentTenantIdentifierResolverImpl");
         hibernateProperties.setProperty("hibernate.multiTenancy", "DATABASE");
         
         return hibernateProperties;

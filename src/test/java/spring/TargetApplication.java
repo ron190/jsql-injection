@@ -21,18 +21,18 @@ import org.neo4j.driver.Result;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import model.Student;
+import spring.model.Student;
 
 @SpringBootApplication
 public class TargetApplication {
 
-    static Properties propsH2 = new Properties();
-    static Properties propsH2Api = new Properties();
-    static Properties propsMysql = new Properties();
-    static Properties propsMysqlError = new Properties();
-    static Properties propsPostgres = new Properties();
-    static Properties propsSqlServer = new Properties();
-    static Properties propsSqlite = new Properties();
+    public static Properties propsH2 = new Properties();
+    public static Properties propsH2Api = new Properties();
+    public static Properties propsMysql = new Properties();
+    public static Properties propsMysqlError = new Properties();
+    public static Properties propsPostgres = new Properties();
+    public static Properties propsSqlServer = new Properties();
+    public static Properties propsSqlite = new Properties();
 
     static {
         

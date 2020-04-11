@@ -210,6 +210,34 @@ public class GreetingController {
         return greeting;
     }
     
+    @RequestMapping("/basic/greeting")
+    public Greeting greetingBasicAuth(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            
+            Query query = session.createNativeQuery("select 1,2,3,4,1,1,1,1,1,1,1,First_Name,5,6 from Student where 999 = "+ inject);
+            
+            query.getResultList();
+            
+        } catch (Exception e) {
+            
+            String stacktrace = ExceptionUtils.getStackTrace(e);
+            
+            LOGGER.debug(stacktrace);
+            
+            greeting = new Greeting(
+                this.counter.incrementAndGet(),
+                String.format(template+"#", inject)
+                + StringEscapeUtils.unescapeJava(stacktrace)
+            );
+        }
+        
+        return greeting;
+    }
+    
     @SuppressWarnings("unchecked")
     @RequestMapping("/greeting-insertion-char")
     public Greeting greetingInsertionChar(@RequestParam(value="name", defaultValue="World") String name) throws IOException {

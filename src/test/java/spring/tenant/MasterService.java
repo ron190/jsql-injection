@@ -1,4 +1,4 @@
-package spring;
+package spring.tenant;
 
 import java.sql.DriverManager;
 import java.util.HashMap;
@@ -9,6 +9,8 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import spring.TargetApplication;
 
 public class MasterService {
     
@@ -27,6 +29,7 @@ public class MasterService {
             TargetApplication.propsSqlServer,
             TargetApplication.propsSqlite
         ).forEach(props -> {
+            
             DatasourceConnectionProviderImpl connectionProviderPostgres = new DatasourceConnectionProviderImpl();
             
             DriverManagerDataSource dataSource = new DriverManagerDataSource();

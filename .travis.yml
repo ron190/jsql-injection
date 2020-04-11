@@ -30,39 +30,56 @@ before_install:
   - mvn -v
   
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
-  
+    
   # Docker configuration
+  - echo Docker build...
+  - jobs
+  
   - docker build -t mysql 
-    -f src/test/resources/docker/Dockerfile.mysql . 
+    -f src/test/resources/docker/Dockerfile.mysql . &
+  - pids[$!]=$!
     
   - docker build -t mysql 
-    -f src/test/resources/docker/Dockerfile.mysql-5.5.40 . 
+    -f src/test/resources/docker/Dockerfile.mysql-5.5.40 . &
+  - pids[$!]=$!
     
   - docker build -t postgres 
-    -f src/test/resources/docker/Dockerfile.postgres . 
+    -f src/test/resources/docker/Dockerfile.postgres . &
+  - pids[$!]=$!
     
   - docker build -t sqlserver 
-    -f src/test/resources/docker/Dockerfile.sqlserver . 
+    -f src/test/resources/docker/Dockerfile.sqlserver . &
+  - pids[$!]=$!
     
   - docker build -t neo4j 
-    -f src/test/resources/docker/Dockerfile.neo4j . 
+    -f src/test/resources/docker/Dockerfile.neo4j . &
+  - pids[$!]=$!
+    
+  - for pid in ${pids[*]}; do wait $pid; done
+  - unset pids
+  
+  - echo Docker build done
+  - echo Docker run...
     
   - docker run --name jsql-mysql  
     --publish 3306:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
-    -d mysql 
+    -d mysql &
+  - pids[$!]=$!
     
   - docker run --name jsql-mysql-5.5.40 
     --publish 3307:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
-    -d mysql:5.5.40 
+    -d mysql:5.5.40 &
+  - pids[$!]=$!
     
   - docker run --name jsql-postgres 
     --publish 5432:5432 
     -e POSTGRES_PASSWORD=my-secret-pw 
     -d postgres 
     -c 'shared_buffers=256MB'
-    -c 'max_connections=1000' 
+    -c 'max_connections=1000' &
+  - pids[$!]=$!
     
   - docker run --name jsql-sqlserver 
     --publish 1434:1434 
@@ -70,13 +87,20 @@ before_install:
     -e "ACCEPT_EULA=Y" 
     -e "SA_PASSWORD=yourStrong(!)Password"
     -u 0:0
-    -d sqlserver  
+    -d sqlserver &
+  - pids[$!]=$!
     
   - docker run --name jsql-neo4j 
     --publish 7687:7687 
     -e NEO4J_AUTH=neo4j/test
-    -d neo4j  
+    -d neo4j &
+  - pids[$!]=$!
     
+  - for pid in ${pids[*]}; do wait $pid; done
+  - unset pids
+  - jobs
+  - echo Docker run done
+
   - docker images && docker ps && pwd
   
   # Buff MySQL

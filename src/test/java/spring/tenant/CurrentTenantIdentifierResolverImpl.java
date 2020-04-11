@@ -1,4 +1,4 @@
-package spring;
+package spring.tenant;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;

@@ -251,14 +251,19 @@
             <scope>test</scope>
         </dependency>
  
-        <!-- Test purpose -->
+        <!-- Spring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <!-- ORM purpose -->
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-security</artifactId>
+            <scope>test</scope>
+	    </dependency>
+    
+        <!-- Hibernate -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
@@ -333,12 +338,6 @@
             <scope>test</scope>
 		</dependency>
 		
-        <dependency>
-		    <groupId>org.neo4j</groupId>
-		    <artifactId>neo4j-jdbc-driver</artifactId>
-		    <version>4.0.0</version>
-            <scope>test</scope>
-		</dependency>
 		<dependency>
 		    <groupId>org.neo4j.driver</groupId>
 		    <artifactId>neo4j-java-driver</artifactId>
