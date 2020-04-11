@@ -60,6 +60,8 @@ public class TargetApplication {
         
         Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
         try (org.neo4j.driver.Session session = driver.session()) {
+            session.run("MATCH (n) DETACH DELETE n");
+            
             Result result = session.run(graphMovie);
             result.forEachRemaining(record -> {
                 System.out.println(record);

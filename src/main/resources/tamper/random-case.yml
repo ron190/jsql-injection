@@ -5,8 +5,11 @@ javascript: |
  load('src/main/resources/tamper/js/random-case.js');
  
  var tampering = function(sql) {
+    
      // Name of database and table is case sensitive on Linux (column name is case insensitive)
-     // random-case.js ignore case for expression `database`.`table`
+     // Script js/random-case.js ignore case for expression `database`.`table`
      return randomCase(sql)
+         
+         // Fix hexa prefix
          .replace(/0X/g,'0x');
  }

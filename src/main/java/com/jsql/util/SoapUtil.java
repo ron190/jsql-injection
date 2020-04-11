@@ -98,7 +98,7 @@ public class SoapUtil {
                 
                 SoapUtil.removeInjectionPoint(doc, doc.getDocumentElement());
                 
-                currentNode.setTextContent(currentNode.getTextContent() + InjectionModel.STAR);
+                currentNode.setTextContent(currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY) + InjectionModel.STAR);
                 
                 this.injectionModel.getMediatorUtils().getParameterUtil().initializeRequest(SoapUtil.convertDocumentToString(doc));
                 
@@ -139,7 +139,7 @@ public class SoapUtil {
                 currentNode.setTextContent(
                     currentNode
                     .getTextContent()
-                    .replaceAll(Pattern.quote(InjectionModel.STAR) + "$", StringUtils.EMPTY)
+                    .replaceAll(Pattern.quote(InjectionModel.STAR) + "*$", StringUtils.EMPTY)
                 );
             }
         }

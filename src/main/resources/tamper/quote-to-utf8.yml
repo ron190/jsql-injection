@@ -3,6 +3,8 @@ description: Replace single quote ' to utf8 character %ef%bc%87 (Big5 and GBK)
 group: 
 javascript: |
  var tampering = function(sql) {
+    
      return sql
+     
          .replace("'",'%ef%bc%87');
  }

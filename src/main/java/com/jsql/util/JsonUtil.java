@@ -150,6 +150,9 @@ public class JsonUtil {
         
         boolean hasFoundInjection = false;
         
+        // Remove STAR at the end of parameter, STAR will be added inside json data instead
+        paramStar.setValue(paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));
+        
         // Will test if current value is a JSON entity
         Object jsonEntity = JsonUtil.getJson(paramStar.getValue());
         

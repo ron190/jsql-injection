@@ -3,8 +3,28 @@ description: Transform SQL keywords to versioned comment, e.g /*!concat*/()
 group: 
 javascript: |
  var tampering = function(sql) {
-    return sql.replace(
-        /([^_])(concat|ifnull)(\/\*\*\/)*\(/gmi,
-        '$1/*!$2*/$3('
-    )
+    
+    return sql
+    
+        // Lock keyword not compatible
+        .replace(/group_concat\(/gi, '@-;:%1@')
+        .replace(/mid\(/gi, '@-;:%2@')
+        .replace(/cast\(/gi, '@-;:%3@')
+        .replace(/count\(/gi, '@-;:%4@')
+        .replace(/trim\(/gi, '@-;:%5@')
+        .replace(/%2b/gi, '@-;:%6@') // plus from trap canceller 7330+1
+        
+        // Ignore comments already there
+        .replace(
+            /([\b])?([a-zA-Z_`]+)(\D)/gmi,
+            '$1/*!$2*/$3'
+        )
+        
+        // Unlock keyword
+        .replace(/@-;:%1@/g, 'group_concat(')
+        .replace(/@-;:%2@/g, 'mid(')
+        .replace(/@-;:%3@/g, 'cast(')
+        .replace(/@-;:%4@/g, 'count(')
+        .replace(/@-;:%5@/g, 'trim(')
+        .replace(/@-;:%6@/g, '%2b')
  }

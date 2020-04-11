@@ -25,6 +25,7 @@ public class TamperingUtil {
     private boolean isEqualToLike = false;
     private boolean isRandomCase = false;
     private boolean isHexToChar = false;
+    private boolean isStringToChar = false;
     private boolean isQuoteToUtf8 = false;
     private boolean isEval = false;
     private boolean isSpaceToMultilineComment = false;
@@ -46,7 +47,8 @@ public class TamperingUtil {
         boolean isEval,
         boolean isSpaceToMultilineComment,
         boolean isSpaceToDashComment,
-        boolean isSpaceToSharpComment
+        boolean isSpaceToSharpComment,
+        boolean isStringToChar
     ) {
         
         this.isBase64 = isBase64;
@@ -60,6 +62,7 @@ public class TamperingUtil {
         this.isSpaceToMultilineComment = isSpaceToMultilineComment;
         this.isSpaceToDashComment = isSpaceToDashComment;
         this.isSpaceToSharpComment = isSpaceToSharpComment;
+        this.isStringToChar = isStringToChar;
     }
     
     private static String eval(String sqlQuery, String jsTampering) {
@@ -117,6 +120,11 @@ public class TamperingUtil {
         if (this.isHexToChar) {
             
             sqlQuery = eval(sqlQuery, TamperingType.HEX_TO_CHAR.instance().getJavascript());
+        }
+        
+        if (this.isStringToChar) {
+            
+            sqlQuery = eval(sqlQuery, TamperingType.STRING_TO_CHAR.instance().getJavascript());
         }
 
         if (this.isFunctionComment) {

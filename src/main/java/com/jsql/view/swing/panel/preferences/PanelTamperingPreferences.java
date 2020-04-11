@@ -34,6 +34,7 @@ public class PanelTamperingPreferences extends JPanel {
     private final JCheckBox checkboxIsTamperingRandomCase = new JCheckBox();
     private final JCheckBox checkboxIsTamperingEval = new JCheckBox();
     private final JCheckBox checkboxIsTamperingHexToChar = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingStringToChar = new JCheckBox();
     private final JCheckBox checkboxIsTamperingQuoteToUtf8 = new JCheckBox();
     private final JRadioButton radioIsTamperingSpaceToMultilineComment = new JRadioButton();
     private final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton();
@@ -159,13 +160,23 @@ public class PanelTamperingPreferences extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsTamperingQouteToUtf8 = TamperingType.QUOTE_TO_UTF8.instance().getTooltip();
-        this.checkboxIsTamperingQuoteToUtf8.setToolTipText(tooltipIsTamperingQouteToUtf8);
+        String tooltipIsTamperingQuoteToUtf8 = TamperingType.QUOTE_TO_UTF8.instance().getTooltip();
+        this.checkboxIsTamperingQuoteToUtf8.setToolTipText(tooltipIsTamperingQuoteToUtf8);
         this.checkboxIsTamperingQuoteToUtf8.setFocusable(false);
         JButton labelIsTamperingQuoteToUtf8 = new JButton(TamperingType.QUOTE_TO_UTF8.instance().getDescription());
-        labelIsTamperingQuoteToUtf8.setToolTipText(tooltipIsTamperingQouteToUtf8);
+        labelIsTamperingQuoteToUtf8.setToolTipText(tooltipIsTamperingQuoteToUtf8);
         labelIsTamperingQuoteToUtf8.addActionListener(actionEvent -> {
             this.checkboxIsTamperingQuoteToUtf8.setSelected(!this.checkboxIsTamperingQuoteToUtf8.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+        
+        String tooltipIsTamperingStringToChar = TamperingType.STRING_TO_CHAR.instance().getTooltip();
+        this.checkboxIsTamperingStringToChar.setToolTipText(tooltipIsTamperingStringToChar);
+        this.checkboxIsTamperingStringToChar.setFocusable(false);
+        JButton labelIsTamperingStringToChar = new JButton(TamperingType.STRING_TO_CHAR.instance().getDescription());
+        labelIsTamperingStringToChar.setToolTipText(tooltipIsTamperingStringToChar);
+        labelIsTamperingStringToChar.addActionListener(actionEvent -> {
+            this.checkboxIsTamperingStringToChar.setSelected(!this.checkboxIsTamperingStringToChar.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
 
@@ -176,6 +187,7 @@ public class PanelTamperingPreferences extends JPanel {
         labelIsTamperingFunctionComment.addMouseListener(new TamperingMouseAdapter(TamperingType.COMMENT_TO_METHOD_SIGNATURE, textPaneEval));
         labelIsTamperingRandomCase.addMouseListener(new TamperingMouseAdapter(TamperingType.RANDOM_CASE, textPaneEval));
         labelIsTamperingHexToChar.addMouseListener(new TamperingMouseAdapter(TamperingType.HEX_TO_CHAR, textPaneEval));
+        labelIsTamperingStringToChar.addMouseListener(new TamperingMouseAdapter(TamperingType.STRING_TO_CHAR, textPaneEval));
         labelIsTamperingQuoteToUtf8.addMouseListener(new TamperingMouseAdapter(TamperingType.QUOTE_TO_UTF8, textPaneEval));
         labelIsTamperingSpaceToMultilineComment.addMouseListener(new TamperingMouseAdapter(TamperingType.SPACE_TO_MULTILINE_COMMENT, textPaneEval));
         labelIsTamperingVersionComment.addMouseListener(new TamperingMouseAdapter(TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE, textPaneEval));
@@ -187,6 +199,7 @@ public class PanelTamperingPreferences extends JPanel {
             labelIsTamperingEqualToLike,
             labelIsTamperingRandomCase,
             labelIsTamperingHexToChar,
+            labelIsTamperingStringToChar,
             labelIsTamperingQuoteToUtf8,
             labelIsTamperingSpaceToMultilineComment,
             labelIsTamperingSpaceToDashComment,
@@ -235,6 +248,7 @@ public class PanelTamperingPreferences extends JPanel {
                 .addComponent(this.checkboxIsTamperingVersionComment)
                 .addComponent(this.checkboxIsTamperingEqualToLike)
                 .addComponent(this.checkboxIsTamperingRandomCase)
+                .addComponent(this.checkboxIsTamperingStringToChar)
                 .addComponent(this.checkboxIsTamperingHexToChar)
                 .addComponent(this.checkboxIsTamperingQuoteToUtf8)
                 .addComponent(this.radioIsTamperingSpaceToMultilineComment)
@@ -249,6 +263,7 @@ public class PanelTamperingPreferences extends JPanel {
                 .addComponent(labelIsTamperingVersionComment)
                 .addComponent(labelIsTamperingEqualToLike)
                 .addComponent(labelIsTamperingRandomCase)
+                .addComponent(labelIsTamperingStringToChar)
                 .addComponent(labelIsTamperingHexToChar)
                 .addComponent(labelIsTamperingQuoteToUtf8)
                 .addComponent(labelIsTamperingSpaceToMultilineComment)
@@ -290,6 +305,11 @@ public class PanelTamperingPreferences extends JPanel {
             ).addGroup(
                 groupLayoutTampering
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsTamperingStringToChar)
+                .addComponent(labelIsTamperingStringToChar)
+            ).addGroup(
+                groupLayoutTampering
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingHexToChar)
                 .addComponent(labelIsTamperingHexToChar)
             ).addGroup(
@@ -328,6 +348,7 @@ public class PanelTamperingPreferences extends JPanel {
             this.checkboxIsTamperingEqualToLike,
             this.checkboxIsTamperingRandomCase,
             this.checkboxIsTamperingHexToChar,
+            this.checkboxIsTamperingStringToChar,
             this.checkboxIsTamperingQuoteToUtf8,
             this.radioIsTamperingSpaceToMultilineComment,
             this.radioIsTamperingSpaceToDashComment,
@@ -379,5 +400,9 @@ public class PanelTamperingPreferences extends JPanel {
     
     public JCheckBox getCheckboxIsTamperingQuoteToUtf8() {
         return this.checkboxIsTamperingQuoteToUtf8;
+    }
+
+    public JCheckBox getCheckboxIsTamperingStringToChar() {
+        return checkboxIsTamperingStringToChar;
     }
 }

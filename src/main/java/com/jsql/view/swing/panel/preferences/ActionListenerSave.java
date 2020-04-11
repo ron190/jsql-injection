@@ -71,7 +71,8 @@ public class ActionListenerSave implements ActionListener {
             this.panelPreferences.getPanelTamperingPreferences().getCheckboxIsTamperingEval().isSelected(),
             this.panelPreferences.getPanelTamperingPreferences().getRadioIsTamperingSpaceToMultilineComment().isSelected(),
             this.panelPreferences.getPanelTamperingPreferences().getRadioIsTamperingSpaceToDashComment().isSelected(),
-            this.panelPreferences.getPanelTamperingPreferences().getRadioIsTamperingSpaceToSharpComment().isSelected()
+            this.panelPreferences.getPanelTamperingPreferences().getRadioIsTamperingSpaceToSharpComment().isSelected(),
+            this.panelPreferences.getPanelTamperingPreferences().getCheckboxIsTamperingStringToChar().isSelected()
         );
         
         boolean isRestartRequired = MediatorGui.model().getMediatorUtils().getAuthenticationUtil().set(

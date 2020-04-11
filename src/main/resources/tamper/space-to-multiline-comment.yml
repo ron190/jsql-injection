@@ -3,8 +3,11 @@ description: Replace blank space ' ' to multiline comment '/**/'
 group: 
 javascript: |
  var tampering = function(sql) {
+    
      return sql
+     
          .replace(/([^-])\+$/gm,'$1%0A/**/')
+         
          // Ignore required space at ending comment -(-)+(-)
          .replace(/([^-])\+([^-])/gm,'$1/**/$2')
  }

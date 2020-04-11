@@ -3,25 +3,39 @@ description: Replace string 'ab' from hex 0x4142 to ascii concat(char(65),char(6
 group: 
 javascript: |
  var tampering = function(sql) {
+    
      return sql
+     
          // String next to [separator] can't be converted to char() in
          // expression group_concat(col order by col separator ',')
-         // Step 1. Escape [separator]
-         .replace(/(separator)\+0x/ig,'$1x')
-         .replace(/0x([a-z0-9]+)/ig, function(corr, p1){
+         
+         // Lock [separator]
+         .replace(/(separator)\+0x/ig, '$1x')
+         
+         // Parse hexa characters after 0x
+         .replace(/0x([a-z0-9]+)/ig, function(corr, hexas){
+            
              return 'concat('
+                 
+                 // Parse hexa codes by two characters
                  + Array.prototype.map.call(
-                     p1
+                    
+                     hexas
                      .match(/.{1,2}/g)
-                     .map(function(v){
-                         return String.fromCharCode(parseInt(v, 16));
+                     .map(function(hexa) {
+                        
+                         // Convert to letter
+                         return String.fromCharCode(parseInt(hexa, 16));
                      })
                      .join(''), 
-                     function(chr){
-                         return 'char('+(chr.charCodeAt(0))+')';
+                     
+                     // Convert to ASCII
+                     function(letter) {
+                         return 'char(' + letter.charCodeAt(0) + ')';
                      })
-                 +')';
+                 + ')';
          })
-         // Step 2. Unescape [separator]
-         .replace(/(separator)x/ig,'$1+0x');
+         
+         // Unlock [separator]
+         .replace(/(separator)x/ig, '$1+0x');
  }

@@ -445,12 +445,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             query = this.initializeRawInjection(paramLeadFixed, isUsingIndex, sqlTrail);
         }
         
+        query = this.clean(methodInjection, query);
+        
         if (this.mediatorUtils.getConnectionUtil().getMethodInjection() == methodInjection) {
             
             query = this.mediatorUtils.getTamperingUtil().tamper(query);
         }
-        
-        query = this.clean(methodInjection, query);
         
         query = this.applyRfcEncoding(methodInjection, query);
         

@@ -35,36 +35,38 @@ before_install:
   - docker build -t mysql 
     -f src/test/resources/docker/Dockerfile.mysql .
     
-  - docker build -t mysql 
+    & docker build -t mysql 
     -f src/test/resources/docker/Dockerfile.mysql-5.5.40 .
     
-  - docker build -t postgres 
+    & docker build -t postgres 
     -f src/test/resources/docker/Dockerfile.postgres .
     
-  - docker build -t sqlserver 
+    & docker build -t sqlserver 
     -f src/test/resources/docker/Dockerfile.sqlserver .
     
-  - docker build -t neo4j 
+    & docker build -t neo4j 
     -f src/test/resources/docker/Dockerfile.neo4j .
+    
+    & wait
     
   - docker run --name jsql-mysql  
     --publish 3306:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
     -d mysql
     
-  - docker run --name jsql-mysql-5.5.40 
+    & docker run --name jsql-mysql-5.5.40 
     --publish 3307:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
     -d mysql:5.5.40
     
-  - docker run --name jsql-postgres 
+    & docker run --name jsql-postgres 
     --publish 5432:5432 
     -e POSTGRES_PASSWORD=my-secret-pw 
     -d postgres 
     -c 'shared_buffers=256MB'
     -c 'max_connections=1000'
     
-  - docker run --name jsql-sqlserver 
+    & docker run --name jsql-sqlserver 
     --publish 1434:1434 
     --publish 1433:1433 
     -e "ACCEPT_EULA=Y" 
@@ -72,10 +74,12 @@ before_install:
     -u 0:0
     -d sqlserver 
     
-  - docker run --name jsql-neo4j 
+    & docker run --name jsql-neo4j 
     --publish 7687:7687 
     -e NEO4J_AUTH=neo4j/test
     -d neo4j 
+    
+    & wait
     
   - docker images && docker ps && pwd
   

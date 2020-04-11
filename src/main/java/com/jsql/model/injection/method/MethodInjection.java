@@ -89,7 +89,7 @@ public abstract class MethodInjection implements Serializable {
         // Default injection: last param tested only
         
         // Injection point defined on last parameter
-        this.getParams().stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
+//        this.getParams().stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
 
         // Will check param value by user.
         // Notice options 'Inject each URL params' and 'inject JSON' must be checked both

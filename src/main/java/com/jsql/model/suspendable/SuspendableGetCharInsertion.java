@@ -161,6 +161,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             LOGGER.trace("Add manually the character * like ["+ characterInsertionByUserFormat +"*] to force the value ["+ characterInsertionByUserFormat +"]");
         }
         
-        return characterInsertionDetectedFixed;
+        // Force space after insertion char required
+        return characterInsertionDetectedFixed + "+";
     }
 }
