@@ -49,7 +49,7 @@ before_install:
   - docker build -t neo4j 
     -f src/test/resources/docker/Dockerfile.neo4j . &
     
-  - wait
+  - for job in `jobs -p`; do wait ${job}; done
   - echo Docker build done
   - echo Docker run...
     
@@ -83,7 +83,7 @@ before_install:
     -e NEO4J_AUTH=neo4j/test
     -d neo4j &
     
-  - wait
+  - for job in `jobs -p`; do wait ${job}; done
   - echo Docker run done
 
   - docker images && docker ps && pwd
