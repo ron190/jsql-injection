@@ -96,7 +96,7 @@ before_install:
   - for pid in ${pids[*]}; do wait $pid; done
 
   - jobs && docker images && docker ps && pwd
-  - sleep 15s
+  - sleep 30s
 
   # Buff MySQL
   - docker exec -it jsql-mysql /bin/bash
