@@ -32,7 +32,7 @@ before_install:
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
     
   # Docker configuration
-  	- echo Docker build...
+  - echo Docker build...
   
   - docker build -t mysql 
     -f src/test/resources/docker/Dockerfile.mysql . &
@@ -50,8 +50,8 @@ before_install:
     -f src/test/resources/docker/Dockerfile.neo4j . &
     
   - wait
-  	- echo Docker build done
-  	- echo Docker run...
+  - echo Docker build done
+  - echo Docker run...
     
   - docker run --name jsql-mysql  
     --publish 3306:3306 
@@ -76,15 +76,15 @@ before_install:
     -e "ACCEPT_EULA=Y" 
     -e "SA_PASSWORD=yourStrong(!)Password"
     -u 0:0
-    -d sqlserver  &
+    -d sqlserver &
     
   - docker run --name jsql-neo4j 
     --publish 7687:7687 
     -e NEO4J_AUTH=neo4j/test
-    -d neo4j  &
+    -d neo4j &
     
   - wait
-  	- echo Docker run done
+  - echo Docker run done
 
   - docker images && docker ps && pwd
   
