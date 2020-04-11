@@ -32,7 +32,6 @@ before_install:
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
     
   # Docker configuration
-  - echo Docker build...
   - jobs
   
   - docker build -t mysql 
@@ -55,12 +54,10 @@ before_install:
     -f src/test/resources/docker/Dockerfile.neo4j . &
   - pids[$!]=$!
     
+  - jobs
   - for pid in ${pids[*]}; do wait $pid; done
   - unset pids
   
-  - echo Docker build done
-  - echo Docker run...
-    
   - docker run --name jsql-mysql  
     --publish 3306:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
@@ -97,12 +94,10 @@ before_install:
   - pids[$!]=$!
     
   - for pid in ${pids[*]}; do wait $pid; done
-  - unset pids
-  - jobs
-  - echo Docker run done
 
-  - docker images && docker ps && pwd
-  
+  - jobs && docker images && docker ps && pwd
+  - sleep 15s
+
   # Buff MySQL
   - docker exec -it jsql-mysql /bin/bash
     -c "
@@ -131,7 +126,6 @@ before_install:
        ';
        "
        
-  - sleep 30s
   - sudo docker exec -it jsql-sqlserver /opt/mssql-tools/bin/sqlcmd -S "tcp:127.0.0.1,1434" -U SA -P "yourStrong(!)Password" -Q "select @@version"
 
 
