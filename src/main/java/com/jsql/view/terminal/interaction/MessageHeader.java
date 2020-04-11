@@ -15,6 +15,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.bean.util.Header;
+import com.jsql.util.AnsiColorUtil;
 import com.jsql.view.interaction.InteractionCommand;
 
 /**
@@ -52,7 +53,7 @@ public class MessageHeader implements InteractionCommand {
     @Override
     public void execute() {
         
-        LOGGER.debug(InteractionCommand.addGreenColor(this.getClass().getSimpleName()));
+        LOGGER.debug(AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
         LOGGER.debug("Method: " + this.response.get("Method"));
         LOGGER.debug("Url: " + this.url);
         LOGGER.debug("Post: " + this.post);

@@ -10,12 +10,20 @@
  ******************************************************************************/
 package com.jsql.view.terminal.interaction;
 
+import org.apache.log4j.Logger;
+
+import com.jsql.util.AnsiColorUtil;
 import com.jsql.view.interaction.InteractionCommand;
 
 /**
  * Mark the injection as vulnerable to a basic injection.
  */
 public class MarkNormalVulnerable implements InteractionCommand {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * @param nullParam
@@ -26,6 +34,7 @@ public class MarkNormalVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.info(InteractionCommand.addGreenColor(this.getClass().getSimpleName()));
+        
+        LOGGER.info(AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
     }
 }

@@ -45,6 +45,7 @@ public class PanelInjectionPreferences extends JPanel {
         JButton labelIsFollowingRedirection = new JButton("Follow HTTP redirection");
         labelIsFollowingRedirection.setToolTipText(tooltipIsFollowingRedirection);
         labelIsFollowingRedirection.addActionListener(actionEvent -> {
+            
             this.checkboxIsFollowingRedirection.setSelected(!this.checkboxIsFollowingRedirection.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
@@ -55,6 +56,7 @@ public class PanelInjectionPreferences extends JPanel {
         JButton labelTestConnection = new JButton("Disable initial connection test");
         labelTestConnection.setToolTipText(tooltipTestConnection);
         labelTestConnection.addActionListener(actionEvent -> {
+            
             this.checkboxIsNotTestingConnection.setSelected(!this.checkboxIsNotTestingConnection.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
@@ -65,18 +67,23 @@ public class PanelInjectionPreferences extends JPanel {
         JButton labelProcessCookies = new JButton("Save session cookies");
         labelProcessCookies.setToolTipText(tooltipProcessCookies);
         labelProcessCookies.addActionListener(actionEvent -> {
+            
             this.checkboxProcessCookies.setSelected(!this.checkboxProcessCookies.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
         ActionListener actionListenerProcessCsrf = actionEvent -> {
+            
             if (actionEvent.getSource() != this.checkboxProcessCsrf) {
+                
                 this.checkboxProcessCsrf.setSelected(!this.checkboxProcessCsrf.isSelected());
             }
             
             if (this.checkboxProcessCsrf.isSelected()) {
+                
                 this.checkboxProcessCookies.setSelected(this.checkboxProcessCsrf.isSelected());
             }
+            
             this.checkboxProcessCookies.setEnabled(!this.checkboxProcessCsrf.isSelected());
             labelProcessCookies.setEnabled(!this.checkboxProcessCsrf.isSelected());
             
@@ -100,6 +107,7 @@ public class PanelInjectionPreferences extends JPanel {
         JButton labelParseForm = new JButton("Add <input> parameters found in HTML body to URL and Request");
         labelParseForm.setToolTipText(tooltipParseForm);
         labelParseForm.addActionListener(actionEvent -> {
+            
             this.checkboxIsParsingForm.setSelected(!this.checkboxIsParsingForm.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
@@ -110,6 +118,7 @@ public class PanelInjectionPreferences extends JPanel {
         JButton labelIsNotInjectingMetadata = new JButton("Disable database's metadata injection to speed-up boolean process");
         labelIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
         labelIsNotInjectingMetadata.addActionListener(actionEvent -> {
+            
             this.checkboxIsNotInjectingMetadata.setSelected(!this.checkboxIsNotInjectingMetadata.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
@@ -132,7 +141,9 @@ public class PanelInjectionPreferences extends JPanel {
         JLabel labelValueInjection = new JLabel("<html><br /><b>Special parameters</b></html>");
         
         ActionListener actionListenerCheckingAllParam = actionEvent -> {
+            
             if (actionEvent.getSource() != this.checkboxIsCheckingAllParam) {
+                
                 this.checkboxIsCheckingAllParam.setSelected(!this.checkboxIsCheckingAllParam.isSelected());
             }
             
@@ -161,26 +172,32 @@ public class PanelInjectionPreferences extends JPanel {
         
         labelIsCheckingAllParam.addActionListener(actionListenerCheckingAllParam);
         labelIsCheckingAllURLParam.addActionListener(actionEvent -> {
+            
             this.checkboxIsCheckingAllURLParam.setSelected(!this.checkboxIsCheckingAllURLParam.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         labelIsCheckingAllRequestParam.addActionListener(actionEvent -> {
+            
             this.checkboxIsCheckingAllRequestParam.setSelected(!this.checkboxIsCheckingAllRequestParam.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         labelIsCheckingAllHeaderParam.addActionListener(actionEvent -> {
+            
             this.checkboxIsCheckingAllHeaderParam.setSelected(!this.checkboxIsCheckingAllHeaderParam.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         labelIsCheckingAllJSONParam.addActionListener(actionEvent -> {
+            
             this.checkboxIsCheckingAllJSONParam.setSelected(!this.checkboxIsCheckingAllJSONParam.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         labelIsCheckingAllCookieParam.addActionListener(actionEvent -> {
+            
             this.checkboxIsCheckingAllCookieParam.setSelected(!this.checkboxIsCheckingAllCookieParam.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         labelIsCheckingAllSOAPParam.addActionListener(actionEvent -> {
+            
             this.checkboxIsCheckingAllSOAPParam.setSelected(!this.checkboxIsCheckingAllSOAPParam.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
@@ -202,7 +219,8 @@ public class PanelInjectionPreferences extends JPanel {
             this.checkboxIsCheckingAllCookieParam,
             this.checkboxIsCheckingAllSOAPParam
             
-        ).forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
+        )
+        .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
         Stream.of(
             labelIsFollowingRedirection,
@@ -220,6 +238,7 @@ public class PanelInjectionPreferences extends JPanel {
             labelProcessCsrf
         )
         .forEach(label -> {
+            
             label.setHorizontalAlignment(SwingConstants.LEFT);
             label.setBorderPainted(false);
             label.setContentAreaFilled(false);
@@ -255,7 +274,8 @@ public class PanelInjectionPreferences extends JPanel {
                 .addComponent(emptyLabelSessionManagement)
                 .addComponent(this.checkboxProcessCsrf)
                 .addComponent(this.checkboxProcessCookies)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup()
                 .addComponent(labelGeneralInjection)
@@ -290,82 +310,98 @@ public class PanelInjectionPreferences extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(emptyLabelGeneralInjection)
                 .addComponent(labelGeneralInjection)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsFollowingRedirection)
                 .addComponent(labelIsFollowingRedirection)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsNotTestingConnection)
                 .addComponent(labelTestConnection)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsParsingForm)
                 .addComponent(labelParseForm)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsNotInjectingMetadata)
                 .addComponent(labelIsNotInjectingMetadata)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(emptyLabelParamsInjection)
                 .addComponent(labelParamsInjection)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllParam)
                 .addComponent(labelIsCheckingAllParam)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllURLParam)
                 .addComponent(labelIsCheckingAllURLParam)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllRequestParam)
                 .addComponent(labelIsCheckingAllRequestParam)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllHeaderParam)
                 .addComponent(labelIsCheckingAllHeaderParam)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(emptyLabelValueInjection)
                 .addComponent(labelValueInjection)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllJSONParam)
                 .addComponent(labelIsCheckingAllJSONParam)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllSOAPParam)
                 .addComponent(labelIsCheckingAllSOAPParam)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllCookieParam)
                 .addComponent(labelIsCheckingAllCookieParam)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(emptyLabelSessionManagement)
                 .addComponent(labelSessionManagement)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxProcessCsrf)
                 .addComponent(labelProcessCsrf)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxProcessCookies)

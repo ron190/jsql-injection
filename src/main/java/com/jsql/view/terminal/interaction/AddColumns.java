@@ -15,6 +15,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.bean.database.Column;
+import com.jsql.util.AnsiColorUtil;
 import com.jsql.view.interaction.InteractionCommand;
 
 /**
@@ -43,7 +44,8 @@ public class AddColumns implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.info(InteractionCommand.addGreenColor(this.getClass().getSimpleName()));
+        
+        LOGGER.info(AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
         
         // Loop into the list of columns
         for (Column column: this.columns) {

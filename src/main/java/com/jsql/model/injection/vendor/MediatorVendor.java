@@ -171,7 +171,7 @@ public class MediatorVendor {
     }
 
     public Vendor getNeo4j() {
-        return neo4j;
+        return this.neo4j;
     }
     
     public Vendor getVendor() {

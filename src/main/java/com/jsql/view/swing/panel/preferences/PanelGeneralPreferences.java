@@ -82,7 +82,8 @@ public class PanelGeneralPreferences extends JPanel {
                 .addComponent(this.getCheckboxIsCheckingUpdate())
                 .addComponent(this.getCheckboxIsReportingBugs())
                 .addComponent(this.getCheckboxIs4K())
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutGeneral
                 .createParallelGroup()
                 .addComponent(labelIsCheckingUpdate)
@@ -100,12 +101,14 @@ public class PanelGeneralPreferences extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.getCheckboxIsCheckingUpdate())
                 .addComponent(labelIsCheckingUpdate)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutGeneral
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.getCheckboxIsReportingBugs())
                 .addComponent(labelIsReportingBugs)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutGeneral
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.getCheckboxIs4K())

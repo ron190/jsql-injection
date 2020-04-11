@@ -33,6 +33,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultEditorKit;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -48,6 +49,11 @@ import com.jsql.view.swing.util.UiUtil;
  * Create a new tab for an administration webpage.
  */
 public class CreateAdminPageTab extends CreateTab implements InteractionCommand {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Url for the administration webpage.
@@ -71,22 +77,31 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         // Fix #44642: NoClassDefFoundError on get()
         // Fix #44641: ExceptionInInitializerError on get()
         try {
+            
             // Previous test for 2xx Success and 3xx Redirection was Header only,
             // now get the HTML content.
             // Proxy is used by jsoup
-            htmlSource = Jsoup.clean(
-                Jsoup.connect(this.url).get().html()
+            htmlSource =
+                Jsoup
+                .clean(
+                    Jsoup
+                    .connect(this.url)
+                    .get()
+                    .html()
                     .replaceAll("<img.*>", StringUtils.EMPTY)
                     .replaceAll("<input.*type=\"?hidden\"?.*>", StringUtils.EMPTY)
                     .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
                     .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
-                Whitelist.relaxed()
+                    Whitelist
+                    .relaxed()
                     .addTags("center", "div", "span")
                     .addAttributes(":all", "style")
-            );
+                );
+            
         } catch (IOException e) {
             
             LOGGER.error(e.getMessage(), e);
+            
         } catch (ExceptionInInitializerError | NoClassDefFoundError e) {
             
             LOGGER.warn("Jsoup not properly configured, please update jsql", e);
@@ -98,8 +113,11 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         
         // Fix #43220: EmptyStackException on setText()
         try {
+            
             browser.setText(htmlSource);
+            
         } catch (EmptyStackException e) {
+            
             LOGGER.error(e, e);
         }
 
@@ -171,8 +189,11 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
                     
                     // Fix #45348: IllegalComponentStateException on show()
                     try {
+                        
                         menu.show(evt.getComponent(), evt.getX(), evt.getY());
+                        
                     } catch (IllegalComponentStateException e) {
+                        
                         LOGGER.error(e, e);
                     }
                     

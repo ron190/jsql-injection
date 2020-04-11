@@ -91,7 +91,7 @@ public class SoapUtil {
                 hasFoundInjection = this.injectTextNodes(doc, currentNode);
                 
                 if (hasFoundInjection) {
-                    break;
+                    return true;
                 }
                 
             } else if (currentNode.getNodeType() == Node.TEXT_NODE) {
@@ -106,12 +106,12 @@ public class SoapUtil {
                     LOGGER.info("Checking SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY));
                     
                     this.injectionModel.getMediatorMethodInjection().getRequest().testParameters();
-                    hasFoundInjection = true;
-                    
+
                     // Injection successful
-                    break;
+                    return true;
                     
                 } catch (JSqlException e) {
+                    
                     // Injection failure
                     LOGGER.warn("No SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY), e);
                 }
@@ -152,6 +152,7 @@ public class SoapUtil {
         transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, StringUtils.EMPTY);
         
         String output = null;
+        
         try {
             Transformer transformer= transformerFactory.newTransformer();
             StringWriter writer = new StringWriter();

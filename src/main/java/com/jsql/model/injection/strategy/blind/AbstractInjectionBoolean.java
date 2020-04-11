@@ -102,13 +102,13 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         taskCompletionService.submit(this.getCallable(inj, 0, IS_TESTING_LENGTH));
         
         // Increment the number of active tasks
-        int submittedTasks = 1;
-        int countAsciiCode255 = 0;
+        int countTasksSubmitted = 1;
+        int countBadAsciiCode = 0;
 
         
         // Process the job until there is no more active task,
         // in other word until all HTTP requests are done
-        while (submittedTasks > 0) {
+        while (countTasksSubmitted > 0) {
             
             // TODO Coverage with pausable multithreading
             if (suspendable.isSuspended()) {
@@ -122,7 +122,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 T currentCallable = taskCompletionService.take().get();
                 
                 // One task has just ended, decrease active tasks by 1
-                submittedTasks--;
+                countTasksSubmitted--;
                 
                 // If SQL result is not empty, then add a new unknown character,
                 // and define a new array of 8 undefined bit.
@@ -146,49 +146,47 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                             taskCompletionService.submit(this.getCallable(inj, indexCharacter, bit));
                         }
                         
-                        // Add all 9 new tasks
-                        submittedTasks += 9;
+                        // Add 9 new tasks
+                        countTasksSubmitted += 9;
                     }
                     
                 } else {
-                    // Process the url that has just checked a bit,
-                    // Retrieve the bits for that character, and
-                    // change the bit from undefined to 0 or 1
                     
-                    // The bits linked to the url
-                    char[] codeAsciiInBinary = bytes.get(currentCallable.getCurrentIndex() - 1);
+                    // Process url that has just checked one bit, convert bits to chars,
+                    // and change current bit from undefined to 0 or 1
                     
-                    // Define the bit
-                    codeAsciiInBinary[(int) (8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit())) / Math.log(2))] = currentCallable.isTrue() ? '1' : '0';
-
-                    /*
-                     * Inform the View if a array of bits is complete, else nothing #Need fix
-                     */
-                    if (new String(codeAsciiInBinary).matches("^\\d+$")) {
+                    char[] asciiCodeMask = this.initializeBinaryMask(bytes, currentCallable);
+                    
+                    String asciiCodeBinary = new String(asciiCodeMask);
+                    
+                    // Inform the View if bits array is complete, else nothing #Need fix
+                    if (asciiCodeBinary.matches("^[01]{8}$")) {
                         
-                        int codeAscii = Integer.parseInt(new String(codeAsciiInBinary), 2);
-                        String charText = Character.toString((char) codeAscii);
+                        int asciiCode = Integer.parseInt(asciiCodeBinary, 2);
                         
-                        if (codeAscii == 255 || codeAscii == 0) {
+                        if (asciiCode == 255 || asciiCode == 0) {
                             
                             if (
-                                submittedTasks != 0
-                                && countAsciiCode255 > 9
-                                && (countAsciiCode255 * 100 / submittedTasks) > 50
+                                countTasksSubmitted != 0
+                                && countBadAsciiCode > 9
+                                && (countBadAsciiCode * 100 / countTasksSubmitted) > 50
                             ) {
                                 LOGGER.warn("Boolean false positives spotted, stopping...");
                                 break;
                             }
                             
-                            countAsciiCode255++;
+                            countBadAsciiCode++;
                         }
 
+                        String charText = Character.toString((char) asciiCode);
+                        
                         Request interaction = new Request();
                         interaction.setMessage(Interaction.MESSAGE_BINARY);
-                        interaction.setParameters(new String(codeAsciiInBinary) +"="+ charText.replaceAll("\\n", "\\\\\\n").replaceAll("\\r", "\\\\\\r").replaceAll("\\t", "\\\\\\t"));
+                        interaction.setParameters(asciiCodeBinary +"="+ charText.replaceAll("\\n", "\\\\\\n").replaceAll("\\r", "\\\\\\r").replaceAll("\\t", "\\\\\\t"));
                         this.injectionModel.sendToViews(interaction);
                     }
                 }
+                
             } catch (InterruptedException | ExecutionException e) {
                 
                 LOGGER.error(e.getMessage(), e);
@@ -199,12 +197,26 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         return this.stop(bytes, taskExecutor);
     }
 
+    private char[] initializeBinaryMask(List<char[]> bytes, T currentCallable) {
+        
+        // Bits for current url
+        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
+        
+        int positionInMask = (int) (8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit())) / Math.log(2));
+        
+        // Set current bit
+        asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';
+        
+        return asciiCodeMask;
+    }
+
     private String stop(List<char[]> bytes, ExecutorService taskExecutor) {
         
         // Await for termination
         boolean isTerminated = false;
         
         try {
+            
             taskExecutor.shutdown();
             isTerminated = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);
             
@@ -222,9 +234,11 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
 
         // Get current progress and display
         StringBuilder result = new StringBuilder();
+        
         for (char[] c: bytes) {
             
             try {
+                
                 int charCode = Integer.parseInt(new String(c), 2);
                 String str = Character.toString((char) charCode);
                 result.append(str);

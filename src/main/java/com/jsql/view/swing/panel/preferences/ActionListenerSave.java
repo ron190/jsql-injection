@@ -88,10 +88,10 @@ public class ActionListenerSave implements ActionListener {
             isRestartRequired
             && JOptionPane.showConfirmDialog(
                 MediatorGui.frame(),
-                    "File krb5.conf has changed, please restart.",
-                    "Restart",
-                    JOptionPane.YES_NO_OPTION
-                ) == JOptionPane.YES_OPTION
+                "File krb5.conf has changed, please restart.",
+                "Restart",
+                JOptionPane.YES_NO_OPTION
+            ) == JOptionPane.YES_OPTION
         ) {
             new ActionNewWindow().actionPerformed(null);
         }

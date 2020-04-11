@@ -101,18 +101,24 @@ public class PanelAuthenticationPreferences extends JPanel {
         this.getCheckboxUseKerberos().setFocusable(false);
         
         labelUseKerberos.addActionListener(actionEvent -> {
+            
             this.getCheckboxUseKerberos().setSelected(!this.getCheckboxUseKerberos().isSelected());
             if (this.getCheckboxUseKerberos().isSelected()) {
+                
                 this.getCheckboxUseDigestAuthentication().setSelected(false);
             }
+            
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
         labelUseDigestAuthentication.addActionListener(actionEvent -> {
+            
             this.getCheckboxUseDigestAuthentication().setSelected(!this.getCheckboxUseDigestAuthentication().isSelected());
             if (this.getCheckboxUseDigestAuthentication().isSelected()) {
+                
                 this.getCheckboxUseKerberos().setSelected(false);
             }
+            
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
@@ -130,12 +136,14 @@ public class PanelAuthenticationPreferences extends JPanel {
         Stream.of(
             this.getCheckboxUseDigestAuthentication(),
             this.getCheckboxUseKerberos()
-        ).forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
+        )
+        .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
         DocumentListener documentListenerSave = new DocumentListenerTyping() {
             
             @Override
             public void process() {
+                
                 panelPreferences.getActionListenerSave().actionPerformed(null);
             }
         };
@@ -153,6 +161,7 @@ public class PanelAuthenticationPreferences extends JPanel {
             labelUseKerberos
         )
         .forEach(label -> {
+            
             label.setHorizontalAlignment(SwingConstants.LEFT);
             label.setBorderPainted(false);
             label.setContentAreaFilled(false);
@@ -171,7 +180,8 @@ public class PanelAuthenticationPreferences extends JPanel {
                 .addComponent(this.getCheckboxUseKerberos())
                 .addComponent(labelKerberosLoginConf)
                 .addComponent(labelKerberosKrb5Conf)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutAuthentication
                 .createParallelGroup()
                 .addComponent(labelUseDigestAuthentication)
@@ -192,27 +202,32 @@ public class PanelAuthenticationPreferences extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.getCheckboxUseDigestAuthentication())
                 .addComponent(labelUseDigestAuthentication)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutAuthentication
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelDigestAuthenticationUsername)
                 .addComponent(this.getTextDigestAuthenticationUsername())
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutAuthentication
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelDigestAuthenticationPassword)
                 .addComponent(this.getTextDigestAuthenticationPassword())
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutAuthentication
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.getCheckboxUseKerberos())
                 .addComponent(labelUseKerberos)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutAuthentication
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelKerberosLoginConf)
                 .addComponent(this.getTextKerberosLoginConf())
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutAuthentication
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelKerberosKrb5Conf)

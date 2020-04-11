@@ -1,6 +1,7 @@
 package com.jsql.view.swing.panel.preferences;
 
 import java.awt.Dimension;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
@@ -50,6 +51,7 @@ public class PanelTamperingPreferences extends JPanel {
         JButton labelIsTamperingBase64 = new JButton(TamperingType.BASE64.instance().getDescription());
         labelIsTamperingBase64.setToolTipText(tooltipIsTamperingBase64);
         labelIsTamperingBase64.addActionListener(actionEvent -> {
+            
             this.checkboxIsTamperingBase64.setSelected(!this.checkboxIsTamperingBase64.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
@@ -60,6 +62,7 @@ public class PanelTamperingPreferences extends JPanel {
         JButton labelIsTamperingFunctionComment = new JButton(TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());
         labelIsTamperingFunctionComment.setToolTipText(tooltipIsTamperingFunctionComment);
         labelIsTamperingFunctionComment.addActionListener(actionEvent -> {
+            
             this.checkboxIsTamperingFunctionComment.setSelected(!this.checkboxIsTamperingFunctionComment.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
@@ -70,6 +73,7 @@ public class PanelTamperingPreferences extends JPanel {
         JButton labelIsTamperingEqualToLike = new JButton(TamperingType.EQUAL_TO_LIKE.instance().getDescription());
         labelIsTamperingEqualToLike.setToolTipText(tooltipIsTamperingEqualToLike);
         labelIsTamperingEqualToLike.addActionListener(actionEvent -> {
+            
             this.checkboxIsTamperingEqualToLike.setSelected(!this.checkboxIsTamperingEqualToLike.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
@@ -80,11 +84,12 @@ public class PanelTamperingPreferences extends JPanel {
         JButton labelIsTamperingRandomCase = new JButton(TamperingType.RANDOM_CASE.instance().getDescription());
         labelIsTamperingRandomCase.setToolTipText(tooltipIsTamperingRandomCase);
         labelIsTamperingRandomCase.addActionListener(actionEvent -> {
+            
             this.checkboxIsTamperingRandomCase.setSelected(!this.checkboxIsTamperingRandomCase.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsTamperingEval = "Custom tamper in JavaScript, e.g sql.replace(/\\+/gm,'/**/').\nMinimal context: var tampering = function(sql) {return sql}";
+        String tooltipIsTamperingEval = "Custom tamper in JavaScript, e.g sql.replace(/\\+/gm,'/**/')";
         this.checkboxIsTamperingEval.setToolTipText(tooltipIsTamperingEval);
         this.checkboxIsTamperingEval.setFocusable(false);
         
@@ -104,11 +109,13 @@ public class PanelTamperingPreferences extends JPanel {
         JButton labelIsTamperingSpaceToMultilineComment = new JButton(TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getDescription());
         labelIsTamperingSpaceToMultilineComment.setToolTipText(tooltipIsTamperingSpaceToMultilineComment);
         labelIsTamperingSpaceToMultilineComment.addActionListener(actionEvent -> {
+            
             if (this.radioIsTamperingSpaceToMultilineComment.isSelected()) {
                 groupSpaceToComment.clearSelection();
             } else {
                 this.radioIsTamperingSpaceToMultilineComment.setSelected(!this.radioIsTamperingSpaceToMultilineComment.isSelected());
             }
+            
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
@@ -118,11 +125,13 @@ public class PanelTamperingPreferences extends JPanel {
         JButton labelIsTamperingSpaceToDashComment = new JButton(TamperingType.SPACE_TO_DASH_COMMENT.instance().getDescription());
         labelIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);
         labelIsTamperingSpaceToDashComment.addActionListener(actionEvent -> {
+            
             if (this.radioIsTamperingSpaceToDashComment.isSelected()) {
                 groupSpaceToComment.clearSelection();
             } else {
                 this.radioIsTamperingSpaceToDashComment.setSelected(!this.radioIsTamperingSpaceToDashComment.isSelected());
             }
+            
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
@@ -132,11 +141,13 @@ public class PanelTamperingPreferences extends JPanel {
         JButton labelIsTamperingSpaceToSharpComment = new JButton(TamperingType.SPACE_TO_SHARP_COMMENT.instance().getDescription());
         labelIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);
         labelIsTamperingSpaceToSharpComment.addActionListener(actionEvent -> {
+            
             if (this.radioIsTamperingSpaceToSharpComment.isSelected()) {
                 groupSpaceToComment.clearSelection();
             } else {
                 this.radioIsTamperingSpaceToSharpComment.setSelected(!this.radioIsTamperingSpaceToSharpComment.isSelected());
             }
+            
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
@@ -146,6 +157,7 @@ public class PanelTamperingPreferences extends JPanel {
         JButton labelIsTamperingVersionComment = new JButton(TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());
         labelIsTamperingVersionComment.setToolTipText(tooltipIsTamperingVersionComment);
         labelIsTamperingVersionComment.addActionListener(actionEvent -> {
+            
             this.checkboxIsTamperingVersionComment.setSelected(!this.checkboxIsTamperingVersionComment.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
@@ -156,6 +168,7 @@ public class PanelTamperingPreferences extends JPanel {
         JButton labelIsTamperingHexToChar = new JButton(TamperingType.HEX_TO_CHAR.instance().getDescription());
         labelIsTamperingHexToChar.setToolTipText(tooltipIsTamperingHexToChar);
         labelIsTamperingHexToChar.addActionListener(actionEvent -> {
+            
             this.checkboxIsTamperingHexToChar.setSelected(!this.checkboxIsTamperingHexToChar.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
@@ -166,6 +179,7 @@ public class PanelTamperingPreferences extends JPanel {
         JButton labelIsTamperingQuoteToUtf8 = new JButton(TamperingType.QUOTE_TO_UTF8.instance().getDescription());
         labelIsTamperingQuoteToUtf8.setToolTipText(tooltipIsTamperingQuoteToUtf8);
         labelIsTamperingQuoteToUtf8.addActionListener(actionEvent -> {
+            
             this.checkboxIsTamperingQuoteToUtf8.setSelected(!this.checkboxIsTamperingQuoteToUtf8.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
@@ -176,44 +190,37 @@ public class PanelTamperingPreferences extends JPanel {
         JButton labelIsTamperingStringToChar = new JButton(TamperingType.STRING_TO_CHAR.instance().getDescription());
         labelIsTamperingStringToChar.setToolTipText(tooltipIsTamperingStringToChar);
         labelIsTamperingStringToChar.addActionListener(actionEvent -> {
+            
             this.checkboxIsTamperingStringToChar.setSelected(!this.checkboxIsTamperingStringToChar.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
-
-        labelIsTamperingSpaceToSharpComment.addMouseListener(new TamperingMouseAdapter(TamperingType.SPACE_TO_SHARP_COMMENT, textPaneEval));
-        labelIsTamperingSpaceToDashComment.addMouseListener(new TamperingMouseAdapter(TamperingType.SPACE_TO_DASH_COMMENT, textPaneEval));
-        labelIsTamperingBase64.addMouseListener(new TamperingMouseAdapter(TamperingType.BASE64, textPaneEval));
-        labelIsTamperingEqualToLike.addMouseListener(new TamperingMouseAdapter(TamperingType.EQUAL_TO_LIKE, textPaneEval));
-        labelIsTamperingFunctionComment.addMouseListener(new TamperingMouseAdapter(TamperingType.COMMENT_TO_METHOD_SIGNATURE, textPaneEval));
-        labelIsTamperingRandomCase.addMouseListener(new TamperingMouseAdapter(TamperingType.RANDOM_CASE, textPaneEval));
-        labelIsTamperingHexToChar.addMouseListener(new TamperingMouseAdapter(TamperingType.HEX_TO_CHAR, textPaneEval));
-        labelIsTamperingStringToChar.addMouseListener(new TamperingMouseAdapter(TamperingType.STRING_TO_CHAR, textPaneEval));
-        labelIsTamperingQuoteToUtf8.addMouseListener(new TamperingMouseAdapter(TamperingType.QUOTE_TO_UTF8, textPaneEval));
-        labelIsTamperingSpaceToMultilineComment.addMouseListener(new TamperingMouseAdapter(TamperingType.SPACE_TO_MULTILINE_COMMENT, textPaneEval));
-        labelIsTamperingVersionComment.addMouseListener(new TamperingMouseAdapter(TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE, textPaneEval));
         
         Stream.of(
-            labelIsTamperingBase64,
-            labelIsTamperingFunctionComment,
-            labelIsTamperingVersionComment,
-            labelIsTamperingEqualToLike,
-            labelIsTamperingRandomCase,
-            labelIsTamperingHexToChar,
-            labelIsTamperingStringToChar,
-            labelIsTamperingQuoteToUtf8,
-            labelIsTamperingSpaceToMultilineComment,
-            labelIsTamperingSpaceToDashComment,
-            labelIsTamperingSpaceToSharpComment
+            new SimpleEntry<>(labelIsTamperingBase64, TamperingType.BASE64),
+            new SimpleEntry<>(labelIsTamperingFunctionComment, TamperingType.COMMENT_TO_METHOD_SIGNATURE),
+            new SimpleEntry<>(labelIsTamperingVersionComment, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE),
+            new SimpleEntry<>(labelIsTamperingEqualToLike, TamperingType.EQUAL_TO_LIKE),
+            new SimpleEntry<>(labelIsTamperingRandomCase, TamperingType.RANDOM_CASE),
+            new SimpleEntry<>(labelIsTamperingHexToChar, TamperingType.HEX_TO_CHAR),
+            new SimpleEntry<>(labelIsTamperingStringToChar, TamperingType.STRING_TO_CHAR),
+            new SimpleEntry<>(labelIsTamperingQuoteToUtf8, TamperingType.QUOTE_TO_UTF8),
+            new SimpleEntry<>(labelIsTamperingSpaceToMultilineComment, TamperingType.SPACE_TO_MULTILINE_COMMENT),
+            new SimpleEntry<>(labelIsTamperingSpaceToDashComment, TamperingType.SPACE_TO_DASH_COMMENT),
+            new SimpleEntry<>(labelIsTamperingSpaceToSharpComment, TamperingType.SPACE_TO_SHARP_COMMENT)
         )
-        .forEach(label -> {
-            label.setHorizontalAlignment(SwingConstants.LEFT);
-            label.setBorderPainted(false);
-            label.setContentAreaFilled(false);
+        .forEach(entry -> {
+            
+            entry.getKey().addMouseListener(new TamperingMouseAdapter(entry.getValue(), textPaneEval));
+            
+            entry.getKey().setHorizontalAlignment(SwingConstants.LEFT);
+            entry.getKey().setBorderPainted(false);
+            entry.getKey().setContentAreaFilled(false);
         });
         
         // TODO create group for cleanable textpanelexer
         StyledDocument styledDocument = textPaneEval.getStyledDocument();
         if (styledDocument instanceof HighlightedDocument) {
+            
             HighlightedDocument oldDocument = (HighlightedDocument) styledDocument;
             oldDocument.stopColorer();
         }
@@ -255,7 +262,8 @@ public class PanelTamperingPreferences extends JPanel {
                 .addComponent(this.radioIsTamperingSpaceToDashComment)
                 .addComponent(this.radioIsTamperingSpaceToSharpComment)
                 .addComponent(this.checkboxIsTamperingEval)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutTampering
                 .createParallelGroup()
                 .addComponent(labelIsTamperingBase64)
@@ -282,57 +290,68 @@ public class PanelTamperingPreferences extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingBase64)
                 .addComponent(labelIsTamperingBase64)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutTampering
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingFunctionComment)
                 .addComponent(labelIsTamperingFunctionComment)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutTampering
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingVersionComment)
                 .addComponent(labelIsTamperingVersionComment)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutTampering
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingEqualToLike)
                 .addComponent(labelIsTamperingEqualToLike)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutTampering
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingRandomCase)
                 .addComponent(labelIsTamperingRandomCase)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutTampering
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingStringToChar)
                 .addComponent(labelIsTamperingStringToChar)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutTampering
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingHexToChar)
                 .addComponent(labelIsTamperingHexToChar)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutTampering
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingQuoteToUtf8)
                 .addComponent(labelIsTamperingQuoteToUtf8)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutTampering
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.radioIsTamperingSpaceToMultilineComment)
                 .addComponent(labelIsTamperingSpaceToMultilineComment)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutTampering
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.radioIsTamperingSpaceToDashComment)
                 .addComponent(labelIsTamperingSpaceToDashComment)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutTampering
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.radioIsTamperingSpaceToSharpComment)
                 .addComponent(labelIsTamperingSpaceToSharpComment)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutTampering
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingEval)
@@ -353,7 +372,8 @@ public class PanelTamperingPreferences extends JPanel {
             this.radioIsTamperingSpaceToMultilineComment,
             this.radioIsTamperingSpaceToDashComment,
             this.radioIsTamperingSpaceToSharpComment
-        ).forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
+        )
+        .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
     }
     
     // Getter and setter
@@ -403,6 +423,6 @@ public class PanelTamperingPreferences extends JPanel {
     }
 
     public JCheckBox getCheckboxIsTamperingStringToChar() {
-        return checkboxIsTamperingStringToChar;
+        return this.checkboxIsTamperingStringToChar;
     }
 }

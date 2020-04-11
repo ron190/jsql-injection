@@ -35,23 +35,23 @@ public abstract class ConcreteNeo4jTestNotSuite extends AbstractTestSuite {
         
         this.jdbcQueryForDatabaseNames = "RETURN 'neo4j' AS A";
         
-        this.jdbcQueryForTableNames = 
+        this.jdbcQueryForTableNames =
          "CALL db.labels() "
         +"YIELD label      "
-        +"WITH label       "                                                 
-        +"RETURN   label   " ;                                                         
+        +"WITH label       "
+        +"RETURN   label   " ;
         
-        this.jdbcQueryForColumnNames = 
+        this.jdbcQueryForColumnNames =
          "MATCH (n:Movie)               "
         +"WITH collect(keys(n)) AS attr "
-        +"UNWIND attr AS r              "                                                 
-        +"WITH DISTINCT r[0] AS d       "                                                          
+        +"UNWIND attr AS r              "
+        +"WITH DISTINCT r[0] AS d       "
         +"ORDER BY d                    "
         +"RETURN  d                     ";
         
-        this.jdbcQueryForValues = 
+        this.jdbcQueryForValues =
          "MATCH (n:Movie)         "
         +"WITH DISTINCT n         "
-        +"RETURN n.title as title ";                                                 
+        +"RETURN n.title as title ";
     }
 }

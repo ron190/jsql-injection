@@ -185,6 +185,32 @@ public class GreetingController {
     }
     
     @SuppressWarnings("unchecked")
+    @RequestMapping("/greeting-multiple-index")
+    public Greeting greetingMultipleIndex(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            
+            Query query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6 from Student where 1 = "+ inject);
+        
+            List<Object[]> results = query.getResultList();
+            
+            greeting = new Greeting(
+                this.counter.incrementAndGet(),
+                String.format(template, inject)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
+            
+        } catch (Exception e) {
+            // Hide useless SQL error messages
+        }
+        
+        return greeting;
+    }
+    
+    @SuppressWarnings("unchecked")
     @RequestMapping("/greeting-insertion-char")
     public Greeting greetingInsertionChar(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
@@ -251,10 +277,10 @@ public class GreetingController {
         
         Greeting greeting = null;
         
-        try (org.neo4j.driver.Session session = driver.session()) {
+        try (org.neo4j.driver.Session session = this.driver.session()) {
             Result result = session.run("MATCH (n:Person) where 1="+ name +" RETURN n.name, n.from, n.title, n.hobby");
             
-            String a = result.stream().map(record -> 
+            String a = result.stream().map(record ->
                 record.keys().stream()
                 .map(key -> key + "=" + record.get(key))
                 .collect(Collectors.joining(", ", "{", "}"))

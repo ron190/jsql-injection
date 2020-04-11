@@ -30,10 +30,10 @@ before_install:
   - mvn -v
   
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
+  
+  - jobs && docker images && docker ps && pwd
     
   # Docker configuration
-  - echo Docker build...
-  
   - docker build -t mysql 
     -f src/test/resources/docker/Dockerfile.mysql . &
     
@@ -50,25 +50,23 @@ before_install:
     -f src/test/resources/docker/Dockerfile.neo4j . &
     
   - wait
-  - echo Docker build done
-  - echo Docker run...
     
   - docker run --name jsql-mysql  
     --publish 3306:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
-    -d mysql 
+    -d mysql &
     
   - docker run --name jsql-mysql-5.5.40 
     --publish 3307:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
-    -d mysql:5.5.40 
+    -d mysql:5.5.40 &
     
   - docker run --name jsql-postgres 
     --publish 5432:5432 
     -e POSTGRES_PASSWORD=my-secret-pw 
     -d postgres 
     -c 'shared_buffers=256MB'
-    -c 'max_connections=1000' 
+    -c 'max_connections=1000' &
     
   - docker run --name jsql-sqlserver 
     --publish 1434:1434 
@@ -76,15 +74,14 @@ before_install:
     -e "ACCEPT_EULA=Y" 
     -e "SA_PASSWORD=yourStrong(!)Password"
     -u 0:0
-    -d sqlserver 
+    -d sqlserver  &
     
   - docker run --name jsql-neo4j 
     --publish 7687:7687 
     -e NEO4J_AUTH=neo4j/test
-    -d neo4j 
+    -d neo4j  &
     
-  - echo Docker run done
-  - docker images && docker ps && pwd
+  - wait && jobs && docker images && docker ps && pwd
   
   # Buff MySQL
   - docker exec -it jsql-mysql /bin/bash

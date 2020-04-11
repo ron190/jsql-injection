@@ -53,6 +53,7 @@ public class PanelProxyPreferences extends JPanel {
         this.getCheckboxIsUsingProxy().setFocusable(false);
 
         buttonIsUsingProxy.addActionListener(actionEvent -> {
+            
             this.getCheckboxIsUsingProxy().setSelected(!this.getCheckboxIsUsingProxy().isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
@@ -61,6 +62,7 @@ public class PanelProxyPreferences extends JPanel {
         this.getCheckboxIsUsingProxyHttps().setFocusable(false);
         
         buttonIsUsingProxyHttps.addActionListener(actionEvent -> {
+            
             this.getCheckboxIsUsingProxyHttps().setSelected(!this.getCheckboxIsUsingProxyHttps().isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
@@ -77,12 +79,14 @@ public class PanelProxyPreferences extends JPanel {
         
         Stream.of(
             this.getCheckboxIsUsingProxy()
-        ).forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
+        )
+        .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
         DocumentListener documentListenerSave = new DocumentListenerTyping() {
             
             @Override
             public void process() {
+                
                 panelPreferences.getActionListenerSave().actionPerformed(null);
             }
         };
@@ -159,32 +163,38 @@ public class PanelProxyPreferences extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.getCheckboxIsUsingProxy())
                 .addComponent(buttonIsUsingProxy)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutProxy
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelProxyAddress)
                 .addComponent(this.getTextProxyAddress())
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutProxy
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelProxyPort)
                 .addComponent(this.getTextProxyPort())
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutProxy
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelProxyHttpsHidden)
                 .addComponent(labelProxyHttps)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutProxy
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.getCheckboxIsUsingProxyHttps())
                 .addComponent(buttonIsUsingProxyHttps)
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutProxy
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelProxyAddressHttps)
                 .addComponent(this.getTextProxyAddressHttps())
-            ).addGroup(
+            )
+            .addGroup(
                 groupLayoutProxy
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelProxyPortHttps)
