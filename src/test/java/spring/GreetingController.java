@@ -69,7 +69,9 @@ public class GreetingController {
             );
             
         } catch (Exception e) {
-            // Hide useless SQL error messages
+            
+            // Required by multiple columns
+            greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
@@ -95,7 +97,9 @@ public class GreetingController {
             );
             
         } catch (Exception e) {
-            // Hide useless SQL error messages
+            
+            // Required by multiple columns
+            greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
@@ -124,6 +128,7 @@ public class GreetingController {
             
         } catch (Exception e) {
             
+            // Required by multiple columns
             greeting = this.initializeErrorMessage(e);
         }
         
@@ -206,7 +211,9 @@ public class GreetingController {
             );
             
         } catch (Exception e) {
-            // Hide useless SQL error messages
+            
+            // Required by multiple columns
+            greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
