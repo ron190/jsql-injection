@@ -31,9 +31,9 @@ resource:
        select
            cast(SCHEMA_NAME as char) r,
            cast(count(TABLE_NAME) as char) q
-       from INFORMATION_SCHEMA.tables t
-       right join INFORMATION_SCHEMA.schemata s
-       on s.SCHEMA_NAME = t.table_schema
+       from INFORMATION_SCHEMA.tables
+       right join INFORMATION_SCHEMA.schemata
+       on SCHEMA_NAME = table_schema
        group by r
        ${limit}
    ) x
