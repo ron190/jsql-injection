@@ -11,7 +11,9 @@ public abstract class ConcreteMySQLErrorTestSuite extends ConcreteMySQLTestSuite
 
     @Override
     public void config() {
+        
         super.config();
+        
         this.jdbcURL = "jdbc:mysql://127.0.0.1:3307/musicstore";
     }
 }

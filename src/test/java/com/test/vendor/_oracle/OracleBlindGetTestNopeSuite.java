@@ -14,7 +14,6 @@ public class OracleBlindGetTestNopeSuite extends ConcreteOracleTestNopeSuite {
         super();
     }
 
-//    @BeforeClass
     @Override
     public void setupInjection() throws InjectionFailureException {
 //        InjectionModel model = new InjectionModel();
@@ -30,17 +29,5 @@ public class OracleBlindGetTestNopeSuite extends ConcreteOracleTestNopeSuite {
 //        MediatorGui.model().beginInjection();
 //
 //        MediatorGui.model().setStrategy(StrategyInjection.BLIND);
-    }
-    
-    @Override
-//    @Test
-    public void listDatabases() throws JSqlException {
-        LOGGER.info("Ignore: too slow");
-    }
-    
-    @Override
-//    @Test
-    public void listTables() throws JSqlException {
-        LOGGER.info("Ignore: too slow");
     }
 }

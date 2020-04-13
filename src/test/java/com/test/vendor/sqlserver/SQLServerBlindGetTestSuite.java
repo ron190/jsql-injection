@@ -7,6 +7,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junitpioneer.jupiter.RepeatFailedTest;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -38,20 +39,9 @@ public class SQLServerBlindGetTestSuite extends ConcreteSQLServerTestSuite {
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlServer());
         model.beginInjection();
     }
-    
-    @Override
-    public void listDatabases() throws JSqlException {
-        LOGGER.info("Ignore: too slow");
-    }
-    
-    @Override
-    public void listTables() throws JSqlException {
-        LOGGER.info("Ignore: too slow");
-    }
-    
-    @Override
-    public void listColumns() throws JSqlException {
-        LOGGER.info("Ignore: too slow");
-    }
 
+    @RepeatFailedTest(3)
+    public void listValues() throws JSqlException {
+        super.listValues();
+    }
 }
