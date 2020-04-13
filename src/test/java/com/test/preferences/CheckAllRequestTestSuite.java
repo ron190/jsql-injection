@@ -1,4 +1,4 @@
-package com.test.auth;
+package com.test.preferences;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -10,11 +10,11 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.vendor.mysql.ConcreteMySQLErrorTestSuite;
+import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class BasicPreferencesTestSuite extends ConcreteMySQLErrorTestSuite {
+public class CheckAllRequestTestSuite extends ConcreteMySQLTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
@@ -24,21 +24,21 @@ public class BasicPreferencesTestSuite extends ConcreteMySQLErrorTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/basic/greeting");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-post");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql-error"),
+            new SimpleEntry<>("tenant", "mysql")
+        ));
+        model.getMediatorUtils().getParameterUtil().setListRequest(Arrays.asList(
+            new SimpleEntry<>("fake", "empty"),
             new SimpleEntry<>("name", "0'")
         ));
         
-        model.getMediatorUtils().getAuthenticationUtil().setAuthentication(true);
-        model.getMediatorUtils().getAuthenticationUtil().setUsernameAuthentication("ron190");
-        model.getMediatorUtils().getAuthenticationUtil().setPasswordAuthentication("p@ssw0rd");
-        model.getMediatorUtils().getAuthenticationUtil().setAuthentication();
-        
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
-        model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
+        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllRequestParam(true);
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getRequest());
+        model.getMediatorUtils().getConnectionUtil().setTypeRequest("POST");
         
         model.setIsScanning(true);
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }
 }

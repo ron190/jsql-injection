@@ -11,7 +11,7 @@ import com.jsql.model.injection.vendor.model.VendorYaml;
 
 public class MediatorVendor {
 
-    InjectionModel injectionModel;
+    private InjectionModel injectionModel;
     
     /**
      * Database vendor currently used.

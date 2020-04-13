@@ -22,14 +22,14 @@ import com.jsql.util.StringUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.tab.MouseTabbedPane;
+import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import com.jsql.view.swing.util.I18nViewUtil;
 
 @SuppressWarnings("serial")
-public class TabbedPaneNetworkTab extends MouseTabbedPane {
+public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     
     /**
      * Log4j logger sent to view.
@@ -98,7 +98,9 @@ public class TabbedPaneNetworkTab extends MouseTabbedPane {
         this.textAreaNetworkTabUrl.setText(networkData.getUrl());
         
         this.textAreaNetworkTabResponse.setText(StringUtils.EMPTY);
+        
         for (String key: networkData.getResponse().keySet()) {
+            
             this.textAreaNetworkTabResponse.append(key + ": " + networkData.getResponse().get(key));
             this.textAreaNetworkTabResponse.append("\n");
         }
@@ -107,11 +109,14 @@ public class TabbedPaneNetworkTab extends MouseTabbedPane {
         // Fix #54573: NullPointerException on setText()
         try {
             this.textAreaNetworkTabSource.setText(
-                StringUtil.detectUtf8(networkData.getSource())
-                    .replaceAll("#{5,}", "#*")
-                    .trim()
+                StringUtil
+                .detectUtf8(networkData.getSource())
+                .replaceAll("#{5,}", "#*")
+                .trim()
             );
+            
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+            
             LOGGER.error(e, e);
         }
         
@@ -128,16 +133,18 @@ public class TabbedPaneNetworkTab extends MouseTabbedPane {
             this.textAreaNetworkTabPreview.setText(
                 Jsoup.clean(
                     "<html>"+ StringUtil.detectUtf8(networkData.getSource()).replaceAll("#{5,}", "#*") + "</html>"
-                        .replaceAll("<img.*>", StringUtils.EMPTY)
-                        .replaceAll("<input.*type=\"?hidden\"?.*>", StringUtils.EMPTY)
-                        .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
-                        .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
+                    .replaceAll("<img.*>", StringUtils.EMPTY)
+                    .replaceAll("<input.*type=\"?hidden\"?.*>", StringUtils.EMPTY)
+                    .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
+                    .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
                     Whitelist.relaxed()
-                        .addTags("center", "div", "span")
-                        .addAttributes(":all", "style")
+                    .addTags("center", "div", "span")
+                    .addAttributes(":all", "style")
                 )
             );
+            
         } catch (RuntimeException | ExceptionInInitializerError e) {
+            
             LOGGER.error(e, e);
         }
     }

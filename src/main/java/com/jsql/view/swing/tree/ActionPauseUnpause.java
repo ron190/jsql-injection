@@ -22,7 +22,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  */
 public class ActionPauseUnpause implements ActionListener {
     
-    AbstractNodeModel nodeModel;
+    private AbstractNodeModel nodeModel;
 
     public ActionPauseUnpause(AbstractNodeModel nodeModel) {
         this.nodeModel = nodeModel;

@@ -34,6 +34,7 @@ public class TabTransferHandler extends TransferHandler {
     public TabTransferHandler() {
         
         super();
+        
         this.localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
     }
     
@@ -41,6 +42,7 @@ public class TabTransferHandler extends TransferHandler {
     protected Transferable createTransferable(JComponent c) {
         
         if (c instanceof DnDTabbedPane) {
+            
             this.source = (DnDTabbedPane) c;
         }
 
@@ -62,8 +64,11 @@ public class TabTransferHandler extends TransferHandler {
             public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
                 
                 if (this.isDataFlavorSupported(flavor)) {
+                    
                     return new DnDTabData(TabTransferHandler.this.source);
+                    
                 } else {
+                    
                     throw new UnsupportedFlavorException(flavor);
                 }
             }
@@ -181,6 +186,7 @@ public class TabTransferHandler extends TransferHandler {
             return true;
             
         } catch (UnsupportedFlavorException | IOException e) {
+            
             LOGGER.error("Dragging tab failed", e);
         }
         

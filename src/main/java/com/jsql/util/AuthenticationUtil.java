@@ -10,6 +10,9 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 
+import sun.net.www.protocol.http.AuthCacheImpl;
+import sun.net.www.protocol.http.AuthCacheValue;
+
 /**
  * Manage authentication protocols Basic, Digest, NTLM and Kerberos.
  * Java class Authenticator processes Basic, Digest and NTLM, library spnego
@@ -168,9 +171,11 @@ public class AuthenticationUtil {
         this.pathKerberosLogin = prefs.get("kerberosLoginConf", StringUtils.EMPTY);
 
 //        AuthCacheValue.setAuthCache(new AuthCacheImpl());
+        AuthCacheValue.setAuthCache(new AuthCacheImpl());
+        Authenticator.setDefault(null);
         
         if (this.isAuthentication) {
-            
+            AuthCacheValue.setAuthCache(new AuthCacheImpl());
             Authenticator.setDefault(new Authenticator() {
                 
                 @Override
@@ -193,9 +198,12 @@ public class AuthenticationUtil {
      * standard timeout configuration.
      */
     public void setAuthentication() {
+        
+        AuthCacheValue.setAuthCache(new AuthCacheImpl());
+        Authenticator.setDefault(null);
 
         if (this.isAuthentication) {
-            
+            AuthCacheValue.setAuthCache(new AuthCacheImpl());
             Authenticator.setDefault(new Authenticator() {
                 
                 @Override
@@ -209,7 +217,7 @@ public class AuthenticationUtil {
             });
             
         } else {
-            
+            AuthCacheValue.setAuthCache(new AuthCacheImpl());
             Authenticator.setDefault(null);
         }
         
@@ -241,6 +249,7 @@ public class AuthenticationUtil {
             
             System.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
             System.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
+            System.setProperty("jcifs.http.insecureBasic", "true");
             jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
             jcifs.Config.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
             

@@ -18,7 +18,6 @@ import java.util.UUID;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.TransferHandler;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -57,9 +56,7 @@ public class TabResults extends DnDTabbedPane {
         
         this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
-        TransferHandler handler = new TabTransferHandler();
-        
-        this.setTransferHandler(handler);
+        this.setTransferHandler(new TabTransferHandler());
 
         // Add hotkeys to rootpane ctrl-tab, ctrl-shift-tab, ctrl-w
         HotkeyUtil.addShortcut(this);

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.util.StringUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySQLErrorTestSuite;
 
@@ -17,7 +16,7 @@ import spring.security.SecurityConfiguration;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class BasicHeaderTestSuite extends ConcreteMySQLErrorTestSuite {
+public class DigestPreferencesTestSuite extends ConcreteMySQLErrorTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
@@ -27,14 +26,16 @@ public class BasicHeaderTestSuite extends ConcreteMySQLErrorTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/basic/greeting");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/digest/greeting");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", "0'")
         ));
-        model.getMediatorUtils().getParameterUtil().setListHeader(Arrays.asList(
-            new SimpleEntry<>("Authorization", "Basic " + StringUtil.base64Encode(SecurityConfiguration.BASIC_USERNAME + ":" + SecurityConfiguration.BASIC_PASSWORD))
-        ));
+        
+        model.getMediatorUtils().getAuthenticationUtil().setAuthentication(true);
+        model.getMediatorUtils().getAuthenticationUtil().setUsernameAuthentication(SecurityConfiguration.DIGEST_USERNAME);
+        model.getMediatorUtils().getAuthenticationUtil().setPasswordAuthentication(SecurityConfiguration.DIGEST_PASSWORD);
+        model.getMediatorUtils().getAuthenticationUtil().setAuthentication();
         
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");

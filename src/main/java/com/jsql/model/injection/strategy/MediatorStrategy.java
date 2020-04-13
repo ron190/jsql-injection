@@ -118,14 +118,12 @@ public class MediatorStrategy {
                 characterInsertion = characterInsertion + InjectionModel.STAR;
             }
             
-            // TODO Fix double star on normal last param
-//            parameterToInject.setValue(characterInsertion.replace("**", "*"));
             parameterToInject.setValue(characterInsertion);
             
             LOGGER.info(
                 I18nUtil.valueByKey("LOG_USING_INSERTION_CHARACTER")
                 + " ["
-                + characterInsertion.replace(InjectionModel.STAR, StringUtils.EMPTY)
+                + characterInsertion.replace(InjectionModel.STAR, StringUtils.EMPTY).replaceAll("\\+$", StringUtils.EMPTY)
                 + "]"
             );
         }

@@ -260,11 +260,13 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("CONSOLE_JAVA_LABEL", this.javaDebugMenu);
 
         for (JCheckBoxMenuItem menuItem: new JCheckBoxMenuItem[]{this.chunkMenu, binaryMenu, networkMenu, this.javaDebugMenu}) {
+            
             menuItem.setUI(
                 new BasicCheckBoxMenuItemUI() {
                     
                     @Override
                     protected void doClick(MenuSelectionManager msm) {
+                        
                         this.menuItem.doClick(0);
                     }
                 }
@@ -274,8 +276,11 @@ public class Menubar extends JMenuBar {
         this.chunkMenu.addActionListener(actionEvent -> {
             
             if (this.chunkMenu.isSelected()) {
+                
                 MediatorGui.panelConsoles().insertChunkTab();
+                
             } else {
+                
                 MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(UiUtil.ICON_CHUNK));
             }
         });
@@ -283,8 +288,11 @@ public class Menubar extends JMenuBar {
         binaryMenu.addActionListener(actionEvent -> {
             
             if (binaryMenu.isSelected()) {
+                
                 MediatorGui.panelConsoles().insertBooleanTab();
+                
             } else {
+                
                 MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(UiUtil.ICON_BINARY));
             }
         });
@@ -292,8 +300,11 @@ public class Menubar extends JMenuBar {
         networkMenu.addActionListener(actionEvent -> {
             
             if (networkMenu.isSelected()) {
+                
                 MediatorGui.panelConsoles().insertNetworkTab();
+                
             } else {
+                
                 MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(UiUtil.ICON_HEADER));
             }
         });
@@ -301,8 +312,11 @@ public class Menubar extends JMenuBar {
         this.javaDebugMenu.addActionListener(actionEvent -> {
             
             if (this.javaDebugMenu.isSelected()) {
+                
                 MediatorGui.panelConsoles().insertJavaTab();
+                
             } else {
+                
                 MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(UiUtil.ICON_CUP));
             }
         });
@@ -490,7 +504,8 @@ public class Menubar extends JMenuBar {
         JMenu menuTranslation = new JMenu(I18nUtil.valueByKey("MENUBAR_LANGUAGE"));
         I18nViewUtil.addComponentForKey("MENUBAR_LANGUAGE", menuTranslation);
         
-        Object[] languages = Stream
+        Object[] languages =
+            Stream
             .of("ru zh es fr tr ko se ar cs it pt pl in nl ro de".split(StringUtils.SPACE))
             .map(flag -> new Locale(flag).getLanguage())
             .collect(Collectors.toList())
@@ -640,6 +655,7 @@ public class Menubar extends JMenuBar {
             this.itemRomanian,
             this.itemGerman
         ).forEach(menuItem -> {
+            
             menuTranslation.add(menuItem);
             groupRadioLanguage.add(menuItem);
         });
@@ -796,6 +812,7 @@ public class Menubar extends JMenuBar {
                 
                 @Override
                 public void mousePressed(MouseEvent e) {
+                    
                     super.mousePressed(e);
                     textarea.requestFocusInWindow();
                 }
@@ -813,6 +830,7 @@ public class Menubar extends JMenuBar {
             );
 
             if (StringUtils.isNotEmpty(textarea.getText()) && result == JOptionPane.YES_OPTION) {
+                
                 MediatorGui.model().getMediatorUtils().getGitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
             }
         });
@@ -834,8 +852,11 @@ public class Menubar extends JMenuBar {
         itemCopy.addActionListener(actionEvent -> {
             
             if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
+                
                 ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).copyTable();
+                
             } else if (MediatorGui.tabResults().getSelectedComponent() instanceof JScrollPane) {
+                
                 ((JTextArea) ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView()).copy();
             }
         });
@@ -847,9 +868,13 @@ public class Menubar extends JMenuBar {
         itemSelectAll.addActionListener(actionEvent -> {
             
             if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
+                
                 ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).selectTable();
-            // Textarea need focus to select all
+                
             } else if (MediatorGui.tabResults().getSelectedComponent() instanceof JScrollPane) {
+                
+                // Textarea need focus to select all
+                
                 ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
                 ((JTextArea) ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();
             }
@@ -887,6 +912,7 @@ public class Menubar extends JMenuBar {
     }
     
     public void switchLocale(Locale newLocale) {
+        
         this.switchLocale(I18nUtil.getLocaleDefault(), newLocale, false);
     }
     
@@ -924,6 +950,7 @@ public class Menubar extends JMenuBar {
                 MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(
                     MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation()
                 );
+                
             } else {
                 
                 MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(
@@ -940,6 +967,7 @@ public class Menubar extends JMenuBar {
         
         // TODO stream
         for (String key: I18nViewUtil.keys()) {
+            
             for (Object componentSwing: I18nViewUtil.componentsByKey(key)) {
                 
                 Class<?> classComponent = componentSwing.getClass();

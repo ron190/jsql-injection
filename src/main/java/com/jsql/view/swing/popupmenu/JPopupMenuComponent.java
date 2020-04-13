@@ -85,6 +85,7 @@ public class JPopupMenuComponent extends JPopupMenu {
                 
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    
                     ((JTextComponent) JPopupMenuComponent.this.component).setText(null);
                 }
             });
@@ -116,7 +117,9 @@ public class JPopupMenuComponent extends JPopupMenu {
                     : MouseInfo.getPointerInfo().getLocation().x,
                     MouseInfo.getPointerInfo().getLocation().y
                 );
+                
             } catch (NullPointerException e) {
+                
                 LOGGER.error(e, e);
             }
         }

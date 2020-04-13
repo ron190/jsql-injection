@@ -43,7 +43,7 @@ import com.jsql.view.swing.util.UiUtil;
  * Panel on the left with functionalities like webshell, file reading and admin page finder.
  */
 @SuppressWarnings("serial")
-public class TabManagers extends MouseTabbedPane {
+public class TabManagers extends TabbedPaneWheeled {
     
     private ManagerWebShell managerWebShell = new ManagerWebShell();
     private ManagerFile managerFile = new ManagerFile();

@@ -42,6 +42,7 @@ import com.jsql.view.swing.sql.text.AttributeSetterForVendor;
 import com.jsql.view.swing.sql.text.JTextPaneLexer;
 import com.jsql.view.swing.sql.text.JTextPaneObjectMethod;
 import com.jsql.view.swing.tab.TabHeader.Cleanable;
+import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.UiUtil;
@@ -51,7 +52,7 @@ public class SqlEngine extends JPanel implements Cleanable {
     
     private ModelYaml modelYaml = MediatorGui.model().getMediatorVendor().getVendor().instance().getModelYaml();
 
-    private static final JTabbedPane TAB_ERROR = new JTabbedPane(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
+    private static final JTabbedPane TAB_ERROR = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
 
     private static final Border BORDER_RIGHT = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
     
@@ -307,7 +308,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         JPanel panelStrategy = this.getPanelStrategy();
         JPanel panelConfiguration = this.getPanelConfiguration();
 
-        JTabbedPane tabsBottom = new JTabbedPane(SwingConstants.BOTTOM);
+        JTabbedPane tabsBottom = new TabbedPaneWheeled(SwingConstants.BOTTOM);
         Stream.of(
             new SimpleEntry<>("SQLENGINE_STRUCTURE", panelStructure),
             new SimpleEntry<>("SQLENGINE_STRATEGY", panelStrategy),
@@ -339,9 +340,9 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private JPanel getPanelStructure() {
         
-        JTabbedPane tabsStandard = new JTabbedPane(SwingConstants.RIGHT);
+        JTabbedPane tabsStandard = new TabbedPaneWheeled(SwingConstants.RIGHT);
         
-        JTabbedPane tabsSchema = new JTabbedPane();
+        JTabbedPane tabsSchema = new TabbedPaneWheeled();
         Stream.of(
             new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabase),
             new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTable),
@@ -365,7 +366,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
         
-        JTabbedPane tabsZipped = new JTabbedPane();
+        JTabbedPane tabsZipped = new TabbedPaneWheeled();
         Stream.of(
             new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabaseZipped),
             new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTableZipped),
@@ -388,7 +389,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
         
-        JTabbedPane tabsDios = new JTabbedPane();
+        JTabbedPane tabsDios = new TabbedPaneWheeled();
         Stream.of(
             new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabaseDios),
             new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTableDios),
@@ -434,13 +435,12 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private JPanel getPanelStrategy() {
         
-        JTabbedPane tabsStrategy = new JTabbedPane();
+        JTabbedPane tabsStrategy = new TabbedPaneWheeled();
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_NORMAL"), new LightScrollPane(1, 0, 1, 0, this.textareaIndices));
         
         JPanel panelStrategy = new JPanel(new BorderLayout());
         panelStrategy.add(tabsStrategy, BorderLayout.CENTER);
         panelStrategy.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
-        
         
         /*Error*/
         JPanel panelError = new JPanel(new BorderLayout());
@@ -449,7 +449,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), panelError);
 
         /*Boolean*/
-        JTabbedPane tabsBoolean = new JTabbedPane(SwingConstants.RIGHT);
+        JTabbedPane tabsBoolean = new TabbedPaneWheeled(SwingConstants.RIGHT);
         Stream.of(
             new SimpleEntry<>("AND mode", this.textareaModeAnd),
             new SimpleEntry<>("OR mode", this.textareaModeOr),
@@ -487,7 +487,7 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private JPanel getPanelConfiguration() {
         
-        JTabbedPane tabsConfiguration = new JTabbedPane();
+        JTabbedPane tabsConfiguration = new TabbedPaneWheeled();
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new LightScrollPane(1, 0, 1, 0, this.textareaOrderBy));
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, this.textareaSlidingWindow));
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, this.textareaLimit));

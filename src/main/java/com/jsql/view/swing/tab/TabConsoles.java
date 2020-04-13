@@ -17,7 +17,7 @@ import java.awt.Font;
  * Adapt MouseTabbedPane to another class in order to ease Mediator registering.
  */
 @SuppressWarnings("serial")
-public class TabConsoles extends MouseTabbedPane {
+public class TabConsoles extends TabbedPaneWheeled {
 
     public void highlightTab(String label) {
         

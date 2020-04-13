@@ -171,8 +171,8 @@ public abstract class MethodInjection implements Serializable {
             // Injection failure
             LOGGER.warn(
                 "No "+ this.name() +" injection found for parameter "
-                + paramStar.getKey() +"="+ paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
-                + " (" + e +")", e
+                + paramStar.getKey() +"="+ paramStar.getValue().replaceAll("\\+.?$|\\" + InjectionModel.STAR, StringUtils.EMPTY)
+                + " (" + e.getMessage() +")"
             );
             
         } finally {

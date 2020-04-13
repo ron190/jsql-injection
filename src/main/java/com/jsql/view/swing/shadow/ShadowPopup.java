@@ -151,7 +151,7 @@ public final class ShadowPopup extends Popup {
      * Returns a previously used {@code ShadowPopup}, or a new one
      * if none of the popups have been recycled.
      */
-    static Popup getInstance(Component owner, Component contents, int x, int y, Popup delegate) {
+    public static Popup getInstance(Component owner, Component contents, int x, int y, Popup delegate) {
         
         ShadowPopup result;
         

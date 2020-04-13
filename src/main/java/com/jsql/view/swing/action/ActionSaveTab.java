@@ -46,7 +46,7 @@ public class ActionSaveTab extends AbstractAction {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorGui.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+    private final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorGui.model().getMediatorUtils().getPreferencesUtil().getPathFile());
 
     public ActionSaveTab() {
         

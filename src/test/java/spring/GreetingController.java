@@ -36,8 +36,9 @@ public class GreetingController {
     private static final String template = "Hello, s!";
     private final AtomicLong counter = new AtomicLong();
     private ObjectMapper objectMapper = new ObjectMapper();
-    protected static final Logger LOGGER = Logger.getRootLogger();
-    
+    private static final Logger LOGGER = Logger.getRootLogger();
+    private Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
+
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -57,7 +58,7 @@ public class GreetingController {
             String inject = request.getParameterMap().get("name")[0];
             inject = inject.replace(":", "\\:");
             
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+            Query query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '"+ inject +"'");
             
             List<Object[]> results = query.getResultList();
             
@@ -83,7 +84,7 @@ public class GreetingController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+inject+"'");
+            Query query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6 from Student where '1' = '"+inject+"'");
             
             List<Object[]> results = query.getResultList();
             
@@ -111,7 +112,7 @@ public class GreetingController {
             String inject = name.get("name");
             inject = inject.replace(":", "\\:");
 
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+            Query query = session.createNativeQuery("select 1,2,First_Name from Student where '1' = '"+ inject +"'");
             
             List<Object[]> results = query.getResultList();
             
@@ -122,7 +123,8 @@ public class GreetingController {
             );
             
         } catch (Exception e) {
-            // Hide useless SQL error messages
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
@@ -218,21 +220,33 @@ public class GreetingController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select 1,2,3,4,1,1,1,1,1,1,1,First_Name,5,6 from Student where 999 = "+ inject);
+            Query query = session.createNativeQuery("select 1,2,3,4,5,6,7,8,9,First_Name,10,11 from Student where 999 = "+ inject);
             
             query.getResultList();
             
         } catch (Exception e) {
             
-            String stacktrace = ExceptionUtils.getStackTrace(e);
+            greeting = this.initializeErrorMessage(e);
+        }
+        
+        return greeting;
+    }
+    
+    @RequestMapping("/digest/greeting")
+    public Greeting greetingDigestAuth(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            LOGGER.debug(stacktrace);
+            Query query = session.createNativeQuery("select 1,2,3,4,5,6,7,8,9,First_Name,10,11 from Student where 999 = "+ inject);
             
-            greeting = new Greeting(
-                this.counter.incrementAndGet(),
-                String.format(template+"#", inject)
-                + StringEscapeUtils.unescapeJava(stacktrace)
-            );
+            query.getResultList();
+            
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
@@ -259,15 +273,7 @@ public class GreetingController {
             
         } catch (Exception e) {
             
-            String stacktrace = ExceptionUtils.getStackTrace(e);
-            
-            LOGGER.debug(stacktrace);
-            
-            greeting = new Greeting(
-                this.counter.incrementAndGet(),
-                String.format(template+"#", inject)
-                + StringEscapeUtils.unescapeJava(stacktrace)
-            );
+            greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
@@ -299,7 +305,6 @@ public class GreetingController {
         return greeting;
     }
     
-    Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
     @RequestMapping("/greeting-neo4j")
     public Greeting greetingNeo4j(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
@@ -341,15 +346,7 @@ public class GreetingController {
             
         } catch (Exception e) {
             
-            String stacktrace = ExceptionUtils.getStackTrace(e);
-            
-            LOGGER.debug(stacktrace);
-            
-            greeting = new Greeting(
-                this.counter.incrementAndGet(),
-                String.format(template+"#", inject)
-                + StringEscapeUtils.unescapeJava(stacktrace)
-            );
+            greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
@@ -407,6 +404,21 @@ public class GreetingController {
         } catch (Exception e) {
             // Hide useless SQL error messages
         }
+        
+        return greeting;
+    }
+
+    private Greeting initializeErrorMessage(Exception e) {
+        
+        String stacktrace = ExceptionUtils.getStackTrace(e);
+        
+        LOGGER.debug(stacktrace);
+        
+        Greeting greeting = new Greeting(
+            this.counter.incrementAndGet(),
+            template+"#"
+            + StringEscapeUtils.unescapeJava(stacktrace)
+        );
         
         return greeting;
     }

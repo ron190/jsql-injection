@@ -237,7 +237,7 @@ public class GitUtil {
                     LOGGER.warn("Fetching default JSON failed", e);
                 }
                 
-                LOGGER.warn("Fetching JSON configuration from Github failed, check your connection or update jsql", e);
+                LOGGER.warn("Fetching configuration from Github failed. Wait for service to be available, check your connection or update jsql", e);
             }
         }
         

@@ -45,10 +45,15 @@ public class TargetApplication {
             new SimpleEntry<>(propsPostgres, "spring/hibernate.postgres.properties"),
             new SimpleEntry<>(propsSqlServer, "spring/hibernate.sqlserver.properties"),
             new SimpleEntry<>(propsSqlite, "spring/hibernate.sqlite.properties")
-        ).forEach(simpleEntry -> {
+        )
+        .forEach(simpleEntry -> {
+            
             try (InputStream inputStream = classloader.getResourceAsStream(simpleEntry.getValue())) {
+                
                 simpleEntry.getKey().load(inputStream);
+                
             } catch (IOException e) {
+                
                 e.printStackTrace();
             }
         });
@@ -56,18 +61,7 @@ public class TargetApplication {
 
     public static void initializeDatabases() throws IOException {
         
-        String graphMovie = Files.readAllLines(Paths.get("src/test/resources/docker/movie-graph.txt")).stream().collect(Collectors.joining("\n"));
-        
-        Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
-        try (org.neo4j.driver.Session session = driver.session()) {
-            session.run("MATCH (n) DETACH DELETE n");
-            
-            Result result = session.run(graphMovie);
-            result.forEachRemaining(record -> {
-                System.out.println(record);
-            });
-        }
-        driver.close();
+        initializeNeo4j();
         
         Stream.of(
             propsH2,
@@ -76,13 +70,14 @@ public class TargetApplication {
             propsPostgres,
             propsSqlServer,
             propsSqlite
-        ).forEach(props -> {
+        )
+        .forEach(props -> {
+            
             Configuration configuration = new Configuration();
             configuration.addProperties(props).configure("spring/hibernate.cfg.xml");
             configuration.addAnnotatedClass(Student.class);
             
-            StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-                    .applySettings(configuration.getProperties());
+            StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
             
             try (
                 SessionFactory factory = configuration.buildSessionFactory(builder.build());
@@ -95,6 +90,26 @@ public class TargetApplication {
                 transaction.commit();
             }
         });
+    }
+
+    private static void initializeNeo4j() throws IOException {
+        
+        String graphMovie = Files.readAllLines(Paths.get("src/test/resources/docker/movie-graph.txt")).stream().collect(Collectors.joining("\n"));
+        
+        Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
+        
+        try (org.neo4j.driver.Session session = driver.session()) {
+            
+            session.run("MATCH (n) DETACH DELETE n");
+            
+            Result result = session.run(graphMovie);
+            result.forEachRemaining(record -> {
+                
+                System.out.println(record);
+            });
+        }
+        
+        driver.close();
     }
 
     /**

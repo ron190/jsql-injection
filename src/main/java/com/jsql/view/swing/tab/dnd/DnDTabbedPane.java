@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 
 import com.jsql.view.swing.action.ActionCloseTabResult;
+import com.jsql.view.swing.tab.TabbedPaneMouseWheelScroller;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -115,37 +116,16 @@ public class DnDTabbedPane extends JTabbedPane {
         
         super();
         
+        // UIManager.put() is not enough
+        this.setUI(new CustomMetalTabbedPaneUI());
+        this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
+        
         Handler h = new Handler();
         this.addMouseListener(h);
         this.addMouseMotionListener(h);
         this.addPropertyChangeListener(h);
         
-        this.addMouseWheelListener(mouseWheelEvent -> {
-            
-            JTabbedPane tabPane = (JTabbedPane) mouseWheelEvent.getSource();
-            
-            int dir = -mouseWheelEvent.getWheelRotation();
-            int selIndex = tabPane.getSelectedIndex();
-            int maxIndex = tabPane.getTabCount() - 1;
-            
-            if ((selIndex == 0 && dir < 0) || (selIndex == maxIndex && dir > 0)) {
-                
-                selIndex = maxIndex - selIndex;
-                
-            } else {
-                
-                selIndex += dir;
-            }
-            
-            if (0 <= selIndex && selIndex < tabPane.getTabCount()) {
-                
-                tabPane.setSelectedIndex(selIndex);
-            }
-        });
-        
-        // UIManager.put() is not enough
-        this.setUI(new CustomMetalTabbedPaneUI());
-        this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
+        this.addMouseWheelListener(new TabbedPaneMouseWheelScroller());
     }
     
     public DnDDropLocation dropLocationForPointDnD(Point p) {

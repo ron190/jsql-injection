@@ -1,4 +1,4 @@
-package com.test.json;
+package com.test.preferences;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -14,8 +14,8 @@ import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class JsonCheckAllParamTestSuite extends ConcreteMySQLTestSuite {
-    
+public class CheckAllHeaderTestSuite extends ConcreteMySQLTestSuite {
+
     @Override
     public void setupInjection() throws Exception {
         
@@ -24,17 +24,15 @@ public class JsonCheckAllParamTestSuite extends ConcreteMySQLTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-json");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("name", "{\"c\": 1, \"b\": {\"b\": [1, true, null, {\"a\": {\"a\": \"0'\"}}]}}"),
-            new SimpleEntry<>("tenant", "mysql")
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-header?tenant=mysql");
+        model.getMediatorUtils().getParameterUtil().setListHeader(Arrays.asList(
+            new SimpleEntry<>("fake", "0'"),
+            new SimpleEntry<>("name", "")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllURLParam(true);
-        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllJSONParam(true);
+        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllHeaderParam(true);
         model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
-        model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getHeader());
         
         model.setIsScanning(true);
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());

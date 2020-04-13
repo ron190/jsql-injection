@@ -56,7 +56,7 @@ public final class StringUtil {
             this.radix = radix;
         }
         
-        void encode(char c, StringBuilder buff) {
+        protected void encode(char c, StringBuilder buff) {
             buff
             .append(this.prefix)
             .append(Integer.toString(c, this.radix))
