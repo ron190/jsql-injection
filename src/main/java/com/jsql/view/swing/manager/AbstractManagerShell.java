@@ -157,40 +157,54 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         public void actionPerformed(ActionEvent evt) {
             
             if (AbstractManagerShell.this.getListPaths().getSelectedValuesList().isEmpty()) {
+                
                 LOGGER.warn("Select at least one directory in the list");
                 return;
             }
 
-            String[] refUrlShell = new String[]{AbstractManagerShell.this.textfieldUrlShell.getText()};
+            String refUrlShell = AbstractManagerShell.this.textfieldUrlShell.getText();
             
-            if (!refUrlShell[0].isEmpty() && !refUrlShell[0].matches("(?i)^https?://.*")) {
-                if (!refUrlShell[0].matches("(?i)^\\w+://.*")) {
+            if (!refUrlShell.isEmpty() && !refUrlShell.matches("(?i)^https?://.*")) {
+                
+                if (!refUrlShell.matches("(?i)^\\w+://.*")) {
+                    
                     LOGGER.info("Undefined shell URL protocol, forcing to [http://]");
-                    refUrlShell[0] = "http://"+ refUrlShell[0];
+                    refUrlShell = "http://"+ refUrlShell;
+                    
                 } else {
+                    
                     LOGGER.warn("Unknown URL protocol");
                     return;
                 }
             }
             
-            if (StringUtils.isNotEmpty(refUrlShell[0])) {
+            if (StringUtils.isNotEmpty(refUrlShell)) {
+                
                 try {
-                    new URL(refUrlShell[0]);
+                    
+                    new URL(refUrlShell);
+                    
                 } catch (MalformedURLException e) {
+                    
                     LOGGER.warn("Incorrect URL: "+ e, e);
                     return;
                 }
             }
+            
+            String urlShellFinal = refUrlShell;
 
             for (final ItemList pathShell: AbstractManagerShell.this.getListPaths().getSelectedValuesList()) {
+                
                 new Thread(() -> {
                     
                     try {
                         AbstractManagerShell.this.createPayload(
                             pathShell.toString(),
-                            refUrlShell[0]
+                            urlShellFinal
                         );
+                        
                     } catch (JSqlException | InterruptedException e) {
+                        
                         LOGGER.warn("Payload creation error: "+ e, e);
                         Thread.currentThread().interrupt();
                     }

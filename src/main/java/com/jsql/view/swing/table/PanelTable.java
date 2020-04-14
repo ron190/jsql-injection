@@ -48,6 +48,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
@@ -61,6 +62,11 @@ import com.jsql.view.swing.util.UiStringUtil;
  */
 @SuppressWarnings("serial")
 public class PanelTable extends JPanel {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Table to display in the panel.
@@ -78,8 +84,10 @@ public class PanelTable extends JPanel {
         super(new BorderLayout());
 
         this.tableValues = new JTable(data, columnNames) {
+            
             @Override
             public boolean isCellEditable(int row, int column) {
+                
                 return false;
             }
         };
@@ -110,6 +118,7 @@ public class PanelTable extends JPanel {
 
         Comparator<Object> comparatorNumeric = new ComparatorColumn<>();
         for (int i = 0 ; i < this.tableValues.getColumnCount() ; i++) {
+            
             rowSorter.setComparator(i, comparatorNumeric);
         }
     }
@@ -135,10 +144,8 @@ public class PanelTable extends JPanel {
                     int rowNumber = PanelTable.this.tableValues.rowAtPoint(p);
                     int colNumber = PanelTable.this.tableValues.columnAtPoint(p);
 
-                    DefaultListSelectionModel modelRow = (DefaultListSelectionModel) PanelTable.this.tableValues
-                            .getSelectionModel();
-                    DefaultListSelectionModel modelColumn = (DefaultListSelectionModel) PanelTable.this.tableValues
-                            .getColumnModel().getSelectionModel();
+                    DefaultListSelectionModel modelRow = (DefaultListSelectionModel) PanelTable.this.tableValues.getSelectionModel();
+                    DefaultListSelectionModel modelColumn = (DefaultListSelectionModel) PanelTable.this.tableValues.getColumnModel().getSelectionModel();
 
                     modelRow.moveLeadSelectionIndex(rowNumber);
                     modelColumn.moveLeadSelectionIndex(colNumber);
@@ -175,15 +182,24 @@ public class PanelTable extends JPanel {
             }
         );
         
-        this.tableValues.setDefaultRenderer(this.tableValues.getColumnClass(2),
+        this.tableValues.setDefaultRenderer(
+            this.tableValues.getColumnClass(2),
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
                 
                 // Prepare cell value to be utf8 inspected
                 String cellValue = value != null ? value.toString() : StringUtils.EMPTY;
                 
-                return cellRendererDefault.getTableCellRendererComponent(
-                    table, UiStringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column
-                );
+                // Fix #90481: NullPointerException on getTableCellRendererComponent()
+                try {
+                    return cellRendererDefault.getTableCellRendererComponent(
+                        table, UiStringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column
+                    );
+                    
+                } catch (NullPointerException e) {
+                    
+                    LOGGER.error(e.getMessage(), e);
+                    return null;
+                }
             }
         );
     }
@@ -198,6 +214,7 @@ public class PanelTable extends JPanel {
             
             // The user scrolled the List (using the bar, mouse wheel or something else):
             if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK){
+                
                 adjustmentEvent.getAdjustable().setBlockIncrement(100);
                 adjustmentEvent.getAdjustable().setUnitIncrement(100);
             }
@@ -236,24 +253,30 @@ public class PanelTable extends JPanel {
                 String text = textFilter.getText();
 
                 if (text.trim().length() == 0) {
+                    
                     rowSorter.setRowFilter(null);
+                    
                 } else {
+                    
                     rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(text)));
                 }
             }
             
             @Override
             public void insertUpdate(DocumentEvent e) {
+                
                 this.insertUpdateFixed();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
+                
                 this.insertUpdateFixed();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
+                
                 throw new UnsupportedOperationException("Not supported yet.");
             }
         });

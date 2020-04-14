@@ -65,15 +65,16 @@ public class DialogTranslate extends JDialog {
     /**
      * Button receiving focus.
      */
-    public final JButton buttonSend = new JButton("Send");
+    private JButton buttonSend = new JButton("Send");
     
     private Language language;
     
-    private final JLabel labelTranslation = new JLabel();
+    private JLabel labelTranslation = new JLabel();
     
-    private final JTextArea[] textToTranslate = new JTextArea[1];
+    // Contact info, use HTML text
+    private JTextArea textToTranslate = new JPopupTextArea(new JTextAreaPlaceholder("Text to translate")).getProxy();
     
-    private final JProgressBar progressBarTranslation = new JProgressBar();
+    private JProgressBar progressBarTranslation = new JProgressBar();
 
     private String textBeforeChange = StringUtils.EMPTY;
 
@@ -108,7 +109,7 @@ public class DialogTranslate extends JDialog {
         this.initializeTextToTranslate();
 
         containerDialog.add(
-            new LightScrollPane(1, 0, 1, 0, this.textToTranslate[0]),
+            new LightScrollPane(1, 0, 1, 0, this.textToTranslate),
             BorderLayout.CENTER
         );
     }
@@ -125,10 +126,14 @@ public class DialogTranslate extends JDialog {
         
         this.labelTranslation.setText(
             "<html>"
-            + "<b>Contribute and translate pieces of jSQL into "+ language +"</b><br>"
-            + "Help the community and translate some buttons, menus, tabs and tooltips into "+ language +", "
+            + "<b>Contribute and translate parts of jSQL Injection into "
+            + language
+            + "</b><br>"
+            + "Help the community and translate some buttons, menus, tabs and tooltips into "
+            + language
+            + ", "
             + "then click on Send to forward your changes to the developer on Github.<br>"
-            + "<i>E.g. for Chinese, change '<b>CONTEXT_MENU_COPY = Copy</b>' to '<b>CONTEXT_MENU_COPY = \u590d\u5236</b>', then click on Send. The list only displays what needs to be translated "
+            + "<i>E.g. for Chinese, change <b>CONTEXT_MENU_COPY = Copy</b> to <b>CONTEXT_MENU_COPY = \u590d\u5236</b>, then click on Send. The list only displays what needs to be translated "
             + "and is updated as soon as the developer processes your translation.</i>"
             + "</html>"
         );
@@ -136,15 +141,15 @@ public class DialogTranslate extends JDialog {
         this.labelTranslation.setIconTextGap(8);
         
         DialogTranslate.this.setTitle("Translate to "+ language);
-        this.textToTranslate[0].setText(null);
-        this.textToTranslate[0].setEditable(false);
+        this.textToTranslate.setText(null);
+        this.textToTranslate.setEditable(false);
         this.buttonSend.setEnabled(false);
         
         // Ubuntu Regular is compatible with all required languages, this includes Chinese and Arabic,
         // but it's not a technical Mono Font.
         // Only Monospaced works both for copy/paste utf8 foreign characters in JTextArea and
         // it's a technical Mono Font.
-        this.textToTranslate[0].setFont(new Font(
+        this.textToTranslate.setFont(new Font(
             UiUtil.FONT_NAME_MONOSPACED,
             Font.PLAIN,
             UIManager.getDefaults().getFont("TextField.font").getSize()
@@ -175,7 +180,7 @@ public class DialogTranslate extends JDialog {
         
         this.buttonSend.addActionListener(actionEvent -> {
             
-            if (this.textToTranslate[0].getText().equals(this.textBeforeChange)) {
+            if (this.textToTranslate.getText().equals(this.textBeforeChange)) {
                 
                 LOGGER.warn("Nothing changed, translate a piece of text then click on Send");
                 return;
@@ -183,7 +188,7 @@ public class DialogTranslate extends JDialog {
             
             String clientDescription =
                 // Escape Markdown character # for h1 in .properties
-                this.textToTranslate[0].getText()
+                this.textToTranslate.getText()
                     .replaceAll("\\\\", "\\\\\\\\")
                     .replaceAll("(?m)^#", "\\\\#")
                     .replace("<", "\\\\<")
@@ -209,33 +214,30 @@ public class DialogTranslate extends JDialog {
 
     private void initializeTextToTranslate() {
         
-        // Contact info, use HTML text
-        this.textToTranslate[0] = new JPopupTextArea(new JTextAreaPlaceholder("Text to translate")).getProxy();
-
-        this.textToTranslate[0].addMouseListener(new MouseAdapter() {
+        this.textToTranslate.addMouseListener(new MouseAdapter() {
             
             @Override
             public void mousePressed(MouseEvent e) {
                 
                 super.mousePressed(e);
-                DialogTranslate.this.textToTranslate[0].requestFocusInWindow();
+                DialogTranslate.this.textToTranslate.requestFocusInWindow();
             }
         });
 
-        this.textToTranslate[0].addFocusListener(new FocusAdapter() {
+        this.textToTranslate.addFocusListener(new FocusAdapter() {
             
             @Override
             public void focusGained(FocusEvent arg0) {
                 
-                DialogTranslate.this.textToTranslate[0].getCaret().setVisible(true);
-                DialogTranslate.this.textToTranslate[0].getCaret().setSelectionVisible(true);
+                DialogTranslate.this.textToTranslate.getCaret().setVisible(true);
+                DialogTranslate.this.textToTranslate.getCaret().setSelectionVisible(true);
             }
         });
 
-        this.textToTranslate[0].setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        this.textToTranslate[0].setDragEnabled(true);
+        this.textToTranslate.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        this.textToTranslate.setDragEnabled(true);
 
-        this.textToTranslate[0].setComponentPopupMenu(new JPopupMenuText(this.textToTranslate[0]));
+        this.textToTranslate.setComponentPopupMenu(new JPopupMenuText(this.textToTranslate));
     }
 
     public Language getLanguage() {
@@ -262,7 +264,7 @@ public class DialogTranslate extends JDialog {
         return this.labelTranslation;
     }
 
-    public JTextArea[] getTextToTranslate() {
+    public JTextArea getTextToTranslate() {
         return this.textToTranslate;
     }
 

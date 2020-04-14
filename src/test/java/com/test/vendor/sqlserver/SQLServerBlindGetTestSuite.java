@@ -40,6 +40,7 @@ public class SQLServerBlindGetTestSuite extends ConcreteSQLServerTestSuite {
         model.beginInjection();
     }
 
+    @Override
     @RepeatFailedTest(3)
     public void listValues() throws JSqlException {
         super.listValues();

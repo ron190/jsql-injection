@@ -33,9 +33,6 @@ public class TabbedPaneWheeled extends JTabbedPane {
         
         this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
-        // Give focus on tab change
-//        this.addChangeListener(changeEvent -> MouseTabbedPane.this.requestFocusInWindow());
-
         // Hotkeys ctrl-TAB, ctrl-shift-TAB
         HotkeyUtil.addShortcut(this);
     }

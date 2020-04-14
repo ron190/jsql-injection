@@ -45,7 +45,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
         
-        if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization())) {
+        if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanTime())) {
             
             LOGGER.info("No Time strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
             

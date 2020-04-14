@@ -14,6 +14,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
+// TODO unstable
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
 public class CheckAllRequestTestSuite extends ConcreteMySQLTestSuite {
@@ -44,6 +45,7 @@ public class CheckAllRequestTestSuite extends ConcreteMySQLTestSuite {
         model.beginInjection();
     }
     
+    @Override
     @RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();

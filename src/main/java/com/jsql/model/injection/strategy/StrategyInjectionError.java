@@ -160,13 +160,13 @@ public class StrategyInjectionError extends AbstractStrategy {
     }
 
     @Override
-    public void allow(int... i) {
-        this.markVulnerability(Interaction.MARK_ERROR_VULNERABLE, i[0]);
+    public void allow(int... indexError) {
+        this.markVulnerability(Interaction.MARK_ERROR_VULNERABLE, indexError[0]);
     }
 
     @Override
-    public void unallow(int... i) {
-        this.markVulnerability(Interaction.MARK_ERROR_INVULNERABLE, i[0]);
+    public void unallow(int... indexError) {
+        this.markVulnerability(Interaction.MARK_ERROR_INVULNERABLE, indexError[0]);
     }
 
     @Override

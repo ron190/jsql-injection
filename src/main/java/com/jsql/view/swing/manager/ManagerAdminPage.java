@@ -147,18 +147,20 @@ public class ManagerAdminPage extends AbstractManagerList {
     private void runSearch() {
         
         if (this.listFile.getSelectedValuesList().isEmpty()) {
+            
             LOGGER.warn("Select at least one admin page in the list");
             return;
         }
         
-        String[] refUrlQuery = new String[]{MediatorGui.panelAddressBar().getTextFieldAddress().getText()};
+        String urlAddressBar = MediatorGui.panelAddressBar().getTextFieldAddress().getText();
         
-        if (!refUrlQuery[0].isEmpty() && !refUrlQuery[0].matches("(?i)^https?://.*")) {
+        if (!urlAddressBar.isEmpty() && !urlAddressBar.matches("(?i)^https?://.*")) {
             
-            if (!refUrlQuery[0].matches("(?i)^\\w+://.*")) {
+            if (!urlAddressBar.matches("(?i)^\\w+://.*")) {
                 
                 LOGGER.info("Undefined URL protocol, forcing to [http://]");
-                refUrlQuery[0] = "http://"+ refUrlQuery[0];
+                urlAddressBar = "http://"+ urlAddressBar;
+                
             } else {
                 
                 LOGGER.info("Unknown URL protocol");
@@ -166,15 +168,19 @@ public class ManagerAdminPage extends AbstractManagerList {
             }
         }
         
-        new Thread(() -> this.searchAdminPages(refUrlQuery), "ThreadAdminPage").start();
+        String urlFinal = urlAddressBar;
+        
+        new Thread(() -> this.searchAdminPages(urlFinal), "ThreadAdminPage").start();
     }
 
-    private void searchAdminPages(String[] refUrlQuery) {
+    private void searchAdminPages(String urlAddressBar) {
         
         if (ManagerAdminPage.this.run.getState() == StateButton.STARTABLE) {
             
-            if (StringUtils.isEmpty(refUrlQuery[0])) {
+            if (StringUtils.isEmpty(urlAddressBar)) {
+                
                 LOGGER.warn("Enter the main address");
+                
             } else {
                 
                 LOGGER.trace("Checking admin page(s)...");
@@ -184,10 +190,12 @@ public class ManagerAdminPage extends AbstractManagerList {
                 
                 try {
                     MediatorGui.model().getResourceAccess().createAdminPages(
-                        refUrlQuery[0],
+                        urlAddressBar,
                         this.listFile.getSelectedValuesList()
                     );
+                    
                 } catch (InterruptedException ex) {
+                    
                     LOGGER.error("Interruption while waiting for Opening Admin Page termination", ex);
                     Thread.currentThread().interrupt();
                 }

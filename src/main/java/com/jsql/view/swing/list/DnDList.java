@@ -265,8 +265,7 @@ public class DnDList extends JList<ItemList> {
             options[2]
         );
         
-        final int[] startPosition = {position};
-        final int[] endPosition = {startPosition[0]};
+        int startPosition = position;
 
         if (answer != JOptionPane.YES_OPTION && answer != JOptionPane.NO_OPTION) {
             return;
@@ -275,33 +274,20 @@ public class DnDList extends JList<ItemList> {
         if (answer == JOptionPane.YES_OPTION) {
             
             this.listModel.clear();
-            startPosition[0] = 0;
-            endPosition[0] = 0;
+            startPosition = 0;
         }
+        
+        int startPositionFinal = startPosition;
         
         SwingUtilities.invokeLater(() -> {
             
-            this.addItems(filesToImport, endPosition);
-            
-            if (!this.listModel.isEmpty()) {
-                DnDList.this.setSelectionInterval(startPosition[0], endPosition[0] - 1);
-            }
-            
-            try {
-                DnDList.this.scrollRectToVisible(
-                    DnDList.this.getCellBounds(
-                        DnDList.this.getMinSelectionIndex(),
-                        DnDList.this.getMaxSelectionIndex()
-                    )
-                );
-            } catch (NullPointerException e) {
-                // Report NullPointerException #1571 : manual scroll elsewhere then run action
-                LOGGER.error(e.getMessage(), e);
-            }
+            this.addItems(filesToImport, startPositionFinal);
         });
     }
 
-    private void addItems(final List<File> filesToImport, final int[] endPosition) {
+    private void addItems(final List<File> filesToImport, int startPosition) {
+        
+        int endPosition = startPosition;
         
         for (File file : filesToImport) {
             
@@ -316,20 +302,39 @@ public class DnDList extends JList<ItemList> {
                     if (
                         StringUtils.isNotEmpty(line)
                         // Fix Report #60
-                        && 0 <= endPosition[0] && endPosition[0] <= this.listModel.size()
+                        && 0 <= endPosition && endPosition <= this.listModel.size()
                     ) {
                         
                         // TODO inheritance DnDListScan
                         if (this.isScan) {
-                            this.listModel.add(endPosition[0]++, new ItemListScan(new BeanInjection(line.replace("\\", "/"))));
+                            this.listModel.add(endPosition++, new ItemListScan(new BeanInjection(line.replace("\\", "/"))));
                         } else {
-                            this.listModel.add(endPosition[0]++, new ItemList(line.replace("\\", "/")));
+                            this.listModel.add(endPosition++, new ItemList(line.replace("\\", "/")));
                         }
                     }
                 }
             } catch (IOException e) {
                 LOGGER.error(e.getMessage(), e);
             }
+        }
+        
+
+        if (!this.listModel.isEmpty()) {
+            DnDList.this.setSelectionInterval(startPosition, endPosition - 1);
+        }
+        
+        try {
+            DnDList.this.scrollRectToVisible(
+                DnDList.this.getCellBounds(
+                    DnDList.this.getMinSelectionIndex(),
+                    DnDList.this.getMaxSelectionIndex()
+                )
+            );
+            
+        } catch (NullPointerException e) {
+            
+            // Report NullPointerException #1571 : manual scroll elsewhere then run action
+            LOGGER.error(e.getMessage(), e);
         }
     }
     

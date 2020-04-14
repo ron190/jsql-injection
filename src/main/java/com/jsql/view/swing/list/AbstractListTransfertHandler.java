@@ -40,7 +40,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
     /**
      * List of cut/copy/paste/drag/drop items.
      */
-    private transient List<ItemList> dragPaths = null;
+    protected transient List<ItemList> dragPaths = null;
     
     protected abstract String initializeTransferable();
     

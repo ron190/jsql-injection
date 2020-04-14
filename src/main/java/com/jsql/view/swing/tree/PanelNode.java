@@ -101,9 +101,10 @@ public class PanelNode extends JPanel {
             this.progressBar,
             this.label,
             this.textFieldEditable
-        ).forEach(jcomponent -> {
-            this.add(jcomponent);
-            jcomponent.setVisible(false);
+        ).forEach(component -> {
+            
+            this.add(component);
+            component.setVisible(false);
         });
         
         this.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
@@ -114,12 +115,14 @@ public class PanelNode extends JPanel {
             
             @Override
             public void focusLost(FocusEvent e) {
+                
                 PanelNode.this.label.setBackground(UiUtil.COLOR_FOCUS_LOST);
                 PanelNode.this.label.setBorder(UiUtil.BORDER_FOCUS_LOST);
             }
             
             @Override
             public void focusGained(FocusEvent e) {
+                
                 PanelNode.this.label.setBackground(UiUtil.COLOR_FOCUS_GAINED);
                 PanelNode.this.label.setBorder(UiUtil.BORDER_FOCUS_GAINED);
             }
@@ -130,17 +133,18 @@ public class PanelNode extends JPanel {
         
         this.textFieldEditable.setFont(UiUtil.FONT_SEGOE);
         this.textFieldEditable.setBorder(BorderFactory.createLineBorder(UiUtil.COLOR_FOCUS_GAINED, 1, false));
+        
         this.textFieldEditable.addActionListener(e -> {
             
             AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
             nodeModel.setIsEdited(false);
             
-            PanelNode.this.label.setVisible(true);
-            PanelNode.this.textFieldEditable.setVisible(false);
+            this.label.setVisible(true);
+            this.textFieldEditable.setVisible(false);
             tree.requestFocusInWindow();
             
-            nodeModel.getElementDatabase().setElementValue(new String(PanelNode.this.textFieldEditable.getText().getBytes(StandardCharsets.UTF_8)));
-            PanelNode.this.label.setText(UiStringUtil.detectUtf8Html(nodeModel.getElementDatabase().getLabelCount()));
+            nodeModel.getElementDatabase().setElementValue(new String(this.textFieldEditable.getText().getBytes(StandardCharsets.UTF_8)));
+            this.label.setText(UiStringUtil.detectUtf8Html(nodeModel.getElementDatabase().getLabelCount()));
             
             tree.revalidate();
             tree.repaint();
@@ -150,6 +154,7 @@ public class PanelNode extends JPanel {
             
             @Override
             public void focusLost(FocusEvent e) {
+                
                 AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
                 nodeModel.setIsEdited(false);
                 tree.revalidate();
@@ -161,8 +166,10 @@ public class PanelNode extends JPanel {
             
             @Override
             public void keyPressed(KeyEvent e) {
+                
                 AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
                 if (e.getKeyCode() == KeyEvent.VK_F2 && !nodeModel.isRunning()) {
+                    
                     nodeModel.setIsEdited(true);
                     
                     PanelNode.this.label.setVisible(false);

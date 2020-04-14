@@ -40,6 +40,7 @@ public class PostgresBlindGetTestSuite extends ConcretePostgresTestSuite {
         model.beginInjection();
     }
     
+    @Override
     @RepeatFailedTest(3)
     public void listValues() throws JSqlException {
         super.listValues();

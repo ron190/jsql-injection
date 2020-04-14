@@ -33,11 +33,6 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    /**
-     * List of cut/copy/paste/drag/drop items.
-     */
-    private transient List<ItemList> dragPaths = null;
-    
     @Override
     protected String initializeTransferable() {
         

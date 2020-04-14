@@ -88,14 +88,19 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
     public void paint(Graphics g) {
         
         // Fix #6350: ArrayIndexOutOfBoundsException on paint()
+        // Fix #90822: IllegalArgumentException on paint()
+        // Fix #90761: StateInvariantError on paint()
         // StateInvariantError possible on jdk 8 when WrappedPlainView.drawLine in paint()
         try {
             super.paint(g);
             
             if (StringUtils.isEmpty(this.getText())) {
+                
                 this.drawPlaceholder(this, g, this.placeholderText);
             }
-        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
+            
+        } catch (Error | IllegalArgumentException | NullPointerException | ArrayIndexOutOfBoundsException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
     }

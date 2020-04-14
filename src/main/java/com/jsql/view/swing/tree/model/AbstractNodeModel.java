@@ -24,6 +24,8 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
@@ -42,6 +44,11 @@ import com.jsql.view.swing.util.UiUtil;
  * Model adding functional layer to the node ; used by renderer and editor.
  */
 public abstract class AbstractNodeModel {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Element from injection model in a linked list.
@@ -184,10 +191,15 @@ public abstract class AbstractNodeModel {
         String textReload;
         
         if (this instanceof NodeModelDatabase) {
+            
             textReload = I18nViewUtil.valueByKey("RELOAD_TABLES");
+            
         } else if (this instanceof NodeModelTable) {
+            
             textReload = I18nViewUtil.valueByKey("RELOAD_COLUMNS");
+            
         } else {
+            
             textReload = "?";
         }
         
@@ -223,13 +235,14 @@ public abstract class AbstractNodeModel {
         
         JMenuItem menuItemLoad = new JMenuItem(
             this.isRunning
-                ? I18nViewUtil.valueByKey("THREAD_STOP")
-                : I18nViewUtil.valueByKey("THREAD_LOAD"),
+            ? I18nViewUtil.valueByKey("THREAD_STOP")
+            : I18nViewUtil.valueByKey("THREAD_LOAD"),
             'o'
         );
         menuItemLoad.setIcon(UiUtil.ICON_EMPTY);
         
         if (!this.isContainingSelection && !this.isRunning) {
+            
             menuItemLoad.setEnabled(false);
         }
         menuItemLoad.addActionListener(new ActionLoadStop(this, currentTableNode));
@@ -244,6 +257,7 @@ public abstract class AbstractNodeModel {
         menuItemPause.setIcon(UiUtil.ICON_EMPTY);
 
         if (!this.isRunning) {
+            
             menuItemPause.setEnabled(false);
         }
         menuItemPause.addActionListener(new ActionPauseUnpause(this));
@@ -293,6 +307,7 @@ public abstract class AbstractNodeModel {
             
             this.displayProgress(this.panelNode, currentNode);
             this.panelNode.hideIcon();
+            
         } else if (this.isProgressing) {
             
             this.panelNode.showLoader();
@@ -300,6 +315,7 @@ public abstract class AbstractNodeModel {
 
             AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
             if (suspendableTask != null && suspendableTask.isPaused()) {
+                
                 ImageIcon animatedGIFPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(
                     new ImageObserverAnimated(
@@ -314,20 +330,32 @@ public abstract class AbstractNodeModel {
 
     private void initializeLabel(final boolean isSelected, boolean hasFocus, boolean isEdited) {
         
-        this.panelNode.getLabel().setText(UiStringUtil.detectUtf8Html(this.toString()));
-        this.panelNode.getLabel().setVisible(true);
+        // Fix #90521: NullPointerException on setText()
+        try {
+            this.panelNode.getLabel().setText(UiStringUtil.detectUtf8Html(this.toString()));
+            
+        } catch (NullPointerException e) {
+            
+            LOGGER.error(e.getMessage(), e);
+        }
         
         this.panelNode.getLabel().setVisible(!isEdited);
 
         if (isSelected) {
+            
             if (hasFocus) {
+                
                 this.panelNode.getLabel().setBackground(UiUtil.COLOR_FOCUS_GAINED);
                 this.panelNode.getLabel().setBorder(UiUtil.BORDER_FOCUS_GAINED);
+                
             } else {
+                
                 this.panelNode.getLabel().setBackground(UiUtil.COLOR_FOCUS_LOST);
                 this.panelNode.getLabel().setBorder(UiUtil.BORDER_FOCUS_LOST);
             }
+            
         } else {
+            
             this.panelNode.getLabel().setBackground(Color.WHITE);
             this.panelNode.getLabel().setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }
@@ -336,8 +364,11 @@ public abstract class AbstractNodeModel {
     private void initializeEditable(boolean isEdited) {
         
         if (StringUtil.isUtf8(this.getElementDatabase().toString())) {
+            
             this.panelNode.getEditable().setFont(UiUtil.FONT_UBUNTU_REGULAR);
+            
         } else {
+            
             this.panelNode.getEditable().setFont(UiUtil.FONT_SEGOE);
         }
         
@@ -360,12 +391,14 @@ public abstract class AbstractNodeModel {
         // Report #135: ignore if thread not found
         AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
         if (suspendableTask != null && suspendableTask.isPaused()) {
+            
             panelNode.getProgressBar().pause();
         }
     }
     
     @Override
     public String toString() {
+        
         return this.elementDatabase != null ? this.elementDatabase.getLabelCount() : this.textEmptyNode;
     }
     

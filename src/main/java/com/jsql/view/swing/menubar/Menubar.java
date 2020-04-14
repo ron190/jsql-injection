@@ -689,7 +689,7 @@ public class Menubar extends JMenuBar {
                     
                     dialogTranslate.setSize(640, 460);
                     dialogTranslate.setLocationRelativeTo(MediatorGui.frame());
-                    dialogTranslate.getRootPane().setDefaultButton(dialogTranslate.buttonSend);
+                    dialogTranslate.getRootPane().setDefaultButton(dialogTranslate.getButtonSend());
                 }
                 
                 dialogTranslate.setVisible(true);

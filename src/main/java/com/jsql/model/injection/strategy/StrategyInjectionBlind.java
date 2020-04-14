@@ -45,7 +45,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
         
-        if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization())) {
+        if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanBlind())) {
             
             LOGGER.info("No Blind strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
             

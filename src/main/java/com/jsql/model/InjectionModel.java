@@ -131,6 +131,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         this.mediatorStrategy.getNormal().setVisibleIndex(null);
         
+        this.mediatorStrategy.getNormal().setApplicable(false);
+        this.mediatorStrategy.getError().setApplicable(false);
+        this.mediatorStrategy.getBlind().setApplicable(false);
+        this.mediatorStrategy.getTime().setApplicable(false);
+        
         this.indexesInUrl = StringUtils.EMPTY;
         
         this.mediatorUtils.getConnectionUtil().setTokenCsrf(null);

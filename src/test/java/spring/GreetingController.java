@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -114,17 +115,21 @@ public class GreetingController {
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
             String inject = name.get("name");
-            inject = inject.replace(":", "\\:");
-
-            Query query = session.createNativeQuery("select 1,2,First_Name from Student where '1' = '"+ inject +"'");
             
-            List<Object[]> results = query.getResultList();
-            
-            greeting = new Greeting(
-                this.counter.incrementAndGet(),
-                String.format(template, inject)
-                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
-            );
+            if (StringUtils.isNotEmpty(inject)) {
+                
+                inject = inject.replace(":", "\\:");
+    
+                Query query = session.createNativeQuery("select 1,2,First_Name from Student where '1' = '"+ inject +"'");
+                
+                List<Object[]> results = query.getResultList();
+                
+                greeting = new Greeting(
+                    this.counter.incrementAndGet(),
+                    String.format(template, inject)
+                    + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+                );
+            }
             
         } catch (Exception e) {
             

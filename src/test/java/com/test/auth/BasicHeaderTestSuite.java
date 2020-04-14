@@ -3,7 +3,6 @@ package com.test.auth;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
@@ -46,6 +45,7 @@ public class BasicHeaderTestSuite extends ConcreteMySQLErrorTestSuite {
         model.beginInjection();
     }
     
+    @Override
     @RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();

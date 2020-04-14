@@ -103,9 +103,9 @@ public class DialogAbout extends JDialog {
         dialogPane.add(lastLine, BorderLayout.SOUTH);
 
         // Contact info, use HTML text
-        final JEditorPane[] text = this.initializeEditorPane();
+        final JEditorPane text = this.initializeEditorPane();
 
-        this.scrollPane = new LightScrollPane(1, 1, 1, 0, text[0]);
+        this.scrollPane = new LightScrollPane(1, 1, 1, 0, text);
         dialogPane.add(this.scrollPane, BorderLayout.CENTER);
 
         this.initializeDialog();
@@ -132,9 +132,9 @@ public class DialogAbout extends JDialog {
         
         this.buttonClose = new JButton("Close");
         this.buttonClose.setBorder(BorderFactory.createCompoundBorder(
-                UiUtil.BORDER_FOCUS_GAINED,
-                BorderFactory.createEmptyBorder(2, 20, 2, 20))
-                );
+            UiUtil.BORDER_FOCUS_GAINED,
+            BorderFactory.createEmptyBorder(2, 20, 2, 20))
+        );
         this.buttonClose.addActionListener(escapeListener);
         
         this.buttonClose.setContentAreaFilled(false);
@@ -157,11 +157,17 @@ public class DialogAbout extends JDialog {
             
             try {
                 Desktop.getDesktop().browse(new URI((String) MediatorGui.model().getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")));
+                
             } catch (IOException e) {
+                
                 LOGGER.warn("Browsing to Url failed", e);
+                
             } catch (URISyntaxException e) {
+                
                 LOGGER.warn("Incorrect Url", e);
+                
             } catch (UnsupportedOperationException e) {
+                
                 LOGGER.warn("BROWSE action not supported on current platform", e);
             }
         });
@@ -175,12 +181,12 @@ public class DialogAbout extends JDialog {
         return buttonWebpage;
     }
 
-    private JEditorPane[] initializeEditorPane() {
+    private JEditorPane initializeEditorPane() {
         
-        final JEditorPane[] editorPane = new JEditorPane[1];
+        JEditorPane editorPane = new JEditorPane();
+        
         try {
-            editorPane[0] = new JEditorPane();
-            editorPane[0].setContentType("text/html");
+            editorPane.setContentType("text/html");
 
             StringBuilder result = new StringBuilder();
             
@@ -194,48 +200,56 @@ public class DialogAbout extends JDialog {
                 }
             }
 
-            editorPane[0].setText(result.toString().replace("%JSQLVERSION%", MediatorGui.model().getVersionJsql()));
+            editorPane.setText(result.toString().replace("%JSQLVERSION%", MediatorGui.model().getVersionJsql()));
+            
         } catch (IOException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
 
-        editorPane[0].addMouseListener(new MouseAdapter() {
+        editorPane.addMouseListener(new MouseAdapter() {
             
             @Override
             public void mousePressed(MouseEvent e) {
                 
                 super.mousePressed(e);
-                editorPane[0].requestFocusInWindow();
+                editorPane.requestFocusInWindow();
             }
         });
 
-        editorPane[0].addFocusListener(new FocusAdapter() {
+        editorPane.addFocusListener(new FocusAdapter() {
             
             @Override
             public void focusGained(FocusEvent arg0) {
                 
-                editorPane[0].getCaret().setVisible(true);
-                editorPane[0].getCaret().setSelectionVisible(true);
+                editorPane.getCaret().setVisible(true);
+                editorPane.getCaret().setSelectionVisible(true);
             }
         });
 
-        editorPane[0].setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        editorPane[0].setDragEnabled(true);
-        editorPane[0].setEditable(false);
+        editorPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        editorPane.setDragEnabled(true);
+        editorPane.setEditable(false);
 
-        editorPane[0].setComponentPopupMenu(new JPopupMenuText(editorPane[0]));
+        editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));
 
-        editorPane[0].addHyperlinkListener(linkEvent -> {
+        editorPane.addHyperlinkListener(linkEvent -> {
             
             if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {
                 
                 try {
                     Desktop.getDesktop().browse(linkEvent.getURL().toURI());
+                    
                 } catch (IOException e) {
+                    
                     LOGGER.warn("Browsing to Url failed", e);
+                    
                 } catch (URISyntaxException e) {
+                    
                     LOGGER.warn("Incorrect Url", e);
+                    
                 } catch (UnsupportedOperationException e) {
+                    
                     LOGGER.warn("BROWSE action not supported on current platform", e);
                 }
             }

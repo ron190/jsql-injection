@@ -34,7 +34,7 @@ public abstract class AbstractStrategy {
      * True if injection can be used, false otherwise.
      */
     protected boolean isApplicable = false;
-    
+
     protected InjectionModel injectionModel;
     
     public AbstractStrategy(InjectionModel injectionModel) {
@@ -81,7 +81,7 @@ public abstract class AbstractStrategy {
      */
     public abstract String getName();
     
-    public void markVulnerability(Interaction message, int... i) {
+    public void markVulnerability(Interaction message, int... indexError) {
         
         Request request = new Request();
         request.setMessage(message);
@@ -90,9 +90,10 @@ public abstract class AbstractStrategy {
         msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
         
         // TODO CollectionUtils.isNotEmpty()
-        if (i != null && i.length > 0) {
+        if (indexError != null && indexError.length > 0) {
             
-            msgHeader.put(Header.SOURCE, i[0]);
+            // TODO Add INDEX_ERROR instead of SOURCE
+            msgHeader.put(Header.SOURCE, indexError[0]);
             msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);
         }
 
@@ -109,6 +110,10 @@ public abstract class AbstractStrategy {
     
     public boolean isApplicable() {
         return this.isApplicable;
+    }
+    
+    public void setApplicable(boolean isApplicable) {
+        this.isApplicable = isApplicable;
     }
     
     public String getVisibleIndex() {

@@ -79,7 +79,9 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
                     new ActionCheckUncheck(this.nodeModel, currentNode)
                 );
             }
+            
         } catch (Exception e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
 
@@ -102,8 +104,10 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
         }
 
         if (node.getUserObject() instanceof AbstractNodeModel) {
+            
             AbstractNodeModel dataModel = (AbstractNodeModel) node.getUserObject();
             if (!dataModel.isLoaded()) {
+                
                 dataModel.runAction();
             }
         }
@@ -129,6 +133,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
         DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
 
         if (currentTableNode.getUserObject() instanceof AbstractNodeModel) {
+            
             AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
             
             if (currentTableModel.isPopupDisplayable()) {

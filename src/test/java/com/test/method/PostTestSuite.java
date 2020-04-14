@@ -40,6 +40,7 @@ public class PostTestSuite extends ConcreteMySQLTestSuite {
         model.beginInjection();
     }
     
+    @Override
     @RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();

@@ -7,7 +7,7 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 
 This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration.
 
-Each program update is tested in the cloud on Travis CI using Java version 8 through 13, and against various MySQL, PostgreSQL, SQL Server and H2 databases. Source code is open to pull request and to any contribution about multi-threading, devops, optimization, unit and integration tests. 
+Each program update is tested in the cloud on Travis CI using Java version 8 through 13, and against various MySQL, PostgreSQL, SQLite, Neo4j, SQL Server and H2 databases. Source code is open to pull request and to any contribution about multi-threading, devops, optimization, unit and integration tests. 
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)<br>
 [![Java 8 to 15](https://img.shields.io/badge/Java-8%20to%2013-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)
@@ -32,7 +32,7 @@ Each program update is tested in the cloud on Travis CI using Java version 8 thr
 - Creation and visualization of Web shell and SQL shell
 - Read and write files on host using injection
 - Bruteforce of password's hash
-- Encode and decode a string
+- Text hashing, encoding and decoding
 
 ## Installation [[jsql-injection-v0.82.jar](https://github.com/ron190/jsql-injection/releases/download/v0.82/jsql-injection-v0.82.jar)]
 Install [Java 8](http://java.com) up to Java 13, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.82.jar` to launch the software.<br>

@@ -41,6 +41,7 @@ public class EmptyErrorTestSuite extends ConcreteMySQLErrorTestSuite {
         model.beginInjection();
     }
     
+    @Override
     @RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();

@@ -39,21 +39,25 @@ public class SQLServerNormalGetTestSuite extends ConcreteSQLServerTestSuite {
         model.beginInjection();
     }
     
+    @Override
     @RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }
     
+    @Override
     @RepeatFailedTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
     }
     
+    @Override
     @RepeatFailedTest(3)
     public void listColumns() throws JSqlException {
         super.listColumns();
     }
     
+    @Override
     @RepeatFailedTest(3)
     public void listValues() throws JSqlException {
         super.listValues();

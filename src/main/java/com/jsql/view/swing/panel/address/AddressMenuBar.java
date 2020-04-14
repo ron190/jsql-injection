@@ -36,7 +36,7 @@ public class AddressMenuBar extends JMenuBar {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    private JMenu[] itemRadioStrategyError = new JMenu[1];
+    private JMenu itemRadioStrategyError = new JMenu();
 
     private JMenu menuVendor;
     private JMenu menuStrategy;
@@ -65,8 +65,6 @@ public class AddressMenuBar extends JMenuBar {
 
         this.menuStrategy = new ComboMenu("Strategy auto");
 
-        this.itemRadioStrategyError = new JMenu[1];
-
         for (final AbstractStrategy strategy: MediatorGui.model().getMediatorStrategy().getStrategies()) {
             
             MenuElement itemRadioStrategy;
@@ -74,7 +72,7 @@ public class AddressMenuBar extends JMenuBar {
             if (strategy == MediatorGui.model().getMediatorStrategy().getError()) {
                 
                 itemRadioStrategy = new JMenu(strategy.toString());
-                this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
+                this.itemRadioStrategyError = (JMenu) itemRadioStrategy;
                 
             } else {
                 
@@ -132,9 +130,9 @@ public class AddressMenuBar extends JMenuBar {
     
     public void initErrorMethods(Vendor vendor) {
         
-        this.itemRadioStrategyError[0].removeAll();
+        this.itemRadioStrategyError.removeAll();
 
-        Integer[] i = { 0 };
+        Integer indexError = 0;
         
         if (vendor != MediatorGui.model().getMediatorVendor().getAuto() && vendor.instance().getModelYaml().getStrategy().getError() != null) {
             
@@ -143,10 +141,10 @@ public class AddressMenuBar extends JMenuBar {
                 JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
                 itemRadioVendor.setEnabled(false);
                 
-                this.itemRadioStrategyError[0].add(itemRadioVendor);
+                this.itemRadioStrategyError.add(itemRadioVendor);
                 this.groupStrategy.add(itemRadioVendor);
 
-                final int indexError = i[0];
+                int indexErrorFinal = indexError;
                 
                 itemRadioVendor.addActionListener(actionEvent -> {
                     
@@ -154,10 +152,10 @@ public class AddressMenuBar extends JMenuBar {
                     
                     MediatorGui.model().getMediatorStrategy().setStrategy(MediatorGui.model().getMediatorStrategy().getError());
                     
-                    MediatorGui.model().getMediatorStrategy().getError().setIndexMethod(indexError);
+                    MediatorGui.model().getMediatorStrategy().getError().setIndexMethod(indexErrorFinal);
                 });
 
-                i[0]++;
+                indexError++;
             }
         }
     }
@@ -194,10 +192,6 @@ public class AddressMenuBar extends JMenuBar {
             this.menuStrategy.getItem(i).setEnabled(false);
             this.menuStrategy.getItem(i).setSelected(false);
         }
-    }
-
-    public JMenu[] getItemRadioStrategyError() {
-        return this.itemRadioStrategyError;
     }
     
     public void markStrategy(AbstractStrategy strategy) {
@@ -241,7 +235,9 @@ public class AddressMenuBar extends JMenuBar {
                     break;
                 }
             }
+            
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+            
             LOGGER.error(e, e);
         }
     }
@@ -267,7 +263,9 @@ public class AddressMenuBar extends JMenuBar {
                     
                     break;
                 }
+                
             } catch (ArrayIndexOutOfBoundsException e) {
+                
                 LOGGER.error(e, e);
             }
         }
@@ -293,6 +291,7 @@ public class AddressMenuBar extends JMenuBar {
                 
                 // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
                 if (0 <= indexMethodError && indexMethodError < menuError.getItemCount()) {
+                    
                     menuError.getItem(indexMethodError).setEnabled(true);
                 }
                 

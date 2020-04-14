@@ -25,30 +25,19 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.StringUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 
 @SuppressWarnings("serial")
 public class NetworkTable extends JTable {
     
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
-
+    private TabbedPaneNetworkTab tabbedPaneNetworkTab;
+    
     /**
      * List of HTTP injection requests and responses.
      */
     private transient List<HttpHeader> listHttpHeader = new ArrayList<>();
-    
-    private TabbedPaneNetworkTab tabbedPaneNetworkTab;
 
     public NetworkTable(TabbedPaneNetworkTab tabbedPaneNetworkTab) {
         
@@ -152,81 +141,23 @@ public class NetworkTable extends JTable {
         this.getSelectionModel().addListSelectionListener(event -> {
             
             // prevent double event
-            if (!event.getValueIsAdjusting() && NetworkTable.this.getSelectedRow() > -1) {
-                this.changeTextNetwork();
+            if (!event.getValueIsAdjusting() && this.getSelectedRow() > -1) {
+                HttpHeader httpHeader = this.listHttpHeader.get(this.getSelectedRow());
+                this.tabbedPaneNetworkTab.changeTextNetwork(httpHeader);
             }
         });
-    }
-    
-    public void changeTextNetwork() {
-        
-        HttpHeader networkData = this.getListHttpHeader().get(this.getSelectedRow());
-        
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabHeader().setText(networkData.getHeader());
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabParams().setText(networkData.getPost());
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabUrl().setText(networkData.getUrl());
-        
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabResponse().setText(StringUtils.EMPTY);
-        
-        for (String key: networkData.getResponse().keySet()) {
-            
-            this.tabbedPaneNetworkTab.getTextAreaNetworkTabResponse().append(key + ": " + networkData.getResponse().get(key));
-            this.tabbedPaneNetworkTab.getTextAreaNetworkTabResponse().append("\n");
-        }
-        
-        // Fix #53736: ArrayIndexOutOfBoundsException on setText()
-        // Fix #54573: NullPointerException on setText()
-        try {
-            this.tabbedPaneNetworkTab.getTextAreaNetworkTabSource().setText(
-                StringUtil
-                .detectUtf8(networkData.getSource())
-                .replaceAll("#{5,}", "#*")
-                .trim()
-            );
-        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
-            LOGGER.error(e, e);
-        }
-        
-        // Reset EditorKit to disable previous document effect
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabPreview().getEditorKit().createDefaultDocument();
-        
-        // Proxy is used by jsoup to display <img> tags
-        // Previous test for 2xx Success and 3xx Redirection was Header only,
-        // now get the HTML content
-        // Fix #35352: EmptyStackException on setText()
-        // Fix #39841: RuntimeException on setText()
-        // Fix #42523: ExceptionInInitializerError on clean()
-        try {
-            this.tabbedPaneNetworkTab.getTextAreaNetworkTabPreview().setText(
-                Jsoup.clean(
-                    "<html>"
-                    + StringUtil.detectUtf8(networkData.getSource()).replaceAll("#{5,}", "#*")
-                    + "</html>"
-                        .replaceAll("<img.*>", StringUtils.EMPTY)
-                        .replaceAll("<input.*type=\"?hidden\"?.*>", StringUtils.EMPTY)
-                        .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
-                        .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
-                    Whitelist
-                        .relaxed()
-                        .addTags("center", "div", "span")
-                        .addAttributes(":all", "style")
-                )
-            );
-        } catch (RuntimeException | ExceptionInInitializerError e) {
-            LOGGER.error(e, e);
-        }
     }
     
     @Override
     public boolean isCellEditable(int row, int column) {
         return false;
     }
-    
-    public void addHeader(HttpHeader header) {
-        this.listHttpHeader.add(header);
-    }
 
     public List<HttpHeader> getListHttpHeader() {
         return this.listHttpHeader;
+    }
+    
+    public void addHeader(HttpHeader header) {
+        this.listHttpHeader.add(header);
     }
 }

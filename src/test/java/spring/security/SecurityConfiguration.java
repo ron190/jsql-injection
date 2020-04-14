@@ -1,8 +1,5 @@
 package spring.security;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 import javax.servlet.Filter;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -49,6 +49,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
     @Override
     public String run(Object... args) throws JSqlException {
         
+        // TODO Map class
         String initialSqlQuery = (String) args[0];
         String[] sourcePage = (String[]) args[1];
         boolean isMultipleRows = (Boolean) args[2];

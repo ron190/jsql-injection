@@ -135,6 +135,7 @@ public class ActionCoder implements ActionListener {
             } else {
                 result = "<span style=\"color:red;\">Unsupported encoding or decoding method</span>";
             }
+            
         } catch (IllegalArgumentException | NoSuchAlgorithmException | IOException | DecoderException e) {
             
             result = String.format("<span style=\"color:red;\">Decoding failed: %s</span>", e.getMessage());

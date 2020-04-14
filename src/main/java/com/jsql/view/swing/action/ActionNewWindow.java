@@ -49,6 +49,14 @@ public class ActionNewWindow extends AbstractAction {
     );
     
     private List<String> commands;
+    
+    public ActionNewWindow() {
+        
+        this(I18nUtil.valueByKey("NEW_WINDOW_MENU"), new String[0]);
+        
+        this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
+        this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+    }
 
     public ActionNewWindow(String name, String... commands) {
         
@@ -58,14 +66,6 @@ public class ActionNewWindow extends AbstractAction {
         
         this.putValue(Action.NAME, name);
         this.putValue(Action.SMALL_ICON, UiUtil.ICON_EMPTY);
-    }
-    
-    public ActionNewWindow() {
-        
-        this(I18nUtil.valueByKey("NEW_WINDOW_MENU"), new String[0]);
-        
-        this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
-        this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
     }
 
     @Override

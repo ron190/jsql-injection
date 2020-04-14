@@ -64,10 +64,10 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
         
         this.dialogTranslate.setTextBeforeChange(this.propertiesToTranslate.toString().trim());
         
-        this.dialogTranslate.buttonSend.setEnabled(true);
-        this.dialogTranslate.getTextToTranslate()[0].setText(this.dialogTranslate.getTextBeforeChange());
-        this.dialogTranslate.getTextToTranslate()[0].setCaretPosition(0);
-        this.dialogTranslate.getTextToTranslate()[0].setEditable(true);
+        this.dialogTranslate.getButtonSend().setEnabled(true);
+        this.dialogTranslate.getTextToTranslate().setText(this.dialogTranslate.getTextBeforeChange());
+        this.dialogTranslate.getTextToTranslate().setCaretPosition(0);
+        this.dialogTranslate.getTextToTranslate().setEditable(true);
         
         if (this.dialogTranslate.getLanguage() != Language.OT) {
             

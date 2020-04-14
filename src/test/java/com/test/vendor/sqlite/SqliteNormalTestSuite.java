@@ -42,16 +42,19 @@ public class SqliteNormalTestSuite extends ConcreteSqliteTestSuite {
     
     // TODO listColumns Special parsing required
     
+    @Override
     @RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }
     
+    @Override
     @RepeatFailedTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
     }
     
+    @Override
     @RepeatFailedTest(3)
     public void listValues() throws JSqlException {
         super.listValues();

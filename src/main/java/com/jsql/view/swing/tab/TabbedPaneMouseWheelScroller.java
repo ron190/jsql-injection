@@ -38,9 +38,12 @@ public class TabbedPaneMouseWheelScroller implements MouseWheelListener {
         if (0 <= selIndex && selIndex < tabPane.getTabCount()) {
             
             // Fix #54575: NullPointerException on setSelectedIndex()
+            // Fix #90835: IllegalArgumentException on setSelectedIndex()
             try {
                 tabPane.setSelectedIndex(selIndex);
-            } catch (NullPointerException err) {
+                
+            } catch (IllegalArgumentException | NullPointerException err) {
+                
                 LOGGER.error(err, err);
             }
         }

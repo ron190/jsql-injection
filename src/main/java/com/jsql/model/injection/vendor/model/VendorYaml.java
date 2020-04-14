@@ -96,16 +96,6 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlInfos() {
-        return this.modelYaml.getResource().getInfo();
-    }
-
-    @Override
-    public String sqlDatabases() {
-        return this.modelYaml.getResource().getSchema().getDatabase();
-    }
-
-    @Override
     public String sqlTables(Database database) {
         
         return
@@ -186,11 +176,6 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlPrivilegeTest() {
-        return this.modelYaml.getResource().getFile().getPrivilege();
-    }
-
-    @Override
     public String sqlFileRead(String filePath) {
         
         return
@@ -219,21 +204,6 @@ public class VendorYaml implements AbstractVendor {
             + this.modelYaml.getResource().getFile().getCreate()
             .getQuery()
             .replace(FILEPATH, filePath);
-    }
-
-    @Override
-    public List<String> getListFalseTest() {
-        return this.modelYaml.getStrategy().getBoolean().getTest().getFalses();
-    }
-
-    @Override
-    public List<String> getListTrueTest() {
-        return this.modelYaml.getStrategy().getBoolean().getTest().getTrues();
-    }
-
-    @Override
-    public String sqlTestBooleanInitialization() {
-        return this.modelYaml.getStrategy().getBoolean().getTest().getInitialization();
     }
 
     @Override
@@ -470,11 +440,6 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlOrderBy() {
-        return this.modelYaml.getStrategy().getNormal().getOrderBy();
-    }
-
-    @Override
     public String sqlLimit(Integer limitSQLResult) {
         
         int limitBoundary = this.modelYaml.getStrategy().getConfiguration().getLimitBoundary();
@@ -483,11 +448,6 @@ public class VendorYaml implements AbstractVendor {
             this.modelYaml.getStrategy().getConfiguration()
             .getLimit()
             .replace(LIMIT_VALUE, Integer.toString(limitSQLResult + limitBoundary));
-    }
-    
-    @Override
-    public String endingComment() {
-        return this.modelYaml.getStrategy().getConfiguration().getEndingComment();
     }
     
     @Override
@@ -520,6 +480,58 @@ public class VendorYaml implements AbstractVendor {
             .replace("${trail_hex}", TRAIL_HEX)
             .replace("${lead}", LEAD)
             .replace("${lead_hex}", LEAD_HEX);
+    }
+    
+    // Getter and setter
+
+    @Override
+    public String sqlBooleanBlind() {
+        return this.modelYaml.getStrategy().getBoolean().getBlind();
+    }
+
+    @Override
+    public String sqlBooleanTime() {
+        return this.modelYaml.getStrategy().getBoolean().getTime();
+    }
+
+    @Override
+    public String sqlInfos() {
+        return this.modelYaml.getResource().getInfo();
+    }
+
+    @Override
+    public String sqlDatabases() {
+        return this.modelYaml.getResource().getSchema().getDatabase();
+    }
+
+    @Override
+    public String sqlPrivilegeTest() {
+        return this.modelYaml.getResource().getFile().getPrivilege();
+    }
+
+    @Override
+    public List<String> getListFalseTest() {
+        return this.modelYaml.getStrategy().getBoolean().getTest().getFalses();
+    }
+
+    @Override
+    public List<String> getListTrueTest() {
+        return this.modelYaml.getStrategy().getBoolean().getTest().getTrues();
+    }
+
+    @Override
+    public String sqlTestBooleanInitialization() {
+        return this.modelYaml.getStrategy().getBoolean().getTest().getInitialization();
+    }
+
+    @Override
+    public String sqlOrderBy() {
+        return this.modelYaml.getStrategy().getNormal().getOrderBy();
+    }
+    
+    @Override
+    public String endingComment() {
+        return this.modelYaml.getStrategy().getConfiguration().getEndingComment();
     }
 
     @Override

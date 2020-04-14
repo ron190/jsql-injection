@@ -33,6 +33,7 @@ public class ActionLoadStop implements ActionListener {
     private DefaultMutableTreeNode currentTableNode;
 
     public ActionLoadStop(AbstractNodeModel nodeModel, DefaultMutableTreeNode currentTableNode) {
+        
         this.nodeModel = nodeModel;
         this.currentTableNode = currentTableNode;
     }
@@ -47,8 +48,11 @@ public class ActionLoadStop implements ActionListener {
         }
 
         if (!this.nodeModel.isRunning()) {
+            
             this.startListValues(columnsToSearch);
+            
         } else {
+            
             this.stopAbstractNode();
         }
         
@@ -97,8 +101,10 @@ public class ActionLoadStop implements ActionListener {
             DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
             
             if (currentChild.getUserObject() instanceof AbstractNodeModel) {
+                
                 AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
                 if (columnTreeNodeModel.isSelected()) {
+                    
                     columnsToSearch.add((Column) columnTreeNodeModel.getElementDatabase());
                 }
             }

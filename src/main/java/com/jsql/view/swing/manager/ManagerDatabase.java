@@ -27,6 +27,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tree.CellEditorNode;
@@ -42,6 +44,11 @@ import com.jsql.view.swing.util.UiUtil;
  */
 @SuppressWarnings("serial")
 public class ManagerDatabase extends JPanel implements Manager {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     private TreeDatabase tree;
 
@@ -128,10 +135,20 @@ public class ManagerDatabase extends JPanel implements Manager {
                 
                 if (selRow != -1 && e.getClickCount() == 2) {
                     
-                    if (ManagerDatabase.this.tree.isExpanded(selPath)) {
-                        ManagerDatabase.this.tree.collapsePath(selPath);
-                    } else {
-                        ManagerDatabase.this.tree.expandPath(selPath);
+                    // Fix ArrayIndexOutOfBoundsException on collapsePath()
+                    try {
+                        if (ManagerDatabase.this.tree.isExpanded(selPath)) {
+                            
+                            ManagerDatabase.this.tree.collapsePath(selPath);
+                            
+                        } else {
+                            
+                            ManagerDatabase.this.tree.expandPath(selPath);
+                        }
+                        
+                    } catch (ArrayIndexOutOfBoundsException err) {
+                        
+                        LOGGER.error(err.getMessage(), err);
                     }
                 }
             }
@@ -152,6 +169,7 @@ public class ManagerDatabase extends JPanel implements Manager {
                     AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
                     
                     if (nodeModel != null && nodeModel.getPanel() != null) {
+                        
                         nodeModel.getPanel().getLabel().setBackground(UiUtil.COLOR_FOCUS_LOST);
                         nodeModel.getPanel().getLabel().setBorder(UiUtil.BORDER_FOCUS_LOST);
                     }
@@ -168,6 +186,7 @@ public class ManagerDatabase extends JPanel implements Manager {
                     AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
                     
                     if (nodeModel != null && nodeModel.getPanel() != null) {
+                        
                         nodeModel.getPanel().getLabel().setBackground(UiUtil.COLOR_FOCUS_GAINED);
                         nodeModel.getPanel().getLabel().setBorder(UiUtil.BORDER_FOCUS_GAINED);
                     }
@@ -190,6 +209,7 @@ public class ManagerDatabase extends JPanel implements Manager {
                 !ManagerDatabase.this.tree.isRootVisible(),
                 ManagerDatabase.this.tree.isRootVisible()
             );
+            
             ManagerDatabase.this.tree.treeDidChange();
         }
 

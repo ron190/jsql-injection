@@ -727,16 +727,19 @@ public class RessourceAccess {
         List<Integer> listFieldsLength = new ArrayList<>();
         
         for (
-            final int[] indexLongestRowSearch = {0};
-            indexLongestRowSearch[0] < listRows.get(0).size();
-            indexLongestRowSearch[0]++
+            int indexLongestRowSearch = 0;
+            indexLongestRowSearch < listRows.get(0).size();
+            indexLongestRowSearch++
         ) {
+            
+            int indexLongestRowSearchFinal = indexLongestRowSearch;
+            
             Collections.sort(
                 listRows,
-                (firstRow, secondRow) -> secondRow.get(indexLongestRowSearch[0]).length() - firstRow.get(indexLongestRowSearch[0]).length()
+                (firstRow, secondRow) -> secondRow.get(indexLongestRowSearchFinal).length() - firstRow.get(indexLongestRowSearchFinal).length()
             );
 
-            listFieldsLength.add(listRows.get(0).get(indexLongestRowSearch[0]).length());
+            listFieldsLength.add(listRows.get(0).get(indexLongestRowSearch).length());
         }
         
         return listFieldsLength;

@@ -36,11 +36,6 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    /**
-     * List of cut/copy/paste/drag/drop items.
-     */
-    private transient List<ItemList> dragPaths = null;
-    
     @Override
     protected List<Integer> initializeStringPaste(String clipboardText, int selectedIndex, DefaultListModel<ItemList> listModel) {
         

@@ -10,9 +10,9 @@ import com.jsql.view.swing.MediatorGui;
 
 public class AltKeyEventDispatcher implements KeyEventDispatcher {
 
-    private final boolean[] wasAltDPressed = {false};
-    private final boolean[] wasAltPressed = {false};
-    private final boolean[] wasAltGraphPressed = {false};
+    private boolean wasAltDPressed = false;
+    private boolean wasAltPressed = false;
+    private boolean wasAltGraphPressed = false;
     
     @Override
     public boolean dispatchKeyEvent(KeyEvent keyEvent) {
@@ -24,7 +24,8 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
         // => AltGr:press Alt:press AltGr:release Alt:release
         // AltGr keycode is the same as Ctrl
         if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
-            this.wasAltGraphPressed[0] = true;
+            
+            this.wasAltGraphPressed = true;
         }
         
         boolean isAltDPressed =
@@ -38,22 +39,25 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
         boolean isAltPressed =
             keyEvent.isAltDown()
             && keyEvent.getKeyCode() == KeyEvent.VK_ALT
-            && !this.wasAltGraphPressed[0];
+            && !this.wasAltGraphPressed;
         
         boolean wasAltPressedAlready =
-            !this.wasAltDPressed[0]
-            && !this.wasAltPressed[0]
-            && !this.wasAltGraphPressed[0];
+            !this.wasAltDPressed
+            && !this.wasAltPressed
+            && !this.wasAltGraphPressed;
         
         if (isAltDPressed) {
+            
             this.selectAddressBar();
             shouldNotTakeFurtherAction = true;
             
         } else if (isAltReleased) {
+            
             this.showMenuBar(wasAltPressedAlready);
             shouldNotTakeFurtherAction = true;
             
         } else if (isAltPressed) {
+            
             this.hideMenuBar();
             shouldNotTakeFurtherAction = true;
         }
@@ -65,7 +69,7 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
         
         MediatorGui.panelAddressBar().getTextFieldAddress().requestFocusInWindow();
         MediatorGui.panelAddressBar().getTextFieldAddress().selectAll();
-        this.wasAltDPressed[0] = true;
+        this.wasAltDPressed = true;
     }
 
     private void showMenuBar(boolean wasAltPressedAlready) {
@@ -76,16 +80,17 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
             if (MenuSelectionManager.defaultManager().getSelectedPath().length > 0) {
                 
                 MenuSelectionManager.defaultManager().clearSelectedPath();
+                
             } else if (!MediatorGui.panelAddressBar().isAdvanceActivated()) {
                 
                 MediatorGui.menubar().setVisible(!MediatorGui.menubar().isVisible());
-                this.wasAltGraphPressed[0] = false;
+                this.wasAltGraphPressed = false;
             }
         } else {
             
-            this.wasAltDPressed[0] = false;
-            this.wasAltPressed[0] = false;
-            this.wasAltGraphPressed[0] = false;
+            this.wasAltDPressed = false;
+            this.wasAltPressed = false;
+            this.wasAltGraphPressed = false;
         }
     }
 
@@ -96,8 +101,8 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
             
             MenuSelectionManager.defaultManager().clearSelectedPath();
             MediatorGui.menubar().setVisible(false);
-            this.wasAltPressed[0] = true;
-            this.wasAltGraphPressed[0] = false;
+            this.wasAltPressed = true;
+            this.wasAltGraphPressed = false;
         }
     }
 }

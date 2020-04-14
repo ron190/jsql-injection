@@ -9,6 +9,7 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -25,6 +26,11 @@ import spring.model.Student;
 
 @SpringBootApplication
 public class TargetApplication {
+    
+    /**
+     * Using default log4j.properties from root /
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     public static Properties propsH2 = new Properties();
     public static Properties propsH2Api = new Properties();
@@ -107,6 +113,9 @@ public class TargetApplication {
                 
                 System.out.println(record);
             });
+            
+        } catch (Exception e) {
+            LOGGER.error(e, e);
         }
         
         driver.close();

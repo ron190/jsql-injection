@@ -2,8 +2,6 @@ package com.jsql.view.swing.panel.consoles;
 
 import java.awt.FontMetrics;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 import javax.swing.JLabel;
@@ -19,7 +17,6 @@ import org.jsoup.safety.Whitelist;
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
@@ -43,11 +40,6 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     private JTextArea textAreaNetworkTabHeader = new JPopupTextArea("Header client request").getProxy();
     private JTextArea textAreaNetworkTabParams = new JPopupTextArea("HTTP POST parameters").getProxy();
     
-    /**
-     * List of HTTP injection requests and responses.
-     */
-    private transient List<HttpHeader> listHttpHeader = new ArrayList<>();
-    
     public TabbedPaneNetworkTab() {
 
         this.setUI(new CustomMetalTabbedPaneUI() {
@@ -65,7 +57,8 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             new SimpleEntry<>("NETWORK_TAB_PREVIEW_LABEL", this.textAreaNetworkTabPreview),
             new SimpleEntry<>("NETWORK_TAB_HEADERS_LABEL", this.textAreaNetworkTabHeader),
             new SimpleEntry<>("NETWORK_TAB_PARAMS_LABEL", this.textAreaNetworkTabParams)
-        ).forEach(entry -> {
+        )
+        .forEach(entry -> {
             
             this.addTab(I18nUtil.valueByKey(entry.getKey()), new LightScrollPane(1, 1, 0, 0, entry.getValue()));
             JLabel label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
@@ -90,9 +83,8 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         this.textAreaNetworkTabPreview.setEditable(false);
     }
     
-    public void changeTextNetwork() {
+    public void changeTextNetwork(HttpHeader networkData) {
         
-        HttpHeader networkData = this.listHttpHeader.get(MediatorGui.panelConsoles().getNetworkTable().getSelectedRow());
         this.textAreaNetworkTabHeader.setText(networkData.getHeader());
         this.textAreaNetworkTabParams.setText(networkData.getPost());
         this.textAreaNetworkTabUrl.setText(networkData.getUrl());
@@ -132,7 +124,11 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         try {
             this.textAreaNetworkTabPreview.setText(
                 Jsoup.clean(
-                    "<html>"+ StringUtil.detectUtf8(networkData.getSource()).replaceAll("#{5,}", "#*") + "</html>"
+                    "<html>"
+                    + StringUtil
+                        .detectUtf8(networkData.getSource())
+                        .replaceAll("#{5,}", "#*")
+                    + "</html>"
                     .replaceAll("<img.*>", StringUtils.EMPTY)
                     .replaceAll("<input.*type=\"?hidden\"?.*>", StringUtils.EMPTY)
                     .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
@@ -148,6 +144,8 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             LOGGER.error(e, e);
         }
     }
+    
+    // Getter and setter
 
     public JTextArea getTextAreaNetworkTabUrl() {
         return this.textAreaNetworkTabUrl;

@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import org.junit.Ignore;
 
 import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.JSqlException;
 
 @Ignore
 public class OracleBlindGetTestNopeSuite extends ConcreteOracleTestNopeSuite {

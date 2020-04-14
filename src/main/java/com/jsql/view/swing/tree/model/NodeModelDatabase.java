@@ -15,6 +15,8 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.bean.database.Database;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.util.UiUtil;
@@ -23,6 +25,11 @@ import com.jsql.view.swing.util.UiUtil;
  * Database model displaying the database icon on the label.
  */
 public class NodeModelDatabase extends AbstractNodeModel {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Node as a database model.
@@ -36,8 +43,11 @@ public class NodeModelDatabase extends AbstractNodeModel {
     protected Icon getLeafIcon(boolean leaf) {
         
         if (leaf) {
+            
             return UiUtil.ICON_DATABASE_GO;
+            
         } else {
+            
             return UiUtil.ICON_DATABASE;
         }
     }
@@ -52,7 +62,15 @@ public class NodeModelDatabase extends AbstractNodeModel {
         MediatorGui.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();
         
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
-        treeModel.reload(MediatorGui.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()));
+        
+        // Fix #90522: ArrayIndexOutOfBoundsException on reload()
+        try {
+            treeModel.reload(MediatorGui.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()));
+            
+        } catch (ArrayIndexOutOfBoundsException e) {
+            
+            LOGGER.error(e.getMessage(), e);
+        }
         
         new SwingWorker<Object, Object>() {
             
@@ -70,6 +88,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
 
     @Override
     public boolean isPopupDisplayable() {
+        
         return this.isLoaded() || !this.isLoaded() && this.isRunning();
     }
 
