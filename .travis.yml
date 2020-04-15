@@ -26,6 +26,8 @@ before_install:
 
   - mvn -v
   - mvn -X dependency:tree
+  - which mvn
+  - find /usr -name '*jansi*' -exec ls -l {} \;
   
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
     
