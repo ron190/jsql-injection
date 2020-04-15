@@ -16,7 +16,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 //TODO Time not working
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class SQLServerTimeGetTestSuite extends ConcreteSQLServerTestSuite {
+public class SQLServerTimeGetTestIgnoreSuite extends ConcreteSQLServerTestSuite {
 
     @Override
     public void setupInjection() throws Exception {
