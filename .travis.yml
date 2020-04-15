@@ -25,6 +25,7 @@ cache:
 before_install:
 
   - mvn -v
+  - mvn -X dependency:tree
   
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
     

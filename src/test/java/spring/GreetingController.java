@@ -427,7 +427,7 @@ public class GreetingController {
         LOGGER.debug(stacktrace);
         
         Greeting greeting = new Greeting(
-            this.counter.getAndIncrement(),
+            0,
             template+"#"
             + StringEscapeUtils.unescapeJava(stacktrace)
         );
