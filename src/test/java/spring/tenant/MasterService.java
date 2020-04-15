@@ -26,7 +26,7 @@ public class MasterService {
             TargetApplication.propsMysql,
             TargetApplication.propsMysqlError,
             TargetApplication.propsPostgres,
-//            TargetApplication.propsSqlServer,
+            TargetApplication.propsSqlServer,
             TargetApplication.propsSqlite
         ).forEach(props -> {
             

@@ -64,7 +64,7 @@ public class GreetingController {
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
-                this.counter.incrementAndGet(),
+                this.counter.getAndIncrement(),
                 String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
@@ -92,7 +92,7 @@ public class GreetingController {
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
-                this.counter.incrementAndGet(),
+                this.counter.getAndIncrement(),
                 String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
@@ -125,7 +125,7 @@ public class GreetingController {
                 List<Object[]> results = query.getResultList();
                 
                 greeting = new Greeting(
-                    this.counter.incrementAndGet(),
+                    this.counter.getAndIncrement(),
                     String.format(template, inject)
                     + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
                 );
@@ -158,7 +158,7 @@ public class GreetingController {
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
-                this.counter.incrementAndGet(),
+                this.counter.getAndIncrement(),
                 String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
@@ -184,7 +184,7 @@ public class GreetingController {
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
-                this.counter.incrementAndGet(),
+                this.counter.getAndIncrement(),
                 String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
@@ -210,7 +210,7 @@ public class GreetingController {
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
-                this.counter.incrementAndGet(),
+                this.counter.getAndIncrement(),
                 String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
@@ -278,7 +278,7 @@ public class GreetingController {
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
-                this.counter.incrementAndGet(),
+                this.counter.getAndIncrement(),
                 String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
@@ -305,7 +305,7 @@ public class GreetingController {
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
-                this.counter.incrementAndGet(),
+                this.counter.getAndIncrement(),
                 String.format(template, inject)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
@@ -332,7 +332,7 @@ public class GreetingController {
             ).collect(Collectors.joining());
             
             greeting = new Greeting(
-                this.counter.incrementAndGet(),
+                this.counter.getAndIncrement(),
                 String.format(template, name)
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(a))
             );
@@ -380,7 +380,7 @@ public class GreetingController {
             if (results.isEmpty()) {
                 
                 greeting = new Greeting(
-                    this.counter.incrementAndGet(),
+                    this.counter.getAndIncrement(),
                     String.format(template+"#", inject)
                     + StringEscapeUtils.unescapeJava("PREFIX It's true SUFFIX")
                 );
@@ -388,7 +388,7 @@ public class GreetingController {
             } else {
                 
                 greeting = new Greeting(
-                    this.counter.incrementAndGet(),
+                    this.counter.getAndIncrement(),
                     String.format(template+"#", inject)
                     + StringEscapeUtils.unescapeJava("PREFIX It's false SUFFIX")
                 );
@@ -427,7 +427,7 @@ public class GreetingController {
         LOGGER.debug(stacktrace);
         
         Greeting greeting = new Greeting(
-            this.counter.incrementAndGet(),
+            this.counter.getAndIncrement(),
             template+"#"
             + StringEscapeUtils.unescapeJava(stacktrace)
         );

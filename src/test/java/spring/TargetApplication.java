@@ -37,7 +37,7 @@ public class TargetApplication {
     public static Properties propsMysql = new Properties();
     public static Properties propsMysqlError = new Properties();
     public static Properties propsPostgres = new Properties();
-//    public static Properties propsSqlServer = new Properties();
+    public static Properties propsSqlServer = new Properties();
     public static Properties propsSqlite = new Properties();
 
     static {
@@ -49,7 +49,7 @@ public class TargetApplication {
             new SimpleEntry<>(propsMysql, "spring/hibernate.mysql.properties"),
             new SimpleEntry<>(propsMysqlError, "spring/hibernate.mysql-5.5.40.properties"),
             new SimpleEntry<>(propsPostgres, "spring/hibernate.postgres.properties"),
-//            new SimpleEntry<>(propsSqlServer, "spring/hibernate.sqlserver.properties"),
+            new SimpleEntry<>(propsSqlServer, "spring/hibernate.sqlserver.properties"),
             new SimpleEntry<>(propsSqlite, "spring/hibernate.sqlite.properties")
         )
         .forEach(simpleEntry -> {
@@ -74,7 +74,7 @@ public class TargetApplication {
             propsMysql,
             propsMysqlError,
             propsPostgres,
-//            propsSqlServer,
+            propsSqlServer,
             propsSqlite
         )
         .forEach(props -> {

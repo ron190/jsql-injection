@@ -15,7 +15,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class SQLServerBlindGetTestIgnoreSuite extends ConcreteSQLServerTestSuite {
+public class SQLServerBlindGetTestSuite extends ConcreteSQLServerTestSuite {
 
     @Override
     public void setupInjection() throws Exception {
