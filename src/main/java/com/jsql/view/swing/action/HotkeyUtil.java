@@ -165,13 +165,13 @@ public final class HotkeyUtil {
             inputMap.put(KeyStroke.getKeyStroke("ctrl "+ currentTab), STR_SELECT_TAB + currentTab);
             inputMap.put(KeyStroke.getKeyStroke("ctrl NUMPAD"+ currentTab), STR_SELECT_TAB + currentTab);
             
-            final int l = currentTab;
-            actionMap.put(STR_SELECT_TAB + currentTab, new AbstractAction(){
+            final int currentTabFinal = currentTab;
+            actionMap.put(STR_SELECT_TAB + currentTab, new AbstractAction() {
                 
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     
-                    MediatorGui.tabManagers().setSelectedIndex(l-1);
+                    MediatorGui.tabManagers().setSelectedIndex(currentTabFinal - 1);
                 }
             });
         }

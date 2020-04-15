@@ -67,6 +67,7 @@ public class ReplaceFileChooser extends JFileChooser {
                     default:
                         break;
                 }
+                
             } else {
                 
                 super.approveSelection();

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -108,14 +109,23 @@ public abstract class MethodInjection implements Serializable {
         
         boolean hasFoundInjection = false;
         
+        System.out.println("this.getParams().stream().map(entry -> entry.getKey()+:+entry.getValue())");
+        System.out.println(this.getParams().stream().map(entry -> entry.getKey()+":"+entry.getValue()).collect(Collectors.joining()));
+        
         // This param will be marked by * if injection is found,
         // inner loop will erase mark * otherwise
         for (SimpleEntry<String, String> paramBase: this.getParams()) {
+
+            System.out.println("paramBase");
+            System.out.println(paramBase);
 
             // This param is the current tested one.
             // For JSON value attributes are traversed one by one to test every values.
             // For standard value mark * is simply added to the end of its value.
             for (SimpleEntry<String, String> paramStar: this.getParams()) {
+
+                System.out.println("paramStar");
+                System.out.println(paramStar);
                 
                 if (paramStar == paramBase) {
                     
@@ -140,9 +150,12 @@ public abstract class MethodInjection implements Serializable {
                         }
                         
                         if (hasFoundInjection) {
+                            
                             return hasFoundInjection;
                         }
+                        
                     } catch (JSONException e) {
+                        
                         LOGGER.error("Error parsing JSON parameters", e);
                     }
                 }
@@ -153,6 +166,9 @@ public abstract class MethodInjection implements Serializable {
     }
     
     public boolean testStandardParameter(SimpleEntry<String, String> paramStar) {
+
+        System.out.println("testStandardParameter");
+        System.out.println(paramStar);
         
         boolean hasFoundInjection = false;
         
@@ -170,9 +186,15 @@ public abstract class MethodInjection implements Serializable {
             
             // Injection failure
             LOGGER.warn(
-                "No "+ this.name() +" injection found for parameter "
-                + paramStar.getKey() +"="+ paramStar.getValue().replaceAll("\\+.?$|\\" + InjectionModel.STAR, StringUtils.EMPTY)
-                + " (" + e.getMessage() +")"
+                "No "
+                + this.name()
+                + " injection found for parameter "
+                + paramStar.getKey()
+                + "="
+                + paramStar.getValue().replaceAll("\\+.?$|\\" + InjectionModel.STAR, StringUtils.EMPTY)
+                + " ("
+                + e.getMessage()
+                + ")"
             );
             
         } finally {

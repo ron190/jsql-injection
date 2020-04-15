@@ -66,7 +66,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         
         this.fixedTable.setAutoCreateColumnsFromModel(false);
         
-        final DefaultTableModel modelFixedTable = new DefaultTableModel(){
+        final DefaultTableModel modelFixedTable = new DefaultTableModel() {
             
             @Override
             public int getColumnCount() {

@@ -156,12 +156,18 @@ public final class ShadowPopup extends Popup {
         ShadowPopup result;
         
         synchronized (ShadowPopup.class) {
+            
             if (cache == null) {
+                
                 cache = new ArrayList<>(MAX_CACHE_SIZE);
             }
+            
             if (!cache.isEmpty()) {
+                
                 result = cache.remove(0);
+                
             } else {
+                
                 result = new ShadowPopup();
             }
         }
@@ -177,13 +183,16 @@ public final class ShadowPopup extends Popup {
     private static void recycle(ShadowPopup popup) {
         
         synchronized (ShadowPopup.class) {
+            
             if (cache.size() < MAX_CACHE_SIZE) {
+                
                 cache.add(popup);
             }
         }
     }
 
     public boolean canSnapshot() {
+        
         return this.canSnapshot;
     }
 
@@ -202,16 +211,21 @@ public final class ShadowPopup extends Popup {
     public void hide() {
         
         if (this.contents == null) {
+            
             return;
         }
 
         JComponent parent = (JComponent) this.contents.getParent();
         this.popup.hide();
+        
         if ((parent != null) && parent.getBorder() == SHADOW_BORDER) {
+            
             parent.setBorder(this.oldBorder);
             parent.setOpaque(this.oldOpaque);
             this.oldBorder = null;
+            
             if (this.heavyWeightContainer != null) {
+                
                 parent.putClientProperty(ShadowPopupFactory.PROP_HORIZONTAL_BACKGROUND, null);
                 parent.putClientProperty(ShadowPopupFactory.PROP_VERTICAL_BACKGROUND, null);
                 this.heavyWeightContainer = null;
@@ -233,6 +247,7 @@ public final class ShadowPopup extends Popup {
     public void show() {
         
         if (this.heavyWeightContainer != null) {
+            
             this.snapshot();
         }
         
@@ -267,16 +282,21 @@ public final class ShadowPopup extends Popup {
         // Implementation by javax.swing.plaf.metal.MetalToolTipUI.getPreferredSize()
         try {
             contentsPrefSize = contents.getPreferredSize();
+            
         } catch(NullPointerException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
         
         if (contentsPrefSize.width <= 0 || contentsPrefSize.height <= 0) {
+            
             return;
         }
         
         for (Container p = contents.getParent() ; p != null ; p = p.getParent()) {
+            
             if (p instanceof JWindow || p instanceof Panel) {
+                
                 // Workaround for the gray rect problem.
                 p.setBackground(contents.getBackground());
                 this.heavyWeightContainer = p;
@@ -292,8 +312,11 @@ public final class ShadowPopup extends Popup {
         
         // Pack it because we have changed the border.
         if (this.heavyWeightContainer != null) {
+            
             this.heavyWeightContainer.setSize(this.heavyWeightContainer.getPreferredSize());
+            
         } else {
+            
             parent.setSize(parent.getPreferredSize());
         }
     }
@@ -323,6 +346,7 @@ public final class ShadowPopup extends Popup {
             // Avoid unnecessary and illegal screen captures
             // for degenerated popups.
             if ((width <= 0) || (height <= SHADOW_SIZE)) {
+                
                 return;
             }
 
@@ -341,6 +365,7 @@ public final class ShadowPopup extends Popup {
 
             Container layeredPane = this.getLayeredPane();
             if (layeredPane == null) {
+                
                 // This could happen if owner is null.
                 return;
             }
@@ -355,6 +380,7 @@ public final class ShadowPopup extends Popup {
             this.paintHorizontalSnapshot(width, height, hShadowBg, layeredPane, layeredPaneWidth, layeredPaneHeight);
 
             this.paintVerticalSnapshot(width, height, vShadowBg, layeredPane, layeredPaneWidth, layeredPaneHeight);
+            
         } catch (AWTException | SecurityException | IllegalArgumentException e) {
             
             this.canSnapshot = false;
@@ -374,9 +400,11 @@ public final class ShadowPopup extends Popup {
         RECT.height = height - SHADOW_SIZE;
 
         if ((RECT.x + RECT.width) > layeredPaneWidth) {
+            
             RECT.width = layeredPaneWidth - RECT.x;
         }
         if ((RECT.y + RECT.height) > layeredPaneHeight) {
+            
             RECT.height = layeredPaneHeight - RECT.y;
         }
         
@@ -386,12 +414,15 @@ public final class ShadowPopup extends Popup {
             g.translate(-RECT.x, -RECT.y);
             g.setClip(RECT);
             if (layeredPane instanceof JComponent) {
+                
                 JComponent c = (JComponent) layeredPane;
                 boolean doubleBuffered = c.isDoubleBuffered();
                 c.setDoubleBuffered(false);
-                c.paintAll(g);
+                ShadowPopup.paintAll(c, g);
                 c.setDoubleBuffered(doubleBuffered);
+                
             } else {
+                
                 layeredPane.paintAll(g);
             }
             g.dispose();
@@ -407,9 +438,12 @@ public final class ShadowPopup extends Popup {
         RECT.height = SHADOW_SIZE;
 
         if ((RECT.x + RECT.width) > layeredPaneWidth) {
+            
             RECT.width = layeredPaneWidth - RECT.x;
         }
+        
         if ((RECT.y + RECT.height) > layeredPaneHeight) {
+            
             RECT.height = layeredPaneHeight - RECT.y;
         }
         
@@ -418,15 +452,20 @@ public final class ShadowPopup extends Popup {
             Graphics g = hShadowBg.createGraphics();
             g.translate(-RECT.x, -RECT.y);
             g.setClip(RECT);
+            
             if (layeredPane instanceof JComponent) {
+                
                 JComponent c = (JComponent) layeredPane;
                 boolean doubleBuffered = c.isDoubleBuffered();
                 c.setDoubleBuffered(false);
                 ShadowPopup.paintAll(c, g);
                 c.setDoubleBuffered(doubleBuffered);
+                
             } else {
+                
                 layeredPane.paintAll(g);
             }
+            
             g.dispose();
         }
     }
@@ -436,7 +475,9 @@ public final class ShadowPopup extends Popup {
         // Fix #3127, Fix #6772, Fix #48907: Multiple Exceptions on paintAll()
         try {
             c.paintAll(g);
+            
         } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException | NullPointerException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
     }
@@ -449,6 +490,7 @@ public final class ShadowPopup extends Popup {
         // The code below is copied from PopupFactory#LightWeightPopup#show()
         Container parent = null;
         if (this.owner != null) {
+            
             parent = this.owner instanceof Container
                     ? (Container) this.owner
                     : this.owner.getParent();
@@ -458,18 +500,24 @@ public final class ShadowPopup extends Popup {
         for (Container p = parent; p != null; p = p.getParent()) {
             
             if (p instanceof JRootPane) {
+                
                 if (p.getParent() instanceof JInternalFrame) {
+                    
                     continue;
                 }
                 parent = ((JRootPane) p).getLayeredPane();
                 // Continue, so that if there is a higher JRootPane, we'll
                 // pick it up.
+                
             } else if (p instanceof Window) {
+                
                 if (parent == null) {
                     parent = p;
                 }
                 break;
+                
             } else if (p instanceof JApplet) {
+                
                 // Painting code stops at Applets, we don't want
                 // to add to a Component above an Applet otherwise
                 // you'll never see it painted.

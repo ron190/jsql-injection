@@ -70,13 +70,17 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         try (
             InputStream inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader reader = new BufferedReader(inputStreamReader);
+            BufferedReader reader = new BufferedReader(inputStreamReader)
         ) {
             String line;
+            
             while ((line = reader.readLine()) != null) {
+                
                 itemsList.add(new ItemList(line));
             }
+            
         } catch (IOException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
 
@@ -186,7 +190,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                     
                 } catch (MalformedURLException e) {
                     
-                    LOGGER.warn("Incorrect URL: "+ e, e);
+                    LOGGER.warn("Incorrect URL: "+ e.getMessage(), e);
                     return;
                 }
             }
@@ -198,16 +202,14 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                 new Thread(() -> {
                     
                     try {
-                        AbstractManagerShell.this.createPayload(
-                            pathShell.toString(),
-                            urlShellFinal
-                        );
+                        AbstractManagerShell.this.createPayload(pathShell.toString(), urlShellFinal);
                         
                     } catch (JSqlException | InterruptedException e) {
                         
-                        LOGGER.warn("Payload creation error: "+ e, e);
+                        LOGGER.warn("Payload creation error: "+ e.getMessage(), e);
                         Thread.currentThread().interrupt();
                     }
+                    
                 }, "ThreadGetShell").start();
             }
         }

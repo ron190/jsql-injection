@@ -38,7 +38,7 @@ import java.io.IOException;
  *  <PRE>
  *  SQLLexer shredder = new SQLLexer(System.in);
  *  SQLToken t;
- *  while ((t = shredder.getNextToken()) != null){
+ *  while ((t = shredder.getNextToken()) != null) {
  *      System.out.println(t);
  *  }
  *  </PRE>

@@ -38,7 +38,7 @@ import java.io.IOException;
  *  <PRE>
  *  JavaScriptLexer shredder = new JavaScriptLexer(System.in);
  *  JavaScriptToken t;
- *  while ((t = shredder.getNextToken()) != null){
+ *  while ((t = shredder.getNextToken()) != null) {
  *      System.out.println(t);
  *  }
  *  </PRE>
@@ -702,7 +702,7 @@ public class JavaScriptLexer implements Lexer {
      */
     public Token getNextToken(boolean returnComments, boolean returnWhiteSpace)throws IOException{
         Token t = this.getNextToken();
-        while (t != null && ((!returnWhiteSpace && t.isWhiteSpace()) || (!returnComments && t.isComment()))){
+        while (t != null && ((!returnWhiteSpace && t.isWhiteSpace()) || (!returnComments && t.isComment()))) {
             t = this.getNextToken();
         }
         return (t);
@@ -1119,13 +1119,13 @@ public Token getNextToken() throws IOException {
         /* bigger negatives are allowed than positives.  Thus
          * we have to be careful to make sure a neg sign is preserved
          */
-        if (this.lastToken == JavaScriptToken.OPERATOR_SUBTRACT){
+        if (this.lastToken == JavaScriptToken.OPERATOR_SUBTRACT) {
             Integer.decode('-' + this.yytext());
         } else {
             Integer.decode(this.yytext());
         }
         this.lastToken = JavaScriptToken.LITERAL_INTEGER_DECIMAL;
-    } catch (NumberFormatException e){
+    } catch (NumberFormatException e) {
         this.lastToken = JavaScriptToken.ERROR_INTEGER_DECIMIAL_SIZE;
     }
     JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
@@ -1313,12 +1313,12 @@ public Token getNextToken() throws IOException {
     Float f;
     try {
         f = Float.valueOf(this.yytext());
-        if (f.isInfinite() || f.compareTo(new Float(0f)) == 0){
+        if (f.isInfinite() || f.compareTo(new Float(0f)) == 0) {
             this.lastToken = JavaScriptToken.ERROR_FLOAT_SIZE;
         } else {
             this.lastToken = JavaScriptToken.LITERAL_FLOATING_POINT;
         }
-    } catch (NumberFormatException e){
+    } catch (NumberFormatException e) {
         this.lastToken = JavaScriptToken.ERROR_FLOAT_SIZE;
     }
     JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
@@ -1327,13 +1327,13 @@ public Token getNextToken() throws IOException {
           case 155: break;
           case 33:
             { try {
-        if (this.lastToken == JavaScriptToken.OPERATOR_SUBTRACT){
+        if (this.lastToken == JavaScriptToken.OPERATOR_SUBTRACT) {
             Long.decode('-' + this.yytext().substring(0,this.yytext().length()-1));
         } else {
             Long.decode(this.yytext().substring(0,this.yytext().length()-1));
         }
         this.lastToken = JavaScriptToken.LITERAL_LONG_DECIMAL;
-    } catch (NumberFormatException e){
+    } catch (NumberFormatException e) {
         this.lastToken = JavaScriptToken.ERROR_LONG_DECIMIAL_SIZE;
     }
     JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
@@ -1344,12 +1344,12 @@ public Token getNextToken() throws IOException {
             { Double d;
     try {
         d = Double.valueOf(this.yytext());
-        if (d.isInfinite() || d.compareTo(new Double(0d)) == 0){
+        if (d.isInfinite() || d.compareTo(new Double(0d)) == 0) {
             this.lastToken = JavaScriptToken.ERROR_DOUBLE_SIZE;
         } else {
             this.lastToken = JavaScriptToken.LITERAL_DOUBLE;
         }
-    } catch (NumberFormatException e){
+    } catch (NumberFormatException e) {
         this.lastToken = JavaScriptToken.ERROR_DOUBLE_SIZE;
     }
     JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
@@ -1364,19 +1364,19 @@ public Token getNextToken() throws IOException {
     this.lastToken = JavaScriptToken.LITERAL_INTEGER_OCTAL;
     int i;
     int length =this.yytext().length();
-    for (i=1 ; i<length-11; i++){
+    for (i=1 ; i<length-11; i++) {
         //check for initial zeros
-        if (this.yytext().charAt(i) != '0'){
+        if (this.yytext().charAt(i) != '0') {
             this.lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;
         }
     }
-    if (length - i > 11){
+    if (length - i > 11) {
         this.lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;
-    } else if (length - i == 11){
+    } else if (length - i == 11) {
         // if the rest of the number is as big as possible
         // the first digit can only be 3 or less
         if (this.yytext().charAt(i) != '0' && this.yytext().charAt(i) != '1' &&
-        this.yytext().charAt(i) != '2' && this.yytext().charAt(i) != '3'){
+        this.yytext().charAt(i) != '2' && this.yytext().charAt(i) != '3') {
             this.lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;
         }
     }
@@ -1571,18 +1571,18 @@ public Token getNextToken() throws IOException {
     this.lastToken = JavaScriptToken.LITERAL_LONG_OCTAL;
     int i;
     int length =this.yytext().length();
-    for (i=1 ; i<length-23; i++){
+    for (i=1 ; i<length-23; i++) {
         //check for initial zeros
-        if (this.yytext().charAt(i) != '0'){
+        if (this.yytext().charAt(i) != '0') {
             this.lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;
         }
     }
-    if (length - i > 23){
+    if (length - i > 23) {
         this.lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;
-    } else if (length - i == 23){
+    } else if (length - i == 23) {
         // if the rest of the number is as big as possible
         // the first digit can only be 3 or less
-        if (this.yytext().charAt(i) != '0' && this.yytext().charAt(i) != '1'){
+        if (this.yytext().charAt(i) != '0' && this.yytext().charAt(i) != '1') {
             this.lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;
         }
     }
@@ -1598,13 +1598,13 @@ public Token getNextToken() throws IOException {
     this.lastToken = JavaScriptToken.LITERAL_INTEGER_HEXIDECIMAL;
     int i;
     int length =this.yytext().length();
-    for (i=2 ; i<length-8; i++){
+    for (i=2 ; i<length-8; i++) {
         //check for initial zeros
-        if (this.yytext().charAt(i) != '0'){
+        if (this.yytext().charAt(i) != '0') {
             this.lastToken = JavaScriptToken.ERROR_INTEGER_HEXIDECIMAL_SIZE;
         }
     }
-    if (length - i > 8){
+    if (length - i > 8) {
         this.lastToken = JavaScriptToken.ERROR_INTEGER_HEXIDECIMAL_SIZE;
     }
     JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
@@ -1673,13 +1673,13 @@ public Token getNextToken() throws IOException {
     this.lastToken = JavaScriptToken.LITERAL_LONG_HEXIDECIMAL;
     int i;
     int length =this.yytext().length();
-    for (i=2 ; i<length-17; i++){
+    for (i=2 ; i<length-17; i++) {
         //check for initial zeros
-        if (this.yytext().charAt(i) != '0'){
+        if (this.yytext().charAt(i) != '0') {
             this.lastToken = JavaScriptToken.ERROR_LONG_HEXIDECIMAL_SIZE;
         }
     }
-    if (length - i > 17){
+    if (length - i > 17) {
         this.lastToken = JavaScriptToken.ERROR_LONG_HEXIDECIMAL_SIZE;
     }
     JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));

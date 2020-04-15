@@ -65,9 +65,11 @@ public class PanelAddressBar extends JPanel {
     public PanelAddressBar() {
         
         final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("FIELD_QUERYSTRING_TOOLTIP"))};
-        JTextFieldWithIcon fieldWithIcon = new JTextFieldWithIcon(I18nUtil.valueByKey("ADDRESS_BAR")){
+        JTextFieldWithIcon fieldWithIcon = new JTextFieldWithIcon(I18nUtil.valueByKey("ADDRESS_BAR")) {
+            
             @Override
             public JToolTip createToolTip() {
+                
                 JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("FIELD_QUERYSTRING_TOOLTIP"));
                 j[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
@@ -78,9 +80,11 @@ public class PanelAddressBar extends JPanel {
         I18nViewUtil.addComponentForKey("FIELD_QUERYSTRING_TOOLTIP", j[0]);
         
         final JToolTipI18n[] j2 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("FIELD_REQUEST_TOOLTIP"))};
-        this.textFieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe="){
+        this.textFieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe=") {
+            
             @Override
             public JToolTip createToolTip() {
+                
                 JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("FIELD_REQUEST_TOOLTIP"));
                 j2[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
@@ -89,9 +93,11 @@ public class PanelAddressBar extends JPanel {
         I18nViewUtil.addComponentForKey("FIELD_REQUEST_TOOLTIP", j2[0]);
         
         final JToolTipI18n[] j3 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("FIELD_HEADER_TOOLTIP"))};
-        this.textFieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key: value\\r\\nCookie: cKey1=cValue1; cKey2=cValue2\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:"){
+        this.textFieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key: value\\r\\nCookie: cKey1=cValue1; cKey2=cValue2\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:") {
+            
             @Override
             public JToolTip createToolTip() {
+                
                 JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("FIELD_HEADER_TOOLTIP"));
                 j3[0] = (JToolTipI18n) tipI18n;
                 return j3[0];
@@ -100,9 +106,11 @@ public class PanelAddressBar extends JPanel {
         I18nViewUtil.addComponentForKey("FIELD_HEADER_TOOLTIP", j3[0]);
         
         final JToolTipI18n[] j4 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("METHOD_QUERYSTRING_TOOLTIP"))};
-        this.radioQueryString = new RadioLinkMethod("GET", true, MediatorGui.model().getMediatorMethodInjection().getQuery()){
+        this.radioQueryString = new RadioLinkMethod("GET", true, MediatorGui.model().getMediatorMethodInjection().getQuery()) {
+            
             @Override
             public JToolTip createToolTip() {
+                
                 JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("METHOD_QUERYSTRING_TOOLTIP"));
                 j4[0] = (JToolTipI18n) tipI18n;
                 return j4[0];
@@ -111,9 +119,11 @@ public class PanelAddressBar extends JPanel {
         I18nViewUtil.addComponentForKey("METHOD_QUERYSTRING_TOOLTIP", j4[0]);
         
         final JToolTipI18n[] j5 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("METHOD_REQUEST_TOOLTIP"))};
-        this.radioMethod = new RadioLinkMethod("POST", MediatorGui.model().getMediatorMethodInjection().getRequest()){
+        this.radioMethod = new RadioLinkMethod("POST", MediatorGui.model().getMediatorMethodInjection().getRequest()) {
+            
             @Override
             public JToolTip createToolTip() {
+                
                 JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("METHOD_REQUEST_TOOLTIP"));
                 j5[0] = (JToolTipI18n) tipI18n;
                 return j5[0];
@@ -122,9 +132,11 @@ public class PanelAddressBar extends JPanel {
         I18nViewUtil.addComponentForKey("METHOD_REQUEST_TOOLTIP", j5[0]);
         
         final JToolTipI18n[] j6 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("METHOD_HEADER_TOOLTIP"))};
-        this.radioHeader = new RadioLinkMethod("Header", MediatorGui.model().getMediatorMethodInjection().getHeader()){
+        this.radioHeader = new RadioLinkMethod("Header", MediatorGui.model().getMediatorMethodInjection().getHeader()) {
+            
             @Override
             public JToolTip createToolTip() {
+                
                 JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("METHOD_HEADER_TOOLTIP"));
                 j6[0] = (JToolTipI18n) tipI18n;
                 return j6[0];
@@ -220,13 +232,15 @@ public class PanelAddressBar extends JPanel {
                 .addComponent(this.radioQueryString)
                 .addComponent(this.requestPanel)
                 .addComponent(this.radioHeader)
-            ).addGroup(
+            )
+            .addGroup(
                 layoutTextFields
                 .createParallelGroup()
                 .addComponent(this.textFieldAddress)
                 .addComponent(this.textFieldRequest)
                 .addComponent(this.textFieldHeader)
-            ).addGroup(
+            )
+            .addGroup(
                 layoutTextFields
                 .createParallelGroup(GroupLayout.Alignment.LEADING, false)
                 .addComponent(advancedButton)
@@ -244,12 +258,14 @@ public class PanelAddressBar extends JPanel {
                 .addComponent(this.radioQueryString)
                 .addComponent(this.textFieldAddress)
                 .addComponent(advancedButton)
-            ).addGroup(
+            )
+            .addGroup(
                 layoutTextFields
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.requestPanel)
                 .addComponent(this.textFieldRequest)
-            ).addGroup(
+            )
+            .addGroup(
                 layoutTextFields
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.radioHeader)
@@ -285,6 +301,8 @@ public class PanelAddressBar extends JPanel {
         
         return advancedButton;
     }
+    
+    // Getter and setter
 
     /**
      * Change the injection method based on selected radio.

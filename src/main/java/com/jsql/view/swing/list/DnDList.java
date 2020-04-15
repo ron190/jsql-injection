@@ -75,6 +75,7 @@ public class DnDList extends JList<ItemList> {
         this.listModel = new DefaultListModel<>();
 
         for (ItemList path: newList) {
+            
             this.listModel.addElement(path);
         }
 
@@ -102,11 +103,13 @@ public class DnDList extends JList<ItemList> {
                 
             @Override
             public void focusLost(FocusEvent arg0) {
+                
                 DnDList.this.repaint();
             }
             
             @Override
             public void focusGained(FocusEvent arg0) {
+                
                 DnDList.this.repaint();
             }
         });
@@ -118,6 +121,7 @@ public class DnDList extends JList<ItemList> {
             public void keyPressed(KeyEvent arg0) {
                 
                 if (arg0.getKeyCode() == KeyEvent.VK_DELETE) {
+                    
                     DnDList.this.removeSelectedItem();
                 }
             }
@@ -135,6 +139,7 @@ public class DnDList extends JList<ItemList> {
             public void actionPerformed(ActionEvent e) {
                 
                 if (DnDList.this.getSelectedValuesList().isEmpty()) {
+                    
                     return;
                 }
                 
@@ -146,8 +151,11 @@ public class DnDList extends JList<ItemList> {
                     int valueIndex = DnDList.this.listModel.indexOf(value);
 
                     if (valueIndex < DnDList.this.listModel.size() - 1) {
+                        
                         siblings.add(DnDList.this.listModel.get(valueIndex + 1));
+                        
                     } else if (valueIndex > 0) {
+                        
                         siblings.add(DnDList.this.listModel.get(valueIndex - 1));
                     }
                 }
@@ -155,6 +163,7 @@ public class DnDList extends JList<ItemList> {
                 TransferHandler.getCutAction().actionPerformed(e);
                 
                 for (ItemList sibling: siblings) {
+                    
                     DnDList.this.setSelectedValue(sibling, true);
                 }
             }
@@ -164,6 +173,7 @@ public class DnDList extends JList<ItemList> {
             TransferHandler.getCopyAction().getValue(Action.NAME),
             TransferHandler.getCopyAction()
         );
+        
         listActionMap.put(
             TransferHandler.getPasteAction().getValue(Action.NAME),
             TransferHandler.getPasteAction()
@@ -176,6 +186,7 @@ public class DnDList extends JList<ItemList> {
     public void removeSelectedItem() {
         
         if (this.getSelectedValuesList().isEmpty()) {
+            
             return;
         }
 
@@ -187,8 +198,11 @@ public class DnDList extends JList<ItemList> {
             this.listModel.removeElement(itemSelected);
             
             if (indexOfItemSelected == this.listModel.getSize()) {
+                
                 this.setSelectedIndex(indexOfItemSelected - 1);
+                
             } else {
+                
                 this.setSelectedIndex(indexOfItemSelected);
             }
         }
@@ -241,9 +255,12 @@ public class DnDList extends JList<ItemList> {
                         JOptionPane.ERROR_MESSAGE,
                         UiUtil.ICON_ERROR
                     );
+                    
                 } catch (ClassCastException e) {
+                    
                     LOGGER.error(e, e);
                 }
+                
                 return;
             }
         }
@@ -268,6 +285,7 @@ public class DnDList extends JList<ItemList> {
         int startPosition = position;
 
         if (answer != JOptionPane.YES_OPTION && answer != JOptionPane.NO_OPTION) {
+            
             return;
         }
         
@@ -279,47 +297,21 @@ public class DnDList extends JList<ItemList> {
         
         int startPositionFinal = startPosition;
         
-        SwingUtilities.invokeLater(() -> {
-            
-            this.addItems(filesToImport, startPositionFinal);
-        });
+        SwingUtilities.invokeLater(() -> this.addItems(filesToImport, startPositionFinal));
     }
 
     private void addItems(final List<File> filesToImport, int startPosition) {
         
         int endPosition = startPosition;
         
-        for (File file : filesToImport) {
+        for (File file: filesToImport) {
             
-            try (
-                FileReader fileReader = new FileReader(file);
-                BufferedReader bufferedReader = new BufferedReader(fileReader)
-            ) {
-                
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    
-                    if (
-                        StringUtils.isNotEmpty(line)
-                        // Fix Report #60
-                        && 0 <= endPosition && endPosition <= this.listModel.size()
-                    ) {
-                        
-                        // TODO inheritance DnDListScan
-                        if (this.isScan) {
-                            this.listModel.add(endPosition++, new ItemListScan(new BeanInjection(line.replace("\\", "/"))));
-                        } else {
-                            this.listModel.add(endPosition++, new ItemList(line.replace("\\", "/")));
-                        }
-                    }
-                }
-            } catch (IOException e) {
-                LOGGER.error(e.getMessage(), e);
-            }
+            endPosition = this.initializeItems(endPosition, file);
         }
         
 
         if (!this.listModel.isEmpty()) {
+            
             DnDList.this.setSelectionInterval(startPosition, endPosition - 1);
         }
         
@@ -337,15 +329,56 @@ public class DnDList extends JList<ItemList> {
             LOGGER.error(e.getMessage(), e);
         }
     }
+
+    private int initializeItems(int startPosition, File file) {
+        
+        int endPosition = startPosition;
+        
+        try (
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader)
+        ) {
+            
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                
+                if (
+                    StringUtils.isNotEmpty(line)
+                    // Fix Report #60
+                    && 0 <= endPosition && endPosition <= this.listModel.size()
+                ) {
+                    
+                    // TODO inheritance DnDListScan
+                    if (this.isScan) {
+                        
+                        this.listModel.add(endPosition++, new ItemListScan(new BeanInjection(line.replace("\\", "/"))));
+                        
+                    } else {
+                        
+                        this.listModel.add(endPosition++, new ItemList(line.replace("\\", "/")));
+                    }
+                }
+            }
+            
+        } catch (IOException e) {
+            
+            LOGGER.error(e.getMessage(), e);
+        }
+        
+        return endPosition;
+    }
     
     public void restore() {
         
         this.listModel.clear();
         
         for (ItemList path: this.defaultList) {
+            
             this.listModel.addElement(path);
         }
     }
+    
+    // Getter and setter
 
     public void setScan(boolean isScan) {
         this.isScan = isScan;

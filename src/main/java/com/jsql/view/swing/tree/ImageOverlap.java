@@ -42,6 +42,7 @@ public class ImageOverlap extends ImageIcon {
      * @param iconPathOverlap Secondary icon to display on top of main icon
      */
     public ImageOverlap(String main, String iconPathOverlap) {
+        
         super(ImageOverlap.class.getClassLoader().getResource(main));
 
         this.iconPathOverlap = iconPathOverlap;
@@ -54,13 +55,16 @@ public class ImageOverlap extends ImageIcon {
         
         try {
             BufferedImage im2 = ImageIO.read(ImageOverlap.class.getClassLoader().getResource(this.iconPathOverlap));
+            
             g.drawImage(
                 im2,
                 (this.getIconWidth() - im2.getWidth()) / 2,
                 (this.getIconHeight() - im2.getHeight()) / 2,
                 null
             );
+            
         } catch (IOException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
     }

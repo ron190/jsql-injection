@@ -134,7 +134,7 @@ public class TabManagers extends TabbedPaneWheeled {
         
         final JToolTipI18n[] refTooltip = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey(keyTooltip))};
         
-        JLabel labelTab = new JLabel(I18nUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER){
+        JLabel labelTab = new JLabel(I18nUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {
             
             @Override
             public JToolTip createToolTip() {

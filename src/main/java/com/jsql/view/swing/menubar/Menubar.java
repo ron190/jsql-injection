@@ -455,7 +455,7 @@ public class Menubar extends JMenuBar {
             AdjustmentListener singleItemScroll = adjustmentEvent -> {
                 
                 // The user scrolled the List (using the bar, mouse wheel or something else):
-                if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK){
+                if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK) {
                     
                     // Jump to the next "block" (which is a row".
                     adjustmentEvent.getAdjustable().setBlockIncrement(100);

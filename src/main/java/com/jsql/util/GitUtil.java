@@ -55,6 +55,7 @@ public class GitUtil {
     public void checkUpdate(ShowOnConsole displayUpdateMessage) {
         
         if (displayUpdateMessage == ShowOnConsole.YES) {
+            
             LOGGER.trace(I18nUtil.valueByKey("UPDATE_LOADING"));
         }
         
@@ -69,7 +70,9 @@ public class GitUtil {
                 
                 LOGGER.debug(I18nUtil.valueByKey("UPDATE_UPTODATE"));
             }
+            
         } catch (NumberFormatException | IOException | JSONException e) {
+            
             LOGGER.warn(I18nUtil.valueByKey("UPDATE_EXCEPTION"), e);
         }
     }
@@ -116,6 +119,7 @@ public class GitUtil {
         
         // Check proxy
         if (!this.injectionModel.getMediatorUtils().getProxyUtil().isLive(showOnConsole)) {
+            
             return;
         }
 
@@ -154,9 +158,9 @@ public class GitUtil {
             DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
             dataOut.writeBytes(
                 new JSONObject()
-                    .put("title", reportTitle)
-                    .put("body", StringUtil.decimalHtmlEncode(reportBody))
-                    .toString()
+                .put("title", reportTitle)
+                .put("body", StringUtil.decimalHtmlEncode(reportBody))
+                .toString()
             );
             dataOut.flush();
             dataOut.close();
@@ -168,7 +172,8 @@ public class GitUtil {
             // Fix #27623: NoClassDefFoundError on getOutputStream()
             // Implemented by jcifs.http.NtlmHttpURLConnection.getOutputStream()
             if (showOnConsole == ShowOnConsole.YES) {
-                LOGGER.warn("Error during Github report connection: "+ e, e);
+                
+                LOGGER.warn("Error during Github report connection: "+ e.getMessage(), e);
             }
         }
     }
@@ -185,7 +190,9 @@ public class GitUtil {
                 String urlIssue = jsonObjectResponse.getString("html_url");
                 LOGGER.debug("Sent to Github: "+ urlIssue);
             }
+            
         } catch (Exception e) {
+            
             throw new IOException("Connection to the Github API failed, check your connection or update jsql");
         }
     }
@@ -203,7 +210,9 @@ public class GitUtil {
             for (int index = 0 ; index < news.length() ; index++) {
                 LOGGER.info(news.get(index));
             }
+            
         } catch (IOException | JSONException e) {
+            
             LOGGER.warn("Connection to the Github API failed", e);
         }
     }

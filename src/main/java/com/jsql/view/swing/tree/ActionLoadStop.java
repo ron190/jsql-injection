@@ -61,13 +61,14 @@ public class ActionLoadStop implements ActionListener {
 
     private void startListValues(final List<Column> columnsToSearch) {
         
-        new SwingWorker<Object, Object>(){
+        new SwingWorker<Object, Object>() {
             
             @Override
             protected Object doInBackground() throws Exception {
                 
                 Thread.currentThread().setName("SwingWorkerActionLoadStop");
                 MediatorGui.model().getDataAccess().listValues(columnsToSearch);
+                
                 return null;
             }
         }.execute();

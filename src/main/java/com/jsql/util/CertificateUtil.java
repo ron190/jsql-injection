@@ -40,6 +40,7 @@ public class CertificateUtil {
                 
                 @Override
                 public X509Certificate[] getAcceptedIssuers() {
+                    
                     return new X509Certificate[0];
                 }
                 
@@ -62,7 +63,8 @@ public class CertificateUtil {
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
             
         } catch (Exception e) {
-            LOGGER.warn("Error ignoring untrusted SSL: "+ e, e);
+            
+            LOGGER.warn("Error ignoring untrusted SSL: "+ e.getMessage(), e);
         }
         
         // Ignore CertificateException: No subject alternative names present

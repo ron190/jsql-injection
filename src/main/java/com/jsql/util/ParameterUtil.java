@@ -47,6 +47,7 @@ public class ParameterUtil {
     private InjectionModel injectionModel;
     
     public ParameterUtil(InjectionModel injectionModel) {
+        
         this.injectionModel = injectionModel;
     }
     
@@ -99,7 +100,7 @@ public class ParameterUtil {
             
         } catch (MalformedURLException e) {
             
-            LOGGER.warn("Incorrect Url: "+ e, e);
+            LOGGER.warn("Incorrect Url: "+ e.getMessage(), e);
             
             // Incorrect URL, reset the start button
             Request request = new Request();
@@ -124,14 +125,17 @@ public class ParameterUtil {
         int nbStarInParameter = 0;
         
         if (this.getQueryStringFromEntries().contains(InjectionModel.STAR)) {
+            
             nbStarInParameter++;
         }
         
         if (this.getRequestFromEntries().contains(InjectionModel.STAR)) {
+            
             nbStarInParameter++;
         }
         
         if (this.getHeaderFromEntries().contains(InjectionModel.STAR)) {
+            
             nbStarInParameter++;
         }
         
@@ -226,6 +230,7 @@ public class ParameterUtil {
         URL url = new URL(urlQuery);
         
         if (StringUtils.isEmpty(urlQuery) || StringUtils.isEmpty(url.getHost())) {
+            
             throw new MalformedURLException("empty URL");
         }
         
@@ -236,7 +241,9 @@ public class ParameterUtil {
         
         // Parse url and GET query string
         Matcher regexQueryString = Pattern.compile("(.*\\?)(.*)").matcher(urlQuery);
+        
         if (!regexQueryString.find()) {
+            
             return;
         }
         
@@ -244,7 +251,8 @@ public class ParameterUtil {
         
         if (StringUtils.isNotEmpty(url.getQuery())) {
             
-            this.listQueryString = Pattern
+            this.listQueryString =
+                Pattern
                 .compile("&")
                 .splitAsStream(regexQueryString.group(2))
                 .map(s -> Arrays.copyOf(s.split("="), 2))
@@ -260,7 +268,8 @@ public class ParameterUtil {
         
         if (StringUtils.isNotEmpty(request)) {
             
-            this.listRequest = Pattern
+            this.listRequest =
+                Pattern
                 .compile("&")
                 .splitAsStream(request)
                 .map(s -> Arrays.copyOf(s.split("="), 2))
@@ -275,7 +284,8 @@ public class ParameterUtil {
         
         if (StringUtils.isNotEmpty(header)) {
             
-            this.listHeader = Pattern
+            this.listHeader =
+                Pattern
                 .compile("\\\\r\\\\n")
                 .splitAsStream(header)
                 .map(commaEntry -> Arrays.copyOf(commaEntry.split(":"), 2))
@@ -286,7 +296,8 @@ public class ParameterUtil {
     
     public String getQueryStringFromEntries() {
         
-        return this.listQueryString
+        return
+            this.listQueryString
             .stream()
             .filter(Objects::nonNull)
             .map(entry -> entry.getKey() +"="+ entry.getValue())
@@ -295,7 +306,8 @@ public class ParameterUtil {
 
     public String getRequestFromEntries() {
         
-        return this.listRequest
+        return
+            this.listRequest
             .stream()
             .filter(Objects::nonNull)
             .map(entry -> entry.getKey() +"="+ entry.getValue())
@@ -304,7 +316,8 @@ public class ParameterUtil {
     
     public String getHeaderFromEntries() {
         
-        return this.listHeader
+        return
+            this.listHeader
             .stream()
             .filter(Objects::nonNull)
             .map(entry -> entry.getKey() +":"+ entry.getValue())
@@ -312,6 +325,7 @@ public class ParameterUtil {
     }
 
     public boolean isRequestSoap() {
+        
         return this.requestAsText.trim().matches("^<\\?xml.*");
     }
 

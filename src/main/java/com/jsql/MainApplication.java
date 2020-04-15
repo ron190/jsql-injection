@@ -70,13 +70,13 @@ public class MainApplication {
             
         } catch (HeadlessException e) {
             
-            LOGGER.error("HeadlessException, command line execution in jSQL not supported yet: "+ e, e);
+            LOGGER.error("HeadlessException, command line execution in jSQL not supported yet: "+ e.getMessage(), e);
             return;
             
         } catch (AWTError e) {
             
             // Fix #22668: Assistive Technology not found
-            LOGGER.error("Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: "+ e, e);
+            LOGGER.error("Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: "+ e.getMessage(), e);
             return;
         }
         

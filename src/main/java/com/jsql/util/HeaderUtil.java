@@ -384,7 +384,7 @@ public class HeaderUtil {
         
         Map<String, String> mapHeaders = new HashMap<>();
         
-        for (Map.Entry<String, List<String>> entries : connection.getHeaderFields().entrySet()) {
+        for (Map.Entry<String, List<String>> entries: connection.getHeaderFields().entrySet()) {
             
             mapHeaders.put(entries.getKey() == null ? "Status code" : entries.getKey(), String.join(",", entries.getValue()));
         }

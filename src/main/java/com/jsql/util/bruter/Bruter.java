@@ -74,7 +74,7 @@ public class Bruter {
 
     public void addSpecialCharacters() {
         
-        for (char c : specialCharacters) {
+        for (char c: specialCharacters) {
             this.characters.add(String.valueOf(c));
         }
     }
@@ -83,7 +83,7 @@ public class Bruter {
         
         char[] arrayChars = s.toCharArray();
         
-        for (char arrayChar : arrayChars) {
+        for (char arrayChar: arrayChars) {
             this.characters.remove(Character.toString(arrayChar));
         }
     }

@@ -638,7 +638,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         if (this.modelYaml.getStrategy().getError() != null) {
             
-            for (Method methodError : this.modelYaml.getStrategy().getError().getMethod()) {
+            for (Method methodError: this.modelYaml.getStrategy().getError().getMethod()) {
                 
                 JPanel panelError = new JPanel(new BorderLayout());
                 

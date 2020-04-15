@@ -64,7 +64,7 @@ class DocumentReader extends Reader {
      *
      * @param document the document to be read.
      */
-    public DocumentReader(AbstractDocument document){
+    public DocumentReader(AbstractDocument document) {
         this.document = document;
     }
 
@@ -75,9 +75,9 @@ class DocumentReader extends Reader {
      * should not be called at the same time as a read) allows
      * the reader to compensate.
      */
-    public void update(int position, int adjustment){
-        if (position < this.position){
-            if (this.position < position - adjustment){
+    public void update(int position, int adjustment) {
+        if (position < this.position) {
+            if (this.position < position - adjustment) {
                 this.position = position;
             } else {
                 this.position += adjustment;
@@ -100,7 +100,7 @@ class DocumentReader extends Reader {
      * @param readAheadLimit ignored.
      */
     @Override
-    public void mark(int readAheadLimit){
+    public void mark(int readAheadLimit) {
         this.mark = this.position;
     }
 
@@ -110,7 +110,7 @@ class DocumentReader extends Reader {
      * @return true
      */
     @Override
-    public boolean markSupported(){
+    public boolean markSupported() {
         return true;
     }
 
@@ -120,13 +120,13 @@ class DocumentReader extends Reader {
      * @return the character or -1 if the end of the document has been reached.
      */
     @Override
-    public int read(){
-        if (this.position < this.document.getLength()){
+    public int read() {
+        if (this.position < this.document.getLength()) {
             try {
                 char c = this.document.getText((int)this.position, 1).charAt(0);
                 this.position++;
                 return c;
-            } catch (BadLocationException e){
+            } catch (BadLocationException e) {
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
@@ -145,7 +145,7 @@ class DocumentReader extends Reader {
      * @return the number of characters read or -1 if no more characters are available in the document.
      */
     @Override
-    public int read(char[] cbuf){
+    public int read(char[] cbuf) {
         return this.read(cbuf, 0, cbuf.length);
     }
 
@@ -159,23 +159,23 @@ class DocumentReader extends Reader {
      * @return the number of characters read or -1 if no more characters are available in the document.
      */
     @Override
-    public int read(char[] cbuf, int off, int len){
-        if (this.position < this.document.getLength()){
+    public int read(char[] cbuf, int off, int len) {
+        if (this.position < this.document.getLength()) {
             int length = len;
-            if (this.position + length >= this.document.getLength()){
+            if (this.position + length >= this.document.getLength()) {
                 length = this.document.getLength() - (int)this.position;
             }
-            if (off + length >= cbuf.length){
+            if (off + length >= cbuf.length) {
                 length = cbuf.length - off;
             }
             try {
                 String s = this.document.getText((int)this.position, length);
                 this.position += length;
-                for (int i=0; i<length; i++){
+                for (int i=0; i<length; i++) {
                     cbuf[off+i] = s.charAt(i);
                 }
                 return length;
-            } catch (BadLocationException e){
+            } catch (BadLocationException e) {
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
@@ -198,8 +198,8 @@ class DocumentReader extends Reader {
      * Reset this reader to the last mark, or the beginning of the document if a mark has not been set.
      */
     @Override
-    public void reset(){
-        if (this.mark == -1){
+    public void reset() {
+        if (this.mark == -1) {
             this.position = 0;
         } else {
             this.position = this.mark;
@@ -216,8 +216,8 @@ class DocumentReader extends Reader {
      * @return the actual number of characters skipped.
      */
     @Override
-    public long skip(long n){
-        if (this.position + n <= this.document.getLength()){
+    public long skip(long n) {
+        if (this.position + n <= this.document.getLength()) {
             this.position += n;
             return n;
         } else {
@@ -232,8 +232,8 @@ class DocumentReader extends Reader {
      *
      * @param n the offset to which to seek.
      */
-    public void seek(long n){
-        if (n <= this.document.getLength()){
+    public void seek(long n) {
+        if (n <= this.document.getLength()) {
             this.position = n;
         } else {
             this.position = this.document.getLength();

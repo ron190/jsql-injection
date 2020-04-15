@@ -264,7 +264,7 @@ public class AddressMenuBar extends JMenuBar {
                     break;
                 }
                 
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
                 
                 LOGGER.error(e, e);
             }

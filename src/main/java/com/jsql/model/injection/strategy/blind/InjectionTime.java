@@ -103,10 +103,10 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             Thread.currentThread().interrupt();
         }
         
-        this.initializeTrueMarks(injectionModel, booleanMode);
+        this.initializeTrueMarks(booleanMode);
     }
 
-    private void initializeTrueMarks(InjectionModel injectionModel, BooleanMode booleanMode) {
+    private void initializeTrueMarks(BooleanMode booleanMode) {
         
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model
@@ -115,7 +115,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         
         for (String urlTest: this.trueTest) {
             
-            listCallableTagTrue.add(new CallableTime(urlTest, injectionModel, this, booleanMode));
+            listCallableTagTrue.add(new CallableTime(urlTest, this.injectionModel, this, booleanMode));
         }
 
         // If one TRUE query makes more than X seconds,

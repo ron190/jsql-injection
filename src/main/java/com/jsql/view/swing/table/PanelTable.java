@@ -213,7 +213,7 @@ public class PanelTable extends JPanel {
         AdjustmentListener singleItemScroll = adjustmentEvent -> {
             
             // The user scrolled the List (using the bar, mouse wheel or something else):
-            if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK){
+            if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK) {
                 
                 adjustmentEvent.getAdjustable().setBlockIncrement(100);
                 adjustmentEvent.getAdjustable().setUnitIncrement(100);

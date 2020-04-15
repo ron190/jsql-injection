@@ -151,7 +151,7 @@ public class PanelConsoles extends JPanel {
         AdjustmentListener singleItemScroll = adjustmentEvent -> {
             
             // The user scrolled the List (using the bar, mouse wheel or something else):
-            if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK){
+            if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK) {
                 
                 // Jump to the next "block" (which is a row".
                 adjustmentEvent.getAdjustable().setBlockIncrement(100);
@@ -189,6 +189,7 @@ public class PanelConsoles extends JPanel {
                 return Math.max(80, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
             }
         });
+        
         this.tabConsoles.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 
         this.buildI18nTab(
@@ -200,17 +201,21 @@ public class PanelConsoles extends JPanel {
         );
 
         // Order is important
-        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-        if (prefs.getBoolean(UiUtil.JAVA_VISIBLE, false)) {
+        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+        if (preferences.getBoolean(UiUtil.JAVA_VISIBLE, false)) {
+            
             this.insertJavaTab();
         }
-        if (prefs.getBoolean(UiUtil.NETWORK_VISIBLE, true)) {
+        if (preferences.getBoolean(UiUtil.NETWORK_VISIBLE, true)) {
+            
             this.insertNetworkTab();
         }
-        if (prefs.getBoolean(UiUtil.CHUNK_VISIBLE, true)) {
+        if (preferences.getBoolean(UiUtil.CHUNK_VISIBLE, true)) {
+            
             this.insertChunkTab();
         }
-        if (prefs.getBoolean(UiUtil.BINARY_VISIBLE, true)) {
+        if (preferences.getBoolean(UiUtil.BINARY_VISIBLE, true)) {
+            
             this.insertBooleanTab();
         }
 
@@ -224,6 +229,7 @@ public class PanelConsoles extends JPanel {
                 Component currentTabHeader = tabs.getTabComponentAt(tabs.getSelectedIndex());
                 
                 if (currentTabHeader != null) {
+                    
                     currentTabHeader.setFont(currentTabHeader.getFont().deriveFont(Font.PLAIN));
                     currentTabHeader.setForeground(Color.BLACK);
                 }
@@ -278,7 +284,9 @@ public class PanelConsoles extends JPanel {
         // Fix #4657, Fix #1860: Multiple Exceptions on setRowCount()
         try {
             ((DefaultTableModel) this.networkTable.getModel()).setRowCount(0);
+            
         } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
         
@@ -292,14 +300,18 @@ public class PanelConsoles extends JPanel {
         // Fix #54572: NullPointerException on setText()
         try {
             this.tabbedPaneNetworkTab.getTextAreaNetworkTabSource().setText(StringUtils.EMPTY);
+            
         } catch (NullPointerException e) {
+            
             LOGGER.error(e, e);
         }
         
         // Fix #41879: ArrayIndexOutOfBoundsException on setText()
         try {
             this.tabbedPaneNetworkTab.getTextAreaNetworkTabPreview().setText(StringUtils.EMPTY);
+            
         } catch (ArrayIndexOutOfBoundsException e) {
+            
             LOGGER.error(e, e);
         }
     }
@@ -364,9 +376,11 @@ public class PanelConsoles extends JPanel {
         
         final JToolTipI18n[] refJToolTipI18n = new JToolTipI18n[]{new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip))};
         
-        JLabel labelTab = new JLabel(I18nViewUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER){
+        JLabel labelTab = new JLabel(I18nViewUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {
+            
             @Override
             public JToolTip createToolTip() {
+                
                 JToolTip tipI18n = new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip));
                 refJToolTipI18n[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
@@ -375,9 +389,19 @@ public class PanelConsoles extends JPanel {
         
         labelTab.setName(keyLabel);
         labelTab.addMouseListener(new MouseAdapter() {
+            
             @Override
             public void mousePressed(MouseEvent e) {
-                PanelConsoles.this.tabConsoles.setSelectedComponent(manager);
+                
+                // Fix #90428: IllegalArgumentException in setSelectedComponent()
+                try {
+                    PanelConsoles.this.tabConsoles.setSelectedComponent(manager);
+                    
+                } catch (IllegalArgumentException err) {
+                    
+                    LOGGER.error(err, err);
+                }
+                
                 super.mousePressed(e);
             }
         });

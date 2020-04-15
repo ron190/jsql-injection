@@ -5,31 +5,51 @@ import org.apache.commons.lang3.StringUtils;
 @SuppressWarnings("serial")
 public abstract class SlidingException extends JSqlException {
     
-    private String slidingWindowAllRows = StringUtils.EMPTY;
+    private final String slidingWindowAllRows;
     
-    private String slidingWindowCurrentRows = StringUtils.EMPTY;
+    private final String slidingWindowCurrentRows;
     
     public SlidingException(String message) {
+        
         super(message);
+        
+        this.slidingWindowAllRows = StringUtils.EMPTY;
+        this.slidingWindowCurrentRows = StringUtils.EMPTY;
     }
     
     public SlidingException(String message, Throwable e) {
+        
         super(message, e);
+        
+        this.slidingWindowAllRows = StringUtils.EMPTY;
+        this.slidingWindowCurrentRows = StringUtils.EMPTY;
     }
     
     public SlidingException(String string, String slidingWindowAllRows) {
         
-        this(string);
+        super(string);
         
-        this.slidingWindowAllRows = slidingWindowAllRows;
+        this.slidingWindowCurrentRows = StringUtils.EMPTY;
+        
+        this.slidingWindowAllRows =
+            StringUtils.isNotEmpty(slidingWindowAllRows)
+            ? slidingWindowAllRows
+            : StringUtils.EMPTY;
     }
 
     public SlidingException(String string, String slidingWindowAllRows, String slidingWindowCurrentRows) {
         
-        this(string);
+        super(string);
         
-        this.slidingWindowAllRows = slidingWindowAllRows;
-        this.slidingWindowCurrentRows = slidingWindowCurrentRows;
+        this.slidingWindowAllRows =
+            StringUtils.isNotEmpty(slidingWindowAllRows)
+            ? slidingWindowAllRows
+            : StringUtils.EMPTY;
+        
+        this.slidingWindowCurrentRows =
+            StringUtils.isNotEmpty(slidingWindowCurrentRows)
+            ? slidingWindowCurrentRows
+            : StringUtils.EMPTY;
     }
 
     public String getSlidingWindowCurrentRows() {

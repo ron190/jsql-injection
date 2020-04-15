@@ -162,6 +162,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         try {
             if (!this.mediatorUtils.getProxyUtil().isLive(ShowOnConsole.YES)) {
+                
                 return;
             }
             
@@ -177,21 +178,25 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             boolean hasFoundInjection = this.mediatorMethodInjection.getQuery().testParameters();
 
             if (!hasFoundInjection) {
+                
                 hasFoundInjection = this.mediatorUtils.getSoapUtil().testParameters();
             }
             
             if (!hasFoundInjection) {
+                
                 LOGGER.trace("Checking standard Request parameters");
                 hasFoundInjection = this.mediatorMethodInjection.getRequest().testParameters();
             }
             
             if (!hasFoundInjection) {
+                
                 hasFoundInjection = this.mediatorMethodInjection.getHeader().testParameters();
             }
             
             if (!this.isScanning) {
                 
                 if (!this.mediatorUtils.getPreferencesUtil().isNotInjectingMetadata()) {
+                    
                     this.dataAccess.getDatabaseInfos();
                 }
                 
@@ -236,8 +241,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         try {
             urlObject = new URL(urlInjection);
+            
         } catch (MalformedURLException e) {
-            LOGGER.warn("Incorrect Query Url: "+ e, e);
+            
+            LOGGER.warn("Incorrect Query Url: "+ e.getMessage(), e);
             return StringUtils.EMPTY;
         }
 
@@ -281,7 +288,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             // Exception for General and Spnego Opening Connection
             IOException | LoginException | GSSException | PrivilegedActionException e
         ) {
-            LOGGER.warn("Error during connection: "+ e, e);
+            LOGGER.warn("Error during connection: "+ e.getMessage(), e);
         }
 
         // return the source code of the page
@@ -298,23 +305,28 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             // URL without query string like Request and Header can receive
             // new params from <form> parsing, in that case add the '?' to URL
             if (!urlInjectionFixed.contains("?")) {
+                
                 urlInjectionFixed += "?";
             }
 
             urlInjectionFixed += this.buildQuery(this.mediatorMethodInjection.getQuery(), this.mediatorUtils.getParameterUtil().getQueryStringFromEntries(), isUsingIndex, dataInjection);
             
             if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
+                
                 urlInjectionFixed += "&"+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey() +"="+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue();
             }
             
             try {
                 urlObjectFixed = new URL(urlInjectionFixed);
+                
             } catch (MalformedURLException e) {
-                LOGGER.warn("Incorrect Url: "+ e, e);
+                
+                LOGGER.warn("Incorrect Url: "+ e.getMessage(), e);
             }
         } else {
             
             if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
+                
                 urlInjectionFixed += "?"+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey() +"="+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue();
             }
         }
@@ -350,6 +362,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             connection = spnego.connect(urlObject);
             
         } else {
+            
             connection = (HttpURLConnection) urlObject.openConnection();
         }
         
@@ -369,7 +382,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         if (!this.mediatorUtils.getParameterUtil().getListHeader().isEmpty()) {
             
-            Stream.of(this.buildQuery(this.mediatorMethodInjection.getHeader(), this.mediatorUtils.getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
+            Stream
+            .of(this.buildQuery(this.mediatorMethodInjection.getHeader(), this.mediatorUtils.getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
             .forEach(e -> {
                 
                 if (e.split(":").length == 2) {
@@ -393,6 +407,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
    
                 DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
+                
                 if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
                     
                     dataOut.writeBytes(this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey() +"="+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue() +"&");
@@ -401,8 +416,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 if (this.mediatorUtils.getConnectionUtil().getTypeRequest().matches("PUT|POST")) {
                     
                     if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
+                        
                         dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
+                        
                     } else {
+                        
                         dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
                     }
                 }
@@ -411,12 +429,16 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 dataOut.close();
                 
                 if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
+                    
                     msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
+                    
                 } else {
+                    
                     msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
                 }
+                
             } catch (IOException e) {
-                LOGGER.warn("Error during Request connection: "+ e, e);
+                LOGGER.warn("Error during Request connection: "+ e.getMessage(), e);
             }
         }
     }
@@ -605,10 +627,14 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         String architecture = System.getProperty("os.arch");
         
         LOGGER.trace(
-            "jSQL Injection v" + this.getVersionJsql()
-            + " on Java "+ versionJava
-            +"-"+ architecture
-            +"-"+ System.getProperty("user.language")
+            "jSQL Injection v"
+            + this.getVersionJsql()
+            + " on Java "
+            + versionJava
+            + "-"
+            + architecture
+            + "-"
+            + System.getProperty("user.language")
         );
     }
     

@@ -57,10 +57,12 @@ public class RequestPanel extends JPanel {
         final JPopupMenu popup = new JPopupMenu();
         final ButtonGroup buttonGroup = new ButtonGroup();
         
-        for (String protocol : new String[]{"OPTIONS", "HEAD", "POST", "PUT", "DELETE", "TRACE"}) {
+        for (String protocol: new String[]{"OPTIONS", "HEAD", "POST", "PUT", "DELETE", "TRACE"}) {
             
             final JMenuItem newMenuItem = new JRadioButtonMenuItem(protocol, "POST".equals(protocol));
+            
             newMenuItem.addActionListener(actionEvent -> {
+                
                 this.typeRequest = (newMenuItem.getText());
                 panelAddressBar.getRadioMethod().setText(this.typeRequest);
             });
@@ -76,6 +78,7 @@ public class RequestPanel extends JPanel {
                     
                     @Override
                     protected void doClick(MenuSelectionManager msm) {
+                        
                         this.menuItem.doClick(0);
                     }
                 }
@@ -94,9 +97,12 @@ public class RequestPanel extends JPanel {
         radioCustomMethod.addActionListener(actionEvent -> {
             
             if (StringUtils.isNotEmpty(inputCustomMethod.getText())) {
+                
                 this.typeRequest = (inputCustomMethod.getText());
                 panelAddressBar.getRadioMethod().setText(this.typeRequest);
+                
             } else {
+                
                 LOGGER.warn("Define label of Custom request method");
             }
         });
@@ -111,9 +117,13 @@ public class RequestPanel extends JPanel {
             public void mousePressed(MouseEvent e) {
                 
                 popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
+                
                 if (ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT) {
+                    
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
+                    
                 } else {
+                    
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
                 }
                 

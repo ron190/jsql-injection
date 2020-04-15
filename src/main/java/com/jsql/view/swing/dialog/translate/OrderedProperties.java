@@ -244,7 +244,8 @@ public final class OrderedProperties {
         
         Properties jdkProperties = new Properties();
         
-        for (Map.Entry<String, String> entry : this.entrySet()) {
+        for (Map.Entry<String, String> entry: this.entrySet()) {
+            
             jdkProperties.put(entry.getKey(), entry.getValue());
         }
         
@@ -312,7 +313,7 @@ public final class OrderedProperties {
         OrderedProperties result = builder.build();
 
         // copy the properties from the source to the target
-        for (Map.Entry<String, String> entry : source.entrySet()) {
+        for (Map.Entry<String, String> entry: source.entrySet()) {
             
             result.setProperty(entry.getKey(), entry.getValue());
         }

@@ -91,7 +91,7 @@ public class HashBruter extends Bruter {
                 
             } else if (baseString.length() < length) {
                 
-                for (String element : this.characters) {
+                for (String element: this.characters) {
                     this.generateAllPossibleCombinations(baseString + element, length);
                 }
             }

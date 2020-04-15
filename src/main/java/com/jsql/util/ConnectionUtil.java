@@ -98,6 +98,7 @@ public class ConnectionUtil {
             CookieHandler.setDefault(cookieManager);
             
         } else {
+            
             CookieHandler.setDefault(null);
         }
         
@@ -126,11 +127,12 @@ public class ConnectionUtil {
                 
             } else {
                 
-                connection = (HttpURLConnection) new URL(
-                    this.getUrlByUser()
-                    // Ignore injection point during the test
-                    .replace(InjectionModel.STAR, StringUtils.EMPTY)
-                ).openConnection();
+                connection =
+                    (HttpURLConnection) new URL(
+                        this.getUrlByUser()
+                        // Ignore injection point during the test
+                        .replace(InjectionModel.STAR, StringUtils.EMPTY)
+                    ).openConnection();
             }
             
             connection.setReadTimeout(this.getTimeout());
@@ -178,10 +180,14 @@ public class ConnectionUtil {
         String pageSource = null;
         try {
             if (lineFeed) {
+                
                 pageSource = ConnectionUtil.getSourceLineFeed(connection);
+                
             } else {
+                
                 pageSource = ConnectionUtil.getSource(connection);
             }
+            
             // TODO catch
         } finally {
             
@@ -203,7 +209,9 @@ public class ConnectionUtil {
     
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String line;
+        
         while ((line = reader.readLine()) != null) {
+            
             pageSource.append(line +"\n");
         }
         reader.close();
@@ -218,7 +226,9 @@ public class ConnectionUtil {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             
             char[] buffer = new char[4096];
+            
             while (reader.read(buffer) > 0) {
+                
                 pageSource.append(buffer);
             }
             
@@ -231,7 +241,9 @@ public class ConnectionUtil {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream))) {
                     
                     char[] buffer = new char[4096];
+                    
                     while (reader.read(buffer) > 0) {
+                        
                         pageSource.append(buffer);
                     }
                 }
@@ -248,10 +260,12 @@ public class ConnectionUtil {
      * @throws IOException when the reading of source page fails
      */
     public String getSourceLineFeed(String url) throws IOException {
+        
         return this.getSource(url, true);
     }
     
     public String getSource(String url) throws IOException {
+        
         return this.getSource(url, false);
     }
     
@@ -265,7 +279,7 @@ public class ConnectionUtil {
      */
     public static void fixCustomRequestMethod(HttpURLConnection connection, String customMethod) throws ProtocolException {
         
-        // Add a default or custom method : check whether we are running on a buggy JRE
+        // Add a default or custom method: check whether we are running on a buggy JRE
         try {
             
             connection.setRequestMethod(customMethod);
@@ -354,7 +368,8 @@ public class ConnectionUtil {
                 privateFieldReadTimeout.setInt(privateURLConnection, this.getTimeout());
                 
             } catch (Exception e) {
-                LOGGER.warn("Fix jcifs timeout failed: "+ e, e);
+                
+                LOGGER.warn("Fix jcifs timeout failed: "+ e.getMessage(), e);
             }
         }
     }

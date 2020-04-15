@@ -7,7 +7,7 @@ javascript: |
      return sql
      
          // Parse letters inside quotes
-         .replace(/'([^']+)'/ig, function(corr, letters){
+         .replace(/'([^']+)'/ig, function(corr, letters) {
             
               return 'concat('
               

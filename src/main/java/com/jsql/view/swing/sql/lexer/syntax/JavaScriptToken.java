@@ -186,7 +186,7 @@ public class JavaScriptToken extends Token {
    * @param charBegin the offset into the input in characters at which this token started
    * @param charEnd the offset into the input in characters at which this token ended
    */
-  public JavaScriptToken(int ID, String contents, int lineNumber, int charBegin, int charEnd){
+  public JavaScriptToken(int ID, String contents, int lineNumber, int charBegin, int charEnd) {
     this (ID, contents, lineNumber, charBegin, charEnd, Token.UNDEFINED_STATE);
   }
 
@@ -201,7 +201,7 @@ public class JavaScriptToken extends Token {
    * @param charEnd the offset into the input in characters at which this token ended
    * @param state the state the tokenizer is in after returning this token.
    */
-  public JavaScriptToken(int ID, String contents, int lineNumber, int charBegin, int charEnd, int state){
+  public JavaScriptToken(int ID, String contents, int lineNumber, int charBegin, int charEnd, int state) {
     this.ID = ID;
     this.contents = new String(contents);
     this.lineNumber = lineNumber;
@@ -220,7 +220,7 @@ public class JavaScriptToken extends Token {
      * tokenizer may be restarted from there.
      */
   @Override
-public int getState(){
+public int getState() {
     return this.state;
   }
   /**
@@ -229,7 +229,7 @@ public int getState(){
    * @return the id number of the token
    */
   @Override
-public int getID(){
+public int getID() {
       return this.ID;
   }
 
@@ -239,7 +239,7 @@ public int getID(){
    * @return A string representing the text of the token
    */
   @Override
-public String getContents(){
+public String getContents() {
       return (new String(this.contents));
   }
 
@@ -249,7 +249,7 @@ public String getContents(){
    * @return the line number of the input on which this token started
    */
   @Override
-public int getLineNumber(){
+public int getLineNumber() {
       return this.lineNumber;
   }
 
@@ -259,7 +259,7 @@ public int getLineNumber(){
    * @return the offset into the input in characters at which this token started
    */
   @Override
-public int getCharBegin(){
+public int getCharBegin() {
       return this.charBegin;
   }
 
@@ -269,7 +269,7 @@ public int getCharBegin(){
    * @return the offset into the input in characters at which this token ended
    */
   @Override
-public int getCharEnd(){
+public int getCharEnd() {
      return this.charEnd;
   }
 
@@ -280,7 +280,7 @@ public int getCharEnd(){
    *
    * @return true if this token is a reserved word, false otherwise
    */
-  public boolean isReservedWord(){
+  public boolean isReservedWord() {
       return((this.ID >> 8) == 0x1);
   }
 
@@ -291,7 +291,7 @@ public int getCharEnd(){
    *
    * @return true if this token is an identifier, false otherwise
    */
-  public boolean isIdentifier(){
+  public boolean isIdentifier() {
       return((this.ID >> 8) == 0x2);
   }
 
@@ -302,7 +302,7 @@ public int getCharEnd(){
    *
    * @return true if this token is a literal, false otherwise
    */
-  public boolean isLiteral(){
+  public boolean isLiteral() {
       return((this.ID >> 8) == 0x3);
   }
   
@@ -313,7 +313,7 @@ public int getCharEnd(){
    *
    * @return true if this token is a Separator, false otherwise
    */
-  public boolean isSeparator(){
+  public boolean isSeparator() {
       return((this.ID >> 8) == 0x4);
   }
 
@@ -324,7 +324,7 @@ public int getCharEnd(){
    *
    * @return true if this token is a Operator, false otherwise
    */
-  public boolean isOperator(){
+  public boolean isOperator() {
       return((this.ID >> 8) == 0x5);
   }
 
@@ -334,7 +334,7 @@ public int getCharEnd(){
    * @return true if this token is a comment, false otherwise
    */
   @Override
-public boolean isComment(){
+public boolean isComment() {
       return((this.ID >> 8) == 0xD);
   }
 
@@ -345,7 +345,7 @@ public boolean isComment(){
    * @return true if this token is White Space, false otherwise
    */
   @Override
-public boolean isWhiteSpace(){
+public boolean isWhiteSpace() {
       return((this.ID >> 8) == 0xE);
   }
 
@@ -356,7 +356,7 @@ public boolean isWhiteSpace(){
    * @return true if this token is an Error, false otherwise
    */
   @Override
-public boolean isError(){
+public boolean isError() {
       return((this.ID >> 8) == 0xF);
   }
 
@@ -368,22 +368,22 @@ public boolean isError(){
      * @return a description of this token.
      */
     @Override
-    public String getDescription(){
-        if (this.isReservedWord()){
+    public String getDescription() {
+        if (this.isReservedWord()) {
             return("reservedWord");
-        } else if (this.isIdentifier()){
+        } else if (this.isIdentifier()) {
             return("identifier");
-        } else if (this.isLiteral()){
+        } else if (this.isLiteral()) {
             return("literal");
-        } else if (this.isSeparator()){
+        } else if (this.isSeparator()) {
             return("separator");
-        } else if (this.isOperator()){
+        } else if (this.isOperator()) {
             return("operator");
-        } else if (this.isComment()){
+        } else if (this.isComment()) {
             return("comment");
-        } else if (this.isWhiteSpace()){
+        } else if (this.isWhiteSpace()) {
             return("whitespace");
-        } else if (this.isError()){
+        } else if (this.isError()) {
              return("error");
         } else {
             return("unknown");
@@ -396,11 +396,11 @@ public boolean isError(){
    * @return a  String that explains the error, if this token is an error, null otherwise.
    */
   @Override
-public String errorString(){
+public String errorString() {
       String s;
-      if (this.isError()){
+      if (this.isError()) {
           s = "Error on line " + this.lineNumber + ": ";
-          switch (this.ID){
+          switch (this.ID) {
           case ERROR_IDENTIFIER:
               s += "Unrecognized Identifier: " + this.contents;
           break;

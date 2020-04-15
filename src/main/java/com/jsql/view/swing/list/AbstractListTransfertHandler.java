@@ -158,23 +158,23 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
             
             String clipboardText = (String) transferableFromClipboard.getTransferData(DataFlavor.stringFlavor);
 
-            int selectedIndex = 0;
+            int selectedIndexPaste = 0;
             
             if (list.getSelectedIndex() > 0) {
-                selectedIndex = list.getSelectedIndex();
+                selectedIndexPaste = list.getSelectedIndex();
             }
             
             list.clearSelection();
 
-            List<Integer> selectedIndexes = this.initializeStringPaste(clipboardText, selectedIndex, listModel);
+            List<Integer> selectedIndexes = this.initializeStringPaste(clipboardText, selectedIndexPaste, listModel);
 
             int[] selectedIndexesPasted = new int[selectedIndexes.size()];
             
             int i = 0;
             
-            for (Integer integer : selectedIndexes) {
+            for (Integer selectedIndex: selectedIndexes) {
                 
-                selectedIndexesPasted[i] = integer;
+                selectedIndexesPasted[i] = selectedIndex;
                 i++;
             }
             

@@ -185,6 +185,7 @@ public class DialogAbout extends JDialog {
         
         JEditorPane editorPane = new JEditorPane();
         
+        // Fix #82540: NoClassDefFoundError on setText()
         try {
             editorPane.setContentType("text/html");
 
@@ -202,7 +203,7 @@ public class DialogAbout extends JDialog {
 
             editorPane.setText(result.toString().replace("%JSQLVERSION%", MediatorGui.model().getVersionJsql()));
             
-        } catch (IOException e) {
+        } catch (NoClassDefFoundError | IOException e) {
             
             LOGGER.error(e.getMessage(), e);
         }

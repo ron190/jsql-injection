@@ -375,7 +375,7 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
                 
                 int[] columns = AdjusterTableColumn.this.tableAdjust.getSelectedColumns();
 
-                for (int column : columns) {
+                for (int column: columns) {
                     
                     if (this.isAdjust) {
                         AdjusterTableColumn.this.adjustColumn(column);

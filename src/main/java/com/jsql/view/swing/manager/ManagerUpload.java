@@ -68,10 +68,12 @@ public class ManagerUpload extends AbstractManagerList {
         try (
             InputStream inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader reader = new BufferedReader(inputStreamReader);
+            BufferedReader reader = new BufferedReader(inputStreamReader)
         ) {
             String line;
+            
             while ((line = reader.readLine()) != null) {
+                
                 pathsList.add(new ItemList(line));
             }
         } catch (IOException e) {
@@ -146,6 +148,7 @@ public class ManagerUpload extends AbstractManagerList {
     private void initializeRunAction(final JTextField shellURL) {
         
         if (ManagerUpload.this.getListPaths().getSelectedValuesList().isEmpty()) {
+            
             LOGGER.warn("Select directory(ies) to upload a file into");
             return;
         }
@@ -163,7 +166,9 @@ public class ManagerUpload extends AbstractManagerList {
             }
                 
             this.uploadFiles(shellURL, filechooser);
+            
         } catch (NullPointerException | ClassCastException ex) {
+            
             LOGGER.error(ex, ex);
         }
     }
@@ -179,11 +184,16 @@ public class ManagerUpload extends AbstractManagerList {
                 try {
                     ManagerUpload.this.loader.setVisible(true);
                     MediatorGui.model().getResourceAccess().uploadFile(path.toString(), shellURL.getText(), file);
+                    
                 } catch (JSqlException e) {
-                    LOGGER.warn("Payload creation error: "+ e, e);
+                    
+                    LOGGER.warn("Payload creation error: "+ e.getMessage(), e);
+                    
                 } catch (IOException e) {
-                    LOGGER.warn("Posting file failed: "+ e, e);
+                    
+                    LOGGER.warn("Posting file failed: "+ e.getMessage(), e);
                 }
+                
             }, "ThreadUpload").start();
         }
     }
