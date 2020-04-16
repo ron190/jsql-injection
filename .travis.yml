@@ -28,3 +28,122 @@ before_install:
   - mvn -X dependency:tree
   - which mvn
   - find /usr -name '*jansi*' -exec ls -l {} \;
+  
+  - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
+    
+  # Docker configuration
+  - jobs
+  
+  - docker build -t mysql 
+    -f src/test/resources/docker/Dockerfile.mysql . &
+  - pids[$!]=$!
+    
+  - docker build -t mysql 
+    -f src/test/resources/docker/Dockerfile.mysql-5.5.40 . &
+  - pids[$!]=$!
+    
+  - docker build -t postgres 
+    -f src/test/resources/docker/Dockerfile.postgres . &
+  - pids[$!]=$!
+    
+  - docker build -t sqlserver 
+    -f src/test/resources/docker/Dockerfile.sqlserver . &
+  - pids[$!]=$!
+    
+  - docker build -t neo4j 
+    -f src/test/resources/docker/Dockerfile.neo4j . &
+  - pids[$!]=$!
+    
+  - jobs
+  - for pid in ${pids[*]}; do wait $pid; done
+  - unset pids
+  
+  - docker run --name jsql-mysql  
+    --publish 3306:3306 
+    -e MYSQL_ROOT_PASSWORD=my-secret-pw 
+    -d mysql &
+  - pids[$!]=$!
+    
+  - docker run --name jsql-mysql-5.5.40 
+    --publish 3307:3306 
+    -e MYSQL_ROOT_PASSWORD=my-secret-pw 
+    -d mysql:5.5.40 &
+  - pids[$!]=$!
+    
+  - docker run --name jsql-postgres 
+    --publish 5432:5432 
+    -e POSTGRES_PASSWORD=my-secret-pw 
+    -d postgres 
+    -c 'shared_buffers=256MB'
+    -c 'max_connections=1000' &
+  - pids[$!]=$!
+    
+  - docker run --name jsql-sqlserver 
+    --publish 1434:1434 
+    --publish 1433:1433 
+    -e "ACCEPT_EULA=Y" 
+    -e "SA_PASSWORD=yourStrong(!)Password"
+    -u 0:0
+    -d sqlserver &
+  - pids[$!]=$!
+    
+  - docker run --name jsql-neo4j 
+    --publish 7687:7687 
+    -e NEO4J_AUTH=neo4j/test
+    -d neo4j &
+  - pids[$!]=$!
+    
+  - for pid in ${pids[*]}; do wait $pid; done
+
+  - jobs && docker images && docker ps && pwd
+  - sleep 30s
+
+  # Buff MySQL
+  - docker exec -it jsql-mysql /bin/bash
+    -c "
+       mysql -uroot -pmy-secret-pw -e '
+       SET GLOBAL max_connections = 100000;
+       SET GLOBAL thread_cache_size = 16384;
+       SET GLOBAL table_open_cache = 524288;
+       ';
+       "
+
+  # Check MySQL status
+  - docker exec -it jsql-mysql /bin/bash
+    -c "
+       mysql -uroot -pmy-secret-pw -e '
+       SHOW GLOBAL variables WHERE Variable_name RLIKE \"thread_cache_size|^max_connections|table_open_cache\";
+       SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|^Queries\"
+       ';
+       "
+
+  # Check Postgres status
+  - docker exec -it jsql-postgres /bin/bash
+    -c "
+       export PGPASSWORD=my-secret-pw;
+       psql -U postgres -h 127.0.0.1 -d \"\" -e -a -c '
+       show max_connections;
+       ';
+       "
+       
+  - sudo docker exec -it jsql-sqlserver /opt/mssql-tools/bin/sqlcmd -S "tcp:127.0.0.1,1434" -U SA -P "yourStrong(!)Password" -Q "select @@version"
+
+
+script:
+
+  - mvn clean verify sonar:sonar
+  
+  # Check MySQL status
+  - docker exec -it jsql-mysql /bin/bash
+    -c "
+       mysql -uroot -pmy-secret-pw -e '
+       SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|^Queries\"
+       ';
+       "
+    
+after_success:
+
+  - bash <(curl -s https://codecov.io/bash)
+  
+  - export CODACY_PROJECT_TOKEN=43e8b6719fbc4f3cbef25d863d7440c8
+  - bash <(curl -Ls https://coverage.codacy.com/get.sh)
