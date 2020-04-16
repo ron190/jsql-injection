@@ -16,10 +16,10 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.json.JSONObject;
-//import org.neo4j.driver.AuthTokens;
-//import org.neo4j.driver.Driver;
-//import org.neo4j.driver.GraphDatabase;
-//import org.neo4j.driver.Result;
+import org.neo4j.driver.AuthTokens;
+import org.neo4j.driver.Driver;
+import org.neo4j.driver.GraphDatabase;
+import org.neo4j.driver.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -38,7 +38,7 @@ public class GreetingController {
     private final AtomicLong counter = new AtomicLong();
     private ObjectMapper objectMapper = new ObjectMapper();
     private static final Logger LOGGER = Logger.getRootLogger();
-//    private Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
+    private Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -322,24 +322,24 @@ public class GreetingController {
         
         Greeting greeting = null;
         
-//        try (org.neo4j.driver.Session session = this.driver.session()) {
-//            Result result = session.run("MATCH (n:Person) where 1="+ name +" RETURN n.name, n.from, n.title, n.hobby");
-//            
-//            String a = result.stream().map(record ->
-//                record.keys().stream()
-//                .map(key -> key + "=" + record.get(key))
-//                .collect(Collectors.joining(", ", "{", "}"))
-//            ).collect(Collectors.joining());
-//            
-//            greeting = new Greeting(
-//                this.counter.getAndIncrement(),
-//                String.format(template, name)
-//                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(a))
-//            );
-//            
-//        } catch (Exception e) {
-//            // Hide useless SQL error messages
-//        }
+        try (org.neo4j.driver.Session session = this.driver.session()) {
+            Result result = session.run("MATCH (n:Person) where 1="+ name +" RETURN n.name, n.from, n.title, n.hobby");
+            
+            String a = result.stream().map(record ->
+                record.keys().stream()
+                .map(key -> key + "=" + record.get(key))
+                .collect(Collectors.joining(", ", "{", "}"))
+            ).collect(Collectors.joining());
+            
+            greeting = new Greeting(
+                this.counter.getAndIncrement(),
+                String.format(template, name)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(a))
+            );
+            
+        } catch (Exception e) {
+            // Hide useless SQL error messages
+        }
         
         return greeting;
     }

@@ -15,10 +15,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-//import org.neo4j.driver.AuthTokens;
-//import org.neo4j.driver.Driver;
-//import org.neo4j.driver.GraphDatabase;
-//import org.neo4j.driver.Result;
+import org.neo4j.driver.AuthTokens;
+import org.neo4j.driver.Driver;
+import org.neo4j.driver.GraphDatabase;
+import org.neo4j.driver.Result;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -100,25 +100,25 @@ public class TargetApplication {
 
     private static void initializeNeo4j() throws IOException {
         
-//        String graphMovie = Files.readAllLines(Paths.get("src/test/resources/docker/movie-graph.txt")).stream().collect(Collectors.joining("\n"));
-//        
-//        Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
-//        
-//        try (org.neo4j.driver.Session session = driver.session()) {
-//            
-//            session.run("MATCH (n) DETACH DELETE n");
-//            
-//            Result result = session.run(graphMovie);
-//            result.forEachRemaining(record -> {
-//                
-//                System.out.println(record);
-//            });
-//            
-//        } catch (Exception e) {
-//            LOGGER.error(e, e);
-//        }
-//        
-//        driver.close();
+        String graphMovie = Files.readAllLines(Paths.get("src/test/resources/docker/movie-graph.txt")).stream().collect(Collectors.joining("\n"));
+        
+        Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
+        
+        try (org.neo4j.driver.Session session = driver.session()) {
+            
+            session.run("MATCH (n) DETACH DELETE n");
+            
+            Result result = session.run(graphMovie);
+            result.forEachRemaining(record -> {
+                
+                System.out.println(record);
+            });
+            
+        } catch (Exception e) {
+            LOGGER.error(e, e);
+        }
+        
+        driver.close();
     }
 
     /**
