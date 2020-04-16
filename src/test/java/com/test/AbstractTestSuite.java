@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.awaitility.Awaitility;
 import org.awaitility.Durations;
-import org.h2.tools.Server;
+//import org.h2.tools.Server;
 import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
@@ -92,7 +92,7 @@ public abstract class AbstractTestSuite {
         if (AbstractTestSuite.isSetupStarted.compareAndSet(false, true)) {
             
             LOGGER.info("@BeforeClass: loading H2, Hibernate and Spring...");
-            Server.createTcpServer().start();
+//            Server.createTcpServer().start();
             TargetApplication.initializeDatabases();
             SpringApplication.run(TargetApplication.class, new String[] {});
             
