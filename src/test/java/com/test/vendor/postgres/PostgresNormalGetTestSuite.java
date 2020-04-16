@@ -7,7 +7,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junitpioneer.jupiter.RepeatFailedTest;
+//import org.junitpioneer.jupiter.RepeatFailedTest;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -40,25 +40,25 @@ public class PostgresNormalGetTestSuite extends ConcretePostgresTestSuite {
     }
     
     @Override
-    @RepeatFailedTest(3)
+    //@RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }
     
     @Override
-    @RepeatFailedTest(3)
+    //@RepeatFailedTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
     }
     
     @Override
-    @RepeatFailedTest(3)
+    //@RepeatFailedTest(3)
     public void listColumns() throws JSqlException {
         super.listColumns();
     }
     
     @Override
-    @RepeatFailedTest(3)
+    //@RepeatFailedTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }
