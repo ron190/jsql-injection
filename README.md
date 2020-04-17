@@ -75,7 +75,7 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 `Devops, User agent, Custom rows fetching.`
 
 ## Since latest release
-`Tampering.`
+`Tampering, Devops with SQLite Neo4j SQLServer Cubrid and authentication integration tests in the Cloud.`
 
 ## Change log
 

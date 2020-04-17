@@ -11,6 +11,10 @@
             <id>jspresso-repository</id>
             <url>http://repository.jspresso.org/maven2</url>
         </repository>
+        <repository>
+            <id>cubrid-repository</id>
+            <url>http://maven.cubrid.org/</url>
+        </repository>
     </repositories>
 
     <properties>
@@ -306,26 +310,22 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
-        
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>test</scope>
         </dependency>
-        
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>test</scope>
         </dependency>
-        
 		<dependency>
 		    <groupId>com.microsoft.sqlserver</groupId>
 		    <artifactId>mssql-jdbc</artifactId>
 		    <version>8.2.1.jre8</version>
             <scope>test</scope>
 		</dependency>
-		
 		<dependency>
 		    <groupId>org.xerial</groupId>
 		    <artifactId>sqlite-jdbc</artifactId>
@@ -338,26 +338,19 @@
             <version>0.1.0</version>
             <scope>test</scope>
 		</dependency>
-		
 		<dependency>
 		    <groupId>org.neo4j.driver</groupId>
 		    <artifactId>neo4j-java-driver</artifactId>
 		    <version>4.0.1</version>
-		</dependency>
-        
-        <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-log</artifactId>
-            <version>0.17.1</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-		    <groupId>org.awaitility</groupId>
-		    <artifactId>awaitility</artifactId>
             <scope>test</scope>
 		</dependency>
-
+		<dependency>
+		    <groupId>cubrid</groupId>
+		    <artifactId>cubrid-jdbc</artifactId>
+		    <version>10.2.0.8797</version>
+            <scope>test</scope>
+		</dependency>
+		
         <!-- jSQL purpose -->
         
         <dependency>
@@ -421,6 +414,19 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.jcabi</groupId>
+            <artifactId>jcabi-log</artifactId>
+            <version>0.17.1</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <scope>test</scope>
         </dependency>
      
     </dependencies>

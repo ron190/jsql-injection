@@ -146,6 +146,10 @@ public class MediatorVendor {
         this.vendorByUser = this.auto;
     }
 
+    public Vendor getCubrid() {
+        return this.cubrid;
+    }
+
     public Vendor getH2() {
         return this.h2;
     }

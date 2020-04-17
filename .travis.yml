@@ -1,13 +1,13 @@
 language: java
 services: docker
 jdk: 
- # Keep concurrent jdk lower than Travis max job count of 5
  - openjdk8
  - openjdk9
  - openjdk10
- # - openjdk11
  - openjdk12
  - openjdk13
+ # Keep concurrent jdk lower than Travis max job count of 5
+ # - openjdk11
  # Need new version of gmavenplus-plugin
  # - openjdk14
 
@@ -24,11 +24,6 @@ cache:
     
 before_install:
 
-  - mvn -v
-  - mvn -X dependency:tree
-  - which mvn
-  - find /usr -name '*jansi*' -exec ls -l {} \;
-  
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
     
   # Docker configuration
@@ -52,6 +47,10 @@ before_install:
     
   - docker build -t neo4j 
     -f src/test/resources/docker/Dockerfile.neo4j . &
+  - pids[$!]=$!
+    
+  - docker build -t cubrid 
+    -f src/test/resources/docker/Dockerfile.cubrid . &
   - pids[$!]=$!
     
   - jobs
@@ -91,6 +90,11 @@ before_install:
     --publish 7687:7687 
     -e NEO4J_AUTH=neo4j/test
     -d neo4j &
+  - pids[$!]=$!
+    
+  - docker run --name jsql-cubrid 
+    --publish 33000:33000
+    -d cubrid &
   - pids[$!]=$!
     
   - for pid in ${pids[*]}; do wait $pid; done
