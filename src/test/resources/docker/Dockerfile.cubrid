@@ -1,3 +1,5 @@
 FROM lighthopper/cubrid
 
 EXPOSE 33000
+
+ENTRYPOINT cubrid service start && ./create-start-demodb.sh
