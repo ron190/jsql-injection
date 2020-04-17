@@ -86,7 +86,7 @@ before_install:
     --publish 7687:7687 
     -e NEO4J_AUTH=neo4j/test
     -d neo4j &
-  - pids[$!]=$!
+  - pids[$!]=$! 
     
   - docker run --name jsql-cubrid 
     --publish 33000:33000
