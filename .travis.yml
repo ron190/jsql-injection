@@ -90,7 +90,7 @@ before_install:
     
   - docker run --name jsql-cubrid 
     --publish 33000:33000
-    lighthopper/cubrid:10.0.0.1376 cubrid service start &
+    lighthopper/cubrid cubrid service start &
   - pids[$!]=$!
     
   - for pid in ${pids[*]}; do wait $pid; done
