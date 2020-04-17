@@ -49,6 +49,10 @@ before_install:
     -f src/test/resources/docker/Dockerfile.neo4j . &
   - pids[$!]=$!
     
+  - docker build -t cubrid 
+    -f src/test/resources/docker/Dockerfile.cubrid . &
+  - pids[$!]=$!
+    
   - jobs
   - for pid in ${pids[*]}; do wait $pid; done
   - unset pids
