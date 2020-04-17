@@ -49,10 +49,6 @@ before_install:
     -f src/test/resources/docker/Dockerfile.neo4j . &
   - pids[$!]=$!
     
-  - docker build -t cubrid 
-    -f src/test/resources/docker/Dockerfile.cubrid . &
-  - pids[$!]=$!
-    
   - jobs
   - for pid in ${pids[*]}; do wait $pid; done
   - unset pids
@@ -94,7 +90,7 @@ before_install:
     
   - docker run --name jsql-cubrid 
     --publish 33000:33000
-    -d cubrid &
+    lighthopper/cubrid:10.0.0.1376 cubrid service start &
   - pids[$!]=$!
     
   - for pid in ${pids[*]}; do wait $pid; done
@@ -131,8 +127,6 @@ before_install:
        "
        
   - sudo docker exec -it jsql-sqlserver /opt/mssql-tools/bin/sqlcmd -S "tcp:127.0.0.1,1434" -U SA -P "yourStrong(!)Password" -Q "select @@version"
-  
-  - sudo docker exec jsql-cubrid ./create-start-demodb.sh
 
 
 script:
