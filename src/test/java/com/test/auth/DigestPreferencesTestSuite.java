@@ -12,13 +12,13 @@ import org.junitpioneer.jupiter.RepeatFailedTest;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.vendor.mysql.ConcreteMySQLErrorTestSuite;
+import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 
 import spring.security.SecurityConfiguration;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class DigestPreferencesTestSuite extends ConcreteMySQLErrorTestSuite {
+public class DigestPreferencesTestSuite extends ConcreteMySqlErrorTestSuite {
     
     @Override
     public void setupInjection() throws Exception {

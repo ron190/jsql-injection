@@ -9,9 +9,9 @@ import com.test.AbstractTestSuite;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public abstract class ConcreteMySQLTestSuite extends AbstractTestSuite {
+public abstract class ConcreteMySqlTestSuite extends AbstractTestSuite {
 
-    public ConcreteMySQLTestSuite() {
+    public ConcreteMySqlTestSuite() {
         this.config();
     }
     

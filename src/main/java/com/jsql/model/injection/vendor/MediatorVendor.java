@@ -197,4 +197,8 @@ public class MediatorVendor {
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
+
+    public Vendor getDb2() {
+        return this.db2;
+    }
 }

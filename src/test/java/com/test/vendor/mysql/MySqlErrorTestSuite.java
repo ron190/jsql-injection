@@ -15,8 +15,8 @@ import com.jsql.view.terminal.SystemOutTerminal;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class MySQLNormalTestSuite extends ConcreteMySQLTestSuite {
-    
+public class MySqlErrorTestSuite extends ConcreteMySqlErrorTestSuite {
+
     @Override
     public void setupInjection() throws Exception {
         
@@ -25,17 +25,17 @@ public class MySQLNormalTestSuite extends ConcreteMySQLTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-error");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
+            new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", "0'")
         ));
-        
+
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
         model.beginInjection();
     }
     

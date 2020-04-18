@@ -54,8 +54,6 @@ public abstract class AbstractTestSuite {
      */
     protected static final Logger LOGGER = Logger.getRootLogger();
 
-    public static final String HOSTNAME = "localhost";
-    
     private List<String> databasesFromJdbc = new ArrayList<>();
     private List<String> tablesFromJdbc = new ArrayList<>();
     private List<String> columnsFromJdbc = new ArrayList<>();

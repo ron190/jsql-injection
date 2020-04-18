@@ -28,7 +28,8 @@ public class MasterService {
             TargetApplication.propsPostgres,
             TargetApplication.propsSqlServer,
             TargetApplication.propsCubrid,
-            TargetApplication.propsSqlite
+            TargetApplication.propsSqlite,
+            TargetApplication.propsDb2
         ).forEach(props -> {
             
             DatasourceConnectionProviderImpl connectionProviderPostgres = new DatasourceConnectionProviderImpl();

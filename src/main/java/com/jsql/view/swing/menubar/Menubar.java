@@ -654,7 +654,8 @@ public class Menubar extends JMenuBar {
             this.itemDutch,
             this.itemRomanian,
             this.itemGerman
-        ).forEach(menuItem -> {
+        )
+        .forEach(menuItem -> {
             
             menuTranslation.add(menuItem);
             groupRadioLanguage.add(menuItem);

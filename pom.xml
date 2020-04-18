@@ -360,6 +360,11 @@
 		    <version>10.2.0.8797</version>
             <scope>test</scope>
 		</dependency>
+		<dependency>
+		    <groupId>com.ibm.db2</groupId>
+		    <artifactId>jcc</artifactId>
+		    <scope>test</scope>
+		</dependency>
 		
         <!-- jSQL purpose -->
         

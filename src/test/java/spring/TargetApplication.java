@@ -40,6 +40,7 @@ public class TargetApplication {
     public static Properties propsSqlServer = new Properties();
     public static Properties propsSqlite = new Properties();
     public static Properties propsCubrid = new Properties();
+    public static Properties propsDb2 = new Properties();
 
     static {
         
@@ -52,7 +53,8 @@ public class TargetApplication {
             new SimpleEntry<>(propsPostgres, "spring/hibernate.postgres.properties"),
             new SimpleEntry<>(propsSqlServer, "spring/hibernate.sqlserver.properties"),
             new SimpleEntry<>(propsCubrid, "spring/hibernate.cubrid.properties"),
-            new SimpleEntry<>(propsSqlite, "spring/hibernate.sqlite.properties")
+            new SimpleEntry<>(propsSqlite, "spring/hibernate.sqlite.properties"),
+            new SimpleEntry<>(propsDb2, "spring/hibernate.db2.properties")
         )
         .forEach(simpleEntry -> {
             
@@ -72,13 +74,14 @@ public class TargetApplication {
         initializeNeo4j();
         
         Stream.of(
-            propsCubrid,
-            propsH2,
-            propsMysql,
-            propsMysqlError,
-            propsPostgres,
-            propsSqlServer,
-            propsSqlite
+//            propsCubrid,
+//            propsH2,
+//            propsMysql,
+//            propsMysqlError,
+//            propsPostgres,
+//            propsSqlServer,
+//            propsSqlite,
+            propsDb2
         )
         .forEach(props -> {
             

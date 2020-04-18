@@ -1,0 +1,3 @@
+FROM ibmcom/db2
+
+EXPOSE 50000

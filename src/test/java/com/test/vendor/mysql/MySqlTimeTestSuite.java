@@ -15,7 +15,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class MySQLTimeTestSuite extends ConcreteMySQLTestSuite {
+public class MySqlTimeTestSuite extends ConcreteMySqlTestSuite {
 
     @Override
     public void setupInjection() throws Exception {

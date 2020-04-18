@@ -7,7 +7,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public abstract class ConcreteMySQLErrorTestSuite extends ConcreteMySQLTestSuite {
+public abstract class ConcreteMySqlErrorTestSuite extends ConcreteMySqlTestSuite {
 
     @Override
     public void config() {
