@@ -53,6 +53,10 @@ before_install:
     -f src/test/resources/docker/Dockerfile.cubrid . &
   - pids[$!]=$!
     
+  - docker build -t db2 
+    -f src/test/resources/docker/Dockerfile.db2 . &
+  - pids[$!]=$!
+    
   - jobs
   - for pid in ${pids[*]}; do wait $pid; done
   - unset pids
@@ -95,6 +99,17 @@ before_install:
   - docker run --name jsql-cubrid 
     --publish 33000:33000
     -d cubrid &
+  - pids[$!]=$!
+  
+  - docker run --name jsql-db2
+    -itd
+    --privileged=true 
+    -p 50000:50000 
+    -e LICENSE=accept 
+    -e DB2INST1_PASSWORD=test 
+    -e DBNAME=testdb 
+    ibmcom/db2
+    -d db2 &
   - pids[$!]=$!
     
   - for pid in ${pids[*]}; do wait $pid; done
