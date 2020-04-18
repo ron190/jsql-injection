@@ -1,6 +1,6 @@
 package groovy
 
-import com.jsql.util.tampering.TamperingUtil
+import com.jsql.util.TamperingUtil
 
 import spock.lang.Specification
 
