@@ -22,7 +22,7 @@ import org.neo4j.driver.Result;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import spring.model.Student;
+import spring.rest.Student;
 
 @SpringBootApplication
 public class TargetApplication {

@@ -43,7 +43,7 @@ public class CreateValuesTab implements InteractionCommand {
     @Override
     public void execute() {
         
-        LOGGER.info(AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
-        LOGGER.info(Arrays.deepToString(this.data));
+        LOGGER.debug(AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
+        LOGGER.debug(Arrays.deepToString(this.data));
     }
 }

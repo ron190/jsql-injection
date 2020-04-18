@@ -1,4 +1,4 @@
-package spring;
+package spring.rest;
 
 import java.io.IOException;
 import java.util.List;

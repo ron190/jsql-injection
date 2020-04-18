@@ -11,8 +11,8 @@ import com.jsql.util.PreferencesUtil;
 import com.jsql.util.PropertiesUtil;
 import com.jsql.util.ProxyUtil;
 import com.jsql.util.SoapUtil;
+import com.jsql.util.TamperingUtil;
 import com.jsql.util.ThreadUtil;
-import com.jsql.util.tampering.TamperingUtil;
 
 public class MediatorUtils {
     

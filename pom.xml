@@ -268,6 +268,16 @@
 	        <artifactId>spring-boot-starter-security</artifactId>
             <scope>test</scope>
 	    </dependency>
+	    <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-web-services</artifactId>
+            <scope>test</scope>
+		</dependency>
+	    <dependency>
+		    <groupId>wsdl4j</groupId>
+		    <artifactId>wsdl4j</artifactId>
+            <scope>test</scope>
+		</dependency>
     
         <!-- Hibernate -->
         <dependency>

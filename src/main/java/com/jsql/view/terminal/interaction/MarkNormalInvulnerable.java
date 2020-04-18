@@ -35,6 +35,6 @@ public class MarkNormalInvulnerable implements InteractionCommand {
     @Override
     public void execute() {
         
-        LOGGER.info(AnsiColorUtil.addRedColor(this.getClass().getSimpleName()));
+        LOGGER.debug(AnsiColorUtil.addRedColor(this.getClass().getSimpleName()));
     }
 }

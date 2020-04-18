@@ -10,16 +10,18 @@ public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentif
     public String resolveCurrentTenantIdentifier() {
         
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        String tenant = "h2";
+        
+        // Used by SOAP
+        String tenant = "mysql";
         
         if (attributes != null) {
             tenant = attributes.getRequest().getParameter("tenant");
             
             if (tenant == null) {
-                tenant = "h2";
+                tenant = "mysql";
             }
         } else {
-            tenant = "h2";
+            tenant = "mysql";
         }
         
         return tenant;

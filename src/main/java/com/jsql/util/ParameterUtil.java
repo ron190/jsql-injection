@@ -326,7 +326,7 @@ public class ParameterUtil {
 
     public boolean isRequestSoap() {
         
-        return this.requestAsText.trim().matches("^<\\?xml.*");
+        return this.requestAsText.trim().matches("^(<soapenv:|<\\?xml).*");
     }
 
     // Getters / setters

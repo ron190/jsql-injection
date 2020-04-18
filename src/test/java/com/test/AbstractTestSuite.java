@@ -100,8 +100,8 @@ public abstract class AbstractTestSuite {
         }
             
         while (!AbstractTestSuite.isSetupDone.get()) {
-            Awaitility.await().pollDelay(Durations.ONE_SECOND).until(() -> true);
-            LOGGER.info("@BeforeClass: backend is setting up, please wait...");
+            Awaitility.await().pollDelay(Durations.TEN_SECONDS).until(() -> true);
+            LOGGER.info("@BeforeClass: backend is setting up...");
         }
             
         if (this.injectionModel == null) {

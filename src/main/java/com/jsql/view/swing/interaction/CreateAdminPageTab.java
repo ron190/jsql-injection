@@ -98,13 +98,9 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
                     .addAttributes(":all", "style")
                 );
             
-        } catch (IOException e) {
+        } catch (IOException | ExceptionInInitializerError | NoClassDefFoundError e) {
             
             LOGGER.error(e.getMessage(), e);
-            
-        } catch (ExceptionInInitializerError | NoClassDefFoundError e) {
-            
-            LOGGER.warn("Jsoup not properly configured, please update jsql", e);
         }
 
         final JTextPane browser = new JTextPane();

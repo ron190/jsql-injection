@@ -1,4 +1,4 @@
-package spring;
+package spring.rest;
 
 import com.fasterxml.jackson.annotation.JsonRawValue;
 

@@ -1,4 +1,4 @@
-package com.jsql.util.tampering;
+package com.jsql.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,6 +9,8 @@ import javax.script.ScriptException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+
+import com.jsql.util.tampering.TamperingType;
 
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
@@ -70,7 +72,7 @@ public class TamperingUtil {
         Object resultSqlTampered = null;
         
         try {
-            if (jsTampering == null || jsTampering.trim().isEmpty()) {
+            if (StringUtils.isEmpty(jsTampering)) {
                 
                 throw new ScriptException("Tampering context is empty");
             }
