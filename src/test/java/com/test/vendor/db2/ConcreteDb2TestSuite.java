@@ -20,9 +20,9 @@ public abstract class ConcreteDb2TestSuite extends AbstractTestSuite {
         this.jdbcURL = "jdbc:db2://localhost:50000/testdb";
         this.jdbcUser = "db2inst1";
         this.jdbcPass = "test";
-        this.jsqlDatabaseName = "SYSTOOLS";
-        this.jsqlTableName = "POLICY";
-        this.jsqlColumnName = "NAME";
+        this.jsqlDatabaseName = "DB2INST1";
+        this.jsqlTableName = "STUDENT";
+        this.jsqlColumnName = "STUDENT_ID";
         
         this.jdbcColumnForDatabaseName = "schemaname";
         this.jdbcColumnForTableName = "name";
