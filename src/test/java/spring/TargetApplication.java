@@ -74,13 +74,13 @@ public class TargetApplication {
         initializeNeo4j();
         
         Stream.of(
-//            propsCubrid,
-//            propsH2,
-//            propsMysql,
-//            propsMysqlError,
-//            propsPostgres,
-//            propsSqlServer,
-//            propsSqlite,
+            propsCubrid,
+            propsH2,
+            propsMysql,
+            propsMysqlError,
+            propsPostgres,
+            propsSqlServer,
+            propsSqlite,
             propsDb2
         )
         .forEach(props -> {

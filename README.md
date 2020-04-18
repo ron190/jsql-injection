@@ -7,7 +7,7 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 
 This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration.
 
-Each program update is tested in the cloud on Travis CI using Java version 8 through 13, and against various MySQL, PostgreSQL, SQLite, Neo4j, SQL Server and H2 databases. Source code is open to pull request and to any contribution about multi-threading, devops, optimization, unit and integration tests. 
+Program is tested in the cloud on Travis CI using Java 8 through 13 and against databases MySQL, PostgreSQL, SQLite, Neo4j, SQL Server, Db2 and H2. Source code is open to pull request and to contribution to multi-threading, devops, optimization, unit and integration tests. 
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)<br>
 [![Java 8 to 15](https://img.shields.io/badge/Java-8%20to%2013-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)
