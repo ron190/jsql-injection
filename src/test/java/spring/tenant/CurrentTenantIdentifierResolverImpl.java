@@ -15,12 +15,16 @@ public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentif
         String tenant = "mysql";
         
         if (attributes != null) {
+            
             tenant = attributes.getRequest().getParameter("tenant");
             
             if (tenant == null) {
+                
                 tenant = "mysql";
             }
+            
         } else {
+            
             tenant = "mysql";
         }
         
@@ -29,6 +33,7 @@ public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentif
 
     @Override
     public boolean validateExistingCurrentSessions() {
+        
         return true;
     }
 }

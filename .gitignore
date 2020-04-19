@@ -14,3 +14,4 @@ test-output/
 dependency-reduced-pom.xml
 build.xml
 jsql-sqlite-its.db
+derby.log

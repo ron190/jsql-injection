@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.derby.drda.NetworkServerControl;
 import org.apache.log4j.Logger;
+import org.h2.tools.Server;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -41,6 +44,8 @@ public class TargetApplication {
     public static Properties propsSqlite = new Properties();
     public static Properties propsCubrid = new Properties();
     public static Properties propsDb2 = new Properties();
+    public static Properties propsHsqldb = new Properties();
+    public static Properties propsDerby = new Properties();
 
     static {
         
@@ -54,7 +59,9 @@ public class TargetApplication {
             new SimpleEntry<>(propsSqlServer, "spring/hibernate.sqlserver.properties"),
             new SimpleEntry<>(propsCubrid, "spring/hibernate.cubrid.properties"),
             new SimpleEntry<>(propsSqlite, "spring/hibernate.sqlite.properties"),
-            new SimpleEntry<>(propsDb2, "spring/hibernate.db2.properties")
+            new SimpleEntry<>(propsDb2, "spring/hibernate.db2.properties"),
+            new SimpleEntry<>(propsHsqldb, "spring/hibernate.hsqldb.properties"),
+            new SimpleEntry<>(propsDerby, "spring/hibernate.derby.properties")
         )
         .forEach(simpleEntry -> {
             
@@ -69,11 +76,15 @@ public class TargetApplication {
         });
     }
 
-    public static void initializeDatabases() throws IOException {
+    public static void initializeDatabases() throws Exception {
         
+        initializeHsqldb();
+        initializeH2();
         initializeNeo4j();
+        initializeDerby();
         
-        Stream.of(
+        Stream
+        .of(
             propsCubrid,
             propsH2,
             propsMysql,
@@ -81,7 +92,9 @@ public class TargetApplication {
             propsPostgres,
             propsSqlServer,
             propsSqlite,
-            propsDb2
+            propsDb2,
+            propsHsqldb,
+            propsDerby
         )
         .forEach(props -> {
             
@@ -98,10 +111,37 @@ public class TargetApplication {
                 Transaction transaction = session.beginTransaction();
                 Student student = new Student();
                 student.setAge(1);
+                student.setFirstName("firstName");
+                student.setClassName("className");
+                student.setLastName("lastName");
+                student.setRollNo("rollNo");
                 session.save(student);
                 transaction.commit();
+                
+            } catch (Exception e) {
+                
+                LOGGER.error(e.getMessage(), e);
             }
         });
+    }
+
+    private static void initializeDerby() throws Exception {
+        NetworkServerControl server = new NetworkServerControl();
+        server.start(null);
+    }
+
+    private static void initializeHsqldb() {
+        
+        org.hsqldb.server.Server server = new org.hsqldb.server.Server();
+        server.setSilent(true);
+        server.setDatabaseName(0, "mainDb");
+        server.setDatabasePath(0, "mem:mainDb");
+        server.start();
+    }
+
+    private static void initializeH2() throws SQLException {
+        
+        Server.createTcpServer().start();
     }
 
     private static void initializeNeo4j() throws IOException {
@@ -130,9 +170,9 @@ public class TargetApplication {
     /**
      * For debug purpose only.
      * @param args
-     * @throws IOException
+     * @throws Exception 
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         
         initializeDatabases();
         

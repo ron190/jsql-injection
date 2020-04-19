@@ -201,4 +201,12 @@ public class MediatorVendor {
     public Vendor getDb2() {
         return this.db2;
     }
+
+    public Vendor getHsqldb() {
+        return this.hsqldb;
+    }
+
+    public Vendor getDerby() {
+        return derby;
+    }
 }

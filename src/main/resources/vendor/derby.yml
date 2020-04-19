@@ -47,11 +47,12 @@ resource:
    /**
     * TODO casting numeric to string not possible with getValues()
     * => hiding numeric columns
+    * Replace % in like
     */
-   and columndatatype || '' not like 'DOUBLE%'
-   and columndatatype || '' not like 'INTEGER%'
-   and columndatatype || '' not like 'DECIMAL%'
-   and columndatatype || '' not like 'BLOB%'
+   and columndatatype || '' not like 'DOUBLE%25'
+   and columndatatype || '' not like 'INTEGER%25'
+   and columndatatype || '' not like 'DECIMAL%25'
+   and columndatatype || '' not like 'BLOB%25'
    ${limit}
    
   row: 
@@ -90,7 +91,7 @@ strategy:
            as char(254)
        )
    )
-  calibrator: '%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'
+  calibrator: "'%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'"
   limitBoundary: 0
   endingComment: --+-
   fingerprint: 
