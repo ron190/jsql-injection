@@ -63,16 +63,19 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     @Override
     public void allow(int... i) {
+        
         this.markVulnerability(Interaction.MARK_NORMAL_VULNERABLE);
     }
 
     @Override
     public void unallow(int... i) {
+        
         this.markVulnerability(Interaction.MARK_NORMAL_INVULNERABLE);
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
+        
         return this.injectionModel.injectWithIndexes(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(sqlQuery, startPosition)
         );
@@ -146,8 +149,10 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         
         for (int i = 0; i < performanceResults.size(); i++) {
             
-            lengthFields[i] = new Integer[]{
+            lengthFields[i] = new Integer[] {
+                    
                 performanceResults.get(i)[1].length() + performanceResults.get(i)[0].length(),
+                
                 Integer.parseInt(performanceResults.get(i)[0])
             };
         }

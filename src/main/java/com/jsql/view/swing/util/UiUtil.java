@@ -131,10 +131,9 @@ public final class UiUtil {
     public static final URL URL_ICON_96 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug96.png");
     public static final URL URL_ICON_128 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug128.png");
 
-    /**
-     * The drop shadow is created from a PNG image with 8 bit alpha channel.
-     */
+    // The drop shadow is created from a PNG image with 8 bit alpha channel.
     public static final Image IMG_SHADOW = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/shadow.png")).getImage();
+    
     public static final ImageIcon IMG_BUG = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/bug.png"));
     public static final ImageIcon IMG_STOP_DEFAULT = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/stopDefault.png"));
     public static final ImageIcon IMG_STOP_ROLLOVER = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/stopRollover.png"));
@@ -192,9 +191,6 @@ public final class UiUtil {
     public static final String NETWORK_VISIBLE = "header_visible";
     public static final String JAVA_VISIBLE = "java_visible";
     
-    /**
-     * Utility class.
-     */
     private UiUtil() {
         //not called
     }

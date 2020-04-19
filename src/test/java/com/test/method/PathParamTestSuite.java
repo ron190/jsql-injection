@@ -1,4 +1,4 @@
-package com.test.json;
+package com.test.method;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import com.test.vendor.mysql.ConcreteMySqlTestSuite;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class JsonTestSuite extends ConcreteMySqlTestSuite {
+public class PathParamTestSuite extends ConcreteMySqlTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
@@ -26,17 +26,17 @@ public class JsonTestSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-json");
+        // TODO
+        // Test all URL segments
+        // Analyse last required query param
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting/1'*/suffix");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("name", "{\"c\": 1, \"b\": {\"b\": [1, true, null, {\"a\": {\"a\": \"0'\"}}]}}"),
-            new SimpleEntry<>("tenant", "mysql")
+            new SimpleEntry<>("tenant", "mysql"),
+            new SimpleEntry<>("fake", "")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllURLParam(true);
-        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllJSONParam(true);
         model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
-        model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.setIsScanning(true);
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());

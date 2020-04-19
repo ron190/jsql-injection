@@ -42,6 +42,7 @@ public class MessageHeader implements InteractionCommand {
     private String header;
     private Map<String, String> response;
     private String source;
+    private String size;
 
     private Map<Header, Object> params;
     
@@ -57,6 +58,7 @@ public class MessageHeader implements InteractionCommand {
         this.header = (String) this.params.get(Header.HEADER);
         this.response = (Map<String, String>) this.params.get(Header.RESPONSE);
         this.source = (String) this.params.get(Header.SOURCE);
+        this.size = (String) this.params.get(Header.PAGE_SIZE);
     }
 
     @Override
@@ -70,7 +72,12 @@ public class MessageHeader implements InteractionCommand {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         
         try {
-            model.addRow(new Object[]{this.response.get("Method"), this.url, this.response.get("Content-Length"), this.response.get("Content-Type")});
+            model.addRow(new Object[] {
+                    
+                this.url,
+                this.size,
+                this.response.get("Content-Type")
+            });
             
             Rectangle rect = table.getCellRect(table.getRowCount() - 1, 0, true);
             Point pt = viewport.getViewPosition();

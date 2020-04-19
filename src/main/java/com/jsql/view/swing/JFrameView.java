@@ -67,6 +67,7 @@ public class JFrameView extends JFrame {
      * @param injectionModel
      */
     public JFrameView() {
+        
         super("jSQL Injection");
         
         MediatorGui.register(this);
@@ -108,13 +109,21 @@ public class JFrameView extends JFrame {
                 prefs.putBoolean(UiUtil.JAVA_VISIBLE, false);
                 
                 for (int i = 0 ; i < MediatorGui.tabConsoles().getTabCount() ; i++) {
+                    
                     if ("CONSOLE_BINARY_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
+                        
                         prefs.putBoolean(UiUtil.BINARY_VISIBLE, true);
+                        
                     } else if ("CONSOLE_CHUNK_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
+                        
                         prefs.putBoolean(UiUtil.CHUNK_VISIBLE, true);
+                        
                     } else if ("CONSOLE_NETWORK_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
+                        
                         prefs.putBoolean(UiUtil.NETWORK_VISIBLE, true);
+                        
                     } else if ("CONSOLE_JAVA_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
+                        
                         prefs.putBoolean(UiUtil.JAVA_VISIBLE, true);
                     }
                 }
@@ -175,8 +184,10 @@ public class JFrameView extends JFrame {
         MediatorGui.treeDatabase().reset();
         
         for (int i = 0 ; i < MediatorGui.tabConsoles().getTabCount() ; i++) {
+            
             Component tabComponent = MediatorGui.tabConsoles().getTabComponentAt(i);
             if (tabComponent != null) {
+                
                 tabComponent.setFont(tabComponent.getFont().deriveFont(Font.PLAIN));
             }
         }
@@ -186,7 +197,9 @@ public class JFrameView extends JFrame {
             MediatorGui.managerFile(),
             MediatorGui.managerWebshell(),
             MediatorGui.managerSqlshell()
-        ).forEach(managerList -> {
+        )
+        .forEach(managerList -> {
+            
             managerList.setButtonEnable(false);
             managerList.changePrivilegeIcon(UiUtil.ICON_SQUARE_GREY);
         });

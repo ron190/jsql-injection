@@ -16,7 +16,7 @@ import com.test.vendor.mysql.ConcreteMySqlTestSuite;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class BadNormalTestSuite extends ConcreteMySqlTestSuite {
+public class BadValueTestSuite extends ConcreteMySqlTestSuite {
     
     @Override
     public void setupInjection() throws Exception {

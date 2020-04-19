@@ -23,7 +23,7 @@ public abstract class ConcreteDerbyTestSuite extends AbstractTestSuite {
         
         this.jdbcQueryForDatabaseNames = "select schemaname from SYS.SYSSCHEMAS";
         this.jdbcQueryForTableNames =    "select tablename from sys.systables t inner join sys.sysschemas s on t.schemaid = s.schemaid where schemaname='"+ this.jsqlDatabaseName +"'";
-        this.jdbcQueryForColumnNames =   
+        this.jdbcQueryForColumnNames =
                 "select columnname from sys.systables t inner join sys.sysschemas s on t.schemaid = s.schemaid inner join sys.syscolumns c on t.tableid = c.referenceid"
                 + " where schemaname = '"+ this.jsqlDatabaseName +"' and tablename = '"+ this.jsqlTableName +"'"
                 + " and columndatatype || '' not like 'DOUBLE%'"

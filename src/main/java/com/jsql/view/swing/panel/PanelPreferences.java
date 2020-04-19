@@ -147,6 +147,7 @@ public class PanelPreferences extends JPanel {
         
         categories.setBorder(BorderFactory.createLineBorder(UiUtil.COLOR_COMPONENT_BORDER));
         categories.addListSelectionListener(e -> {
+            
             PanelPreferences.this.remove(borderLayoutPreferences.getLayoutComponent(BorderLayout.CENTER));
             PanelPreferences.this.add(categories.getSelectedValue().getPanel(), BorderLayout.CENTER);
             // Both required

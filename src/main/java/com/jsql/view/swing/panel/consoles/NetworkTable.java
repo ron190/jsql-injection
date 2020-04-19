@@ -32,8 +32,6 @@ import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 @SuppressWarnings("serial")
 public class NetworkTable extends JTable {
     
-    private TabbedPaneNetworkTab tabbedPaneNetworkTab;
-    
     /**
      * List of HTTP injection requests and responses.
      */
@@ -41,9 +39,7 @@ public class NetworkTable extends JTable {
 
     public NetworkTable(TabbedPaneNetworkTab tabbedPaneNetworkTab) {
         
-        super(0, 4);
-        
-        this.tabbedPaneNetworkTab = tabbedPaneNetworkTab;
+        super(0, 3);
         
         this.setComponentPopupMenu(new JPopupMenuTable(this));
         this.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -63,11 +59,11 @@ public class NetworkTable extends JTable {
                 // move selected row and place cursor on focused cell
                 if (SwingUtilities.isRightMouseButton(e)) {
                     
-                    Point p = e.getPoint();
+                    Point point = e.getPoint();
 
                     // get the row index that contains that coordinate
-                    int rowNumber = NetworkTable.this.rowAtPoint(p);
-                    int colNumber = NetworkTable.this.columnAtPoint(p);
+                    int rowNumber = NetworkTable.this.rowAtPoint(point);
+                    int colNumber = NetworkTable.this.columnAtPoint(point);
                     
                     // Get the ListSelectionModel of the JTable
                     DefaultListSelectionModel modelRow = (DefaultListSelectionModel) NetworkTable.this.getSelectionModel();
@@ -83,7 +79,6 @@ public class NetworkTable extends JTable {
         this.setModel(new DefaultTableModel() {
             
             private String[] columns = {
-                I18nUtil.valueByKey("NETWORK_TAB_METHOD_COLUMN"),
                 I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"),
                 I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN"),
                 I18nUtil.valueByKey("NETWORK_TAB_TYPE_COLUMN")
@@ -100,11 +95,11 @@ public class NetworkTable extends JTable {
             }
         });
 
-        this.getColumnModel().getColumn(1).setCellRenderer(new TooltipCellRenderer());
+        this.getColumnModel().getColumn(0).setCellRenderer(new TooltipCellRenderer());
 
         DefaultTableCellRenderer centerHorizontalAlignment = new CenterRenderer();
+        this.getColumnModel().getColumn(1).setCellRenderer(centerHorizontalAlignment);
         this.getColumnModel().getColumn(2).setCellRenderer(centerHorizontalAlignment);
-        this.getColumnModel().getColumn(3).setCellRenderer(centerHorizontalAlignment);
         
         this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), null);
         this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), null);
@@ -133,17 +128,17 @@ public class NetworkTable extends JTable {
             }
         );
         
-        this.getColumnModel().getColumn(0).setPreferredWidth(75);
-        this.getColumnModel().getColumn(1).setPreferredWidth(300);
-        this.getColumnModel().getColumn(2).setPreferredWidth(40);
-        this.getColumnModel().getColumn(3).setPreferredWidth(50);
+        this.getColumnModel().getColumn(0).setPreferredWidth(300);
+        this.getColumnModel().getColumn(1).setPreferredWidth(40);
+        this.getColumnModel().getColumn(2).setPreferredWidth(50);
         
         this.getSelectionModel().addListSelectionListener(event -> {
             
             // prevent double event
             if (!event.getValueIsAdjusting() && this.getSelectedRow() > -1) {
+                
                 HttpHeader httpHeader = this.listHttpHeader.get(this.getSelectedRow());
-                this.tabbedPaneNetworkTab.changeTextNetwork(httpHeader);
+                tabbedPaneNetworkTab.changeTextNetwork(httpHeader);
             }
         });
     }

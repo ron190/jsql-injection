@@ -179,7 +179,7 @@ public class ManagerAdminPage extends AbstractManagerList {
             
             if (StringUtils.isEmpty(urlAddressBar)) {
                 
-                LOGGER.warn("Enter the main address");
+                LOGGER.warn("URL in the address bar is missing");
                 
             } else {
                 

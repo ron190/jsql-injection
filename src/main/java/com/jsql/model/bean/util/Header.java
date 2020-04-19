@@ -8,6 +8,7 @@ public enum Header {
     RESPONSE,
     SOURCE,
     VENDOR,
+    PAGE_SIZE,
     INJECTION_MODEL
     
 }

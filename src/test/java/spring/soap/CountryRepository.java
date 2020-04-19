@@ -35,7 +35,7 @@ public class CountryRepository {
     @Transactional
 	public Country findCountry(String name) throws Exception {
 	    
-        Country spain = new Country();
+        Country country = new Country();
         
         Session session = this.sessionFactory.getCurrentSession();
 
@@ -45,22 +45,22 @@ public class CountryRepository {
             
             List<Object[]> results = query.getResultList();
             
-            spain.setName(
-                    String.format(template, name)
-                    + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
-                    );
+            country.setName(
+                String.format(template, name)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
             
         } catch (Exception e) {
             
             // Required by multiple columns
-            spain.setName(this.initializeErrorMessage(e).getContent());
+            country.setName(this.initializeErrorMessage(e).getContent());
             
             // Required by transaction rollback
             throw e;
         }
         
         
-        return spain;
+        return country;
 	}
 
     private Greeting initializeErrorMessage(Exception e) {

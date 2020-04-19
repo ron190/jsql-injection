@@ -207,6 +207,6 @@ public class MediatorVendor {
     }
 
     public Vendor getDerby() {
-        return derby;
+        return this.derby;
     }
 }

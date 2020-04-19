@@ -7,7 +7,7 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 
 This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration.
 
-Program is tested in the cloud on Travis CI using Java 8 through 13 and against databases MySQL, PostgreSQL, SQLite, Neo4j, SQL Server, Db2 and H2. Source code is open to pull request and to contribution to multi-threading, devops, optimization, unit and integration tests. 
+Program stability is tested in the cloud on Travis CI using Java 8 through 13 and against dockerized databases MySQL, PostgreSQL, Neo4j, SQL Server, Db2, CUBRID and in memory databases HSQLDB, H2, Derby and SQLite. Source code is open to pull requests and to contributions to any subject like multi-threading, devops, optimization, unit and integration tests. 
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)<br>
 [![Java 8 to 15](https://img.shields.io/badge/Java-8%20to%2013-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)
@@ -24,14 +24,15 @@ Program is tested in the cloud on Travis CI using Java 8 through 13 and against 
 ## Features
 - Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Blind and Time
-- Multiple injection structures: Standard, Zipped, Dump In One Shot
-- SQL expressions programming at runtime
-- JavaScript/Java tampering programming at runtime
-- Injection of a list of targets
+- Proxy connection HTTP, SOCKS4 and SOCKS5
+- Authentication Basic, Digest, NTLM, Kerberos  
+- SQL query programming at runtime
+- Tampering programming at runtime
+- Injection of list of targets
 - Search for administration pages
 - Creation and visualization of Web shell and SQL shell
 - Read and write files on host using injection
-- Bruteforce of password's hash
+- Bruteforce of password hash
 - Text hashing, encoding and decoding
 
 ## Installation [[jsql-injection-v0.82.jar](https://github.com/ron190/jsql-injection/releases/download/v0.82/jsql-injection-v0.82.jar)]

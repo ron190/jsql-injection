@@ -1,9 +1,11 @@
 package com.jsql.view.swing.sql;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.lang.reflect.Field;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -14,6 +16,7 @@ import java.util.stream.Stream;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -25,10 +28,13 @@ import javax.swing.JTextField;
 import javax.swing.MenuSelectionManager;
 import javax.swing.OverlayLayout;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.plaf.TabbedPaneUI;
 import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
@@ -50,9 +56,14 @@ import com.jsql.view.swing.util.UiUtil;
 @SuppressWarnings("serial")
 public class SqlEngine extends JPanel implements Cleanable {
     
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
+    
     private ModelYaml modelYaml = MediatorGui.model().getMediatorVendor().getVendor().instance().getModelYaml();
 
-    private static final JTabbedPane TAB_ERROR = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
+    private static final JTabbedPane TAB_ERROR = new JTabbedPane(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
 
     private static final Border BORDER_RIGHT = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
     
@@ -446,10 +457,12 @@ public class SqlEngine extends JPanel implements Cleanable {
         JPanel panelError = new JPanel(new BorderLayout());
         panelError.add(SqlEngine.TAB_ERROR, BorderLayout.CENTER);
         
+        this.fixScrollerColor();
+        
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), panelError);
 
         /*Boolean*/
-        JTabbedPane tabsBoolean = new TabbedPaneWheeled(SwingConstants.RIGHT);
+        JTabbedPane tabsBoolean = new JTabbedPane(SwingConstants.RIGHT);
         Stream.of(
             new SimpleEntry<>("AND mode", this.textareaModeAnd),
             new SimpleEntry<>("OR mode", this.textareaModeOr),
@@ -483,6 +496,49 @@ public class SqlEngine extends JPanel implements Cleanable {
         });
         
         return panelStrategy;
+    }
+
+    private void fixScrollerColor() {
+        
+        TabbedPaneUI tabbedPaneUI = SqlEngine.TAB_ERROR.getUI();
+        
+        try {
+            // MetalTabbedPaneUI => BasicTabbedPaneUI
+            Field tabScroller = tabbedPaneUI.getClass().getSuperclass().getDeclaredField("tabScroller");
+            tabScroller.setAccessible(true);
+            Object scrollableTabSupport = tabScroller.get(tabbedPaneUI); //IllegalAccessException
+            
+            this.fixButtonColor(scrollableTabSupport, "scrollForwardButton");
+            this.fixButtonColor(scrollableTabSupport, "scrollBackwardButton");
+            
+        } catch (SecurityException | IllegalArgumentException | NoSuchFieldException | IllegalAccessException e) {
+            
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    private void fixButtonColor(Object scrollableTabSupport, String nameButton) throws NoSuchFieldException, IllegalAccessException {
+        
+        Field scrollForwardButton = scrollableTabSupport.getClass().getDeclaredField(nameButton);
+        scrollForwardButton.setAccessible(true);
+        JButton button = (JButton) scrollForwardButton.get(scrollableTabSupport); //IllegalAccessException
+        
+        Field highlight = button.getClass().getSuperclass().getDeclaredField("highlight");
+        highlight.setAccessible(true);
+        highlight.set(button, UIManager.getColor("TabbedPane.highlight"));
+        
+        Field shadow = button.getClass().getSuperclass().getDeclaredField("shadow");
+        shadow.setAccessible(true);
+        shadow.set(button, UIManager.getColor("TabbedPane.darkShadow"));
+        
+        Field darkShadow = button.getClass().getSuperclass().getDeclaredField("darkShadow");
+        darkShadow.setAccessible(true);
+        darkShadow.set(button, new Color(122, 138, 153));
+        
+        button.setBorder(BorderFactory.createEmptyBorder());
+        button.setOpaque(false);
+        button.setBorderPainted(false);
+        button.setBackground(UiUtil.COLOR_DEFAULT_BACKGROUND);
     }
 
     private JPanel getPanelConfiguration() {

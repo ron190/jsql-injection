@@ -271,12 +271,25 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             this.initializeHeader(isUsingIndex, dataInjection, connection, msgHeader);
             this.initializeRequest(isUsingIndex, dataInjection, connection, msgHeader);
             
-            msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
+            Map<String, String> headers = HeaderUtil.getHttpHeaders(connection);
+            msgHeader.put(Header.RESPONSE, headers);
             
             // Calling connection.disconnect() is not required, further calls will follow
             pageSource = ConnectionUtil.getSource(connection);
             
+            int sizeHeaders =
+                headers
+                .keySet()
+                .stream()
+                .map(key -> headers.get(key).length() + key.length())
+                .mapToInt(Integer::intValue)
+                .sum();
+            
+            String size = (pageSource.length() + sizeHeaders) / 1024 + "kb";
+            msgHeader.put(Header.PAGE_SIZE, size);
+            
             if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
+                
                 pageSource = StringUtil.fromHtml(pageSource);
             }
             

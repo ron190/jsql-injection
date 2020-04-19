@@ -15,6 +15,7 @@ import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetVendor;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.JsonUtil;
+import com.jsql.util.StringUtil;
 
 public class MediatorStrategy {
     
@@ -61,31 +62,60 @@ public class MediatorStrategy {
      */
     public String buildURL(String urlBase, boolean isUsingIndex, String sqlTrail) {
         
+        String result = urlBase;
+        
         if (urlBase.contains(InjectionModel.STAR)) {
             
             if (!isUsingIndex) {
                 
-                return urlBase.replace(InjectionModel.STAR, sqlTrail);
+                result = urlBase.replace(InjectionModel.STAR, this.extracted(sqlTrail));
                 
             } else {
                 
-                return
-                    urlBase.replace(
+                result = 
+                    urlBase
+                    .replace(
                         InjectionModel.STAR,
-                        this.injectionModel.getIndexesInUrl().replaceAll(
-                            "1337" + this.normal.getVisibleIndex() + "7331",
-                            /**
-                             * Oracle column often contains $, which is reserved for regex.
-                             * => need to be escape with quoteReplacement()
-                             */
-                            Matcher.quoteReplacement(sqlTrail)
+                        this.extracted(
+                            this.injectionModel.getIndexesInUrl().replaceAll(
+                                "1337" + this.normal.getVisibleIndex() + "7331",
+                                /**
+                                 * Oracle column often contains $, which is reserved for regex.
+                                 * => need to be escape with quoteReplacement()
+                                 */
+                                Matcher.quoteReplacement(sqlTrail)
+                            )
                         )
-                    )
-                ;
+                    );
             }
         }
         
-        return urlBase;
+        return result;
+    }
+
+    private String extracted(String sqlTrail) {
+        
+        return
+            StringUtil.clean(sqlTrail)
+            .replace("\"", "%22")
+            .replace("'", "%27")
+            .replace("(", "%28")
+            .replace(")", "%29")
+            .replace("{", "%7B")
+            .replace("[", "%5B")
+            .replace("|", "%7C")
+            .replace("`", "%60")
+            .replace("]", "%5D")
+            .replace("}", "%7D")
+            .replace(">", "%3E")
+            .replace("<", "%3C")
+            .replace("?", "%3F")
+            .replace("_", "%5F")
+            .replace("\\", "%5C")
+            .replace(",", "%2C")
+            .replace(StringUtils.SPACE, "%20")
+            .replace("+", "%20")
+            + this.injectionModel.getMediatorVendor().getVendor().instance().endingComment().replace("+", "%20");
     }
     
     /**

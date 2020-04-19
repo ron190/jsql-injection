@@ -1068,10 +1068,9 @@ public class Menubar extends JMenuBar {
             
             MediatorGui.managerBruteForce().getResult().setFont(UiUtil.FONT_UBUNTU_REGULAR);
             
-            colMod.getColumn(0).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_METHOD_COLUMN"));
-            colMod.getColumn(1).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
-            colMod.getColumn(2).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
-            colMod.getColumn(3).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
+            colMod.getColumn(0).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
+            colMod.getColumn(1).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
+            colMod.getColumn(2).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
             
         } else {
             
@@ -1088,10 +1087,9 @@ public class Menubar extends JMenuBar {
             
             MediatorGui.managerBruteForce().getResult().setFont(UiUtil.FONT_UBUNTU_MONO);
             
-            colMod.getColumn(0).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_METHOD_COLUMN"));
-            colMod.getColumn(1).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
-            colMod.getColumn(2).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
-            colMod.getColumn(3).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
+            colMod.getColumn(0).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
+            colMod.getColumn(1).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
+            colMod.getColumn(2).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
         }
         
         header.repaint();

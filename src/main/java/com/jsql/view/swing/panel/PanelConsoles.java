@@ -266,8 +266,8 @@ public class PanelConsoles extends JPanel {
 
         JPanel panelExpander = new JPanel(new BorderLayout());
         panelExpander.setBorder(BorderFactory.createEmptyBorder());
-        panelExpander.add(buttonShowSouth, BorderLayout.SOUTH);
-        panelExpander.add(this.buttonShowNorth, BorderLayout.NORTH);
+        panelExpander.add(buttonShowSouth, BorderLayout.LINE_START);
+        panelExpander.add(this.buttonShowNorth, BorderLayout.LINE_END);
         arrowDownPanel.add(panelExpander, BorderLayout.LINE_END);
         
         return arrowDownPanel;
@@ -292,28 +292,7 @@ public class PanelConsoles extends JPanel {
         
         this.javaTextPane.getProxy().setText(StringUtils.EMPTY);
         
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabUrl().setText(StringUtils.EMPTY);
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabHeader().setText(StringUtils.EMPTY);
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabParams().setText(StringUtils.EMPTY);
-        this.tabbedPaneNetworkTab.getTextAreaNetworkTabResponse().setText(StringUtils.EMPTY);
-        
-        // Fix #54572: NullPointerException on setText()
-        try {
-            this.tabbedPaneNetworkTab.getTextAreaNetworkTabSource().setText(StringUtils.EMPTY);
-            
-        } catch (NullPointerException e) {
-            
-            LOGGER.error(e, e);
-        }
-        
-        // Fix #41879: ArrayIndexOutOfBoundsException on setText()
-        try {
-            this.tabbedPaneNetworkTab.getTextAreaNetworkTabPreview().setText(StringUtils.EMPTY);
-            
-        } catch (ArrayIndexOutOfBoundsException e) {
-            
-            LOGGER.error(e, e);
-        }
+        this.tabbedPaneNetworkTab.reset();
     }
 
     /**

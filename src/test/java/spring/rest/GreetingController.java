@@ -23,6 +23,8 @@ import org.neo4j.driver.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -317,6 +319,32 @@ public class GreetingController {
         return greeting;
     }
     
+    @SuppressWarnings("unchecked")
+    @GetMapping("/greeting/{name}/suffix")
+    public Greeting greetingPathParam(@PathVariable("name") String name) throws IOException {
+        
+        Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+            
+            List<Object[]> results = query.getResultList();
+            
+            greeting = new Greeting(
+                this.counter.getAndIncrement(),
+                String.format(template, inject)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
+            
+        } catch (Exception e) {
+            // Hide useless SQL error messages
+        }
+        
+        return greeting;
+    }
+    
     @RequestMapping("/greeting-neo4j")
     public Greeting greetingNeo4j(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
@@ -326,9 +354,13 @@ public class GreetingController {
             Result result = session.run("MATCH (n:Person) where 1="+ name +" RETURN n.name, n.from, n.title, n.hobby");
             
             String a = result.stream().map(record ->
-                record.keys().stream()
+            
+                record
+                .keys()
+                .stream()
                 .map(key -> key + "=" + record.get(key))
                 .collect(Collectors.joining(", ", "{", "}"))
+                
             ).collect(Collectors.joining());
             
             greeting = new Greeting(

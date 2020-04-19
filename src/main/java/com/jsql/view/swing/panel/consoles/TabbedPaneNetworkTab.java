@@ -50,7 +50,8 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             }
         });
         
-        Stream.of(
+        Stream
+        .of(
             new SimpleEntry<>("NETWORK_TAB_URL_LABEL", this.textAreaNetworkTabUrl),
             new SimpleEntry<>("NETWORK_TAB_RESPONSE_LABEL", this.textAreaNetworkTabResponse),
             new SimpleEntry<>("NETWORK_TAB_SOURCE_LABEL", this.textAreaNetworkTabSource),
@@ -129,45 +130,45 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
                         .detectUtf8(networkData.getSource())
                         .replaceAll("#{5,}", "#*")
                     + "</html>"
-                    .replaceAll("<img.*>", StringUtils.EMPTY)
-                    .replaceAll("<input.*type=\"?hidden\"?.*>", StringUtils.EMPTY)
-                    .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
-                    .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
+                    .replaceAll("<img[^>]*>", StringUtils.EMPTY)
+                    .replaceAll("<input[^>]*type=\"?hidden\"?.*>", StringUtils.EMPTY)
+                    .replaceAll("<input[^>]*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
+                    .replaceAll("<input[^>]*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
                     Whitelist.relaxed()
                     .addTags("center", "div", "span")
                     .addAttributes(":all", "style")
                 )
             );
             
-        } catch (RuntimeException | ExceptionInInitializerError e) {
+        } catch (Exception | ExceptionInInitializerError e) {
             
             LOGGER.error(e, e);
         }
     }
     
-    // Getter and setter
-
-    public JTextArea getTextAreaNetworkTabUrl() {
-        return this.textAreaNetworkTabUrl;
-    }
-
-    public JTextArea getTextAreaNetworkTabResponse() {
-        return this.textAreaNetworkTabResponse;
-    }
-
-    public JTextArea getTextAreaNetworkTabSource() {
-        return this.textAreaNetworkTabSource;
-    }
-
-    public JTextPane getTextAreaNetworkTabPreview() {
-        return this.textAreaNetworkTabPreview;
-    }
-
-    public JTextArea getTextAreaNetworkTabHeader() {
-        return this.textAreaNetworkTabHeader;
-    }
-
-    public JTextArea getTextAreaNetworkTabParams() {
-        return this.textAreaNetworkTabParams;
+    public void reset() {
+        
+        this.textAreaNetworkTabUrl.setText(StringUtils.EMPTY);
+        this.textAreaNetworkTabHeader.setText(StringUtils.EMPTY);
+        this.textAreaNetworkTabParams.setText(StringUtils.EMPTY);
+        this.textAreaNetworkTabResponse.setText(StringUtils.EMPTY);
+        
+        // Fix #54572: NullPointerException on setText()
+        try {
+            this.textAreaNetworkTabSource.setText(StringUtils.EMPTY);
+            
+        } catch (NullPointerException e) {
+            
+            LOGGER.error(e, e);
+        }
+        
+        // Fix #41879: ArrayIndexOutOfBoundsException on setText()
+        try {
+            this.textAreaNetworkTabPreview.setText(StringUtils.EMPTY);
+            
+        } catch (ArrayIndexOutOfBoundsException e) {
+            
+            LOGGER.error(e, e);
+        }
     }
 }

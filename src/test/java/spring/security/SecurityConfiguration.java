@@ -60,14 +60,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * Allow from all
      * </Proxy>
      */
+    
+    /**
+     * ssh-host-config
+     * /usr/sbin/sshd
+     * ssh -D 9999 -C Watthieu-x64@127.0.0.1
+     */
  
     private static final String BASIC_REALM = "Basic Realm";
-    public static final String BASIC_USERNAME = "a";
-    public static final String BASIC_PASSWORD = "a";
+    private static final String BASIC_ROLE = "ADMIN1";
+    public static final String BASIC_USERNAME = "login-basic";
+    public static final String BASIC_PASSWORD = "password-basic";
     
-    private static final String DIGEST_REALM = "myrealm";
-    public static final String DIGEST_USERNAME = "user";
-    public static final String DIGEST_PASSWORD = "p@ssw0rd";
+    private static final String DIGEST_ROLE = "ADMIN2";
+    private static final String DIGEST_REALM = "Digest Realm";
+    public static final String DIGEST_USERNAME = "login-digest";
+    public static final String DIGEST_PASSWORD = "password-digest";
     private static final String DIGEST_PASSWORD_ENCODED = DigestAuthUtils.encodePasswordInA1Format(DIGEST_USERNAME, DIGEST_REALM, DIGEST_PASSWORD);
      
     @Autowired
@@ -77,14 +85,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .inMemoryAuthentication()
         .withUser(BASIC_USERNAME)
         .password(this.passwordEncoder().encode(BASIC_PASSWORD))
-        .roles("ADMIN1");
+        .roles(BASIC_ROLE);
         
         auth
         .inMemoryAuthentication()
         .passwordEncoder(NoOpPasswordEncoder.getInstance())
         .withUser(DIGEST_USERNAME)
         .password(DIGEST_PASSWORD_ENCODED)
-        .roles("ADMIN2");
+        .roles(DIGEST_ROLE);
     }
     
     @Override
@@ -92,26 +100,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       
         http
         .csrf()
-        .disable()
+            .disable()
         .authorizeRequests()
-        .antMatchers("/basic/**")
-        .hasRole("ADMIN1")
+            .antMatchers("/basic/**")
+            .hasRole(BASIC_ROLE)
+            .and()
+            .httpBasic()
+            .realmName(BASIC_REALM)
+            .authenticationEntryPoint(this.getBasicAuthEntryPoint())
         .and()
-        .httpBasic()
-        .realmName(BASIC_REALM)
-        .authenticationEntryPoint(this.getBasicAuthEntryPoint())
+            .authorizeRequests()
+            .antMatchers("/digest/**")
+            .hasRole(DIGEST_ROLE)
+            .and()
+            .addFilterBefore(this.digestAuthenticationFilter(), BasicAuthenticationFilter.class)
+            .httpBasic()
+            .realmName(DIGEST_REALM)
+            .authenticationEntryPoint(this.digestEntryPoint())
         .and()
-        .authorizeRequests()
-        .antMatchers("/digest/**")
-        .hasRole("ADMIN2")
-        .and()
-        .addFilterBefore(this.digestAuthenticationFilter(), BasicAuthenticationFilter.class)
-        .httpBasic()
-        .realmName(DIGEST_REALM)
-        .authenticationEntryPoint(this.digestEntryPoint())
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     public Filter digestAuthenticationFilter() throws Exception {
