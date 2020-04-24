@@ -42,6 +42,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.MenuSelectionManager;
@@ -796,14 +797,14 @@ public class Menubar extends JMenuBar {
             ));
             textarea.setText(
                 "## What's the expected behavior?\n\n"
-                + "## And what's the actual behavior?\n\n"
-                + "## Any detailed information about the Issue?\n\n"
-                + "## Steps to reproduce the behavior\n\n"
+                + "## What's the actual behavior?\n\n"
+                + "## Any other detailed information on the Issue?\n\n"
+                + "## Steps to reproduce the problem\n\n"
                 + "  1. ...\n"
                 + "  2. ...\n\n"
-                + "## [Community] Any request for a new feature?\n\n"
+                + "## [Community] Request for new feature\n\n"
             );
-            panel.add(new JLabel("Describe your issue or the bug you encountered " + ":"), BorderLayout.NORTH);
+            panel.add(new JLabel("Describe your issue or the bug you encountered :"), BorderLayout.NORTH);
             panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
             
             panel.setPreferredSize(new Dimension(400, 250));
@@ -938,25 +939,29 @@ public class Menubar extends JMenuBar {
         
         if (ComponentOrientation.getOrientation(oldLocale) != ComponentOrientation.getOrientation(newLocale)) {
             
-            Component componentLeft = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getLeftComponent();
-            Component componentRight = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getRightComponent();
+            JSplitPane splitPaneLeftRight = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight();
             
-            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(null);
-            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(null);
-            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(componentRight);
-            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(componentLeft);
+            Component componentLeft = splitPaneLeftRight.getLeftComponent();
+            Component componentRight = splitPaneLeftRight.getRightComponent();
+
+            // Reset components
+            splitPaneLeftRight.setLeftComponent(null);
+            splitPaneLeftRight.setRightComponent(null);
+            
+            splitPaneLeftRight.setLeftComponent(componentRight);
+            splitPaneLeftRight.setRightComponent(componentLeft);
             
             if (isStartup) {
                 
-                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(
-                    MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation()
+                splitPaneLeftRight.setDividerLocation(
+                    splitPaneLeftRight.getDividerLocation()
                 );
                 
             } else {
                 
-                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(
-                    MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getWidth() -
-                    MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation()
+                splitPaneLeftRight.setDividerLocation(
+                    splitPaneLeftRight.getWidth() -
+                    splitPaneLeftRight.getDividerLocation()
                 );
             }
         }

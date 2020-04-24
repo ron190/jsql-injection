@@ -36,7 +36,7 @@ Program stability is tested in the cloud on Travis CI using Java 8 through 13 an
 - Text hashing, encoding and decoding
 
 ## Installation [[jsql-injection-v0.82.jar](https://github.com/ron190/jsql-injection/releases/download/v0.82/jsql-injection-v0.82.jar)]
-Install [Java 8](http://java.com) up to Java 13, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.82.jar` to launch the software.<br>
+Install [Java 8](http://java.com) up to Java 15, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.82.jar` to launch the software.<br>
 You can also type `java -jar jsql-injection-v0.82.jar` in your terminal to start the program.<br>
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
@@ -73,7 +73,7 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 `Burp integration, Crawler, Database: Netezza, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB, Dictionary attack, WAF detection.`
 
 ## In progress
-`Devops, User agent, Custom rows fetching.`
+`Devops, User agent, Custom rows load.`
 
 ## Since latest release
 `Tampering, Devops with SQLite Neo4j SQLServer Cubrid and authentication integration tests in the Cloud.`

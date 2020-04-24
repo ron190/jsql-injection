@@ -45,15 +45,15 @@ public class JScrollIndicator extends JLayeredPane {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    public static final int SCROLL_BAR_ALPHA_ROLLOVER = 100;
-    public static final int SCROLL_BAR_ALPHA = 25;
+    private static final int SCROLL_BAR_ALPHA_ROLLOVER = 100;
+    private static final int SCROLL_BAR_ALPHA = 25;
 
     private static final Color THUMB_COLOR = Color.DARK_GRAY;
     private static final int THUMB_THICKNESS = 15;
     private static final int THUMB_MIN_SIZE = 48;
     private static final int THUMB_MARGIN = 0;
 
-    public final JScrollPane scrollPane;
+    private final JScrollPane scrollPane;
     private final ControlPanel controlPanel;
 
     /**
@@ -67,8 +67,12 @@ public class JScrollIndicator extends JLayeredPane {
      */
     public JScrollIndicator(final JComponent view) {
         
-        this(view, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        this(view, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    }
+    
+    public JScrollIndicator(final JComponent view, int scrollPaneConstants) {
+        
+        this(view, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, scrollPaneConstants);
     }
 
     /**

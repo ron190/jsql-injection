@@ -55,6 +55,7 @@ public class NodeModelTable extends AbstractNodeModel {
      * @param table Element table coming from model
      */
     public NodeModelTable(Table table) {
+        
         super(table);
     }
 
@@ -62,8 +63,11 @@ public class NodeModelTable extends AbstractNodeModel {
     protected Icon getLeafIcon(boolean leaf) {
         
         if (leaf) {
+            
             return UiUtil.ICON_TABLE_GO;
+            
         } else {
+            
             return UiUtil.ICON_TABLE;
         }
     }
@@ -72,15 +76,19 @@ public class NodeModelTable extends AbstractNodeModel {
     protected void displayProgress(PanelNode panelNode, DefaultMutableTreeNode currentNode) {
         
         if ("information_schema".equals(this.getParent().toString())) {
+            
             panelNode.showLoader();
             
             AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
             if (suspendableTask != null && suspendableTask.isPaused()) {
+                
                 ImageIcon animatedGifPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);
                 animatedGifPaused.setImageObserver(new ImageObserverAnimated(MediatorGui.treeDatabase(), currentNode));
                 panelNode.setLoaderIcon(animatedGifPaused);
             }
+            
         } else {
+            
             super.displayProgress(panelNode, currentNode);
         }
     }
@@ -106,6 +114,7 @@ public class NodeModelTable extends AbstractNodeModel {
                 
                 Thread.currentThread().setName("SwingWorkerNodeModelTable");
                 Table selectedTable = (Table) NodeModelTable.this.getElementDatabase();
+                
                 return MediatorGui.model().getDataAccess().listColumns(selectedTable);
             }
         }.execute();
@@ -200,11 +209,13 @@ public class NodeModelTable extends AbstractNodeModel {
         menuCustomLoad.add(menuItemDump);
         
         for (JMenuItem menuItem: new JMenuItem[]{menuItemLoadAllRows, menuItemLoadOneRow}) {
+            
             menuItem.setUI(
                 new BasicRadioButtonMenuItemUI() {
                     
                     @Override
                     protected void doClick(MenuSelectionManager msm) {
+                        
                         this.menuItem.doClick(0);
                     }
                 }
@@ -216,13 +227,14 @@ public class NodeModelTable extends AbstractNodeModel {
                 
                 @Override
                 protected void doClick(MenuSelectionManager msm) {
+                    
                     this.menuItem.doClick(0);
                 }
             }
         );
 
-//        tablePopupMenu.add(new JSeparator());
-//        tablePopupMenu.add(menuCustomLoad);
+        tablePopupMenu.add(new JSeparator());
+        tablePopupMenu.add(menuCustomLoad);
         
         tablePopupMenu.setButtonGroupLoadRows(buttonGroupLoadRows);
         tablePopupMenu.setRadioCustomFromChar(radioCustomFromChar);
@@ -243,6 +255,7 @@ public class NodeModelTable extends AbstractNodeModel {
         menuItemUncheckAll.setIcon(UiUtil.ICON_EMPTY);
 
         if (!this.isLoaded()) {
+            
             menuItemCheckAll.setEnabled(false);
             menuItemUncheckAll.setEnabled(false);
         }
@@ -260,6 +273,7 @@ public class NodeModelTable extends AbstractNodeModel {
     
     @Override
     public boolean isPopupDisplayable() {
+        
         return this.isLoaded() || !this.isLoaded() && this.isRunning();
     }
 }

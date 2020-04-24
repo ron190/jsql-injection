@@ -21,12 +21,14 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.prefs.Preferences;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
@@ -51,6 +53,7 @@ import com.jsql.view.swing.scrollpane.JScrollIndicator;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.tab.TabConsoles;
+import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
 import com.jsql.view.swing.text.JToolTipI18n;
@@ -92,6 +95,8 @@ public class PanelConsoles extends JPanel {
     private TabConsoles tabConsoles = new TabConsoles();
     private TabbedPaneNetworkTab tabbedPaneNetworkTab;
     private NetworkTable networkTable;
+    
+    private MouseWheelListener tabbedPaneMouseWheelListener = new TabbedPaneMouseWheelListener();
 
     private BasicArrowButton buttonShowNorth = new BasicArrowButton(SwingConstants.NORTH);
     private int location = 0;
@@ -134,6 +139,10 @@ public class PanelConsoles extends JPanel {
         this.networkSplitPane.setBorder(BorderFactory.createEmptyBorder());
         
         this.tabbedPaneNetworkTab = new TabbedPaneNetworkTab();
+        
+        this.tabbedPaneNetworkTab.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
+        this.tabConsoles.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
+        
         this.networkSplitPane.setRightComponent(this.tabbedPaneNetworkTab);
         
         this.networkTable = new NetworkTable(this.tabbedPaneNetworkTab);
@@ -144,9 +153,9 @@ public class PanelConsoles extends JPanel {
 
     private JScrollIndicator initializeScrollerTable() {
         
-        JScrollIndicator scrollerNetwork = new JScrollIndicator(this.networkTable);
-        scrollerNetwork.scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
-        scrollerNetwork.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
+        JScrollIndicator scrollerNetwork = new JScrollIndicator(this.networkTable, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollerNetwork.getScrollPane().setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
+        scrollerNetwork.getScrollPane().setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         
         AdjustmentListener singleItemScroll = adjustmentEvent -> {
             
@@ -159,8 +168,8 @@ public class PanelConsoles extends JPanel {
             }
         };
 
-        scrollerNetwork.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
-        scrollerNetwork.scrollPane.getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);
+        scrollerNetwork.getScrollPane().getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
+        scrollerNetwork.getScrollPane().getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);
         
         return scrollerNetwork;
     }

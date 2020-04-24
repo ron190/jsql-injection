@@ -2,12 +2,12 @@
 
 ## What's the actual behavior?
 
-## Any detailed information about the Issue?
+## Any other detailed information about the Issue?
 
-## Steps to reproduce
+## Steps to reproduce the problem
 
   1. ...
   2. ...
 
-## [Community] Any request for a new feature?
+## [Community] Request for new feature
 

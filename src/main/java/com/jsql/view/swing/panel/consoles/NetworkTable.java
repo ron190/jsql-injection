@@ -129,7 +129,7 @@ public class NetworkTable extends JTable {
         );
         
         this.getColumnModel().getColumn(0).setPreferredWidth(300);
-        this.getColumnModel().getColumn(1).setPreferredWidth(40);
+        this.getColumnModel().getColumn(1).setPreferredWidth(20);
         this.getColumnModel().getColumn(2).setPreferredWidth(50);
         
         this.getSelectionModel().addListSelectionListener(event -> {

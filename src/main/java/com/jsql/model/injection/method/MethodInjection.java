@@ -84,13 +84,11 @@ public abstract class MethodInjection implements Serializable {
         return this.injectionModel.getMediatorStrategy().testStrategies(null);
     }
 
+    /*
+     *  Default injection: last param tested only
+     */
     private boolean checkLastParam() throws JSqlException {
         
-        // Default injection: last param tested only
-        
-        // Injection point defined on last parameter
-//        this.getParams().stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
-
         // Will check param value by user.
         // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
         // for JSON injection of last param
@@ -99,12 +97,13 @@ public abstract class MethodInjection implements Serializable {
         return this.injectionModel.getMediatorStrategy().testStrategies(parameterToInject);
     }
 
+    /**
+     * Injection of every params: isCheckingAllParam() == true.
+     * Params are tested one by one in two loops:
+     * - inner loop erases * from previous param
+     * - outer loop adds * to current param
+     */
     private boolean checkAllParams() {
-        
-        // Injection of every params: isCheckingAllParam() == true.
-        // Params are tested one by one in two loops:
-        // - inner loop erases * from previous param
-        // - outer loop adds * to current param
         
         boolean hasFoundInjection = false;
         

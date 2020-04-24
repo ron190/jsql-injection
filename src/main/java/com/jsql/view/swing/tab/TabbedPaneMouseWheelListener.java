@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 /**
  * Mousewheel allows to navigate to next/previous tab.
  */
-public class TabbedPaneMouseWheelScroller implements MouseWheelListener {
+public class TabbedPaneMouseWheelListener implements MouseWheelListener {
     
     /**
      * Log4j logger sent to view.

@@ -73,66 +73,90 @@ public class ActionCoder implements ActionListener {
                 result = "<span style=\"color:red;\">Empty string to convert</span>";
                 
             } else if (Arrays.asList("Md2", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512").contains(nameMethod)) {
+                
                 result = HashUtil.toHash(nameMethod, textInput);
                 
             } else if ("Md4".contains(nameMethod)) {
+                
                 result = HashUtil.toMd4(textInput);
                 
             } else if ("Adler32".contains(nameMethod)) {
+                
                 result = HashUtil.toAdler32(textInput);
                 
             } else if ("Crc16".contains(nameMethod)) {
+                
                 result = HashUtil.toCrc16(textInput);
                 
             } else if ("Crc32".contains(nameMethod)) {
+                
                 result = HashUtil.toCrc32(textInput);
                 
             } else if ("Crc64".contains(nameMethod)) {
+                
                 result = HashUtil.toCrc64(textInput);
                 
             } else if ("Mysql".equals(nameMethod)) {
+                
                 result = HashUtil.toMySql(textInput);
                 
             } else if ("Encode to Hex".equalsIgnoreCase(nameMethod)) {
+                
                 result = StringUtil.toHex(textInput);
                 
             } else if ("Decode from Hex".equalsIgnoreCase(nameMethod)) {
+                
                 result = StringUtil.fromHex(textInput);
                 
             } else if ("Encode to Hex(zipped)".equalsIgnoreCase(nameMethod)) {
+                
                 result = StringUtil.toHexZip(textInput);
                 
             } else if ("Decode from Hex(zipped)".equalsIgnoreCase(nameMethod)) {
+                
                 result = StringUtil.fromHexZip(textInput);
                 
             } else if ("Encode to Base64(zipped)".equalsIgnoreCase(nameMethod)) {
+                
                 result = StringUtil.toBase64Zip(textInput);
                 
             } else if ("Decode from Base64(zipped)".equalsIgnoreCase(nameMethod)) {
+                
                 result = StringUtil.fromBase64Zip(textInput);
                 
             } else if ("Encode to Base64".equalsIgnoreCase(nameMethod)) {
+                
                 result = StringUtil.base64Encode(textInput);
                 
             } else if ("Decode from Base64".equalsIgnoreCase(nameMethod)) {
+                
                 result = StringUtil.base64Decode(textInput);
                 
             } else if ("Encode to Html".equalsIgnoreCase(nameMethod)) {
+                
                 result = StringUtil.toHtml(textInput);
                 
             } else if ("Encode to Html (decimal)".equalsIgnoreCase(nameMethod)) {
+                
                 result = StringUtil.decimalHtmlEncode(textInput, true);
                 
             } else if ("Decode from Html".equalsIgnoreCase(nameMethod)) {
+                
                 result = StringUtil.fromHtml(textInput);
                 
             } else if ("Encode to Url".equalsIgnoreCase(nameMethod)) {
+                
                 result = StringUtil.toUrl(textInput);
                 
             } else if ("Decode from Url".equalsIgnoreCase(nameMethod)) {
-                result = StringUtil.fromUrl(textInput);
+                
+                result = org.apache.commons.lang3.StringUtils.replaceEach(
+                    StringUtil.fromUrl(textInput),
+                    new String[]{"&", "\"", "<", ">"}, new String[]{"&amp;", "&quot;", "&lt;", "&gt;"}
+                );
                 
             } else {
+                
                 result = "<span style=\"color:red;\">Unsupported encoding or decoding method</span>";
             }
             

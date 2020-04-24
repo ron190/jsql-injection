@@ -72,7 +72,7 @@ public class MediatorStrategy {
                 
             } else {
                 
-                result = 
+                result =
                     urlBase
                     .replace(
                         InjectionModel.STAR,

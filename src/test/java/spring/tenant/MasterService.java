@@ -32,7 +32,8 @@ public class MasterService {
             TargetApplication.propsSqlite,
             TargetApplication.propsDb2,
             TargetApplication.propsHsqldb,
-            TargetApplication.propsDerby
+            TargetApplication.propsDerby,
+            TargetApplication.propsOracle
         )
         .forEach(props -> {
             

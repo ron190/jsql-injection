@@ -207,8 +207,8 @@ public class PanelTable extends JPanel {
     private void initializeTableScroller() {
         
         JScrollIndicator scroller = new JScrollIndicator(this.tableValues);
-        scroller.scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
-        scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
+        scroller.getScrollPane().setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
+        scroller.getScrollPane().setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         
         AdjustmentListener singleItemScroll = adjustmentEvent -> {
             
@@ -220,11 +220,11 @@ public class PanelTable extends JPanel {
             }
         };
 
-        scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
-        scroller.scrollPane.getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);
+        scroller.getScrollPane().getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
+        scroller.getScrollPane().getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);
 
         FixedColumnTable tableFixedColumn = new FixedColumnTable();
-        tableFixedColumn.fixColumnSize(2, scroller.scrollPane);
+        tableFixedColumn.fixColumnSize(2, scroller.getScrollPane());
         
         this.add(scroller, BorderLayout.CENTER);
     }

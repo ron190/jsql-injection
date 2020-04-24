@@ -46,22 +46,24 @@ public class TargetApplication {
     public static Properties propsDb2 = new Properties();
     public static Properties propsHsqldb = new Properties();
     public static Properties propsDerby = new Properties();
+    public static Properties propsOracle = new Properties();
 
     static {
         
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
         Stream.of(
-            new SimpleEntry<>(propsH2, "spring/hibernate.h2.properties"),
-            new SimpleEntry<>(propsMysql, "spring/hibernate.mysql.properties"),
-            new SimpleEntry<>(propsMysqlError, "spring/hibernate.mysql-5.5.40.properties"),
-            new SimpleEntry<>(propsPostgres, "spring/hibernate.postgres.properties"),
-            new SimpleEntry<>(propsSqlServer, "spring/hibernate.sqlserver.properties"),
-            new SimpleEntry<>(propsCubrid, "spring/hibernate.cubrid.properties"),
-            new SimpleEntry<>(propsSqlite, "spring/hibernate.sqlite.properties"),
-            new SimpleEntry<>(propsDb2, "spring/hibernate.db2.properties"),
-            new SimpleEntry<>(propsHsqldb, "spring/hibernate.hsqldb.properties"),
-            new SimpleEntry<>(propsDerby, "spring/hibernate.derby.properties")
+            new SimpleEntry<>(propsH2, "hibernate/hibernate.h2.properties"),
+            new SimpleEntry<>(propsMysql, "hibernate/hibernate.mysql.properties"),
+            new SimpleEntry<>(propsMysqlError, "hibernate/hibernate.mysql-5.5.40.properties"),
+            new SimpleEntry<>(propsPostgres, "hibernate/hibernate.postgres.properties"),
+            new SimpleEntry<>(propsSqlServer, "hibernate/hibernate.sqlserver.properties"),
+            new SimpleEntry<>(propsCubrid, "hibernate/hibernate.cubrid.properties"),
+            new SimpleEntry<>(propsSqlite, "hibernate/hibernate.sqlite.properties"),
+            new SimpleEntry<>(propsDb2, "hibernate/hibernate.db2.properties"),
+            new SimpleEntry<>(propsHsqldb, "hibernate/hibernate.hsqldb.properties"),
+            new SimpleEntry<>(propsDerby, "hibernate/hibernate.derby.properties"),
+            new SimpleEntry<>(propsOracle, "hibernate/hibernate.oracle.properties")
         )
         .forEach(simpleEntry -> {
             
@@ -94,12 +96,13 @@ public class TargetApplication {
             propsSqlite,
             propsDb2,
             propsHsqldb,
-            propsDerby
+            propsDerby,
+            propsOracle
         )
         .forEach(props -> {
             
             Configuration configuration = new Configuration();
-            configuration.addProperties(props).configure("spring/hibernate.cfg.xml");
+            configuration.addProperties(props).configure("hibernate/hibernate.cfg.xml");
             configuration.addAnnotatedClass(Student.class);
             
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
@@ -146,7 +149,7 @@ public class TargetApplication {
 
     private static void initializeNeo4j() throws IOException {
         
-        String graphMovie = Files.readAllLines(Paths.get("src/test/resources/docker/movie-graph.txt")).stream().collect(Collectors.joining("\n"));
+        String graphMovie = Files.readAllLines(Paths.get("src/test/resources/data/movie-graph.txt")).stream().collect(Collectors.joining("\n"));
         
         Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
         

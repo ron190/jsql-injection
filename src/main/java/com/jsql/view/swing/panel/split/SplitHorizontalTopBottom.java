@@ -30,6 +30,7 @@ import com.jsql.view.swing.panel.PanelConsoles;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.tab.TabResults;
+import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -78,8 +79,13 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         int verticalSplitter = prefs.getInt(SplitHorizontalTopBottom.NAME_V_SPLITPANE, 350);
         int horizontalSplitter = prefs.getInt(SplitHorizontalTopBottom.NAME_H_SPLITPANE, 200);
 
-        MediatorGui.register(new TabManagers());
-        MediatorGui.register(new TabResults());
+        TabManagers tabManagers = new TabManagers();
+        tabManagers.addMouseWheelListener(new TabbedPaneMouseWheelListener());
+        MediatorGui.register(tabManagers);
+
+        TabResults tabResults = new TabResults();
+        tabResults.addMouseWheelListener(new TabbedPaneMouseWheelListener());
+        MediatorGui.register(tabResults);
 
         // Tree and tabs on top
         this.splitVerticalLeftRight = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);

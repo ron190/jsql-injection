@@ -2,6 +2,8 @@ package com.jsql.view.swing.interaction;
 
 import java.awt.ComponentOrientation;
 
+import javax.swing.JSplitPane;
+
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.MediatorGui;
 
@@ -23,17 +25,19 @@ public class CreateTab {
         
         if (MediatorGui.tabResults().getTabCount() == 0) {
             
-            int dividerLocation = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation();
+            JSplitPane splitPaneLeftRight = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight();
+            int dividerLocation = splitPaneLeftRight.getDividerLocation();
             
             if (ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT) {
                 
-                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(MediatorGui.tabResults());
+                splitPaneLeftRight.setLeftComponent(MediatorGui.tabResults());
+                
             } else {
                 
-                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(MediatorGui.tabResults());
+                splitPaneLeftRight.setRightComponent(MediatorGui.tabResults());
             }
             
-            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(dividerLocation);
+            splitPaneLeftRight.setDividerLocation(dividerLocation);
         }
     }
 }

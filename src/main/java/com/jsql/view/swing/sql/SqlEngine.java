@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.MouseWheelListener;
 import java.lang.reflect.Field;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ import com.jsql.view.swing.sql.text.AttributeSetterForVendor;
 import com.jsql.view.swing.sql.text.JTextPaneLexer;
 import com.jsql.view.swing.sql.text.JTextPaneObjectMethod;
 import com.jsql.view.swing.tab.TabHeader.Cleanable;
+import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
 import com.jsql.view.swing.util.I18nViewUtil;
@@ -63,9 +65,11 @@ public class SqlEngine extends JPanel implements Cleanable {
     
     private ModelYaml modelYaml = MediatorGui.model().getMediatorVendor().getVendor().instance().getModelYaml();
 
-    private static final JTabbedPane TAB_ERROR = new JTabbedPane(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
+    private JTabbedPane tabbedPaneError = new JTabbedPane(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
 
-    private static final Border BORDER_RIGHT = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
+    private Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
+    
+    private MouseWheelListener tabbedPaneMouseWheelListener = new TabbedPaneMouseWheelListener();
     
     // Standard
     private final JTextPaneLexer textareaDatabase = new JTextPaneLexer() {
@@ -313,19 +317,22 @@ public class SqlEngine extends JPanel implements Cleanable {
             this.textareaTime,
             this.textareaBitTest,
             this.textareaLengthTest
-        ).forEach(textPane -> textPane.setBorder(SqlEngine.BORDER_RIGHT));
+        )
+        .forEach(textPane -> textPane.setBorder(this.borderRight));
         
         JPanel panelStructure = this.getPanelStructure();
         JPanel panelStrategy = this.getPanelStrategy();
         JPanel panelConfiguration = this.getPanelConfiguration();
 
-        JTabbedPane tabsBottom = new TabbedPaneWheeled(SwingConstants.BOTTOM);
+        JTabbedPane tabsBottom = new TabbedPaneWheeled(SwingConstants.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabsBottom.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         Stream.of(
             new SimpleEntry<>("SQLENGINE_STRUCTURE", panelStructure),
             new SimpleEntry<>("SQLENGINE_STRATEGY", panelStrategy),
             new SimpleEntry<>("SQLENGINE_CONFIGURATION", panelConfiguration)
         )
         .forEach(entry -> {
+            
             tabsBottom.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());
             
             JLabel label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
@@ -351,9 +358,11 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private JPanel getPanelStructure() {
         
-        JTabbedPane tabsStandard = new TabbedPaneWheeled(SwingConstants.RIGHT);
+        JTabbedPane tabsStandard = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabsStandard.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         
-        JTabbedPane tabsSchema = new TabbedPaneWheeled();
+        JTabbedPane tabsSchema = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabsSchema.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         Stream.of(
             new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabase),
             new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTable),
@@ -364,6 +373,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             new SimpleEntry<>("SQLENGINE_METADATA", this.textareaInfo)
         )
         .forEach(entry -> {
+            
             tabsSchema.addTab(
                 I18nUtil.valueByKey(entry.getKey()),
                 new LightScrollPane(1, 0, 1, 0, entry.getValue())
@@ -377,7 +387,8 @@ public class SqlEngine extends JPanel implements Cleanable {
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
         
-        JTabbedPane tabsZipped = new TabbedPaneWheeled();
+        JTabbedPane tabsZipped = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabsZipped.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         Stream.of(
             new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabaseZipped),
             new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTableZipped),
@@ -387,6 +398,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             new SimpleEntry<>("SQLENGINE_FIELDS_SEPARATOR", this.textareaConcatZipped)
         )
         .forEach(entry -> {
+            
             tabsZipped.addTab(
                 I18nUtil.valueByKey(entry.getKey()),
                 new LightScrollPane(1, 0, 1, 0, entry.getValue())
@@ -400,7 +412,8 @@ public class SqlEngine extends JPanel implements Cleanable {
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
         
-        JTabbedPane tabsDios = new TabbedPaneWheeled();
+        JTabbedPane tabsDios = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabsDios.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         Stream.of(
             new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabaseDios),
             new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTableDios),
@@ -410,6 +423,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             new SimpleEntry<>("SQLENGINE_FIELDS_SEPARATOR", this.textareaConcatDios)
         )
         .forEach(entry -> {
+            
             tabsDios.addTab(
                 I18nUtil.valueByKey(entry.getKey()),
                 new LightScrollPane(1, 0, 1, 0, entry.getValue())
@@ -427,7 +441,9 @@ public class SqlEngine extends JPanel implements Cleanable {
             new SimpleEntry<>("SQLENGINE_STANDARD", tabsSchema),
             new SimpleEntry<>("SQLENGINE_ZIPPED", tabsZipped),
             new SimpleEntry<>("SQLENGINE_DIOS", tabsDios)
-        ).forEach(entry -> {
+        )
+        .forEach(entry -> {
+            
             tabsStandard.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());
             
             JLabel label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
@@ -446,7 +462,8 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private JPanel getPanelStrategy() {
         
-        JTabbedPane tabsStrategy = new TabbedPaneWheeled();
+        JTabbedPane tabsStrategy = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabsStrategy.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_NORMAL"), new LightScrollPane(1, 0, 1, 0, this.textareaIndices));
         
         JPanel panelStrategy = new JPanel(new BorderLayout());
@@ -455,14 +472,15 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         /*Error*/
         JPanel panelError = new JPanel(new BorderLayout());
-        panelError.add(SqlEngine.TAB_ERROR, BorderLayout.CENTER);
+        panelError.add(this.tabbedPaneError, BorderLayout.CENTER);
         
         this.fixScrollerColor();
         
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), panelError);
 
         /*Boolean*/
-        JTabbedPane tabsBoolean = new JTabbedPane(SwingConstants.RIGHT);
+        JTabbedPane tabsBoolean = new JTabbedPane(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabsBoolean.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         Stream.of(
             new SimpleEntry<>("AND mode", this.textareaModeAnd),
             new SimpleEntry<>("OR mode", this.textareaModeOr),
@@ -485,6 +503,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             "SQLENGINE_BOOLEAN"
         )
         .forEach(keyI18n -> {
+            
             JLabel label = new JLabel(I18nUtil.valueByKey(keyI18n));
             
             tabsStrategy.setTabComponentAt(
@@ -500,7 +519,7 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private void fixScrollerColor() {
         
-        TabbedPaneUI tabbedPaneUI = SqlEngine.TAB_ERROR.getUI();
+        TabbedPaneUI tabbedPaneUI = this.tabbedPaneError.getUI();
         
         try {
             // MetalTabbedPaneUI => BasicTabbedPaneUI
@@ -543,7 +562,9 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private JPanel getPanelConfiguration() {
         
-        JTabbedPane tabsConfiguration = new TabbedPaneWheeled();
+        JTabbedPane tabsConfiguration = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabsConfiguration.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
+        
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new LightScrollPane(1, 0, 1, 0, this.textareaOrderBy));
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, this.textareaSlidingWindow));
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, this.textareaLimit));
@@ -561,6 +582,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             "SQLENGINE_TRAPCANCELLER"
         )
         .forEach(keyI18n -> {
+            
             JLabel label = new JLabel(I18nUtil.valueByKey(keyI18n));
             tabsConfiguration.setTabComponentAt(
                 tabsConfiguration.indexOfTab(I18nUtil.valueByKey(keyI18n)),
@@ -601,9 +623,11 @@ public class SqlEngine extends JPanel implements Cleanable {
         listVendors.removeIf(i -> i == MediatorGui.model().getMediatorVendor().getAuto());
         
         for (final Vendor vendor: listVendors) {
+            
             JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorGui.model().getMediatorVendor().getVendor());
             
             itemRadioVendor.addActionListener(actionEvent -> {
+                
                 this.modelYaml = vendor.instance().getModelYaml();
                 this.initializeTextComponents();
                 comboMenuVendor.setText(vendor.toString());
@@ -611,8 +635,10 @@ public class SqlEngine extends JPanel implements Cleanable {
             
             itemRadioVendor.setUI(
                 new BasicRadioButtonMenuItemUI() {
+                    
                     @Override
                     protected void doClick(MenuSelectionManager msm) {
+                        
                         this.menuItem.doClick(0);
                     }
                 }
@@ -690,7 +716,9 @@ public class SqlEngine extends JPanel implements Cleanable {
      */
     private void populateTabError() {
         
-        SqlEngine.TAB_ERROR.removeAll();
+        this.tabbedPaneError.removeAll();
+        
+        this.tabbedPaneError.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         
         if (this.modelYaml.getStrategy().getError() != null) {
             
@@ -712,7 +740,7 @@ public class SqlEngine extends JPanel implements Cleanable {
                 SqlEngine.resetLexer(textPaneError);
                 textPaneError.switchSetterToVendor();
                 textPaneError.setText(methodError.getQuery().trim());
-                textPaneError.setBorder(SqlEngine.BORDER_RIGHT);
+                textPaneError.setBorder(this.borderRight);
     
                 panelError.add(new LightScrollPane(1, 0, 1, 0, textPaneError), BorderLayout.CENTER);
                 
@@ -723,9 +751,9 @@ public class SqlEngine extends JPanel implements Cleanable {
                 
                 panelError.add(panelLimit, BorderLayout.SOUTH);
     
-                SqlEngine.TAB_ERROR.addTab(methodError.getName(), panelError);
+                this.tabbedPaneError.addTab(methodError.getName(), panelError);
                 
-                SqlEngine.TAB_ERROR.setTitleAt(SqlEngine.TAB_ERROR.getTabCount() - 1, "<html><div style=\"text-align:left;width:150px;\">"+ methodError.getName() +"</div></html>");
+                this.tabbedPaneError.setTitleAt(this.tabbedPaneError.getTabCount() - 1, "<html><div style=\"text-align:left;width:150px;\">"+ methodError.getName() +"</div></html>");
                 
                 this.textPanesError.add(textPaneError);
             }

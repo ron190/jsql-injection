@@ -102,6 +102,7 @@ public class MainApplication {
         
         if (injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {
             
+            // jdk >= 9
             System.setProperty("sun.java2d.uiScale", "2.5");
         }
     }

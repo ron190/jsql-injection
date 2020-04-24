@@ -5,9 +5,11 @@ import java.awt.ComponentOrientation;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.JSplitPane;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.panel.split.SplitHorizontalTopBottom;
 import com.jsql.view.swing.tab.TabHeader;
 
 @SuppressWarnings("serial")
@@ -27,6 +29,7 @@ public class ActionCloseTabResult extends AbstractAction {
             
             // Stop syntax color highlighter
             if (tab instanceof TabHeader && ((TabHeader) tab).getCleanableTab() != null) {
+                
                 ((TabHeader) tab).getCleanableTab().clean();
             }
 
@@ -40,21 +43,25 @@ public class ActionCloseTabResult extends AbstractAction {
         
         if (MediatorGui.tabResults().getTabCount() == 0) {
             
-            int i = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation();
+            SplitHorizontalTopBottom splitPaneTopBottom = MediatorGui.frame().getSplitHorizontalTopBottom();
+            JSplitPane splitPaneLeftRight = splitPaneTopBottom.getSplitVerticalLeftRight();
+            
+            int i = splitPaneLeftRight.getDividerLocation();
             
             if (ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.LEFT_TO_RIGHT) {
                 
-                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(
-                    MediatorGui.frame().getSplitHorizontalTopBottom().getLabelPlaceholderResult()
+                splitPaneLeftRight.setRightComponent(
+                    splitPaneTopBottom.getLabelPlaceholderResult()
                 );
+                
             } else {
                 
-                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(
-                    MediatorGui.frame().getSplitHorizontalTopBottom().getLabelPlaceholderResult()
+                splitPaneLeftRight.setLeftComponent(
+                    splitPaneTopBottom.getLabelPlaceholderResult()
                 );
             }
             
-            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(i);
+            splitPaneLeftRight.setDividerLocation(i);
         }
     }
 }

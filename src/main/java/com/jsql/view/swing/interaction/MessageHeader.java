@@ -66,7 +66,7 @@ public class MessageHeader implements InteractionCommand {
         
         MediatorGui.panelConsoles().getNetworkTable().addHeader(new HttpHeader(this.url, this.post, this.header, this.response, this.source));
         
-        JViewport viewport = ((JScrollIndicator) MediatorGui.panelConsoles().getNetworkSplitPane().getLeftComponent()).scrollPane.getViewport();
+        JViewport viewport = ((JScrollIndicator) MediatorGui.panelConsoles().getNetworkSplitPane().getLeftComponent()).getScrollPane().getViewport();
         JTable table = (JTable) viewport.getView();
         
         DefaultTableModel model = (DefaultTableModel) table.getModel();

@@ -61,18 +61,19 @@ public class ActionSaveTab extends AbstractAction {
         
         this.filechooser.setDialogTitle("Save Tab As");
 
-        Component component = MediatorGui.tabResults().getSelectedComponent();
+        Component componentResult = MediatorGui.tabResults().getSelectedComponent();
         
-        if (component instanceof PanelTable) {
+        if (componentResult instanceof PanelTable) {
             
-            JTable table = ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).getTableValues();
+            JTable table = ((PanelTable) componentResult).getTableValues();
             this.saveToFile(table);
+            
         } else if (
-            component instanceof LightScrollPane
-            && ((LightScrollPane) component).scrollPane.getViewport().getView() instanceof JTextComponent
+            componentResult instanceof LightScrollPane
+            && ((LightScrollPane) componentResult).scrollPane.getViewport().getView() instanceof JTextComponent
         ) {
             
-            JTextComponent textarea = (JTextComponent) ((LightScrollPane) MediatorGui.tabResults().getSelectedComponent()).scrollPane.getViewport().getView();
+            JTextComponent textarea = (JTextComponent) ((LightScrollPane) componentResult).scrollPane.getViewport().getView();
             this.saveToFile(textarea);
         }
     }
@@ -93,6 +94,7 @@ public class ActionSaveTab extends AbstractAction {
             if (textarea instanceof JTextComponent) {
                 
                 this.saveTextToFile((JTextComponent) textarea);
+                
             } else if (textarea instanceof JTable) {
                 
                 this.saveTableToFile((JTable) textarea);
@@ -109,6 +111,7 @@ public class ActionSaveTab extends AbstractAction {
             TableModel tableModel = tableResults.getModel();
             
             for (int i = 2 ; i < tableModel.getColumnCount() ; i++) {
+                
                 fileWriterExcel.write(tableModel.getColumnName(i) + "\t");
             }
             
@@ -122,6 +125,7 @@ public class ActionSaveTab extends AbstractAction {
                     if (tableModel.getValueAt(i, j) == null) {
                         
                         fileWriterExcel.write("\t");
+                        
                     } else {
                         
                         // Encode line break.
@@ -134,7 +138,9 @@ public class ActionSaveTab extends AbstractAction {
                 
                 fileWriterExcel.write("\n");
             }
+            
         } catch (IOException e) {
+            
             LOGGER.warn("Error writing to "+ fileSelected.getName(), e);
         }
     }
@@ -148,7 +154,9 @@ public class ActionSaveTab extends AbstractAction {
             BufferedWriter fileOut = new BufferedWriter(fileWriter)
         ) {
             textarea.write(fileOut);
+            
         } catch (IOException e) {
+            
             LOGGER.warn("Error writing to "+ file.getName(), e);
         }
     }

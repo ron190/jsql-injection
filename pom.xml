@@ -15,6 +15,10 @@
             <id>cubrid-repository</id>
             <url>http://maven.cubrid.org/</url>
         </repository>
+        <repository>
+            <id>oracle-repository</id>
+            <url>http://maven.geomajas.org/</url>
+        </repository>
     </repositories>
 
     <properties>
@@ -382,6 +386,18 @@
 		    <version>10.14.2.0</version>
 		    <scope>test</scope>
 		</dependency>
+<!-- 		<dependency> -->
+<!-- 		    <groupId>com.oracle.ojdbc</groupId> -->
+<!-- 		    <artifactId>ojdbc8</artifactId> -->
+<!-- 		    <scope>test</scope> -->
+<!--         </dependency> -->
+		<dependency>
+		    <groupId>com.oracle</groupId>
+		    <artifactId>ojdbc6</artifactId>
+		    <version>11.2.0.1.0</version>
+		    <scope>test</scope>
+		</dependency>
+
 		
         <!-- jSQL purpose -->
         

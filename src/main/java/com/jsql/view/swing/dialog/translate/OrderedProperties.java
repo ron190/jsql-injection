@@ -409,6 +409,11 @@ public final class OrderedProperties {
         public synchronized boolean equals(Object o) {
             return super.equals(o) && o instanceof OrderedProperties;
         }
+        
+        @Override
+        public synchronized int hashCode() {
+            return super.hashCode();
+        }
     }
 
     /**

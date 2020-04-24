@@ -26,8 +26,6 @@ public class TabbedPaneWheeled extends JTabbedPane {
      */
     public TabbedPaneWheeled() {
         
-        this.addMouseWheelListener(new TabbedPaneMouseWheelScroller());
-        
         // UIManager.put() is not enough
         this.setUI(new CustomMetalTabbedPaneUI());
         

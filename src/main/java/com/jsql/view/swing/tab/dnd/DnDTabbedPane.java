@@ -20,7 +20,6 @@ import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 
 import com.jsql.view.swing.action.ActionCloseTabResult;
-import com.jsql.view.swing.tab.TabbedPaneMouseWheelScroller;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -124,8 +123,6 @@ public class DnDTabbedPane extends JTabbedPane {
         this.addMouseListener(h);
         this.addMouseMotionListener(h);
         this.addPropertyChangeListener(h);
-        
-        this.addMouseWheelListener(new TabbedPaneMouseWheelScroller());
     }
     
     public DnDDropLocation dropLocationForPointDnD(Point p) {
@@ -133,6 +130,7 @@ public class DnDTabbedPane extends JTabbedPane {
         for (int i = 0; i < this.getTabCount(); i++) {
             
             if (this.getBoundsAt(i).contains(p)) {
+                
                 return new DnDDropLocation(p, i);
             }
         }
@@ -143,10 +141,6 @@ public class DnDTabbedPane extends JTabbedPane {
         }
         
         return new DnDDropLocation(p, -1);
-    }
-    
-    public final DnDDropLocation getDropLocation() {
-        return this.dropLocation;
     }
     
     public Object setDropLocation(TransferHandler.DropLocation location, boolean forDrop) {
@@ -362,5 +356,9 @@ public class DnDTabbedPane extends JTabbedPane {
                 ActionCloseTabResult.perform(i);
             }
         }
+    }
+    
+    public final DnDDropLocation getDropLocation() {
+        return this.dropLocation;
     }
 }
