@@ -2,15 +2,21 @@ package com.jsql.model.injection.vendor.model;
 
 public class Vendor {
     
-    private final String labelVendor;
+    private String labelVendor;
     
-    private final AbstractVendor instanceVendor;
+    private AbstractVendor instanceVendor;
     
-    public Vendor(String labelVendor, AbstractVendor instanceVendor) {
-        this.labelVendor = labelVendor;
+    public Vendor(AbstractVendor instanceVendor) {
+        
+        this.labelVendor = instanceVendor.getModelYaml().getVendor();
         this.instanceVendor = instanceVendor;
     }
     
+    public Vendor() {
+        
+        this.labelVendor = "Database auto";
+    }
+
     public AbstractVendor instance() {
         return this.instanceVendor;
     }
@@ -20,7 +26,7 @@ public class Vendor {
         return this.labelVendor;
     }
     
-    public String transformSQLite(String resultToParse) {
+    public String transformSqlite(String resultToParse) {
         return resultToParse;
     }
 }

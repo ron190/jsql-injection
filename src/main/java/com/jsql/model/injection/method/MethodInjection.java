@@ -128,7 +128,7 @@ public abstract class MethodInjection implements Serializable {
                         // When option 'Inject JSON' is selected and there's a JSON entity to inject
                         // then loop through each paths to add * at the end of value and test each strategies.
                         // Marks * are erased between each tests.
-                        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJSONParam() && !attributesJson.isEmpty()) {
+                        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam() && !attributesJson.isEmpty()) {
                             
                             hasFoundInjection = this.injectionModel.getMediatorUtils().getJsonUtil().testJsonParameter(this, paramStar);
                             

@@ -1,4 +1,5 @@
-vendor: 
+vendor: CUBRID
+
 resource: 
  info: |
   concat(

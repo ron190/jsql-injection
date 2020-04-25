@@ -13,19 +13,20 @@ public class BeanInjection {
     private String url = StringUtils.EMPTY;
     private String request = StringUtils.EMPTY;
     private String header = StringUtils.EMPTY;
-    private MethodInjection injectionType;
-    private Vendor vendor;
     private String requestType = StringUtils.EMPTY;
+    
+    private MethodInjection method;
+    private Vendor vendor;
 
     public BeanInjection(String url) {
         
         this.url = url;
-        this.injectionType = MediatorHelper.model().getMediatorMethodInjection().getQuery();
+        this.method = MediatorHelper.model().getMediatorMethodInjection().getQuery();
         this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();
         this.requestType = "POST";
     }
     
-    public BeanInjection(String url, String request, String header, String injectionType, String vendor, String requestType) {
+    public BeanInjection(String url, String request, String header, String nameMethod, String vendor, String requestType) {
         
         this(url);
         
@@ -33,19 +34,51 @@ public class BeanInjection {
         this.header = header;
         
         try {
-            this.injectionType = MediatorHelper.model().getMediatorMethodInjection().getMethods().stream().filter(m -> m.name().equalsIgnoreCase(injectionType)).findAny().orElse(MediatorHelper.model().getMediatorMethodInjection().getQuery());
+            this.method = 
+                MediatorHelper
+                .model()
+                .getMediatorMethodInjection()
+                .getMethods()
+                .stream()
+                .filter(method -> method.name().equalsIgnoreCase(nameMethod))
+                .findAny()
+                .orElse(MediatorHelper.model().getMediatorMethodInjection().getQuery());
+            
         } catch (IllegalArgumentException | NoSuchElementException e) {
-            this.injectionType = MediatorHelper.model().getMediatorMethodInjection().getQuery();
+            
+            this.method = MediatorHelper.model().getMediatorMethodInjection().getQuery();
         }
         
         try {
-            this.vendor = MediatorHelper.model().getMediatorVendor().getVendors().stream().filter(m -> m.toString().equals(vendor)).findAny().orElse(MediatorHelper.model().getMediatorVendor().getAuto());
+            this.vendor = 
+                MediatorHelper
+                .model()
+                .getMediatorVendor()
+                .getVendors()
+                .stream()
+                .filter(m -> m.toString().equals(vendor))
+                .findAny()
+                .orElse(MediatorHelper.model().getMediatorVendor().getAuto());
+            
         } catch (IllegalArgumentException | NoSuchElementException e) {
+            
             this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();
         }
         
         this.requestType = requestType.isEmpty() ? "POST" : requestType;
     }
+    
+    // Json getter for serialization
+    
+    public String getMethod() {
+        return this.method.name();
+    }
+    
+    public String getVendor() {
+        return this.vendor.toString();
+    }
+    
+    // Getter and setter
 
     public String getUrl() {
         return this.url;
@@ -59,23 +92,15 @@ public class BeanInjection {
         return this.header;
     }
     
-    public String getInjectionType() {
-        return this.injectionType.name();
-    }
-
-    public MethodInjection getInjectionTypeAsEnum() {
-        return this.injectionType;
-    }
-
     public String getRequestType() {
         return this.requestType;
     }
 
-    public String getVendor() {
-        return this.vendor.toString();
+    public MethodInjection getMethodInstance() {
+        return this.method;
     }
 
-    public Vendor getVendorAsEnum() {
+    public Vendor getVendorInstance() {
         return this.vendor;
     }
 }

@@ -1,4 +1,5 @@
-vendor: 
+vendor: NuoDB
+
 resource: 
  info: |
   select

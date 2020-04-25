@@ -234,11 +234,11 @@ public enum ActionCoder {
         @Override
         public String run(String value) throws UnsupportedEncodingException {
             
-            return 
+            return
                 StringUtils
                 .replaceEach(
                     StringUtil.fromUrl(value),
-                    new String[] { "&", "\"", "<", ">" }, 
+                    new String[] { "&", "\"", "<", ">" },
                     new String[] { "&amp;", "&quot;", "&lt;", "&gt;" }
                 );
         }
@@ -252,7 +252,7 @@ public enum ActionCoder {
 
     public static Optional<ActionCoder> forName(String name) {
         
-        return 
+        return
             Arrays
             .asList(ActionCoder.values())
             .stream()

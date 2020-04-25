@@ -1,4 +1,5 @@
-vendor: 
+vendor: MaxDB
+
 resource: 
  info: |
   SELECT 

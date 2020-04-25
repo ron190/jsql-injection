@@ -83,6 +83,7 @@ public class ManagerScan extends AbstractManagerList {
         dndListScan.addListSelectionListener(e -> {
             
             if (dndListScan.getSelectedValue() == null) {
+                
                 return;
             }
             
@@ -94,18 +95,26 @@ public class ManagerScan extends AbstractManagerList {
             
             String requestType = beanInjection.getRequestType();
             if (requestType != null && !requestType.isEmpty()) {
-                MediatorHelper.panelAddressBar().getRadioMethod().setText(requestType);
+                
+                MediatorHelper.panelAddressBar().getRadioRequest().setText(requestType);
+                
             } else {
-                MediatorHelper.panelAddressBar().getRadioMethod().setText("POST");
+                
+                MediatorHelper.panelAddressBar().getRadioRequest().setText("POST");
             }
             
-            MethodInjection injectionType = beanInjection.getInjectionTypeAsEnum();
+            MethodInjection method = beanInjection.getMethodInstance();
             
-            if (injectionType == MediatorHelper.model().getMediatorMethodInjection().getHeader()) {
+            if (method == MediatorHelper.model().getMediatorMethodInjection().getHeader()) {
+                
                 MediatorHelper.panelAddressBar().getRadioHeader().setSelected();
-            } else if (injectionType == MediatorHelper.model().getMediatorMethodInjection().getRequest()) {
-                MediatorHelper.panelAddressBar().getRadioMethod().setSelected();
+                
+            } else if (method == MediatorHelper.model().getMediatorMethodInjection().getRequest()) {
+                
+                MediatorHelper.panelAddressBar().getRadioRequest().setSelected();
+                
             } else {
+                
                 MediatorHelper.panelAddressBar().getRadioQueryString().setSelected();
             }
         });
@@ -139,25 +148,28 @@ public class ManagerScan extends AbstractManagerList {
     private List<ItemList> getItemList() {
         
         StringBuilder jsonScan = new StringBuilder();
+        
         try (
             InputStream inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.INPUT_STREAM_PAGES_SCAN);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader reader = new BufferedReader(inputStreamReader);
+            BufferedReader reader = new BufferedReader(inputStreamReader)
         ) {
             
             String line;
             while ((line = reader.readLine()) != null) {
+                
                 jsonScan.append(line);
             }
+            
         } catch (IOException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
         
         List<ItemList> itemsList = new ArrayList<>();
         
-        JSONArray jsonArrayScan;
         try {
-            jsonArrayScan = new JSONArray(jsonScan.toString());
+            JSONArray jsonArrayScan = new JSONArray(jsonScan.toString());
             
             for (int i = 0 ; i < jsonArrayScan.length() ; i++) {
                 
@@ -167,14 +179,16 @@ public class ManagerScan extends AbstractManagerList {
                     jsonObjectScan.getString("url"),
                     jsonObjectScan.optString("request"),
                     jsonObjectScan.optString("header"),
-                    jsonObjectScan.optString("injectionType"),
+                    jsonObjectScan.optString("method"),
                     jsonObjectScan.optString("vendor"),
                     jsonObjectScan.optString("requestType")
                 );
                 
                 itemsList.add(new ItemListScan(beanInjection));
             }
+            
         } catch (JSONException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
         
@@ -197,6 +211,7 @@ public class ManagerScan extends AbstractManagerList {
         this.run.addActionListener(actionEvent -> {
             
             if (dndListScan.getSelectedValuesList().isEmpty()) {
+                
                 LOGGER.warn("Select URL(s) to scan");
                 return;
             }
@@ -211,10 +226,12 @@ public class ManagerScan extends AbstractManagerList {
                     
                     DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) dndListScan.getModel();
                     for (int i = 0 ; i < listModel.getSize() ; i++) {
+                        
                         listModel.get(i).reset();
                     }
                     
                     MediatorHelper.model().getResourceAccess().scan(dndListScan.getSelectedValuesList());
+                    
                 } else {
                     
                     MediatorHelper.model().getResourceAccess().setScanStopped(true);

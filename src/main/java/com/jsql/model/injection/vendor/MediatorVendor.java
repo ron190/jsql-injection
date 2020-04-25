@@ -53,37 +53,39 @@ public class MediatorVendor {
     
     public MediatorVendor(InjectionModel injectionModel) {
         
-        this.auto = new Vendor("Database auto", null);
-        this.access = new Vendor("Access", new VendorYaml("access.yml", injectionModel));
-        this.cockroachDB = new Vendor("CockroachDB", new VendorYaml("cockroachdb.yml", injectionModel));
-        this.cubrid = new Vendor("CUBRID", new VendorYaml("cubrid.yml", injectionModel));
-        this.db2 = new Vendor("DB2", new VendorYaml("db2.yml", injectionModel));
-        this.derby = new Vendor("Derby", new VendorYaml("derby.yml", injectionModel));
-        this.firebird = new Vendor("Firebird", new VendorYaml("firebird.yml", injectionModel));
-        this.h2 = new Vendor("H2", new VendorYaml("h2.yml", injectionModel));
-        this.hana = new Vendor("Hana", new VendorYaml("hana.yml", injectionModel));
-        this.hsqldb = new Vendor("HSQLDB", new VendorYaml("hsqldb.yml", injectionModel));
-        this.informix = new Vendor("Informix", new VendorYaml("informix.yml", injectionModel));
-        this.ingres = new Vendor("Ingres", new VendorYaml("ingres.yml", injectionModel));
-        this.maxDB = new Vendor("MaxDB", new VendorYaml("maxdb.yml", injectionModel));
-        this.mckoi = new Vendor("Mckoi", new VendorYaml("mckoi.yml", injectionModel));
-        this.memSQL = new Vendor("MemSQL", new VendorYaml("memsql.yml", injectionModel));
-        this.mySQL = new Vendor("MySQL", new VendorYaml("mysql.yml", injectionModel));
-        this.neo4j = new Vendor("Neo4j", new VendorYaml("neo4j.yml", injectionModel));
-        this.nuoDB = new Vendor("NuoDB", new VendorYaml("nuodb.yml", injectionModel));
-        this.oracle = new Vendor("Oracle", new VendorYaml("oracle.yml", injectionModel));
-        this.postgreSQL = new Vendor("PostgreSQL", new VendorYaml("postgresql.yml", injectionModel));
-        this.sqlite = new Vendor("SQLite", new VendorYaml("sqlite.yml", injectionModel)) {
+        this.auto = new Vendor();
+        this.access = new Vendor(new VendorYaml("access.yml", injectionModel));
+        this.cockroachDB = new Vendor(new VendorYaml("cockroachdb.yml", injectionModel));
+        this.cubrid = new Vendor(new VendorYaml("cubrid.yml", injectionModel));
+        this.db2 = new Vendor(new VendorYaml("db2.yml", injectionModel));
+        this.derby = new Vendor(new VendorYaml("derby.yml", injectionModel));
+        this.firebird = new Vendor(new VendorYaml("firebird.yml", injectionModel));
+        this.h2 = new Vendor(new VendorYaml("h2.yml", injectionModel));
+        this.hana = new Vendor(new VendorYaml("hana.yml", injectionModel));
+        this.hsqldb = new Vendor(new VendorYaml("hsqldb.yml", injectionModel));
+        this.informix = new Vendor(new VendorYaml("informix.yml", injectionModel));
+        this.ingres = new Vendor(new VendorYaml("ingres.yml", injectionModel));
+        this.maxDB = new Vendor(new VendorYaml("maxdb.yml", injectionModel));
+        this.mckoi = new Vendor(new VendorYaml("mckoi.yml", injectionModel));
+        this.memSQL = new Vendor(new VendorYaml("memsql.yml", injectionModel));
+        this.mySQL = new Vendor(new VendorYaml("mysql.yml", injectionModel));
+        this.neo4j = new Vendor(new VendorYaml("neo4j.yml", injectionModel));
+        this.nuoDB = new Vendor(new VendorYaml("nuodb.yml", injectionModel));
+        this.oracle = new Vendor(new VendorYaml("oracle.yml", injectionModel));
+        this.postgreSQL = new Vendor(new VendorYaml("postgresql.yml", injectionModel));
+        this.sqlite = new Vendor(new VendorYaml("sqlite.yml", injectionModel)) {
              
             @Override
-            public String transformSQLite(String resultToParse) {
+            public String transformSqlite(String resultToParse) {
                 
                 StringBuilder resultSqlite = new StringBuilder();
+                
                 String resultTmp =
                     resultToParse
                     .replaceFirst(".+?\\(", StringUtils.EMPTY)
                     .trim()
                     .replaceAll("\\)$", StringUtils.EMPTY);
+                
                 resultTmp = resultTmp.replaceAll("\\(.+?\\)", StringUtils.EMPTY);
                 
                 for (String columnNameAndType: resultTmp.split(",")) {
@@ -105,10 +107,10 @@ public class MediatorVendor {
                 return resultSqlite.toString();
             }
         };
-        this.sqlServer = new Vendor("SQL Server", new VendorYaml("sqlserver.yml", injectionModel));
-        this.sybase = new Vendor("Sybase", new VendorYaml("sybase.yml", injectionModel));
-        this.teradata = new Vendor("Teradata", new VendorYaml("teradata.yml", injectionModel));
-        this.vertica = new Vendor("Vertica", new VendorYaml("vertica.yml", injectionModel));
+        this.sqlServer = new Vendor(new VendorYaml("sqlserver.yml", injectionModel));
+        this.sybase = new Vendor(new VendorYaml("sybase.yml", injectionModel));
+        this.teradata = new Vendor(new VendorYaml("teradata.yml", injectionModel));
+        this.vertica = new Vendor(new VendorYaml("vertica.yml", injectionModel));
         
         this.vendors = Arrays.asList(
             this.auto,
@@ -141,6 +143,13 @@ public class MediatorVendor {
         this.setVendor(this.mySQL);
         this.vendorByUser = this.auto;
     }
+    
+    public boolean isSqlite() {
+        
+        return this.getVendor() == this.getSqlite();
+    }
+    
+    // Getter and setter
 
     public Vendor getCubrid() {
         return this.cubrid;

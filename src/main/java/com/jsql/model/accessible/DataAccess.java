@@ -420,9 +420,9 @@ public class DataAccess {
         }
 
         // Build SQLite columns
-        if (this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getSqlite()) {
+        if (this.injectionModel.getMediatorVendor().isSqlite()) {
             
-            resultToParse = this.injectionModel.getMediatorVendor().getSqlite().transformSQLite(resultToParse);
+            resultToParse = this.injectionModel.getMediatorVendor().getSqlite().transformSqlite(resultToParse);
         }
         
         // Parse all the data we have retrieved

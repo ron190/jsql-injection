@@ -60,6 +60,7 @@ public final class UiUtil {
 
     public static final Color COLOR_BLU = new Color(132, 172, 221);
     public static final Color COLOR_GREEN = new Color(0, 128, 0);
+    public static final String TEXTPANE_FONT = "TextPane.font";
 
     public static final Color COLOR_FOCUS_GAINED = (Color) UIManager.get("TabbedPane.selected");
     
@@ -171,13 +172,13 @@ public final class UiUtil {
     public static final Font FONT_UBUNTU_REGULAR = new Font(
         UiUtil.FONT_NAME_UBUNTU_REGULAR,
         Font.PLAIN,
-        UIManager.getDefaults().getFont("TextPane.font").getSize()
+        UIManager.getDefaults().getFont(TEXTPANE_FONT).getSize()
     );
     
     public static final Font FONT_SEGOE = new Font(
         "Segoe UI",
         Font.PLAIN,
-        UIManager.getDefaults().getFont("TextPane.font").getSize()
+        UIManager.getDefaults().getFont(TEXTPANE_FONT).getSize()
     );
     
     public static final Font FONT_SEGOE_BIG = new Font(
@@ -245,7 +246,7 @@ public final class UiUtil {
         // Custom text component
         // Admin page
         UIManager.put("TextPane.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        UIManager.put("TextPane.font", UiUtil.FONT_UBUNTU_MONO);
+        UIManager.put(TEXTPANE_FONT, UiUtil.FONT_UBUNTU_MONO);
         UIManager.put("TextPane.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
         
         UIManager.put("TextField.border", UiUtil.BORDER_BLU);

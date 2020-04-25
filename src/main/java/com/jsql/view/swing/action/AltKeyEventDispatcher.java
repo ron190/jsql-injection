@@ -86,6 +86,7 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
                 MediatorHelper.menubar().setVisible(!MediatorHelper.menubar().isVisible());
                 this.wasAltGraphPressed = false;
             }
+            
         } else {
             
             this.wasAltDPressed = false;

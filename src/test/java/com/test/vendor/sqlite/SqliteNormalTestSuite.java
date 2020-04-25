@@ -40,8 +40,6 @@ public class SqliteNormalTestSuite extends ConcreteSqliteTestSuite {
         model.beginInjection();
     }
     
-    // TODO listColumns Special parsing required
-    
     @Override
     @RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
@@ -52,6 +50,12 @@ public class SqliteNormalTestSuite extends ConcreteSqliteTestSuite {
     @RepeatFailedTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
+    }
+    
+    @Override
+    @RepeatFailedTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
     }
     
     @Override

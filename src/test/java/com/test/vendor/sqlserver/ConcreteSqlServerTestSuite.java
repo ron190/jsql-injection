@@ -9,9 +9,9 @@ import com.test.AbstractTestSuite;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public abstract class ConcreteSQLServerTestSuite extends AbstractTestSuite {
+public abstract class ConcreteSqlServerTestSuite extends AbstractTestSuite {
 
-    public ConcreteSQLServerTestSuite() {
+    public ConcreteSqlServerTestSuite() {
         
         this.jdbcURL = "jdbc:sqlserver://127.0.0.1:1433";
         this.jdbcUser = "sa";

@@ -33,10 +33,12 @@ public class ActionStart implements ActionListener {
         
         // No injection running
         if (this.panelAddressBar.getAddressMenuBar().getButtonInUrl().getState() == StateButton.STARTABLE) {
+            
             this.startInjection();
 
-        // Injection currently running, stop the process
         } else if (this.panelAddressBar.getAddressMenuBar().getButtonInUrl().getState() == StateButton.STOPPABLE) {
+            
+            // Injection currently running, stop the process
             this.stopInjection();
         }
     }
@@ -57,7 +59,9 @@ public class ActionStart implements ActionListener {
                     I18nUtil.valueByKey("DIALOG_NEW_INJECTION_TITLE"),
                     JOptionPane.OK_CANCEL_OPTION
                 );
+                
             } catch (ClassCastException e) {
+                
                 LOGGER.error(e, e);
             }
         }

@@ -11,6 +11,7 @@
 package com.jsql.view.swing.panel;
 
 import java.awt.Dimension;
+import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -48,9 +49,9 @@ public class PanelAddressBar extends JPanel {
     private JTextField textFieldRequest;
     private JTextField textFieldHeader;
     
-    private RadioLinkMethod radioQueryString;
-    private RadioLinkMethod radioMethod;
-    private RadioLinkMethod radioHeader;
+    private RadioLinkMethod[] radioQueryString = new RadioLinkMethod[1];
+    private RadioLinkMethod[] radioRequest = new RadioLinkMethod[1];
+    private RadioLinkMethod[] radioHeader = new RadioLinkMethod[1];
 
     /**
      * Current injection method.
@@ -105,59 +106,57 @@ public class PanelAddressBar extends JPanel {
         }).getProxy();
         I18nViewUtil.addComponentForKey("FIELD_HEADER_TOOLTIP", j3[0]);
         
-        final JToolTipI18n[] j4 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("METHOD_QUERYSTRING_TOOLTIP"))};
-        this.radioQueryString = new RadioLinkMethod("GET", true, MediatorHelper.model().getMediatorMethodInjection().getQuery()) {
+        class RadioModel {
             
-            @Override
-            public JToolTip createToolTip() {
+            String request;
+            Boolean isSelected;
+            MethodInjection method;
+            String i18n;
+            RadioLinkMethod[] radio;
+
+            public RadioModel(String request, Boolean isSelected, MethodInjection method, String i18n, RadioLinkMethod[] radio) {
                 
-                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("METHOD_QUERYSTRING_TOOLTIP"));
-                j4[0] = (JToolTipI18n) tipI18n;
-                return j4[0];
+                this.request = request;
+                this.isSelected = isSelected;
+                this.method = method;
+                this.i18n = i18n;
+                this.radio = radio;
             }
-        };
-        I18nViewUtil.addComponentForKey("METHOD_QUERYSTRING_TOOLTIP", j4[0]);
+        }
         
-        final JToolTipI18n[] j5 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("METHOD_REQUEST_TOOLTIP"))};
-        this.radioMethod = new RadioLinkMethod("POST", MediatorHelper.model().getMediatorMethodInjection().getRequest()) {
+        Stream
+        .of(
+            new RadioModel("GET", true, MediatorHelper.model().getMediatorMethodInjection().getQuery(), "METHOD_QUERYSTRING_TOOLTIP", this.radioQueryString),
+            new RadioModel("POST", false, MediatorHelper.model().getMediatorMethodInjection().getRequest(), "METHOD_REQUEST_TOOLTIP", this.radioRequest),
+            new RadioModel("Header", false, MediatorHelper.model().getMediatorMethodInjection().getHeader(), "METHOD_HEADER_TOOLTIP", this.radioHeader)
+        )
+        .forEach(radioModel -> {
             
-            @Override
-            public JToolTip createToolTip() {
+            JToolTipI18n[] tooltip = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey(radioModel.i18n))};
+            radioModel.radio[0] = new RadioLinkMethod(radioModel.request, radioModel.isSelected, radioModel.method) {
                 
-                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("METHOD_REQUEST_TOOLTIP"));
-                j5[0] = (JToolTipI18n) tipI18n;
-                return j5[0];
-            }
-        };
-        I18nViewUtil.addComponentForKey("METHOD_REQUEST_TOOLTIP", j5[0]);
-        
-        final JToolTipI18n[] j6 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("METHOD_HEADER_TOOLTIP"))};
-        this.radioHeader = new RadioLinkMethod("Header", MediatorHelper.model().getMediatorMethodInjection().getHeader()) {
+                @Override
+                public JToolTip createToolTip() {
+                    
+                    tooltip[0] = new JToolTipI18n(I18nUtil.valueByKey(radioModel.i18n));
+                    return tooltip[0];
+                }
+            };
+            I18nViewUtil.addComponentForKey(radioModel.i18n, tooltip[0]);
             
-            @Override
-            public JToolTip createToolTip() {
-                
-                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("METHOD_HEADER_TOOLTIP"));
-                j6[0] = (JToolTipI18n) tipI18n;
-                return j6[0];
-            }
-        };
-        I18nViewUtil.addComponentForKey("METHOD_HEADER_TOOLTIP", j6[0]);
+            radioModel.radio[0].setToolTipText(I18nUtil.valueByKey(radioModel.i18n));
+        });
                 
         this.requestPanel = new RequestPanel(this);
 
-        this.radioQueryString.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
+        this.radioQueryString[0].setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
         this.requestPanel.setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));
-        this.radioHeader.setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));
+        this.radioHeader[0].setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));
 
         // Tooltip setting
         this.textFieldAddress.setToolTipText(I18nUtil.valueByKey("FIELD_QUERYSTRING_TOOLTIP"));
         this.textFieldRequest.setToolTipText(I18nUtil.valueByKey("FIELD_REQUEST_TOOLTIP"));
         this.textFieldHeader.setToolTipText(I18nUtil.valueByKey("FIELD_HEADER_TOOLTIP"));
-
-        this.radioQueryString.setToolTipText(I18nUtil.valueByKey("METHOD_QUERYSTRING_TOOLTIP"));
-        this.radioMethod.setToolTipText(I18nUtil.valueByKey("METHOD_REQUEST_TOOLTIP"));
-        this.radioHeader.setToolTipText(I18nUtil.valueByKey("METHOD_HEADER_TOOLTIP"));
 
         /**
          * Define UI and the left padding for addressBar
@@ -198,11 +197,11 @@ public class PanelAddressBar extends JPanel {
         this.addressMenuBar = new AddressMenuBar(this);
         new ComponentBorder(this.addressMenuBar, 17, 0).install(this.textFieldAddress);
 
-        this.radioQueryString.setVisible(false);
+        this.radioQueryString[0].setVisible(false);
         this.textFieldRequest.setVisible(false);
         this.requestPanel.setVisible(false);
         this.textFieldHeader.setVisible(false);
-        this.radioHeader.setVisible(false);
+        this.radioHeader[0].setVisible(false);
         
         this.initializeLayout();
     }
@@ -229,9 +228,9 @@ public class PanelAddressBar extends JPanel {
             .addGroup(
                 layoutTextFields
                 .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                .addComponent(this.radioQueryString)
+                .addComponent(this.radioQueryString[0])
                 .addComponent(this.requestPanel)
-                .addComponent(this.radioHeader)
+                .addComponent(this.radioHeader[0])
             )
             .addGroup(
                 layoutTextFields
@@ -255,7 +254,7 @@ public class PanelAddressBar extends JPanel {
             .addGroup(
                 layoutTextFields
                 .createParallelGroup(GroupLayout.Alignment.CENTER, false)
-                .addComponent(this.radioQueryString)
+                .addComponent(this.radioQueryString[0])
                 .addComponent(this.textFieldAddress)
                 .addComponent(advancedButton)
             )
@@ -268,7 +267,7 @@ public class PanelAddressBar extends JPanel {
             .addGroup(
                 layoutTextFields
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.radioHeader)
+                .addComponent(this.radioHeader[0])
                 .addComponent(this.textFieldHeader)
             )
         );
@@ -285,13 +284,13 @@ public class PanelAddressBar extends JPanel {
             
             boolean isVisible = advancedButton.getDirection() == SwingConstants.SOUTH;
 
-            this.radioQueryString.setVisible(isVisible);
+            this.radioQueryString[0].setVisible(isVisible);
 
             PanelAddressBar.this.textFieldRequest.setVisible(isVisible);
             panelHttpProtocol.setVisible(isVisible);
 
             PanelAddressBar.this.textFieldHeader.setVisible(isVisible);
-            this.radioHeader.setVisible(isVisible);
+            this.radioHeader[0].setVisible(isVisible);
             
             this.isAdvanceActivated = isVisible;
             MediatorHelper.menubar().setVisible(isVisible);
@@ -304,10 +303,6 @@ public class PanelAddressBar extends JPanel {
     
     // Getter and setter
 
-    /**
-     * Change the injection method based on selected radio.
-     * @param methodInjection The new method
-     */
     public void setMethodInjection(MethodInjection methodInjection) {
         this.methodInjection = methodInjection;
     }
@@ -329,15 +324,15 @@ public class PanelAddressBar extends JPanel {
     }
 
     public RadioLinkMethod getRadioQueryString() {
-        return this.radioQueryString;
+        return this.radioQueryString[0];
     }
 
     public RadioLinkMethod getRadioHeader() {
-        return this.radioHeader;
+        return this.radioHeader[0];
     }
 
-    public RadioLinkMethod getRadioMethod() {
-        return this.radioMethod;
+    public RadioLinkMethod getRadioRequest() {
+        return this.radioRequest[0];
     }
 
     public MethodInjection getMethodInjection() {

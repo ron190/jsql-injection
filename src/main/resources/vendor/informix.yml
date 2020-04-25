@@ -1,4 +1,5 @@
-vendor: 
+vendor: Informix
+
 resource: 
  info: |
   SELECT trim(

@@ -416,9 +416,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     private void initializeRequest(boolean isUsingIndex, String dataInjection, HttpURLConnection connection, Map<Header, Object> msgHeader) {
         
         if (
-            this.mediatorUtils.getParameterUtil().getListRequest().isEmpty() 
+            this.mediatorUtils.getParameterUtil().getListRequest().isEmpty()
             && this.mediatorUtils.getConnectionUtil().getTokenCsrf() == null
-        ) { 
+        ) {
             return;
         }
             

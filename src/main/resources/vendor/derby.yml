@@ -1,4 +1,5 @@
-vendor: 
+vendor: Derby
+
 resource: 
  info: |
   SELECT 

@@ -1,4 +1,5 @@
-vendor: 
+vendor: PostgreSQL
+
 resource: 
  info: |
   concat_ws(

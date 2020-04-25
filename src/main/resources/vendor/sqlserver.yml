@@ -1,4 +1,5 @@
-vendor: 
+vendor: SQL Server
+
 resource: 
  info: |
   SELECT 

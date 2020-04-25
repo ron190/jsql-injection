@@ -1,4 +1,5 @@
-vendor: 
+vendor: CockroachDB
+
 resource: 
  info: |
   concat_ws(

@@ -14,7 +14,6 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetVendor;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.JsonUtil;
 import com.jsql.util.StringUtil;
 
 public class MediatorStrategy {
@@ -143,12 +142,7 @@ public class MediatorStrategy {
             
             String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(characterInsertionByUser);
             
-            // TODO double star on normal last param, not on json or error
-            if (!JsonUtil.isJson(parameterToInject.getValue())) {
-                characterInsertion = characterInsertion + InjectionModel.STAR;
-            }
-            
-            parameterToInject.setValue(characterInsertion);
+            parameterToInject.setValue(characterInsertion + InjectionModel.STAR);
             
             LOGGER.info(
                 I18nUtil.valueByKey("LOG_USING_INSERTION_CHARACTER")

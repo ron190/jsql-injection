@@ -194,7 +194,7 @@ public class PreferencesUtil {
         preferences.putBoolean("isCheckingAllURLParam", this.isCheckingAllURLParam());
         preferences.putBoolean("isCheckingAllRequestParam", this.isCheckingAllRequestParam());
         preferences.putBoolean("isCheckingAllHeaderParam", this.isCheckingAllHeaderParam());
-        preferences.putBoolean("isCheckingAllJSONParam", this.isCheckingAllJSONParam());
+        preferences.putBoolean("isCheckingAllJSONParam", this.isCheckingAllJsonParam());
         preferences.putBoolean("isCheckingAllCookieParam", this.isCheckingAllCookieParam());
         preferences.putBoolean("isCheckingAllSOAPParam", this.isCheckingAllSOAPParam());
         preferences.putBoolean("isParsingForm", this.isParsingForm());
@@ -281,7 +281,7 @@ public class PreferencesUtil {
         this.isCheckingAllHeaderParam = isCheckingAllHeaderParam;
     }
 
-    public boolean isCheckingAllJSONParam() {
+    public boolean isCheckingAllJsonParam() {
         return this.isCheckingAllJSONParam;
     }
 

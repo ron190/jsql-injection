@@ -157,7 +157,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
                 itemJsonObject.optString("url", StringUtils.EMPTY),
                 itemJsonObject.optString("request", StringUtils.EMPTY),
                 itemJsonObject.optString("header", StringUtils.EMPTY),
-                itemJsonObject.optString("injectionType", StringUtils.EMPTY),
+                itemJsonObject.optString("method", StringUtils.EMPTY),
                 itemJsonObject.optString("vendor", StringUtils.EMPTY),
                 itemJsonObject.optString("requestType", StringUtils.EMPTY)
             );
@@ -177,7 +177,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
                 itemsJsonObject.optString("url", StringUtils.EMPTY),
                 itemsJsonObject.optString("request", StringUtils.EMPTY),
                 itemsJsonObject.optString("header", StringUtils.EMPTY),
-                itemsJsonObject.optString("injectionType", StringUtils.EMPTY),
+                itemsJsonObject.optString("method", StringUtils.EMPTY),
                 itemsJsonObject.optString("vendor", StringUtils.EMPTY),
                 itemsJsonObject.optString("requestType", StringUtils.EMPTY)
             );
@@ -185,7 +185,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
             ItemListScan newItem = new ItemListScan(beanInjection);
             itemsParsed.add(newItem);
             
-        } catch (JSONException eJsonObject) {
+        } catch (JSONException e) {
             
             for (String url: clipboardText.split("\\n")) {
                 

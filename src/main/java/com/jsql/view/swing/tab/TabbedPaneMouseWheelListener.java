@@ -2,7 +2,6 @@ package com.jsql.view.swing.tab;
 
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.io.Serializable;
 
 import javax.swing.JTabbedPane;
 

@@ -52,7 +52,7 @@ public class RequestPanel extends JPanel {
         buttonRequestMethod.setOpaque(false);
         
         this.add(buttonRequestMethod);
-        this.add(panelAddressBar.getRadioMethod());
+        this.add(panelAddressBar.getRadioRequest());
         
         final JPopupMenu popup = new JPopupMenu();
         final ButtonGroup buttonGroup = new ButtonGroup();
@@ -64,7 +64,7 @@ public class RequestPanel extends JPanel {
             newMenuItem.addActionListener(actionEvent -> {
                 
                 this.typeRequest = (newMenuItem.getText());
-                panelAddressBar.getRadioMethod().setText(this.typeRequest);
+                panelAddressBar.getRadioRequest().setText(this.typeRequest);
             });
             
             popup.add(newMenuItem);
@@ -99,7 +99,7 @@ public class RequestPanel extends JPanel {
             if (StringUtils.isNotEmpty(inputCustomMethod.getText())) {
                 
                 this.typeRequest = (inputCustomMethod.getText());
-                panelAddressBar.getRadioMethod().setText(this.typeRequest);
+                panelAddressBar.getRadioRequest().setText(this.typeRequest);
                 
             } else {
                 

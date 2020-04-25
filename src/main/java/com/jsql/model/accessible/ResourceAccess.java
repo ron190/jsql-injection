@@ -332,7 +332,7 @@ public class ResourceAccess {
             directoryNames.add(directoryName +"/");
         }
         
-        injectWebshell(pathShellFixed, urlShellFixed, urlProtocol, urlWithoutFileName, directoryNames);
+        this.injectWebshell(pathShellFixed, urlShellFixed, urlProtocol, urlWithoutFileName, directoryNames);
     }
 
     private void injectWebshell(String pathShellFixed, String urlShellFixed, String urlProtocol, String urlWithoutFileName, List<String> directoryNames) throws InterruptedException {
@@ -1192,7 +1192,7 @@ public class ResourceAccess {
                 urlItemListScan.getBeanInjection().getUrl(),
                 urlItemListScan.getBeanInjection().getRequest(),
                 urlItemListScan.getBeanInjection().getHeader(),
-                urlItemListScan.getBeanInjection().getInjectionTypeAsEnum(),
+                urlItemListScan.getBeanInjection().getMethodInstance(),
                 urlItemListScan.getBeanInjection().getRequestType(),
                 true
             );

@@ -10,20 +10,20 @@
         "request": "tfUName=myusername&tfUPass=mypassword'",
         "header": "Cookie: ASPSESSIONIDCQCARQSS=FIRST_REGISTER_USERNAME_THEN_LOGIN_AND_GET_COOKIE_VALUE",
         "requestType": "POST",
-        "injectionType": "REQUEST",
+        "method": "REQUEST",
         "vendor": "SQLSERVER"
     },
     {
         "url": "2018shell2.picoctf.com:28120/answer2.php",
         "request": "debug=0&answer=0'",
         "requestType": "POST",
-        "injectionType": "REQUEST"
+        "method": "REQUEST"
     },
     {
         "url": "2018shell.picoctf.com:15987/answer2.php",
         "request": "debug=0&answer=0'",
         "requestType": "POST",
-        "injectionType": "REQUEST"
+        "method": "REQUEST"
     },
     {"url": "http://www.webscantest.com/datastore/search_get_by_id.php?id=3"},
     {"url": "http://www.webscantest.com/datastore/search_get_by_name.php?name=Rake'"},

@@ -1,4 +1,5 @@
-vendor: 
+vendor: Neo4j
+
 resource: 
  info: |
   '' AS A LIMIT 0 UNION 

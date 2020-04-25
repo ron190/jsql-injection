@@ -38,6 +38,20 @@ public class ItemList {
         this.internalString = newString;
         this.originalString = newString;
     }
+    
+    public void reset() {
+        
+        this.internalString = this.originalString;
+        this.isVulnerable = false;
+        this.isDatabaseConfirmed = false;
+    }
+    
+    @Override
+    public String toString() {
+        return this.internalString;
+    }
+    
+    // Getter and setter
 
     public String getInternalString() {
         return this.internalString;
@@ -61,17 +75,6 @@ public class ItemList {
 
     public void setIsDatabaseConfirmed(boolean isDatabaseConfirmed) {
         this.isDatabaseConfirmed = isDatabaseConfirmed;
-    }
-    
-    public void reset() {
-        this.internalString = this.originalString;
-        this.isVulnerable = false;
-        this.isDatabaseConfirmed = false;
-    }
-
-    @Override
-    public String toString() {
-        return this.internalString;
     }
     
     public String getOriginalString() {

@@ -1,4 +1,5 @@
-vendor: 
+vendor: Firebird
+
 resource: 
  info: |
   SELECT 

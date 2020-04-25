@@ -12,7 +12,6 @@ public class Schema implements Serializable {
     private String table = StringUtils.EMPTY;
     private String column = StringUtils.EMPTY;
     private Row row = new Row();
-    private String limit = StringUtils.EMPTY;
 
     public String getDatabase() {
         return this.database;
@@ -44,13 +43,5 @@ public class Schema implements Serializable {
 
     public void setRow(Row row) {
         this.row = row;
-    }
-
-    public String getLimit() {
-        return this.limit;
-    }
-
-    public void setLimit(String limit) {
-        this.limit = limit;
     }
 }

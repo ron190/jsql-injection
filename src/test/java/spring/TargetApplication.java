@@ -25,8 +25,6 @@ import org.neo4j.driver.Result;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.jsql.util.CertificateUtil;
-
 import spring.rest.Student;
 
 @SpringBootApplication
@@ -95,11 +93,11 @@ public class TargetApplication {
             propsMysqlError,
             propsPostgres,
             propsSqlServer,
-            propsSqlite,
             propsDb2,
             propsHsqldb,
             propsDerby,
-            propsOracle
+            propsOracle,
+            propsSqlite
         )
         .forEach(props -> {
             

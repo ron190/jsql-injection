@@ -131,11 +131,11 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 // requests for that new character.
                 if (currentCallable.isTestingLength()) {
                     
-                    initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted, currentCallable);
+                    this.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted, currentCallable);
                     
                 } else {
                     
-                    injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
+                    this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
                 }
                 
             } catch (InterruptedException | ExecutionException e) {
@@ -190,11 +190,11 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     }
 
     private void initializeNextCharacters(
-        String sqlQuery, 
-        List<char[]> bytes, 
-        AtomicInteger indexCharacter, 
-        CompletionService<T> taskCompletionService, 
-        AtomicInteger countTasksSubmitted, 
+        String sqlQuery,
+        List<char[]> bytes,
+        AtomicInteger indexCharacter,
+        CompletionService<T> taskCompletionService,
+        AtomicInteger countTasksSubmitted,
         T lengthCallable
     ) {
         

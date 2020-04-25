@@ -1,4 +1,5 @@
-vendor: 
+vendor: Teradata
+
 resource: 
  info: |
   select 

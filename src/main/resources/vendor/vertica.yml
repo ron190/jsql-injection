@@ -1,4 +1,5 @@
-vendor: 
+vendor: Vertica
+
 resource: 
  info: |
   select
