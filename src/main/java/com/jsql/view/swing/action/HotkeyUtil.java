@@ -27,8 +27,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.menubar.Menubar;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Keyword shortcut definition. <br>
@@ -158,7 +158,7 @@ public final class HotkeyUtil {
         inputMap.put(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB), "actionString-previousTab");
         actionMap.put("actionString-previousTab", previousTab);
         
-        int tabCount = MediatorGui.tabManagers().getTabCount();
+        int tabCount = MediatorHelper.tabManagers().getTabCount();
         
         for (int currentTab = 1 ; currentTab <= tabCount ; currentTab++) {
             
@@ -171,7 +171,7 @@ public final class HotkeyUtil {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     
-                    MediatorGui.tabManagers().setSelectedIndex(currentTabFinal - 1);
+                    MediatorHelper.tabManagers().setSelectedIndex(currentTabFinal - 1);
                 }
             });
         }
@@ -192,8 +192,8 @@ public final class HotkeyUtil {
                 
                 if (
                     // Fix #40924: NullPointerException on MediatorGui.panelAddressBar()
-                    MediatorGui.panelAddressBar() != null
-                    && !MediatorGui.panelAddressBar().isAdvanceActivated()
+                    MediatorHelper.panelAddressBar() != null
+                    && !MediatorHelper.panelAddressBar().isAdvanceActivated()
                 ) {
                     menubar.setVisible(false);
                 }

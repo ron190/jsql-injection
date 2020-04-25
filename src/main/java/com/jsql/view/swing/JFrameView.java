@@ -36,6 +36,7 @@ import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.split.SplitHorizontalTopBottom;
 import com.jsql.view.swing.shadow.ShadowPopupFactory;
 import com.jsql.view.swing.shell.AbstractShell;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -70,7 +71,7 @@ public class JFrameView extends JFrame {
         
         super("jSQL Injection");
         
-        MediatorGui.register(this);
+        MediatorHelper.register(this);
 
         // Load UI before any component
         UiUtil.prepareGUI();
@@ -108,21 +109,21 @@ public class JFrameView extends JFrame {
                 prefs.putBoolean(UiUtil.NETWORK_VISIBLE, false);
                 prefs.putBoolean(UiUtil.JAVA_VISIBLE, false);
                 
-                for (int i = 0 ; i < MediatorGui.tabConsoles().getTabCount() ; i++) {
+                for (int i = 0 ; i < MediatorHelper.tabConsoles().getTabCount() ; i++) {
                     
-                    if ("CONSOLE_BINARY_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
+                    if ("CONSOLE_BINARY_LABEL".equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
                         
                         prefs.putBoolean(UiUtil.BINARY_VISIBLE, true);
                         
-                    } else if ("CONSOLE_CHUNK_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
+                    } else if ("CONSOLE_CHUNK_LABEL".equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
                         
                         prefs.putBoolean(UiUtil.CHUNK_VISIBLE, true);
                         
-                    } else if ("CONSOLE_NETWORK_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
+                    } else if ("CONSOLE_NETWORK_LABEL".equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
                         
                         prefs.putBoolean(UiUtil.NETWORK_VISIBLE, true);
                         
-                    } else if ("CONSOLE_JAVA_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
+                    } else if ("CONSOLE_JAVA_LABEL".equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
                         
                         prefs.putBoolean(UiUtil.JAVA_VISIBLE, true);
                     }
@@ -142,7 +143,7 @@ public class JFrameView extends JFrame {
     private void initializeShortcuts() {
         
         // Define the keyword shortcuts for tabs #Need to work even if the focus is not on tabs
-        HotkeyUtil.addShortcut(this.getRootPane(), MediatorGui.tabResults());
+        HotkeyUtil.addShortcut(this.getRootPane(), MediatorHelper.tabResults());
         HotkeyUtil.addTextFieldShortcutSelectAll();
     }
 
@@ -151,7 +152,7 @@ public class JFrameView extends JFrame {
         // Save controller
         Menubar menubar = new Menubar();
         this.setJMenuBar(menubar);
-        MediatorGui.register(menubar);
+        MediatorHelper.register(menubar);
         
         // Define the default panel: each component on a vertical line
         this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
@@ -159,7 +160,7 @@ public class JFrameView extends JFrame {
         // Textfields at the top
         PanelAddressBar panelAddressBar = new PanelAddressBar();
         this.add(panelAddressBar);
-        MediatorGui.register(panelAddressBar);
+        MediatorHelper.register(panelAddressBar);
 
         // Main panel for tree and tables in the middle
         JPanel mainPanel = new JPanel(new GridLayout(1, 0));
@@ -175,17 +176,17 @@ public class JFrameView extends JFrame {
      */
     public void resetInterface() {
         
-        MediatorGui.panelAddressBar().getAddressMenuBar().reset();
+        MediatorHelper.panelAddressBar().getAddressMenuBar().reset();
         
-        MediatorGui.treeDatabase().getTreeNodeModels().clear();
+        MediatorHelper.treeDatabase().getTreeNodeModels().clear();
         this.mapShells.clear();
         
-        MediatorGui.panelConsoles().reset();
-        MediatorGui.treeDatabase().reset();
+        MediatorHelper.panelConsoles().reset();
+        MediatorHelper.treeDatabase().reset();
         
-        for (int i = 0 ; i < MediatorGui.tabConsoles().getTabCount() ; i++) {
+        for (int i = 0 ; i < MediatorHelper.tabConsoles().getTabCount() ; i++) {
             
-            Component tabComponent = MediatorGui.tabConsoles().getTabComponentAt(i);
+            Component tabComponent = MediatorHelper.tabConsoles().getTabComponentAt(i);
             if (tabComponent != null) {
                 
                 tabComponent.setFont(tabComponent.getFont().deriveFont(Font.PLAIN));
@@ -193,10 +194,10 @@ public class JFrameView extends JFrame {
         }
         
         Stream.of(
-            MediatorGui.managerUpload(),
-            MediatorGui.managerFile(),
-            MediatorGui.managerWebshell(),
-            MediatorGui.managerSqlshell()
+            MediatorHelper.managerUpload(),
+            MediatorHelper.managerFile(),
+            MediatorHelper.managerWebshell(),
+            MediatorHelper.managerSqlshell()
         )
         .forEach(managerList -> {
             

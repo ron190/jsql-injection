@@ -34,6 +34,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolTip;
 import javax.swing.OverlayLayout;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.DefaultTableModel;
@@ -42,7 +43,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.console.JavaConsoleAdapter;
 import com.jsql.view.swing.console.SimpleConsoleAdapter;
 import com.jsql.view.swing.console.SwingAppender;
@@ -59,6 +59,7 @@ import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
 import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -111,7 +112,7 @@ public class PanelConsoles extends JPanel {
         
         this.initializeSplit();
 
-        MediatorGui.register(this.tabConsoles);
+        MediatorHelper.register(this.tabConsoles);
         
         this.initializeTabsConsoles();
 
@@ -153,7 +154,7 @@ public class PanelConsoles extends JPanel {
 
     private JScrollIndicator initializeScrollerTable() {
         
-        JScrollIndicator scrollerNetwork = new JScrollIndicator(this.networkTable, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollIndicator scrollerNetwork = new JScrollIndicator(this.networkTable, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollerNetwork.getScrollPane().setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         scrollerNetwork.getScrollPane().setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         
@@ -328,7 +329,7 @@ public class PanelConsoles extends JPanel {
             "CONSOLE_BINARY_TOOLTIP",
             UiUtil.ICON_BINARY,
             new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.binaryTextArea),
-            1 + (MediatorGui.menubar().getChunkMenu().isSelected() ? 1 : 0)
+            1 + (MediatorHelper.menubar().getChunkMenu().isSelected() ? 1 : 0)
         );
     }
 
@@ -342,7 +343,7 @@ public class PanelConsoles extends JPanel {
             "CONSOLE_NETWORK_TOOLTIP",
             UiUtil.ICON_HEADER,
             new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.networkSplitPane),
-            this.tabConsoles.getTabCount() - (MediatorGui.menubar().getJavaDebugMenu().isSelected() ? 1 : 0)
+            this.tabConsoles.getTabCount() - (MediatorHelper.menubar().getJavaDebugMenu().isSelected() ? 1 : 0)
         );
     }
 

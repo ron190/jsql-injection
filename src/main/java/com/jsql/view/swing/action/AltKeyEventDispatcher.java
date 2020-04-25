@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.MenuSelectionManager;
 
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 public class AltKeyEventDispatcher implements KeyEventDispatcher {
 
@@ -67,8 +67,8 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
 
     private void selectAddressBar() {
         
-        MediatorGui.panelAddressBar().getTextFieldAddress().requestFocusInWindow();
-        MediatorGui.panelAddressBar().getTextFieldAddress().selectAll();
+        MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();
+        MediatorHelper.panelAddressBar().getTextFieldAddress().selectAll();
         this.wasAltDPressed = true;
     }
 
@@ -81,9 +81,9 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
                 
                 MenuSelectionManager.defaultManager().clearSelectedPath();
                 
-            } else if (!MediatorGui.panelAddressBar().isAdvanceActivated()) {
+            } else if (!MediatorHelper.panelAddressBar().isAdvanceActivated()) {
                 
-                MediatorGui.menubar().setVisible(!MediatorGui.menubar().isVisible());
+                MediatorHelper.menubar().setVisible(!MediatorHelper.menubar().isVisible());
                 this.wasAltGraphPressed = false;
             }
         } else {
@@ -97,10 +97,10 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
     private void hideMenuBar() {
         
         // Avoid flickering and AltGr pollution
-        if (!MediatorGui.panelAddressBar().isAdvanceActivated() && MediatorGui.menubar().isVisible()) {
+        if (!MediatorHelper.panelAddressBar().isAdvanceActivated() && MediatorHelper.menubar().isVisible()) {
             
             MenuSelectionManager.defaultManager().clearSelectedPath();
-            MediatorGui.menubar().setVisible(false);
+            MediatorHelper.menubar().setVisible(false);
             this.wasAltPressed = true;
             this.wasAltGraphPressed = false;
         }

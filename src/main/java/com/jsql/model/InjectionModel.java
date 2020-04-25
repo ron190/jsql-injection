@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
 import org.ietf.jgss.GSSException;
 
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.accessible.RessourceAccess;
+import com.jsql.model.accessible.ResourceAccess;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
@@ -86,7 +86,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     private transient PropertiesUtil propertiesUtil = new PropertiesUtil();
              
     private transient DataAccess dataAccess = new DataAccess(this);
-    private transient RessourceAccess resourceAccess = new RessourceAccess(this);
+    private transient ResourceAccess resourceAccess = new ResourceAccess(this);
     
     public static final String STAR = "*";
     
@@ -390,7 +390,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         connection.setRequestProperty("Pragma", "no-cache");
         connection.setRequestProperty("Cache-Control", "no-cache");
         connection.setRequestProperty("Expires", "-1");
-        connection.setRequestProperty("Content-Type", "text/plain");
+        connection.setRequestProperty(HeaderUtil.CONTENT_TYPE, "text/plain");
         
         return connection;
     }
@@ -415,56 +415,60 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
     private void initializeRequest(boolean isUsingIndex, String dataInjection, HttpURLConnection connection, Map<Header, Object> msgHeader) {
         
-        if (!this.mediatorUtils.getParameterUtil().getListRequest().isEmpty() || this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
+        if (
+            this.mediatorUtils.getParameterUtil().getListRequest().isEmpty() 
+            && this.mediatorUtils.getConnectionUtil().getTokenCsrf() == null
+        ) { 
+            return;
+        }
             
-            try {
-                ConnectionUtil.fixCustomRequestMethod(connection, this.mediatorUtils.getConnectionUtil().getTypeRequest());
+        try {
+            ConnectionUtil.fixCustomRequestMethod(connection, this.mediatorUtils.getConnectionUtil().getTypeRequest());
+            
+            connection.setDoOutput(true);
+            
+            if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
                 
-                connection.setDoOutput(true);
+                connection.setRequestProperty(HeaderUtil.CONTENT_TYPE, "text/xml");
                 
-                if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
-                    
-                    connection.setRequestProperty("Content-Type", "text/xml");
-                    
-                } else {
-                    
-                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                }
-   
-                DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
+            } else {
                 
-                if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
-                    
-                    dataOut.writeBytes(this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey() +"="+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue() +"&");
-                }
-                
-                if (this.mediatorUtils.getConnectionUtil().getTypeRequest().matches("PUT|POST")) {
-                    
-                    if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
-                        
-                        dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
-                        
-                    } else {
-                        
-                        dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
-                    }
-                }
-                
-                dataOut.flush();
-                dataOut.close();
-                
-                if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
-                    
-                    msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
-                    
-                } else {
-                    
-                    msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
-                }
-                
-            } catch (IOException e) {
-                LOGGER.warn("Error during Request connection: "+ e.getMessage(), e);
+                connection.setRequestProperty(HeaderUtil.CONTENT_TYPE, "application/x-www-form-urlencoded");
             }
+   
+            DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
+            
+            if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
+                
+                dataOut.writeBytes(this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey() +"="+ this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue() +"&");
+            }
+            
+            if (this.mediatorUtils.getConnectionUtil().getTypeRequest().matches("PUT|POST")) {
+                
+                if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
+                    
+                    dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
+                    
+                } else {
+                    
+                    dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
+                }
+            }
+            
+            dataOut.flush();
+            dataOut.close();
+            
+            if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
+                
+                msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
+                
+            } else {
+                
+                msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
+            }
+            
+        } catch (IOException e) {
+            LOGGER.warn("Error during Request connection: "+ e.getMessage(), e);
         }
     }
     
@@ -705,7 +709,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         return this.dataAccess;
     }
 
-    public RessourceAccess getResourceAccess() {
+    public ResourceAccess getResourceAccess() {
         return this.resourceAccess;
     }
 

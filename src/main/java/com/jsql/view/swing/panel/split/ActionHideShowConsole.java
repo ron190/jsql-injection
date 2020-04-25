@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * MouseAdapter to show/hide bottom panel.
@@ -34,26 +34,26 @@ public class ActionHideShowConsole implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         
         if (
-            MediatorGui.frame().getSplitHorizontalTopBottom().getTopComponent().isVisible()
-            && MediatorGui.frame().getSplitHorizontalTopBottom().getBottomComponent().isVisible()
+            MediatorHelper.frame().getSplitHorizontalTopBottom().getTopComponent().isVisible()
+            && MediatorHelper.frame().getSplitHorizontalTopBottom().getBottomComponent().isVisible()
         ) {
             
-            MediatorGui.panelConsoles().setDividerLocation(MediatorGui.frame().getSplitHorizontalTopBottom().getDividerLocation());
-            MediatorGui.frame().getSplitHorizontalTopBottom().getBottomComponent().setVisible(false);
+            MediatorHelper.panelConsoles().setDividerLocation(MediatorHelper.frame().getSplitHorizontalTopBottom().getDividerLocation());
+            MediatorHelper.frame().getSplitHorizontalTopBottom().getBottomComponent().setVisible(false);
             this.panel.setVisible(true);
-            MediatorGui.frame().getSplitHorizontalTopBottom().disableDragSize();
+            MediatorHelper.frame().getSplitHorizontalTopBottom().disableDragSize();
         } else if (
             this.panel.isVisible()
-            || !MediatorGui.frame().getSplitHorizontalTopBottom().getTopComponent().isVisible()
-            && MediatorGui.frame().getSplitHorizontalTopBottom().getBottomComponent().isVisible()
+            || !MediatorHelper.frame().getSplitHorizontalTopBottom().getTopComponent().isVisible()
+            && MediatorHelper.frame().getSplitHorizontalTopBottom().getBottomComponent().isVisible()
         ) {
             
-            MediatorGui.frame().getSplitHorizontalTopBottom().getBottomComponent().setVisible(true);
-            MediatorGui.frame().getSplitHorizontalTopBottom().getTopComponent().setVisible(true);
+            MediatorHelper.frame().getSplitHorizontalTopBottom().getBottomComponent().setVisible(true);
+            MediatorHelper.frame().getSplitHorizontalTopBottom().getTopComponent().setVisible(true);
             this.panel.setVisible(false);
-            MediatorGui.frame().getSplitHorizontalTopBottom().setDividerLocation(MediatorGui.panelConsoles().getDividerLocation());
-            MediatorGui.frame().getSplitHorizontalTopBottom().enableDragSize();
-            MediatorGui.panelConsoles().getButtonShowNorth().setVisible(true);
+            MediatorHelper.frame().getSplitHorizontalTopBottom().setDividerLocation(MediatorHelper.panelConsoles().getDividerLocation());
+            MediatorHelper.frame().getSplitHorizontalTopBottom().enableDragSize();
+            MediatorHelper.panelConsoles().getButtonShowNorth().setVisible(true);
         }
     }
 }

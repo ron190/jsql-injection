@@ -41,7 +41,6 @@ import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.ComboMenu;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.sql.lexer.HighlightedDocument;
@@ -53,6 +52,7 @@ import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
@@ -63,11 +63,11 @@ public class SqlEngine extends JPanel implements Cleanable {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    private ModelYaml modelYaml = MediatorGui.model().getMediatorVendor().getVendor().instance().getModelYaml();
+    private ModelYaml modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
 
     private JTabbedPane tabbedPaneError = new JTabbedPane(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
 
-    private Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
+    private transient Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
     
     private MouseWheelListener tabbedPaneMouseWheelListener = new TabbedPaneMouseWheelListener();
     
@@ -353,7 +353,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         tabsBottom.setAlignmentX(FlowLayout.LEADING);
         tabsBottom.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         
-        MediatorGui.menubar().switchLocale(I18nUtil.getLocaleDefault());
+        MediatorHelper.menubar().switchLocale(I18nUtil.getLocaleDefault());
     }
 
     private JPanel getPanelStructure() {
@@ -614,17 +614,17 @@ public class SqlEngine extends JPanel implements Cleanable {
         menuBarVendor.setOpaque(false);
         menuBarVendor.setBorder(null);
         
-        JMenu comboMenuVendor = new ComboMenu(MediatorGui.model().getMediatorVendor().getVendor().toString());
+        JMenu comboMenuVendor = new ComboMenu(MediatorHelper.model().getMediatorVendor().getVendor().toString());
         menuBarVendor.add(comboMenuVendor);
 
         ButtonGroup groupVendor = new ButtonGroup();
 
-        List<Vendor> listVendors = new LinkedList<>(MediatorGui.model().getMediatorVendor().getVendors());
-        listVendors.removeIf(i -> i == MediatorGui.model().getMediatorVendor().getAuto());
+        List<Vendor> listVendors = new LinkedList<>(MediatorHelper.model().getMediatorVendor().getVendors());
+        listVendors.removeIf(i -> i == MediatorHelper.model().getMediatorVendor().getAuto());
         
         for (final Vendor vendor: listVendors) {
             
-            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorGui.model().getMediatorVendor().getVendor());
+            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorHelper.model().getMediatorVendor().getVendor());
             
             itemRadioVendor.addActionListener(actionEvent -> {
                 

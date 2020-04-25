@@ -14,8 +14,8 @@ import javax.swing.text.SimpleAttributeSet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.text.JPopupTextPane;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -100,12 +100,12 @@ public abstract class JColoredConsole extends JPopupTextPane {
                 foregroundColor = UiUtil.COLOR_GREEN;
             }
             
-            int tabIndex = MediatorGui.tabConsoles().indexOfTab(this.tabName);
+            int tabIndex = MediatorHelper.tabConsoles().indexOfTab(this.tabName);
             
-            if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
+            if (0 <= tabIndex && tabIndex < MediatorHelper.tabConsoles().getTabCount()) {
                 
-                Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
-                if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
+                Component tabHeader = MediatorHelper.tabConsoles().getTabComponentAt(tabIndex);
+                if (MediatorHelper.tabConsoles().getSelectedIndex() != tabIndex) {
                     
                     tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
                     tabHeader.setForeground(foregroundColor);

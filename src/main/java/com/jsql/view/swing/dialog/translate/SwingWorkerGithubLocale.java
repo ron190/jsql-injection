@@ -13,8 +13,8 @@ import javax.swing.SwingWorker;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.exception.IgnoreMessageException;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.dialog.DialogTranslate;
+import com.jsql.view.swing.util.MediatorHelper;
 
 public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
     
@@ -105,8 +105,8 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
     private void loadRootFromGithub() throws IOException {
         
         try {
-            String pageSourceRoot = MediatorGui.model().getMediatorUtils().getConnectionUtil().getSourceLineFeed(
-                MediatorGui.model().getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.webservice.i18n.url")
+            String pageSourceRoot = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSourceLineFeed(
+                MediatorHelper.model().getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.webservice.i18n.url")
             );
             
             this.propertiesRoot.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}")));
@@ -127,7 +127,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
     private void loadLanguageFromGithub() throws IOException {
         
         try {
-            String pageSourceLanguage = MediatorGui.model().getMediatorUtils().getConnectionUtil().getSourceLineFeed(
+            String pageSourceLanguage = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSourceLineFeed(
                 "https://raw.githubusercontent.com/ron190/jsql-injection/master/src/main/resources/i18n/jsql_"+ this.dialogTranslate.getLanguage().getLabelLocale() +".properties"
             );
             

@@ -10,9 +10,9 @@ import org.apache.log4j.Logger;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.panel.PanelAddressBar;
+import com.jsql.view.swing.util.MediatorHelper;
 
 public class ActionStart implements ActionListener {
     
@@ -46,7 +46,7 @@ public class ActionStart implements ActionListener {
         int option = JOptionPane.OK_OPTION;
         
         // Ask the user confirmation if injection already built
-        if (MediatorGui.model().shouldErasePreviousInjection()) {
+        if (MediatorHelper.model().shouldErasePreviousInjection()) {
             
             // Fix #33930: ClassCastException on showConfirmDialog()
             // Implementation by sun.awt.image
@@ -72,9 +72,9 @@ public class ActionStart implements ActionListener {
             // Erase everything in the view from a previous injection
             Request requests = new Request();
             requests.setMessage(Interaction.RESET_INTERFACE);
-            MediatorGui.model().sendToViews(requests);
+            MediatorHelper.model().sendToViews(requests);
 
-            MediatorGui.model().getMediatorUtils().getParameterUtil().controlInput(
+            MediatorHelper.model().getMediatorUtils().getParameterUtil().controlInput(
                 this.panelAddressBar.getTextFieldAddress().getText().trim(),
                 this.panelAddressBar.getTextFieldRequest().getText().trim(),
                 this.panelAddressBar.getTextFieldHeader().getText().trim(),
@@ -91,6 +91,6 @@ public class ActionStart implements ActionListener {
         this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setInjectionStopping();
         this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setToolTipText(I18nUtil.valueByKey("BUTTON_STOPPING_TOOLTIP"));
         
-        MediatorGui.model().setIsStoppedByUser(true);
+        MediatorHelper.model().setIsStoppedByUser(true);
     }
 }

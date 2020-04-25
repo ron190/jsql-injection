@@ -14,7 +14,7 @@ import java.util.Map;
 
 import com.jsql.model.bean.util.Header;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Mark the injection as vulnerable to a basic injection.
@@ -35,6 +35,6 @@ public class MarkNormalVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.managerScan().highlight(this.url, "Normal");
+        MediatorHelper.managerScan().highlight(this.url, "Normal");
     }
 }

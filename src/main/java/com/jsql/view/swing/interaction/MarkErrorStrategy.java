@@ -11,7 +11,7 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Mark the injection as invulnerable to a error based injection.
@@ -28,6 +28,6 @@ public class MarkErrorStrategy implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.panelAddressBar().getAddressMenuBar().markError();
+        MediatorHelper.panelAddressBar().getAddressMenuBar().markError();
     }
 }

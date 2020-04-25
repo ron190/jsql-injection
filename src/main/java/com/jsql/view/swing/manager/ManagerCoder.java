@@ -25,7 +25,7 @@ import javax.swing.JTextPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.jsql.view.swing.manager.util.ActionCoder;
+import com.jsql.view.swing.manager.util.CoderListener;
 import com.jsql.view.swing.manager.util.MenuBarCoder;
 import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -56,7 +56,7 @@ public class ManagerCoder extends JPanel implements Manager {
      */
     private JTextPane result;
     
-    private transient ActionCoder actionCoder = new ActionCoder(this);
+    private transient CoderListener actionCoder = new CoderListener(this);
     
     private class ChangeMenuListener implements ChangeListener {
         

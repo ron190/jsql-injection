@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.jsql.model.bean.database.Table;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Add the tables to the corresponding database.
@@ -38,6 +38,6 @@ public class AddTables implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.treeDatabase().addTables(this.tables);
+        MediatorHelper.treeDatabase().addTables(this.tables);
     }
 }

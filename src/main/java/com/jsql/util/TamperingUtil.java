@@ -38,6 +38,7 @@ public class TamperingUtil {
     
     private static final NashornScriptEngineFactory NASHORN_FACTORY = new NashornScriptEngineFactory();
 
+    // TODO builder
     public void set(
         boolean isBase64,
         boolean isVersionComment,

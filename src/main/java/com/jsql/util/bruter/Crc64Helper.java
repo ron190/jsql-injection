@@ -21,13 +21,13 @@ package com.jsql.util.bruter;
  * <li>http://www.geocities.com/SiliconValley/Pines/8659/crc.htm</li>
  * </ul>
  */
-public class Crc64 {
+public class Crc64Helper {
     
     private static final long POLY64REV = 0xd800000000000000L;
     
     private static final long[] LOOKUPTABLE;
     
-    private Crc64() {
+    private Crc64Helper() {
         
     }
 

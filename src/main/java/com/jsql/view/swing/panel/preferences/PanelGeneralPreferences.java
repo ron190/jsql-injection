@@ -11,15 +11,15 @@ import javax.swing.SwingConstants;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.PanelPreferences;
+import com.jsql.view.swing.util.MediatorHelper;
 
 @SuppressWarnings("serial")
 public class PanelGeneralPreferences extends JPanel {
 
-    private final JCheckBox checkboxIsCheckingUpdate = new JCheckBox(StringUtils.EMPTY, MediatorGui.model().getMediatorUtils().getPreferencesUtil().isCheckingUpdate());
-    private final JCheckBox checkboxIsReportingBugs = new JCheckBox(StringUtils.EMPTY, MediatorGui.model().getMediatorUtils().getPreferencesUtil().isReportingBugs());
-    private final JCheckBox checkboxIs4K = new JCheckBox(StringUtils.EMPTY, MediatorGui.model().getMediatorUtils().getPreferencesUtil().is4K());
+    private final JCheckBox checkboxIsCheckingUpdate = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingUpdate());
+    private final JCheckBox checkboxIsReportingBugs = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isReportingBugs());
+    private final JCheckBox checkboxIs4K = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().is4K());
 
     public PanelGeneralPreferences(PanelPreferences panelPreferences) {
         

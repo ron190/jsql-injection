@@ -11,7 +11,7 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Append text to the tab Chunk.
@@ -34,8 +34,8 @@ public class MessageChunk implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.panelConsoles().messageChunk(this.text);
+        MediatorHelper.panelConsoles().messageChunk(this.text);
         
-        MediatorGui.tabConsoles().highlightTab("Chunk");
+        MediatorHelper.tabConsoles().highlightTab("Chunk");
     }
 }

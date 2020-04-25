@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.scrollpane.LightScrollPaneShell;
@@ -35,6 +34,7 @@ import com.jsql.view.swing.tab.dnd.DnDTabbedPane;
 import com.jsql.view.swing.tab.dnd.TabTransferHandler;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiStringUtil;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -83,7 +83,7 @@ public class TabResults extends DnDTabbedPane {
         // Apply the custom header to the tab
         this.setTabComponentAt(this.indexOfComponent(scroller), header);
         
-        MediatorGui.tabManagers().createFileTab(path, name);
+        MediatorHelper.tabManagers().createFileTab(path, name);
     }
     
     public void createShell(String url, String path) {
@@ -91,7 +91,7 @@ public class TabResults extends DnDTabbedPane {
         try {
             UUID terminalID = UUID.randomUUID();
             ShellWeb terminal = new ShellWeb(terminalID, url);
-            MediatorGui.frame().getConsoles().put(terminalID, terminal);
+            MediatorHelper.frame().getConsoles().put(terminalID, terminal);
             
             LightScrollPane scroller = new LightScrollPaneShell(terminal);
     
@@ -105,8 +105,8 @@ public class TabResults extends DnDTabbedPane {
     
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
-                "<html><b>URL</b><br>" + url + MediatorGui.model().getResourceAccess().filenameWebshell
-                + "<br><b>Path</b><br>" + path + MediatorGui.model().getResourceAccess().filenameWebshell + "</html>"
+                "<html><b>URL</b><br>" + url + MediatorHelper.model().getResourceAccess().filenameWebshell
+                + "<br><b>Path</b><br>" + path + MediatorHelper.model().getResourceAccess().filenameWebshell + "</html>"
             );
     
             // Apply the custom header to the tab
@@ -126,7 +126,7 @@ public class TabResults extends DnDTabbedPane {
             
             ShellSql terminal = new ShellSql(terminalID, url, user, pass);
             
-            MediatorGui.frame().getConsoles().put(terminalID, terminal);
+            MediatorHelper.frame().getConsoles().put(terminalID, terminal);
     
             LightScrollPane scroller = new LightScrollPaneShell(terminal);
             
@@ -140,8 +140,8 @@ public class TabResults extends DnDTabbedPane {
     
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
-                "<html><b>URL</b><br>" + url + MediatorGui.model().getResourceAccess().filenameSqlshell
-                + "<br><b>Path</b><br>" + path + MediatorGui.model().getResourceAccess().filenameSqlshell + "</html>"
+                "<html><b>URL</b><br>" + url + MediatorHelper.model().getResourceAccess().filenameSqlshell
+                + "<br><b>Path</b><br>" + path + MediatorHelper.model().getResourceAccess().filenameSqlshell + "</html>"
             );
     
             // Apply the custom header to the tab

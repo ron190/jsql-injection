@@ -1,6 +1,7 @@
-package com.jsql.view.swing;
+package com.jsql.view.swing.util;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.view.swing.JFrameView;
 import com.jsql.view.swing.manager.ManagerAdminPage;
 import com.jsql.view.swing.manager.ManagerBruteForce;
 import com.jsql.view.swing.manager.ManagerFile;
@@ -19,7 +20,7 @@ import com.jsql.view.swing.tree.TreeDatabase;
 /**
  * Mediator for loosely coupled components.
  */
-public final class MediatorGui {
+public final class MediatorHelper {
     
     private static InjectionModel model;
     
@@ -44,7 +45,7 @@ public final class MediatorGui {
     /**
      * Utility class.
      */
-    private MediatorGui() {
+    private MediatorHelper() {
         //not called
     }
 
@@ -115,68 +116,68 @@ public final class MediatorGui {
     // Registering GUI components
     
     public static void register(JFrameView frame) {
-        MediatorGui.frame = frame;
+        MediatorHelper.frame = frame;
     }
     
     public static void register(Menubar menubar) {
-        MediatorGui.menubar = menubar;
+        MediatorHelper.menubar = menubar;
     }
     
     public static void register(PanelAddressBar panelAddress) {
-        MediatorGui.panelAddressBar = panelAddress;
+        MediatorHelper.panelAddressBar = panelAddress;
     }
     
     public static void register(TabConsoles tabConsoles) {
-        MediatorGui.tabConsoles = tabConsoles;
+        MediatorHelper.tabConsoles = tabConsoles;
     }
     
     public static void register(PanelConsoles panelConsoles) {
-        MediatorGui.panelConsoles = panelConsoles;
+        MediatorHelper.panelConsoles = panelConsoles;
     }
     
     public static void register(TreeDatabase treeDatabase) {
-        MediatorGui.treeDatabase = treeDatabase;
+        MediatorHelper.treeDatabase = treeDatabase;
     }
     
     public static void register(TabResults tabResults) {
-        MediatorGui.tabResults = tabResults;
+        MediatorHelper.tabResults = tabResults;
     }
     
     public static void register(TabManagers tabManagers) {
-        MediatorGui.tabManagers = tabManagers;
+        MediatorHelper.tabManagers = tabManagers;
     }
     
     // Registering Managers
     
     public static void register(ManagerWebShell managerWebshell) {
-        MediatorGui.managerWebshell = managerWebshell;
+        MediatorHelper.managerWebshell = managerWebshell;
     }
     
     public static void register(ManagerAdminPage managerAdminPage) {
-        MediatorGui.managerAdminPage = managerAdminPage;
+        MediatorHelper.managerAdminPage = managerAdminPage;
     }
     
     public static void register(ManagerFile managerFile) {
-        MediatorGui.managerFile = managerFile;
+        MediatorHelper.managerFile = managerFile;
     }
     
     public static void register(ManagerUpload managerUpload) {
-        MediatorGui.managerUpload = managerUpload;
+        MediatorHelper.managerUpload = managerUpload;
     }
     
     public static void register(ManagerSqlShell managerSqlshell) {
-        MediatorGui.managerSqlshell = managerSqlshell;
+        MediatorHelper.managerSqlshell = managerSqlshell;
     }
     
     public static void register(ManagerScan managerScan) {
-        MediatorGui.managerScan = managerScan;
+        MediatorHelper.managerScan = managerScan;
     }
     
     public static void register(ManagerBruteForce managerBruteForce) {
-        MediatorGui.managerBruteForce = managerBruteForce;
+        MediatorHelper.managerBruteForce = managerBruteForce;
     }
 
     public static void register(InjectionModel model) {
-        MediatorGui.model = model;
+        MediatorHelper.model = model;
     }
 }

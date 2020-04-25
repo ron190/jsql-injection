@@ -106,13 +106,6 @@ public class AuthenticationUtil {
         this.isAuthentication = isAuthentication;
         this.usernameAuthentication = usernameAuthentication;
         this.passwordAuthentication = passwordAuthentication;
-        
-        // Activate standard authentication
-        // TODO: java.lang.IllegalAccessError: class com.jsql.tool.AuthenticationTools (in unnamed module @0x266d09)
-        // cannot access class sun.net.www.protocol.http.AuthCacheImpl (in module java.base) because module java.base
-        // does not export sun.net.www.protocol.http to unnamed module @0x266d09
-        // Use Authenticator.setDefault(null); or a bad Authenticator
-        // AuthCacheValue.setAuthCache(new AuthCacheImpl());
     }
 
     private boolean initializeKerberos(boolean isKerberos, String kerberosKrb5Conf, String kerberosLoginConf) {
@@ -170,7 +163,6 @@ public class AuthenticationUtil {
         this.pathKerberosKrb5 = prefs.get("kerberosKrb5Conf", StringUtils.EMPTY);
         this.pathKerberosLogin = prefs.get("kerberosLoginConf", StringUtils.EMPTY);
 
-//        AuthCacheValue.setAuthCache(new AuthCacheImpl());
         AuthCacheValue.setAuthCache(new AuthCacheImpl());
         Authenticator.setDefault(null);
         

@@ -11,7 +11,7 @@
 package com.jsql.view.swing.manager;
 
 import com.jsql.model.exception.JSqlException;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Manager for uploading PHP webshell to the host and send system commands.
@@ -25,6 +25,6 @@ public class ManagerWebShell extends AbstractManagerShell {
     
     @Override
     protected void createPayload(String pathShell, String urlShell) throws JSqlException, InterruptedException {
-        MediatorGui.model().getResourceAccess().createWebShell(pathShell, urlShell);
+        MediatorHelper.model().getResourceAccess().createWebShell(pathShell, urlShell);
     }
 }

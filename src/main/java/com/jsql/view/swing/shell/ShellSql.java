@@ -13,7 +13,7 @@ package com.jsql.view.swing.shell;
 import java.net.MalformedURLException;
 import java.util.UUID;
 
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * A terminal for SQL shell injection.
@@ -35,6 +35,6 @@ public class ShellSql extends AbstractShell {
 
     @Override
     public void action(String cmd, UUID terminalID, String wbhPath, String... arg) {
-        MediatorGui.model().getResourceAccess().runSqlShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
+        MediatorHelper.model().getResourceAccess().runSqlShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
     }
 }

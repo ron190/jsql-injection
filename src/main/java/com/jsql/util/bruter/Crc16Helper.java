@@ -16,9 +16,9 @@ package com.jsql.util.bruter;
  *
  *
  *************************************************************************/
-public class Crc16 {
+public class Crc16Helper {
     
-    private Crc16() {
+    private Crc16Helper() {
         
     }
     

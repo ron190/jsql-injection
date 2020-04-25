@@ -21,8 +21,8 @@ import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Action to start and stop injection process.
@@ -67,7 +67,7 @@ public class ActionLoadStop implements ActionListener {
             protected Object doInBackground() throws Exception {
                 
                 Thread.currentThread().setName("SwingWorkerActionLoadStop");
-                MediatorGui.model().getDataAccess().listValues(columnsToSearch);
+                MediatorHelper.model().getDataAccess().listValues(columnsToSearch);
                 
                 return null;
             }
@@ -76,7 +76,7 @@ public class ActionLoadStop implements ActionListener {
 
     private void stopAbstractNode() {
         
-        AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
+        AbstractSuspendable<?> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
         
         // Fix #21394: NullPointerException on stop()
         if (suspendableTask != null) {
@@ -87,12 +87,12 @@ public class ActionLoadStop implements ActionListener {
         this.nodeModel.setProgressing(false);
         this.nodeModel.setLoading(false);
         
-        MediatorGui.model().getMediatorUtils().getThreadUtil().remove(this.nodeModel.getElementDatabase());
+        MediatorHelper.model().getMediatorUtils().getThreadUtil().remove(this.nodeModel.getElementDatabase());
     }
 
     private List<Column> getSelectedColumns() {
         
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();
         DefaultMutableTreeNode tableNode = this.currentTableNode;
         final List<Column> columnsToSearch = new ArrayList<>();
 

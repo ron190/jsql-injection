@@ -14,7 +14,7 @@ import org.apache.commons.lang3.SerializationUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Display popupmenu on right click.
@@ -38,15 +38,15 @@ public class TabMouseAdapter extends MouseAdapter {
         JPopupMenu menu = new JPopupMenu();
 
         // Copy menu items from menubar
-        for (int position = 0 ; position < MediatorGui.menubar().getMenuView().getMenuComponentCount() ; position++) {
+        for (int position = 0 ; position < MediatorHelper.menubar().getMenuView().getMenuComponentCount() ; position++) {
             
             // Fix #35348: SerializationException on clone()
             try {
-                JMenuItem itemMenu = (JMenuItem) SerializationUtils.clone(MediatorGui.menubar().getMenuView().getMenuComponent(position));
+                JMenuItem itemMenu = (JMenuItem) SerializationUtils.clone(MediatorHelper.menubar().getMenuView().getMenuComponent(position));
                 menu.add(itemMenu);
                 
                 final int positionFinal = position;
-                itemMenu.addActionListener(actionEvent -> MediatorGui.tabManagers().setSelectedIndex(positionFinal));
+                itemMenu.addActionListener(actionEvent -> MediatorHelper.tabManagers().setSelectedIndex(positionFinal));
             } catch (SerializationException ex) {
                 LOGGER.error(ex, ex);
             }

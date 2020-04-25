@@ -12,7 +12,7 @@ package com.jsql.view.swing.interaction;
 
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Mark the injection as invulnerable to a time based injection.
@@ -29,8 +29,8 @@ public class MarkTimeInvulnerable implements InteractionCommand {
     @Override
     public void execute() {
         
-        AbstractStrategy strategy = MediatorGui.model().getMediatorStrategy().getTime();
+        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getTime();
         
-        MediatorGui.panelAddressBar().getAddressMenuBar().markStrategyInvulnerable(strategy);
+        MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategyInvulnerable(strategy);
     }
 }

@@ -29,10 +29,10 @@ import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.table.PanelTable;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -46,7 +46,7 @@ public class ActionSaveTab extends AbstractAction {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    private final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorGui.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+    private final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
 
     public ActionSaveTab() {
         
@@ -61,7 +61,7 @@ public class ActionSaveTab extends AbstractAction {
         
         this.filechooser.setDialogTitle("Save Tab As");
 
-        Component componentResult = MediatorGui.tabResults().getSelectedComponent();
+        Component componentResult = MediatorHelper.tabResults().getSelectedComponent();
         
         if (componentResult instanceof PanelTable) {
             
@@ -84,12 +84,12 @@ public class ActionSaveTab extends AbstractAction {
             return;
         }
         
-        int stateSave = this.filechooser.showSaveDialog(MediatorGui.frame());
+        int stateSave = this.filechooser.showSaveDialog(MediatorHelper.frame());
         
         if (stateSave == JFileChooser.APPROVE_OPTION) {
             
             String folderSelectedFile = this.filechooser.getCurrentDirectory().toString();
-            MediatorGui.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);
             
             if (textarea instanceof JTextComponent) {
                 

@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.jsql.model.bean.database.Database;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Add the databases to current injection panel.
@@ -39,6 +39,6 @@ public class AddDatabases implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.treeDatabase().addDatabases(this.databases);
+        MediatorHelper.treeDatabase().addDatabases(this.databases);
     }
 }

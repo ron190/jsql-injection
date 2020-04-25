@@ -37,7 +37,8 @@ public class HeaderUtil {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    private static final String HEADER_WWW_AUTHENTICATE = "WWW-Authenticate";
+    public static final String CONTENT_TYPE = "Content-Type";
+    private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final String REGEX_HTTP_STATUS = "4\\d\\d";
     private static final String FOUND_STATUS_HTTP = "Found status HTTP ";
 
@@ -345,34 +346,34 @@ public class HeaderUtil {
         
         return
             Pattern.matches(REGEX_HTTP_STATUS, responseCode)
-            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
-            && "Negotiate".equals(mapResponse.get(HEADER_WWW_AUTHENTICATE));
+            && mapResponse.containsKey(WWW_AUTHENTICATE)
+            && "Negotiate".equals(mapResponse.get(WWW_AUTHENTICATE));
     }
 
     private boolean isDigest(String responseCode, Map<String, String> mapResponse) {
         
         return
             Pattern.matches(REGEX_HTTP_STATUS, responseCode)
-            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
-            && mapResponse.get(HEADER_WWW_AUTHENTICATE) != null
-            && mapResponse.get(HEADER_WWW_AUTHENTICATE).startsWith("Digest ");
+            && mapResponse.containsKey(WWW_AUTHENTICATE)
+            && mapResponse.get(WWW_AUTHENTICATE) != null
+            && mapResponse.get(WWW_AUTHENTICATE).startsWith("Digest ");
     }
 
     private boolean isNtlm(String responseCode, Map<String, String> mapResponse) {
         
         return
             Pattern.matches(REGEX_HTTP_STATUS, responseCode)
-            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
-            && "NTLM".equals(mapResponse.get(HEADER_WWW_AUTHENTICATE));
+            && mapResponse.containsKey(WWW_AUTHENTICATE)
+            && "NTLM".equals(mapResponse.get(WWW_AUTHENTICATE));
     }
 
     private boolean isBasicAuth(String responseCode, Map<String, String> mapResponse) {
         
         return
             Pattern.matches(REGEX_HTTP_STATUS, responseCode)
-            && mapResponse.containsKey(HEADER_WWW_AUTHENTICATE)
-            && mapResponse.get(HEADER_WWW_AUTHENTICATE) != null
-            && mapResponse.get(HEADER_WWW_AUTHENTICATE).startsWith("Basic ");
+            && mapResponse.containsKey(WWW_AUTHENTICATE)
+            && mapResponse.get(WWW_AUTHENTICATE) != null
+            && mapResponse.get(WWW_AUTHENTICATE).startsWith("Basic ");
     }
     
     /**

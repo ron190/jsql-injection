@@ -11,7 +11,7 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * End the refreshing of the main Start injection button.
@@ -28,11 +28,11 @@ public class EndPreparation implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.panelAddressBar().getAddressMenuBar().endPreparation();
+        MediatorHelper.panelAddressBar().getAddressMenuBar().endPreparation();
 
-        if (MediatorGui.model().shouldErasePreviousInjection()) {
+        if (MediatorHelper.model().shouldErasePreviousInjection()) {
             
-            MediatorGui.tabManagers().endPreparation();
+            MediatorHelper.tabManagers().endPreparation();
         }
     }
 }

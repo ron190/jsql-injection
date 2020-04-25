@@ -12,7 +12,7 @@ package com.jsql.view.swing.interaction;
 
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Stop refreshing the progress bar of an untracked
@@ -36,6 +36,6 @@ public class EndIndeterminateProgress implements InteractionCommand {
     @Override
     public void execute() {
 
-        MediatorGui.treeDatabase().endIndeterminateProgess(this.dataElementDatabase);
+        MediatorHelper.treeDatabase().endIndeterminateProgess(this.dataElementDatabase);
     }
 }

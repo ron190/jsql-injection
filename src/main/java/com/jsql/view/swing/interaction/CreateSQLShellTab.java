@@ -11,12 +11,12 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Create a new tab for the terminal.
  */
-public class CreateSQLShellTab extends CreateTab implements InteractionCommand {
+public class CreateSQLShellTab extends CreateTabHelper implements InteractionCommand {
     
     /**
      * Full path of the shell file on remote host.
@@ -44,6 +44,6 @@ public class CreateSQLShellTab extends CreateTab implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.tabResults().createSQLShellTab(this.url, this.user, this.pass, this.path);
+        MediatorHelper.tabResults().createSQLShellTab(this.url, this.user, this.pass, this.path);
     }
 }

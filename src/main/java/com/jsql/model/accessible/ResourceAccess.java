@@ -50,15 +50,15 @@ import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.HeaderUtil;
 import com.jsql.view.scan.ScanListTerminal;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.list.ItemListScan;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Resource access object.
  * Get informations from file system, commands, webpage.
  */
-public class RessourceAccess {
+public class ResourceAccess {
     
     /**
      * Log4j logger sent to view.
@@ -108,7 +108,7 @@ public class RessourceAccess {
     
     private InjectionModel injectionModel;
 
-    public RessourceAccess(InjectionModel injectionModel) {
+    public ResourceAccess(InjectionModel injectionModel) {
         
         this.injectionModel = injectionModel;
         
@@ -331,6 +331,11 @@ public class RessourceAccess {
             
             directoryNames.add(directoryName +"/");
         }
+        
+        injectWebshell(pathShellFixed, urlShellFixed, urlProtocol, urlWithoutFileName, directoryNames);
+    }
+
+    private void injectWebshell(String pathShellFixed, String urlShellFixed, String urlProtocol, String urlWithoutFileName, List<String> directoryNames) throws InterruptedException {
         
         ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableCreateWebShell"));
         CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
@@ -1204,7 +1209,7 @@ public class RessourceAccess {
         
         // Get back the normal view
         // TODO Don't play with View on Model
-        this.injectionModel.addObserver(MediatorGui.frame().getObserver());
+        this.injectionModel.addObserver(MediatorHelper.frame().getObserver());
         
         this.injectionModel.setIsScanning(false);
         this.injectionModel.setIsStoppedByUser(false);

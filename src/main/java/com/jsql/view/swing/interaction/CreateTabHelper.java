@@ -5,17 +5,17 @@ import java.awt.ComponentOrientation;
 import javax.swing.JSplitPane;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Set result tab panel orientation according to locale when first
  * tab is inserted.
  */
-public class CreateTab {
+public class CreateTabHelper {
 
-    protected CreateTab() {
+    protected CreateTabHelper() {
         
-        CreateTab.initializeSplitOrientation();
+        CreateTabHelper.initializeSplitOrientation();
     }
     
     /**
@@ -23,18 +23,18 @@ public class CreateTab {
      */
     public static void initializeSplitOrientation() {
         
-        if (MediatorGui.tabResults().getTabCount() == 0) {
+        if (MediatorHelper.tabResults().getTabCount() == 0) {
             
-            JSplitPane splitPaneLeftRight = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight();
+            JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight();
             int dividerLocation = splitPaneLeftRight.getDividerLocation();
             
             if (ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT) {
                 
-                splitPaneLeftRight.setLeftComponent(MediatorGui.tabResults());
+                splitPaneLeftRight.setLeftComponent(MediatorHelper.tabResults());
                 
             } else {
                 
-                splitPaneLeftRight.setRightComponent(MediatorGui.tabResults());
+                splitPaneLeftRight.setRightComponent(MediatorHelper.tabResults());
             }
             
             splitPaneLeftRight.setDividerLocation(dividerLocation);

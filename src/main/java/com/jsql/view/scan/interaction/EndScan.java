@@ -13,7 +13,7 @@ package com.jsql.view.scan.interaction;
 import org.apache.log4j.Logger;
 
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * End the refreshing of administration page search button.
@@ -32,7 +32,7 @@ public class EndScan implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.managerScan().endProcess();
+        MediatorHelper.managerScan().endProcess();
         LOGGER.trace("Scan finished");
     }
 }

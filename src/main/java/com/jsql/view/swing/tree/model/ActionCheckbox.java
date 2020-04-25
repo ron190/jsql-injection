@@ -7,7 +7,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Listener to check or uncheck every children menu items.
@@ -31,7 +31,7 @@ public class ActionCheckbox implements ActionListener {
         
         AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
         
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();
 
         int tableChildCount = treeModel.getChildCount(currentTableNode);
         for (int i = 0 ; i < tableChildCount ; i++) {

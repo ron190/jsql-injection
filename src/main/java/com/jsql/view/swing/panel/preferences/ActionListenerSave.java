@@ -5,9 +5,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.panel.PanelPreferences;
+import com.jsql.view.swing.util.MediatorHelper;
 
 public class ActionListenerSave implements ActionListener {
     
@@ -21,7 +21,7 @@ public class ActionListenerSave implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        MediatorGui.model().getMediatorUtils().getPreferencesUtil().set(
+        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(
             this.panelPreferences.getPanelGeneralPreferences().getCheckboxIsCheckingUpdate().isSelected(),
             this.panelPreferences.getPanelGeneralPreferences().getCheckboxIsReportingBugs().isSelected(),
             this.panelPreferences.getPanelGeneralPreferences().getCheckboxIs4K().isSelected(),
@@ -51,7 +51,7 @@ public class ActionListenerSave implements ActionListener {
             this.panelPreferences.getPanelTamperingPreferences().getRadioIsTamperingSpaceToSharpComment().isSelected()
         );
         
-        MediatorGui.model().getMediatorUtils().getProxyUtil().setPreferences(
+        MediatorHelper.model().getMediatorUtils().getProxyUtil().setPreferences(
             this.panelPreferences.getPanelProxyPreferences().getCheckboxIsUsingProxy().isSelected(),
             this.panelPreferences.getPanelProxyPreferences().getTextProxyAddress().getText(),
             this.panelPreferences.getPanelProxyPreferences().getTextProxyPort().getText(),
@@ -60,7 +60,7 @@ public class ActionListenerSave implements ActionListener {
             this.panelPreferences.getPanelProxyPreferences().getTextProxyPortHttps().getText()
         );
         
-        MediatorGui.model().getMediatorUtils().getTamperingUtil().set(
+        MediatorHelper.model().getMediatorUtils().getTamperingUtil().set(
             this.panelPreferences.getPanelTamperingPreferences().getCheckboxIsTamperingBase64().isSelected(),
             this.panelPreferences.getPanelTamperingPreferences().getCheckboxIsTamperingVersionComment().isSelected(),
             this.panelPreferences.getPanelTamperingPreferences().getCheckboxIsTamperingFunctionComment().isSelected(),
@@ -75,7 +75,7 @@ public class ActionListenerSave implements ActionListener {
             this.panelPreferences.getPanelTamperingPreferences().getCheckboxIsTamperingStringToChar().isSelected()
         );
         
-        boolean isRestartRequired = MediatorGui.model().getMediatorUtils().getAuthenticationUtil().set(
+        boolean isRestartRequired = MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().set(
             this.panelPreferences.getPanelAuthenticationPreferences().getCheckboxUseDigestAuthentication().isSelected(),
             this.panelPreferences.getPanelAuthenticationPreferences().getTextDigestAuthenticationUsername().getText(),
             this.panelPreferences.getPanelAuthenticationPreferences().getTextDigestAuthenticationPassword().getText(),
@@ -87,7 +87,7 @@ public class ActionListenerSave implements ActionListener {
         if (
             isRestartRequired
             && JOptionPane.showConfirmDialog(
-                MediatorGui.frame(),
+                MediatorHelper.frame(),
                 "File krb5.conf has changed, please restart.",
                 "Restart",
                 JOptionPane.YES_NO_OPTION

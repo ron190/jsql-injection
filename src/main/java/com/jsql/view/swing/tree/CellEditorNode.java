@@ -25,8 +25,8 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Tree cell editor responsible for mouse action on nodes.
@@ -56,8 +56,8 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
     public CellEditorNode() {
         
         this.defaultTreeRenderer = new CellRendererNode();
-        MediatorGui.treeDatabase().addTreeSelectionListener(this);
-        MediatorGui.treeDatabase().addMouseListener(this);
+        MediatorHelper.treeDatabase().addTreeSelectionListener(this);
+        MediatorHelper.treeDatabase().addMouseListener(this);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
     @Override
     public void valueChanged(TreeSelectionEvent arg0) {
         
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) MediatorGui.treeDatabase().getLastSelectedPathComponent();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) MediatorHelper.treeDatabase().getLastSelectedPathComponent();
 
         // Get rid of java.lang.NullPointerException
         if (node == null) {

@@ -25,12 +25,12 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.PanelConsoles;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.tab.TabResults;
 import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -50,6 +50,9 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
      * Reset divider position for current application version.
      */
     private static final String NAME_H_SPLITPANE = "horizontalSplitter-";
+    
+    private static final int HORIZONTAL_SPLITTER = 200;
+    private static final int VERTICAL_SPLITTER = 350;
 
     /**
      * SplitPane containing Manager panels on the left and result tabs on the right.
@@ -76,20 +79,28 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         super(JSplitPane.VERTICAL_SPLIT);
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-        int verticalSplitter = prefs.getInt(SplitHorizontalTopBottom.NAME_V_SPLITPANE, 350);
-        int horizontalSplitter = prefs.getInt(SplitHorizontalTopBottom.NAME_H_SPLITPANE, 200);
+        int verticalSplitter = prefs.getInt(SplitHorizontalTopBottom.NAME_V_SPLITPANE, VERTICAL_SPLITTER);
+        int horizontalSplitter = prefs.getInt(SplitHorizontalTopBottom.NAME_H_SPLITPANE, HORIZONTAL_SPLITTER);
+        
+        if (verticalSplitter <= 30) {
+            verticalSplitter = VERTICAL_SPLITTER;
+        }
+        
+        if (horizontalSplitter <= 30) {
+            horizontalSplitter = HORIZONTAL_SPLITTER;
+        }
 
         TabManagers tabManagers = new TabManagers();
         tabManagers.addMouseWheelListener(new TabbedPaneMouseWheelListener());
-        MediatorGui.register(tabManagers);
+        MediatorHelper.register(tabManagers);
 
         TabResults tabResults = new TabResults();
         tabResults.addMouseWheelListener(new TabbedPaneMouseWheelListener());
-        MediatorGui.register(tabResults);
+        MediatorHelper.register(tabResults);
 
         // Tree and tabs on top
         this.splitVerticalLeftRight = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
-        this.splitVerticalLeftRight.setLeftComponent(MediatorGui.tabManagers());
+        this.splitVerticalLeftRight.setLeftComponent(MediatorHelper.tabManagers());
         
         this.labelPlaceholderResult = new JLabel(UiUtil.IMG_BUG);
         this.labelPlaceholderResult.setMinimumSize(new Dimension(100, 0));
@@ -128,9 +139,9 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         // Setting for top and bottom components
         this.setTopComponent(panelManagerResult);
 
-        MediatorGui.register(new PanelConsoles());
+        MediatorHelper.register(new PanelConsoles());
 
-        this.setBottomComponent(MediatorGui.panelConsoles());
+        this.setBottomComponent(MediatorHelper.panelConsoles());
         this.setDividerLocation(669 - horizontalSplitter);
 
         // defines left and bottom pane

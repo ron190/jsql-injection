@@ -12,7 +12,7 @@ package com.jsql.view.swing.interaction;
 
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Start refreshing the progress bar of an element in the database tree.
@@ -35,6 +35,6 @@ public class StartProgress implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.treeDatabase().startProgess(this.dataElementDatabase);
+        MediatorHelper.treeDatabase().startProgess(this.dataElementDatabase);
     }
 }

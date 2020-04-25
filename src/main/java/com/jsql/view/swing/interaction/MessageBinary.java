@@ -11,7 +11,7 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Append text to the tab Binary.
@@ -34,8 +34,8 @@ public class MessageBinary implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.panelConsoles().messageBinary(this.text);
+        MediatorHelper.panelConsoles().messageBinary(this.text);
         
-        MediatorGui.tabConsoles().highlightTab("Boolean");
+        MediatorHelper.tabConsoles().highlightTab("Boolean");
     }
 }

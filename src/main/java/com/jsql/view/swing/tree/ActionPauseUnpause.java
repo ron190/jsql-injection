@@ -14,8 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Action to pause and unpause injection process.
@@ -31,7 +31,7 @@ public class ActionPauseUnpause implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
+        AbstractSuspendable<?> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
         
         if (suspendableTask == null) {
             return;

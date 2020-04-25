@@ -21,10 +21,6 @@ public class I18nUtil {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-//    static {
-//        Locale.setDefault(new Locale("zh"));
-//    }
-    
     /**
      * Bundle of standard i18n keys and translated text for root language English
      */

@@ -18,7 +18,7 @@ import javax.swing.tree.TreePath;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.bean.database.Database;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -59,13 +59,13 @@ public class NodeModelDatabase extends AbstractNodeModel {
             return;
         }
     
-        MediatorGui.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();
+        MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();
         
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();
         
         // Fix #90522: ArrayIndexOutOfBoundsException on reload()
         try {
-            treeModel.reload(MediatorGui.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()));
+            treeModel.reload(MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()));
             
         } catch (ArrayIndexOutOfBoundsException e) {
             
@@ -79,7 +79,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
                 
                 Thread.currentThread().setName("SwingWorkerNodeModelDatabase");
                 Database selectedDatabase = (Database) NodeModelDatabase.this.getElementDatabase();
-                return MediatorGui.model().getDataAccess().listTables(selectedDatabase);
+                return MediatorHelper.model().getDataAccess().listTables(selectedDatabase);
             }
         }.execute();
         

@@ -23,11 +23,11 @@ public class HashUtil {
     }
     
     public static String toCrc16(String text) {
-        return Crc16.generateCRC16(text);
+        return Crc16Helper.generateCRC16(text);
     }
     
     public static String toCrc64(String text) {
-        return Crc64.generateCRC64(text.getBytes());
+        return Crc64Helper.generateCRC64(text.getBytes());
     }
     
     public static String toMySql(String textInput) throws NoSuchAlgorithmException {

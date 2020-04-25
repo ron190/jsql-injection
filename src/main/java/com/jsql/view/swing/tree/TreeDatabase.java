@@ -15,11 +15,11 @@ import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.tree.model.NodeModelColumn;
 import com.jsql.view.swing.tree.model.NodeModelDatabase;
 import com.jsql.view.swing.tree.model.NodeModelTable;
+import com.jsql.view.swing.util.MediatorHelper;
 
 @SuppressWarnings("serial")
 public class TreeDatabase extends JTree {
@@ -196,7 +196,7 @@ public class TreeDatabase extends JTree {
             // Mark the node model as 'no stop/pause/resume button'
             progressingTreeNodeModel.setRunning(false);
             
-            MediatorGui.tabResults().createValuesTab(data, columnNames, table);
+            MediatorHelper.tabResults().createValuesTab(data, columnNames, table);
         }
     }
     

@@ -15,7 +15,7 @@ import java.util.Map;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Mark the injection as vulnerable to a blind injection.
@@ -40,6 +40,6 @@ public class DatabaseIdentified implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.managerScan().addTag(this.url, this.vendor.toString());
+        MediatorHelper.managerScan().addTag(this.url, this.vendor.toString());
     }
 }

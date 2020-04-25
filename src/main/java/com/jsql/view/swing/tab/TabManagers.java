@@ -24,7 +24,6 @@ import javax.swing.SwingConstants;
 import org.apache.commons.lang3.StringUtils;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.ManagerAdminPage;
 import com.jsql.view.swing.manager.ManagerBruteForce;
 import com.jsql.view.swing.manager.ManagerCoder;
@@ -37,6 +36,7 @@ import com.jsql.view.swing.manager.ManagerWebShell;
 import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -69,13 +69,13 @@ public class TabManagers extends TabbedPaneWheeled {
         ManagerAdminPage managerAdminPage = new ManagerAdminPage();
         ManagerBruteForce managerBruteForce = new ManagerBruteForce();
         
-        MediatorGui.register(this.managerWebShell);
-        MediatorGui.register(this.managerFile);
-        MediatorGui.register(this.managerUpload);
-        MediatorGui.register(this.managerSqlShell);
-        MediatorGui.register(managerScanList);
-        MediatorGui.register(managerAdminPage);
-        MediatorGui.register(managerBruteForce);
+        MediatorHelper.register(this.managerWebShell);
+        MediatorHelper.register(this.managerFile);
+        MediatorHelper.register(this.managerUpload);
+        MediatorHelper.register(this.managerSqlShell);
+        MediatorHelper.register(managerScanList);
+        MediatorHelper.register(managerAdminPage);
+        MediatorHelper.register(managerBruteForce);
         
         this.setMinimumSize(new Dimension(100, 0));
         this.addMouseClickMenu();

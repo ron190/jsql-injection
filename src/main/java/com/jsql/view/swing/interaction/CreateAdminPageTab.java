@@ -39,16 +39,16 @@ import org.jsoup.safety.Whitelist;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Create a new tab for an administration webpage.
  */
-public class CreateAdminPageTab extends CreateTab implements InteractionCommand {
+public class CreateAdminPageTab extends CreateTabHelper implements InteractionCommand {
     
     /**
      * Log4j logger sent to view.
@@ -204,18 +204,18 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         });
 
         final LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, browser);
-        MediatorGui.tabResults().addTab(this.url.replaceAll(".*/", StringUtils.EMPTY) + StringUtils.SPACE, scroller);
+        MediatorHelper.tabResults().addTab(this.url.replaceAll(".*/", StringUtils.EMPTY) + StringUtils.SPACE, scroller);
 
         // Focus on the new tab
-        MediatorGui.tabResults().setSelectedComponent(scroller);
+        MediatorHelper.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
         TabHeader header = new TabHeader(this.url.replaceAll(".*/", StringUtils.EMPTY), UiUtil.ICON_ADMIN_SERVER);
 
-        MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), "<html>"+ this.url +"</html>");
+        MediatorHelper.tabResults().setToolTipTextAt(MediatorHelper.tabResults().indexOfComponent(scroller), "<html>"+ this.url +"</html>");
 
         // Apply the custom header to the tab
-        MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
+        MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);
 
         // Give focus to the admin page
         browser.requestFocusInWindow();

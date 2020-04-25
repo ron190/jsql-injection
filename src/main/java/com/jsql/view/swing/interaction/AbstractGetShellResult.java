@@ -13,8 +13,8 @@ package com.jsql.view.swing.interaction;
 import java.util.UUID;
 
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.shell.AbstractShell;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Append the result of a command in the terminal.
@@ -44,7 +44,7 @@ public class AbstractGetShellResult implements InteractionCommand {
     @Override
     public void execute() {
         
-        AbstractShell terminal = MediatorGui.frame().getConsoles().get(this.terminalID);
+        AbstractShell terminal = MediatorHelper.frame().getConsoles().get(this.terminalID);
         
         terminal.append(this.result);
         

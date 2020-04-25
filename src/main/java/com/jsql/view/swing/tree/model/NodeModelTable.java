@@ -36,13 +36,13 @@ import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.tree.CheckBoxMenuItemIconCustom;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
 import com.jsql.view.swing.tree.ImageOverlap;
 import com.jsql.view.swing.tree.PanelNode;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -79,11 +79,11 @@ public class NodeModelTable extends AbstractNodeModel {
             
             panelNode.showLoader();
             
-            AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
+            AbstractSuspendable<?> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 
                 ImageIcon animatedGifPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);
-                animatedGifPaused.setImageObserver(new ImageObserverAnimated(MediatorGui.treeDatabase(), currentNode));
+                animatedGifPaused.setImageObserver(new ImageObserverAnimated(MediatorHelper.treeDatabase(), currentNode));
                 panelNode.setLoaderIcon(animatedGifPaused);
             }
             
@@ -101,10 +101,10 @@ public class NodeModelTable extends AbstractNodeModel {
             return;
         }
             
-        DefaultMutableTreeNode treeNode = MediatorGui.treeDatabase().getTreeNodeModels().get(this.getElementDatabase());
+        DefaultMutableTreeNode treeNode = MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase());
         treeNode.removeAllChildren();
         
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();
         treeModel.reload(treeNode);
         
         new SwingWorker<Object, Object>() {
@@ -115,7 +115,7 @@ public class NodeModelTable extends AbstractNodeModel {
                 Thread.currentThread().setName("SwingWorkerNodeModelTable");
                 Table selectedTable = (Table) NodeModelTable.this.getElementDatabase();
                 
-                return MediatorGui.model().getDataAccess().listColumns(selectedTable);
+                return MediatorHelper.model().getDataAccess().listColumns(selectedTable);
             }
         }.execute();
         

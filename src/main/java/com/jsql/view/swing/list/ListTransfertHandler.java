@@ -76,25 +76,31 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
         list.setSelectedIndices(selectedIndices);
     }
 
-    private void addFromOutside(TransferSupport support, DefaultListModel<ItemList> listModel, int childIndex, List<Integer> listSelectedIndices) {
+    private void addFromOutside(TransferSupport support, DefaultListModel<ItemList> listModel, int childIndexFrom, List<Integer> listSelectedIndices) {
         
         try {
+            int childIndexTo = childIndexFrom;
+            
             String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
             
             for (String value: importString.split("\\n")) {
                 
                 if (StringUtils.isNotEmpty(value)) {
                     
-                    listSelectedIndices.add(childIndex);
-                    listModel.add(childIndex++, new ItemList(value.replace("\\", "/")));
+                    listSelectedIndices.add(childIndexTo);
+                    listModel.add(childIndexTo++, new ItemList(value.replace("\\", "/")));
                 }
             }
+            
         } catch (UnsupportedFlavorException | IOException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
     }
 
-    private void addFromList(DefaultListModel<ItemList> listModel, int childIndex, List<Integer> listSelectedIndices) {
+    private void addFromList(DefaultListModel<ItemList> listModel, int childIndexFrom, List<Integer> listSelectedIndices) {
+        
+        int childIndexTo = childIndexFrom;
         
         for (ItemList value: this.dragPaths) {
             
@@ -102,15 +108,17 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
                 
                 //! FUUuu
                 ItemList newValue = new ItemList(value.toString().replace("\\", "/"));
-                listSelectedIndices.add(childIndex);
-                listModel.add(childIndex++, newValue);
+                listSelectedIndices.add(childIndexTo);
+                listModel.add(childIndexTo++, newValue);
             }
         }
     }
 
     @Override
-    protected List<Integer> initializeStringPaste(String clipboardText, int selectedIndex, DefaultListModel<ItemList> listModel) {
+    protected List<Integer> initializeStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel<ItemList> listModel) {
         
+        int selectedIndexTo = selectedIndexFrom;
+
         List<Integer> selectedIndexes = new ArrayList<>();
 
         for (String line: clipboardText.split("\\n")) {
@@ -119,8 +127,8 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
                 
                 String newLine = line.replace("\\", "/");
                 ItemList newItem = new ItemList(newLine);
-                selectedIndexes.add(selectedIndex);
-                listModel.add(selectedIndex++, newItem);
+                selectedIndexes.add(selectedIndexTo);
+                listModel.add(selectedIndexTo++, newItem);
             }
         }
         

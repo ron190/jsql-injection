@@ -129,8 +129,8 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             )
         );
         
-        this.run = new JButtonStateful("SHELL_RUN_BUTTON_LABEL");
-        I18nViewUtil.addComponentForKey("SHELL_RUN_BUTTON_LABEL", this.run);
+        this.run = new JButtonStateful(this.defaultText);
+        I18nViewUtil.addComponentForKey(this.defaultText, this.run);
         this.run.setToolTipText(I18nUtil.valueByKey("SHELL_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
 

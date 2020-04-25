@@ -12,7 +12,7 @@ package com.jsql.view.swing.interaction;
 
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Mark the injection as vulnerable to a blind injection.
@@ -32,6 +32,6 @@ public class SetVendor implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.panelAddressBar().getAddressMenuBar().setVendor(this.vendor);
+        MediatorHelper.panelAddressBar().getAddressMenuBar().setVendor(this.vendor);
     }
 }

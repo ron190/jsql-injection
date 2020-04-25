@@ -12,12 +12,12 @@ package com.jsql.view.swing.interaction;
 
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Create a new tab for the values.
  */
-public class CreateValuesTab extends CreateTab implements InteractionCommand {
+public class CreateValuesTab extends CreateTabHelper implements InteractionCommand {
     
     /**
      * Array of column names, displayed in header table.
@@ -52,6 +52,6 @@ public class CreateValuesTab extends CreateTab implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.treeDatabase().createValuesTab(this.data, this.columnNames, this.table);
+        MediatorHelper.treeDatabase().createValuesTab(this.data, this.columnNames, this.table);
     }
 }

@@ -37,14 +37,16 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
     private static final Logger LOGGER = Logger.getRootLogger();
 
     @Override
-    protected List<Integer> initializeStringPaste(String clipboardText, int selectedIndex, DefaultListModel<ItemList> listModel) {
+    protected List<Integer> initializeStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel<ItemList> listModel) {
+        
+        int selectedIndexTo = selectedIndexFrom;
         
         List<Integer> selectedIndexes = new ArrayList<>();
 
         for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(clipboardText)) {
 
-            selectedIndexes.add(selectedIndex);
-            listModel.add(selectedIndex++, itemListScan);
+            selectedIndexes.add(selectedIndexTo);
+            listModel.add(selectedIndexTo++, itemListScan);
         }
         
         return selectedIndexes;

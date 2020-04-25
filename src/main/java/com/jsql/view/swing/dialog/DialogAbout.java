@@ -45,10 +45,10 @@ import javax.swing.event.HyperlinkEvent;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -77,7 +77,7 @@ public class DialogAbout extends JDialog {
      */
     public DialogAbout() {
         
-        super(MediatorGui.frame(), "About jSQL Injection", Dialog.ModalityType.MODELESS);
+        super(MediatorHelper.frame(), "About jSQL Injection", Dialog.ModalityType.MODELESS);
 
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -156,7 +156,7 @@ public class DialogAbout extends JDialog {
         buttonWebpage.addActionListener(ev -> {
             
             try {
-                Desktop.getDesktop().browse(new URI((String) MediatorGui.model().getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")));
+                Desktop.getDesktop().browse(new URI((String) MediatorHelper.model().getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")));
                 
             } catch (IOException e) {
                 
@@ -201,7 +201,7 @@ public class DialogAbout extends JDialog {
                 }
             }
 
-            editorPane.setText(result.toString().replace("%JSQLVERSION%", MediatorGui.model().getVersionJsql()));
+            editorPane.setText(result.toString().replace("%JSQLVERSION%", MediatorHelper.model().getVersionJsql()));
             
         } catch (NoClassDefFoundError | IOException e) {
             
@@ -266,7 +266,7 @@ public class DialogAbout extends JDialog {
         
         this.scrollPane.scrollPane.getViewport().setViewPosition(new Point(0, 0));
         this.setSize(533, 400);
-        this.setLocationRelativeTo(MediatorGui.frame());
+        this.setLocationRelativeTo(MediatorHelper.frame());
         this.buttonClose.requestFocusInWindow();
         this.getRootPane().setDefaultButton(this.buttonClose);
     }

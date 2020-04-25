@@ -14,7 +14,7 @@ import java.util.Map;
 
 import com.jsql.model.bean.util.Header;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Mark the injection as invulnerable to a error based injection.
@@ -36,6 +36,6 @@ public class MarkErrorInvulnerable implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.panelAddressBar().getAddressMenuBar().markErrorInvulnerable(this.indexMethodError);
+        MediatorHelper.panelAddressBar().getAddressMenuBar().markErrorInvulnerable(this.indexMethodError);
     }
 }

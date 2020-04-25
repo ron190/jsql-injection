@@ -16,13 +16,13 @@ import javax.swing.SwingConstants;
 import javax.swing.text.StyledDocument;
 
 import com.jsql.util.tampering.TamperingType;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.sql.lexer.HighlightedDocument;
 import com.jsql.view.swing.text.JPopupTextPane;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
@@ -234,11 +234,11 @@ public class PanelTamperingPreferences extends JPanel {
             @Override
             public void process() {
                 
-                MediatorGui.model().getMediatorUtils().getTamperingUtil().setCustomTamper(textPaneEval.getText());
+                MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(textPaneEval.getText());
             }
         });
         
-        textPaneEval.setText(MediatorGui.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
+        textPaneEval.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
         
         GroupLayout groupLayoutTampering = new GroupLayout(this);
         this.setLayout(groupLayoutTampering);

@@ -33,7 +33,6 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.exception.JSqlException;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
@@ -41,6 +40,7 @@ import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -131,8 +131,8 @@ public class ManagerUpload extends AbstractManagerList {
 
     private void initializeRunButton(final JTextField shellURL) {
         
-        this.run = new JButtonStateful("UPLOAD_RUN_BUTTON_LABEL");
-        I18nViewUtil.addComponentForKey("UPLOAD_RUN_BUTTON_LABEL", this.run);
+        this.run = new JButtonStateful(this.defaultText);
+        I18nViewUtil.addComponentForKey(this.defaultText, this.run);
         this.run.setToolTipText(I18nUtil.valueByKey("UPLOAD_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
         
@@ -153,13 +153,13 @@ public class ManagerUpload extends AbstractManagerList {
             return;
         }
 
-        final JFileChooser filechooser = new JFileChooser(MediatorGui.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+        final JFileChooser filechooser = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
         filechooser.setDialogTitle(I18nUtil.valueByKey("UPLOAD_DIALOG_TEXT"));
         
         // Fix #2402: NullPointerException on showOpenDialog()
         // Fix #40547: ClassCastException on showOpenDialog()
         try {
-            int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
+            int returnVal = filechooser.showOpenDialog(MediatorHelper.frame());
             
             if (returnVal != JFileChooser.APPROVE_OPTION) {
                 return;
@@ -183,7 +183,7 @@ public class ManagerUpload extends AbstractManagerList {
                 
                 try {
                     ManagerUpload.this.loader.setVisible(true);
-                    MediatorGui.model().getResourceAccess().uploadFile(path.toString(), shellURL.getText(), file);
+                    MediatorHelper.model().getResourceAccess().uploadFile(path.toString(), shellURL.getText(), file);
                     
                 } catch (JSqlException e) {
                     

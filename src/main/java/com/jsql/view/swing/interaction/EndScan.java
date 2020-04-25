@@ -11,7 +11,7 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * End the refreshing of administration page search button.
@@ -28,6 +28,6 @@ public class EndScan implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.managerScan().endProcess();
+        MediatorHelper.managerScan().endProcess();
     }
 }

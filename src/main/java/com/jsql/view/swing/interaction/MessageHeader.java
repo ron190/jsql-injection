@@ -23,8 +23,8 @@ import org.apache.log4j.Logger;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Append a text to the tab Header.
@@ -44,29 +44,28 @@ public class MessageHeader implements InteractionCommand {
     private String source;
     private String size;
 
-    private Map<Header, Object> params;
-    
     /**
      * @param interactionParams Text to append
      */
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
         
-        this.params = (Map<Header, Object>) interactionParams[0];
-        this.url = (String) this.params.get(Header.URL);
-        this.post = (String) this.params.get(Header.POST);
-        this.header = (String) this.params.get(Header.HEADER);
-        this.response = (Map<String, String>) this.params.get(Header.RESPONSE);
-        this.source = (String) this.params.get(Header.SOURCE);
-        this.size = (String) this.params.get(Header.PAGE_SIZE);
+        Map<Header, Object> params = (Map<Header, Object>) interactionParams[0];
+        
+        this.url = (String) params.get(Header.URL);
+        this.post = (String) params.get(Header.POST);
+        this.header = (String) params.get(Header.HEADER);
+        this.response = (Map<String, String>) params.get(Header.RESPONSE);
+        this.source = (String) params.get(Header.SOURCE);
+        this.size = (String) params.get(Header.PAGE_SIZE);
     }
 
     @Override
     public void execute() {
         
-        MediatorGui.panelConsoles().getNetworkTable().addHeader(new HttpHeader(this.url, this.post, this.header, this.response, this.source));
+        MediatorHelper.panelConsoles().getNetworkTable().addHeader(new HttpHeader(this.url, this.post, this.header, this.response, this.source));
         
-        JViewport viewport = ((JScrollIndicator) MediatorGui.panelConsoles().getNetworkSplitPane().getLeftComponent()).getScrollPane().getViewport();
+        JViewport viewport = ((JScrollIndicator) MediatorHelper.panelConsoles().getNetworkSplitPane().getLeftComponent()).getScrollPane().getViewport();
         JTable table = (JTable) viewport.getView();
         
         DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -84,7 +83,7 @@ public class MessageHeader implements InteractionCommand {
             rect.translate(-pt.x, -pt.y);
             viewport.scrollRectToVisible(rect);
             
-            MediatorGui.tabConsoles().highlightTab("Network");
+            MediatorHelper.tabConsoles().highlightTab("Network");
             
         } catch(NullPointerException | IndexOutOfBoundsException e) {
             

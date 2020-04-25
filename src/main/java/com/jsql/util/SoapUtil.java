@@ -63,7 +63,7 @@ public class SoapUtil {
         return hasFoundInjection;
     }
     
-    public static Document convertToDocument(String xmlStr) throws ParserConfigurationException, SAXException, IOException, XMLStreamException {
+    public static Document convertToDocument(String xmlStr) throws ParserConfigurationException, SAXException, IOException {
         
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         

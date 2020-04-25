@@ -22,8 +22,8 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionCloseTabResult;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -101,7 +101,7 @@ public class TabHeader extends JPanel implements MouseListener {
         if (SwingUtilities.isRightMouseButton(e)) {
             return;
         }
-        int closeTabNumber = MediatorGui.tabResults().indexOfTabComponent(TabHeader.this);
+        int closeTabNumber = MediatorHelper.tabResults().indexOfTabComponent(TabHeader.this);
         
         if (this.getCleanableTab() != null) {
             this.getCleanableTab().clean();

@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.jsql.model.bean.database.Column;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Add the columns to corresponding table.
@@ -39,6 +39,6 @@ public class AddColumns implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.treeDatabase().addColumns(this.columns);
+        MediatorHelper.treeDatabase().addColumns(this.columns);
     }
 }

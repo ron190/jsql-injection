@@ -7,8 +7,8 @@ import javax.swing.JCheckBox;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Check and unckeck column as checkbox.
@@ -30,7 +30,7 @@ public class ActionCheckUncheck implements ActionListener {
         JCheckBox columnCheckBox = (JCheckBox) source;
         this.nodeModel.setSelected(columnCheckBox.isSelected());
 
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();
         DefaultMutableTreeNode tableNode = (DefaultMutableTreeNode) this.currentTableNode.getParent();
 
         int tableChildCount = treeModel.getChildCount(tableNode);

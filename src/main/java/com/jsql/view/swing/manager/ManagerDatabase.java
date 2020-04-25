@@ -29,7 +29,6 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tree.CellEditorNode;
 import com.jsql.view.swing.tree.CellRendererNode;
@@ -37,6 +36,7 @@ import com.jsql.view.swing.tree.TreeDatabase;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.tree.model.NodeModelEmpty;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -73,7 +73,7 @@ public class ManagerDatabase extends JPanel implements Manager {
         I18nViewUtil.addComponentForKey("DATABASE_EMPTY", nodeModelEmpty);
         
         this.tree = new TreeDatabase(root);
-        MediatorGui.register(this.tree);
+        MediatorHelper.register(this.tree);
 
         // Graphic manager for components
         this.tree.setCellRenderer(new CellRendererNode());

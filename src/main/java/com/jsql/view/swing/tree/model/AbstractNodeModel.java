@@ -30,13 +30,13 @@ import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.ActionLoadStop;
 import com.jsql.view.swing.tree.ActionPauseUnpause;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
 import com.jsql.view.swing.tree.ImageOverlap;
 import com.jsql.view.swing.tree.PanelNode;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiStringUtil;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -156,7 +156,7 @@ public abstract class AbstractNodeModel {
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
         
         JPopupMenuCustomExtract popupMenu = new JPopupMenuCustomExtract();
-        AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
+        AbstractSuspendable<?> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
 
         this.initializeItemLoadPause(currentTableNode, popupMenu, suspendableTask);
         this.initializeItemRenameReload(currentTableNode, path, popupMenu);
@@ -171,7 +171,7 @@ public abstract class AbstractNodeModel {
         popupMenu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
 
         popupMenu.show(
-            MediatorGui.treeDatabase(),
+            MediatorHelper.treeDatabase(),
             ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
             ? e.getX() - popupMenu.getWidth()
             : e.getX(),
@@ -221,7 +221,7 @@ public abstract class AbstractNodeModel {
             AbstractNodeModel.this.getPanel().getLabel().setVisible(false);
             AbstractNodeModel.this.getPanel().getEditable().setVisible(true);
             
-            MediatorGui.treeDatabase().setSelectionPath(path);
+            MediatorHelper.treeDatabase().setSelectionPath(path);
         });
         
         popupMenu.add(new JSeparator());
@@ -313,13 +313,13 @@ public abstract class AbstractNodeModel {
             this.panelNode.showLoader();
             this.panelNode.hideIcon();
 
-            AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
+            AbstractSuspendable<?> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 
                 ImageIcon animatedGIFPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(
                     new ImageObserverAnimated(
-                        MediatorGui.treeDatabase(),
+                        MediatorHelper.treeDatabase(),
                         currentNode
                     )
                 );
@@ -389,7 +389,7 @@ public abstract class AbstractNodeModel {
         panelNode.getProgressBar().setVisible(true);
         
         // Report #135: ignore if thread not found
-        AbstractSuspendable<?> suspendableTask = MediatorGui.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
+        AbstractSuspendable<?> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
         if (suspendableTask != null && suspendableTask.isPaused()) {
             
             panelNode.getProgressBar().pause();

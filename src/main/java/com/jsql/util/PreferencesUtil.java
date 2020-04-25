@@ -116,6 +116,7 @@ public class PreferencesUtil {
         prefs.put("pathFile", this.pathFile);
     }
     
+    // TODO builder
     /**
      * Initialize the utility class, persist preferences and
      * apply change to the JVM.

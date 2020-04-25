@@ -22,11 +22,11 @@ import javax.swing.SwingConstants;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -94,11 +94,11 @@ public class ManagerFile extends AbstractManagerList {
                     ManagerFile.this.run.setState(StateButton.STOPPABLE);
                     ManagerFile.this.loader.setVisible(true);
                     
-                    MediatorGui.managerWebshell().clearSelection();
-                    MediatorGui.managerSqlshell().clearSelection();
+                    MediatorHelper.managerWebshell().clearSelection();
+                    MediatorHelper.managerSqlshell().clearSelection();
                     
                     try {
-                        MediatorGui.model().getResourceAccess().readFile(this.listFile.getSelectedValuesList());
+                        MediatorHelper.model().getResourceAccess().readFile(this.listFile.getSelectedValuesList());
                     } catch (InterruptedException ex) {
                         LOGGER.warn("Interruption while waiting for Reading File termination", ex);
                         Thread.currentThread().interrupt();
@@ -107,7 +107,7 @@ public class ManagerFile extends AbstractManagerList {
                     }
                 } else {
                     
-                    MediatorGui.model().getResourceAccess().stopSearchingFile();
+                    MediatorHelper.model().getResourceAccess().stopSearchingFile();
                     ManagerFile.this.run.setEnabled(false);
                     ManagerFile.this.run.setState(StateButton.STOPPING);
                 }

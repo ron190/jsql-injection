@@ -88,23 +88,26 @@ public class StrategyInjectionError extends AbstractStrategy {
         }
     }
 
-    private int getCapacity(int indexErrorMethod, int errorCapacity, Method errorMethod, Matcher regexSearch) {
+    private int getCapacity(int indexErrorMethod, int errorCapacityDefault, Method errorMethod, Matcher regexSearch) {
+        
+        int errorCapacityImproved = errorCapacityDefault;
         
         regexSearch.reset();
         
         while (regexSearch.find()) {
             
-            if (errorCapacity < regexSearch.group(1).length()) {
+            if (errorCapacityImproved < regexSearch.group(1).length()) {
+                
                 this.indexMethod = indexErrorMethod;
             }
             
-            errorCapacity = regexSearch.group(1).length();
-            this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacity);
+            errorCapacityImproved = regexSearch.group(1).length();
+            this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacityImproved);
         }
         
-        LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") + StringUtils.SPACE + errorMethod.getName() +" using "+ Integer.toString(errorCapacity) +" characters");
+        LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") + StringUtils.SPACE + errorMethod.getName() +" using "+ Integer.toString(errorCapacityImproved) +" characters");
         
-        return errorCapacity;
+        return errorCapacityImproved;
     }
 
     private Matcher getPerformance(Configuration configurationYaml, Method errorMethod) {

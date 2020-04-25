@@ -99,7 +99,7 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
                 this.drawPlaceholder(this, g, this.placeholderText);
             }
             
-        } catch (Error | IllegalArgumentException | NullPointerException | ArrayIndexOutOfBoundsException e) {
+        } catch (IllegalArgumentException | NullPointerException | ArrayIndexOutOfBoundsException e) {
             
             LOGGER.error(e.getMessage(), e);
         }

@@ -28,7 +28,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.MenuBarCoder;
 import com.jsql.view.swing.manager.util.StateButton;
@@ -36,6 +35,7 @@ import com.jsql.view.swing.manager.util.UserAgent;
 import com.jsql.view.swing.manager.util.UserAgentType;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -152,7 +152,7 @@ public class ManagerAdminPage extends AbstractManagerList {
             return;
         }
         
-        String urlAddressBar = MediatorGui.panelAddressBar().getTextFieldAddress().getText();
+        String urlAddressBar = MediatorHelper.panelAddressBar().getTextFieldAddress().getText();
         
         if (!urlAddressBar.isEmpty() && !urlAddressBar.matches("(?i)^https?://.*")) {
             
@@ -189,7 +189,7 @@ public class ManagerAdminPage extends AbstractManagerList {
                 ManagerAdminPage.this.loader.setVisible(true);
                 
                 try {
-                    MediatorGui.model().getResourceAccess().createAdminPages(
+                    MediatorHelper.model().getResourceAccess().createAdminPages(
                         urlAddressBar,
                         this.listFile.getSelectedValuesList()
                     );
@@ -202,7 +202,7 @@ public class ManagerAdminPage extends AbstractManagerList {
             }
         } else if (this.run.getState() == StateButton.STOPPABLE) {
             
-            MediatorGui.model().getResourceAccess().setSearchAdminStopped(true);
+            MediatorHelper.model().getResourceAccess().setSearchAdminStopped(true);
             ManagerAdminPage.this.run.setEnabled(false);
             ManagerAdminPage.this.run.setState(StateButton.STOPPING);
         }

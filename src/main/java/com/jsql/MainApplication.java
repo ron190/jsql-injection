@@ -15,7 +15,7 @@ import com.jsql.util.CertificateUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.JFrameView;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Main class of the application and called from the .jar.
@@ -54,7 +54,7 @@ public class MainApplication {
     public static void main(String[] args) {
         
         // Initialize MVC
-        MediatorGui.register(injectionModel);
+        MediatorHelper.register(injectionModel);
         
         // Configure global environment settings
         CertificateUtil.ignoreCertificationChain();
@@ -64,7 +64,7 @@ public class MainApplication {
         
         try {
             JFrameView view = new JFrameView();
-            MediatorGui.register(view);
+            MediatorHelper.register(view);
             
             injectionModel.addObserver(view.getObserver());
             

@@ -11,7 +11,7 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Erase the screen.
@@ -28,6 +28,6 @@ public class ResetStrategyLabel implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorGui.panelAddressBar().getAddressMenuBar().resetLabelStrategy();
+        MediatorHelper.panelAddressBar().getAddressMenuBar().resetLabelStrategy();
     }
 }

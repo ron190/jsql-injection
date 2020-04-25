@@ -33,7 +33,6 @@ import org.json.JSONObject;
 
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.BeanInjection;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ItemList;
@@ -44,6 +43,7 @@ import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -88,25 +88,25 @@ public class ManagerScan extends AbstractManagerList {
             
             BeanInjection beanInjection = ((ItemListScan) dndListScan.getSelectedValue()).getBeanInjection();
             
-            MediatorGui.panelAddressBar().getTextFieldAddress().setText(beanInjection.getUrl());
-            MediatorGui.panelAddressBar().getTextFieldHeader().setText(beanInjection.getHeader());
-            MediatorGui.panelAddressBar().getTextFieldRequest().setText(beanInjection.getRequest());
+            MediatorHelper.panelAddressBar().getTextFieldAddress().setText(beanInjection.getUrl());
+            MediatorHelper.panelAddressBar().getTextFieldHeader().setText(beanInjection.getHeader());
+            MediatorHelper.panelAddressBar().getTextFieldRequest().setText(beanInjection.getRequest());
             
             String requestType = beanInjection.getRequestType();
             if (requestType != null && !requestType.isEmpty()) {
-                MediatorGui.panelAddressBar().getRadioMethod().setText(requestType);
+                MediatorHelper.panelAddressBar().getRadioMethod().setText(requestType);
             } else {
-                MediatorGui.panelAddressBar().getRadioMethod().setText("POST");
+                MediatorHelper.panelAddressBar().getRadioMethod().setText("POST");
             }
             
             MethodInjection injectionType = beanInjection.getInjectionTypeAsEnum();
             
-            if (injectionType == MediatorGui.model().getMediatorMethodInjection().getHeader()) {
-                MediatorGui.panelAddressBar().getRadioHeader().setSelected();
-            } else if (injectionType == MediatorGui.model().getMediatorMethodInjection().getRequest()) {
-                MediatorGui.panelAddressBar().getRadioMethod().setSelected();
+            if (injectionType == MediatorHelper.model().getMediatorMethodInjection().getHeader()) {
+                MediatorHelper.panelAddressBar().getRadioHeader().setSelected();
+            } else if (injectionType == MediatorHelper.model().getMediatorMethodInjection().getRequest()) {
+                MediatorHelper.panelAddressBar().getRadioMethod().setSelected();
             } else {
-                MediatorGui.panelAddressBar().getRadioQueryString().setSelected();
+                MediatorHelper.panelAddressBar().getRadioQueryString().setSelected();
             }
         });
     }
@@ -214,11 +214,11 @@ public class ManagerScan extends AbstractManagerList {
                         listModel.get(i).reset();
                     }
                     
-                    MediatorGui.model().getResourceAccess().scan(dndListScan.getSelectedValuesList());
+                    MediatorHelper.model().getResourceAccess().scan(dndListScan.getSelectedValuesList());
                 } else {
                     
-                    MediatorGui.model().getResourceAccess().setScanStopped(true);
-                    MediatorGui.model().setIsStoppedByUser(true);
+                    MediatorHelper.model().getResourceAccess().setScanStopped(true);
+                    MediatorHelper.model().setIsStoppedByUser(true);
                     ManagerScan.this.run.setEnabled(false);
                     ManagerScan.this.run.setState(StateButton.STOPPING);
                 }

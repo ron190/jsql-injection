@@ -41,7 +41,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.GitUtil.ShowOnConsole;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.dialog.translate.Language;
 import com.jsql.view.swing.dialog.translate.SwingWorkerGithubLocale;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
@@ -49,6 +48,7 @@ import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -83,7 +83,7 @@ public class DialogTranslate extends JDialog {
      */
     public DialogTranslate() {
         
-        super(MediatorGui.frame(), Dialog.ModalityType.MODELESS);
+        super(MediatorHelper.frame(), Dialog.ModalityType.MODELESS);
 
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -194,7 +194,7 @@ public class DialogTranslate extends JDialog {
                     .replace("<", "\\\\<")
             ;
               
-            MediatorGui.model().getMediatorUtils().getGitUtil().sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language +" translation");
+            MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language +" translation");
             DialogTranslate.this.setVisible(false);
         });
 

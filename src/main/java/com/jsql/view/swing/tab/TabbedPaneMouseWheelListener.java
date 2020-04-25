@@ -2,6 +2,7 @@ package com.jsql.view.swing.tab;
 
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.Serializable;
 
 import javax.swing.JTabbedPane;
 
@@ -10,7 +11,8 @@ import org.apache.log4j.Logger;
 /**
  * Mousewheel allows to navigate to next/previous tab.
  */
-public class TabbedPaneMouseWheelListener implements MouseWheelListener {
+@SuppressWarnings("serial")
+public class TabbedPaneMouseWheelListener implements MouseWheelListener, Serializable {
     
     /**
      * Log4j logger sent to view.

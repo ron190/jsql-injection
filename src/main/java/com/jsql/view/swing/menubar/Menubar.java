@@ -59,7 +59,6 @@ import org.apache.log4j.Logger;
 import com.jsql.model.InjectionModel;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.action.ActionSaveTab;
 import com.jsql.view.swing.action.HotkeyUtil;
@@ -67,7 +66,7 @@ import com.jsql.view.swing.console.SwingAppender;
 import com.jsql.view.swing.dialog.DialogAbout;
 import com.jsql.view.swing.dialog.DialogTranslate;
 import com.jsql.view.swing.dialog.translate.Language;
-import com.jsql.view.swing.interaction.CreateTab;
+import com.jsql.view.swing.interaction.CreateTabHelper;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.sql.SqlEngine;
@@ -76,6 +75,7 @@ import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextFieldPlaceholder;
 import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -278,11 +278,11 @@ public class Menubar extends JMenuBar {
             
             if (this.chunkMenu.isSelected()) {
                 
-                MediatorGui.panelConsoles().insertChunkTab();
+                MediatorHelper.panelConsoles().insertChunkTab();
                 
             } else {
                 
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(UiUtil.ICON_CHUNK));
+                MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(UiUtil.ICON_CHUNK));
             }
         });
         
@@ -290,11 +290,11 @@ public class Menubar extends JMenuBar {
             
             if (binaryMenu.isSelected()) {
                 
-                MediatorGui.panelConsoles().insertBooleanTab();
+                MediatorHelper.panelConsoles().insertBooleanTab();
                 
             } else {
                 
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(UiUtil.ICON_BINARY));
+                MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(UiUtil.ICON_BINARY));
             }
         });
         
@@ -302,11 +302,11 @@ public class Menubar extends JMenuBar {
             
             if (networkMenu.isSelected()) {
                 
-                MediatorGui.panelConsoles().insertNetworkTab();
+                MediatorHelper.panelConsoles().insertNetworkTab();
                 
             } else {
                 
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(UiUtil.ICON_HEADER));
+                MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(UiUtil.ICON_HEADER));
             }
         });
         
@@ -314,11 +314,11 @@ public class Menubar extends JMenuBar {
             
             if (this.javaDebugMenu.isSelected()) {
                 
-                MediatorGui.panelConsoles().insertJavaTab();
+                MediatorHelper.panelConsoles().insertJavaTab();
                 
             } else {
                 
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(UiUtil.ICON_CUP));
+                MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(UiUtil.ICON_CUP));
             }
         });
 
@@ -341,7 +341,7 @@ public class Menubar extends JMenuBar {
             
             final JMenuItem itemMenu = this.menuView.getItem(position);
             final int positionFinal = position;
-            itemMenu.addActionListener(actionEvent -> MediatorGui.tabManagers().setSelectedIndex(positionFinal));
+            itemMenu.addActionListener(actionEvent -> MediatorHelper.tabManagers().setSelectedIndex(positionFinal));
         }
 
         JMenuItem itemPreferences = this.initializeItemPreferences();
@@ -402,30 +402,30 @@ public class Menubar extends JMenuBar {
         
         itemSqlEngine.addActionListener(actionEvent -> {
             
-            for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
+            for (int i = 0; i < MediatorHelper.tabResults().getTabCount() ; i++) {
                 
-                if (titleTabSqlEngine.equals(MediatorGui.tabResults().getTitleAt(i))) {
+                if (titleTabSqlEngine.equals(MediatorHelper.tabResults().getTitleAt(i))) {
                     
-                    MediatorGui.tabResults().setSelectedIndex(i);
+                    MediatorHelper.tabResults().setSelectedIndex(i);
                     return;
                 }
             }
             
-            CreateTab.initializeSplitOrientation();
+            CreateTabHelper.initializeSplitOrientation();
 
             SqlEngine panelSqlEngine = new SqlEngine();
             
-            MediatorGui.tabResults().addTab(titleTabSqlEngine, panelSqlEngine);
+            MediatorHelper.tabResults().addTab(titleTabSqlEngine, panelSqlEngine);
 
             // Focus on the new tab
-            MediatorGui.tabResults().setSelectedComponent(panelSqlEngine);
+            MediatorHelper.tabResults().setSelectedComponent(panelSqlEngine);
 
             // Create a custom tab header with close button
             TabHeader header = new TabHeader(I18nViewUtil.valueByKey("MENUBAR_SQL_ENGINE"), UiUtil.ICON_COG, panelSqlEngine);
             I18nViewUtil.addComponentForKey("MENUBAR_SQL_ENGINE", header.getTabTitleLabel());
 
             // Apply the custom header to the tab
-            MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(panelSqlEngine), header);
+            MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(panelSqlEngine), header);
         });
         
         return itemSqlEngine;
@@ -442,16 +442,16 @@ public class Menubar extends JMenuBar {
         
         itemPreferences.addActionListener(actionEvent -> {
             
-            for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
+            for (int i = 0; i < MediatorHelper.tabResults().getTabCount() ; i++) {
                 
-                if (titleTabPreferences.equals(MediatorGui.tabResults().getTitleAt(i))) {
+                if (titleTabPreferences.equals(MediatorHelper.tabResults().getTitleAt(i))) {
                     
-                    MediatorGui.tabResults().setSelectedIndex(i);
+                    MediatorHelper.tabResults().setSelectedIndex(i);
                     return;
                 }
             }
             
-            CreateTab.initializeSplitOrientation();
+            CreateTabHelper.initializeSplitOrientation();
             
             AdjustmentListener singleItemScroll = adjustmentEvent -> {
                 
@@ -467,17 +467,17 @@ public class Menubar extends JMenuBar {
             LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, new PanelPreferences());
             scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
             
-            MediatorGui.tabResults().addTab(titleTabPreferences, scroller);
+            MediatorHelper.tabResults().addTab(titleTabPreferences, scroller);
 
             // Focus on the new tab
-            MediatorGui.tabResults().setSelectedComponent(scroller);
+            MediatorHelper.tabResults().setSelectedComponent(scroller);
 
             // Create a custom tab header with close button
             TabHeader header = new TabHeader(I18nViewUtil.valueByKey("MENUBAR_PREFERENCES"), UiUtil.ICON_COG);
             I18nViewUtil.addComponentForKey("MENUBAR_PREFERENCES", header.getTabTitleLabel());
 
             // Apply the custom header to the tab
-            MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
+            MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);
         });
         
         return itemPreferences;
@@ -690,7 +690,7 @@ public class Menubar extends JMenuBar {
                 if (!dialogTranslate.isVisible()) {
                     
                     dialogTranslate.setSize(640, 460);
-                    dialogTranslate.setLocationRelativeTo(MediatorGui.frame());
+                    dialogTranslate.setLocationRelativeTo(MediatorHelper.frame());
                     dialogTranslate.getRootPane().setDefaultButton(dialogTranslate.getButtonSend());
                 }
                 
@@ -821,7 +821,7 @@ public class Menubar extends JMenuBar {
             });
 
             int result = JOptionPane.showOptionDialog(
-                MediatorGui.frame(),
+                MediatorHelper.frame(),
                 panel,
                 "Report an issue or a bug",
                 JOptionPane.OK_CANCEL_OPTION,
@@ -833,7 +833,7 @@ public class Menubar extends JMenuBar {
 
             if (StringUtils.isNotEmpty(textarea.getText()) && result == JOptionPane.YES_OPTION) {
                 
-                MediatorGui.model().getMediatorUtils().getGitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
+                MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
             }
         });
         
@@ -853,13 +853,13 @@ public class Menubar extends JMenuBar {
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         itemCopy.addActionListener(actionEvent -> {
             
-            if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
+            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {
                 
-                ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).copyTable();
+                ((PanelTable) MediatorHelper.tabResults().getSelectedComponent()).copyTable();
                 
-            } else if (MediatorGui.tabResults().getSelectedComponent() instanceof JScrollPane) {
+            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {
                 
-                ((JTextArea) ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView()).copy();
+                ((JTextArea) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).copy();
             }
         });
 
@@ -869,16 +869,16 @@ public class Menubar extends JMenuBar {
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.addActionListener(actionEvent -> {
             
-            if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
+            if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {
                 
-                ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).selectTable();
+                ((PanelTable) MediatorHelper.tabResults().getSelectedComponent()).selectTable();
                 
-            } else if (MediatorGui.tabResults().getSelectedComponent() instanceof JScrollPane) {
+            } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {
                 
                 // Textarea need focus to select all
                 
-                ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
-                ((JTextArea) ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();
+                ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
+                ((JTextArea) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();
             }
         });
 
@@ -902,7 +902,7 @@ public class Menubar extends JMenuBar {
         JMenuItem itemExit = new JMenuItem(I18nUtil.valueByKey("MENUBAR_FILE_EXIT"), 'x');
         I18nViewUtil.addComponentForKey("MENUBAR_FILE_EXIT", itemExit);
         itemExit.setIcon(UiUtil.ICON_EMPTY);
-        itemExit.addActionListener(actionEvent -> MediatorGui.frame().dispose());
+        itemExit.addActionListener(actionEvent -> MediatorHelper.frame().dispose());
 
         HotkeyUtil.addShortcut(Menubar.this);
 
@@ -926,20 +926,20 @@ public class Menubar extends JMenuBar {
         this.switchOrientation(oldLocale, newLocale, isStartup);
         this.switchMenuItems();
         
-        MediatorGui.treeDatabase().reloadNodes();
+        MediatorHelper.treeDatabase().reloadNodes();
         
         // Fix glitches on Linux
-        MediatorGui.frame().revalidate();
+        MediatorHelper.frame().revalidate();
     }
 
     private void switchOrientation(Locale oldLocale, Locale newLocale, boolean isStartup) {
         
         ComponentOrientation componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault());
-        MediatorGui.frame().applyComponentOrientation(componentOrientation);
+        MediatorHelper.frame().applyComponentOrientation(componentOrientation);
         
         if (ComponentOrientation.getOrientation(oldLocale) != ComponentOrientation.getOrientation(newLocale)) {
             
-            JSplitPane splitPaneLeftRight = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight();
+            JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight();
             
             Component componentLeft = splitPaneLeftRight.getLeftComponent();
             Component componentRight = splitPaneLeftRight.getRightComponent();
@@ -966,7 +966,7 @@ public class Menubar extends JMenuBar {
             }
         }
         
-        MediatorGui.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));
+        MediatorHelper.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));
     }
 
     private void switchI18nComponents(Locale newLocale) {
@@ -1055,7 +1055,7 @@ public class Menubar extends JMenuBar {
 
     private void switchNetworkTable(Locale newLocale) {
         
-        JTableHeader header = MediatorGui.panelConsoles().getNetworkTable().getTableHeader();
+        JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();
         TableColumnModel colMod = header.getColumnModel();
         
         if (I18nUtil.isAsian(newLocale)) {
@@ -1071,7 +1071,7 @@ public class Menubar extends JMenuBar {
             )
             .forEach(attribute -> StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_UBUNTU_REGULAR));
             
-            MediatorGui.managerBruteForce().getResult().setFont(UiUtil.FONT_UBUNTU_REGULAR);
+            MediatorHelper.managerBruteForce().getResult().setFont(UiUtil.FONT_UBUNTU_REGULAR);
             
             colMod.getColumn(0).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
             colMod.getColumn(1).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
@@ -1090,7 +1090,7 @@ public class Menubar extends JMenuBar {
             )
             .forEach(attribute -> StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_UBUNTU_MONO));
             
-            MediatorGui.managerBruteForce().getResult().setFont(UiUtil.FONT_UBUNTU_MONO);
+            MediatorHelper.managerBruteForce().getResult().setFont(UiUtil.FONT_UBUNTU_MONO);
             
             colMod.getColumn(0).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
             colMod.getColumn(1).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
