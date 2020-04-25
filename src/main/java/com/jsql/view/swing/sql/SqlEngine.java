@@ -51,6 +51,8 @@ import com.jsql.view.swing.tab.TabHeader.Cleanable;
 import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
+import com.jsql.view.swing.ui.BorderlessTabButtonUI;
+import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -286,6 +288,8 @@ public class SqlEngine extends JPanel implements Cleanable {
     
     public SqlEngine() {
         
+        this.tabbedPaneError.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
+
         this.initializeTextComponents();
         
         Stream.of(
@@ -474,13 +478,12 @@ public class SqlEngine extends JPanel implements Cleanable {
         JPanel panelError = new JPanel(new BorderLayout());
         panelError.add(this.tabbedPaneError, BorderLayout.CENTER);
         
-        this.fixScrollerColor();
-        
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), panelError);
 
         /*Boolean*/
         JTabbedPane tabsBoolean = new JTabbedPane(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsBoolean.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
+        tabsBoolean.setUI(new BorderlessTabButtonUI());
         Stream.of(
             new SimpleEntry<>("AND mode", this.textareaModeAnd),
             new SimpleEntry<>("OR mode", this.textareaModeOr),
@@ -517,54 +520,12 @@ public class SqlEngine extends JPanel implements Cleanable {
         return panelStrategy;
     }
 
-    private void fixScrollerColor() {
-        
-        TabbedPaneUI tabbedPaneUI = this.tabbedPaneError.getUI();
-        
-        try {
-            // MetalTabbedPaneUI => BasicTabbedPaneUI
-            Field tabScroller = tabbedPaneUI.getClass().getSuperclass().getDeclaredField("tabScroller");
-            tabScroller.setAccessible(true);
-            Object scrollableTabSupport = tabScroller.get(tabbedPaneUI); //IllegalAccessException
-            
-            this.fixButtonColor(scrollableTabSupport, "scrollForwardButton");
-            this.fixButtonColor(scrollableTabSupport, "scrollBackwardButton");
-            
-        } catch (SecurityException | IllegalArgumentException | NoSuchFieldException | IllegalAccessException e) {
-            
-            LOGGER.error(e.getMessage(), e);
-        }
-    }
-
-    private void fixButtonColor(Object scrollableTabSupport, String nameButton) throws NoSuchFieldException, IllegalAccessException {
-        
-        Field scrollForwardButton = scrollableTabSupport.getClass().getDeclaredField(nameButton);
-        scrollForwardButton.setAccessible(true);
-        JButton button = (JButton) scrollForwardButton.get(scrollableTabSupport); //IllegalAccessException
-        
-        Field highlight = button.getClass().getSuperclass().getDeclaredField("highlight");
-        highlight.setAccessible(true);
-        highlight.set(button, UIManager.getColor("TabbedPane.highlight"));
-        
-        Field shadow = button.getClass().getSuperclass().getDeclaredField("shadow");
-        shadow.setAccessible(true);
-        shadow.set(button, UIManager.getColor("TabbedPane.darkShadow"));
-        
-        Field darkShadow = button.getClass().getSuperclass().getDeclaredField("darkShadow");
-        darkShadow.setAccessible(true);
-        darkShadow.set(button, new Color(122, 138, 153));
-        
-        button.setBorder(BorderFactory.createEmptyBorder());
-        button.setOpaque(false);
-        button.setBorderPainted(false);
-        button.setBackground(UiUtil.COLOR_DEFAULT_BACKGROUND);
-    }
-
     private JPanel getPanelConfiguration() {
         
         JTabbedPane tabsConfiguration = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsConfiguration.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
-        
+        tabsConfiguration.setUI(new BorderlessTabButtonUI());
+
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new LightScrollPane(1, 0, 1, 0, this.textareaOrderBy));
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, this.textareaSlidingWindow));
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, this.textareaLimit));
@@ -717,8 +678,7 @@ public class SqlEngine extends JPanel implements Cleanable {
     private void populateTabError() {
         
         this.tabbedPaneError.removeAll();
-        
-        this.tabbedPaneError.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
+        tabbedPaneError.setUI(new BorderlessTabButtonUI());
         
         if (this.modelYaml.getStrategy().getError() != null) {
             

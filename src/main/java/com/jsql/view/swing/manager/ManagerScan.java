@@ -105,11 +105,11 @@ public class ManagerScan extends AbstractManagerList {
             
             MethodInjection method = beanInjection.getMethodInstance();
             
-            if (method == MediatorHelper.model().getMediatorMethodInjection().getHeader()) {
+            if (method == MediatorHelper.model().getMediatorMethod().getHeader()) {
                 
                 MediatorHelper.panelAddressBar().getRadioHeader().setSelected();
                 
-            } else if (method == MediatorHelper.model().getMediatorMethodInjection().getRequest()) {
+            } else if (method == MediatorHelper.model().getMediatorMethod().getRequest()) {
                 
                 MediatorHelper.panelAddressBar().getRadioRequest().setSelected();
                 

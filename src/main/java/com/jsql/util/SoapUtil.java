@@ -105,7 +105,7 @@ public class SoapUtil {
                 try {
                     LOGGER.info("Checking SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY));
                     
-                    this.injectionModel.getMediatorMethodInjection().getRequest().testParameters();
+                    this.injectionModel.getMediatorMethod().getRequest().testParameters();
 
                     // Injection successful
                     return true;

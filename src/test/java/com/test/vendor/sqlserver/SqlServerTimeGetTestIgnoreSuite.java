@@ -32,7 +32,7 @@ public class SqlServerTimeGetTestIgnoreSuite extends ConcreteSqlServerTestSuite 
             new SimpleEntry<>("name", "1'")
         ));
         
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.setIsScanning(true);

@@ -26,7 +26,7 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Tab UI to remove inner borders on empty tabbedpane and force header height on Linux.
  */
-public class CustomMetalTabbedPaneUI extends MetalTabbedPaneUI {
+public class CustomMetalTabbedPaneUI extends BorderlessTabButtonUI {
 
     @Override
     protected void paintContentBorderLeftEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
@@ -51,34 +51,5 @@ public class CustomMetalTabbedPaneUI extends MetalTabbedPaneUI {
     @Override
     protected int calculateMaxTabHeight(int tabPlacement) {
         return 22;
-    }
-    
-    @Override
-    protected JButton createScrollButton(int direction) {
-        
-        if (direction != SOUTH && direction != NORTH && direction != EAST && direction != WEST) {
-            throw new IllegalArgumentException("Direction must be one of: SOUTH, NORTH, EAST or WEST");
-        }
-
-        return new ScrollableTabButton(direction);
-    }
-    
-    @SuppressWarnings("serial")
-    private class ScrollableTabButton extends BasicArrowButton implements UIResource, SwingConstants {
-        
-        public ScrollableTabButton(int direction) {
-            
-            super(
-                direction,
-                UiUtil.COLOR_DEFAULT_BACKGROUND,
-                UIManager.getColor("TabbedPane.darkShadow"),
-                new Color(122, 138, 153),
-                UIManager.getColor("TabbedPane.highlight")
-            );
-            
-            this.setBorder(BorderFactory.createEmptyBorder());
-            this.setOpaque(false);
-            this.setBorderPainted(false);
-        }
     }
 }

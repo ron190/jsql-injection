@@ -13,6 +13,7 @@ package com.jsql.view.swing.tab;
 import javax.swing.JTabbedPane;
 
 import com.jsql.view.swing.action.HotkeyUtil;
+import com.jsql.view.swing.ui.BorderlessTabButtonUI;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
 /**

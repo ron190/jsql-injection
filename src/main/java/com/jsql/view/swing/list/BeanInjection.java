@@ -21,7 +21,7 @@ public class BeanInjection {
     public BeanInjection(String url) {
         
         this.url = url;
-        this.method = MediatorHelper.model().getMediatorMethodInjection().getQuery();
+        this.method = MediatorHelper.model().getMediatorMethod().getQuery();
         this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();
         this.requestType = "POST";
     }
@@ -37,16 +37,16 @@ public class BeanInjection {
             this.method = 
                 MediatorHelper
                 .model()
-                .getMediatorMethodInjection()
+                .getMediatorMethod()
                 .getMethods()
                 .stream()
-                .filter(method -> method.name().equalsIgnoreCase(nameMethod))
+                .filter(methodInjection -> methodInjection.name().equalsIgnoreCase(nameMethod))
                 .findAny()
-                .orElse(MediatorHelper.model().getMediatorMethodInjection().getQuery());
+                .orElse(MediatorHelper.model().getMediatorMethod().getQuery());
             
         } catch (IllegalArgumentException | NoSuchElementException e) {
             
-            this.method = MediatorHelper.model().getMediatorMethodInjection().getQuery();
+            this.method = MediatorHelper.model().getMediatorMethod().getQuery();
         }
         
         try {

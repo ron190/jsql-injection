@@ -16,7 +16,7 @@ class ParameterUtilSpock extends Specification {
         and: parameterUtil.initializeHeader('')
         and: parameterUtil.initializeRequest('')
         and:
-            injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethodInjection.header
+            injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.header
             parameterUtil.checkParametersFormat()
         then: thrown InjectionFailureException
         
@@ -24,7 +24,7 @@ class ParameterUtilSpock extends Specification {
         and: parameterUtil.initializeHeader('a: a*')
         and: parameterUtil.initializeRequest('')
         and:
-            injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethodInjection.request
+            injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.request
             parameterUtil.checkParametersFormat()
         then: thrown InjectionFailureException
         
@@ -32,7 +32,7 @@ class ParameterUtilSpock extends Specification {
         and: parameterUtil.initializeHeader('')
         and: parameterUtil.initializeRequest('a=a*')
         and:
-            injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethodInjection.query
+            injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.query
             parameterUtil.checkParametersFormat()
         then: thrown InjectionFailureException
     }
@@ -42,17 +42,17 @@ class ParameterUtilSpock extends Specification {
         when: parameterUtil.initializeQueryString('http://127.0.0.1')
         
         and:
-            injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethodInjection.query
+            injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.query
             parameterUtil.checkParametersFormat()
         then: thrown InjectionFailureException
         
         when:
-            injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethodInjection.request
+            injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.request
             parameterUtil.checkParametersFormat()
         then: thrown InjectionFailureException
         
         when:
-            injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethodInjection.header
+            injectionModel.mediatorUtils.connectionUtil.methodInjection = injectionModel.mediatorMethod.header
             parameterUtil.checkParametersFormat()
         then: thrown InjectionFailureException
     }

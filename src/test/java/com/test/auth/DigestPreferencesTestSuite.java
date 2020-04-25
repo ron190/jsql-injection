@@ -39,7 +39,7 @@ public class DigestPreferencesTestSuite extends ConcreteMySqlErrorTestSuite {
         model.getMediatorUtils().getAuthenticationUtil().setPasswordAuthentication(SecurityConfiguration.DIGEST_PASSWORD);
         model.getMediatorUtils().getAuthenticationUtil().setAuthentication();
         
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.setIsScanning(true);

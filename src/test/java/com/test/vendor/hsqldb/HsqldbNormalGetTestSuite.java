@@ -30,7 +30,7 @@ public class HsqldbNormalGetTestSuite extends ConcreteHsqldbTestSuite {
             new SimpleEntry<>("tenant", "hsqldb"),
             new SimpleEntry<>("name", "1'")
         ));
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());

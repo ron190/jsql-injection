@@ -300,7 +300,7 @@ public class ConnectionUtil {
                 Array.set(methods.get(connection), 1, customMethod);
                 
                 // If the implementation class is an Https URL Connection, we
-                // need to go up one level higher in the heirarchy to modify the
+                // need to go up one level higher in the hierarchy to modify the
                 // 'method' field.
                 if (parentClass == HttpsURLConnection.class) {
                     methodField = parentClass.getSuperclass().getDeclaredField("method");

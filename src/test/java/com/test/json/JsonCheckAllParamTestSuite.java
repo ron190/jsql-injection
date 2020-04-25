@@ -35,7 +35,7 @@ public class JsonCheckAllParamTestSuite extends ConcreteMySqlTestSuite {
         model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllURLParam(true);
         model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllJSONParam(true);
         model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.setIsScanning(true);

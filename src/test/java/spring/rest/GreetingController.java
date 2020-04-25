@@ -1,10 +1,12 @@
 package spring.rest;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,11 @@ import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
 import org.neo4j.driver.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +48,24 @@ public class GreetingController {
     private static final Logger LOGGER = Logger.getRootLogger();
     private Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
 
+    @Bean
+    public StrictHttpFirewall httpFirewall() {
+        
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        
+        List<String> httpMethods = 
+            Stream
+            .concat(
+                Stream.of("CUSTOM-JSQL"),
+                Arrays.asList(RequestMethod.values()).stream().map(requestMethod -> requestMethod.name())
+            )
+            .collect(Collectors.toList());
+        
+        firewall.setAllowedHttpMethods(httpMethods);
+        
+        return firewall;
+    }
+    
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -317,6 +341,12 @@ public class GreetingController {
         }
         
         return greeting;
+    }
+    
+    @Bean
+    public ServletRegistrationBean<CustomMethodServlet> servletRegistrationBean() {
+        
+        return new ServletRegistrationBean<CustomMethodServlet>(new CustomMethodServlet(sessionFactory), "/greeting-custom/*");
     }
     
     @SuppressWarnings("unchecked")

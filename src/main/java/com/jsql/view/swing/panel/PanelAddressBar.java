@@ -56,7 +56,7 @@ public class PanelAddressBar extends JPanel {
     /**
      * Current injection method.
      */
-    private MethodInjection methodInjection = MediatorHelper.model().getMediatorMethodInjection().getQuery();
+    private MethodInjection methodInjection = MediatorHelper.model().getMediatorMethod().getQuery();
 
     private AddressMenuBar addressMenuBar;
     private RequestPanel requestPanel;
@@ -126,9 +126,9 @@ public class PanelAddressBar extends JPanel {
         
         Stream
         .of(
-            new RadioModel("GET", true, MediatorHelper.model().getMediatorMethodInjection().getQuery(), "METHOD_QUERYSTRING_TOOLTIP", this.radioQueryString),
-            new RadioModel("POST", false, MediatorHelper.model().getMediatorMethodInjection().getRequest(), "METHOD_REQUEST_TOOLTIP", this.radioRequest),
-            new RadioModel("Header", false, MediatorHelper.model().getMediatorMethodInjection().getHeader(), "METHOD_HEADER_TOOLTIP", this.radioHeader)
+            new RadioModel("GET", true, MediatorHelper.model().getMediatorMethod().getQuery(), "METHOD_QUERYSTRING_TOOLTIP", this.radioQueryString),
+            new RadioModel("POST", false, MediatorHelper.model().getMediatorMethod().getRequest(), "METHOD_REQUEST_TOOLTIP", this.radioRequest),
+            new RadioModel("Header", false, MediatorHelper.model().getMediatorMethod().getHeader(), "METHOD_HEADER_TOOLTIP", this.radioHeader)
         )
         .forEach(radioModel -> {
             

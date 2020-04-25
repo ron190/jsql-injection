@@ -34,7 +34,7 @@ public class CheckAllHeaderTestSuite extends ConcreteMySqlTestSuite {
         
         model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllHeaderParam(true);
         model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getHeader());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getHeader());
         
         model.setIsScanning(true);
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());

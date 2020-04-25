@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.jsql.model.InjectionModel;
 
-public class MediatorMethodInjection {
+public class MediatorMethod {
 
     private MethodInjection query;
     private MethodInjection request;
@@ -15,7 +15,7 @@ public class MediatorMethodInjection {
     private List<MethodInjection> methods;
     
     @SuppressWarnings("serial")
-    public MediatorMethodInjection(InjectionModel injectionModel) {
+    public MediatorMethod(InjectionModel injectionModel) {
         
         this.query = new MethodInjection(injectionModel) {
             

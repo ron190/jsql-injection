@@ -33,7 +33,7 @@ public class TamperingTestSuite extends ConcreteMySqlTestSuite {
         
         model.getMediatorUtils().getTamperingUtil().set(false, true, false, true, true, true, false, false, true, false, false, false);
         model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getRequest());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getRequest());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("POST");
         
         model.setIsScanning(true);

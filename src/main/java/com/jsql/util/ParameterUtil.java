@@ -153,7 +153,7 @@ public class ParameterUtil {
 
         if (
             this.getQueryStringFromEntries().contains(InjectionModel.STAR)
-            && methodInjection != this.injectionModel.getMediatorMethodInjection().getQuery()
+            && methodInjection != this.injectionModel.getMediatorMethod().getQuery()
             && !isCheckingAllParam
         ) {
             
@@ -161,7 +161,7 @@ public class ParameterUtil {
             
         } else if (
             this.getRequestFromEntries().contains(InjectionModel.STAR)
-            && methodInjection != this.injectionModel.getMediatorMethodInjection().getRequest()
+            && methodInjection != this.injectionModel.getMediatorMethod().getRequest()
             && !isCheckingAllParam
         ) {
             
@@ -169,7 +169,7 @@ public class ParameterUtil {
             
         } else if (
             this.getHeaderFromEntries().contains(InjectionModel.STAR)
-            && methodInjection != this.injectionModel.getMediatorMethodInjection().getHeader()
+            && methodInjection != this.injectionModel.getMediatorMethod().getHeader()
             && !isCheckingAllParam
         ) {
             
@@ -183,7 +183,7 @@ public class ParameterUtil {
         boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();
         
         if (
-            methodInjection == this.injectionModel.getMediatorMethodInjection().getQuery()
+            methodInjection == this.injectionModel.getMediatorMethod().getQuery()
             && !isCheckingAllParam
             && this.getListQueryString().isEmpty()
             && !this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
@@ -192,14 +192,14 @@ public class ParameterUtil {
             throw new InjectionFailureException("No query string");
         
         } else if (
-            methodInjection == this.injectionModel.getMediatorMethodInjection().getRequest()
+            methodInjection == this.injectionModel.getMediatorMethod().getRequest()
             && this.getListRequest().isEmpty()
         ) {
             
             throw new InjectionFailureException("Incorrect Request format");
             
         } else if (
-            methodInjection == this.injectionModel.getMediatorMethodInjection().getHeader()
+            methodInjection == this.injectionModel.getMediatorMethod().getHeader()
             && this.getListHeader().isEmpty()
         ) {
             

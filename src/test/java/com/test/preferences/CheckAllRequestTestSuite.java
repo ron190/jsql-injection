@@ -36,7 +36,7 @@ public class CheckAllRequestTestSuite extends ConcreteMySqlTestSuite {
         ));
         
         model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllRequestParam(true);
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getRequest());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getRequest());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("POST");
         
         model.setIsScanning(true);

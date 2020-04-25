@@ -33,7 +33,7 @@ public class EmptyNormalTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("name", StringUtils.EMPTY)
         ));
         
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.setIsScanning(true);

@@ -39,7 +39,7 @@ import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.injection.method.MediatorMethodInjection;
+import com.jsql.model.injection.method.MediatorMethod;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.strategy.MediatorStrategy;
 import com.jsql.model.injection.vendor.MediatorVendor;
@@ -79,7 +79,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     private static final Logger LOGGER = Logger.getRootLogger();
     
     private transient MediatorVendor mediatorVendor = new MediatorVendor(InjectionModel.this);
-    private transient MediatorMethodInjection mediatorMethodInjection = new MediatorMethodInjection(this);
+    private transient MediatorMethod mediatorMethod = new MediatorMethod(this);
     private transient MediatorUtils mediatorUtils;
     private transient MediatorStrategy mediatorStrategy;
 
@@ -175,7 +175,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             LOGGER.trace(I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
             this.mediatorUtils.getConnectionUtil().testConnection();
             
-            boolean hasFoundInjection = this.mediatorMethodInjection.getQuery().testParameters();
+            boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters();
 
             if (!hasFoundInjection) {
                 
@@ -185,12 +185,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             if (!hasFoundInjection) {
                 
                 LOGGER.trace("Checking standard Request parameters");
-                hasFoundInjection = this.mediatorMethodInjection.getRequest().testParameters();
+                hasFoundInjection = this.mediatorMethod.getRequest().testParameters();
             }
             
             if (!hasFoundInjection) {
                 
-                hasFoundInjection = this.mediatorMethodInjection.getHeader().testParameters();
+                hasFoundInjection = this.mediatorMethod.getHeader().testParameters();
             }
             
             if (!this.isScanning) {
@@ -326,7 +326,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 urlInjectionFixed += "?";
             }
 
-            urlInjectionFixed += this.buildQuery(this.mediatorMethodInjection.getQuery(), this.mediatorUtils.getParameterUtil().getQueryStringFromEntries(), isUsingIndex, dataInjection);
+            urlInjectionFixed += this.buildQuery(this.mediatorMethod.getQuery(), this.mediatorUtils.getParameterUtil().getQueryStringFromEntries(), isUsingIndex, dataInjection);
             
             if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
                 
@@ -400,7 +400,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         if (!this.mediatorUtils.getParameterUtil().getListHeader().isEmpty()) {
             
             Stream
-            .of(this.buildQuery(this.mediatorMethodInjection.getHeader(), this.mediatorUtils.getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
+            .of(this.buildQuery(this.mediatorMethod.getHeader(), this.mediatorUtils.getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
             .forEach(e -> {
                 
                 if (e.split(":").length == 2) {
@@ -409,7 +409,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 }
             });
             
-            msgHeader.put(Header.HEADER, this.buildQuery(this.mediatorMethodInjection.getHeader(), this.mediatorUtils.getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection));
+            msgHeader.put(Header.HEADER, this.buildQuery(this.mediatorMethod.getHeader(), this.mediatorUtils.getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection));
         }
     }
 
@@ -447,11 +447,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 
                 if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
                     
-                    dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
+                    dataOut.writeBytes(this.buildQuery(this.mediatorMethod.getRequest(), this.mediatorUtils.getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
                     
                 } else {
                     
-                    dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
+                    dataOut.writeBytes(this.buildQuery(this.mediatorMethod.getRequest(), this.mediatorUtils.getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
                 }
             }
             
@@ -460,11 +460,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
                 
-                msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
+                msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethod.getRequest(), this.mediatorUtils.getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
                 
             } else {
                 
-                msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.mediatorUtils.getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
+                msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethod.getRequest(), this.mediatorUtils.getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
             }
             
         } catch (IOException e) {
@@ -585,7 +585,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         String queryFixed = query;
         
         if (
-            methodInjection == this.mediatorMethodInjection.getRequest()
+            methodInjection == this.mediatorMethod.getRequest()
             && this.mediatorUtils.getParameterUtil().isRequestSoap()
         ) {
             
@@ -610,7 +610,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         if (!this.mediatorUtils.getParameterUtil().isRequestSoap()) {
         
-            if (methodInjection != this.mediatorMethodInjection.getHeader()) {
+            if (methodInjection != this.mediatorMethod.getHeader()) {
                 
                 // URL encode each character because no query parameter context
                 queryFixed = queryFixed.replace("\"", "%22");
@@ -701,8 +701,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         return this.mediatorVendor;
     }
 
-    public MediatorMethodInjection getMediatorMethodInjection() {
-        return this.mediatorMethodInjection;
+    public MediatorMethod getMediatorMethod() {
+        return this.mediatorMethod;
     }
 
     public DataAccess getDataAccess() {
