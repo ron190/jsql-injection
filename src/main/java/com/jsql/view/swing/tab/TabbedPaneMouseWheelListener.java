@@ -11,8 +11,7 @@ import org.apache.log4j.Logger;
 /**
  * Mousewheel allows to navigate to next/previous tab.
  */
-@SuppressWarnings("serial")
-public class TabbedPaneMouseWheelListener implements MouseWheelListener, Serializable {
+public class TabbedPaneMouseWheelListener implements MouseWheelListener {
     
     /**
      * Log4j logger sent to view.

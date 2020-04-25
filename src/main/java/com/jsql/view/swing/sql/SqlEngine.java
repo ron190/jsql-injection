@@ -69,7 +69,7 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private transient Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
     
-    private MouseWheelListener tabbedPaneMouseWheelListener = new TabbedPaneMouseWheelListener();
+    private transient MouseWheelListener tabbedPaneMouseWheelListener = new TabbedPaneMouseWheelListener();
     
     // Standard
     private final JTextPaneLexer textareaDatabase = new JTextPaneLexer() {

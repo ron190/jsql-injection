@@ -28,7 +28,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
@@ -97,7 +96,7 @@ public class PanelConsoles extends JPanel {
     private TabbedPaneNetworkTab tabbedPaneNetworkTab;
     private NetworkTable networkTable;
     
-    private MouseWheelListener tabbedPaneMouseWheelListener = new TabbedPaneMouseWheelListener();
+    private transient MouseWheelListener tabbedPaneMouseWheelListener = new TabbedPaneMouseWheelListener();
 
     private BasicArrowButton buttonShowNorth = new BasicArrowButton(SwingConstants.NORTH);
     private int location = 0;

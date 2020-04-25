@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
@@ -80,35 +81,35 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
 
     /**
      * Process the whole boolean injection, character by character, bit by bit.
-     * @param inj SQL query
+     * @param sqlQuery SQL query
      * @param suspendable Action a user can stop
      * @return Final string: SQLiABCDEF...
      * @throws StoppedByUserSlidingException
      */
-    public String inject(String inj, AbstractSuspendable<String> suspendable) throws StoppedByUserSlidingException {
+    public String inject(String sqlQuery, AbstractSuspendable<String> suspendable) throws StoppedByUserSlidingException {
 
         // List of the characters, each one represented by an array of 8 bits
         // e.g SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
         List<char[]> bytes = new ArrayList<>();
         
         // Cursor for current character position
-        int indexCharacter = 0;
+        AtomicInteger indexCharacter = new AtomicInteger(0);
 
         // Concurrent URL requests
         ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableAbstractBoolean"));
         CompletionService<T> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         // Send the first binary question: is the SQL result empty?
-        taskCompletionService.submit(this.getCallable(inj, 0, IS_TESTING_LENGTH));
+        taskCompletionService.submit(this.getCallable(sqlQuery, 0, IS_TESTING_LENGTH));
         
         // Increment the number of active tasks
-        int countTasksSubmitted = 1;
-        int countBadAsciiCode = 0;
+        AtomicInteger countTasksSubmitted = new AtomicInteger(1);
+        AtomicInteger countBadAsciiCode = new AtomicInteger(0);
 
         
         // Process the job until there is no more active task,
         // in other word until all HTTP requests are done
-        while (countTasksSubmitted > 0) {
+        while (countTasksSubmitted.get() > 0) {
             
             // TODO Coverage with pausable multithreading
             if (suspendable.isSuspended()) {
@@ -122,7 +123,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 T currentCallable = taskCompletionService.take().get();
                 
                 // One task has just ended, decrease active tasks by 1
-                countTasksSubmitted--;
+                countTasksSubmitted.decrementAndGet();
                 
                 // If SQL result is not empty, then add a new unknown character,
                 // and define a new array of 8 undefined bit.
@@ -130,71 +131,94 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 // requests for that new character.
                 if (currentCallable.isTestingLength()) {
                     
-                    if (currentCallable.isTrue()) {
-                        
-                        indexCharacter++;
-                        
-                        // New undefined bits of the next character
-                        bytes.add(new char[]{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'});
-                        
-                        // Test if it's the end of the line
-                        taskCompletionService.submit(this.getCallable(inj, indexCharacter, IS_TESTING_LENGTH));
-                        
-                        // Test the 8 bits for the next character, save its position and current bit for later
-                        for (int bit: new int[]{1, 2, 4, 8, 16, 32, 64, 128}) {
-                            
-                            taskCompletionService.submit(this.getCallable(inj, indexCharacter, bit));
-                        }
-                        
-                        // Add 9 new tasks
-                        countTasksSubmitted += 9;
-                    }
+                    initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted, currentCallable);
                     
                 } else {
                     
-                    // Process url that has just checked one bit, convert bits to chars,
-                    // and change current bit from undefined to 0 or 1
-                    
-                    char[] asciiCodeMask = this.initializeBinaryMask(bytes, currentCallable);
-                    
-                    String asciiCodeBinary = new String(asciiCodeMask);
-                    
-                    // Inform the View if bits array is complete, else nothing #Need fix
-                    if (asciiCodeBinary.matches("^[01]{8}$")) {
-                        
-                        int asciiCode = Integer.parseInt(asciiCodeBinary, 2);
-                        
-                        if (asciiCode == 255 || asciiCode == 0) {
-                            
-                            if (
-                                countTasksSubmitted != 0
-                                && countBadAsciiCode > 9
-                                && (countBadAsciiCode * 100 / countTasksSubmitted) > 50
-                            ) {
-                                LOGGER.warn("Boolean false positives spotted, stopping...");
-                                break;
-                            }
-                            
-                            countBadAsciiCode++;
-                        }
-
-                        String charText = Character.toString((char) asciiCode);
-                        
-                        Request interaction = new Request();
-                        interaction.setMessage(Interaction.MESSAGE_BINARY);
-                        interaction.setParameters(asciiCodeBinary +"="+ charText.replaceAll("\\n", "\\\\\\n").replaceAll("\\r", "\\\\\\r").replaceAll("\\t", "\\\\\\t"));
-                        this.injectionModel.sendToViews(interaction);
-                    }
+                    injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
                 }
                 
             } catch (InterruptedException | ExecutionException e) {
                 
                 LOGGER.error(e.getMessage(), e);
                 Thread.currentThread().interrupt();
+                
+            } catch (InjectionFailureException e) {
+                
+                LOGGER.error(e.getMessage(), e);
+                break;
             }
         }
 
         return this.stop(bytes, taskExecutor);
+    }
+
+    private void injectCharacter(List<char[]> bytes, AtomicInteger countTasksSubmitted, AtomicInteger countBadAsciiCode, T currentCallable) throws InjectionFailureException {
+        
+        // Process url that has just checked one bit, convert bits to chars,
+        // and change current bit from undefined to 0 or 1
+        
+        char[] asciiCodeMask = this.initializeBinaryMask(bytes, currentCallable);
+        
+        String asciiCodeBinary = new String(asciiCodeMask);
+        
+        // Inform the View if bits array is complete, else nothing #Need fix
+        if (asciiCodeBinary.matches("^[01]{8}$")) {
+            
+            int asciiCode = Integer.parseInt(asciiCodeBinary, 2);
+            
+            if (asciiCode == 255 || asciiCode == 0) {
+                
+                if (
+                    countTasksSubmitted.get() != 0
+                    && countBadAsciiCode.get() > 9
+                    && (countBadAsciiCode.get() * 100 / countTasksSubmitted.get()) > 50
+                ) {
+                    throw new InjectionFailureException("Boolean false positives spotted, stopping...");
+                }
+                
+                countBadAsciiCode.incrementAndGet();
+            }
+
+            String charText = Character.toString((char) asciiCode);
+            
+            Request interaction = new Request();
+            interaction.setMessage(Interaction.MESSAGE_BINARY);
+            interaction.setParameters(asciiCodeBinary +"="+ charText.replaceAll("\\n", "\\\\\\n").replaceAll("\\r", "\\\\\\r").replaceAll("\\t", "\\\\\\t"));
+            this.injectionModel.sendToViews(interaction);
+        }
+    }
+
+    private void initializeNextCharacters(
+        String sqlQuery, 
+        List<char[]> bytes, 
+        AtomicInteger indexCharacter, 
+        CompletionService<T> taskCompletionService, 
+        AtomicInteger countTasksSubmitted, 
+        T lengthCallable
+    ) {
+        
+        // End of row
+        if (!lengthCallable.isTrue()) {
+            return;
+        }
+        
+        indexCharacter.incrementAndGet();
+        
+        // New undefined bits of the next character
+        bytes.add(new char[]{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'});
+        
+        // Test if it's the end of the line
+        taskCompletionService.submit(this.getCallable(sqlQuery, indexCharacter.get(), IS_TESTING_LENGTH));
+        
+        // Test the 8 bits for the next character, save its position and current bit for later
+        for (int bit: new int[]{1, 2, 4, 8, 16, 32, 64, 128}) {
+            
+            taskCompletionService.submit(this.getCallable(sqlQuery, indexCharacter.get(), bit));
+        }
+        
+        // Add 9 new tasks
+        countTasksSubmitted.addAndGet(9);
     }
 
     private char[] initializeBinaryMask(List<char[]> bytes, T currentCallable) {

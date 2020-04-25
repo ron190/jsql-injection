@@ -260,5 +260,5 @@ public enum ActionCoder {
             .findFirst();
     }
 
-    public abstract String run(String value) throws UnsupportedEncodingException, DecoderException, IOException, NoSuchAlgorithmException;
+    public abstract String run(String value) throws DecoderException, IOException, NoSuchAlgorithmException;
 }

@@ -25,6 +25,8 @@ import org.neo4j.driver.Result;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.jsql.util.CertificateUtil;
+
 import spring.rest.Student;
 
 @SpringBootApplication
@@ -129,6 +131,7 @@ public class TargetApplication {
     }
 
     private static void initializeDerby() throws Exception {
+        
         NetworkServerControl server = new NetworkServerControl();
         server.start(null);
     }

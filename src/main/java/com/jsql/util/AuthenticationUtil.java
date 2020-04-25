@@ -241,7 +241,6 @@ public class AuthenticationUtil {
             
             System.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
             System.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
-            System.setProperty("jcifs.http.insecureBasic", "true");
             jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
             jcifs.Config.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
             
