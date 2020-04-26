@@ -24,7 +24,7 @@ cache:
     
 before_install:
 
-  - export FROM_TRAVIS = true
+  - export FROM_TRAVIS="true"
   - sudo cat /proc/meminfo
   - java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
 #  - export MAVEN_SKIP_RC=true
