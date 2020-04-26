@@ -120,10 +120,6 @@ public class TargetApplication {
                 student.setRollNo("rollNo");
                 session.save(student);
                 transaction.commit();
-                
-            } catch (Exception e) {
-                
-                LOGGER.error(e.getMessage(), e);
             }
         });
     }

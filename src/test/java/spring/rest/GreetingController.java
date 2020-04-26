@@ -350,6 +350,8 @@ public class GreetingController {
         Greeting greeting = null;
         
         if (!"CUSTOM-JSQL".equals(request.getMethod())) {
+            System.out.println("request.getMethod()");
+            System.out.println(request.getMethod());
             return greeting;
         }
         
@@ -368,7 +370,8 @@ public class GreetingController {
             );
             
         } catch (Exception e) {
-            // Hide useless SQL error messages
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
