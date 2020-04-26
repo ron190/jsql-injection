@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -85,20 +87,28 @@ public class TargetApplication {
         initializeNeo4j();
         initializeDerby();
         
-        Stream
-        .of(
-            propsCubrid,
-            propsH2,
-            propsMysql,
-            propsMysqlError,
-            propsPostgres,
-            propsSqlServer,
-            propsDb2,
-            propsHsqldb,
-            propsDerby,
-            propsOracle,
-            propsSqlite
-        )
+        ArrayList<Properties> properties = new ArrayList<Properties>(
+            Arrays.asList(
+                TargetApplication.propsH2,
+                TargetApplication.propsMysql,
+                TargetApplication.propsMysqlError,
+                TargetApplication.propsPostgres,
+                TargetApplication.propsSqlServer,
+                TargetApplication.propsCubrid,
+                TargetApplication.propsSqlite,
+                TargetApplication.propsDb2,
+                TargetApplication.propsHsqldb,
+                TargetApplication.propsDerby
+            )
+        );
+        
+        if (!"true".equals(System.getenv("FROM_TRAVIS"))) {
+            
+            properties.add(TargetApplication.propsOracle);
+        }
+        
+        properties
+        .stream()
         .forEach(props -> {
             
             Configuration configuration = new Configuration();
@@ -120,6 +130,9 @@ public class TargetApplication {
                 student.setRollNo("rollNo");
                 session.save(student);
                 transaction.commit();
+                
+            } catch (Exception e) {
+                // Ignore
             }
         });
     }

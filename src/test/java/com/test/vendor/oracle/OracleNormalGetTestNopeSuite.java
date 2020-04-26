@@ -13,7 +13,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-//TODO
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
 public class OracleNormalGetTestNopeSuite extends ConcreteOracleTestSuite {
