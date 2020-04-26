@@ -24,7 +24,11 @@ cache:
     
 before_install:
 
-  - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
+  - sudo cat /proc/meminfo
+  - java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
+#  - export MAVEN_SKIP_RC=true
+#  - export MAVEN_OPTS="-Xss512k -Xms2g -Xmx3g -Xmn3g -XX:PermSize=1g $MAVEN_OPTS"
+#  - export MAVEN_OPTS="-Xss512k -Xms2g -Xmx3g -Xmn3g -XX:PermSize=1g $MAVEN_OPTS" > ~/.mavenrc
     
   # Docker configuration
   - ./src/test/resources/docker/script/build.sh

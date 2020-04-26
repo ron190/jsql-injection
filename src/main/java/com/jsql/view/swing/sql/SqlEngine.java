@@ -60,11 +60,6 @@ import com.jsql.view.swing.util.UiUtil;
 @SuppressWarnings("serial")
 public class SqlEngine extends JPanel implements Cleanable {
     
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
-    
     private ModelYaml modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
 
     private JTabbedPane tabbedPaneError = new JTabbedPane(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -292,7 +287,8 @@ public class SqlEngine extends JPanel implements Cleanable {
 
         this.initializeTextComponents();
         
-        Stream.of(
+        Stream
+        .of(
             this.textareaDatabase,
             this.textareaTable,
             this.textareaColumn,
@@ -330,7 +326,9 @@ public class SqlEngine extends JPanel implements Cleanable {
 
         JTabbedPane tabsBottom = new TabbedPaneWheeled(SwingConstants.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsBottom.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
-        Stream.of(
+        
+        Stream
+        .of(
             new SimpleEntry<>("SQLENGINE_STRUCTURE", panelStructure),
             new SimpleEntry<>("SQLENGINE_STRATEGY", panelStrategy),
             new SimpleEntry<>("SQLENGINE_CONFIGURATION", panelConfiguration)
@@ -367,7 +365,9 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         JTabbedPane tabsSchema = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsSchema.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
-        Stream.of(
+        
+        Stream
+        .of(
             new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabase),
             new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTable),
             new SimpleEntry<>("SQLENGINE_COLUMNS", this.textareaColumn),
@@ -393,7 +393,9 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         JTabbedPane tabsZipped = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsZipped.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
-        Stream.of(
+        
+        Stream
+        .of(
             new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabaseZipped),
             new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTableZipped),
             new SimpleEntry<>("SQLENGINE_COLUMNS", this.textareaColumnZipped),
@@ -418,7 +420,9 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         JTabbedPane tabsDios = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsDios.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
-        Stream.of(
+        
+        Stream
+        .of(
             new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabaseDios),
             new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTableDios),
             new SimpleEntry<>("SQLENGINE_COLUMNS", this.textareaColumnDios),
@@ -441,7 +445,8 @@ public class SqlEngine extends JPanel implements Cleanable {
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
         
-        Stream.of(
+        Stream
+        .of(
             new SimpleEntry<>("SQLENGINE_STANDARD", tabsSchema),
             new SimpleEntry<>("SQLENGINE_ZIPPED", tabsZipped),
             new SimpleEntry<>("SQLENGINE_DIOS", tabsDios)
@@ -461,6 +466,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         JPanel panelStructure = new JPanel(new BorderLayout());
         panelStructure.add(tabsStandard, BorderLayout.CENTER);
         panelStructure.setBorder(BorderFactory.createEmptyBorder());
+        
         return panelStructure;
     }
 
@@ -484,7 +490,9 @@ public class SqlEngine extends JPanel implements Cleanable {
         JTabbedPane tabsBoolean = new JTabbedPane(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsBoolean.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         tabsBoolean.setUI(new BorderlessTabButtonUI());
-        Stream.of(
+        
+        Stream
+        .of(
             new SimpleEntry<>("AND mode", this.textareaModeAnd),
             new SimpleEntry<>("OR mode", this.textareaModeOr),
             new SimpleEntry<>("Blind", this.textareaBlind),
@@ -626,7 +634,8 @@ public class SqlEngine extends JPanel implements Cleanable {
         this.getTextPanes().forEach(JTextPaneObjectMethod::switchSetterToVendor);
         this.getTextPanes().forEach(textPaneLexer -> textPaneLexer.setText(StringUtils.EMPTY));
         
-        Stream.of(
+        Stream
+        .of(
             new SimpleEntry<>(this.textareaDatabase, this.modelYaml.getResource().getSchema().getDatabase()),
             new SimpleEntry<>(this.textareaTable, this.modelYaml.getResource().getSchema().getTable()),
             new SimpleEntry<>(this.textareaColumn, this.modelYaml.getResource().getSchema().getColumn()),
@@ -773,7 +782,8 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         return Stream.concat(
             this.textPanesError.stream(),
-            Stream.of(
+            Stream
+            .of(
                 this.textareaDatabase,
                 this.textareaTable,
                 this.textareaColumn,
