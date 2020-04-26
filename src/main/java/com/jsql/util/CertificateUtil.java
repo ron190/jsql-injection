@@ -79,7 +79,8 @@ public class CertificateUtil {
         
         // Ignore CertificateException: No subject alternative names present
         HttpsURLConnection.setDefaultHostnameVerifier(
-            (String hostname, SSLSession sslSession) -> StringUtils.EMPTY.equals(StringUtils.EMPTY)
+            // Always true
+            (String hostname, SSLSession sslSession) -> !StringUtils.EMPTY.equals(StringUtils.SPACE)
         );
     }
 }
