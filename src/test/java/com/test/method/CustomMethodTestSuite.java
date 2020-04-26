@@ -26,9 +26,9 @@ public class CustomMethodTestSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-custom?tenant=mysql-error&name=0'");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-custom?tenant=mysql&name=0'");
         model.getMediatorUtils().getParameterUtil().setListRequest(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql-error"),
+            new SimpleEntry<>("tenant", "mysql"),
             new SimpleEntry<>("name", "0'")
         ));
         

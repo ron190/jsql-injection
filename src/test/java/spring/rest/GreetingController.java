@@ -343,10 +343,35 @@ public class GreetingController {
         return greeting;
     }
     
-    @Bean
-    public ServletRegistrationBean<CustomMethodServlet> servletRegistrationBean() {
+    @SuppressWarnings("unchecked")
+    @RequestMapping("/greeting-custom")
+    public Greeting greetingCustom(HttpServletRequest request, @RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        return new ServletRegistrationBean<CustomMethodServlet>(new CustomMethodServlet(sessionFactory), "/greeting-custom/*");
+        Greeting greeting = null;
+        
+        if (!"CUSTOM-JSQL".equals(request.getMethod())) {
+            return greeting;
+        }
+        
+        String inject = name.replace(":", "\\:");
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+        
+            List<Object[]> results = query.getResultList();
+            
+            greeting = new Greeting(
+                this.counter.getAndIncrement(),
+                String.format(template, inject)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
+            
+        } catch (Exception e) {
+            // Hide useless SQL error messages
+        }
+        
+        return greeting;
     }
     
     @SuppressWarnings("unchecked")

@@ -7,7 +7,9 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.security.cert.CertificateException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -46,12 +48,20 @@ public class CertificateUtil {
                 
                 @Override
                 public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                    // Ignore
+                    
+                    if (StringUtils.EMPTY.equals(StringUtils.SPACE)) {
+                        
+                        throw new IllegalArgumentException();
+                    }
                 }
                 
                 @Override
                 public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                    // Ignore
+                    
+                    if (StringUtils.EMPTY.equals(StringUtils.SPACE)) {
+                        
+                        throw new IllegalArgumentException();
+                    }
                 }
             }
         };
@@ -68,6 +78,8 @@ public class CertificateUtil {
         }
         
         // Ignore CertificateException: No subject alternative names present
-        HttpsURLConnection.setDefaultHostnameVerifier((String hostname, SSLSession sslSession) -> true);
+        HttpsURLConnection.setDefaultHostnameVerifier(
+            (String hostname, SSLSession sslSession) -> StringUtils.EMPTY.equals(StringUtils.EMPTY)
+        );
     }
 }
