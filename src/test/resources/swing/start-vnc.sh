@@ -17,11 +17,15 @@ done
 
 echo "Using first available display :${NEW_DISPLAY}"
 
-vncpasswd -f >"/home/travis/.vnc/passwd" <<EOF
+cat << EOF > /home/travis/.vnc/passwd
 $full_password
 $view_password
 EOF
 
+vncpasswd -f /home/travis/.vnc/passwd
+
 export OLD_DISPLAY=${DISPLAY}
 vncserver ":${NEW_DISPLAY}" -localhost -geometry 1600x1200 -depth 16
 export DISPLAY=:${NEW_DISPLAY}
+
+./src/test/resources/swing/start-vnc.sh: line 20: /home/travis/.vnc/passwd: No such file or directory
