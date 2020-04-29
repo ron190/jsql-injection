@@ -17,7 +17,7 @@ done
 
 echo "Using first available display :${NEW_DISPLAY}"
 
-vncpasswd -f >"$HOME/.vnc/passwd" <<EOF
+vncpasswd -f >"/home/travis/.vnc/passwd" <<EOF
 $full_password
 $view_password
 EOF
