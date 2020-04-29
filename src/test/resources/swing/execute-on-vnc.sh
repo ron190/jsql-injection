@@ -30,6 +30,12 @@ full_password
 view_password
 EOF
 
+mkdir $HOME/.vnc/
+vncpasswd -f > $HOME/.vnc/passwd <<EOF
+123456
+123456
+EOF
+
 echo hi!
 
 OLD_DISPLAY=${DISPLAY}
