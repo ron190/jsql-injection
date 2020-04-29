@@ -27,7 +27,7 @@ EOF
 
 ls /home/travis/.vnc/
 
-vncpasswd /home/travis/.vnc/passwd
+vncpasswd -t /home/travis/.vnc/passwd
 
 export OLD_DISPLAY=${DISPLAY}
 vncserver ":${NEW_DISPLAY}" -localhost -geometry 1600x1200 -depth 16
