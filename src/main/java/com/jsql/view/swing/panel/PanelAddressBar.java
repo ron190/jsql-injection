@@ -106,24 +106,6 @@ public class PanelAddressBar extends JPanel {
         }).getProxy();
         I18nViewUtil.addComponentForKey("FIELD_HEADER_TOOLTIP", j3[0]);
         
-        class RadioModel {
-            
-            String request;
-            Boolean isSelected;
-            MethodInjection method;
-            String i18n;
-            RadioLinkMethod[] radio;
-
-            public RadioModel(String request, Boolean isSelected, MethodInjection method, String i18n, RadioLinkMethod[] radio) {
-                
-                this.request = request;
-                this.isSelected = isSelected;
-                this.method = method;
-                this.i18n = i18n;
-                this.radio = radio;
-            }
-        }
-        
         Stream
         .of(
             new RadioModel("GET", true, MediatorHelper.model().getMediatorMethod().getQuery(), "METHOD_QUERYSTRING_TOOLTIP", this.radioQueryString),
@@ -299,6 +281,24 @@ public class PanelAddressBar extends JPanel {
         });
         
         return advancedButton;
+    }
+    
+    private class RadioModel {
+        
+        private String request;
+        private Boolean isSelected;
+        private MethodInjection method;
+        private String i18n;
+        private RadioLinkMethod[] radio;
+
+        public RadioModel(String request, Boolean isSelected, MethodInjection method, String i18n, RadioLinkMethod[] radio) {
+            
+            this.request = request;
+            this.isSelected = isSelected;
+            this.method = method;
+            this.i18n = i18n;
+            this.radio = radio;
+        }
     }
     
     // Getter and setter

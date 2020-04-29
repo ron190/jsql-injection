@@ -13,14 +13,19 @@ package com.jsql.view.swing.util;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.Transparency;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -33,16 +38,23 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JTextPane;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.text.DefaultCaret;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.console.SwingAppender;
+import com.jsql.view.swing.sql.lexer.HighlightedDocument;
+import com.jsql.view.swing.text.action.DeleteNextCharAction;
+import com.jsql.view.swing.text.action.DeletePrevCharAction;
 import com.jsql.view.swing.ui.BorderRoundBlu;
 import com.jsql.view.swing.ui.CheckBoxIcon;
 import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
@@ -51,7 +63,7 @@ import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
  * Build default component appearance, keyboard shortcuts and icons.
  */
 @SuppressWarnings("serial")
-public final class UiUtil {
+public class UiUtil {
     
     /**
      * Log4j logger sent to view.
@@ -227,16 +239,22 @@ public final class UiUtil {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         
         try (InputStream fontStream = new BufferedInputStream(SwingAppender.class.getClassLoader().getResourceAsStream("swing/font/UbuntuMono-R-ctrlchar.ttf"))) {
+            
             Font ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             ge.registerFont(ubuntuFont);
+            
         } catch (FontFormatException | IOException e) {
+            
             LOGGER.warn("Loading Font Ubuntu Mono with control characters failed", e);
         }
         
         try (InputStream fontStream = new BufferedInputStream(SwingAppender.class.getClassLoader().getResourceAsStream("swing/font/Ubuntu-R.ttf"))) {
+            
             Font ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             ge.registerFont(ubuntuFont);
+            
         } catch (FontFormatException | IOException e) {
+            
             LOGGER.warn("Loading Font Ubuntu failed", e);
         }
     }
@@ -360,7 +378,9 @@ public final class UiUtil {
                         // Fix #42291: InternalError on drawRect()
                         try {
                             gg.drawRect(x, y, w - 1, h - 1);
+                            
                         } catch (InternalError e) {
+                            
                             LOGGER.error(e, e);
                         }
                     }
@@ -405,6 +425,7 @@ public final class UiUtil {
                 BorderFactory.createLineBorder(Color.WHITE)
             )
         ));
+        
         UIManager.put("ProgressBar.foreground", new Color(136, 183, 104));
         UIManager.put("ProgressBar.background", UIManager.get("Tree.background"));
     }
@@ -423,10 +444,90 @@ public final class UiUtil {
             images.add(ImageIO.read(UiUtil.URL_ICON_96));
             images.add(ImageIO.read(UiUtil.URL_ICON_32));
             images.add(ImageIO.read(UiUtil.URL_ICON_16));
+            
         } catch (NoClassDefFoundError | IOException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
         
         return images;
+    }
+    
+    public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText) {
+        
+        drawPlaceholder(textComponent, g, placeholderText, g.getFontMetrics().getAscent() + 2);
+    }
+    
+    public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText, int y) {
+        
+        int w = textComponent.getWidth();
+        
+        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        
+        Insets ins = textComponent.getInsets();
+        FontMetrics fm = g.getFontMetrics();
+        
+        int c0 = textComponent.getBackground().getRGB();
+        int c1 = textComponent.getForeground().getRGB();
+        int m = 0xfefefefe;
+        int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
+        
+        g.setColor(new Color(c2, true));
+        g.setFont(textComponent.getFont().deriveFont(Font.ITALIC));
+
+        g.drawString(
+            placeholderText,
+            textComponent.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT
+            ? w - (fm.stringWidth(placeholderText) + ins.left + 2)
+            : ins.left + 2,
+            y
+        );
+    }
+    
+    public static void initialize(JTextComponent component) {
+
+        component.setCaret(new DefaultCaret() {
+            
+            @Override
+            public void setSelectionVisible(boolean visible) {
+                
+                super.setSelectionVisible(true);
+            }
+        });
+        
+        component.addFocusListener(new FocusListener() {
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                
+                component.setSelectionColor(UiUtil.COLOR_FOCUS_LOST);
+                component.revalidate();
+                component.repaint();
+            }
+            
+            @Override
+            public void focusGained(FocusEvent e) {
+                
+                component.setSelectionColor(UiUtil.COLOR_FOCUS_GAINED);
+                component.revalidate();
+                component.repaint();
+            }
+        });
+        
+        component.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());
+        component.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeleteNextCharAction());
+    }
+    
+    /**
+     * End the thread doing coloring.
+     * @param textPane which coloring has to stop.
+     */
+    public static void stopDocumentColorer(JTextPane textPane) {
+        
+        if (textPane.getStyledDocument() instanceof HighlightedDocument) {
+            
+            HighlightedDocument oldDocument = (HighlightedDocument) textPane.getStyledDocument();
+            oldDocument.stopColorer();
+        }
     }
 }

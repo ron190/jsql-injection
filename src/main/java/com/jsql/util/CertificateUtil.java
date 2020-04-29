@@ -7,7 +7,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import javax.security.cert.CertificateException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;

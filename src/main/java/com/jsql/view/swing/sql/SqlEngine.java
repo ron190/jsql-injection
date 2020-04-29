@@ -1,12 +1,10 @@
 package com.jsql.view.swing.sql;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseWheelListener;
-import java.lang.reflect.Field;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -17,7 +15,6 @@ import java.util.stream.Stream;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -29,13 +26,10 @@ import javax.swing.JTextField;
 import javax.swing.MenuSelectionManager;
 import javax.swing.OverlayLayout;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
-import javax.swing.plaf.TabbedPaneUI;
 import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
@@ -52,7 +46,6 @@ import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
 import com.jsql.view.swing.ui.BorderlessTabButtonUI;
-import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -687,7 +680,7 @@ public class SqlEngine extends JPanel implements Cleanable {
     private void populateTabError() {
         
         this.tabbedPaneError.removeAll();
-        tabbedPaneError.setUI(new BorderlessTabButtonUI());
+        this.tabbedPaneError.setUI(new BorderlessTabButtonUI());
         
         if (this.modelYaml.getStrategy().getError() != null) {
             
@@ -736,7 +729,7 @@ public class SqlEngine extends JPanel implements Cleanable {
     @Override
     public void clean() {
         
-        this.getTextPanes().forEach(SqlEngine::stopDocumentColorer);
+        this.getTextPanes().forEach(UiUtil::stopDocumentColorer);
     }
     
     /**
@@ -745,7 +738,7 @@ public class SqlEngine extends JPanel implements Cleanable {
      */
     private static void resetLexer(JTextPaneLexer textPane) {
         
-        stopDocumentColorer(textPane);
+        UiUtil.stopDocumentColorer(textPane);
         
         HighlightedDocument document = new HighlightedDocument(HighlightedDocument.SQL_STYLE);
         document.setHighlightStyle(HighlightedDocument.SQL_STYLE);
@@ -759,19 +752,6 @@ public class SqlEngine extends JPanel implements Cleanable {
                 textPane.setAttribute();
             }
         });
-    }
-    
-    /**
-     * End the thread doing coloring.
-     * @param textPane which coloring has to stop.
-     */
-    private static void stopDocumentColorer(JTextPaneLexer textPane) {
-        
-        if (textPane.getStyledDocument() instanceof HighlightedDocument) {
-            
-            HighlightedDocument oldDocument = (HighlightedDocument) textPane.getStyledDocument();
-            oldDocument.stopColorer();
-        }
     }
     
     /**

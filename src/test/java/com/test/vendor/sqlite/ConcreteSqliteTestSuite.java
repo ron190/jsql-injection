@@ -59,7 +59,7 @@ public abstract class ConcreteSqliteTestSuite extends AbstractTestSuite {
             )
             .matcher(columnsToParse);
 
-        List<String> columns = new ArrayList<String>();
+        List<String> columns = new ArrayList<>();
         
         while (regexSearch.find()) {
             

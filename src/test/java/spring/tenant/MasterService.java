@@ -22,7 +22,7 @@ public class MasterService {
         // Remove annoying logs from jdbc driver
         DriverManager.setLogWriter(null);
 
-        ArrayList<Properties> properties = new ArrayList<Properties>(
+        ArrayList<Properties> properties = new ArrayList<>(
             Arrays.asList(
                 TargetApplication.propsH2,
                 TargetApplication.propsMysql,

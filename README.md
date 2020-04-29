@@ -1,7 +1,7 @@
 ## Description
 **jSQL Injection** is a lightweight application used to find database information from a distant server.
 
-It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X).
+It is **free**, **open source** and works **cross-platform** on Windows, Linux and Mac OS X.
 
 ![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in other distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) or [BlackArch Linux](http://www.blackarch.org/).
 
@@ -53,7 +53,6 @@ $result = $link->query("SELECT col1, col2 FROM my_table where id=$_GET[id]");
 while ($row = $result->fetch_array($result, MYSQLI_NUM))
     echo join(',', $row);
 ```
-
 
 ## Screenshots and [[video](https://youtu.be/ZZkQRE3OL8E)]
 [![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)

@@ -10,18 +10,7 @@
  *******************************************************************************/
 package com.jsql.view.swing.ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.plaf.UIResource;
-import javax.swing.plaf.basic.BasicArrowButton;
-import javax.swing.plaf.metal.MetalTabbedPaneUI;
-
-import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Tab UI to remove inner borders on empty tabbedpane and force header height on Linux.

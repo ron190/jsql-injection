@@ -21,7 +21,7 @@ import com.jsql.view.swing.util.UiUtil;
  * Textfield with information text displayed when empty.
  */
 @SuppressWarnings("serial")
-public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlaceholder {
+public class JTextPanePlaceholder extends JTextPane {
     
     /**
      * Log4j logger sent to view.
@@ -52,36 +52,7 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
         
         this.placeholderText = placeholder;
         
-        this.setCaret(new DefaultCaret() {
-            
-            @Override
-            public void setSelectionVisible(boolean visible) {
-                
-                super.setSelectionVisible(true);
-            }
-        });
-        
-        this.addFocusListener(new FocusListener() {
-            
-            @Override
-            public void focusLost(FocusEvent e) {
-                
-                JTextPanePlaceholder.this.setSelectionColor(UiUtil.COLOR_FOCUS_LOST);
-                JTextPanePlaceholder.this.revalidate();
-                JTextPanePlaceholder.this.repaint();
-            }
-            
-            @Override
-            public void focusGained(FocusEvent e) {
-                
-                JTextPanePlaceholder.this.setSelectionColor(UiUtil.COLOR_FOCUS_GAINED);
-                JTextPanePlaceholder.this.revalidate();
-                JTextPanePlaceholder.this.repaint();
-            }
-        });
-        
-        this.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());
-        this.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeleteNextCharAction());
+        UiUtil.initialize(this);
     }
 
     @Override
@@ -95,7 +66,7 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
             super.paint(g);
             
             if (StringUtils.isEmpty(Jsoup.parse(this.getText()).text().trim())) {
-                this.drawPlaceholder(this, g, this.placeholderText);
+                UiUtil.drawPlaceholder(this, g, this.placeholderText);
             }
         } catch (ConcurrentModificationException | IndexOutOfBoundsException | ClassCastException e) {
             LOGGER.error(e.getMessage(), e);

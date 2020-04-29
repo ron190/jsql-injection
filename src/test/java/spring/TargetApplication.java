@@ -87,7 +87,7 @@ public class TargetApplication {
         initializeNeo4j();
         initializeDerby();
         
-        ArrayList<Properties> properties = new ArrayList<Properties>(
+        ArrayList<Properties> properties = new ArrayList<>(
             Arrays.asList(
                 TargetApplication.propsH2,
                 TargetApplication.propsMysql,

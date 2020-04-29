@@ -32,6 +32,7 @@ public class Table extends AbstractElementDatabase {
     /**
      * The number of rows in the table.
      */
+    // TODO to int and move to abstract class
     private String rowCount;
 
     /**
@@ -41,6 +42,7 @@ public class Table extends AbstractElementDatabase {
      * @param newParentDatabase
      */
     public Table(String newTableName, String newRowCount, Database newParentDatabase) {
+        
         this.elementValue = newTableName;
         this.rowCount = newRowCount;
         this.parentDatabase = newParentDatabase;
@@ -59,6 +61,7 @@ public class Table extends AbstractElementDatabase {
      */
     @Override
     public int getChildCount() {
+        
         return Integer.parseInt(this.rowCount);
     }
 
@@ -71,18 +74,25 @@ public class Table extends AbstractElementDatabase {
     public String getLabelCount() {
         
         String nbRow;
+        
         if ("information_schema".equals(this.parentDatabase.toString())) {
+            
             nbRow = "?";
+            
         } else {
+            
             nbRow = this.rowCount;
         }
         
         // Report #138: detect incorrect number of rows
         String sPlural = StringUtils.EMPTY;
+        
         try {
             if (Integer.parseInt(this.rowCount) > 1) {
+                
                 sPlural = "s";
             }
+            
         } catch (NumberFormatException e) {
             
             this.rowCount = "0";

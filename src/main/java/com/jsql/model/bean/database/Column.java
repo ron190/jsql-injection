@@ -27,6 +27,7 @@ public class Column extends AbstractElementDatabase {
      * @param newTableName
      */
     public Column(String newColumnName, Table newTableName) {
+        
         this.elementValue = newColumnName;
         this.parentTable = newTableName;
     }

@@ -26,8 +26,7 @@ public class PathParamTestSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        // TODO
-        // Test all URL segments
+        // TODO Test all PathParam URL segments
         // Analyse last required query param
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting/1'*/suffix");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(

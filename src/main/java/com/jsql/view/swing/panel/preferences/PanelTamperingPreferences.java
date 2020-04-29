@@ -19,6 +19,7 @@ import com.jsql.util.tampering.TamperingType;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.sql.lexer.HighlightedDocument;
+import com.jsql.view.swing.tab.TabHeader.Cleanable;
 import com.jsql.view.swing.text.JPopupTextPane;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
@@ -26,7 +27,7 @@ import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
-public class PanelTamperingPreferences extends JPanel {
+public class PanelTamperingPreferences extends JPanel implements Cleanable {
     
     private final JCheckBox checkboxIsTamperingBase64 = new JCheckBox();
     private final JCheckBox checkboxIsTamperingVersionComment = new JCheckBox();
@@ -40,6 +41,8 @@ public class PanelTamperingPreferences extends JPanel {
     private final JRadioButton radioIsTamperingSpaceToMultilineComment = new JRadioButton();
     private final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton();
     private final JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton();
+    
+    JTextPane textPaneEval;
 
     public PanelTamperingPreferences(PanelPreferences panelPreferences) {
         
@@ -93,7 +96,7 @@ public class PanelTamperingPreferences extends JPanel {
         this.checkboxIsTamperingEval.setToolTipText(tooltipIsTamperingEval);
         this.checkboxIsTamperingEval.setFocusable(false);
         
-        JTextPane textPaneEval = new JPopupTextPane(new JTextPanePlaceholder(tooltipIsTamperingEval)).getProxy();
+        textPaneEval = new JPopupTextPane(new JTextPanePlaceholder(tooltipIsTamperingEval)).getProxy();
         LightScrollPane textAreaIsTamperingEval = new LightScrollPane(textPaneEval);
         textAreaIsTamperingEval.setBorder(UiUtil.BORDER_FOCUS_LOST);
         textAreaIsTamperingEval.setMinimumSize(new Dimension(400, 100));
@@ -216,14 +219,6 @@ public class PanelTamperingPreferences extends JPanel {
             entry.getKey().setBorderPainted(false);
             entry.getKey().setContentAreaFilled(false);
         });
-        
-        // TODO create group for cleanable textpanelexer
-        StyledDocument styledDocument = textPaneEval.getStyledDocument();
-        if (styledDocument instanceof HighlightedDocument) {
-            
-            HighlightedDocument oldDocument = (HighlightedDocument) styledDocument;
-            oldDocument.stopColorer();
-        }
         
         HighlightedDocument document = new HighlightedDocument(HighlightedDocument.JAVASCRIPT_STYLE);
         document.setHighlightStyle(HighlightedDocument.JAVASCRIPT_STYLE);
@@ -359,7 +354,8 @@ public class PanelTamperingPreferences extends JPanel {
             )
         );
         
-        Stream.of(
+        Stream
+        .of(
             this.checkboxIsTamperingEval,
             this.checkboxIsTamperingBase64,
             this.checkboxIsTamperingFunctionComment,
@@ -374,6 +370,12 @@ public class PanelTamperingPreferences extends JPanel {
             this.radioIsTamperingSpaceToSharpComment
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
+    }
+
+    @Override
+    public void clean() {
+        
+        UiUtil.stopDocumentColorer(textPaneEval);
     }
     
     // Getter and setter

@@ -26,7 +26,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-
+    
     <build>
 
         <resources>
@@ -134,18 +134,38 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M4</version>
                 <configuration>
-                    <!-- Compatible only jdk > 9  -->
-                    <!-- <argLine>-Dnashorn.args=- -no-deprecation-warning</argLine> -->
-                    <rerunFailingTestsCount>3</rerunFailingTestsCount>
+<!--                     Compatible only jdk > 9  -->
+<!--                     <argLine>-Dnashorn.args=- -no-deprecation-warning</argLine> -->
                     <includes>
                         <include>**/*Spock</include>
-                        <include>**/*TestSuite</include>
+                        <include>**/*UiTest</include>
+                    </includes>        
+                    <reportFormat>plain</reportFormat>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-failsafe-plugin</artifactId>
+		        <version>3.0.0-M4</version>
+		        <executions>
+		          <execution>
+		            <goals>
+		              <goal>integration-test</goal>
+		              <goal>verify</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+                <configuration>
+                    <rerunFailingTestsCount>3</rerunFailingTestsCount>
+                    <includes>
+                        <include>**/*TestSuite.java</include>
                     </includes>        
                     <parallel>classes</parallel>
                     <threadCount>3</threadCount>
                     <threadCountClasses>2</threadCountClasses>
                     <threadCountMethods>1</threadCountMethods>
-                    <reportFormat>plain</reportFormat>
+                    <reportFormat>plain</reportFormat>       
                 </configuration>
             </plugin>
     
@@ -210,7 +230,6 @@
                 </executions>
                 <configuration>
                     <excludes> 
-                        <exclude>**/com/jsql/view/swing/**/*.class</exclude>
                         <exclude>**/com/jsql/model/injection/strategy/blind/patch/**/*.class</exclude>
                         <exclude>**/com/jsql/view/scan/interaction/**/*.class</exclude>
                     </excludes>
@@ -241,6 +260,20 @@
     </dependencyManagement>
 
     <dependencies>
+    
+        <!-- Required by failsafe? -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+	    <dependency>
+	        <groupId>org.assertj</groupId>
+	        <artifactId>assertj-swing-junit</artifactId>
+	        <version>3.9.2</version>
+	        <scope>test</scope>
+	    </dependency>
         
         <!-- Spock -->
         <dependency>

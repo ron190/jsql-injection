@@ -19,7 +19,7 @@ import com.jsql.view.swing.util.UiUtil;
  * Textfield with information text displayed when empty.
  */
 @SuppressWarnings("serial")
-public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlaceholder {
+public class JTextAreaPlaceholder extends JTextArea {
     
     /**
      * Log4j logger sent to view.
@@ -48,40 +48,9 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
      */
     public JTextAreaPlaceholder(String placeholder) {
         
-        // TODO duplicated in JTextPanePlaceholder
-        // but diamond inheritance textpane and textarea
         this.placeholderText = placeholder;
         
-        this.setCaret(new DefaultCaret() {
-            
-            @Override
-            public void setSelectionVisible(boolean visible) {
-                
-                super.setSelectionVisible(true);
-            }
-        });
-        
-        this.addFocusListener(new FocusListener() {
-            
-            @Override
-            public void focusLost(FocusEvent e) {
-                
-                JTextAreaPlaceholder.this.setSelectionColor(UiUtil.COLOR_FOCUS_LOST);
-                JTextAreaPlaceholder.this.revalidate();
-                JTextAreaPlaceholder.this.repaint();
-            }
-            
-            @Override
-            public void focusGained(FocusEvent e) {
-                
-                JTextAreaPlaceholder.this.setSelectionColor(UiUtil.COLOR_FOCUS_GAINED);
-                JTextAreaPlaceholder.this.revalidate();
-                JTextAreaPlaceholder.this.repaint();
-            }
-        });
-        
-        this.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());
-        this.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeleteNextCharAction());
+        UiUtil.initialize(this);
     }
 
     @Override
@@ -96,7 +65,7 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
             
             if (StringUtils.isEmpty(this.getText())) {
                 
-                this.drawPlaceholder(this, g, this.placeholderText);
+                UiUtil.drawPlaceholder(this, g, this.placeholderText);
             }
             
         } catch (IllegalArgumentException | NullPointerException | ArrayIndexOutOfBoundsException e) {

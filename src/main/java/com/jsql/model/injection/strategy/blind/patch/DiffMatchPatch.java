@@ -1507,7 +1507,6 @@ public class DiffMatchPatch {
             String param = token.substring(1);
             switch (token.charAt(0)) {
             case '+':
-                // TODO
                 // decode would change all "+" to " "
                 param = param.replace("+", "%2B");
                 try {
@@ -2283,7 +2282,6 @@ public class DiffMatchPatch {
                     continue;
                 }
                 line = text.getFirst().substring(1);
-                // TODO
                 line = line.replace("+", "%2B");  // decode would change all "+" to " "
                 try {
                     line = URLDecoder.decode(line, StandardCharsets.UTF_8.name());

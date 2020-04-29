@@ -464,7 +464,8 @@ public class Menubar extends JMenuBar {
                 }
             };
 
-            LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, new PanelPreferences());
+            PanelPreferences panelPreferences = new PanelPreferences();
+            LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, panelPreferences);
             scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
             
             MediatorHelper.tabResults().addTab(titleTabPreferences, scroller);
@@ -473,7 +474,7 @@ public class Menubar extends JMenuBar {
             MediatorHelper.tabResults().setSelectedComponent(scroller);
 
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18nViewUtil.valueByKey("MENUBAR_PREFERENCES"), UiUtil.ICON_COG);
+            TabHeader header = new TabHeader(I18nViewUtil.valueByKey("MENUBAR_PREFERENCES"), UiUtil.ICON_COG, panelPreferences.getPanelTamperingPreferences());
             I18nViewUtil.addComponentForKey("MENUBAR_PREFERENCES", header.getTabTitleLabel());
 
             // Apply the custom header to the tab
@@ -971,7 +972,6 @@ public class Menubar extends JMenuBar {
 
     private void switchI18nComponents(Locale newLocale) {
         
-        // TODO stream
         for (String key: I18nViewUtil.keys()) {
             
             for (Object componentSwing: I18nViewUtil.componentsByKey(key)) {

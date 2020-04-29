@@ -69,7 +69,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 String pageSource = currentCallable.getContent();
                 
                 if (
-                    //TODO
+                    // TODO 1. Pattern to find vendor
                     // the correct character: mysql
                     Pattern.compile(".*Unknown column '1337' in 'order clause'.*", Pattern.DOTALL).matcher(pageSource).matches() ||
                     Pattern.compile(".*supplied argument is not a valid MySQL result resource.*", Pattern.DOTALL).matcher(pageSource).matches() ||
@@ -106,20 +106,27 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
     private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService) {
         
         List<String> roots = Arrays.asList("-1", "0", "1", StringUtils.EMPTY);
-        List<String> prefixes = Arrays.asList(
+        
+        List<String> prefixes = 
+            Arrays
+            .asList(
                 "prefix",
                 "prefix'", "'prefix'",
                 "prefix\"", "\"prefix\"",
                 "prefix%bf'", "%bf'prefix%bf'",
                 "prefix%bf\"", "%bf\"prefix%bf\""
             );
+        
         List<String> suffixes = Arrays.asList(StringUtils.EMPTY, ")", "))");
         
         List<String> charactersInsertion = new ArrayList<>();
         
         for (String root: roots) {
+            
             for (String prefix: prefixes) {
+                
                 for (String suffix: suffixes) {
+                    
                     charactersInsertion.add(prefix.replace("prefix", root) + suffix);
                 }
             }
@@ -148,10 +155,14 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         if (characterInsertionDetectedFixed == null) {
             
             if (StringUtils.isEmpty(characterInsertionByUser) || InjectionModel.STAR.equals(characterInsertionByUser)) {
+                
                 characterInsertionDetectedFixed = "1";
+                
             } else {
+                
                 characterInsertionDetectedFixed = characterInsertionByUser;
             }
+            
             LOGGER.warn("No character insertion activates ORDER BY error, forcing to ["+ characterInsertionDetectedFixed.replace(InjectionModel.STAR, StringUtils.EMPTY) +"]");
             
         } else if (!characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY).equals(characterInsertionDetectedFixed)) {

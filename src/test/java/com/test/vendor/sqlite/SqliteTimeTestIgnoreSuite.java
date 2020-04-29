@@ -13,7 +13,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-//TODO
+//TODO SqliteTime
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
 public class SqliteTimeTestIgnoreSuite extends ConcreteSqliteTestSuite {
@@ -40,8 +40,6 @@ public class SqliteTimeTestIgnoreSuite extends ConcreteSqliteTestSuite {
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlite());
         model.beginInjection();
     }
-    
-    // TODO listColumns Special parsing required
     
     @Override
     @RepeatFailedTest(3)

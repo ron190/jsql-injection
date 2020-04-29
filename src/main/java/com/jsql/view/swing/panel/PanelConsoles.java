@@ -275,8 +275,8 @@ public class PanelConsoles extends JPanel {
 
         JPanel panelExpander = new JPanel(new BorderLayout());
         panelExpander.setBorder(BorderFactory.createEmptyBorder());
-        panelExpander.add(buttonShowSouth, BorderLayout.LINE_START);
-        panelExpander.add(this.buttonShowNorth, BorderLayout.LINE_END);
+        panelExpander.add(buttonShowSouth, BorderLayout.LINE_END);
+        panelExpander.add(this.buttonShowNorth, BorderLayout.LINE_START);
         arrowDownPanel.add(panelExpander, BorderLayout.LINE_END);
         
         return arrowDownPanel;

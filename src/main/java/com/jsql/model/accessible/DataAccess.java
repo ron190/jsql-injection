@@ -419,6 +419,7 @@ public class DataAccess {
             LOGGER.warn(e.getMessage(), e);
         }
 
+        // TODO make generic with SqliteVendor
         // Build SQLite columns
         if (this.injectionModel.getMediatorVendor().isSqlite()) {
             

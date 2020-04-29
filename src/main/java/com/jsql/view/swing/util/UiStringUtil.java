@@ -25,6 +25,7 @@ public class UiStringUtil {
         
         // Fix #35217: NullPointerException on getBytes()
         if (text == null) {
+            
             return StringUtils.EMPTY;
         }
         
@@ -36,7 +37,6 @@ public class UiStringUtil {
         String result = text;
         if (encoding != null) {
             
-            // TODO move to View, remove from model
             result =
                 "<html><span style=\"font-family:'"
                 + UiUtil.FONT_NAME_UBUNTU_REGULAR

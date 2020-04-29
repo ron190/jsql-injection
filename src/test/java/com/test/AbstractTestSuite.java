@@ -170,7 +170,7 @@ public abstract class AbstractTestSuite {
         Set<String> valuesFromJdbc = new HashSet<>();
         
         try {
-            List<String> databases = 
+            List<String> databases =
                 this.injectionModel
                 .getDataAccess()
                 .listDatabases()
@@ -187,7 +187,7 @@ public abstract class AbstractTestSuite {
             
         } catch (AssertionError e) {
             
-            Set<String> tablesUnkown = 
+            Set<String> tablesUnkown =
                 Stream
                 .concat(
                     valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
@@ -206,7 +206,7 @@ public abstract class AbstractTestSuite {
         Set<String> valuesFromJdbc = new HashSet<>();
 
         try {
-            List<String> tables = 
+            List<String> tables =
                 this.injectionModel
                 .getDataAccess()
                 .listTables(new Database(AbstractTestSuite.this.jsqlDatabaseName, "0"))
@@ -222,7 +222,7 @@ public abstract class AbstractTestSuite {
             
         } catch (AssertionError e) {
             
-            Set<String> tablesUnkown = 
+            Set<String> tablesUnkown =
                 Stream
                 .concat(
                     valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
@@ -246,7 +246,7 @@ public abstract class AbstractTestSuite {
         Set<String> valuesFromJdbc = new HashSet<>();
 
         try {
-            List<String> columns = 
+            List<String> columns =
                 this.injectionModel
                 .getDataAccess()
                 .listColumns(
@@ -259,14 +259,14 @@ public abstract class AbstractTestSuite {
                 .collect(Collectors.toList());
 
             valuesFromInjection.addAll(columns);
-            valuesFromJdbc.addAll(parse(AbstractTestSuite.this.columnsFromJdbc));
+            valuesFromJdbc.addAll(this.parse(AbstractTestSuite.this.columnsFromJdbc));
 
             LOGGER.info(String.format("listColumns: found %s to find %s", valuesFromInjection, valuesFromJdbc));
             assertTrue(!valuesFromInjection.isEmpty() && !valuesFromJdbc.isEmpty() && valuesFromInjection.equals(valuesFromJdbc));
             
         } catch (AssertionError e) {
             
-            Set<String> columnsUnkown = 
+            Set<String> columnsUnkown =
                 Stream
                 .concat(
                     valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
@@ -293,7 +293,7 @@ public abstract class AbstractTestSuite {
                 )
             ));
             
-            List<String> valuesFound = 
+            List<String> valuesFound =
                 Arrays
                 .asList(rows)
                 .stream()
@@ -304,13 +304,13 @@ public abstract class AbstractTestSuite {
             valuesFromInjection.addAll(valuesFound);
             valuesFromJdbc.addAll(AbstractTestSuite.this.valuesFromJdbc);
 
-            String logValuesFromInjection = 
+            String logValuesFromInjection =
                 valuesFromInjection
                 .toString()
                 .replaceAll("\n", "[n]")
                 .replaceAll("\r", "[r]");
             
-            String logValuesFromJdbc = 
+            String logValuesFromJdbc =
                 valuesFromJdbc
                 .toString()
                 .replaceAll("\n", "[n]")
@@ -322,7 +322,7 @@ public abstract class AbstractTestSuite {
             
         } catch (AssertionError e) {
             
-            Set<String> valuesUnknown = 
+            Set<String> valuesUnknown =
                 Stream
                 .concat(
                     valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),

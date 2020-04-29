@@ -26,6 +26,7 @@ public class Database extends AbstractElementDatabase {
     /**
      * The number of tables in the database.
      */
+    // TODO to int
     private String tableCount;
 
     /**
@@ -34,6 +35,7 @@ public class Database extends AbstractElementDatabase {
      * @param newTableCount
      */
     public Database(String newDatabaseName, String newTableCount) {
+        
         this.elementValue = newDatabaseName;
         this.tableCount = newTableCount;
     }
@@ -51,6 +53,7 @@ public class Database extends AbstractElementDatabase {
      */
     @Override
     public int getChildCount() {
+        
         return Integer.parseInt(this.tableCount);
     }
 
@@ -63,11 +66,15 @@ public class Database extends AbstractElementDatabase {
         
         // Report #1500: detect incorrect number of tables
         String sPlural = StringUtils.EMPTY;
+        
         try {
             if (Integer.parseInt(this.tableCount) > 1) {
+                
                 sPlural = "s";
             }
+            
         } catch (NumberFormatException e) {
+            
             this.tableCount = "0";
             LOGGER.warn("Incorrect number of tables.");
         }

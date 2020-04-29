@@ -34,7 +34,7 @@ public class BeanInjection {
         this.header = header;
         
         try {
-            this.method = 
+            this.method =
                 MediatorHelper
                 .model()
                 .getMediatorMethod()
@@ -50,7 +50,7 @@ public class BeanInjection {
         }
         
         try {
-            this.vendor = 
+            this.vendor =
                 MediatorHelper
                 .model()
                 .getMediatorVendor()

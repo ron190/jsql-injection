@@ -35,6 +35,7 @@ import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.list.BeanInjection;
 import com.jsql.view.swing.list.DnDList;
+import com.jsql.view.swing.list.DnDListScan;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.list.ItemListScan;
 import com.jsql.view.swing.list.ListTransfertHandlerScan;
@@ -66,9 +67,8 @@ public class ManagerScan extends AbstractManagerList {
 
         List<ItemList> itemsList = this.getItemList();
         
-        final DnDList dndListScan = new DnDList(itemsList);
+        final DnDList dndListScan = new DnDListScan(itemsList);
         
-        dndListScan.setScan(true);
         dndListScan.setName("scan");
         dndListScan.setTransferHandler(null);
         dndListScan.setTransferHandler(new ListTransfertHandlerScan());

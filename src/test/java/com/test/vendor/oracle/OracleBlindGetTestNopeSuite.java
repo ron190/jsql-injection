@@ -13,7 +13,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-//TODO
+//TODO OracleBlind not working
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
 public class OracleBlindGetTestNopeSuite extends ConcreteOracleTestSuite {

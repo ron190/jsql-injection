@@ -11,6 +11,11 @@ jdk:
  # Need new version of gmavenplus-plugin
  # - openjdk14
 
+env:
+  global:
+    # Disable Oracle in the cloud
+    - FROM_TRAVIS=true
+    
 addons:
   sonarcloud:
     organization: ron190-github
@@ -24,14 +29,10 @@ cache:
     
 before_install:
 
-  - export FROM_TRAVIS="true"
+  - env | sort
   - sudo cat /proc/meminfo
   - java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
-#  - export MAVEN_SKIP_RC=true
-#  - export MAVEN_OPTS="-Xss512k -Xms2g -Xmx3g -Xmn3g -XX:PermSize=1g $MAVEN_OPTS"
-#  - export MAVEN_OPTS="-Xss512k -Xms2g -Xmx3g -Xmn3g -XX:PermSize=1g $MAVEN_OPTS" > ~/.mavenrc
     
-  # Docker configuration
   - ./src/test/resources/docker/script/build.sh
   - ./src/test/resources/docker/script/run.sh
   - ./src/test/resources/docker/script/verify.sh

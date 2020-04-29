@@ -212,7 +212,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         return this.indexMethod;
     }
     
-    public void setIndexMethod(int i) {
-        this.indexMethod = i;
+    public void setIndexMethod(int indexMethod) {
+        this.indexMethod = indexMethod;
     }
 }

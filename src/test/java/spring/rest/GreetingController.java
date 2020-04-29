@@ -23,11 +23,9 @@ import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
 import org.neo4j.driver.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,13 +45,16 @@ public class GreetingController {
     private ObjectMapper objectMapper = new ObjectMapper();
     private static final Logger LOGGER = Logger.getRootLogger();
     private Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
-
+    
+    @Autowired
+    private SessionFactory sessionFactory;
+    
     @Bean
     public StrictHttpFirewall httpFirewall() {
         
         StrictHttpFirewall firewall = new StrictHttpFirewall();
         
-        List<String> httpMethods = 
+        List<String> httpMethods =
             Stream
             .concat(
                 Stream.of("CUSTOM-JSQL"),
@@ -65,9 +66,6 @@ public class GreetingController {
         
         return firewall;
     }
-    
-    @Autowired
-    private SessionFactory sessionFactory;
 
     @SuppressWarnings("unchecked")
     @RequestMapping(
@@ -349,6 +347,7 @@ public class GreetingController {
         
         Greeting greeting = null;
         
+        // TODO 1x GET and 12x POST instead of CUSTOM-JSQL
         if (!"CUSTOM-JSQL".equals(request.getMethod())) {
             System.out.println("request.getMethod()");
             System.out.println(request.getMethod());
