@@ -33,7 +33,11 @@ public class MainApplication {
     static {
         
         injectionModel = new InjectionModel();
-        injectionModel.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();
+        
+        if (!"true".equals(System.getenv("FROM_TRAVIS"))) {
+            
+            injectionModel.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();
+        }
         
         MainApplication.apply4K();
     }
