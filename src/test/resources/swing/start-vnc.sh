@@ -36,6 +36,11 @@ full_password
 view_password
 EOF
 
+vncpasswd -f > "$HOME/.vnc/passwd" <<EOF
+full_password
+view_password
+EOF
+
 cat /home/travis/.vnc/passwd
 
 export OLD_DISPLAY=${DISPLAY}
