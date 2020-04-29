@@ -37,7 +37,7 @@ public class SimpleFrame_JButtonMatcher_UiTest extends AssertJSwingJUnitTestCase
         System.out.println("6ho!");
         window.show(new Dimension(600, 400));
         System.out.println("7ho!");
-        window.button(withName("BUTTON_START_TOOLTIP").andShowing().andText("")).click();
+        window.button(withName("BUTTON_START_TOOLTIP").andText("")).click();
         System.out.println("8ho!");
     }
 }
