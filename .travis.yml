@@ -35,9 +35,9 @@ before_install:
   
   - sudo apt-get install tightvncserver
     
-  - ./src/test/resources/docker/script/build.sh
-  - ./src/test/resources/docker/script/run.sh
-  - ./src/test/resources/docker/script/verify.sh
+#  - ./src/test/resources/docker/script/build.sh
+#  - ./src/test/resources/docker/script/run.sh
+#  - ./src/test/resources/docker/script/verify.sh
 
 script:
 
