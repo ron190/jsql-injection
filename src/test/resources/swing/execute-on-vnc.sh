@@ -30,11 +30,6 @@ full_password
 view_password
 EOF
 
-vncpasswd << EOF
-123456
-123456
-EOF
-
 echo hi!
 
 OLD_DISPLAY=${DISPLAY}
