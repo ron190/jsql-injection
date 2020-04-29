@@ -17,10 +17,14 @@ done
 
 echo "Using first available display :${NEW_DISPLAY}"
 
+ls /home/travis/
+
 cat << EOF > /home/travis/.vnc/passwd
 $full_password
 $view_password
 EOF
+
+ls /home/travis/.vnc/
 
 vncpasswd -f /home/travis/.vnc/passwd
 
