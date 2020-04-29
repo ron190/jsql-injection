@@ -30,17 +30,24 @@ full_password
 view_password
 EOF
 
-
 vncpasswd << EOF
 123456
 123456
 EOF
 
+echo hi!
+
 OLD_DISPLAY=${DISPLAY}
 vncserver ":${NEW_DISPLAY}" -localhost -geometry 1600x1200 -depth 16
 export DISPLAY=:${NEW_DISPLAY}
 
+echo hi!
+
 "$@"
+
+echo hi!
 
 export DISPLAY=${OLD_DISPLAY}
 vncserver -kill ":${NEW_DISPLAY}"
+
+echo hi!
