@@ -43,7 +43,7 @@ script:
 
   - ./src/test/resources/swing/start-vnc.sh
   - echo hi!
-  - mvn clean verify sonar:sonar
+  #- mvn clean verify sonar:sonar
   - ./src/test/resources/swing/stop-vnc.sh
   
   # Check MySQL status
