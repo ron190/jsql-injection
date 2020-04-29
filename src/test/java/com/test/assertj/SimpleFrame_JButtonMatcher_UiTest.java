@@ -36,6 +36,8 @@ public class SimpleFrame_JButtonMatcher_UiTest extends AssertJSwingJUnitTestCase
         FrameFixture window = new FrameFixture(robot(), frame);
         System.out.println("6ho!");
         window.show(new Dimension(600, 400));
+        window.resizeTo(new Dimension(800, 600));
+        window.maximize();
         System.out.println("7ho!");
         window.button(withName("BUTTON_START_TOOLTIP").andText("")).click();
         System.out.println("8ho!");
