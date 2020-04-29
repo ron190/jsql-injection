@@ -17,6 +17,7 @@ done
 
 echo "Using first available display :${NEW_DISPLAY}"
 
+mkdir /home/travis/.vnc/
 ls /home/travis/
 
 cat << EOF > /home/travis/.vnc/passwd
