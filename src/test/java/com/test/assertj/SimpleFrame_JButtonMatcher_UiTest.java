@@ -2,6 +2,8 @@ package com.test.assertj;
 
 import static org.assertj.swing.core.matcher.JButtonMatcher.withName;
 
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 
 import org.assertj.swing.edt.GuiActionRunner;
@@ -33,7 +35,7 @@ public class SimpleFrame_JButtonMatcher_UiTest extends AssertJSwingJUnitTestCase
         System.out.println("5ho!");
         FrameFixture window = new FrameFixture(robot(), frame);
         System.out.println("6ho!");
-        window.show();
+        window.show(new Dimension(600, 400));
         System.out.println("7ho!");
         window.button(withName("BUTTON_START_TOOLTIP").andShowing().andText("")).click();
         System.out.println("8ho!");
