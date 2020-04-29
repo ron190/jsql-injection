@@ -18,7 +18,8 @@ done
 
 echo "Using first available display :${NEW_DISPLAY}"
 
-vncpasswd -f > "$HOME/.vnc/passwd" <<EOF
+mkdir $HOME/.vnc/
+vncpasswd -f > $HOME/.vnc/passwd <<EOF
 123456
 123456
 EOF
