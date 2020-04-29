@@ -18,37 +18,16 @@ done
 
 echo "Using first available display :${NEW_DISPLAY}"
 
-mkdir /home/travis/.vnc/
-ls /home/travis/
-
-tee /home/travis/.vnc/jsql-passwd << EOF
-full_password
-view_password
-EOF
-
-ls /home/travis/.vnc/
-cat /home/travis/.vnc/jsql-passwd
-
-#vncpasswd -f /home/travis/.vnc/jsql-passwd > /home/travis/.vnc/passwd
-
-vncpasswd -f > /home/travis/.vnc/passwd <<EOF
-full_password
-view_password
-EOF
-
-vncpasswd -f > "$HOME/.vnc/passwd" <<EOF
-full_password
-view_password
-EOF
-
-
 vncpasswd << EOF
 123456
 123456
 EOF
 
 cat /home/travis/.vnc/passwd
+cat $HOME/.vnc/passwd
 
 export OLD_DISPLAY=${DISPLAY}
 vncserver ":${NEW_DISPLAY}" -localhost -geometry 1600x1200 -depth 16 &
 export DISPLAY=:${NEW_DISPLAY}
+
+echo hello!

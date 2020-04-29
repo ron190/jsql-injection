@@ -42,6 +42,7 @@ before_install:
 script:
 
   - ./src/test/resources/swing/start-vnc.sh
+  - echo hi!
   - mvn clean verify sonar:sonar
   - ./src/test/resources/swing/stop-vnc.sh
   
