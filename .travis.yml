@@ -33,7 +33,7 @@ before_install:
   - sudo cat /proc/meminfo
   - java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
   
-  - sudo apt-get install tightvncserver xorg-x11-fonts-base
+  - sudo apt-get install tightvncserver libxfont2
     
 #  - ./src/test/resources/docker/script/build.sh
 #  - ./src/test/resources/docker/script/run.sh
