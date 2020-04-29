@@ -1,4 +1,5 @@
-#/bin/bash
+#!/usr/bin/env sh
+
 NEW_DISPLAY=42
 DONE="no"
 
@@ -20,9 +21,9 @@ echo "Using first available display :${NEW_DISPLAY}"
 mkdir /home/travis/.vnc/
 ls /home/travis/
 
-tee /home/travis/.vnc/jsql-passwd << EOF 
-$full_password
-$view_password
+tee /home/travis/.vnc/jsql-passwd << EOF
+    $full_password
+    $view_password
 EOF
 
 ls /home/travis/.vnc/
