@@ -41,6 +41,12 @@ full_password
 view_password
 EOF
 
+
+vncpasswd << EOF
+123456
+123456
+EOF
+
 cat /home/travis/.vnc/passwd
 
 export OLD_DISPLAY=${DISPLAY}
