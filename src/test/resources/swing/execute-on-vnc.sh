@@ -24,7 +24,17 @@ vncpasswd -f > $HOME/.vnc/passwd <<EOF
 123456
 EOF
 
-echo hi!
+cat $HOME/.vnc/passwd
+
+mkdir /home/travis/.vnc/
+vncpasswd -f > /home/travis/.vnc/passwd <<EOF
+123456
+123456
+EOF
+
+cat /home/travis/.vnc/passwd
+
+echo hi $HOME hi!
 
 OLD_DISPLAY=${DISPLAY}
 vncserver ":${NEW_DISPLAY}" -localhost -geometry 1600x1200 -depth 16
