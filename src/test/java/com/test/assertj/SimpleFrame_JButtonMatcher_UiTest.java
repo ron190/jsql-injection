@@ -19,15 +19,23 @@ public class SimpleFrame_JButtonMatcher_UiTest extends AssertJSwingJUnitTestCase
 
     @Override
     protected void onSetUp() {
+        System.out.println("1ho!");
         InjectionModel injectionModel = new InjectionModel();
+        System.out.println("2ho!");
         MediatorHelper.register(injectionModel);
+        System.out.println("3ho!");
         frame = GuiActionRunner.execute(() -> new JFrameView());
+        System.out.println("4ho!");
     }
 
     @Test
     public void shoulFindOkButton() {
+        System.out.println("5ho!");
         FrameFixture window = new FrameFixture(robot(), frame);
+        System.out.println("6ho!");
         window.show();
+        System.out.println("7ho!");
         window.button(withName("BUTTON_START_TOOLTIP").andShowing().andText("")).click();
+        System.out.println("8ho!");
     }
 }
