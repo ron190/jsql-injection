@@ -27,6 +27,10 @@ EOF
 cat $HOME/.vnc/passwd
 
 chmod 600 $HOME/.vnc/passwd
+
+mkdir /usr/X11R6/lib
+mkdir /usr/X11R6/lib/X11
+ln -s /usr/share/X11/fonts /usr/X11R6/lib/X11/fonts
  
 OLD_DISPLAY=${DISPLAY}
 vncserver ":${NEW_DISPLAY}" -localhost -geometry 1600x1200 -depth 16
