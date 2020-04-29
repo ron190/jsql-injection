@@ -32,6 +32,8 @@ before_install:
   - env | sort
   - sudo cat /proc/meminfo
   - java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
+  
+  - sudo apt-get install tightvncserver
     
   - ./src/test/resources/docker/script/build.sh
   - ./src/test/resources/docker/script/run.sh
@@ -39,7 +41,9 @@ before_install:
 
 script:
 
+  - ./src/test/resources/swing/start-vnc.sh
   - mvn clean verify sonar:sonar
+  - ./src/test/resources/swing/stop-vnc.sh
   
   # Check MySQL status
   - docker exec -it jsql-mysql /bin/bash
