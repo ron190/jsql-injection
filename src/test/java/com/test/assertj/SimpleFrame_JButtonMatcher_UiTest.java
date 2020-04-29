@@ -27,7 +27,7 @@ public class SimpleFrame_JButtonMatcher_UiTest extends AssertJSwingJUnitTestCase
         MediatorHelper.register(injectionModel);
         System.out.println("3ho!");
         frame = GuiActionRunner.execute(() -> new JFrameView());
-        System.out.println("4ho!");
+        System.out.println("4ho!"); 
     }
 
     @Test
