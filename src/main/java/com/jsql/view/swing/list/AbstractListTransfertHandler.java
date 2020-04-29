@@ -90,6 +90,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
             || support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
     }
 
+    // TODO 2. Fix drag string to dndscan 
     @Override
     public boolean importData(TransferSupport support) {
         

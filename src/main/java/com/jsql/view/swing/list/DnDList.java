@@ -55,7 +55,7 @@ public class DnDList extends JList<ItemList> {
     /**
      * Model for the JList.
      */
-    private DefaultListModel<ItemList> listModel;
+    protected DefaultListModel<ItemList> listModel;
     
     /**
      * List of default items.
@@ -348,15 +348,7 @@ public class DnDList extends JList<ItemList> {
                     && 0 <= endPosition && endPosition <= this.listModel.size()
                 ) {
                     
-                    // TODO inheritance DnDListScan
-                    if (this.isScan) {
-                        
-                        this.listModel.add(endPosition++, new ItemListScan(new BeanInjection(line.replace("\\", "/"))));
-                        
-                    } else {
-                        
-                        this.listModel.add(endPosition++, new ItemList(line.replace("\\", "/")));
-                    }
+                    addItem(endPosition++, line);
                 }
             }
             
@@ -378,9 +370,8 @@ public class DnDList extends JList<ItemList> {
         }
     }
     
-    // Getter and setter
-
-    public void setScan(boolean isScan) {
-        this.isScan = isScan;
+    public void addItem(int endPosition, String line) {
+        
+        this.listModel.add(endPosition, new ItemList(line.replace("\\", "/")));
     }
 }
