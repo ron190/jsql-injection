@@ -22,8 +22,8 @@ mkdir /home/travis/.vnc/
 ls /home/travis/
 
 tee /home/travis/.vnc/jsql-passwd << EOF
-    $full_password
-    $view_password
+full_password
+view_password
 EOF
 
 ls /home/travis/.vnc/
