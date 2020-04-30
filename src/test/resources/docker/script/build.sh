@@ -1,5 +1,3 @@
-#!/usr/bin/env sh
-
 jobs
 
 docker build -t mysql \

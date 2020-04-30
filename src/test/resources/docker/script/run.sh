@@ -1,5 +1,3 @@
-#!/usr/bin/env sh
-
 # docker start $(docker ps -a -q)
 
 docker run --name jsql-mysql \
