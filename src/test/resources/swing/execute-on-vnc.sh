@@ -35,7 +35,7 @@ chmod 600 $HOME/.vnc/passwd
 xset q
  
 OLD_DISPLAY=${DISPLAY}
-vncserver ":${NEW_DISPLAY}" -localhost -geometry 1920x1080 -depth 24
+vncserver ":${NEW_DISPLAY}" -localhost -geometry 1920x1080 -depth 24 
 export DISPLAY=:${NEW_DISPLAY}
 
 echo hi!
