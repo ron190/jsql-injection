@@ -1,3 +1,7 @@
+#!/usr/bin/env sh
+
+# docker start $(docker ps -a -q)
+
 docker run --name jsql-mysql \
 --publish 3306:3306 \
 -e MYSQL_ROOT_PASSWORD=my-secret-pw \

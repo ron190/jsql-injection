@@ -349,8 +349,7 @@ public class GreetingController {
         
         // TODO 1x GET and 12x POST instead of CUSTOM-JSQL
         if (!"CUSTOM-JSQL".equals(request.getMethod())) {
-            System.out.println("request.getMethod()");
-            System.out.println(request.getMethod());
+            
             return greeting;
         }
         

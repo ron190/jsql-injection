@@ -24,27 +24,13 @@ vncpasswd -f > $HOME/.vnc/passwd <<EOF
 123456
 EOF
 
-cat $HOME/.vnc/passwd
-
 chmod 600 $HOME/.vnc/passwd
 
-# mkdir /usr/X11R6/lib
-# mkdir /usr/X11R6/lib/X11
-# ln -s /usr/share/X11/fonts /usr/X11R6/lib/X11/fonts
-
-xset q
- 
 OLD_DISPLAY=${DISPLAY}
 vncserver ":${NEW_DISPLAY}" -localhost -geometry 1920x1080 -depth 24 
 export DISPLAY=:${NEW_DISPLAY}
 
-echo hi!
-
 "$@"
-
-echo hi!
 
 export DISPLAY=${OLD_DISPLAY}
 vncserver -kill ":${NEW_DISPLAY}"
-
-echo hi!

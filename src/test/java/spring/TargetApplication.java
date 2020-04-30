@@ -159,7 +159,7 @@ public class TargetApplication {
 
     private static void initializeNeo4j() throws IOException {
         
-        String graphMovie = Files.readAllLines(Paths.get("src/test/resources/data/movie-graph.txt")).stream().collect(Collectors.joining("\n"));
+        String graphMovie = Files.readAllLines(Paths.get("src/test/resources/neo4j/movie-graph.txt")).stream().collect(Collectors.joining("\n"));
         
         Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
         
@@ -170,7 +170,7 @@ public class TargetApplication {
             Result result = session.run(graphMovie);
             result.forEachRemaining(record -> {
                 
-                System.out.println(record);
+                LOGGER.info(record);
             });
             
         } catch (Exception e) {

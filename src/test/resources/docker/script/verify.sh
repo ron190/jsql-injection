@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 # Buff MySQL
 docker exec -it jsql-mysql /bin/bash \
 -c << EOF

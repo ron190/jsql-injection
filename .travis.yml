@@ -33,19 +33,15 @@ before_install:
   - sudo cat /proc/meminfo
   - java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
   
-  - sudo apt-get install tightvncserver libxfont2 xfonts-base
+  - sudo apt-get install tightvncserver xfonts-base
     
-#  - ./src/test/resources/docker/script/build.sh
-#  - ./src/test/resources/docker/script/run.sh
-#  - ./src/test/resources/docker/script/verify.sh
+  - ./src/test/resources/docker/script/build.sh
+  - ./src/test/resources/docker/script/run.sh
+  - ./src/test/resources/docker/script/verify.sh
 
 script:
 
-#  - ./src/test/resources/swing/start-vnc.sh
-#  - echo hi!
-#  - mvn clean verify sonar:sonar
-#  - ./src/test/resources/swing/stop-vnc.sh
-  - ./src/test/resources/swing/execute-on-vnc.sh mvn clean verify sonar:sonar
+  - ./src/test/resources/vnc/execute-on-vnc.sh mvn clean verify sonar:sonar
   
   # Check MySQL status
   - docker exec -it jsql-mysql /bin/bash
