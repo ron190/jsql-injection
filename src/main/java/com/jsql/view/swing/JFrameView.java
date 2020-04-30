@@ -136,6 +136,9 @@ public class JFrameView extends JFrame {
             
             this.setSize(1024, 768);
             
+            // Center the window
+            this.setLocationRelativeTo(null);
+            
         } else {
             
             this.setSize(600, 400);
@@ -143,9 +146,6 @@ public class JFrameView extends JFrame {
         
         this.setVisible(true);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        // Center the window
-        this.setLocationRelativeTo(null);
     }
 
     private void initializeShortcuts() {
