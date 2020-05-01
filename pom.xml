@@ -99,28 +99,50 @@
                             <destFile>${project.build.directory}/jacoco.exec</destFile>
                             <fileSets>
                                <fileSet>
-                                   <directory>model/target</directory>
+                                   <directory>${project.build.directory}</directory>
                                    <includes>
-                                       <include>*.exec</include>
-                                   </includes>
-                               </fileSet>
-                               <fileSet>
-                                   <directory>view/target</directory>
-                                   <includes>
-                                       <include>*.exec</include>
+                                       <include>**/*.exec</include>
                                    </includes>
                                </fileSet>
                             </fileSets>
                             <!-- report config -->
                             <dataFile>${project.build.directory}/jacoco.exec</dataFile>
                         </configuration>
-                    </execution>
+                    </execution>                    
+<!--                     <execution> -->
+<!--                         <id>report</id> -->
+<!--                         <phase>post-integration-test</phase> -->
+<!--                         <goals> -->
+<!--                             <goal>merge</goal> -->
+<!--                             <goal>report</goal> -->
+<!--                         </goals> -->
+<!--                         <configuration> -->
+<!--                             merge config -->
+<!--                             <destFile>${project.build.directory}/jacoco.exec</destFile> -->
+<!--                             <fileSets> -->
+<!--                                <fileSet> -->
+<!--                                    <directory>model/target</directory> -->
+<!--                                    <includes> -->
+<!--                                        <include>*.exec</include> -->
+<!--                                    </includes> -->
+<!--                                </fileSet> -->
+<!--                                <fileSet> -->
+<!--                                    <directory>view/target</directory> -->
+<!--                                    <includes> -->
+<!--                                        <include>*.exec</include> -->
+<!--                                    </includes> -->
+<!--                                </fileSet> -->
+<!--                             </fileSets> -->
+<!--                             report config -->
+<!--                             <dataFile>${project.build.directory}/jacoco.exec</dataFile> -->
+<!--                         </configuration> -->
+<!--                     </execution> -->
                 </executions>
                 <configuration>
-                    <excludes> 
-                        <exclude>**/com/jsql/model/injection/strategy/blind/patch/**/*.class</exclude>
-                        <exclude>**/com/jsql/view/scan/interaction/**/*.class</exclude>
-                    </excludes>
+<!--                     <excludes>  -->
+<!--                         <exclude>**/com/jsql/model/injection/strategy/blind/patch/**/*.class</exclude> -->
+<!--                         <exclude>**/com/jsql/view/scan/interaction/**/*.class</exclude> -->
+<!--                     </excludes> -->
                 </configuration>
             </plugin>
             

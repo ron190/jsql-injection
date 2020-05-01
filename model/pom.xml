@@ -35,12 +35,13 @@
                     <!-- Compatible only jdk > 9 -->
                     <!-- <argLine>-Dnashorn.args=- -no-deprecation-warning</argLine> -->
                     <includes>
-                        <include>**/*UiTest</include>
+                        <include>**/*Spock</include>
                     </includes>
                     <reportFormat>plain</reportFormat>
                 </configuration>
             </plugin>
 
+            <!-- Spock -->
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
@@ -48,8 +49,7 @@
                 <configuration>
                     <testSources>
                         <testSource>
-                            <directory>${project.basedir}/src/test/java
-                            </directory>
+                            <directory>${project.basedir}/src/test/java</directory>
                             <includes>
                                 <include>**/*.groovy</include>
                             </includes>
