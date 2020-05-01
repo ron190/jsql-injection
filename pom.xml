@@ -10,7 +10,7 @@
     <modules>
         <module>view</module>
         <module>model</module>
-        <module>report</module>
+<!--         <module>report</module> -->
     </modules>
 
     <properties>
@@ -99,7 +99,13 @@
                             <destFile>${project.build.directory}/jacoco.exec</destFile>
                             <fileSets>
                                <fileSet>
-                                   <directory>${project.build.directory}</directory>
+                                   <directory>model/target</directory>
+                                   <includes>
+                                       <include>*.exec</include>
+                                   </includes>
+                               </fileSet>
+                               <fileSet>
+                                   <directory>view/target</directory>
                                    <includes>
                                        <include>*.exec</include>
                                    </includes>

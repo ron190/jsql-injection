@@ -1,31 +1,31 @@
 jobs
 
 docker build -t mysql \
--f src/test/resources/docker/Dockerfile.mysql . &
+-f model/src/test/resources/docker/Dockerfile.mysql . &
 pids[$!]=$!
 
 docker build -t mysql \
--f src/test/resources/docker/Dockerfile.mysql-5.5.40 . &
+-f model/src/test/resources/docker/Dockerfile.mysql-5.5.40 . &
 pids[$!]=$!
 
 docker build -t postgres \
--f src/test/resources/docker/Dockerfile.postgres . &
+-f model/src/test/resources/docker/Dockerfile.postgres . &
 pids[$!]=$!
 
 docker build -t sqlserver \
--f src/test/resources/docker/Dockerfile.sqlserver . &
+-f model/src/test/resources/docker/Dockerfile.sqlserver . &
 pids[$!]=$!
 
 docker build -t neo4j \
--f src/test/resources/docker/Dockerfile.neo4j . &
+-f model/src/test/resources/docker/Dockerfile.neo4j . &
 pids[$!]=$!
 
 docker build -t cubrid \
--f src/test/resources/docker/Dockerfile.cubrid . &
+-f model/src/test/resources/docker/Dockerfile.cubrid . &
 pids[$!]=$!
 
 docker build -t db2 \
--f src/test/resources/docker/Dockerfile.db2 . &
+-f model/src/test/resources/docker/Dockerfile.db2 . &
 pids[$!]=$!
 
 jobs
