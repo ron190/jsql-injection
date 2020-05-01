@@ -1,6 +1,5 @@
 package com.jsql;
 
-
 import java.awt.AWTError;
 import java.awt.Dimension;
 import java.awt.HeadlessException;

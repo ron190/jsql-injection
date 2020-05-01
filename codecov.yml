@@ -1,2 +1,4 @@
 ignore:
-  - "src/main/java/com/jsql/model/injection/strategy/blind/patch"
+  - '**/swing/sql/lexer/**'
+  - '**/strategy/blind/patch/**'
+  - '**/bruter/DigestMD4.java'

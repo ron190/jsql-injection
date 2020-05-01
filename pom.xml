@@ -10,7 +10,6 @@
     <modules>
         <module>model</module>
         <module>view</module>
-<!--         <module>report</module> -->
     </modules>
 
     <properties>
@@ -20,26 +19,6 @@
     </properties>
     
     <build>
-
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources/logger</directory>
-            </testResource>
-        </testResources>
 
         <plugins>
   
@@ -108,66 +87,13 @@
                             <!-- report config -->
                             <dataFile>${project.build.directory}/jacoco.exec</dataFile>
                         </configuration>
-                    </execution>                    
-<!--                     <execution> -->
-<!--                         <id>report</id> -->
-<!--                         <phase>post-integration-test</phase> -->
-<!--                         <goals> -->
-<!--                             <goal>merge</goal> -->
-<!--                             <goal>report</goal> -->
-<!--                         </goals> -->
-<!--                         <configuration> -->
-<!--                             merge config -->
-<!--                             <destFile>${project.build.directory}/jacoco.exec</destFile> -->
-<!--                             <fileSets> -->
-<!--                                <fileSet> -->
-<!--                                    <directory>model/target</directory> -->
-<!--                                    <includes> -->
-<!--                                        <include>*.exec</include> -->
-<!--                                    </includes> -->
-<!--                                </fileSet> -->
-<!--                                <fileSet> -->
-<!--                                    <directory>view/target</directory> -->
-<!--                                    <includes> -->
-<!--                                        <include>*.exec</include> -->
-<!--                                    </includes> -->
-<!--                                </fileSet> -->
-<!--                             </fileSets> -->
-<!--                             report config -->
-<!--                             <dataFile>${project.build.directory}/jacoco.exec</dataFile> -->
-<!--                         </configuration> -->
-<!--                     </execution> -->
+                    </execution>
                 </executions>
-                <configuration>
-<!--                     <excludes>  -->
-<!--                         <exclude>**/com/jsql/model/injection/strategy/blind/patch/**/*.class</exclude> -->
-<!--                         <exclude>**/com/jsql/view/scan/interaction/**/*.class</exclude> -->
-<!--                     </excludes> -->
-                </configuration>
             </plugin>
-            
-<!--             <plugin> -->
-<!--                 <groupId>org.springframework.boot</groupId> -->
-<!--                 <artifactId>spring-boot-maven-plugin</artifactId> -->
-<!--                 <version>2.2.6.RELEASE</version> -->
-<!--             </plugin> -->
 
         </plugins>
         
     </build>
- 
-<!--     <dependencyManagement> -->
-<!--         <dependencies> -->
-<!--             <dependency> -->
-<!--                 Import dependency management from Spring Boot -->
-<!--                 <groupId>org.springframework.boot</groupId> -->
-<!--                 <artifactId>spring-boot-dependencies</artifactId> -->
-<!--                 <version>2.2.6.RELEASE</version> -->
-<!--                 <type>pom</type> -->
-<!--                 <scope>import</scope> -->
-<!--             </dependency> -->
-<!--         </dependencies> -->
-<!--     </dependencyManagement> -->
 
     <dependencies>
 
