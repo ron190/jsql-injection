@@ -8,8 +8,8 @@
     <packaging>pom</packaging>
     
     <modules>
-        <module>view</module>
         <module>model</module>
+        <module>view</module>
 <!--         <module>report</module> -->
     </modules>
 

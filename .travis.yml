@@ -27,7 +27,7 @@ cache:
     - $HOME/.m2
     - $HOME/.sonar/cache
     
-before_install:
+before_script:
 
   - env | sort
   - sudo cat /proc/meminfo
