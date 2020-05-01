@@ -7,13 +7,15 @@
         </encoder>
     </appender>
     
-    <logger name="org.hibernate" level="INFO" additivity="false">
+    <logger name="org.hibernate" level="OFF" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
     
-    <root level="INFO"  additivity="false">
+    <root level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
     </root>
+
+    <logger name="org.neo4j.ogm.drivers.http" level="INFO" additivity="false"></logger>
     
     <!-- Remove annoying logs -->
     <logger name="org.hibernate.engine.jdbc.spi.SqlExceptionHelper" level="OFF" additivity="false">

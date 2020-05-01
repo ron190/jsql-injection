@@ -52,6 +52,8 @@ public class TargetApplication {
 
     static {
         
+        System.setProperty("logback.configurationFile", "logger/logback.xml");
+        
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
         Stream.of(
