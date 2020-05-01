@@ -14,7 +14,7 @@
         <dependency>
             <groupId>jsql-injection</groupId>
             <artifactId>model</artifactId>
-            <version>dev-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
