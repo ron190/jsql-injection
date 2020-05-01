@@ -35,13 +35,13 @@ before_install:
   
   - sudo apt-get install tightvncserver xfonts-base
     
-  - ./src/test/resources/docker/script/build.sh
-  - ./src/test/resources/docker/script/run.sh
-  - ./src/test/resources/docker/script/verify.sh
+  - ./model/src/test/resources/docker/script/build.sh
+  - ./model/src/test/resources/docker/script/run.sh
+  - ./model/src/test/resources/docker/script/verify.sh
 
 script:
 
-  - ./src/test/resources/vnc/execute-on-vnc.sh mvn clean verify sonar:sonar
+  - ./model/src/test/resources/vnc/execute-on-vnc.sh mvn clean verify sonar:sonar
   
   # Check MySQL status
   - docker exec -it jsql-mysql /bin/bash
