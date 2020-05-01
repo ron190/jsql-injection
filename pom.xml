@@ -5,6 +5,12 @@
     <groupId>jsql-injection</groupId>
     <artifactId>jsql-injection</artifactId>
     <version>v0.82</version>
+<!--     <packaging>pom</packaging> -->
+    
+<!--     <modules> -->
+<!-- 	    <module>model</module> -->
+<!-- 	    <module>view</module> -->
+<!--     </modules> -->
     
     <repositories>
         <repository>
@@ -283,15 +289,8 @@
     </dependencyManagement>
 
     <dependencies>
-    
-        <!-- Required by failsafe? -->
-<!--         <dependency> -->
-<!--             <groupId>javax.servlet</groupId> -->
-<!--             <artifactId>javax.servlet-api</artifactId> -->
-<!--             <scope>test</scope> -->
-<!--         </dependency> -->
-        
-	    <dependency>
+
+        <dependency>
 	        <groupId>org.assertj</groupId>
 	        <artifactId>assertj-swing-junit</artifactId>
 	        <version>3.9.2</version>

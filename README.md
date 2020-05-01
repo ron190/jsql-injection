@@ -1,13 +1,15 @@
 ## Description
 **jSQL Injection** is a lightweight application used to find database information from a distant server.
 
-It is **free**, **open source** and works **cross-platform** on Windows, Linux and Mac OS X.
+It is **free**, **open source** and it works **cross-platform** on Windows, Linux and Mac OS X with Java from version 8 to 15.
 
-![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in other distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) or [BlackArch Linux](http://www.blackarch.org/).
+![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in various other distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
 
 This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration.
 
-Program stability is tested in the cloud on Travis CI using Java 8 through 13 and against dockerized databases MySQL, PostgreSQL, Neo4j, SQL Server, Db2, CUBRID and in memory databases HSQLDB, H2, Derby and SQLite. Source code is open to pull requests and to contributions to any subject like multi-threading, devops, optimization, unit and integration tests. 
+Injection stability and non regression is tested in the cloud on Travis CI using Java 8 through 13 and against dockerized and in memory databases. Also GUI is tested in the cloud on VNC screen during the same process.
+
+Source code is open to pull requests and to contributions to any subject like multi-threading, devops, optimization, unit and integration tests. 
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)<br>
 [![Java 8 to 15](https://img.shields.io/badge/Java-8%20to%2013-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)
@@ -23,19 +25,19 @@ Program stability is tested in the cloud on Travis CI using Java 8 through 13 an
 ## Features
 - Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Blind and Time
-- Proxy connection HTTP, SOCKS4 and SOCKS5
-- Authentication Basic, Digest, NTLM, Kerberos  
 - SQL query programming at runtime
 - Tampering programming at runtime
 - Injection of list of targets
-- Search for administration pages
-- Creation and visualization of Web shell and SQL shell
 - Read and write files on host using injection
+- Creation and visualization of Web shell and SQL shell
 - Bruteforce of password hash
+- Search for administration pages
 - Text hashing, encoding and decoding
+- Authentication Basic, Digest, NTLM, Kerberos  
+- Proxy connection HTTP, SOCKS4 and SOCKS5
 
 ## Installation [[jsql-injection-v0.82.jar](https://github.com/ron190/jsql-injection/releases/download/v0.82/jsql-injection-v0.82.jar)]
-Install [Java 8](http://java.com) up to Java 15, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.82.jar` to launch the software.<br>
+Install [Java 8](http://java.com) or either up to Java 15, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.82.jar` to launch the software.<br>
 You can also type `java -jar jsql-injection-v0.82.jar` in your terminal to start the program.<br>
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
@@ -74,7 +76,7 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 `Devops, User agent, Custom rows load.`
 
 ## Since latest release
-`Tampering, Devops with SQLite Neo4j SQLServer Cubrid and authentication integration tests in the Cloud.`
+`GUI unit test with VNC screen, Devops with SQLite Neo4j SQLServer Cubrid and authentication integration tests in the Cloud, Tampering.`
 
 ## Change log
 
