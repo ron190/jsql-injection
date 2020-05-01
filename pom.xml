@@ -414,6 +414,12 @@
             <version>4.0.1</version>
             <scope>test</scope>
         </dependency>
+		<dependency>
+		    <groupId>org.neo4j</groupId>
+		    <artifactId>neo4j-jdbc-driver</artifactId>
+		    <version>4.0.0</version>
+            <scope>test</scope>
+		</dependency>
         <dependency>
             <groupId>cubrid</groupId>
             <artifactId>cubrid-jdbc</artifactId>

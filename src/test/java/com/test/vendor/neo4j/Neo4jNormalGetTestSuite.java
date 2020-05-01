@@ -15,7 +15,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class Neo4jNormalGetTestNotSuite extends ConcreteNeo4jTestNotSuite {
+public class Neo4jNormalGetTestSuite extends ConcreteNeo4jTestSuite {
     
     @Override
     public void setupInjection() throws Exception {

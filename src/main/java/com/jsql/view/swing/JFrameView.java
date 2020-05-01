@@ -132,17 +132,12 @@ public class JFrameView extends JFrame {
         });
         
         // Size of window
-        if (!"true".equals(System.getenv("FROM_TRAVIS"))) {
-            
-            this.setSize(1024, 768);
-            
-            // Center the window
-            this.setLocationRelativeTo(null);
-            
-        } else {
-            
-            this.setSize(600, 400);
-        }
+        this.setSize(1024, 768);
+        this.setVisible(true);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        // Center the window
+        this.setLocationRelativeTo(null);
         
         this.setVisible(true);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

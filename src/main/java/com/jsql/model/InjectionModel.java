@@ -131,6 +131,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         this.mediatorStrategy.getNormal().setVisibleIndex(null);
         
+        // TODO remove, must be done on checkApplicability() 
         this.mediatorStrategy.getNormal().setApplicable(false);
         this.mediatorStrategy.getError().setApplicable(false);
         this.mediatorStrategy.getBlind().setApplicable(false);

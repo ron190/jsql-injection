@@ -42,17 +42,10 @@ public class StrategyInjectionError extends AbstractStrategy {
         
         // Reset applicability of new Vendor
         this.isApplicable = false;
-        this.tabCapacityMethod = null;
         
         Strategy strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
         Configuration configurationYaml = strategyYaml.getConfiguration();
         
-        if (strategyYaml.getError() == null) {
-            
-            LOGGER.info("No Error strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
-            return;
-        }
-
         LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Error...");
         
         this.tabCapacityMethod = new String[strategyYaml.getError().getMethod().size()];

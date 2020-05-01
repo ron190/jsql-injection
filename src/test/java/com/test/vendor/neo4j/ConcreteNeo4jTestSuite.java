@@ -9,9 +9,9 @@ import com.test.AbstractTestSuite;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public abstract class ConcreteNeo4jTestNotSuite extends AbstractTestSuite {
+public abstract class ConcreteNeo4jTestSuite extends AbstractTestSuite {
 
-    public ConcreteNeo4jTestNotSuite() {
+    public ConcreteNeo4jTestSuite() {
         
         /*
          * Error x509 => docker-machine regenerate-certs => docker-machine restart
