@@ -13,8 +13,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-@TestInstance(Lifecycle.PER_CLASS)
-@Execution(ExecutionMode.CONCURRENT)
 public class MySqlErrorTestSuite extends ConcreteMySqlErrorTestSuite {
 
     @Override

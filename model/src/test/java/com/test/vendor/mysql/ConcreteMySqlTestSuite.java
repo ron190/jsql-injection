@@ -7,8 +7,6 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.test.AbstractTestSuite;
 
-@TestInstance(Lifecycle.PER_CLASS)
-@Execution(ExecutionMode.CONCURRENT)
 public abstract class ConcreteMySqlTestSuite extends AbstractTestSuite {
 
     public ConcreteMySqlTestSuite() {

@@ -15,8 +15,6 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import com.jsql.model.accessible.DataAccess;
 import com.test.AbstractTestSuite;
 
-@TestInstance(Lifecycle.PER_CLASS)
-@Execution(ExecutionMode.CONCURRENT)
 public abstract class ConcreteSqliteTestSuite extends AbstractTestSuite {
 
     public ConcreteSqliteTestSuite() {

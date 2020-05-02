@@ -14,8 +14,6 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 
-@TestInstance(Lifecycle.PER_CLASS)
-@Execution(ExecutionMode.CONCURRENT)
 public class BadErrorTestSuite extends ConcreteMySqlErrorTestSuite {
 
     @Override

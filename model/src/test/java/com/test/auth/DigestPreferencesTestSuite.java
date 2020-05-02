@@ -16,8 +16,6 @@ import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 
 import spring.security.SecurityConfiguration;
 
-@TestInstance(Lifecycle.PER_CLASS)
-@Execution(ExecutionMode.CONCURRENT)
 public class DigestPreferencesTestSuite extends ConcreteMySqlErrorTestSuite {
     
     @Override

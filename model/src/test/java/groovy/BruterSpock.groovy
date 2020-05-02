@@ -1,12 +1,5 @@
 package groovy
 
-import org.apache.log4j.Logger
-
-import com.jsql.model.InjectionModel
-import com.jsql.model.bean.database.Column
-import com.jsql.model.bean.database.Database
-import com.jsql.model.bean.database.Table
-import com.jsql.model.exception.InjectionFailureException
 import com.jsql.util.bruter.HashBruter
 
 import spock.lang.Specification

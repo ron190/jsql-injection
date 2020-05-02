@@ -12,6 +12,8 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.PreDestroy;
+
 import org.apache.derby.drda.NetworkServerControl;
 import org.apache.log4j.Logger;
 import org.h2.tools.Server;
@@ -36,6 +38,10 @@ public class TargetApplication {
      * Using default log4j.properties from root /
      */
     private static final Logger LOGGER = Logger.getRootLogger();
+    
+    private static NetworkServerControl serverDerby;
+    private static org.hsqldb.server.Server serverHsqldb;
+    private static org.h2.tools.Server serverH2;
 
     public static Properties propsH2 = new Properties();
     public static Properties propsH2Api = new Properties();
@@ -52,7 +58,8 @@ public class TargetApplication {
 
     static {
         
-        System.setProperty("logback.configurationFile", "logger/logback.xml");
+        // Logger before Spring starts
+        System.setProperty("logback.configurationFile", "logger/jsql-logback.xml");
         
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
@@ -110,7 +117,7 @@ public class TargetApplication {
         }
         
         properties
-        .stream()
+        .parallelStream()
         .forEach(props -> {
             
             Configuration configuration = new Configuration();
@@ -141,22 +148,23 @@ public class TargetApplication {
 
     private static void initializeDerby() throws Exception {
         
-        NetworkServerControl server = new NetworkServerControl();
-        server.start(null);
+        serverDerby = new NetworkServerControl();
+        serverDerby.start(null);
     }
 
     private static void initializeHsqldb() {
         
-        org.hsqldb.server.Server server = new org.hsqldb.server.Server();
-        server.setSilent(true);
-        server.setDatabaseName(0, "mainDb");
-        server.setDatabasePath(0, "mem:mainDb");
-        server.start();
+        serverHsqldb = new org.hsqldb.server.Server();
+        serverHsqldb.setSilent(true);
+        serverHsqldb.setDatabaseName(0, "mainDb");
+        serverHsqldb.setDatabasePath(0, "mem:mainDb");
+        serverHsqldb.start();
     }
 
     private static void initializeH2() throws SQLException {
         
-        Server.createTcpServer().start();
+        serverH2 = Server.createTcpServer();
+        serverH2.start();
     }
 
     private static void initializeNeo4j() throws IOException {
@@ -192,5 +200,15 @@ public class TargetApplication {
         initializeDatabases();
         
         SpringApplication.run(TargetApplication.class, args);
+    }
+    
+    @PreDestroy
+    public void onDestroy() throws Exception {
+        
+        LOGGER.info("Ending in-memory databases...");
+        
+        serverDerby.shutdown();
+        serverH2.stop();
+        serverHsqldb.stop();
     }
 }

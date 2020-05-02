@@ -3,7 +3,6 @@ package groovy
 import java.nio.charset.StandardCharsets
 
 import org.apache.commons.lang3.StringUtils
-import org.apache.commons.text.StringEscapeUtils
 
 import com.jsql.util.StringUtil
 import com.jsql.util.bruter.HashUtil

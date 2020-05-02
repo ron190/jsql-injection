@@ -16,8 +16,6 @@ import com.test.vendor.mysql.ConcreteMySqlTestSuite;
 
 // TODO unstable
 // 
-@TestInstance(Lifecycle.PER_CLASS)
-@Execution(ExecutionMode.CONCURRENT)
 public class CustomMethodTestIgnoreSuite extends ConcreteMySqlTestSuite {
     
     @Override

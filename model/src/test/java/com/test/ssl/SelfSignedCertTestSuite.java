@@ -15,8 +15,6 @@ import com.jsql.util.CertificateUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlTestSuite;
 
-@TestInstance(Lifecycle.PER_CLASS)
-@Execution(ExecutionMode.CONCURRENT)
 public class SelfSignedCertTestSuite extends ConcreteMySqlTestSuite {
     
     @Override

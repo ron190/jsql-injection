@@ -14,8 +14,6 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 
 //TODO SqliteTime
-@TestInstance(Lifecycle.PER_CLASS)
-@Execution(ExecutionMode.CONCURRENT)
 public class SqliteTimeTestIgnoreSuite extends ConcreteSqliteTestSuite {
     
     @Override

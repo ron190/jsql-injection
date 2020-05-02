@@ -44,8 +44,11 @@ import spring.TargetApplication;
 public abstract class AbstractTestSuite {
     
     static {
+        
+        // jSQL model only logger
+        PropertyConfigurator.configure("src/test/resources/logger/jsql-log4j.properties");
+        
         // Use Timeout fix in Model
-        PropertyConfigurator.configure("src/test/resources/logger/log4j.stdout.properties");
         jcifs.Config.registerSmbURLHandler();
     }
     
@@ -89,7 +92,7 @@ public abstract class AbstractTestSuite {
         
         if (AbstractTestSuite.isSetupStarted.compareAndSet(false, true)) {
             
-            LOGGER.info("@BeforeClass: loading H2, Hibernate and Spring...");
+            LOGGER.info("@BeforeClass: loading Hibernate and Spring...");
             TargetApplication.initializeDatabases();
             SpringApplication.run(TargetApplication.class, new String[] {});
             

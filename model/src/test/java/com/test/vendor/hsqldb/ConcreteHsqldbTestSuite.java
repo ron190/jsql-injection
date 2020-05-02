@@ -6,7 +6,6 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.test.AbstractTestSuite;
 
-@Execution(ExecutionMode.CONCURRENT)
 public abstract class ConcreteHsqldbTestSuite extends AbstractTestSuite {
 
     public ConcreteHsqldbTestSuite() {
