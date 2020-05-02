@@ -258,6 +258,7 @@ public class PanelAddressBar extends JPanel {
     private BasicArrowButton initializeAdvancedButton(final JPanel panelHttpProtocol) {
         
         final BasicArrowButton advancedButton = new BasicArrowButton(SwingConstants.SOUTH);
+        advancedButton.setName("advancedButton");
         advancedButton.setBorderPainted(false);
         advancedButton.setOpaque(false);
 

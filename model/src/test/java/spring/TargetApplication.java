@@ -113,7 +113,7 @@ public class TargetApplication {
         
         if (!"true".equals(System.getenv("FROM_TRAVIS"))) {
             
-            properties.add(TargetApplication.propsOracle);
+            properties.add(0, TargetApplication.propsOracle);
         }
         
         properties

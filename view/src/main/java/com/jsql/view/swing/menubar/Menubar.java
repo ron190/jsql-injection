@@ -161,6 +161,7 @@ public class Menubar extends JMenuBar {
         
         // Window Menu > Preferences
         JMenu menuWindows = new JMenu(I18nUtil.valueByKey("MENUBAR_WINDOWS"));
+        menuWindows.setName("menuWindows");
         I18nViewUtil.addComponentForKey("MENUBAR_WINDOWS", menuWindows);
         menuWindows.setMnemonic('W');
 
@@ -345,7 +346,9 @@ public class Menubar extends JMenuBar {
         }
 
         JMenuItem itemPreferences = this.initializeItemPreferences();
+        itemPreferences.setName("itemPreferences");
         JMenuItem itemSqlEngine = this.initializeItemSqlEngine();
+        itemSqlEngine.setName("itemSqlEngine");
         
         menuWindows.add(itemSqlEngine);
         menuWindows.add(itemPreferences);
@@ -359,10 +362,12 @@ public class Menubar extends JMenuBar {
         JMenu menuHelp = new JMenu(I18nUtil.valueByKey("MENUBAR_HELP"));
         menuHelp.setMnemonic('H');
         I18nViewUtil.addComponentForKey("MENUBAR_HELP", menuHelp);
+        menuHelp.setName("menuHelp");
         
         JMenuItem itemHelp = new JMenuItem(I18nUtil.valueByKey("MENUBAR_HELP_ABOUT"), 'A');
         itemHelp.setIcon(UiUtil.ICON_EMPTY);
         I18nViewUtil.addComponentForKey("MENUBAR_HELP_ABOUT", itemHelp);
+        itemHelp.setName("itemHelp");
         
         JMenuItem itemUpdate = new JMenuItem(I18nUtil.valueByKey("MENUBAR_HELP_UPDATE"), 'U');
         itemUpdate.setIcon(UiUtil.ICON_EMPTY);
@@ -489,10 +494,14 @@ public class Menubar extends JMenuBar {
         // Help Menu > about
         JMenu menuCommunity = new JMenu(I18nUtil.valueByKey("MENUBAR_COMMUNITY"));
         menuCommunity.setMnemonic('C');
+        menuCommunity.setName("menuCommunity");
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY", menuCommunity);
         
         JMenu menuI18nContribution = this.initializeMenuI18nContribution();
+        menuI18nContribution.setName("menuI18nContribution");
+        
         JMenuItem itemReportIssue = this.initializeItemReportIssue();
+        itemReportIssue.setName("itemReportIssue");
         
         menuCommunity.add(menuI18nContribution);
         menuCommunity.add(new JSeparator());
@@ -505,6 +514,7 @@ public class Menubar extends JMenuBar {
         
         JMenu menuTranslation = new JMenu(I18nUtil.valueByKey("MENUBAR_LANGUAGE"));
         I18nViewUtil.addComponentForKey("MENUBAR_LANGUAGE", menuTranslation);
+        menuTranslation.setName("menuTranslation");
         
         Object[] languages =
             Stream
@@ -536,6 +546,7 @@ public class Menubar extends JMenuBar {
             new Locale("ru").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemRussian.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ru")));
+        this.itemRussian.setName("itemRussian");
         
         this.itemCzech = new JRadioButtonMenuItem(
             new Locale("cs").getDisplayLanguage(new Locale("cs")),
@@ -722,6 +733,8 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", itemIntoOther);
         
         this.itemIntoArabic.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        
+        this.itemIntoFrench.setName("itemIntoFrench");
         
         Stream
         .of(

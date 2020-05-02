@@ -54,7 +54,7 @@ public class AddressMenuBar extends JMenuBar {
     
     public AddressMenuBar(PanelAddressBar panelAddressBar) {
         
-        this.buttonInUrl.setName("BUTTON_START_TOOLTIP");
+        this.buttonInUrl.setName("buttonInUrl");
         this.buttonInUrl.setToolTipText(I18nUtil.valueByKey("BUTTON_START_TOOLTIP"));
         this.buttonInUrl.addActionListener(new ActionStart(panelAddressBar));
 
