@@ -1,9 +1,9 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
 NEW_DISPLAY=42
 DONE="no"
 
-while [ "$DONE" == "no" ]
+while [[ "$DONE" == "no" ]];
 do
   out=$(xdpyinfo -display :${NEW_DISPLAY} 2>&1)
   if [[ "$out" == name* ]] || [[ "$out" == Invalid* ]]
