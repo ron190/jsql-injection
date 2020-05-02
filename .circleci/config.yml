@@ -1,9 +1,17 @@
 version: 2.1
 
 orbs:
-  maven: circleci/maven@0.0.12
+    maven: circleci/maven@0.0.12
 
+dependencies:
+    override: 
+        - mvn -DskipTests clean install dependency:resolve-plugins dependency:go-offline
+        
+test:
+    override:
+        - mvn -o surefire:test        
+  
 workflows:
-  maven_test:
-    jobs:
-      - maven/test # checkout, build, test, and upload test results
+    maven_test:
+        jobs:
+            - maven/test # checkout, build, test, and upload test results

@@ -38,21 +38,16 @@ before_script:
   - sudo cat /proc/meminfo
   - java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
   
+  # git update-index --chmod=+x <file>
   - ./model/src/test/resources/docker/script/build.sh
   - ./model/src/test/resources/docker/script/run.sh
+  - ./model/src/test/resources/docker/script/buff.sh
   - ./model/src/test/resources/docker/script/verify.sh
 
 script:
 
   - ./model/src/test/resources/vnc/execute-on-vnc.sh mvn clean verify sonar:sonar
-  
-  # Check MySQL status
-  - docker exec -it jsql-mysql /bin/bash
-    -c "
-       mysql -uroot -pmy-secret-pw -e '
-       SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|^Queries\"
-       ';
-       "
+  - ./model/src/test/resources/docker/script/verify.sh
     
 after_success:
 
