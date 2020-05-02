@@ -1,5 +1,5 @@
 # Buff MySQL
-docker exec -it jsql-mysql /bin/bash \
+docker exec jsql-mysql /bin/bash \
 -c << EOF
    mysql -uroot -pmy-secret-pw -e '
    SET GLOBAL max_connections = 100000;
@@ -9,7 +9,7 @@ docker exec -it jsql-mysql /bin/bash \
 EOF
 
 # Check MySQL status
-docker exec -it jsql-mysql /bin/bash \
+docker exec jsql-mysql /bin/bash \
 -c << EOF
    mysql -uroot -pmy-secret-pw -e '
    SHOW GLOBAL variables WHERE Variable_name RLIKE \"thread_cache_size|^max_connections|table_open_cache\";
@@ -18,7 +18,7 @@ docker exec -it jsql-mysql /bin/bash \
 EOF
 
 # Check Postgres status
-docker exec -it jsql-postgres /bin/bash \
+docker exec jsql-postgres /bin/bash \
 -c << EOF
    export PGPASSWORD=my-secret-pw;
    psql -U postgres -h 127.0.0.1 -d \"\" -e -a -c '
@@ -26,4 +26,8 @@ docker exec -it jsql-postgres /bin/bash \
    ';
 EOF
    
-sudo docker exec -it jsql-sqlserver /opt/mssql-tools/bin/sqlcmd -S "tcp:127.0.0.1,1434" -U SA -P "yourStrong(!)Password" -Q "select @@version"
+docker exec jsql-sqlserver /opt/mssql-tools/bin/sqlcmd \
+-S "tcp:127.0.0.1,1434" \
+-U SA \
+-P "yourStrong(!)Password" \
+-Q "select @@version"

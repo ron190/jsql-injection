@@ -1,10 +1,5 @@
 package com.test.vendor.db2;
 
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
-
 import com.test.AbstractTestSuite;
 
 public abstract class ConcreteDb2TestSuite extends AbstractTestSuite {

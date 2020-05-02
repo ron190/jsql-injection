@@ -1,10 +1,5 @@
 package com.test.vendor.postgres;
 
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
-
 import com.test.AbstractTestSuite;
 
 public abstract class ConcretePostgresTestSuite extends AbstractTestSuite {

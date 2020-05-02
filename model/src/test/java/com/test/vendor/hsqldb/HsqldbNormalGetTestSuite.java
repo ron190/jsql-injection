@@ -3,10 +3,6 @@ package com.test.vendor.hsqldb;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junitpioneer.jupiter.RepeatFailedTest;
 
 import com.jsql.model.InjectionModel;

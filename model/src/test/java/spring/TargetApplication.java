@@ -41,7 +41,7 @@ public class TargetApplication {
     
     private static NetworkServerControl serverDerby;
     private static org.hsqldb.server.Server serverHsqldb;
-    private static org.h2.tools.Server serverH2;
+    private static Server serverH2;
 
     public static Properties propsH2 = new Properties();
     public static Properties propsH2Api = new Properties();

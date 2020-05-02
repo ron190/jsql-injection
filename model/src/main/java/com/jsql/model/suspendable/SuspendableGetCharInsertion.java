@@ -107,7 +107,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         
         List<String> roots = Arrays.asList("-1", "0", "1", StringUtils.EMPTY);
         
-        List<String> prefixes = 
+        List<String> prefixes =
             Arrays
             .asList(
                 "prefix",

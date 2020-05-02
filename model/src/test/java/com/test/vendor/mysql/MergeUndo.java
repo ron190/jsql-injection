@@ -1,8 +1,6 @@
 package com.test.vendor.mysql;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -33,17 +31,9 @@ public class MergeUndo extends JEditorPane {
         frame.getContentPane().add(scroll);
  
         JToolBar tb=new JToolBar();
-        app.btnUndo.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                app.undoManager.undo();
-            }
-        });
+        app.btnUndo.addActionListener(e -> app.undoManager.undo());
         tb.add(app.btnUndo);
-        app.btnRedo.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                app.undoManager.redo();
-            }
-        });
+        app.btnRedo.addActionListener(e -> app.undoManager.redo());
         tb.add(app.btnRedo);
         frame.getContentPane().add(tb, BorderLayout.NORTH);
  
@@ -54,41 +44,46 @@ public class MergeUndo extends JEditorPane {
  
     public MergeUndo() {
         super();
-        setEditorKit(new StyledEditorKit());
-        getDocument().addUndoableEditListener(undoManager);
+        this.setEditorKit(new StyledEditorKit());
+        this.getDocument().addUndoableEditListener(this.undoManager);
  
-        undoManager.refreshControls();
+        this.undoManager.refreshControls();
     }
  
     class MyCompoundEdit extends CompoundEdit {
         boolean isUnDone=false;
         public int getLength() {
-            return edits.size();
+            return this.edits.size();
         }
  
+        @Override
         public void undo() throws CannotUndoException {
             super.undo();
-            isUnDone=true;
+            this.isUnDone=true;
         }
+        @Override
         public void redo() throws CannotUndoException {
             super.redo();
-            isUnDone=false;
+            this.isUnDone=false;
         }
+        @Override
         public boolean canUndo() {
-            return edits.size()>0 && !isUnDone;
+            return this.edits.size()>0 && !this.isUnDone;
         }
 
+        @Override
         public boolean canRedo() {
-            return edits.size()>0 && isUnDone;
+            return this.edits.size()>0 && this.isUnDone;
         }
  
     }
     class UndoManager extends AbstractUndoableEdit implements UndoableEditListener {
         String lastEditName=null;
-        ArrayList<MyCompoundEdit> edits=new ArrayList<MyCompoundEdit>();
+        ArrayList<MyCompoundEdit> edits=new ArrayList<>();
         MyCompoundEdit current;
         int pointer=-1;
  
+        @Override
         public void undoableEditHappened(UndoableEditEvent e) {
             UndoableEdit edit=e.getEdit();
             if (edit instanceof AbstractDocument.DefaultDocumentEvent) {
@@ -98,28 +93,28 @@ public class MergeUndo extends JEditorPane {
                     int len=event.getLength();
                     String text=event.getDocument().getText(start, len);
                     boolean isNeedStart=false;
-                    if (current==null) {
+                    if (this.current==null) {
                         isNeedStart=true;
                     }
                     else if (text.contains("\n")) {
                         isNeedStart=true;
                     }
-                    else if (lastEditName==null || !lastEditName.equals(edit.getPresentationName())) {
+                    else if (this.lastEditName==null || !this.lastEditName.equals(edit.getPresentationName())) {
                         isNeedStart=true;
                     }
  
-                    while (pointer<edits.size()-1) {
-                        edits.remove(edits.size()-1);
+                    while (this.pointer<this.edits.size()-1) {
+                        this.edits.remove(this.edits.size()-1);
                         isNeedStart=true;
                     }
                     if (isNeedStart) {
-                        createCompoundEdit();
+                        this.createCompoundEdit();
                     }
  
-                    current.addEdit(edit);
-                    lastEditName=edit.getPresentationName();
+                    this.current.addEdit(edit);
+                    this.lastEditName=edit.getPresentationName();
  
-                    refreshControls();
+                    this.refreshControls();
                 } catch (BadLocationException e1) {
                     e1.printStackTrace();
                 }
@@ -127,52 +122,56 @@ public class MergeUndo extends JEditorPane {
         }
  
         public void createCompoundEdit() {
-            if (current==null) {
-                current= new MyCompoundEdit();
+            if (this.current==null) {
+                this.current= new MyCompoundEdit();
             }
-            else if (current.getLength()>0) {
-                current= new MyCompoundEdit();
+            else if (this.current.getLength()>0) {
+                this.current= new MyCompoundEdit();
             }
  
-            edits.add(current);
-            pointer++;
+            this.edits.add(this.current);
+            this.pointer++;
         }
  
+        @Override
         public void undo() throws CannotUndoException {
-            if (!canUndo()) {
+            if (!this.canUndo()) {
                 throw new CannotUndoException();
             }
  
-            MyCompoundEdit u=edits.get(pointer);
+            MyCompoundEdit u=this.edits.get(this.pointer);
             u.undo();
-            pointer--;
+            this.pointer--;
  
-            refreshControls();
+            this.refreshControls();
         }
  
+        @Override
         public void redo() throws CannotUndoException {
-            if (!canRedo()) {
+            if (!this.canRedo()) {
                 throw new CannotUndoException();
             }
  
-            pointer++;
-            MyCompoundEdit u=edits.get(pointer);
+            this.pointer++;
+            MyCompoundEdit u=this.edits.get(this.pointer);
             u.redo();
  
-            refreshControls();
+            this.refreshControls();
         }
  
+        @Override
         public boolean canUndo() {
-            return pointer>=0;
+            return this.pointer>=0;
         }
 
+        @Override
         public boolean canRedo() {
-            return edits.size()>0 && pointer<edits.size()-1;
+            return this.edits.size()>0 && this.pointer<this.edits.size()-1;
         }
  
         public void refreshControls() {
-            btnUndo.setEnabled(canUndo());
-            btnRedo.setEnabled(canRedo());
+            MergeUndo.this.btnUndo.setEnabled(this.canUndo());
+            MergeUndo.this.btnRedo.setEnabled(this.canRedo());
         }
     }
 }

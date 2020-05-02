@@ -1,8 +1,5 @@
 package com.test.vendor.derby;
 
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
-
 import com.test.AbstractTestSuite;
 
 public abstract class ConcreteDerbyTestSuite extends AbstractTestSuite {

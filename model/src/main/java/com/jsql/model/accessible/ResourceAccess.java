@@ -120,34 +120,34 @@ public class ResourceAccess {
 //     * @throws InterruptedException
 //     */
 //    public void createAdminPages(String urlInjection, List<ItemList> pageNames) throws InterruptedException {
-//        
+//
 //        String urlWithoutProtocol = urlInjection.replaceAll("^https?://[^/]*", StringUtils.EMPTY);
 //        String urlProtocol = urlInjection.replace(urlWithoutProtocol, StringUtils.EMPTY);
 //        String urlWithoutFileName = urlWithoutProtocol.replaceAll("[^/]*$", StringUtils.EMPTY);
-//        
+//
 //        List<String> directoryNames = new ArrayList<>();
-//        
+//
 //        if (urlWithoutFileName.split("/").length == 0) {
-//            
+//
 //            directoryNames.add("/");
 //        }
-//        
+//
 //        for (String directoryName: urlWithoutFileName.split("/")) {
-//            
+//
 //            directoryNames.add(directoryName +"/");
 //        }
-//        
+//
 //        ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableGetAdminPage"));
 //        CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
-//        
+//
 //        StringBuilder urlPart = new StringBuilder();
-//        
+//
 //        for (String segment: directoryNames) {
-//            
+//
 //            urlPart.append(segment);
-//            
+//
 //            for (ItemList pageName: pageNames) {
-//                
+//
 //                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + pageName.toString(), this.injectionModel));
 //            }
 //        }
@@ -155,7 +155,7 @@ public class ResourceAccess {
 //        int nbAdminPagesFound = 0;
 //        int submittedTasks = directoryNames.size() * pageNames.size();
 //        int tasksHandled;
-//        
+//
 //        for (
 //            tasksHandled = 0;
 //            tasksHandled < submittedTasks && !this.isSearchAdminStopped;
@@ -1052,39 +1052,39 @@ public class ResourceAccess {
 //     * @throws ExecutionException if the computation threw an exception
 //     */
 //    public void readFile(List<ItemList> pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
-//        
+//
 //        if (!this.isReadingAllowed()) {
-//            
+//
 //            return;
 //        }
 //
 //        int countFileFound = 0;
-//        
+//
 //        ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableReadFile"));
 //        CompletionService<CallableFile> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 //
 //        for (ItemList pathFile: pathsFiles) {
-//            
+//
 //            CallableFile callableFile = new CallableFile(pathFile.toString(), this.injectionModel);
 //            taskCompletionService.submit(callableFile);
-//            
+//
 //            this.callablesReadFile.add(callableFile);
 //        }
 //
 //        List<String> duplicate = new ArrayList<>();
 //        int submittedTasks = pathsFiles.size();
 //        int tasksHandled;
-//        
+//
 //        for (
 //            tasksHandled = 0 ;
 //            tasksHandled < submittedTasks && !this.isSearchFileStopped ;
 //            tasksHandled++
 //        ) {
-//            
+//
 //            CallableFile currentCallable = taskCompletionService.take().get();
-//            
+//
 //            if (StringUtils.isNotEmpty(currentCallable.getSourceFile())) {
-//                
+//
 //                String name = currentCallable.getPathFile().substring(currentCallable.getPathFile().lastIndexOf('/') + 1, currentCallable.getPathFile().length());
 //                String content = currentCallable.getSourceFile();
 //                String path = currentCallable.getPathFile();
@@ -1095,29 +1095,29 @@ public class ResourceAccess {
 //                this.injectionModel.sendToViews(request);
 //
 //                if (!duplicate.contains(path.replace(name, StringUtils.EMPTY))) {
-//                    
+//
 //                    LOGGER.info("Shell might be possible in folder "+ path.replace(name, StringUtils.EMPTY));
 //                }
-//                
+//
 //                duplicate.add(path.replace(name, StringUtils.EMPTY));
 //
 //                countFileFound++;
 //            }
 //        }
-//        
+//
 //        // Force ongoing suspendables to stop immediately
 //        for (CallableFile callableReadFile: this.callablesReadFile) {
-//            
+//
 //            callableReadFile.getSuspendableReadFile().stop();
 //        }
-//        
+//
 //        this.callablesReadFile.clear();
 //
 //        taskExecutor.shutdown();
 //        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
-//        
+//
 //        this.isSearchFileStopped = false;
-//        
+//
 //        String result =
 //            "Found "
 //            + countFileFound
@@ -1127,16 +1127,16 @@ public class ResourceAccess {
 //            + "on "
 //            + submittedTasks
 //            +" files checked";
-//        
+//
 //        if (countFileFound > 0) {
-//            
+//
 //            LOGGER.debug(result);
-//            
+//
 //        } else {
-//            
+//
 //            LOGGER.warn(result);
 //        }
-//        
+//
 //        Request request = new Request();
 //        request.setMessage(Interaction.END_FILE_SEARCH);
 //        this.injectionModel.sendToViews(request);
@@ -1151,18 +1151,18 @@ public class ResourceAccess {
 //     * @param urlsItemList contains a list of String URL
 //     */
 //    public void scan(List<ItemList> urlsItemList) {
-//        
+//
 //        // Erase everything in the view from a previous injection
 //        Request requests = new Request();
 //        requests.setMessage(Interaction.RESET_INTERFACE);
 //        this.injectionModel.sendToViews(requests);
-//        
+//
 //        // wait for ending of ongoing interaction between two injections
 //        try {
 //            Thread.sleep(500);
-//            
+//
 //        } catch (InterruptedException e) {
-//            
+//
 //            LOGGER.error("Interruption while sleeping during scan", e);
 //            Thread.currentThread().interrupt();
 //        }
@@ -1170,20 +1170,20 @@ public class ResourceAccess {
 //        // Display result only in console
 //        this.injectionModel.deleteObservers();
 //        this.injectionModel.addObserver(new ScanListTerminal());
-//        
+//
 //        this.injectionModel.setIsScanning(true);
 //        this.isScanStopped = false;
-//        
+//
 //        for (ItemList urlItemList: urlsItemList) {
-//            
+//
 //            ItemListScan urlItemListScan = (ItemListScan) urlItemList;
 //            if (this.injectionModel.isStoppedByUser() || this.isScanStopped) {
-//                
+//
 //                break;
 //            }
-//            
+//
 //            LOGGER.info("Scanning "+ urlItemListScan.getBeanInjection().getUrl());
-//            
+//
 //            this.injectionModel.getMediatorUtils().getParameterUtil().controlInput(
 //                urlItemListScan.getBeanInjection().getUrl(),
 //                urlItemListScan.getBeanInjection().getRequest(),
@@ -1192,21 +1192,21 @@ public class ResourceAccess {
 //                urlItemListScan.getBeanInjection().getRequestType(),
 //                true
 //            );
-//            
+//
 //            try {
 //                Thread.sleep(500);
-//                
+//
 //            } catch (InterruptedException e) {
-//                
+//
 //                LOGGER.error("Interruption while sleeping between two scans", e);
 //                Thread.currentThread().interrupt();
 //            }
 //        }
-//        
+//
 //        // Get back the normal view
 //        // TODO Don't play with View on Model
 //        this.injectionModel.addObserver(MediatorHelper.frame().getObserver());
-//        
+//
 //        this.injectionModel.setIsScanning(false);
 //        this.injectionModel.setIsStoppedByUser(false);
 //        this.isScanStopped = false;

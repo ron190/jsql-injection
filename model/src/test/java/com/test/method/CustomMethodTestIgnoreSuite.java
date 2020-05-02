@@ -3,10 +3,6 @@ package com.test.method;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junitpioneer.jupiter.RepeatFailedTest;
 
 import com.jsql.model.InjectionModel;
@@ -15,7 +11,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlTestSuite;
 
 // TODO unstable
-// 
+//
 public class CustomMethodTestIgnoreSuite extends ConcreteMySqlTestSuite {
     
     @Override

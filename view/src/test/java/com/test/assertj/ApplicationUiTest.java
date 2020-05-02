@@ -2,8 +2,6 @@ package com.test.assertj;
 
 import static org.assertj.swing.core.matcher.JButtonMatcher.withName;
 
-import java.awt.Dimension;
-
 import javax.swing.JFrame;
 
 import org.assertj.swing.edt.GuiActionRunner;
@@ -17,18 +15,16 @@ import com.jsql.view.swing.util.MediatorHelper;
 
 public class ApplicationUiTest extends AssertJSwingJUnitTestCase {
     
-    private JFrame frame;
-    FrameFixture window;
+    private FrameFixture window;
 
     @Override
     protected void onSetUp() {
         
         InjectionModel injectionModel = new InjectionModel();
         MediatorHelper.register(injectionModel);
-        frame = GuiActionRunner.execute(() -> new JFrameView());
+        JFrame frame = GuiActionRunner.execute(() -> new JFrameView());
+        
         window = new FrameFixture(robot(), frame);
-        window.show(new Dimension(600, 400));
-        window.resizeTo(new Dimension(800, 600));
     }
 
     @Test
