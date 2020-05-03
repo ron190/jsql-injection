@@ -1,0 +1,4 @@
+[[runners]]
+  executor = "docker"
+  [runners.docker]
+    privileged = true
