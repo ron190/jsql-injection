@@ -90,7 +90,6 @@ public class ApplicationUiTest {
         DialogFixture dialog = window.dialog();
         dialog.button(withText("Cancel")).click();
         
-        window.pressAndReleaseKeys(KeyEvent.VK_ESCAPE);
         window.button(withName("advancedButton")).click();
     }
     

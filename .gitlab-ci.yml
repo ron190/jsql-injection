@@ -4,9 +4,9 @@ stages:
   - build
   - test
 
-variables:
-  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+# variables:
+#   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+#   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
 cache:
   paths:
@@ -16,9 +16,9 @@ cache:
 build:
   stage: build
   script:
-    - mvn $MAVEN_CLI_OPTS -DskipTests clean install
+    - mvn clean install -DskipTests
 
 test:
   stage: test
   script:
-    - mvn $MAVEN_CLI_OPTS clean verify
+    - mvn clean verify
