@@ -21,9 +21,9 @@ services:
   - docker:19.03.8-dind
 
 before_script:
-  - apt-get update -y 
-  - apt-get upgrade -y 
-  - apt-get install tightvncserver xfonts-base
+#  - apt-get update -y 
+#  - apt-get upgrade -y 
+#  - apt-get install tightvncserver xfonts-base
             
   - docker info
   
@@ -31,8 +31,8 @@ before_script:
 #  - sudo -u gitlab-runner -H docker info
 #  
 #  - sudo apt-get update
-  - curl -fsSL https://get.docker.com -o get-docker.sh
-  - sh get-docker.sh
+#  - curl -fsSL https://get.docker.com -o get-docker.sh
+#  - sh get-docker.sh
   
   - docker run hello-world
   
