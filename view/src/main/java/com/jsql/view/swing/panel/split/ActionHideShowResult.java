@@ -28,6 +28,7 @@ public class ActionHideShowResult implements ActionListener {
             MediatorHelper.frame().getSplitHorizontalTopBottom().getTopComponent().setVisible(false);
             MediatorHelper.frame().getSplitHorizontalTopBottom().disableDragSize();
             MediatorHelper.panelConsoles().getButtonShowNorth().setVisible(false);
+            
         } else if (
             MediatorHelper.frame().getSplitHorizontalTopBottom().getTopComponent().isVisible()
             && !MediatorHelper.frame().getSplitHorizontalTopBottom().getBottomComponent().isVisible()

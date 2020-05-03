@@ -7,7 +7,7 @@ It is **free**, **open source** and it works **cross-platform** on Windows, Linu
 
 This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration.
 
-Injection stability and non regression is tested in the cloud on Travis CI using Java 8 through 13 and against dockerized and in memory databases. Also GUI is tested in the cloud on VNC screen during the same process.
+Injection stability and non regression are verified in the cloud on Travis CI using Java 8 through 13 and against dockerized and in memory databases. Also GUI is tested in the cloud on VNC screen during the same process.
 
 Source code is open to pull requests and to contributions to any subject like multi-threading, devops, optimization, unit and integration tests. 
 

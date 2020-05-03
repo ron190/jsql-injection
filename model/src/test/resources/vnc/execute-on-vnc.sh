@@ -3,7 +3,7 @@
 NEW_DISPLAY=42
 DONE="no"
 
-while [[ "$DONE" == "no" ]];
+while (( "$DONE" -eq "no" ));
 do
   out=$(xdpyinfo -display :${NEW_DISPLAY} 2>&1)
   if [[ "$out" == name* ]] || [[ "$out" == Invalid* ]]

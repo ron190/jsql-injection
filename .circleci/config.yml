@@ -10,12 +10,31 @@ jobs:
         command: find . -name 'pom.xml' | sort | xargs cat > /tmp/maven_cache_seed
     - restore_cache:
         key: maven-{{ checksum "/tmp/maven_cache_seed" }}
+        
     - run:
         name: Install Dependencies
         command: mvn -DskipTests clean install dependency:resolve-plugins dependency:go-offline
+        
+    - run:
+        name: Install apt-get
+        command: sudo apt-get install tightvncserver xfonts-base
+        
+    - run:
+        name: Run Docker
+        command: |
+            ./model/src/test/resources/docker/script/build.sh
+            ./model/src/test/resources/docker/script/run.sh
+            ./model/src/test/resources/docker/script/buff.sh
+            ./model/src/test/resources/docker/script/verify.sh 
+                   
     - run:
         name: Run Tests
-        command: mvn verify
+        command: ./model/src/test/resources/vnc/execute-on-vnc.sh mvn clean verify
+            
+    - run:
+        name: Run Tests
+        command: ./model/src/test/resources/docker/script/verify.sh
+  
     - save_cache:
         paths:
         - ~/.m2

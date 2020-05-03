@@ -249,6 +249,7 @@ public class PanelConsoles extends JPanel {
     private JPanel initializeExpandPanel() {
         
         BasicArrowButton buttonShowSouth = new BasicArrowButton(SwingConstants.SOUTH);
+        buttonShowSouth.setName("buttonShowSouth");
         
         buttonShowSouth.setBorderPainted(false);
         buttonShowSouth.setPreferredSize(new Dimension(buttonShowSouth.getPreferredSize().width, buttonShowSouth.getPreferredSize().height));
@@ -263,6 +264,7 @@ public class PanelConsoles extends JPanel {
         this.buttonShowNorth.setOpaque(false);
         this.buttonShowNorth.setBorder(BorderFactory.createEmptyBorder());
         this.buttonShowNorth.addActionListener(SplitHorizontalTopBottom.getActionHideShowResult());
+        this.buttonShowNorth.setName("buttonShowNorth");
 
         JPanel arrowDownPanel = new JPanel();
         arrowDownPanel.setLayout(new BorderLayout());

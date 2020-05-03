@@ -42,6 +42,7 @@ public class ActionHideShowConsole implements ActionListener {
             MediatorHelper.frame().getSplitHorizontalTopBottom().getBottomComponent().setVisible(false);
             this.panel.setVisible(true);
             MediatorHelper.frame().getSplitHorizontalTopBottom().disableDragSize();
+            
         } else if (
             this.panel.isVisible()
             || !MediatorHelper.frame().getSplitHorizontalTopBottom().getTopComponent().isVisible()

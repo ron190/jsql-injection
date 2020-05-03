@@ -100,7 +100,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
 
         // Tree and tabs on top
         this.splitVerticalLeftRight = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
-        this.splitVerticalLeftRight.setLeftComponent(MediatorHelper.tabManagers());
+        this.splitVerticalLeftRight.setLeftComponent(tabManagers);
         
         this.labelPlaceholderResult = new JLabel(UiUtil.IMG_BUG);
         this.labelPlaceholderResult.setMinimumSize(new Dimension(100, 0));
@@ -128,6 +128,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         buttonShowConsoles.setBorderPainted(false);
         buttonShowConsoles.setOpaque(false);
         buttonShowConsoles.addActionListener(SplitHorizontalTopBottom.ACTION_HIDE_SHOW_CONSOLE);
+        buttonShowConsoles.setName("buttonShowConsolesHidden");
         
         PANEL_HIDDEN_CONSOLES.add(Box.createHorizontalGlue());
         PANEL_HIDDEN_CONSOLES.add(buttonShowConsoles, BorderLayout.LINE_END);
@@ -139,9 +140,10 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         // Setting for top and bottom components
         this.setTopComponent(panelManagerResult);
 
-        MediatorHelper.register(new PanelConsoles());
+        PanelConsoles panelConsoles = new PanelConsoles();
+        MediatorHelper.register(panelConsoles);
 
-        this.setBottomComponent(MediatorHelper.panelConsoles());
+        this.setBottomComponent(panelConsoles);
         this.setDividerLocation(669 - horizontalSplitter);
 
         // defines left and bottom pane
