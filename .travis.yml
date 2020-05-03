@@ -11,6 +11,10 @@ jdk:
  # Need new version of gmavenplus-plugin
  # - openjdk14
 
+branches:
+  only:
+  - master
+  
 env:
   global:
     # Disable Oracle in the cloud

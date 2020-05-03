@@ -21,7 +21,7 @@ jobs:
             sudo apt-get update -y 
             sudo apt-get upgrade -y 
             sudo apt-get install tightvncserver xfonts-base
-            setup_remote_docker
+            # setup_remote_docker: command not found
             sudo docker run hello-world
         
     - run:
@@ -51,3 +51,8 @@ workflows:
     jobs:
     - maven/test
   version: 2
+  
+general:
+  branches:
+    only:
+     - circleci-master

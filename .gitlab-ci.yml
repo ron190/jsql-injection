@@ -1,40 +1,66 @@
-image: maven:latest
+image: docker:git
 
 stages:
   - build
-  - test
+  #- test
 
 # variables:
 #   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
 #   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
 variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
+  DOCKER_DRIVER: overlay
+  # DOCKER_TLS_CERTDIR: ""
 
 cache:
   paths:
-    - .m2/repository/
-    - target/
+    - .m2/
+    #- target/
 
 services:
-  - docker:19.03.8-dind
+  - docker:dind
 
-before_script:
+build:
+  image: maven:3-jdk-8:latest
+  stage: build
+  only: 
+   - gitlab-master
+  # artifacts:
+  #   paths:
+  #     - target/*.jar
+  script:
+    - echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                            https://maven.apache.org/xsd/settings-1.0.0.xsd">
+                <localRepository>'$PWD'.m2</localRepository>
+          </settings>' > $HOME/.m2/settings.xml
+    - mvn -v
+    - docker info
+    - docker run hello-world
+    - ./model/src/test/resources/docker/script/build.sh
+    - ./model/src/test/resources/docker/script/run.sh
+    - ./model/src/test/resources/docker/script/buff.sh
+    - ./model/src/test/resources/docker/script/verify.sh   
+    - mvn clean install -DskipTests
+
+#before_script:
 #  - apt-get update -y 
 #  - apt-get upgrade -y 
 #  - apt-get install tightvncserver xfonts-base
             
-  - curl -fsSL https://get.docker.com -o get-docker.sh
-  - sh get-docker.sh
-  - docker info
+# Executing docker install script, commit: 442e66405c304fa92af8aadaa1d9b31bf4b0ad94
+#   WARNING: ol is now only supported by Docker EE            
+#   - curl -fsSL https://get.docker.com -o get-docker.sh
+#   - sh get-docker.sh
+#  - docker info
   
 #  - sudo usermod -aG docker gitlab-runner
 #  - sudo -u gitlab-runner -H docker info
 #  
 #  - sudo apt-get update
   
-  - docker run hello-world
+#  - docker run hello-world
   
 #  - sudo apt-get install \
 #    apt-transport-https \
@@ -50,20 +76,20 @@ before_script:
 #   stable"
 #   
 #  - sudo apt-get install docker-ce docker-ce-cli containerd.io
-  - docker info
+#  - docker info
 #  - sudo docker run hello-world
 
-build:
-  stage: build
-  script:
-
-    - ./model/src/test/resources/docker/script/build.sh
-    - ./model/src/test/resources/docker/script/run.sh
-    - ./model/src/test/resources/docker/script/buff.sh
-    - ./model/src/test/resources/docker/script/verify.sh   
-    - mvn clean install -DskipTests
-
-test:
-  stage: test
-  script:
-    - mvn clean verify
+#build:
+#  stage: build
+#  script:
+#
+#    - ./model/src/test/resources/docker/script/build.sh
+#    - ./model/src/test/resources/docker/script/run.sh
+#    - ./model/src/test/resources/docker/script/buff.sh
+#    - ./model/src/test/resources/docker/script/verify.sh   
+#    - mvn clean install -DskipTests
+#
+#test:
+#  stage: test
+#  script:
+#    - mvn clean verify
