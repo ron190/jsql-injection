@@ -25,14 +25,14 @@ before_script:
 #  - apt-get upgrade -y 
 #  - apt-get install tightvncserver xfonts-base
             
+  - curl -fsSL https://get.docker.com -o get-docker.sh
+  - sh get-docker.sh
   - docker info
   
 #  - sudo usermod -aG docker gitlab-runner
 #  - sudo -u gitlab-runner -H docker info
 #  
 #  - sudo apt-get update
-#  - curl -fsSL https://get.docker.com -o get-docker.sh
-#  - sh get-docker.sh
   
   - docker run hello-world
   

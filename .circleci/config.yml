@@ -21,12 +21,12 @@ jobs:
             sudo apt-get update -y 
             sudo apt-get upgrade -y 
             sudo apt-get install tightvncserver xfonts-base
+            setup_remote_docker
             sudo docker run hello-world
         
     - run:
         name: Run Docker
         command: |
-            # setup_remote_docker
             ./model/src/test/resources/docker/script/build.sh
             ./model/src/test/resources/docker/script/run.sh
             ./model/src/test/resources/docker/script/buff.sh
