@@ -21,9 +21,9 @@ services:
   - docker:19.03.8-dind
 
 before_script:
-  - sudo apt-get update -y 
-  - sudo apt-get upgrade -y 
-  - sudo apt-get install tightvncserver xfonts-base
+  - apt-get update -y 
+  - apt-get upgrade -y 
+  - apt-get install tightvncserver xfonts-base
             
   - docker info
   
@@ -32,9 +32,9 @@ before_script:
 #  
 #  - sudo apt-get update
   - curl -fsSL https://get.docker.com -o get-docker.sh
-  - sudo sh get-docker.sh
+  - sh get-docker.sh
   
-  - sudo docker run hello-world
+  - docker run hello-world
   
 #  - sudo apt-get install \
 #    apt-transport-https \

@@ -11,18 +11,18 @@
     <name>model</name>
     
     <repositories>
-<!--         <repository> -->
-<!--             <id>jspresso-repository</id> -->
-<!--             <url>http://repository.jspresso.org/maven2</url> -->
-<!--         </repository> -->
+        <repository>
+            <id>jspresso-repository</id>
+            <url>http://repository.jspresso.org/maven2</url>
+        </repository>
         <repository>
             <id>cubrid-repository</id>
             <url>http://maven.cubrid.org/</url>
         </repository>
-<!--         <repository> -->
-<!--             <id>oracle-repository</id> -->
-<!--             <url>http://maven.geomajas.org/</url> -->
-<!--         </repository> -->
+        <repository>
+            <id>oracle-repository</id>
+            <url>http://maven.geomajas.org/</url>
+        </repository>
     </repositories>
     
     <build>
