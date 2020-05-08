@@ -3,16 +3,12 @@ package com.test.assertj;
 import static org.assertj.swing.core.matcher.JButtonMatcher.withName;
 import static org.assertj.swing.core.matcher.JButtonMatcher.withText;
 
-import java.awt.event.KeyEvent;
-
 import javax.swing.JFrame;
 
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.DialogFixture;
 import org.assertj.swing.fixture.FrameFixture;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
