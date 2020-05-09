@@ -1,18 +1,19 @@
 #!/bin/bash
 
+pwd
 echo ======================================
-./cubrid.sh
+./model/src/test/resources/docker/healthcheck/cubrid.sh
 echo ======================================
-./db2.sh
+./model/src/test/resources/docker/healthcheck/db2.sh
 echo ======================================
-./mysql-5.5.40.sh
+./model/src/test/resources/docker/healthcheck/mysql-5.5.40.sh
 echo ======================================
-./mysql.sh
+./model/src/test/resources/docker/healthcheck/mysql.sh
 echo ======================================
-./neo4j.sh
+./model/src/test/resources/docker/healthcheck/neo4j.sh
 echo ======================================
-./postgres.sh
+./model/src/test/resources/docker/healthcheck/postgres.sh
 echo ======================================
-./sqlserver.sh
+./model/src/test/resources/docker/healthcheck/sqlserver.sh
 echo ======================================
 
