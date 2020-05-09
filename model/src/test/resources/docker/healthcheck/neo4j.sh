@@ -20,4 +20,3 @@ do
 done
   
 >&2 echo "Neo4j is up - executing command"
-exec $cmd

@@ -20,4 +20,3 @@ until docker exec -i jsql-sqlserver /opt/mssql-tools/bin/sqlcmd \
 done
   
 >&2 echo "Sqlserver is up - executing command"
-exec $cmd
