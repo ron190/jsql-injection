@@ -35,6 +35,10 @@ cache:
   directories:
     - $HOME/.m2
     - $HOME/.sonar/cache
+    - $HOME/docker_images
+
+before_install:
+  - docker load -i docker_images/images.tar || true
     
 before_script:
 
@@ -43,11 +47,8 @@ before_script:
   - java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
   
   # git update-index --chmod=+x <file>
-#  - ./model/src/test/resources/docker/script/build.sh
-#  - ./model/src/test/resources/docker/script/run.sh
   - docker-compose -f ./model/src/test/resources/docker/docker-compose.yml up -d
   - ./model/src/test/resources/docker/healthcheck/healthcheck.sh
-#  - sleep 30s
   - ./model/src/test/resources/docker/script/buff.sh
   - ./model/src/test/resources/docker/script/verify.sh
 
@@ -55,6 +56,9 @@ script:
 
   - ./model/src/test/resources/vnc/execute-on-vnc.sh mvn clean verify sonar:sonar
   - ./model/src/test/resources/docker/script/verify.sh
+  
+before_cache:
+  - docker save -o docker_images/images.tar $(docker images -a -q)  
     
 after_success:
 

@@ -6,10 +6,10 @@ retry=0
 
 until cat <<EOF | docker exec -i --user db2inst1 jsql-db2 /bin/bash     
     
+    pwd
     export DB2INSTANCE=db2inst1                                                                                                                            
-    cd database/config/db2inst1/sqllib/bin  
-    ./db2 connect to testdb                                  
-    ./db2 select 1 as jsqlColumn from sysibm.sysversions                    
+    ./database/config/db2inst1/sqllib/bin/db2 connect to testdb                                  
+    ./database/config/db2inst1/sqllib/bin/db2 select 1 as jsqlColumn from sysibm.sysversions                    
 EOF
 do
   retry=$((retry+1))
