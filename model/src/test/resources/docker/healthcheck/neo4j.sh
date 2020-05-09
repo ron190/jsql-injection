@@ -11,7 +11,7 @@ EOF
 do
 
   retry=$((retry+1))
-  if [ $retry -gt 15 ] ; then
+  if [ $retry -gt 30 ] ; then
     exit 1
   fi
   

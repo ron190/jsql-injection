@@ -11,7 +11,7 @@ until docker exec -i jsql-sqlserver /opt/mssql-tools/bin/sqlcmd \
 -Q "select 'jsqlValue' as jsqlColumn"; do
 
   retry=$((retry+1))
-  if [ $retry -gt 15 ] ; then
+  if [ $retry -gt 30 ] ; then
     exit 1
   fi
   
