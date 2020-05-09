@@ -35,7 +35,7 @@ cache:
   directories:
     - $HOME/.m2
     - $HOME/.sonar/cache
-    - $HOME/docker_images
+    - docker_images
 
 before_install:
   - docker load -i docker_images/images.tar || true
@@ -59,6 +59,7 @@ script:
   - ./model/src/test/resources/docker/script/verify.sh
   
 before_cache:
+  - mkdir -p docker_images
   - docker save -o docker_images/images.tar $(docker images -a -q)  
     
 after_success:
