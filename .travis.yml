@@ -45,7 +45,7 @@ before_script:
   # git update-index --chmod=+x <file>
 #  - ./model/src/test/resources/docker/script/build.sh
 #  - ./model/src/test/resources/docker/script/run.sh
-  - docker-compose up --project-directory ./model/src/test/resources/docker
+  - docker-compose up -f ./model/src/test/resources/docker/docker-compose.yml
   - sleep 30s
   - ./model/src/test/resources/docker/script/buff.sh
   - ./model/src/test/resources/docker/script/verify.sh
