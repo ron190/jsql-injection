@@ -14,7 +14,7 @@ until cat <<EOF | docker exec -i --workdir /database/config/db2inst1/sqllib/bin 
     export DBNAME=testdb
     export DBPORT=50000
     ./db2 list active databases
-    ./db2 connect to testdb IN SHARE MODE
+    ./db2 connect to testdb IN SHARE MODE user db2inst1 using test
     ./db2 select 1 as jsqlColumn from sysibm.sysversions
 EOF
 do
