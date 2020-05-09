@@ -95,9 +95,11 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         ) {
             String line;
             while ((line = reader.readLine()) != null) {
+                
                 this.itemsList.add(new ItemList(line));
             }
         } catch (IOException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
 
@@ -127,12 +129,15 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) this.listPaths.getModel();
         
         for (int i = 0 ; i < listModel.size() ; i++) {
+            
             if (listModel.get(i).toString().equals(element)) {
+                
                 isFound = true;
             }
         }
         
         if (!isFound) {
+            
             ItemList itemList = new ItemList(element);
             listModel.addElement(itemList);
         }

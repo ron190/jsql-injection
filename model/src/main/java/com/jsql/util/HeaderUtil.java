@@ -323,8 +323,11 @@ public class HeaderUtil {
             LOGGER.warn(FOUND_STATUS_HTTP+ responseCode +" Redirection");
             
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()) {
+                
                 LOGGER.warn("If injection fails please test again with option 'Follow HTTP redirection' enabled.");
+                
             } else {
+                
                 LOGGER.info("Redirecting to the next page...");
             }
             

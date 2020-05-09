@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.util.I18nUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.view.swing.util.MediatorHelper;
 
@@ -34,9 +35,10 @@ public class ActionCheckIP implements ActionListener, Runnable {
         }
 
         try {
-            LOGGER.trace("Checking ip address...");
+            
+            LOGGER.trace(I18nUtil.valueByKey("LOG_IP_ADDRESS_CHECK"));
             String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource("http://checkip.amazonaws.com");
-            LOGGER.info("Your public IP address is " + addressIp);
+            LOGGER.info(I18nUtil.valueByKey("LOG_IP_ADDRESS_IS") + " " + addressIp);
             
         } catch (MalformedURLException e) {
             

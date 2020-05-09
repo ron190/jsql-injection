@@ -187,9 +187,9 @@ public class DataAccess {
             LOGGER.debug(infos);
             
         } catch (ArrayIndexOutOfBoundsException e) {
-            
-            LOGGER.warn("Incorrect or incomplete data: "+ resultToParse, e);
-            LOGGER.info("Processing but failure is expected...");
+
+            LOGGER.warn(I18nUtil.valueByKey("LOG_DB_METADATA_INCORRECT") +": "+ resultToParse, e);
+            LOGGER.info(I18nUtil.valueByKey("LOG_DB_METADATA_WARN"));
         }
     }
     
@@ -579,7 +579,8 @@ public class DataAccess {
                 } catch (IndexOutOfBoundsException e) {
                     
                     isIncomplete = true;
-                    LOGGER.trace("Incomplete line found");
+                    
+                    LOGGER.trace(I18nUtil.valueByKey("LOG_LIST_VALUES_INCOMPLETE"));
                     
                     // Ignore
                     IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
@@ -589,7 +590,7 @@ public class DataAccess {
             
             if (isIncomplete) {
                 
-                LOGGER.warn("String is too long, row #"+ (indexRow + 1) +" is incomplete:");
+                LOGGER.warn(I18nUtil.valueByKey("LOG_LIST_VALUES_TOO_LONG") + (indexRow + 1) +": ");
                 LOGGER.warn(String.join(", ", listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()])));
             }
         }

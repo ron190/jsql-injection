@@ -43,8 +43,8 @@ before_script:
   - java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
   
   # git update-index --chmod=+x <file>
-  - ./model/src/test/resources/docker/script/build.sh
-  - ./model/src/test/resources/docker/script/run.sh
+#  - ./model/src/test/resources/docker/script/build.sh
+#  - ./model/src/test/resources/docker/script/run.sh
   - ./model/src/test/resources/docker/script/buff.sh
   - ./model/src/test/resources/docker/script/verify.sh
 

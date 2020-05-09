@@ -233,7 +233,6 @@ public class ManagerScan extends AbstractManagerList {
                         listModel.get(i).reset();
                     }
                     
-//                    MediatorHelper.model().getResourceAccess().scan(dndListScan.getSelectedValuesList());
                     this.scan(dndListScan.getSelectedValuesList());
                     
                 } else {

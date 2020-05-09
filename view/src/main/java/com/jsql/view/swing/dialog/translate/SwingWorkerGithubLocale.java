@@ -2,7 +2,10 @@ package com.jsql.view.swing.dialog.translate;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -14,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.util.ConnectionUtil;
+import com.jsql.util.I18nUtil;
 import com.jsql.util.PropertiesUtil;
 import com.jsql.view.swing.dialog.DialogTranslate;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -91,7 +95,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
         }
     }
 
-    private void loadFromGithub() throws IOException {
+    private void loadFromGithub() throws IOException, URISyntaxException {
         
         this.loadRootFromGithub();
         
@@ -101,7 +105,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             
         } else {
             
-            LOGGER.info("Text to translate loaded from source");
+            LOGGER.info(I18nUtil.valueByKey("LOG_I18N_DEFAULT_LOADED"));
         }
     }
 
@@ -109,14 +113,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
         
         if (this.propertiesLanguageToTranslate.size() == 0) {
             
-            if (this.dialogTranslate.getLanguage() == Language.OT) {
-                
-                LOGGER.info("Language file not found, text to translate loaded from local", eGithub);
-                
-            } else {
-                
-                LOGGER.info("Language file not found, text to translate into "+ this.dialogTranslate.getLanguage() +" loaded from local", eGithub);
-            }
+            LOGGER.info("Language file not found, text to translate loaded from local", eGithub);
             
         } else if (this.propertiesRoot.size() == 0) {
             
@@ -124,23 +121,26 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
         }
     }
     
-    private void loadRootFromGithub() throws IOException {
+    private void loadRootFromGithub() throws IOException, URISyntaxException {
         
         try {
             String pageSourceRoot = connectionUtil.getSourceLineFeed(
                 propertiesUtil.getProperties().getProperty("github.webservice.i18n.root")
             );
             
-            String pageSourceRootFixed = Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}");
+            String pageSourceRootFixed = Pattern.compile("\\\\[\n\r]+").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}");
             
             this.propertiesRoot.load(new StringReader(pageSourceRootFixed));
             
-            LOGGER.info("Reference language loaded from Github");
+            LOGGER.info(I18nUtil.valueByKey("LOG_I18N_ROOT_LOADED"));
             
         } catch (IOException e) {
             
-            String rootI18n = new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql.properties")));
-            String rootI18nFixed = Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(rootI18n)).replaceAll("{@|@}");
+            URI uri = ClassLoader.getSystemResource("i18n/jsql.properties").toURI();
+            Path path = Paths.get(uri);
+            byte[] root = Files.readAllBytes(path);
+            String rootI18n = new String(root);
+            String rootI18nFixed = Pattern.compile("\\\\[\n\r]+").matcher(Matcher.quoteReplacement(rootI18n)).replaceAll("{@|@}");
             
             this.propertiesRoot.load(new StringReader(rootI18nFixed));
             LOGGER.info("Reference language loaded from local");
@@ -151,7 +151,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
         }
     }
     
-    private void loadLanguageFromGithub() throws IOException {
+    private void loadLanguageFromGithub() throws IOException, URISyntaxException {
         
         try {
             String pageSourceLanguage = connectionUtil.getSourceLineFeed(
@@ -161,14 +161,18 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             
             this.propertiesLanguageToTranslate.load(new StringReader(pageSourceLanguage));
             
-            LOGGER.info("Text for "+ this.dialogTranslate.getLanguage() +" translation loaded from Github");
+            LOGGER.info(I18nUtil.valueByKey("LOG_I18N_TEXT_LOADED") +" "+ this.dialogTranslate.getLanguage());
             
         } catch (IOException e) {
             
-            String localeI18n = new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql_"+ this.dialogTranslate.getLanguage().getLabelLocale() +".properties")));
+            URI uri = ClassLoader.getSystemResource("i18n/jsql_"+ this.dialogTranslate.getLanguage().getLabelLocale() +".properties").toURI();
+            Path path = Paths.get(uri);
+            byte[] root = Files.readAllBytes(path);
+            String localeI18n = new String(root);
+            String localeI18nFixed = Pattern.compile("\\\\[\n\r]+").matcher(localeI18n).replaceAll("{@|@}");
             
-            this.propertiesLanguageToTranslate.load(new StringReader(localeI18n));
-            LOGGER.info("Text for "+ this.dialogTranslate.getLanguage() +" translation loaded from local");
+            this.propertiesLanguageToTranslate.load(new StringReader(localeI18nFixed));
+            LOGGER.info(this.dialogTranslate.getLanguage() +" translation loaded from local");
             
             // Ignore
             IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);

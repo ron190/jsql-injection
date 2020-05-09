@@ -63,6 +63,7 @@ public class ManagerCoder extends JPanel implements Manager {
         private String nameMethod;
         
         ChangeMenuListener(String nameMethod) {
+            
             this.nameMethod = nameMethod;
         }
         
@@ -74,6 +75,7 @@ public class ManagerCoder extends JPanel implements Manager {
                 JMenuItem item = (JMenuItem) e.getSource();
                 
                 if (item.isSelected() || item.isArmed()) {
+                    
                     ManagerCoder.this.actionCoder.actionPerformed(this.nameMethod);
                 }
             }
@@ -192,6 +194,7 @@ public class ManagerCoder extends JPanel implements Manager {
         this.menuMethod = comboMenu;
         
         for (JMenu menu: mapMenus.values()) {
+            
             comboMenu.add(menu);
         }
 

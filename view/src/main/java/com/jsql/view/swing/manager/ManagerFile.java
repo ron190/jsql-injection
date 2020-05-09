@@ -113,12 +113,15 @@ public class ManagerFile extends AbstractManagerList {
                     MediatorHelper.managerSqlshell().clearSelection();
                     
                     try {
-//                        MediatorHelper.model().getResourceAccess().readFile(this.listFile.getSelectedValuesList());
                         this.readFile(this.listFile.getSelectedValuesList());
+                        
                     } catch (InterruptedException ex) {
+                        
                         LOGGER.warn("Interruption while waiting for Reading File termination", ex);
                         Thread.currentThread().interrupt();
+                        
                     } catch (Exception ex) {
+                        
                         LOGGER.warn(ex, ex);
                     }
                 } else {

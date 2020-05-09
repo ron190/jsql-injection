@@ -169,12 +169,12 @@ public class ManagerAdminPage extends AbstractManagerList {
             
             if (!urlAddressBar.matches("(?i)^\\w+://.*")) {
                 
-                LOGGER.info("Undefined URL protocol, forcing to [http://]");
+                LOGGER.info(I18nUtil.valueByKey("LOG_ADMIN_NO_PROTOCOL"));
                 urlAddressBar = "http://"+ urlAddressBar;
                 
             } else {
                 
-                LOGGER.info("Unknown URL protocol");
+                LOGGER.info(I18nUtil.valueByKey("LOG_ADMIN_UNKNOWN_PROTOCOL"));
                 return;
             }
         }
@@ -200,7 +200,6 @@ public class ManagerAdminPage extends AbstractManagerList {
                 ManagerAdminPage.this.loader.setVisible(true);
                 
                 try {
-//                    MediatorHelper.model().getResourceAccess().createAdminPages(
                     this.createAdminPages(
                         urlAddressBar,
                         this.listFile.getSelectedValuesList()
