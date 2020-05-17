@@ -57,6 +57,8 @@ script:
 
   - docker run 
     -v "$HOME/.m2":/root/.m2 
+    -e "SONARQUBE_SCANNER_PARAMS=${SONARQUBE_SCANNER_PARAMS}"
+    -e "SONAR_TOKEN=${SONAR_TOKEN}"
     --network docker_jsql-network 
     jsql:latest 
     ./model/src/test/resources/vnc/execute-on-vnc.sh 
