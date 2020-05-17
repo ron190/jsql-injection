@@ -66,7 +66,7 @@ public class TargetApplication {
         Stream.of(
             new SimpleEntry<>(propsH2, "hibernate/hibernate.h2.properties"),
             new SimpleEntry<>(propsMysql, "hibernate/hibernate.mysql.properties"),
-            new SimpleEntry<>(propsMysqlError, "hibernate/hibernate.mysql-5.5.40.properties"),
+            new SimpleEntry<>(propsMysqlError, "hibernate/hibernate.mysql-5-5-40.properties"),
             new SimpleEntry<>(propsPostgres, "hibernate/hibernate.postgres.properties"),
             new SimpleEntry<>(propsSqlServer, "hibernate/hibernate.sqlserver.properties"),
             new SimpleEntry<>(propsCubrid, "hibernate/hibernate.cubrid.properties"),
@@ -171,7 +171,7 @@ public class TargetApplication {
         
         String graphMovie = Files.readAllLines(Paths.get("src/test/resources/neo4j/movie-graph.txt")).stream().collect(Collectors.joining("\n"));
         
-        Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
+        Driver driver = GraphDatabase.driver("bolt://jsql-neo4j:7687", AuthTokens.basic("neo4j", "test"));
         
         try (org.neo4j.driver.Session session = driver.session()) {
             

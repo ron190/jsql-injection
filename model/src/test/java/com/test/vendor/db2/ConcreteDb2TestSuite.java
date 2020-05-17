@@ -10,7 +10,7 @@ public abstract class ConcreteDb2TestSuite extends AbstractTestSuite {
     
     public void config() {
       
-        this.jdbcURL = "jdbc:db2://localhost:50000/testdb";
+        this.jdbcURL = "jdbc:db2://jsql-db2:50000/testdb";
         this.jdbcUser = "db2inst1";
         this.jdbcPass = "test";
         this.jsqlDatabaseName = "DB2INST1";

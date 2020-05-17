@@ -6,7 +6,7 @@ public abstract class ConcreteSqlServerTestSuite extends AbstractTestSuite {
 
     public ConcreteSqlServerTestSuite() {
         
-        this.jdbcURL = "jdbc:sqlserver://127.0.0.1:1433";
+        this.jdbcURL = "jdbc:sqlserver://jsql-sqlserver:1433";
         this.jdbcUser = "sa";
         this.jdbcPass = "yourStrong(!)Password";
         this.jsqlDatabaseName = "master";

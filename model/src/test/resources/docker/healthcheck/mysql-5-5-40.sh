@@ -4,7 +4,7 @@ set -e
 
 retry=0
 
-until docker exec -i jsql-mysql-5.5.40 mysql -uroot -pmy-secret-pw -e "select 'jsqlValue' as jsqlColumn"; do
+until docker exec -i jsql-mysql-5-5-40 mysql -uroot -pmy-secret-pw -e "select 'jsqlValue' as jsqlColumn"; do
 
   retry=$((retry+1))
   if [ $retry -gt 30 ] ; then

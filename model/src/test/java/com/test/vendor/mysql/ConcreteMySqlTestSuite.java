@@ -10,7 +10,7 @@ public abstract class ConcreteMySqlTestSuite extends AbstractTestSuite {
     
     public void config() {
         
-        this.jdbcURL = "jdbc:mysql://127.0.0.1/musicstore";
+        this.jdbcURL = "jdbc:mysql://jsql-mysql/musicstore";
         this.jdbcUser = "root";
         this.jdbcPass = "my-secret-pw";
         this.jsqlDatabaseName = "musicstore";

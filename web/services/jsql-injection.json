@@ -1,9 +1,8 @@
 {
     "version": "0.82",
     "news": [
-        "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer.",
-        "[Hiring] ProGuard shrinking. Devops PHP, Python and Node integration on Travis CI",
-        "[Roadmap] Inject user defined query, User Agent",
+        "[Contribution welcome] Docker and Spring, ProGuard shrinking. Devops PHP, Python and Node integration on Travis CI",
+        "[Roadmap] Dockerize injection model, inject user defined query, define User Agent",
         "[Done] UI tests with AssertJ and VNC, Integration test and Spring API with databases on Docker"
     ]
 }

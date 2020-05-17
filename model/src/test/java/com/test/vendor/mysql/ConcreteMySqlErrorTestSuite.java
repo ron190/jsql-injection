@@ -7,6 +7,6 @@ public abstract class ConcreteMySqlErrorTestSuite extends ConcreteMySqlTestSuite
         
         super.config();
         
-        this.jdbcURL = "jdbc:mysql://127.0.0.1:3307/musicstore";
+        this.jdbcURL = "jdbc:mysql://jsql-mysql-5-5-40:3307/musicstore";
     }
 }

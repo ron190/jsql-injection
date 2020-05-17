@@ -10,16 +10,20 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: my-secret-pw
     container_name: jsql-mysql
-
-  mysql-5.5.40:
+    networks:
+      - jsql-network
+      
+  mysql-5-5-40:
     ports: 
-      - 3307:3306
+      - 3307:3307
     build:
       context: .
-      dockerfile: Dockerfile.mysql-5.5.40
+      dockerfile: Dockerfile.mysql-5-5-40
     environment:
       MYSQL_ROOT_PASSWORD: my-secret-pw
-    container_name: jsql-mysql-5.5.40
+    container_name: jsql-mysql-5-5-40
+    networks:
+      - jsql-network
 
   postgres:
     ports: 
@@ -30,6 +34,8 @@ services:
     environment:
       POSTGRES_PASSWORD: my-secret-pw
     container_name: jsql-postgres
+    networks:
+      - jsql-network
 
   sqlserver:
     ports: 
@@ -42,6 +48,8 @@ services:
       SA_PASSWORD: yourStrong(!)Password
       ACCEPT_EULA: Y
     container_name: jsql-sqlserver
+    networks:
+      - jsql-network
 
   neo4j:
     ports: 
@@ -52,6 +60,8 @@ services:
     environment:
       NEO4J_AUTH: neo4j/test
     container_name: jsql-neo4j
+    networks:
+      - jsql-network
 
   cubrid:
     ports: 
@@ -60,6 +70,8 @@ services:
       context: .
       dockerfile: Dockerfile.cubrid
     container_name: jsql-cubrid
+    networks:
+      - jsql-network
 
   db2:
     ports: 
@@ -73,3 +85,8 @@ services:
       DB2INST1_PASSWORD: test
       DBNAME: testdb
     container_name: jsql-db2
+    networks:
+      - jsql-network
+      
+networks:
+  jsql-network:

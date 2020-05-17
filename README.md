@@ -5,30 +5,45 @@ It is **free**, **open source** and it works **cross-platform** on Windows, Linu
 
 ![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in various other distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
 
-This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration.
+This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration. Injection stability and non regression are verified in the cloud against dockerized and in memory databases and GUI is tested on VNC screen during the same process.
 
-Injection stability and non regression are verified in the cloud on Travis CI using Java 8 through 13 and against dockerized and in memory databases. Also GUI is tested in the cloud on VNC screen during the same process.
+## Cloud injection architecture
 
-Source code is open to pull requests and to contributions to any subject like multi-threading, devops, optimization, unit and integration tests. 
+```
++-+ +-------------------------------------+
+| | |           JUNIT FRAMEWORK           |
+| | +-------------------------------------+
+| |          |                   |
+|D| +--------v--------+  +-------v--------+
+|O| | INJECTION MODEL <--+      GUI       |
+|C| +-----------------+  +----------------+
+|K|          |
+|E| +--------v----------------------------+
+|R| |             SPRING API              |
+| | +-------------------------------------+
+| |    |         |            |         |
+| | +--v--+ +----v-----+ +----v-----+ +-v-+
+| | |MYSQL| |POSTGRESQL| |SQL SERVER| |...|
++-+ +-----+ +----------+ +----------+ +---+
+```
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)<br>
-[![Java 8 to 15](https://img.shields.io/badge/Java-8%20to%2015-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)
-[![JUnit 5](https://img.shields.io/badge/JUnit-5-50940f)](http://junit.org)
-[![Maven 3.1](https://img.shields.io/badge/Maven-3.1-a2265a)](https://maven.apache.org/)
+[![Java 8 to 15](https://img.shields.io/badge/java-8%20to%2015-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)
+[![JUnit 5](https://img.shields.io/badge/junit-5-50940f)](http://junit.org)
+[![Maven 3.1](https://img.shields.io/badge/maven-3.1-a2265a)](https://maven.apache.org/)
 [![GitHub](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
-[![Travis Build Status](https://travis-ci.org/ron190/jsql-injection.svg?branch=master)](https://travis-ci.org/ron190/jsql-injection)
-[![Gitlab Build Status](https://gitlab.com/ron190/jsql-injection/badges/gitlab-master/pipeline.svg?style=flat)](https://gitlab.com/ron190/jsql-injection)
-[![CircleCI Build Status](https://circleci.com/gh/ron190/jsql-injection/tree/circleci-master.svg?style=shield)](https://circleci.com/gh/ron190/jsql-injection/tree/circleci-master)<br>
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=jsql-injection%3Ajsql-injection&metric=coverage)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
-[![Codecov](https://codecov.io/gh/ron190/jsql-injection/branch/master/graph/badge.svg)](https://codecov.io/gh/ron190/jsql-injection)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/e7ccb247f9b74d489a1fa9f9483c978f)](https://www.codacy.com/manual/ron190/jsql-injection?utm_source=github.com&utm_medium=referral&utm_content=ron190/jsql-injection&utm_campaign=Badge_Coverage)
+[![Travis](https://img.shields.io/travis/ron190/jsql-injection/master?label=travis-ci)](https://travis-ci.org/ron190/jsql-injection)
+[![Gitlab](https://img.shields.io/gitlab/pipeline/ron190/jsql-injection/gitlab-master?label=gitlab)](https://gitlab.com/ron190/jsql-injection)
+[![CircleCI](https://img.shields.io/circleci/build/github/ron190/jsql-injection/circleci-master?label=circleci)](https://circleci.com/gh/ron190/jsql-injection/tree/circleci-master)<br>
+[![Sonar](https://img.shields.io/sonar/coverage/jsql-injection:jsql-injection?label=sonar&server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
+[![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=codecov)](https://codecov.io/gh/ron190/jsql-injection)
+[![Codacy](https://img.shields.io/codacy/coverage/e7ccb247f9b74d489a1fa9f9483c978f?label=codacy)](https://app.codacy.com/manual/ron190/jsql-injection/dashboard)
 [![Codebeat badge](https://codebeat.co/badges/457d8c76-c470-4457-ad06-310a6d8b4b3e)](https://codebeat.co/projects/github-com-ron190-jsql-injection-master)
 
 ## Features
 - Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Blind and Time
-- SQL query programming at runtime
-- Tampering programming at runtime
+- SQL query and tampering programming at runtime
 - Injection of list of targets
 - Read and write files on host using injection
 - Creation and visualization of Web shell and SQL shell
@@ -72,13 +87,19 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## [[Roadmap](https://github.com/ron190/jsql-injection/projects)]
-`Burp integration, Crawler, Database: Netezza, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB, Dictionary attack, WAF detection.`
+```
+Stacked query, Full Path Disclosure, Injection strategies: dios routedQuery, WAF detection, Database: Netezza, Presto, Redshift, MonetDB, Altibase, MimerSQL, CrateDB, Ignite, InterSystems Caché, InterSystems IRIS, eXtremeDB, FrontBase.
+```
 
 ## In progress
-`Devops, User agent, Custom rows load.`
+```
+Devops, User agent, Custom rows load.
+```
 
 ## Since latest release
-`GUI unit test with VNC screen, Devops with SQLite Neo4j SQLServer Cubrid and authentication integration tests in the Cloud, Tampering.`
+```
+GUI unit test with VNC screen, Devops with SQLite Neo4j SQLServer Cubrid and authentication integration tests in the Cloud, Tampering.
+```
 
 ## Change log
 

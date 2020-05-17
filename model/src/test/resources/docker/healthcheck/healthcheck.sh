@@ -6,7 +6,7 @@ echo 1/7 ======================================
 echo 2/7 ======================================
 ./model/src/test/resources/docker/healthcheck/db2.sh
 echo 3/7 ======================================
-./model/src/test/resources/docker/healthcheck/mysql-5.5.40.sh
+./model/src/test/resources/docker/healthcheck/mysql-5-5-40.sh
 echo 4/7 ======================================
 ./model/src/test/resources/docker/healthcheck/mysql.sh
 echo 5/7 ======================================

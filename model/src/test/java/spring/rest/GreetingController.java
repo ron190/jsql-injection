@@ -44,7 +44,7 @@ public class GreetingController {
     private final AtomicLong counter = new AtomicLong();
     private ObjectMapper objectMapper = new ObjectMapper();
     private static final Logger LOGGER = Logger.getRootLogger();
-    private Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "test"));
+    private Driver driver = GraphDatabase.driver("bolt://jsql-neo4j:7687", AuthTokens.basic("neo4j", "test"));
     
     @Autowired
     private SessionFactory sessionFactory;

@@ -14,7 +14,7 @@ public abstract class ConcreteNeo4jTestSuite extends AbstractTestSuite {
          * Virtualbox port forward 7474 7687
          */
 
-        this.jdbcURL = "jdbc:neo4j:bolt://127.0.0.1";
+        this.jdbcURL = "jdbc:neo4j:bolt://jsql-neo4j";
         this.jdbcUser = "neo4j";
         this.jdbcPass = "test";
         

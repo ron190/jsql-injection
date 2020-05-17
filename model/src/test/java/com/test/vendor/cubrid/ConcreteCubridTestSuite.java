@@ -10,7 +10,7 @@ public abstract class ConcreteCubridTestSuite extends AbstractTestSuite {
 
     public void config() {
         
-        this.jdbcURL = "jdbc:cubrid:localhost:33000:demodb:::";
+        this.jdbcURL = "jdbc:cubrid:jsql-cubrid:33000:demodb:::";
         this.jdbcUser = "";
         this.jdbcPass = "";
         this.jsqlDatabaseName = "PUBLIC";
