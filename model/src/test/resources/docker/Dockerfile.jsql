@@ -2,8 +2,8 @@ FROM maven:3.6.3-jdk-8-slim
 
 COPY ./ ./
 
-ENV SONARQUBE_SCANNER_PARAMS ${SONARQUBE_SCANNER_PARAMS}
-ENV SONAR_TOKEN ${SONAR_TOKEN}
+# ENV SONARQUBE_SCANNER_PARAMS '{ "sonar.branch.name" : "master-docker", "sonar.organization" : "ron190-github", "sonar.host.url" : "https://sonarcloud.io", "sonar.login" : "" }'
+# ENV SONAR_TOKEN ${SONAR_TOKEN}
 
 # Ignore repositories errors
 RUN apt-get update -y || true
