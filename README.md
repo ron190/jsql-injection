@@ -5,27 +5,7 @@ It is **free**, **open source** and it works **cross-platform** on Windows, Linu
 
 ![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in various other distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
 
-This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration. Injection stability and non regression are verified in the cloud against dockerized and in memory databases and GUI is tested on VNC screen during the same process.
-
-## Cloud injection architecture
-
-```
-+-+ +-------------------------------------+
-| | |           JUNIT FRAMEWORK           |
-| | +-------------------------------------+
-| |          |                   |
-|D| +--------v--------+  +-------v--------+
-|O| | INJECTION MODEL <--+      GUI       |
-|C| +-----------------+  +----------------+
-|K|          |
-|E| +--------v----------------------------+
-|R| |             SPRING API              |
-| | +-------------------------------------+
-| |    |         |            |         |
-| | +--v--+ +----v-----+ +----v-----+ +-v-+
-| | |MYSQL| |POSTGRESQL| |SQL SERVER| |...|
-+-+ +-----+ +----------+ +----------+ +---+
-```
+This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration. Injection stability and non regression are verified in the cloud against dockerized and in memory databases, and GUI is tested on VNC screen during the same process.
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)<br>
 [![Java 8 to 15](https://img.shields.io/badge/java-8%20to%2015-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)
@@ -39,6 +19,23 @@ This software is developed using open source libraries like [Spring](https://spr
 [![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=codecov)](https://codecov.io/gh/ron190/jsql-injection)
 [![Codacy](https://img.shields.io/codacy/coverage/e7ccb247f9b74d489a1fa9f9483c978f?label=codacy)](https://app.codacy.com/manual/ron190/jsql-injection/dashboard)
 [![Codebeat badge](https://codebeat.co/badges/457d8c76-c470-4457-ad06-310a6d8b4b3e)](https://codebeat.co/projects/github-com-ron190-jsql-injection-master)
+
+## Continuous integration on Docker in the Cloud
+
+```
++---+ +-------------------------------------------+
+|   | |              JUNIT FRAMEWORK              |
+|   | +------------|----------------------|-------+
+| D | +------------v-----------+  +-------v-------+
+| O | |    INJECTION MODEL     <--+      GUI      |
+| C | +------------|-----------+  +---------------+
+| K | +------------v------------------------------+
+| E | |                 SPRING API                |
+| R | +---|-----------|--------------|----------|-+
+|   | +---v---+ +-----v------+ +-----v------+ +-v-+
+|   | | MYSQL | | POSTGRESQL | | SQL SERVER | |...|
++---+ +-------+ +------------+ +------------+ +---+
+```
 
 ## Features
 - Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
@@ -88,7 +85,9 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 
 ## [[Roadmap](https://github.com/ron190/jsql-injection/projects)]
 ```
-Stacked query, Full Path Disclosure, Injection strategies: dios routedQuery, WAF detection, Database: Netezza, Presto, Redshift, MonetDB, Altibase, MimerSQL, CrateDB, Ignite, InterSystems Caché, InterSystems IRIS, eXtremeDB, FrontBase.
+Stacked query, Full Path Disclosure, Injection strategies: dios routedQuery, WAF detection,
+New databases: Netezza, Presto, Redshift, MonetDB, Altibase, MimerSQL, CrateDB, Ignite, 
+InterSystems Caché, InterSystems IRIS, eXtremeDB, FrontBase.
 ```
 
 ## In progress
@@ -98,7 +97,8 @@ Devops, User agent, Custom rows load.
 
 ## Since latest release
 ```
-GUI unit test with VNC screen, Devops with SQLite Neo4j SQLServer Cubrid and authentication integration tests in the Cloud, Tampering.
+GUI unit test with VNC screen, Devops with SQLite Neo4j SQLServer Cubrid and authentication 
+integration tests in the Cloud, Tampering.
 ```
 
 ## Change log

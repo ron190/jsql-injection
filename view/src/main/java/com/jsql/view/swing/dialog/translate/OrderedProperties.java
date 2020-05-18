@@ -381,7 +381,7 @@ public final class OrderedProperties {
         }
 
         @Override
-        public Object get(Object key) {
+        public synchronized Object get(Object key) {
             return this.targetProperties.get(key);
         }
 
@@ -396,7 +396,7 @@ public final class OrderedProperties {
         }
 
         @Override
-        public Enumeration<Object> keys() {
+        public synchronized Enumeration<Object> keys() {
             return new Vector<Object>(this.targetProperties.keySet()).elements();
         }
 
