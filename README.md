@@ -12,29 +12,28 @@ This software is developed using open source libraries like [Spring](https://spr
 [![JUnit 5](https://img.shields.io/badge/junit-5-50940f)](http://junit.org)
 [![Maven 3.1](https://img.shields.io/badge/maven-3.1-a2265a)](https://maven.apache.org/)
 [![GitHub](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
-[![Travis](https://img.shields.io/travis/ron190/jsql-injection/master?label=travis-ci)](https://travis-ci.org/ron190/jsql-injection)
-[![Gitlab](https://img.shields.io/gitlab/pipeline/ron190/jsql-injection/gitlab-master?label=gitlab)](https://gitlab.com/ron190/jsql-injection)
-[![CircleCI](https://img.shields.io/circleci/build/github/ron190/jsql-injection/circleci-master?label=circleci)](https://circleci.com/gh/ron190/jsql-injection/tree/circleci-master)<br>
+[![Travis](https://travis-ci.org/ron190/jsql-injection.svg?branch=master)](https://travis-ci.org/ron190/jsql-injection)
+[![Gitlab](https://gitlab.com/ron190/jsql-injection/badges/gitlab-master/pipeline.svg?style=flat)](https://gitlab.com/ron190/jsql-injection)
+[![CircleCI](https://circleci.com/gh/ron190/jsql-injection/tree/circleci-master.svg?style=shield)](https://circleci.com/gh/ron190/jsql-injection/tree/circleci-master)<br>
 [![Sonar](https://img.shields.io/sonar/coverage/jsql-injection:jsql-injection?label=sonar&server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
 [![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=codecov)](https://codecov.io/gh/ron190/jsql-injection)
 [![Codacy](https://img.shields.io/codacy/coverage/e7ccb247f9b74d489a1fa9f9483c978f?label=codacy)](https://app.codacy.com/manual/ron190/jsql-injection/dashboard)
 [![Codebeat badge](https://codebeat.co/badges/457d8c76-c470-4457-ad06-310a6d8b4b3e)](https://codebeat.co/projects/github-com-ron190-jsql-injection-master)
 
-## Continuous integration on Docker in the Cloud
-
+## Continuous integration in the Cloud on Docker
 ```
-+---+ +-------------------------------------------+
-|   | |              JUNIT FRAMEWORK              |
-|   | +------------|----------------------|-------+
-| D | +------------v-----------+  +-------v-------+
-| O | |    INJECTION MODEL     <--+      GUI      |
-| C | +------------|-----------+  +---------------+
-| K | +------------v------------------------------+
-| E | |                 SPRING API                |
-| R | +---|-----------|--------------|----------|-+
-|   | +---v---+ +-----v------+ +-----v------+ +-v-+
-|   | | MYSQL | | POSTGRESQL | | SQL SERVER | |...|
-+---+ +-------+ +------------+ +------------+ +---+
++---+ +-----------------------------------------------------------------------+
+|   | |                         JUNIT TEST FRAMEWORK                          |
+|   | +-----------------|-------------------------------------|---------------+
+| D | +-----------------v-------------------+  +--------------v---------------+
+| O | |          INJECTION MODEL            <--+             GUI              |
+| C | +-----------------|-------------------+  +------------------------------+
+| K | +-----------------v-----------------------------------------------------+
+| E | |                              SPRING API                               |
+| R | +---|---------|----------|----------|------|------|-------|--------|----+
+|   | +---v---------v----------v----------v------v------v-------v--------v----+
+|   | | MYSQL | POSTGRES | SQL SERVER | CUBRID | H2 | DERBY | HSQLDB | SQLITE |
++---+ +-----------------------------------------------------------------------+
 ```
 
 ## Features
