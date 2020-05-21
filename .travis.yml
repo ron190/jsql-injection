@@ -14,22 +14,15 @@ services: docker
 
 jobs:
   include:
+  
   - env: MAVEN_NASHORN=
-    env: JSQL_DOCKERFILE=Dockerfile-jdk8.jsql
+    env: JSQL_DOCKERFILE=3.6.3-jdk-8-slim
+    
   - env: MAVEN_NASHORN="--no-deprecation-warning"
-    env: JSQL_DOCKERFILE=Dockerfile-jdk9.jsql
+    env: JSQL_DOCKERFILE=3.6.3-jdk-11-slim
+    
   - env: MAVEN_NASHORN="--no-deprecation-warning"
-    env: JSQL_DOCKERFILE=Dockerfile-jdk10.jsql
-  - env: MAVEN_NASHORN="--no-deprecation-warning"
-    env: JSQL_DOCKERFILE=Dockerfile-jdk11.jsql
-  - env: MAVEN_NASHORN="--no-deprecation-warning"
-    env: JSQL_DOCKERFILE=Dockerfile-jdk12.jsql
-  - env: MAVEN_NASHORN="--no-deprecation-warning"
-    env: JSQL_DOCKERFILE=Dockerfile-jdk13.jsql
-  - env: MAVEN_NASHORN="--no-deprecation-warning"
-    env: JSQL_DOCKERFILE=Dockerfile-jdk14.jsql
-  - env: MAVEN_NASHORN="--no-deprecation-warning"
-    env: JSQL_DOCKERFILE=Dockerfile-jdk15.jsql
+    env: JSQL_DOCKERFILE=3.6.3-openjdk-14-slim
 
 branches:
   only:
@@ -61,7 +54,7 @@ before_script:
   - ./model/src/test/resources/docker/script/verify.sh
   
   - docker rmi jsql:latest -f
-  - docker build -t jsql:latest -f model/src/test/resources/docker/${JSQL_DOCKERFILE} .
+  - docker build -t jsql:latest -f model/src/test/resources/docker/Dockerfile.jsql .
 
 script:
 
