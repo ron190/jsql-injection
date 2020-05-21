@@ -1,8 +1,8 @@
 language: java
 services: docker
 
-# jdk: 
-#  - openjdk8
+jdk: 
+ - openjdk8
 #  - openjdk9
 #  - openjdk10
 #  - openjdk12
