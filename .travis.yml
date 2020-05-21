@@ -3,31 +3,25 @@ services: docker
 
 jdk: 
  - openjdk8
-#  - openjdk9
-#  - openjdk10
-#  - openjdk12
-#  - openjdk13
-#  # Keep concurrent jdk lower than Travis max job count of 5
-#  # - openjdk11
-#  # Need new version of gmavenplus-plugin
-#  # - openjdk14
 
 jobs:
   include:
   
-  - env: MAVEN_NASHORN=
-    env: JSQL_DOCKERFILE=3.6.3-jdk-8-slim
+  - env:
+    - MAVEN_NASHORN=
+    - JSQL_DOCKERFILE=3.6.3-jdk-8-slim
     
-  - env: MAVEN_NASHORN="--no-deprecation-warning"
-    env: JSQL_DOCKERFILE=3.6.3-jdk-11-slim
+  - env:
+    - MAVEN_NASHORN="--no-deprecation-warning"
+    - JSQL_DOCKERFILE=3.6.3-jdk-11-slim
     
-  - env: MAVEN_NASHORN="--no-deprecation-warning"
-    env: JSQL_DOCKERFILE=3.6.3-openjdk-14-slim
+  - env:
+    - MAVEN_NASHORN="--no-deprecation-warning"
+    - JSQL_DOCKERFILE=3.6.3-openjdk-14-slim
 
 branches:
   only:
   - master
-  - master-docker
   
 addons:
   sonarcloud:
