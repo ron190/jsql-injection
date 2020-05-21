@@ -54,7 +54,7 @@ before_script:
   - ./model/src/test/resources/docker/script/verify.sh
   
   - docker rmi jsql:latest -f
-  - docker build -t jsql:latest -f model/src/test/resources/docker/Dockerfile.jsql .
+  - docker build -t jsql:latest --build-arg JSQL_DOCKERFILE=${JSQL_DOCKERFILE} -f model/src/test/resources/docker/Dockerfile.jsql .
 
 script:
 
