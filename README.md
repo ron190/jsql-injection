@@ -14,6 +14,7 @@ This software is developed using open source libraries like [Spring](https://spr
 [![GitHub](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
 [![Travis](https://travis-ci.org/ron190/jsql-injection.svg?branch=master)](https://travis-ci.org/ron190/jsql-injection)
 [![Gitlab](https://gitlab.com/ron190/jsql-injection/badges/gitlab-master/pipeline.svg?style=flat)](https://gitlab.com/ron190/jsql-injection)
+[![Github Actions](https://img.shields.io/github/workflow/status/ron190/jsql-injection/Java CI with Maven/github-master)](https://github.com/ron190/jsql-injection/actions)
 [![CircleCI](https://circleci.com/gh/ron190/jsql-injection/tree/circleci-master.svg?style=shield)](https://circleci.com/gh/ron190/jsql-injection/tree/circleci-master)<br>
 [![Sonar](https://img.shields.io/sonar/coverage/jsql-injection:jsql-injection?label=sonar&server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
 [![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=codecov)](https://codecov.io/gh/ron190/jsql-injection)
