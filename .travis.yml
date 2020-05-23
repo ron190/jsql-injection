@@ -12,11 +12,11 @@ jobs:
     - JSQL_DOCKERFILE=3.6.3-jdk-8-slim
     
   - env:
-    - MAVEN_NASHORN="--no-deprecation-warning"
+    - MAVEN_NASHORN="-Dnashorn.args=--no-deprecation-warning"
     - JSQL_DOCKERFILE=3.6.3-jdk-11-slim
     
   - env:
-    - MAVEN_NASHORN="--no-deprecation-warning"
+    - MAVEN_NASHORN="-Dnashorn.args=--no-deprecation-warning"
     - JSQL_DOCKERFILE=3.6.3-openjdk-14-slim
 
 branches:
@@ -61,6 +61,7 @@ script:
     jsql:latest 
     ./model/src/test/resources/vnc/execute-on-vnc.sh 
     mvn clean verify sonar:sonar
+  - 'if [ $? -ne 0 ]; then echo "docker run exit code: $?" && exit 1; fi'
   - ./model/src/test/resources/docker/script/verify.sh
   
 # after_success:
