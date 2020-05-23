@@ -87,6 +87,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <argLine>${MAVEN_NASHORN}</argLine>
                     <rerunFailingTestsCount>3</rerunFailingTestsCount>
                     <includes>
                         <include>**/*TestSuite.java</include>
