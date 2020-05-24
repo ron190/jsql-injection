@@ -7,6 +7,8 @@ COPY ./ ./
 # ENV SONARQUBE_SCANNER_PARAMS '{ "sonar.branch.name" : "master-docker", "sonar.organization" : "ron190-github", "sonar.host.url" : "https://sonarcloud.io", "sonar.login" : "" }'
 # ENV SONAR_TOKEN ${SONAR_TOKEN}
 
+ENV MAVEN_NASHORN ${MAVEN_NASHORN}
+
 # Ignore repositories errors
 RUN apt-get update -y || true
 
