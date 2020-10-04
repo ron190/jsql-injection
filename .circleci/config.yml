@@ -1,0 +1,63 @@
+version: 2
+jobs:
+  maven/test:
+    docker:
+    - image: circleci/openjdk:8u252-jdk
+    steps:
+    - checkout
+
+    - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
+        # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+        key: circleci-jsql-injection-{{ checksum "pom.xml" }}
+    
+    # Force verify to get and cache dependencies for next docker run
+    - run: mvn -DskipTests clean install verify -DskipITs dependency:resolve-plugins dependency:go-offline
+    
+    - save_cache: # saves the project dependencies
+        paths:
+          - $HOME/.m2
+        key: circleci-jsql-injection-{{ checksum "pom.xml" }}    
+    
+    - setup_remote_docker 
+    
+    - run:
+        name: Run Docker
+        command: |
+            docker-compose -f ./model/src/test/resources/docker/docker-compose.yml build --parallel
+            docker-compose -f ./model/src/test/resources/docker/docker-compose.yml up -d
+            ./model/src/test/resources/docker/healthcheck/healthcheck.sh
+            ./model/src/test/resources/docker/script/buff.sh
+            ./model/src/test/resources/docker/script/verify.sh
+            docker rmi jsql:latest -f
+            docker build -t jsql:latest -f model/src/test/resources/docker/Dockerfile.jsql .
+  
+    - run:
+        name: Run Tests
+        command: |
+            # volume not mounted so not cached => requires circleci executor machine
+            docker run                                           \
+                -v $HOME/.m2:/root/.m2                           \
+                --network docker_jsql-network                    \
+                jsql:latest                                      \
+                ./model/src/test/resources/vnc/execute-on-vnc.sh \
+                mvn clean verify
+    
+    - save_cache: # saves the project dependencies
+        paths:
+          - $HOME/.m2
+        key: circleci-jsql-injection-{{ checksum "pom.xml" }}    
+            
+    - run:
+        name: Verify Tests
+        command: ./model/src/test/resources/docker/script/verify.sh
+    
+workflows:
+  maven_test:
+    jobs:
+    - maven/test
+  version: 2
+  
+general:
+  branches:
+    only:
+     - circleci-master
