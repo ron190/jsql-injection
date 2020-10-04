@@ -17,7 +17,11 @@ class JsonUtilSpock extends Specification {
         when: List<SimpleEntry<String, String>> entries = JsonUtil.createEntries(oJsonObject, "root", parentXPath)
         
         then:
-            ((JSONObject) oJsonObject).getJSONArray('d').getJSONArray(2).getJSONObject(0).get('d') == 'd*'
+            ((JSONObject) oJsonObject)
+            .getJSONArray('d')
+            .getJSONArray(2)
+            .getJSONObject(0)
+            .get('d') == 'd*'
         
         where:
             parentXPath = new SimpleEntry<String, String>("root.d[2][0].d", "d")
@@ -42,9 +46,9 @@ class JsonUtilSpock extends Specification {
             [
                 'root.a=a',
                 'root.b.b=b',
-                'root.c[0].c=c',
+                'root.c[2].c=c',
                 'root.d[2][0].d=d',
-                'root.e.e[2][0].e=e',
+                'root.e.e[4][0].e=e',
             ]
         
         where:
@@ -52,9 +56,9 @@ class JsonUtilSpock extends Specification {
                 {
                     a: 'a*',
                     b: {b: 'b*'},
-                    c: [{c: 'c*'}],
+                    c: [0, false, {c: 'c*'}],
                     d: [null, null, [{d: 'd*'}]],
-                    e: {e: [null, null, [{e: 'e*'}]]},
+                    e: {e: [null, 1, false, null, [{e: 'e*'}]]},
                 }
             ''')
     }
@@ -71,6 +75,7 @@ class JsonUtilSpock extends Specification {
                 'root.c[0].c=c',
                 'root.d[2][0].d=d',
                 'root.e.e[2][0].e=e',
+                'root.f[2][4].f[2]=f',
             ]
             entriesJsonArray.stream().map({e -> e.toString()}).collect(Collectors.toList()) ==
             [
@@ -79,6 +84,7 @@ class JsonUtilSpock extends Specification {
                 'root[1].c[0].c=c',
                 'root[1].d[2][0].d=d',
                 'root[1].e.e[2][0].e=e',
+                'root[1].f[2][4].f[2]=f',
             ]
         
         where:
@@ -89,11 +95,14 @@ class JsonUtilSpock extends Specification {
                     c: [{c: 'c'}],
                     d: [null, null, [{d: 'd'}]],
                     e: {e: [null, null, [{e: 'e'}]]},
+                    f: [1, false, [1, true, {f: true}, {f: 1}, {f: [true, 1, 'f']}]]
                 }
             ''')
             
             oJsonArray = JsonUtil.getJson("""
                 [
+                    1,
+                    true,
                     null,
                     ${oJsonObject},
                     null

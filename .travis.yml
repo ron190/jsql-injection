@@ -52,25 +52,23 @@ before_script:
 
 script:
 
-  # - docker run 
-  #   -v "$HOME/.m2":/root/.m2 
-  #   -v "$HOME/.sonar/cache":/root/.sonar/cache
-  #   -e "SONARQUBE_SCANNER_PARAMS=${SONARQUBE_SCANNER_PARAMS}"
-  #   -e "SONAR_TOKEN=${SONAR_TOKEN}"
-  #   --network docker_jsql-network 
-  #   jsql:latest 
-  #   ./model/src/test/resources/vnc/execute-on-vnc.sh 
-  #   mvn clean verify sonar:sonar
+  - docker run                                                
+    -v "$HOME/.m2":/root/.m2   
+    -v "$HOME/.sonar/cache":/root/.sonar/cache                                               
+    --network docker_jsql-network                             
+    -e SONAR_TOKEN                  
+    -e MAVEN_NASHORN                                                 
+    jsql:latest                                               
+    ./model/src/test/resources/vnc/execute-on-vnc.sh          
+    sh -c 'java -version ; (mvn clean verify sonar:sonar) ; (cd view/ ; mvn sonar:sonar) ; (cd model/ ; mvn sonar:sonar)'
   # - |
   #   export DOCKER_RUN=$?
   #   echo "docker run exit code: ${DOCKER_RUN}"
   #   if [ ${DOCKER_RUN} -ne 0 ]; then exit 1; fi
-  - ./model/src/test/resources/docker/script/run.sh
+  # - ./model/src/test/resources/docker/script/run.sh
   - ./model/src/test/resources/docker/script/verify.sh
   
-# after_success:
+after_success:
 
-  # - bash <(curl -s https://codecov.io/bash)
-  # 
-  # - export CODACY_PROJECT_TOKEN=43e8b6719fbc4f3cbef25d863d7440c8
-  # - bash <(curl -Ls https://coverage.codacy.com/get.sh)
+  - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -Ls https://coverage.codacy.com/get.sh)

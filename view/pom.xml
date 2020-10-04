@@ -30,6 +30,13 @@
             <version>2.4</version>
         </dependency>
     </dependencies>
+    
+    <properties>
+      <sonar.projectKey>jsql-injection:jsql-injection-view</sonar.projectKey>
+      <sonar.organization>ron190-github</sonar.organization>
+      <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+      <sonar.exclusions>**/view/swing/sql/lexer**/*</sonar.exclusions>
+    </properties>
 
     <build>
 

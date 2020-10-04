@@ -3,6 +3,7 @@ docker run                                                    \
     -v "$HOME/.sonar/cache":/root/.sonar/cache                \
     -e "SONARQUBE_SCANNER_PARAMS=${SONARQUBE_SCANNER_PARAMS}" \
     -e "SONAR_TOKEN=${SONAR_TOKEN}"                           \
+    -e "MAVEN_NASHORN=${MAVEN_NASHORN}"                       \
     --network docker_jsql-network                             \
     jsql:latest                                               \
     ./model/src/test/resources/vnc/execute-on-vnc.sh          \

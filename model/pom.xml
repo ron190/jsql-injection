@@ -23,7 +23,14 @@
             <id>oracle-repository</id>
             <url>http://maven.geomajas.org/</url>
         </repository>
-    </repositories>
+    </repositories> 
+    
+    <properties>
+      <sonar.projectKey>jsql-injection:jsql-injection-model</sonar.projectKey>
+      <sonar.organization>ron190-github</sonar.organization>
+      <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+      <sonar.exclusions>**/blind/patch/*, **/DigestMD4.java</sonar.exclusions>
+    </properties>
     
     <build>
         <plugins>
