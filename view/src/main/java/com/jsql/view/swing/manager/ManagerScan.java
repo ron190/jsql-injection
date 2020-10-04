@@ -276,12 +276,12 @@ public class ManagerScan extends AbstractManagerList {
         MediatorHelper.model().addObserver(new ScanListTerminal());
         
         MediatorHelper.model().setIsScanning(true);
-        MediatorHelper.model().getResourceAccess().isScanStopped = false;
+        MediatorHelper.model().getResourceAccess().setScanStopped(false);
         
         for (ItemList urlItemList: urlsItemList) {
             
             ItemListScan urlItemListScan = (ItemListScan) urlItemList;
-            if (MediatorHelper.model().isStoppedByUser() || MediatorHelper.model().getResourceAccess().isScanStopped) {
+            if (MediatorHelper.model().isStoppedByUser() || MediatorHelper.model().getResourceAccess().isScanStopped()) {
                 
                 break;
             }
@@ -313,7 +313,7 @@ public class ManagerScan extends AbstractManagerList {
         
         MediatorHelper.model().setIsScanning(false);
         MediatorHelper.model().setIsStoppedByUser(false);
-        MediatorHelper.model().getResourceAccess().isScanStopped = false;
+        MediatorHelper.model().getResourceAccess().setScanStopped(false);
 
         Request request = new Request();
         request.setMessage(Interaction.END_SCAN);

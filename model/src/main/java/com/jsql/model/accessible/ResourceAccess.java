@@ -79,18 +79,18 @@ public class ResourceAccess {
     /**
      * True if admin page should stop, false otherwise.
      */
-    public boolean isSearchAdminStopped = false;
+    private boolean isSearchAdminStopped = false;
     
     /**
      * True if scan list should stop, false otherwise.
      */
-    public boolean isScanStopped = false;
+    private boolean isScanStopped = false;
 
     /**
      * True if ongoing file reading must stop, false otherwise.
      * If true any new file read is cancelled at start.
      */
-    public boolean isSearchFileStopped = false;
+    private boolean isSearchFileStopped = false;
 
     /**
      * True if current user has right to read file.
@@ -986,7 +986,7 @@ public class ResourceAccess {
      */
     public void stopSearchingFile() {
         
-        this.isSearchFileStopped = true;
+        this.setSearchFileStopped(true);
         
         // Force ongoing suspendable to stop immediately
         for (CallableFile callable: this.callablesReadFile) {
@@ -1015,5 +1015,17 @@ public class ResourceAccess {
 
     public void setReadingIsAllowed(boolean readingIsAllowed) {
         this.readingIsAllowed = readingIsAllowed;
+    }
+
+    public boolean isScanStopped() {
+        return isScanStopped;
+    }
+
+    public boolean isSearchFileStopped() {
+        return isSearchFileStopped;
+    }
+
+    public void setSearchFileStopped(boolean isSearchFileStopped) {
+        this.isSearchFileStopped = isSearchFileStopped;
     }
 }

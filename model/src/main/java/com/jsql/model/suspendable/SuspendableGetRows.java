@@ -448,7 +448,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             String values = regexSearch.group(1);
             int instances = Integer.parseInt(regexSearch.group(2));
 
-            listValues.add(new ArrayList<String>());
+            listValues.add(new ArrayList<>());
             listValues.get(rowsFound).add(Integer.toString(rowsFound + 1));
             listValues.get(rowsFound).add("x"+ instances);
             

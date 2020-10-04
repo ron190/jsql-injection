@@ -5,8 +5,6 @@ It is **free**, **open source** and it works **cross-platform** on Windows, Linu
 
 ![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in various other distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
 
-This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration. Injection stability and non regression are verified in the cloud against dockerized and in memory databases, and GUI is tested on VNC screen during the same process.
-
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)<br>
 [![Java 8 to 15](https://img.shields.io/badge/java-8%20to%2015-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)
 [![JUnit 5](https://img.shields.io/badge/junit-5-50940f)](http://junit.org)
@@ -20,22 +18,6 @@ This software is developed using open source libraries like [Spring](https://spr
 [![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=codecov)](https://codecov.io/gh/ron190/jsql-injection)
 [![Codacy](https://img.shields.io/codacy/coverage/e7ccb247f9b74d489a1fa9f9483c978f?label=codacy)](https://app.codacy.com/manual/ron190/jsql-injection/dashboard)
 [![Codebeat badge](https://codebeat.co/badges/457d8c76-c470-4457-ad06-310a6d8b4b3e)](https://codebeat.co/projects/github-com-ron190-jsql-injection-master)
-
-## Continuous integration in the Cloud on Docker
-```
-+---+ +-----------------------------------------------------------------------+
-|   | |                         JUNIT TEST FRAMEWORK                          |
-|   | +-----------------|-------------------------------------|---------------+
-| D | +-----------------v-------------------+  +--------------v---------------+
-| O | |          INJECTION MODEL            <--+             GUI              |
-| C | +-----------------|-------------------+  +------------------------------+
-| K | +-----------------v-----------------------------------------------------+
-| E | |                              SPRING API                               |
-| R | +---|---------|----------|----------|------|------|-------|--------|----+
-|   | +---v---------v----------v----------v------v------v-------v--------v----+
-|   | | MYSQL | POSTGRES | SQL SERVER | CUBRID | H2 | DERBY | HSQLDB | SQLITE |
-+---+ +-----------------------------------------------------------------------+
-```
 
 ## Features
 - Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
@@ -55,6 +37,23 @@ Install [Java 8](http://java.com) or either up to Java 15, then download the lat
 You can also type `java -jar jsql-injection-v0.82.jar` in your terminal to start the program.<br>
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
+## Continuous integration
+This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration. Non regression tests are run in the cloud against dockerized and in memory databases, and GUI is tested on VNC screen during the same process.
+```
++---+ +-----------------------------------------------------------------------+
+|   | |                         JUNIT TEST FRAMEWORK                          |
+|   | +-----------------|-------------------------------------|---------------+
+| D | +-----------------v-------------------+  +--------------v---------------+
+| O | |          INJECTION MODEL            <--+             GUI              |
+| C | +-----------------|-------------------+  +------------------------------+
+| K | +-----------------v-----------------------------------------------------+
+| E | |                              SPRING API                               |
+| R | +---|---------|----------|----------|------|------|-------|--------|----+
+|   | +---v---------v----------v----------v------v------v-------v--------v----+
+|   | | MYSQL | POSTGRES | SQL SERVER | CUBRID | H2 | DERBY | HSQLDB | SQLITE |
++---+ +-----------------------------------------------------------------------+
+```
+
 ## [[Test-bed scripts](https://github.com/ron190/jsql-injection/tree/master/web/test-bed)]
 Use the sample scripts to test injection on your local environment. First install a development environment like [EasyPHP](http://www.easyphp.org), then download the [test-bed PHP scripts](https://github.com/ron190/jsql-injection/tree/master/web/test-bed) and place them into `www/`.
 ```php
@@ -70,14 +69,13 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 ```
 
 ## Screenshots and [[video](https://youtu.be/ZZkQRE3OL8E)]
-[![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
-[![SQL Engine](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.78/sqlengine-mini.png "SQL Engine")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.78/sqlengine.png)
+[![SQL Engine](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/sqlengine-mini.png "SQL Engine")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/sqlengine.png)
+[![Tamper](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/tamper-mini.png "Tamper")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/tamper.png)
 [![Batch scan](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/scan-mini.png "Batch scan")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/scan.png)
+[![Admin page](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/admin-mini.png "Admin page")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/admin.png)
 [![Web shell](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/webshell-mini.png "Web shell")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/webshell.png)
 [![SQL shell](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/sqlshell-mini.png "SQL shell")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/sqlshell.png)
-[![Panels](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/panels-mini.png "Panel")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/panels.png)
-[![Admin page](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/admin-mini.png "Admin page")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/admin.png)
 [![File](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/file-mini.png "File")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/file.png)
 [![Upload](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/upload-mini.png "Upload")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/upload.png)
 [![Bruteforce](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter-mini.png "Bruteforce")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter.png)
@@ -103,7 +101,7 @@ integration tests in the Cloud, Tampering.
 
 ## Change log
 
-**v0.82** `Tampering options, Refactoring for Cloud and multithreading compatibility`
+**v0.82** `Tampering options, Refactoring for Cloud and multithreading`
 
 **v0.81** `Test all parameters including JSON, Parse forms and Csrf tokens, Databases: CockroachDB Mckoi Neo4j NuoDB Hana and Vertica, Translation complete: Russian, Chinese`
 

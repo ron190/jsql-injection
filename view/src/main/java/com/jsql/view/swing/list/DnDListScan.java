@@ -26,6 +26,8 @@ public class DnDListScan extends DnDList {
     @Override
     public void addItem(int endPosition, String line) {
         
-        this.listModel.add(endPosition++, new ItemListScan(new BeanInjection(line.replace("\\", "/"))));
+        int position = endPosition;
+        
+        this.listModel.add(position++, new ItemListScan(new BeanInjection(line.replace("\\", "/"))));
     }
 }

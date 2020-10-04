@@ -273,7 +273,7 @@ public class ManagerAdminPage extends AbstractManagerList {
         taskExecutor.shutdown();
         taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
 
-        MediatorHelper.model().getResourceAccess().isSearchAdminStopped = false;
+        MediatorHelper.model().getResourceAccess().setSearchAdminStopped(false);
 
         MediatorHelper.model().getResourceAccess().logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);
 

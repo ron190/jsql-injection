@@ -127,7 +127,7 @@ public class HeaderUtil {
         Optional<SimpleEntry<String, String>> optionalTokenCsrf = Jsoup
             .parse(pageSource.toString())
             .select("input")
-            .select("[name=csrf_token], [name=csrfToken]")
+            .select("[name=csrf_token], [name=csrfToken], [name=user_token], [name=csrfmiddlewaretoken], [name=csrfmiddlewaretoken]")
             .stream()
             .findFirst()
             .map(input -> new SimpleEntry<>(input.attr("name"), input.attr("value")));

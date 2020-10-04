@@ -58,7 +58,7 @@ public final class OrderedProperties {
      * the ordering of the keys, this instance behaves like an instance of the {@link Properties} class.
      */
     public OrderedProperties() {
-        this(new LinkedHashMap<String, String>(), false);
+        this(new LinkedHashMap<>(), false);
     }
 
     private OrderedProperties(Map<String, String> properties, boolean suppressDate) {

@@ -166,7 +166,7 @@ public abstract class AbstractTestSuite {
         }
     }
 
-    @Ignore
+    @Ignore("Enabled on inheritance")
     public void listDatabases() throws JSqlException {
         
         Set<String> valuesFromInjection = new HashSet<>();
@@ -202,7 +202,7 @@ public abstract class AbstractTestSuite {
         }
     }
 
-    @Ignore
+    @Ignore("Enabled on inheritance")
     public void listTables() throws JSqlException {
         
         Set<String> valuesFromInjection = new HashSet<>();
@@ -236,13 +236,8 @@ public abstract class AbstractTestSuite {
             throw new AssertionError(String.format("Unknown tables: %s\n%s", tablesUnkown, e));
         }
     }
-    
-    protected Collection<String> parse(List<String> columns) {
-        
-        return columns;
-    }
 
-    @Ignore
+    @Ignore("Enabled on inheritance")
     public void listColumns() throws JSqlException {
         
         Set<String> valuesFromInjection = new HashSet<>();
@@ -280,8 +275,19 @@ public abstract class AbstractTestSuite {
             throw new AssertionError(String.format("Unknown columns: %s\n%s", columnsUnkown, e));
         }
     }
+    
+    /**
+     * Default columns processing.
+     * Can be overridden like for Sqlite.
+     * @param columns
+     * @return
+     */
+    protected Collection<String> parse(List<String> columns) {
+        
+        return columns;
+    }
 
-    @Ignore
+    @Ignore("Enabled on inheritance")
     public void listValues() throws JSqlException {
         
         Set<String> valuesFromInjection = new TreeSet<>();

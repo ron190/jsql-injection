@@ -33,5 +33,73 @@
     {"url": "leettime.net/sqlninja.com/tasks/basic_ch4.php?id=1"},
     {"url": "leettime.net/sqlninja.com/tasks/deathrow_ch1.php?id=1"},
     {"url": "leettime.net/sqlninja.com/tasks/sub_ch1.php?id=1"},
-    {"url": "leettime.net/sqlninja.com/tasks/mics_ch1.php?sort=1"}
+    {"url": "leettime.net/sqlninja.com/tasks/mics_ch1.php?sort=1"},
+    {
+        "url": "http://127.0.0.1/DVWA-2.0.1/vulnerabilities/sqli/?id=&Submit=Submit",
+        "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE;security=low;",
+        "vendor": "MYSQL"
+    },
+    {
+        "url": "http://127.0.0.1/DVWA-2.0.1/vulnerabilities/sqli/",
+        "request": "id=&Submit=Submit",
+        "requestType": "POST",
+        "method": "REQUEST",
+        "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE;security=medium;"
+    },
+    {
+        "url": "http://127.0.0.1/bWAPP/sqli_1.php?action=search&title=",
+        "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
+        "vendor": "MYSQL"
+    },
+    {
+        "url": "http://127.0.0.1/bWAPP/sqli_2.php?movie=1&action=go",
+        "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
+        "vendor": "MYSQL"
+    },
+    {
+        "url": "http://127.0.0.1/bWAPP/sqli_3.php",
+        "request": "login=bee&password=bug&form=submit",
+        "requestType": "POST",
+        "method": "REQUEST",
+        "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
+        "vendor": "MYSQL"
+    },
+    {
+        "url": "http://127.0.0.1/bWAPP/sqli_4.php?title=a'&action=search",
+        "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
+        "vendor": "MYSQL"
+    },
+    {
+        "url": "http://127.0.0.1/bWAPP/sqli_6.php",
+        "request": "title=a&action=search",
+        "requestType": "POST",
+        "method": "REQUEST",
+        "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
+        "vendor": "MYSQL"
+    },
+    {
+        "url": "http://127.0.0.1/bWAPP/sqli_7.php",
+        "request": "entry=a&blog=add",
+        "requestType": "POST",
+        "method": "REQUEST",
+        "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
+        "vendor": "MYSQL"
+    },
+    {
+        "url": "http://127.0.0.1/bWAPP/sqli_11.php?title=a'&action=search",
+        "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;"
+    },
+    {
+        "url": "http://127.0.0.1/bWAPP/sqli_16.php",
+        "request": "login=bee&password=bug&form=submit",
+        "requestType": "POST",
+        "method": "REQUEST",
+        "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
+        "vendor": "MYSQL"
+    },
+    {
+        "url": "http://127.0.0.1/bWAPP/sqli_17.php",
+        "method": "HEADER",
+        "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;\r\nUser-Agent:"
+    }
 ]

@@ -169,7 +169,7 @@ public class ManagerFile extends AbstractManagerList {
         
         for (
             tasksHandled = 0 ;
-            tasksHandled < submittedTasks && !MediatorHelper.model().getResourceAccess().isSearchFileStopped ;
+            tasksHandled < submittedTasks && !MediatorHelper.model().getResourceAccess().isSearchFileStopped() ;
             tasksHandled++
         ) {
             
@@ -208,7 +208,7 @@ public class ManagerFile extends AbstractManagerList {
         taskExecutor.shutdown();
         taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
         
-        MediatorHelper.model().getResourceAccess().isSearchFileStopped = false;
+        MediatorHelper.model().getResourceAccess().setSearchFileStopped(false);
         
         String result =
             "Found "

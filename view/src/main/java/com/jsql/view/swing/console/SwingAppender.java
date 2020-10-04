@@ -97,7 +97,7 @@ public class SwingAppender extends WriterAppender {
     }
 
     /**
-     * Colorizes the specified message for the specified log4j level.
+     * Display colored message by log4j level.
      */
     private void insertText(String message, Level level, ThrowableInformation throwableInformation) {
         
