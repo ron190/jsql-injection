@@ -38,7 +38,7 @@ You can also type `java -jar jsql-injection-v0.82.jar` in your terminal to start
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 ## Continuous integration
-This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration. Non regression tests are run in the cloud against dockerized and in memory databases, and GUI is tested on VNC screen during the same process.
+This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using a continuous integration platform like Travis CI or Github Actions. The non regression tests run against dockerized and in memory databases and GUI is tested on VNC screen in the cloud on the CI platform, then quality checks are stored on quality platforms like Sonar and Codecov for developers to improve code quality.
 ```
 +---+ +-----------------------------------------------------------------------+
 |   | |                         JUNIT TEST FRAMEWORK                          |

@@ -111,7 +111,7 @@ public class TargetApplication {
             )
         );
         
-        if (!"true".equals(System.getenv("FROM_TRAVIS"))) {
+        if (!"true".equals(System.getenv("FROM_CI_PIPELINE"))) {
             
             properties.add(0, TargetApplication.propsOracle);
         }

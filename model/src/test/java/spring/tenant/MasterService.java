@@ -37,7 +37,7 @@ public class MasterService {
             )
         );
         
-        if (!"true".equals(System.getenv("FROM_TRAVIS"))) {
+        if (!"true".equals(System.getenv("FROM_CI_PIPELINE"))) {
             
             properties.add(TargetApplication.propsOracle);
         }

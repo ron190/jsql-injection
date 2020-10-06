@@ -1,11 +1,11 @@
-# This workflow will build a Java project with Maven
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
 name: Java CI with Maven
 
 on:
   push:
     branches: [ master ]
+    
+env:
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 jobs:
   build:
@@ -14,44 +14,41 @@ jobs:
 
     steps:
     
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
     
-    - uses: actions/cache@v1
+    - name: Set Maven dependencies cache
+      uses: actions/cache@v1
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+        restore-keys: ${{ runner.os }}-maven-
               
-    - name: Build with Maven
-#      run: mvn -B package --file pom.xml
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - name: Install Maven dependencies
       run: |
-        docker version
         mvn clean install -DskipITs -DskipTests dependency:tree --file pom.xml
-
-        env | sort
-        sudo cat /proc/meminfo
-        java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
         
-        # git update-index --chmod=+x <file>
+    - name: Build and start databases Docker images
+      run: |
         docker-compose -f ./model/src/test/resources/docker/docker-compose.yml build --parallel
         docker-compose -f ./model/src/test/resources/docker/docker-compose.yml up -d
         ./model/src/test/resources/docker/healthcheck/healthcheck.sh
         ./model/src/test/resources/docker/script/buff.sh
         ./model/src/test/resources/docker/script/verify.sh
         
+    - name: Build project Docker image and start tests
+      run: |
         docker rmi jsql:latest -f
         export JSQL_DOCKERFILE=3.6.3-jdk-8-slim
         docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
         
         docker run                                                  \
+          --rm                                                      \
           -v "$HOME/.m2":/root/.m2                                  \
           -v "$HOME/.sonar/cache":/root/.sonar/cache                \
           --network docker_jsql-network                             \
@@ -59,7 +56,15 @@ jobs:
           -e MAVEN_NASHORN                                          \
           jsql:latest                                               \
           ./model/src/test/resources/vnc/execute-on-vnc.sh          \
-          sh -c 'java -version ; (mvn clean verify sonar:sonar) ; (cd view/ ; mvn sonar:sonar) ; (cd model/ ; mvn sonar:sonar)'
-          
-          
+          sh -c 'java -version ; mvn clean verify sonar:sonar && (cd view/ ; mvn sonar:sonar) && (cd model/ ; mvn sonar:sonar)'
+        
+        DOCKER_RUN="$?"
+        echo docker run exit code: $DOCKER_RUN
+        if [ "${DOCKER_RUN}" != "0" ]; then exit 1; fi
+        
         ./model/src/test/resources/docker/script/verify.sh
+        
+    - name: Send quality reports
+      run: |
+        bash <(curl -s https://codecov.io/bash)
+        bash <(curl -Ls https://coverage.codacy.com/get.sh)

@@ -79,12 +79,12 @@ class JsonUtilSpock extends Specification {
             ]
             entriesJsonArray.stream().map({e -> e.toString()}).collect(Collectors.toList()) ==
             [
-                'root[1].a=a',
-                'root[1].b.b=b',
-                'root[1].c[0].c=c',
-                'root[1].d[2][0].d=d',
-                'root[1].e.e[2][0].e=e',
-                'root[1].f[2][4].f[2]=f',
+                'root[3].a=a',
+                'root[3].b.b=b',
+                'root[3].c[0].c=c',
+                'root[3].d[2][0].d=d',
+                'root[3].e.e[2][0].e=e',
+                'root[3].f[2][4].f[2]=f',
             ]
         
         where:

@@ -34,7 +34,7 @@ public class MainApplication {
         
         injectionModel = new InjectionModel();
         
-        if (!"true".equals(System.getenv("FROM_TRAVIS"))) {
+        if (!"true".equals(System.getenv("FROM_CI_PIPELINE"))) {
             
             injectionModel.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();
         }

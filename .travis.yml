@@ -8,16 +8,16 @@ jobs:
   include:
   
   - env:
-    - MAVEN_NASHORN=
     - JSQL_DOCKERFILE=3.6.3-jdk-8-slim
+    - MAVEN_NASHORN=
     
   - env:
-    - MAVEN_NASHORN=-Dnashorn.args=--no-deprecation-warning
     - JSQL_DOCKERFILE=3.6.3-jdk-11-slim
+    - MAVEN_NASHORN=-Dnashorn.args=--no-deprecation-warning
     
   - env:
-    - MAVEN_NASHORN=-Dnashorn.args=--no-deprecation-warning
     - JSQL_DOCKERFILE=3.6.3-openjdk-14-slim
+    - MAVEN_NASHORN=-Dnashorn.args=--no-deprecation-warning
 
 branches:
   only:
@@ -35,37 +35,37 @@ cache:
     - $HOME/.sonar/cache
 
 before_script:
-
-  - env | sort
-  - sudo cat /proc/meminfo
-  - java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
-  
-  # git update-index --chmod=+x <file>
-  - docker-compose -f ./model/src/test/resources/docker/docker-compose.yml build --parallel
-  - docker-compose -f ./model/src/test/resources/docker/docker-compose.yml up -d
-  - ./model/src/test/resources/docker/healthcheck/healthcheck.sh
-  - ./model/src/test/resources/docker/script/buff.sh
-  - ./model/src/test/resources/docker/script/verify.sh
-  
-  - docker rmi jsql:latest -f
-  - docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
+  - |
+    env | sort
+    sudo cat /proc/meminfo
+    java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
+    
+    docker-compose -f ./model/src/test/resources/docker/docker-compose.yml build --parallel
+    docker-compose -f ./model/src/test/resources/docker/docker-compose.yml up -d
+    ./model/src/test/resources/docker/healthcheck/healthcheck.sh
+    ./model/src/test/resources/docker/script/buff.sh
+    ./model/src/test/resources/docker/script/verify.sh
+    
+    docker rmi jsql:latest -f
+    docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
 
 script:
+  - |
+    docker run                                            \
+    --rm                                                  \
+    -v "$HOME/.m2":/root/.m2                              \
+    -v "$HOME/.sonar/cache":/root/.sonar/cache            \
+    --network docker_jsql-network                         \
+    -e SONAR_TOKEN                                        \
+    -e MAVEN_NASHORN                                      \
+    jsql:latest                                           \
+    ./model/src/test/resources/vnc/execute-on-vnc.sh      \
+    sh -c 'java -version ; mvn clean verify sonar:sonar && (cd view/ ; mvn sonar:sonar) && (cd model/ ; mvn sonar:sonar)'
+    
+    DOCKER_RUN="$?"
+    echo docker run exit code: $DOCKER_RUN
+    if [ "${DOCKER_RUN}" != "0" ]; then exit 1; fi
 
-  - docker run                                                
-    -v "$HOME/.m2":/root/.m2   
-    -v "$HOME/.sonar/cache":/root/.sonar/cache                                               
-    --network docker_jsql-network                             
-    -e SONAR_TOKEN                  
-    -e MAVEN_NASHORN                                                 
-    jsql:latest                                               
-    ./model/src/test/resources/vnc/execute-on-vnc.sh          
-    sh -c 'java -version ; (mvn clean verify sonar:sonar) ; (cd view/ ; mvn sonar:sonar) ; (cd model/ ; mvn sonar:sonar)'
-  # - |
-  #   export DOCKER_RUN=$?
-  #   echo "docker run exit code: ${DOCKER_RUN}"
-  #   if [ ${DOCKER_RUN} -ne 0 ]; then exit 1; fi
-  # - ./model/src/test/resources/docker/script/run.sh
   - ./model/src/test/resources/docker/script/verify.sh
   
 after_success:

@@ -102,14 +102,27 @@ public class JsonUtil {
         for (int i = 0; i < jsonArrayEntity.length(); i++) {
             
             Object jsonEntityInArray = jsonArrayEntity.get(i);
-            
-            if (!(jsonEntityInArray instanceof JSONObject) && !(jsonEntityInArray instanceof JSONArray)) {
-                
-                continue;
-            }
-
             String xpath = parentName +"["+ i +"]";
-            attributesXPath.addAll(JsonUtil.createEntries(jsonEntityInArray, xpath, parentXPath));
+            
+            /** TODO Generic required {@see #scanJsonObject()} */
+            if (jsonEntityInArray instanceof JSONArray || jsonEntityInArray instanceof JSONObject) {
+                
+                attributesXPath.addAll(JsonUtil.createEntries(jsonEntityInArray, xpath, parentXPath));
+                
+            } else if (jsonEntityInArray instanceof String) {
+                
+                SimpleEntry<String, String> stringValue = new SimpleEntry<>(xpath, (String) jsonEntityInArray);
+                attributesXPath.add(stringValue);
+                
+                if (parentXPath == null) {
+                    
+                    jsonArrayEntity.put(i, jsonEntityInArray.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY));
+                    
+                } else if (stringValue.equals(parentXPath)) {
+                    
+                    jsonArrayEntity.put(i, jsonEntityInArray + InjectionModel.STAR);
+                }
+            }
         }
     }
 
@@ -125,6 +138,7 @@ public class JsonUtil {
             Object value = jsonObjectEntity.get(key);
             String xpath = parentName +"."+ key;
             
+            /** TODO Generic required {@see #scanJsonArray()} */
             if (value instanceof JSONArray || value instanceof JSONObject) {
                 
                 attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));

@@ -4,10 +4,10 @@ FROM maven:${JSQL_DOCKERFILE}
 
 COPY ./ ./
 
-# ENV SONARQUBE_SCANNER_PARAMS '{ "sonar.branch.name" : "master-docker", "sonar.organization" : "ron190-github", "sonar.host.url" : "https://sonarcloud.io", "sonar.login" : "" }'
-# ENV SONAR_TOKEN ${SONAR_TOKEN}
-
 ENV MAVEN_NASHORN ${MAVEN_NASHORN}
+
+# Define user for VNC
+ENV USER vnc-user-jsql
 
 # Ignore repositories errors
 RUN apt-get update -y || true
@@ -16,11 +16,5 @@ RUN apt-get update -y || true
 RUN apt-get install tightvncserver xfonts-base dos2unix iproute2 net-tools iputils-ping -y
 
 RUN dos2unix /model/src/test/resources/vnc/execute-on-vnc.sh
-
-# Define user for VNC
-ENV USER vnc-user-jsql
-
-# Disable Oracle tests
-ENV FROM_TRAVIS true
 
 CMD ["/bin/bash"]

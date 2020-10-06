@@ -32,6 +32,10 @@ export DISPLAY=:${NEW_DISPLAY}
 echo MAVEN_NASHORN=${MAVEN_NASHORN}
 
 "$@"
+JSQL_EXIT_CODE=$?
+echo "# Container command exit code $JSQL_EXIT_CODE"
 
 export DISPLAY=${OLD_DISPLAY}
 vncserver -kill ":${NEW_DISPLAY}"
+
+exit $JSQL_EXIT_CODE

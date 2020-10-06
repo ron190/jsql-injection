@@ -19,31 +19,12 @@
         <sonar.projectKey>jsql-injection:jsql-injection</sonar.projectKey>
         <sonar.organization>ron190-github</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
     </properties>
     
     <build>
 
         <plugins>
-  
-            <!-- Read sonar-project.properties usually ignored by mvn -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>read-project-properties</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <file>sonar-project.properties</file>
-                            </files>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
     
             <!-- Generate reports for Sonar and Codecov -->
             <plugin>

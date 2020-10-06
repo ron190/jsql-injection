@@ -7,8 +7,8 @@
         <artifactId>jsql-injection</artifactId>
         <version>v0.82</version>
     </parent>
-    <artifactId>view</artifactId>
-    <name>view</name>
+    <artifactId>jsql-view</artifactId>
+    <name>jsql-view</name>
 
     <dependencies>
         <dependency>
@@ -32,9 +32,7 @@
     </dependencies>
     
     <properties>
-      <sonar.projectKey>jsql-injection:jsql-injection-view</sonar.projectKey>
-      <sonar.organization>ron190-github</sonar.organization>
-      <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+      <sonar.projectKey>jsql-injection:view</sonar.projectKey>
       <sonar.exclusions>**/view/swing/sql/lexer**/*</sonar.exclusions>
     </properties>
 
