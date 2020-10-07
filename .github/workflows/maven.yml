@@ -16,7 +16,9 @@ jobs:
         jdk: [
           3.6.3-jdk-8-slim,
           3.6.3-jdk-11-slim,
-          3.6.3-openjdk-14-slim
+          3.6.3-openjdk-14-slim,
+          3.6.3-openjdk-15,
+          3.6.3-openjdk-16
         ]
 
     steps:
@@ -60,22 +62,22 @@ jobs:
         
     - name: Run project tests on Docker container
       run: |
-        docker run                                                  \
-          --rm                                                      \
-          -v "$HOME/.m2":/root/.m2                                  \
-          -v "$HOME/.sonar/cache":/root/.sonar/cache                \
-          --network docker_jsql-network                             \
-          -e SONAR_TOKEN                                            \
-          -e MAVEN_NASHORN                                          \
-          jsql:latest                                               \
-          ./model/src/test/resources/vnc/execute-on-vnc.sh          \
-          sh -c '                                                   \
-            java -version                                           \
-            && mvn clean verify sonar:sonar                         \
-            && (cd view/ ; mvn sonar:sonar)                         \
-            && (cd model/ ; mvn sonar:sonar)                        \
-            && bash <(curl -s https://codecov.io/bash)              \
-            && bash <(curl -Ls https://coverage.codacy.com/get.sh)  \
+        docker run                                               \
+          --rm                                                   \
+          -v "$HOME/.m2":/root/.m2                               \
+          -v "$HOME/.sonar/cache":/root/.sonar/cache             \
+          --network docker_jsql-network                          \
+          -e SONAR_TOKEN                                         \
+          -e MAVEN_NASHORN                                       \
+          jsql:latest                                            \
+          ./model/src/test/resources/vnc/execute-on-vnc.sh       \
+          sh -c '                                                \
+            java -version                                        \
+            && mvn clean verify sonar:sonar                      \
+            && (cd view/ ; mvn sonar:sonar)                      \
+            && (cd model/ ; mvn sonar:sonar)                     \
+            && sh <(curl -s https://codecov.io/bash)             \
+            && sh <(curl -Ls https://coverage.codacy.com/get.sh) \
           '
         
         DOCKER_RUN="$?"
