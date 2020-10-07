@@ -59,9 +59,6 @@ jobs:
       run: |
         docker rmi jsql:latest -f
         docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
-        
-    - name: Run project tests on Docker container
-      run: |
         docker run                                               \
           --rm                                                   \
           -v "$HOME/.m2":/root/.m2                               \
