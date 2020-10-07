@@ -9,7 +9,7 @@ env:
 
 jobs:
   build:
-    name: Run 3.6.3-jdk-8-slim on ubuntu-latest
+    name: Run tests on Docker
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -52,13 +52,13 @@ jobs:
         ./model/src/test/resources/docker/script/verify.sh
         
     - name: Build project Docker image
+      env:
+        JSQL_DOCKERFILE: ${{ matrix.jdk }}
       run: |
         docker rmi jsql:latest -f
         docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
         
     - name: Run project tests on Docker container
-      env:
-        JSQL_DOCKERFILE: ${{ matrix.jdk }}
       run: |
         docker run                                                  \
           --rm                                                      \
