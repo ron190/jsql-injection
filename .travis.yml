@@ -1,10 +1,6 @@
 language: java
 services: docker
 
-git:
-  # Disable shallow clone to send Git blame to Sonar
-  depth: false
-
 jdk: openjdk8
 
 jobs:
