@@ -1,6 +1,10 @@
 language: java
 services: docker
 
+git:
+  # Disable shallow clone to send Git blame to Sonar
+  depth: false
+
 jdk: openjdk8
 
 jobs:
@@ -16,6 +20,14 @@ jobs:
     
   - env:
     - JSQL_DOCKERFILE=3.6.3-openjdk-14-slim
+    - MAVEN_NASHORN=-Dnashorn.args=--no-deprecation-warning
+    
+  - env:
+    - JSQL_DOCKERFILE=3.6.3-openjdk-15
+    - MAVEN_NASHORN=-Dnashorn.args=--no-deprecation-warning
+    
+  - env:
+    - JSQL_DOCKERFILE=3.6.3-openjdk-16
     - MAVEN_NASHORN=-Dnashorn.args=--no-deprecation-warning
 
 branches:
@@ -56,6 +68,8 @@ script:
     -v "$HOME/.sonar/cache":/root/.sonar/cache       \
     --network docker_jsql-network                    \
     -e SONAR_TOKEN                                   \
+    -e CODACY_PROJECT_TOKEN                          \
+    -e CODECOV_TOKEN                                 \
     -e MAVEN_NASHORN                                 \
     jsql:latest                                      \
     ./model/src/test/resources/vnc/execute-on-vnc.sh \
