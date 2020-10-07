@@ -63,6 +63,7 @@ before_script:
 script:
   - |
     docker run                                       \
+    -t                                               \
     --rm                                             \
     -v "$HOME/.m2":/root/.m2                         \
     -v "$HOME/.sonar/cache":/root/.sonar/cache       \
