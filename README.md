@@ -10,10 +10,8 @@ It is **free**, **open source** and it works **cross-platform** on Windows, Linu
 [![JUnit 5](https://img.shields.io/badge/junit-5-50940f)](http://junit.org)
 [![Maven 3.1](https://img.shields.io/badge/maven-3.1-a2265a)](https://maven.apache.org/)
 [![GitHub](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
-[![Travis](https://travis-ci.org/ron190/jsql-injection.svg?branch=master)](https://travis-ci.org/ron190/jsql-injection)
-[![Gitlab](https://gitlab.com/ron190/jsql-injection/badges/gitlab-master/pipeline.svg?style=flat)](https://gitlab.com/ron190/jsql-injection)
 [![Github](https://github.com/ron190/jsql-injection/workflows/Java%20CI%20with%20Maven/badge.svg?branch=github-master)](https://github.com/ron190/jsql-injection/actions)
-[![CircleCI](https://circleci.com/gh/ron190/jsql-injection/tree/circleci-master.svg?style=shield)](https://circleci.com/gh/ron190/jsql-injection/tree/circleci-master)<br>
+[![Travis](https://travis-ci.org/ron190/jsql-injection.svg?branch=master)](https://travis-ci.org/ron190/jsql-injection)<br>
 [![Sonar](https://img.shields.io/sonar/coverage/jsql-injection:jsql-injection?label=sonar&server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
 [![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=codecov)](https://codecov.io/gh/ron190/jsql-injection)
 [![Codacy](https://img.shields.io/codacy/coverage/e7ccb247f9b74d489a1fa9f9483c978f?label=codacy)](https://app.codacy.com/manual/ron190/jsql-injection/dashboard)
@@ -38,7 +36,7 @@ You can also type `java -jar jsql-injection-v0.82.jar` in your terminal to start
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 ## Continuous integration
-This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using a continuous integration platform like Travis CI or Github Actions. The non regression tests run against dockerized and in memory databases and GUI is tested on VNC screen in the cloud on the CI platform, then quality checks are stored on quality platforms like Sonar and Codecov for developers to improve code quality.
+This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using a continuous integration platform like Travis CI and Github Actions. The non regression tests run against dockerized and in memory databases and GUI is tested on VNC screen in the cloud on the CI platform, then quality checks are stored on quality code platforms like Sonar and Codecov.
 ```
 +---+ +-----------------------------------------------------------------------+
 |   | |                         JUNIT TEST FRAMEWORK                          |

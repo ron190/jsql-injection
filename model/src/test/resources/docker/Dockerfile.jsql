@@ -6,6 +6,9 @@ COPY ./ ./
 
 ENV MAVEN_NASHORN ${MAVEN_NASHORN}
 
+# Disable Oracle tests
+ENV FROM_CI_PIPELINE true
+
 # Define user for VNC
 ENV USER vnc-user-jsql
 

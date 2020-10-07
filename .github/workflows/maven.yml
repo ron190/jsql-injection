@@ -9,13 +9,23 @@ env:
 
 jobs:
   build:
-
+    name: Run 3.6.3-jdk-8-slim on ubuntu-latest
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jdk: [
+          3.6.3-jdk-8-slim,
+          3.6.3-jdk-11-slim,
+          3.6.3-openjdk-14-slim
+        ]
 
     steps:
     
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        # Disable shallow clone to send Git blame to Sonar
+        fetch-depth: 0
     
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
@@ -41,12 +51,15 @@ jobs:
         ./model/src/test/resources/docker/script/buff.sh
         ./model/src/test/resources/docker/script/verify.sh
         
-    - name: Build project Docker image and start tests
+    - name: Build project Docker image
       run: |
         docker rmi jsql:latest -f
-        export JSQL_DOCKERFILE=3.6.3-jdk-8-slim
         docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
         
+    - name: Run project tests on Docker container
+      env:
+        JSQL_DOCKERFILE: ${{ matrix.jdk }}
+      run: |
         docker run                                                  \
           --rm                                                      \
           -v "$HOME/.m2":/root/.m2                                  \
@@ -56,15 +69,19 @@ jobs:
           -e MAVEN_NASHORN                                          \
           jsql:latest                                               \
           ./model/src/test/resources/vnc/execute-on-vnc.sh          \
-          sh -c 'java -version ; mvn clean verify sonar:sonar && (cd view/ ; mvn sonar:sonar) && (cd model/ ; mvn sonar:sonar)'
+          sh -c '                                                   \
+            java -version                                           \
+            && mvn clean verify sonar:sonar                         \
+            && (cd view/ ; mvn sonar:sonar)                         \
+            && (cd model/ ; mvn sonar:sonar)                        \
+            && bash <(curl -s https://codecov.io/bash)              \
+            && bash <(curl -Ls https://coverage.codacy.com/get.sh)  \
+          '
         
         DOCKER_RUN="$?"
         echo docker run exit code: $DOCKER_RUN
         if [ "${DOCKER_RUN}" != "0" ]; then exit 1; fi
         
-        ./model/src/test/resources/docker/script/verify.sh
-        
-    - name: Send quality reports
+    - name: Verify database Docker containers statistics
       run: |
-        bash <(curl -s https://codecov.io/bash)
-        bash <(curl -Ls https://coverage.codacy.com/get.sh)
+        ./model/src/test/resources/docker/script/verify.sh

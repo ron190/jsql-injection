@@ -1,6 +1,10 @@
 language: java
 services: docker
 
+git:
+  # Disable shallow clone to send Git blame to Sonar
+  depth: false
+
 jdk: 
  - openjdk8
 
@@ -51,24 +55,26 @@ before_script:
 
 script:
   - |
-    docker run                                            \
-    --rm                                                  \
-    -v "$HOME/.m2":/root/.m2                              \
-    -v "$HOME/.sonar/cache":/root/.sonar/cache            \
-    --network docker_jsql-network                         \
-    -e SONAR_TOKEN                                        \
-    -e MAVEN_NASHORN                                      \
-    jsql:latest                                           \
-    ./model/src/test/resources/vnc/execute-on-vnc.sh      \
-    sh -c 'java -version ; mvn clean verify sonar:sonar && (cd view/ ; mvn sonar:sonar) && (cd model/ ; mvn sonar:sonar)'
+    docker run                                                  \
+    --rm                                                        \
+    -v "$HOME/.m2":/root/.m2                                    \
+    -v "$HOME/.sonar/cache":/root/.sonar/cache                  \
+    --network docker_jsql-network                               \
+    -e SONAR_TOKEN                                              \
+    -e MAVEN_NASHORN                                            \
+    jsql:latest                                                 \
+    ./model/src/test/resources/vnc/execute-on-vnc.sh            \
+    sh -c '                                                     \
+        java -version                                           \
+        && mvn clean verify sonar:sonar                         \
+        && (cd view/ ; mvn sonar:sonar)                         \
+        && (cd model/ ; mvn sonar:sonar)                        \
+        && bash <(curl -s https://codecov.io/bash)              \
+        && bash <(curl -Ls https://coverage.codacy.com/get.sh)  \
+    '
     
     DOCKER_RUN="$?"
     echo docker run exit code: $DOCKER_RUN
     if [ "${DOCKER_RUN}" != "0" ]; then exit 1; fi
 
   - ./model/src/test/resources/docker/script/verify.sh
-  
-after_success:
-
-  - bash <(curl -s https://codecov.io/bash)
-  - bash <(curl -Ls https://coverage.codacy.com/get.sh)
