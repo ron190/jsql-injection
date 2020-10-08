@@ -8,7 +8,9 @@ env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  DEBUG_COLORS: "true"
   TERM: xterm-256color
+  COLORTERM: truecolor
 
 jobs:
   build:
