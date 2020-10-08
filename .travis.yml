@@ -8,9 +8,10 @@ git:
 jdk: openjdk8
 
 env: 
-  - DEBUG_COLORS="true"
-  - TERM=xterm-256color
-  - COLORTERM=truecolor
+  global:
+    - DEBUG_COLORS="true"
+    - TERM=xterm-256color
+    - COLORTERM=truecolor
 
 jobs:
   include:
