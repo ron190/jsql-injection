@@ -12,13 +12,14 @@ jobs:
     name: Run tests on Docker
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         jdk: [
           3.6.3-jdk-8-slim,
           3.6.3-jdk-11-slim,
-          3.6.3-openjdk-14-slim,
-          3.6.3-openjdk-15,
-          3.6.3-openjdk-16
+          3.6.3-openjdk-14-slim
+          #jdk15 missing apt-get image
+          #jdk16 missing apt-get image
         ]
 
     steps:

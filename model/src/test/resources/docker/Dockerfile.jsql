@@ -1,12 +1,13 @@
 ARG JSQL_DOCKERFILE=${JSQL_DOCKERFILE}
 ARG MAVEN_NASHORN=${MAVEN_NASHORN}
+
 FROM maven:${JSQL_DOCKERFILE}
 
 COPY ./ ./
 
-ENV MAVEN_NASHORN ${MAVEN_NASHORN}
-ENV CODACY_PROJECT_TOKEN ${CODACY_PROJECT_TOKEN}
-ENV CODECOV_TOKEN ${CODECOV_TOKEN}
+# ENV MAVEN_NASHORN ${MAVEN_NASHORN}
+# ENV CODACY_PROJECT_TOKEN ${CODACY_PROJECT_TOKEN}
+# ENV CODECOV_TOKEN ${CODECOV_TOKEN}
 
 # Disable Oracle tests
 ENV FROM_CI_PIPELINE true
@@ -14,13 +15,11 @@ ENV FROM_CI_PIPELINE true
 # Define user for VNC
 ENV USER vnc-user-jsql
 
-ENV TERM xterm-256color
-
 # Ignore repositories errors
 RUN apt-get update -y || true
 
 # Install VNC support, shell and network tools
-RUN apt-get install tightvncserver xfonts-base dos2unix iproute2 net-tools iputils-ping git libgbm-dev xvfb -y
+RUN apt-get install tightvncserver xfonts-base dos2unix iproute2 net-tools iputils-ping git -y
 
 RUN dos2unix /model/src/test/resources/vnc/execute-on-vnc.sh
 
