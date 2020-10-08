@@ -6,6 +6,9 @@ on:
     
 env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  TERM: xterm-256color
 
 jobs:
   build:
@@ -47,11 +50,14 @@ jobs:
         JSQL_DOCKERFILE: ${{ matrix.jdk }}
       run: |
         mvn clean install -DskipITs -DskipTests dependency:tree --file pom.xml
+        
         docker-compose -f ./model/src/test/resources/docker/docker-compose.yml build --parallel
         docker-compose -f ./model/src/test/resources/docker/docker-compose.yml up -d
+        
         ./model/src/test/resources/docker/healthcheck/healthcheck.sh
         ./model/src/test/resources/docker/script/buff.sh
         ./model/src/test/resources/docker/script/verify.sh
+        
         docker rmi jsql:latest -f
         docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
         docker run                                         \
@@ -68,6 +74,7 @@ jobs:
           ./model/src/test/resources/vnc/execute-on-vnc.sh \
           bash -c '                                        \
             java -version                                  \
+            && env|sort                                    \
             && mvn clean verify sonar:sonar                \
             && (cd view/ ; mvn sonar:sonar)                \
             && (cd model/ ; mvn sonar:sonar)               \

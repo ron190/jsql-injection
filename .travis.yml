@@ -7,6 +7,8 @@ git:
 
 jdk: openjdk8
 
+env: TERM=xterm-256color
+
 jobs:
   include:
   
@@ -39,9 +41,12 @@ cache:
 
 before_script:
   - |
+    export TERM=xterm-256color
     env | sort
     sudo cat /proc/meminfo
     java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
+    
+    mvn clean install -DskipITs -DskipTests dependency:tree --file pom.xml
     
     docker-compose -f ./model/src/test/resources/docker/docker-compose.yml build --parallel
     docker-compose -f ./model/src/test/resources/docker/docker-compose.yml up -d
@@ -68,6 +73,7 @@ script:
     ./model/src/test/resources/vnc/execute-on-vnc.sh \
     bash -c '                                        \
         java -version                                \
+        && env|sort                                  \
         && mvn clean verify sonar:sonar              \
         && (cd view/ ; mvn sonar:sonar)              \
         && (cd model/ ; mvn sonar:sonar)             \
