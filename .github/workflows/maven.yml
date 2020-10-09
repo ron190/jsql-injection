@@ -44,12 +44,14 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-maven-
               
-    - name: Install Maven dependencies, build and start databases Docker images
+    - name: Install Maven dependencies
       env:
         JSQL_DOCKERFILE: ${{ matrix.jdk }}
       run: |
         mvn clean install -DskipITs -DskipTests dependency:tree --file pom.xml
         
+    - name: Build and start databases Docker images
+      run: |
         docker-compose -f ./model/src/test/resources/docker/docker-compose.yml build --parallel
         docker-compose -f ./model/src/test/resources/docker/docker-compose.yml up -d
         
@@ -57,8 +59,13 @@ jobs:
         ./model/src/test/resources/docker/script/buff.sh
         ./model/src/test/resources/docker/script/verify.sh
         
+    - name: Build project Docker containers
+      run: |
         docker rmi jsql:latest -f
         docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
+        
+    - name: Run unit and integration tests
+      run: |
         docker run                                          \
           -t                                                \
           --rm                                              \
