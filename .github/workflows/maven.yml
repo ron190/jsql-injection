@@ -23,6 +23,8 @@ jobs:
           #jdk15 missing apt-get image
           #jdk16 missing apt-get image
         ]
+    env:
+      JSQL_DOCKERFILE: ${{ matrix.jdk }}
 
     steps:
     
@@ -45,8 +47,6 @@ jobs:
         restore-keys: ${{ runner.os }}-maven-
               
     - name: Install Maven dependencies
-      env:
-        JSQL_DOCKERFILE: ${{ matrix.jdk }}
       run: |
         mvn clean install -DskipITs -DskipTests dependency:tree --file pom.xml
         
