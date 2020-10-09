@@ -69,7 +69,7 @@ script:
     bash -c '                                        \
         java -version                                \
         && env|sort                                  \
-        && mvn clean verify sonar:sonar              \
+        && mvn clean verify                          \
         && (cd view/ ; mvn sonar:sonar)              \
         && (cd model/ ; mvn sonar:sonar)             \
         && bash <(curl -s https://codecov.io/bash)             \

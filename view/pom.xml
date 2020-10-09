@@ -13,7 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>jsql-injection</groupId>
-            <artifactId>model</artifactId>
+            <artifactId>jsql-model</artifactId>
             <version>${project.version}</version>
         </dependency>
 
