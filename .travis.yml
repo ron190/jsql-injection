@@ -74,7 +74,7 @@ script:
         && (cd model/ ; mvn sonar:sonar)                \
         && bash <(curl -s https://codecov.io/bash)             \
         && bash <(curl -Ls https://coverage.codacy.com/get.sh) \
-    '
+    ' 
     
     DOCKER_RUN="$?"
     echo docker run exit code: $DOCKER_RUN
