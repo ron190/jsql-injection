@@ -59,24 +59,24 @@ jobs:
         
         docker rmi jsql:latest -f
         docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
-        docker run                                         \
-          -t                                               \
-          --rm                                             \
-          -v "$HOME/.m2":/root/.m2                         \
-          -v "$HOME/.sonar/cache":/root/.sonar/cache       \
-          --network docker_jsql-network                    \
-          -e SONAR_TOKEN                                   \
-          -e CODACY_PROJECT_TOKEN                          \
-          -e CODECOV_TOKEN                                 \
-          -e MAVEN_NASHORN                                 \
-          jsql:latest                                      \
-          ./model/src/test/resources/vnc/execute-on-vnc.sh \
-          bash -c '                                        \
-            java -version                                  \
-            && env|sort                                    \
-            && mvn clean verify                            \
-            && (cd view/ ; mvn sonar:sonar)                \
-            && (cd model/ ; mvn sonar:sonar)               \
+        docker run                                          \
+          -t                                                \
+          --rm                                              \
+          -v "$HOME/.m2":/root/.m2                          \
+          -v "$HOME/.sonar/cache":/root/.sonar/cache        \
+          --network docker_jsql-network                     \
+          -e SONAR_TOKEN                                    \
+          -e CODACY_PROJECT_TOKEN                           \
+          -e CODECOV_TOKEN                                  \
+          -e MAVEN_NASHORN                                  \
+          jsql:latest                                       \
+          ./model/src/test/resources/vnc/execute-on-vnc.sh  \
+          bash -c '                                         \
+            java -version                                   \
+            && env|sort                                     \
+            && mvn clean verify sonar:sonar                 \
+            && (cd view/ ; mvn sonar:sonar)                 \
+            && (cd model/ ; mvn sonar:sonar)                \
             && bash <(curl -s https://codecov.io/bash)             \
             && bash <(curl -Ls https://coverage.codacy.com/get.sh) \
           '

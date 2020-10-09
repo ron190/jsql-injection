@@ -92,7 +92,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <argLine>${MAVEN_NASHORN}</argLine>
+<!--                 Don't override, it breaks generating report -->
+<!--                     <argLine>${MAVEN_NASHORN}</argLine> -->
                     <rerunFailingTestsCount>3</rerunFailingTestsCount>
                     <includes>
                         <include>**/*TestSuite.java</include>
