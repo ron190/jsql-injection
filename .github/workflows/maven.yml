@@ -23,9 +23,19 @@ jobs:
           #jdk15 missing apt-get image
           #jdk16 missing apt-get image
         ]
+        include:
+        - jdk: 3.6.3-jdk-8-slim
+          MAVEN_NASHORN:
+        include:
+        - jdk: 3.6.3-jdk-11-slim
+          MAVEN_NASHORN: -Dnashorn.args=--no-deprecation-warning
+        include:
+        - jdk: 3.6.3-openjdk-14-slim
+          MAVEN_NASHORN: -Dnashorn.args=--no-deprecation-warning
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
-
+      MAVEN_NASHORN: ${{ matrix.MAVEN_NASHORN }}
+    
     steps:
     
     - name: Checkout code
