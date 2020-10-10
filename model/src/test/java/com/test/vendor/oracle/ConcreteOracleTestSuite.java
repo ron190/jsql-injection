@@ -10,6 +10,24 @@ public abstract class ConcreteOracleTestSuite extends AbstractTestSuite {
     
     public void config() {
         
+        /*
+            Oracle Database 19c (19.3.0) Enterprise Edition and Standard Edition 2
+            
+            buildDockerImage.sh -v 19.3.0 -e
+            
+            docker run --name oracle19ee \
+            -p 1521:1521 -p 5500:5500 \
+            -e ORACLE_SID=ORCLCDB \
+            -e ORACLE_PDB=ORCLPDB1 \
+            -e ORACLE_PWD=Password1_One \
+            -e ORACLE_CHARACTERSET=AL32UTF8 \
+            oracle/database:19.3.0-ee      
+            
+            jdbc:oracle:thin:@localhost:11521:ORCLCDB
+            system  
+            Password1_One
+         */
+        
         // ORA-12519, TNS:no appropriate service handler found
         // select * from v$resource_limit where resource_name = 'processes';
         
