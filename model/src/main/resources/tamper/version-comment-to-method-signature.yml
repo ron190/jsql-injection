@@ -7,24 +7,24 @@ javascript: |
     return sql
     
         // Lock keyword not compatible
-        .replace(/group_concat\(/gi, '@-;:%1@')
-        .replace(/mid\(/gi, '@-;:%2@')
-        .replace(/cast\(/gi, '@-;:%3@')
-        .replace(/count\(/gi, '@-;:%4@')
-        .replace(/trim\(/gi, '@-;:%5@')
-        .replace(/%2b/gi, '@-;:%6@') // plus from trap canceller 7330+1
+        .replace(/group_concat\(/gi, 'jSqLlOcK1')
+        .replace(/mid\(/gi, 'jSqLlOcK2')
+        .replace(/cast\(/gi, 'jSqLlOcK3')
+        .replace(/count\(/gi, 'jSqLlOcK4')
+        .replace(/trim\(/gi, 'jSqLlOcK5')
+        .replace(/substring\(/gi, 'jSqLlOcK6')
         
         // Ignore comments already there
         .replace(
-            /([\b])?([a-zA-Z_`]+)(\D)/gmi,
-            '$1/*!$2*/$3'
+            /(?!jSqLlOcK\d+\()([a-z_`]+)\(/gmi,
+            '/*!$1*/('
         )
         
         // Unlock keyword
-        .replace(/@-;:%1@/g, 'group_concat(')
-        .replace(/@-;:%2@/g, 'mid(')
-        .replace(/@-;:%3@/g, 'cast(')
-        .replace(/@-;:%4@/g, 'count(')
-        .replace(/@-;:%5@/g, 'trim(')
-        .replace(/@-;:%6@/g, '%2b')
+        .replace(/jSqLlOcK1/g, 'group_concat(')
+        .replace(/jSqLlOcK2/g, 'mid(')
+        .replace(/jSqLlOcK3/g, 'cast(')
+        .replace(/jSqLlOcK4/g, 'count(')
+        .replace(/jSqLlOcK5/g, 'trim(')
+        .replace(/jSqLlOcK6/g, 'substring(')
  }

@@ -1,8 +1,12 @@
 package spring.ssl;
 
+import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
+import org.apache.tomcat.util.http.LegacyCookieProcessor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.embedded.tomcat.TomcatContextCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -40,5 +44,25 @@ public class HttpServer {
         tomcat.addAdditionalTomcatConnectors(connector);
         
         return tomcat;
+    }
+    
+    @Bean
+    public WebServerFactoryCustomizer<TomcatServletWebServerFactory> cookieProcessorCustomizer() {
+        
+        return new WebServerFactoryCustomizer<TomcatServletWebServerFactory>() {
+
+            @Override
+            public void customize(TomcatServletWebServerFactory tomcatServletWebServerFactory) {
+                
+                tomcatServletWebServerFactory.addContextCustomizers(new TomcatContextCustomizer() {
+
+                    @Override
+                    public void customize(Context context) {
+                        
+                        context.setCookieProcessor(new LegacyCookieProcessor());
+                    }
+                });
+            }
+        };
     }
 }

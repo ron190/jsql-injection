@@ -46,15 +46,16 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         String initialQuery = StringUtils.EMPTY;
         int nbIndex;
 
-        // SQL: each field is built has the following 1337[index]7330+1
-        // Search if the source contains 1337[index]7331, this notation allows to exclude
-        // pages that display our own url in the source
+        // SQL fields are built like 1337[index]7330+1
+        // 7330+1 allows to exclude false positive when page contains injection URL
+        // Search if the source contains 1337[index]7331
         for (nbIndex = 1 ; nbIndex <= 10 ; nbIndex++) {
             
             taskCompletionService.submit(
                 new CallablePageSource(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),
-                    this.injectionModel
+                    this.injectionModel,
+                    "normal:index-" + nbIndex
                 )
             );
         }
@@ -83,7 +84,8 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                     taskCompletionService.submit(
                         new CallablePageSource(
                             this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),
-                            this.injectionModel
+                            this.injectionModel,
+                            "normal:index-" + nbIndex
                         )
                     );
                     

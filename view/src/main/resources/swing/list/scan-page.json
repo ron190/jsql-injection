@@ -101,5 +101,13 @@
         "url": "http://127.0.0.1/bWAPP/sqli_17.php",
         "method": "HEADER",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;\r\nUser-Agent:"
+    },
+    {"url": "http://local_pentesterlab/sqli/example1.php?name=root'"},
+    {"url": "http://local_pentesterlab_from_sqli_to_shell/cat?id="},
+    {"url": "http://local_pentesterlab_from_sqli_to_shell_pg_edition/cat?id="},
+    {
+        "url": "http://local_pentesterlab_from_sqli_to_shell_II/cat?id=1",
+        "method": "HEADER",
+        "header": "X-Forwarded-For: 1'"
     }
 ]

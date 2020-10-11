@@ -69,7 +69,8 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                 new CallablePageSource(
                     insertionCharacter,
                     insertionCharacter,
-                    this.injectionModel
+                    this.injectionModel,
+                    "get:vendor"
                 )
             );
 

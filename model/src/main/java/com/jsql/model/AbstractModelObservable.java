@@ -38,21 +38,21 @@ public abstract class AbstractModelObservable extends Observable {
      * useVisibleIndex false if injection indexes aren't needed,
      * return source page after the HTTP call.
      */
-    public abstract String inject(String dataInjection, boolean isUsingIndex);
+    public abstract String inject(String dataInjection, boolean isUsingIndex, String metadataInjectionProcess);
     
     /**
      * Inject without the need of index like in "select 1,2,..."<br>
      * Used for example by: first index test (getVisibleIndex), Error test, and Error, Blind, Time strategies.
      * @return source code of current page
      */
-    public String injectWithoutIndex(String dataInjection) {
+    public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess) {
         
-        return this.inject(dataInjection, false);
+        return this.inject(dataInjection, false, metadataInjectionProcess);
     }
 
-    public String injectWithIndexes(String dataInjection) {
+    public String injectWithIndexes(String dataInjection, String metadataInjectionProcess) {
         
-        return this.inject(dataInjection, true);
+        return this.inject(dataInjection, true, metadataInjectionProcess);
     }
 
     /**

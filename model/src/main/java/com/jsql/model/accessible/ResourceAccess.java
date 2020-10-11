@@ -195,7 +195,8 @@ public class ResourceAccess {
         
         this.injectionModel.injectWithoutIndex(
                 
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.filenameWebshell)
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.filenameWebshell),
+            "shell:create-web"
         );
 
         String resultInjection;
@@ -389,6 +390,7 @@ public class ResourceAccess {
         msgHeader.put(Header.HEADER, StringUtils.EMPTY);
         msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
         msgHeader.put(Header.SOURCE, pageSource);
+        msgHeader.put(Header.METADATA_INJECTION_PROCESS, "shell:run-cmd");
         
         Request request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);
@@ -467,7 +469,8 @@ public class ResourceAccess {
         }
         
         this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.filenameSqlshell)
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.filenameSqlshell),
+            "shell:create-sql"
         );
 
         String resultInjection;
@@ -784,7 +787,8 @@ public class ResourceAccess {
         }
         
         this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile("<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">", pathShellFixed + this.filenameUpload)
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile("<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">", pathShellFixed + this.filenameUpload),
+            "upload"
         );
 
         String[] sourcePage = {StringUtils.EMPTY};

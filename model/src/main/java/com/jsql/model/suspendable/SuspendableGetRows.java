@@ -55,6 +55,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         boolean isMultipleRows = (Boolean) args[2];
         int countRowsToFind = (Integer) args[3];
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
+        String metadataInjectionProcess = args.length == 6 ? (String) args[5] : "";
         
         this.injectionModel.getMediatorUtils().getThreadUtil().put(searchName, this);
 
@@ -85,7 +86,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
 
             this.checkSuspend(strategy, slidingWindowAllRows, slidingWindowCurrentRow);
             
-            sourcePage[0] = strategy.inject(queryGetRows, Integer.toString(charPositionInCurrentRow), this);
+            sourcePage[0] = strategy.inject(queryGetRows, Integer.toString(charPositionInCurrentRow), this, metadataInjectionProcess);
             
             // Parse all the data we have retrieved
             Matcher regexLeadFound = this.parseLeadFound(sourcePage[0], strategy.getPerformanceLength());

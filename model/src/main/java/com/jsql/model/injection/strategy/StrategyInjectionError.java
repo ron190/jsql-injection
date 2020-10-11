@@ -113,7 +113,8 @@ public class StrategyInjectionError extends AbstractStrategy {
                 .replace("${injection}", configurationYaml.getCalibrator())
                 .replace("${window.char}", "1")
                 .replace("${capacity}", Integer.toString(errorMethod.getCapacity()))
-            )
+            ),
+            "error:size-test"
         );
         
         return Pattern.compile("(?s)"+ DataAccess.LEAD +"(#+)").matcher(performanceErrorSourcePage);
@@ -133,7 +134,8 @@ public class StrategyInjectionError extends AbstractStrategy {
                 .replace("${injection}", configurationYaml.getFailsafe().replace("${indice}","0"))
                 .replace("${window.char}", "1")
                 .replace("${capacity}", Integer.toString(errorMethod.getCapacity()))
-            )
+            ),
+            "error:is-injectable"
         );
    
         if (performanceSourcePage.matches(
@@ -166,10 +168,11 @@ public class StrategyInjectionError extends AbstractStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
         
         return this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition)
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition),
+            metadataInjectionProcess
         );
     }
 

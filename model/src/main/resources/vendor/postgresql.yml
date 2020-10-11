@@ -2,12 +2,18 @@ vendor: PostgreSQL
 
 resource: 
  info: |
-  concat_ws(
-      '${enclose_value_sql}',
-      version(),
-      current_database(),
-      user
-  )
+  /* Method concat_ws exists since pg 9.1 only
+     concat_ws(
+         '${enclose_value_sql}',
+         version(),
+         current_database(),
+         user
+     ) */
+  version()
+  || '${enclose_value_sql}'
+  || current_database()
+  || '${enclose_value_sql}'
+  || user
   || '${trail_sql}'
   
  schema: 

@@ -64,7 +64,7 @@ public abstract class AbstractStrategy {
      * Start the strategy work.
      * @return Source code
      */
-    public abstract String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException;
+    public abstract String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException;
     
     /**
      * Change the strategy of the model to current strategy.

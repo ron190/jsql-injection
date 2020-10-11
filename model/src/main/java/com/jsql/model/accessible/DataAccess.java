@@ -158,7 +158,8 @@ public class DataAccess {
             sourcePage,
             false,
             0,
-            null
+            null,
+            "get:metadata"
         );
 
         if (StringUtils.isEmpty(resultToParse)) {
@@ -217,7 +218,8 @@ public class DataAccess {
                 sourcePage,
                 true,
                 0,
-                null
+                null,
+                "get:databases"
             );
             
         } catch (SlidingException e) {
@@ -308,7 +310,8 @@ public class DataAccess {
                 pageSource,
                 true,
                 Integer.parseInt(tableCount),
-                database
+                database,
+                "get:tables"
             );
             
         } catch (SlidingException e) {
@@ -398,7 +401,8 @@ public class DataAccess {
                 pageSource,
                 true,
                 0,
-                table
+                table,
+                "get:columns"
             );
             
         } catch (SlidingException e) {
@@ -511,7 +515,7 @@ public class DataAccess {
         arrayColumns = columnsName.toArray(new String[columnsName.size()]);
         
         // Group the columns names, values and Table object in one array
-        Object[] objectData = {arrayColumns, tableDatas, table};
+        Object[] objectData = { arrayColumns, tableDatas, table };
 
         Request requestCreateValuesTab = new Request();
         requestCreateValuesTab.setMessage(Interaction.CREATE_VALUES_TAB);
@@ -538,7 +542,8 @@ public class DataAccess {
                 pageSource,
                 true,
                 rowCount,
-                table
+                table,
+                "get:rows"
             );
             
         } catch (SlidingException e) {

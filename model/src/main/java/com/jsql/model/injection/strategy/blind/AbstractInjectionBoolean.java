@@ -86,7 +86,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
      * @return Final string: SQLiABCDEF...
      * @throws StoppedByUserSlidingException
      */
-    public String inject(String sqlQuery, AbstractSuspendable<String> suspendable) throws StoppedByUserSlidingException {
+    public String inject(String sqlQuery, AbstractSuspendable<String> suspendable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
 
         // List of the characters, each one represented by an array of 8 bits
         // e.g SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
@@ -145,7 +145,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 
             } catch (InjectionFailureException e) {
                 
-                LOGGER.error(e.getMessage(), e);
+                LOGGER.warn(e.getMessage(), e);
                 break;
             }
         }
@@ -281,7 +281,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
      * @param urlString URL to inject
      * @return Source code
      */
-    public String callUrl(String urlString) {
-        return this.injectionModel.injectWithoutIndex(urlString);
+    public String callUrl(String urlString, String metadataInjectionProcess) {
+        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);
     }
 }

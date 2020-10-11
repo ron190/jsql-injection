@@ -74,10 +74,11 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
         
         return this.injectionModel.injectWithIndexes(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(sqlQuery, startPosition)
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(sqlQuery, startPosition),
+            metadataInjectionProcess
         );
     }
 
@@ -123,7 +124,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         // ==> ${lead}(index)######...######
         // Search for index that displays the most #
         String performanceQuery = this.injectionModel.getMediatorVendor().getVendor().instance().sqlCapacity(indexes);
-        String performanceSourcePage = this.injectionModel.injectWithoutIndex(performanceQuery);
+        String performanceSourcePage = this.injectionModel.injectWithoutIndex(performanceQuery, "normal:size-test");
 
         // Build a 2D array of string with:
         //     column 1: index

@@ -43,6 +43,7 @@ public class MessageHeader implements InteractionCommand {
     private Map<String, String> response;
     private String source;
     private String size;
+    private String metadataInjectionProcess;
 
     /**
      * @param interactionParams Text to append
@@ -58,6 +59,7 @@ public class MessageHeader implements InteractionCommand {
         this.response = (Map<String, String>) params.get(Header.RESPONSE);
         this.source = (String) params.get(Header.SOURCE);
         this.size = (String) params.get(Header.PAGE_SIZE);
+        this.metadataInjectionProcess = (String) params.get(Header.METADATA_INJECTION_PROCESS);
     }
 
     @Override
@@ -75,7 +77,8 @@ public class MessageHeader implements InteractionCommand {
                     
                 this.url,
                 this.size,
-                this.response.get("Content-Type")
+                this.response.get("Content-Type"),
+                this.metadataInjectionProcess
             });
             
             Rectangle rect = table.getCellRect(table.getRowCount() - 1, 0, true);

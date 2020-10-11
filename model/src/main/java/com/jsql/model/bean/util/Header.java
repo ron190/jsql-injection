@@ -9,6 +9,7 @@ public enum Header {
     SOURCE,
     VENDOR,
     PAGE_SIZE,
-    INJECTION_MODEL
+    INJECTION_MODEL,
+    METADATA_INJECTION_PROCESS
     
 }

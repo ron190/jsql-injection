@@ -227,7 +227,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * @return source code of current page
      */
     @Override
-    public String inject(String newDataInjection, boolean isUsingIndex) {
+    public String inject(String newDataInjection, boolean isUsingIndex, String metadataInjectionProcess) {
         
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
         String urlInjection = this.mediatorUtils.getConnectionUtil().getUrlBase();
@@ -295,8 +295,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
             
             msgHeader.put(Header.SOURCE, pageSource);
+            msgHeader.put(Header.METADATA_INJECTION_PROCESS, metadataInjectionProcess);
             
-            // Inform the view about the log infos
+            // Send data to Views
             Request request = new Request();
             request.setMessage(Interaction.MESSAGE_HEADER);
             request.setParameters(msgHeader);
@@ -502,8 +503,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             query = this.initializeRawInjection(paramLeadFixed, isUsingIndex, sqlTrail);
         }
         
+        // Remove comments except empty /**/
         query = this.clean(methodInjection, query);
         
+        // Add empty comments with space=>/**/
         if (this.mediatorUtils.getConnectionUtil().getMethodInjection() == methodInjection) {
             
             query = this.mediatorUtils.getTamperingUtil().tamper(query);
@@ -581,6 +584,13 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         return query;
     }
 
+    /**
+     * Dependency:
+     * - Tamper space=>comment
+     * @param methodInjection
+     * @param query
+     * @return
+     */
     private String clean(MethodInjection methodInjection, String query) {
         
         String queryFixed = query;
@@ -590,12 +600,18 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             && this.mediatorUtils.getParameterUtil().isRequestSoap()
         ) {
             
-            // Remove SQL comments
             queryFixed =
                 queryFixed
-                .replaceAll("(?s)/\\*.*?\\*/", StringUtils.EMPTY)
+                // Remove SQL comments except tamper /**/ /*!...*/
+                // Negative lookahead: don't match tamper empty comment /**/ or version comment /*!...*/
+                // JavaScript: (?!\/\*!.*\*\/|\/\*\*\/)\/\*.*\*\/
+                .replaceAll("(?s)(?!/\\*\\*/|/\\*!.*\\*/)/\\*.*?\\*/", StringUtils.EMPTY)
                 .replace("+", " ")
-                .replace("%2b", "+");
+                // Trap canceller
+                .replace("%2b", "+")
+                // End comment
+                .replace("%23", "#")
+                ;
             
         } else {
             

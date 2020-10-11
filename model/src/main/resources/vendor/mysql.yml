@@ -238,7 +238,9 @@ strategy:
   limitBoundary: 0
   # Encoded space mandatory to avoid space cleaning
   # TODO keep raw space
-  endingComment: --+-
+  # endingComment: --+-
+  # pentesterlab does not work with --+-, switch to #
+  endingComment: '%23'
   fingerprint: 
    errorMessage: 
     - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near

@@ -2,7 +2,7 @@ tooltip: Transform SQL keywords to random case
 description: Transform SQL keywords to random case
 group: 
 javascript: |
- load('src/main/resources/tamper/js/random-case.js');
+ load('../model/src/main/resources/tamper/js/random-case.js');
  
  var tampering = function(sql) {
     

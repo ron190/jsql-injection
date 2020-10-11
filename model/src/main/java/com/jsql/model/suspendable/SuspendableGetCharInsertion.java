@@ -140,7 +140,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                     + StringUtils.SPACE
                     + this.injectionModel.getMediatorVendor().getVendor().instance().sqlOrderBy(),
                     characterInsertion,
-                    this.injectionModel
+                    this.injectionModel,
+                    "get:prefix-char"
                 )
             );
         }
@@ -174,6 +175,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         
         // Encoded space required for integer insertion
         // TODO keep raw space + tamper space
+        // Fail on neo4j when plain space ' '
         return characterInsertionDetectedFixed + "+";
     }
 }

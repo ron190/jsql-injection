@@ -105,6 +105,7 @@ public class TamperingUtil {
         String sqlQuery = null;
         String trail = null;
         
+        // Transform only SQL query without HTTP parameters and syntax changed, like p=1'+[sql]
         Matcher matcherSql = Pattern.compile("(?s)(.*<tampering>)(.*)(</tampering>.*)").matcher(sqlQueryDefault);
         
         if (matcherSql.find()) {
@@ -114,11 +115,33 @@ public class TamperingUtil {
            trail = matcherSql.group(3);
         }
         
+        if (this.isEval) {
+            
+            sqlQuery = eval(sqlQuery, this.customTamper);
+        }
+
+        if (this.isRandomCase) {
+            
+            sqlQuery = eval(sqlQuery, TamperingType.RANDOM_CASE.instance().getJavascript());
+        }
+        
+        if (this.isEqualToLike) {
+            
+            sqlQuery = eval(sqlQuery, TamperingType.EQUAL_TO_LIKE.instance().getJavascript());
+        }
+        
+        sqlQuery = lead + sqlQuery + trail;
+        
+        sqlQuery = sqlQuery.replaceAll("(?i)<tampering>", StringUtils.EMPTY);
+        sqlQuery = sqlQuery.replaceAll("(?i)</tampering>", StringUtils.EMPTY);
+        
         // Empty when checking character insertion
         if (StringUtils.isEmpty(sqlQuery)) {
             
             return StringUtils.EMPTY;
         }
+        
+        // Transform all query, SQL and HTTP
 
         if (this.isHexToChar) {
             
@@ -140,11 +163,6 @@ public class TamperingUtil {
             sqlQuery = eval(sqlQuery, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getJavascript());
         }
         
-        if (this.isEqualToLike) {
-            
-            sqlQuery = eval(sqlQuery, TamperingType.EQUAL_TO_LIKE.instance().getJavascript());
-        }
-        
         // Dependency to: EQUAL_TO_LIKE
         if (this.isSpaceToDashComment) {
             
@@ -159,32 +177,16 @@ public class TamperingUtil {
             sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_SHARP_COMMENT.instance().getJavascript());
         }
         
-        if (this.isRandomCase) {
-            
-            sqlQuery = eval(sqlQuery, TamperingType.RANDOM_CASE.instance().getJavascript());
-        }
-        
-        if (this.isEval) {
-            
-            sqlQuery = eval(sqlQuery, this.customTamper);
-        }
-        
         if (this.isBase64) {
             
             sqlQuery = eval(sqlQuery, TamperingType.BASE64.instance().getJavascript());
         }
-        
-        sqlQuery = lead + sqlQuery + trail;
         
         // Include character insertion at the beginning of query
         if (this.isQuoteToUtf8) {
             
             sqlQuery = eval(sqlQuery, TamperingType.QUOTE_TO_UTF8.instance().getJavascript());
         }
-        
-        // Problème si le tag contient des caractères spéciaux
-        sqlQuery = sqlQuery.replaceAll("(?i)<tampering>", StringUtils.EMPTY);
-        sqlQuery = sqlQuery.replaceAll("(?i)</tampering>", StringUtils.EMPTY);
         
         return sqlQuery;
     }

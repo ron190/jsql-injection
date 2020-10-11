@@ -18,6 +18,7 @@ public class CallablePageSource implements Callable<CallablePageSource> {
      * URL to load.
      */
     private String url;
+    private String metadataInjectionProcess;
 
     /**
      * Source code for current page.
@@ -41,6 +42,12 @@ public class CallablePageSource implements Callable<CallablePageSource> {
         this.injectionModel = injectionModel;
         this.url = url;
     }
+    public CallablePageSource(String url, InjectionModel injectionModel, String metadataInjectionProcess) {
+        
+        this.injectionModel = injectionModel;
+        this.url = url;
+        this.metadataInjectionProcess = metadataInjectionProcess;
+    }
 
     /**
      * Create callable for current insertion character test.
@@ -48,9 +55,9 @@ public class CallablePageSource implements Callable<CallablePageSource> {
      * @param characterInsertion
      * @param injectionModel2
      */
-    public CallablePageSource(String url, String characterInsertion, InjectionModel injectionModel) {
+    public CallablePageSource(String url, String characterInsertion, InjectionModel injectionModel, String metadataInjectionProcess) {
         
-        this(url, injectionModel);
+        this(url, injectionModel, metadataInjectionProcess);
         
         this.characterInsertion = characterInsertion;
     }
@@ -58,7 +65,7 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     @Override
     public CallablePageSource call() throws Exception {
         
-        this.content = this.injectionModel.injectWithoutIndex(this.url);
+        this.content = this.injectionModel.injectWithoutIndex(this.url, this.metadataInjectionProcess);
         
         return this;
     }

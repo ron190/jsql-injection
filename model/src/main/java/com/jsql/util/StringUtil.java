@@ -298,13 +298,16 @@ public final class StringUtil {
         
         return
             query
-            // Remove comments
-            .replaceAll("(?s)/\\*.*?\\*/", org.apache.commons.lang3.StringUtils.EMPTY)
+            // Remove SQL comments except tamper /**/ /*!...*/
+            // Negative lookahead: don't match tamper empty comment /**/ or version comment /*!...*/
+            // JavaScript: (?!\/\*!.*\*\/|\/\*\*\/)\/\*.*\*\/
+            .replaceAll("(?s)(?!/\\*\\*/|/\\*!.*\\*/)/\\*.*?\\*/", org.apache.commons.lang3.StringUtils.EMPTY)
             // Remove spaces after a word
-            .replaceAll("([^\\s\\w])(\\s+)", "$1")
+            .replaceAll("(?s)([^\\s\\w])(\\s+)", "$1")
             // Remove spaces before a word
-            .replaceAll("(\\s+)([^\\s\\w])", "$2")
+            .replaceAll("(?s)(\\s+)([^\\s\\w])", "$2")
             // Replace spaces
-            .replaceAll("\\s+", "+");
+            .replaceAll("(?s)\\s+", " ")
+            ;
     }
 }

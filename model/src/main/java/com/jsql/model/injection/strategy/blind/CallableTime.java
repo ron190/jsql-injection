@@ -30,16 +30,18 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     private InjectionModel injectionModel;
     
     private InjectionTime injectionTime;
+    private String metadataInjectionProcess;
     
     /**
      * Constructor for preparation and blind confirmation.
      * @param inj
      * @param injectionModel
      */
-    public CallableTime(String inj, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode) {
+    public CallableTime(String inj, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
         
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
+        this.metadataInjectionProcess = metadataInjectionProcess;
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(inj, blindMode);
     }
     
@@ -49,19 +51,19 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
      * @param indexCharacter
      * @param bit
      */
-    public CallableTime(String inj, int indexCharacter, int bit, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode) {
+    public CallableTime(String inj, int indexCharacter, int bit, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
         
-        this.injectionModel = injectionModel;
-        this.injectionTime = injectionTime;
+        // TODO Make generic
+        this(inj, injectionModel, injectionTime, blindMode, metadataInjectionProcess);
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestTime(inj, indexCharacter, bit, blindMode);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
     }
 
-    public CallableTime(String inj, int indexCharacter, boolean isTestingLength, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode) {
+    public CallableTime(String inj, int indexCharacter, boolean isTestingLength, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
         
-        this.injectionModel = injectionModel;
-        this.injectionTime = injectionTime;
+        // TODO Make generic
+        this(inj, injectionModel, injectionTime, blindMode, metadataInjectionProcess);
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestTime(inj, indexCharacter, blindMode);
         this.isTestingLength = isTestingLength;
     }
@@ -80,7 +82,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     public CallableTime call() throws Exception {
         
         this.calendar1.setTime(new Date());
-        this.injectionTime.callUrl(this.booleanUrl);
+        this.injectionTime.callUrl(this.booleanUrl, this.metadataInjectionProcess);
         this.calendar2.setTime(new Date());
         
         long milliseconds1 = this.calendar1.getTimeInMillis();

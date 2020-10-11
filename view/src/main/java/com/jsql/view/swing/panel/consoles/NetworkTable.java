@@ -39,7 +39,7 @@ public class NetworkTable extends JTable {
 
     public NetworkTable(TabbedPaneNetworkTab tabbedPaneNetworkTab) {
         
-        super(0, 3);
+        super(0, 4);
         
         this.setComponentPopupMenu(new JPopupMenuTable(this));
         this.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -81,7 +81,8 @@ public class NetworkTable extends JTable {
             private String[] columns = {
                 I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"),
                 I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN"),
-                I18nUtil.valueByKey("NETWORK_TAB_TYPE_COLUMN")
+                I18nUtil.valueByKey("NETWORK_TAB_TYPE_COLUMN"),
+                "Metadata"
             };
 
             @Override
@@ -100,6 +101,7 @@ public class NetworkTable extends JTable {
         DefaultTableCellRenderer centerHorizontalAlignment = new CenterRenderer();
         this.getColumnModel().getColumn(1).setCellRenderer(centerHorizontalAlignment);
         this.getColumnModel().getColumn(2).setCellRenderer(centerHorizontalAlignment);
+        this.getColumnModel().getColumn(3).setCellRenderer(centerHorizontalAlignment);
         
         this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), null);
         this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), null);
@@ -131,6 +133,7 @@ public class NetworkTable extends JTable {
         this.getColumnModel().getColumn(0).setPreferredWidth(300);
         this.getColumnModel().getColumn(1).setPreferredWidth(20);
         this.getColumnModel().getColumn(2).setPreferredWidth(50);
+        this.getColumnModel().getColumn(3).setPreferredWidth(50);
         
         this.getSelectionModel().addListSelectionListener(event -> {
             

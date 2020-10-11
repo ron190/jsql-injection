@@ -57,7 +57,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-        this.blankTrueMark = this.callUrl(StringUtils.EMPTY);
+        this.blankTrueMark = this.callUrl(StringUtils.EMPTY, "blind:set-true-mark");
 
         /*
          *  Concurrent calls to the FALSE statements,
@@ -68,7 +68,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         
         for (String urlTest: this.falseTest) {
             
-            listCallableTagFalse.add(new CallableBlind(urlTest, injectionModel, this, blindMode));
+            listCallableTagFalse.add(new CallableBlind(urlTest, injectionModel, this, blindMode, "blind:false-mark"));
         }
         
         /*
@@ -123,7 +123,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         
         for (String urlTest: this.trueTest) {
             
-            listCallableTagTrue.add(new CallableBlind(urlTest, injectionModel, this, blindMode));
+            listCallableTagTrue.add(new CallableBlind(urlTest, injectionModel, this, blindMode, "blind:true-mark"));
         }
         
         // Remove TRUE opcodes in the FALSE opcodes, because
@@ -157,14 +157,15 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         }
     }
 
+    // TODO Remove useless isTestingLength==true
     @Override
     public CallableBlind getCallable(String string, int indexCharacter, boolean isTestingLength) {
-        return new CallableBlind(string, indexCharacter, isTestingLength, this.injectionModel, this, this.booleanMode);
+        return new CallableBlind(string, indexCharacter, isTestingLength, this.injectionModel, this, this.booleanMode, "blind:length-test");
     }
 
     @Override
     public CallableBlind getCallable(String string, int indexCharacter, int bit) {
-        return new CallableBlind(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode);
+        return new CallableBlind(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "blind:bit-test");
     }
 
     @Override
@@ -178,7 +179,8 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(),
             this.injectionModel,
             this,
-            this.booleanMode
+            this.booleanMode,
+            "blind:is-injectable"
         );
         
         try {

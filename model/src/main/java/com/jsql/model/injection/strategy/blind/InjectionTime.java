@@ -63,7 +63,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         
         for (String urlTest: this.falseTest) {
             
-            listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this, booleanMode));
+            listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this, booleanMode, "time:false-mark"));
         }
         
         /*
@@ -115,7 +115,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         
         for (String urlTest: this.trueTest) {
             
-            listCallableTagTrue.add(new CallableTime(urlTest, this.injectionModel, this, booleanMode));
+            listCallableTagTrue.add(new CallableTime(urlTest, this.injectionModel, this, booleanMode, "time:true-mark"));
         }
 
         // If one TRUE query makes more than X seconds,
@@ -154,14 +154,15 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         }
     }
 
+    // TODO Remove useless isTestingLength==true
     @Override
     public CallableTime getCallable(String string, int indexCharacter, boolean isTestingLength) {
-        return new CallableTime(string, indexCharacter, isTestingLength, this.injectionModel, this, this.booleanMode);
+        return new CallableTime(string, indexCharacter, isTestingLength, this.injectionModel, this, this.booleanMode, "time:length-test");
     }
 
     @Override
     public CallableTime getCallable(String string, int indexCharacter, int bit) {
-        return new CallableTime(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode);
+        return new CallableTime(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "time:bit-test");
     }
 
     @Override
@@ -175,7 +176,8 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(),
             this.injectionModel,
             this,
-            this.booleanMode
+            this.booleanMode,
+            "time:is-injectable"
         );
         
         try {
