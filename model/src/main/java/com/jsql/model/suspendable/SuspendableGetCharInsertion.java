@@ -52,7 +52,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetInsertionCharacter"));
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
-        List<String> charactersInsertion = this.initializeCallables(taskCompletionService);
+        List<String> charactersInsertion = this.initializeCallables(taskCompletionService, characterInsertionByUser);
 
         String characterInsertionDetected = null;
         
@@ -103,14 +103,15 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         return this.getCharacterInsertion(characterInsertionByUser, characterInsertionDetected);
     }
 
-    private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService) {
+    private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService, String characterInsertionByUser) {
         
-        List<String> roots = Arrays.asList("-1", "0", "1", StringUtils.EMPTY);
+        List<String> roots = Arrays.asList(characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY), "-1", "0", "1", StringUtils.EMPTY);
         
         List<String> prefixes =
             Arrays
             .asList(
                 "prefix",
+                "prefix`", "`prefix`",
                 "prefix'", "'prefix'",
                 "prefix\"", "\"prefix\"",
                 "prefix%bf'", "%bf'prefix%bf'",
@@ -176,6 +177,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         // Encoded space required for integer insertion
         // TODO keep raw space + tamper space
         // Fail on neo4j when plain space ' '
-        return characterInsertionDetectedFixed + "+";
+        return characterInsertionDetectedFixed.replace(InjectionModel.STAR, "+" + InjectionModel.STAR);
     }
 }

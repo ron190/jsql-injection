@@ -46,7 +46,7 @@ public class ManagerSqlShell extends AbstractManagerShell {
         GroupLayout userPassLayout = new GroupLayout(userPassPanel);
         userPassPanel.setLayout(userPassLayout);
         userPassPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        userPassPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 1, 1));
+        userPassPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         
         this.username.setToolTipText(I18nUtil.valueByKey("SQL_SHELL_USERNAME_TOOLTIP"));
         this.password.setToolTipText(I18nUtil.valueByKey("SQL_SHELL_PASSWORD_TOOLTIP"));

@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.WindowConstants;
 
 import com.jsql.model.InjectionModel;
@@ -36,6 +37,7 @@ import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.split.SplitHorizontalTopBottom;
 import com.jsql.view.swing.shadow.ShadowPopupFactory;
 import com.jsql.view.swing.shell.AbstractShell;
+import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -160,15 +162,22 @@ public class JFrameView extends JFrame {
         // Define the default panel: each component on a vertical line
         this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 
-        // Textfields at the top
-        PanelAddressBar panelAddressBar = new PanelAddressBar();
-        this.add(panelAddressBar);
-        MediatorHelper.register(panelAddressBar);
-
         // Main panel for tree and tables in the middle
+        // Set proxy tabs dependency
         JPanel mainPanel = new JPanel(new GridLayout(1, 0));
         this.splitHorizontalTopBottom = new SplitHorizontalTopBottom();
         mainPanel.add(this.splitHorizontalTopBottom);
+        
+        // Textfields at the top
+        PanelAddressBar panelAddressBar = new PanelAddressBar();
+        
+        // Tab manager use proxy tabs dependency
+        JTabbedPane tabManagers = new TabManagers();
+
+        this.add(tabManagers);
+        this.add(panelAddressBar);
+        MediatorHelper.register(panelAddressBar);
+
         this.add(mainPanel);
         
         menubar.switchLocale(Locale.ENGLISH, I18nUtil.getLocaleDefault(), true);

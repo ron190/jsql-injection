@@ -13,7 +13,7 @@ import com.jsql.view.swing.menubar.Menubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.PanelConsoles;
 import com.jsql.view.swing.tab.TabConsoles;
-import com.jsql.view.swing.tab.TabManagers;
+import com.jsql.view.swing.tab.TabManagersProxy;
 import com.jsql.view.swing.tab.TabResults;
 import com.jsql.view.swing.tree.TreeDatabase;
 
@@ -26,7 +26,7 @@ public final class MediatorHelper {
     
     private static TreeDatabase treeDatabase;
     private static TabResults tabResults;
-    private static TabManagers tabManagers;
+    private static TabManagersProxy tabManagers;
     
     private static JFrameView frame;
     private static Menubar menubar;
@@ -61,7 +61,7 @@ public final class MediatorHelper {
         return tabResults;
     }
     
-    public static TabManagers tabManagers() {
+    public static TabManagersProxy tabManagers() {
         return tabManagers;
     }
      
@@ -143,7 +143,7 @@ public final class MediatorHelper {
         MediatorHelper.tabResults = tabResults;
     }
     
-    public static void register(TabManagers tabManagers) {
+    public static void register(TabManagersProxy tabManagers) {
         MediatorHelper.tabManagers = tabManagers;
     }
     

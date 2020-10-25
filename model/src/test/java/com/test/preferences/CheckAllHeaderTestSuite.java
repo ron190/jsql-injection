@@ -22,12 +22,17 @@ public class CheckAllHeaderTestSuite extends ConcreteMySqlTestSuite {
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-header?tenant=mysql");
         model.getMediatorUtils().getParameterUtil().setListHeader(Arrays.asList(
-            new SimpleEntry<>("fake", "0'"),
-            new SimpleEntry<>("name", "")
+            new SimpleEntry<>("fake1", "0'"),
+            new SimpleEntry<>("name", ""),
+            new SimpleEntry<>("fake2", "0'")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllHeaderParam(true);
-        model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withCheckingAllHeaderParam()
+        .withNotTestingConnection();
+        
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getHeader());
         
         model.setIsScanning(true);

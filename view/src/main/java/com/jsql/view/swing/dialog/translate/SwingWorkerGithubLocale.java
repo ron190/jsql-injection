@@ -75,7 +75,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             || this.propertiesLanguageToTranslate.size() == 0
             || !this.propertiesLanguageToTranslate.containsKey(key.getKey())
         )
-        .forEach(key -> 
+        .forEach(key ->
         
             this.propertiesToTranslate.append("\n\n"+ key.getKey() +"="+ key.getValue().replace("{@|@}","\\\n"))
         );
@@ -124,8 +124,8 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
     private void loadRootFromGithub() throws IOException, URISyntaxException {
         
         try {
-            String pageSourceRoot = connectionUtil.getSourceLineFeed(
-                propertiesUtil.getProperties().getProperty("github.webservice.i18n.root")
+            String pageSourceRoot = this.connectionUtil.getSourceLineFeed(
+                this.propertiesUtil.getProperties().getProperty("github.webservice.i18n.root")
             );
             
             String pageSourceRootFixed = Pattern.compile("\\\\[\n\r]+").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}");
@@ -154,8 +154,8 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
     private void loadLanguageFromGithub() throws IOException, URISyntaxException {
         
         try {
-            String pageSourceLanguage = connectionUtil.getSourceLineFeed(
-                propertiesUtil.getProperties().getProperty("github.webservice.i18n.locale")
+            String pageSourceLanguage = this.connectionUtil.getSourceLineFeed(
+                this.propertiesUtil.getProperties().getProperty("github.webservice.i18n.locale")
                 + "jsql_"+ this.dialogTranslate.getLanguage().getLabelLocale() +".properties"
             );
             

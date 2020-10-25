@@ -19,7 +19,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -39,6 +41,7 @@ public class HeaderUtil {
     
     public static final String CONTENT_TYPE = "Content-Type";
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
+    private static final String SET_COOKIE = "Set-Cookie";
     private static final String REGEX_HTTP_STATUS = "4\\d\\d";
     private static final String FOUND_STATUS_HTTP = "Found status HTTP ";
 
@@ -100,6 +103,29 @@ public class HeaderUtil {
         
         this.parseForms(connection, pageSource);
         
+        if (this.isCsrf(mapResponse).isPresent()) {
+            SimpleEntry<String, String> cookieCsrf = this.isCsrf(mapResponse).get();
+            LOGGER.warn("Found CSRF token in HTTP header: "+ cookieCsrf.getKey() +"="+ cookieCsrf.getValue());
+            SimpleEntry<String, String> headerCsrf =
+                new SimpleEntry<>(
+                    "X-"+ cookieCsrf.getKey(),
+                    cookieCsrf.getValue()
+                );
+            
+            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()) {
+                
+                LOGGER.debug(
+                    "CSRF token added to querystring, request and header: "+
+                    "X-"+ cookieCsrf.getKey() +"="+ cookieCsrf.getValue()
+                );
+                this.injectionModel.getMediatorUtils().getConnectionUtil().setTokenCsrf(headerCsrf);
+                
+            } else {
+                
+                LOGGER.info("Activate CSRF processing in Preferences if injection fails");
+            }
+        }
+        
         // TODO Extract CsrfUtil
         exception = this.parseCsrf(exception, pageSource);
 
@@ -127,7 +153,7 @@ public class HeaderUtil {
         Optional<SimpleEntry<String, String>> optionalTokenCsrf = Jsoup
             .parse(pageSource.toString())
             .select("input")
-            .select("[name=csrf_token], [name=csrfToken], [name=user_token], [name=csrfmiddlewaretoken], [name=csrfmiddlewaretoken]")
+            .select("[name=csrf_token], [name=csrfToken], [name=user_token], [name=csrfmiddlewaretoken], [name=form_build_id]")
             .stream()
             .findFirst()
             .map(input -> new SimpleEntry<>(input.attr("name"), input.attr("value")));
@@ -143,7 +169,7 @@ public class HeaderUtil {
                 
             } else {
                 
-                LOGGER.warn("Found Csrf token '"+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +"' in HTML body");
+                LOGGER.warn("Found Csrf token in HTML body: "+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue());
                 exceptionCsrf = new IOException("please activate Csrf processing in Preferences");
             }
         }
@@ -285,7 +311,8 @@ public class HeaderUtil {
             LOGGER.warn(
                 "Basic Authentication detected.\n"
                 + "Please define and enable authentication information in the panel Preferences.\n"
-                + "Or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with the string 'osUserName:osPassword' encoded in Base64. You can use the Coder in jSQL to encode the string."
+                + "Or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with "
+                + "the string 'osUserName:osPassword' encoded in Base64. You can use the Coder in jSQL to encode the string."
             );
         
         } else if (this.isNtlm(responseCode, mapResponse)) {
@@ -312,15 +339,15 @@ public class HeaderUtil {
             
         } else if (Pattern.matches("1\\d\\d", responseCode)) {
             
-            LOGGER.trace(FOUND_STATUS_HTTP+ responseCode +" Informational");
+            LOGGER.trace(FOUND_STATUS_HTTP + responseCode +" Informational");
             
         } else if (Pattern.matches("2\\d\\d", responseCode)) {
             
-            LOGGER.debug(FOUND_STATUS_HTTP+ responseCode +" Success");
+            LOGGER.debug(FOUND_STATUS_HTTP + responseCode +" Success");
             
         } else if (Pattern.matches("3\\d\\d", responseCode)) {
             
-            LOGGER.warn(FOUND_STATUS_HTTP+ responseCode +" Redirection");
+            LOGGER.warn(FOUND_STATUS_HTTP + responseCode +" Redirection");
             
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()) {
                 
@@ -333,18 +360,43 @@ public class HeaderUtil {
             
         } else if (Pattern.matches(REGEX_HTTP_STATUS, responseCode)) {
             
-            LOGGER.warn(FOUND_STATUS_HTTP+ responseCode +" Client Error");
+            LOGGER.warn(FOUND_STATUS_HTTP + responseCode +" Client Error");
             
         } else if (Pattern.matches("5\\d\\d", responseCode)) {
             
-            LOGGER.warn(FOUND_STATUS_HTTP+ responseCode +" Server Error");
+            LOGGER.warn(FOUND_STATUS_HTTP + responseCode +" Server Error");
             
         } else {
             
-            LOGGER.trace(FOUND_STATUS_HTTP+ responseCode +" Unknown");
+            LOGGER.trace(FOUND_STATUS_HTTP + responseCode +" Unknown");
         }
     }
 
+    private Optional<SimpleEntry<String, String>> isCsrf(Map<String, String> mapResponse) {
+        
+        Optional<SimpleEntry<String, String>> countCsrfToken = Optional.empty();
+        
+        if (mapResponse.containsKey(SET_COOKIE)) {
+            
+            // Spring: Cookie XSRF-TOKEN => Header X-XSRF-TOKEN, GET/POST parameter _csrf
+            // Laravel, Zend, Symfony, React, Vue, Angular
+            
+            String[] cookieValues = StringUtils.split(mapResponse.get(SET_COOKIE), ";");
+            countCsrfToken =
+                Stream
+                .of(cookieValues)
+                .filter(cookie -> cookie.trim().startsWith("XSRF-TOKEN"))
+                .map(cookie -> {
+                    String[] cookieEntry = StringUtils.split(cookie, "=");
+
+                    return new SimpleEntry<>(cookieEntry[0].trim(), cookieEntry[1].trim());
+                })
+                .findFirst();
+        }
+        
+        return countCsrfToken;
+    }
+    
     private boolean isNegotiate(String responseCode, Map<String, String> mapResponse) {
         
         return

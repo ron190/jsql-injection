@@ -29,8 +29,12 @@ public class CustomMethodTestIgnoreSuite extends ConcreteMySqlTestSuite {
         ));
         
         model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
-        model.getMediatorUtils().getConnectionUtil().setTypeRequest("CUSTOM-JSQL");
+        
+        model
+        .getMediatorUtils()
+        .getConnectionUtil()
+        .withMethodInjection(model.getMediatorMethod().getQuery())
+        .withTypeRequest("CUSTOM-JSQL");
         
         model.setIsScanning(true);
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());

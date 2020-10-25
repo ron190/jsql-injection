@@ -130,24 +130,38 @@ public class MediatorStrategy {
         // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
         LOGGER.trace(I18nUtil.valueByKey("LOG_GET_INSERTION_CHARACTER"));
         
+        String parameterOriginalValue = null;
+        
         // If not an injection point then find insertion character.
         // Force to 1 if no insertion char works and empty value from user,
         // Force to user's value if no insertion char works,
         // Force to insertion char otherwise.
+        // parameterToInject null on true STAR injection
         // TODO Use also on Json injection where parameter == null
         if (parameterToInject != null) {
             
+            parameterOriginalValue = parameterToInject.getValue();
+                     
             // Test for params integrity
             String characterInsertionByUser = this.injectionModel.getMediatorUtils().getParameterUtil().initializeStar(parameterToInject);
             
             String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(characterInsertionByUser);
             
-            parameterToInject.setValue(characterInsertion + InjectionModel.STAR);
+            if (characterInsertion.contains(InjectionModel.STAR)) {
+                
+                // When injecting all parameters or JSON
+                parameterToInject.setValue(characterInsertion);
+                
+            } else {
+                
+                // When injecting last parameter
+                parameterToInject.setValue(characterInsertion +"+"+ InjectionModel.STAR);
+            }
             
             LOGGER.info(
                 I18nUtil.valueByKey("LOG_USING_INSERTION_CHARACTER")
                 + " ["
-                + characterInsertion.replace(InjectionModel.STAR, StringUtils.EMPTY).replaceAll("\\+$", StringUtils.EMPTY)
+                + characterInsertion.replace("+"+ InjectionModel.STAR, StringUtils.EMPTY)
                 + "]"
             );
         }
@@ -180,6 +194,13 @@ public class MediatorStrategy {
             this.time.activateStrategy();
             
         } else {
+            
+            // Restore initial parameter value on injection failure
+            // Only when not true STAR injection
+            if (parameterOriginalValue != null) {
+                
+                parameterToInject.setValue(parameterOriginalValue.replace(InjectionModel.STAR, StringUtils.EMPTY));
+            }
             
             throw new InjectionFailureException("No injection found");
         }

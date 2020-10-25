@@ -86,6 +86,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
                 .clean(
                     Jsoup
                     .connect(this.url)
+                    .ignoreHttpErrors(true)
                     .get()
                     .html()
                     .replaceAll("<img.*>", StringUtils.EMPTY)
@@ -98,7 +99,11 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
                     .addAttributes(":all", "style")
                 );
             
-        } catch (IOException | ExceptionInInitializerError | NoClassDefFoundError e) {
+        } catch (IOException e) {
+            
+            LOGGER.warn("Failure opening page: "+ e);
+            
+        } catch (ExceptionInInitializerError | NoClassDefFoundError e) {
             
             LOGGER.error(e.getMessage(), e);
         }

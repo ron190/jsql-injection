@@ -19,6 +19,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
 @SuppressWarnings("deprecation")
 @Configuration
@@ -100,11 +104,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       
         http
         .csrf()
-            .disable()
-        .authorizeRequests()
+            .requireCsrfProtectionMatcher(
+                new AndRequestMatcher(
+                    CsrfFilter.DEFAULT_CSRF_MATCHER,
+                    new RegexRequestMatcher("/greeting-csrf.*", null)
+                )
+            )
+            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        .and()
+            .authorizeRequests()
             .antMatchers("/basic/**")
             .hasRole(BASIC_ROLE)
-            .and()
+        .and()
             .httpBasic()
             .realmName(BASIC_REALM)
             .authenticationEntryPoint(this.getBasicAuthEntryPoint())
@@ -112,14 +123,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/digest/**")
             .hasRole(DIGEST_ROLE)
-            .and()
+        .and()
             .addFilterBefore(this.digestAuthenticationFilter(), BasicAuthenticationFilter.class)
             .httpBasic()
             .realmName(DIGEST_REALM)
             .authenticationEntryPoint(this.digestEntryPoint())
         .and()
             .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        ;
     }
 
     public Filter digestAuthenticationFilter() throws Exception {

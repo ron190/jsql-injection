@@ -78,7 +78,7 @@ public class ManagerScan extends AbstractManagerList {
         
         this.listPaths = dndListScan;
         this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
-        this.add(new LightScrollPane(1, 0, 0, 0, dndListScan), BorderLayout.CENTER);
+        this.add(new LightScrollPane(0, 0, 0, 0, dndListScan), BorderLayout.CENTER);
 
         JPanel lastLine = this.getLastLinePanel(dndListScan);
         this.add(lastLine, BorderLayout.SOUTH);

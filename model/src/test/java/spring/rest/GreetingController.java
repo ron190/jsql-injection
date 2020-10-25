@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.persistence.Query;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +26,7 @@ import org.neo4j.driver.GraphDatabase;
 import org.neo4j.driver.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -34,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -65,6 +69,82 @@ public class GreetingController {
         firewall.setAllowedHttpMethods(httpMethods);
         
         return firewall;
+    }
+
+    @SuppressWarnings("unchecked")
+    @RequestMapping(
+        method = { RequestMethod.GET, RequestMethod.POST },
+        path = "/greeting-csrf",
+        consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.TEXT_PLAIN_VALUE }
+    )
+    public Greeting greetingCsrf(HttpServletRequest request) throws IOException {
+        
+        // Get csrf token from cookie XSRF-TOKEN
+        // Send header X-XSRF-TOKEN with value from XSRF-TOKEN
+        // Or send param _csrf with value from XSRF-TOKEN
+        Optional<String> tokenCsrfFromQuery = Optional.ofNullable(request.getParameter("_csrf"));
+        Optional<String> tokenCsrfFromHeader = Optional.ofNullable(request.getHeader("X-XSRF-TOKEN"));
+        
+        long nbCsrfCookie =
+            Stream
+            .of(
+                Optional
+                .ofNullable(request.getCookies())
+                .orElse(new Cookie[0])
+            )
+            .filter(c -> "XSRF-TOKEN".equals(c.getName()))
+            .count();
+        
+        if (nbCsrfCookie != 1) {
+            
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Set CSRF cookie not allowed");
+            
+        } else {
+            
+            Cookie tokenCsrfFromSession =
+                Stream
+                .of(request.getCookies())
+                .filter(c -> "XSRF-TOKEN".equals(c.getName()))
+                .findFirst()
+                .get();
+
+            if (
+                tokenCsrfFromQuery.isPresent()
+                && !tokenCsrfFromQuery.get().equals(tokenCsrfFromSession.getValue())
+                || tokenCsrfFromHeader.isPresent()
+                && !tokenCsrfFromHeader.get().equals(tokenCsrfFromSession.getValue())
+            ) {
+                throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Token CSRF does not match session XSRF-TOKEN"
+                );
+            }
+        }
+        
+        Greeting greeting = null;
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            
+            // Inside try because test connection do not send param
+            String inject = request.getParameterMap().get("name")[0];
+            inject = inject.replace(":", "\\:");
+            
+            Query query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '"+ inject +"'");
+            
+            List<Object[]> results = query.getResultList();
+            
+            greeting = new Greeting(
+                this.counter.getAndIncrement(),
+                String.format(template, inject)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
+            
+        } catch (Exception e) {
+            
+            // Required by multiple columns
+            greeting = this.initializeErrorMessage(e);
+        }
+        
+        return greeting;
     }
 
     @SuppressWarnings("unchecked")
@@ -340,6 +420,35 @@ public class GreetingController {
         
         return greeting;
     }
+    
+//    @SuppressWarnings("unchecked")
+//    @RequestMapping("/greeting2")
+//    public Greeting greeting2(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+//        
+//        Greeting greeting = null;
+//        String inject = name.replace(":", "\\:");
+//        
+//        try (Session session = this.sessionFactory.getCurrentSession()) {
+//            
+////            Query query = session.createNativeQuery("select 1 where '1'='1'; declare @test nchar(100); SELECT @test = @@version; EXEC @test; --");
+////            Query query = session.createNativeQuery("declare @test nchar(100); SELECT @test = @@version; EXEC @test; --");
+//            Query query = session.createNativeQuery("select 1 where 1=@@version; declare @test nchar(100); SELECT @test = @@version; EXEC @test; --");
+//        
+//            List<Object[]> results = query.getResultList();
+//            
+//            greeting = new Greeting(
+//                this.counter.getAndIncrement(),
+//                String.format(template, inject)
+//                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+//            );
+//            
+//        } catch (Exception e) {
+//            
+//            greeting = this.initializeErrorMessage(e);
+//        }
+//        
+//        return greeting;
+//    }
     
     @SuppressWarnings("unchecked")
     @RequestMapping("/greeting-custom")

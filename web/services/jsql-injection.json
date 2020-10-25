@@ -1,8 +1,8 @@
 {
     "version": "0.82",
     "news": [
-        "[Contribute] CTF and vuln application compatibility test, Docker and Spring, Devops integration of .NET, PHP, Python and Node API, ProGuard shrinking",
-        "[Roadmap] Dockerize injection model, inject user defined query, define User Agent",
-        "[Done] UI tests with AssertJ and VNC, Integration test and Spring API with databases on Docker"
+        "[Contribute] CTF and vuln application tests, Devops integration of .NET/PHP/Python/Node APIs, ProGuard shrinking",
+        "[Roadmap] Inject user defined query, Choose User Agent and range of rows",
+        "[Done] Dockerize injection model, Devops pipeline for unit/integration/ui tests"
     ]
 }

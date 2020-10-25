@@ -39,15 +39,19 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
     private String responseCodeHttp = StringUtils.EMPTY;
 
     private InjectionModel injectionModel;
+
+    private String metadataInjectionProcess;
     
     /**
      * Create a callable to find admin page.
      * @param urlAdminPage URL of admin page
+     * @param string
      */
-    public CallableHttpHead(String urlAdminPage, InjectionModel injectionModel) {
+    public CallableHttpHead(String urlAdminPage, InjectionModel injectionModel, String metadataInjectionProcess) {
         
         this.urlAdminPage = urlAdminPage;
         this.injectionModel= injectionModel;
+        this.metadataInjectionProcess= metadataInjectionProcess;
     }
 
     /**
@@ -88,6 +92,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
         msgHeader.put(Header.POST, StringUtils.EMPTY);
         msgHeader.put(Header.HEADER, StringUtils.EMPTY);
         msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
+        msgHeader.put(Header.METADATA_INJECTION_PROCESS, this.metadataInjectionProcess);
 
         Request request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);

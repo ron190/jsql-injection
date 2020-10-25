@@ -346,7 +346,7 @@ public class DnDList extends JList<ItemList> {
                     && 0 <= endPosition && endPosition <= this.listModel.size()
                 ) {
                     
-                    addItem(endPosition++, line);
+                    this.addItem(endPosition++, line);
                 }
             }
             

@@ -106,7 +106,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         this.listFile = new DnDList(this.itemsList);
 
         this.listFile.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
-        this.add(new LightScrollPane(1, 0, 0, 0, this.listFile), BorderLayout.CENTER);
+        this.add(new LightScrollPane(0, 0, 0, 0, this.listFile), BorderLayout.CENTER);
 
         this.lastLine.setOpaque(false);
         this.lastLine.setLayout(new BoxLayout(this.lastLine, BoxLayout.X_AXIS));

@@ -21,10 +21,10 @@ public abstract class ConcreteOracleTestSuite extends AbstractTestSuite {
             -e ORACLE_PDB=ORCLPDB1 \
             -e ORACLE_PWD=Password1_One \
             -e ORACLE_CHARACTERSET=AL32UTF8 \
-            oracle/database:19.3.0-ee      
+            oracle/database:19.3.0-ee
             
             jdbc:oracle:thin:@localhost:11521:ORCLCDB
-            system  
+            system
             Password1_One
          */
         

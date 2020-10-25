@@ -1,4 +1,4 @@
-package com.test.method;
+package com.test.security;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlTestSuite;
 
-public class PathParamTestSuite extends ConcreteMySqlTestSuite {
+public class CsrfHeaderTestSuite extends ConcreteMySqlTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
@@ -20,19 +20,26 @@ public class PathParamTestSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        // TODO Test all PathParam URL segments
-        // Analyse last required query param
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting/1'*/suffix");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
-            new SimpleEntry<>("fake", "")
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-csrf?tenant=mysql");
+        model.getMediatorUtils().getParameterUtil().setListRequest(Arrays.asList(
+            new SimpleEntry<>("name", "0'")
         ));
-        
-        model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
-        
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withProcessingCookies()
+        .withNotTestingConnection()
+        .withProcessingCsrf();
+
+        model
+        .getMediatorUtils()
+        .getConnectionUtil()
+        .withMethodInjection(model.getMediatorMethod().getRequest())
+        .withTypeRequest("POST");
         
         model.setIsScanning(true);
+        // TODO Remove setStrategy, but fails without
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }

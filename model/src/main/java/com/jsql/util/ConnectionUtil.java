@@ -374,6 +374,20 @@ public class ConnectionUtil {
         }
     }
     
+    
+    // Builder
+
+    public ConnectionUtil withMethodInjection(MethodInjection methodInjection) {
+        this.methodInjection = methodInjection;
+        return this;
+    }
+    
+    public ConnectionUtil withTypeRequest(String typeRequest) {
+        this.typeRequest = typeRequest;
+        return this;
+    }
+    
+    
     // Getters and setters
     
     public String getUrlByUser() {

@@ -24,8 +24,11 @@ public class Neo4jNormalGetTestSuite extends ConcreteNeo4jTestSuite {
             new SimpleEntry<>("name", "1")
         ));
         
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
-        model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
+        model
+        .getMediatorUtils()
+        .getConnectionUtil()
+        .withMethodInjection(model.getMediatorMethod().getQuery())
+        .withTypeRequest("GET");
 
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getNeo4j());

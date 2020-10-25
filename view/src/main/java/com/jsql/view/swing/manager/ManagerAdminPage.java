@@ -14,6 +14,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.CompletionService;
@@ -21,6 +22,8 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -74,21 +77,8 @@ public class ManagerAdminPage extends AbstractManagerList {
         this.lastLine.setLayout(new BorderLayout());
         this.lastLine.setPreferredSize(new Dimension(0, 26));
         
-        this.lastLine.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)
-            )
-        );
-        
         JPanel panelRunButton = new JPanel();
         panelRunButton.setLayout(new BoxLayout(panelRunButton, BoxLayout.X_AXIS));
-        panelRunButton.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)
-            )
-        );
         
         panelRunButton.add(Box.createHorizontalGlue());
         panelRunButton.add(this.loader);
@@ -226,21 +216,24 @@ public class ManagerAdminPage extends AbstractManagerList {
      * @throws InterruptedException
      */
     public void createAdminPages(String urlInjection, List<ItemList> pageNames) throws InterruptedException {
+         
+        Matcher matcher = Pattern.compile("^((https?://)?[^/]*)(.*)").matcher(urlInjection);
+        matcher.find();
+        String urlProtocol = matcher.group(1);
+        String urlWithoutProtocol = matcher.group(3);
         
-        String urlWithoutProtocol = urlInjection.replaceAll("^https?://[^/]*", StringUtils.EMPTY);
-        String urlProtocol = urlInjection.replace(urlWithoutProtocol, StringUtils.EMPTY);
-        String urlWithoutFileName = urlWithoutProtocol.replaceAll("[^/]*$", StringUtils.EMPTY);
+        List<String> folderSplits = new ArrayList<>();
         
-        List<String> directoryNames = new ArrayList<>();
-        
-        if (urlWithoutFileName.split("/").length == 0) {
-            
-            directoryNames.add("/");
+        // Hostname only
+        if (urlWithoutProtocol.isEmpty() || !Pattern.matches("^/.*", urlWithoutProtocol)) {
+            urlWithoutProtocol = "/dummy";
         }
         
-        for (String directoryName: urlWithoutFileName.split("/")) {
+        String[] splits = urlWithoutProtocol.split("/", -1);
+        String[] folderNames = Arrays.copyOf(splits, splits.length - 1);
+        for (String folderName: Arrays.asList(folderNames)) {
             
-            directoryNames.add(directoryName +"/");
+            folderSplits.add(folderName +"/");
         }
         
         ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableGetAdminPage"));
@@ -248,18 +241,24 @@ public class ManagerAdminPage extends AbstractManagerList {
         
         StringBuilder urlPart = new StringBuilder();
         
-        for (String segment: directoryNames) {
+        for (String segment: folderSplits) {
             
             urlPart.append(segment);
             
             for (ItemList pageName: pageNames) {
                 
-                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + pageName.toString(), MediatorHelper.model()));
+                taskCompletionService.submit(
+                    new CallableHttpHead(
+                        urlProtocol + urlPart.toString() + pageName.toString(), 
+                        MediatorHelper.model(),
+                        "check:page"
+                    )
+                );
             }
         }
 
         int nbAdminPagesFound = 0;
-        int submittedTasks = directoryNames.size() * pageNames.size();
+        int submittedTasks = folderSplits.size() * pageNames.size();
         int tasksHandled;
         
         for (

@@ -191,6 +191,69 @@ public class TamperingUtil {
         return sqlQuery;
     }
     
+    // Builder
+    
+    public TamperingUtil withBase64() {
+        this.isBase64 = true;
+        return this;
+    }
+    
+    public TamperingUtil withVersionComment() {
+        this.isVersionComment = true;
+        return this;
+    }
+    
+    public TamperingUtil withFunctionComment() {
+        this.isFunctionComment = true;
+        return this;
+    }
+    
+    public TamperingUtil withEqualToLike() {
+        this.isEqualToLike = true;
+        return this;
+    }
+    
+    public TamperingUtil withRandomCase() {
+        this.isRandomCase = true;
+        return this;
+    }
+    
+    public TamperingUtil withHexToChar() {
+        this.isHexToChar = true;
+        return this;
+    }
+    
+    public TamperingUtil withStringToChar() {
+        this.isStringToChar = true;
+        return this;
+    }
+    
+    public TamperingUtil withQuoteToUtf8() {
+        this.isQuoteToUtf8 = true;
+        return this;
+    }
+    
+    public TamperingUtil withEval() {
+        this.isEval = true;
+        return this;
+    }
+    
+    public TamperingUtil withSpaceToMultilineComment() {
+        this.isSpaceToMultilineComment = true;
+        return this;
+    }
+    
+    public TamperingUtil withSpaceToDashComment() {
+        this.isSpaceToDashComment = true;
+        return this;
+    }
+    
+    public TamperingUtil withSpaceToSharpComment() {
+        this.isSpaceToSharpComment = true;
+        return this;
+    }
+    
+    
     // Getter and setter
 
     public String getCustomTamper() {

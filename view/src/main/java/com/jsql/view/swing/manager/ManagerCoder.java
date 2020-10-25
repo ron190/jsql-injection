@@ -109,7 +109,7 @@ public class ManagerCoder extends JPanel implements Manager {
         this.result.setEditorKit(new HTMLEditorKitTextPaneWrap());
         
         JPanel bottom = new JPanel(new BorderLayout());
-        bottom.add(new LightScrollPane(1, 0, 0, 0, this.result), BorderLayout.CENTER);
+        bottom.add(new LightScrollPane(0, 0, 0, 0, this.result), BorderLayout.CENTER);
 
         JSplitPaneWithZeroSizeDivider divider = new JSplitPaneWithZeroSizeDivider(JSplitPane.VERTICAL_SPLIT);
         divider.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -136,7 +136,7 @@ public class ManagerCoder extends JPanel implements Manager {
         
         middleLine.add(comboMenubar);
 
-        topMixed.add(new LightScrollPane(1, 0, 1, 0, this.textInput), BorderLayout.CENTER);
+        topMixed.add(new LightScrollPane(0, 0, 1, 0, this.textInput), BorderLayout.CENTER);
         topMixed.add(middleLine, BorderLayout.SOUTH);
         
         return topMixed;

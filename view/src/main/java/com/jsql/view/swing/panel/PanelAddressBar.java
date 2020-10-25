@@ -65,6 +65,8 @@ public class PanelAddressBar extends JPanel {
     
     public PanelAddressBar() {
         
+        this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
+        
         final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("FIELD_QUERYSTRING_TOOLTIP"))};
         JTextFieldWithIcon fieldWithIcon = new JTextFieldWithIcon(I18nUtil.valueByKey("ADDRESS_BAR")) {
             

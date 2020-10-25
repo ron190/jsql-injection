@@ -22,9 +22,12 @@ public class SoapTestSuite extends ConcreteMySqlErrorTestSuite {
         
         model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
         model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllSoapParam(true);
-
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getRequest());
-        model.getMediatorUtils().getConnectionUtil().setTypeRequest("POST");
+        
+        model
+        .getMediatorUtils()
+        .getConnectionUtil()
+        .withMethodInjection(model.getMediatorMethod().getRequest())
+        .withTypeRequest("POST");
         
         model.setIsScanning(true);
         model.beginInjection();

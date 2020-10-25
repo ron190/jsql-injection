@@ -128,7 +128,7 @@ public class ResourceAccess {
                 this.injectionModel.sendToViews(request);
 
                 nbAdminPagesFoundFixed++;
-                LOGGER.debug("Found admin page: "+ currentCallable.getUrl());
+                LOGGER.debug("Found page: "+ currentCallable.getUrl());
             }
             
         } catch (InterruptedException | ExecutionException e) {
@@ -279,7 +279,13 @@ public class ResourceAccess {
         for (String segment: directoryNames) {
             
             urlPart.append(segment);
-            taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + this.filenameWebshell, this.injectionModel));
+            taskCompletionService.submit(
+                new CallableHttpHead(
+                    urlProtocol + urlPart.toString() + this.filenameWebshell,
+                    this.injectionModel,
+                    "webshell:create"
+                )
+            );
         }
 
         int submittedTasks = directoryNames.size() * 1;
@@ -558,7 +564,13 @@ public class ResourceAccess {
         for (String segment: directoryNames) {
             
             urlPart.append(segment);
-            taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + this.filenameSqlshell, this.injectionModel));
+            taskCompletionService.submit(
+                new CallableHttpHead(
+                    urlProtocol + urlPart.toString() + this.filenameSqlshell,
+                    this.injectionModel,
+                    "sqlshell:create"
+                )
+            );
         }
 
         int submittedTasks = directoryNames.size() * 1;
@@ -1022,11 +1034,11 @@ public class ResourceAccess {
     }
 
     public boolean isScanStopped() {
-        return isScanStopped;
+        return this.isScanStopped;
     }
 
     public boolean isSearchFileStopped() {
-        return isSearchFileStopped;
+        return this.isSearchFileStopped;
     }
 
     public void setSearchFileStopped(boolean isSearchFileStopped) {

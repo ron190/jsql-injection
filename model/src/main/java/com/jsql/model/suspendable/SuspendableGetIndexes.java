@@ -49,7 +49,8 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         // SQL fields are built like 1337[index]7330+1
         // 7330+1 allows to exclude false positive when page contains injection URL
         // Search if the source contains 1337[index]7331
-        for (nbIndex = 1 ; nbIndex <= 10 ; nbIndex++) {
+        for (nbIndex = 1 ; nbIndex <= 100 ; nbIndex++) {
+//        for (nbIndex = 1 ; nbIndex <= 10 ; nbIndex++) {
             
             taskCompletionService.submit(
                 new CallablePageSource(
@@ -59,6 +60,8 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                 )
             );
         }
+        
+        nbIndex = 1;
 
         try {
             // Start from 10 to 100 requests
@@ -69,6 +72,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                 }
 
                 CallablePageSource currentCallable = taskCompletionService.take().get();
+                nbIndex++;
 
                 // Found a correct mark 1337[index]7331 in the source
                 // TODO 1337 0%2b1
@@ -77,19 +81,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                     this.injectionModel.getMediatorStrategy().getNormal().setSourceIndexesFound(currentCallable.getContent());
                     initialQuery = currentCallable.getUrl().replace("0%2b1", "1");
                     isRequestFound = true;
-                    
-                } else {
-                    
-                    // Else add a new index
-                    taskCompletionService.submit(
-                        new CallablePageSource(
-                            this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),
-                            this.injectionModel,
-                            "normal:index-" + nbIndex
-                        )
-                    );
-                    
-                    nbIndex++;
+                    break;
                 }
             }
             

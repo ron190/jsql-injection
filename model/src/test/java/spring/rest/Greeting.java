@@ -18,6 +18,7 @@ public class Greeting {
 
     @JsonRawValue
     public String getContent() {
-        return this.content;
+        return " <meta name=\"_csrf\" content=\"${_csrf.token}\"/>\r\n" +
+                "    <meta name=\"_csrf_header\" content=\"${_csrf.headerName}\"/>" + this.content;
     }
 }

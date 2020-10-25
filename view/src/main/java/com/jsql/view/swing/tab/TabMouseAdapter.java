@@ -27,6 +27,12 @@ public class TabMouseAdapter extends MouseAdapter {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
+    TabbedPaneWheeled tabbedPaneWheeled;
+    
+    public TabMouseAdapter(TabbedPaneWheeled tabbedPaneWheeled) {
+        this.tabbedPaneWheeled = tabbedPaneWheeled;
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         
@@ -46,7 +52,7 @@ public class TabMouseAdapter extends MouseAdapter {
                 menu.add(itemMenu);
                 
                 final int positionFinal = position;
-                itemMenu.addActionListener(actionEvent -> MediatorHelper.tabManagers().setSelectedIndex(positionFinal));
+                itemMenu.addActionListener(actionEvent -> tabbedPaneWheeled.setSelectedIndex(positionFinal));
             } catch (SerializationException ex) {
                 LOGGER.error(ex, ex);
             }

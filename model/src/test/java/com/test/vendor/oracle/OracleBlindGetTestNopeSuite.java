@@ -26,8 +26,13 @@ public class OracleBlindGetTestNopeSuite extends ConcreteOracleTestSuite {
             new SimpleEntry<>("name", "0'")
         ));
         
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
-        model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
+        model.getMediatorUtils().getPreferencesUtil().setIsNotInjectingMetadata(true);
+        
+        model
+        .getMediatorUtils()
+        .getConnectionUtil()
+        .withMethodInjection(model.getMediatorMethod().getQuery())
+        .withTypeRequest("GET");
         
         model.setIsScanning(true);
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getBlind());

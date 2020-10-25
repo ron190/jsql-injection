@@ -53,7 +53,7 @@ public class PanelPreferences extends JPanel {
         INJECTION(panelInjection),
         TAMPERING(panelTampering),
         PROXY(panelProxy),
-        AUTHENTICATION(panelAuthentication),
+        AUTH(panelAuthentication),
         GENERAL(panelGeneral),
         USER_AGENT(new JPanel());
         

@@ -133,6 +133,8 @@ public class PanelInjectionPreferences extends JPanel {
         
         JLabel emptyLabelGeneralInjection = new JLabel();
         JLabel labelGeneralInjection = new JLabel("<html><b>Connection definition</b></html>");
+        JLabel emptyLabelBooleanInjection = new JLabel();
+        JLabel labelBooleanInjection = new JLabel("<html><br /><b>Boolean configuration for Blind/Time injection</b></html>");
         JLabel emptyLabelParamsInjection = new JLabel();
         JLabel labelParamsInjection = new JLabel("<html><br /><b>Parameters injection</b></html>");
         JLabel emptyLabelSessionManagement = new JLabel();
@@ -260,6 +262,8 @@ public class PanelInjectionPreferences extends JPanel {
                 .addComponent(this.checkboxIsParsingForm)
                 .addComponent(this.checkboxIsNotInjectingMetadata)
                 
+                .addComponent(emptyLabelBooleanInjection)
+                
                 .addComponent(emptyLabelParamsInjection)
                 .addComponent(this.checkboxIsCheckingAllParam)
                 .addComponent(this.checkboxIsCheckingAllURLParam)
@@ -283,6 +287,8 @@ public class PanelInjectionPreferences extends JPanel {
                 .addComponent(labelTestConnection)
                 .addComponent(labelParseForm)
                 .addComponent(labelIsNotInjectingMetadata)
+                
+                .addComponent(labelBooleanInjection)
                 
                 .addComponent(labelParamsInjection)
                 .addComponent(labelIsCheckingAllParam)
@@ -335,6 +341,14 @@ public class PanelInjectionPreferences extends JPanel {
                 .addComponent(this.checkboxIsNotInjectingMetadata)
                 .addComponent(labelIsNotInjectingMetadata)
             )
+            
+            .addGroup(
+                groupLayoutInjection
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(emptyLabelBooleanInjection)
+                .addComponent(labelBooleanInjection)
+            )
+            
             .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -365,6 +379,7 @@ public class PanelInjectionPreferences extends JPanel {
                 .addComponent(this.checkboxIsCheckingAllHeaderParam)
                 .addComponent(labelIsCheckingAllHeaderParam)
             )
+            
             .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -389,6 +404,7 @@ public class PanelInjectionPreferences extends JPanel {
                 .addComponent(this.checkboxIsCheckingAllCookieParam)
                 .addComponent(labelIsCheckingAllCookieParam)
             )
+            
             .addGroup(
                 groupLayoutInjection
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)

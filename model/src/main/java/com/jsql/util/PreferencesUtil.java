@@ -101,7 +101,7 @@ public class PreferencesUtil {
         
         this.setIs4K(prefs.getBoolean("is4K", false));
         
-        HttpURLConnection.setFollowRedirects(this.isFollowingRedirection());
+        HttpURLConnection.setFollowRedirects(this.isFollowingRedirection);
     }
     
     /**
@@ -184,37 +184,71 @@ public class PreferencesUtil {
 
         Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
-        preferences.putBoolean("isCheckingUpdate", this.isCheckingUpdate());
-        preferences.putBoolean("isReportingBugs", this.isReportingBugs());
-        preferences.putBoolean("is4K", this.is4K());
+        preferences.putBoolean("isCheckingUpdate", this.isCheckingUpdate);
+        preferences.putBoolean("isReportingBugs", this.isReportingBugs);
+        preferences.putBoolean("is4K", this.is4K);
         
-        preferences.putBoolean("isFollowingRedirection", this.isFollowingRedirection());
-        preferences.putBoolean("isNotInjectingMetadata", this.isNotInjectingMetadata());
-        preferences.putBoolean("isCheckingAllParam", this.isCheckingAllParam());
-        preferences.putBoolean("isCheckingAllURLParam", this.isCheckingAllURLParam());
-        preferences.putBoolean("isCheckingAllRequestParam", this.isCheckingAllRequestParam());
-        preferences.putBoolean("isCheckingAllHeaderParam", this.isCheckingAllHeaderParam());
-        preferences.putBoolean("isCheckingAllJSONParam", this.isCheckingAllJsonParam());
-        preferences.putBoolean("isCheckingAllCookieParam", this.isCheckingAllCookieParam());
-        preferences.putBoolean("isCheckingAllSOAPParam", this.isCheckingAllSOAPParam());
-        preferences.putBoolean("isParsingForm", this.isParsingForm());
-        preferences.putBoolean("isNotTestingConnection", this.isNotTestingConnection());
-        preferences.putBoolean("isProcessingCookies", this.isProcessingCookies());
-        preferences.putBoolean("isProcessingCsrf", this.isProcessingCsrf());
+        preferences.putBoolean("isFollowingRedirection", this.isFollowingRedirection);
+        preferences.putBoolean("isNotInjectingMetadata", this.isNotInjectingMetadata);
+        preferences.putBoolean("isCheckingAllParam", this.isCheckingAllParam);
+        preferences.putBoolean("isCheckingAllURLParam", this.isCheckingAllURLParam);
+        preferences.putBoolean("isCheckingAllRequestParam", this.isCheckingAllRequestParam);
+        preferences.putBoolean("isCheckingAllHeaderParam", this.isCheckingAllHeaderParam);
+        preferences.putBoolean("isCheckingAllJSONParam", this.isCheckingAllJSONParam);
+        preferences.putBoolean("isCheckingAllCookieParam", this.isCheckingAllCookieParam);
+        preferences.putBoolean("isCheckingAllSOAPParam", this.isCheckingAllSOAPParam);
+        preferences.putBoolean("isParsingForm", this.isParsingForm);
+        preferences.putBoolean("isNotTestingConnection", this.isNotTestingConnection);
+        preferences.putBoolean("isProcessingCookies", this.isProcessingCookies);
+        preferences.putBoolean("isProcessingCsrf", this.isProcessingCsrf);
         
-        preferences.putBoolean("isTamperingBase64", this.isTamperingBase64());
-        preferences.putBoolean("isTamperingEqualToLike", this.isTamperingEqualToLike());
-        preferences.putBoolean("isTamperingVersionComment", this.isTamperingVersionComment());
-        preferences.putBoolean("isTamperingFunctionComment", this.isTamperingFunctionComment());
-        preferences.putBoolean("isTamperingRandomCase", this.isTamperingRandomCase());
-        preferences.putBoolean("isTamperingEval", this.isTamperingEval());
-        preferences.putBoolean("isTamperingSpaceToDashComment", this.isTamperingSpaceToDashComment());
-        preferences.putBoolean("isTamperingSpaceToMultlineComment", this.isTamperingSpaceToMultlineComment());
-        preferences.putBoolean("isTamperingSpaceToSharpComment", this.isTamperingSpaceToSharpComment());
+        preferences.putBoolean("isTamperingBase64", this.isTamperingBase64);
+        preferences.putBoolean("isTamperingEqualToLike", this.isTamperingEqualToLike);
+        preferences.putBoolean("isTamperingVersionComment", this.isTamperingVersionComment);
+        preferences.putBoolean("isTamperingFunctionComment", this.isTamperingFunctionComment);
+        preferences.putBoolean("isTamperingRandomCase", this.isTamperingRandomCase);
+        preferences.putBoolean("isTamperingEval", this.isTamperingEval);
+        preferences.putBoolean("isTamperingSpaceToDashComment", this.isTamperingSpaceToDashComment);
+        preferences.putBoolean("isTamperingSpaceToMultlineComment", this.isTamperingSpaceToMultlineComment);
+        preferences.putBoolean("isTamperingSpaceToSharpComment", this.isTamperingSpaceToSharpComment);
         
-        HttpURLConnection.setFollowRedirects(this.isFollowingRedirection());
+        HttpURLConnection.setFollowRedirects(this.isFollowingRedirection);
     }
+    
+    
+    // Builder
 
+    public PreferencesUtil withNotTestingConnection() {
+        this.isNotTestingConnection = true;
+        return this;
+    }
+    
+    public PreferencesUtil withCheckingAllHeaderParam() {
+        this.isCheckingAllHeaderParam = true;
+        return this;
+    }
+    
+    public PreferencesUtil withProcessingCookies() {
+        this.isProcessingCookies = true;
+        return this;
+    }
+    
+    public PreferencesUtil withProcessingCsrf() {
+        this.isProcessingCsrf = true;
+        return this;
+    }
+    
+    public PreferencesUtil withCheckingAllURLParam() {
+        this.isCheckingAllURLParam = true;
+        return this;
+    }
+    
+    public PreferencesUtil withCheckingAllJSONParam() {
+        this.isCheckingAllJSONParam = true;
+        return this;
+    }
+    
+    
     // Getters and setters
     
     public String getPathFile() {

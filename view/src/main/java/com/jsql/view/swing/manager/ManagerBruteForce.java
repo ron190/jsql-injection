@@ -188,7 +188,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
         
         this.hash.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 1, 1, UiUtil.COLOR_DEFAULT_BACKGROUND),
+                BorderFactory.createMatteBorder(1, 1, 1, 1, UiUtil.COLOR_DEFAULT_BACKGROUND),
                 UiUtil.BORDER_BLU
             )
         );
@@ -200,7 +200,8 @@ public class ManagerBruteForce extends JPanel implements Manager {
         
         final JPanel secondLine = new JPanel();
         secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));
-
+        secondLine.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));
+        
         this.lowerCaseCharacters = new JCheckBox("a-z", true);
         this.upperCaseCharacters = new JCheckBox("A-Z", true);
         this.numericCharacters = new JCheckBox("0-9", true);
@@ -234,6 +235,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
         
         JPanel thirdLine = new JPanel();
         thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
+        thirdLine.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));
         
         this.exclude = new JPopupTextField(I18nUtil.valueByKey("BRUTEFORCE_EXCLUDE_LABEL")).getProxy();
         this.exclude.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_EXCLUDE_TOOLTIP"));

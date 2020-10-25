@@ -12,6 +12,7 @@ javascript: |
          .replace(/cast\(/gi, 'jSqLlOcK3(')
          .replace(/count\(/gi, 'jSqLlOcK4(')
          .replace(/trim\(/gi, 'jSqLlOcK5(')
+         .replace(/substring\(/gi, 'jSqLlOcK6(')
          
          // Replace 'text(' to 'text/**/('
          // Negative lookahead to exclude keywords
@@ -26,5 +27,6 @@ javascript: |
          .replace(/jSqLlOcK3\(/g, 'cast(')
          .replace(/jSqLlOcK4\(/g, 'count(')
          .replace(/jSqLlOcK5\(/g, 'trim(')
+         .replace(/jSqLlOcK6\(/g, 'substring(')
      ;
  }

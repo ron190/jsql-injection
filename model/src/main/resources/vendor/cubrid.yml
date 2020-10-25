@@ -121,6 +121,7 @@ strategy:
   fingerprint: 
    errorMessage: 
     - Cubrid database
+    - "Syntax error: unexpected '.', expecting SELECT or VALUE or VALUES or '"
     
  normal: 
   indices: union select ${indices}

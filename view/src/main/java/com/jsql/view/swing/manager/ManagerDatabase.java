@@ -61,7 +61,7 @@ public class ManagerDatabase extends JPanel implements Manager {
 
         this.initializeTree();
         
-        LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, this.tree);
+        LightScrollPane scroller = new LightScrollPane(0, 0, 0, 0, this.tree);
         this.add(scroller, BorderLayout.CENTER);
     }
 

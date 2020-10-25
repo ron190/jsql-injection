@@ -1,4 +1,4 @@
-package com.test.auth;
+package com.test.security;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -28,13 +28,16 @@ public class DigestPreferencesTestSuite extends ConcreteMySqlErrorTestSuite {
             new SimpleEntry<>("name", "0'")
         ));
         
-        model.getMediatorUtils().getAuthenticationUtil().setAuthentication(true);
+        model.getMediatorUtils().getAuthenticationUtil().setIsAuthentEnabled(true);
         model.getMediatorUtils().getAuthenticationUtil().setUsernameAuthentication(SecurityConfiguration.DIGEST_USERNAME);
         model.getMediatorUtils().getAuthenticationUtil().setPasswordAuthentication(SecurityConfiguration.DIGEST_PASSWORD);
         model.getMediatorUtils().getAuthenticationUtil().setAuthentication();
         
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
-        model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
+        model
+        .getMediatorUtils()
+        .getConnectionUtil()
+        .withMethodInjection(model.getMediatorMethod().getQuery())
+        .withTypeRequest("GET");
         
         model.setIsScanning(true);
         model.beginInjection();

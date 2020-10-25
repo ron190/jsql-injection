@@ -194,7 +194,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 hasFoundInjection = this.mediatorMethod.getHeader().testParameters();
             }
             
-            if (!this.isScanning) {
+            if (hasFoundInjection && !this.isScanning) {
                 
                 if (!this.mediatorUtils.getPreferencesUtil().isNotInjectingMetadata()) {
                     

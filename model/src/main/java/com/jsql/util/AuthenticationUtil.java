@@ -32,7 +32,7 @@ public class AuthenticationUtil {
     /**
      * True if standard authentication Basic, Digest, NTLM is activated.
      */
-    private boolean isAuthentication = false;
+    private boolean isAuthEnabled = false;
 
     /**
      * Login for standard authentication.
@@ -98,12 +98,12 @@ public class AuthenticationUtil {
         
         Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         
-        preferences.putBoolean("isDigestAuthentication", this.isAuthentication);
+        preferences.putBoolean("isDigestAuthentication", this.isAuthEnabled);
         preferences.put("usernameDigest", this.usernameAuthentication);
         preferences.put("passwordDigest", this.passwordAuthentication);
         
         // Define proxy settings
-        this.isAuthentication = isAuthentication;
+        this.isAuthEnabled = isAuthentication;
         this.usernameAuthentication = usernameAuthentication;
         this.passwordAuthentication = passwordAuthentication;
     }
@@ -153,7 +153,7 @@ public class AuthenticationUtil {
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 
         // Default proxy disabled
-        this.isAuthentication = prefs.getBoolean("isDigestAuthentication", false);
+        this.isAuthEnabled = prefs.getBoolean("isDigestAuthentication", false);
 
         // Default TOR config
         this.usernameAuthentication = prefs.get("usernameDigest", StringUtils.EMPTY);
@@ -166,7 +166,8 @@ public class AuthenticationUtil {
         AuthCacheValue.setAuthCache(new AuthCacheImpl());
         Authenticator.setDefault(null);
         
-        if (this.isAuthentication) {
+        if (this.isAuthEnabled) {
+            
             AuthCacheValue.setAuthCache(new AuthCacheImpl());
             Authenticator.setDefault(new Authenticator() {
                 
@@ -194,7 +195,8 @@ public class AuthenticationUtil {
         AuthCacheValue.setAuthCache(new AuthCacheImpl());
         Authenticator.setDefault(null);
 
-        if (this.isAuthentication) {
+        if (this.isAuthEnabled) {
+            
             AuthCacheValue.setAuthCache(new AuthCacheImpl());
             Authenticator.setDefault(new Authenticator() {
                 
@@ -209,6 +211,7 @@ public class AuthenticationUtil {
             });
             
         } else {
+            
             AuthCacheValue.setAuthCache(new AuthCacheImpl());
             Authenticator.setDefault(null);
         }
@@ -258,8 +261,8 @@ public class AuthenticationUtil {
         return this.passwordAuthentication;
     }
 
-    public boolean isDigestAuthentication() {
-        return this.isAuthentication;
+    public boolean isAuthentEnabled() {
+        return this.isAuthEnabled;
     }
 
     public String getPathKerberosLogin() {
@@ -274,8 +277,8 @@ public class AuthenticationUtil {
         return this.isKerberos;
     }
 
-    public void setAuthentication(boolean isAuthentication) {
-        this.isAuthentication = isAuthentication;
+    public void setIsAuthentEnabled(boolean isAuthentEnabled) {
+        this.isAuthEnabled = isAuthentEnabled;
     }
 
     public void setUsernameAuthentication(String usernameAuthentication) {

@@ -95,8 +95,8 @@ public class PanelTamperingPreferences extends JPanel implements Cleanable {
         this.checkboxIsTamperingEval.setToolTipText(tooltipIsTamperingEval);
         this.checkboxIsTamperingEval.setFocusable(false);
         
-        textPaneEval = new JPopupTextPane(new JTextPanePlaceholder(tooltipIsTamperingEval)).getProxy();
-        LightScrollPane textAreaIsTamperingEval = new LightScrollPane(textPaneEval);
+        this.textPaneEval = new JPopupTextPane(new JTextPanePlaceholder(tooltipIsTamperingEval)).getProxy();
+        LightScrollPane textAreaIsTamperingEval = new LightScrollPane(this.textPaneEval);
         textAreaIsTamperingEval.setBorder(UiUtil.BORDER_FOCUS_LOST);
         textAreaIsTamperingEval.setMinimumSize(new Dimension(400, 100));
         
@@ -212,7 +212,7 @@ public class PanelTamperingPreferences extends JPanel implements Cleanable {
         )
         .forEach(entry -> {
             
-            entry.getKey().addMouseListener(new TamperingMouseAdapter(entry.getValue(), textPaneEval));
+            entry.getKey().addMouseListener(new TamperingMouseAdapter(entry.getValue(), this.textPaneEval));
             
             entry.getKey().setHorizontalAlignment(SwingConstants.LEFT);
             entry.getKey().setBorderPainted(false);
@@ -221,18 +221,18 @@ public class PanelTamperingPreferences extends JPanel implements Cleanable {
         
         HighlightedDocument document = new HighlightedDocument(HighlightedDocument.JAVASCRIPT_STYLE);
         document.setHighlightStyle(HighlightedDocument.JAVASCRIPT_STYLE);
-        textPaneEval.setStyledDocument(document);
+        this.textPaneEval.setStyledDocument(document);
         
         document.addDocumentListener(new DocumentListenerTyping() {
             
             @Override
             public void process() {
                 
-                MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(textPaneEval.getText());
+                MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(PanelTamperingPreferences.this.textPaneEval.getText());
             }
         });
         
-        textPaneEval.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
+        this.textPaneEval.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
         
         GroupLayout groupLayoutTampering = new GroupLayout(this);
         this.setLayout(groupLayoutTampering);
@@ -374,7 +374,7 @@ public class PanelTamperingPreferences extends JPanel implements Cleanable {
     @Override
     public void clean() {
         
-        UiUtil.stopDocumentColorer(textPaneEval);
+        UiUtil.stopDocumentColorer(this.textPaneEval);
     }
     
     // Getter and setter

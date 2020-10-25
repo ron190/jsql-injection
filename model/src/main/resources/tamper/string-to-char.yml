@@ -9,16 +9,16 @@ javascript: |
          // Parse letters inside quotes
          .replace(/'([^']+)'/ig, function(corr, letters) {
             
-              return 'concat('
-              
-                  // Split by letter
-                  + letters
-                      .split('')
-                      .map(function(letter) {
-                       
-                          // Convert to ASCII
-                          return 'char(' + letter.charCodeAt(0) + ')';
-                      })
-                  + ')';
+             return 'concat('
+             
+                 // Split by letter
+                 + letters
+                     .split('')
+                     .map(function(letter) {
+                      
+                         // Convert to ASCII
+                         return 'char(' + letter.charCodeAt(0) + ')';
+                     })
+                 + ')';
          });
  }

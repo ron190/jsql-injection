@@ -20,7 +20,7 @@ It is **free**, **open source** and it works **cross-platform** on Windows, Linu
 ## Features
 - Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Blind and Time
-- SQL query and tampering programming at runtime
+- SQL and tampering sandboxes
 - Injection of list of targets
 - Read and write files on host using injection
 - Creation and visualization of Web shell and SQL shell

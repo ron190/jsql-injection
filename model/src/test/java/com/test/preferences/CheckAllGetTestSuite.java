@@ -22,14 +22,18 @@ public class CheckAllGetTestSuite extends ConcreteMySqlTestSuite {
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("fake", "empty"),
+            new SimpleEntry<>("tenant", "mysql"),
             new SimpleEntry<>("name", "0'"),
-            new SimpleEntry<>("tenant", "mysql")
+            new SimpleEntry<>("fake", "empty")
         ));
         
         model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllURLParam(true);
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
-        model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
+        
+        model
+        .getMediatorUtils()
+        .getConnectionUtil()
+        .withMethodInjection(model.getMediatorMethod().getQuery())
+        .withTypeRequest("GET");
         
         model.setIsScanning(true);
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());

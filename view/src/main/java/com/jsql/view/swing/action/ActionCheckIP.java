@@ -7,8 +7,8 @@ import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.util.I18nUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
+import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 
 /**

@@ -1,4 +1,4 @@
-package com.test.auth;
+package com.test.security;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -32,8 +32,11 @@ public class BasicHeaderTestSuite extends ConcreteMySqlErrorTestSuite {
             new SimpleEntry<>("Authorization", "Basic " + StringUtil.base64Encode(SecurityConfiguration.BASIC_USERNAME + ":" + SecurityConfiguration.BASIC_PASSWORD))
         ));
         
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
-        model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
+        model
+        .getMediatorUtils()
+        .getConnectionUtil()
+        .withMethodInjection(model.getMediatorMethod().getQuery())
+        .withTypeRequest("GET");
         
         model.setIsScanning(true);
         model.beginInjection();

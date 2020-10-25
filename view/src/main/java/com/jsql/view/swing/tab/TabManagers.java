@@ -20,19 +20,10 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
-
-import org.apache.commons.lang3.StringUtils;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.manager.ManagerAdminPage;
-import com.jsql.view.swing.manager.ManagerBruteForce;
-import com.jsql.view.swing.manager.ManagerCoder;
-import com.jsql.view.swing.manager.ManagerDatabase;
-import com.jsql.view.swing.manager.ManagerFile;
-import com.jsql.view.swing.manager.ManagerScan;
-import com.jsql.view.swing.manager.ManagerSqlShell;
-import com.jsql.view.swing.manager.ManagerUpload;
-import com.jsql.view.swing.manager.ManagerWebShell;
 import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import com.jsql.view.swing.util.I18nViewUtil;
@@ -44,11 +35,6 @@ import com.jsql.view.swing.util.UiUtil;
  */
 @SuppressWarnings("serial")
 public class TabManagers extends TabbedPaneWheeled {
-    
-    private ManagerWebShell managerWebShell = new ManagerWebShell();
-    private ManagerFile managerFile = new ManagerFile();
-    private ManagerUpload managerUpload = new ManagerUpload();
-    private ManagerSqlShell managerSqlShell = new ManagerSqlShell();
     
     /**
      * Create manager panel.
@@ -63,74 +49,33 @@ public class TabManagers extends TabbedPaneWheeled {
                 return Math.max(75, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
             }
         });
+
+        this.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                MediatorHelper.tabManagers().setSelectedIndex(TabManagers.this.getSelectedIndex());
+            }
+        });
         
-        ManagerScan managerScanList = new ManagerScan();
-        ManagerDatabase managerDatabase = new ManagerDatabase();
-        ManagerAdminPage managerAdminPage = new ManagerAdminPage();
-        ManagerBruteForce managerBruteForce = new ManagerBruteForce();
+        this.addMouseWheelListener(new TabbedPaneMouseWheelListener());
+        this.setMaximumSize(new Dimension(this.getMaximumSize().width, 25));
+        this.setPreferredSize(new Dimension(this.getPreferredSize().width, 25));
         
-        MediatorHelper.register(this.managerWebShell);
-        MediatorHelper.register(this.managerFile);
-        MediatorHelper.register(this.managerUpload);
-        MediatorHelper.register(this.managerSqlShell);
-        MediatorHelper.register(managerScanList);
-        MediatorHelper.register(managerAdminPage);
-        MediatorHelper.register(managerBruteForce);
-        
-        this.setMinimumSize(new Dimension(100, 0));
         this.addMouseClickMenu();
         
-        this.buildI18nTab("DATABASE_TAB", "DATABASE_TOOLTIP", UiUtil.ICON_DATABASE_SERVER, managerDatabase);
-        this.buildI18nTab("ADMINPAGE_TAB", "ADMINPAGE_TOOLTIP", UiUtil.ICON_ADMIN_SERVER, managerAdminPage);
-        this.buildI18nTab("FILE_TAB", "FILE_TOOLTIP", UiUtil.ICON_FILE_SERVER, this.managerFile);
-        this.buildI18nTab("WEBSHELL_TAB", "WEBSHELL_TOOLTIP", UiUtil.ICON_SHELL_SERVER, this.managerWebShell);
-        this.buildI18nTab("SQLSHELL_TAB", "SQLSHELL_TOOLTIP", UiUtil.ICON_SHELL_SERVER, this.managerSqlShell);
-        this.buildI18nTab("UPLOAD_TAB", "UPLOAD_TOOLTIP", UiUtil.ICON_UPLOAD, this.managerUpload);
-        this.buildI18nTab("BRUTEFORCE_TAB", "BRUTEFORCE_TOOLTIP", UiUtil.ICON_BRUTER, managerBruteForce);
-        this.buildI18nTab("CODER_TAB", "CODER_TOOLTIP", UiUtil.ICON_CODER, new ManagerCoder());
-        this.buildI18nTab("SCANLIST_TAB", "SCANLIST_TOOLTIP", UiUtil.ICON_SCANLIST, managerScanList);
+        this.setMinimumSize(new Dimension(100, 0));
+        
+        this.buildI18nTab("DATABASE_TAB", "DATABASE_TOOLTIP", UiUtil.ICON_DATABASE_SERVER, null, 0);
+        this.buildI18nTab("ADMINPAGE_TAB", "ADMINPAGE_TOOLTIP", UiUtil.ICON_ADMIN_SERVER, null, 1);
+        this.buildI18nTab("FILE_TAB", "FILE_TOOLTIP", UiUtil.ICON_FILE_SERVER, null, 2);
+        this.buildI18nTab("WEBSHELL_TAB", "WEBSHELL_TOOLTIP", UiUtil.ICON_SHELL_SERVER, null, 3);
+        this.buildI18nTab("SQLSHELL_TAB", "SQLSHELL_TOOLTIP", UiUtil.ICON_SHELL_SERVER, null, 4);
+        this.buildI18nTab("UPLOAD_TAB", "UPLOAD_TOOLTIP", UiUtil.ICON_UPLOAD, null, 5);
+        this.buildI18nTab("BRUTEFORCE_TAB", "BRUTEFORCE_TOOLTIP", UiUtil.ICON_BRUTER, null, 6);
+        this.buildI18nTab("CODER_TAB", "CODER_TOOLTIP", UiUtil.ICON_CODER, null, 7);
+        this.buildI18nTab("SCANLIST_TAB", "SCANLIST_TOOLTIP", UiUtil.ICON_SCANLIST, null, 8);
     }
     
-    public void createFileTab(String path, String name) {
-        
-        // Add the path String to the list of files only if there is no same StringObject value already
-        this.managerWebShell.addToList(path.replace(name, StringUtils.EMPTY));
-        this.managerUpload.addToList(path.replace(name, StringUtils.EMPTY));
-        this.managerSqlShell.addToList(path.replace(name, StringUtils.EMPTY));
-    }
-    
-    public void markFileSystemInvulnerable() {
-        
-        this.managerFile.changePrivilegeIcon(UiUtil.ICON_SQUARE_RED);
-        this.managerFile.endProcess();
-        
-        this.managerWebShell.changePrivilegeIcon(UiUtil.ICON_SQUARE_RED);
-        this.managerWebShell.endProcess();
-        
-        this.managerUpload.changePrivilegeIcon(UiUtil.ICON_SQUARE_RED);
-        this.managerUpload.endProcess();
-        
-        this.managerSqlShell.changePrivilegeIcon(UiUtil.ICON_SQUARE_RED);
-        this.managerSqlShell.endProcess();
-    }
-    
-    public void endPreparation() {
-        
-        this.managerFile.setButtonEnable(true);
-        this.managerWebShell.setButtonEnable(true);
-        this.managerSqlShell.setButtonEnable(true);
-        this.managerUpload.setButtonEnable(true);
-    }
-    
-    public void markFileSystemVulnerable() {
-        
-        this.managerFile.changePrivilegeIcon(UiUtil.ICON_TICK);
-        this.managerWebShell.changePrivilegeIcon(UiUtil.ICON_TICK);
-        this.managerSqlShell.changePrivilegeIcon(UiUtil.ICON_TICK);
-        this.managerUpload.changePrivilegeIcon(UiUtil.ICON_TICK);
-    }
-    
-    private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, Component manager) {
+    private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, Component manager, int index) {
         
         final JToolTipI18n[] refTooltip = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey(keyTooltip))};
         
@@ -150,7 +95,8 @@ public class TabManagers extends TabbedPaneWheeled {
             @Override
             public void mousePressed(MouseEvent e) {
                 
-                TabManagers.this.setSelectedComponent(manager);
+                MediatorHelper.tabManagers().setSelectedIndex(index);
+                TabManagers.this.setSelectedIndex(index);
                 super.mousePressed(e);
             }
         });
@@ -165,6 +111,6 @@ public class TabManagers extends TabbedPaneWheeled {
         I18nViewUtil.addComponentForKey(keyTooltip, refTooltip[0]);
         
         labelTab.setToolTipText(I18nUtil.valueByKey(keyTooltip));
-        labelTab.addMouseListener(new TabMouseAdapter());
+        labelTab.addMouseListener(new TabMouseAdapter(this));
     }
 }

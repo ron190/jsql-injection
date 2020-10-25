@@ -23,11 +23,12 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
+import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.panel.PanelConsoles;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
-import com.jsql.view.swing.tab.TabManagers;
+import com.jsql.view.swing.tab.TabManagersProxy;
 import com.jsql.view.swing.tab.TabResults;
 import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -90,8 +91,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
             horizontalSplitter = HORIZONTAL_SPLITTER;
         }
 
-        TabManagers tabManagers = new TabManagers();
-        tabManagers.addMouseWheelListener(new TabbedPaneMouseWheelListener());
+        TabManagersProxy tabManagers = new TabManagersProxy();
         MediatorHelper.register(tabManagers);
 
         TabResults tabResults = new TabResults();
