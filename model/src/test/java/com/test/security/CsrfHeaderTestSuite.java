@@ -8,9 +8,9 @@ import org.junitpioneer.jupiter.RepeatFailedTest;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.vendor.mysql.ConcreteMySqlTestSuite;
+import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 
-public class CsrfHeaderTestSuite extends ConcreteMySqlTestSuite {
+public class CsrfHeaderTestSuite extends ConcreteMySqlErrorTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
@@ -20,8 +20,9 @@ public class CsrfHeaderTestSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-csrf?tenant=mysql");
-        model.getMediatorUtils().getParameterUtil().setListRequest(Arrays.asList(
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-csrf");
+        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
+            new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", "0'")
         ));
 
@@ -35,12 +36,10 @@ public class CsrfHeaderTestSuite extends ConcreteMySqlTestSuite {
         model
         .getMediatorUtils()
         .getConnectionUtil()
-        .withMethodInjection(model.getMediatorMethod().getRequest())
-        .withTypeRequest("POST");
+        .withMethodInjection(model.getMediatorMethod().getQuery())
+        .withTypeRequest("GET");
         
         model.setIsScanning(true);
-        // TODO Remove setStrategy, but fails without
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }
     

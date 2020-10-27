@@ -1,9 +1,8 @@
 package com.jsql.util;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URLConnection;
@@ -104,11 +103,15 @@ public class HeaderUtil {
         this.parseForms(connection, pageSource);
         
         if (this.isCsrf(mapResponse).isPresent()) {
+            
             SimpleEntry<String, String> cookieCsrf = this.isCsrf(mapResponse).get();
             LOGGER.warn("Found CSRF token in HTTP header: "+ cookieCsrf.getKey() +"="+ cookieCsrf.getValue());
+            
+            // TODO Add each CSRF tokens to each header and request, like Spring param _csrf and header XSRF-TOKEN
             SimpleEntry<String, String> headerCsrf =
                 new SimpleEntry<>(
                     "X-"+ cookieCsrf.getKey(),
+//                    "_csrf",
                     cookieCsrf.getValue()
                 );
             
@@ -260,33 +263,40 @@ public class HeaderUtil {
         
         Exception exception = null;
         
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+        ByteArrayOutputStream sourceByteArray = new ByteArrayOutputStream();
+        
+        // Get connection content without null bytes %00
+        try {
+            byte[] buffer = new byte[1024];
+            int length;
             
-            char[] buffer = new char[4096];
-            while (reader.read(buffer) > 0) {
-                pageSource.append(buffer);
+            while ((length = connection.getInputStream().read(buffer)) != -1) {
+                
+                sourceByteArray.write(buffer, 0, length);
             }
-            
         } catch (IOException errorInputStream) {
             
             exception = errorInputStream;
-            
             InputStream errorStream = connection.getErrorStream();
             
             if (errorStream != null) {
                 
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream))) {
+                try {
+                    byte[] buffer = new byte[1024];
+                    int length;
                     
-                    char[] buffer = new char[4096];
-                    while (reader.read(buffer) > 0) {
-                        pageSource.append(buffer);
+                    while ((length = connection.getInputStream().read(buffer)) != -1) {
+                        
+                        sourceByteArray.write(buffer, 0, length);
                     }
-                    
                 } catch (Exception errorErrorStream) {
+                    
                     exception = new IOException("Exception reading Error Stream", errorErrorStream);
                 }
             }
         }
+        
+        pageSource.append(sourceByteArray.toString("UTF-8"));
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
             
@@ -387,6 +397,7 @@ public class HeaderUtil {
                 .of(cookieValues)
                 .filter(cookie -> cookie.trim().startsWith("XSRF-TOKEN"))
                 .map(cookie -> {
+                    
                     String[] cookieEntry = StringUtils.split(cookie, "=");
 
                     return new SimpleEntry<>(cookieEntry[0].trim(), cookieEntry[1].trim());

@@ -95,6 +95,7 @@
                 <configuration>
                     <!-- Don't override, it breaks generating report -->
                     <argLine>@{argLine} ${MAVEN_NASHORN}</argLine>
+                    <!-- Set number of retry, allows 1st test to run Spring then run other tests -->
                     <rerunFailingTestsCount>3</rerunFailingTestsCount>
                     <includes>
                         <include>**/*TestSuite.java</include>

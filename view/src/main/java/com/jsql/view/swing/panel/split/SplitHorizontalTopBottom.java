@@ -23,7 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
-import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.panel.PanelConsoles;

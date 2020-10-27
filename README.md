@@ -10,7 +10,7 @@ It is **free**, **open source** and it works **cross-platform** on Windows, Linu
 [![JUnit 5](https://img.shields.io/badge/junit-5-50940f)](http://junit.org)
 [![Maven 3.1](https://img.shields.io/badge/maven-3.1-a2265a)](https://maven.apache.org/)
 [![GitHub](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
-[![Github](https://github.com/ron190/jsql-injection/workflows/Java%20CI%20with%20Maven/badge.svg?branch=github-master)](https://github.com/ron190/jsql-injection/actions)
+[![Github Actions](https://github.com/ron190/jsql-injection/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)](https://github.com/ron190/jsql-injection/actions)
 [![Travis](https://travis-ci.org/ron190/jsql-injection.svg?branch=master)](https://travis-ci.org/ron190/jsql-injection)<br>
 [![Sonar](https://img.shields.io/sonar/coverage/jsql-injection:jsql-injection?label=sonar&server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
 [![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=codecov)](https://codecov.io/gh/ron190/jsql-injection)

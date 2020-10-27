@@ -50,7 +50,6 @@ import com.jsql.view.swing.manager.util.UserAgentType;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Manager to display webpages frequently used as backoffice administration.
@@ -249,7 +248,7 @@ public class ManagerAdminPage extends AbstractManagerList {
                 
                 taskCompletionService.submit(
                     new CallableHttpHead(
-                        urlProtocol + urlPart.toString() + pageName.toString(), 
+                        urlProtocol + urlPart.toString() + pageName.toString(),
                         MediatorHelper.model(),
                         "check:page"
                     )

@@ -52,7 +52,7 @@ public class TabMouseAdapter extends MouseAdapter {
                 menu.add(itemMenu);
                 
                 final int positionFinal = position;
-                itemMenu.addActionListener(actionEvent -> tabbedPaneWheeled.setSelectedIndex(positionFinal));
+                itemMenu.addActionListener(actionEvent -> this.tabbedPaneWheeled.setSelectedIndex(positionFinal));
             } catch (SerializationException ex) {
                 LOGGER.error(ex, ex);
             }

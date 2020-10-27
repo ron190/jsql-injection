@@ -25,8 +25,11 @@ public class ActionListenerSave implements ActionListener {
             this.panelPreferences.getPanelGeneralPreferences().getCheckboxIsCheckingUpdate().isSelected(),
             this.panelPreferences.getPanelGeneralPreferences().getCheckboxIsReportingBugs().isSelected(),
             this.panelPreferences.getPanelGeneralPreferences().getCheckboxIs4K().isSelected(),
+            this.panelPreferences.getPanelGeneralPreferences().getCheckboxIsFollowingRedirection().isSelected(),
+            this.panelPreferences.getPanelGeneralPreferences().getCheckboxIsNotTestingConnection().isSelected(),
+            this.panelPreferences.getPanelGeneralPreferences().getCheckboxProcessCookies().isSelected(),
+            this.panelPreferences.getPanelGeneralPreferences().getCheckboxProcessCsrf().isSelected(),
             
-            this.panelPreferences.getPanelInjectionPreferences().getCheckboxIsFollowingRedirection().isSelected(),
             this.panelPreferences.getPanelInjectionPreferences().getCheckboxIsNotInjectingMetadata().isSelected(),
             this.panelPreferences.getPanelInjectionPreferences().getCheckboxIsCheckingAllParam().isSelected(),
             this.panelPreferences.getPanelInjectionPreferences().getCheckboxIsCheckingAllURLParam().isSelected(),
@@ -36,9 +39,6 @@ public class ActionListenerSave implements ActionListener {
             this.panelPreferences.getPanelInjectionPreferences().getCheckboxIsCheckingAllCookieParam().isSelected(),
             this.panelPreferences.getPanelInjectionPreferences().getCheckboxIsCheckingAllSOAPParam().isSelected(),
             this.panelPreferences.getPanelInjectionPreferences().getCheckboxIsParsingForm().isSelected(),
-            this.panelPreferences.getPanelInjectionPreferences().getCheckboxIsNotTestingConnection().isSelected(),
-            this.panelPreferences.getPanelInjectionPreferences().getCheckboxProcessCookies().isSelected(),
-            this.panelPreferences.getPanelInjectionPreferences().getCheckboxProcessCsrf().isSelected(),
             
             this.panelPreferences.getPanelTamperingPreferences().getCheckboxIsTamperingBase64().isSelected(),
             this.panelPreferences.getPanelTamperingPreferences().getCheckboxIsTamperingEqualToLike().isSelected(),

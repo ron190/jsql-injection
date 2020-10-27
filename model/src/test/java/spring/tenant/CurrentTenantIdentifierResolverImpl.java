@@ -11,6 +11,7 @@ public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentif
         
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         
+        // TODO Set dummy value instead to avoid fallback on mysql
         // Used by SOAP
         String tenant = "mysql";
         

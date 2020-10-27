@@ -34,7 +34,6 @@ public class PostTestSuite extends ConcreteMySqlTestSuite {
         .withTypeRequest("POST");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }
     

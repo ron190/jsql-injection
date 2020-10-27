@@ -20,8 +20,6 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.text.JToolTipI18n;
@@ -50,11 +48,7 @@ public class TabManagers extends TabbedPaneWheeled {
             }
         });
 
-        this.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                MediatorHelper.tabManagers().setSelectedIndex(TabManagers.this.getSelectedIndex());
-            }
-        });
+        this.addChangeListener(e -> MediatorHelper.tabManagers().setSelectedIndex(TabManagers.this.getSelectedIndex()));
         
         this.addMouseWheelListener(new TabbedPaneMouseWheelListener());
         this.setMaximumSize(new Dimension(this.getMaximumSize().width, 25));

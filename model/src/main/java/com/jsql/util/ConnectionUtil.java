@@ -1,13 +1,13 @@
 package com.jsql.util;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.net.CookieHandler;
-import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -33,6 +33,7 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.util.protocol.SessionCookieManager;
 
 import net.sourceforge.spnego.SpnegoHttpURLConnection;
 
@@ -83,7 +84,7 @@ public class ConnectionUtil {
         
         this.injectionModel = injectionModel;
     }
-
+    
     /**
      * Check that the connection to the website is working correctly.
      * It uses authentication defined by user, with fixed timeout, and warn
@@ -92,16 +93,10 @@ public class ConnectionUtil {
      */
     public void testConnection() throws InjectionFailureException {
 
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCookies()) {
-            
-            CookieManager cookieManager = new CookieManager();
-            CookieHandler.setDefault(cookieManager);
-            
-        } else {
-            
-            CookieHandler.setDefault(null);
-        }
-        
+        // Set multithreaded Cookie handler
+        // Allows CSRF token processing during ITs, can be used for batch scan
+        CookieHandler.setDefault(SessionCookieManager.getInstance());
+
         // Test the HTTP connection
         HttpURLConnection connection = null;
         try {
@@ -221,36 +216,39 @@ public class ConnectionUtil {
     
     public static String getSource(HttpURLConnection connection) throws IOException {
         
-        StringBuilder pageSource = new StringBuilder();
+        ByteArrayOutputStream pageSource = new ByteArrayOutputStream();
         
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+        // Get connection content without null bytes %00
+        try {
+            byte[] buffer = new byte[1024];
+            int length;
             
-            char[] buffer = new char[4096];
-            
-            while (reader.read(buffer) > 0) {
+            while ((length = connection.getInputStream().read(buffer)) != -1) {
                 
-                pageSource.append(buffer);
+                pageSource.write(buffer, 0, length);
             }
-            
         } catch (IOException errorInputStream) {
             
             InputStream errorStream = connection.getErrorStream();
             
             if (errorStream != null) {
                 
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream))) {
+                try {
+                    byte[] buffer = new byte[1024];
+                    int length;
                     
-                    char[] buffer = new char[4096];
-                    
-                    while (reader.read(buffer) > 0) {
+                    while ((length = connection.getInputStream().read(buffer)) != -1) {
                         
-                        pageSource.append(buffer);
+                        pageSource.write(buffer, 0, length);
                     }
+                } catch (Exception errorErrorStream) {
+                    
+                    LOGGER.error("Exception reading Error Stream", errorErrorStream);
                 }
             }
         }
         
-        return pageSource.toString();
+        return pageSource.toString("UTF-8");
     }
     
     /**

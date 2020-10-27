@@ -425,6 +425,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         }
             
         try {
+            // Set connection method
+            // Active for query string injection too, in that case inject query string still with altered method
             ConnectionUtil.fixCustomRequestMethod(connection, this.mediatorUtils.getConnectionUtil().getTypeRequest());
             
             connection.setDoOutput(true);

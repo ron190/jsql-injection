@@ -8,11 +8,11 @@ import org.junitpioneer.jupiter.RepeatFailedTest;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.vendor.mysql.ConcreteMySqlTestSuite;
+import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 
 // TODO unstable
 //
-public class CustomMethodTestIgnoreSuite extends ConcreteMySqlTestSuite {
+public class CustomMethodTestIgnoreSuite extends ConcreteMySqlErrorTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
@@ -22,9 +22,11 @@ public class CustomMethodTestIgnoreSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-custom?tenant=mysql&name=0'");
-        model.getMediatorUtils().getParameterUtil().setListRequest(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
+        // TODO Request params not passed when cutom method => fallback to querystring
+        // Need custom method set also for querystring
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-custom?tenant=mysql-error&name=0'");
+        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
+            new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", "0'")
         ));
         
@@ -37,7 +39,6 @@ public class CustomMethodTestIgnoreSuite extends ConcreteMySqlTestSuite {
         .withTypeRequest("CUSTOM-JSQL");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }
     
