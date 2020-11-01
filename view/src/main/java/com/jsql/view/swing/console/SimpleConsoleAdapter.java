@@ -9,7 +9,7 @@ import javax.swing.text.StyleConstants;
  * A textpane with color.
  */
 @SuppressWarnings("serial")
-public class SimpleConsoleAdapter extends JColoredConsole {
+public class SimpleConsoleAdapter extends AbstractColoredConsole {
     
     private SimpleAttributeSet attributeTimestamp = new SimpleAttributeSet();
     

@@ -19,11 +19,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -35,9 +35,7 @@ import org.mozilla.universalchardet.UniversalDetector;
  */
 public final class StringUtil {
     
-    /**
-     * Define the schema of conversion to html entities.
-     */
+    // Define the schema of conversion to html entities
     private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#", ";", 10);
     
     /**
@@ -170,7 +168,9 @@ public final class StringUtil {
      */
     public static String base64Decode(String s) {
         
-        return StringUtils.newStringUtf8(Base64.decodeBase64(s));
+        // org.apache.commons.codec.binary.Base64 fails on RlRQIHVzZXI6IG
+        // Use java.util.Base64 instead
+        return StringUtils.newStringUtf8(Base64.getDecoder().decode(s));
     }
 
     /**
@@ -180,7 +180,9 @@ public final class StringUtil {
      */
     public static String base64Encode(String s) {
         
-        return Base64.encodeBase64String(StringUtils.getBytesUtf8(s));
+        // org.apache.commons.codec.binary.Base64 fails on RlRQIHVzZXI6IG
+        // Use java.util.Base64 instead
+        return Base64.getEncoder().encodeToString(StringUtils.getBytesUtf8(s));
     }
 
     /**

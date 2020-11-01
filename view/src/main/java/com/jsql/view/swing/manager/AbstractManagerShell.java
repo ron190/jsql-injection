@@ -61,7 +61,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
     /**
      * Build the manager panel.
      */
-    public AbstractManagerShell() {
+    protected AbstractManagerShell() {
         
         this.setLayout(new BorderLayout());
         

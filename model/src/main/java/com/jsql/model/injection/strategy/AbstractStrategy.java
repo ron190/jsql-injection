@@ -37,7 +37,7 @@ public abstract class AbstractStrategy {
 
     protected InjectionModel injectionModel;
     
-    public AbstractStrategy(InjectionModel injectionModel) {
+    protected AbstractStrategy(InjectionModel injectionModel) {
         
         this.injectionModel = injectionModel;
     }

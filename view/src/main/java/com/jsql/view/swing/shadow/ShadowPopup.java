@@ -44,7 +44,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JApplet;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JRootPane;
@@ -399,34 +398,7 @@ public final class ShadowPopup extends Popup {
         RECT.width = SHADOW_SIZE;
         RECT.height = height - SHADOW_SIZE;
 
-        if ((RECT.x + RECT.width) > layeredPaneWidth) {
-            
-            RECT.width = layeredPaneWidth - RECT.x;
-        }
-        if ((RECT.y + RECT.height) > layeredPaneHeight) {
-            
-            RECT.height = layeredPaneHeight - RECT.y;
-        }
-        
-        if (!RECT.isEmpty()) {
-            
-            Graphics g = vShadowBg.createGraphics();
-            g.translate(-RECT.x, -RECT.y);
-            g.setClip(RECT);
-            if (layeredPane instanceof JComponent) {
-                
-                JComponent c = (JComponent) layeredPane;
-                boolean doubleBuffered = c.isDoubleBuffered();
-                c.setDoubleBuffered(false);
-                ShadowPopup.paintAll(c, g);
-                c.setDoubleBuffered(doubleBuffered);
-                
-            } else {
-                
-                layeredPane.paintAll(g);
-            }
-            g.dispose();
-        }
+        this.extracted(vShadowBg, layeredPane, layeredPaneWidth, layeredPaneHeight);
     }
 
     private void paintHorizontalSnapshot(int width, int height, BufferedImage hShadowBg, Container layeredPane, int layeredPaneWidth, int layeredPaneHeight) {
@@ -437,6 +409,11 @@ public final class ShadowPopup extends Popup {
         RECT.width = width;
         RECT.height = SHADOW_SIZE;
 
+        this.extracted(hShadowBg, layeredPane, layeredPaneWidth, layeredPaneHeight);
+    }
+
+    private void extracted(BufferedImage shadowBg, Container layeredPane, int layeredPaneWidth, int layeredPaneHeight) {
+        
         if ((RECT.x + RECT.width) > layeredPaneWidth) {
             
             RECT.width = layeredPaneWidth - RECT.x;
@@ -449,10 +426,9 @@ public final class ShadowPopup extends Popup {
         
         if (!RECT.isEmpty()) {
             
-            Graphics g = hShadowBg.createGraphics();
+            Graphics g = shadowBg.createGraphics();
             g.translate(-RECT.x, -RECT.y);
             g.setClip(RECT);
-            
             if (layeredPane instanceof JComponent) {
                 
                 JComponent c = (JComponent) layeredPane;
@@ -465,7 +441,6 @@ public final class ShadowPopup extends Popup {
                 
                 layeredPane.paintAll(g);
             }
-            
             g.dispose();
         }
     }
@@ -514,13 +489,6 @@ public final class ShadowPopup extends Popup {
                 if (parent == null) {
                     parent = p;
                 }
-                break;
-                
-            } else if (p instanceof JApplet) {
-                
-                // Painting code stops at Applets, we don't want
-                // to add to a Component above an Applet otherwise
-                // you'll never see it painted.
                 break;
             }
         }

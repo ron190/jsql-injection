@@ -43,16 +43,15 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
      * Name of preference for splitter vertical.
      * Reset divider position for current application version.
      */
-    private static final String NAME_V_SPLITPANE = "verticalSplitter-";
+    private static final String NAME_LEFT_RIGHT_SPLITPANE = "verticalSplitter-";
     
     /**
      * Name of preference for splitter horizontal.
      * Reset divider position for current application version.
      */
-    private static final String NAME_H_SPLITPANE = "horizontalSplitter-";
+    public static final String NAME_TOP_BOTTOM_SPLITPANE = "horizontalSplitter-";
     
-    private static final int HORIZONTAL_SPLITTER = 200;
-    private static final int VERTICAL_SPLITTER = 350;
+    private static final int LOC_LEFT_RIGHT_SPLITTER = 350;
 
     /**
      * SplitPane containing Manager panels on the left and result tabs on the right.
@@ -78,17 +77,8 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         
         super(JSplitPane.VERTICAL_SPLIT);
 
-        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-        int verticalSplitter = prefs.getInt(SplitHorizontalTopBottom.NAME_V_SPLITPANE, VERTICAL_SPLITTER);
-        int horizontalSplitter = prefs.getInt(SplitHorizontalTopBottom.NAME_H_SPLITPANE, HORIZONTAL_SPLITTER);
-        
-        if (verticalSplitter <= 30) {
-            verticalSplitter = VERTICAL_SPLITTER;
-        }
-        
-        if (horizontalSplitter <= 30) {
-            horizontalSplitter = HORIZONTAL_SPLITTER;
-        }
+        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+        int verticalLeftRightSplitter = preferences.getInt(SplitHorizontalTopBottom.NAME_LEFT_RIGHT_SPLITPANE, LOC_LEFT_RIGHT_SPLITTER);
 
         TabManagersProxy tabManagers = new TabManagersProxy();
         MediatorHelper.register(tabManagers);
@@ -108,7 +98,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         this.labelPlaceholderResult.setAlignmentY(Component.CENTER_ALIGNMENT);
       
         this.splitVerticalLeftRight.setRightComponent(this.labelPlaceholderResult);
-        this.splitVerticalLeftRight.setDividerLocation(verticalSplitter);
+        this.splitVerticalLeftRight.setDividerLocation(verticalLeftRightSplitter);
         this.splitVerticalLeftRight.setDividerSize(0);
         this.splitVerticalLeftRight.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
 
@@ -143,20 +133,20 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         MediatorHelper.register(panelConsoles);
 
         this.setBottomComponent(panelConsoles);
-        this.setDividerLocation(669 - horizontalSplitter);
 
         // defines left and bottom pane
         this.setResizeWeight(1);
     }
     
+    
     // Getter and setter
 
     public static String getNameVSplitpane() {
-        return NAME_V_SPLITPANE;
+        return NAME_LEFT_RIGHT_SPLITPANE;
     }
 
     public static String getNameHSplitpane() {
-        return NAME_H_SPLITPANE;
+        return NAME_TOP_BOTTOM_SPLITPANE;
     }
 
     public JSplitPaneWithZeroSizeDivider getSplitVerticalLeftRight() {

@@ -34,13 +34,13 @@ public class ApplicationUiTest {
     }
 
     @Test
-    public void shoulFindOkButton() {
+    public void shouldFindOkButton() {
         
         window.button(withName("buttonInUrl")).click();
     }
 
     @Test
-    public void shoulFindConsoleButton() {
+    public void shouldFindConsoleButton() {
         
         window.button(withName("buttonShowSouth")).click();
         window.button(withName("buttonShowConsolesHidden")).click();
@@ -49,7 +49,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shoulFindPreferences() {
+    public void shouldFindPreferences() {
         
         window.button(withName("advancedButton")).click();
         window.menuItem("menuWindows").click();
@@ -58,7 +58,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shoulFindSqlEngine() {
+    public void shouldFindSqlEngine() {
         
         window.button(withName("advancedButton")).click();
         window.menuItem("menuWindows").click();
@@ -67,7 +67,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shoulFindLanguage() {
+    public void shouldFindLanguage() {
         
         window.button(withName("advancedButton")).click();
         window.menuItem("menuWindows").click();
@@ -77,7 +77,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shoulFindReportIssue() {
+    public void shouldFindReportIssue() {
         
         window.button(withName("advancedButton")).click();
         window.menuItem("menuCommunity").click();
@@ -90,7 +90,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shoulFindIHelpTranslate() {
+    public void shouldFindIHelpTranslate() {
         
         window.button(withName("advancedButton")).click();
         window.menuItem("menuCommunity").click();
@@ -104,7 +104,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shoulFindAbout() {
+    public void shouldFindAbout() {
         
         window.button(withName("advancedButton")).click();
         window.menuItem("menuHelp").click();

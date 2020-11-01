@@ -479,7 +479,7 @@ public class Menubar extends JMenuBar {
             MediatorHelper.tabResults().setSelectedComponent(scroller);
 
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18nViewUtil.valueByKey("MENUBAR_PREFERENCES"), UiUtil.ICON_COG, panelPreferences.getPanelTamperingPreferences());
+            TabHeader header = new TabHeader(I18nViewUtil.valueByKey("MENUBAR_PREFERENCES"), UiUtil.ICON_COG, panelPreferences.getPanelTampering());
             I18nViewUtil.addComponentForKey("MENUBAR_PREFERENCES", header.getTabTitleLabel());
 
             // Apply the custom header to the tab

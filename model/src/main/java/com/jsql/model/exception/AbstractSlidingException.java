@@ -3,13 +3,13 @@ package com.jsql.model.exception;
 import org.apache.commons.lang3.StringUtils;
 
 @SuppressWarnings("serial")
-public abstract class SlidingException extends JSqlException {
+public abstract class AbstractSlidingException extends JSqlException {
     
     private final String slidingWindowAllRows;
     
     private final String slidingWindowCurrentRows;
     
-    public SlidingException(String message) {
+    protected AbstractSlidingException(String message) {
         
         super(message);
         
@@ -17,7 +17,7 @@ public abstract class SlidingException extends JSqlException {
         this.slidingWindowCurrentRows = StringUtils.EMPTY;
     }
     
-    public SlidingException(String message, Throwable e) {
+    protected AbstractSlidingException(String message, Throwable e) {
         
         super(message, e);
         
@@ -25,7 +25,7 @@ public abstract class SlidingException extends JSqlException {
         this.slidingWindowCurrentRows = StringUtils.EMPTY;
     }
     
-    public SlidingException(String string, String slidingWindowAllRows) {
+    protected AbstractSlidingException(String string, String slidingWindowAllRows) {
         
         super(string);
         
@@ -37,7 +37,7 @@ public abstract class SlidingException extends JSqlException {
             : StringUtils.EMPTY;
     }
 
-    public SlidingException(String string, String slidingWindowAllRows, String slidingWindowCurrentRows) {
+    protected AbstractSlidingException(String string, String slidingWindowAllRows, String slidingWindowCurrentRows) {
         
         super(string);
         

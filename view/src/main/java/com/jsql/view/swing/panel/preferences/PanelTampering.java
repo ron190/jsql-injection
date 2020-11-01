@@ -26,7 +26,7 @@ import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
-public class PanelTamperingPreferences extends JPanel implements Cleanable {
+public class PanelTampering extends JPanel implements Cleanable {
     
     private JCheckBox checkboxIsTamperingBase64 = new JCheckBox();
     private JCheckBox checkboxIsTamperingVersionComment = new JCheckBox();
@@ -43,7 +43,7 @@ public class PanelTamperingPreferences extends JPanel implements Cleanable {
     
     private JTextPane textPaneEval;
 
-    public PanelTamperingPreferences(PanelPreferences panelPreferences) {
+    public PanelTampering(PanelPreferences panelPreferences) {
         
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
@@ -228,7 +228,7 @@ public class PanelTamperingPreferences extends JPanel implements Cleanable {
             @Override
             public void process() {
                 
-                MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(PanelTamperingPreferences.this.textPaneEval.getText());
+                MediatorHelper.model().getMediatorUtils().getTamperingUtil().setCustomTamper(PanelTampering.this.textPaneEval.getText());
             }
         });
         

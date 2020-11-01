@@ -32,7 +32,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.util.protocol.SessionCookieManager;
 
 import net.sourceforge.spnego.SpnegoHttpURLConnection;
@@ -63,7 +63,7 @@ public class ConnectionUtil {
     /**
      * Method of injection: by query string, request or header.
      */
-    private MethodInjection methodInjection;
+    private AbstractMethodInjection methodInjection;
 
     /**
      * Default HTTP method. It can be changed to a custom method.
@@ -377,7 +377,7 @@ public class ConnectionUtil {
     
     // Builder
 
-    public ConnectionUtil withMethodInjection(MethodInjection methodInjection) {
+    public ConnectionUtil withMethodInjection(AbstractMethodInjection methodInjection) {
         this.methodInjection = methodInjection;
         return this;
     }
@@ -406,11 +406,11 @@ public class ConnectionUtil {
         this.urlBase = urlBase;
     }
     
-    public MethodInjection getMethodInjection() {
+    public AbstractMethodInjection getMethodInjection() {
         return this.methodInjection;
     }
 
-    public void setMethodInjection(MethodInjection methodInjection) {
+    public void setMethodInjection(AbstractMethodInjection methodInjection) {
         this.methodInjection = methodInjection;
     }
     

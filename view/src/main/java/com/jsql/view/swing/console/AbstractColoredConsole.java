@@ -22,7 +22,7 @@ import com.jsql.view.swing.util.UiUtil;
  * A JTextPane which displays colored strings.
  */
 @SuppressWarnings("serial")
-public abstract class JColoredConsole extends JPopupTextPane {
+public abstract class AbstractColoredConsole extends JPopupTextPane {
     
     /**
      * Log4j logger sent to view.
@@ -38,7 +38,7 @@ public abstract class JColoredConsole extends JPopupTextPane {
      * Create a JTextPane which displays colored strings.
      * @param tabName Text name of tab
      */
-    public JColoredConsole(final String tabName, String placeholder) {
+    protected AbstractColoredConsole(final String tabName, String placeholder) {
         
         super(placeholder);
         
@@ -49,8 +49,8 @@ public abstract class JColoredConsole extends JPopupTextPane {
             @Override
             public void focusGained(FocusEvent arg0) {
                 
-                JColoredConsole.this.getProxy().getCaret().setVisible(true);
-                JColoredConsole.this.getProxy().getCaret().setSelectionVisible(true);
+                AbstractColoredConsole.this.getProxy().getCaret().setVisible(true);
+                AbstractColoredConsole.this.getProxy().getCaret().setSelectionVisible(true);
             }
         });
 

@@ -3,6 +3,8 @@ package com.jsql.util;
 import java.net.HttpURLConnection;
 import java.util.prefs.Preferences;
 
+import javax.swing.Icon;
+
 import com.jsql.model.InjectionModel;
 
 /**
@@ -59,6 +61,11 @@ public class PreferencesUtil {
     private boolean isTamperingSpaceToDashComment = false;
     private boolean isTamperingSpaceToSharpComment = false;
 
+    private String blindTag = "";
+    private boolean isBlindTag = false;
+    private boolean isLimitingThreads = false;
+    private int countLimitingThreads;
+
     /**
      * Initialize the utility class with previously saved JVM preferences and apply
      * loaded settings to the system.
@@ -100,6 +107,10 @@ public class PreferencesUtil {
         this.setIsTamperingSpaceToSharpComment(prefs.getBoolean("isTamperingSpaceToSharpComment", false));
         
         this.setIs4K(prefs.getBoolean("is4K", false));
+        this.setIsBlindTag(prefs.getBoolean("isBlindTag", false));
+        this.setBlindTag(prefs.get("blindTag", ""));
+        this.setIsLimitingThreads(prefs.getBoolean("isLimitingThreads", false));
+        this.setCountLimitingThreads(prefs.getInt("countLimitingThreads", 10));
         
         HttpURLConnection.setFollowRedirects(this.isFollowingRedirection);
     }
@@ -123,6 +134,9 @@ public class PreferencesUtil {
      * @param isCheckingUpdate true if it checks to updates
      * @param isReportingBugs true if it reports issues
      * @param isFollowingRedirection true if redirection are followed to new URL destination
+     * @param string 
+     * @param b 
+     * @param object 
      */
     public void set(
         boolean isCheckingUpdate,
@@ -131,6 +145,7 @@ public class PreferencesUtil {
         
         boolean isFollowingRedirection,
         boolean isNotInjectingMetadata,
+        
         boolean isCheckingAllParam,
         boolean isCheckingAllURLParam,
         boolean isCheckingAllRequestParam,
@@ -139,6 +154,7 @@ public class PreferencesUtil {
         boolean isCheckingAllCookieParam,
         boolean isCheckingAllSOAPParam,
         boolean isParsingForm,
+        
         boolean isNotTestingConnection,
         boolean isProcessingCookies,
         boolean isProcessingCsrf,
@@ -151,12 +167,20 @@ public class PreferencesUtil {
         boolean isTamperingEval,
         boolean isTamperingSpaceToDashComment,
         boolean isTamperingSpaceToMultlineComment,
-        boolean isTamperingSpaceToSharpComment
+        boolean isTamperingSpaceToSharpComment,
+        boolean isLimitingThreads, 
+        int countLimitingThreads, 
+        boolean isBlindTag, 
+        String blindTag
     ) {
         
         this.setIsCheckingUpdate(isCheckingUpdate);
         this.setIsReportingBugs(isReportingBugs);
         this.setIs4K(is4K);
+        this.setIsLimitingThreads(isLimitingThreads);
+        this.setCountLimitingThreads(countLimitingThreads);
+        this.setIsBlindTag(isBlindTag);
+        this.setBlindTag(blindTag);
         
         this.setIsFollowingRedirection(isFollowingRedirection);
         this.setIsNotInjectingMetadata(isNotInjectingMetadata);
@@ -187,6 +211,10 @@ public class PreferencesUtil {
         preferences.putBoolean("isCheckingUpdate", this.isCheckingUpdate);
         preferences.putBoolean("isReportingBugs", this.isReportingBugs);
         preferences.putBoolean("is4K", this.is4K);
+        preferences.putBoolean("isLimitingThreads", this.isLimitingThreads);
+        preferences.putInt("countLimitingThreads", this.countLimitingThreads);
+        preferences.putBoolean("isBlindTag", this.isBlindTag);
+        preferences.put("blindTag", this.blindTag);
         
         preferences.putBoolean("isFollowingRedirection", this.isFollowingRedirection);
         preferences.putBoolean("isNotInjectingMetadata", this.isNotInjectingMetadata);
@@ -457,5 +485,37 @@ public class PreferencesUtil {
 
     public void setIs4K(boolean is4k) {
         this.is4K = is4k;
+    }
+
+    public boolean isLimitingThreads() {
+        return isLimitingThreads ;
+    }
+    
+    public void setIsLimitingThreads(boolean isLimitingThreads) {
+        this.isLimitingThreads = isLimitingThreads;
+    }
+    
+    public int countLimitingThreads() {
+        return countLimitingThreads ;
+    }
+    
+    public void setCountLimitingThreads(int countLimitingThreads) {
+        this.countLimitingThreads = countLimitingThreads;
+    }
+    
+    public boolean isBlindTag() {
+        return isBlindTag;
+    }
+    
+    public void setIsBlindTag(boolean isBlindTag) {
+        this.isBlindTag = isBlindTag;
+    }
+    
+    public String blindTag() {
+        return blindTag;
+    }
+    
+    public void setBlindTag(String blindTag) {
+        this.blindTag = blindTag;
     }
 }

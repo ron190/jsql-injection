@@ -14,7 +14,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.util.JsonUtil;
 
 @SuppressWarnings("serial")
-public abstract class MethodInjection implements Serializable {
+public abstract class AbstractMethodInjection implements Serializable {
     
     /**
      * Log4j logger sent to view.
@@ -23,7 +23,8 @@ public abstract class MethodInjection implements Serializable {
     
     protected InjectionModel injectionModel;
     
-    public MethodInjection(InjectionModel injectionModel) {
+    protected AbstractMethodInjection(InjectionModel injectionModel) {
+        
         this.injectionModel = injectionModel;
     }
     
@@ -84,7 +85,7 @@ public abstract class MethodInjection implements Serializable {
         return this.injectionModel.getMediatorStrategy().testStrategies(null);
     }
 
-    /*
+    /**
      *  Default injection: last param tested only
      */
     private boolean checkLastParam() throws JSqlException {

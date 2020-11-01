@@ -21,11 +21,11 @@ import org.apache.commons.text.WordUtils;
 
 import com.jsql.view.swing.action.ActionCheckIP;
 import com.jsql.view.swing.panel.preferences.ActionListenerSave;
-import com.jsql.view.swing.panel.preferences.PanelAuthenticationPreferences;
-import com.jsql.view.swing.panel.preferences.PanelGeneralPreferences;
-import com.jsql.view.swing.panel.preferences.PanelInjectionPreferences;
-import com.jsql.view.swing.panel.preferences.PanelProxyPreferences;
-import com.jsql.view.swing.panel.preferences.PanelTamperingPreferences;
+import com.jsql.view.swing.panel.preferences.PanelAuthentication;
+import com.jsql.view.swing.panel.preferences.PanelGeneral;
+import com.jsql.view.swing.panel.preferences.PanelInjection;
+import com.jsql.view.swing.panel.preferences.PanelProxy;
+import com.jsql.view.swing.panel.preferences.PanelTampering;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -34,11 +34,11 @@ public class PanelPreferences extends JPanel {
     
     private transient ActionListener actionListenerSave = new ActionListenerSave(this);
     
-    private PanelTamperingPreferences panelTamperingPreferences = new PanelTamperingPreferences(this);
-    private PanelInjectionPreferences panelInjectionPreferences = new PanelInjectionPreferences(this);
-    private PanelProxyPreferences panelProxyPreferences = new PanelProxyPreferences(this);
-    private PanelAuthenticationPreferences panelAuthenticationPreferences = new PanelAuthenticationPreferences(this);
-    private PanelGeneralPreferences panelGeneralPreferences = new PanelGeneralPreferences(this);
+    private PanelTampering panelTamperingPreferences = new PanelTampering(this);
+    private PanelInjection panelInjectionPreferences = new PanelInjection(this);
+    private PanelProxy panelProxyPreferences = new PanelProxy(this);
+    private PanelAuthentication panelAuthenticationPreferences = new PanelAuthentication(this);
+    private PanelGeneral panelGeneralPreferences = new PanelGeneral(this);
 
     private static final JPanel panelInjection = new JPanel(new BorderLayout());
     private static final JPanel panelAuthentication = new JPanel(new BorderLayout());
@@ -162,10 +162,15 @@ public class PanelPreferences extends JPanel {
                 
                 JLabel labelItemList = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 
+                if (isSelected) {
+                    labelItemList.setBackground(UiUtil.COLOR_FOCUS_GAINED);
+                }
                 labelItemList.setBorder(
                     BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(3, 3, 0, 3, Color.WHITE),
-                        labelItemList.getBorder()
+                        isSelected
+                        ? BorderFactory.createLineBorder(UiUtil.COLOR_COMPONENT_BORDER)
+                        : labelItemList.getBorder()
                     )
                 );
                 
@@ -178,23 +183,23 @@ public class PanelPreferences extends JPanel {
     
     // Getter and setter
 
-    public PanelAuthenticationPreferences getPanelAuthenticationPreferences() {
+    public PanelAuthentication getPanelAuthentication() {
         return this.panelAuthenticationPreferences;
     }
 
-    public PanelProxyPreferences getPanelProxyPreferences() {
+    public PanelProxy getPanelProxy() {
         return this.panelProxyPreferences;
     }
 
-    public PanelInjectionPreferences getPanelInjectionPreferences() {
+    public PanelInjection getPanelInjection() {
         return this.panelInjectionPreferences;
     }
 
-    public PanelTamperingPreferences getPanelTamperingPreferences() {
+    public PanelTampering getPanelTampering() {
         return this.panelTamperingPreferences;
     }
 
-    public PanelGeneralPreferences getPanelGeneralPreferences() {
+    public PanelGeneral getPanelGeneral() {
         return this.panelGeneralPreferences;
     }
 

@@ -33,7 +33,7 @@ import org.json.JSONObject;
 
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.scan.ScanListTerminal;
 import com.jsql.view.swing.list.BeanInjection;
@@ -106,7 +106,7 @@ public class ManagerScan extends AbstractManagerList {
                 MediatorHelper.panelAddressBar().getRadioRequest().setText("POST");
             }
             
-            MethodInjection method = beanInjection.getMethodInstance();
+            AbstractMethodInjection method = beanInjection.getMethodInstance();
             
             if (method == MediatorHelper.model().getMediatorMethod().getHeader()) {
                 

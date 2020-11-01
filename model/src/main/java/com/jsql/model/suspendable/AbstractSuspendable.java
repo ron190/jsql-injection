@@ -27,7 +27,7 @@ public abstract class AbstractSuspendable<T> {
 
     protected InjectionModel injectionModel;
     
-    public AbstractSuspendable(InjectionModel injectionModel) {
+    protected AbstractSuspendable(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
     

@@ -19,31 +19,24 @@ public class SessionCookieManager extends CookieHandler {
     private CookiePolicy policyCallback;
 
     public SessionCookieManager() {
-        this(null, null);
+        this(null);
     }
 
-    private final static SessionCookieManager ms_instance = new SessionCookieManager();
+    private static final SessionCookieManager INSTANCE = new SessionCookieManager();
 
     public static SessionCookieManager getInstance() {
         
-        return ms_instance;
+        return INSTANCE;
     }
 
-    private final static ThreadLocal<CookieStore> ms_cookieJars = new ThreadLocal<CookieStore>() {
-        
-        @Override
-        protected synchronized CookieStore initialValue() {
-            
-            return new CookieManager().getCookieStore();
-        }
-    };
+    private static final ThreadLocal<CookieStore> COOKIE_JARS = ThreadLocal.withInitial(() -> new CookieManager().getCookieStore());
 
     public void clear() {
         
         this.getCookieStore().removeAll();
     }
     
-    public SessionCookieManager(CookieStore store, CookiePolicy cookiePolicy) {
+    public SessionCookieManager(CookiePolicy cookiePolicy) {
         
         // use default cookie policy if not specify one
         this.policyCallback = 
@@ -64,7 +57,7 @@ public class SessionCookieManager extends CookieHandler {
 
     public CookieStore getCookieStore() {
         
-        return ms_cookieJars.get();
+        return COOKIE_JARS.get();
     }
 
     @Override
@@ -181,12 +174,7 @@ public class SessionCookieManager extends CookieHandler {
             return false;
         }
         
-        if (path.startsWith(pathToMatchWith)) {
-            
-            return true;
-        }
-
-        return false;
+        return path.startsWith(pathToMatchWith);
     }
 
     /*

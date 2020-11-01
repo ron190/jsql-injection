@@ -25,7 +25,7 @@ public abstract class AbstractCharAction extends TextAction {
     /**
      * Create this object with the appropriate identifier.
      */
-    public AbstractCharAction(String deleteAction) {
+    protected AbstractCharAction(String deleteAction) {
         
         super(deleteAction);
     }

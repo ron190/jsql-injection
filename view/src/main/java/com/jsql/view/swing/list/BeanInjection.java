@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.view.swing.util.MediatorHelper;
 
@@ -15,7 +15,7 @@ public class BeanInjection {
     private String header = StringUtils.EMPTY;
     private String requestType = StringUtils.EMPTY;
     
-    private MethodInjection method;
+    private AbstractMethodInjection method;
     private Vendor vendor;
 
     public BeanInjection(String url) {
@@ -96,7 +96,7 @@ public class BeanInjection {
         return this.requestType;
     }
 
-    public MethodInjection getMethodInstance() {
+    public AbstractMethodInjection getMethodInstance() {
         return this.method;
     }
 

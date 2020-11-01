@@ -293,9 +293,9 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             .compile(MODE + TRAIL_RGX +".*")
             .matcher(currentChunk)
             .replaceAll(StringUtils.EMPTY)
-            .replaceAll("\\n", "\\\\\\n")
-            .replaceAll("\\r", "\\\\\\r")
-            .replaceAll("\\t", "\\\\\\t")
+            .replace("\\n", "\\\\\\n")
+            .replace("\\r", "\\\\\\r")
+            .replace("\\t", "\\\\\\t")
         );
         
         this.injectionModel.sendToViews(request);

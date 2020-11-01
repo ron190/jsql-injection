@@ -45,30 +45,22 @@ import com.jsql.view.swing.util.UiUtil;
  * View in the MVC pattern, defines all the components
  * and process actions sent by the model.<br>
  * Main groups of components:<br>
- * - at the top: textfields input,<br>
+ * - at the top: textfield inputs,<br>
  * - at the center: tree on the left, table on the right,<br>
  * - at the bottom: information labels.
  */
 @SuppressWarnings("serial")
 public class JFrameView extends JFrame {
 
-    /**
-     * Main center panel, composed by left and right tabs.
-     * @return Center panel
-     */
+    // Main center panel
     private SplitHorizontalTopBottom splitHorizontalTopBottom;
 
-    /**
-     * List of terminal by unique identifier.
-     */
+    // List of terminal by unique identifier
     private Map<UUID, AbstractShell> mapShells = new HashMap<>();
     
     private transient ObserverInteraction observer = new ObserverInteraction("com.jsql.view.swing.interaction");
     
-    /**
-     * Build the GUI: add app icon, tree icons, the 3 main panels.
-     * @param injectionModel
-     */
+    // Build the GUI: add app icon, tree icons, the 3 main panels
     public JFrameView() {
         
         super("jSQL Injection");
@@ -92,42 +84,52 @@ public class JFrameView extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             
             @Override
+            public void windowOpened(WindowEvent e) {
+                super.windowOpened(e);
+                
+                Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+                double horizontalTopBottomSplitter = preferences.getDouble(SplitHorizontalTopBottom.NAME_TOP_BOTTOM_SPLITPANE, 0.75);
+
+                JFrameView.this.splitHorizontalTopBottom.setDividerLocation(horizontalTopBottomSplitter);
+            }
+            
+            @Override
             public void windowClosing(WindowEvent e) {
                 
-                Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-                prefs.putInt(
+                Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+                preferences.putInt(
                     SplitHorizontalTopBottom.getNameVSplitpane(),
                     JFrameView.this.splitHorizontalTopBottom.getSplitVerticalLeftRight().getDividerLocation()
                 );
                 
                 // Divider location change when window is maximized, we can't save getDividerLocation()
-                prefs.putInt(
+                preferences.putDouble(
                     SplitHorizontalTopBottom.getNameHSplitpane(),
-                    JFrameView.this.splitHorizontalTopBottom.getHeight() - JFrameView.this.splitHorizontalTopBottom.getDividerLocation()
+                    (JFrameView.this.splitHorizontalTopBottom.getDividerLocation()) * 100.0 / (JFrameView.this.splitHorizontalTopBottom.getHeight()) / 100
                 );
                 
-                prefs.putBoolean(UiUtil.BINARY_VISIBLE, false);
-                prefs.putBoolean(UiUtil.CHUNK_VISIBLE, false);
-                prefs.putBoolean(UiUtil.NETWORK_VISIBLE, false);
-                prefs.putBoolean(UiUtil.JAVA_VISIBLE, false);
+                preferences.putBoolean(UiUtil.BINARY_VISIBLE, false);
+                preferences.putBoolean(UiUtil.CHUNK_VISIBLE, false);
+                preferences.putBoolean(UiUtil.NETWORK_VISIBLE, false);
+                preferences.putBoolean(UiUtil.JAVA_VISIBLE, false);
                 
                 for (int i = 0 ; i < MediatorHelper.tabConsoles().getTabCount() ; i++) {
                     
                     if ("CONSOLE_BINARY_LABEL".equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
                         
-                        prefs.putBoolean(UiUtil.BINARY_VISIBLE, true);
+                        preferences.putBoolean(UiUtil.BINARY_VISIBLE, true);
                         
                     } else if ("CONSOLE_CHUNK_LABEL".equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
                         
-                        prefs.putBoolean(UiUtil.CHUNK_VISIBLE, true);
+                        preferences.putBoolean(UiUtil.CHUNK_VISIBLE, true);
                         
                     } else if ("CONSOLE_NETWORK_LABEL".equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
                         
-                        prefs.putBoolean(UiUtil.NETWORK_VISIBLE, true);
+                        preferences.putBoolean(UiUtil.NETWORK_VISIBLE, true);
                         
                     } else if ("CONSOLE_JAVA_LABEL".equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
                         
-                        prefs.putBoolean(UiUtil.JAVA_VISIBLE, true);
+                        preferences.putBoolean(UiUtil.JAVA_VISIBLE, true);
                     }
                 }
             }
@@ -183,9 +185,7 @@ public class JFrameView extends JFrame {
         menubar.switchLocale(Locale.ENGLISH, I18nUtil.getLocaleDefault(), true);
     }
 
-    /**
-     * Empty the interface.
-     */
+    // Empty the interface
     public void resetInterface() {
         
         MediatorHelper.panelAddressBar().getAddressMenuBar().reset();
@@ -217,6 +217,7 @@ public class JFrameView extends JFrame {
             managerList.changePrivilegeIcon(UiUtil.ICON_SQUARE_GREY);
         });
     }
+    
     
     // Getters and setters
 

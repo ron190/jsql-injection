@@ -107,7 +107,7 @@ public abstract class AbstractNodeModel {
      * Create a functional model for tree node.
      * @param elementDatabase Database structural component
      */
-    public AbstractNodeModel(AbstractElementDatabase elementDatabase) {
+    protected AbstractNodeModel(AbstractElementDatabase elementDatabase) {
         this.elementDatabase = elementDatabase;
     }
 
@@ -115,7 +115,7 @@ public abstract class AbstractNodeModel {
      * Create an empty model for tree node.
      * @param emptyObject Empty tree default node
      */
-    public AbstractNodeModel(String emptyObject) {
+    protected AbstractNodeModel(String emptyObject) {
         this.textEmptyNode = emptyObject;
     }
     

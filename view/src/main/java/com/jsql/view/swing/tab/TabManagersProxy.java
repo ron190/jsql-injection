@@ -73,15 +73,15 @@ public class TabManagersProxy extends JTabbedPane {
         
         this.setMinimumSize(new Dimension(100, 0));
         
-        this.buildI18nTab("DATABASE_TAB", "DATABASE_TOOLTIP", UiUtil.ICON_DATABASE_SERVER, managerDatabase);
-        this.buildI18nTab("ADMINPAGE_TAB", "ADMINPAGE_TOOLTIP", UiUtil.ICON_ADMIN_SERVER, managerAdminPage);
-        this.buildI18nTab("FILE_TAB", "FILE_TOOLTIP", UiUtil.ICON_FILE_SERVER, this.managerFile);
-        this.buildI18nTab("WEBSHELL_TAB", "WEBSHELL_TOOLTIP", UiUtil.ICON_SHELL_SERVER, this.managerWebShell);
-        this.buildI18nTab("SQLSHELL_TAB", "SQLSHELL_TOOLTIP", UiUtil.ICON_SHELL_SERVER, this.managerSqlShell);
-        this.buildI18nTab("UPLOAD_TAB", "UPLOAD_TOOLTIP", UiUtil.ICON_UPLOAD, this.managerUpload);
-        this.buildI18nTab("BRUTEFORCE_TAB", "BRUTEFORCE_TOOLTIP", UiUtil.ICON_BRUTER, managerBruteForce);
-        this.buildI18nTab("CODER_TAB", "CODER_TOOLTIP", UiUtil.ICON_CODER, new ManagerCoder());
-        this.buildI18nTab("SCANLIST_TAB", "SCANLIST_TOOLTIP", UiUtil.ICON_SCANLIST, managerScanList);
+        this.buildI18nTab("DATABASE_TAB", UiUtil.ICON_DATABASE_SERVER, managerDatabase);
+        this.buildI18nTab("ADMINPAGE_TAB", UiUtil.ICON_ADMIN_SERVER, managerAdminPage);
+        this.buildI18nTab("FILE_TAB", UiUtil.ICON_FILE_SERVER, this.managerFile);
+        this.buildI18nTab("WEBSHELL_TAB", UiUtil.ICON_SHELL_SERVER, this.managerWebShell);
+        this.buildI18nTab("SQLSHELL_TAB", UiUtil.ICON_SHELL_SERVER, this.managerSqlShell);
+        this.buildI18nTab("UPLOAD_TAB", UiUtil.ICON_UPLOAD, this.managerUpload);
+        this.buildI18nTab("BRUTEFORCE_TAB", UiUtil.ICON_BRUTER, managerBruteForce);
+        this.buildI18nTab("CODER_TAB", UiUtil.ICON_CODER, new ManagerCoder());
+        this.buildI18nTab("SCANLIST_TAB", UiUtil.ICON_SCANLIST, managerScanList);
     }
     
     public void createFileTab(String path, String name) {
@@ -123,7 +123,7 @@ public class TabManagersProxy extends JTabbedPane {
         this.managerUpload.changePrivilegeIcon(UiUtil.ICON_TICK);
     }
     
-    private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, Component manager) {
+    private void buildI18nTab(String keyLabel, Icon icon, Component manager) {
         
         this.addTab(I18nUtil.valueByKey(keyLabel), icon, manager);
     }

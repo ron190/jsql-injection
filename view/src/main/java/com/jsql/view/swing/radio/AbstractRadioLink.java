@@ -23,7 +23,7 @@ public abstract class AbstractRadioLink extends JLabel {
      * @param string Text for label
      * @param isSelected Is the radio selected by default?
      */
-    public AbstractRadioLink(String string, boolean isSelected) {
+    protected AbstractRadioLink(String string, boolean isSelected) {
         this(string);
         if (isSelected) {
             this.setUnderlined();
@@ -34,7 +34,7 @@ public abstract class AbstractRadioLink extends JLabel {
      * Build a radio label.
      * @param string Text for label
      */
-    public AbstractRadioLink(String string) {
+    protected AbstractRadioLink(String string) {
         super(string);
     }
 

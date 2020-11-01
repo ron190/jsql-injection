@@ -41,6 +41,9 @@ public class TabbedPaneWheeled extends JTabbedPane {
 
     public TabbedPaneWheeled(int tabPlacement, int tabLayoutPolicy) {
         super(tabPlacement, tabLayoutPolicy);
+        
+        // UIManager.put() is not enough
+        this.setUI(new CustomMetalTabbedPaneUI());
     }
 
     /**

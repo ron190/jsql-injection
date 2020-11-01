@@ -27,9 +27,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    /**
-     * Source code of the TRUE web page (usually ?id=1).
-     */
+    // Source code of the TRUE web page (usually ?id=1)
     private String blankTrueMark;
 
     /**
@@ -59,11 +57,20 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         // Call the SQL request which must be TRUE (usually ?id=1)
         this.blankTrueMark = this.callUrl(StringUtils.EMPTY, "blind:set-true-mark");
 
-        /*
-         *  Concurrent calls to the FALSE statements,
-         *  it will use inject() from the model
-         */
-        ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagFalse"));
+        // Concurrent calls to the FALSE statements,
+        // it will use inject() from the model
+        ExecutorService taskExecutor;
+        
+        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+            
+            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetBlindTagFalse"));
+            
+        } else {
+            
+            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagFalse"));
+        }
+        
         Collection<CallableBlind> listCallableTagFalse = new ArrayList<>();
         
         for (String urlTest: this.falseTest) {
@@ -71,20 +78,17 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             listCallableTagFalse.add(new CallableBlind(urlTest, injectionModel, this, blindMode, "blind:false-mark"));
         }
         
-        /*
-         * Delete junk from the results of FALSE statements,
-         * keep only opcodes found in each and every FALSE pages.
-         * Allow the user to stop the loop
-         */
+        // Delete junk from the results of FALSE statements,
+        // keep only opcodes found in each and every FALSE pages.
+        // Allow the user to stop the loop
         try {
-            // Begin the url requests
-            List<Future<CallableBlind>> listTagFalse = executorTagFalse.invokeAll(listCallableTagFalse);
+            List<Future<CallableBlind>> listTagFalse = taskExecutor.invokeAll(listCallableTagFalse);
             
-            executorTagFalse.shutdown();
+            taskExecutor.shutdown();
             
-            if (!executorTagFalse.awaitTermination(15, TimeUnit.SECONDS)) {
+            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
                 
-                executorTagFalse.shutdownNow();
+                taskExecutor.shutdownNow();
             }
             
             this.constantFalseMark = listTagFalse.get(0).get().getOpcodes();
@@ -118,7 +122,18 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
-        ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagTrue"));
+        ExecutorService taskExecutor;
+        
+        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+            
+            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetBlindTagTrue"));
+            
+        } else {
+            
+            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagTrue"));
+        }
+
         Collection<CallableBlind> listCallableTagTrue = new ArrayList<>();
         
         for (String urlTest: this.trueTest) {
@@ -130,12 +145,12 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         // a significant FALSE statement shouldn't contain any TRUE opcode.
         // Allow the user to stop the loop.
         try {
-            List<Future<CallableBlind>> listTagTrue = executorTagTrue.invokeAll(listCallableTagTrue);
+            List<Future<CallableBlind>> listTagTrue = taskExecutor.invokeAll(listCallableTagTrue);
             
-            executorTagTrue.shutdown();
-            if (!executorTagTrue.awaitTermination(15, TimeUnit.SECONDS)) {
+            taskExecutor.shutdown();
+            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
                 
-                executorTagTrue.shutdownNow();
+                taskExecutor.shutdownNow();
             }
         
             for (Future<CallableBlind> trueTag: listTagTrue) {
@@ -202,6 +217,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             + this.constantFalseMark
         ;
     }
+    
     
     // Getter and setter
 

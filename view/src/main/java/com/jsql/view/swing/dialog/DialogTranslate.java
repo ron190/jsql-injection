@@ -189,7 +189,7 @@ public class DialogTranslate extends JDialog {
             String clientDescription =
                 // Escape Markdown character # for h1 in .properties
                 this.textToTranslate.getText()
-                    .replaceAll("\\\\", "\\\\\\\\")
+                    .replace("\\\\", "\\\\\\\\")
                     .replaceAll("(?m)^#", "\\\\#")
                     .replace("<", "\\<")
             ;

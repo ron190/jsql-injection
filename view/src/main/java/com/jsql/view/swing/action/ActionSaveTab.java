@@ -130,7 +130,10 @@ public class ActionSaveTab extends AbstractAction {
                         
                         // Encode line break.
                         String line = tableModel.getValueAt(i, j).toString();
-                        line = line.replaceAll("\n", "\\n").replaceAll("\t", "\\t");
+                        line =
+                            line
+                            .replace("\n", "\\n")
+                            .replace("\t", "\\t");
                         line = line + "\t";
                         fileWriterExcel.write(line);
                     }

@@ -40,7 +40,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.MediatorMethod;
-import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.strategy.MediatorStrategy;
 import com.jsql.model.injection.vendor.MediatorVendor;
 import com.jsql.util.AuthenticationUtil;
@@ -476,7 +476,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         }
     }
     
-    private String buildQuery(MethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
+    private String buildQuery(AbstractMethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
         
         String query;
         String paramLeadFixed = paramLead.replace(InjectionModel.STAR, "<tampering>*</tampering>");
@@ -593,7 +593,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * @param query
      * @return
      */
-    private String clean(MethodInjection methodInjection, String query) {
+    private String clean(AbstractMethodInjection methodInjection, String query) {
         
         String queryFixed = query;
         
@@ -623,7 +623,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         return queryFixed;
     }
 
-    private String applyRfcEncoding(MethodInjection methodInjection, String query) {
+    private String applyRfcEncoding(AbstractMethodInjection methodInjection, String query) {
         
         String queryFixed = query;
         

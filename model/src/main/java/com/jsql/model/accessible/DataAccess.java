@@ -28,7 +28,7 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.exception.SlidingException;
+import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.I18nUtil;
 
@@ -222,7 +222,7 @@ public class DataAccess {
                 "get:databases"
             );
             
-        } catch (SlidingException e) {
+        } catch (AbstractSlidingException e) {
             
             LOGGER.warn(e.getMessage(), e);
             
@@ -314,7 +314,7 @@ public class DataAccess {
                 "get:tables"
             );
             
-        } catch (SlidingException e) {
+        } catch (AbstractSlidingException e) {
             
             LOGGER.warn(e.getMessage(), e);
             
@@ -405,7 +405,7 @@ public class DataAccess {
                 "get:columns"
             );
             
-        } catch (SlidingException e) {
+        } catch (AbstractSlidingException e) {
             
             LOGGER.warn(e.getMessage(), e);
             
@@ -546,7 +546,7 @@ public class DataAccess {
                 "get:rows"
             );
             
-        } catch (SlidingException e) {
+        } catch (AbstractSlidingException e) {
             
             LOGGER.warn(e.getMessage(), e);
             

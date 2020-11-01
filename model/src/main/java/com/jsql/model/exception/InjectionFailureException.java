@@ -16,7 +16,7 @@ package com.jsql.model.exception;
  * with database elements (database, table, column)
  */
 @SuppressWarnings("serial")
-public class InjectionFailureException extends SlidingException {
+public class InjectionFailureException extends AbstractSlidingException {
     
     public InjectionFailureException() {
         super("Execution stopped");

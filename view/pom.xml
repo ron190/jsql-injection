@@ -114,8 +114,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M4</version>
                 <configuration>
-                    <!-- Compatible only jdk > 9 -->
-                    <!-- <argLine>-Dnashorn.args=- -no-deprecation-warning</argLine> -->
                     <includes>
                         <include>**/*UiTest</include>
                     </includes>

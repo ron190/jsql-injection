@@ -90,7 +90,7 @@ public abstract class AbstractShell extends JTextPane {
      * @param labelShell Type of shell to display on prompt
      * @throws MalformedURLException
      */
-    public AbstractShell(UUID uuidShell, String urlShell, String labelShell) throws MalformedURLException {
+    protected AbstractShell(UUID uuidShell, String urlShell, String labelShell) throws MalformedURLException {
         
         this.uuidShell = uuidShell;
         this.urlShell = urlShell;

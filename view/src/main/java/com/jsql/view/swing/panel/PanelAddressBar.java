@@ -22,7 +22,7 @@ import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
-import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.panel.address.ActionEnterAddressBar;
 import com.jsql.view.swing.panel.address.AddressMenuBar;
@@ -56,7 +56,7 @@ public class PanelAddressBar extends JPanel {
     /**
      * Current injection method.
      */
-    private MethodInjection methodInjection = MediatorHelper.model().getMediatorMethod().getQuery();
+    private AbstractMethodInjection methodInjection = MediatorHelper.model().getMediatorMethod().getQuery();
 
     private AddressMenuBar addressMenuBar;
     private RequestPanel requestPanel;
@@ -290,11 +290,11 @@ public class PanelAddressBar extends JPanel {
         
         private String request;
         private Boolean isSelected;
-        private MethodInjection method;
+        private AbstractMethodInjection method;
         private String i18n;
         private RadioLinkMethod[] radio;
 
-        public RadioModel(String request, Boolean isSelected, MethodInjection method, String i18n, RadioLinkMethod[] radio) {
+        public RadioModel(String request, Boolean isSelected, AbstractMethodInjection method, String i18n, RadioLinkMethod[] radio) {
             
             this.request = request;
             this.isSelected = isSelected;
@@ -306,7 +306,7 @@ public class PanelAddressBar extends JPanel {
     
     // Getter and setter
 
-    public void setMethodInjection(MethodInjection methodInjection) {
+    public void setMethodInjection(AbstractMethodInjection methodInjection) {
         this.methodInjection = methodInjection;
     }
 
@@ -338,7 +338,7 @@ public class PanelAddressBar extends JPanel {
         return this.radioRequest[0];
     }
 
-    public MethodInjection getMethodInjection() {
+    public AbstractMethodInjection getMethodInjection() {
         return this.methodInjection;
     }
 

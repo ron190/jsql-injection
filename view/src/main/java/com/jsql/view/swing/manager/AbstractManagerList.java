@@ -80,11 +80,11 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      */
     protected JLabel loader = new JLabel(UiUtil.ICON_LOADER_GIF);
     
-    public AbstractManagerList() {
+    protected AbstractManagerList() {
         // Nothing
     }
     
-    public AbstractManagerList(String nameFile) {
+    protected AbstractManagerList(String nameFile) {
         
         this.setLayout(new BorderLayout());
 

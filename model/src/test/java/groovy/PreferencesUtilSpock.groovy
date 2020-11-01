@@ -42,6 +42,11 @@ class PreferencesUtilSpock extends Specification {
                 isTamperingSpaceToDashComment == false
                 isTamperingSpaceToMultlineComment == false
                 isTamperingSpaceToSharpComment == false
+                
+                isLimitingThreads == false
+                countLimitingThreads == 0
+                isBlindTag == false
+                blindTag == ""
             }
     }
     
@@ -76,7 +81,12 @@ class PreferencesUtilSpock extends Specification {
                 isTamperingSpaceToMultlineComment,
                 isTamperingSpaceToSharpComment,
                 
-                is4K
+                is4K,
+                
+                isLimitingThreads,
+                countLimitingThreads,
+                isBlindTag,
+                blindTag
             )
         
         then:
@@ -110,6 +120,11 @@ class PreferencesUtilSpock extends Specification {
                 isTamperingSpaceToDashComment == true
                 isTamperingSpaceToMultlineComment == true
                 isTamperingSpaceToSharpComment == true
+                
+                isLimitingThreads == true
+                countLimitingThreads == 0
+                isBlindTag == true
+                blindTag == ""
             }
         
         when:
@@ -147,6 +162,11 @@ class PreferencesUtilSpock extends Specification {
                 isTamperingSpaceToDashComment == true
                 isTamperingSpaceToMultlineComment == true
                 isTamperingSpaceToSharpComment == true
+                
+                isLimitingThreads == true
+                countLimitingThreads == 0
+                isBlindTag == true
+                blindTag == ""
             }
         
         where:
@@ -181,7 +201,11 @@ class PreferencesUtilSpock extends Specification {
             isTamperingSpaceToDashComment = true
             isTamperingSpaceToMultlineComment = true
             isTamperingSpaceToSharpComment = true
-        
+                
+            isLimitingThreads = true
+            countLimitingThreads = 0
+            isBlindTag = true
+            blindTag = ""
     }
     
     // Restore default preferences to jvm
@@ -217,7 +241,12 @@ class PreferencesUtilSpock extends Specification {
             false,
             false,
             false,
-            false
+            false,
+            
+            false,
+            0,
+            false,
+            ""
         )
     }
 }

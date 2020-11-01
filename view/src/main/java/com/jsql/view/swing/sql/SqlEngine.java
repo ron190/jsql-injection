@@ -45,7 +45,6 @@ import com.jsql.view.swing.tab.TabHeader.Cleanable;
 import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
-import com.jsql.view.swing.ui.BorderlessTabButtonUI;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -55,7 +54,7 @@ public class SqlEngine extends JPanel implements Cleanable {
     
     private ModelYaml modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
 
-    private JTabbedPane tabbedPaneError = new JTabbedPane(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
+    private JTabbedPane tabbedPaneError = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
 
     private transient Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
     
@@ -480,9 +479,8 @@ public class SqlEngine extends JPanel implements Cleanable {
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), panelError);
 
         /*Boolean*/
-        JTabbedPane tabsBoolean = new JTabbedPane(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
+        JTabbedPane tabsBoolean = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsBoolean.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
-        tabsBoolean.setUI(new BorderlessTabButtonUI());
         
         Stream
         .of(
@@ -525,7 +523,6 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         JTabbedPane tabsConfiguration = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsConfiguration.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
-        tabsConfiguration.setUI(new BorderlessTabButtonUI());
 
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new LightScrollPane(1, 0, 1, 0, this.textareaOrderBy));
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, this.textareaSlidingWindow));
@@ -680,7 +677,6 @@ public class SqlEngine extends JPanel implements Cleanable {
     private void populateTabError() {
         
         this.tabbedPaneError.removeAll();
-        this.tabbedPaneError.setUI(new BorderlessTabButtonUI());
         
         if (this.modelYaml.getStrategy().getError() != null) {
             

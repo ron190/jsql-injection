@@ -32,14 +32,22 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         super(injectionModel);
     }
 
-    /**
-     * 
-     */
     @Override
     public String run(Object... args) throws JSqlException {
         
         // Concurrent search
-        ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetIndexes"));
+        ExecutorService taskExecutor;
+        
+        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+            
+            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetIndexes"));
+            
+        } else {
+            
+            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetIndexes"));
+        }
+        
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         boolean isRequestFound = false;
@@ -50,7 +58,6 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         // 7330+1 allows to exclude false positive when page contains injection URL
         // Search if the source contains 1337[index]7331
         for (nbIndex = 1 ; nbIndex <= 100 ; nbIndex++) {
-//        for (nbIndex = 1 ; nbIndex <= 10 ; nbIndex++) {
             
             taskCompletionService.submit(
                 new CallablePageSource(
@@ -65,7 +72,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
 
         try {
             // Start from 10 to 100 requests
-            while (!isRequestFound && nbIndex <= 100) {
+            while (nbIndex <= 100) {
 
                 if (this.isSuspended()) {
                     throw new StoppedByUserSlidingException();

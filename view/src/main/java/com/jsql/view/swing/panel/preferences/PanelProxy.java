@@ -22,7 +22,7 @@ import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
-public class PanelProxyPreferences extends JPanel {
+public class PanelProxy extends JPanel {
 
     private final JCheckBox checkboxIsUsingProxy = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttp());
     private final JCheckBox checkboxIsUsingProxyHttps = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttps());
@@ -32,7 +32,7 @@ public class PanelProxyPreferences extends JPanel {
     private final JTextField textProxyAddressHttps = new JPopupTextField("e.g Tor address: 127.0.0.1", MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyAddressHttps()).getProxy();
     private final JTextField textProxyPortHttps = new JPopupTextField("e.g Tor port: 8118", MediatorHelper.model().getMediatorUtils().getProxyUtil().getProxyPortHttps()).getProxy();
 
-    public PanelProxyPreferences(PanelPreferences panelPreferences) {
+    public PanelProxy(PanelPreferences panelPreferences) {
         
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         

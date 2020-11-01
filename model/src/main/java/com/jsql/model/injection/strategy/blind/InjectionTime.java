@@ -58,7 +58,18 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
          *  Concurrent calls to the FALSE statements,
          *  it will use inject() from the model
          */
-        ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagFalse"));
+        ExecutorService taskExecutor;
+        
+        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+            
+            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetTimeTagFalse"));
+            
+        } else {
+            
+            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagFalse"));
+        }
+
         Collection<CallableTime> listCallableTagFalse = new ArrayList<>();
         
         for (String urlTest: this.falseTest) {
@@ -72,13 +83,13 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
          * Allow the user to stop the loop
          */
         try {
-            List<Future<CallableTime>> listTagFalse = executorTagFalse.invokeAll(listCallableTagFalse);
+            List<Future<CallableTime>> listTagFalse = taskExecutor.invokeAll(listCallableTagFalse);
             
-            executorTagFalse.shutdown();
+            taskExecutor.shutdown();
             
-            if (!executorTagFalse.awaitTermination(15, TimeUnit.SECONDS)) {
+            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
                 
-                executorTagFalse.shutdownNow();
+                taskExecutor.shutdownNow();
             }
         
             for (Future<CallableTime> tagFalse: listTagFalse) {
@@ -110,7 +121,18 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model
-        ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagTrue"));
+        ExecutorService taskExecutor;
+        
+        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+            
+            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetTimeTagTrue"));
+            
+        } else {
+            
+            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagTrue"));
+        }
+
         Collection<CallableTime> listCallableTagTrue = new ArrayList<>();
         
         for (String urlTest: this.trueTest) {
@@ -122,12 +144,12 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         // then the test is a failure => exit.
         // Allow the user to stop the loop
         try {
-            List<Future<CallableTime>> listTagTrue = executorTagTrue.invokeAll(listCallableTagTrue);
+            List<Future<CallableTime>> listTagTrue = taskExecutor.invokeAll(listCallableTagTrue);
             
-            executorTagTrue.shutdown();
-            if (!executorTagTrue.awaitTermination(15, TimeUnit.SECONDS)) {
+            taskExecutor.shutdown();
+            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
                 
-                executorTagTrue.shutdownNow();
+                taskExecutor.shutdownNow();
             }
         
             for (Future<CallableTime> falseMark: listTagTrue) {

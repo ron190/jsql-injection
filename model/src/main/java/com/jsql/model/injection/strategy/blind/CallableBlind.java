@@ -15,9 +15,7 @@ import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
  */
 public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     
-    /**
-     * List of differences found between the TRUE page, and the present page.
-     */
+    // List of differences found between the TRUE page, and the present page
     private LinkedList<Diff> opcodes = new LinkedList<>();
     
     private static final DiffMatchPatch DIFFMATCHPATCH = new DiffMatchPatch();

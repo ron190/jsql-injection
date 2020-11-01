@@ -8,16 +8,16 @@ import com.jsql.model.InjectionModel;
 
 public class MediatorMethod {
 
-    private MethodInjection query;
-    private MethodInjection request;
-    private MethodInjection header;
+    private AbstractMethodInjection query;
+    private AbstractMethodInjection request;
+    private AbstractMethodInjection header;
     
-    private List<MethodInjection> methods;
+    private List<AbstractMethodInjection> methods;
     
     @SuppressWarnings("serial")
     public MediatorMethod(InjectionModel injectionModel) {
         
-        this.query = new MethodInjection(injectionModel) {
+        this.query = new AbstractMethodInjection(injectionModel) {
             
             @Override
             public boolean isCheckingAllParam() {
@@ -40,7 +40,7 @@ public class MediatorMethod {
             }
         };
         
-        this.request = new MethodInjection(injectionModel) {
+        this.request = new AbstractMethodInjection(injectionModel) {
             
             @Override
             public boolean isCheckingAllParam() {
@@ -63,7 +63,7 @@ public class MediatorMethod {
             }
         };
         
-        this.header = new MethodInjection(injectionModel) {
+        this.header = new AbstractMethodInjection(injectionModel) {
             
             @Override
             public boolean isCheckingAllParam() {
@@ -89,19 +89,19 @@ public class MediatorMethod {
         this.methods = Arrays.asList(this.getQuery(), this.getRequest(), this.getHeader());
     }
 
-    public MethodInjection getQuery() {
+    public AbstractMethodInjection getQuery() {
         return this.query;
     }
 
-    public MethodInjection getRequest() {
+    public AbstractMethodInjection getRequest() {
         return this.request;
     }
 
-    public MethodInjection getHeader() {
+    public AbstractMethodInjection getHeader() {
         return this.header;
     }
 
-    public List<MethodInjection> getMethods() {
+    public List<AbstractMethodInjection> getMethods() {
         return this.methods;
     }
 }

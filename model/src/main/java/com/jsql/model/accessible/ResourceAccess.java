@@ -100,7 +100,7 @@ public class ResourceAccess {
     /**
      * List of ongoing jobs.
      */
-    public List<CallableFile> callablesReadFile = new ArrayList<>();
+    private List<CallableFile> callablesReadFile = new ArrayList<>();
     
     private InjectionModel injectionModel;
 
@@ -235,7 +235,7 @@ public class ResourceAccess {
 
         if (resultInjection.indexOf(sourceShellToInject) <= -1) {
             
-            throw new JSqlException("Incorrect Web payload integrity: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
+            throw new JSqlException("Incorrect Web payload integrity: "+ sourcePage[0].trim().replace("\\n", "\\\\\\n"));
         }
             
         LOGGER.debug("Web payload created into '"+ pathShellFixed + this.filenameWebshell +"'");
@@ -271,7 +271,18 @@ public class ResourceAccess {
 
     private void injectWebshell(String pathShellFixed, String urlShellFixed, String urlProtocol, String urlWithoutFileName, List<String> directoryNames) throws InterruptedException {
         
-        ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableCreateWebShell"));
+        ExecutorService taskExecutor;
+        
+        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+            
+            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableCreateWebShell"));
+            
+        } else {
+            
+            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableCreateWebShell"));
+        }
+        
         CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
         
         StringBuilder urlPart = new StringBuilder();
@@ -516,7 +527,7 @@ public class ResourceAccess {
 
         if (resultInjection.indexOf(sourceShellToInject) <= -1) {
             
-            throw new JSqlException("Incorrect SQL payload integrity: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
+            throw new JSqlException("Incorrect SQL payload integrity: "+ sourcePage[0].trim().replace("\\n", "\\\\\\n"));
         }
             
         LOGGER.debug("SQL payload created into '"+ pathShellFixed + this.filenameSqlshell +"'");
@@ -556,7 +567,18 @@ public class ResourceAccess {
         String urlProtocol, String urlWithoutFileName, List<String> directoryNames
     ) throws InterruptedException {
         
-        ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableCreateSqlShell"));
+        ExecutorService taskExecutor;
+        
+        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+            
+            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableCreateSqlShell"));
+            
+        } else {
+            
+            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableCreateSqlShell"));
+        }
+        
         CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
         
         StringBuilder urlPart = new StringBuilder();
@@ -822,7 +844,7 @@ public class ResourceAccess {
             
         } catch (JSqlException e) {
             
-            throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"), e);
+            throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replace("\\n", "\\\\\\n"), e);
         }
 
         String urlFileFixed = urlFile;
@@ -850,7 +872,7 @@ public class ResourceAccess {
             
         } else {
             
-            throw new JSqlException("Incorrect Upload payload integrity: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
+            throw new JSqlException("Incorrect Upload payload integrity: "+ sourcePage[0].trim().replace("\\n", "\\\\\\n"));
         }
         
         Request request = new Request();
@@ -1005,7 +1027,7 @@ public class ResourceAccess {
         this.setSearchFileStopped(true);
         
         // Force ongoing suspendable to stop immediately
-        for (CallableFile callable: this.callablesReadFile) {
+        for (CallableFile callable: this.getCallablesReadFile()) {
             
             callable.getSuspendableReadFile().stop();
         }
@@ -1043,5 +1065,13 @@ public class ResourceAccess {
 
     public void setSearchFileStopped(boolean isSearchFileStopped) {
         this.isSearchFileStopped = isSearchFileStopped;
+    }
+
+    public List<CallableFile> getCallablesReadFile() {
+        return callablesReadFile;
+    }
+
+    public void setCallablesReadFile(List<CallableFile> callablesReadFile) {
+        this.callablesReadFile = callablesReadFile;
     }
 }

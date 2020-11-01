@@ -1,5 +1,7 @@
 package com.jsql.view.swing.panel.preferences;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.util.stream.Stream;
 
@@ -9,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +21,7 @@ import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.util.MediatorHelper;
 
 @SuppressWarnings("serial")
-public class PanelGeneralPreferences extends JPanel {
+public class PanelGeneral extends JPanel {
 
     private final JCheckBox checkboxIsCheckingUpdate = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingUpdate());
     private final JCheckBox checkboxIsReportingBugs = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isReportingBugs());
@@ -25,10 +29,12 @@ public class PanelGeneralPreferences extends JPanel {
 
     private final JCheckBox checkboxIsFollowingRedirection = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection());
     private final JCheckBox checkboxIsNotTestingConnection = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection());
-    private final JCheckBox checkboxProcessCookies = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCookies());
-    private final JCheckBox checkboxProcessCsrf = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf());
-
-    public PanelGeneralPreferences(PanelPreferences panelPreferences) {
+    private final JCheckBox checkboxIsProcessingCookies = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCookies());
+    private final JCheckBox checkboxIsProcessingCsrf = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf());
+    private final JCheckBox checkboxIsLimitingThreads = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
+    private final JSpinner spinnerLimitingThreads = new JSpinner();
+    
+    public PanelGeneral(PanelPreferences panelPreferences) {
         
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
@@ -86,44 +92,72 @@ public class PanelGeneralPreferences extends JPanel {
         });
         
         String tooltipProcessCookies = "Save session cookies";
-        this.checkboxProcessCookies.setToolTipText(tooltipProcessCookies);
-        this.checkboxProcessCookies.setFocusable(false);
+        this.checkboxIsProcessingCookies.setToolTipText(tooltipProcessCookies);
+        this.checkboxIsProcessingCookies.setFocusable(false);
         JButton labelProcessCookies = new JButton("Save session cookies");
         labelProcessCookies.setToolTipText(tooltipProcessCookies);
         labelProcessCookies.addActionListener(actionEvent -> {
             
-            this.checkboxProcessCookies.setSelected(!this.checkboxProcessCookies.isSelected());
+            this.checkboxIsProcessingCookies.setSelected(!this.checkboxIsProcessingCookies.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
+        String tooltipIsLimitingThreads = "Limit threads";
+        this.checkboxIsLimitingThreads.setToolTipText(tooltipIsLimitingThreads);
+        this.checkboxIsLimitingThreads.setFocusable(false);
+        JButton labelIsLimitingThreads = new JButton("Limit threads to");
+        labelIsLimitingThreads.setToolTipText(tooltipIsLimitingThreads);
+        labelIsLimitingThreads.addActionListener(actionEvent -> {
+            
+            this.checkboxIsLimitingThreads.setSelected(!this.checkboxIsLimitingThreads.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+        
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(labelIsLimitingThreads, BorderLayout.WEST);
+        p.add(this.spinnerLimitingThreads, BorderLayout.CENTER);
+        p.setMaximumSize(new Dimension(150, this.spinnerLimitingThreads.getPreferredSize().height));
+        this.spinnerLimitingThreads.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
+        
+        int countLimitingThreads = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+        SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(
+            countLimitingThreads <= 0
+            ? 10
+            : countLimitingThreads,
+            1,
+            100,
+            1
+        );
+        this.spinnerLimitingThreads.setModel(spinnerNumberModel);
+        
         ActionListener actionListenerProcessCsrf = actionEvent -> {
             
-            if (actionEvent.getSource() != this.checkboxProcessCsrf) {
+            if (actionEvent.getSource() != this.checkboxIsProcessingCsrf) {
                 
-                this.checkboxProcessCsrf.setSelected(!this.checkboxProcessCsrf.isSelected());
+                this.checkboxIsProcessingCsrf.setSelected(!this.checkboxIsProcessingCsrf.isSelected());
             }
             
-            if (this.checkboxProcessCsrf.isSelected()) {
+            if (this.checkboxIsProcessingCsrf.isSelected()) {
                 
-                this.checkboxProcessCookies.setSelected(this.checkboxProcessCsrf.isSelected());
+                this.checkboxIsProcessingCookies.setSelected(this.checkboxIsProcessingCsrf.isSelected());
             }
             
-            this.checkboxProcessCookies.setEnabled(!this.checkboxProcessCsrf.isSelected());
-            labelProcessCookies.setEnabled(!this.checkboxProcessCsrf.isSelected());
+            this.checkboxIsProcessingCookies.setEnabled(!this.checkboxIsProcessingCsrf.isSelected());
+            labelProcessCookies.setEnabled(!this.checkboxIsProcessingCsrf.isSelected());
             
             panelPreferences.getActionListenerSave().actionPerformed(null);
         };
         
-        this.checkboxProcessCookies.setEnabled(!this.checkboxProcessCsrf.isSelected());
-        labelProcessCookies.setEnabled(!this.checkboxProcessCsrf.isSelected());
+        this.checkboxIsProcessingCookies.setEnabled(!this.checkboxIsProcessingCsrf.isSelected());
+        labelProcessCookies.setEnabled(!this.checkboxIsProcessingCsrf.isSelected());
         
         String tooltipProcessCsrf = "Process CSRF token";
-        this.checkboxProcessCsrf.setToolTipText(tooltipProcessCsrf);
-        this.checkboxProcessCsrf.setFocusable(false);
+        this.checkboxIsProcessingCsrf.setToolTipText(tooltipProcessCsrf);
+        this.checkboxIsProcessingCsrf.setFocusable(false);
         JButton labelProcessCsrf = new JButton("Process CSRF token");
         labelProcessCsrf.setToolTipText(tooltipProcessCsrf);
         labelProcessCsrf.addActionListener(actionListenerProcessCsrf);
-        this.checkboxProcessCsrf.addActionListener(actionListenerProcessCsrf);
+        this.checkboxIsProcessingCsrf.addActionListener(actionListenerProcessCsrf);
 
         JLabel emptyLabelSessionManagement = new JLabel();
         JLabel labelSessionManagement = new JLabel("<html><br /><b>Session and Cookie management</b></html>");
@@ -137,8 +171,9 @@ public class PanelGeneralPreferences extends JPanel {
             this.checkboxIs4K,
             this.checkboxIsFollowingRedirection,
             this.checkboxIsNotTestingConnection,
-            this.checkboxProcessCsrf,
-            this.checkboxProcessCookies
+            this.checkboxIsProcessingCsrf,
+            this.checkboxIsProcessingCookies,
+            this.checkboxIsLimitingThreads
         ).forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
         Stream.of(
@@ -148,7 +183,8 @@ public class PanelGeneralPreferences extends JPanel {
             labelIsFollowingRedirection,
             labelTestConnection,
             labelProcessCsrf,
-            labelProcessCookies
+            labelProcessCookies,
+            labelIsLimitingThreads
         )
         .forEach(label -> {
             label.setHorizontalAlignment(SwingConstants.LEFT);
@@ -168,9 +204,10 @@ public class PanelGeneralPreferences extends JPanel {
                 .addComponent(this.checkboxIs4K)
                 .addComponent(this.checkboxIsFollowingRedirection)
                 .addComponent(this.checkboxIsNotTestingConnection)
+                .addComponent(this.checkboxIsLimitingThreads)
                 .addComponent(emptyLabelSessionManagement)
-                .addComponent(this.checkboxProcessCsrf)
-                .addComponent(this.checkboxProcessCookies)
+                .addComponent(this.checkboxIsProcessingCsrf)
+                .addComponent(this.checkboxIsProcessingCookies)
             )
             .addGroup(
                 groupLayout
@@ -180,6 +217,7 @@ public class PanelGeneralPreferences extends JPanel {
                 .addComponent(labelIs4K)
                 .addComponent(labelIsFollowingRedirection)
                 .addComponent(labelTestConnection)
+                .addComponent(p)
                 .addComponent(labelSessionManagement)
                 .addComponent(labelProcessCsrf)
                 .addComponent(labelProcessCookies)
@@ -221,6 +259,12 @@ public class PanelGeneralPreferences extends JPanel {
                 .addComponent(this.checkboxIsNotTestingConnection)
                 .addComponent(labelTestConnection)
             )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsLimitingThreads)
+                .addComponent(p)
+            )
 
             .addGroup(
                 groupLayout
@@ -231,13 +275,13 @@ public class PanelGeneralPreferences extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxProcessCsrf)
+                .addComponent(this.checkboxIsProcessingCsrf)
                 .addComponent(labelProcessCsrf)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxProcessCookies)
+                .addComponent(this.checkboxIsProcessingCookies)
                 .addComponent(labelProcessCookies)
             )
         );
@@ -267,10 +311,18 @@ public class PanelGeneralPreferences extends JPanel {
     }
     
     public JCheckBox getCheckboxProcessCookies() {
-        return this.checkboxProcessCookies;
+        return this.checkboxIsProcessingCookies;
     }
     
     public JCheckBox getCheckboxProcessCsrf() {
-        return this.checkboxProcessCsrf;
+        return this.checkboxIsProcessingCsrf;
+    }
+    
+    public JCheckBox getCheckboxIsLimitingThreads() {
+        return this.checkboxIsLimitingThreads;
+    }
+    
+    public JSpinner getSpinnerLimitingThreads() {
+        return this.spinnerLimitingThreads;
     }
 }

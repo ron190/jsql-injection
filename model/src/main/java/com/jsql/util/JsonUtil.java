@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.model.injection.method.AbstractMethodInjection;
 
 public class JsonUtil {
     
@@ -160,7 +160,7 @@ public class JsonUtil {
         }
     }
     
-    public boolean testJsonParameter(MethodInjection methodInjection, SimpleEntry<String, String> paramStar) {
+    public boolean testJsonParameter(AbstractMethodInjection methodInjection, SimpleEntry<String, String> paramStar) {
         
         boolean hasFoundInjection = false;
         

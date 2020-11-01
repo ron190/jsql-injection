@@ -18,7 +18,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.model.injection.method.AbstractMethodInjection;
 
 public class ParameterUtil {
     
@@ -60,7 +60,7 @@ public class ParameterUtil {
         String urlQuery,
         String dataRequest,
         String dataHeader,
-        MethodInjection methodInjection,
+        AbstractMethodInjection methodInjection,
         String typeRequest,
         boolean isScanning
     ) {
@@ -148,7 +148,7 @@ public class ParameterUtil {
     
     public void checkStarMatchMethod() throws InjectionFailureException {
         
-        MethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();
+        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();
         boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();
 
         if (
@@ -179,7 +179,7 @@ public class ParameterUtil {
     
     public void checkMethodNotEmpty() throws InjectionFailureException {
         
-        MethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();
+        AbstractMethodInjection methodInjection = this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection();
         boolean isCheckingAllParam = this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam();
         
         if (

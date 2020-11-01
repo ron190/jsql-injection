@@ -160,7 +160,7 @@ public class ManagerFile extends AbstractManagerList {
             CallableFile callableFile = new CallableFile(pathFile.toString(), MediatorHelper.model());
             taskCompletionService.submit(callableFile);
             
-            MediatorHelper.model().getResourceAccess().callablesReadFile.add(callableFile);
+            MediatorHelper.model().getResourceAccess().getCallablesReadFile().add(callableFile);
         }
 
         List<String> duplicate = new ArrayList<>();
@@ -198,12 +198,12 @@ public class ManagerFile extends AbstractManagerList {
         }
         
         // Force ongoing suspendables to stop immediately
-        for (CallableFile callableReadFile: MediatorHelper.model().getResourceAccess().callablesReadFile) {
+        for (CallableFile callableReadFile: MediatorHelper.model().getResourceAccess().getCallablesReadFile()) {
             
             callableReadFile.getSuspendableReadFile().stop();
         }
         
-        MediatorHelper.model().getResourceAccess().callablesReadFile.clear();
+        MediatorHelper.model().getResourceAccess().getCallablesReadFile().clear();
 
         taskExecutor.shutdown();
         taskExecutor.awaitTermination(5, TimeUnit.SECONDS);

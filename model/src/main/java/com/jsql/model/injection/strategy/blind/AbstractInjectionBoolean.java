@@ -53,7 +53,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     
     protected BooleanMode booleanMode;
     
-    public AbstractInjectionBoolean(InjectionModel injectionModel, BooleanMode booleanMode) {
+    protected AbstractInjectionBoolean(InjectionModel injectionModel, BooleanMode booleanMode) {
         
         this.injectionModel = injectionModel;
         this.booleanMode = booleanMode;
@@ -96,7 +96,18 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         AtomicInteger indexCharacter = new AtomicInteger(0);
 
         // Concurrent URL requests
-        ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableAbstractBoolean"));
+        ExecutorService taskExecutor;
+        
+        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+            
+            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableAbstractBoolean"));
+            
+        } else {
+            
+            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableAbstractBoolean"));
+        }
+        
         CompletionService<T> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         // Send the first binary question: is the SQL result empty?
@@ -184,7 +195,14 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
             
             Request interaction = new Request();
             interaction.setMessage(Interaction.MESSAGE_BINARY);
-            interaction.setParameters(asciiCodeBinary +"="+ charText.replaceAll("\\n", "\\\\\\n").replaceAll("\\r", "\\\\\\r").replaceAll("\\t", "\\\\\\t"));
+            interaction.setParameters(
+                asciiCodeBinary 
+                + "=" 
+                + charText
+                .replace("\\n", "\\\\\\n")
+                .replace("\\r", "\\\\\\r")
+                .replace("\\t", "\\\\\\t")
+            );
             this.injectionModel.sendToViews(interaction);
         }
     }
