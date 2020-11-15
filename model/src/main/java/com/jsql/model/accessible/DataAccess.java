@@ -25,10 +25,10 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.I18nUtil;
 

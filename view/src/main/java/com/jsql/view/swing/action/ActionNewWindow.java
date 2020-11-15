@@ -23,6 +23,7 @@ import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.MainApplication;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -44,7 +45,7 @@ public class ActionNewWindow extends AbstractAction {
     private static final List<String> COMMANDS_DEFAULT = Arrays.asList(
         "-cp",
         CLASSPATH,
-        ActionNewWindow.class.getName()
+        MainApplication.class.getName()
     );
     
     private List<String> commands;

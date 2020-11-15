@@ -26,6 +26,7 @@ import com.jsql.view.swing.panel.preferences.PanelGeneral;
 import com.jsql.view.swing.panel.preferences.PanelInjection;
 import com.jsql.view.swing.panel.preferences.PanelProxy;
 import com.jsql.view.swing.panel.preferences.PanelTampering;
+import com.jsql.view.swing.panel.preferences.PanelUserAgent;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -39,11 +40,13 @@ public class PanelPreferences extends JPanel {
     private PanelProxy panelProxyPreferences = new PanelProxy(this);
     private PanelAuthentication panelAuthenticationPreferences = new PanelAuthentication(this);
     private PanelGeneral panelGeneralPreferences = new PanelGeneral(this);
+    private PanelUserAgent panelUserAgentPreferences = new PanelUserAgent();
 
     private static final JPanel panelInjection = new JPanel(new BorderLayout());
     private static final JPanel panelAuthentication = new JPanel(new BorderLayout());
     private static final JPanel panelProxy = new JPanel(new BorderLayout());
     private static final JPanel panelGeneral = new JPanel(new BorderLayout());
+    private static final JPanel panelUserAgent = new JPanel(new BorderLayout());
     private static final JPanel panelTampering = new JPanel(new BorderLayout());
     
     private transient Border panelBorder = BorderFactory.createEmptyBorder(10, 15, 0, 15);
@@ -55,7 +58,7 @@ public class PanelPreferences extends JPanel {
         PROXY(panelProxy),
         AUTH(panelAuthentication),
         GENERAL(panelGeneral),
-        USER_AGENT(new JPanel());
+        USER_AGENT(panelUserAgent);
         
         private Component panel;
 
@@ -91,6 +94,10 @@ public class PanelPreferences extends JPanel {
         panelGeneral.add(new JLabel("<html><b>General</b> / Standard options</html>"), BorderLayout.NORTH);
         panelGeneral.add(this.panelGeneralPreferences, BorderLayout.CENTER);
         
+        panelUserAgent.setBorder(this.panelBorder);
+        panelUserAgent.add(new JLabel("<html><b>User Agent</b> / Request agents</html>"), BorderLayout.NORTH);
+        panelUserAgent.add(this.panelUserAgentPreferences, BorderLayout.CENTER);
+        
         panelInjection.setBorder(this.panelBorder);
         panelInjection.add(new JLabel("<html><b>Injection</b> / Algorithm configuration</html>"), BorderLayout.NORTH);
         panelInjection.add(this.panelInjectionPreferences, BorderLayout.CENTER);
@@ -123,7 +130,7 @@ public class PanelPreferences extends JPanel {
         flatButtonMouseAdapter.setContentVisible(true);
         buttonCheckIp.addMouseListener(flatButtonMouseAdapter);
         
-        JLabel labelProxy = new JLabel("<html><b>Proxy</b> / Define proxy settings (e.g. TOR)</html>");
+        JLabel labelProxy = new JLabel("<html><b>Proxy</b> / Define proxy settings (e.g. Burp Suite, Tor)</html>");
         panelProxy.removeAll();
         panelProxy.add(labelProxy, BorderLayout.NORTH);
         panelProxy.add(this.panelProxyPreferences);
@@ -201,6 +208,10 @@ public class PanelPreferences extends JPanel {
 
     public PanelGeneral getPanelGeneral() {
         return this.panelGeneralPreferences;
+    }
+    
+    public PanelUserAgent getPanelUserAgent() {
+        return this.panelUserAgentPreferences;
     }
 
     public ActionListener getActionListenerSave() {

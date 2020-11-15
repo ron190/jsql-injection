@@ -39,8 +39,8 @@ import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.injection.method.MediatorMethod;
 import com.jsql.model.injection.method.AbstractMethodInjection;
+import com.jsql.model.injection.method.MediatorMethod;
 import com.jsql.model.injection.strategy.MediatorStrategy;
 import com.jsql.model.injection.vendor.MediatorVendor;
 import com.jsql.util.AuthenticationUtil;
@@ -59,6 +59,7 @@ import com.jsql.util.SoapUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.util.TamperingUtil;
 import com.jsql.util.ThreadUtil;
+import com.jsql.util.UserAgentUtil;
 
 import net.sourceforge.spnego.SpnegoHttpURLConnection;
 
@@ -122,6 +123,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.mediatorUtils.setProxyUtil(new ProxyUtil(this));
         this.mediatorUtils.setThreadUtil(new ThreadUtil());
         this.mediatorUtils.setTamperingUtil(new TamperingUtil());
+        this.mediatorUtils.setUserAgentUtil(new UserAgentUtil());
     }
 
     /**
@@ -268,6 +270,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
             
             this.mediatorUtils.getConnectionUtil().fixJcifsTimeout(connection);
+            this.mediatorUtils.getConnectionUtil().setCustomUserAgent(connection);
             
             this.initializeHeader(isUsingIndex, dataInjection, connection, msgHeader);
             this.initializeRequest(isUsingIndex, dataInjection, connection, msgHeader);

@@ -17,19 +17,19 @@ import java.util.Map;
 public class SessionCookieManager extends CookieHandler {
     
     private CookiePolicy policyCallback;
+    
+    private static final ThreadLocal<CookieStore> COOKIE_JARS = ThreadLocal.withInitial(() -> new CookieManager().getCookieStore());
+    
+    private static final SessionCookieManager INSTANCE = new SessionCookieManager();
 
     public SessionCookieManager() {
         this(null);
     }
 
-    private static final SessionCookieManager INSTANCE = new SessionCookieManager();
-
     public static SessionCookieManager getInstance() {
         
         return INSTANCE;
     }
-
-    private static final ThreadLocal<CookieStore> COOKIE_JARS = ThreadLocal.withInitial(() -> new CookieManager().getCookieStore());
 
     public void clear() {
         
@@ -39,25 +39,12 @@ public class SessionCookieManager extends CookieHandler {
     public SessionCookieManager(CookiePolicy cookiePolicy) {
         
         // use default cookie policy if not specify one
-        this.policyCallback = 
-                (cookiePolicy == null) 
+        this.policyCallback =
+                (cookiePolicy == null)
                 ? CookiePolicy.ACCEPT_ALL //note that I changed it to ACCEPT_ALL
                 : cookiePolicy;
 
         // if not specify CookieStore to use, use default one
-    }
-    
-    public void setCookiePolicy(CookiePolicy cookiePolicy) {
-        
-        if (cookiePolicy != null) {
-            
-            this.policyCallback = cookiePolicy;
-        }
-    }
-
-    public CookieStore getCookieStore() {
-        
-        return COOKIE_JARS.get();
     }
 
     @Override
@@ -243,5 +230,18 @@ public class SessionCookieManager extends CookieHandler {
                 return 0;
             }
         }
+    }
+    
+    public void setCookiePolicy(CookiePolicy cookiePolicy) {
+        
+        if (cookiePolicy != null) {
+            
+            this.policyCallback = cookiePolicy;
+        }
+    }
+
+    public CookieStore getCookieStore() {
+        
+        return COOKIE_JARS.get();
     }
 }

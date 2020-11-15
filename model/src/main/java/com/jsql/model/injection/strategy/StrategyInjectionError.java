@@ -44,6 +44,12 @@ public class StrategyInjectionError extends AbstractStrategy {
         this.isApplicable = false;
         
         Strategy strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
+        
+        if (strategyYaml.getError().getMethod().size() <= 0) {
+            LOGGER.trace("No Error strategy for current database engine");
+            return;
+        }
+        
         Configuration configurationYaml = strategyYaml.getConfiguration();
         
         LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Error...");
@@ -140,14 +146,8 @@ public class StrategyInjectionError extends AbstractStrategy {
    
         if (performanceSourcePage.matches(
             VendorYaml.replaceTags(
-                "(?s).*"
-                + configurationYaml.getFailsafe()
-                .replace("${indice}","0")
-                // TODO postgres
-                .replace("0%2b1", "1")
-                .replace("(133707331)::text", "133707331")
-//                    .replace("(cast(133707331 as text))", "133707331")
-                + ".*"
+                // TODO Set static value in DataAccess
+                "(?s).*133707331.*"
             )
         )) {
             methodIsApplicable = true;

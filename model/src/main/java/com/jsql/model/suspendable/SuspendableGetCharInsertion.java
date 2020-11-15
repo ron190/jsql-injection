@@ -51,9 +51,9 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         // or   supplied argument is not a valid MySQL result resource
         ExecutorService taskExecutor;
         
-        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
             
-            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
             taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetInsertionCharacter"));
             
         } else {
@@ -116,7 +116,14 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
 
     private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService, String characterInsertionByUser) {
         
-        List<String> roots = Arrays.asList(characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY), "-1", "0", "1", StringUtils.EMPTY);
+        List<String> roots =
+            Arrays.asList(
+                characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY),
+                "-1",
+                "0",
+                "1",
+                StringUtils.EMPTY
+            );
         
         List<String> prefixes =
             Arrays

@@ -1,6 +1,6 @@
 vendor: MemSQL
 
-resource: 
+resource:
  info: |
   concat(
       concat_ws(
@@ -11,8 +11,8 @@ resource:
       ),
       '${trail_sql}'
   )
-  
- schema: 
+
+ schema:
   database: |
    select concat(
        ifnull(
@@ -37,7 +37,7 @@ resource:
        group by r
        ${limit}
    ) x
-   
+
   table: |
    select concat(
        group_concat(
@@ -58,7 +58,7 @@ resource:
        order by r
        ${limit}
    ) x
-   
+
   column: |
    select concat(
        group_concat(
@@ -78,8 +78,8 @@ resource:
        order by n
        ${limit}
    ) x
-   
-  row: 
+
+  row:
    query: |
     select concat(
         group_concat(
@@ -99,12 +99,12 @@ resource:
         group by r
         ${limit}
     ) x
-   fields: 
+   fields:
     field: trim(ifnull(`${field.value}`, ''))
     concat: ",0x7f,"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
    concat(
        '${lead}',
@@ -118,17 +118,17 @@ strategy:
   failsafe: 1337${indice}7330%2b1
   calibrator: rpad('${calibrator_sql}',1024,'${calibrator_sql}')
   limitBoundary: 0
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - memsql
-    
- normal: 
+
+ normal:
   indices: union select ${indices}
   capacity: |
    (
        select concat(
-           '${lead}', 
-           ${indice}, 
+           '${lead}',
+           ${indice},
            ${calibrator}
        )
    )

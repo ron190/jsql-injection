@@ -273,9 +273,9 @@ public class ResourceAccess {
         
         ExecutorService taskExecutor;
         
-        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
             
-            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
             taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableCreateWebShell"));
             
         } else {
@@ -569,9 +569,9 @@ public class ResourceAccess {
         
         ExecutorService taskExecutor;
         
-        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
             
-            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
             taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableCreateSqlShell"));
             
         } else {
@@ -1068,7 +1068,7 @@ public class ResourceAccess {
     }
 
     public List<CallableFile> getCallablesReadFile() {
-        return callablesReadFile;
+        return this.callablesReadFile;
     }
 
     public void setCallablesReadFile(List<CallableFile> callablesReadFile) {

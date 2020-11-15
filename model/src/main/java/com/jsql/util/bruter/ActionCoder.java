@@ -157,6 +157,33 @@ public enum ActionCoder {
         }
     },
     
+    ENCODE_TO_BASE32("Encode to Base32") {
+        
+        @Override
+        public String run(String value) {
+            
+            return StringUtil.base32Encode(value);
+        }
+    },
+    
+    ENCODE_TO_BASE58("Encode to Base58") {
+        
+        @Override
+        public String run(String value) {
+            
+            return StringUtil.base58Encode(value);
+        }
+    },
+    
+    ENCODE_TO_BASE16("Encode to Base16") {
+        
+        @Override
+        public String run(String value) {
+            
+            return StringUtil.base16Encode(value);
+        }
+    },
+    
     ENCODE_TO_HTML("Encode to Html") {
         
         @Override
@@ -217,6 +244,33 @@ public enum ActionCoder {
         public String run(String value) {
             
             return StringUtil.base64Decode(value);
+        }
+    },
+    
+    DECODE_FROM_BASE32("Decode from Base32") {
+        
+        @Override
+        public String run(String value) {
+            
+            return StringUtil.base32Decode(value);
+        }
+    },
+    
+    DECODE_FROM_BASE58("Decode from Base58") {
+        
+        @Override
+        public String run(String value) {
+            
+            return StringUtil.base58Decode(value);
+        }
+    },
+    
+    DECODE_FROM_BASE16("Decode from Base16") {
+        
+        @Override
+        public String run(String value) {
+            
+            return StringUtil.base16Decode(value);
         }
     },
     

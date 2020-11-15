@@ -12,12 +12,16 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.jsql.view.swing.panel.PanelPreferences;
+import com.jsql.view.swing.text.listener.DocumentListenerTyping;
 import com.jsql.view.swing.util.MediatorHelper;
 
 @SuppressWarnings("serial")
@@ -32,7 +36,9 @@ public class PanelGeneral extends JPanel {
     private final JCheckBox checkboxIsProcessingCookies = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCookies());
     private final JCheckBox checkboxIsProcessingCsrf = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf());
     private final JCheckBox checkboxIsLimitingThreads = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
-    private final JSpinner spinnerLimitingThreads = new JSpinner();
+    private final JSpinner spinnerThreadCount = new JSpinner();
+    private final JCheckBox checkboxIsCsrfUserTag = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag());
+    private final JTextField textfieldCsrfUserTag = new JTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTag());
     
     public PanelGeneral(PanelPreferences panelPreferences) {
         
@@ -113,11 +119,11 @@ public class PanelGeneral extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        JPanel p = new JPanel(new BorderLayout());
-        p.add(labelIsLimitingThreads, BorderLayout.WEST);
-        p.add(this.spinnerLimitingThreads, BorderLayout.CENTER);
-        p.setMaximumSize(new Dimension(150, this.spinnerLimitingThreads.getPreferredSize().height));
-        this.spinnerLimitingThreads.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
+        JPanel panelThreadCount = new JPanel(new BorderLayout());
+        panelThreadCount.add(labelIsLimitingThreads, BorderLayout.WEST);
+        panelThreadCount.add(this.spinnerThreadCount, BorderLayout.CENTER);
+        panelThreadCount.setMaximumSize(new Dimension(150, this.spinnerThreadCount.getPreferredSize().height));
+        this.spinnerThreadCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
         
         int countLimitingThreads = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countLimitingThreads();
         SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(
@@ -128,7 +134,7 @@ public class PanelGeneral extends JPanel {
             100,
             1
         );
-        this.spinnerLimitingThreads.setModel(spinnerNumberModel);
+        this.spinnerThreadCount.setModel(spinnerNumberModel);
         
         ActionListener actionListenerProcessCsrf = actionEvent -> {
             
@@ -158,6 +164,31 @@ public class PanelGeneral extends JPanel {
         labelProcessCsrf.setToolTipText(tooltipProcessCsrf);
         labelProcessCsrf.addActionListener(actionListenerProcessCsrf);
         this.checkboxIsProcessingCsrf.addActionListener(actionListenerProcessCsrf);
+        
+        String tooltipIsCsrfUserTag = "CSRF tag name";
+        this.checkboxIsCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
+        this.checkboxIsCsrfUserTag.setFocusable(false);
+        JButton labelIsCsrfUserTag = new JButton("CSRF tag name");
+        labelIsCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
+        labelIsCsrfUserTag.addActionListener(actionEvent -> {
+            
+            this.checkboxIsCsrfUserTag.setSelected(!this.checkboxIsCsrfUserTag.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+        
+        JPanel panelCsrfUserTag = new JPanel(new BorderLayout());
+        panelCsrfUserTag.add(labelIsCsrfUserTag, BorderLayout.WEST);
+        panelCsrfUserTag.add(this.textfieldCsrfUserTag, BorderLayout.CENTER);
+        panelCsrfUserTag.setMaximumSize(new Dimension(150, this.textfieldCsrfUserTag.getPreferredSize().height));
+        this.textfieldCsrfUserTag.getDocument().addDocumentListener(new DocumentListenerTyping() {
+            
+            @Override
+            public void process() {
+                
+                panelPreferences.getActionListenerSave().actionPerformed(null);
+            }
+        });
+        
 
         JLabel emptyLabelSessionManagement = new JLabel();
         JLabel labelSessionManagement = new JLabel("<html><br /><b>Session and Cookie management</b></html>");
@@ -165,28 +196,34 @@ public class PanelGeneral extends JPanel {
         GroupLayout groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
         
-        Stream.of(
+        Stream
+        .of(
             this.checkboxIsCheckingUpdate,
             this.checkboxIsReportingBugs,
             this.checkboxIs4K,
             this.checkboxIsFollowingRedirection,
             this.checkboxIsNotTestingConnection,
             this.checkboxIsProcessingCsrf,
+            this.checkboxIsCsrfUserTag,
             this.checkboxIsProcessingCookies,
             this.checkboxIsLimitingThreads
-        ).forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
+        )
+        .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
-        Stream.of(
+        Stream
+        .of(
             labelIsCheckingUpdate,
             labelIsReportingBugs,
             labelIs4K,
             labelIsFollowingRedirection,
             labelTestConnection,
             labelProcessCsrf,
+            labelIsCsrfUserTag,
             labelProcessCookies,
             labelIsLimitingThreads
         )
         .forEach(label -> {
+            
             label.setHorizontalAlignment(SwingConstants.LEFT);
             label.setBorderPainted(false);
             label.setContentAreaFilled(false);
@@ -206,8 +243,9 @@ public class PanelGeneral extends JPanel {
                 .addComponent(this.checkboxIsNotTestingConnection)
                 .addComponent(this.checkboxIsLimitingThreads)
                 .addComponent(emptyLabelSessionManagement)
-                .addComponent(this.checkboxIsProcessingCsrf)
                 .addComponent(this.checkboxIsProcessingCookies)
+                .addComponent(this.checkboxIsProcessingCsrf)
+                .addComponent(this.checkboxIsCsrfUserTag)
             )
             .addGroup(
                 groupLayout
@@ -217,10 +255,11 @@ public class PanelGeneral extends JPanel {
                 .addComponent(labelIs4K)
                 .addComponent(labelIsFollowingRedirection)
                 .addComponent(labelTestConnection)
-                .addComponent(p)
+                .addComponent(panelThreadCount)
                 .addComponent(labelSessionManagement)
-                .addComponent(labelProcessCsrf)
                 .addComponent(labelProcessCookies)
+                .addComponent(labelProcessCsrf)
+                .addComponent(panelCsrfUserTag)
             )
         );
 
@@ -263,7 +302,7 @@ public class PanelGeneral extends JPanel {
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsLimitingThreads)
-                .addComponent(p)
+                .addComponent(panelThreadCount)
             )
 
             .addGroup(
@@ -275,15 +314,22 @@ public class PanelGeneral extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsProcessingCookies)
+                .addComponent(labelProcessCookies)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsProcessingCsrf)
                 .addComponent(labelProcessCsrf)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsProcessingCookies)
-                .addComponent(labelProcessCookies)
+                .addComponent(this.checkboxIsCsrfUserTag)
+                .addComponent(panelCsrfUserTag)
             )
+
         );
     }
 
@@ -323,6 +369,14 @@ public class PanelGeneral extends JPanel {
     }
     
     public JSpinner getSpinnerLimitingThreads() {
-        return this.spinnerLimitingThreads;
+        return this.spinnerThreadCount;
+    }
+    
+    public JCheckBox getCheckboxIsCsrfUserTag() {
+        return this.checkboxIsCsrfUserTag;
+    }
+    
+    public JTextField getTextfieldCsrfUserTag() {
+        return this.textfieldCsrfUserTag;
     }
 }

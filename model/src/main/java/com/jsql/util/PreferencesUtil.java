@@ -3,8 +3,6 @@ package com.jsql.util;
 import java.net.HttpURLConnection;
 import java.util.prefs.Preferences;
 
-import javax.swing.Icon;
-
 import com.jsql.model.InjectionModel;
 
 /**
@@ -61,8 +59,8 @@ public class PreferencesUtil {
     private boolean isTamperingSpaceToDashComment = false;
     private boolean isTamperingSpaceToSharpComment = false;
 
-    private String blindTag = "";
-    private boolean isBlindTag = false;
+    private String csrfUserTag = "";
+    private boolean isCsrfUserTag = false;
     private boolean isLimitingThreads = false;
     private int countLimitingThreads;
 
@@ -107,8 +105,8 @@ public class PreferencesUtil {
         this.setIsTamperingSpaceToSharpComment(prefs.getBoolean("isTamperingSpaceToSharpComment", false));
         
         this.setIs4K(prefs.getBoolean("is4K", false));
-        this.setIsBlindTag(prefs.getBoolean("isBlindTag", false));
-        this.setBlindTag(prefs.get("blindTag", ""));
+        this.setIsCsrfUserTag(prefs.getBoolean("isCsrfUserTag", false));
+        this.setCsrfUserTag(prefs.get("csrfUserTag", ""));
         this.setIsLimitingThreads(prefs.getBoolean("isLimitingThreads", false));
         this.setCountLimitingThreads(prefs.getInt("countLimitingThreads", 10));
         
@@ -134,9 +132,9 @@ public class PreferencesUtil {
      * @param isCheckingUpdate true if it checks to updates
      * @param isReportingBugs true if it reports issues
      * @param isFollowingRedirection true if redirection are followed to new URL destination
-     * @param string 
-     * @param b 
-     * @param object 
+     * @param string
+     * @param b
+     * @param object
      */
     public void set(
         boolean isCheckingUpdate,
@@ -168,10 +166,10 @@ public class PreferencesUtil {
         boolean isTamperingSpaceToDashComment,
         boolean isTamperingSpaceToMultlineComment,
         boolean isTamperingSpaceToSharpComment,
-        boolean isLimitingThreads, 
-        int countLimitingThreads, 
-        boolean isBlindTag, 
-        String blindTag
+        boolean isLimitingThreads,
+        int countLimitingThreads,
+        boolean isCsrfUserTag,
+        String csrfUserTag
     ) {
         
         this.setIsCheckingUpdate(isCheckingUpdate);
@@ -179,8 +177,8 @@ public class PreferencesUtil {
         this.setIs4K(is4K);
         this.setIsLimitingThreads(isLimitingThreads);
         this.setCountLimitingThreads(countLimitingThreads);
-        this.setIsBlindTag(isBlindTag);
-        this.setBlindTag(blindTag);
+        this.setIsCsrfUserTag(isCsrfUserTag);
+        this.setCsrfUserTag(csrfUserTag);
         
         this.setIsFollowingRedirection(isFollowingRedirection);
         this.setIsNotInjectingMetadata(isNotInjectingMetadata);
@@ -213,8 +211,8 @@ public class PreferencesUtil {
         preferences.putBoolean("is4K", this.is4K);
         preferences.putBoolean("isLimitingThreads", this.isLimitingThreads);
         preferences.putInt("countLimitingThreads", this.countLimitingThreads);
-        preferences.putBoolean("isBlindTag", this.isBlindTag);
-        preferences.put("blindTag", this.blindTag);
+        preferences.putBoolean("isCsrfUserTag", this.isCsrfUserTag);
+        preferences.put("csrfUserTag", this.csrfUserTag);
         
         preferences.putBoolean("isFollowingRedirection", this.isFollowingRedirection);
         preferences.putBoolean("isNotInjectingMetadata", this.isNotInjectingMetadata);
@@ -488,7 +486,7 @@ public class PreferencesUtil {
     }
 
     public boolean isLimitingThreads() {
-        return isLimitingThreads ;
+        return this.isLimitingThreads ;
     }
     
     public void setIsLimitingThreads(boolean isLimitingThreads) {
@@ -496,26 +494,26 @@ public class PreferencesUtil {
     }
     
     public int countLimitingThreads() {
-        return countLimitingThreads ;
+        return this.countLimitingThreads ;
     }
     
     public void setCountLimitingThreads(int countLimitingThreads) {
         this.countLimitingThreads = countLimitingThreads;
     }
     
-    public boolean isBlindTag() {
-        return isBlindTag;
+    public boolean isCsrfUserTag() {
+        return this.isCsrfUserTag;
     }
     
-    public void setIsBlindTag(boolean isBlindTag) {
-        this.isBlindTag = isBlindTag;
+    public void setIsCsrfUserTag(boolean isCsrfUserTag) {
+        this.isCsrfUserTag = isCsrfUserTag;
     }
     
-    public String blindTag() {
-        return blindTag;
+    public String csrfUserTag() {
+        return this.csrfUserTag;
     }
     
-    public void setBlindTag(String blindTag) {
-        this.blindTag = blindTag;
+    public void setCsrfUserTag(String csrfUserTag) {
+        this.csrfUserTag = csrfUserTag;
     }
 }

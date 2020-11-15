@@ -102,7 +102,10 @@ public class VendorYaml implements AbstractVendor {
             this.modelYaml.getResource().getSchema()
             .getTable()
             .replace(DATABASE_HEX, Hex.encodeHexString(database.toString().getBytes()))
-            .replace(DATABASE, database.toString());
+            .replace(DATABASE, database.toString())
+            // TODO Breaks Oracle <%2Fa>
+            // .replace("%", "%25") // Encode % in name
+            ;
     }
 
     @Override
@@ -114,7 +117,10 @@ public class VendorYaml implements AbstractVendor {
             .replace(DATABASE_HEX, Hex.encodeHexString(table.getParent().toString().getBytes()))
             .replace(TABLE_HEX, Hex.encodeHexString(table.toString().getBytes()))
             .replace(DATABASE, table.getParent().toString())
-            .replace(TABLE, table.toString());
+            .replace(TABLE, table.toString())
+            // TODO Breaks Oracle <%2Fa>
+            // .replace("%", "%25") // Encode % in name
+            ;
     }
 
     @Override

@@ -123,9 +123,9 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         // it will use inject() from the model
         ExecutorService taskExecutor;
         
-        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
             
-            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
             taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetTimeTagTrue"));
             
         } else {

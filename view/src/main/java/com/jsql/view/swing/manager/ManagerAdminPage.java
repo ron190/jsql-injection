@@ -16,7 +16,6 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
@@ -28,10 +27,7 @@ import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JMenu;
 import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -43,10 +39,7 @@ import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
-import com.jsql.view.swing.manager.util.MenuBarCoder;
 import com.jsql.view.swing.manager.util.StateButton;
-import com.jsql.view.swing.manager.util.UserAgent;
-import com.jsql.view.swing.manager.util.UserAgentType;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -71,8 +64,6 @@ public class ManagerAdminPage extends AbstractManagerList {
 
         this.initializeRunButton();
         
-        this.initializeMenuUserAgent();
-        
         this.lastLine.setLayout(new BorderLayout());
         this.lastLine.setPreferredSize(new Dimension(0, 26));
         
@@ -87,43 +78,6 @@ public class ManagerAdminPage extends AbstractManagerList {
         this.lastLine.add(panelRunButton, BorderLayout.LINE_END);
         
         this.add(this.lastLine, BorderLayout.SOUTH);
-    }
-
-    private void initializeMenuUserAgent() {
-        
-        // TODO user agent
-        JMenu menuUserAgent = MenuBarCoder.createMenu("<User-Agent default>");
-        MenuBarCoder comboMenubar = new MenuBarCoder(menuUserAgent);
-        comboMenubar.setOpaque(false);
-        comboMenubar.setBorder(null);
-        
-        ButtonGroup groupUserAgent = new ButtonGroup();
-        
-        JRadioButtonMenuItem radioButtonMenuItemDefaultUserAgent = new JRadioButtonMenuItem("<User-Agent default>", true);
-        radioButtonMenuItemDefaultUserAgent.addActionListener(actionEvent ->
-            menuUserAgent.setText("<User-Agent default>")
-        );
-        radioButtonMenuItemDefaultUserAgent.setToolTipText("Java/"+ System.getProperty("java.version"));
-        groupUserAgent.add(radioButtonMenuItemDefaultUserAgent);
-        menuUserAgent.add(radioButtonMenuItemDefaultUserAgent);
-        
-        for (Entry<UserAgentType, List<UserAgent>> entryUserAgent: UserAgent.getList().entrySet()) {
-            
-            JMenu menuAgentType = new JMenu(entryUserAgent.getKey().getLabel());
-            menuUserAgent.add(menuAgentType);
-            
-            for (UserAgent userAgent: entryUserAgent.getValue()) {
-                
-                JRadioButtonMenuItem radioButtonMenuItemUserAgent = new JRadioButtonMenuItem(userAgent.getLabel());
-                radioButtonMenuItemUserAgent.addActionListener(actionEvent ->
-                    menuUserAgent.setText(userAgent.getLabel())
-                );
-                
-                radioButtonMenuItemUserAgent.setToolTipText(userAgent.getNameUserAgent());
-                groupUserAgent.add(radioButtonMenuItemUserAgent);
-                menuAgentType.add(radioButtonMenuItemUserAgent);
-            }
-        }
     }
 
     private void initializeRunButton() {

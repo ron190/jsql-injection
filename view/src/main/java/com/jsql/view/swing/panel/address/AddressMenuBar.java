@@ -12,6 +12,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.MenuElement;
 
 import org.apache.log4j.Logger;
@@ -99,6 +100,7 @@ public class AddressMenuBar extends JMenuBar {
 
         ButtonGroup groupVendor = new ButtonGroup();
 
+        int indexVendor = 0;
         for (final Vendor vendor: MediatorHelper.model().getMediatorVendor().getVendors()) {
             
             JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorHelper.model().getMediatorVendor().getAuto());
@@ -110,6 +112,12 @@ public class AddressMenuBar extends JMenuBar {
             
             this.menuVendor.add(itemRadioVendor);
             groupVendor.add(itemRadioVendor);
+            
+            if (indexVendor == 0) {
+                this.menuVendor.add(new JSeparator());
+            }
+            
+            indexVendor++;
         }
 
         this.add(Box.createHorizontalGlue());

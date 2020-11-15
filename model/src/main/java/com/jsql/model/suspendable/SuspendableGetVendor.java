@@ -62,9 +62,9 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             
             ExecutorService taskExecutor;
             
-            if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
                 
-                int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+                int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
                 taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetVendor"));
                 
             } else {

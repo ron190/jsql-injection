@@ -13,6 +13,7 @@ import com.jsql.util.ProxyUtil;
 import com.jsql.util.SoapUtil;
 import com.jsql.util.TamperingUtil;
 import com.jsql.util.ThreadUtil;
+import com.jsql.util.UserAgentUtil;
 
 public class MediatorUtils {
     
@@ -29,6 +30,7 @@ public class MediatorUtils {
     private ProxyUtil proxyUtil;
     private ThreadUtil threadUtil;
     private TamperingUtil tamperingUtil;
+    private UserAgentUtil userAgentUtil;
 
     public PropertiesUtil getPropertiesUtil() {
         return this.propertiesUtil;
@@ -78,9 +80,14 @@ public class MediatorUtils {
         return this.threadUtil;
     }
 
+    public UserAgentUtil getUserAgentUtil() {
+        return this.userAgentUtil;
+    }
+    
     public TamperingUtil getTamperingUtil() {
         return this.tamperingUtil;
     }
+    
 
     public void setPropertiesUtil(PropertiesUtil propertiesUtil) {
         this.propertiesUtil = propertiesUtil;
@@ -132,5 +139,9 @@ public class MediatorUtils {
 
     public void setTamperingUtil(TamperingUtil tamperingUtil) {
         this.tamperingUtil = tamperingUtil;
+    }
+
+    public void setUserAgentUtil(UserAgentUtil userAgentUtil) {
+        this.userAgentUtil = userAgentUtil;
     }
 }

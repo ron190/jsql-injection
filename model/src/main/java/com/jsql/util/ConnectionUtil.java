@@ -17,9 +17,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -371,6 +375,24 @@ public class ConnectionUtil {
                 
                 LOGGER.warn("Fix jcifs timeout failed: "+ e.getMessage(), e);
             }
+        }
+    }
+    
+    public void setCustomUserAgent(HttpURLConnection connection) {
+        
+        if (injectionModel.getMediatorUtils().getUserAgentUtil().isCustomUserAgent()) {
+            
+            String agents = injectionModel.getMediatorUtils().getUserAgentUtil().getCustomUserAgent();
+            List<String> listAgents = 
+                Stream
+                .of(agents.split("[\\r\\n]{1,}"))
+                .filter(q -> !q.matches("^#.*"))
+                .collect(Collectors.toList());
+            
+            Random rand = new Random();
+            String randomElement = listAgents.get(rand.nextInt(listAgents.size()));
+            
+            connection.addRequestProperty("User-Agent", randomElement);
         }
     }
     

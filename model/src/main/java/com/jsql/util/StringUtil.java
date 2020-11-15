@@ -24,10 +24,14 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.mozilla.universalchardet.UniversalDetector;
+
+import com.jsql.util.bruter.Base16;
+import com.jsql.util.bruter.Base58;
 
 /**
  * Utility class adding String operations like join() which are not
@@ -159,6 +163,40 @@ public final class StringUtil {
         }
         
         return result;
+    }
+    
+    public static String base32Encode(String s) {
+        
+        Base32 base32 = new Base32();
+        return base32.encodeToString(StringUtils.getBytesUtf8(s));
+    }
+    
+    public static String base32Decode(String s) {
+        
+        Base32 base32 = new Base32();
+        return StringUtils.newStringUtf8(base32.decode(s));
+    }
+    
+    public static String base58Encode(String s) {
+        
+        return Base58.encode(StringUtils.getBytesUtf8(s));
+    }
+    
+    public static String base58Decode(String s) {
+        
+        return StringUtils.newStringUtf8(Base58.decode(s));
+    }
+    
+    public static String base16Encode(String s) {
+        
+        Base16 base16 = new Base16();
+        return base16.encodeToString(StringUtils.getBytesUtf8(s));
+    }
+    
+    public static String base16Decode(String s) {
+        
+        Base16 base16 = new Base16();
+        return StringUtils.newStringUtf8(base16.decode(s));
     }
 
     /**

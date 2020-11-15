@@ -146,6 +146,9 @@ public class ManagerCoder extends JPanel implements Manager {
         
         Map<String, JMenu> mapMenus = new LinkedHashMap<>();
         
+        mapMenus.put("Base16", new JMenu("Base16"));
+        mapMenus.put("Base32", new JMenu("Base32"));
+        mapMenus.put("Base58", new JMenu("Base58"));
         mapMenus.put("Base64", new JMenu("Base64"));
         mapMenus.put("Hex", new JMenu("Hex"));
         mapMenus.put("Url", new JMenu("Url"));

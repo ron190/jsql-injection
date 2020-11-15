@@ -54,8 +54,8 @@ public class ActionListenerSave implements ActionListener {
             
             this.panelPreferences.getPanelGeneral().getCheckboxIsLimitingThreads().isSelected(),
             (Integer) this.panelPreferences.getPanelGeneral().getSpinnerLimitingThreads().getValue(),
-            this.panelPreferences.getPanelInjection().getCheckboxIsBlindTag().isSelected(),
-            this.panelPreferences.getPanelInjection().getTextfieldBlindTag().getText()
+            this.panelPreferences.getPanelGeneral().getCheckboxIsCsrfUserTag().isSelected(),
+            this.panelPreferences.getPanelGeneral().getTextfieldCsrfUserTag().getText()
         );
         
         MediatorHelper.model().getMediatorUtils().getProxyUtil().setPreferences(

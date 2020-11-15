@@ -20,8 +20,19 @@
             <url>http://maven.cubrid.org/</url>
         </repository>
         <repository>
+            <id>exasol-repository</id>
+            <url>https://maven.exasol.com/artifactory/exasol-releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
             <id>oracle-repository</id>
             <url>http://maven.geomajas.org/</url>
+        </repository>
+        <repository>
+            <id>monetdb-repository</id>
+            <url>https://clojars.org/repo/</url>
         </repository>
     </repositories> 
     
@@ -285,12 +296,66 @@
             <artifactId>ojdbc8</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- <dependency> -->
-        <!-- <groupId>com.oracle</groupId> -->
-        <!-- <artifactId>ojdbc6</artifactId> -->
-        <!-- <version>11.2.0.1.0</version> -->
-        <!-- <scope>test</scope> -->
-        <!-- </dependency> -->
+            
+<!--         <dependency> -->
+<!--             <groupId>altibase</groupId> -->
+<!--             <artifactId>altibase-connector-java</artifactId> -->
+<!--             <scope>system</scope> -->
+<!--             <version>7.1</version> -->
+<!--             <systemPath>${project.basedir}/src/test/resources/jdbc/Altibase.jar</systemPath> -->
+<!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>ctreeACE</groupId> -->
+<!--             <artifactId>ctreeace-connector-java</artifactId> -->
+<!--             <scope>system</scope> -->
+<!--             <version>0.0</version> -->
+<!--             <systemPath>${project.basedir}/src/test/resources/jdbc/ctreeJDBC.jar</systemPath> -->
+<!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>frontbase</groupId> -->
+<!--             <artifactId>frontbase-connector-java</artifactId> -->
+<!--             <scope>system</scope> -->
+<!--             <version>2.5.9</version> -->
+<!--             <systemPath>${project.basedir}/src/test/resources/jdbc/frontbasejdbc.jar</systemPath> -->
+<!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>intersystems-iris</groupId> -->
+<!--             <artifactId>intersystems-iris-connector-java</artifactId> -->
+<!--             <scope>system</scope> -->
+<!--             <version>3.1.0</version> -->
+<!--             <systemPath>${project.basedir}/src/test/resources/jdbc/intersystems-jdbc-3.1.0.jar</systemPath> -->
+<!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>mimersql</groupId> -->
+<!--             <artifactId>mimersql</artifactId> -->
+<!--             <scope>system</scope> -->
+<!--             <version>3.40</version> -->
+<!--             <systemPath>${project.basedir}/src/test/resources/jdbc/mimjdbc3.jar</systemPath> -->
+<!--         </dependency> -->
+        <dependency>
+            <groupId>com.exasol</groupId>
+            <artifactId>exasol-jdbc</artifactId>
+            <version>7.0.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>monetdb</groupId>
+            <artifactId>monetdb-jdbc</artifactId>
+            <version>2.29</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.facebook.presto</groupId>
+            <artifactId>presto-jdbc</artifactId>
+            <version>0.243.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.firebirdsql.jdbc</groupId>
+            <artifactId>jaybird</artifactId>
+            <version>4.0.1.java7</version>
+            <scope>test</scope>
+        </dependency>
 
 
         <!-- jSQL purpose -->

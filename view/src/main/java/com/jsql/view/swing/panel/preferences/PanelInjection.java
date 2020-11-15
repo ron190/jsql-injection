@@ -1,7 +1,5 @@
 package com.jsql.view.swing.panel.preferences;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.util.stream.Stream;
 
@@ -11,10 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,8 +29,6 @@ public class PanelInjection extends JPanel {
     private final JCheckBox checkboxIsCheckingAllJSONParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam());
     private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
     private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSOAPParam());
-    private final JCheckBox checkboxIsBlindTag = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isBlindTag());
-    private final JTextField textfieldBlindTag = new JTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().blindTag());
     
     public PanelInjection(PanelPreferences panelPreferences) {
         
@@ -71,12 +64,8 @@ public class PanelInjection extends JPanel {
         JButton labelIsCheckingAllJSONParam = new JButton("Inject JSON parameters");
         JButton labelIsCheckingAllSOAPParam = new JButton("Inject SOAP parameters in Request body");
         
-        JButton labelIsBlindTag = new JButton("Force blind tag to");
-        
         JLabel emptyLabelGeneralInjection = new JLabel();
         JLabel labelGeneralInjection = new JLabel("<html><b>Connection definition</b></html>");
-        JLabel emptyLabelBooleanInjection = new JLabel();
-        JLabel labelBooleanInjection = new JLabel("<html><br /><b>Blind config</b></html>");
         JLabel emptyLabelParamsInjection = new JLabel();
         JLabel labelParamsInjection = new JLabel("<html><br /><b>Parameters injection</b></html>");
         JLabel emptyLabelValueInjection = new JLabel();
@@ -143,40 +132,11 @@ public class PanelInjection extends JPanel {
             this.checkboxIsCheckingAllSOAPParam.setSelected(!this.checkboxIsCheckingAllSOAPParam.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
-        labelIsBlindTag.addActionListener(actionEvent -> {
-            
-            this.checkboxIsBlindTag.setSelected(!this.checkboxIsBlindTag.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-        
-        JPanel p = new JPanel(new BorderLayout());
-        p.add(labelIsBlindTag, BorderLayout.WEST);
-        p.add(this.textfieldBlindTag, BorderLayout.CENTER);
-        p.setMaximumSize(new Dimension(400, this.textfieldBlindTag.getPreferredSize().height));
-        
-        this.textfieldBlindTag.getDocument().addDocumentListener(new DocumentListener() {
-            
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                this.warn();
-            }
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                this.warn();
-            }
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                this.warn();
-            }
-
-            public void warn() {
-                panelPreferences.getActionListenerSave().actionPerformed(null);
-            }
-        });
         
         this.checkboxIsCheckingAllParam.addActionListener(actionListenerCheckingAllParam);
         
-        Stream.of(
+        Stream
+        .of(
             this.checkboxIsNotInjectingMetadata,
             this.checkboxIsParsingForm,
             this.checkboxIsCheckingAllURLParam,
@@ -184,12 +144,12 @@ public class PanelInjection extends JPanel {
             this.checkboxIsCheckingAllHeaderParam,
             this.checkboxIsCheckingAllJSONParam,
             this.checkboxIsCheckingAllCookieParam,
-            this.checkboxIsCheckingAllSOAPParam,
-            this.checkboxIsBlindTag
+            this.checkboxIsCheckingAllSOAPParam
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
-        Stream.of(
+        Stream
+        .of(
             labelParseForm,
             labelIsNotInjectingMetadata,
             labelIsCheckingAllParam,
@@ -198,8 +158,7 @@ public class PanelInjection extends JPanel {
             labelIsCheckingAllHeaderParam,
             labelIsCheckingAllJSONParam,
             labelIsCheckingAllCookieParam,
-            labelIsCheckingAllSOAPParam,
-            labelIsBlindTag
+            labelIsCheckingAllSOAPParam
         )
         .forEach(label -> {
             
@@ -222,9 +181,6 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsParsingForm)
                 .addComponent(this.checkboxIsNotInjectingMetadata)
                 
-                .addComponent(emptyLabelBooleanInjection)
-                .addComponent(this.checkboxIsBlindTag)
-                
                 .addComponent(emptyLabelParamsInjection)
                 .addComponent(this.checkboxIsCheckingAllParam)
                 .addComponent(this.checkboxIsCheckingAllURLParam)
@@ -242,9 +198,6 @@ public class PanelInjection extends JPanel {
                 .addComponent(labelGeneralInjection)
                 .addComponent(labelParseForm)
                 .addComponent(labelIsNotInjectingMetadata)
-                
-                .addComponent(labelBooleanInjection)
-                .addComponent(p)
                 
                 .addComponent(labelParamsInjection)
                 .addComponent(labelIsCheckingAllParam)
@@ -280,19 +233,6 @@ public class PanelInjection extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsNotInjectingMetadata)
                 .addComponent(labelIsNotInjectingMetadata)
-            )
-            
-            .addGroup(
-                groupLayout
-                .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(emptyLabelBooleanInjection)
-                .addComponent(labelBooleanInjection)
-            )
-            .addGroup(
-                groupLayout
-                .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsBlindTag)
-                .addComponent(p)
             )
             
             .addGroup(
@@ -390,13 +330,5 @@ public class PanelInjection extends JPanel {
     
     public JCheckBox getCheckboxIsParsingForm() {
         return this.checkboxIsParsingForm;
-    }
-    
-    public JCheckBox getCheckboxIsBlindTag() {
-        return this.checkboxIsBlindTag;
-    }
-    
-    public JTextField getTextfieldBlindTag() {
-        return this.textfieldBlindTag;
     }
 }

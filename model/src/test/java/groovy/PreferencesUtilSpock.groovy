@@ -45,8 +45,6 @@ class PreferencesUtilSpock extends Specification {
                 
                 isLimitingThreads == false
                 countLimitingThreads == 0
-                isBlindTag == false
-                blindTag == ""
             }
     }
     
@@ -85,8 +83,9 @@ class PreferencesUtilSpock extends Specification {
                 
                 isLimitingThreads,
                 countLimitingThreads,
-                isBlindTag,
-                blindTag
+                
+                isCsrfUserTag,
+                csrfUserTag
             )
         
         then:
@@ -123,8 +122,9 @@ class PreferencesUtilSpock extends Specification {
                 
                 isLimitingThreads == true
                 countLimitingThreads == 0
-                isBlindTag == true
-                blindTag == ""
+                
+                isCsrfUserTag == true
+                csrfUserTag == ""
             }
         
         when:
@@ -165,8 +165,9 @@ class PreferencesUtilSpock extends Specification {
                 
                 isLimitingThreads == true
                 countLimitingThreads == 0
-                isBlindTag == true
-                blindTag == ""
+                
+                isCsrfUserTag == true
+                csrfUserTag == ""
             }
         
         where:
@@ -204,8 +205,9 @@ class PreferencesUtilSpock extends Specification {
                 
             isLimitingThreads = true
             countLimitingThreads = 0
-            isBlindTag = true
-            blindTag = ""
+            
+            isCsrfUserTag = true
+            csrfUserTag = ""
     }
     
     // Restore default preferences to jvm

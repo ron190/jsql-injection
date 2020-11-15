@@ -98,9 +98,9 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         // Concurrent URL requests
         ExecutorService taskExecutor;
         
-        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
             
-            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
             taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableAbstractBoolean"));
             
         } else {
@@ -196,8 +196,8 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
             Request interaction = new Request();
             interaction.setMessage(Interaction.MESSAGE_BINARY);
             interaction.setParameters(
-                asciiCodeBinary 
-                + "=" 
+                asciiCodeBinary
+                + "="
                 + charText
                 .replace("\\n", "\\\\\\n")
                 .replace("\\r", "\\\\\\r")

@@ -53,6 +53,21 @@ public class CustomMetalTabbedPaneUI extends BorderlessTabButtonUI {
     }
 
     @Override
+    protected void paintTabBorder(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
+        // Do nothing
+    }
+
+    @Override
+    protected void paintFocusIndicator(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
+        // Do nothing
+    }
+
+    @Override
+    protected void paintContentBorderTopEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
+        // Do nothing
+    }
+
+    @Override
     protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
         int tabCount = this.tabPane.getTabCount();
 
@@ -84,39 +99,17 @@ public class CustomMetalTabbedPaneUI extends BorderlessTabButtonUI {
     }
 
     @Override
-    protected void paintTabBorder(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
-        // Do nothing
-    }
-
-    @Override
-    protected void paintFocusIndicator(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
-        // Do nothing
-    }
-
-    @Override
-    protected void paintContentBorderTopEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
-        
-        super.paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
-        
-        Rectangle selRect = this.getTabBounds(selectedIndex, this.calcRect);
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setColor(this.selectedTabColor);
-        g2.drawLine(selRect.x - ADJ2 + 1, y, selRect.x + selRect.width + ADJ2 - 1, y);
-        
-        g2.dispose();
-    }
-
-    @Override
     protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
         
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        Rectangle clipRect = g2.getClipBounds();
-        clipRect.grow(ADJ2 + 1, 0);
-        g2.setClip(clipRect);
+//        Rectangle clipRect = g2.getClipBounds();
+//        clipRect.grow(ADJ2 + 1, 0);
+//        g2.setClip(clipRect);
 
-        int textShiftOffset = isSelected ? -1 : 1;
+//        int textShiftOffset = isSelected ? -1 : 1;
+        int textShiftOffset = 0;
         GeneralPath trapezoid = new GeneralPath();
         trapezoid.moveTo(x - ADJ2, y + h);
         trapezoid.lineTo(x + ADJ2, y + textShiftOffset);

