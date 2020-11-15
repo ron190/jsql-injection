@@ -83,7 +83,7 @@ public class MediatorVendor {
         this.mckoi = new Vendor(new VendorYaml("mckoi.yml", injectionModel));
         this.memSQL = new Vendor(new VendorYaml("memsql.yml", injectionModel));
         this.mimerSQL = new Vendor(new VendorYaml("mimersql.yml", injectionModel));
-        this.monetDB = new Vendor(new VendorYaml("monetDB.yml", injectionModel));
+        this.monetDB = new Vendor(new VendorYaml("monetdb.yml", injectionModel));
         this.mySQL = new Vendor(new VendorYaml("mysql.yml", injectionModel));
         this.neo4j = new Vendor(new VendorYaml("neo4j.yml", injectionModel));
         this.nuoDB = new Vendor(new VendorYaml("nuodb.yml", injectionModel));

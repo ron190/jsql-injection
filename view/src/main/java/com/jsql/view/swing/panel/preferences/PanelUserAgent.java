@@ -15,16 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorUtils;
 import com.jsql.util.tampering.TamperingType;
-import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.sql.lexer.HighlightedDocument;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
@@ -64,15 +59,15 @@ public class PanelUserAgent extends JPanel {
             LOGGER.error(e.getMessage(), e);
         }
         
-        textfieldCustomUserAgent.setText(jsonScan.toString());
+        this.textfieldCustomUserAgent.setText(jsonScan.toString());
         MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(jsonScan.toString());
-        textfieldCustomUserAgent.getDocument().addDocumentListener(new DocumentListenerTyping() {
+        this.textfieldCustomUserAgent.getDocument().addDocumentListener(new DocumentListenerTyping() {
 
             @Override
             public void process() {
                 
                 MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(
-                    textfieldCustomUserAgent.getText()
+                    PanelUserAgent.this.textfieldCustomUserAgent.getText()
                 );
             }
         });
@@ -91,7 +86,7 @@ public class PanelUserAgent extends JPanel {
         
         LightScrollPane textAreaIsTamperingEval = new LightScrollPane(this.textfieldCustomUserAgent);
         textAreaIsTamperingEval.setBorder(UiUtil.BORDER_FOCUS_LOST);
-        textfieldCustomUserAgent.setMinimumSize(new Dimension(40000, 100));
+        this.textfieldCustomUserAgent.setMinimumSize(new Dimension(40000, 100));
         
         JLabel emptyLabelSessionManagement = new JLabel();
         

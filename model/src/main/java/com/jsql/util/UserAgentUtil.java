@@ -35,7 +35,7 @@ public class UserAgentUtil {
     }
 
     public boolean isCustomUserAgent() {
-        return isCustomUserAgent;
+        return this.isCustomUserAgent;
     }
     
     public void setIsCustomUserAgent(boolean isCustomUserAgent) {

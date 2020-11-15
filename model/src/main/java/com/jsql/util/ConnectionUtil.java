@@ -380,10 +380,10 @@ public class ConnectionUtil {
     
     public void setCustomUserAgent(HttpURLConnection connection) {
         
-        if (injectionModel.getMediatorUtils().getUserAgentUtil().isCustomUserAgent()) {
+        if (this.injectionModel.getMediatorUtils().getUserAgentUtil().isCustomUserAgent()) {
             
-            String agents = injectionModel.getMediatorUtils().getUserAgentUtil().getCustomUserAgent();
-            List<String> listAgents = 
+            String agents = this.injectionModel.getMediatorUtils().getUserAgentUtil().getCustomUserAgent();
+            List<String> listAgents =
                 Stream
                 .of(agents.split("[\\r\\n]{1,}"))
                 .filter(q -> !q.matches("^#.*"))
