@@ -1,11 +1,13 @@
 vendor: H2
+# jdbc:h2:tcp://127.0.0.1/mem:public;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;
+# sa
 
 resource:
  info: |
   concat(
       concat_ws(
           '${enclose_value_sql}',
-          H2VERSION(),
+          h2version(),
           database(),
           user()
       ),
@@ -126,6 +128,8 @@ strategy:
   fingerprint:
    errorMessage:
     - h2 database
+   orderByErrorMessage:
+    - Order by expression "1337" must be in the result list in this case
 
  normal:
   indices: union select ${indices}

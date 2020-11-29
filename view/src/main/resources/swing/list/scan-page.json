@@ -1,8 +1,8 @@
 [
-    {"url": "http://testphp.vulnweb.com/artists.php?artist=1"},
-    {"url": "http://testphp.vulnweb.com/listproducts.php?cat=1"},
+    {"url": "http://testphp.vulnweb.com/artists.php?artist="},
+    {"url": "http://testphp.vulnweb.com/listproducts.php?cat="},
     {
-        "url": "http://testasp.vulnweb.com/showforum.asp?id=1",
+        "url": "http://testasp.vulnweb.com/showforum.asp?id=",
         "vendor": "SQLSERVER"
     },
     {
@@ -15,18 +15,28 @@
     },
     {
         "url": "http://2018shell2.picoctf.com:28120/answer2.php",
-        "request": "debug=0&answer=0'",
+        "request": "debug=0&answer=",
         "requestType": "POST",
         "method": "REQUEST"
     },
     {
         "url": "http://2018shell.picoctf.com:15987/answer2.php",
-        "request": "debug=0&answer=0'",
+        "request": "debug=0&answer=",
         "requestType": "POST",
         "method": "REQUEST"
     },
-    {"url": "http://www.webscantest.com/datastore/search_get_by_id.php?id=3"},
-    {"url": "http://www.webscantest.com/datastore/search_get_by_name.php?name=Rake'"},
+    {"url": "http://www.webscantest.com/datastore/search_get_by_id.php?id="},
+    {"url": "http://www.webscantest.com/datastore/search_get_by_name.php?name="},
+    {
+        "url": "https://hack-me-if-you-can.herokuapp.com/?site=login.php",
+        "request": "username=&password=&loggedin=on",
+        "requestType": "POST",
+        "method": "REQUEST"
+    },
+    {
+        "url": "https://juice-shop.herokuapp.com/rest/products/search?q=",
+        "vendor": "SQLITE"
+    },
     {
         "url": "http://localhost/DVWA-2.0.1/vulnerabilities/sqli/?id=&Submit=Submit",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE;security=low;",

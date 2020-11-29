@@ -1,8 +1,9 @@
 vendor: Ingres
+# jdbc:ingres://localhost:II7/demodb
 
 resource:
  info: |
-  SELECT
+  select
       dbmsinfo('_version')
       || '${enclose_value_sql}'
       || dbmsinfo('database')
@@ -96,7 +97,7 @@ strategy:
  configuration:
   slidingWindow: |
    '${lead}'
-   ||substr(
+   || substr(
        r,
        ${window.char},
        65536

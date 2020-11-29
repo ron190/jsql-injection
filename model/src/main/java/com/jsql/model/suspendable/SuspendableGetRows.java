@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
@@ -106,6 +107,11 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             // Fix #40947: OutOfMemoryError on append()
             try {
                 String currentChunk = regexLeadFound.group(1);
+                
+                if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()) {
+                    
+                    currentChunk = StringEscapeUtils.unescapeJava(currentChunk); // Transform \u0000 entities to text
+                }
                 
                 countInfiniteLoop = this.checkInfinite(countInfiniteLoop, previousChunk, currentChunk, slidingWindowCurrentRow, slidingWindowAllRows);
                 

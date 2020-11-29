@@ -224,6 +224,36 @@ public class SqlEngine extends JPanel implements Cleanable {
             this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getStrategy().getConfiguration(), "setEndingComment");
         }
     };
+    private final JTextPaneLexer textareaLimitBoundary = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getStrategy().getConfiguration(), "setLimitBoundary");
+        }
+    };
+    private final JTextPaneLexer textareaOrderByErrorMessage = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getStrategy().getConfiguration().getFingerprint(), "setOrderByErrorMessage");
+        }
+    };
+    private final JTextPaneLexer textareaIncorrectStringErrorMessage = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getStrategy().getConfiguration().getFingerprint(), "setErrorMessageAsString");
+        }
+    };
+    private final JTextPaneLexer textareaTruthy = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getStrategy().getBoolean().getTest(), "setTruthy");
+        }
+    };
+    private final JTextPaneLexer textareaFalsy = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getStrategy().getBoolean().getTest(), "setFalsy");
+        }
+    };
     
     // Normal
     private final JTextPaneLexer textareaIndices = new JTextPaneLexer() {
@@ -315,6 +345,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         JPanel panelStructure = this.getPanelStructure();
         JPanel panelStrategy = this.getPanelStrategy();
         JPanel panelConfiguration = this.getPanelConfiguration();
+        JPanel panelFingerprinting = this.getPanelFingerprinting();
 
         JTabbedPane tabsBottom = new TabbedPaneWheeled(SwingConstants.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsBottom.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
@@ -323,7 +354,8 @@ public class SqlEngine extends JPanel implements Cleanable {
         .of(
             new SimpleEntry<>("SQLENGINE_STRUCTURE", panelStructure),
             new SimpleEntry<>("SQLENGINE_STRATEGY", panelStrategy),
-            new SimpleEntry<>("SQLENGINE_CONFIGURATION", panelConfiguration)
+            new SimpleEntry<>("SQLENGINE_CONFIGURATION", panelConfiguration),
+            new SimpleEntry<>("SQLENGINE_FINGERPRINTING", panelFingerprinting)
         )
         .forEach(entry -> {
             
@@ -524,16 +556,15 @@ public class SqlEngine extends JPanel implements Cleanable {
         JTabbedPane tabsConfiguration = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsConfiguration.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
 
-        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new LightScrollPane(1, 0, 1, 0, this.textareaOrderBy));
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, this.textareaSlidingWindow));
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, this.textareaLimit));
+        tabsConfiguration.addTab("Limit start index", new LightScrollPane(1, 0, 1, 0, this.textareaLimitBoundary));
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CAPACITY"), new LightScrollPane(1, 0, 1, 0, this.textareaCapacity));
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CALIBRATOR"), new LightScrollPane(1, 0, 1, 0, this.textareaCalibrator));
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_TRAPCANCELLER"), new LightScrollPane(1, 0, 1, 0, this.textareaFailsafe));
         tabsConfiguration.addTab("End comment", new LightScrollPane(1, 0, 1, 0, this.textareaEndingComment));
         
         Stream.of(
-            "SQLENGINE_ORDER_BY",
             "SQLENGINE_CHARACTERS_SLIDINGWINDOW",
             "SQLENGINE_ROWS_SLIDINGWINDOW",
             "SQLENGINE_CAPACITY",
@@ -556,6 +587,39 @@ public class SqlEngine extends JPanel implements Cleanable {
         panelConfiguration.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
         
         return panelConfiguration;
+    }
+    
+    private JPanel getPanelFingerprinting() {
+        
+        JTabbedPane tabs = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabs.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
+        
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new LightScrollPane(1, 0, 1, 0, this.textareaOrderBy));
+        tabs.addTab("Order by error", new LightScrollPane(1, 0, 1, 0, this.textareaOrderByErrorMessage));
+        tabs.addTab("String error", new LightScrollPane(1, 0, 1, 0, this.textareaIncorrectStringErrorMessage));
+        tabs.addTab("Truthy", new LightScrollPane(1, 0, 1, 0, this.textareaTruthy));
+        tabs.addTab("Falsy", new LightScrollPane(1, 0, 1, 0, this.textareaFalsy));
+        
+        Stream
+        .of(
+            "SQLENGINE_ORDER_BY"
+        )
+        .forEach(keyI18n -> {
+            
+            JLabel label = new JLabel(I18nUtil.valueByKey(keyI18n));
+            tabs.setTabComponentAt(
+                tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)),
+                label
+            );
+            
+            I18nViewUtil.addComponentForKey(keyI18n, label);
+        });
+        
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(tabs, BorderLayout.CENTER);
+        panel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
+        
+        return panel;
     }
 
     private void initializeMenuVendor() {
@@ -649,10 +713,16 @@ public class SqlEngine extends JPanel implements Cleanable {
             
             new SimpleEntry<>(this.textareaInfo, this.modelYaml.getResource().getInfo()),
             
+            new SimpleEntry<>(this.textareaTruthy, this.modelYaml.getStrategy().getBoolean().getTest().getTruthyAsString()),
+            new SimpleEntry<>(this.textareaFalsy, this.modelYaml.getStrategy().getBoolean().getTest().getFalsyAsString()),
+            
             new SimpleEntry<>(this.textareaSlidingWindow, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow()),
             new SimpleEntry<>(this.textareaLimit, this.modelYaml.getStrategy().getConfiguration().getLimit()),
             new SimpleEntry<>(this.textareaFailsafe, this.modelYaml.getStrategy().getConfiguration().getFailsafe()),
             new SimpleEntry<>(this.textareaEndingComment, this.modelYaml.getStrategy().getConfiguration().getEndingComment()),
+            new SimpleEntry<>(this.textareaLimitBoundary, this.modelYaml.getStrategy().getConfiguration().getLimitBoundary()),
+            new SimpleEntry<>(this.textareaOrderByErrorMessage, this.modelYaml.getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()),
+            new SimpleEntry<>(this.textareaIncorrectStringErrorMessage, this.modelYaml.getStrategy().getConfiguration().getFingerprint().getErrorMessageAsString()),
             new SimpleEntry<>(this.textareaCalibrator, this.modelYaml.getStrategy().getConfiguration().getCalibrator()),
             
             new SimpleEntry<>(this.textareaIndices, this.modelYaml.getStrategy().getNormal().getIndices()),
@@ -707,11 +777,12 @@ public class SqlEngine extends JPanel implements Cleanable {
                 panelLimit.add(new JLabel(" Overflow limit: "));
                 panelLimit.add(new JTextField(Integer.toString(methodError.getCapacity())));
                 
+                // TODO Integrate Error limit
                 panelError.add(panelLimit, BorderLayout.SOUTH);
     
                 this.tabbedPaneError.addTab(methodError.getName(), panelError);
                 
-                this.tabbedPaneError.setTitleAt(this.tabbedPaneError.getTabCount() - 1, "<html><div style=\"text-align:left;width:150px;\">"+ methodError.getName() +"</div></html>");
+                this.tabbedPaneError.setTitleAt(this.tabbedPaneError.getTabCount() - 1, "<html><div style=\"text-align:left;width:100px;\">"+ methodError.getName() +"</div></html>");
                 
                 this.textPanesError.add(textPaneError);
             }
@@ -796,7 +867,12 @@ public class SqlEngine extends JPanel implements Cleanable {
                 this.textareaCapacity,
                 this.textareaOrderBy,
                 this.textareaEndingComment,
-                this.textareaIndices
+                this.textareaLimitBoundary,
+                this.textareaOrderByErrorMessage,
+                this.textareaIncorrectStringErrorMessage,
+                this.textareaIndices,
+                this.textareaTruthy,
+                this.textareaFalsy
             )
         )
         .collect(Collectors.toList());

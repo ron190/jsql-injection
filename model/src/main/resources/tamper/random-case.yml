@@ -1,5 +1,5 @@
-tooltip: Transform SQL keywords to random case
-description: Transform SQL keywords to random case
+tooltip: Random SQL characters case
+description: Random SQL characters case
 group: 
 javascript: |
  load('../model/src/main/resources/tamper/js/random-case.js');

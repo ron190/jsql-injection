@@ -1,16 +1,17 @@
 vendor: Informix
+# jdbc:informix-sqli://fe80::1125:78c0:ef17:8ab5:7360:user=informix;password=test;INFORMIXSERVER=ol_informix1210_2
 
 resource:
  info: |
-  SELECT trim(
-      DBINFO('version','full')
+  select trim(
+      dbinfo('version','full')
       || '${enclose_value_sql}'
-      || DBSERVERNAME
+      || bservername
       || '${enclose_value_sql}'
-      || USER
+      || user
       || '${trail_sql}'
   ) r
-  FROM TABLE(SET{1})
+  from table(set{1})
 
  schema:
   database: |
@@ -98,7 +99,7 @@ strategy:
   slidingWindow: |
    select
        '${lead}'
-       ||substr(
+       || substr(
            r,
            ${window.char},
            32767
@@ -111,7 +112,7 @@ strategy:
    select
        (1337${indice}7330%2b1)
        || '' r
-   FROM TABLE(SET{1})
+   from table(set{1})
   calibrator: |
    rpad(
        '${calibrator_sql}',

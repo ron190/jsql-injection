@@ -1,8 +1,13 @@
 vendor: Mckoi
+# java -jar mckoidb.jar -create "admin_user" "aupass00"
+# E:\Dev\mckoi1.0.6>java -cp mckoidb.jar com.mckoi.tools.JDBCQueryTool -url "jdbc:mckoi:local://./db.conf" -u "admin_user" -p "aupass00"
+# java -jar mckoidb.jar
+# jdbc:mckoi://127.0.0.1
+# admin_user aupass00
 
 resource:
  info: |
-  SELECT
+  select
       '-'
       || '${enclose_value_sql}'
       || '-'
@@ -106,6 +111,7 @@ strategy:
    )
   limit: having count(*) between ${limit.value} and ${limit.value}
   failsafe: select cast(x.rrr as char)rr from (select 1337${indice}7330%2b1 rrr)x
+  # No method repeat() found
   calibrator: '%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'
   limitBoundary: 1
   fingerprint:

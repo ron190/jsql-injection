@@ -12,7 +12,7 @@ public class Configuration implements Serializable {
     private String limit = StringUtils.EMPTY;
     private String failsafe = StringUtils.EMPTY;
     private String calibrator = StringUtils.EMPTY;
-    private Integer limitBoundary = 0;
+    private String limitBoundary = "0";
     private String endingComment = StringUtils.EMPTY;
     private Fingerprint fingerprint = new Fingerprint();
 
@@ -48,11 +48,11 @@ public class Configuration implements Serializable {
         this.calibrator = calibrator;
     }
 
-    public Integer getLimitBoundary() {
+    public String getLimitBoundary() {
         return this.limitBoundary;
     }
 
-    public void setLimitBoundary(Integer limitBoundary) {
+    public void setLimitBoundary(String limitBoundary) {
         this.limitBoundary = limitBoundary;
     }
 

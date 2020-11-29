@@ -23,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
@@ -96,24 +97,61 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
+    public String sqlDatabases() {
+        
+        String sqlQuery;
+        
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZippedStrategy()) {
+            
+            sqlQuery = this.modelYaml.getResource().getZipped().getDatabase();
+
+        } else {
+        
+            sqlQuery = this.modelYaml.getResource().getSchema().getDatabase();
+        }
+        
+        return sqlQuery;
+    }
+    
+    @Override
     public String sqlTables(Database database) {
         
+        String sqlQuery;
+        
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZippedStrategy()) {
+            
+            sqlQuery = this.modelYaml.getResource().getZipped().getTable();
+            
+        } else {
+            
+            sqlQuery = this.modelYaml.getResource().getSchema().getTable();
+        }
+        
         return
-            this.modelYaml.getResource().getSchema()
-            .getTable()
-            .replace(DATABASE_HEX, Hex.encodeHexString(database.toString().getBytes()))
-            .replace(DATABASE, database.toString())
-            // TODO Breaks Oracle <%2Fa>
-            // .replace("%", "%25") // Encode % in name
-            ;
+                sqlQuery
+                .replace(DATABASE_HEX, Hex.encodeHexString(database.toString().getBytes()))
+                .replace(DATABASE, database.toString())
+                // TODO Breaks Oracle <%2Fa>
+                // .replace("%", "%25") // Encode % in name
+                ;
     }
 
     @Override
     public String sqlColumns(Table table) {
         
+        String sqlQuery;
+        
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZippedStrategy()) {
+            
+            sqlQuery = this.modelYaml.getResource().getZipped().getColumn();
+
+        } else {
+        
+            sqlQuery = this.modelYaml.getResource().getSchema().getColumn();
+        }
+        
         return
-            this.modelYaml.getResource().getSchema()
-            .getColumn()
+            sqlQuery
             .replace(DATABASE_HEX, Hex.encodeHexString(table.getParent().toString().getBytes()))
             .replace(TABLE_HEX, Hex.encodeHexString(table.toString().getBytes()))
             .replace(DATABASE, table.getParent().toString())
@@ -126,7 +164,21 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlRows(String[] namesColumns, Database database, Table table) {
         
-        String sqlField = this.modelYaml.getResource().getSchema().getRow().getFields().getField();
+        String sqlQuery, sqlField, sqlConcatFields;
+        
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZippedStrategy()) {
+            
+            sqlField = this.modelYaml.getResource().getZipped().getRow().getFields().getField();
+            sqlConcatFields = this.modelYaml.getResource().getZipped().getRow().getFields().getConcat();
+            sqlQuery = this.modelYaml.getResource().getZipped().getRow().getQuery();
+
+        } else {
+        
+            sqlField = this.modelYaml.getResource().getSchema().getRow().getFields().getField();
+            sqlConcatFields = this.modelYaml.getResource().getSchema().getRow().getFields().getConcat();
+            sqlQuery = this.modelYaml.getResource().getSchema().getRow().getQuery();
+        }
+        
         Matcher matcherSqlField = Pattern.compile("(?s)(.*)"+ Pattern.quote(FIELD) +"(.*)").matcher(sqlField);
         String leadSqlField = StringUtils.EMPTY;
         String trailSqlField = StringUtils.EMPTY;
@@ -136,8 +188,6 @@ public class VendorYaml implements AbstractVendor {
             leadSqlField = matcherSqlField.group(1);
             trailSqlField = matcherSqlField.group(2);
         }
-        
-        String sqlConcatFields = this.modelYaml.getResource().getSchema().getRow().getFields().getConcat();
         
         String[] namesColumnUtf8 = new String[namesColumns.length];
         
@@ -169,8 +219,7 @@ public class VendorYaml implements AbstractVendor {
         }
         
         return
-            this.modelYaml.getResource().getSchema().getRow()
-            .getQuery()
+            sqlQuery
             .replace(
                 FIELDS,
                 leadSqlField
@@ -448,7 +497,15 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlLimit(Integer limitSQLResult) {
         
-        int limitBoundary = this.modelYaml.getStrategy().getConfiguration().getLimitBoundary();
+        int limitBoundary = 0;
+        
+        try {
+            limitBoundary = Integer.parseInt(this.modelYaml.getStrategy().getConfiguration().getLimitBoundary());
+            
+        } catch (NumberFormatException e) {
+            
+            LOGGER.warn("Incorrect Limit start index, force to 0");
+        }
         
         return
             this.modelYaml.getStrategy().getConfiguration()
@@ -506,11 +563,6 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlDatabases() {
-        return this.modelYaml.getResource().getSchema().getDatabase();
-    }
-
-    @Override
     public String sqlPrivilegeTest() {
         return this.modelYaml.getResource().getFile().getPrivilege();
     }
@@ -537,7 +589,9 @@ public class VendorYaml implements AbstractVendor {
     
     @Override
     public String endingComment() {
-        return this.modelYaml.getStrategy().getConfiguration().getEndingComment();
+        return 
+            this.modelYaml.getStrategy().getConfiguration().getEndingComment()
+            + RandomStringUtils.randomAlphanumeric(4);
     }
 
     @Override

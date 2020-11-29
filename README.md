@@ -1,7 +1,7 @@
 ## Description
 **jSQL Injection** is a lightweight application used to find database information from a distant server.
 
-It is **free**, **open source** and it works **cross-platform** on Windows, Linux and Mac OS X with Java from version 8 to 15.
+It's **free**, **open source** and it works **cross-platform** on Windows, Linux and Mac OS X with Java from version 8 to 15.
 
 ![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in various other distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
 
@@ -9,22 +9,23 @@ It is **free**, **open source** and it works **cross-platform** on Windows, Linu
 [![Java 8 to 15](https://img.shields.io/badge/java-8%20to%2015-orange?logo=java)](http://www.oracle.com/technetwork/java/javase/downloads/)
 [![JUnit 5](https://img.shields.io/badge/junit-5-50940f)](http://junit.org)
 [![Maven 3.1](https://img.shields.io/badge/maven-3.1-a2265a)](https://maven.apache.org/)
-[![GitHub](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
-[![Github Actions](https://github.com/ron190/jsql-injection/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)](https://github.com/ron190/jsql-injection/actions)
-[![Travis](https://travis-ci.org/ron190/jsql-injection.svg?branch=master&logo=travis)](https://travis-ci.org/ron190/jsql-injection)<br>
+[![License](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ron190/jsql-injection/pipeline-jsql-injection?label=%20&logo=github)](https://github.com/ron190/jsql-injection/actions)
+[![Travis (.org)](https://img.shields.io/travis/ron190/jsql-injection?logo=%20)](https://travis-ci.org/ron190/jsql-injection)<br>
 [![Sonar](https://img.shields.io/sonar/coverage/jsql-injection:jsql-injection?label=sonar&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
 [![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=codecov&logo=codecov)](https://codecov.io/gh/ron190/jsql-injection)
 [![Codacy](https://img.shields.io/codacy/coverage/e7ccb247f9b74d489a1fa9f9483c978f?label=codacy&logo=codacy)](https://app.codacy.com/manual/ron190/jsql-injection/dashboard)
 [![Codebeat badge](https://codebeat.co/badges/457d8c76-c470-4457-ad06-310a6d8b4b3e)](https://codebeat.co/projects/github-com-ron190-jsql-injection-master)<br>
-[![Sonar Violations (long format)](https://img.shields.io/sonar/violations/jsql-injection:jsql-injection?color=white&format=long&label=code%20smells&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/ron190/jsql-injection.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ron190/jsql-injection/alerts/)
+[![Sonar Violations (long format)](https://img.shields.io/sonar/violations/jsql-injection:jsql-injection?format=long&label=%20&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/ron190/jsql-injection.svg?logo=lgtm&logoWidth=18&label=%20)](https://lgtm.com/projects/g/ron190/jsql-injection/alerts/)
 
 ## Features
-- Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
-- Multiple injection strategies: Normal, Error, Blind and Time
+- Automatic injection of 34 kinds of databases: Access, Altibase, C-treeACE, CockroachDB, CUBRID, DB2, Derby, Exasol, Firebird, FrontBase, H2, Hana, HSQLDB, Informix, Ingres, InterSystems-IRIS, MaxDB, Mckoi, MemSQL, MimerSQL, MonetDB, MySQL, Neo4j, Netezza, NuoDB, Oracle, PostgreSQL, Presto, SQLite, SQL Server, Sybase, Teradata and Vertica
+- Multiple injection strategies: Normal, Error, Stacked, Blind and Time
+- Various injection modes: Basic, Compress, Dump In One Shot
 - SQL and tampering sandboxes
-- Injection of list of targets
-- Read and write files on host using injection
+- Injection of a list of targets
+- Read and write files using injection
 - Creation and visualization of Web shell and SQL shell
 - Bruteforce of password hash
 - Search for administration pages
@@ -33,12 +34,12 @@ It is **free**, **open source** and it works **cross-platform** on Windows, Linu
 - Proxy connection HTTP, SOCKS4 and SOCKS5
 
 ## Installation [[jsql-injection-v0.82.jar](https://github.com/ron190/jsql-injection/releases/download/v0.82/jsql-injection-v0.82.jar)]
-Install [Java 8](http://java.com) or either up to Java 15, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.82.jar` to launch the software.<br>
+Install [Java](http://java.com) 8 or up to 15, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.82.jar` to launch the software.<br>
 You can also type `java -jar jsql-injection-v0.82.jar` in your terminal to start the program.<br>
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 ## Continuous integration
-This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using a continuous integration platform like Travis CI and Github Actions. The non regression tests run against dockerized and in memory databases and GUI is tested on VNC screen in the cloud on the CI platform, then quality checks are stored on quality code platforms like Sonar and Codecov.
+This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using a continuous integration platform like Travis CI and Github Actions. The non regression tests run against dockerized and in memory databases and GUI is tested on VNC screen in the cloud on CI platforms, then quality checks are stored on code quality platforms.
 ```
 +---+ +-----------------------------------------------------------------------+
 |   | |                         JUNIT TEST FRAMEWORK                          |
@@ -54,7 +55,7 @@ This software is developed using open source libraries like [Spring](https://spr
 +---+ +-----------------------------------------------------------------------+
 ```
 
-## [[Test-bed scripts](https://github.com/ron190/jsql-injection/tree/master/web/test-bed)]
+## [[Test-bed scripts for PHP](https://github.com/ron190/jsql-injection/tree/master/web/test-bed)]
 Use the sample scripts to test injection on your local environment. First install a development environment like [EasyPHP](http://www.easyphp.org), then download the [test-bed PHP scripts](https://github.com/ron190/jsql-injection/tree/master/web/test-bed) and place them into `www/`.
 ```php
 <?php
@@ -67,6 +68,8 @@ $result = $link->query("SELECT col1, col2 FROM my_table where id=$_GET[id]");
 while ($row = $result->fetch_array($result, MYSQLI_NUM))
     echo join(',', $row);
 ```
+
+## [[Test-bed scripts for Spring](https://github.com/ron190/jsql-injection/tree/master/model/src/test/java/spring/rest)]
 
 ## Screenshots and [[video](https://youtu.be/ZZkQRE3OL8E)]
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
@@ -83,17 +86,19 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 
 ## [[Roadmap](https://github.com/ron190/jsql-injection/projects)]
 ```
-Full Path Disclosure, Injection strategies: dios routedQuery, WAF detection.
+Full Path Disclosure, Injection strategies: routed query, WAF detection.
 ```
 
 ## In progress
 ```
-Custom rows load.
+Custom rows load, Strategy Dump In One Shot.
 ```
 
 ## Since latest release
 ```
-Preferences for threads User-Agent and CSRF, Stacked query, New databases: Altibase C-treeACE Exasol FrontBase InterSystems-IRIS MimerSQL MonetDB Presto.
+New preferences for Threads, User-Agent, CSRF, Query size reduction. 
+Add Stacked query and new Error strategies, Database and char insertion identification.
+New databases: Altibase C-treeACE Exasol FrontBase InterSystems-IRIS MemSQL MimerSQL MonetDB Netezza Presto.
 ```
 
 ## Change log

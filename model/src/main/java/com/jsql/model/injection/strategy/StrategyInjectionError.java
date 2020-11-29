@@ -45,8 +45,8 @@ public class StrategyInjectionError extends AbstractStrategy {
         
         Strategy strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
         
-        if (strategyYaml.getError().getMethod().size() <= 0) {
-            LOGGER.trace("No Error strategy for current database engine");
+        if (strategyYaml.getError().getMethod().isEmpty()) {
+            LOGGER.trace("No Error strategy for "+ this.injectionModel.getMediatorVendor().getVendor());
             return;
         }
         
@@ -104,7 +104,7 @@ public class StrategyInjectionError extends AbstractStrategy {
             this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacityImproved);
         }
         
-        LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") + StringUtils.SPACE + errorMethod.getName() +" using "+ Integer.toString(errorCapacityImproved) +" characters");
+        LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") + " [Error " + errorMethod.getName() +"] using ["+ Integer.toString(errorCapacityImproved) +"] characters");
         
         return errorCapacityImproved;
     }
@@ -128,7 +128,7 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     private boolean isApplicable(Configuration configurationYaml, Method errorMethod) {
         
-        LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING") + StringUtils.SPACE + errorMethod.getName() +"...");
+//        LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING") + StringUtils.SPACE + errorMethod.getName() +"...");
         boolean methodIsApplicable = false;
       
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(

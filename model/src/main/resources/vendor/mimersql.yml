@@ -1,4 +1,7 @@
 vendor: MimerSQL
+# docker run -p 1360:1360 -d mimersql/mimersql_v11.0:latest
+# jdbc:mimer://127.0.0.1:1360/mimerdb
+# SYSADM SYSADM
 
 resource:
  info: |
@@ -108,24 +111,22 @@ strategy:
                    ${capacity}
                )
            )
-       FROM (VALUES(0))
+       from (values(0))
    )
-  limit: OFFSET ${limit.value} ROWS FETCH NEXT 100 ROWS ONLY
+  limit: offset ${limit.value} rows fetch next 100 rows only
   failsafe: 
    select
        cast((1337${indice}7330%2b1)as varchar(2000))
        || '' r
-   FROM (VALUES(0))  
+   from (values(0))  
   calibrator: repeat('${calibrator_sql}', 2000)
   limitBoundary: 0
-  # Encoded space mandatory to avoid space cleaning
-  # TODO keep raw space
-  # endingComment: --+-
-  # pentesterlab does not work with --+-, switch to #
   endingComment: --+-
   fingerprint:
    errorMessage:
     - mimersql
+   orderByErrorMessage:
+    - ORDER BY clause invalid because it includes an integer which does not identify a column of the result table
 
  normal:
   indices: union select ${result_range} from (${indice_unique}) b
@@ -135,6 +136,6 @@ strategy:
            '${lead}'
            || '${indice}'
            || ${calibrator}
-       FROM (VALUES(0))
+       from (values(0))
    )
   orderBy: order by 1337

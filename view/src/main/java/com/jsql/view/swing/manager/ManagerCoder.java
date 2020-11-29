@@ -152,6 +152,7 @@ public class ManagerCoder extends JPanel implements Manager {
         mapMenus.put("Base64", new JMenu("Base64"));
         mapMenus.put("Hex", new JMenu("Hex"));
         mapMenus.put("Url", new JMenu("Url"));
+        mapMenus.put("Unicode", new JMenu("Unicode"));
         
         JMenu menuHtml = new JMenu("Html");
         mapMenus.put("Html", menuHtml);

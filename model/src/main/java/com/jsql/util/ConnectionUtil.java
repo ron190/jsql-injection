@@ -82,6 +82,8 @@ public class ConnectionUtil {
 
     private SimpleEntry<String, String> tokenCsrf = null;
     
+    private Random randomForUserAgent = new Random();
+    
     private InjectionModel injectionModel;
     
     public ConnectionUtil(InjectionModel injectionModel) {
@@ -99,7 +101,14 @@ public class ConnectionUtil {
 
         // Set multithreaded Cookie handler
         // Allows CSRF token processing during ITs, can be used for batch scan
-        CookieHandler.setDefault(SessionCookieManager.getInstance());
+        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()) {
+            
+            CookieHandler.setDefault(SessionCookieManager.getInstance());
+            
+        } else {
+            
+            CookieHandler.setDefault(null);
+        }
 
         // Test the HTTP connection
         HttpURLConnection connection = null;
@@ -389,8 +398,7 @@ public class ConnectionUtil {
                 .filter(q -> !q.matches("^#.*"))
                 .collect(Collectors.toList());
             
-            Random rand = new Random();
-            String randomElement = listAgents.get(rand.nextInt(listAgents.size()));
+            String randomElement = listAgents.get(this.randomForUserAgent.nextInt(listAgents.size()));
             
             connection.addRequestProperty("User-Agent", randomElement);
         }

@@ -1,4 +1,7 @@
 vendor: Altibase
+# docker run -it altibase/altibase
+# jdbc:Altibase://localhost:20300/mydb
+# sys manager
 
 resource: 
  info: |
@@ -109,6 +112,8 @@ strategy:
   fingerprint:
    errorMessage:
     - Altibase
+   orderByErrorMessage:
+    - Invalid position value in ORDER BY clause
 
  normal:
   indices: union select ${indices}

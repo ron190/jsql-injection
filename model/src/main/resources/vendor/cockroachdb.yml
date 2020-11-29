@@ -1,5 +1,13 @@
 vendor: CockroachDB
-
+# docker pull cockroachdb/cockroach:beta-20170406
+# docker network create -d bridge roachnet
+# docker run -d ^
+#  --name=roach1 ^
+#  --hostname=roach1 ^
+#  --net=roachnet ^
+#  -p 26257:26257 -p 8080:8080  ^
+#  cockroachdb/cockroach start --insecure
+ 
 resource:
  info: |
   concat_ws(
@@ -23,10 +31,10 @@ resource:
        )
        || '${trail_sql}'
    from (
-       SELECT
+       select
            tables.table_schema r,
            count(table_name) q
-       FROM information_schema.tables
+       from information_schema.tables
        group by 1
        order by 1
        ${limit}
@@ -44,10 +52,10 @@ resource:
        )
        || '${trail_sql}'
    from (
-       SELECT
+       select
            tables.table_name r,
            '0' q
-       FROM information_schema.tables
+       from information_schema.tables
        where tables.TABLE_SCHEMA = '${database}'
        order by 1
        ${limit}
@@ -65,10 +73,10 @@ resource:
        )
        || '${trail_sql}'
    from (
-       SELECT
+       select
            columns.column_name r,
            '0' q
-       FROM information_schema.columns
+       from information_schema.columns
        where columns.TABLE_SCHEMA = '${database}'
        and columns.TABLE_name = '${table}'
        order by 1
@@ -88,10 +96,10 @@ resource:
         )
         || '${trail_sql}'
     from (
-        SELECT
+        select
             substr((${fields}), 1, 775) r,
             count(*) q
-        FROM ${database}.${table}
+        from ${database}.${table}
         group by 1
         ${limit}
     )x
@@ -107,7 +115,7 @@ strategy:
         * If reach end of string (${lead}i) then NULLIF nullifies the result
         */
        '${lead}'
-       || NULLIF(
+       || nullif(
            substr(
                (${injection}),
                ${window.char},

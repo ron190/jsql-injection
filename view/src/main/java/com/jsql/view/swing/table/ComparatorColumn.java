@@ -21,8 +21,8 @@ public class ComparatorColumn<T> implements Comparator<T> {
     /**
      * Custom compare to sort numbers as numbers.
      * Strings as strings, with numbers ordered before strings.
-     * @param o1
-     * @param o2
+     * @param cellLeft
+     * @param cellRight
      * @return
      */
     @Override

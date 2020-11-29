@@ -12,7 +12,7 @@ import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 
 // TODO unstable
 //
-public class CustomMethodTestIgnoreSuite extends ConcreteMySqlErrorTestSuite {
+public class CustomUserAgentTestSuite extends ConcreteMySqlErrorTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
@@ -24,21 +24,25 @@ public class CustomMethodTestIgnoreSuite extends ConcreteMySqlErrorTestSuite {
 
         // TODO Request params not passed when cutom method => fallback to querystring
         // Need custom method set also for querystring
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-custom?tenant=mysql-error&name=0'");
-        model.getMediatorUtils().getParameterUtil().setListRequest(Arrays.asList(
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-user-agent?tenant=mysql-error&name=0'");
+        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", "0'")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
+        model
+        .getMediatorUtils()
+        .getUserAgentUtil()
+        .set(true, "CUSTOM-USER-AGENT2\r\nCUSTOM-USER-AGENT1");
         
         model
         .getMediatorUtils()
         .getConnectionUtil()
-        .withMethodInjection(model.getMediatorMethod().getRequest())
-        .withTypeRequest("CUSTOM-JSQL");
+        .withMethodInjection(model.getMediatorMethod().getQuery())
+        .withTypeRequest("GET");
         
         model.setIsScanning(true);
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
         model.beginInjection();
     }
     

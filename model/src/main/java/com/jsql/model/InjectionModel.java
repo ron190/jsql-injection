@@ -79,7 +79,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    private transient MediatorVendor mediatorVendor = new MediatorVendor(InjectionModel.this);
+    private transient MediatorVendor mediatorVendor = new MediatorVendor(this);
     private transient MediatorMethod mediatorMethod = new MediatorMethod(this);
     private transient MediatorUtils mediatorUtils;
     private transient MediatorStrategy mediatorStrategy;
@@ -197,6 +197,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
             
             if (hasFoundInjection && !this.isScanning) {
+                
+                if (this.getMediatorUtils().getPreferencesUtil().isZippedStrategy()) {
+                    
+                    LOGGER.info("Using minimal query size");
+                }
                 
                 if (!this.mediatorUtils.getPreferencesUtil().isNotInjectingMetadata()) {
                     
@@ -529,7 +534,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         // Method is selected by user and there's no injection point
         if (
             // Several SQL expressions does not use indexes in SELECT,
-            // like Boolean, Error, Shell and search for Insertion character,
+            // like Boolean, Error, Shell and search for character insertion,
             // in that case concat SQL expression to the end of param.
             !isUsingIndex
         ) {
@@ -564,7 +569,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         String query;
         
         // Several SQL expressions does not use indexes in SELECT,
-        // like Boolean, Error, Shell and search for Insertion character,
+        // like Boolean, Error, Shell and search for character insertion,
         // in that case replace injection point by SQL expression.
         // Injection point is always at the end?
         if (!isUsingIndex) {
@@ -639,18 +644,18 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 queryFixed = queryFixed.replace("'", "%27");
                 queryFixed = queryFixed.replace("(", "%28");
                 queryFixed = queryFixed.replace(")", "%29");
-                queryFixed = queryFixed.replace("{", "%7B");
-                queryFixed = queryFixed.replace("[", "%5B");
-                queryFixed = queryFixed.replace("|", "%7C");
+                queryFixed = queryFixed.replace("{", "%7b");
+                queryFixed = queryFixed.replace("[", "%5b");
+                queryFixed = queryFixed.replace("|", "%7c");
                 queryFixed = queryFixed.replace("`", "%60");
-                queryFixed = queryFixed.replace("]", "%5D");
-                queryFixed = queryFixed.replace("}", "%7D");
-                queryFixed = queryFixed.replace(">", "%3E");
-                queryFixed = queryFixed.replace("<", "%3C");
-                queryFixed = queryFixed.replace("?", "%3F");
-                queryFixed = queryFixed.replace("_", "%5F");
-                queryFixed = queryFixed.replace("\\", "%5C");
-                queryFixed = queryFixed.replace(",", "%2C");
+                queryFixed = queryFixed.replace("]", "%5d");
+                queryFixed = queryFixed.replace("}", "%7d");
+                queryFixed = queryFixed.replace(">", "%3e");
+                queryFixed = queryFixed.replace("<", "%3c");
+                queryFixed = queryFixed.replace("?", "%3f");
+                queryFixed = queryFixed.replace("_", "%5f");
+                queryFixed = queryFixed.replace("\\", "%5c");
+                queryFixed = queryFixed.replace(",", "%2c");
                 queryFixed = queryFixed.replace(StringUtils.SPACE, "+");
                 
             } else {
@@ -658,7 +663,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 // For cookies in Spring
                 // Replace spaces
                 queryFixed = queryFixed.replace("+", "%20");
-                queryFixed = queryFixed.replace(",", "%2C");
+                queryFixed = queryFixed.replace(",", "%2c");
             }
         }
         

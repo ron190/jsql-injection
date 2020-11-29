@@ -107,6 +107,8 @@ strategy:
   fingerprint:
    errorMessage:
     - MS Access
+   orderByErrorMessage:
+    - invalid ORDER BY expression
 
  normal:
   indices: union select ${result_range} from (${indice_unique})

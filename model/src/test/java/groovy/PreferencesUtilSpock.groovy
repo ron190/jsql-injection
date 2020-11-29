@@ -40,7 +40,7 @@ class PreferencesUtilSpock extends Specification {
                 isTamperingRandomCase == false
                 isTamperingEval == false
                 isTamperingSpaceToDashComment == false
-                isTamperingSpaceToMultlineComment == false
+                isTamperingSpaceToMultilineComment == false
                 isTamperingSpaceToSharpComment == false
                 
                 isLimitingThreads == false
@@ -76,7 +76,7 @@ class PreferencesUtilSpock extends Specification {
                 isTamperingRandomCase,
                 isTamperingEval,
                 isTamperingSpaceToDashComment,
-                isTamperingSpaceToMultlineComment,
+                isTamperingSpaceToMultilineComment,
                 isTamperingSpaceToSharpComment,
                 
                 is4K,
@@ -117,7 +117,7 @@ class PreferencesUtilSpock extends Specification {
                 isTamperingRandomCase == true
                 isTamperingEval == true
                 isTamperingSpaceToDashComment == true
-                isTamperingSpaceToMultlineComment == true
+                isTamperingSpaceToMultilineComment == true
                 isTamperingSpaceToSharpComment == true
                 
                 isLimitingThreads == true
@@ -160,7 +160,7 @@ class PreferencesUtilSpock extends Specification {
                 isTamperingRandomCase == true
                 isTamperingEval == true
                 isTamperingSpaceToDashComment == true
-                isTamperingSpaceToMultlineComment == true
+                isTamperingSpaceToMultilineComment == true
                 isTamperingSpaceToSharpComment == true
                 
                 isLimitingThreads == true
@@ -200,7 +200,7 @@ class PreferencesUtilSpock extends Specification {
             isTamperingRandomCase = true
             isTamperingEval = true
             isTamperingSpaceToDashComment = true
-            isTamperingSpaceToMultlineComment = true
+            isTamperingSpaceToMultilineComment = true
             isTamperingSpaceToSharpComment = true
                 
             isLimitingThreads = true

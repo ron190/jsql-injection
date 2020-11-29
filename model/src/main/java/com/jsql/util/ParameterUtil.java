@@ -142,7 +142,7 @@ public class ParameterUtil {
         // Injection Point
         if (nbStarInParameter >= 2) {
             
-            throw new InjectionFailureException("Insertion character [*] must be used once in Query String, Request or Header parameters");
+            throw new InjectionFailureException("Character insertion [*] must be used once in Query String, Request or Header parameters");
         }
     }
     

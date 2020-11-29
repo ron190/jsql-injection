@@ -8,7 +8,7 @@ public abstract class ConcreteHsqldbTestSuite extends AbstractTestSuite {
 
     public ConcreteHsqldbTestSuite() {
         
-        this.jdbcURL = "jdbc:hsqldb:hsql://127.0.0.1:9001/mainDb";
+        this.jdbcURL = "jdbc:hsqldb:hsql://127.0.0.1:9002/mainDb";
         this.jdbcUser = "sa";
         this.jdbcPass = StringUtils.EMPTY;
         this.jsqlDatabaseName = "PUBLIC";

@@ -1,5 +1,5 @@
-tooltip: Transform SQL keywords to versioned comment, e.g /*!concat*/()
-description: Transform SQL keywords to versioned comment, e.g /*!concat*/()
+tooltip: Method signature with versioned comment, e.g /*!concat*/()
+description: Method signature with versioned comment, e.g /*!concat*/()
 group: 
 javascript: |
  var tampering = function(sql) {

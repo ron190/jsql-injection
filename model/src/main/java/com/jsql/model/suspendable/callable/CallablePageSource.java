@@ -17,7 +17,7 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     /**
      * URL to load.
      */
-    private String url;
+    private String query;
     private String metadataInjectionProcess;
 
     /**
@@ -34,30 +34,30 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     
     /**
      * Create a callable to get initial query or insertion character.
-     * @param url
+     * @param query
      * @param injectionModel
      */
-    public CallablePageSource(String url, InjectionModel injectionModel) {
+    public CallablePageSource(String query, InjectionModel injectionModel) {
         
+        this.query = query;
         this.injectionModel = injectionModel;
-        this.url = url;
     }
-    public CallablePageSource(String url, InjectionModel injectionModel, String metadataInjectionProcess) {
+    public CallablePageSource(String query, InjectionModel injectionModel, String metadataInjectionProcess) {
         
+        this.query = query;
         this.injectionModel = injectionModel;
-        this.url = url;
         this.metadataInjectionProcess = metadataInjectionProcess;
     }
 
     /**
      * Create callable for current insertion character test.
-     * @param url
+     * @param query
      * @param characterInsertion
      * @param injectionModel2
      */
-    public CallablePageSource(String url, String characterInsertion, InjectionModel injectionModel, String metadataInjectionProcess) {
+    public CallablePageSource(String query, String characterInsertion, InjectionModel injectionModel, String metadataInjectionProcess) {
         
-        this(url, injectionModel, metadataInjectionProcess);
+        this(query, injectionModel, metadataInjectionProcess);
         
         this.characterInsertion = characterInsertion;
     }
@@ -65,15 +65,15 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     @Override
     public CallablePageSource call() throws Exception {
         
-        this.content = this.injectionModel.injectWithoutIndex(this.url, this.metadataInjectionProcess);
+        this.content = this.injectionModel.injectWithoutIndex(this.query, this.metadataInjectionProcess);
         
         return this;
     }
 
     // Getters and setters
 
-    public String getUrl() {
-        return this.url;
+    public String getQuery() {
+        return this.query;
     }
     
     public String getContent() {

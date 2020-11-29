@@ -5,7 +5,7 @@ git:
   # Disable shallow clone to send Git blame to Sonar
   depth: false
 
-jdk: openjdk8
+jdk: oraclejdk11
 
 jobs:
   include:

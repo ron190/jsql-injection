@@ -41,8 +41,8 @@ public class PanelProxy extends JPanel {
         JLabel labelProxyPort = new JLabel("Proxy port  ");
         JLabel labelProxyAddressHttps = new JLabel("Proxy address  ");
         JLabel labelProxyPortHttps = new JLabel("Proxy port  ");
-        JButton buttonIsUsingProxy = new JButton("Use a proxy for http:// URLs");
-        JButton buttonIsUsingProxyHttps = new JButton("Use a proxy for https:// URLs");
+        JButton buttonIsUsingProxy = new JButton("Proxy for http://");
+        JButton buttonIsUsingProxyHttps = new JButton("Proxy for https://");
         String tooltipIsUsingProxy = "Enable proxy communication (e.g. TOR with Privoxy or Burp) for HTTP protocol.";
         buttonIsUsingProxy.setToolTipText(tooltipIsUsingProxy);
         String tooltipIsUsingProxyHttps = "Enable proxy communication (e.g. TOR with Privoxy or Burp) for HTTPS protocol.";

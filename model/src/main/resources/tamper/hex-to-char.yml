@@ -1,5 +1,5 @@
-tooltip: Replace string 'ab' from hex 0x4142 to ascii concat(char(65),char(66))
-description: Replace string 'ab' from hex 0x4142 to ascii concat(char(65),char(66))
+tooltip: Hex 0x4142 ('ab') to ascii concat(char(65),char(66))
+description: Hex 0x4142 ('ab') to ascii concat(char(65),char(66))
 group: 
 javascript: |
  var tampering = function(sql) {

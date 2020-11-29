@@ -52,77 +52,6 @@ import org.apache.commons.codec.binary.StringUtils;
 public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
 
     /**
-     * Holds thread context so classes can be thread-safe.
-     *
-     * This class is not itself thread-safe; each thread must allocate its own copy.
-     *
-     * @since 1.7
-     */
-    static class Context {
-
-        /**
-         * Place holder for the bytes we're dealing with for our based logic.
-         * Bitwise operations store and extract the encoding or decoding from this variable.
-         */
-        int ibitWorkArea;
-
-        /**
-         * Place holder for the bytes we're dealing with for our based logic.
-         * Bitwise operations store and extract the encoding or decoding from this variable.
-         */
-        long lbitWorkArea;
-
-        /**
-         * Buffer for streaming.
-         */
-        byte[] buffer;
-
-        /**
-         * Position where next character should be written in the buffer.
-         */
-        int pos;
-
-        /**
-         * Position where next character should be read from the buffer.
-         */
-        int readPos;
-
-        /**
-         * Boolean flag to indicate the EOF has been reached. Once EOF has been reached, this object becomes useless,
-         * and must be thrown away.
-         */
-        boolean eof;
-
-        /**
-         * Variable tracks how many characters have been written to the current line. Only used when encoding. We use
-         * it to make sure each encoded line never goes beyond lineLength (if lineLength &gt; 0).
-         */
-        int currentLinePos;
-
-        /**
-         * Writes to the buffer only occur after every 3/5 reads when encoding, and every 4/8 reads when decoding. This
-         * variable helps track that.
-         */
-        int modulus;
-
-        Context() {
-        }
-
-        /**
-         * Returns a String useful for debugging (especially within a debugger.)
-         *
-         * @return a String useful for debugging.
-         */
-        @SuppressWarnings("boxing") // OK to ignore boxing here
-        @Override
-        public String toString() {
-            return String.format("%s[buffer=%s, currentLinePos=%s, eof=%s, ibitWorkArea=%s, lbitWorkArea=%s, " +
-                    "modulus=%s, pos=%s, readPos=%s]", this.getClass().getSimpleName(), Arrays.toString(this.buffer),
-                    this.currentLinePos, this.eof, this.ibitWorkArea, this.lbitWorkArea, this.modulus, this.pos, this.readPos);
-        }
-    }
-
-    /**
      * EOF
      *
      * @since 1.7
@@ -193,110 +122,6 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @see <a href="http://www.ietf.org/rfc/rfc2045.txt">RFC 2045 section 2.1</a>
      */
     static final byte[] CHUNK_SEPARATOR = {'\r', '\n'};
-
-    /**
-     * Compares two {@code int} values numerically treating the values
-     * as unsigned. Taken from JDK 1.8.
-     *
-     * <p>TODO: Replace with JDK 1.8 Integer::compareUnsigned(int, int).</p>
-     *
-     * @param  x the first {@code int} to compare
-     * @param  y the second {@code int} to compare
-     * @return the value {@code 0} if {@code x == y}; a value less
-     *         than {@code 0} if {@code x < y} as unsigned values; and
-     *         a value greater than {@code 0} if {@code x > y} as
-     *         unsigned values
-     */
-    private static int compareUnsigned(final int x, final int y) {
-        return Integer.compare(x + Integer.MIN_VALUE, y + Integer.MIN_VALUE);
-    }
-
-    /**
-     * Create a positive capacity at least as large the minimum required capacity.
-     * If the minimum capacity is negative then this throws an OutOfMemoryError as no array
-     * can be allocated.
-     *
-     * @param minCapacity the minimum capacity
-     * @return the capacity
-     * @throws OutOfMemoryError if the {@code minCapacity} is negative
-     */
-    private static int createPositiveCapacity(final int minCapacity) {
-        if (minCapacity < 0) {
-            // overflow
-            throw new OutOfMemoryError("Unable to allocate array size: " + (minCapacity & 0xffffffffL));
-        }
-        // This is called when we require buffer expansion to a very big array.
-        // Use the conservative maximum buffer size if possible, otherwise the biggest required.
-        //
-        // Note: In this situation JDK 1.8 java.util.ArrayList returns Integer.MAX_VALUE.
-        // This excludes some VMs that can exceed MAX_BUFFER_SIZE but not allocate a full
-        // Integer.MAX_VALUE length array.
-        // The result is that we may have to allocate an array of this size more than once if
-        // the capacity must be expanded again.
-        return (minCapacity > MAX_BUFFER_SIZE) ?
-            minCapacity :
-            MAX_BUFFER_SIZE;
-    }
-
-    /**
-     * Gets a copy of the chunk separator per RFC 2045 section 2.1.
-     *
-     * @return the chunk separator
-     * @see <a href="http://www.ietf.org/rfc/rfc2045.txt">RFC 2045 section 2.1</a>
-     * @since 1.15
-     */
-    public static byte[] getChunkSeparator() {
-        return CHUNK_SEPARATOR.clone();
-    }
-
-    /**
-     * Checks if a byte value is whitespace or not.
-     * Whitespace is taken to mean: space, tab, CR, LF
-     * @param byteToCheck
-     *            the byte to check
-     * @return true if byte is whitespace, false otherwise
-     */
-    protected static boolean isWhiteSpace(final byte byteToCheck) {
-        switch (byteToCheck) {
-            case ' ' :
-            case '\n' :
-            case '\r' :
-            case '\t' :
-                return true;
-            default :
-                return false;
-        }
-    }
-
-    /**
-     * Increases our buffer by the {@link #DEFAULT_BUFFER_RESIZE_FACTOR}.
-     * @param context the context to be used
-     * @param minCapacity the minimum required capacity
-     * @return the resized byte[] buffer
-     * @throws OutOfMemoryError if the {@code minCapacity} is negative
-     */
-    private static byte[] resizeBuffer(final Context context, final int minCapacity) {
-        // Overflow-conscious code treats the min and new capacity as unsigned.
-        final int oldCapacity = context.buffer.length;
-        int newCapacity = oldCapacity * DEFAULT_BUFFER_RESIZE_FACTOR;
-        if (compareUnsigned(newCapacity, minCapacity) < 0) {
-            newCapacity = minCapacity;
-        }
-        if (compareUnsigned(newCapacity, MAX_BUFFER_SIZE) > 0) {
-            newCapacity = createPositiveCapacity(minCapacity);
-        }
-
-        final byte[] b = new byte[newCapacity];
-        System.arraycopy(context.buffer, 0, b, 0, context.buffer.length);
-        context.buffer = b;
-        return b;
-    }
-
-    /**
-     * @deprecated Use {@link #pad}. Will be removed in 2.0.
-     */
-    @Deprecated
-    protected final byte PAD = PAD_DEFAULT; // instance variable just in case it needs to vary later
 
     protected final byte pad; // instance variable just in case it needs to vary later
 
@@ -378,6 +203,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      */
     protected BaseNCodec(final int unencodedBlockSize, final int encodedBlockSize,
                          final int lineLength, final int chunkSeparatorLength, final byte pad, final CodecPolicy decodingPolicy) {
+        
         this.unencodedBlockSize = unencodedBlockSize;
         this.encodedBlockSize = encodedBlockSize;
         final boolean useChunking = lineLength > 0 && chunkSeparatorLength > 0;
@@ -385,6 +211,108 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         this.chunkSeparatorLength = chunkSeparatorLength;
         this.pad = pad;
         this.decodingPolicy = Objects.requireNonNull(decodingPolicy, "codecPolicy");
+    }
+
+    /**
+     * Compares two {@code int} values numerically treating the values
+     * as unsigned. Taken from JDK 1.8.
+     *
+     * <p>TODO: Replace with JDK 1.8 Integer::compareUnsigned(int, int).</p>
+     *
+     * @param  x the first {@code int} to compare
+     * @param  y the second {@code int} to compare
+     * @return the value {@code 0} if {@code x == y}; a value less
+     *         than {@code 0} if {@code x < y} as unsigned values; and
+     *         a value greater than {@code 0} if {@code x > y} as
+     *         unsigned values
+     */
+    private static int compareUnsigned(final int x, final int y) {
+        return Integer.compare(x + Integer.MIN_VALUE, y + Integer.MIN_VALUE);
+    }
+
+    /**
+     * Create a positive capacity at least as large the minimum required capacity.
+     * If the minimum capacity is negative then this throws an OutOfMemoryError as no array
+     * can be allocated.
+     *
+     * @param minCapacity the minimum capacity
+     * @return the capacity
+     * @throws OutOfMemoryError if the {@code minCapacity} is negative
+     */
+    private static int createPositiveCapacity(final int minCapacity) {
+        
+        if (minCapacity < 0) {
+            // overflow
+            throw new OutOfMemoryError("Unable to allocate array size: " + (minCapacity & 0xffffffffL));
+        }
+        // This is called when we require buffer expansion to a very big array.
+        // Use the conservative maximum buffer size if possible, otherwise the biggest required.
+        //
+        // Note: In this situation JDK 1.8 java.util.ArrayList returns Integer.MAX_VALUE.
+        // This excludes some VMs that can exceed MAX_BUFFER_SIZE but not allocate a full
+        // Integer.MAX_VALUE length array.
+        // The result is that we may have to allocate an array of this size more than once if
+        // the capacity must be expanded again.
+        return (minCapacity > MAX_BUFFER_SIZE) ?
+            minCapacity :
+            MAX_BUFFER_SIZE;
+    }
+
+    /**
+     * Gets a copy of the chunk separator per RFC 2045 section 2.1.
+     *
+     * @return the chunk separator
+     * @see <a href="http://www.ietf.org/rfc/rfc2045.txt">RFC 2045 section 2.1</a>
+     * @since 1.15
+     */
+    public static byte[] getChunkSeparator() {
+        return CHUNK_SEPARATOR.clone();
+    }
+
+    /**
+     * Checks if a byte value is whitespace or not.
+     * Whitespace is taken to mean: space, tab, CR, LF
+     * @param byteToCheck
+     *            the byte to check
+     * @return true if byte is whitespace, false otherwise
+     */
+    protected static boolean isWhiteSpace(final byte byteToCheck) {
+        
+        switch (byteToCheck) {
+            case ' ' :
+            case '\n' :
+            case '\r' :
+            case '\t' :
+                return true;
+            default :
+                return false;
+        }
+    }
+
+    /**
+     * Increases our buffer by the {@link #DEFAULT_BUFFER_RESIZE_FACTOR}.
+     * @param context the context to be used
+     * @param minCapacity the minimum required capacity
+     * @return the resized byte[] buffer
+     * @throws OutOfMemoryError if the {@code minCapacity} is negative
+     */
+    private static byte[] resizeBuffer(final Context context, final int minCapacity) {
+        
+        // Overflow-conscious code treats the min and new capacity as unsigned.
+        final int oldCapacity = context.buffer.length;
+        int newCapacity = oldCapacity * DEFAULT_BUFFER_RESIZE_FACTOR;
+        if (compareUnsigned(newCapacity, minCapacity) < 0) {
+            newCapacity = minCapacity;
+        }
+        if (compareUnsigned(newCapacity, MAX_BUFFER_SIZE) > 0) {
+            newCapacity = createPositiveCapacity(minCapacity);
+        }
+
+        final byte[] b = new byte[newCapacity];
+        System.arraycopy(context.buffer, 0, b, 0, context.buffer.length);
+        context.buffer = b;
+        
+        return b;
     }
 
     /**
@@ -407,6 +335,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return {@code true} if any byte is a valid character in the alphabet or PAD; {@code false} otherwise
      */
     protected boolean containsAlphabetOrPad(final byte[] arrayOctet) {
+        
         if (arrayOctet == null) {
             return false;
         }
@@ -415,6 +344,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -427,6 +357,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      */
     @Override
     public byte[] decode(final byte[] pArray) {
+        
         if (pArray == null || pArray.length == 0) {
             return pArray;
         }
@@ -435,6 +366,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         this.decode(pArray, 0, EOF, context); // Notify decoder of EOF.
         final byte[] result = new byte[context.pos];
         this.readResults(result, 0, result.length, context);
+        
         return result;
     }
 
@@ -454,6 +386,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      */
     @Override
     public Object decode(final Object obj) throws DecoderException {
+        
         if (obj instanceof byte[]) {
             return this.decode((byte[]) obj);
         } else if (obj instanceof String) {
@@ -483,9 +416,11 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      */
     @Override
     public byte[] encode(final byte[] pArray) {
+        
         if (pArray == null || pArray.length == 0) {
             return pArray;
         }
+        
         return this.encode(pArray, 0, pArray.length);
     }
 
@@ -503,14 +438,17 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @since 1.11
      */
     public byte[] encode(final byte[] pArray, final int offset, final int length) {
+        
         if (pArray == null || pArray.length == 0) {
             return pArray;
         }
+        
         final Context context = new Context();
         this.encode(pArray, offset, length, context);
         this.encode(pArray, offset, EOF, context); // Notify encoder of EOF.
         final byte[] buf = new byte[context.pos - context.readPos];
         this.readResults(buf, 0, buf.length, context);
+        
         return buf;
     }
 
@@ -529,9 +467,11 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      */
     @Override
     public Object encode(final Object obj) throws EncoderException {
+        
         if (!(obj instanceof byte[])) {
             throw new EncoderException("Parameter supplied to Base-N encode is not a byte[]");
         }
+        
         return this.encode((byte[]) obj);
     }
 
@@ -567,7 +507,8 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @param context the context to be used
      * @return the buffer
      */
-    protected byte[] ensureBufferSize(final int size, final Context context){
+    protected byte[] ensureBufferSize(final int size, final Context context) {
+        
         if (context.buffer == null) {
             context.buffer = new byte[Math.max(size, this.getDefaultBufferSize())];
             context.pos = 0;
@@ -578,6 +519,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         } else if (context.pos + size - context.buffer.length > 0) {
             return resizeBuffer(context, context.pos + size);
         }
+        
         return context.buffer;
     }
 
@@ -656,12 +598,18 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      *         {@code false}, otherwise
      */
     public boolean isInAlphabet(final byte[] arrayOctet, final boolean allowWSPad) {
+        
         for (final byte octet : arrayOctet) {
-            if (!this.isInAlphabet(octet) &&
-                    (!allowWSPad || (octet != this.pad) && !isWhiteSpace(octet))) {
+            
+            if (
+                !this.isInAlphabet(octet)
+                && (!allowWSPad || (octet != this.pad)
+                && !isWhiteSpace(octet))
+            ) {
                 return false;
             }
         }
+        
         return true;
     }
 
@@ -711,16 +659,88 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return The number of bytes successfully extracted into the provided byte[] array.
      */
     int readResults(final byte[] b, final int bPos, final int bAvail, final Context context) {
+        
         if (context.buffer != null) {
+            
             final int len = Math.min(this.available(context), bAvail);
             System.arraycopy(context.buffer, context.readPos, b, bPos, len);
             context.readPos += len;
             if (context.readPos >= context.pos) {
                 context.buffer = null; // so hasData() will return false, and this method can return -1
             }
+            
             return len;
         }
+        
         return context.eof ? EOF : 0;
+    }
+
+    /**
+     * Holds thread context so classes can be thread-safe.
+     *
+     * This class is not itself thread-safe; each thread must allocate its own copy.
+     *
+     * @since 1.7
+     */
+    static class Context {
+
+        /**
+         * Place holder for the bytes we're dealing with for our based logic.
+         * Bitwise operations store and extract the encoding or decoding from this variable.
+         */
+        int ibitWorkArea;
+
+        /**
+         * Place holder for the bytes we're dealing with for our based logic.
+         * Bitwise operations store and extract the encoding or decoding from this variable.
+         */
+        long lbitWorkArea;
+
+        /**
+         * Buffer for streaming.
+         */
+        byte[] buffer;
+
+        /**
+         * Position where next character should be written in the buffer.
+         */
+        int pos;
+
+        /**
+         * Position where next character should be read from the buffer.
+         */
+        int readPos;
+
+        /**
+         * Boolean flag to indicate the EOF has been reached. Once EOF has been reached, this object becomes useless,
+         * and must be thrown away.
+         */
+        boolean eof;
+
+        /**
+         * Variable tracks how many characters have been written to the current line. Only used when encoding. We use
+         * it to make sure each encoded line never goes beyond lineLength (if lineLength &gt; 0).
+         */
+        int currentLinePos;
+
+        /**
+         * Writes to the buffer only occur after every 3/5 reads when encoding, and every 4/8 reads when decoding. This
+         * variable helps track that.
+         */
+        int modulus;
+
+        /**
+         * Returns a String useful for debugging (especially within a debugger.)
+         *
+         * @return a String useful for debugging.
+         */
+        @SuppressWarnings("boxing") // OK to ignore boxing here
+        @Override
+        public String toString() {
+            return String.format("%s[buffer=%s, currentLinePos=%s, eof=%s, ibitWorkArea=%s, lbitWorkArea=%s, " +
+                    "modulus=%s, pos=%s, readPos=%s]", this.getClass().getSimpleName(), Arrays.toString(this.buffer),
+                    this.currentLinePos, this.eof, this.ibitWorkArea, this.lbitWorkArea, this.modulus, this.pos, this.readPos);
+        }
     }
 }
 

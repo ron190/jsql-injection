@@ -152,15 +152,35 @@ public class DataAccess {
         
         String[] sourcePage = {StringUtils.EMPTY};
 
-        String resultToParse;
-        resultToParse = new SuspendableGetRows(this.injectionModel).run(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlInfos(),
-            sourcePage,
-            false,
-            0,
-            null,
-            "get:metadata"
-        );
+        String resultToParse = null;
+        
+        try {
+            resultToParse = new SuspendableGetRows(this.injectionModel).run(
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlInfos(),
+                sourcePage,
+                false,
+                0,
+                null,
+                "get:metadata"
+            );
+        
+        } catch (AbstractSlidingException e) {
+            
+            LOGGER.warn(e.getMessage(), e);
+            
+            // Get pieces of data already retrieved instead of losing them
+            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
+                
+                resultToParse = e.getSlidingWindowAllRows();
+                
+            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
+                
+                resultToParse = e.getSlidingWindowCurrentRows();
+            }
+            
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage(), e);
+        }
 
         if (StringUtils.isEmpty(resultToParse)) {
             

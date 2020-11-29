@@ -54,7 +54,6 @@ public class TargetApplication {
     public static Properties propsDb2 = new Properties();
     public static Properties propsHsqldb = new Properties();
     public static Properties propsDerby = new Properties();
-    public static Properties propsOracle = new Properties();
 
     static {
         
@@ -73,8 +72,7 @@ public class TargetApplication {
             new SimpleEntry<>(propsSqlite, "hibernate/hibernate.sqlite.properties"),
             new SimpleEntry<>(propsDb2, "hibernate/hibernate.db2.properties"),
             new SimpleEntry<>(propsHsqldb, "hibernate/hibernate.hsqldb.properties"),
-            new SimpleEntry<>(propsDerby, "hibernate/hibernate.derby.properties"),
-            new SimpleEntry<>(propsOracle, "hibernate/hibernate.oracle.properties")
+            new SimpleEntry<>(propsDerby, "hibernate/hibernate.derby.properties")
         )
         .forEach(simpleEntry -> {
             
@@ -110,11 +108,6 @@ public class TargetApplication {
                 TargetApplication.propsDerby
             )
         );
-        
-        if (!"true".equals(System.getenv("FROM_CI_PIPELINE"))) {
-            
-            properties.add(0, TargetApplication.propsOracle);
-        }
         
         properties
         .parallelStream()
@@ -158,6 +151,7 @@ public class TargetApplication {
         serverHsqldb.setSilent(true);
         serverHsqldb.setDatabaseName(0, "mainDb");
         serverHsqldb.setDatabasePath(0, "mem:mainDb");
+        serverHsqldb.setPort(9002);
         serverHsqldb.start();
     }
 

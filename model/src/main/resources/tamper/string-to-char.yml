@@ -1,5 +1,5 @@
-tooltip: Replace string 'ab' to ascii concat(char(65),char(66))
-description: Replace string 'ab' to ascii concat(char(65),char(66))
+tooltip: String 'ab' to concat(char(65),char(66))
+description: String 'ab' to concat(char(65),char(66))
 group: 
 javascript: |
  var tampering = function(sql) {

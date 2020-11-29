@@ -197,7 +197,8 @@ public class PanelTampering extends JPanel implements Cleanable {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        Stream.of(
+        Stream
+        .of(
             new SimpleEntry<>(labelIsTamperingBase64, TamperingType.BASE64),
             new SimpleEntry<>(labelIsTamperingFunctionComment, TamperingType.COMMENT_TO_METHOD_SIGNATURE),
             new SimpleEntry<>(labelIsTamperingVersionComment, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE),

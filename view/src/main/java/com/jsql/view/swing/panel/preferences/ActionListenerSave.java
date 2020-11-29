@@ -21,42 +21,46 @@ public class ActionListenerSave implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(
-            this.panelPreferences.getPanelGeneral().getCheckboxIsCheckingUpdate().isSelected(),
-            this.panelPreferences.getPanelGeneral().getCheckboxIsReportingBugs().isSelected(),
-            this.panelPreferences.getPanelGeneral().getCheckboxIs4K().isSelected(),
-            
-            this.panelPreferences.getPanelGeneral().getCheckboxIsFollowingRedirection().isSelected(),
-            this.panelPreferences.getPanelInjection().getCheckboxIsNotInjectingMetadata().isSelected(),
-            
-            this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllParam().isSelected(),
-            this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllURLParam().isSelected(),
-            this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllRequestParam().isSelected(),
-            this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllHeaderParam().isSelected(),
-            this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllJSONParam().isSelected(),
-            this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllCookieParam().isSelected(),
-            this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllSOAPParam().isSelected(),
-            this.panelPreferences.getPanelInjection().getCheckboxIsParsingForm().isSelected(),
-            
-            this.panelPreferences.getPanelGeneral().getCheckboxIsNotTestingConnection().isSelected(),
-            this.panelPreferences.getPanelGeneral().getCheckboxProcessCookies().isSelected(),
-            this.panelPreferences.getPanelGeneral().getCheckboxProcessCsrf().isSelected(),
-            
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected(),
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected(),
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingFunctionComment().isSelected(),
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected(),
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingRandomCase().isSelected(),
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEval().isSelected(),
-            this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToDashComment().isSelected(),
-            this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToMultilineComment().isSelected(),
-            this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToSharpComment().isSelected(),
-            
-            this.panelPreferences.getPanelGeneral().getCheckboxIsLimitingThreads().isSelected(),
-            (Integer) this.panelPreferences.getPanelGeneral().getSpinnerLimitingThreads().getValue(),
-            this.panelPreferences.getPanelGeneral().getCheckboxIsCsrfUserTag().isSelected(),
-            this.panelPreferences.getPanelGeneral().getTextfieldCsrfUserTag().getText()
-        );
+        MediatorHelper.model().getMediatorUtils().getPreferencesUtil()
+        
+        .withIsCheckingUpdate(this.panelPreferences.getPanelGeneral().getCheckboxIsCheckingUpdate().isSelected())
+        .withIsReportingBugs(this.panelPreferences.getPanelGeneral().getCheckboxIsReportingBugs().isSelected())
+        .withIs4K(this.panelPreferences.getPanelGeneral().getCheckboxIs4K().isSelected())
+        
+        .withIsFollowingRedirection(this.panelPreferences.getPanelConnection().getCheckboxIsFollowingRedirection().isSelected())
+        .withIsUnicodeDecodeDisabled(this.panelPreferences.getPanelConnection().getCheckboxIsUnicodeDecodeDisabled().isSelected())
+        .withIsNotTestingConnection(this.panelPreferences.getPanelConnection().getCheckboxIsNotTestingConnection().isSelected())
+        .withIsNotProcessingCookies(this.panelPreferences.getPanelConnection().getCheckboxIsNotProcessingCookies().isSelected())
+        .withIsProcessingCsrf(this.panelPreferences.getPanelConnection().getCheckboxProcessCsrf().isSelected())
+        .withIsLimitingThreads(this.panelPreferences.getPanelConnection().getCheckboxIsLimitingThreads().isSelected())
+        .withCountLimitingThreads((Integer) this.panelPreferences.getPanelConnection().getSpinnerLimitingThreads().getValue())
+        .withIsCsrfUserTag(this.panelPreferences.getPanelConnection().getCheckboxIsCsrfUserTag().isSelected())
+        .withCsrfUserTag(this.panelPreferences.getPanelConnection().getTextfieldCsrfUserTag().getText())
+        
+        .withIsZippedStrategy(this.panelPreferences.getPanelInjection().getCheckboxIsZippedStrategy().isSelected())
+        .withIsPerfIndexDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsPerfIndexDisabled().isSelected())
+                
+        .withIsNotInjectingMetadata(this.panelPreferences.getPanelInjection().getCheckboxIsNotInjectingMetadata().isSelected())
+        .withIsCheckingAllParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllParam().isSelected())
+        .withIsCheckingAllURLParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllURLParam().isSelected())
+        .withIsCheckingAllRequestParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllRequestParam().isSelected())
+        .withIsCheckingAllHeaderParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllHeaderParam().isSelected())
+        .withIsCheckingAllJSONParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllJSONParam().isSelected())
+        .withIsCheckingAllCookieParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllCookieParam().isSelected())
+        .withIsCheckingAllSOAPParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllSOAPParam().isSelected())
+        .withIsParsingForm(this.panelPreferences.getPanelInjection().getCheckboxIsParsingForm().isSelected())
+                
+        .withIsTamperingBase64(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected())
+        .withIsTamperingEqualToLike(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected())
+        .withIsTamperingFunctionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingFunctionComment().isSelected())
+        .withIsTamperingVersionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected())
+        .withIsTamperingRandomCase(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingRandomCase().isSelected())
+        .withIsTamperingEval(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEval().isSelected())
+        .withIsTamperingSpaceToDashComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToDashComment().isSelected())
+        .withIsTamperingSpaceToMultilineComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToMultilineComment().isSelected())
+        .withIsTamperingSpaceToSharpComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToSharpComment().isSelected())
+        
+        .persist();
         
         MediatorHelper.model().getMediatorUtils().getProxyUtil().setPreferences(
             this.panelPreferences.getPanelProxy().getCheckboxIsUsingProxy().isSelected(),
@@ -67,20 +71,19 @@ public class ActionListenerSave implements ActionListener {
             this.panelPreferences.getPanelProxy().getTextProxyPortHttps().getText()
         );
         
-        MediatorHelper.model().getMediatorUtils().getTamperingUtil().set(
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected(),
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected(),
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingFunctionComment().isSelected(),
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected(),
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingRandomCase().isSelected(),
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingHexToChar().isSelected(),
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingQuoteToUtf8().isSelected(),
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEval().isSelected(),
-            this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToMultilineComment().isSelected(),
-            this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToDashComment().isSelected(),
-            this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToSharpComment().isSelected(),
-            this.panelPreferences.getPanelTampering().getCheckboxIsTamperingStringToChar().isSelected()
-        );
+        MediatorHelper.model().getMediatorUtils().getTamperingUtil()
+        .withBase64(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected())
+        .withEqualToLike(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected())
+        .withEval(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEval().isSelected())
+        .withFunctionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingFunctionComment().isSelected())
+        .withHexToChar(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingHexToChar().isSelected())
+        .withQuoteToUtf8(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingQuoteToUtf8().isSelected())
+        .withRandomCase(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingRandomCase().isSelected())
+        .withSpaceToDashComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToDashComment().isSelected())
+        .withSpaceToMultilineComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToMultilineComment().isSelected())
+        .withSpaceToSharpComment(this.panelPreferences.getPanelTampering().getRadioIsTamperingSpaceToSharpComment().isSelected())
+        .withStringToChar(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingStringToChar().isSelected())
+        .withVersionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected());
         
         boolean isRestartRequired = MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().set(
             this.panelPreferences.getPanelAuthentication().getCheckboxUseDigestAuthentication().isSelected(),

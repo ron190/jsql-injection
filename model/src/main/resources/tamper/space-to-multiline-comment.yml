@@ -1,5 +1,5 @@
-tooltip: Replace blank space ' ' to multiline comment '/**/'
-description: Replace blank space ' ' to multiline comment '/**/'
+tooltip: Space ' ' to multiline comment '/**/'
+description: Space ' ' to multiline comment '/**/'
 group: 
 javascript: |
  var tampering = function(sql) {

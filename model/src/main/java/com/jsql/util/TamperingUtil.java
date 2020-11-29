@@ -113,6 +113,10 @@ public class TamperingUtil {
            lead = matcherSql.group(1);
            sqlQuery = matcherSql.group(2);
            trail = matcherSql.group(3);
+           
+        } else {
+            
+            return sqlQueryDefault;
         }
         
         if (this.isEval) {
@@ -262,5 +266,65 @@ public class TamperingUtil {
 
     public void setCustomTamper(String customTamper) {
         this.customTamper = customTamper;
+    }
+
+    public TamperingUtil withBase64(boolean selected) {
+        this.isBase64 = selected;
+        return this;
+    }
+
+    public TamperingUtil withEqualToLike(boolean selected) {
+        this.isEqualToLike = selected;
+        return this;
+    }
+
+    public TamperingUtil withEval(boolean selected) {
+        this.isEval = selected;
+        return this;
+    }
+
+    public TamperingUtil withFunctionComment(boolean selected) {
+        this.isFunctionComment = selected;
+        return this;
+    }
+
+    public TamperingUtil withHexToChar(boolean selected) {
+        this.isHexToChar = selected;
+        return this;
+    }
+
+    public TamperingUtil withQuoteToUtf8(boolean selected) {
+        this.isQuoteToUtf8 = selected;
+        return this;
+    }
+
+    public TamperingUtil withRandomCase(boolean selected) {
+        this.isRandomCase = selected;
+        return this;
+    }
+
+    public TamperingUtil withSpaceToDashComment(boolean selected) {
+        this.isSpaceToDashComment = selected;
+        return this;
+    }
+
+    public TamperingUtil withSpaceToMultilineComment(boolean selected) {
+        this.isSpaceToMultilineComment = selected;
+        return this;
+    }
+
+    public TamperingUtil withSpaceToSharpComment(boolean selected) {
+        this.isSpaceToSharpComment = selected;
+        return this;
+    }
+
+    public TamperingUtil withStringToChar(boolean selected) {
+        this.isStringToChar = selected;
+        return this;
+    }
+
+    public TamperingUtil withVersionComment(boolean selected) {
+        this.isVersionComment = selected;
+        return this;
     }
 }

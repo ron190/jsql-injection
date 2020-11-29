@@ -1,4 +1,5 @@
 vendor: CUBRID
+# jdbc:cubrid:localhost:33000:demodb:::
 
 resource:
  info: |
@@ -122,6 +123,8 @@ strategy:
    errorMessage:
     - Cubrid database
     - "Syntax error: unexpected '.', expecting SELECT or VALUE or VALUES or '"
+   orderByErrorMessage:
+    - "Semantic: 1337 in sort spec is out of range"
 
  normal:
   indices: union select ${indices}

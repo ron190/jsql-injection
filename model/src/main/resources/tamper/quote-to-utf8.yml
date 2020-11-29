@@ -1,5 +1,5 @@
-tooltip: Replace single quote ' to utf8 character %ef%bc%87 (Big5 and GBK)
-description: Replace single quote ' to utf8 character %ef%bc%87 (Big5 and GBK)
+tooltip: Quote ' to utf8 character %ef%bc%87 (Big5 and GBK)
+description: Quote ' to utf8 character %ef%bc%87 (Big5 and GBK)
 group: 
 javascript: |
  var tampering = function(sql) {

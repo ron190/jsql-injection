@@ -29,15 +29,19 @@ public class PanelInjection extends JPanel {
     private final JCheckBox checkboxIsCheckingAllJSONParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam());
     private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
     private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSOAPParam());
+
+    private final JCheckBox checkboxIsPerfIndexDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
+    private final JCheckBox checkboxIsZippedStrategy = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZippedStrategy());
+    private final JCheckBox checkboxIsUrlEncodingDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled());
     
     public PanelInjection(PanelPreferences panelPreferences) {
         
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
-        String tooltipParseForm = "Add <input> parameters found in HTML body to URL and Request";
+        String tooltipParseForm = "Add <input> parameters to Query string and Request";
         this.checkboxIsParsingForm.setToolTipText(tooltipParseForm);
         this.checkboxIsParsingForm.setFocusable(false);
-        JButton labelParseForm = new JButton("Add <input> parameters found in HTML body to URL and Request");
+        JButton labelParseForm = new JButton("Add <input> parameters to Query string and Request");
         labelParseForm.setToolTipText(tooltipParseForm);
         labelParseForm.addActionListener(actionEvent -> {
             
@@ -45,10 +49,10 @@ public class PanelInjection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsNotInjectingMetadata = "Disable database's metadata injection (e.g version, username).";
+        String tooltipIsNotInjectingMetadata = "Disable database's metadata injection (speed-up boolean process)";
         this.checkboxIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
         this.checkboxIsNotInjectingMetadata.setFocusable(false);
-        JButton labelIsNotInjectingMetadata = new JButton("Disable database's metadata injection to speed-up boolean process");
+        JButton labelIsNotInjectingMetadata = new JButton("Disable database's metadata injection (speed-up boolean process)");
         labelIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
         labelIsNotInjectingMetadata.addActionListener(actionEvent -> {
             
@@ -64,12 +68,18 @@ public class PanelInjection extends JPanel {
         JButton labelIsCheckingAllJSONParam = new JButton("Inject JSON parameters");
         JButton labelIsCheckingAllSOAPParam = new JButton("Inject SOAP parameters in Request body");
         
+        JButton labelIsZippedStrategy = new JButton("Use Zip strategy for smaller SQL queries");
+        JButton labelIsUrlEncodingDisabled = new JButton("Disable URL encoding for smaller URL");
+        JButton labelIsPerfIndexDisabled = new JButton("Disable calibration for smaller SQL query during Normal index selection");
+        
         JLabel emptyLabelGeneralInjection = new JLabel();
-        JLabel labelGeneralInjection = new JLabel("<html><b>Connection definition</b></html>");
+        JLabel labelGeneralInjection = new JLabel("<html><b>Content processing</b></html>");
         JLabel emptyLabelParamsInjection = new JLabel();
-        JLabel labelParamsInjection = new JLabel("<html><br /><b>Parameters injection</b></html>");
-        JLabel emptyLabelValueInjection = new JLabel();
-        JLabel labelValueInjection = new JLabel("<html><br /><b>Special parameters</b></html>");
+        JLabel labelParamsInjection = new JLabel("<html><br /><b>URL parameters</b></html>");
+        JLabel emptyLabelSpecial = new JLabel();
+        JLabel labelSpecial = new JLabel("<html><br /><b>Special parameters</b></html>");
+        JLabel emptyLabelQuerySize = new JLabel();
+        JLabel labelQuerySize = new JLabel("<html><br /><b>URL size cut</b></html>");
         
         ActionListener actionListenerCheckingAllParam = actionEvent -> {
             
@@ -132,6 +142,21 @@ public class PanelInjection extends JPanel {
             this.checkboxIsCheckingAllSOAPParam.setSelected(!this.checkboxIsCheckingAllSOAPParam.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
+        labelIsPerfIndexDisabled.addActionListener(actionEvent -> {
+            
+            this.checkboxIsPerfIndexDisabled.setSelected(!this.checkboxIsPerfIndexDisabled.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+        labelIsZippedStrategy.addActionListener(actionEvent -> {
+            
+            this.checkboxIsZippedStrategy.setSelected(!this.checkboxIsZippedStrategy.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+        labelIsUrlEncodingDisabled.addActionListener(actionEvent -> {
+            
+            this.checkboxIsUrlEncodingDisabled.setSelected(!this.checkboxIsUrlEncodingDisabled.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
         
         this.checkboxIsCheckingAllParam.addActionListener(actionListenerCheckingAllParam);
         
@@ -144,7 +169,10 @@ public class PanelInjection extends JPanel {
             this.checkboxIsCheckingAllHeaderParam,
             this.checkboxIsCheckingAllJSONParam,
             this.checkboxIsCheckingAllCookieParam,
-            this.checkboxIsCheckingAllSOAPParam
+            this.checkboxIsCheckingAllSOAPParam,
+            this.checkboxIsPerfIndexDisabled,
+            this.checkboxIsZippedStrategy,
+            this.checkboxIsUrlEncodingDisabled
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
@@ -158,7 +186,10 @@ public class PanelInjection extends JPanel {
             labelIsCheckingAllHeaderParam,
             labelIsCheckingAllJSONParam,
             labelIsCheckingAllCookieParam,
-            labelIsCheckingAllSOAPParam
+            labelIsCheckingAllSOAPParam,
+            labelIsPerfIndexDisabled,
+            labelIsZippedStrategy,
+            labelIsUrlEncodingDisabled
         )
         .forEach(label -> {
             
@@ -187,10 +218,15 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsCheckingAllRequestParam)
                 .addComponent(this.checkboxIsCheckingAllHeaderParam)
                 
-                .addComponent(emptyLabelValueInjection)
+                .addComponent(emptyLabelSpecial)
                 .addComponent(this.checkboxIsCheckingAllCookieParam)
                 .addComponent(this.checkboxIsCheckingAllJSONParam)
                 .addComponent(this.checkboxIsCheckingAllSOAPParam)
+                
+                .addComponent(emptyLabelQuerySize)
+                .addComponent(this.checkboxIsZippedStrategy)
+                .addComponent(this.checkboxIsUrlEncodingDisabled)
+                .addComponent(this.checkboxIsPerfIndexDisabled)
             )
             .addGroup(
                 groupLayout
@@ -205,10 +241,15 @@ public class PanelInjection extends JPanel {
                 .addComponent(labelIsCheckingAllRequestParam)
                 .addComponent(labelIsCheckingAllHeaderParam)
                 
-                .addComponent(labelValueInjection)
+                .addComponent(labelSpecial)
                 .addComponent(labelIsCheckingAllJSONParam)
                 .addComponent(labelIsCheckingAllSOAPParam)
                 .addComponent(labelIsCheckingAllCookieParam)
+
+                .addComponent(labelQuerySize)
+                .addComponent(labelIsZippedStrategy)
+                .addComponent(labelIsUrlEncodingDisabled)
+                .addComponent(labelIsPerfIndexDisabled)
             )
         );
         
@@ -269,8 +310,8 @@ public class PanelInjection extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(emptyLabelValueInjection)
-                .addComponent(labelValueInjection)
+                .addComponent(emptyLabelSpecial)
+                .addComponent(labelSpecial)
             )
             .addGroup(
                 groupLayout
@@ -289,6 +330,31 @@ public class PanelInjection extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllCookieParam)
                 .addComponent(labelIsCheckingAllCookieParam)
+            )
+            
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(emptyLabelQuerySize)
+                .addComponent(labelQuerySize)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsZippedStrategy)
+                .addComponent(labelIsZippedStrategy)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsUrlEncodingDisabled)
+                .addComponent(labelIsUrlEncodingDisabled)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsPerfIndexDisabled)
+                .addComponent(labelIsPerfIndexDisabled)
             )
         );
     }
@@ -330,5 +396,17 @@ public class PanelInjection extends JPanel {
     
     public JCheckBox getCheckboxIsParsingForm() {
         return this.checkboxIsParsingForm;
+    }
+
+    public JCheckBox getCheckboxIsPerfIndexDisabled() {
+        return this.checkboxIsPerfIndexDisabled;
+    }
+
+    public JCheckBox getCheckboxIsZippedStrategy() {
+        return this.checkboxIsZippedStrategy;
+    }
+    
+    public JCheckBox getCheckboxIsUrlEncodingDisabled() {
+        return this.checkboxIsUrlEncodingDisabled;
     }
 }

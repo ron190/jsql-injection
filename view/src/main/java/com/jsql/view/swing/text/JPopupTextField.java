@@ -21,10 +21,6 @@ import com.jsql.view.swing.util.UiUtil;
 @SuppressWarnings("serial")
 public class JPopupTextField extends JPopupTextComponent<JTextField> implements DecoratorJComponent<JTextField> {
     
-    /**
-     * Build new instance of JTextField to decorate with default text.
-     * @param string Text to display
-     */
     public JPopupTextField(String placeholder) {
         
         this(new JTextFieldPlaceholder(placeholder));
@@ -32,7 +28,7 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
 
     /**
      * Build new instance of JTextField to decorate with default text.
-     * @param string Text to display
+     * @param value Text to display
      */
     public JPopupTextField(String placeholder, String value) {
         

@@ -52,7 +52,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         
         if (this.isApplicable) {
             
-            LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Normal injection using "+ this.performanceLength +" characters");
+            LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Normal injection at index ["+ this.visibleIndex +"] using ["+ this.performanceLength +"] characters");
             this.allow();
             
         } else {

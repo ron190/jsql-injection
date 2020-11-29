@@ -22,6 +22,7 @@ import org.apache.commons.text.WordUtils;
 import com.jsql.view.swing.action.ActionCheckIP;
 import com.jsql.view.swing.panel.preferences.ActionListenerSave;
 import com.jsql.view.swing.panel.preferences.PanelAuthentication;
+import com.jsql.view.swing.panel.preferences.PanelConnection;
 import com.jsql.view.swing.panel.preferences.PanelGeneral;
 import com.jsql.view.swing.panel.preferences.PanelInjection;
 import com.jsql.view.swing.panel.preferences.PanelProxy;
@@ -41,6 +42,7 @@ public class PanelPreferences extends JPanel {
     private PanelAuthentication panelAuthenticationPreferences = new PanelAuthentication(this);
     private PanelGeneral panelGeneralPreferences = new PanelGeneral(this);
     private PanelUserAgent panelUserAgentPreferences = new PanelUserAgent();
+    private PanelConnection panelConnectionPreferences = new PanelConnection(this);
 
     private static final JPanel panelInjection = new JPanel(new BorderLayout());
     private static final JPanel panelAuthentication = new JPanel(new BorderLayout());
@@ -48,6 +50,7 @@ public class PanelPreferences extends JPanel {
     private static final JPanel panelGeneral = new JPanel(new BorderLayout());
     private static final JPanel panelUserAgent = new JPanel(new BorderLayout());
     private static final JPanel panelTampering = new JPanel(new BorderLayout());
+    private static final JPanel panelConnection = new JPanel(new BorderLayout());
     
     private transient Border panelBorder = BorderFactory.createEmptyBorder(10, 15, 0, 15);
     
@@ -55,10 +58,11 @@ public class PanelPreferences extends JPanel {
         
         INJECTION(panelInjection),
         TAMPERING(panelTampering),
-        PROXY(panelProxy),
+        CONNECTION(panelConnection),
         AUTH(panelAuthentication),
-        GENERAL(panelGeneral),
-        USER_AGENT(panelUserAgent);
+        USER_AGENT(panelUserAgent),
+        PROXY(panelProxy),
+        GENERAL(panelGeneral);
         
         private Component panel;
 
@@ -86,27 +90,31 @@ public class PanelPreferences extends JPanel {
         
         this.add(categories, BorderLayout.LINE_START);
         
-        panelTampering.setBorder(this.panelBorder);
-        panelTampering.add(new JLabel("<html><b>Tampering</b> / SQL expression alteration to bypass Web Application Firewall</html>"), BorderLayout.NORTH);
-        panelTampering.add(this.panelTamperingPreferences, BorderLayout.CENTER);
-        
-        panelGeneral.setBorder(this.panelBorder);
-        panelGeneral.add(new JLabel("<html><b>General</b> / Standard options</html>"), BorderLayout.NORTH);
-        panelGeneral.add(this.panelGeneralPreferences, BorderLayout.CENTER);
-        
-        panelUserAgent.setBorder(this.panelBorder);
-        panelUserAgent.add(new JLabel("<html><b>User Agent</b> / Request agents</html>"), BorderLayout.NORTH);
-        panelUserAgent.add(this.panelUserAgentPreferences, BorderLayout.CENTER);
-        
         panelInjection.setBorder(this.panelBorder);
-        panelInjection.add(new JLabel("<html><b>Injection</b> / Algorithm configuration</html>"), BorderLayout.NORTH);
+        panelInjection.add(new JLabel("<html><b>Injection</b> / Process configuration</html>"), BorderLayout.NORTH);
         panelInjection.add(this.panelInjectionPreferences, BorderLayout.CENTER);
         
+        panelTampering.setBorder(this.panelBorder);
+        panelTampering.add(new JLabel("<html><b>Tampering</b> / SQL transform to bypass Web Application Firewall</html>"), BorderLayout.NORTH);
+        panelTampering.add(this.panelTamperingPreferences, BorderLayout.CENTER);
+        
+        panelConnection.setBorder(this.panelBorder);
+        panelConnection.add(new JLabel("<html><b>Connection</b> / Network and threads</html>"), BorderLayout.NORTH);
+        panelConnection.add(this.panelConnectionPreferences, BorderLayout.CENTER);
+        
         panelAuthentication.setBorder(this.panelBorder);
-        panelAuthentication.add(new JLabel("<html><b>Authentication</b> / Basic, Digest, NTLM or Kerberos</html>"), BorderLayout.NORTH);
+        panelAuthentication.add(new JLabel("<html><b>Authentication</b> / Basic, Digest, NTLM or Kerberos connection</html>"), BorderLayout.NORTH);
         panelAuthentication.add(this.panelAuthenticationPreferences, BorderLayout.CENTER);
         
+        panelUserAgent.setBorder(this.panelBorder);
+        panelUserAgent.add(new JLabel("<html><b>User Agent</b> / Network connection agents</html>"), BorderLayout.NORTH);
+        panelUserAgent.add(this.panelUserAgentPreferences, BorderLayout.CENTER);
+        
         this.initializePanelProxy();
+        
+        panelGeneral.setBorder(this.panelBorder);
+        panelGeneral.add(new JLabel("<html><b>General</b> / Basic options</html>"), BorderLayout.NORTH);
+        panelGeneral.add(this.panelGeneralPreferences, BorderLayout.CENTER);
         
         this.add(panelInjection, BorderLayout.CENTER);
     }
@@ -130,7 +138,7 @@ public class PanelPreferences extends JPanel {
         flatButtonMouseAdapter.setContentVisible(true);
         buttonCheckIp.addMouseListener(flatButtonMouseAdapter);
         
-        JLabel labelProxy = new JLabel("<html><b>Proxy</b> / Define proxy settings (e.g. Burp Suite, Tor)</html>");
+        JLabel labelProxy = new JLabel("<html><b>Proxy</b> / Settings for tools like Burp and Tor</html>");
         panelProxy.removeAll();
         panelProxy.add(labelProxy, BorderLayout.NORTH);
         panelProxy.add(this.panelProxyPreferences);
@@ -212,6 +220,10 @@ public class PanelPreferences extends JPanel {
     
     public PanelUserAgent getPanelUserAgent() {
         return this.panelUserAgentPreferences;
+    }
+    
+    public PanelConnection getPanelConnection() {
+        return this.panelConnectionPreferences;
     }
 
     public ActionListener getActionListenerSave() {

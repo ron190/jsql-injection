@@ -57,7 +57,8 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         // SQL fields are built like 1337[index]7330+1
         // 7330+1 allows to exclude false positive when page contains injection URL
         // Search if the source contains 1337[index]7331
-        for (nbIndex = 1 ; nbIndex <= 100 ; nbIndex++) {
+        // TODO preferences for 50
+        for (nbIndex = 1 ; nbIndex <= 50 ; nbIndex++) {
             
             taskCompletionService.submit(
                 new CallablePageSource(
@@ -72,7 +73,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
 
         try {
             // Start from 10 to 100 requests
-            while (nbIndex <= 100) {
+            while (!isRequestFound && nbIndex <= 50) {
 
                 if (this.isSuspended()) {
                     throw new StoppedByUserSlidingException();
@@ -86,8 +87,17 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                 if (Pattern.compile("(?s).*1337\\d+7331.*").matcher(currentCallable.getContent()).matches()) {
                     
                     this.injectionModel.getMediatorStrategy().getNormal().setSourceIndexesFound(currentCallable.getContent());
-                    initialQuery = currentCallable.getUrl().replace("0%2b1", "1");
+                    initialQuery = currentCallable.getQuery().replace("0%2b1", "1");
                     isRequestFound = true;
+                    
+                    if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {
+                        
+                        initialQuery = initialQuery.replaceAll("1337(?!17331)\\d+7331", "1");
+                        LOGGER.info("Calibrating indexes disabled, forcing to index [1]");
+                    }
+                    
+                    LOGGER.info("Normal strategy triggered with query ["+ currentCallable.getQuery().trim().replaceAll("1337(\\d*)7330%2b1", "$1") +"]");
+                    
                     break;
                 }
             }

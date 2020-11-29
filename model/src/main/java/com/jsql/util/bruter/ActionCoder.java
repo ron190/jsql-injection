@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import com.jsql.util.StringUtil;
 
@@ -210,6 +211,15 @@ public enum ActionCoder {
             return StringUtil.toUrl(value);
         }
     },
+    
+    ENCODE_TO_UNICODE("Encode to Unicode") {
+        
+        @Override
+        public String run(String value) {
+            
+            return StringEscapeUtils.escapeJava(value);
+        }
+    },
 
     DECODE_FROM_HEX("Decode from Hex") {
         
@@ -280,6 +290,15 @@ public enum ActionCoder {
         public String run(String value) {
             
             return StringUtil.fromHtml(value);
+        }
+    },
+    
+    DECODE_FROM_UNICODE("Decode from Unicode") {
+        
+        @Override
+        public String run(String value) {
+            
+            return StringEscapeUtils.unescapeJava(value);
         }
     },
     

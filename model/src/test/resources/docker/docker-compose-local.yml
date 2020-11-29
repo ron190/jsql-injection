@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+
+  memsql:
+  exasol:
+  monetdb:
+  iris:
+  presto:
+  mimersql:
+  altibase:
+  nuodb:

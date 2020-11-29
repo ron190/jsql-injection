@@ -37,11 +37,6 @@ public class MasterService {
             )
         );
         
-        if (!"true".equals(System.getenv("FROM_CI_PIPELINE"))) {
-            
-            properties.add(TargetApplication.propsOracle);
-        }
-        
         properties
         .stream()
         .forEach(props -> {

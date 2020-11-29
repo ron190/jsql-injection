@@ -128,9 +128,12 @@ public class MediatorStrategy {
     public boolean testStrategies(SimpleEntry<String, String> parameterToInject) throws JSqlException {
         
         // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
-        LOGGER.trace(I18nUtil.valueByKey("LOG_GET_INSERTION_CHARACTER"));
+//        LOGGER.trace(I18nUtil.valueByKey("LOG_GET_INSERTION_CHARACTER"));
         
         String parameterOriginalValue = null;
+        
+        // Fingerprint database
+        this.injectionModel.getMediatorVendor().setVendor(new SuspendableGetVendor(this.injectionModel).run());
         
         // If not an injection point then find insertion character.
         // Force to 1 if no insertion char works and empty value from user,
@@ -157,17 +160,7 @@ public class MediatorStrategy {
                 // When injecting last parameter
                 parameterToInject.setValue(characterInsertion +"+"+ InjectionModel.STAR);
             }
-            
-            LOGGER.info(
-                I18nUtil.valueByKey("LOG_USING_INSERTION_CHARACTER")
-                + " ["
-                + characterInsertion.replace("+"+ InjectionModel.STAR, StringUtils.EMPTY)
-                + "]"
-            );
         }
-        
-        // Fingerprint database
-        this.injectionModel.getMediatorVendor().setVendor(new SuspendableGetVendor(this.injectionModel).run());
 
         // Test each injection strategies: time < blind < error < normal
         // Choose the most efficient strategy: normal > error > blind > time

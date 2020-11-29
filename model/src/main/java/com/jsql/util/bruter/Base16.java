@@ -61,6 +61,7 @@ public class Base16 extends BaseNCodec {
      * alphabet but fall within the bounds of the array are translated to -1.
      */
     private static final byte[] UPPER_CASE_DECODE_TABLE = {
+            
             //  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00-0f
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10-1f
@@ -74,6 +75,7 @@ public class Base16 extends BaseNCodec {
      * equivalents as specified in Table 5 of RFC 4648.
      */
     private static final byte[] UPPER_CASE_ENCODE_TABLE = {
+            
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'A', 'B', 'C', 'D', 'E', 'F'
     };
@@ -84,6 +86,7 @@ public class Base16 extends BaseNCodec {
      * alphabet but fall within the bounds of the array are translated to -1.
      */
     private static final byte[] LOWER_CASE_DECODE_TABLE = {
+            
             //  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00-0f
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10-1f
@@ -99,6 +102,7 @@ public class Base16 extends BaseNCodec {
      * lower-case equivalents.
      */
     private static final byte[] LOWER_CASE_ENCODE_TABLE = {
+            
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'a', 'b', 'c', 'd', 'e', 'f'
     };
@@ -129,6 +133,7 @@ public class Base16 extends BaseNCodec {
      * @param lowerCase if {@code true} then use a lower-case Base16 alphabet.
      */
     public Base16(final boolean lowerCase) {
+        
         this(lowerCase, DECODING_POLICY_DEFAULT);
     }
 
@@ -139,20 +144,28 @@ public class Base16 extends BaseNCodec {
      * @param decodingPolicy Decoding policy.
      */
     public Base16(final boolean lowerCase, final CodecPolicy decodingPolicy) {
-        super(BYTES_PER_UNENCODED_BLOCK, BYTES_PER_ENCODED_BLOCK, 0, 0,
-                PAD_DEFAULT, decodingPolicy);
+        
+        super(BYTES_PER_UNENCODED_BLOCK, BYTES_PER_ENCODED_BLOCK, 0, 0, PAD_DEFAULT, decodingPolicy);
+        
         if (lowerCase) {
+            
             this.encodeTable = LOWER_CASE_ENCODE_TABLE;
             this.decodeTable = LOWER_CASE_DECODE_TABLE;
+            
         } else {
+            
             this.encodeTable = UPPER_CASE_ENCODE_TABLE;
             this.decodeTable = UPPER_CASE_DECODE_TABLE;
         }
     }
 
     @Override
-    void decode(final byte[] data, int offset, final int length, final Context context) {
+    void decode(final byte[] data, int offsetInput, final int length, final Context context) {
+        
+        int offset = offsetInput;
+        
         if (context.eof || length < 0) {
+            
             context.eof = true;
             if (context.ibitWorkArea != 0) {
                 this.validateTrailingCharacter();
@@ -165,6 +178,7 @@ public class Base16 extends BaseNCodec {
 
         // small optimisation to short-cut the rest of this method when it is fed byte-by-byte
         if (availableChars == 1 && availableChars == dataLen) {
+            
             context.ibitWorkArea = this.decodeOctet(data[offset]) + 1;   // store 1/2 byte for next invocation of decode, we offset by +1 as empty-value is 0
             return;
         }
@@ -177,6 +191,7 @@ public class Base16 extends BaseNCodec {
         int result;
         int i = 0;
         if (dataLen < availableChars) {
+            
             // we have 1/2 byte from previous invocation to decode
             result = (context.ibitWorkArea - 1) << BITS_PER_ENCODED_BYTE;
             result |= this.decodeOctet(data[offset++]);
@@ -189,6 +204,7 @@ public class Base16 extends BaseNCodec {
         }
 
         while (i < charsToProcess) {
+            
             result = this.decodeOctet(data[offset++]) << BITS_PER_ENCODED_BYTE;
             result |= this.decodeOctet(data[offset++]);
             i += 2;
@@ -202,6 +218,7 @@ public class Base16 extends BaseNCodec {
     }
 
     private int decodeOctet(final byte octet) {
+        
         int decoded = -1;
         if ((octet & 0xff) < this.decodeTable.length) {
             decoded = this.decodeTable[octet];
@@ -216,6 +233,7 @@ public class Base16 extends BaseNCodec {
 
     @Override
     void encode(final byte[] data, final int offset, final int length, final Context context) {
+        
         if (context.eof) {
             return;
         }
@@ -234,6 +252,7 @@ public class Base16 extends BaseNCodec {
 
         final int end = offset + length;
         for (int i = offset; i < end; i++) {
+            
             final int value = data[i];
             final int high = (value >> BITS_PER_ENCODED_BYTE) & MASK_4BITS;
             final int low = value & MASK_4BITS;
@@ -251,6 +270,7 @@ public class Base16 extends BaseNCodec {
      */
     @Override
     public boolean isInAlphabet(final byte octet) {
+        
         return (octet & 0xff) < this.decodeTable.length && this.decodeTable[octet] != -1;
     }
 
@@ -261,6 +281,7 @@ public class Base16 extends BaseNCodec {
      * @throws IllegalArgumentException if strict decoding is enabled
      */
     private void validateTrailingCharacter() {
+        
         if (this.isStrictDecoding()) {
             throw new IllegalArgumentException("Strict decoding: Last encoded character is a valid base 16 alphabet" +
                     "character but not a possible encoding. " +

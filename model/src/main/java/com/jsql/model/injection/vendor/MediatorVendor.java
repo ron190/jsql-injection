@@ -1,15 +1,27 @@
 package com.jsql.model.injection.vendor;
 
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
+import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.VendorYaml;
+import com.jsql.util.I18nUtil;
 
 public class MediatorVendor {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Database vendor currently used.
@@ -48,6 +60,7 @@ public class MediatorVendor {
     private Vendor monetDB;
     private Vendor mySQL;
     private Vendor neo4j;
+    private Vendor netezza;
     private Vendor nuoDB;
     private Vendor oracle;
     private Vendor postgreSQL;
@@ -59,8 +72,11 @@ public class MediatorVendor {
     private Vendor vertica;
     
     private List<Vendor> vendors;
+    private InjectionModel injectionModel;
     
     public MediatorVendor(InjectionModel injectionModel) {
+        
+        this.injectionModel = injectionModel;
         
         this.auto = new Vendor();
         this.access = new Vendor(new VendorYaml("access.yml", injectionModel));
@@ -86,6 +102,7 @@ public class MediatorVendor {
         this.monetDB = new Vendor(new VendorYaml("monetdb.yml", injectionModel));
         this.mySQL = new Vendor(new VendorYaml("mysql.yml", injectionModel));
         this.neo4j = new Vendor(new VendorYaml("neo4j.yml", injectionModel));
+        this.netezza = new Vendor(new VendorYaml("netezza.yml", injectionModel));
         this.nuoDB = new Vendor(new VendorYaml("nuodb.yml", injectionModel));
         this.oracle = new Vendor(new VendorYaml("oracle.yml", injectionModel));
         this.postgreSQL = new Vendor(new VendorYaml("postgresql.yml", injectionModel));
@@ -106,6 +123,10 @@ public class MediatorVendor {
                 resultTmp = resultTmp.replaceAll("\\(.+?\\)", StringUtils.EMPTY);
                 
                 for (String columnNameAndType: resultTmp.split(",")) {
+                    
+                    if (columnNameAndType.trim().startsWith("primary key")) {
+                        continue;
+                    }
                     
                     // Some recent SQLite use tabulation character as a separator => split() by any white space \s
                     String columnName = columnNameAndType.trim().split("\\s")[0];
@@ -131,16 +152,16 @@ public class MediatorVendor {
         
         this.vendors = Arrays.asList(
             this.auto,
-            this.altibase,
             this.access,
+            this.altibase,
             this.ctreeACE,
             this.cockroachDB,
             this.cubrid,
             this.db2,
             this.derby,
             this.exasol,
-            this.frontbase,
             this.firebird,
+            this.frontbase,
             this.h2,
             this.hana,
             this.hsqldb,
@@ -154,6 +175,7 @@ public class MediatorVendor {
             this.monetDB,
             this.mySQL,
             this.neo4j,
+            this.netezza,
             this.nuoDB,
             this.oracle,
             this.postgreSQL,
@@ -176,6 +198,10 @@ public class MediatorVendor {
     
     
     // Getter and setter
+    
+    public Vendor getAuto() {
+        return this.auto;
+    }
 
     public Vendor getCubrid() {
         return this.cubrid;
@@ -187,10 +213,6 @@ public class MediatorVendor {
 
     public Vendor getPostgreSQL() {
         return this.postgreSQL;
-    }
-
-    public Vendor getAuto() {
-        return this.auto;
     }
 
     public Vendor getMySQL() {

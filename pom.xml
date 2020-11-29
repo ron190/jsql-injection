@@ -20,6 +20,7 @@
         <sonar.organization>ron190-github</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.java.binaries>target/classes</sonar.java.binaries>
+        <sonar.java.source>8</sonar.java.source>
     </properties>
     
     <build>

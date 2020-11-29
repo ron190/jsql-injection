@@ -27,7 +27,7 @@ import com.jsql.view.swing.util.UiUtil;
  */
 public class CustomMetalTabbedPaneUI extends BorderlessTabButtonUI {
     
-    private static final int ADJ2 = 0;
+    private static final float ADJ2 = 0f;
     private final Color selectedTabColor = UIManager.getColor("TabbedPane.selected");
     private static final Color TAB_BACKGROUND = UiUtil.COLOR_DEFAULT_BACKGROUND;
     private static final Color TAB_BORDER = UiUtil.COLOR_COMPONENT_BORDER;
@@ -104,12 +104,7 @@ public class CustomMetalTabbedPaneUI extends BorderlessTabButtonUI {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-//        Rectangle clipRect = g2.getClipBounds();
-//        clipRect.grow(ADJ2 + 1, 0);
-//        g2.setClip(clipRect);
-
-//        int textShiftOffset = isSelected ? -1 : 1;
-        int textShiftOffset = 0;
+        float textShiftOffset = 0f;
         GeneralPath trapezoid = new GeneralPath();
         trapezoid.moveTo(x - ADJ2, y + h);
         trapezoid.lineTo(x + ADJ2, y + textShiftOffset);

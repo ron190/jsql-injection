@@ -1,18 +1,20 @@
 vendor: HSQLDB
+# jdbc:hsqldb:hsql://127.0.0.1:9001/mainDb
+# sa
 
 resource:
  info: |
   select concat(
       concat_ws(
           '${enclose_value_sql}',
-          DATABASE_VERSION(),
-          CURRENT_SCHEMA,
-          USER()
+          database_version(),
+          current_schema,
+          user()
       ),
       '${trail_sql}'
   ) r
-  FROM (
-      VALUES(0)
+  from (
+      values(0)
   )
 
  schema:
@@ -22,7 +24,7 @@ resource:
            '${enclose_value_sql}'
            || r
            || '${separator_qte_sql}'
-           || convert(q,SQL_VARCHAR)
+           || convert(q, sql_varchar)
            || '${enclose_value_sql}'
            order by r
            separator '${separator_cell_sql}'
@@ -31,7 +33,7 @@ resource:
    ) r
    from (
        select
-           convert(schema_name, SQL_VARCHAR) r,
+           convert(schema_name, sql_varchar) r,
            count(TABLE_NAME) q
        from INFORMATION_SCHEMA.tables t
        right join INFORMATION_SCHEMA.schemata s
@@ -44,7 +46,7 @@ resource:
    select concat(
        group_concat(
            '${enclose_value_sql}'
-           || convert(r,SQL_VARCHAR)
+           || convert(r, sql_varchar)
            || '${separator_qte_sql}0${enclose_value_sql}'
            order by r
            separator '${separator_cell_sql}'
@@ -63,7 +65,7 @@ resource:
    select concat(
        group_concat(
            '${enclose_value_sql}'
-           || convert(n,SQL_VARCHAR)
+           || convert(n,sql_varchar)
            || '${separator_qte_sql}'
            || 0
            || '${enclose_value_sql}'
@@ -88,7 +90,7 @@ resource:
             '${enclose_value_sql}'
             || r
             || '${separator_qte_sql}'
-            || convert(q,SQL_VARCHAR)
+            || convert(q,sql_varchar)
             || '${enclose_value_sql}'
             order by r
             separator '${separator_cell_sql}'
@@ -97,14 +99,14 @@ resource:
     ) r
     from (
         select
-            convert(${fields}, SQL_VARCHAR) r,
+            convert(${fields}, sql_varchar) r,
             count(*) q
         from ${database}.${table}
         group by r
         ${limit}
     ) x
    fields:
-    field: trim(ifnull(convert(${field.value}, SQL_VARCHAR), ''))
+    field: trim(ifnull(convert(${field.value}, sql_varchar), ''))
     concat: "|| '%7f' ||"
 
 strategy:
@@ -128,13 +130,15 @@ strategy:
    select
        (1337${indice}7330%2b1)
        || '' r
-   FROM (VALUES(0))
+   from (values(0))
   calibrator: repeat('${calibrator_sql}', 1024)
   limitBoundary: 0
   endingComment: --+-
   fingerprint:
    errorMessage:
     - HSQLDB
+   orderByErrorMessage:
+    - invalid ORDER BY expression
 
  normal:
   indices: union select ${result_range} from (${indice_unique}) b

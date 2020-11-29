@@ -1,4 +1,6 @@
 vendor: Vertica
+# jdbc:vertica://127.0.0.1:5433/
+# dbadmin password
 
 resource:
  info: |
@@ -105,7 +107,7 @@ strategy:
         * If reach end of string (${lead}i) then NULLIF nullifies the result
         */
        '${lead}'
-       || NULLIF(
+       || nullif(
            substr(
                (${injection}),
                ${window.char},

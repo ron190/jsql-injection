@@ -1,4 +1,5 @@
 vendor: MemSQL
+# docker pull memsql/quickstart
 
 resource:
  info: |
@@ -121,6 +122,8 @@ strategy:
   fingerprint:
    errorMessage:
     - memsql
+   orderByErrorMessage:
+    - Unknown column '1337' in 'order clause'
 
  normal:
   indices: union select ${indices}

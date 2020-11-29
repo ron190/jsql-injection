@@ -1,4 +1,6 @@
 vendor: Hana
+# jdbc:sap://127.0.0.1:30115
+# XSA_ADMIN 1anaHEXH
 
 resource:
  info: |
@@ -15,14 +17,14 @@ resource:
  schema:
   database: |
    select
-       STRING_AGG(
+       string_agg(
            '${enclose_value_sql}'
            || r
            || '${separator_qte_sql}'
            || '0'
            || '${enclose_value_sql}',
            '${separator_cell_sql}'
-           ORDER BY r
+           order by r
        )
        || '${trail_sql}'
    from (
@@ -34,14 +36,14 @@ resource:
 
   table: |
    select
-       STRING_AGG(
+       string_agg(
            '${enclose_value_sql}'
            || r
            || '${separator_qte_sql}'
            || '0'
            || '${enclose_value_sql}',
            '${separator_cell_sql}'
-           ORDER BY r
+           order by r
        )
        || '${trail_sql}'
    from (
@@ -58,14 +60,14 @@ resource:
 
   column: |
    select
-       STRING_AGG(
+       string_agg(
            '${enclose_value_sql}'
            || r
            || '${separator_qte_sql}'
            || '0'
            || '${enclose_value_sql}',
            '${separator_cell_sql}'
-           ORDER BY r
+           order by r
        )
        || '${trail_sql}'
    from (
@@ -85,14 +87,14 @@ resource:
   row:
    query: |
     select
-        STRING_AGG(
+        string_agg(
             '${enclose_value_sql}'
             || r
             || '${separator_qte_sql}'
             || '0'
             || '${enclose_value_sql}',
             '${separator_cell_sql}'
-            ORDER BY r
+            order by r
         )
         || '${trail_sql}'
     from (
@@ -113,7 +115,7 @@ strategy:
         * If reach end of string (${lead}i) then NULLIF nullifies the result
         */
        '${lead}'
-       || NULLIF (
+       || nullif (
            substr (
                (${injection}),
                ${window.char},
@@ -163,7 +165,7 @@ strategy:
      * true bit return bit, false bit return 0
      * 8 & 8 = 8, 8 & 4 = 0
      */
-    0 != BITAND(
+    0 != bitand(
         ascii(
             substr(
                 (${injection}),

@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: pipeline-jsql-injection
 
 on:
   push:
@@ -37,10 +37,10 @@ jobs:
         # Disable shallow clone to send Git blame to Sonar
         fetch-depth: 0
     
-    - name: Set up JDK 1.8
+    - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: 1.8
+        java-version: 15
     
     - name: Set Maven dependencies cache
       uses: actions/cache@v1
@@ -51,7 +51,7 @@ jobs:
               
     - name: Install Maven dependencies
       run: |
-        mvn clean install -DskipITs -DskipTests dependency:tree --file pom.xml
+        mvn clean install -DskipTests dependency:tree
         
     - name: Build and start databases Docker images
       run: |

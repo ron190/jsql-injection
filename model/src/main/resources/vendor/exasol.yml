@@ -1,4 +1,7 @@
 vendor: Exasol
+# docker run --name exasoldb -p 8563:8563 --detach --privileged --stop-timeout 120  exasol/docker-db
+# jdbc:exa:127.0.0.1:8563
+# sys exasol
 
 resource:
  info: |
@@ -132,6 +135,8 @@ strategy:
   fingerprint:
    errorMessage:
     - Exasol
+   orderByErrorMessage:
+    - Wrong column number. Too large value 1337 as select list column reference in ORDER BY
 
  normal:
   indices: union select ${indices}

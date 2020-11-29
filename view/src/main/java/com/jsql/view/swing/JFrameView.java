@@ -145,6 +145,8 @@ public class JFrameView extends JFrame {
         
         this.setVisible(true);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        
+        MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();
     }
 
     private void initializeShortcuts() {

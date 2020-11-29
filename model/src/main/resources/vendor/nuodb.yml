@@ -1,9 +1,11 @@
 vendor: NuoDB
+# jdbc:com.nuodb://127.0.0.1/test
+# dba nuodb
 
 resource:
  info: |
   select
-      GETRELEASEVERSION()
+      getreleaseversion()
       || '${enclose_value_sql}'
       || database()
       || '${enclose_value_sql}'

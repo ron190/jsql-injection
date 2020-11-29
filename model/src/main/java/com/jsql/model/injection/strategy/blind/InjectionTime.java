@@ -152,13 +152,13 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
                 taskExecutor.shutdownNow();
             }
         
-            for (Future<CallableTime> falseMark: listTagTrue) {
+            for (Future<CallableTime> trueMark: listTagTrue) {
                 
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
                 
-                if (!falseMark.get().isTrue()) {
+                if (!trueMark.get().isTrue()) {
                     
                     this.isTimeInjectable = false;
                     return;

@@ -20,10 +20,6 @@ import com.jsql.view.swing.util.UiUtil;
 @SuppressWarnings("serial")
 public class JTextFieldAddressBar extends JPopupTextField implements DecoratorJComponent<JTextField> {
     
-    /**
-     * Constructor with default text.
-     * @param string The text to display
-     */
     public JTextFieldAddressBar(JTextField c) {
         
         super(c);

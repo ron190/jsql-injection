@@ -1,12 +1,14 @@
 vendor: MaxDB
+# jdbc:sapdb://127.0.0.1/MAXDB
+# DBADMIN TEST
 
 resource:
  info: |
-  SELECT
+  select
       '-'
       || id
       || '${enclose_value_sql}'
-      || DATABASE()
+      || database()
       || '${enclose_value_sql}'
       || user()
       || '${trail_sql}'
@@ -98,7 +100,7 @@ strategy:
   slidingWindow: |
    select
        '${lead}'
-       ||SUBSTR(
+       || substr(
            r,
            ${window.char},
            1500
