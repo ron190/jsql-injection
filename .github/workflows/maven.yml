@@ -1,4 +1,4 @@
-name: pipeline-jsql-injection
+name: Java CI with Maven and Docker
 
 on:
   push:
@@ -40,7 +40,7 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: 15
+        java-version: 14
     
     - name: Set Maven dependencies cache
       uses: actions/cache@v1
