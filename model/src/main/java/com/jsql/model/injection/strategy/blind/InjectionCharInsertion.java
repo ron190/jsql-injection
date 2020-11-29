@@ -100,7 +100,6 @@ public class InjectionCharInsertion {
                     +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr()
                     +"+"+ urlTest
                     ,
-                    injectionModel,
                     this,
                     BooleanMode.OR,
                     "char:bool-true"
@@ -123,7 +122,7 @@ public class InjectionCharInsertion {
             
             this.constantTrueMark = listTagTrue.get(0).get().getOpcodes();
             
-            for (int i = 1 ; i < listTagTrue.size() ; i++) { // Future<CallableCharInsertion> trueMark: listTagTrue) {
+            for (int i = 1 ; i < listTagTrue.size() ; i++) {
                 
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
@@ -141,10 +140,10 @@ public class InjectionCharInsertion {
             Thread.currentThread().interrupt();
         }
         
-        this.initializeFalseMarks(injectionModel, falseCharInsertion);
+        this.initializeFalseMarks(injectionModel);
     }
     
-    private void initializeFalseMarks(InjectionModel injectionModel, String a) {
+    private void initializeFalseMarks(InjectionModel injectionModel) {
         
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
@@ -170,7 +169,6 @@ public class InjectionCharInsertion {
                     +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr()
                     +"+"+ urlTest
                     ,
-                    injectionModel,
                     this,
                     BooleanMode.OR,
                     "char:bool-false"
@@ -222,7 +220,6 @@ public class InjectionCharInsertion {
             +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr()
             +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization()
             ,
-            this.injectionModel,
             this,
             BooleanMode.OR,
             "char:bool-confirm"

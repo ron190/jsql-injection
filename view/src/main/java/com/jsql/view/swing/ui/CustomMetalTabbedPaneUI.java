@@ -106,10 +106,10 @@ public class CustomMetalTabbedPaneUI extends BorderlessTabButtonUI {
 
         float textShiftOffset = 0f;
         GeneralPath trapezoid = new GeneralPath();
-        trapezoid.moveTo(x - ADJ2, y + h);
+        trapezoid.moveTo(x - ADJ2, (float) y + h);
         trapezoid.lineTo(x + ADJ2, y + textShiftOffset);
         trapezoid.lineTo(x + w - ADJ2, y + textShiftOffset);
-        trapezoid.lineTo(x + w + ADJ2, y + h);
+        trapezoid.lineTo(x + w + ADJ2, (float) y + h);
 
         g2.setColor(isSelected ? this.selectedTabColor : TAB_BACKGROUND);
         g2.fill(trapezoid);

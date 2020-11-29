@@ -37,36 +37,6 @@ public class TamperingUtil {
     private String customTamper = null;
     
     private static final NashornScriptEngineFactory NASHORN_FACTORY = new NashornScriptEngineFactory();
-
-    // TODO builder
-    public void set(
-        boolean isBase64,
-        boolean isVersionComment,
-        boolean isFunctionComment,
-        boolean isEqualToLike,
-        boolean isRandomCase,
-        boolean isHexToChar,
-        boolean isQuoteToUtf8,
-        boolean isEval,
-        boolean isSpaceToMultilineComment,
-        boolean isSpaceToDashComment,
-        boolean isSpaceToSharpComment,
-        boolean isStringToChar
-    ) {
-        
-        this.isBase64 = isBase64;
-        this.isVersionComment = isVersionComment;
-        this.isFunctionComment = isFunctionComment;
-        this.isEqualToLike = isEqualToLike;
-        this.isRandomCase = isRandomCase;
-        this.isHexToChar = isHexToChar;
-        this.isQuoteToUtf8 = isQuoteToUtf8;
-        this.isEval = isEval;
-        this.isSpaceToMultilineComment = isSpaceToMultilineComment;
-        this.isSpaceToDashComment = isSpaceToDashComment;
-        this.isSpaceToSharpComment = isSpaceToSharpComment;
-        this.isStringToChar = isStringToChar;
-    }
     
     private static String eval(String sqlQuery, String jsTampering) {
         

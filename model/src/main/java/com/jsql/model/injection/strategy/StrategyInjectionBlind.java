@@ -51,26 +51,26 @@ public class StrategyInjectionBlind extends AbstractStrategy {
             
         } else {
             
-            LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Blind with operator AND...");
+            LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Blind with AND...");
             
             this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.AND);
             this.isApplicable = this.injectionBlind.isInjectable();
             
             if (!this.isApplicable) {
                 
-                LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Blind with operator OR...");
+                LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Blind with OR...");
                 
                 this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.OR);
                 this.isApplicable = this.injectionBlind.isInjectable();
                 
                 if (this.isApplicable) {
                     
-                    LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Blind injection with operator OR");
+                    LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Blind injection with OR");
                 }
                 
             } else {
                 
-                LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Blind injection with operator AND");
+                LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Blind injection with AND");
             }
             
             if (this.isApplicable) {

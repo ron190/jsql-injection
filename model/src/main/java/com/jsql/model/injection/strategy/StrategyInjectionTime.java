@@ -51,25 +51,25 @@ public class StrategyInjectionTime extends AbstractStrategy {
             
         } else {
             
-            LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Time with operator AND...");
+            LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Time with AND...");
             
             this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.AND);
             this.isApplicable = this.injectionTime.isInjectable();
             
             if (!this.isApplicable) {
                 
-                LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Time with operator OR...");
+                LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Time with OR...");
                 
                 this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.OR);
                 this.isApplicable = this.injectionTime.isInjectable();
                 
                 if (this.isApplicable) {
-                    LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Time injection with operator OR");
+                    LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Time injection with OR");
                 }
                 
             } else {
                 
-                LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Time injection with operator AND");
+                LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Time injection with AND");
             }
             
             if (this.isApplicable) {

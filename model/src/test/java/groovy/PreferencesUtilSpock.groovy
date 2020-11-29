@@ -185,7 +185,7 @@ class PreferencesUtilSpock extends Specification {
         
         def preferencesUtil = 
             new PreferencesUtil()
-            .withIsCheckingUpdate()
-            .withIsReportingBugs()
+            .withCheckingUpdate()
+            .withReportingBugs()
     }
 }

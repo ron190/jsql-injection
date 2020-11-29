@@ -3,8 +3,6 @@ package com.jsql.model.injection.strategy.blind;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
@@ -17,28 +15,21 @@ import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
  */
 public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharInsertion> {
     
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
-    
     // List of differences found between the TRUE page, and the present page
     private LinkedList<Diff> opcodes = new LinkedList<>();
     
-    private DiffMatchPatch DIFFMATCHPATCH = new DiffMatchPatch();
+    private DiffMatchPatch diffMatchPatch = new DiffMatchPatch();
 
     private InjectionCharInsertion injectionCharInsertion;
     
     private String metadataInjectionProcess;
-
-    private String ctnt;
     
     /**
      * Constructor for preparation and blind confirmation.
      * @param inj
      * @param injectionCharInsertion
      */
-    public CallableCharInsertion(String inj, InjectionModel injectionModel, InjectionCharInsertion injectionCharInsertion, BooleanMode blindMode, String metadataInjectionProcess) {
+    public CallableCharInsertion(String inj, InjectionCharInsertion injectionCharInsertion, BooleanMode blindMode, String metadataInjectionProcess) {
         
         this.injectionCharInsertion = injectionCharInsertion;
         this.metadataInjectionProcess = metadataInjectionProcess;
@@ -72,11 +63,11 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
     @Override
     public CallableCharInsertion call() throws Exception {
         
-        this.ctnt = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess);
+        String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess);
         
-        this.opcodes = this.DIFFMATCHPATCH.diffMain(this.injectionCharInsertion.getBlankFalseMark(), this.ctnt, false);
+        this.opcodes = this.diffMatchPatch.diffMain(this.injectionCharInsertion.getBlankFalseMark(), source, false);
         
-        this.DIFFMATCHPATCH.diffCleanupEfficiency(this.opcodes);
+        this.diffMatchPatch.diffCleanupEfficiency(this.opcodes);
         
         return this;
     }

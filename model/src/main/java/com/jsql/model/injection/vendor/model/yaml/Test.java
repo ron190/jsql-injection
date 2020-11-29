@@ -12,9 +12,27 @@ import org.apache.commons.lang3.StringUtils;
 @SuppressWarnings("serial")
 public class Test implements Serializable {
 
-    private List<String> falses = new ArrayList<>();
-    private List<String> trues = new ArrayList<>();
-    private String initialization = StringUtils.EMPTY;
+    private List<String> falses = 
+        Arrays.asList(
+            "true = false",
+            "true %21= true",
+            "false %21= false",
+            "1 = 2",
+            "1 %21= 1",
+            "2 %21= 2"
+        );
+            
+    private List<String> trues = 
+        Arrays.asList(
+            "true = true",
+            "false = false",
+            "true %21= false",
+            "1 = 1",
+            "2 = 2",
+            "1 %21= 2"
+        );
+
+    private String initialization = "0%2b1 = 1";
     private String bit = StringUtils.EMPTY;
     private String length = StringUtils.EMPTY;
 

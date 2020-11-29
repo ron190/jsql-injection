@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class SessionCookieManager extends CookieHandler {
     
@@ -98,21 +99,21 @@ public class SessionCookieManager extends CookieHandler {
             return;
         }
 
-        for (String headerKey : responseHeaders.keySet()) {
+        for (Entry<String, List<String>> entrySetHeader : responseHeaders.entrySet()) {
             
             // RFC 2965 3.2.2, key must be 'Set-Cookie2'
             // we also accept 'Set-Cookie' here for backward compatibility
             if (
-                headerKey == null
+                entrySetHeader.getKey() == null
                 || !(
-                        headerKey.equalsIgnoreCase("Set-Cookie2")
-                        || headerKey.equalsIgnoreCase("Set-Cookie")
-                    )
+                    entrySetHeader.getKey().equalsIgnoreCase("Set-Cookie2")
+                    || entrySetHeader.getKey().equalsIgnoreCase("Set-Cookie")
+                )
             ) {
                 continue;
             }
 
-            for (String headerValue : responseHeaders.get(headerKey)) {
+            for (String headerValue : entrySetHeader.getValue()) {
                 
                 try {
                     List<HttpCookie> cookies = HttpCookie.parse(headerValue);

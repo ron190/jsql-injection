@@ -11,8 +11,8 @@ public class Boolean implements Serializable {
     private Test test = new Test();
     private String blind = StringUtils.EMPTY;
     private String time = StringUtils.EMPTY;
-    private String modeAnd = StringUtils.EMPTY;
-    private String modeOr = StringUtils.EMPTY;
+    private String modeAnd = "and";
+    private String modeOr = "or";
 
     public Test getTest() {
         return this.test;

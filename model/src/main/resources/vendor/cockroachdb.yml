@@ -139,21 +139,6 @@ strategy:
 
  boolean:
   test:
-   falses:
-    - true = false
-    - true %21= true
-    - false %21= false
-    - 1 = 2
-    - 1 %21= 1
-    - 2 %21= 2
-   trues:
-    - true = true
-    - false = false
-    - true %21= false
-    - 1 = 1
-    - 2 = 2
-    - 1 %21= 2
-   initialization: 0%2b1 = 1
    bit: |
     /**
      * true bit return bit, false bit return 0

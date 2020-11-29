@@ -152,7 +152,7 @@ public class DataAccess {
         
         String[] sourcePage = {StringUtils.EMPTY};
 
-        String resultToParse = null;
+        String resultToParse = "";
         
         try {
             resultToParse = new SuspendableGetRows(this.injectionModel).run(

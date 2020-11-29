@@ -102,9 +102,11 @@ public class HeaderUtil {
         
         this.parseForms(connection, pageSource);
         
-        if (this.isCsrf(mapResponse).isPresent()) {
+        Optional<SimpleEntry<String, String>> optionalCookieCsrf = this.isCsrf(mapResponse);
+        
+        if (optionalCookieCsrf.isPresent()) {
             
-            SimpleEntry<String, String> cookieCsrf = this.isCsrf(mapResponse).get();
+            SimpleEntry<String, String> cookieCsrf = optionalCookieCsrf.get();
             LOGGER.warn("Found CSRF token in HTTP header: "+ cookieCsrf.getKey() +"="+ cookieCsrf.getValue());
             
             // TODO Add each CSRF tokens to each header and request, like Spring param _csrf and header XSRF-TOKEN

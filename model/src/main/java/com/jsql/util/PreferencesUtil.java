@@ -372,18 +372,13 @@ public class PreferencesUtil {
         return this;
     }
     
-    public PreferencesUtil withIsCheckingUpdate() {
+    public PreferencesUtil withCheckingUpdate() {
         this.isCheckingUpdate = true;
         return this;
     }
     
-    public PreferencesUtil withIsReportingBugs() {
+    public PreferencesUtil withReportingBugs() {
         this.isReportingBugs = true;
-        return this;
-    }
-    
-    public PreferencesUtil withIsCheckingAllURLParam() {
-        this.isCheckingAllURLParam = true;
         return this;
     }
     
