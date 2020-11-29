@@ -982,8 +982,8 @@ public Token getNextToken() throws IOException {
       boolean zzR = false;
       int zzCh;
       int zzCharCount;
-      for (zzCurrentPosL = this.zzStartRead  ;
-           zzCurrentPosL < zzMarkedPosL ;
+      for (zzCurrentPosL = this.zzStartRead;
+           zzCurrentPosL < zzMarkedPosL;
            zzCurrentPosL += zzCharCount ) {
         zzCh = Character.codePointAt(zzBufferL, zzCurrentPosL, zzMarkedPosL);
         zzCharCount = Character.charCount(zzCh);

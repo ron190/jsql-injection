@@ -25,7 +25,7 @@ public class PostTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("name", "0'")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
+        model.getMediatorUtils().getPreferencesUtil().withNotTestingConnection();
 
         model
         .getMediatorUtils()

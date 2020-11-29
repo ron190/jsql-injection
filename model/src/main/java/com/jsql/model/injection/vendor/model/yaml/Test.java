@@ -59,8 +59,8 @@ public class Test implements Serializable {
     }
 
     public String getTruthyAsString() {
-        return 
-            trues
+        return
+            this.trues
             .stream()
             .collect(
                 Collectors.joining(System.getProperty("line.separator"))
@@ -68,12 +68,12 @@ public class Test implements Serializable {
     }
     
     public void setTruthy(String truthy) {
-        trues = Arrays.asList(truthy.split("[\r\n]+"));
+        this.trues = Arrays.asList(truthy.split("[\r\n]+"));
     }
     
     public String getFalsyAsString() {
-        return 
-            falses
+        return
+            this.falses
             .stream()
             .collect(
                 Collectors.joining(System.getProperty("line.separator"))
@@ -81,6 +81,6 @@ public class Test implements Serializable {
     }
     
     public void setFalsy(String falsy) {
-        falses = Arrays.asList(falsy.split("[\r\n]+"));
+        this.falses = Arrays.asList(falsy.split("[\r\n]+"));
     }
 }

@@ -115,7 +115,10 @@ public class HeaderUtil {
                     cookieCsrf.getValue()
                 );
             
-            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()) {
+            if (
+                !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
+                && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
+            ) {
                 
                 LOGGER.debug(
                     "CSRF token added to querystring, request and header: "+
@@ -165,7 +168,10 @@ public class HeaderUtil {
             
             SimpleEntry<String, String> tokenCsrfFound = optionalTokenCsrf.get();
             
-            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()) {
+            if (
+                !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
+                && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
+            ) {
                 
                 LOGGER.debug("Found Csrf token "+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +" in HTML body, adding token to querystring, request and header");
                 this.injectionModel.getMediatorUtils().getConnectionUtil().setTokenCsrf(tokenCsrfFound);

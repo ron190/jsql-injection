@@ -128,7 +128,6 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     private boolean isApplicable(Configuration configurationYaml, Method errorMethod) {
         
-//        LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING") + StringUtils.SPACE + errorMethod.getName() +"...");
         boolean methodIsApplicable = false;
       
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(

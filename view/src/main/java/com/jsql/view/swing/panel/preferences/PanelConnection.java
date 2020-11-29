@@ -32,7 +32,7 @@ public class PanelConnection extends JPanel {
     private final JCheckBox checkboxIsLimitingThreads = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
     private final JCheckBox checkboxIsUnicodeDecodeDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled());
     
-    private final JSpinner spinnerThreadCount = new JSpinner();
+    private final JSpinner spinnerLimitingThreads = new JSpinner();
     private final JCheckBox checkboxIsCsrfUserTag = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag());
     private final JTextField textfieldCsrfUserTag = new JTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTag());
     
@@ -78,11 +78,6 @@ public class PanelConnection extends JPanel {
         this.checkboxIsNotProcessingCookies.setFocusable(false);
         JButton labelIsNotProcessingCookies = new JButton("Disable session cookies");
         labelIsNotProcessingCookies.setToolTipText(tooltipIsNotProcessingCookies);
-        labelIsNotProcessingCookies.addActionListener(actionEvent -> {
-            
-            this.checkboxIsNotProcessingCookies.setSelected(!this.checkboxIsNotProcessingCookies.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
         
         String tooltipIsLimitingThreads = "Limit threads";
         this.checkboxIsLimitingThreads.setToolTipText(tooltipIsLimitingThreads);
@@ -95,11 +90,23 @@ public class PanelConnection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
+        String tooltipProcessCsrf = "Process CSRF token";
+        this.checkboxIsProcessingCsrf.setToolTipText(tooltipProcessCsrf);
+        this.checkboxIsProcessingCsrf.setFocusable(false);
+        JButton labelProcessingCsrf = new JButton("Process CSRF token");
+        labelProcessingCsrf.setToolTipText(tooltipProcessCsrf);
+        labelProcessingCsrf.addActionListener(actionEvent -> {
+            
+            this.checkboxIsProcessingCsrf.setSelected(!this.checkboxIsProcessingCsrf.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+        
         JPanel panelThreadCount = new JPanel(new BorderLayout());
         panelThreadCount.add(labelIsLimitingThreads, BorderLayout.WEST);
-        panelThreadCount.add(this.spinnerThreadCount, BorderLayout.CENTER);
-        panelThreadCount.setMaximumSize(new Dimension(150, this.spinnerThreadCount.getPreferredSize().height));
-        this.spinnerThreadCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
+        panelThreadCount.add(this.spinnerLimitingThreads, BorderLayout.CENTER);
+        panelThreadCount.add(new JLabel(" (default 10)"), BorderLayout.EAST);
+        panelThreadCount.setMaximumSize(new Dimension(125, this.spinnerLimitingThreads.getPreferredSize().height));
+        this.spinnerLimitingThreads.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
         
         int countLimitingThreads = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countLimitingThreads();
         SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(
@@ -110,50 +117,21 @@ public class PanelConnection extends JPanel {
             100,
             1
         );
-        this.spinnerThreadCount.setModel(spinnerNumberModel);
-        
-        ActionListener actionListenerProcessCsrf = actionEvent -> {
-            
-            if (actionEvent.getSource() != this.checkboxIsProcessingCsrf) {
-                
-                this.checkboxIsProcessingCsrf.setSelected(!this.checkboxIsProcessingCsrf.isSelected());
-            }
-            
-            if (this.checkboxIsProcessingCsrf.isSelected()) {
-                
-                this.checkboxIsNotProcessingCookies.setSelected(false);
-            }
-            
-            this.checkboxIsNotProcessingCookies.setEnabled(!this.checkboxIsProcessingCsrf.isSelected());
-            labelIsNotProcessingCookies.setEnabled(!this.checkboxIsProcessingCsrf.isSelected());
-            
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        };
-        
-        this.checkboxIsNotProcessingCookies.setEnabled(!this.checkboxIsProcessingCsrf.isSelected());
-        labelIsNotProcessingCookies.setEnabled(!this.checkboxIsProcessingCsrf.isSelected());
-        
-        String tooltipProcessCsrf = "Process CSRF token";
-        this.checkboxIsProcessingCsrf.setToolTipText(tooltipProcessCsrf);
-        this.checkboxIsProcessingCsrf.setFocusable(false);
-        JButton labelProcessCsrf = new JButton("Process CSRF token");
-        labelProcessCsrf.setToolTipText(tooltipProcessCsrf);
-        labelProcessCsrf.addActionListener(actionListenerProcessCsrf);
-        this.checkboxIsProcessingCsrf.addActionListener(actionListenerProcessCsrf);
+        this.spinnerLimitingThreads.setModel(spinnerNumberModel);
         
         String tooltipIsCsrfUserTag = "CSRF tag name";
         this.checkboxIsCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
         this.checkboxIsCsrfUserTag.setFocusable(false);
-        JButton labelIsCsrfUserTag = new JButton("CSRF tag name");
-        labelIsCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
-        labelIsCsrfUserTag.addActionListener(actionEvent -> {
+        JButton labelCsrfUserTag = new JButton("CSRF tag name");
+        labelCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
+        labelCsrfUserTag.addActionListener(actionEvent -> {
             
             this.checkboxIsCsrfUserTag.setSelected(!this.checkboxIsCsrfUserTag.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
         JPanel panelCsrfUserTag = new JPanel(new BorderLayout());
-        panelCsrfUserTag.add(labelIsCsrfUserTag, BorderLayout.WEST);
+        panelCsrfUserTag.add(labelCsrfUserTag, BorderLayout.WEST);
         panelCsrfUserTag.add(this.textfieldCsrfUserTag, BorderLayout.CENTER);
         panelCsrfUserTag.setMaximumSize(new Dimension(150, this.textfieldCsrfUserTag.getPreferredSize().height));
         this.textfieldCsrfUserTag.getDocument().addDocumentListener(new DocumentListenerTyping() {
@@ -165,7 +143,29 @@ public class PanelConnection extends JPanel {
             }
         });
         
-
+        ActionListener actionListenerNotProcessingCookies = actionEvent -> {
+            
+            this.checkboxIsNotProcessingCookies.setSelected(!this.checkboxIsNotProcessingCookies.isSelected());
+            
+            this.checkboxIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+            labelProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+            
+            this.textfieldCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+            this.checkboxIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+            labelCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+            
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        };
+        
+        labelIsNotProcessingCookies.addActionListener(actionListenerNotProcessingCookies);
+        
+        labelProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+        
+        this.textfieldCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+        this.checkboxIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+        this.checkboxIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+        labelCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+        
         JLabel emptyLabelSessionManagement = new JLabel();
         JLabel labelSessionManagement = new JLabel("<html><br /><b>Session and Cookie management</b></html>");
         
@@ -189,8 +189,8 @@ public class PanelConnection extends JPanel {
             labelIsFollowingRedirection,
             labelIsUnicodeDecodeDisabled,
             labelTestConnection,
-            labelProcessCsrf,
-            labelIsCsrfUserTag,
+            labelProcessingCsrf,
+            labelCsrfUserTag,
             labelIsNotProcessingCookies,
             labelIsLimitingThreads
         )
@@ -226,7 +226,7 @@ public class PanelConnection extends JPanel {
                 .addComponent(panelThreadCount)
                 .addComponent(labelSessionManagement)
                 .addComponent(labelIsNotProcessingCookies)
-                .addComponent(labelProcessCsrf)
+                .addComponent(labelProcessingCsrf)
                 .addComponent(panelCsrfUserTag)
             )
         );
@@ -277,7 +277,7 @@ public class PanelConnection extends JPanel {
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsProcessingCsrf)
-                .addComponent(labelProcessCsrf)
+                .addComponent(labelProcessingCsrf)
             )
             .addGroup(
                 groupLayout
@@ -317,7 +317,7 @@ public class PanelConnection extends JPanel {
     }
     
     public JSpinner getSpinnerLimitingThreads() {
-        return this.spinnerThreadCount;
+        return this.spinnerLimitingThreads;
     }
     
     public JCheckBox getCheckboxIsCsrfUserTag() {

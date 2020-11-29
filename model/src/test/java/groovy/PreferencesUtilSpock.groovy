@@ -16,77 +16,47 @@ class PreferencesUtilSpock extends Specification {
                 isCheckingUpdate == true
                 isReportingBugs == true
                 is4K == true
-                
-                isFollowingRedirection == false
-                isNotInjectingMetadata == false
-                
-                isCheckingAllParam == false
-                isCheckingAllURLParam == false
-                isCheckingAllRequestParam == false
-                isCheckingAllHeaderParam == false
-                isCheckingAllJSONParam == false
-                isCheckingAllCookieParam == false
-                isCheckingAllSOAPParam == false
-                
-                isParsingForm == false
-                isNotTestingConnection == false
-                isProcessingCookies == false
-                isProcessingCsrf == false
-                
-                isTamperingBase64 == false
-                isTamperingEqualToLike == false
-                isTamperingFunctionComment == false
-                isTamperingVersionComment == false
-                isTamperingRandomCase == false
-                isTamperingEval == false
-                isTamperingSpaceToDashComment == false
-                isTamperingSpaceToMultilineComment == false
-                isTamperingSpaceToSharpComment == false
-                
-                isLimitingThreads == false
-                countLimitingThreads == 0
             }
     }
     
     def 'Check saved preferences are loaded from the JVM'() {
         when:
-            preferencesUtil.set(
-                isCheckingUpdate,
-                isReportingBugs,
-                isFollowingRedirection,
-                isNotInjectingMetadata,
-                
-                isCheckingAllParam,
-                isCheckingAllURLParam,
-                isCheckingAllRequestParam,
-                isCheckingAllHeaderParam,
-                isCheckingAllJSONParam,
-                isCheckingAllCookieParam,
-                isCheckingAllSOAPParam,
-                
-                isParsingForm,
-                isNotTestingConnection,
-                isProcessingCookies,
-                isProcessingCsrf,
-                
-                isTamperingBase64,
-                isTamperingEqualToLike,
-                isTamperingFunctionComment,
-                isTamperingVersionComment,
-                isTamperingRandomCase,
-                isTamperingEval,
-                isTamperingSpaceToDashComment,
-                isTamperingSpaceToMultilineComment,
-                isTamperingSpaceToSharpComment,
-                
-                is4K,
-                
-                isLimitingThreads,
-                countLimitingThreads,
-                
-                isCsrfUserTag,
-                csrfUserTag
-            )
+            preferencesUtil
+            .withIsCheckingUpdate(isCheckingUpdate)
+            .withIsReportingBugs(isReportingBugs)
+            .withIsFollowingRedirection(isFollowingRedirection)
+            .withIsNotInjectingMetadata(isNotInjectingMetadata)
+            
+            .withIsCheckingAllParam(isCheckingAllParam)
+            .withIsCheckingAllURLParam(isCheckingAllURLParam)
+            .withIsCheckingAllRequestParam(isCheckingAllRequestParam)
+            .withIsCheckingAllHeaderParam(isCheckingAllHeaderParam)
+            .withIsCheckingAllJSONParam(isCheckingAllJSONParam)
+            .withIsCheckingAllCookieParam(isCheckingAllCookieParam)
+            .withIsCheckingAllSOAPParam(isCheckingAllSOAPParam)
+
+            .withIsParsingForm(isParsingForm)
+            .withIsNotTestingConnection(isNotTestingConnection)
+            .withIsNotProcessingCookies(isNotProcessingCookies)
+            .withIsProcessingCsrf(isProcessingCsrf)
+
+            .withIsTamperingBase64(isTamperingBase64)
+            .withIsTamperingEqualToLike(isTamperingEqualToLike)
+            .withIsTamperingFunctionComment(isTamperingFunctionComment)
+            .withIsTamperingVersionComment(isTamperingVersionComment)
+            .withIsTamperingRandomCase(isTamperingRandomCase)
+            .withIsTamperingEval(isTamperingEval)
+            .withIsTamperingSpaceToDashComment(isTamperingSpaceToDashComment)
+            .withIsTamperingSpaceToMultilineComment(isTamperingSpaceToMultilineComment)
+            .withIsTamperingSpaceToSharpComment(isTamperingSpaceToSharpComment)
+
+            .withIs4K(is4K)
+
+            .withIsLimitingThreads(isLimitingThreads)
+            .withCountLimitingThreads(countLimitingThreads)
+
+            .withIsCsrfUserTag(isCsrfUserTag)
+            .withCsrfUserTag(csrfUserTag)
         
         then:
             preferencesUtil.with {
@@ -107,7 +77,7 @@ class PreferencesUtilSpock extends Specification {
                 
                 isParsingForm == true
                 isNotTestingConnection == true
-                isProcessingCookies == true
+                isNotProcessingCookies == true
                 isProcessingCsrf == true
                 
                 isTamperingBase64 == true
@@ -150,7 +120,7 @@ class PreferencesUtilSpock extends Specification {
                 
                 isParsingForm == true
                 isNotTestingConnection == true
-                isProcessingCookies == true
+                isNotProcessingCookies == true
                 isProcessingCsrf == true
                 
                 isTamperingBase64 == true
@@ -190,7 +160,7 @@ class PreferencesUtilSpock extends Specification {
             
             isParsingForm = true
             isNotTestingConnection = true
-            isProcessingCookies = true
+            isNotProcessingCookies = true
             isProcessingCsrf = true
             
             isTamperingBase64 = true
@@ -210,45 +180,12 @@ class PreferencesUtilSpock extends Specification {
             csrfUserTag = ""
     }
     
-    // Restore default preferences to jvm
+    // Restore default preferences to JVM
     def cleanupSpec() {
         
-        def preferencesUtil = new PreferencesUtil()
-        preferencesUtil.set(
-            true,
-            true,
-            false,
-            
-            false,
-            false,
-                 
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-                 
-            false,
-            false,
-            false,
-            false,
-                 
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            
-            false,
-            0,
-            false,
-            ""
-        )
+        def preferencesUtil = 
+            new PreferencesUtil()
+            .withIsCheckingUpdate()
+            .withIsReportingBugs()
     }
 }

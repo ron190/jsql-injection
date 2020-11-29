@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
@@ -51,7 +50,7 @@ public class InjectionCharInsertion {
      * Create blind attack initialization.
      * If every false test are not in true mark and every true test are in
      * true test, then blind attack is confirmed.
-     * @param prefixSuffix 
+     * @param prefixSuffix
      * @param blindMode
      */
     public InjectionCharInsertion(InjectionModel injectionModel, String falseCharInsertion, String prefixSuffix) {
@@ -73,7 +72,7 @@ public class InjectionCharInsertion {
         this.blankFalseMark = this.callUrl(
             falseCharInsertion
             +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().endingComment()
-            +"+fals+", 
+            +"+fals+",
             "char:bool-false"
         );
 
@@ -101,9 +100,9 @@ public class InjectionCharInsertion {
                     +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr()
                     +"+"+ urlTest
                     ,
-                    injectionModel, 
-                    this, 
-                    BooleanMode.OR, 
+                    injectionModel,
+                    this,
+                    BooleanMode.OR,
                     "char:bool-true"
                 )
             );
@@ -167,13 +166,13 @@ public class InjectionCharInsertion {
             
             listCallableTagFalse.add(
                 new CallableCharInsertion(
-                    prefixSuffix.replace("prefix", "" + RandomStringUtils.random(10, "345"))
+                    this.prefixSuffix.replace("prefix", "" + RandomStringUtils.random(10, "345"))
                     +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr()
                     +"+"+ urlTest
                     ,
-                    injectionModel, 
-                    this, 
-                    BooleanMode.OR, 
+                    injectionModel,
+                    this,
+                    BooleanMode.OR,
                     "char:bool-false"
                 )
             );
@@ -219,7 +218,7 @@ public class InjectionCharInsertion {
         }
         
         CallableCharInsertion blindTest = new CallableCharInsertion(
-            prefixSuffix.replace("prefix", "" + RandomStringUtils.random(10, "678"))
+            this.prefixSuffix.replace("prefix", "" + RandomStringUtils.random(10, "678"))
             +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr()
             +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization()
             ,

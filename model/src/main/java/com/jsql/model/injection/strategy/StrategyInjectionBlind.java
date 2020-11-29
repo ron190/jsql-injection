@@ -64,6 +64,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
                 this.isApplicable = this.injectionBlind.isInjectable();
                 
                 if (this.isApplicable) {
+                    
                     LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Blind injection with operator OR");
                 }
                 
@@ -110,6 +111,8 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
     @Override
     public void activateStrategy() {
+        
+        LOGGER.warn("Expecting failure, database optimizer usually breaks OR short-circuiting");
         
         LOGGER.info(I18nUtil.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getBlind());

@@ -25,7 +25,7 @@ public class CookieTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("Cookie", "name=\"0'*\"")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
+        model.getMediatorUtils().getPreferencesUtil().withNotTestingConnection();
         
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getHeader());
         

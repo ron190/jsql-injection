@@ -37,7 +37,7 @@ import com.jsql.model.bean.database.Table;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 
-import spring.TargetApplication;
+import spring.SpringTargetApplication;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
@@ -93,8 +93,8 @@ public abstract class AbstractTestSuite {
         if (AbstractTestSuite.isSetupStarted.compareAndSet(false, true)) {
             
             LOGGER.info("@BeforeClass: loading Hibernate and Spring...");
-            TargetApplication.initializeDatabases();
-            SpringApplication.run(TargetApplication.class, new String[] {});
+            SpringTargetApplication.initializeDatabases();
+            SpringApplication.run(SpringTargetApplication.class, new String[] {});
             
             AbstractTestSuite.isSetupDone.set(true);
         }

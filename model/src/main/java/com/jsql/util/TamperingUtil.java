@@ -124,6 +124,26 @@ public class TamperingUtil {
             sqlQuery = eval(sqlQuery, this.customTamper);
         }
 
+        if (this.isHexToChar) {
+            
+            sqlQuery = eval(sqlQuery, TamperingType.HEX_TO_CHAR.instance().getJavascript());
+        }
+        
+        if (this.isStringToChar) {
+            
+            sqlQuery = eval(sqlQuery, TamperingType.STRING_TO_CHAR.instance().getJavascript());
+        }
+
+        if (this.isFunctionComment) {
+            
+            sqlQuery = eval(sqlQuery, TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getJavascript());
+        }
+
+        if (this.isVersionComment) {
+            
+            sqlQuery = eval(sqlQuery, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getJavascript());
+        }
+
         if (this.isRandomCase) {
             
             sqlQuery = eval(sqlQuery, TamperingType.RANDOM_CASE.instance().getJavascript());
@@ -146,26 +166,6 @@ public class TamperingUtil {
         }
         
         // Transform all query, SQL and HTTP
-
-        if (this.isHexToChar) {
-            
-            sqlQuery = eval(sqlQuery, TamperingType.HEX_TO_CHAR.instance().getJavascript());
-        }
-        
-        if (this.isStringToChar) {
-            
-            sqlQuery = eval(sqlQuery, TamperingType.STRING_TO_CHAR.instance().getJavascript());
-        }
-
-        if (this.isFunctionComment) {
-            
-            sqlQuery = eval(sqlQuery, TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getJavascript());
-        }
-
-        if (this.isVersionComment) {
-            
-            sqlQuery = eval(sqlQuery, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getJavascript());
-        }
         
         // Dependency to: EQUAL_TO_LIKE
         if (this.isSpaceToDashComment) {

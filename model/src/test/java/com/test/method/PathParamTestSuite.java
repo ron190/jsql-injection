@@ -28,7 +28,7 @@ public class PathParamTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("fake", "")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
+        model.getMediatorUtils().getPreferencesUtil().withNotTestingConnection();
         
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
         

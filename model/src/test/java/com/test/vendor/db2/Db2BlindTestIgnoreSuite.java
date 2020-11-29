@@ -25,7 +25,7 @@ public class Db2BlindTestIgnoreSuite extends ConcreteDb2TestSuite {
             new SimpleEntry<>("name", "1'")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().setIsNotInjectingMetadata(true);
+        model.getMediatorUtils().getPreferencesUtil().withNotTestingConnection();
         
         model
         .getMediatorUtils()

@@ -640,23 +640,27 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             if (methodInjection != this.mediatorMethod.getHeader()) {
                 
                 // URL encode each character because no query parameter context
-                queryFixed = queryFixed.replace("\"", "%22");
-                queryFixed = queryFixed.replace("'", "%27");
-                queryFixed = queryFixed.replace("(", "%28");
-                queryFixed = queryFixed.replace(")", "%29");
-                queryFixed = queryFixed.replace("{", "%7b");
-                queryFixed = queryFixed.replace("[", "%5b");
+                if (!this.mediatorUtils.getPreferencesUtil().isUrlEncodingDisabled()) {
+                    
+                    queryFixed = queryFixed.replace("\"", "%22");
+                    queryFixed = queryFixed.replace("'", "%27");
+                    queryFixed = queryFixed.replace("(", "%28");
+                    queryFixed = queryFixed.replace(")", "%29");
+                    queryFixed = queryFixed.replace("{", "%7b");
+                    queryFixed = queryFixed.replace("[", "%5b");
+                    queryFixed = queryFixed.replace("`", "%60");
+                    queryFixed = queryFixed.replace("]", "%5d");
+                    queryFixed = queryFixed.replace("}", "%7d");
+                    queryFixed = queryFixed.replace(">", "%3e");
+                    queryFixed = queryFixed.replace("<", "%3c");
+                    queryFixed = queryFixed.replace("?", "%3f");
+                    queryFixed = queryFixed.replace("_", "%5f");
+                    queryFixed = queryFixed.replace(",", "%2c");
+                    queryFixed = queryFixed.replace(StringUtils.SPACE, "+");
+                }
+                
                 queryFixed = queryFixed.replace("|", "%7c");
-                queryFixed = queryFixed.replace("`", "%60");
-                queryFixed = queryFixed.replace("]", "%5d");
-                queryFixed = queryFixed.replace("}", "%7d");
-                queryFixed = queryFixed.replace(">", "%3e");
-                queryFixed = queryFixed.replace("<", "%3c");
-                queryFixed = queryFixed.replace("?", "%3f");
-                queryFixed = queryFixed.replace("_", "%5f");
                 queryFixed = queryFixed.replace("\\", "%5c");
-                queryFixed = queryFixed.replace(",", "%2c");
-                queryFixed = queryFixed.replace(StringUtils.SPACE, "+");
                 
             } else {
                 

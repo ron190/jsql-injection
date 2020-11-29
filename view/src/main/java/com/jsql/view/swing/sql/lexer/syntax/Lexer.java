@@ -29,7 +29,7 @@ public interface Lexer {
      *
      * @return the next token
      */
-    Token getNextToken() throws IOException ;
+    Token getNextToken() throws IOException;
 
     /**
      * Closes the current input stream, and resets the scanner to read from a new input stream.

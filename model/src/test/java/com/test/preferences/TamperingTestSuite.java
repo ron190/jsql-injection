@@ -34,7 +34,7 @@ public class TamperingTestSuite extends ConcreteMySqlTestSuite {
         .withHexToChar()
         .withSpaceToMultilineComment();
         
-        model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
+        model.getMediatorUtils().getPreferencesUtil().withNotTestingConnection();
         
         model
         .getMediatorUtils()

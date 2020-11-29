@@ -128,12 +128,12 @@ public class VendorYaml implements AbstractVendor {
         }
         
         return
-                sqlQuery
-                .replace(DATABASE_HEX, Hex.encodeHexString(database.toString().getBytes()))
-                .replace(DATABASE, database.toString())
-                // TODO Breaks Oracle <%2Fa>
-                // .replace("%", "%25") // Encode % in name
-                ;
+            sqlQuery
+            .replace(DATABASE_HEX, Hex.encodeHexString(database.toString().getBytes()))
+            .replace(DATABASE, database.toString())
+            // TODO Breaks Oracle <%2Fa>
+            // .replace("%", "%25") // Encode % in name
+            ;
     }
 
     @Override
@@ -545,6 +545,7 @@ public class VendorYaml implements AbstractVendor {
             .replace("${lead_hex}", LEAD_HEX);
     }
     
+    
     // Getter and setter
 
     @Override
@@ -589,8 +590,9 @@ public class VendorYaml implements AbstractVendor {
     
     @Override
     public String endingComment() {
-        return 
+        return
             this.modelYaml.getStrategy().getConfiguration().getEndingComment()
+            // Allows Boolean match fingerprinting on host errors
             + RandomStringUtils.randomAlphanumeric(4);
     }
 

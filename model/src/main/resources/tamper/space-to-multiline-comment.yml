@@ -4,5 +4,8 @@ group:
 javascript: |
  var tampering = function(sql) {
     
-     return sql.replace(/[+\s]+/gm,'/**/')
+     return sql
+        // Space required on end comment, switch to dash
+        .replace(/--\+-/gm,'%23')
+        .replace(/[+\s]+/gm,'/**/')
  }

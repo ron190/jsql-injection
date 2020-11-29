@@ -29,7 +29,6 @@ public class CsrfHeaderTestSuite extends ConcreteMySqlErrorTestSuite {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withProcessingCookies()
         .withNotTestingConnection()
         .withProcessingCsrf();
 

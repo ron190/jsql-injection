@@ -72,11 +72,11 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
     @Override
     public CallableCharInsertion call() throws Exception {
         
-        ctnt = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess);
+        this.ctnt = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess);
         
-        this.opcodes = DIFFMATCHPATCH.diffMain(this.injectionCharInsertion.getBlankFalseMark(), ctnt, false);
+        this.opcodes = this.DIFFMATCHPATCH.diffMain(this.injectionCharInsertion.getBlankFalseMark(), this.ctnt, false);
         
-        DIFFMATCHPATCH.diffCleanupEfficiency(this.opcodes);
+        this.DIFFMATCHPATCH.diffCleanupEfficiency(this.opcodes);
         
         return this;
     }

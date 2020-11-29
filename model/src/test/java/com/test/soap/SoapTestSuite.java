@@ -20,8 +20,9 @@ public class SoapTestSuite extends ConcreteMySqlErrorTestSuite {
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/ws");
         model.getMediatorUtils().getParameterUtil().initializeRequest("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:gs=\"http://www.baeldung.com/springsoap/gen\"><soapenv:Header/><soapenv:Body><gs:getCountryRequest><gs:name>1'</gs:name></gs:getCountryRequest></soapenv:Body></soapenv:Envelope>");
         
-        model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
-        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllSoapParam(true);
+        model.getMediatorUtils().getPreferencesUtil()
+        .withNotTestingConnection()
+        .withCheckingAllSOAPParam();
         
         model
         .getMediatorUtils()

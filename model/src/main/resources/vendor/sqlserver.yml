@@ -275,7 +275,7 @@ strategy:
   
    - name: Cast:stack explicit
      query: |
-      ;select convert(int,(
+      ; select convert(int,(
           ${window}
       ))
      capacity: 1991 
@@ -297,7 +297,7 @@ strategy:
   
    - name: Cast:stack implicit
      query: |
-      ;select 1/(
+      ; select 1/(
           ${window}
       )
      capacity: 1991 
@@ -319,7 +319,7 @@ strategy:
   
    - name: User_name:stack
      query: |
-      ;select user_name((
+      ; select user_name((
           ${window}
       ))
      capacity: 1991 

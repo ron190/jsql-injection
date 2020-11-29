@@ -173,6 +173,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         return Integer.toString(lengthFields[lengthFields.length - 1][1]);
     }
     
+    
     // Getters and setters
     
     @Override

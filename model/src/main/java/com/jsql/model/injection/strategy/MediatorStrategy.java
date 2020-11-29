@@ -6,22 +6,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetVendor;
-import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
 
 public class MediatorStrategy {
-    
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
     
     private AbstractStrategy time;
     private AbstractStrategy blind;
@@ -114,7 +107,8 @@ public class MediatorStrategy {
             .replace(",", "%2C")
             .replace(StringUtils.SPACE, "%20")
             .replace("+", "%20")
-            + this.injectionModel.getMediatorVendor().getVendor().instance().endingComment().replace("+", "%20");
+            + this.injectionModel.getMediatorVendor().getVendor().instance().endingComment().replace("+", "%20")
+            ;
     }
     
     /**
@@ -128,7 +122,6 @@ public class MediatorStrategy {
     public boolean testStrategies(SimpleEntry<String, String> parameterToInject) throws JSqlException {
         
         // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
-//        LOGGER.trace(I18nUtil.valueByKey("LOG_GET_INSERTION_CHARACTER"));
         
         String parameterOriginalValue = null;
         
@@ -200,6 +193,7 @@ public class MediatorStrategy {
         
         return true;
     }
+    
     
     // Getter and setter
 

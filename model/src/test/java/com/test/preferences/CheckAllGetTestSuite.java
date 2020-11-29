@@ -27,7 +27,7 @@ public class CheckAllGetTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("fake", "empty")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllURLParam(true);
+        model.getMediatorUtils().getPreferencesUtil().withIsCheckingAllURLParam();
         
         model
         .getMediatorUtils()

@@ -36,19 +36,21 @@ public class ActionListenerSave implements ActionListener {
         .withCountLimitingThreads((Integer) this.panelPreferences.getPanelConnection().getSpinnerLimitingThreads().getValue())
         .withIsCsrfUserTag(this.panelPreferences.getPanelConnection().getCheckboxIsCsrfUserTag().isSelected())
         .withCsrfUserTag(this.panelPreferences.getPanelConnection().getTextfieldCsrfUserTag().getText())
-        
-        .withIsZippedStrategy(this.panelPreferences.getPanelInjection().getCheckboxIsZippedStrategy().isSelected())
-        .withIsPerfIndexDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsPerfIndexDisabled().isSelected())
                 
+        .withIsParsingForm(this.panelPreferences.getPanelInjection().getCheckboxIsParsingForm().isSelected())
         .withIsNotInjectingMetadata(this.panelPreferences.getPanelInjection().getCheckboxIsNotInjectingMetadata().isSelected())
+        .withIsLimitingNormalIndex(this.panelPreferences.getPanelInjection().getCheckboxIsLimitingNormalIndex().isSelected())
+        .withCountNormalIndex((Integer) this.panelPreferences.getPanelInjection().getSpinnerNormalIndexCount().getValue())
         .withIsCheckingAllParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllParam().isSelected())
         .withIsCheckingAllURLParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllURLParam().isSelected())
         .withIsCheckingAllRequestParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllRequestParam().isSelected())
         .withIsCheckingAllHeaderParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllHeaderParam().isSelected())
         .withIsCheckingAllJSONParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllJSONParam().isSelected())
-        .withIsCheckingAllCookieParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllCookieParam().isSelected())
         .withIsCheckingAllSOAPParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllSOAPParam().isSelected())
-        .withIsParsingForm(this.panelPreferences.getPanelInjection().getCheckboxIsParsingForm().isSelected())
+        .withIsCheckingAllCookieParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllCookieParam().isSelected())
+        .withIsZippedStrategy(this.panelPreferences.getPanelInjection().getCheckboxIsZippedStrategy().isSelected())
+        .withIsUrlEncodingDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsUrlEncodingDisabled().isSelected())
+        .withIsPerfIndexDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsPerfIndexDisabled().isSelected())
                 
         .withIsTamperingBase64(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected())
         .withIsTamperingEqualToLike(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected())
@@ -86,12 +88,12 @@ public class ActionListenerSave implements ActionListener {
         .withVersionComment(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingVersionComment().isSelected());
         
         boolean isRestartRequired = MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().set(
-            this.panelPreferences.getPanelAuthentication().getCheckboxUseDigestAuthentication().isSelected(),
-            this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationUsername().getText(),
-            this.panelPreferences.getPanelAuthentication().getTextDigestAuthenticationPassword().getText(),
-            this.panelPreferences.getPanelAuthentication().getCheckboxUseKerberos().isSelected(),
-            this.panelPreferences.getPanelAuthentication().getTextKerberosKrb5Conf().getText(),
-            this.panelPreferences.getPanelAuthentication().getTextKerberosLoginConf().getText()
+            this.panelPreferences.getPanelAuth().getCheckboxUseDigestAuthentication().isSelected(),
+            this.panelPreferences.getPanelAuth().getTextDigestAuthenticationUsername().getText(),
+            this.panelPreferences.getPanelAuth().getTextDigestAuthenticationPassword().getText(),
+            this.panelPreferences.getPanelAuth().getCheckboxUseKerberos().isSelected(),
+            this.panelPreferences.getPanelAuth().getTextKerberosKrb5Conf().getText(),
+            this.panelPreferences.getPanelAuth().getTextKerberosLoginConf().getText()
         );
         
         if (

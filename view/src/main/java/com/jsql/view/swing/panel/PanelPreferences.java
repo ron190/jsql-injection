@@ -21,7 +21,7 @@ import org.apache.commons.text.WordUtils;
 
 import com.jsql.view.swing.action.ActionCheckIP;
 import com.jsql.view.swing.panel.preferences.ActionListenerSave;
-import com.jsql.view.swing.panel.preferences.PanelAuthentication;
+import com.jsql.view.swing.panel.preferences.PanelAuth;
 import com.jsql.view.swing.panel.preferences.PanelConnection;
 import com.jsql.view.swing.panel.preferences.PanelGeneral;
 import com.jsql.view.swing.panel.preferences.PanelInjection;
@@ -39,13 +39,13 @@ public class PanelPreferences extends JPanel {
     private PanelTampering panelTamperingPreferences = new PanelTampering(this);
     private PanelInjection panelInjectionPreferences = new PanelInjection(this);
     private PanelProxy panelProxyPreferences = new PanelProxy(this);
-    private PanelAuthentication panelAuthenticationPreferences = new PanelAuthentication(this);
+    private PanelAuth panelAuthPreferences = new PanelAuth(this);
     private PanelGeneral panelGeneralPreferences = new PanelGeneral(this);
     private PanelUserAgent panelUserAgentPreferences = new PanelUserAgent();
     private PanelConnection panelConnectionPreferences = new PanelConnection(this);
 
     private static final JPanel panelInjection = new JPanel(new BorderLayout());
-    private static final JPanel panelAuthentication = new JPanel(new BorderLayout());
+    private static final JPanel panelAuth = new JPanel(new BorderLayout());
     private static final JPanel panelProxy = new JPanel(new BorderLayout());
     private static final JPanel panelGeneral = new JPanel(new BorderLayout());
     private static final JPanel panelUserAgent = new JPanel(new BorderLayout());
@@ -59,7 +59,7 @@ public class PanelPreferences extends JPanel {
         INJECTION(panelInjection),
         TAMPERING(panelTampering),
         CONNECTION(panelConnection),
-        AUTH(panelAuthentication),
+        AUTH(panelAuth),
         USER_AGENT(panelUserAgent),
         PROXY(panelProxy),
         GENERAL(panelGeneral);
@@ -102,9 +102,9 @@ public class PanelPreferences extends JPanel {
         panelConnection.add(new JLabel("<html><b>Connection</b> / Network and threads</html>"), BorderLayout.NORTH);
         panelConnection.add(this.panelConnectionPreferences, BorderLayout.CENTER);
         
-        panelAuthentication.setBorder(this.panelBorder);
-        panelAuthentication.add(new JLabel("<html><b>Authentication</b> / Basic, Digest, NTLM or Kerberos connection</html>"), BorderLayout.NORTH);
-        panelAuthentication.add(this.panelAuthenticationPreferences, BorderLayout.CENTER);
+        panelAuth.setBorder(this.panelBorder);
+        panelAuth.add(new JLabel("<html><b>Authentication</b> / Basic, Digest, NTLM or Kerberos connection</html>"), BorderLayout.NORTH);
+        panelAuth.add(this.panelAuthPreferences, BorderLayout.CENTER);
         
         panelUserAgent.setBorder(this.panelBorder);
         panelUserAgent.add(new JLabel("<html><b>User Agent</b> / Network connection agents</html>"), BorderLayout.NORTH);
@@ -198,8 +198,8 @@ public class PanelPreferences extends JPanel {
     
     // Getter and setter
 
-    public PanelAuthentication getPanelAuthentication() {
-        return this.panelAuthenticationPreferences;
+    public PanelAuth getPanelAuth() {
+        return this.panelAuthPreferences;
     }
 
     public PanelProxy getPanelProxy() {

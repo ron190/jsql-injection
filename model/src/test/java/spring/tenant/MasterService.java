@@ -11,7 +11,7 @@ import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProvid
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import spring.TargetApplication;
+import spring.SpringTargetApplication;
 
 public class MasterService {
     
@@ -24,16 +24,16 @@ public class MasterService {
 
         ArrayList<Properties> properties = new ArrayList<>(
             Arrays.asList(
-                TargetApplication.propsH2,
-                TargetApplication.propsMysql,
-                TargetApplication.propsMysqlError,
-                TargetApplication.propsPostgres,
-                TargetApplication.propsSqlServer,
-                TargetApplication.propsCubrid,
-                TargetApplication.propsSqlite,
-                TargetApplication.propsDb2,
-                TargetApplication.propsHsqldb,
-                TargetApplication.propsDerby
+                SpringTargetApplication.propsH2,
+                SpringTargetApplication.propsMysql,
+                SpringTargetApplication.propsMysqlError,
+                SpringTargetApplication.propsPostgres,
+                SpringTargetApplication.propsSqlServer,
+                SpringTargetApplication.propsCubrid,
+                SpringTargetApplication.propsSqlite,
+                SpringTargetApplication.propsDb2,
+                SpringTargetApplication.propsHsqldb,
+                SpringTargetApplication.propsDerby
             )
         );
         

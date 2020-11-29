@@ -7,13 +7,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.neo4j.driver.AuthTokens;
+import org.neo4j.driver.Driver;
+import org.neo4j.driver.GraphDatabase;
+import org.neo4j.driver.Result;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 public class JdbcRestController {
@@ -21,6 +28,8 @@ public class JdbcRestController {
     private static final String template = "Hello, s!";
     private final AtomicLong counter = new AtomicLong();
     private static final Logger LOGGER = Logger.getRootLogger();
+    private Driver driver = GraphDatabase.driver("bolt://jsql-neo4j:7687", AuthTokens.basic("neo4j", "test"));
+    private ObjectMapper objectMapper = new ObjectMapper();
     
     @RequestMapping("/greeting-altibase")
     public Greeting greetingAltibase(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
@@ -362,6 +371,47 @@ public class JdbcRestController {
         
         return greeting;
     }
+    
+    @RequestMapping("/greeting-neo4j")
+    public Greeting greetingNeo4j(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        Greeting greeting = null;
+        
+        try (org.neo4j.driver.Session session = this.driver.session()) {
+            Result result = session.run("MATCH (n:Person) where 1="+ name +" RETURN n.name, n.from, n.title, n.hobby");
+            
+            String a = result.stream().map(record ->
+            
+                record
+                .keys()
+                .stream()
+                .map(key -> key + "=" + record.get(key))
+                .collect(Collectors.joining(", ", "{", "}"))
+                
+            ).collect(Collectors.joining());
+            
+            greeting = new Greeting(
+                this.counter.getAndIncrement(),
+                String.format(template, name)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(a))
+            );
+            
+        } catch (Exception e) {
+            // Hide useless SQL error messages
+        }
+        
+        return greeting;
+    }
+    
+    // TODO
+    // missing derby
+    // missing cockroachdb: docker fails
+    // missing hana: docker fails 13.9GB image
+    // missing informix: services but no connection
+    // missing ingress: missing services
+    // missing maxdb: broken installation
+    // mckoi: no error on wrong order column
+    // netezza
 
     private Greeting initializeErrorMessage(Exception e) {
         

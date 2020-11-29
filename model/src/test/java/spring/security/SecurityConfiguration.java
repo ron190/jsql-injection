@@ -127,9 +127,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .httpBasic()
             .realmName(DIGEST_REALM)
             .authenticationEntryPoint(this.digestEntryPoint())
-//        .and()
-//            .sessionManagement()
-//            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         ;
     }
 

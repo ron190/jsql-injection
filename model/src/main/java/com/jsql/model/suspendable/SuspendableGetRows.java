@@ -284,7 +284,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         }
         
         if (searchName instanceof Table && searchName.getChildCount() > 0) {
-            messageError.append(", if possible retry with one column selected only");
+            messageError.append(", check Network tab for error logs");
         }
         
         throw new InjectionFailureException(messageError.toString(), e);

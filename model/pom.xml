@@ -332,6 +332,13 @@
 <!--             <version>3.40</version> -->
 <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/mimjdbc3.jar</systemPath> -->
 <!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>netezza</groupId> -->
+<!--             <artifactId>netezza</artifactId> -->
+<!--             <scope>system</scope> -->
+<!--             <version>3.40</version> -->
+<!--             <systemPath>${project.basedir}/src/test/resources/jdbc/nzjdbc-1.0.jar</systemPath> -->
+<!--         </dependency> -->
         <dependency>
             <groupId>com.exasol</groupId>
             <artifactId>exasol-jdbc</artifactId>

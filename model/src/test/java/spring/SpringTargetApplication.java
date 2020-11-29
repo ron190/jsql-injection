@@ -32,7 +32,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import spring.rest.Student;
 
 @SpringBootApplication
-public class TargetApplication {
+public class SpringTargetApplication {
     
     /**
      * Using default log4j.properties from root /
@@ -96,16 +96,16 @@ public class TargetApplication {
         
         ArrayList<Properties> properties = new ArrayList<>(
             Arrays.asList(
-                TargetApplication.propsH2,
-                TargetApplication.propsMysql,
-                TargetApplication.propsMysqlError,
-                TargetApplication.propsPostgres,
-                TargetApplication.propsSqlServer,
-                TargetApplication.propsCubrid,
-                TargetApplication.propsSqlite,
-                TargetApplication.propsDb2,
-                TargetApplication.propsHsqldb,
-                TargetApplication.propsDerby
+                SpringTargetApplication.propsH2,
+                SpringTargetApplication.propsMysql,
+                SpringTargetApplication.propsMysqlError,
+                SpringTargetApplication.propsPostgres,
+                SpringTargetApplication.propsSqlServer,
+                SpringTargetApplication.propsCubrid,
+                SpringTargetApplication.propsSqlite,
+                SpringTargetApplication.propsDb2,
+                SpringTargetApplication.propsHsqldb,
+                SpringTargetApplication.propsDerby
             )
         );
         
@@ -193,7 +193,7 @@ public class TargetApplication {
         
         initializeDatabases();
         
-        SpringApplication.run(TargetApplication.class, args);
+        SpringApplication.run(SpringTargetApplication.class, args);
     }
     
     @PreDestroy

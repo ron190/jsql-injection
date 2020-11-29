@@ -168,8 +168,8 @@ public class ManagerFile extends AbstractManagerList {
         int tasksHandled;
         
         for (
-            tasksHandled = 0 ;
-            tasksHandled < submittedTasks && !MediatorHelper.model().getResourceAccess().isSearchFileStopped() ;
+            tasksHandled = 0;
+            tasksHandled < submittedTasks && !MediatorHelper.model().getResourceAccess().isSearchFileStopped();
             tasksHandled++
         ) {
             

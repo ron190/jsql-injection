@@ -22,7 +22,7 @@ import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
-public class PanelAuthentication extends JPanel {
+public class PanelAuth extends JPanel {
 
     private final JCheckBox checkboxUseDigestAuthentication = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isAuthentEnabled());
     private final JCheckBox checkboxUseKerberos = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isKerberos());
@@ -35,7 +35,7 @@ public class PanelAuthentication extends JPanel {
     private static final String TAG_HTML_ON = "<html>";
     private static final String TAG_HTML_OFF = "</html>";
     
-    public PanelAuthentication(PanelPreferences panelPreferences) {
+    public PanelAuth(PanelPreferences panelPreferences) {
 
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         

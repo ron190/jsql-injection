@@ -29,7 +29,7 @@ public class CheckAllRequestTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("name", "0'")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllRequestParam(true);
+        model.getMediatorUtils().getPreferencesUtil().withCheckingAllRequestParam();
         
         model
         .getMediatorUtils()

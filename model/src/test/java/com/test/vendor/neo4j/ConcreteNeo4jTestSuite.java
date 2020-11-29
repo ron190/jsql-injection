@@ -32,7 +32,7 @@ public abstract class ConcreteNeo4jTestSuite extends AbstractTestSuite {
          "CALL db.labels() "
         +"YIELD label      "
         +"WITH label       "
-        +"RETURN   label   " ;
+        +"RETURN   label   ";
         
         this.jdbcQueryForColumnNames =
          "MATCH (n:Movie)               "

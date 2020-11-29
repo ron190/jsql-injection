@@ -1,20 +1,14 @@
 package com.jsql.model.injection.vendor;
 
 import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.VendorYaml;
-import com.jsql.util.I18nUtil;
 
 public class MediatorVendor {
     
@@ -72,11 +66,7 @@ public class MediatorVendor {
     private Vendor vertica;
     
     private List<Vendor> vendors;
-    private InjectionModel injectionModel;
-    
     public MediatorVendor(InjectionModel injectionModel) {
-        
-        this.injectionModel = injectionModel;
         
         this.auto = new Vendor();
         this.access = new Vendor(new VendorYaml("access.yml", injectionModel));

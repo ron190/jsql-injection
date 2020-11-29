@@ -1,5 +1,7 @@
 package com.jsql.view.swing.panel.preferences;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.util.stream.Stream;
 
@@ -9,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +34,9 @@ public class PanelInjection extends JPanel {
     private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
     private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSOAPParam());
 
+    private final JCheckBox checkboxIsLimitingNormalIndex = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex());
+    private final JSpinner spinnerNormalIndexCount = new JSpinner();
+
     private final JCheckBox checkboxIsPerfIndexDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
     private final JCheckBox checkboxIsZippedStrategy = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZippedStrategy());
     private final JCheckBox checkboxIsUrlEncodingDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled());
@@ -38,10 +45,10 @@ public class PanelInjection extends JPanel {
         
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
-        String tooltipParseForm = "Add <input> parameters to Query string and Request";
+        String tooltipParseForm = "Add <input> params to Query string and Request";
         this.checkboxIsParsingForm.setToolTipText(tooltipParseForm);
         this.checkboxIsParsingForm.setFocusable(false);
-        JButton labelParseForm = new JButton("Add <input> parameters to Query string and Request");
+        JButton labelParseForm = new JButton("Add <input> params to Query string and Request");
         labelParseForm.setToolTipText(tooltipParseForm);
         labelParseForm.addActionListener(actionEvent -> {
             
@@ -60,6 +67,35 @@ public class PanelInjection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
+        String tooltipIsLimitingNormalIndex = "Limit Normal indexes to";
+        this.checkboxIsLimitingNormalIndex.setToolTipText(tooltipIsLimitingNormalIndex);
+        this.checkboxIsLimitingNormalIndex.setFocusable(false);
+        JButton labelIsLimitingNormalIndex = new JButton("Limit Normal indexes to");
+        labelIsLimitingNormalIndex.setToolTipText(tooltipIsLimitingNormalIndex);
+        labelIsLimitingNormalIndex.addActionListener(actionEvent -> {
+            
+            this.checkboxIsLimitingNormalIndex.setSelected(!this.checkboxIsLimitingNormalIndex.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+        
+        JPanel panelIsLimitingNormalIndex = new JPanel(new BorderLayout());
+        panelIsLimitingNormalIndex.add(labelIsLimitingNormalIndex, BorderLayout.WEST);
+        panelIsLimitingNormalIndex.add(this.spinnerNormalIndexCount, BorderLayout.CENTER);
+        panelIsLimitingNormalIndex.add(new JLabel(" (default 50)"), BorderLayout.EAST);
+        panelIsLimitingNormalIndex.setMaximumSize(new Dimension(250, this.spinnerNormalIndexCount.getPreferredSize().height));
+        this.spinnerNormalIndexCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
+        
+        int countNormalIndex = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countNormalIndex();
+        SpinnerNumberModel spinnerCountNormalIndex = new SpinnerNumberModel(
+            countNormalIndex <= 0
+            ? 50
+            : countNormalIndex,
+            1,
+            100,
+            1
+        );
+        this.spinnerNormalIndexCount.setModel(spinnerCountNormalIndex);
+        
         JButton labelIsCheckingAllParam = new JButton("Inject each parameter and ignore user's method");
         JButton labelIsCheckingAllURLParam = new JButton("Inject each URL parameter if method is GET");
         JButton labelIsCheckingAllRequestParam = new JButton("Inject each Request parameter if method is Request");
@@ -68,9 +104,9 @@ public class PanelInjection extends JPanel {
         JButton labelIsCheckingAllJSONParam = new JButton("Inject JSON parameters");
         JButton labelIsCheckingAllSOAPParam = new JButton("Inject SOAP parameters in Request body");
         
-        JButton labelIsZippedStrategy = new JButton("Use Zip strategy for smaller SQL queries");
-        JButton labelIsUrlEncodingDisabled = new JButton("Disable URL encoding for smaller URL");
-        JButton labelIsPerfIndexDisabled = new JButton("Disable calibration for smaller SQL query during Normal index selection");
+        JButton labelIsZippedStrategy = new JButton("Use Zip strategy (smaller SQL queries)");
+        JButton labelIsUrlEncodingDisabled = new JButton("Disable URL encoding (smaller URL)");
+        JButton labelIsPerfIndexDisabled = new JButton("Disable calibration (smaller SQL query during Normal index selection)");
         
         JLabel emptyLabelGeneralInjection = new JLabel();
         JLabel labelGeneralInjection = new JLabel("<html><b>Content processing</b></html>");
@@ -172,7 +208,8 @@ public class PanelInjection extends JPanel {
             this.checkboxIsCheckingAllSOAPParam,
             this.checkboxIsPerfIndexDisabled,
             this.checkboxIsZippedStrategy,
-            this.checkboxIsUrlEncodingDisabled
+            this.checkboxIsUrlEncodingDisabled,
+            this.checkboxIsLimitingNormalIndex
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
@@ -189,7 +226,8 @@ public class PanelInjection extends JPanel {
             labelIsCheckingAllSOAPParam,
             labelIsPerfIndexDisabled,
             labelIsZippedStrategy,
-            labelIsUrlEncodingDisabled
+            labelIsUrlEncodingDisabled,
+            labelIsLimitingNormalIndex
         )
         .forEach(label -> {
             
@@ -211,6 +249,7 @@ public class PanelInjection extends JPanel {
                 .addComponent(emptyLabelGeneralInjection)
                 .addComponent(this.checkboxIsParsingForm)
                 .addComponent(this.checkboxIsNotInjectingMetadata)
+                .addComponent(this.checkboxIsLimitingNormalIndex)
                 
                 .addComponent(emptyLabelParamsInjection)
                 .addComponent(this.checkboxIsCheckingAllParam)
@@ -234,6 +273,7 @@ public class PanelInjection extends JPanel {
                 .addComponent(labelGeneralInjection)
                 .addComponent(labelParseForm)
                 .addComponent(labelIsNotInjectingMetadata)
+                .addComponent(panelIsLimitingNormalIndex)
                 
                 .addComponent(labelParamsInjection)
                 .addComponent(labelIsCheckingAllParam)
@@ -274,6 +314,12 @@ public class PanelInjection extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsNotInjectingMetadata)
                 .addComponent(labelIsNotInjectingMetadata)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsLimitingNormalIndex)
+                .addComponent(panelIsLimitingNormalIndex)
             )
             
             .addGroup(
@@ -408,5 +454,13 @@ public class PanelInjection extends JPanel {
     
     public JCheckBox getCheckboxIsUrlEncodingDisabled() {
         return this.checkboxIsUrlEncodingDisabled;
+    }
+    
+    public JCheckBox getCheckboxIsLimitingNormalIndex() {
+        return this.checkboxIsLimitingNormalIndex;
+    }
+    
+    public JSpinner getSpinnerNormalIndexCount() {
+        return this.spinnerNormalIndexCount;
     }
 }

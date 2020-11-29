@@ -23,8 +23,6 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
-import com.jsql.model.injection.strategy.blind.InjectionBlind;
 import com.jsql.model.injection.strategy.blind.InjectionCharInsertion;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.suspendable.callable.CallablePageSource;
@@ -55,11 +53,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         
         String characterInsertionByUser = (String) args[0];
 
-        // Concurrent search and let the user stops the process if needed.
-        // SQL: force a wrong ORDER BY clause with an inexistent column, order by 1337,
-        // and check if a correct error message is sent back by the server:
-        //         Unknown column '1337' in 'order clause'
-        // or   supplied argument is not a valid MySQL result resource
         ExecutorService taskExecutor;
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
@@ -78,7 +71,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         
         List<String> charactersInsertion = this.initializeCallables(taskCompletionService, characterInsertionByUser, charFromBooleanMatch);
 
-        LOGGER.trace("Fingerprinting database and character insertion with ORDER BY match...");
+        LOGGER.trace("Fingerprinting database and character insertion with Order by match...");
 
         String charFromOrderBy = null;
         
@@ -130,7 +123,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                         
                         if (optionalOrderByErrorMatch.isPresent()) {
                             
-                            LOGGER.info("Possibly [" + vendor + "] from ORDER BY match");
+                            LOGGER.info("Possibly [" + vendor + "] from Order by match");
                         }
                         
                         return optionalOrderByErrorMatch.isPresent();
@@ -150,30 +143,30 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 if (!vendorsOrderByMatch.isEmpty()) {
                     
                     // Vendor
-                    if (vendorsOrderByMatch.size() == 1 && vendorsOrderByMatch.get(0) != injectionModel.getMediatorVendor().getVendor()) {
+                    if (vendorsOrderByMatch.size() == 1 && vendorsOrderByMatch.get(0) != this.injectionModel.getMediatorVendor().getVendor()) {
                         
-                        injectionModel.getMediatorVendor().setVendor(vendorsOrderByMatch.get(0));
+                        this.injectionModel.getMediatorVendor().setVendor(vendorsOrderByMatch.get(0));
                         
                     } else if (vendorsOrderByMatch.size() > 1) {
                         
-                        if (vendorsOrderByMatch.contains(injectionModel.getMediatorVendor().getPostgreSQL())) {
+                        if (vendorsOrderByMatch.contains(this.injectionModel.getMediatorVendor().getPostgreSQL())) {
                             
-                            injectionModel.getMediatorVendor().setVendor(injectionModel.getMediatorVendor().getPostgreSQL());
+                            this.injectionModel.getMediatorVendor().setVendor(this.injectionModel.getMediatorVendor().getPostgreSQL());
                             
-                        } else if (vendorsOrderByMatch.contains(injectionModel.getMediatorVendor().getMySQL())) {
+                        } else if (vendorsOrderByMatch.contains(this.injectionModel.getMediatorVendor().getMySQL())) {
                             
-                            injectionModel.getMediatorVendor().setVendor(injectionModel.getMediatorVendor().getMySQL());
+                            this.injectionModel.getMediatorVendor().setVendor(this.injectionModel.getMediatorVendor().getMySQL());
                             
                         } else {
                             
-                            injectionModel.getMediatorVendor().setVendor(vendorsOrderByMatch.get(0));
+                            this.injectionModel.getMediatorVendor().setVendor(vendorsOrderByMatch.get(0));
                         }
                     }
                     
-                    LOGGER.info("Using ["+ injectionModel.getMediatorVendor().getVendor() +"]");
+                    LOGGER.info("Using ["+ this.injectionModel.getMediatorVendor().getVendor() +"]");
                     Request requestSetVendor = new Request();
                     requestSetVendor.setMessage(Interaction.SET_VENDOR);
-                    requestSetVendor.setParameters(injectionModel.getMediatorVendor().getVendor());
+                    requestSetVendor.setParameters(this.injectionModel.getMediatorVendor().getVendor());
                     this.injectionModel.sendToViews(requestSetVendor);
                     
                     
@@ -182,11 +175,11 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                     
                     if (charFromOrderBy.equals(charFromBooleanMatch[0])) {
                     
-                        LOGGER.info("Confirmed character insertion ["+ charFromOrderBy +"] using ORDER BY match");
+                        LOGGER.info("Confirmed character insertion ["+ charFromOrderBy +"] using Order by match");
 
                     } else {
                         
-                        LOGGER.info("Found character insertion ["+ charFromOrderBy +"] using ORDER BY match");
+                        LOGGER.info("Found character insertion ["+ charFromOrderBy +"] using Order by match");
                     }
                     
                     break;
@@ -215,7 +208,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         if (charFromOrderBy == null && charFromBooleanMatch[0] != null) {
             
             charFromOrderBy = charFromBooleanMatch[0];
-            LOGGER.trace("No ORDER BY match found, using boolean match");
         }
         
         return this.getCharacterInsertion(characterInsertionByUser, charFromOrderBy);
@@ -237,9 +229,9 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             .asList(
                 "prefix",
                 "prefix'",
-//                "prefix\"",
-//                "prefix`",
+                "prefix\"",
                 "prefix%bf'"
+//                "prefix`",
 //                "'prefix'"
 //                "`prefix`",
 //                "\"prefix\"",
@@ -249,7 +241,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         
         List<String> charactersInsertion = new ArrayList<>();
         
-        LOGGER.trace("Fingerprinting character insertion with boolean match...");
+        LOGGER.trace("Fingerprinting character insertion with Boolean match...");
         for (String root: roots) {
             
             for (String prefix: prefixes) {
@@ -258,12 +250,12 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                     
                     charactersInsertion.add(prefix.replace("prefix", root) + suffix);
                     
-                    // Skipping boolean match when already found
+                    // Skipping Boolean match when already found
                     if (charFromBooleanMatch[0] == null) {
                         
                         InjectionCharInsertion injectionCharInsertion = new InjectionCharInsertion(
-                            this.injectionModel, 
-                            prefix.replace("prefix", root) + suffix 
+                            this.injectionModel,
+                            prefix.replace("prefix", root) + suffix
                             ,
                             prefix + suffix
                         );
@@ -274,7 +266,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                             }
                             
                             charFromBooleanMatch[0] = prefix.replace("prefix", root) + suffix;
-                            LOGGER.info("Found character insertion ["+ charFromBooleanMatch[0] +"] using boolean match");
+                            LOGGER.info("Found character insertion ["+ charFromBooleanMatch[0] +"] using Boolean match");
                         }
                     }
                 }
@@ -318,6 +310,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         } else if (!characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY).equals(characterInsertionDetectedFixed)) {
             
             String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY);
+            LOGGER.trace("Using ["+ this.injectionModel.getMediatorVendor().getVendor() +"] and ["+ characterInsertionDetectedFixed +"]");
             LOGGER.trace("Add manually the character * like ["+ characterInsertionByUserFormat +"*] to force the value ["+ characterInsertionByUserFormat +"]");
             
         } else {

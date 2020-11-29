@@ -53,12 +53,17 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         boolean isRequestFound = false;
         String initialQuery = StringUtils.EMPTY;
         int nbIndex;
+        
+        int countNormalIndex = 
+            this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex()
+            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countNormalIndex()
+            : 50;
 
         // SQL fields are built like 1337[index]7330+1
         // 7330+1 allows to exclude false positive when page contains injection URL
         // Search if the source contains 1337[index]7331
         // TODO preferences for 50
-        for (nbIndex = 1 ; nbIndex <= 50 ; nbIndex++) {
+        for (nbIndex = 1 ; nbIndex <= countNormalIndex ; nbIndex++) {
             
             taskCompletionService.submit(
                 new CallablePageSource(
@@ -73,7 +78,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
 
         try {
             // Start from 10 to 100 requests
-            while (!isRequestFound && nbIndex <= 50) {
+            while (!isRequestFound && nbIndex <= countNormalIndex) {
 
                 if (this.isSuspended()) {
                     throw new StoppedByUserSlidingException();

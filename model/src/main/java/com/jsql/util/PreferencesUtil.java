@@ -58,8 +58,11 @@ public class PreferencesUtil {
     private String csrfUserTag = "";
     private boolean isCsrfUserTag = false;
     private boolean isLimitingThreads = false;
-    private int countLimitingThreads;
+    private int countLimitingThreads = 10;
     private boolean isUnicodeDecodeDisabled = false;
+
+    private boolean isLimitingNormalIndex = false;
+    private int countNormalIndex = 50;
 
     /**
      * Initialize the utility class with previously saved JVM preferences and apply
@@ -70,7 +73,7 @@ public class PreferencesUtil {
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
         
-        this.setPathFile(prefs.get("pathFile", System.getProperty("user.dir")));
+        this.pathFile = prefs.get("pathFile", System.getProperty("user.dir"));
         
         this.isCheckingUpdate = prefs.getBoolean("isCheckingUpdate", true);
         this.isReportingBugs = prefs.getBoolean("isReportingBugs", true);
@@ -111,20 +114,10 @@ public class PreferencesUtil {
         this.isLimitingThreads = prefs.getBoolean("isLimitingThreads", false);
         this.countLimitingThreads = prefs.getInt("countLimitingThreads", 10);
         this.isUnicodeDecodeDisabled = prefs.getBoolean("isUnicodeDecodeDisabled", false);
+        this.countNormalIndex = prefs.getInt("countNormalIndex", 50);
+        this.isLimitingNormalIndex = prefs.getBoolean("isLimitingNormalIndex", false);
         
         HttpURLConnection.setFollowRedirects(this.isFollowingRedirection);
-    }
-    
-    /**
-     * Set the general file path to the utility class and persist to JVM preferences.
-     * @param path folder path to persist
-     */
-    public void set(String path) {
-        
-        this.setPathFile(path);
-        
-        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-        prefs.put("pathFile", this.pathFile);
     }
     
     /**
@@ -141,6 +134,8 @@ public class PreferencesUtil {
         preferences.putBoolean("isLimitingThreads", this.isLimitingThreads);
         preferences.putBoolean("isUnicodeDecodeDisabled", this.isUnicodeDecodeDisabled);
         preferences.putInt("countLimitingThreads", this.countLimitingThreads);
+        preferences.putBoolean("isLimitingNormalIndex", this.isLimitingNormalIndex);
+        preferences.putInt("countNormalIndex", this.countNormalIndex);
         preferences.putBoolean("isCsrfUserTag", this.isCsrfUserTag);
         preferences.put("csrfUserTag", this.csrfUserTag);
         
@@ -175,6 +170,18 @@ public class PreferencesUtil {
         HttpURLConnection.setFollowRedirects(this.isFollowingRedirection);
     }
     
+    /**
+     * Set the general file path to the utility class and persist to JVM preferences.
+     * @param path folder path to persist
+     */
+    public void set(String path) {
+        
+        this.pathFile = path;
+        
+        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
+        prefs.put("pathFile", this.pathFile);
+    }
+    
     
     // Getters and setters
     
@@ -182,248 +189,132 @@ public class PreferencesUtil {
         return this.pathFile;
     }
     
-    public void setPathFile(String pathFile) {
-        this.pathFile = pathFile;
-    }
-    
     public boolean isCheckingUpdate() {
         return this.isCheckingUpdate;
-    }
-
-    public void setIsCheckingUpdate(boolean isCheckingUpdate) {
-        this.isCheckingUpdate = isCheckingUpdate;
     }
     
     public boolean isFollowingRedirection() {
         return this.isFollowingRedirection;
-    }
-
-    public void setIsFollowingRedirection(boolean isFollowingRedirection) {
-        this.isFollowingRedirection = isFollowingRedirection;
     }
     
     public boolean isReportingBugs() {
         return this.isReportingBugs;
     }
 
-    public void setIsReportingBugs(boolean isReportingBugs) {
-        this.isReportingBugs = isReportingBugs;
-    }
-
     public boolean isNotInjectingMetadata() {
         return this.isNotInjectingMetadata;
-    }
-
-    public void setIsNotInjectingMetadata(boolean isNotInjectingMetadata) {
-        this.isNotInjectingMetadata = isNotInjectingMetadata;
     }
 
     public boolean isCheckingAllURLParam() {
         return this.isCheckingAllURLParam;
     }
 
-    public void setIsCheckingAllURLParam(boolean isCheckingAllURLParam) {
-        this.isCheckingAllURLParam = isCheckingAllURLParam;
-    }
-
     public boolean isCheckingAllRequestParam() {
         return this.isCheckingAllRequestParam;
-    }
-
-    public void setIsCheckingAllRequestParam(boolean isCheckingAllRequestParam) {
-        this.isCheckingAllRequestParam = isCheckingAllRequestParam;
     }
 
     public boolean isCheckingAllHeaderParam() {
         return this.isCheckingAllHeaderParam;
     }
 
-    public void setIsCheckingAllHeaderParam(boolean isCheckingAllHeaderParam) {
-        this.isCheckingAllHeaderParam = isCheckingAllHeaderParam;
-    }
-
     public boolean isCheckingAllJsonParam() {
         return this.isCheckingAllJSONParam;
-    }
-
-    public void setIsCheckingAllJSONParam(boolean isCheckingAllJSONParam) {
-        this.isCheckingAllJSONParam = isCheckingAllJSONParam;
     }
 
     public boolean isParsingForm() {
         return this.isParsingForm;
     }
 
-    public void setIsParsingForm(boolean isParsingForm) {
-        this.isParsingForm = isParsingForm;
-    }
-
     public boolean isNotTestingConnection() {
         return this.isNotTestingConnection;
-    }
-
-    public void setIsNotTestingConnection(boolean isNotTestingConnection) {
-        this.isNotTestingConnection = isNotTestingConnection;
     }
 
     public boolean isNotProcessingCookies() {
         return this.isNotProcessingCookies;
     }
 
-    public void setIsNotProcessingCookies(boolean isNotProcessingCookies) {
-        this.isNotProcessingCookies = isNotProcessingCookies;
-    }
-
     public boolean isCheckingAllParam() {
         return this.isCheckingAllParam;
-    }
-
-    public void setIsCheckingAllParam(boolean isCheckingAllParam) {
-        this.isCheckingAllParam = isCheckingAllParam;
     }
 
     public boolean isProcessingCsrf() {
         return this.isProcessingCsrf;
     }
 
-    public void setIsProcessingCsrf(boolean isProcessingCsrf) {
-        this.isProcessingCsrf = isProcessingCsrf;
-    }
-
     public boolean isCheckingAllCookieParam() {
         return this.isCheckingAllCookieParam;
-    }
-
-    public void setIsCheckingAllCookieParam(boolean isCheckingAllCookieParam) {
-        this.isCheckingAllCookieParam = isCheckingAllCookieParam;
     }
 
     public boolean isTamperingBase64() {
         return this.isTamperingBase64;
     }
 
-    public void setIsTamperingBase64(boolean isTamperingBase64) {
-        this.isTamperingBase64 = isTamperingBase64;
-    }
-
     public boolean isTamperingFunctionComment() {
         return this.isTamperingFunctionComment;
-    }
-
-    public void setIsTamperingFunctionComment(boolean isTamperingFunctionComment) {
-        this.isTamperingFunctionComment = isTamperingFunctionComment;
     }
 
     public boolean isTamperingEqualToLike() {
         return this.isTamperingEqualToLike;
     }
 
-    public void setIsTamperingEqualToLike(boolean isTamperingEqualToLike) {
-        this.isTamperingEqualToLike = isTamperingEqualToLike;
-    }
-
     public boolean isTamperingRandomCase() {
         return this.isTamperingRandomCase;
-    }
-
-    public void setIsTamperingRandomCase(boolean isTamperingRandomCase) {
-        this.isTamperingRandomCase = isTamperingRandomCase;
     }
 
     public boolean isTamperingSpaceToMultilineComment() {
         return this.isTamperingSpaceToMultilineComment;
     }
 
-    public void setIsTamperingSpaceToMultilineComment(boolean isTamperingSpaceToMultilineComment) {
-        this.isTamperingSpaceToMultilineComment = isTamperingSpaceToMultilineComment;
-    }
-
     public boolean isTamperingSpaceToDashComment() {
         return this.isTamperingSpaceToDashComment;
-    }
-
-    public void setIsTamperingSpaceToDashComment(boolean isTamperingSpaceToDashComment) {
-        this.isTamperingSpaceToDashComment = isTamperingSpaceToDashComment;
     }
 
     public boolean isTamperingSpaceToSharpComment() {
         return this.isTamperingSpaceToSharpComment;
     }
 
-    public void setIsTamperingSpaceToSharpComment(boolean isTamperingSpaceToSharpComment) {
-        this.isTamperingSpaceToSharpComment = isTamperingSpaceToSharpComment;
-    }
-
     public boolean isTamperingVersionComment() {
         return this.isTamperingVersionComment;
-    }
-
-    public void setIsTamperingVersionComment(boolean isTamperingVersionComment) {
-        this.isTamperingVersionComment = isTamperingVersionComment;
     }
 
     public boolean isTamperingEval() {
         return this.isTamperingEval;
     }
 
-    public void setIsTamperingEval(boolean isTamperingEval) {
-        this.isTamperingEval = isTamperingEval;
-    }
-
     public boolean isCheckingAllSOAPParam() {
         return this.isCheckingAllSOAPParam;
-    }
-
-    public void setIsCheckingAllSoapParam(boolean isCheckingAllSOAPParam) {
-        this.isCheckingAllSOAPParam = isCheckingAllSOAPParam;
     }
 
     public boolean is4K() {
         return this.is4K;
     }
 
-    public void setIs4K(boolean is4k) {
-        this.is4K = is4k;
-    }
-
     public boolean isLimitingThreads() {
         return this.isLimitingThreads;
-    }
-    
-    public void setIsLimitingThreads(boolean isLimitingThreads) {
-        this.isLimitingThreads = isLimitingThreads;
     }
     
     public boolean isUnicodeDecodeDisabled() {
         return this.isUnicodeDecodeDisabled;
     }
     
-    public void setIsUnicodeDecodeDisabled(boolean isUnicodeDecodeDisabled) {
-        this.isUnicodeDecodeDisabled = isUnicodeDecodeDisabled;
-    }
-    
     public int countLimitingThreads() {
-        return this.countLimitingThreads ;
+        return this.countLimitingThreads;
     }
     
-    public void setCountLimitingThreads(int countLimitingThreads) {
-        this.countLimitingThreads = countLimitingThreads;
+    public int countNormalIndex() {
+        return this.countNormalIndex;
+    }
+    
+    public boolean isLimitingNormalIndex() {
+        return this.isLimitingNormalIndex;
     }
     
     public boolean isCsrfUserTag() {
         return this.isCsrfUserTag;
     }
     
-    public void setIsCsrfUserTag(boolean isCsrfUserTag) {
-        this.isCsrfUserTag = isCsrfUserTag;
-    }
-    
     public String csrfUserTag() {
         return this.csrfUserTag;
-    }
-    
-    public void setCsrfUserTag(String csrfUserTag) {
-        this.csrfUserTag = csrfUserTag;
     }
     
     public boolean isPerfIndexDisabled() {
@@ -439,7 +330,7 @@ public class PreferencesUtil {
     }
     
     
-    // Builder
+    // Builder true
 
     public PreferencesUtil withNotTestingConnection() {
         this.isNotTestingConnection = true;
@@ -466,10 +357,38 @@ public class PreferencesUtil {
         return this;
     }
     
+    public PreferencesUtil withCheckingAllRequestParam() {
+        this.isCheckingAllRequestParam = true;
+        return this;
+    }
+    
     public PreferencesUtil withCheckingAllJSONParam() {
         this.isCheckingAllJSONParam = true;
         return this;
     }
+    
+    public PreferencesUtil withCheckingAllSOAPParam() {
+        this.isCheckingAllSOAPParam = true;
+        return this;
+    }
+    
+    public PreferencesUtil withIsCheckingUpdate() {
+        this.isCheckingUpdate = true;
+        return this;
+    }
+    
+    public PreferencesUtil withIsReportingBugs() {
+        this.isReportingBugs = true;
+        return this;
+    }
+    
+    public PreferencesUtil withIsCheckingAllURLParam() {
+        this.isCheckingAllURLParam = true;
+        return this;
+    }
+    
+    
+    // Builder
 
     public PreferencesUtil withIsCheckingUpdate(boolean isCheckingUpdate) {
         this.isCheckingUpdate = isCheckingUpdate;
@@ -633,6 +552,16 @@ public class PreferencesUtil {
     
     public PreferencesUtil withIsUrlEncodingDisabled(boolean isUrlEncodingDisabled) {
         this.isUrlEncodingDisabled = isUrlEncodingDisabled;
+        return this;
+    }
+
+    public PreferencesUtil withIsLimitingNormalIndex(boolean isLimitingNormalIndex) {
+        this.isLimitingNormalIndex = isLimitingNormalIndex;
+        return this;
+    }
+
+    public PreferencesUtil withCountNormalIndex(int countNormalIndex) {
+        this.countNormalIndex = countNormalIndex;
         return this;
     }
 }
