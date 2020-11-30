@@ -164,9 +164,9 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlRows(String[] namesColumns, Database database, Table table) {
         
-        String 
-            sqlQuery, 
-            sqlField, 
+        String
+            sqlQuery,
+            sqlField,
             sqlConcatFields;
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZippedStrategy()) {

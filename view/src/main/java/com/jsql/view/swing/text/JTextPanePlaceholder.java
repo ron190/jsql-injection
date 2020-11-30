@@ -56,13 +56,15 @@ public class JTextPanePlaceholder extends JTextPane {
         // Fix #38546: ConcurrentModificationException on getText()
         // Fix #37872: IndexOutOfBoundsException on getText()
         // Fix #48915: ClassCastException on paint()
+        // Unhandled IllegalArgumentException #91471 on paint()
         try {
             super.paint(g);
             
             if (StringUtils.isEmpty(Jsoup.parse(this.getText()).text().trim())) {
                 UiUtil.drawPlaceholder(this, g, this.placeholderText);
             }
-        } catch (ConcurrentModificationException | IndexOutOfBoundsException | ClassCastException e) {
+        } catch (IllegalArgumentException | ConcurrentModificationException | IndexOutOfBoundsException | ClassCastException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
     }

@@ -334,7 +334,10 @@ public class DnDTabbedPane extends JTabbedPane {
                 DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
                 TransferHandler th = src.getTransferHandler();
                 DnDTabbedPane.this.dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
+                
+                // Unhandled NoClassDefFoundError #56620: Could not initialize class java.awt.dnd.DragSource
                 th.exportAsDrag(src, e, TransferHandler.MOVE);
+                
                 RECT_LINE.setBounds(0, 0, 0, 0);
                 src.getRootPane().getGlassPane().setVisible(true);
                 src.setDropLocation(new DnDDropLocation(tabPt, -1), true);

@@ -242,7 +242,9 @@ public class LightScrollPane extends JComponent {
             
             graphics2D.setColor(colorThumbAlpha);
             
+            // Unhandled NoClassDefFoundError #65554: Could not initialize class sun.dc.pr.Rasterizer
             graphics2D.fillRect(x, y, width, height);
+            
             graphics2D.dispose();
         }
     }

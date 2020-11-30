@@ -80,6 +80,8 @@ public class MenuActionNewValue implements ActionListener {
 
         int result = -1;
                
+        // Unhandled NullPointerException #92858 on showOptionDialog()
+        // Unhandled IllegalArgumentException #92859 on showOptionDialog()
         // Fix #70832: ClassCastException on showOptionDialog()
         try {
             result = JOptionPane.showOptionDialog(
@@ -92,7 +94,9 @@ public class MenuActionNewValue implements ActionListener {
                 new String[]{I18nUtil.valueByKey("LIST_ADD_VALUE_OK"), I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")},
                 I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
             );
-        } catch (ClassCastException e) {
+            
+        } catch (NullPointerException | IllegalArgumentException | ClassCastException e) {
+            
             LOGGER.error(e, e);
         }
 

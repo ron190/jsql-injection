@@ -31,6 +31,8 @@ public class ReplaceFileChooser extends JFileChooser {
      */
     public ReplaceFileChooser(String s) {
         
+        // Unhandled NoSuchMethodError #82561 on constructor: NoSuchMethodError
+        // Unhandled InternalError #93015 on constructor: InvocationTargetException
         super(s);
     }
     

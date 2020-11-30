@@ -50,6 +50,7 @@ public class ActionStart implements ActionListener {
         // Ask the user confirmation if injection already built
         if (MediatorHelper.model().shouldErasePreviousInjection()) {
             
+            // Fix #93469: IllegalArgumentException on showConfirmDialog()
             // Fix #33930: ClassCastException on showConfirmDialog()
             // Implementation by sun.awt.image
             try {
@@ -60,7 +61,7 @@ public class ActionStart implements ActionListener {
                     JOptionPane.OK_CANCEL_OPTION
                 );
                 
-            } catch (ClassCastException e) {
+            } catch (IllegalArgumentException| ClassCastException e) {
                 
                 LOGGER.error(e, e);
             }

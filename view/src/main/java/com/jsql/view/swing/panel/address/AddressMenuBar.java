@@ -141,7 +141,7 @@ public class AddressMenuBar extends JMenuBar {
         
         this.itemRadioStrategyError.removeAll();
 
-        Integer indexError = 0;
+        int indexError = 0;
         
         if (vendor != MediatorHelper.model().getMediatorVendor().getAuto() && vendor.instance().getModelYaml().getStrategy().getError() != null) {
             

@@ -54,7 +54,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         String initialQuery = StringUtils.EMPTY;
         int nbIndex;
         
-        int countNormalIndex = 
+        int countNormalIndex =
             this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex()
             ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countNormalIndex()
             : 50;

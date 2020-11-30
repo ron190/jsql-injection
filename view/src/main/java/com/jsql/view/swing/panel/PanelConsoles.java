@@ -384,6 +384,7 @@ public class PanelConsoles extends JPanel {
             public void mousePressed(MouseEvent e) {
                 
                 // Fix #90428: IllegalArgumentException in setSelectedComponent()
+                // ArrayIndexOutOfBoundsException #92973 on setSelectedComponent()
                 try {
                     PanelConsoles.this.tabConsoles.setSelectedComponent(manager);
                     

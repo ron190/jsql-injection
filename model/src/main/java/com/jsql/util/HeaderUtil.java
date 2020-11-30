@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -459,11 +460,24 @@ public class HeaderUtil {
         
         Map<String, String> mapHeaders = new HashMap<>();
         
-        for (Map.Entry<String, List<String>> entries: connection.getHeaderFields().entrySet()) {
+        // Unhandled NoSuchElementException #91041 on getHeaderFields()
+        try {
+            for (Map.Entry<String, List<String>> entries: connection.getHeaderFields().entrySet()) {
+                
+                mapHeaders.put(
+                    entries.getKey() == null
+                    ? "Status code"
+                    : entries.getKey()
+                    ,
+                    String.join(",", entries.getValue())
+                );
+            }
             
-            mapHeaders.put(entries.getKey() == null ? "Status code" : entries.getKey(), String.join(",", entries.getValue()));
+        } catch (NoSuchElementException e) {
+            
+            LOGGER.error(e, e);
         }
-
+        
         return mapHeaders;
     }
 }

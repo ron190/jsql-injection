@@ -44,8 +44,12 @@ public class ImageObserverAnimated implements ImageObserver {
     public boolean imageUpdate(Image img, int flags, int x, int y, int w, int h) {
         
         if ((flags & (FRAMEBITS | ALLBITS)) != 0) {
+            
             Rectangle rect = this.tree.getPathBounds(this.path);
+            
             if (rect != null) {
+                
+                // Unhandled StackOverflowError #92723
                 this.tree.repaint(rect);
             }
         }

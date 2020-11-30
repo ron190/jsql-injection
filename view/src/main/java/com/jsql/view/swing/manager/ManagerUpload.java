@@ -167,9 +167,9 @@ public class ManagerUpload extends AbstractManagerList {
                 
             this.uploadFiles(shellURL, filechooser);
             
-        } catch (NullPointerException | ClassCastException ex) {
+        } catch (NullPointerException | ClassCastException e) {
             
-            LOGGER.error(ex, ex);
+            LOGGER.error(e, e);
         }
     }
 

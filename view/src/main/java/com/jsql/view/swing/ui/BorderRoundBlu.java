@@ -34,6 +34,7 @@ public class BorderRoundBlu extends AbstractBorder {
         Container parent = c.getParent();
         
         if (parent!=null) {
+            
             g2.setColor(parent.getBackground());
             Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
             corner.subtract(new Area(round));
@@ -42,7 +43,9 @@ public class BorderRoundBlu extends AbstractBorder {
             // Fix #42289: UnsatisfiedLinkError on fill()
             try {
                 g2.fill(corner);
+                
             } catch (NoClassDefFoundError | UnsatisfiedLinkError e) {
+                
                 LOGGER.error(e, e);
             }
         }
@@ -52,7 +55,9 @@ public class BorderRoundBlu extends AbstractBorder {
         // Fix #55411: NoClassDefFoundError on draw()
         try {
             g2.draw(round);
+            
         } catch (NoClassDefFoundError e) {
+            
             LOGGER.error(e, e);
         }
             

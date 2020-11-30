@@ -11,13 +11,13 @@ It's **free**, **open source** and it works **cross-platform** on Windows, Linux
 [![Maven 3.1](https://img.shields.io/badge/maven-3.1-a2265a)](https://maven.apache.org/)
 [![License](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ron190/jsql-injection/Java%20CI%20with%20Maven%20and%20Docker?label=%20&logo=github)](https://github.com/ron190/jsql-injection/actions)
-[![Travis (.org)](https://img.shields.io/travis/ron190/jsql-injection?label=%20&logo=travis)](https://travis-ci.org/ron190/jsql-injection)<br>
+[![Travis (.org)](https://img.shields.io/travis/ron190/jsql-injection?label=%20&logo=travis)](https://travis-ci.org/ron190/jsql-injection)
 [![Sonar](https://img.shields.io/sonar/coverage/jsql-injection:jsql-injection?label=%20&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
 [![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=%20&logo=codecov)](https://codecov.io/gh/ron190/jsql-injection)
 [![Codacy](https://img.shields.io/codacy/coverage/e7ccb247f9b74d489a1fa9f9483c978f?label=%20&logo=codacy)](https://app.codacy.com/manual/ron190/jsql-injection/dashboard)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/ron190/jsql-injection.svg?logo=lgtm&logoWidth=18&label=%20)](https://lgtm.com/projects/g/ron190/jsql-injection/alerts/)
 [![Codebeat badge](https://codebeat.co/badges/457d8c76-c470-4457-ad06-310a6d8b4b3e)](https://codebeat.co/projects/github-com-ron190-jsql-injection-master)<br>
 [![Sonar Violations (long format)](https://img.shields.io/sonar/violations/jsql-injection:jsql-injection?format=long&label=%20&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/ron190/jsql-injection.svg?logo=lgtm&logoWidth=18&label=%20)](https://lgtm.com/projects/g/ron190/jsql-injection/alerts/)
 
 ## Features
 - Automatic injection of 34 kinds of databases: Access, Altibase, C-treeACE, CockroachDB, CUBRID, DB2, Derby, Exasol, Firebird, FrontBase, H2, Hana, HSQLDB, Informix, Ingres, InterSystems-IRIS, MaxDB, Mckoi, MemSQL, MimerSQL, MonetDB, MySQL, Neo4j, Netezza, NuoDB, Oracle, PostgreSQL, Presto, SQLite, SQL Server, Sybase, Teradata and Vertica

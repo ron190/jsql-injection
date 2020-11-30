@@ -532,6 +532,7 @@ public class Menubar extends JMenuBar {
         );
         this.itemEnglish.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.ROOT));
         
+        // Unhandled ClassFormatError #73790 on constructor: Unknown constant tag 73 in class file java/awt/font/TextLine
         this.itemArabic = new JRadioButtonMenuItem(
             "<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span></html>",
             UiUtil.ICON_FLAG_AR,
@@ -941,9 +942,16 @@ public class Menubar extends JMenuBar {
         this.switchMenuItems();
         
         MediatorHelper.treeDatabase().reloadNodes();
-        
-        // Fix glitches on Linux
-        MediatorHelper.frame().revalidate();
+
+        // IllegalArgumentException #92981 on revalidate()
+        try {
+            // Fix glitches on Linux
+            MediatorHelper.frame().revalidate();
+            
+        } catch (IllegalArgumentException e) {
+            
+            LOGGER.error(e, e);
+        }
     }
 
     private void switchOrientation(Locale oldLocale, Locale newLocale, boolean isStartup) {

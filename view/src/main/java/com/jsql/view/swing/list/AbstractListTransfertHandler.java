@@ -76,7 +76,15 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
             DefaultListModel<ItemList> model = (DefaultListModel<ItemList>) list.getModel();
             
             for (ItemList itemPath: this.dragPaths) {
-                model.remove(model.indexOf(itemPath));
+                
+                // Unhandled ArrayIndexOutOfBoundsException #56115 on remove()
+                try {
+                    model.remove(model.indexOf(itemPath));
+                    
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    
+                    LOGGER.error(e, e);
+                }
             }
             
             this.dragPaths = null;

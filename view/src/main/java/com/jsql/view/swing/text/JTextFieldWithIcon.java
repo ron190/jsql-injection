@@ -42,6 +42,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
     @Override
     protected void paintComponent(Graphics g) {
         
+        // Unhandled InternalError #92917: Unable to Stroke shape (no dcpr in java.library.path)
         super.paintComponent(g);
 
         URL url = UiUtil.URL_GLOBE;
@@ -51,9 +52,12 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
         }
         
         Image image = null;
+        
         try {
             image = new ImageIcon(url).getImage();
+            
         } catch (IllegalArgumentException e) {
+            
             // Exception if globe.png is unavailable
             LOGGER.error(e.getMessage(), e);
         }
@@ -73,7 +77,9 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
                 y + 1,
                 this
             );
+            
         } catch (ClassCastException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
     }

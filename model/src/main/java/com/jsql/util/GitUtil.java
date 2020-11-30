@@ -60,13 +60,13 @@ public class GitUtil {
         }
         
         try {
-            Float versionGit = Float.parseFloat(this.getJSONObject().getString("version"));
+            float versionGit = Float.parseFloat(this.getJSONObject().getString("version"));
             
             if (versionGit > Float.parseFloat(this.injectionModel.getVersionJsql())) {
                 
                 LOGGER.warn(I18nUtil.valueByKey("UPDATE_NEW_VERSION"));
                 
-            } else if(displayUpdateMessage == ShowOnConsole.YES) {
+            } else if (displayUpdateMessage == ShowOnConsole.YES) {
                 
                 LOGGER.debug(I18nUtil.valueByKey("UPDATE_UPTODATE"));
             }

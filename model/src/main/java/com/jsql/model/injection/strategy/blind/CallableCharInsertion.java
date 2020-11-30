@@ -3,7 +3,6 @@ package com.jsql.model.injection.strategy.blind;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.jsql.model.InjectionModel;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;

@@ -41,10 +41,9 @@ public class InjectionCharInsertion {
     
     protected InjectionModel injectionModel;
 
-    private List<String> trueTest;
-    protected List<String> falseTest;
-
     private String prefixSuffix;
+
+    private List<String> falseTest;
     
     /**
      * Create blind attack initialization.
@@ -59,11 +58,11 @@ public class InjectionCharInsertion {
         
         this.prefixSuffix = prefixSuffix;
         
-        this.trueTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
+        List<String> trueTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
         this.falseTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListFalseTest();
         
         // No blind
-        if (this.trueTest.isEmpty() || this.injectionModel.isStoppedByUser()) {
+        if (trueTest.isEmpty() || this.injectionModel.isStoppedByUser()) {
             
             return;
         }
@@ -92,7 +91,7 @@ public class InjectionCharInsertion {
         
         Collection<CallableCharInsertion> listCallableTagTrue = new ArrayList<>();
         
-        for (String urlTest: this.trueTest) {
+        for (String urlTest: trueTest) {
             
             listCallableTagTrue.add(
                 new CallableCharInsertion(

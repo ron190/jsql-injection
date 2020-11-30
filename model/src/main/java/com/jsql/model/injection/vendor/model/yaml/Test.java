@@ -2,7 +2,6 @@
 package com.jsql.model.injection.vendor.model.yaml;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 @SuppressWarnings("serial")
 public class Test implements Serializable {
 
-    private List<String> falses = 
+    private List<String> falses =
         Arrays.asList(
             "true = false",
             "true %21= true",
@@ -22,7 +21,7 @@ public class Test implements Serializable {
             "2 %21= 2"
         );
             
-    private List<String> trues = 
+    private List<String> trues =
         Arrays.asList(
             "true = true",
             "false = false",

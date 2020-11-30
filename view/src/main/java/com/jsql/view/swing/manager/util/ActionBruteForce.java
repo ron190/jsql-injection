@@ -150,7 +150,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
         if (hashBruter.getPerSecond() != 0) {
             
-            Float remainingDuration = Float.parseFloat(Long.toString(hashBruter.getRemainder())) / hashBruter.getPerSecond();
+            float remainingDuration = Float.parseFloat(Long.toString(hashBruter.getRemainder())) / hashBruter.getPerSecond();
             
             this.append(this.bruteForceManager.getResult(), (
                 I18nUtil.valueByKey("BRUTEFORCE_TRAVERSING_REMAINING") + ": "

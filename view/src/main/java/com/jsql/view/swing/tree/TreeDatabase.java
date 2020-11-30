@@ -282,8 +282,12 @@ public class TreeDatabase extends JTree {
             // Get the node
             AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
             
-            // Mark the node model as 'display progress bar'
-            progressingTreeNodeModel.setLoading(true);
+            // Fix rare Unhandled NullPointerException #66340
+            if (progressingTreeNodeModel != null) {
+                
+                // Mark the node model as 'display progress bar'
+                progressingTreeNodeModel.setLoading(true);
+            }
             
             // Tree model, update the tree (refresh, add node, etc)
             DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();
