@@ -23,27 +23,17 @@ import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean<T>> {
     
     /**
-     * Every FALSE SQL statements will be checked,
-     * more statements means a more robust application
-     */
-    protected List<String> falseTest;
-    
-    /**
-     * Every TRUE SQL statements will be checked,
-     * more statements means a more robust application
-     */
-    protected List<String> trueTest;
-    
-    /**
-     * Constant linked to a URL, true if that url
-     * checks the end of the SQL result, false otherwise.
-     */
-    protected static final boolean IS_TESTING_LENGTH = true;
-    
-    /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
+    
+    // Every FALSE SQL statements will be checked,
+    // more statements means a more robust application
+    protected List<String> falseTest;
+    
+    // Every TRUE SQL statements will be checked,
+    // more statements means a more robust application
+    protected List<String> trueTest;
     
     public enum BooleanMode {
         AND, OR
@@ -62,9 +52,9 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         this.trueTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
     }
     
-    public abstract T getCallable(String string, int indexCharacter, boolean isTestingLength);
+    public abstract T getCallableSizeTest(String string, int indexCharacter);
     
-    public abstract T getCallable(String string, int indexCharacter, int bit);
+    public abstract T getCallableBitTest(String string, int indexCharacter, int bit);
     
     /**
      * Start one test to verify if boolean works.
@@ -74,7 +64,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     public abstract boolean isInjectable() throws StoppedByUserSlidingException;
     
     /**
-     * Display a message to explain how is blid/time working.
+     * Display a message to explain how is blind/time working.
      * @return
      */
     public abstract String getInfoMessage();
@@ -111,7 +101,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         CompletionService<T> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         // Send the first binary question: is the SQL result empty?
-        taskCompletionService.submit(this.getCallable(sqlQuery, 0, IS_TESTING_LENGTH));
+        taskCompletionService.submit(this.getCallableSizeTest(sqlQuery, 0));
         
         // Increment the number of active tasks
         AtomicInteger countTasksSubmitted = new AtomicInteger(1);
@@ -122,7 +112,6 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         // in other word until all HTTP requests are done
         while (countTasksSubmitted.get() > 0) {
             
-            // TODO Coverage with pausable multithreading
             if (suspendable.isSuspended()) {
                 
                 String result = this.stop(bytes, taskExecutor);
@@ -227,12 +216,12 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         bytes.add(new char[]{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'});
         
         // Test if it's the end of the line
-        taskCompletionService.submit(this.getCallable(sqlQuery, indexCharacter.get(), IS_TESTING_LENGTH));
+        taskCompletionService.submit(this.getCallableSizeTest(sqlQuery, indexCharacter.get()));
         
         // Test the 8 bits for the next character, save its position and current bit for later
         for (int bit: new int[]{1, 2, 4, 8, 16, 32, 64, 128}) {
             
-            taskCompletionService.submit(this.getCallable(sqlQuery, indexCharacter.get(), bit));
+            taskCompletionService.submit(this.getCallableBitTest(sqlQuery, indexCharacter.get(), bit));
         }
         
         // Add 9 new tasks

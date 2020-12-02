@@ -33,7 +33,7 @@ public class CustomUserAgentTestSuite extends ConcreteMySqlErrorTestSuite {
         model
         .getMediatorUtils()
         .getUserAgentUtil()
-        .set(true, "CUSTOM-USER-AGENT2\r\nCUSTOM-USER-AGENT1");
+        .withCustomUserAgent("CUSTOM-USER-AGENT2\r\nCUSTOM-USER-AGENT1");
         
         model
         .getMediatorUtils()

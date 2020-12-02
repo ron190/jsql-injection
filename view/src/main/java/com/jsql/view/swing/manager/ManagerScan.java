@@ -308,7 +308,6 @@ public class ManagerScan extends AbstractManagerList {
         }
         
         // Get back the normal view
-        // TODO Don't play with View on Model
         MediatorHelper.model().addObserver(MediatorHelper.frame().getObserver());
         
         MediatorHelper.model().setIsScanning(false);

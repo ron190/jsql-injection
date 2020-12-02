@@ -62,7 +62,6 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         // SQL fields are built like 1337[index]7330+1
         // 7330+1 allows to exclude false positive when page contains injection URL
         // Search if the source contains 1337[index]7331
-        // TODO preferences for 50
         for (nbIndex = 1 ; nbIndex <= countNormalIndex ; nbIndex++) {
             
             taskCompletionService.submit(
@@ -88,7 +87,6 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                 nbIndex++;
 
                 // Found a correct mark 1337[index]7331 in the source
-                // TODO 1337 0%2b1
                 if (Pattern.compile("(?s).*1337\\d+7331.*").matcher(currentCallable.getContent()).matches()) {
                     
                     this.injectionModel.getMediatorStrategy().getNormal().setSourceIndexesFound(currentCallable.getContent());

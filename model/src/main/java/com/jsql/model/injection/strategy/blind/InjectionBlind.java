@@ -172,14 +172,15 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         }
     }
 
-    // TODO Remove useless isTestingLength==true
     @Override
-    public CallableBlind getCallable(String string, int indexCharacter, boolean isTestingLength) {
-        return new CallableBlind(string, indexCharacter, isTestingLength, this.injectionModel, this, this.booleanMode, "blind:length-test");
+    public CallableBlind getCallableSizeTest(String string, int indexCharacter) {
+        
+        return new CallableBlind(string, indexCharacter, this.injectionModel, this, this.booleanMode, "blind:length-test");
     }
 
     @Override
-    public CallableBlind getCallable(String string, int indexCharacter, int bit) {
+    public CallableBlind getCallableBitTest(String string, int indexCharacter, int bit) {
+        
         return new CallableBlind(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "blind:bit-test");
     }
 

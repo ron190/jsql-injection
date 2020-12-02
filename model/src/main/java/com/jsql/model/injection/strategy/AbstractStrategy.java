@@ -81,7 +81,7 @@ public abstract class AbstractStrategy {
      */
     public abstract String getName();
     
-    public void markVulnerability(Interaction message, int... indexError) {
+    public void markVulnerability(Interaction message, int... indexErrorStrategy) {
         
         Request request = new Request();
         request.setMessage(message);
@@ -89,11 +89,10 @@ public abstract class AbstractStrategy {
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
         
-        // TODO CollectionUtils.isNotEmpty()
-        if (indexError != null && indexError.length > 0) {
+        // Ellipse default to non null array
+        if (indexErrorStrategy.length > 0) {
             
-            // TODO Add INDEX_ERROR instead of SOURCE
-            msgHeader.put(Header.SOURCE, indexError[0]);
+            msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);
             msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);
         }
 

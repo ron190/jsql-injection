@@ -54,10 +54,9 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             return;
         }
 
-        /*
-         *  Concurrent calls to the FALSE statements,
-         *  it will use inject() from the model
-         */
+        
+        // Concurrent calls to the FALSE statements,
+        // it will use inject() from the model
         ExecutorService taskExecutor;
         
         if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
@@ -77,11 +76,10 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this, booleanMode, "time:false-mark"));
         }
         
-        /*
-         * If one FALSE query makes less than X seconds,
-         * then the test is a failure => exit
-         * Allow the user to stop the loop
-         */
+        
+        // If one FALSE query makes less than X seconds,
+        // then the test is a failure => exit
+        // Allow the user to stop the loop
         try {
             List<Future<CallableTime>> listTagFalse = taskExecutor.invokeAll(listCallableTagFalse);
             
@@ -176,14 +174,15 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         }
     }
 
-    // TODO Remove useless isTestingLength==true
     @Override
-    public CallableTime getCallable(String string, int indexCharacter, boolean isTestingLength) {
-        return new CallableTime(string, indexCharacter, isTestingLength, this.injectionModel, this, this.booleanMode, "time:length-test");
+    public CallableTime getCallableSizeTest(String string, int indexCharacter) {
+        
+        return new CallableTime(string, indexCharacter, this.injectionModel, this, this.booleanMode, "time:length-test");
     }
 
     @Override
-    public CallableTime getCallable(String string, int indexCharacter, int bit) {
+    public CallableTime getCallableBitTest(String string, int indexCharacter, int bit) {
+        
         return new CallableTime(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "time:bit-test");
     }
 

@@ -104,7 +104,7 @@ public class JsonUtil {
             Object jsonEntityInArray = jsonArrayEntity.get(i);
             String xpath = parentName +"["+ i +"]";
             
-            /** TODO Generic required {@see #scanJsonObject()} */
+            // Not possible to make generic with scanJsonObject() because of JSONArray.put(int) != JSONObject.put(String)
             if (jsonEntityInArray instanceof JSONArray || jsonEntityInArray instanceof JSONObject) {
                 
                 attributesXPath.addAll(JsonUtil.createEntries(jsonEntityInArray, xpath, parentXPath));
@@ -138,7 +138,7 @@ public class JsonUtil {
             Object value = jsonObjectEntity.get(key);
             String xpath = parentName +"."+ key;
             
-            /** TODO Generic required {@see #scanJsonArray()} */
+            // Not possible to make generic with scanJsonObject() because of JSONArray.put(int) != JSONObject.put(String)
             if (value instanceof JSONArray || value instanceof JSONObject) {
                 
                 attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));

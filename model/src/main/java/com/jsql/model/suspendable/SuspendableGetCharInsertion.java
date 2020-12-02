@@ -130,16 +130,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                     })
                     .collect(Collectors.toList());
                 
-                // TODO
-                // missing cockroachdb: docker fails
-                // missing hana: docker fails 13.9GB image
-                // missing informix: services but no connection
-                // missing ingress: missing services
-                // missing maxdb: broken installation
-                // mckoi: no error on wrong order column
-                // nuodb
-                // sybase
-                
                 if (!vendorsOrderByMatch.isEmpty()) {
                     
                     // Vendor
@@ -324,7 +314,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         }
         
         // Encoded space required for integer insertion
-        // TODO keep raw space + tamper space
         // Fail on neo4j when plain space ' '
         return characterInsertionDetectedFixed.replace(InjectionModel.STAR, "+" + InjectionModel.STAR);
     }

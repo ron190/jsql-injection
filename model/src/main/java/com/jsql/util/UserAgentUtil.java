@@ -5,15 +5,11 @@ public class UserAgentUtil {
     private boolean isCustomUserAgent = false;
 
     private String customUserAgent = null;
-    
-    // TODO builder
-    public void set(
-        boolean isCustomUserAgent,
-        String customUserAgent
-    ) {
-        
-        this.isCustomUserAgent = isCustomUserAgent;
+
+    public UserAgentUtil withCustomUserAgent(String customUserAgent) {
+        this.isCustomUserAgent = true;
         this.customUserAgent = customUserAgent;
+        return this;
     }
     
     

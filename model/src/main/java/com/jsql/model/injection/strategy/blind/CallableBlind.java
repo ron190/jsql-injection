@@ -47,7 +47,6 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      */
     public CallableBlind(String inj, int indexCharacter, int bit, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
         
-        // TODO Make generic
         this(inj, injectionModel, injectionBlind, blindMode, metadataInjectionProcess);
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestBlind(inj, indexCharacter, bit, blindMode);
         this.currentIndex = indexCharacter;
@@ -62,12 +61,11 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      * @param injectionModel
      * @param injectionBlind2
      */
-    public CallableBlind(String inj, int indexCharacter, boolean isTestingLength, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
+    public CallableBlind(String inj, int indexCharacter, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
         
-        // TODO Make generic
         this(inj, injectionModel, injectionBlind, blindMode, metadataInjectionProcess);
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestBlind(inj, indexCharacter, blindMode);
-        this.isTestingLength = isTestingLength;
+        this.isTestingLength = true;
     }
 
     /**

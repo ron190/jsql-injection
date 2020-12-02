@@ -22,35 +22,30 @@ public class Database extends AbstractElementDatabase {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
-
-    /**
-     * The number of tables in the database.
-     */
+    
+    // The number of tables in the database.
     // TODO to int
     private String tableCount;
 
     /**
      * Define the database label and number of tables.
-     * @param newDatabaseName
-     * @param newTableCount
+     * @param databaseName
+     * @param tableCount
      */
-    public Database(String newDatabaseName, String newTableCount) {
+    public Database(String databaseName, String tableCount) {
         
-        this.elementValue = newDatabaseName;
-        this.tableCount = newTableCount;
+        this.elementValue = databaseName;
+        this.tableCount = tableCount;
     }
 
-    /**
-     * A database has no parent.
-     */
+    // A database has no parent.
     @Override
     public AbstractElementDatabase getParent() {
         return null;
     }
 
-    /**
-     * Return the number of tables in the table.
-     */
+    
+    // Return the number of tables in the table.
     @Override
     public int getChildCount() {
         

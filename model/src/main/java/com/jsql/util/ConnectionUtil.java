@@ -107,6 +107,7 @@ public class ConnectionUtil {
             
         } else {
             
+            SessionCookieManager.getInstance().clear();
             CookieHandler.setDefault(null);
         }
 
@@ -196,7 +197,10 @@ public class ConnectionUtil {
                 pageSource = ConnectionUtil.getSource(connection);
             }
             
-            // TODO catch
+        } catch (IOException e) {
+
+            LOGGER.error(e, e);
+            
         } finally {
             
             msgHeader.put(Header.SOURCE, pageSource);

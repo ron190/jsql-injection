@@ -13,7 +13,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
+import javax.swing.JToolTip;
 import javax.swing.MenuElement;
+import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
@@ -25,6 +27,7 @@ import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.manager.util.ComboMenu;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.util.ButtonAddressBar;
+import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.ui.ComponentBorder;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -78,7 +81,18 @@ public class AddressMenuBar extends JMenuBar {
                 
             } else {
                 
-                itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString());
+                final JToolTipI18n[] refTooltip = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("STRATEGY_" + strategy.getName().toUpperCase(Locale.ROOT) + "_TOOLTIP"))};
+                
+                itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString()) {
+                    
+                    @Override
+                    public JToolTip createToolTip() {
+                        
+                        JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("STRATEGY_" + strategy.getName().toUpperCase(Locale.ROOT) + "_TOOLTIP"));
+                        refTooltip[0] = (JToolTipI18n) tipI18n;
+                        return tipI18n;
+                    }
+                };
                 
                 ((AbstractButton) itemRadioStrategy).addActionListener(actionEvent -> {
                     
@@ -91,7 +105,6 @@ public class AddressMenuBar extends JMenuBar {
 
             this.menuStrategy.add((JMenuItem) itemRadioStrategy);
             
-            // TODO i18n dynamic tooltip missing
             ((JComponent) itemRadioStrategy).setToolTipText(I18nUtil.valueByKey("STRATEGY_" + strategy.getName().toUpperCase(Locale.ROOT) + "_TOOLTIP"));
             ((JComponent) itemRadioStrategy).setEnabled(false);
         }

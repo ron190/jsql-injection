@@ -133,7 +133,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         this.mediatorStrategy.getNormal().setVisibleIndex(null);
         
-        // TODO remove, must be done on checkApplicability()
         this.mediatorStrategy.getNormal().setApplicable(false);
         this.mediatorStrategy.getError().setApplicable(false);
         this.mediatorStrategy.getBlind().setApplicable(false);
@@ -550,10 +549,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             // and use visible Index for injection
             query = paramLead + this.indexesInUrl.replaceAll(
                 "1337" + this.mediatorStrategy.getNormal().getVisibleIndex() + "7331",
-                /**
-                 * Oracle column often contains $, which is reserved for regex.
-                 * => need to be escape with quoteReplacement()
-                 */
+                // Oracle column often contains $, which is reserved for regex.
+                // => need to be escape with quoteReplacement()
                 Matcher.quoteReplacement(sqlTrail)
             );
             
@@ -583,7 +580,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             query = paramLead.replace(
                 InjectionModel.STAR,
                 this.indexesInUrl.replace(
-                    // TODO 1337
                     "1337" + this.mediatorStrategy.getNormal().getVisibleIndex() + "7331",
                     sqlTrail
                 )
@@ -701,6 +697,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             + System.getProperty("user.language")
         );
     }
+    
     
     // Getters and setters
 

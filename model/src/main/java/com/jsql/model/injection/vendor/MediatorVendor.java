@@ -120,8 +120,7 @@ public class MediatorVendor {
                     
                     if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
                         
-                        // Build \4\5\4\6
-                        // TODO join with \6
+                        // Generate pattern \4\5\4\6 for injection parsing
                         resultSqlite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
                     }
                 }

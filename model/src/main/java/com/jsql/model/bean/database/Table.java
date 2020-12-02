@@ -23,42 +23,34 @@ public class Table extends AbstractElementDatabase {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
-
-    /**
-     * The database that contains the current column.
-     */
+    
+    // The database that contains the current column.
     private Database parentDatabase;
     
-    /**
-     * The number of rows in the table.
-     */
+    // The number of rows in the table.
     // TODO to int and move to abstract class
     private String rowCount;
 
     /**
      * Define the table label, number of rows and parent database.
-     * @param newTableName
-     * @param newRowCount
-     * @param newParentDatabase
+     * @param tableName
+     * @param rowCount
+     * @param parentDatabase
      */
-    public Table(String newTableName, String newRowCount, Database newParentDatabase) {
+    public Table(String tableName, String rowCount, Database parentDatabase) {
         
-        this.elementValue = newTableName;
-        this.rowCount = newRowCount;
-        this.parentDatabase = newParentDatabase;
+        this.elementValue = tableName;
+        this.rowCount = rowCount;
+        this.parentDatabase = parentDatabase;
     }
-
-    /**
-     * Return the parent database.
-     */
+    
+    // Return the parent database.
     @Override
     public AbstractElementDatabase getParent() {
         return this.parentDatabase;
     }
-
-    /**
-     * Return the number of rows in the table.
-     */
+    
+    // Return the number of rows in the table.
     @Override
     public int getChildCount() {
         

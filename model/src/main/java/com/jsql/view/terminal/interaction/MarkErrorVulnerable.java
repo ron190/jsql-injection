@@ -39,7 +39,7 @@ public class MarkErrorVulnerable implements InteractionCommand {
     public MarkErrorVulnerable(Object[] interactionParams) {
         
         Map<Header, Object> mapHeader = (Map<Header, Object>) interactionParams[0];
-        this.indexMethodError = (int) mapHeader.get(Header.SOURCE);
+        this.indexMethodError = (int) mapHeader.get(Header.INDEX_ERROR_STRATEGY);
         this.injectionModel = (InjectionModel) mapHeader.get(Header.INJECTION_MODEL);
     }
 

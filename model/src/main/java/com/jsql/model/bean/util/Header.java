@@ -7,6 +7,7 @@ public enum Header {
     HEADER,
     RESPONSE,
     SOURCE,
+    INDEX_ERROR_STRATEGY,
     VENDOR,
     PAGE_SIZE,
     INJECTION_MODEL,
