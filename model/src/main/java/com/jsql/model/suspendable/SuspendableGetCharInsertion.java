@@ -8,7 +8,6 @@ import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -26,7 +25,6 @@ import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.InjectionCharInsertion;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.suspendable.callable.CallablePageSource;
-import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import com.jsql.util.I18nUtil;
 
 /**
@@ -52,18 +50,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
     public String run(Object... args) throws JSqlException {
         
         String characterInsertionByUser = (String) args[0];
-
-        ExecutorService taskExecutor;
         
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
-            
-            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
-            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetInsertionCharacter"));
-            
-        } else {
-            
-            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetInsertionCharacter"));
-        }
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetInsertionCharacter");
         
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
@@ -272,7 +260,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                     + this.injectionModel.getMediatorVendor().getVendor().instance().sqlOrderBy(),
                     characterInsertion,
                     this.injectionModel,
-                    "char:order-by"
+                    "fprint#order"
                 )
             );
         }

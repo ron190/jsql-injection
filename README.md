@@ -22,16 +22,16 @@ It's **free**, **open source** and it works **cross-platform** on Windows, Linux
 ## Features
 - Automatic injection of 34 kinds of databases: Access, Altibase, C-treeACE, CockroachDB, CUBRID, DB2, Derby, Exasol, Firebird, FrontBase, H2, Hana, HSQLDB, Informix, Ingres, InterSystems-IRIS, MaxDB, Mckoi, MemSQL, MimerSQL, MonetDB, MySQL, Neo4j, Netezza, NuoDB, Oracle, PostgreSQL, Presto, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Stacked, Blind and Time
-- Various injection modes: Basic, Compress, Dump In One Shot
-- SQL and tampering sandboxes
-- Injection of a list of targets
-- Read and write files using injection
-- Creation and visualization of Web shell and SQL shell
-- Bruteforce of password hash
-- Search for administration pages
-- Text hashing, encoding and decoding
-- Authentication Basic, Digest, NTLM, Kerberos  
-- Proxy connection HTTP, SOCKS4 and SOCKS5
+- Various injection processes: Basic, Zip, Dump In One Shot
+- Sandbox for SQL and tampering scripting
+- Targets list to inject
+- Read and write file using injection
+- Create and display Web shell and SQL shell
+- Bruteforce hash password
+- Search for admin pages
+- Hash, encode and decode text
+- Authenticate using Basic, Digest, NTLM or Kerberos  
+- Proxy connection on HTTP, SOCKS4 and SOCKS5
 
 ## Installation [[jsql-injection-v0.82.jar](https://github.com/ron190/jsql-injection/releases/download/v0.82/jsql-injection-v0.82.jar)]
 Install [Java](http://java.com) 8 or up to 15, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.82.jar` to launch the software.<br>
@@ -86,19 +86,20 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 
 ## [[Roadmap](https://github.com/ron190/jsql-injection/projects)]
 ```
-Full Path Disclosure, Injection strategies: routed query, WAF detection.
+Full Path Disclosure, Injection strategies: routed query, WAF detection
 ```
 
 ## In progress
 ```
-Custom rows load, Strategy Dump In One Shot.
+Fingerprint database and insertion char, Custom rows load
 ```
 
 ## Since latest release
 ```
-New preferences for Threads, User-Agent, CSRF, Query size reduction. 
-Add Stacked query and new Error strategies, Database and char insertion identification.
-New databases: Altibase C-treeACE Exasol FrontBase InterSystems-IRIS MemSQL MimerSQL MonetDB Netezza Presto.
+- New Strategy Dump In One Shot
+- New preferences for Threads, User-Agent, CSRF, Query size reduction 
+- Add Stacked query and new Error strategies, Database and char insertion identification
+- New databases: Altibase C-treeACE Exasol FrontBase InterSystems-IRIS MemSQL MimerSQL MonetDB Netezza Presto
 ```
 
 ## Change log

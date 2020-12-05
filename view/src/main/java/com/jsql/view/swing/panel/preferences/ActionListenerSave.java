@@ -36,6 +36,7 @@ public class ActionListenerSave implements ActionListener {
         .withCountLimitingThreads((Integer) this.panelPreferences.getPanelConnection().getSpinnerLimitingThreads().getValue())
         .withIsCsrfUserTag(this.panelPreferences.getPanelConnection().getCheckboxIsCsrfUserTag().isSelected())
         .withCsrfUserTag(this.panelPreferences.getPanelConnection().getTextfieldCsrfUserTag().getText())
+        .withCsrfUserTagOutput(this.panelPreferences.getPanelConnection().getTextfieldCsrfUserTagOutput().getText())
                 
         .withIsParsingForm(this.panelPreferences.getPanelInjection().getCheckboxIsParsingForm().isSelected())
         .withIsNotInjectingMetadata(this.panelPreferences.getPanelInjection().getCheckboxIsNotInjectingMetadata().isSelected())
@@ -45,10 +46,12 @@ public class ActionListenerSave implements ActionListener {
         .withIsCheckingAllURLParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllURLParam().isSelected())
         .withIsCheckingAllRequestParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllRequestParam().isSelected())
         .withIsCheckingAllHeaderParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllHeaderParam().isSelected())
-        .withIsCheckingAllJSONParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllJSONParam().isSelected())
-        .withIsCheckingAllSOAPParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllSOAPParam().isSelected())
+        .withIsCheckingAllBase64Param(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllBase64Param().isSelected())
+        .withIsCheckingAllJsonParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllJsonParam().isSelected())
+        .withIsCheckingAllSoapParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllSoapParam().isSelected())
         .withIsCheckingAllCookieParam(this.panelPreferences.getPanelInjection().getCheckboxIsCheckingAllCookieParam().isSelected())
-        .withIsZippedStrategy(this.panelPreferences.getPanelInjection().getCheckboxIsZippedStrategy().isSelected())
+        .withIsZipStrategy(this.panelPreferences.getPanelInjection().getCheckboxIsZipStrategy().isSelected())
+        .withIsDiosStrategy(this.panelPreferences.getPanelInjection().getCheckboxIsDiosStrategy().isSelected())
         .withIsUrlEncodingDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsUrlEncodingDisabled().isSelected())
         .withIsPerfIndexDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsPerfIndexDisabled().isSelected())
                 
@@ -98,12 +101,13 @@ public class ActionListenerSave implements ActionListener {
         
         if (
             isRestartRequired
-            && JOptionPane.showConfirmDialog(
-                MediatorHelper.frame(),
-                "File krb5.conf has changed, please restart.",
-                "Restart",
-                JOptionPane.YES_NO_OPTION
-            ) == JOptionPane.YES_OPTION
+            && JOptionPane
+                .showConfirmDialog(
+                    MediatorHelper.frame(),
+                    "File krb5.conf has changed, please restart.",
+                    "Restart",
+                    JOptionPane.YES_NO_OPTION
+                ) == JOptionPane.YES_OPTION
         ) {
             new ActionNewWindow().actionPerformed(null);
         }

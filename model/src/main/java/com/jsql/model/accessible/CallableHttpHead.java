@@ -92,7 +92,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
         msgHeader.put(Header.POST, StringUtils.EMPTY);
         msgHeader.put(Header.HEADER, StringUtils.EMPTY);
         msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
-        msgHeader.put(Header.METADATA_INJECTION_PROCESS, this.metadataInjectionProcess);
+        msgHeader.put(Header.METADATA_PROCESS, this.metadataInjectionProcess);
 
         Request request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);

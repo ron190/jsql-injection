@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.text.JPopupTextField;
-import com.jsql.view.swing.text.listener.DocumentListenerTyping;
+import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -39,8 +39,8 @@ public class PanelAuth extends JPanel {
 
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
-        GroupLayout groupLayoutAuthentication = new GroupLayout(this);
-        this.setLayout(groupLayoutAuthentication);
+        GroupLayout groupLayout = new GroupLayout(this);
+        this.setLayout(groupLayout);
 
         // Digest label
         JLabel labelDigestAuthenticationUsername = new JLabel("Username  ");
@@ -139,7 +139,7 @@ public class PanelAuth extends JPanel {
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
-        DocumentListener documentListenerSave = new DocumentListenerTyping() {
+        DocumentListener documentListenerSave = new DocumentListenerEditing() {
             
             @Override
             public void process() {
@@ -167,68 +167,80 @@ public class PanelAuth extends JPanel {
             label.setContentAreaFilled(false);
         });
         
-        groupLayoutAuthentication
+        JLabel labelMarginHidden = new JLabel();
+        JLabel labelMargin = new JLabel();
+        labelMargin.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
+        
+        groupLayout
         .setHorizontalGroup(
-            groupLayoutAuthentication
+            groupLayout
             .createSequentialGroup()
             .addGroup(
-                groupLayoutAuthentication
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                 .addComponent(this.getCheckboxUseDigestAuthentication())
                 .addComponent(labelDigestAuthenticationUsername)
                 .addComponent(labelDigestAuthenticationPassword)
+                .addComponent(labelMarginHidden)
                 .addComponent(this.getCheckboxUseKerberos())
                 .addComponent(labelKerberosLoginConf)
                 .addComponent(labelKerberosKrb5Conf)
             )
             .addGroup(
-                groupLayoutAuthentication
+                groupLayout
                 .createParallelGroup()
                 .addComponent(labelUseDigestAuthentication)
                 .addComponent(this.getTextDigestAuthenticationUsername())
                 .addComponent(this.getTextDigestAuthenticationPassword())
+                .addComponent(labelMargin)
                 .addComponent(labelUseKerberos)
                 .addComponent(this.getTextKerberosLoginConf())
                 .addComponent(this.getTextKerberosKrb5Conf())
             )
         );
         
-        groupLayoutAuthentication
+        groupLayout
         .setVerticalGroup(
-            groupLayoutAuthentication
+            groupLayout
             .createSequentialGroup()
             .addGroup(
-                groupLayoutAuthentication
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.getCheckboxUseDigestAuthentication())
                 .addComponent(labelUseDigestAuthentication)
             )
             .addGroup(
-                groupLayoutAuthentication
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelDigestAuthenticationUsername)
                 .addComponent(this.getTextDigestAuthenticationUsername())
             )
             .addGroup(
-                groupLayoutAuthentication
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelDigestAuthenticationPassword)
                 .addComponent(this.getTextDigestAuthenticationPassword())
             )
             .addGroup(
-                groupLayoutAuthentication
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(labelMarginHidden)
+                .addComponent(labelMargin)
+            )
+            .addGroup(
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.getCheckboxUseKerberos())
                 .addComponent(labelUseKerberos)
             )
             .addGroup(
-                groupLayoutAuthentication
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelKerberosLoginConf)
                 .addComponent(this.getTextKerberosLoginConf())
             )
             .addGroup(
-                groupLayoutAuthentication
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelKerberosKrb5Conf)
                 .addComponent(this.getTextKerberosKrb5Conf())

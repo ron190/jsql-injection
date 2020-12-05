@@ -8,7 +8,7 @@ import javax.swing.event.DocumentListener;
  * Used for example to process tampering, sql engine,
  * or encoding when keyboard input is entered.
  */
-public abstract class DocumentListenerTyping implements DocumentListener {
+public abstract class DocumentListenerEditing implements DocumentListener {
 
     public abstract void process();
     

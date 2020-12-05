@@ -32,12 +32,14 @@ public class PreferencesUtil {
     private boolean isCheckingAllURLParam = false;
     private boolean isCheckingAllRequestParam = false;
     private boolean isCheckingAllHeaderParam = false;
-    private boolean isCheckingAllJSONParam = false;
+    private boolean isCheckingAllBase64Param = false;
+    private boolean isCheckingAllJsonParam = false;
     private boolean isCheckingAllCookieParam = false;
-    private boolean isCheckingAllSOAPParam = false;
+    private boolean isCheckingAllSoapParam = false;
     
     private boolean isPerfIndexDisabled = false;
-    private boolean isZippedStrategy = false;
+    private boolean isZipStrategy = false;
+    private boolean isDiosStrategy = false;
     private boolean isUrlEncodingDisabled = false;
     
     private boolean isParsingForm = false;
@@ -56,6 +58,7 @@ public class PreferencesUtil {
     private boolean isTamperingSpaceToSharpComment = false;
 
     private String csrfUserTag = "";
+    private String csrfUserTagOutput = "";
     private boolean isCsrfUserTag = false;
     private boolean isLimitingThreads = false;
     private int countLimitingThreads = 10;
@@ -85,12 +88,14 @@ public class PreferencesUtil {
         this.isCheckingAllURLParam = prefs.getBoolean("isCheckingAllURLParam", false);
         this.isCheckingAllRequestParam = prefs.getBoolean("isCheckingAllRequestParam", false);
         this.isCheckingAllHeaderParam = prefs.getBoolean("isCheckingAllHeaderParam", false);
-        this.isCheckingAllJSONParam = prefs.getBoolean("isCheckingAllJSONParam", false);
+        this.isCheckingAllBase64Param = prefs.getBoolean("isCheckingAllBase64Param", false);
+        this.isCheckingAllJsonParam = prefs.getBoolean("isCheckingAllJsonParam", false);
         this.isCheckingAllCookieParam = prefs.getBoolean("isCheckingAllCookieParam", false);
-        this.isCheckingAllSOAPParam = prefs.getBoolean("isCheckingAllSOAPParam", false);
+        this.isCheckingAllSoapParam = prefs.getBoolean("isCheckingAllSoapParam", false);
         
         this.isPerfIndexDisabled = prefs.getBoolean("isPerfIndexDisabled", false);
-        this.isZippedStrategy = prefs.getBoolean("isZippedStrategy", false);
+        this.isZipStrategy = prefs.getBoolean("isZipStrategy", false);
+        this.isDiosStrategy = prefs.getBoolean("isDiosStrategy", false);
         this.isUrlEncodingDisabled = prefs.getBoolean("isUrlEncodingDisabled", false);
         
         this.isParsingForm = prefs.getBoolean("isParsingForm", false);
@@ -111,6 +116,7 @@ public class PreferencesUtil {
         this.is4K = prefs.getBoolean("is4K", false);
         this.isCsrfUserTag = prefs.getBoolean("isCsrfUserTag", false);
         this.csrfUserTag = prefs.get("csrfUserTag", "");
+        this.csrfUserTagOutput = prefs.get("csrfUserTagOutput", "");
         this.isLimitingThreads = prefs.getBoolean("isLimitingThreads", false);
         this.countLimitingThreads = prefs.getInt("countLimitingThreads", 10);
         this.isUnicodeDecodeDisabled = prefs.getBoolean("isUnicodeDecodeDisabled", false);
@@ -138,6 +144,7 @@ public class PreferencesUtil {
         preferences.putInt("countNormalIndex", this.countNormalIndex);
         preferences.putBoolean("isCsrfUserTag", this.isCsrfUserTag);
         preferences.put("csrfUserTag", this.csrfUserTag);
+        preferences.put("csrfUserTagOutput", this.csrfUserTagOutput);
         
         preferences.putBoolean("isFollowingRedirection", this.isFollowingRedirection);
         preferences.putBoolean("isNotInjectingMetadata", this.isNotInjectingMetadata);
@@ -145,16 +152,19 @@ public class PreferencesUtil {
         preferences.putBoolean("isCheckingAllURLParam", this.isCheckingAllURLParam);
         preferences.putBoolean("isCheckingAllRequestParam", this.isCheckingAllRequestParam);
         preferences.putBoolean("isCheckingAllHeaderParam", this.isCheckingAllHeaderParam);
-        preferences.putBoolean("isCheckingAllJSONParam", this.isCheckingAllJSONParam);
+        
+        preferences.putBoolean("isCheckingAllBase64Param", this.isCheckingAllBase64Param);
+        preferences.putBoolean("isCheckingAllJsonParam", this.isCheckingAllJsonParam);
         preferences.putBoolean("isCheckingAllCookieParam", this.isCheckingAllCookieParam);
-        preferences.putBoolean("isCheckingAllSOAPParam", this.isCheckingAllSOAPParam);
+        preferences.putBoolean("isCheckingAllSoapParam", this.isCheckingAllSoapParam);
         preferences.putBoolean("isParsingForm", this.isParsingForm);
         preferences.putBoolean("isNotTestingConnection", this.isNotTestingConnection);
         preferences.putBoolean("isNotProcessingCookies", this.isNotProcessingCookies);
         preferences.putBoolean("isProcessingCsrf", this.isProcessingCsrf);
         
         preferences.putBoolean("isPerfIndexDisabled", this.isPerfIndexDisabled);
-        preferences.putBoolean("isZippedStrategy", this.isZippedStrategy);
+        preferences.putBoolean("isZipStrategy", this.isZipStrategy);
+        preferences.putBoolean("isDiosStrategy", this.isDiosStrategy);
         preferences.putBoolean("isUrlEncodingDisabled", this.isUrlEncodingDisabled);
         
         preferences.putBoolean("isTamperingBase64", this.isTamperingBase64);
@@ -217,8 +227,12 @@ public class PreferencesUtil {
         return this.isCheckingAllHeaderParam;
     }
 
+    public boolean isCheckingAllBase64Param() {
+        return this.isCheckingAllBase64Param;
+    }
+    
     public boolean isCheckingAllJsonParam() {
-        return this.isCheckingAllJSONParam;
+        return this.isCheckingAllJsonParam;
     }
 
     public boolean isParsingForm() {
@@ -281,8 +295,8 @@ public class PreferencesUtil {
         return this.isTamperingEval;
     }
 
-    public boolean isCheckingAllSOAPParam() {
-        return this.isCheckingAllSOAPParam;
+    public boolean isCheckingAllSoapParam() {
+        return this.isCheckingAllSoapParam;
     }
 
     public boolean is4K() {
@@ -317,12 +331,20 @@ public class PreferencesUtil {
         return this.csrfUserTag;
     }
     
+    public String csrfUserTagOutput() {
+        return this.csrfUserTagOutput;
+    }
+    
     public boolean isPerfIndexDisabled() {
         return this.isPerfIndexDisabled;
     }
     
-    public boolean isZippedStrategy() {
-        return this.isZippedStrategy;
+    public boolean isZipStrategy() {
+        return this.isZipStrategy;
+    }
+    
+    public boolean isDiosStrategy() {
+        return this.isDiosStrategy;
     }
     
     public boolean isUrlEncodingDisabled() {
@@ -334,6 +356,11 @@ public class PreferencesUtil {
 
     public PreferencesUtil withNotTestingConnection() {
         this.isNotTestingConnection = true;
+        return this;
+    }
+    
+    public PreferencesUtil withNotInjectingMetadata() {
+        this.isNotInjectingMetadata = true;
         return this;
     }
     
@@ -362,13 +389,13 @@ public class PreferencesUtil {
         return this;
     }
     
-    public PreferencesUtil withCheckingAllJSONParam() {
-        this.isCheckingAllJSONParam = true;
+    public PreferencesUtil withCheckingAllJsonParam() {
+        this.isCheckingAllJsonParam = true;
         return this;
     }
     
-    public PreferencesUtil withCheckingAllSOAPParam() {
-        this.isCheckingAllSOAPParam = true;
+    public PreferencesUtil withCheckingAllSoapParam() {
+        this.isCheckingAllSoapParam = true;
         return this;
     }
     
@@ -435,8 +462,13 @@ public class PreferencesUtil {
         return this;
     }
 
-    public PreferencesUtil withIsCheckingAllJSONParam(boolean isCheckingAllJSONParam) {
-        this.isCheckingAllJSONParam = isCheckingAllJSONParam;
+    public PreferencesUtil withIsCheckingAllBase64Param(boolean isCheckingAllBase64Param) {
+        this.isCheckingAllBase64Param = isCheckingAllBase64Param;
+        return this;
+    }
+    
+    public PreferencesUtil withIsCheckingAllJsonParam(boolean isCheckingAllJSONParam) {
+        this.isCheckingAllJsonParam = isCheckingAllJSONParam;
         return this;
     }
 
@@ -445,8 +477,8 @@ public class PreferencesUtil {
         return this;
     }
 
-    public PreferencesUtil withIsCheckingAllSOAPParam(boolean isCheckingAllSOAPParam) {
-        this.isCheckingAllSOAPParam = isCheckingAllSOAPParam;
+    public PreferencesUtil withIsCheckingAllSoapParam(boolean isCheckingAllSOAPParam) {
+        this.isCheckingAllSoapParam = isCheckingAllSOAPParam;
         return this;
     }
 
@@ -519,6 +551,11 @@ public class PreferencesUtil {
         this.csrfUserTag = csrfUserTag;
         return this;
     }
+    
+    public PreferencesUtil withCsrfUserTagOutput(String csrfUserTagOutput) {
+        this.csrfUserTagOutput = csrfUserTagOutput;
+        return this;
+    }
 
     public PreferencesUtil withIsCsrfUserTag(boolean isCsrfUserTag) {
         this.isCsrfUserTag = isCsrfUserTag;
@@ -535,8 +572,13 @@ public class PreferencesUtil {
         return this;
     }
     
-    public PreferencesUtil withIsZippedStrategy(boolean isZippedStrategy) {
-        this.isZippedStrategy = isZippedStrategy;
+    public PreferencesUtil withIsZipStrategy(boolean isZipStrategy) {
+        this.isZipStrategy = isZipStrategy;
+        return this;
+    }
+    
+    public PreferencesUtil withIsDiosStrategy(boolean isDiosStrategy) {
+        this.isDiosStrategy = isDiosStrategy;
         return this;
     }
     

@@ -15,7 +15,6 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.JToolTip;
 import javax.swing.MenuElement;
-import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 

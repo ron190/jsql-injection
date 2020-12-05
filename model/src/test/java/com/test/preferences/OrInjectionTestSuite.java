@@ -20,10 +20,10 @@ public class OrInjectionTestSuite extends ConcreteMySqlErrorTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-error");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/errors");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "--*")
+            new SimpleEntry<>("name", "")
         ));
         
         model
@@ -33,7 +33,6 @@ public class OrInjectionTestSuite extends ConcreteMySqlErrorTestSuite {
         .withTypeRequest("GET");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
         model.beginInjection();
     }
     

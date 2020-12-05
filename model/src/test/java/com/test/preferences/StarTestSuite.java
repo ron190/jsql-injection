@@ -20,7 +20,7 @@ public class StarTestSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("fake", "empty"),
             new SimpleEntry<>("name", "0'*"),
@@ -34,7 +34,6 @@ public class StarTestSuite extends ConcreteMySqlTestSuite {
         .withTypeRequest("GET");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }
     

@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.text.JPopupTextField;
-import com.jsql.view.swing.text.listener.DocumentListenerTyping;
+import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -37,10 +37,10 @@ public class PanelProxy extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
         // Proxy label
-        JLabel labelProxyAddress = new JLabel("Proxy address  ");
-        JLabel labelProxyPort = new JLabel("Proxy port  ");
-        JLabel labelProxyAddressHttps = new JLabel("Proxy address  ");
-        JLabel labelProxyPortHttps = new JLabel("Proxy port  ");
+        JLabel labelProxyAddress = new JLabel("Address  ");
+        JLabel labelProxyPort = new JLabel("Port  ");
+        JLabel labelProxyAddressHttps = new JLabel("Address  ");
+        JLabel labelProxyPortHttps = new JLabel("Port  ");
         JButton buttonIsUsingProxy = new JButton("Proxy for http://");
         JButton buttonIsUsingProxyHttps = new JButton("Proxy for https://");
         String tooltipIsUsingProxy = "Enable proxy communication (e.g. TOR with Privoxy or Burp) for HTTP protocol.";
@@ -82,7 +82,7 @@ public class PanelProxy extends JPanel {
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
-        DocumentListener documentListenerSave = new DocumentListenerTyping() {
+        DocumentListener documentListenerSave = new DocumentListenerEditing() {
             
             @Override
             public void process() {
@@ -109,24 +109,20 @@ public class PanelProxy extends JPanel {
             label.setContentAreaFilled(false);
         });
         
-        GroupLayout groupLayoutProxy = new GroupLayout(this);
-        this.setLayout(groupLayoutProxy);
+        GroupLayout groupLayout = new GroupLayout(this);
+        this.setLayout(groupLayout);
         
-        JLabel labelProxyHttpHidden = new JLabel();
-        JLabel labelProxyHttp = new JLabel("<html><b>Handling proxy for HTTP protocol</b></html>");
         JLabel labelProxyHttpsHidden = new JLabel();
-        JLabel labelProxyHttps = new JLabel("<html><b>Handling proxy for HTTPS protocol</b></html>");
-        labelProxyHttp.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        JLabel labelProxyHttps = new JLabel();
         labelProxyHttps.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         
-        groupLayoutProxy
+        groupLayout
         .setHorizontalGroup(
-            groupLayoutProxy
+            groupLayout
             .createSequentialGroup()
             .addGroup(
-                groupLayoutProxy
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                .addComponent(labelProxyHttpHidden)
                 .addComponent(this.getCheckboxIsUsingProxy())
                 .addComponent(labelProxyAddress)
                 .addComponent(labelProxyPort)
@@ -135,9 +131,8 @@ public class PanelProxy extends JPanel {
                 .addComponent(labelProxyAddressHttps)
                 .addComponent(labelProxyPortHttps)
             ).addGroup(
-                groupLayoutProxy
+                groupLayout
                 .createParallelGroup()
-                .addComponent(labelProxyHttp)
                 .addComponent(buttonIsUsingProxy)
                 .addComponent(this.getTextProxyAddress())
                 .addComponent(this.getTextProxyPort())
@@ -148,54 +143,48 @@ public class PanelProxy extends JPanel {
             )
         );
         
-        groupLayoutProxy
+        groupLayout
         .setVerticalGroup(
-            groupLayoutProxy
+            groupLayout
             .createSequentialGroup()
             .addGroup(
-                groupLayoutProxy
-                .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(labelProxyHttpHidden)
-                .addComponent(labelProxyHttp)
-            )
-            .addGroup(
-                groupLayoutProxy
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.getCheckboxIsUsingProxy())
                 .addComponent(buttonIsUsingProxy)
             )
             .addGroup(
-                groupLayoutProxy
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelProxyAddress)
                 .addComponent(this.getTextProxyAddress())
             )
             .addGroup(
-                groupLayoutProxy
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelProxyPort)
                 .addComponent(this.getTextProxyPort())
             )
             .addGroup(
-                groupLayoutProxy
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelProxyHttpsHidden)
                 .addComponent(labelProxyHttps)
             )
             .addGroup(
-                groupLayoutProxy
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.getCheckboxIsUsingProxyHttps())
                 .addComponent(buttonIsUsingProxyHttps)
             )
             .addGroup(
-                groupLayoutProxy
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelProxyAddressHttps)
                 .addComponent(this.getTextProxyAddressHttps())
             )
             .addGroup(
-                groupLayoutProxy
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(labelProxyPortHttps)
                 .addComponent(this.getTextProxyPortHttps())

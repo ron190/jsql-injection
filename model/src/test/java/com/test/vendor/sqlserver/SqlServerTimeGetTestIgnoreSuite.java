@@ -20,11 +20,13 @@ public class SqlServerTimeGetTestIgnoreSuite extends ConcreteSqlServerTestSuite 
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-time");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/time");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "sqlserver"),
             new SimpleEntry<>("name", "1'")
         ));
+        
+        model.getMediatorUtils().getPreferencesUtil().withNotInjectingMetadata();
         
         model
         .getMediatorUtils()

@@ -143,7 +143,7 @@ strategy:
     - Unterminated identifier started at position \\d+ in SQL .*. Expected .* char
     - 'ERROR: syntax error at or near ".*"[\\r\\n]+  Position: \\d+'
     - 'ERROR: syntax error at end of input[\\r\\n]+  Position: \\d+'
-    
+    # Other
     - "ERROR: unterminated quoted identifier at or near"
     - "Query failed: ERROR:  unterminated quoted string at or near"
     - function\\.pg

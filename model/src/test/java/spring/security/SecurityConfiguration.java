@@ -106,7 +106,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .requireCsrfProtectionMatcher(
                 new AndRequestMatcher(
                     CsrfFilter.DEFAULT_CSRF_MATCHER,
-                    new RegexRequestMatcher("/greeting-csrf.*", null)
+                    new RegexRequestMatcher("/csrf.*", null)
                 )
             )
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())

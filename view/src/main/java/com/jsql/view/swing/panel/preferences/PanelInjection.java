@@ -6,11 +6,13 @@ import java.awt.event.ActionListener;
 import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
@@ -30,15 +32,18 @@ public class PanelInjection extends JPanel {
     private final JCheckBox checkboxIsCheckingAllURLParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam());
     private final JCheckBox checkboxIsCheckingAllRequestParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam());
     private final JCheckBox checkboxIsCheckingAllHeaderParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam());
+    private final JCheckBox checkboxIsCheckingAllBase64Param = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllBase64Param());
     private final JCheckBox checkboxIsCheckingAllJSONParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam());
     private final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
-    private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSOAPParam());
+    private final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam());
 
     private final JCheckBox checkboxIsLimitingNormalIndex = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex());
     private final JSpinner spinnerNormalIndexCount = new JSpinner();
 
     private final JCheckBox checkboxIsPerfIndexDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
-    private final JCheckBox checkboxIsZippedStrategy = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZippedStrategy());
+    private final JRadioButton checkboxIsZipStrategy = new JRadioButton(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy());
+    private final JRadioButton checkboxIsDefaultStrategy = new JRadioButton(StringUtils.EMPTY, true);
+    private final JRadioButton checkboxIsDiosStrategy = new JRadioButton(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy());
     private final JCheckBox checkboxIsUrlEncodingDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled());
     
     public PanelInjection(PanelPreferences panelPreferences) {
@@ -102,11 +107,14 @@ public class PanelInjection extends JPanel {
         JButton labelIsCheckingAllHeaderParam = new JButton("Inject each Header parameter if method is Header");
         JButton labelIsCheckingAllCookieParam = new JButton("Inject each Cookie parameter");
         JButton labelIsCheckingAllJSONParam = new JButton("Inject JSON parameters");
+        JButton labelIsCheckingAllBase64Param = new JButton("Inject Base64 parameters");
         JButton labelIsCheckingAllSOAPParam = new JButton("Inject SOAP parameters in Request body");
         
-        JButton labelIsZippedStrategy = new JButton("Use Zip strategy (smaller SQL queries)");
+        JButton labelIsDefaultStrategy = new JButton("Use Default strategy (use this ; no change to URL or processing)");
+        JButton labelIsDiosStrategy = new JButton("Use Dios strategy (less queries ; do not use with Error strategies)");
+        JButton labelIsZipStrategy = new JButton("Use Zip strategy (smaller SQL queries ; reduce URL size but less efficient)");
         JButton labelIsUrlEncodingDisabled = new JButton("Disable URL encoding (smaller URL)");
-        JButton labelIsPerfIndexDisabled = new JButton("Disable calibration (smaller SQL query during Normal index selection)");
+        JButton labelIsPerfIndexDisabled = new JButton("Disable calibration (smaller SQL query during Normal index selection only)");
         
         JLabel emptyLabelGeneralInjection = new JLabel();
         JLabel labelGeneralInjection = new JLabel("<html><b>Content processing</b></html>");
@@ -115,7 +123,7 @@ public class PanelInjection extends JPanel {
         JLabel emptyLabelSpecial = new JLabel();
         JLabel labelSpecial = new JLabel("<html><br /><b>Special parameters</b></html>");
         JLabel emptyLabelQuerySize = new JLabel();
-        JLabel labelQuerySize = new JLabel("<html><br /><b>URL size cut</b></html>");
+        JLabel labelQuerySize = new JLabel("<html><br /><b>Reduce processing and URL size (advanced)</b></html>");
         
         ActionListener actionListenerCheckingAllParam = actionEvent -> {
             
@@ -168,6 +176,11 @@ public class PanelInjection extends JPanel {
             this.checkboxIsCheckingAllJSONParam.setSelected(!this.checkboxIsCheckingAllJSONParam.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
+        labelIsCheckingAllBase64Param.addActionListener(actionEvent -> {
+            
+            this.checkboxIsCheckingAllBase64Param.setSelected(!this.checkboxIsCheckingAllBase64Param.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
         labelIsCheckingAllCookieParam.addActionListener(actionEvent -> {
             
             this.checkboxIsCheckingAllCookieParam.setSelected(!this.checkboxIsCheckingAllCookieParam.isSelected());
@@ -183,9 +196,19 @@ public class PanelInjection extends JPanel {
             this.checkboxIsPerfIndexDisabled.setSelected(!this.checkboxIsPerfIndexDisabled.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
-        labelIsZippedStrategy.addActionListener(actionEvent -> {
+        labelIsZipStrategy.addActionListener(actionEvent -> {
             
-            this.checkboxIsZippedStrategy.setSelected(!this.checkboxIsZippedStrategy.isSelected());
+            this.checkboxIsZipStrategy.setSelected(!this.checkboxIsZipStrategy.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+        labelIsDiosStrategy.addActionListener(actionEvent -> {
+            
+            this.checkboxIsDiosStrategy.setSelected(!this.checkboxIsDiosStrategy.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+        labelIsDefaultStrategy.addActionListener(actionEvent -> {
+            
+            this.checkboxIsDefaultStrategy.setSelected(!this.checkboxIsDefaultStrategy.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         labelIsUrlEncodingDisabled.addActionListener(actionEvent -> {
@@ -204,10 +227,11 @@ public class PanelInjection extends JPanel {
             this.checkboxIsCheckingAllRequestParam,
             this.checkboxIsCheckingAllHeaderParam,
             this.checkboxIsCheckingAllJSONParam,
+            this.checkboxIsCheckingAllBase64Param,
             this.checkboxIsCheckingAllCookieParam,
             this.checkboxIsCheckingAllSOAPParam,
             this.checkboxIsPerfIndexDisabled,
-            this.checkboxIsZippedStrategy,
+            this.checkboxIsZipStrategy,
             this.checkboxIsUrlEncodingDisabled,
             this.checkboxIsLimitingNormalIndex
         )
@@ -222,10 +246,13 @@ public class PanelInjection extends JPanel {
             labelIsCheckingAllRequestParam,
             labelIsCheckingAllHeaderParam,
             labelIsCheckingAllJSONParam,
+            labelIsCheckingAllBase64Param,
             labelIsCheckingAllCookieParam,
             labelIsCheckingAllSOAPParam,
             labelIsPerfIndexDisabled,
-            labelIsZippedStrategy,
+            labelIsZipStrategy,
+            labelIsDiosStrategy,
+            labelIsDefaultStrategy,
             labelIsUrlEncodingDisabled,
             labelIsLimitingNormalIndex
         )
@@ -235,6 +262,11 @@ public class PanelInjection extends JPanel {
             label.setBorderPainted(false);
             label.setContentAreaFilled(false);
         });
+        
+        ButtonGroup groupSpaceToComment = new ButtonGroup();
+        groupSpaceToComment.add(this.checkboxIsZipStrategy);
+        groupSpaceToComment.add(this.checkboxIsDiosStrategy);
+        groupSpaceToComment.add(this.checkboxIsDefaultStrategy);
         
         GroupLayout groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
@@ -258,12 +290,15 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsCheckingAllHeaderParam)
                 
                 .addComponent(emptyLabelSpecial)
-                .addComponent(this.checkboxIsCheckingAllCookieParam)
+                .addComponent(this.checkboxIsCheckingAllBase64Param)
                 .addComponent(this.checkboxIsCheckingAllJSONParam)
                 .addComponent(this.checkboxIsCheckingAllSOAPParam)
+                .addComponent(this.checkboxIsCheckingAllCookieParam)
                 
                 .addComponent(emptyLabelQuerySize)
-                .addComponent(this.checkboxIsZippedStrategy)
+                .addComponent(this.checkboxIsDefaultStrategy)
+                .addComponent(this.checkboxIsDiosStrategy)
+                .addComponent(this.checkboxIsZipStrategy)
                 .addComponent(this.checkboxIsUrlEncodingDisabled)
                 .addComponent(this.checkboxIsPerfIndexDisabled)
             )
@@ -282,12 +317,15 @@ public class PanelInjection extends JPanel {
                 .addComponent(labelIsCheckingAllHeaderParam)
                 
                 .addComponent(labelSpecial)
+                .addComponent(labelIsCheckingAllBase64Param)
                 .addComponent(labelIsCheckingAllJSONParam)
                 .addComponent(labelIsCheckingAllSOAPParam)
                 .addComponent(labelIsCheckingAllCookieParam)
 
                 .addComponent(labelQuerySize)
-                .addComponent(labelIsZippedStrategy)
+                .addComponent(labelIsDefaultStrategy)
+                .addComponent(labelIsDiosStrategy)
+                .addComponent(labelIsZipStrategy)
                 .addComponent(labelIsUrlEncodingDisabled)
                 .addComponent(labelIsPerfIndexDisabled)
             )
@@ -362,6 +400,12 @@ public class PanelInjection extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsCheckingAllBase64Param)
+                .addComponent(labelIsCheckingAllBase64Param)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsCheckingAllJSONParam)
                 .addComponent(labelIsCheckingAllJSONParam)
             )
@@ -387,8 +431,20 @@ public class PanelInjection extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsZippedStrategy)
-                .addComponent(labelIsZippedStrategy)
+                .addComponent(this.checkboxIsDefaultStrategy)
+                .addComponent(labelIsDefaultStrategy)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsDiosStrategy)
+                .addComponent(labelIsDiosStrategy)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsZipStrategy)
+                .addComponent(labelIsZipStrategy)
             )
             .addGroup(
                 groupLayout
@@ -428,7 +484,11 @@ public class PanelInjection extends JPanel {
         return this.checkboxIsCheckingAllHeaderParam;
     }
     
-    public JCheckBox getCheckboxIsCheckingAllJSONParam() {
+    public JCheckBox getCheckboxIsCheckingAllBase64Param() {
+        return this.checkboxIsCheckingAllBase64Param;
+    }
+    
+    public JCheckBox getCheckboxIsCheckingAllJsonParam() {
         return this.checkboxIsCheckingAllJSONParam;
     }
     
@@ -436,7 +496,7 @@ public class PanelInjection extends JPanel {
         return this.checkboxIsCheckingAllCookieParam;
     }
     
-    public JCheckBox getCheckboxIsCheckingAllSOAPParam() {
+    public JCheckBox getCheckboxIsCheckingAllSoapParam() {
         return this.checkboxIsCheckingAllSOAPParam;
     }
     
@@ -448,8 +508,12 @@ public class PanelInjection extends JPanel {
         return this.checkboxIsPerfIndexDisabled;
     }
 
-    public JCheckBox getCheckboxIsZippedStrategy() {
-        return this.checkboxIsZippedStrategy;
+    public JRadioButton getCheckboxIsZipStrategy() {
+        return this.checkboxIsZipStrategy;
+    }
+    
+    public JRadioButton getCheckboxIsDiosStrategy() {
+        return this.checkboxIsDiosStrategy;
     }
     
     public JCheckBox getCheckboxIsUrlEncodingDisabled() {

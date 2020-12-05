@@ -19,7 +19,7 @@ import com.jsql.view.interaction.InteractionCommand;
  * Mark the injection as invulnerable to a time based injection.
  */
 public class MarkTimeInvulnerable implements InteractionCommand {
-    
+
     /**
      * Using default log4j.properties from root /
      */
@@ -34,7 +34,7 @@ public class MarkTimeInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        
+
         LOGGER.debug(AnsiColorUtil.addRedColor(this.getClass().getSimpleName()));
     }
 }

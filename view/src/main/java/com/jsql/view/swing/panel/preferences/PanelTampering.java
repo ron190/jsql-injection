@@ -21,7 +21,7 @@ import com.jsql.view.swing.sql.lexer.HighlightedDocument;
 import com.jsql.view.swing.tab.TabHeader.Cleanable;
 import com.jsql.view.swing.text.JPopupTextPane;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
-import com.jsql.view.swing.text.listener.DocumentListenerTyping;
+import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -224,7 +224,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         document.setHighlightStyle(HighlightedDocument.JAVASCRIPT_STYLE);
         this.textPaneEval.setStyledDocument(document);
         
-        document.addDocumentListener(new DocumentListenerTyping() {
+        document.addDocumentListener(new DocumentListenerEditing() {
             
             @Override
             public void process() {
@@ -235,15 +235,15 @@ public class PanelTampering extends JPanel implements Cleanable {
         
         this.textPaneEval.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
         
-        GroupLayout groupLayoutTampering = new GroupLayout(this);
-        this.setLayout(groupLayoutTampering);
+        GroupLayout groupLayout = new GroupLayout(this);
+        this.setLayout(groupLayout);
         
-        groupLayoutTampering
+        groupLayout
         .setHorizontalGroup(
-            groupLayoutTampering
+            groupLayout
             .createSequentialGroup()
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                 .addComponent(this.checkboxIsTamperingBase64)
                 .addComponent(this.checkboxIsTamperingFunctionComment)
@@ -259,7 +259,7 @@ public class PanelTampering extends JPanel implements Cleanable {
                 .addComponent(this.checkboxIsTamperingEval)
             )
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup()
                 .addComponent(labelIsTamperingBase64)
                 .addComponent(labelIsTamperingFunctionComment)
@@ -276,78 +276,78 @@ public class PanelTampering extends JPanel implements Cleanable {
             )
         );
         
-        groupLayoutTampering
+        groupLayout
         .setVerticalGroup(
-            groupLayoutTampering
+            groupLayout
             .createSequentialGroup()
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingBase64)
                 .addComponent(labelIsTamperingBase64)
             )
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingFunctionComment)
                 .addComponent(labelIsTamperingFunctionComment)
             )
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingVersionComment)
                 .addComponent(labelIsTamperingVersionComment)
             )
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingEqualToLike)
                 .addComponent(labelIsTamperingEqualToLike)
             )
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingRandomCase)
                 .addComponent(labelIsTamperingRandomCase)
             )
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingStringToChar)
                 .addComponent(labelIsTamperingStringToChar)
             )
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingHexToChar)
                 .addComponent(labelIsTamperingHexToChar)
             )
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingQuoteToUtf8)
                 .addComponent(labelIsTamperingQuoteToUtf8)
             )
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.radioIsTamperingSpaceToMultilineComment)
                 .addComponent(labelIsTamperingSpaceToMultilineComment)
             )
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.radioIsTamperingSpaceToDashComment)
                 .addComponent(labelIsTamperingSpaceToDashComment)
             )
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.radioIsTamperingSpaceToSharpComment)
                 .addComponent(labelIsTamperingSpaceToSharpComment)
             )
             .addGroup(
-                groupLayoutTampering
+                groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsTamperingEval)
                 .addComponent(textAreaIsTamperingEval)

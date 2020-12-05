@@ -1,4 +1,4 @@
-package com.test.soap;
+package com.test.special;
 
 import org.junitpioneer.jupiter.RepeatFailedTest;
 
@@ -22,7 +22,7 @@ public class SoapTestSuite extends ConcreteMySqlErrorTestSuite {
         
         model.getMediatorUtils().getPreferencesUtil()
         .withNotTestingConnection()
-        .withCheckingAllSOAPParam();
+        .withCheckingAllSoapParam();
         
         model
         .getMediatorUtils()

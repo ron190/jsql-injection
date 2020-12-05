@@ -56,7 +56,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         boolean isMultipleRows = (Boolean) args[2];
         int countRowsToFind = (Integer) args[3];
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
-        String metadataInjectionProcess = args.length == 6 ? (String) args[5] : "";
+        String metadataInjectionProcess = (String) args[5];
         
         this.injectionModel.getMediatorUtils().getThreadUtil().put(searchName, this);
 

@@ -21,8 +21,8 @@ public class PathParamTestSuite extends ConcreteMySqlTestSuite {
         model.addObserver(new SystemOutTerminal());
 
         // TODO Test all PathParam URL segments
-        // Analyse last required query param
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting/1'*/suffix");
+        // Analyze last required query param
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/path/1'*/suffix");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql"),
             new SimpleEntry<>("fake", "")
@@ -33,7 +33,6 @@ public class PathParamTestSuite extends ConcreteMySqlTestSuite {
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getQuery());
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }
     

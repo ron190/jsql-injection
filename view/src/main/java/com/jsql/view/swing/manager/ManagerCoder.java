@@ -33,7 +33,7 @@ import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JPopupTextPane;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
-import com.jsql.view.swing.text.listener.DocumentListenerTyping;
+import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 
 /**
  * Manager to code/decode string in various methods.
@@ -93,7 +93,7 @@ public class ManagerCoder extends JPanel implements Manager {
         this.textInput.setEditable(true);
         this.textInput.setLineWrap(true);
         
-        this.textInput.getDocument().addDocumentListener(new DocumentListenerTyping() {
+        this.textInput.getDocument().addDocumentListener(new DocumentListenerEditing() {
             
             @Override
             public void process() {

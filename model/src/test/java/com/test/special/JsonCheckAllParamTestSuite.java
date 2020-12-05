@@ -1,18 +1,17 @@
-package com.test.insertion;
+package com.test.special;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junitpioneer.jupiter.RepeatFailedTest;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
+import com.test.vendor.mysql.ConcreteMySqlTestSuite;
 
-public class EmptyErrorTestSuite extends ConcreteMySqlErrorTestSuite {
-
+public class JsonCheckAllParamTestSuite extends ConcreteMySqlTestSuite {
+    
     @Override
     public void setupInjection() throws Exception {
         
@@ -21,11 +20,18 @@ public class EmptyErrorTestSuite extends ConcreteMySqlErrorTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/errors");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/json");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", StringUtils.EMPTY)
+            new SimpleEntry<>("name", "{\"c\": 1, \"b\": {\"b\": [1, true, null, {\"a\": {\"a\": \"0'\"}}]}}"),
+            new SimpleEntry<>("tenant", "mysql")
         ));
+        
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withCheckingAllURLParam()
+        .withCheckingAllJsonParam()
+        .withNotTestingConnection();
 
         model
         .getMediatorUtils()
@@ -34,7 +40,6 @@ public class EmptyErrorTestSuite extends ConcreteMySqlErrorTestSuite {
         .withTypeRequest("GET");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
         model.beginInjection();
     }
     

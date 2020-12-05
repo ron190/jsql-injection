@@ -20,6 +20,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.PrivilegedActionException;
+import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.EnumMap;
 import java.util.Map;
@@ -121,7 +122,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.mediatorUtils.setJsonUtil(new JsonUtil(this));
         this.mediatorUtils.setPreferencesUtil(new PreferencesUtil());
         this.mediatorUtils.setProxyUtil(new ProxyUtil(this));
-        this.mediatorUtils.setThreadUtil(new ThreadUtil());
+        this.mediatorUtils.setThreadUtil(new ThreadUtil(this));
         this.mediatorUtils.setTamperingUtil(new TamperingUtil());
         this.mediatorUtils.setUserAgentUtil(new UserAgentUtil());
     }
@@ -197,7 +198,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             if (hasFoundInjection && !this.isScanning) {
                 
-                if (this.getMediatorUtils().getPreferencesUtil().isZippedStrategy()) {
+                if (this.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
                     
                     LOGGER.info("Using minimal query size");
                 }
@@ -293,8 +294,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 .mapToInt(Integer::intValue)
                 .sum();
             
-            String size = (pageSource.length() + sizeHeaders) / 1024 + "kb";
-            msgHeader.put(Header.PAGE_SIZE, size);
+            float size = (float) (pageSource.length() + sizeHeaders) / 1024;
+            DecimalFormat decimalFormat = new DecimalFormat("0.000");
+            msgHeader.put(Header.PAGE_SIZE, decimalFormat.format(size));
             
             if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
                 
@@ -302,7 +304,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
             
             msgHeader.put(Header.SOURCE, pageSource);
-            msgHeader.put(Header.METADATA_INJECTION_PROCESS, metadataInjectionProcess);
+            msgHeader.put(Header.METADATA_PROCESS, metadataInjectionProcess);
+            msgHeader.put(Header.METADATA_STRATEGY, this.mediatorStrategy.getMeta());
             
             // Send data to Views
             Request request = new Request();

@@ -124,7 +124,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         // ==> ${lead}(index)######...######
         // Search for index that displays the most #
         String performanceQuery = this.injectionModel.getMediatorVendor().getVendor().instance().sqlCapacity(indexes);
-        String performanceSourcePage = this.injectionModel.injectWithoutIndex(performanceQuery, "normal:size-test");
+        String performanceSourcePage = this.injectionModel.injectWithoutIndex(performanceQuery, "normal#size");
 
         // Build a 2D array of string with:
         //     column 1: index

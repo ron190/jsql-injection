@@ -121,8 +121,15 @@ strategy:
   endingComment: --+-
   fingerprint:
    errorMessage:
+    # Spring
+    - "Syntax error: unexpected '.*', expecting SELECT or VALUE or VALUES or "
+    - "Syntax: 'ORDER BY' is not allowed here\\. \\[CAS INFO-.*\\],\\[SESSION-.*\\]"
+    - "Syntax: unterminated string \\[CAS INFO-.*\\],\\[SESSION-.*\\]"
+    - "Syntax: unterminated identifier \\[CAS INFO-.*\\],\\[SESSION-.*\\]"
+    - "Syntax error: unexpected END OF STATEMENT \\[CAS INFO-.*\\],\\[SESSION-.*\\]"
+    - 'Semantic: Attribute ".*" was not found\. .*\[CAS INFO-.*\],\[SESSION-.*\]'
+    # Other
     - Cubrid database
-    - "Syntax error: unexpected '.', expecting SELECT or VALUE or VALUES or '"
    orderByErrorMessage:
     - "Semantic: 1337 in sort spec is out of range"
 

@@ -11,7 +11,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
-import com.jsql.model.suspendable.SuspendableGetVendor;
 import com.jsql.util.StringUtil;
 
 public class MediatorStrategy {
@@ -40,6 +39,19 @@ public class MediatorStrategy {
         this.normal = new StrategyInjectionNormal(this.injectionModel);
         
         this.strategies = Arrays.asList(this.time, this.blind, this.error, this.normal);
+    }
+    
+    public String getMeta() {
+        
+        String strategyName = this.strategy == null ? "n/a" : this.strategy.toString().toLowerCase();
+        
+        String strategyMode = this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()
+        ? "dios"
+        : this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()
+        ? "zip"
+        : "default";
+        
+        return strategyName +"#"+ strategyMode;
     }
     
     /**
@@ -126,7 +138,7 @@ public class MediatorStrategy {
         String parameterOriginalValue = null;
         
         // Fingerprint database
-        this.injectionModel.getMediatorVendor().setVendor(new SuspendableGetVendor(this.injectionModel).run());
+        this.injectionModel.getMediatorVendor().setVendor(this.injectionModel.getMediatorVendor().fingerprintVendor());
         
         // If not an injection point then find insertion character.
         // Force to 1 if no insertion char works and empty value from user,

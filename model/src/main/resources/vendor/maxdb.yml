@@ -123,7 +123,7 @@ strategy:
    errorMessage:
     - "Warning: maxdb::"
     - maxdb.query
-    - "): Invalid end of SQL statement"
+    - "\\): Invalid end of SQL statement"
 
  normal:
   indices: union select ${result_range} from (${indice_unique})z

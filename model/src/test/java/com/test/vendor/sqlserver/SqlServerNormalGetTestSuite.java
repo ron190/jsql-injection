@@ -13,16 +13,16 @@ public class SqlServerNormalGetTestSuite extends ConcreteSqlServerTestSuite {
 
     @Override
     public void setupInjection() throws Exception {
-        
+
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "sqlserver"),
-            new SimpleEntry<>("name", "-1'")
+            new SimpleEntry<>("name", "")
         ));
         
         model
@@ -31,29 +31,28 @@ public class SqlServerNormalGetTestSuite extends ConcreteSqlServerTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlServer());
         model.beginInjection();
     }
-    
+
     @Override
     @RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }
-    
+
     @Override
     @RepeatFailedTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
     }
-    
+
     @Override
     @RepeatFailedTest(3)
     public void listColumns() throws JSqlException {
         super.listColumns();
     }
-    
+
     @Override
     @RepeatFailedTest(3)
     public void listValues() throws JSqlException {

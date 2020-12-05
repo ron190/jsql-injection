@@ -23,10 +23,10 @@ public class BasicHeaderTestSuite extends ConcreteMySqlErrorTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/basic/greeting");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/basic");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "0'")
+            new SimpleEntry<>("name", "")
         ));
         model.getMediatorUtils().getParameterUtil().setListHeader(Arrays.asList(
             new SimpleEntry<>("Authorization", "Basic " + StringUtil.base64Encode(SecurityConfiguration.BASIC_USERNAME + ":" + SecurityConfiguration.BASIC_PASSWORD))

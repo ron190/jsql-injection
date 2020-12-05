@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -187,6 +188,11 @@ public class JsonUtil {
             
             try {
                 LOGGER.info("Checking JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));
+                
+                if (Base64.isBase64(paramStar.getValue().replace("*", ""))) {
+                    
+                    LOGGER.info("Param " + paramStar.getKey() +"="+ paramStar.getValue() +" appears to be Base64");
+                }
                 
                 // Test current JSON value marked with * for injection
                 // Keep original param

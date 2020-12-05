@@ -21,7 +21,7 @@ public class MultipleIndexTestSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-multiple-index");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/multiple-index");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql"),
             new SimpleEntry<>("name", StringUtils.EMPTY)
@@ -34,7 +34,6 @@ public class MultipleIndexTestSuite extends ConcreteMySqlTestSuite {
         .withTypeRequest("GET");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }
     

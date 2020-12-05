@@ -1,4 +1,4 @@
-package com.test.vendor.oracle;
+package com.test.insertion;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -8,9 +8,10 @@ import org.junitpioneer.jupiter.RepeatFailedTest;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 
-public class OracleNormalGetTestNopeSuite extends ConcreteOracleTestSuite {
-    
+public class BadValueErrorTestSuite extends ConcreteMySqlErrorTestSuite {
+
     @Override
     public void setupInjection() throws Exception {
         
@@ -19,12 +20,12 @@ public class OracleNormalGetTestNopeSuite extends ConcreteOracleTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/errors");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "oracle"),
-            new SimpleEntry<>("name", "0'")
+            new SimpleEntry<>("tenant", "mysql-error"),
+            new SimpleEntry<>("name", "---")
         ));
-        
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
@@ -32,8 +33,7 @@ public class OracleNormalGetTestNopeSuite extends ConcreteOracleTestSuite {
         .withTypeRequest("GET");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getOracle());
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
         model.beginInjection();
     }
     
@@ -41,23 +41,5 @@ public class OracleNormalGetTestNopeSuite extends ConcreteOracleTestSuite {
     @RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
-    }
-    
-    @Override
-    @RepeatFailedTest(3)
-    public void listTables() throws JSqlException {
-        super.listTables();
-    }
-    
-    @Override
-    @RepeatFailedTest(3)
-    public void listColumns() throws JSqlException {
-        super.listColumns();
-    }
-    
-    @Override
-    @RepeatFailedTest(3)
-    public void listValues() throws JSqlException {
-        super.listValues();
     }
 }

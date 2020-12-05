@@ -24,10 +24,9 @@ public class CustomMethodTestIgnoreSuite extends ConcreteMySqlErrorTestSuite {
 
         // TODO Request params not passed when cutom method => fallback to querystring
         // Need custom method set also for querystring
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-custom?tenant=mysql-error&name=0'");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/custom?tenant=mysql-error");
         model.getMediatorUtils().getParameterUtil().setListRequest(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "0'")
+            new SimpleEntry<>("name", "")
         ));
         
         model.getMediatorUtils().getPreferencesUtil().withNotTestingConnection();
@@ -51,7 +50,7 @@ public class CustomMethodTestIgnoreSuite extends ConcreteMySqlErrorTestSuite {
 
 /*
 
-[log4j.stdout.properties] 16:56:39,981 [ForkJoinPool-2-worker-2] INFO  Starting new injection: http://localhost:8080/greeting-custom?tenant=mysql&name=0'
+[log4j.stdout.properties] 16:56:39,981 [ForkJoinPool-2-worker-2] INFO  Starting new injection: http://localhost:8080/custom?tenant=mysql&name=0'
 
 [log4j.stdout.properties] 16:56:40,464 [ForkJoinPool-2-worker-2] INFO  Using insertion character [-1']
 
@@ -65,7 +64,7 @@ public class CustomMethodTestIgnoreSuite extends ConcreteMySqlErrorTestSuite {
 
 [INFO] Running com.test.insertion.BadValueTestSuite
 
-[log4j.stdout.properties] 16:56:44,562 [ForkJoinPool-2-worker-1] INFO  Starting new injection: http://localhost:8080/greeting-insertion-char
+[log4j.stdout.properties] 16:56:44,562 [ForkJoinPool-2-worker-1] INFO  Starting new injection: http://localhost:8080/normal-insertion-char
 
 [log4j.stdout.properties] 16:56:45,173 [ForkJoinPool-2-worker-1] INFO  Using insertion character [-1"))]
 
@@ -79,7 +78,7 @@ public class CustomMethodTestIgnoreSuite extends ConcreteMySqlErrorTestSuite {
 
 [log4j.stdout.properties] 16:56:45,258 [ForkJoinPool-2-worker-1] INFO  Using database [MySQL]
 
-[log4j.stdout.properties] 16:56:45,290 [ForkJoinPool-2-worker-3] INFO  Starting new injection: http://localhost:8080/greeting-post
+[log4j.stdout.properties] 16:56:45,290 [ForkJoinPool-2-worker-3] INFO  Starting new injection: http://localhost:8080/normal-post
 
 [log4j.stdout.properties] 16:56:45,341 [ForkJoinPool-2-worker-3] INFO  Checking REQUEST parameter fake=empty
 

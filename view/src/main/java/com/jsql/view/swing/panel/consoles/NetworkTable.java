@@ -80,8 +80,8 @@ public class NetworkTable extends JTable {
             
             private String[] columns = {
                 I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"),
-                I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN"),
-                I18nUtil.valueByKey("NETWORK_TAB_TYPE_COLUMN"),
+                I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN") + " (KB)",
+                "Strategy",
                 "Metadata"
             };
 

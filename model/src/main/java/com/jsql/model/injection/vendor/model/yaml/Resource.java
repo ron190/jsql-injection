@@ -10,7 +10,7 @@ public class Resource implements Serializable {
 
     private String info = StringUtils.EMPTY;
     private Schema schema = new Schema();
-    private Schema zipped = new Schema();
+    private Schema zip = new Schema();
     private Schema dios = new Schema();
     private File file = new File();
 
@@ -30,12 +30,12 @@ public class Resource implements Serializable {
         this.schema = schema;
     }
 
-    public Schema getZipped() {
-        return this.zipped;
+    public Schema getZip() {
+        return this.zip;
     }
 
-    public void setZipped(Schema zipped) {
-        this.zipped = zipped;
+    public void setZip(Schema zip) {
+        this.zip = zip;
     }
 
     public Schema getDios() {

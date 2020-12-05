@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -16,7 +15,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
-import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
  * A blind attack class using concurrent threads.
@@ -72,22 +70,12 @@ public class InjectionCharInsertion {
             falseCharInsertion
             +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().endingComment()
             +"+fals+",
-            "char:bool-false"
+            "fprint#ref"
         );
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-        ExecutorService taskExecutor;
-        
-        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
-            
-            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
-            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableCharInsertionTagTrue"));
-            
-        } else {
-            
-            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableCharInsertionTagTrue"));
-        }
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableCharInsertionTagTrue");
         
         Collection<CallableCharInsertion> listCallableTagTrue = new ArrayList<>();
         
@@ -101,7 +89,7 @@ public class InjectionCharInsertion {
                     ,
                     this,
                     BooleanMode.OR,
-                    "char:bool-true"
+                    "fprint#true"
                 )
             );
         }
@@ -146,17 +134,7 @@ public class InjectionCharInsertion {
         
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
-        ExecutorService taskExecutor;
-        
-        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
-            
-            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
-            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetBlindTagTrue"));
-            
-        } else {
-            
-            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagTrue"));
-        }
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
 
         Collection<CallableCharInsertion> listCallableTagFalse = new ArrayList<>();
         
@@ -170,7 +148,7 @@ public class InjectionCharInsertion {
                     ,
                     this,
                     BooleanMode.OR,
-                    "char:bool-false"
+                    "fprint#false"
                 )
             );
         }
@@ -221,7 +199,7 @@ public class InjectionCharInsertion {
             ,
             this,
             BooleanMode.OR,
-            "char:bool-confirm"
+            "fprint#confirm"
         );
         
         try {

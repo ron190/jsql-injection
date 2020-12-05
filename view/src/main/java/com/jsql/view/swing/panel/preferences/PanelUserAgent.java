@@ -22,7 +22,7 @@ import com.jsql.util.tampering.TamperingType;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
-import com.jsql.view.swing.text.listener.DocumentListenerTyping;
+import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -61,7 +61,7 @@ public class PanelUserAgent extends JPanel {
         
         this.textfieldCustomUserAgent.setText(jsonScan.toString());
         MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(jsonScan.toString());
-        this.textfieldCustomUserAgent.getDocument().addDocumentListener(new DocumentListenerTyping() {
+        this.textfieldCustomUserAgent.getDocument().addDocumentListener(new DocumentListenerEditing() {
 
             @Override
             public void process() {

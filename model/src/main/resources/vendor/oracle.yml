@@ -214,7 +214,7 @@ strategy:
     - 'ORA-.*: ".*": invalid identifier'
     - 'ORA-.*: invalid SQL statement'
     - 'ORA-.*: missing keyword'
-    
+    # Other
     - function.oci
     - "Warning: oci_parse()"
     - "Warning: oci_execute()"

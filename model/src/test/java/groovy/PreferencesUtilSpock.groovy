@@ -31,9 +31,9 @@ class PreferencesUtilSpock extends Specification {
             .withIsCheckingAllURLParam(isCheckingAllURLParam)
             .withIsCheckingAllRequestParam(isCheckingAllRequestParam)
             .withIsCheckingAllHeaderParam(isCheckingAllHeaderParam)
-            .withIsCheckingAllJSONParam(isCheckingAllJSONParam)
+            .withIsCheckingAllJsonParam(isCheckingAllJsonParam)
             .withIsCheckingAllCookieParam(isCheckingAllCookieParam)
-            .withIsCheckingAllSOAPParam(isCheckingAllSOAPParam)
+            .withIsCheckingAllSoapParam(isCheckingAllSoapParam)
 
             .withIsParsingForm(isParsingForm)
             .withIsNotTestingConnection(isNotTestingConnection)
@@ -71,9 +71,9 @@ class PreferencesUtilSpock extends Specification {
                 isCheckingAllURLParam == true
                 isCheckingAllRequestParam == true
                 isCheckingAllHeaderParam == true
-                isCheckingAllJSONParam == true
+                isCheckingAllJsonParam == true
                 isCheckingAllCookieParam == true
-                isCheckingAllSOAPParam == true
+                isCheckingAllSoapParam == true
                 
                 isParsingForm == true
                 isNotTestingConnection == true
@@ -114,9 +114,9 @@ class PreferencesUtilSpock extends Specification {
                 isCheckingAllURLParam == true
                 isCheckingAllRequestParam == true
                 isCheckingAllHeaderParam == true
-                isCheckingAllJSONParam == true
+                isCheckingAllJsonParam == true
                 isCheckingAllCookieParam == true
-                isCheckingAllSOAPParam == true
+                isCheckingAllSoapParam == true
                 
                 isParsingForm == true
                 isNotTestingConnection == true
@@ -154,9 +154,9 @@ class PreferencesUtilSpock extends Specification {
             isCheckingAllURLParam = true
             isCheckingAllRequestParam = true
             isCheckingAllHeaderParam = true
-            isCheckingAllJSONParam = true
+            isCheckingAllJsonParam = true
             isCheckingAllCookieParam = true
-            isCheckingAllSOAPParam = true
+            isCheckingAllSoapParam = true
             
             isParsingForm = true
             isNotTestingConnection = true

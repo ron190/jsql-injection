@@ -20,7 +20,7 @@ public class CookieTestSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-cookie?tenant=mysql");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/cookie?tenant=mysql");
         model.getMediatorUtils().getParameterUtil().setListHeader(Arrays.asList(
             new SimpleEntry<>("Cookie", "name=\"0'*\"")
         ));
@@ -30,7 +30,6 @@ public class CookieTestSuite extends ConcreteMySqlTestSuite {
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getHeader());
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }
     

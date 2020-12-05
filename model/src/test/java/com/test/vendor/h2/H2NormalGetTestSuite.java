@@ -19,10 +19,10 @@ public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "h2"),
-            new SimpleEntry<>("name", "1'")
+            new SimpleEntry<>("name", "")
         ));
         
         model
@@ -31,7 +31,6 @@ public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getH2());
         model.beginInjection();
     }

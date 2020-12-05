@@ -30,7 +30,6 @@ import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,7 +45,6 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
-import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.HeaderUtil;
 
@@ -207,7 +205,8 @@ public class ResourceAccess {
                 sourcePage,
                 false,
                 1,
-                null
+                null,
+                "wshell"
             );
 
             if (StringUtils.isEmpty(resultInjection)) {
@@ -271,17 +270,7 @@ public class ResourceAccess {
 
     private void injectWebshell(String pathShellFixed, String urlShellFixed, String urlProtocol, String urlWithoutFileName, List<String> directoryNames) throws InterruptedException {
         
-        ExecutorService taskExecutor;
-        
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
-            
-            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
-            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableCreateWebShell"));
-            
-        } else {
-            
-            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableCreateWebShell"));
-        }
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableCreateWebShell");
         
         CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
         
@@ -294,7 +283,7 @@ public class ResourceAccess {
                 new CallableHttpHead(
                     urlProtocol + urlPart.toString() + this.filenameWebshell,
                     this.injectionModel,
-                    "webshell:create"
+                    "wshell#run"
                 )
             );
         }
@@ -407,7 +396,7 @@ public class ResourceAccess {
         msgHeader.put(Header.HEADER, StringUtils.EMPTY);
         msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
         msgHeader.put(Header.SOURCE, pageSource);
-        msgHeader.put(Header.METADATA_INJECTION_PROCESS, "shell:run-cmd");
+        msgHeader.put(Header.METADATA_PROCESS, "sshell#run");
         
         Request request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);
@@ -499,7 +488,8 @@ public class ResourceAccess {
                 sourcePage,
                 false,
                 1,
-                null
+                null,
+                "sshell"
             );
 
             if (StringUtils.isEmpty(resultInjection)) {
@@ -566,18 +556,8 @@ public class ResourceAccess {
         String username, String password, String pathShellFixed, String urlShellFixed,
         String urlProtocol, String urlWithoutFileName, List<String> directoryNames
     ) throws InterruptedException {
-        
-        ExecutorService taskExecutor;
-        
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
-            
-            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
-            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableCreateSqlShell"));
-            
-        } else {
-            
-            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableCreateSqlShell"));
-        }
+
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableCreateSqlShell");
         
         CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
         
@@ -834,7 +814,8 @@ public class ResourceAccess {
                 sourcePage,
                 false,
                 1,
-                null
+                null,
+                "upload"
             );
             
             if (StringUtils.isEmpty(sourceShellInjected)) {
@@ -987,7 +968,8 @@ public class ResourceAccess {
             sourcePage,
             false,
             1,
-            null
+            null,
+            "read"
         );
 
         if (StringUtils.isEmpty(resultInjection)) {

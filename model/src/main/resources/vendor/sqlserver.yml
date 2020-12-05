@@ -201,12 +201,13 @@ strategy:
   fingerprint:
    errorMessage:
     # Spring
-    - No column name was specified for column .* of '.*'. [SQL State=.*, DB Errorcode=.*]
-    - Incorrect syntax near '.*'. [SQL State=.*, DB Errorcode=.*]
-    - An object or column name is missing or empty. For SELECT INTO statements, verify each column has a name. For other statements, look for empty alias names. Aliases defined as "" or [] are not allowed. Change the alias to a valid name. [SQL State=.*, DB Errorcode=.*]
-    - Unclosed quotation mark after the character string '.*'. [SQL State=.*, DB Errorcode=.*]
-    
-    - "[Microsoft][SQL Server"
+    - No column name was specified for column .* of '.*'. \[SQL State=.*, DB Errorcode=.*\]
+    - Incorrect syntax near '.*'\. \[SQL State=.*, DB Errorcode=.*\]
+    - An object or column name is missing or empty\. For SELECT INTO statements, verify each column has a name\. For other statements, look for empty alias names\. Aliases defined as "" or \[\] are not allowed\. Change the alias to a valid name\. \[SQL State=.*, DB Errorcode=.*\]
+    - Unclosed quotation mark after the character string '.*'\. \[SQL State=.*, DB Errorcode=.*\]
+    - Unclosed quotation mark after the character string '
+    # Other
+    - \[Microsoft\]\[SQL Server
     - SQL Server
    orderByErrorMessage:
     - The ORDER BY position number 1337 is out of range of the number of items in the select list

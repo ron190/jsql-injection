@@ -19,7 +19,7 @@ public class MySqlOrderByTestSuite extends ConcreteMySqlErrorTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-order-by");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/order-by");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", "")

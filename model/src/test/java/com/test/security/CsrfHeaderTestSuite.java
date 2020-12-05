@@ -20,10 +20,10 @@ public class CsrfHeaderTestSuite extends ConcreteMySqlErrorTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-csrf");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/csrf");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "0'")
+            new SimpleEntry<>("name", "")
         ));
 
         model

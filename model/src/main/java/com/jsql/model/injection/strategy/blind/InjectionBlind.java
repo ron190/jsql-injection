@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -15,7 +14,6 @@ import org.apache.log4j.Logger;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
-import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
  * A blind attack class using concurrent threads.
@@ -55,27 +53,17 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-        this.blankTrueMark = this.callUrl(StringUtils.EMPTY, "blind:set-true-mark");
+        this.blankTrueMark = this.callUrl(StringUtils.EMPTY, "blind#ref");
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-        ExecutorService taskExecutor;
-        
-        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
-            
-            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
-            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetBlindTagFalse"));
-            
-        } else {
-            
-            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagFalse"));
-        }
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagFalse");
         
         Collection<CallableBlind> listCallableTagFalse = new ArrayList<>();
         
         for (String urlTest: this.falseTest) {
             
-            listCallableTagFalse.add(new CallableBlind(urlTest, injectionModel, this, blindMode, "blind:false-mark"));
+            listCallableTagFalse.add(new CallableBlind(urlTest, injectionModel, this, blindMode, "blind#false"));
         }
         
         // Delete junk from the results of FALSE statements,
@@ -122,23 +110,13 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
-        ExecutorService taskExecutor;
-        
-        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
-            
-            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
-            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetBlindTagTrue"));
-            
-        } else {
-            
-            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagTrue"));
-        }
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
 
         Collection<CallableBlind> listCallableTagTrue = new ArrayList<>();
         
         for (String urlTest: this.trueTest) {
             
-            listCallableTagTrue.add(new CallableBlind(urlTest, injectionModel, this, blindMode, "blind:true-mark"));
+            listCallableTagTrue.add(new CallableBlind(urlTest, injectionModel, this, blindMode, "blind#true"));
         }
         
         // Remove TRUE opcodes in the FALSE opcodes, because
@@ -175,13 +153,13 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
     @Override
     public CallableBlind getCallableSizeTest(String string, int indexCharacter) {
         
-        return new CallableBlind(string, indexCharacter, this.injectionModel, this, this.booleanMode, "blind:length-test");
+        return new CallableBlind(string, indexCharacter, this.injectionModel, this, this.booleanMode, "blind#size");
     }
 
     @Override
     public CallableBlind getCallableBitTest(String string, int indexCharacter, int bit) {
         
-        return new CallableBlind(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "blind:bit-test");
+        return new CallableBlind(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "blind#bit");
     }
 
     @Override
@@ -196,7 +174,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             this.injectionModel,
             this,
             this.booleanMode,
-            "blind:is-injectable"
+            "blind#confirm"
         );
         
         try {

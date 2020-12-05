@@ -20,9 +20,9 @@ public class TamperingTestSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-post?tenant=mysql");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/post?tenant=mysql");
         model.getMediatorUtils().getParameterUtil().setListRequest(Arrays.asList(
-            new SimpleEntry<>("name", "0'")
+            new SimpleEntry<>("name", "")
         ));
         
         model
@@ -43,7 +43,6 @@ public class TamperingTestSuite extends ConcreteMySqlTestSuite {
         .withTypeRequest("POST");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }
     

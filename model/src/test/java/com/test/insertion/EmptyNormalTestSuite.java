@@ -21,7 +21,7 @@ public class EmptyNormalTestSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-insertion-char");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/insertion-char");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql"),
             new SimpleEntry<>("name", StringUtils.EMPTY)
@@ -34,7 +34,6 @@ public class EmptyNormalTestSuite extends ConcreteMySqlTestSuite {
         .withTypeRequest("GET");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }
     

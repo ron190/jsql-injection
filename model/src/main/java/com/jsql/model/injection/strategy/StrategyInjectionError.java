@@ -87,6 +87,53 @@ public class StrategyInjectionError extends AbstractStrategy {
         }
     }
 
+    private boolean isApplicable(Configuration configurationYaml, Method errorMethod) {
+        
+        boolean methodIsApplicable = false;
+      
+        String performanceSourcePage = this.injectionModel.injectWithoutIndex(
+            StringUtils.SPACE
+            + VendorYaml.replaceTags(
+                errorMethod
+                .getQuery()
+                .replace("${window}", configurationYaml.getSlidingWindow())
+                .replace("${injection}", configurationYaml.getFailsafe().replace("${indice}","0"))
+                .replace("${window.char}", "1")
+                .replace("${capacity}", Integer.toString(errorMethod.getCapacity()))
+            ),
+            "error#confirm"
+        );
+   
+        if (performanceSourcePage.matches(
+            VendorYaml.replaceTags(
+                // TODO Set static value in DataAccess
+                "(?s).*133707331.*"
+            )
+        )) {
+            methodIsApplicable = true;
+            this.isApplicable = true;
+        }
+        
+        return methodIsApplicable;
+    }
+
+    private Matcher getPerformance(Configuration configurationYaml, Method errorMethod) {
+        
+        String performanceErrorSourcePage = this.injectionModel.injectWithoutIndex(
+            StringUtils.SPACE
+            + VendorYaml.replaceTags(
+                errorMethod.getQuery()
+                .replace("${window}", configurationYaml.getSlidingWindow())
+                .replace("${injection}", configurationYaml.getCalibrator())
+                .replace("${window.char}", "1")
+                .replace("${capacity}", Integer.toString(errorMethod.getCapacity()))
+            ),
+            "error#size"
+        );
+        
+        return Pattern.compile("(?s)"+ DataAccess.LEAD +"(#+)").matcher(performanceErrorSourcePage);
+    }
+
     private int getCapacity(int indexErrorMethod, int errorCapacityDefault, Method errorMethod, Matcher regexSearch) {
         
         int errorCapacityImproved = errorCapacityDefault;
@@ -107,53 +154,6 @@ public class StrategyInjectionError extends AbstractStrategy {
         LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") + " [Error " + errorMethod.getName() +"] using ["+ Integer.toString(errorCapacityImproved) +"] characters");
         
         return errorCapacityImproved;
-    }
-
-    private Matcher getPerformance(Configuration configurationYaml, Method errorMethod) {
-        
-        String performanceErrorSourcePage = this.injectionModel.injectWithoutIndex(
-            StringUtils.SPACE
-            + VendorYaml.replaceTags(
-                errorMethod.getQuery()
-                .replace("${window}", configurationYaml.getSlidingWindow())
-                .replace("${injection}", configurationYaml.getCalibrator())
-                .replace("${window.char}", "1")
-                .replace("${capacity}", Integer.toString(errorMethod.getCapacity()))
-            ),
-            "error:size-test"
-        );
-        
-        return Pattern.compile("(?s)"+ DataAccess.LEAD +"(#+)").matcher(performanceErrorSourcePage);
-    }
-
-    private boolean isApplicable(Configuration configurationYaml, Method errorMethod) {
-        
-        boolean methodIsApplicable = false;
-      
-        String performanceSourcePage = this.injectionModel.injectWithoutIndex(
-            StringUtils.SPACE
-            + VendorYaml.replaceTags(
-                errorMethod
-                .getQuery()
-                .replace("${window}", configurationYaml.getSlidingWindow())
-                .replace("${injection}", configurationYaml.getFailsafe().replace("${indice}","0"))
-                .replace("${window.char}", "1")
-                .replace("${capacity}", Integer.toString(errorMethod.getCapacity()))
-            ),
-            "error:is-injectable"
-        );
-   
-        if (performanceSourcePage.matches(
-            VendorYaml.replaceTags(
-                // TODO Set static value in DataAccess
-                "(?s).*133707331.*"
-            )
-        )) {
-            methodIsApplicable = true;
-            this.isApplicable = true;
-        }
-        
-        return methodIsApplicable;
     }
 
     @Override

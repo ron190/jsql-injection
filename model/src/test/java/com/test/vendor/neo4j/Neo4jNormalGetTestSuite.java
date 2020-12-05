@@ -19,7 +19,7 @@ public class Neo4jNormalGetTestSuite extends ConcreteNeo4jTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-neo4j");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/neo4j");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("name", "1")
         ));
@@ -30,7 +30,6 @@ public class Neo4jNormalGetTestSuite extends ConcreteNeo4jTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
 
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getNeo4j());
         model.beginInjection();
     }

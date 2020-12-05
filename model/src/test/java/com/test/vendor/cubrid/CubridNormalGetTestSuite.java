@@ -19,10 +19,10 @@ public class CubridNormalGetTestSuite extends ConcreteCubridTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "cubrid"),
-            new SimpleEntry<>("name", "0'")
+            new SimpleEntry<>("name", "")
         ));
         
         model
@@ -32,7 +32,6 @@ public class CubridNormalGetTestSuite extends ConcreteCubridTestSuite {
         .withTypeRequest("GET");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getCubrid());
         model.beginInjection();
     }

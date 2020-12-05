@@ -1,15 +1,27 @@
 package com.jsql.model.injection.vendor;
 
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
+import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.VendorYaml;
+import com.jsql.util.I18nUtil;
 
 public class MediatorVendor {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Database vendor currently used.
@@ -60,7 +72,12 @@ public class MediatorVendor {
     private Vendor vertica;
     
     private List<Vendor> vendors;
+    
+    private InjectionModel injectionModel;
+    
     public MediatorVendor(InjectionModel injectionModel) {
+        
+        this.injectionModel = injectionModel;
         
         this.auto = new Vendor();
         this.access = new Vendor(new VendorYaml("access.yml", injectionModel));
@@ -177,6 +194,82 @@ public class MediatorVendor {
     public boolean isSqlite() {
         
         return this.getVendor() == this.getSqlite();
+    }
+    
+    public Vendor fingerprintVendor() {
+        
+        Vendor vendor = null;
+        
+        if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAuto()) {
+            
+            vendor = this.injectionModel.getMediatorVendor().getVendorByUser();
+            LOGGER.info(I18nUtil.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendor +"]");
+            
+        } else {
+            
+            LOGGER.trace("Fingerprinting database...");
+        
+            String insertionCharacter = "'\"#-)'\"*";
+            String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, "vendor");
+                
+            MediatorVendor mediatorVendor = this.injectionModel.getMediatorVendor();
+            Vendor[] vendors =
+                mediatorVendor
+                .getVendors()
+                .stream()
+                .filter(v -> v != mediatorVendor.getAuto())
+                .toArray(Vendor[]::new);
+            
+            // Test each vendor
+            for (Vendor vendorTest: vendors) {
+                
+                if (
+                    pageSource.matches("(?si)"+ vendorTest.instance().fingerprintErrorsAsRegex())
+                ) {
+                    vendor = vendorTest;
+                    LOGGER.info("Possibly ["+ vendor +"] from basic fingerprinting");
+                    break;
+                }
+            }
+            
+            vendor = this.initializeVendor(vendor);
+        }
+        
+        Request requestSetVendor = new Request();
+        requestSetVendor.setMessage(Interaction.SET_VENDOR);
+        requestSetVendor.setParameters(vendor);
+        this.injectionModel.sendToViews(requestSetVendor);
+        
+        return vendor;
+    }
+
+    public Vendor initializeVendor(Vendor vendor) {
+        
+        Vendor vendorFixed = vendor;
+        
+        if (vendorFixed == null) {
+            
+            vendorFixed = this.injectionModel.getMediatorVendor().getMySQL();
+            LOGGER.info(I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendorFixed +"]");
+            
+        } else {
+            
+            LOGGER.info(I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendorFixed +"]");
+            
+            Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+            msgHeader.put(
+                Header.URL,
+                this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()
+            );
+            msgHeader.put(Header.VENDOR, vendorFixed);
+            
+            Request requestDatabaseIdentified = new Request();
+            requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);
+            requestDatabaseIdentified.setParameters(msgHeader);
+            this.injectionModel.sendToViews(requestDatabaseIdentified);
+        }
+        
+        return vendorFixed;
     }
     
     

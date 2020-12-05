@@ -101,9 +101,29 @@ public class VendorYaml implements AbstractVendor {
         
         String sqlQuery;
         
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZippedStrategy()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
             
-            sqlQuery = this.modelYaml.getResource().getZipped().getDatabase();
+            if (StringUtils.isNotBlank(this.modelYaml.getResource().getDios().getDatabase())) {
+
+                sqlQuery = this.modelYaml.getResource().getDios().getDatabase();
+                
+            } else {
+                
+                LOGGER.info("Strategy [Dios] activated but database query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                sqlQuery = this.modelYaml.getResource().getSchema().getDatabase();
+            }
+
+        } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
+            
+            if (StringUtils.isNotBlank(this.modelYaml.getResource().getZip().getDatabase())) {
+
+                sqlQuery = this.modelYaml.getResource().getZip().getDatabase();
+                
+            } else {
+                
+                LOGGER.info("Strategy [Zip] activated but database query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                sqlQuery = this.modelYaml.getResource().getSchema().getDatabase();
+            }
 
         } else {
         
@@ -118,10 +138,30 @@ public class VendorYaml implements AbstractVendor {
         
         String sqlQuery;
         
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZippedStrategy()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
             
-            sqlQuery = this.modelYaml.getResource().getZipped().getTable();
+            if (StringUtils.isNotBlank(this.modelYaml.getResource().getDios().getTable())) {
+
+                sqlQuery = this.modelYaml.getResource().getDios().getTable();
+                
+            } else {
+                
+                LOGGER.info("Strategy [Dios] activated but table query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                sqlQuery = this.modelYaml.getResource().getSchema().getTable();
+            }
+
+        } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
             
+            if (StringUtils.isNotBlank(this.modelYaml.getResource().getZip().getTable())) {
+
+                sqlQuery = this.modelYaml.getResource().getZip().getTable();
+                
+            } else {
+                
+                LOGGER.info("Strategy [Zip] activated but table query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                sqlQuery = this.modelYaml.getResource().getSchema().getTable();
+            }
+
         } else {
             
             sqlQuery = this.modelYaml.getResource().getSchema().getTable();
@@ -141,9 +181,29 @@ public class VendorYaml implements AbstractVendor {
         
         String sqlQuery;
         
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZippedStrategy()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
             
-            sqlQuery = this.modelYaml.getResource().getZipped().getColumn();
+            if (StringUtils.isNotBlank(this.modelYaml.getResource().getDios().getColumn())) {
+
+                sqlQuery = this.modelYaml.getResource().getDios().getColumn();
+                
+            } else {
+                
+                LOGGER.info("Strategy [Dios] activated but column query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                sqlQuery = this.modelYaml.getResource().getSchema().getColumn();
+            }
+
+        } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
+            
+            if (StringUtils.isNotBlank(this.modelYaml.getResource().getZip().getColumn())) {
+
+                sqlQuery = this.modelYaml.getResource().getZip().getColumn();
+                
+            } else {
+                
+                LOGGER.info("Strategy [Zip] activated but column query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                sqlQuery = this.modelYaml.getResource().getSchema().getColumn();
+            }
 
         } else {
         
@@ -169,11 +229,40 @@ public class VendorYaml implements AbstractVendor {
             sqlField,
             sqlConcatFields;
         
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZippedStrategy()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
             
-            sqlField = this.modelYaml.getResource().getZipped().getRow().getFields().getField();
-            sqlConcatFields = this.modelYaml.getResource().getZipped().getRow().getFields().getConcat();
-            sqlQuery = this.modelYaml.getResource().getZipped().getRow().getQuery();
+            if (StringUtils.isNotBlank(this.modelYaml.getResource().getDios().getDatabase())) {
+
+                sqlField = this.modelYaml.getResource().getDios().getRow().getFields().getField();
+                sqlConcatFields = this.modelYaml.getResource().getDios().getRow().getFields().getConcat();
+                sqlQuery = this.modelYaml.getResource().getDios().getRow().getQuery();
+            
+                
+            } else {
+                
+                LOGGER.info("Strategy [Dios] activated but row query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                sqlField = this.modelYaml.getResource().getSchema().getRow().getFields().getField();
+                sqlConcatFields = this.modelYaml.getResource().getSchema().getRow().getFields().getConcat();
+                sqlQuery = this.modelYaml.getResource().getSchema().getRow().getQuery();
+            
+            }
+
+        } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
+            
+            if (StringUtils.isNotBlank(this.modelYaml.getResource().getZip().getDatabase())) {
+
+                sqlField = this.modelYaml.getResource().getZip().getRow().getFields().getField();
+                sqlConcatFields = this.modelYaml.getResource().getZip().getRow().getFields().getConcat();
+                sqlQuery = this.modelYaml.getResource().getZip().getRow().getQuery();
+            
+                
+            } else {
+                
+                LOGGER.info("Strategy [Zip] activated but row query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                sqlField = this.modelYaml.getResource().getSchema().getRow().getFields().getField();
+                sqlConcatFields = this.modelYaml.getResource().getSchema().getRow().getFields().getConcat();
+                sqlQuery = this.modelYaml.getResource().getSchema().getRow().getQuery();
+            }
 
         } else {
         
@@ -524,7 +613,7 @@ public class VendorYaml implements AbstractVendor {
                 this.modelYaml.getStrategy().getConfiguration().getFingerprint()
                 .getErrorMessage()
                 .stream()
-                .map(Pattern::quote)
+                .map(m -> ".*"+ m +".*")
                 .toArray(),
                 "|"
             );

@@ -161,7 +161,7 @@ public class DataAccess {
                 false,
                 0,
                 null,
-                "get:metadata"
+                "meta"
             );
         
         } catch (AbstractSlidingException e) {
@@ -239,7 +239,7 @@ public class DataAccess {
                 true,
                 0,
                 null,
-                "get:databases"
+                "databases"
             );
             
         } catch (AbstractSlidingException e) {
@@ -331,7 +331,7 @@ public class DataAccess {
                 true,
                 Integer.parseInt(tableCount),
                 database,
-                "get:tables"
+                "tables"
             );
             
         } catch (AbstractSlidingException e) {
@@ -422,7 +422,7 @@ public class DataAccess {
                 true,
                 0,
                 table,
-                "get:columns"
+                "columns"
             );
             
         } catch (AbstractSlidingException e) {
@@ -562,7 +562,7 @@ public class DataAccess {
                 true,
                 rowCount,
                 table,
-                "get:rows"
+                "rows"
             );
             
         } catch (AbstractSlidingException e) {

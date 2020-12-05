@@ -81,7 +81,7 @@ resource:
      )
     concat: "|| '%7f' ||"
 
- zipped:
+ zip:
   database: |
    select
        '${enclose_value_sql}sqlite_master${separator_qte_sql}'
@@ -159,7 +159,7 @@ strategy:
     - '[SQLITE_ERROR] SQL error or missing database (near ".*": syntax error) [DB Errorcode=\\d+]'
     - '[SQLITE_ERROR] SQL error or missing database (incomplete input) [DB Errorcode=\\d+]'
     - '[SQLITE_ERROR] SQL error or missing database (unrecognized token: ".*") [DB Errorcode=\\d+]'
-    
+    # Other
     - SQLite
    orderByErrorMessage:
     - ORDER BY term out of range - should be between

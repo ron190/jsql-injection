@@ -10,8 +10,6 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 
-// TODO unstable
-//
 public class CustomUserAgentTestSuite extends ConcreteMySqlErrorTestSuite {
     
     @Override
@@ -24,10 +22,10 @@ public class CustomUserAgentTestSuite extends ConcreteMySqlErrorTestSuite {
 
         // TODO Request params not passed when cutom method => fallback to querystring
         // Need custom method set also for querystring
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-user-agent?tenant=mysql-error&name=0'");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/user-agent");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "0'")
+            new SimpleEntry<>("name", "")
         ));
         
         model
@@ -42,7 +40,6 @@ public class CustomUserAgentTestSuite extends ConcreteMySqlErrorTestSuite {
         .withTypeRequest("GET");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
         model.beginInjection();
     }
     
@@ -55,7 +52,7 @@ public class CustomUserAgentTestSuite extends ConcreteMySqlErrorTestSuite {
 
 /*
 
-[log4j.stdout.properties] 16:56:39,981 [ForkJoinPool-2-worker-2] INFO  Starting new injection: http://localhost:8080/greeting-custom?tenant=mysql&name=0'
+[log4j.stdout.properties] 16:56:39,981 [ForkJoinPool-2-worker-2] INFO  Starting new injection: http://localhost:8080/normal-custom?tenant=mysql&name=0'
 
 [log4j.stdout.properties] 16:56:40,464 [ForkJoinPool-2-worker-2] INFO  Using insertion character [-1']
 
@@ -69,7 +66,7 @@ public class CustomUserAgentTestSuite extends ConcreteMySqlErrorTestSuite {
 
 [INFO] Running com.test.insertion.BadValueTestSuite
 
-[log4j.stdout.properties] 16:56:44,562 [ForkJoinPool-2-worker-1] INFO  Starting new injection: http://localhost:8080/greeting-insertion-char
+[log4j.stdout.properties] 16:56:44,562 [ForkJoinPool-2-worker-1] INFO  Starting new injection: http://localhost:8080/normal-insertion-char
 
 [log4j.stdout.properties] 16:56:45,173 [ForkJoinPool-2-worker-1] INFO  Using insertion character [-1"))]
 
@@ -83,7 +80,7 @@ public class CustomUserAgentTestSuite extends ConcreteMySqlErrorTestSuite {
 
 [log4j.stdout.properties] 16:56:45,258 [ForkJoinPool-2-worker-1] INFO  Using database [MySQL]
 
-[log4j.stdout.properties] 16:56:45,290 [ForkJoinPool-2-worker-3] INFO  Starting new injection: http://localhost:8080/greeting-post
+[log4j.stdout.properties] 16:56:45,290 [ForkJoinPool-2-worker-3] INFO  Starting new injection: http://localhost:8080/normal-post
 
 [log4j.stdout.properties] 16:56:45,341 [ForkJoinPool-2-worker-3] INFO  Checking REQUEST parameter fake=empty
 

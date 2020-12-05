@@ -123,8 +123,8 @@ strategy:
   endingComment: --+-
   fingerprint:
    errorMessage:
-    - Found a quote for which there is no matching quote. [SQL State=
-    - "[Informix][Informix ODBC Driver]General error. (SQLPrepare["
+    - Found a quote for which there is no matching quote\. \[SQL State=
+    - "\\[Informix\\]\\[Informix ODBC Driver\\]General error\\. \\(SQLPrepare\\["
     - Informix database
 
  normal:

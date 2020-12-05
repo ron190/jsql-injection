@@ -1,4 +1,4 @@
-package com.test.json;
+package com.test.vendor.db2;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -8,10 +8,9 @@ import org.junitpioneer.jupiter.RepeatFailedTest;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.vendor.mysql.ConcreteMySqlTestSuite;
 
-public class JsonCheckAllParamTestSuite extends ConcreteMySqlTestSuite {
-    
+public class Db2ErrorTestInstableSuite extends ConcreteDb2TestSuite {
+
     @Override
     public void setupInjection() throws Exception {
         
@@ -20,27 +19,19 @@ public class JsonCheckAllParamTestSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-json");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/errors");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("name", "{\"c\": 1, \"b\": {\"b\": [1, true, null, {\"a\": {\"a\": \"0'\"}}]}}"),
-            new SimpleEntry<>("tenant", "mysql")
+            new SimpleEntry<>("tenant", "db2"),
+            // Instable fingerprinting
+            new SimpleEntry<>("name", "0'")
         ));
         
-        model
-        .getMediatorUtils()
-        .getPreferencesUtil()
-        .withCheckingAllURLParam()
-        .withCheckingAllJSONParam()
-        .withNotTestingConnection();
-
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
-        model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
+
         model.beginInjection();
     }
     
@@ -48,5 +39,23 @@ public class JsonCheckAllParamTestSuite extends ConcreteMySqlTestSuite {
     @RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
+    }
+    
+    @Override
+    @RepeatFailedTest(3)
+    public void listTables() throws JSqlException {
+        super.listTables();
+    }
+    
+    @Override
+    @RepeatFailedTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
+    }
+    
+    @Override
+    @RepeatFailedTest(3)
+    public void listValues() throws JSqlException {
+        super.listValues();
     }
 }

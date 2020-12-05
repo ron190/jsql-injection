@@ -44,7 +44,7 @@ import com.jsql.view.swing.sql.text.JTextPaneObjectMethod;
 import com.jsql.view.swing.tab.TabHeader.Cleanable;
 import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
-import com.jsql.view.swing.text.listener.DocumentListenerTyping;
+import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -105,41 +105,41 @@ public class SqlEngine extends JPanel implements Cleanable {
         }
     };
     
-    // Zipped
-    private final JTextPaneLexer textareaDatabaseZipped = new JTextPaneLexer() {
+    // Zip
+    private final JTextPaneLexer textareaDatabaseZip = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getResource().getZipped(), "setDatabase");
+            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getResource().getZip(), "setDatabase");
         }
     };
-    private final JTextPaneLexer textareaTableZipped = new JTextPaneLexer() {
+    private final JTextPaneLexer textareaTableZip = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getResource().getZipped(), "setTable");
+            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getResource().getZip(), "setTable");
         }
     };
-    private final JTextPaneLexer textareaColumnZipped = new JTextPaneLexer() {
+    private final JTextPaneLexer textareaColumnZip = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getResource().getZipped(), "setColumn");
+            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getResource().getZip(), "setColumn");
         }
     };
-    private final JTextPaneLexer textareaQueryZipped = new JTextPaneLexer() {
+    private final JTextPaneLexer textareaQueryZip = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getResource().getZipped().getRow(), "setQuery");
+            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getResource().getZip().getRow(), "setQuery");
         }
     };
-    private final JTextPaneLexer textareaFieldZipped = new JTextPaneLexer() {
+    private final JTextPaneLexer textareaFieldZip = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getResource().getZipped().getRow().getFields(), "setField");
+            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getResource().getZip().getRow().getFields(), "setField");
         }
     };
-    private final JTextPaneLexer textareaConcatZipped = new JTextPaneLexer() {
+    private final JTextPaneLexer textareaConcatZip = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getResource().getZipped().getRow().getFields(), "setConcat");
+            this.attributeSetter = new AttributeSetterForVendor(SqlEngine.this.modelYaml.getResource().getZip().getRow().getFields(), "setConcat");
         }
     };
     
@@ -319,12 +319,12 @@ public class SqlEngine extends JPanel implements Cleanable {
             this.textareaConcat,
             this.textareaInfo,
             
-            this.textareaDatabaseZipped,
-            this.textareaTableZipped,
-            this.textareaColumnZipped,
-            this.textareaQueryZipped,
-            this.textareaFieldZipped,
-            this.textareaConcatZipped,
+            this.textareaDatabaseZip,
+            this.textareaTableZip,
+            this.textareaColumnZip,
+            this.textareaQueryZip,
+            this.textareaFieldZip,
+            this.textareaConcatZip,
             
             this.textareaDatabaseDios,
             this.textareaTableDios,
@@ -415,28 +415,28 @@ public class SqlEngine extends JPanel implements Cleanable {
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
         
-        JTabbedPane tabsZipped = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-        tabsZipped.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
+        JTabbedPane tabsZip = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabsZip.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         
         Stream
         .of(
-            new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabaseZipped),
-            new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTableZipped),
-            new SimpleEntry<>("SQLENGINE_COLUMNS", this.textareaColumnZipped),
-            new SimpleEntry<>("SQLENGINE_ROWS", this.textareaQueryZipped),
-            new SimpleEntry<>("SQLENGINE_FIELD", this.textareaFieldZipped),
-            new SimpleEntry<>("SQLENGINE_FIELDS_SEPARATOR", this.textareaConcatZipped)
+            new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabaseZip),
+            new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTableZip),
+            new SimpleEntry<>("SQLENGINE_COLUMNS", this.textareaColumnZip),
+            new SimpleEntry<>("SQLENGINE_ROWS", this.textareaQueryZip),
+            new SimpleEntry<>("SQLENGINE_FIELD", this.textareaFieldZip),
+            new SimpleEntry<>("SQLENGINE_FIELDS_SEPARATOR", this.textareaConcatZip)
         )
         .forEach(entry -> {
             
-            tabsZipped.addTab(
+            tabsZip.addTab(
                 I18nUtil.valueByKey(entry.getKey()),
                 new LightScrollPane(1, 0, 1, 0, entry.getValue())
             );
             
             JLabel label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
-            tabsZipped.setTabComponentAt(
-                tabsZipped.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
+            tabsZip.setTabComponentAt(
+                tabsZip.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
                 label
             );
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
@@ -472,7 +472,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         Stream
         .of(
             new SimpleEntry<>("SQLENGINE_STANDARD", tabsSchema),
-            new SimpleEntry<>("SQLENGINE_ZIPPED", tabsZipped),
+            new SimpleEntry<>("SQLENGINE_ZIP", tabsZip),
             new SimpleEntry<>("SQLENGINE_DIOS", tabsDios)
         )
         .forEach(entry -> {
@@ -697,12 +697,12 @@ public class SqlEngine extends JPanel implements Cleanable {
             new SimpleEntry<>(this.textareaField, this.modelYaml.getResource().getSchema().getRow().getFields().getField()),
             new SimpleEntry<>(this.textareaConcat, this.modelYaml.getResource().getSchema().getRow().getFields().getConcat()),
             
-            new SimpleEntry<>(this.textareaDatabaseZipped, this.modelYaml.getResource().getZipped().getDatabase()),
-            new SimpleEntry<>(this.textareaTableZipped, this.modelYaml.getResource().getZipped().getTable()),
-            new SimpleEntry<>(this.textareaColumnZipped, this.modelYaml.getResource().getZipped().getColumn()),
-            new SimpleEntry<>(this.textareaQueryZipped, this.modelYaml.getResource().getZipped().getRow().getQuery()),
-            new SimpleEntry<>(this.textareaFieldZipped, this.modelYaml.getResource().getZipped().getRow().getFields().getField()),
-            new SimpleEntry<>(this.textareaConcatZipped, this.modelYaml.getResource().getZipped().getRow().getFields().getConcat()),
+            new SimpleEntry<>(this.textareaDatabaseZip, this.modelYaml.getResource().getZip().getDatabase()),
+            new SimpleEntry<>(this.textareaTableZip, this.modelYaml.getResource().getZip().getTable()),
+            new SimpleEntry<>(this.textareaColumnZip, this.modelYaml.getResource().getZip().getColumn()),
+            new SimpleEntry<>(this.textareaQueryZip, this.modelYaml.getResource().getZip().getRow().getQuery()),
+            new SimpleEntry<>(this.textareaFieldZip, this.modelYaml.getResource().getZip().getRow().getFields().getField()),
+            new SimpleEntry<>(this.textareaConcatZip, this.modelYaml.getResource().getZip().getRow().getFields().getConcat()),
             
             new SimpleEntry<>(this.textareaDatabaseDios, this.modelYaml.getResource().getDios().getDatabase()),
             new SimpleEntry<>(this.textareaTableDios, this.modelYaml.getResource().getDios().getTable()),
@@ -811,7 +811,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         document.setHighlightStyle(HighlightedDocument.SQL_STYLE);
         textPane.setStyledDocument(document);
         
-        document.addDocumentListener(new DocumentListenerTyping() {
+        document.addDocumentListener(new DocumentListenerEditing() {
             
             @Override
             public void process() {
@@ -839,12 +839,12 @@ public class SqlEngine extends JPanel implements Cleanable {
                 this.textareaConcat,
                 this.textareaInfo,
                 
-                this.textareaDatabaseZipped,
-                this.textareaTableZipped,
-                this.textareaColumnZipped,
-                this.textareaQueryZipped,
-                this.textareaFieldZipped,
-                this.textareaConcatZipped,
+                this.textareaDatabaseZip,
+                this.textareaTableZip,
+                this.textareaColumnZip,
+                this.textareaQueryZip,
+                this.textareaFieldZip,
+                this.textareaConcatZip,
                 
                 this.textareaDatabaseDios,
                 this.textareaTableDios,

@@ -45,7 +45,7 @@ public class SoapUtil {
         boolean hasFoundInjection = false;
         
         if (
-            this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllSOAPParam()
+            this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam()
             && this.injectionModel.getMediatorUtils().getParameterUtil().isRequestSoap()
         ) {
             try {

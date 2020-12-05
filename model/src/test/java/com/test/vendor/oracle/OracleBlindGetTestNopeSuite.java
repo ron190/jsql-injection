@@ -20,13 +20,13 @@ public class OracleBlindGetTestNopeSuite extends ConcreteOracleTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-blind");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/blind");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "oracle"),
-            new SimpleEntry<>("name", "0'")
+            new SimpleEntry<>("name", "")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().withNotTestingConnection();
+        model.getMediatorUtils().getPreferencesUtil().withNotInjectingMetadata();
         
         model
         .getMediatorUtils()

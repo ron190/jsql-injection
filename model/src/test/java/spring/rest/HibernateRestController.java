@@ -64,7 +64,7 @@ public class HibernateRestController {
     }
     
     @SuppressWarnings("unchecked")
-    @RequestMapping("/greeting")
+    @RequestMapping("/normal")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name, @RequestHeader Map<String, String> headers) throws IOException {
         
         Greeting greeting = null;
@@ -90,7 +90,7 @@ public class HibernateRestController {
     }
 
     @SuppressWarnings("unchecked")
-    @RequestMapping("/greeting-blind")
+    @RequestMapping("/blind")
     public Greeting greetingBlind(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
@@ -126,7 +126,7 @@ public class HibernateRestController {
         return greeting;
     }
 
-    @RequestMapping("/greeting-time")
+    @RequestMapping("/time")
     public Greeting greetingTime(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
@@ -145,7 +145,7 @@ public class HibernateRestController {
         return greeting;
     }
 
-    @RequestMapping("/greeting-error")
+    @RequestMapping("/errors")
     public Greeting greetingError(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
@@ -172,7 +172,7 @@ public class HibernateRestController {
     @SuppressWarnings("unchecked")
     @RequestMapping(
         method = { RequestMethod.GET, RequestMethod.POST },
-        path = "/greeting-csrf",
+        path = "/csrf",
         consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.TEXT_PLAIN_VALUE }
     )
     public Greeting greetingCsrf(HttpServletRequest request) throws IOException {
@@ -197,7 +197,6 @@ public class HibernateRestController {
             
         } catch (Exception e) {
             
-            // Required by multiple columns
             greeting = this.initializeErrorMessage(e);
         }
         
@@ -207,7 +206,7 @@ public class HibernateRestController {
     @SuppressWarnings("unchecked")
     @RequestMapping(
         method = { RequestMethod.GET, RequestMethod.POST },
-        path = "/greeting-post",
+        path = "/post",
         consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.TEXT_PLAIN_VALUE }
     )
     public Greeting greetingPost(HttpServletRequest request) throws IOException {
@@ -232,7 +231,6 @@ public class HibernateRestController {
             
         } catch (Exception e) {
             
-            // Required by multiple columns
             greeting = this.initializeErrorMessage(e);
         }
         
@@ -240,7 +238,7 @@ public class HibernateRestController {
     }
     
     @SuppressWarnings("unchecked")
-    @RequestMapping("/greeting-cookie")
+    @RequestMapping("/cookie")
     public Greeting greetingCookie(HttpServletRequest request, @CookieValue("name") String name) throws IOException {
 
         Greeting greeting = null;
@@ -260,7 +258,6 @@ public class HibernateRestController {
             
         } catch (Exception e) {
             
-            // Required by multiple columns
             greeting = this.initializeErrorMessage(e);
         }
         
@@ -268,7 +265,7 @@ public class HibernateRestController {
     }
     
     @SuppressWarnings("unchecked")
-    @RequestMapping("/greeting-header")
+    @RequestMapping("/header")
     public Greeting greetingHeader(@RequestHeader Map<String, String> name) throws IOException {
         
         Greeting greeting = null;
@@ -294,7 +291,6 @@ public class HibernateRestController {
             
         } catch (Exception e) {
             
-            // Required by multiple columns
             greeting = this.initializeErrorMessage(e);
         }
         
@@ -302,7 +298,7 @@ public class HibernateRestController {
     }
     
     @SuppressWarnings("unchecked")
-    @RequestMapping("/greeting-json")
+    @RequestMapping("/json")
     public Greeting greetingJson(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
@@ -325,14 +321,15 @@ public class HibernateRestController {
             );
             
         } catch (Exception e) {
-            // Hide useless SQL error messages
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
     }
     
     @SuppressWarnings("unchecked")
-    @RequestMapping("/greeting-integer-insertion-char")
+    @RequestMapping("/integer-insertion-char")
     public Greeting greetingIntegerInsertionChar(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
@@ -351,14 +348,15 @@ public class HibernateRestController {
             );
             
         } catch (Exception e) {
-            // Hide useless SQL error messages
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
     }
     
     @SuppressWarnings("unchecked")
-    @RequestMapping("/greeting-multiple-index")
+    @RequestMapping("/multiple-index")
     public Greeting greetingMultipleIndex(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
@@ -379,14 +377,13 @@ public class HibernateRestController {
             
         } catch (Exception e) {
             
-            // Required by multiple columns
             greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
     }
     
-    @RequestMapping("/basic/greeting")
+    @RequestMapping("/basic")
     public Greeting greetingBasicAuth(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
@@ -406,7 +403,7 @@ public class HibernateRestController {
         return greeting;
     }
     
-    @RequestMapping("/digest/greeting")
+    @RequestMapping("/digest")
     public Greeting greetingDigestAuth(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
@@ -427,7 +424,7 @@ public class HibernateRestController {
     }
     
     @SuppressWarnings("unchecked")
-    @RequestMapping("/greeting-insertion-char")
+    @RequestMapping("/insertion-char")
     public Greeting greetingInsertionChar(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
@@ -454,7 +451,7 @@ public class HibernateRestController {
     }
     
     @SuppressWarnings("unchecked")
-    @RequestMapping("/greeting-custom")
+    @RequestMapping("/custom")
     public Greeting greetingCustom(HttpServletRequest request, @RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
@@ -496,7 +493,7 @@ public class HibernateRestController {
     }
     
     @SuppressWarnings("unchecked")
-    @RequestMapping("/greeting-user-agent")
+    @RequestMapping("/user-agent")
     public Greeting greetingUserAgent(HttpServletRequest request, @RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
@@ -520,10 +517,10 @@ public class HibernateRestController {
             List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
-                    this.counter.getAndIncrement(),
-                    String.format(template, inject)
-                    + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
-                    );
+                this.counter.getAndIncrement(),
+                String.format(template, inject)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
             
         } catch (Exception e) {
             
@@ -534,7 +531,7 @@ public class HibernateRestController {
     }
     
     @SuppressWarnings("unchecked")
-    @GetMapping("/greeting/{name}/suffix")
+    @GetMapping("/path/{name}/suffix")
     public Greeting greetingPathParam(@PathVariable("name") String name) throws IOException {
         
         Greeting greeting = null;
@@ -553,13 +550,14 @@ public class HibernateRestController {
             );
             
         } catch (Exception e) {
-            // Hide useless SQL error messages
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
     }
     
-    @RequestMapping("/greeting-order-by")
+    @RequestMapping("/order-by")
     public Greeting greetingOrderBy(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;

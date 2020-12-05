@@ -4,7 +4,6 @@ import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -15,7 +14,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.callable.CallablePageSource;
-import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
  * Runnable class, search the correct number of fields in the SQL query.
@@ -36,17 +34,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
     public String run(Object... args) throws JSqlException {
         
         // Concurrent search
-        ExecutorService taskExecutor;
-        
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
-            
-            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
-            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetIndexes"));
-            
-        } else {
-            
-            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetIndexes"));
-        }
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetIndexes");
         
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
@@ -68,7 +56,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                 new CallablePageSource(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),
                     this.injectionModel,
-                    "normal:index-" + nbIndex
+                    "normal#" + nbIndex
                 )
             );
         }

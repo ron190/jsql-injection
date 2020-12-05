@@ -1,4 +1,4 @@
-package com.test.vendor.db2;
+package com.test.vendor.cubrid;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -9,8 +9,8 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-public class Db2BlindTestIgnoreSuite extends ConcreteDb2TestSuite {
-    
+public class CubridErrorTestInstableSuite extends ConcreteCubridTestSuite {
+
     @Override
     public void setupInjection() throws Exception {
         
@@ -19,13 +19,12 @@ public class Db2BlindTestIgnoreSuite extends ConcreteDb2TestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-blind");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/errors");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "db2"),
-            new SimpleEntry<>("name", "1'")
+            new SimpleEntry<>("tenant", "cubrid"),
+            // Instable fingerprinting
+            new SimpleEntry<>("name", "0'")
         ));
-        
-        model.getMediatorUtils().getPreferencesUtil().withNotTestingConnection();
         
         model
         .getMediatorUtils()
@@ -33,9 +32,6 @@ public class Db2BlindTestIgnoreSuite extends ConcreteDb2TestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getBlind());
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getDb2());
         model.beginInjection();
     }
     

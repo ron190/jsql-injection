@@ -20,9 +20,10 @@ public class HeaderTestSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-header?tenant=mysql");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/header");
         model.getMediatorUtils().getParameterUtil().setListHeader(Arrays.asList(
-            new SimpleEntry<>("name", "0'")
+            new SimpleEntry<>("tenant", "mysql"),
+            new SimpleEntry<>("name", "")
         ));
         
         model.getMediatorUtils().getPreferencesUtil().withNotTestingConnection();
@@ -30,7 +31,6 @@ public class HeaderTestSuite extends ConcreteMySqlTestSuite {
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getHeader());
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }
     

@@ -192,7 +192,7 @@ public class SessionCookieManager extends CookieHandler {
         return cookieHeader;
     }
 
-    private static class CookiePathComparator implements Comparator<HttpCookie> {
+    private class CookiePathComparator implements Comparator<HttpCookie> {
         
         @Override
         public int compare(HttpCookie c1, HttpCookie c2) {

@@ -1,4 +1,4 @@
-package com.test.insertion;
+package com.test.special;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -7,25 +7,28 @@ import org.junitpioneer.jupiter.RepeatFailedTest;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
+import com.jsql.util.CertificateUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
+import com.test.vendor.mysql.ConcreteMySqlTestSuite;
 
-public class BadErrorTestSuite extends ConcreteMySqlErrorTestSuite {
-
+public class SelfSignedCertTestSuite extends ConcreteMySqlTestSuite {
+    
     @Override
     public void setupInjection() throws Exception {
         
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
+        
+        CertificateUtil.ignoreCertificationChain();
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-error");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("https://localhost:8443/normal");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "---")
+            new SimpleEntry<>("tenant", "mysql"),
+            new SimpleEntry<>("name", "")
         ));
-
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
@@ -33,7 +36,6 @@ public class BadErrorTestSuite extends ConcreteMySqlErrorTestSuite {
         .withTypeRequest("GET");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
         model.beginInjection();
     }
     

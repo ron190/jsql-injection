@@ -117,11 +117,13 @@ strategy:
   fingerprint:
    errorMessage:
     # Spring
-    - 'DB2 SQL Error: SQLCODE=.*, SQLSTATE=.*, SQLERRMC=.*, DRIVER=.* [SQL State=.*, DB Errorcode=.*]' 
-    
+    - 'DB2 SQL Error: SQLCODE=.*, SQLSTATE=.*, SQLERRMC=.*, DRIVER=.*'
+    # Other
     - function.db2
     - 'Warning: db2_execute()'
     - 'Warning: db2_fetch_array()'
+   orderByErrorMessage:
+    - 'DB2 SQL Error: SQLCODE=.*, SQLSTATE=.*, SQLERRMC=.*, DRIVER=.*'
 
  normal:
   indices: union select ${indices} from sysibm.sysdummy1

@@ -13,11 +13,15 @@ package com.jsql.util;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
  * Utility class managing running threads on which the user can act.
@@ -37,7 +41,14 @@ public final class ThreadUtil {
      * We can interact with those tasks in order to pause/resume and stop the process.
      */
     private final Map<AbstractElementDatabase, AbstractSuspendable<?>> suspendables = new HashMap<>();
+
+    private InjectionModel injectionModel;
     
+    public ThreadUtil(InjectionModel injectionModel) {
+        
+        this.injectionModel = injectionModel;
+    }
+
     /**
      * Add a job to the list of ongoing tasks. It is used to allow the user to act
      * on the job and stop/pause a running process.
@@ -84,5 +95,22 @@ public final class ThreadUtil {
         } catch (ConcurrentModificationException e) {
             LOGGER.error(e, e);
         }
+    }
+    
+    public ExecutorService getExecutor(String a) {
+
+        ExecutorService taskExecutor;
+        
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
+            
+            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
+            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable(a));
+            
+        } else {
+            
+            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable(a));
+        }
+        
+        return taskExecutor;
     }
 }

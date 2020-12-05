@@ -1,4 +1,4 @@
-package com.test.ssl;
+package com.test.vendor.db2;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -7,25 +7,22 @@ import org.junitpioneer.jupiter.RepeatFailedTest;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.util.CertificateUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.vendor.mysql.ConcreteMySqlTestSuite;
 
-public class SelfSignedCertTestSuite extends ConcreteMySqlTestSuite {
+public class Db2NormalTestSuite extends ConcreteDb2TestSuite {
     
     @Override
     public void setupInjection() throws Exception {
         
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
-        
-        CertificateUtil.ignoreCertificationChain();
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("https://localhost:8443/greeting");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
+            new SimpleEntry<>("tenant", "db2"),
+            // Instable fingerprinting
             new SimpleEntry<>("name", "0'")
         ));
         
@@ -35,8 +32,7 @@ public class SelfSignedCertTestSuite extends ConcreteMySqlTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getDb2());
         model.beginInjection();
     }
     
@@ -44,5 +40,23 @@ public class SelfSignedCertTestSuite extends ConcreteMySqlTestSuite {
     @RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
+    }
+    
+    @Override
+    @RepeatFailedTest(3)
+    public void listTables() throws JSqlException {
+        super.listTables();
+    }
+    
+    @Override
+    @RepeatFailedTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
+    }
+    
+    @Override
+    @RepeatFailedTest(3)
+    public void listValues() throws JSqlException {
+        super.listValues();
     }
 }

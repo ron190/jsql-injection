@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -13,7 +12,6 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
  * A time attack class using parallel threads.
@@ -57,23 +55,13 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-        ExecutorService taskExecutor;
-        
-        if (injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
-            
-            int countThreads = injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
-            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetTimeTagFalse"));
-            
-        } else {
-            
-            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagFalse"));
-        }
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagFalse");
 
         Collection<CallableTime> listCallableTagFalse = new ArrayList<>();
         
         for (String urlTest: this.falseTest) {
             
-            listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this, booleanMode, "time:false-mark"));
+            listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this, booleanMode, "time#false"));
         }
         
         
@@ -119,23 +107,13 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model
-        ExecutorService taskExecutor;
-        
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
-            
-            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
-            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable("CallableGetTimeTagTrue"));
-            
-        } else {
-            
-            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagTrue"));
-        }
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagTrue");
 
         Collection<CallableTime> listCallableTagTrue = new ArrayList<>();
         
         for (String urlTest: this.trueTest) {
             
-            listCallableTagTrue.add(new CallableTime(urlTest, this.injectionModel, this, booleanMode, "time:true-mark"));
+            listCallableTagTrue.add(new CallableTime(urlTest, this.injectionModel, this, booleanMode, "time#true"));
         }
 
         // If one TRUE query makes more than X seconds,
@@ -177,13 +155,13 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
     @Override
     public CallableTime getCallableSizeTest(String string, int indexCharacter) {
         
-        return new CallableTime(string, indexCharacter, this.injectionModel, this, this.booleanMode, "time:length-test");
+        return new CallableTime(string, indexCharacter, this.injectionModel, this, this.booleanMode, "time#size");
     }
 
     @Override
     public CallableTime getCallableBitTest(String string, int indexCharacter, int bit) {
         
-        return new CallableTime(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "time:bit-test");
+        return new CallableTime(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "time#bit");
     }
 
     @Override
@@ -198,7 +176,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             this.injectionModel,
             this,
             this.booleanMode,
-            "time:is-injectable"
+            "time#confirm"
         );
         
         try {

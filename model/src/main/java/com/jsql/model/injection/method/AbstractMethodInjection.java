@@ -5,6 +5,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
@@ -125,6 +126,11 @@ public abstract class AbstractMethodInjection implements Serializable {
                         
                         // Define a tree of JSON attributes with path as the key: root.a => value of a
                         List<SimpleEntry<String, String>> attributesJson = JsonUtil.createEntries(jsonEntity, "root", null);
+                        
+                        if (Base64.isBase64(paramStar.getValue().replace("*", ""))) {
+                            
+                            LOGGER.info("Param " + paramStar.getKey() +"="+ paramStar.getValue() +" appears to be Base64");
+                        }
                         
                         // When option 'Inject JSON' is selected and there's a JSON entity to inject
                         // then loop through each paths to add * at the end of value and test each strategies.

@@ -20,11 +20,11 @@ public class CheckAllHeaderTestSuite extends ConcreteMySqlTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/greeting-header?tenant=mysql");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/header?tenant=mysql");
         model.getMediatorUtils().getParameterUtil().setListHeader(Arrays.asList(
-            new SimpleEntry<>("fake1", "0'"),
+            new SimpleEntry<>("fake1", ""),
             new SimpleEntry<>("name", ""),
-            new SimpleEntry<>("fake2", "0'")
+            new SimpleEntry<>("fake2", "")
         ));
         
         model
@@ -36,7 +36,6 @@ public class CheckAllHeaderTestSuite extends ConcreteMySqlTestSuite {
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getHeader());
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }
     

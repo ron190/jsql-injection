@@ -31,92 +31,105 @@ public class JdbcRestController {
     private Driver driver = GraphDatabase.driver("bolt://jsql-neo4j:7687", AuthTokens.basic("neo4j", "test"));
     private ObjectMapper objectMapper = new ObjectMapper();
     
-    @RequestMapping("/greeting-altibase")
+    @RequestMapping("/altibase")
     public Greeting greetingAltibase(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
         Class.forName("Altibase.jdbc.driver.AltibaseDriver");
         // docker run -it altibase/altibase
 
-        String inject = name.replace(":", "\\:");
-        StringBuilder result = new StringBuilder();
-        
-            try (
-                Connection con = DriverManager.getConnection("jdbc:Altibase://jsql-altibase:20300/mydb", "sys", "manager");
-                PreparedStatement pstmt = con.prepareStatement("select db_name from SYSTEM_.SYS_DATABASE_ where '1' = '"+ inject +"'");
-            ) {
-                ResultSet rs = pstmt.executeQuery();
-                while(rs.next()) {
-                    result.append(rs.getString(1));
-                }
-            }
-        
-        Greeting greeting = new Greeting(
-            this.counter.getAndIncrement(),
-            String.format(template, name)
-            + StringEscapeUtils.unescapeJava(result.toString())
-        );
-        
-        return greeting;
-    }
-    
-    @RequestMapping("/greeting-ctreeace")
-    public Greeting greetingCTreeAce(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
-        // c-treeACE-Express.windows.64bit.v11.5.1.64705.190310.ACE.msi
-        Class.forName("ctree.jdbc.ctreeDriver");
-
-        String inject = name.replace(":", "\\:");
-        StringBuilder result = new StringBuilder();
-        
-            try (
-                Connection con = DriverManager.getConnection("jdbc:ctree://localhost:6597/ctreeSQL", "ADMIN", "ADMIN");
-                PreparedStatement pstmt = con.prepareStatement("select tbl from systables where '1' = '"+ inject +"'");
-            ) {
-                ResultSet rs = pstmt.executeQuery();
-                while(rs.next()) {
-                    result.append(rs.getString(1));
-                }
-            }
-        
-        Greeting greeting = new Greeting(
-            this.counter.getAndIncrement(),
-            String.format(template, name)
-            + StringEscapeUtils.unescapeJava(result.toString())
-        );
-        
-        return greeting;
-    }
-    
-    @RequestMapping("/greeting-exasol")
-    public Greeting greetingExasol(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
-        Class.forName("com.exasol.jdbc.EXADriver");
-        // docker run --name exasoldb -p 8563:8563 --detach --privileged --stop-timeout 120  exasol/docker-db
-        
+        Greeting greeting = null;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
         try (
-                Connection con = DriverManager.getConnection("jdbc:exa:127.0.0.1:8563", "sys", "exasol");
-                PreparedStatement pstmt = con.prepareStatement("select COLUMN_SCHEMA from EXA_SYS_COLUMNS where '1' = '"+ inject +"'");
-                ) {
+            Connection con = DriverManager.getConnection("jdbc:Altibase://jsql-altibase:20300/mydb", "sys", "manager");
+            PreparedStatement pstmt = con.prepareStatement("select db_name from SYSTEM_.SYS_DATABASE_ where '1' = '"+ inject +"'");
+        ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
-        Greeting greeting = new Greeting(
-                this.counter.getAndIncrement(),
-                String.format(template, name)
-                + StringEscapeUtils.unescapeJava(result.toString())
-                );
+        greeting = new Greeting(
+            this.counter.getAndIncrement(),
+            String.format(template, name)
+            + StringEscapeUtils.unescapeJava(result.toString())
+        );
         
         return greeting;
     }
     
-    @RequestMapping("/greeting-ignite")
+    @RequestMapping("/ctreeace")
+    public Greeting greetingCTreeAce(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+        // c-treeACE-Express.windows.64bit.v11.5.1.64705.190310.ACE.msi
+        Class.forName("ctree.jdbc.ctreeDriver");
+
+        Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
+        StringBuilder result = new StringBuilder();
+        
+        try (
+            Connection con = DriverManager.getConnection("jdbc:ctree://localhost:6597/ctreeSQL", "ADMIN", "ADMIN");
+            PreparedStatement pstmt = con.prepareStatement("select tbl from systables where '1' = '"+ inject +"'");
+        ) {
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+                result.append(rs.getString(1));
+            }
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
+        }
+        
+        greeting = new Greeting(
+            this.counter.getAndIncrement(),
+            String.format(template, name)
+            + StringEscapeUtils.unescapeJava(result.toString())
+        );
+        
+        return greeting;
+    }
+    
+    @RequestMapping("/exasol")
+    public Greeting greetingExasol(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+        Class.forName("com.exasol.jdbc.EXADriver");
+        // docker run --name exasoldb -p 8563:8563 --detach --privileged --stop-timeout 120  exasol/docker-db
+        
+        Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
+        StringBuilder result = new StringBuilder();
+        
+        try (
+            Connection con = DriverManager.getConnection("jdbc:exa:127.0.0.1:8563", "sys", "exasol");
+            PreparedStatement pstmt = con.prepareStatement("select COLUMN_SCHEMA from EXA_SYS_COLUMNS where '1' = '"+ inject +"'");
+        ) {
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+                result.append(rs.getString(1));
+            }
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
+        }
+        
+        greeting = new Greeting(
+            this.counter.getAndIncrement(),
+            String.format(template, name)
+            + StringEscapeUtils.unescapeJava(result.toString())
+        );
+        
+        return greeting;
+    }
+    
+    @RequestMapping("/ignite")
     public Greeting greetingIgnite(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
         Class.forName("org.apache.ignite.IgniteJdbcThinDriver");
         // docker run -d -p 10800:10800 apacheignite/ignite
         
+        Greeting greeting = null;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
@@ -128,9 +141,12 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
-        Greeting greeting = new Greeting(
+        greeting = new Greeting(
             this.counter.getAndIncrement(),
             String.format(template, name)
             + StringEscapeUtils.unescapeJava(result.toString())
@@ -139,7 +155,7 @@ public class JdbcRestController {
         return greeting;
     }
     
-    @RequestMapping("/greeting-frontbase")
+    @RequestMapping("/frontbase")
     public Greeting greetingFrontbase(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
         /* FrontBase-8.2.18-WinNT.zip
          * sql92.exe
@@ -155,133 +171,153 @@ public class JdbcRestController {
          */
         Class.forName("com.frontbase.jdbc.FBJDriver");
         
+        Greeting greeting = null;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
         try (
-                Connection con = DriverManager.getConnection("jdbc:FrontBase://127.0.0.1/firstdb", "_system", "");
-                PreparedStatement pstmt = con.prepareStatement("select \"SCHEMA_NAME\" from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'");
-                ) {
+            Connection con = DriverManager.getConnection("jdbc:FrontBase://127.0.0.1/firstdb", "_system", "");
+            PreparedStatement pstmt = con.prepareStatement("select \"SCHEMA_NAME\" from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'");
+        ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
-        Greeting greeting = new Greeting(
-                this.counter.getAndIncrement(),
-                String.format(template, name)
-                + StringEscapeUtils.unescapeJava(result.toString())
-                );
+        greeting = new Greeting(
+            this.counter.getAndIncrement(),
+            String.format(template, name)
+            + StringEscapeUtils.unescapeJava(result.toString())
+        );
         
         return greeting;
     }
     
-    @RequestMapping("/greeting-iris")
+    @RequestMapping("/iris")
     public Greeting greetingIris(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
         Class.forName("com.intersystems.jdbc.IRISDriver");
         
+        Greeting greeting = null;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
         try (
-                Connection con = DriverManager.getConnection("jdbc:IRIS://127.0.0.1:1972/USER", "_SYSTEM", "Mw7SUqLPFbZWUu4");
-                PreparedStatement pstmt = con.prepareStatement("select SCHEMA_NAME from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'");
-                ) {
+            Connection con = DriverManager.getConnection("jdbc:IRIS://127.0.0.1:1972/USER", "_SYSTEM", "Mw7SUqLPFbZWUu4");
+            PreparedStatement pstmt = con.prepareStatement("select SCHEMA_NAME from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'");
+        ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
-        Greeting greeting = new Greeting(
-                this.counter.getAndIncrement(),
-                String.format(template, name)
-                + StringEscapeUtils.unescapeJava(result.toString())
-                );
+        greeting = new Greeting(
+            this.counter.getAndIncrement(),
+            String.format(template, name)
+            + StringEscapeUtils.unescapeJava(result.toString())
+        );
         
         return greeting;
     }
     
-    @RequestMapping("/greeting-monetdb")
+    @RequestMapping("/monetdb")
     public Greeting greetingMonetDB(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
         Class.forName("nl.cwi.monetdb.jdbc.MonetDriver");
         
+        Greeting greeting = null;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
         try (
-                Connection con = DriverManager.getConnection("jdbc:monetdb://127.0.0.1:50001/db", "monetdb", "monetdb");
-                PreparedStatement pstmt = con.prepareStatement("select name from schemas where '1' = '"+ inject +"'");
-                ) {
+            Connection con = DriverManager.getConnection("jdbc:monetdb://127.0.0.1:50001/db", "monetdb", "monetdb");
+            PreparedStatement pstmt = con.prepareStatement("select name from schemas where '1' = '"+ inject +"'");
+        ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
-        Greeting greeting = new Greeting(
-                this.counter.getAndIncrement(),
-                String.format(template, name)
-                + StringEscapeUtils.unescapeJava(result.toString())
-                );
+        greeting = new Greeting(
+            this.counter.getAndIncrement(),
+            String.format(template, name)
+            + StringEscapeUtils.unescapeJava(result.toString())
+        );
         
         return greeting;
     }
     
-    @RequestMapping("/greeting-mimersql")
+    @RequestMapping("/mimersql")
     public Greeting greetingMimerSQL(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
         Class.forName("com.mimer.jdbc.Driver");
         
+        Greeting greeting = null;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
         try (
-                Connection con = DriverManager.getConnection("jdbc:mimer://127.0.0.1:1360/mimerdb", "SYSADM", "SYSADM");
-                PreparedStatement pstmt = con.prepareStatement("select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'");
-                ) {
+            Connection con = DriverManager.getConnection("jdbc:mimer://127.0.0.1:1360/mimerdb", "SYSADM", "SYSADM");
+            PreparedStatement pstmt = con.prepareStatement("select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'");
+        ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
-        Greeting greeting = new Greeting(
-                this.counter.getAndIncrement(),
-                String.format(template, name)
-                + StringEscapeUtils.unescapeJava(result.toString())
-                );
+        greeting = new Greeting(
+            this.counter.getAndIncrement(),
+            String.format(template, name)
+            + StringEscapeUtils.unescapeJava(result.toString())
+        );
         
         return greeting;
     }
     
-    @RequestMapping("/greeting-presto")
+    @RequestMapping("/presto")
     public Greeting greetingPresto(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
         Class.forName("com.facebook.presto.jdbc.PrestoDriver");
         
+        Greeting greeting = null;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
         try (
-                Connection con = DriverManager.getConnection("jdbc:presto://127.0.0.1:8078/system", "test", "");
-                PreparedStatement pstmt = con.prepareStatement("select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'");
-                ) {
+            Connection con = DriverManager.getConnection("jdbc:presto://127.0.0.1:8078/system", "test", "");
+            PreparedStatement pstmt = con.prepareStatement("select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'");
+        ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
-        Greeting greeting = new Greeting(
-                this.counter.getAndIncrement(),
-                String.format(template, name)
-                + StringEscapeUtils.unescapeJava(result.toString())
-                );
+        greeting = new Greeting(
+            this.counter.getAndIncrement(),
+            String.format(template, name)
+            + StringEscapeUtils.unescapeJava(result.toString())
+        );
         
         return greeting;
     }
     
-    @RequestMapping("/greeting-firebird")
+    @RequestMapping("/firebird")
     public Greeting greetingFirebird(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
         // Service Firebird Server - DefaultInstance
         Class.forName("org.firebirdsql.jdbc.FBDriver");
@@ -312,7 +348,7 @@ public class JdbcRestController {
         return greeting;
     }
     
-    @RequestMapping("/greeting-netezza")
+    @RequestMapping("/netezza")
     public Greeting greetingNetezza(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
         Class.forName("org.netezza.Driver");
         
@@ -330,10 +366,10 @@ public class JdbcRestController {
             }
             
             greeting = new Greeting(
-                    this.counter.getAndIncrement(),
-                    String.format(template, name)
-                    + StringEscapeUtils.unescapeJava(result.toString())
-                    );
+                this.counter.getAndIncrement(),
+                String.format(template, name)
+                + StringEscapeUtils.unescapeJava(result.toString())
+            );
         } catch (Exception e) {
             
             greeting = this.initializeErrorMessage(e);
@@ -342,7 +378,7 @@ public class JdbcRestController {
         return greeting;
     }
     
-    @RequestMapping("/greeting-oracle")
+    @RequestMapping("/oracle")
     public Greeting greetingOracle(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
         Class.forName("oracle.jdbc.OracleDriver");
         
@@ -360,10 +396,10 @@ public class JdbcRestController {
             }
             
             greeting = new Greeting(
-                    this.counter.getAndIncrement(),
-                    String.format(template, name)
-                    + StringEscapeUtils.unescapeJava(result.toString())
-                    );
+                this.counter.getAndIncrement(),
+                String.format(template, name)
+                + StringEscapeUtils.unescapeJava(result.toString())
+            );
         } catch (Exception e) {
             
             greeting = this.initializeErrorMessage(e);
@@ -372,7 +408,7 @@ public class JdbcRestController {
         return greeting;
     }
     
-    @RequestMapping("/greeting-neo4j")
+    @RequestMapping("/neo4j")
     public Greeting greetingNeo4j(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Greeting greeting = null;
@@ -397,7 +433,8 @@ public class JdbcRestController {
             );
             
         } catch (Exception e) {
-            // Hide useless SQL error messages
+            
+            greeting = this.initializeErrorMessage(e);
         }
         
         return greeting;
