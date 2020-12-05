@@ -1,7 +1,7 @@
 ## Description
 **jSQL Injection** is a lightweight application used to find database information from a distant server.
 
-It's **free**, **open source** and it works **cross-platform** on Windows, Linux and Mac OS X with Java from version 8 to 15.
+It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac OS X with Java from version 8 to 15.
 
 ![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in various other distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
 
@@ -22,15 +22,15 @@ It's **free**, **open source** and it works **cross-platform** on Windows, Linux
 ## Features
 - Automatic injection of 34 kinds of databases: Access, Altibase, C-treeACE, CockroachDB, CUBRID, DB2, Derby, Exasol, Firebird, FrontBase, H2, Hana, HSQLDB, Informix, Ingres, InterSystems-IRIS, MaxDB, Mckoi, MemSQL, MimerSQL, MonetDB, MySQL, Neo4j, Netezza, NuoDB, Oracle, PostgreSQL, Presto, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Stacked, Blind and Time
-- Various injection processes: Basic, Zip, Dump In One Shot
+- Various injection processes: Default, Zip, Dios
 - Sandbox for SQL and tampering scripting
-- Targets list to inject
+- List to inject multiple targets
 - Read and write file using injection
 - Create and display Web shell and SQL shell
-- Bruteforce hash password
+- Bruteforce password hash
 - Search for admin pages
 - Hash, encode and decode text
-- Authenticate using Basic, Digest, NTLM or Kerberos  
+- Authenticate using Basic, Digest, NTLM and Kerberos  
 - Proxy connection on HTTP, SOCKS4 and SOCKS5
 
 ## Installation [[jsql-injection-v0.82.jar](https://github.com/ron190/jsql-injection/releases/download/v0.82/jsql-injection-v0.82.jar)]
@@ -39,7 +39,9 @@ You can also type `java -jar jsql-injection-v0.82.jar` in your terminal to start
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 ## Continuous integration
-This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using a continuous integration platform like Travis CI and Github Actions. The non regression tests run against dockerized and in memory databases and GUI is tested on VNC screen in the cloud on CI platforms, then quality checks are stored on code quality platforms.
+This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using continuous integration platform like Travis CI and Github Actions.<br> 
+Non regression tests run against dockerized and in memory databases and GUI is tested on VNC screen in the cloud on CI platforms.<br>
+Then quality checks are stored on code quality platforms.
 ```
 +---+ +-----------------------------------------------------------------------+
 |   | |                         JUNIT TEST FRAMEWORK                          |

@@ -9,7 +9,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-public class Db2BlindTestSuite extends ConcreteDb2TestSuite {
+public class Db2BlindTestInstableSuite extends ConcreteDb2TestSuite {
     
     @Override
     public void setupInjection() throws Exception {
