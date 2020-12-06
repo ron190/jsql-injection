@@ -161,7 +161,7 @@ public class JsonUtil {
         }
     }
     
-    public boolean testJsonParameter(AbstractMethodInjection methodInjection, SimpleEntry<String, String> paramStar) {
+    public boolean testJsonParam(AbstractMethodInjection methodInjection, SimpleEntry<String, String> paramStar) {
         
         boolean hasFoundInjection = false;
         
@@ -189,9 +189,16 @@ public class JsonUtil {
             try {
                 LOGGER.info("Checking JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));
                 
-                if (Base64.isBase64(paramStar.getValue().replace("*", ""))) {
+                String paramBase64 = paramStar.getValue().replace("*", "");
+                if (Base64.isBase64(paramBase64) && StringUtil.isUtf8(StringUtil.base64Decode(paramBase64))) {
                     
-                    LOGGER.info("Param " + paramStar.getKey() +"="+ paramStar.getValue() +" appears to be Base64");
+                    LOGGER.info(
+                        String.format(
+                            "Param %s=%s appears to be Base64",
+                            paramStar.getKey(),
+                            paramStar.getValue()
+                        )
+                    );
                 }
                 
                 // Test current JSON value marked with * for injection

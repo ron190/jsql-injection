@@ -150,8 +150,6 @@ public abstract class AbstractNodeModel {
      * Display a popup menu for a database or table node.
      * @param currentTableNode Current node
      * @param path Path of current node
-     * @param x Popup menu x mouse coordinate
-     * @param y Popup menu y mouse coordinate
      */
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
         
@@ -271,14 +269,16 @@ public abstract class AbstractNodeModel {
      * @param tree
      * @param nodeRenderer
      * @param isSelected
-     * @param isExpanded
      * @param isLeaf
-     * @param row
      * @param hasFocus
      * @return
      */
     public Component getComponent(
-        final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, boolean hasFocus
+        final JTree tree,
+        Object nodeRenderer,
+        final boolean isSelected,
+        boolean isLeaf,
+        boolean hasFocus
     ) {
         
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;

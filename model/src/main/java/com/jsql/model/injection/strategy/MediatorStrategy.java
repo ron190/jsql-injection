@@ -43,22 +43,26 @@ public class MediatorStrategy {
     
     public String getMeta() {
         
-        String strategyName = this.strategy == null ? "n/a" : this.strategy.toString().toLowerCase();
+        String strategyName = this.strategy == null ? StringUtils.EMPTY : this.strategy.toString().toLowerCase();
         
-        String strategyMode = this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()
-        ? "dios"
-        : this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()
-        ? "zip"
-        : "default";
+        String strategyMode = "default";
         
-        return strategyName +"#"+ strategyMode;
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
+            
+            strategyMode = "dios";
+            
+        } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
+            
+            strategyMode = "zip";
+        }
+        
+        return String.format("%s#%s", strategyName, strategyMode);
     }
     
     /**
      * Build correct data for GET, POST, HEADER.
      * Each can be either raw data (no injection), SQL query without index requirement,
      * or SQL query with index requirement.
-     * @param dataType Current method to build
      * @param urlBase Beginning of the request data
      * @param isUsingIndex False if request doesn't use indexes
      * @param sqlTrail SQL statement
@@ -125,8 +129,6 @@ public class MediatorStrategy {
     
     /**
      * Find the insertion character, test each strategy, inject metadata and list databases.
-     * @param isNotInjectionPoint true if mode standard/JSON/full, false if injection point
-     * @param isJson true if param contains JSON
      * @param parameterToInject to be tested, null when injection point
      * @return true when successful injection
      * @throws JSqlException when no params' integrity, process stopped by user, or injection failure

@@ -72,8 +72,8 @@ script:
         && mvn clean verify sonar:sonar                 \
         && (cd view/ ; mvn sonar:sonar)                 \
         && (cd model/ ; mvn sonar:sonar)                \
-        && bash <(curl -s https://codecov.io/bash) || true             \
-        && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true \
+        && (bash <(curl -s https://codecov.io/bash) || true)             \
+        && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true) \
     ' 
     
     DOCKER_RUN="$?"

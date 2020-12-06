@@ -45,7 +45,6 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
     /**
      * Create a callable to find admin page.
      * @param urlAdminPage URL of admin page
-     * @param string
      */
     public CallableHttpHead(String urlAdminPage, InjectionModel injectionModel, String metadataInjectionProcess) {
         

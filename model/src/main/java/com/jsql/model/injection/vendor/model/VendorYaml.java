@@ -109,7 +109,13 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info("Strategy [Dios] activated but database query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                LOGGER.info(
+                    String
+                    .format(
+                        "Strategy [Dios] activated but database query is undefined for [%s], fallback to default",
+                        this.injectionModel.getMediatorVendor().getVendor()
+                    )
+                );
                 sqlQuery = this.modelYaml.getResource().getSchema().getDatabase();
             }
 
@@ -121,7 +127,13 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info("Strategy [Zip] activated but database query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                LOGGER.info(
+                    String
+                    .format(
+                        "Strategy [Zip] activated but database query is undefined for [%s], fallback to default",
+                        this.injectionModel.getMediatorVendor().getVendor()
+                    )
+                );
                 sqlQuery = this.modelYaml.getResource().getSchema().getDatabase();
             }
 
@@ -146,7 +158,13 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info("Strategy [Dios] activated but table query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                LOGGER.info(
+                    String
+                    .format(
+                        "Strategy [Dios] activated but table query is undefined for [%s], fallback to default",
+                        this.injectionModel.getMediatorVendor().getVendor()
+                    )
+                );
                 sqlQuery = this.modelYaml.getResource().getSchema().getTable();
             }
 
@@ -158,7 +176,13 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info("Strategy [Zip] activated but table query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                LOGGER.info(
+                    String
+                    .format(
+                        "Strategy [Zip] activated but table query is undefined for [%s], fallback to default",
+                        this.injectionModel.getMediatorVendor().getVendor()
+                    )
+                );
                 sqlQuery = this.modelYaml.getResource().getSchema().getTable();
             }
 
@@ -189,7 +213,13 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info("Strategy [Dios] activated but column query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                LOGGER.info(
+                    String
+                    .format(
+                        "Strategy [Dios] activated but column query is undefined for [%s], fallback to default",
+                        this.injectionModel.getMediatorVendor().getVendor()
+                    )
+                );
                 sqlQuery = this.modelYaml.getResource().getSchema().getColumn();
             }
 
@@ -201,7 +231,13 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info("Strategy [Zip] activated but column query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                LOGGER.info(
+                    String
+                    .format(
+                        "Strategy [Zip] activated but column query is undefined for [%s], fallback to default",
+                        this.injectionModel.getMediatorVendor().getVendor()
+                    )
+                );
                 sqlQuery = this.modelYaml.getResource().getSchema().getColumn();
             }
 
@@ -240,7 +276,13 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info("Strategy [Dios] activated but row query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                LOGGER.info(
+                    String
+                    .format(
+                        "Strategy [Dios] activated but row query is undefined for [%s], fallback to default",
+                        this.injectionModel.getMediatorVendor().getVendor()
+                    )
+                );
                 sqlField = this.modelYaml.getResource().getSchema().getRow().getFields().getField();
                 sqlConcatFields = this.modelYaml.getResource().getSchema().getRow().getFields().getConcat();
                 sqlQuery = this.modelYaml.getResource().getSchema().getRow().getQuery();
@@ -258,7 +300,13 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info("Strategy [Zip] activated but row query is undefined for ["+ this.injectionModel.getMediatorVendor().getVendor() +"], fallback to default");
+                LOGGER.info(
+                    String
+                    .format(
+                        "Strategy [Zip] activated but row query is undefined for [%s], fallback to default",
+                        this.injectionModel.getMediatorVendor().getVendor()
+                    )
+                );
                 sqlField = this.modelYaml.getResource().getSchema().getRow().getFields().getField();
                 sqlConcatFields = this.modelYaml.getResource().getSchema().getRow().getFields().getConcat();
                 sqlQuery = this.modelYaml.getResource().getSchema().getRow().getQuery();

@@ -165,7 +165,6 @@ public class ResourceAccess {
     /**
      * Create a webshell in the server.
      * @param pathShell Remote path of the file
-     * @param url
      * @throws InterruptedException
      * @throws InjectionFailureException
      * @throws StoppedByUserSlidingException
@@ -446,7 +445,7 @@ public class ResourceAccess {
     /**
      * Create SQL shell on the server. Override user name and password eventually.
      * @param pathShell Script to create on the server
-     * @param url URL for the script (used for url rewriting)
+     * @param urlShell URL for the script (used for url rewriting)
      * @param username User name for current database
      * @param password User password for current database
      * @throws InterruptedException

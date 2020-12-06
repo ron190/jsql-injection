@@ -110,9 +110,9 @@ public class PanelInjection extends JPanel {
         JButton labelIsCheckingAllBase64Param = new JButton("Inject Base64 parameters");
         JButton labelIsCheckingAllSOAPParam = new JButton("Inject SOAP parameters in Request body");
         
-        JButton labelIsDefaultStrategy = new JButton("Use Default strategy (use this ; no change to URL or processing)");
-        JButton labelIsDiosStrategy = new JButton("Use Dios strategy (less queries ; do not use with Error strategies)");
-        JButton labelIsZipStrategy = new JButton("Use Zip strategy (smaller SQL queries ; reduce URL size but less efficient)");
+        JButton labelIsDefaultStrategy = new JButton("Use Default mode (use this ; no change to URL or processing)");
+        JButton labelIsDiosStrategy = new JButton("Use Dios mode (less queries ; do not use with Error strategies)");
+        JButton labelIsZipStrategy = new JButton("Use Zip mode (smaller SQL queries ; reduce URL size but less efficient)");
         JButton labelIsUrlEncodingDisabled = new JButton("Disable URL encoding (smaller URL)");
         JButton labelIsPerfIndexDisabled = new JButton("Disable calibration (smaller SQL query during Normal index selection only)");
         

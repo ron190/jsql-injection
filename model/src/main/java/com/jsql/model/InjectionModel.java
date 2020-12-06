@@ -229,8 +229,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     
     /**
      * Run a HTTP connection to the web server.
-     * @param dataInjection SQL query
-     * @param responseHeader unused
+     * @param newDataInjection SQL query
      * @return source code of current page
      */
     @Override
@@ -303,7 +302,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 pageSource = StringUtil.fromHtml(pageSource);
             }
             
-            msgHeader.put(Header.SOURCE, pageSource);
+            msgHeader.put(
+                Header.SOURCE,
+                pageSource
+                .replaceAll("(#){60,}", "$1...")  // Remove ranges of # created by calibration
+                .replaceAll("(jIyM){60,}", "$1...")  // Remove batch of chars created by Dios
+            );
             msgHeader.put(Header.METADATA_PROCESS, metadataInjectionProcess);
             msgHeader.put(Header.METADATA_STRATEGY, this.mediatorStrategy.getMeta());
             

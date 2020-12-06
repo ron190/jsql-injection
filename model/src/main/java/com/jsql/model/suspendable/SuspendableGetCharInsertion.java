@@ -23,6 +23,7 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.InjectionCharInsertion;
+import com.jsql.model.injection.vendor.MediatorVendor;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.util.I18nUtil;
@@ -52,12 +53,12 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         String characterInsertionByUser = (String) args[0];
         
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetInsertionCharacter");
-        
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         String[] charFromBooleanMatch = new String[1];
-        
         List<String> charactersInsertion = this.initializeCallables(taskCompletionService, characterInsertionByUser, charFromBooleanMatch);
+        
+        MediatorVendor mediatorVendor = this.injectionModel.getMediatorVendor();
 
         LOGGER.trace("Fingerprinting database and character insertion with Order by match...");
 
@@ -75,94 +76,35 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 total--;
                 String pageSource = currentCallable.getContent();
                 
-                List<Vendor> vendorsOrderByMatch =
-                    this.injectionModel
-                    .getMediatorVendor()
-                    .getVendors()
-                    .stream()
-                    .filter(vendor -> vendor != this.injectionModel.getMediatorVendor().getAuto())
-                    .filter(vendor ->
-                        StringUtils
-                        .isNotEmpty(
-                            vendor
-                            .instance()
-                            .getModelYaml()
-                            .getStrategy()
-                            .getConfiguration()
-                            .getFingerprint()
-                            .getOrderByErrorMessage()
-                        )
-                    )
-                    .filter(vendor -> {
-                        
-                        Optional<String> optionalOrderByErrorMatch =
-                            Stream.of(
-                                vendor
-                                .instance()
-                                .getModelYaml()
-                                .getStrategy()
-                                .getConfiguration()
-                                .getFingerprint()
-                                .getOrderByErrorMessage()
-                                .split("[\\r\\n]{1,}")
-                            )
-                            .filter(errorMessage -> Pattern.compile(".*" + errorMessage + ".*", Pattern.DOTALL).matcher(pageSource).matches())
-                            .findAny();
-                        
-                        if (optionalOrderByErrorMatch.isPresent()) {
-                            
-                            LOGGER.info("Possibly [" + vendor + "] from Order by match");
-                        }
-                        
-                        return optionalOrderByErrorMatch.isPresent();
-                    })
-                    .collect(Collectors.toList());
+                List<Vendor> vendorsOrderByMatch = this.getVendorsOrderByMatch(mediatorVendor, pageSource);
                 
-                if (!vendorsOrderByMatch.isEmpty()) {
-                    
-                    // Vendor
-                    if (vendorsOrderByMatch.size() == 1 && vendorsOrderByMatch.get(0) != this.injectionModel.getMediatorVendor().getVendor()) {
-                        
-                        this.injectionModel.getMediatorVendor().setVendor(vendorsOrderByMatch.get(0));
-                        
-                    } else if (vendorsOrderByMatch.size() > 1) {
-                        
-                        if (vendorsOrderByMatch.contains(this.injectionModel.getMediatorVendor().getPostgreSQL())) {
-                            
-                            this.injectionModel.getMediatorVendor().setVendor(this.injectionModel.getMediatorVendor().getPostgreSQL());
-                            
-                        } else if (vendorsOrderByMatch.contains(this.injectionModel.getMediatorVendor().getMySQL())) {
-                            
-                            this.injectionModel.getMediatorVendor().setVendor(this.injectionModel.getMediatorVendor().getMySQL());
-                            
-                        } else {
-                            
-                            this.injectionModel.getMediatorVendor().setVendor(vendorsOrderByMatch.get(0));
-                        }
-                    }
-                    
-                    LOGGER.info("Using ["+ this.injectionModel.getMediatorVendor().getVendor() +"]");
-                    Request requestSetVendor = new Request();
-                    requestSetVendor.setMessage(Interaction.SET_VENDOR);
-                    requestSetVendor.setParameters(this.injectionModel.getMediatorVendor().getVendor());
-                    this.injectionModel.sendToViews(requestSetVendor);
-                    
-                    
-                    // Char insertion
-                    charFromOrderBy = currentCallable.getCharacterInsertion();
-                    
-                    if (charFromOrderBy.equals(charFromBooleanMatch[0])) {
-                    
-                        LOGGER.info("Confirmed character insertion ["+ charFromOrderBy +"] using Order by match");
-
-                    } else {
-                        
-                        LOGGER.info("Found character insertion ["+ charFromOrderBy +"] using Order by match");
-                    }
-                    
-                    break;
-                    
+                if (vendorsOrderByMatch.isEmpty()) {
+                    continue;
                 }
+                    
+                this.setVendor(mediatorVendor, vendorsOrderByMatch);
+                
+                LOGGER.info("Using ["+ mediatorVendor.getVendor() +"]");
+                Request requestSetVendor = new Request();
+                requestSetVendor.setMessage(Interaction.SET_VENDOR);
+                requestSetVendor.setParameters(mediatorVendor.getVendor());
+                this.injectionModel.sendToViews(requestSetVendor);
+                
+                
+                // Char insertion
+                charFromOrderBy = currentCallable.getCharacterInsertion();
+                
+                if (charFromOrderBy.equals(charFromBooleanMatch[0])) {
+                
+                    LOGGER.info("Confirmed character insertion ["+ charFromOrderBy +"] using Order by match");
+
+                } else {
+                    
+                    LOGGER.info("Found character insertion ["+ charFromOrderBy +"] using Order by match");
+                }
+                
+                break;
+                    
             } catch (InterruptedException | ExecutionException e) {
                 
                 LOGGER.error("Interruption while defining character injection", e);
@@ -191,6 +133,78 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         return this.getCharacterInsertion(characterInsertionByUser, charFromOrderBy);
     }
 
+    private void setVendor(MediatorVendor mediatorVendor, List<Vendor> vendorsOrderByMatch) {
+        
+        // Vendor
+        if (
+            vendorsOrderByMatch.size() == 1
+            && vendorsOrderByMatch.get(0) != mediatorVendor.getVendor()
+        ) {
+            
+            mediatorVendor.setVendor(vendorsOrderByMatch.get(0));
+            
+        } else if (vendorsOrderByMatch.size() > 1) {
+            
+            if (vendorsOrderByMatch.contains(mediatorVendor.getPostgreSQL())) {
+                
+                mediatorVendor.setVendor(mediatorVendor.getPostgreSQL());
+                
+            } else if (vendorsOrderByMatch.contains(mediatorVendor.getMySQL())) {
+                
+                mediatorVendor.setVendor(mediatorVendor.getMySQL());
+                
+            } else {
+                
+                mediatorVendor.setVendor(vendorsOrderByMatch.get(0));
+            }
+        }
+    }
+
+    private List<Vendor> getVendorsOrderByMatch(MediatorVendor mediatorVendor, String pageSource) {
+        
+        return
+            mediatorVendor
+            .getVendors()
+            .stream()
+            .filter(vendor -> vendor != mediatorVendor.getAuto())
+            .filter(vendor ->
+                StringUtils
+                .isNotEmpty(
+                    vendor
+                    .instance()
+                    .getModelYaml()
+                    .getStrategy()
+                    .getConfiguration()
+                    .getFingerprint()
+                    .getOrderByErrorMessage()
+                )
+            )
+            .filter(vendor -> {
+                
+                Optional<String> optionalOrderByErrorMatch =
+                    Stream.of(
+                        vendor
+                        .instance()
+                        .getModelYaml()
+                        .getStrategy()
+                        .getConfiguration()
+                        .getFingerprint()
+                        .getOrderByErrorMessage()
+                        .split("[\\r\\n]{1,}")
+                    )
+                    .filter(errorMessage -> Pattern.compile(".*" + errorMessage + ".*", Pattern.DOTALL).matcher(pageSource).matches())
+                    .findAny();
+                
+                if (optionalOrderByErrorMatch.isPresent()) {
+                    
+                    LOGGER.info("Possibly [" + vendor + "] from Order by match");
+                }
+                
+                return optionalOrderByErrorMatch.isPresent();
+            })
+            .collect(Collectors.toList());
+    }
+
     private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService, String characterInsertionByUser, String[] charFromBooleanMatch) throws JSqlException {
         
         List<String> roots =
@@ -202,13 +216,15 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 StringUtils.EMPTY
             );
         
+        final String labelPrefix = "prefix";
+        
         List<String> prefixes =
             Arrays
             .asList(
-                "prefix",
-                "prefix'",
-                "prefix\"",
-                "prefix%bf'"
+                labelPrefix,
+                labelPrefix +"'",
+                labelPrefix +"\"",
+                labelPrefix +"%bf'"
 //                "prefix`",
 //                "'prefix'"
 //                "`prefix`",
@@ -226,27 +242,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 
                 for (String suffix: suffixes) {
                     
-                    charactersInsertion.add(prefix.replace("prefix", root) + suffix);
-                    
-                    // Skipping Boolean match when already found
-                    if (charFromBooleanMatch[0] == null) {
-                        
-                        InjectionCharInsertion injectionCharInsertion = new InjectionCharInsertion(
-                            this.injectionModel,
-                            prefix.replace("prefix", root) + suffix
-                            ,
-                            prefix + suffix
-                        );
-                        if (injectionCharInsertion.isInjectable()) {
-    
-                            if (this.isSuspended()) {
-                                throw new StoppedByUserSlidingException();
-                            }
-                            
-                            charFromBooleanMatch[0] = prefix.replace("prefix", root) + suffix;
-                            LOGGER.info("Found character insertion ["+ charFromBooleanMatch[0] +"] using Boolean match");
-                        }
-                    }
+                    this.checkInsertionChar(charFromBooleanMatch, labelPrefix, charactersInsertion, root, prefix, suffix);
                 }
             }
         }
@@ -267,6 +263,37 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         
         return charactersInsertion;
     }
+
+    private void checkInsertionChar(
+        String[] charFromBooleanMatch,
+        final String labelPrefix,
+        List<String> charactersInsertion,
+        String root,
+        String prefix,
+        String suffix
+    ) throws StoppedByUserSlidingException {
+        
+        charactersInsertion.add(prefix.replace(labelPrefix, root) + suffix);
+        
+        // Skipping Boolean match when already found
+        if (charFromBooleanMatch[0] == null) {
+            
+            InjectionCharInsertion injectionCharInsertion = new InjectionCharInsertion(
+                this.injectionModel,
+                prefix.replace(labelPrefix, root) + suffix,
+                prefix + suffix
+            );
+            if (injectionCharInsertion.isInjectable()) {
+   
+                if (this.isSuspended()) {
+                    throw new StoppedByUserSlidingException();
+                }
+                
+                charFromBooleanMatch[0] = prefix.replace(labelPrefix, root) + suffix;
+                LOGGER.info("Found character insertion ["+ charFromBooleanMatch[0] +"] using Boolean match");
+            }
+        }
+    }
     
     private String getCharacterInsertion(String characterInsertionByUser, String characterInsertionDetected) {
         
@@ -283,21 +310,40 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 characterInsertionDetectedFixed = characterInsertionByUser;
             }
             
-            LOGGER.warn("No character insertion found, forcing to ["+ characterInsertionDetectedFixed.replace(InjectionModel.STAR, StringUtils.EMPTY) +"]");
+            LOGGER.warn(
+                String
+                .format(
+                    "No character insertion found, forcing to [%s]",
+                    characterInsertionDetectedFixed.replace(InjectionModel.STAR, StringUtils.EMPTY)
+                )
+            );
             
         } else if (!characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY).equals(characterInsertionDetectedFixed)) {
             
             String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY);
-            LOGGER.trace("Using ["+ this.injectionModel.getMediatorVendor().getVendor() +"] and ["+ characterInsertionDetectedFixed +"]");
-            LOGGER.trace("Add manually the character * like ["+ characterInsertionByUserFormat +"*] to force the value ["+ characterInsertionByUserFormat +"]");
+            LOGGER.trace(
+                String.format(
+                    "Using [%s] and [%s]",
+                    this.injectionModel.getMediatorVendor().getVendor(),
+                    characterInsertionDetectedFixed
+                )
+            );
+            LOGGER.trace(
+                String.format(
+                    "Add manually the character * like [%s*] to force the value [%s]",
+                    characterInsertionByUserFormat,
+                    characterInsertionByUserFormat
+                )
+            );
             
         } else {
             
             LOGGER.info(
-                I18nUtil.valueByKey("LOG_USING_INSERTION_CHARACTER")
-                + " ["
-                + characterInsertionDetectedFixed.replace(InjectionModel.STAR, StringUtils.EMPTY)
-                + "]"
+                String.format(
+                    "%s [%s]",
+                    I18nUtil.valueByKey("LOG_USING_INSERTION_CHARACTER"),
+                    characterInsertionDetectedFixed.replace(InjectionModel.STAR, StringUtils.EMPTY)
+                )
             );
         }
         

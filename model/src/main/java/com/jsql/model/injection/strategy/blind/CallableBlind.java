@@ -57,9 +57,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      * Constructor for length test.
      * @param inj
      * @param indexCharacter
-     * @param isTestingLength
      * @param injectionModel
-     * @param injectionBlind2
      */
     public CallableBlind(String inj, int indexCharacter, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
         

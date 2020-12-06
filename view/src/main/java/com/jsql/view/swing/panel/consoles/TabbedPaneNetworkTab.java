@@ -125,11 +125,8 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         try {
             this.textAreaNetworkTabPreview.setText(
                 Jsoup.clean(
-                    "<html>"
-                    + StringUtil
-                        .detectUtf8(networkData.getSource())
-                        .replaceAll("#{5,}", "#*")
-                    + "</html>"
+                    String
+                    .format("<html>%s</html>", StringUtil.detectUtf8(networkData.getSource()))
                     .replaceAll("<img[^>]*>", StringUtils.EMPTY)
                     .replaceAll("<input[^>]*type=\"?hidden\"?.*>", StringUtils.EMPTY)
                     .replaceAll("<input[^>]*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")

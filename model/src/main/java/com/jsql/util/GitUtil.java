@@ -89,19 +89,19 @@ public class GitUtil {
         String javaVersion = System.getProperty("java.version");
         String osArch = System.getProperty("os.arch");
         
-        String clientDescription =
-              "```\n"
-            + "jSQL: v"+ this.injectionModel.getVersionJsql() +"\n"
+        String osMetadata =
+            "jSQL: v"+ this.injectionModel.getVersionJsql() +"\n"
             + "Java: v"+ javaVersion +"-"+ osArch +"-"+ System.getProperty("user.language") +" on "+ System.getProperty("java.runtime.name") +"\n"
             + "OS: "+ System.getProperty("os.name") +" (v"+ System.getProperty("os.version") +")\n"
             + "Desktop: "+( System.getProperty("sun.desktop") != null ? System.getProperty("sun.desktop") : "undefined" )+"\n"
             + "Strategy: "+( this.injectionModel.getMediatorStrategy().getStrategy() != null ? this.injectionModel.getMediatorStrategy().getStrategy().getName() : "undefined" )+"\n"
-            + "Db engine: "+ this.injectionModel.getMediatorVendor().getVendor().toString() +"\n"
-            + "```\n"
-            + "```\n"
-            + "Exception on "+ threadName +"\n"
-            + ExceptionUtils.getStackTrace(throwable).trim() +"\n"
-            + "```";
+            + "Db engine: "+ this.injectionModel.getMediatorVendor().getVendor().toString() +"\n";
+        
+        String exceptionText =
+            "Exception on "+ threadName +"\n"
+            + ExceptionUtils.getStackTrace(throwable).trim() +"\n";
+        
+        String clientDescription = String.format("```\n%s```\n```\n%b```", osMetadata, exceptionText);
         
         clientDescription = clientDescription.replaceAll("(https?://[.a-zA-Z_0-9]*)+", org.apache.commons.lang3.StringUtils.EMPTY);
           

@@ -53,9 +53,13 @@ public class CallablePageSource implements Callable<CallablePageSource> {
      * Create callable for current insertion character test.
      * @param query
      * @param characterInsertion
-     * @param injectionModel2
      */
-    public CallablePageSource(String query, String characterInsertion, InjectionModel injectionModel, String metadataInjectionProcess) {
+    public CallablePageSource(
+        String query,
+        String characterInsertion,
+        InjectionModel injectionModel,
+        String metadataInjectionProcess
+    ) {
         
         this(query, injectionModel, metadataInjectionProcess);
         
@@ -70,6 +74,7 @@ public class CallablePageSource implements Callable<CallablePageSource> {
         return this;
     }
 
+    
     // Getters and setters
 
     public String getQuery() {

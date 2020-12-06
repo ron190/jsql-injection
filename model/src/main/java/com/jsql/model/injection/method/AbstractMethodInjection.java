@@ -13,6 +13,7 @@ import org.json.JSONException;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.util.JsonUtil;
+import com.jsql.util.StringUtil;
 
 @SuppressWarnings("serial")
 public abstract class AbstractMethodInjection implements Serializable {
@@ -37,10 +38,6 @@ public abstract class AbstractMethodInjection implements Serializable {
     /**
      * Verify if injection works for specific Method using 3 modes: standard (last param), injection point
      * and full params injection. Special injections like JSON and SOAP are checked.
-     * @param methodInjection currently tested (Query, Request or Header)
-     * @param paramsAsString to verify if contains injection point
-     * @param params from Query, Request or Header as a list of key/value to be tested for insertion character ;
-     * Mode standard: last param, mode injection point: no test, mode full: every params.
      * @return true if injection didn't failed
      * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
      */
@@ -121,29 +118,7 @@ public abstract class AbstractMethodInjection implements Serializable {
                 if (paramStar == paramBase) {
                     
                     try {
-                        // Will test if current value is a JSON entity
-                        Object jsonEntity = JsonUtil.getJson(paramStar.getValue());
-                        
-                        // Define a tree of JSON attributes with path as the key: root.a => value of a
-                        List<SimpleEntry<String, String>> attributesJson = JsonUtil.createEntries(jsonEntity, "root", null);
-                        
-                        if (Base64.isBase64(paramStar.getValue().replace("*", ""))) {
-                            
-                            LOGGER.info("Param " + paramStar.getKey() +"="+ paramStar.getValue() +" appears to be Base64");
-                        }
-                        
-                        // When option 'Inject JSON' is selected and there's a JSON entity to inject
-                        // then loop through each paths to add * at the end of value and test each strategies.
-                        // Marks * are erased between each tests.
-                        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam() && !attributesJson.isEmpty()) {
-                            
-                            hasFoundInjection = this.injectionModel.getMediatorUtils().getJsonUtil().testJsonParameter(this, paramStar);
-                            
-                        } else {
-                            
-                            // Standard non JSON injection
-                            hasFoundInjection = this.testStandardParameter(paramStar);
-                        }
+                        hasFoundInjection = this.testParam(paramStar);
                         
                         if (hasFoundInjection) {
                             
@@ -160,8 +135,46 @@ public abstract class AbstractMethodInjection implements Serializable {
     
         return hasFoundInjection;
     }
+
+    private boolean testParam(SimpleEntry<String, String> paramStar) {
+        
+        boolean hasFoundInjection;
+        
+        // Will test if current value is a JSON entity
+        Object jsonEntity = JsonUtil.getJson(paramStar.getValue());
+        
+        // Define a tree of JSON attributes with path as the key: root.a => value of a
+        List<SimpleEntry<String, String>> attributesJson = JsonUtil.createEntries(jsonEntity, "root", null);
+        
+        String paramBase64 = paramStar.getValue().replace("*", "");
+        if (Base64.isBase64(paramBase64) && StringUtil.isUtf8(StringUtil.base64Decode(paramBase64))) {
+            
+            LOGGER.info(
+                String.format(
+                    "Param %s=%s appears to be Base64",
+                    paramStar.getKey(),
+                    paramStar.getValue()
+                )
+            );
+        }
+        
+        // When option 'Inject JSON' is selected and there's a JSON entity to inject
+        // then loop through each paths to add * at the end of value and test each strategies.
+        // Marks * are erased between each tests.
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam() && !attributesJson.isEmpty()) {
+            
+            hasFoundInjection = this.injectionModel.getMediatorUtils().getJsonUtil().testJsonParam(this, paramStar);
+            
+        } else {
+            
+            // Standard non JSON injection
+            hasFoundInjection = this.testStandardParam(paramStar);
+        }
+        
+        return hasFoundInjection;
+    }
     
-    public boolean testStandardParameter(SimpleEntry<String, String> paramStar) {
+    public boolean testStandardParam(SimpleEntry<String, String> paramStar) {
 
         boolean hasFoundInjection = false;
         

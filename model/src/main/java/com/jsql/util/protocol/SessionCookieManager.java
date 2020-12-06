@@ -113,22 +113,27 @@ public class SessionCookieManager extends CookieHandler {
                 continue;
             }
 
-            for (String headerValue : entrySetHeader.getValue()) {
+            this.putAcceptedCookie(uri, entrySetHeader);
+        }
+    }
+
+    private void putAcceptedCookie(URI uri, Entry<String, List<String>> entrySetHeader) {
+        
+        for (String headerValue : entrySetHeader.getValue()) {
+            
+            try {
+                List<HttpCookie> cookies = HttpCookie.parse(headerValue);
                 
-                try {
-                    List<HttpCookie> cookies = HttpCookie.parse(headerValue);
+                for (HttpCookie cookie : cookies) {
                     
-                    for (HttpCookie cookie : cookies) {
+                    if (this.shouldAcceptInternal(uri, cookie)) {
                         
-                        if (this.shouldAcceptInternal(uri, cookie)) {
-                            
-                            this.getCookieStore().add(uri, cookie);
-                        }
+                        this.getCookieStore().add(uri, cookie);
                     }
-                } catch (IllegalArgumentException e) {
-                    // invalid set-cookie header string
-                    // no-op
                 }
+            } catch (IllegalArgumentException e) {
+                // invalid set-cookie header string
+                // no-op
             }
         }
     }

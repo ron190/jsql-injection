@@ -130,9 +130,11 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         //     column 1: index
         //     column 2: # found, so #######...#######
         regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(\\d+)(#+)").matcher(performanceSourcePage);
+        
         List<String[]> performanceResults = new ArrayList<>();
         
         while (regexSearch.find()) {
+            
             performanceResults.add(new String[]{regexSearch.group(1), regexSearch.group(2)});
         }
 
@@ -168,6 +170,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
             "1337(?!"+ lengthFields[lengthFields.length - 1][1] +"7331)\\d*7331",
             "1"
         );
+        
         this.injectionModel.setIndexesInUrl(indexesInUrl);
         
         return Integer.toString(lengthFields[lengthFields.length - 1][1]);

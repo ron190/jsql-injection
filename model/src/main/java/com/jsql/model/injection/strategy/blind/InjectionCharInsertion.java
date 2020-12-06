@@ -48,7 +48,6 @@ public class InjectionCharInsertion {
      * If every false test are not in true mark and every true test are in
      * true test, then blind attack is confirmed.
      * @param prefixSuffix
-     * @param blindMode
      */
     public InjectionCharInsertion(InjectionModel injectionModel, String falseCharInsertion, String prefixSuffix) {
         

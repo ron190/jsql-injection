@@ -55,7 +55,6 @@ public class MouseAdapterMenuAction extends MouseAdapter {
     /**
      * Create a popup menu for current JList item.
      * @param dndList List with action
-     * @param mouseOver Is JList hovered
      */
     public MouseAdapterMenuAction(DnDList dndList) {
         this.dndList = dndList;
