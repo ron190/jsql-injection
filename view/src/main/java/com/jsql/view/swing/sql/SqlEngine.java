@@ -65,167 +65,167 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         // Default
         TEXTAREA_DATABASE(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getSchema().setDatabase(v),
+            v -> modelYaml.getResource().getSchema().setDatabase(v),
             () -> modelYaml.getResource().getSchema().getDatabase()
         )),
         TEXTAREA_TABLE(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getSchema().setTable(v),
+            v -> modelYaml.getResource().getSchema().setTable(v),
             () -> modelYaml.getResource().getSchema().getTable()
         )),
         TEXTAREA_COLUMN(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getSchema().setColumn(v),
+            v -> modelYaml.getResource().getSchema().setColumn(v),
             () -> modelYaml.getResource().getSchema().getColumn()
         )),
         TEXTAREA_QUERY(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getSchema().getRow().setQuery(v),
+            v -> modelYaml.getResource().getSchema().getRow().setQuery(v),
             () -> modelYaml.getResource().getSchema().getRow().getQuery()
         )),
         TEXTAREA_FIELD(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getSchema().getRow().getFields().setField(v),
+            v -> modelYaml.getResource().getSchema().getRow().getFields().setField(v),
             () -> modelYaml.getResource().getSchema().getRow().getFields().getField()
         )),
         TEXTAREA_CONCAT(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getSchema().getRow().getFields().setConcat(v),
+            v -> modelYaml.getResource().getSchema().getRow().getFields().setConcat(v),
             () -> modelYaml.getResource().getSchema().getRow().getFields().getConcat()
         )),
         
         // Zip
         TEXTAREA_DATABASE_ZIP(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getZip().setDatabase(v),
+            v -> modelYaml.getResource().getZip().setDatabase(v),
             () -> modelYaml.getResource().getZip().getDatabase()
         )),
         TEXTAREA_TABLE_ZIP(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getZip().setTable(v),
+            v -> modelYaml.getResource().getZip().setTable(v),
             () -> modelYaml.getResource().getZip().getTable()
         )),
         TEXTAREA_COLUMN_ZIP(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getZip().setColumn(v),
+            v -> modelYaml.getResource().getZip().setColumn(v),
             () -> modelYaml.getResource().getZip().getColumn()
         )),
         TEXTAREA_QUERY_ZIP(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getZip().getRow().setQuery(v),
+            v -> modelYaml.getResource().getZip().getRow().setQuery(v),
             () -> modelYaml.getResource().getZip().getRow().getQuery()
         )),
         TEXTAREA_FIELD_ZIP(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getZip().getRow().getFields().setField(v),
+            v -> modelYaml.getResource().getZip().getRow().getFields().setField(v),
             () -> modelYaml.getResource().getZip().getRow().getFields().getField()
         )),
         TEXTAREA_CONCAT_ZIP(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getZip().getRow().getFields().setConcat(v),
+            v -> modelYaml.getResource().getZip().getRow().getFields().setConcat(v),
             () -> modelYaml.getResource().getZip().getRow().getFields().getConcat()
         )),
         
         // Dios
         TEXTAREA_DATABASE_DIOS(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getDios().setDatabase(v),
+            v -> modelYaml.getResource().getDios().setDatabase(v),
             () -> modelYaml.getResource().getDios().getDatabase()
         )),
         TEXTAREA_TABLE_DIOS(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getDios().setTable(v),
+            v -> modelYaml.getResource().getDios().setTable(v),
             () -> modelYaml.getResource().getDios().getTable()
         )),
         TEXTAREA_COLUMN_DIOS(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getDios().setColumn(v),
+            v -> modelYaml.getResource().getDios().setColumn(v),
             () -> modelYaml.getResource().getDios().getColumn()
         )),
         TEXTAREA_QUERY_DIOS(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getDios().getRow().setQuery(v),
+            v -> modelYaml.getResource().getDios().getRow().setQuery(v),
             () -> modelYaml.getResource().getDios().getRow().getQuery()
         )),
         TEXTAREA_FIELD_DIOS(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getDios().getRow().getFields().setField(v),
+            v -> modelYaml.getResource().getDios().getRow().getFields().setField(v),
             () -> modelYaml.getResource().getDios().getRow().getFields().getField()
         )),
         TEXTAREA_CONCAT_DIOS(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().getDios().getRow().getFields().setConcat(v),
+            v -> modelYaml.getResource().getDios().getRow().getFields().setConcat(v),
             () -> modelYaml.getResource().getDios().getRow().getFields().getConcat()
         )),
         
         TEXTAREA_INFO(new JTextPaneLexer(
-            (v) -> modelYaml.getResource().setInfo(v),
+            v -> modelYaml.getResource().setInfo(v),
             () -> modelYaml.getResource().getInfo()
         )),
         
         TEXTAREA_TRUTHY(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getBoolean().getTest().setTruthy(v),
+            v -> modelYaml.getStrategy().getBoolean().getTest().setTruthy(v),
             () -> modelYaml.getStrategy().getBoolean().getTest().getTruthyAsString()
         )),
         TEXTAREA_FALSY(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getBoolean().getTest().setFalsy(v),
+            v -> modelYaml.getStrategy().getBoolean().getTest().setFalsy(v),
             () -> modelYaml.getStrategy().getBoolean().getTest().getFalsyAsString()
         )),
          
         // Configuration
         TEXTAREA_SLIDING_WINDOW(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getConfiguration().setSlidingWindow(v),
+            v -> modelYaml.getStrategy().getConfiguration().setSlidingWindow(v),
             () -> modelYaml.getStrategy().getConfiguration().getSlidingWindow()
         )),
         TEXTAREA_LIMIT(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getConfiguration().setLimit(v),
+            v -> modelYaml.getStrategy().getConfiguration().setLimit(v),
             () -> modelYaml.getStrategy().getConfiguration().getLimit()
         )),
         TEXTAREA_FAILSAFE(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getConfiguration().setFailsafe(v),
+            v -> modelYaml.getStrategy().getConfiguration().setFailsafe(v),
             () -> modelYaml.getStrategy().getConfiguration().getFailsafe()
         )),
         TEXTAREA_CALIBRATOR(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getConfiguration().setCalibrator(v),
+            v -> modelYaml.getStrategy().getConfiguration().setCalibrator(v),
             () -> modelYaml.getStrategy().getConfiguration().getCalibrator()
         )),
         TEXTAREA_ENDING_COMMENT(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getConfiguration().setEndingComment(v),
+            v -> modelYaml.getStrategy().getConfiguration().setEndingComment(v),
             () -> modelYaml.getStrategy().getConfiguration().getEndingComment()
         )),
         TEXTAREA_LIMIT_BOUNDARY(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getConfiguration().setLimitBoundary(v),
+            v -> modelYaml.getStrategy().getConfiguration().setLimitBoundary(v),
             () -> modelYaml.getStrategy().getConfiguration().getLimitBoundary()
         )),
         TEXTAREA_ORDER_BY_ERROR_MESSAGE(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getConfiguration().getFingerprint().setOrderByErrorMessage(v),
+            v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setOrderByErrorMessage(v),
             () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
         )),
         TEXTAREA_INCORRECT_STRING_ERROR_MESSAGE(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getConfiguration().getFingerprint().setErrorMessageAsString(v),
+            v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setErrorMessageAsString(v),
             () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getErrorMessageAsString()
         )),
         
         // Normal
         TEXTAREA_INDICES(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getNormal().setIndices(v),
+            v -> modelYaml.getStrategy().getNormal().setIndices(v),
             () -> modelYaml.getStrategy().getNormal().getIndices()
         )),
         TEXTAREA_CAPACITY(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getNormal().setCapacity(v),
+            v -> modelYaml.getStrategy().getNormal().setCapacity(v),
             () -> modelYaml.getStrategy().getNormal().getCapacity()
         )),
         TEXTAREA_ORDER_BY(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getNormal().setOrderBy(v),
+            v -> modelYaml.getStrategy().getNormal().setOrderBy(v),
             () -> modelYaml.getStrategy().getNormal().getOrderBy()
         )),
         
         // Boolean
         TEXTAREA_MODE_AND(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getBoolean().setModeAnd(v),
+            v -> modelYaml.getStrategy().getBoolean().setModeAnd(v),
             () -> modelYaml.getStrategy().getBoolean().getModeAnd()
         )),
         TEXTAREA_MODE_OR(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getBoolean().setModeOr(v),
+            v -> modelYaml.getStrategy().getBoolean().setModeOr(v),
             () -> modelYaml.getStrategy().getBoolean().getModeOr()
         )),
         TEXTAREA_BLIND(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getBoolean().setBlind(v),
+            v -> modelYaml.getStrategy().getBoolean().setBlind(v),
             () -> modelYaml.getStrategy().getBoolean().getBlind()
         )),
         TEXTAREA_TIME(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getBoolean().setTime(v),
+            v -> modelYaml.getStrategy().getBoolean().setTime(v),
             () -> modelYaml.getStrategy().getBoolean().getTime()
         )),
         TEXTAREA_BIT_TEST(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getBoolean().getTest().setBit(v),
+            v -> modelYaml.getStrategy().getBoolean().getTest().setBit(v),
             () -> modelYaml.getStrategy().getBoolean().getTest().getBit()
         )),
         TEXTAREA_LENGTH_TEST(new JTextPaneLexer(
-            (v) -> modelYaml.getStrategy().getBoolean().getTest().setLength(v),
+            v -> modelYaml.getStrategy().getBoolean().getTest().setLength(v),
             () -> modelYaml.getStrategy().getBoolean().getTest().getLength()
         ))
         ;
@@ -674,10 +674,10 @@ public class SqlEngine extends JPanel implements Cleanable {
             
             JPanel panelError = new JPanel(new BorderLayout());
             
-            final Method[] refMethodError = new Method[]{methodError};
+            final Method[] refMethodError = new Method[]{ methodError };
             
             JTextPaneLexer textPaneError = new JTextPaneLexer(
-                (v) -> refMethodError[0].setQuery(v),
+                v -> refMethodError[0].setQuery(v),
                 () -> refMethodError[0].getQuery()
             );
             
@@ -754,7 +754,7 @@ public class SqlEngine extends JPanel implements Cleanable {
                 this.textPanesError.stream(),
                 Stream
                 .of(TEXT_WITH_COLOR.values())
-                .map(v -> v.getText())
+                .map(TEXT_WITH_COLOR::getText)
             )
             .collect(Collectors.toList());
     }

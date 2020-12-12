@@ -2,6 +2,7 @@ package com.jsql.model;
 
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.ConnectionUtil;
+import com.jsql.util.CsrfUtil;
 import com.jsql.util.ExceptionUtil;
 import com.jsql.util.GitUtil;
 import com.jsql.util.HeaderUtil;
@@ -31,6 +32,7 @@ public class MediatorUtils {
     private ThreadUtil threadUtil;
     private TamperingUtil tamperingUtil;
     private UserAgentUtil userAgentUtil;
+    private CsrfUtil csrfUtil;
 
     public PropertiesUtil getPropertiesUtil() {
         return this.propertiesUtil;
@@ -143,5 +145,13 @@ public class MediatorUtils {
 
     public void setUserAgentUtil(UserAgentUtil userAgentUtil) {
         this.userAgentUtil = userAgentUtil;
+    }
+
+    public CsrfUtil getCsrfUtil() {
+        return csrfUtil;
+    }
+
+    public void setCsrfUtil(CsrfUtil csrfUtil) {
+        this.csrfUtil = csrfUtil;
     }
 }

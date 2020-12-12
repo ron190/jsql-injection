@@ -10,8 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 @SuppressWarnings("serial")
 public class JTextPaneLexer extends JTextPane implements JTextPaneObjectMethod {
     
-    private Consumer<String> consumerSetter;
-    private Supplier<String> supplierGetter;
+    private transient Consumer<String> consumerSetter;
+    private transient Supplier<String> supplierGetter;
     
     public JTextPaneLexer(
         Consumer<String> consumer,

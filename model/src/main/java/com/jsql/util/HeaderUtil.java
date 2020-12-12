@@ -41,7 +41,6 @@ public class HeaderUtil {
     
     public static final String CONTENT_TYPE = "Content-Type";
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
-    private static final String SET_COOKIE = "Set-Cookie";
     private static final String REGEX_HTTP_STATUS = "4\\d\\d";
     private static final String FOUND_STATUS_HTTP = "Found status HTTP ";
     private static final String INPUT_ATTR_VALUE = "value";
@@ -113,50 +112,7 @@ public class HeaderUtil {
         
         this.parseForms(connection, pageSource);
         
-        Optional<SimpleEntry<String, String>> optionalCookieCsrf = this.isCsrf(mapResponse);
-        
-        if (optionalCookieCsrf.isPresent()) {
-            
-            SimpleEntry<String, String> cookieCsrf = optionalCookieCsrf.get();
-            LOGGER.warn(
-                String
-                .format(
-                    "Found CSRF token in HTTP header: %s=%s",
-                    cookieCsrf.getKey(),
-                    cookieCsrf.getValue()
-                )
-            );
-            
-            // TODO Add each CSRF tokens to each header and request, like Spring param _csrf and header XSRF-TOKEN
-            SimpleEntry<String, String> headerCsrf =
-                new SimpleEntry<>(
-                    "X-"+ cookieCsrf.getKey(),
-//                    "_csrf",
-                    cookieCsrf.getValue()
-                );
-            
-            if (
-                !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
-                && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
-            ) {
-                
-                LOGGER.debug(
-                    String.format(
-                        "CSRF token added to querystring, request and header: X-%s=%s",
-                        cookieCsrf.getKey(),
-                        cookieCsrf.getValue()
-                    )
-                );
-                this.injectionModel.getMediatorUtils().getConnectionUtil().setTokenCsrf(headerCsrf);
-                
-            } else {
-                
-                LOGGER.info("Activate CSRF processing in Preferences if injection fails");
-            }
-        }
-        
-        // TODO Extract CsrfUtil
-        exception = this.parseCsrf(exception, pageSource);
+        exception = this.injectionModel.getMediatorUtils().getCsrfUtil().parseCsrf(exception, pageSource, mapResponse);
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, urlByUser);
@@ -173,54 +129,6 @@ public class HeaderUtil {
             
             throw new IOException(exception);
         }
-    }
-
-    private Exception parseCsrf(Exception exception, StringBuilder pageSource) {
-        
-        Exception exceptionCsrf = exception;
-        
-        // TODO csrf in HTTP
-        Optional<SimpleEntry<String, String>> optionalTokenCsrf =
-            Jsoup
-            .parse(pageSource.toString())
-            .select("input")
-            .select("[name=csrf_token], [name=csrfToken], [name=user_token], [name=csrfmiddlewaretoken], [name=form_build_id]")
-            .stream()
-            .findFirst()
-            .map(input -> new SimpleEntry<>(input.attr("name"), input.attr(INPUT_ATTR_VALUE)));
-        
-        if (optionalTokenCsrf.isPresent()) {
-            
-            SimpleEntry<String, String> tokenCsrfFound = optionalTokenCsrf.get();
-            
-            if (
-                !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
-                && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
-            ) {
-                
-                LOGGER.debug(
-                    String.format(
-                        "Found Csrf token %s=%s in HTML body, adding token to querystring, request and header",
-                        tokenCsrfFound.getKey(),
-                        tokenCsrfFound.getValue()
-                    )
-                );
-                this.injectionModel.getMediatorUtils().getConnectionUtil().setTokenCsrf(tokenCsrfFound);
-                
-            } else {
-                
-                LOGGER.warn(
-                    String.format(
-                        "Found Csrf token in HTML body: %s=%s",
-                        tokenCsrfFound.getKey(),
-                        tokenCsrfFound.getValue()
-                    )
-                );
-                exceptionCsrf = new IOException("please activate Csrf processing in Preferences");
-            }
-        }
-        
-        return exceptionCsrf;
     }
 
     private void parseForms(HttpURLConnection connection, StringBuilder pageSource) throws IOException {
@@ -242,7 +150,7 @@ public class HeaderUtil {
             result.append(
                 String
                 .format(
-                    "\n<form action=\"%s\" method=\"%s\" />",
+                    "%n<form action=\"%s\" method=\"%s\" />",
                     form.attr("action"),
                     form.attr(FORM_ATTR_VALUE)
                 )
@@ -250,11 +158,10 @@ public class HeaderUtil {
             
             for (Element input: form.select("input")) {
                 
-                
                 result.append(
                     String
                     .format(
-                        "\n    <input name=\"%s\" value=\"%s\" />",
+                        "%n    <input name=\"%s\" value=\"%s\" />",
                         input.attr("name"),
                         input.attr(INPUT_ATTR_VALUE)
                     )
@@ -465,32 +372,6 @@ public class HeaderUtil {
             
             LOGGER.trace(FOUND_STATUS_HTTP + responseCode +" Unknown");
         }
-    }
-
-    private Optional<SimpleEntry<String, String>> isCsrf(Map<String, String> mapResponse) {
-        
-        Optional<SimpleEntry<String, String>> countCsrfToken = Optional.empty();
-        
-        if (mapResponse.containsKey(SET_COOKIE)) {
-            
-            // Spring: Cookie XSRF-TOKEN => Header X-XSRF-TOKEN, GET/POST parameter _csrf
-            // Laravel, Zend, Symfony, React, Vue, Angular
-            
-            String[] cookieValues = StringUtils.split(mapResponse.get(SET_COOKIE), ";");
-            countCsrfToken =
-                Stream
-                .of(cookieValues)
-                .filter(cookie -> cookie.trim().startsWith("XSRF-TOKEN"))
-                .map(cookie -> {
-                    
-                    String[] cookieEntry = StringUtils.split(cookie, "=");
-
-                    return new SimpleEntry<>(cookieEntry[0].trim(), cookieEntry[1].trim());
-                })
-                .findFirst();
-        }
-        
-        return countCsrfToken;
     }
     
     private boolean isNegotiate(String responseCode, Map<String, String> mapResponse) {

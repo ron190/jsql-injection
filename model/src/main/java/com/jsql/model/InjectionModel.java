@@ -46,6 +46,7 @@ import com.jsql.model.injection.strategy.MediatorStrategy;
 import com.jsql.model.injection.vendor.MediatorVendor;
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.ConnectionUtil;
+import com.jsql.util.CsrfUtil;
 import com.jsql.util.ExceptionUtil;
 import com.jsql.util.GitUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
@@ -125,6 +126,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.mediatorUtils.setThreadUtil(new ThreadUtil(this));
         this.mediatorUtils.setTamperingUtil(new TamperingUtil());
         this.mediatorUtils.setUserAgentUtil(new UserAgentUtil());
+        this.mediatorUtils.setCsrfUtil(new CsrfUtil(this));
     }
 
     /**
@@ -141,7 +143,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         this.indexesInUrl = StringUtils.EMPTY;
         
-        this.mediatorUtils.getConnectionUtil().setTokenCsrf(null);
+        this.mediatorUtils.getCsrfUtil().setTokenCsrf(null);
         
         this.setIsStoppedByUser(false);
         
@@ -272,15 +274,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         try {
             HttpURLConnection connection = this.initializeConnection(urlObject);
             
-            // Csrf
-            
-            if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
-                
-                connection.setRequestProperty(
-                    this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey(),
-                    this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue()
-                );
-            }
+            this.mediatorUtils.getCsrfUtil().addCsrfToken(connection);
             
             this.mediatorUtils.getConnectionUtil().fixJcifsTimeout(connection);
             this.mediatorUtils.getConnectionUtil().setCustomUserAgent(connection);
@@ -348,52 +342,38 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         String urlInjectionFixed = urlInjection;
         URL urlObjectFixed = urlObject;
         
-        if (!this.mediatorUtils.getParameterUtil().getListQueryString().isEmpty()) {
-            
-            // URL without query string like Request and Header can receive
-            // new params from <form> parsing, in that case add the '?' to URL
-            if (!urlInjectionFixed.contains("?")) {
-                
-                urlInjectionFixed += "?";
-            }
+        if (
+            this.mediatorUtils.getParameterUtil().getListQueryString().isEmpty()
+            && !this.mediatorUtils.getPreferencesUtil().isProcessingCsrf()
+        ) {
 
-            urlInjectionFixed +=
-                this.buildQuery(
-                    this.mediatorMethod.getQuery(),
-                    this.mediatorUtils.getParameterUtil().getQueryStringFromEntries(),
-                    isUsingIndex,
-                    dataInjection
-                );
+            msgHeader.put(Header.URL, urlInjectionFixed);
+            return urlObjectFixed;
+        }
             
-            if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
-                
-                urlInjectionFixed +=
-                    String.format(
-                        "&%s=%s",
-                        this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey(),
-                        this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue()
-                    );
-            }
+        // URL without query string like Request and Header can receive
+        // new params from <form> parsing, in that case add the '?' to URL
+        if (!urlInjectionFixed.contains("?")) {
             
-            try {
-                urlObjectFixed = new URL(urlInjectionFixed);
-                
-            } catch (MalformedURLException e) {
-                
-                LOGGER.warn("Incorrect Url: "+ e.getMessage(), e);
-            }
+            urlInjectionFixed += "?";
+        }
+
+        urlInjectionFixed +=
+            this.buildQuery(
+                this.mediatorMethod.getQuery(),
+                this.mediatorUtils.getParameterUtil().getQueryStringFromEntries(),
+                isUsingIndex,
+                dataInjection
+            );
+
+        urlInjectionFixed = this.mediatorUtils.getCsrfUtil().getCsrfTokenQueryString(urlInjectionFixed);
+        
+        try {
+            urlObjectFixed = new URL(urlInjectionFixed);
             
-        } else {
+        } catch (MalformedURLException e) {
             
-            if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
-                
-                urlInjectionFixed +=
-                    String.format(
-                        "?%s=%s",
-                        this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey(),
-                        this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue()
-                    );
-            }
+            LOGGER.warn("Incorrect Url: "+ e.getMessage(), e);
         }
 
         msgHeader.put(Header.URL, urlInjectionFixed);
@@ -497,7 +477,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         if (
             this.mediatorUtils.getParameterUtil().getListRequest().isEmpty()
-            && this.mediatorUtils.getConnectionUtil().getTokenCsrf() == null
+            && this.mediatorUtils.getCsrfUtil().getTokenCsrf() == null
         ) {
             return;
         }
@@ -520,16 +500,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
    
             DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
             
-            if (this.mediatorUtils.getConnectionUtil().getTokenCsrf() != null) {
-                
-                dataOut.writeBytes(
-                    String.format(
-                        "%s=%s&",
-                        this.mediatorUtils.getConnectionUtil().getTokenCsrf().getKey(),
-                        this.mediatorUtils.getConnectionUtil().getTokenCsrf().getValue()
-                    )
-                );
-            }
+            this.mediatorUtils.getCsrfUtil().addCsrfToken(dataOut);
             
             if (this.mediatorUtils.getConnectionUtil().getTypeRequest().matches("PUT|POST")) {
                 

@@ -37,6 +37,8 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
     private ConnectionUtil connectionUtil = MediatorHelper.model().getMediatorUtils().getConnectionUtil();
     private PropertiesUtil propertiesUtil = MediatorHelper.model().getMediatorUtils().getPropertiesUtil();
     
+    private static final String LINE_FEED_ESCAPE = "{@|@}";
+    
     public SwingWorkerGithubLocale(DialogTranslate dialogTranslate) {
         
         this.dialogTranslate = dialogTranslate;
@@ -79,9 +81,9 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
         
             this.propertiesToTranslate.append(
                 String.format(
-                    "\n\n%s=%s",
+                    "%n%n%s=%s",
                     key.getKey(),
-                    key.getValue().replace("{@|@}","\\\n")
+                    key.getValue().replace(LINE_FEED_ESCAPE,"\\\n")
                 )
             )
         );
@@ -140,7 +142,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
                 this.propertiesUtil.getProperties().getProperty("github.webservice.i18n.root")
             );
             
-            String pageSourceRootFixed = Pattern.compile("\\\\[\n\r]+").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}");
+            String pageSourceRootFixed = Pattern.compile("\\\\[\n\r]+").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll(LINE_FEED_ESCAPE);
             
             this.propertiesRoot.load(new StringReader(pageSourceRootFixed));
             
@@ -152,7 +154,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             Path path = Paths.get(uri);
             byte[] root = Files.readAllBytes(path);
             String rootI18n = new String(root);
-            String rootI18nFixed = Pattern.compile("\\\\[\n\r]+").matcher(Matcher.quoteReplacement(rootI18n)).replaceAll("{@|@}");
+            String rootI18nFixed = Pattern.compile("\\\\[\n\r]+").matcher(Matcher.quoteReplacement(rootI18n)).replaceAll(LINE_FEED_ESCAPE);
             
             this.propertiesRoot.load(new StringReader(rootI18nFixed));
             LOGGER.info("Reference language loaded from local");
@@ -200,7 +202,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             Path path = Paths.get(uri);
             byte[] root = Files.readAllBytes(path);
             String localeI18n = new String(root);
-            String localeI18nFixed = Pattern.compile("\\\\[\n\r]+").matcher(localeI18n).replaceAll("{@|@}");
+            String localeI18nFixed = Pattern.compile("\\\\[\n\r]+").matcher(localeI18n).replaceAll(LINE_FEED_ESCAPE);
             
             this.propertiesLanguageToTranslate.load(new StringReader(localeI18nFixed));
             LOGGER.info(

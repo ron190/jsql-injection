@@ -514,6 +514,8 @@ public class Menubar extends JMenuBar {
 
     private JMenu initializeMenuTranslation() {
         
+        String patternAsianDisplay = "<html><span style=\"font-family:'%s'\">%s</span></html>";
+        
         JMenu menuTranslation = new JMenu(I18nUtil.valueByKey("MENUBAR_LANGUAGE"));
         I18nViewUtil.addComponentForKey("MENUBAR_LANGUAGE", menuTranslation);
         menuTranslation.setName("menuTranslation");
@@ -537,7 +539,7 @@ public class Menubar extends JMenuBar {
         // Unhandled ClassFormatError #73790 on constructor: Unknown constant tag 73 in class file java/awt/font/TextLine
         this.itemArabic = new JRadioButtonMenuItem(
             String.format(
-                "<html><span style=\"font-family:'%s'\">%s</span></html>",
+                patternAsianDisplay,
                 UiUtil.FONT_NAME_UBUNTU_REGULAR,
                 new Locale("ar").getDisplayLanguage(new Locale("ar"))
             ),
@@ -621,7 +623,7 @@ public class Menubar extends JMenuBar {
         this.itemChinese = new JRadioButtonMenuItem(
             String
             .format(
-                "<html><span style=\"font-family:'%s'\">%s</span></html>",
+                patternAsianDisplay,
                 UiUtil.FONT_NAME_UBUNTU_REGULAR,
                 new Locale("zh").getDisplayLanguage(new Locale("zh"))
             ),
@@ -654,7 +656,7 @@ public class Menubar extends JMenuBar {
         this.itemKorean = new JRadioButtonMenuItem(
             String
             .format(
-                "<html><span style=\"font-family:'%s'\">%s</span></html>",
+                patternAsianDisplay,
                 UiUtil.FONT_NAME_UBUNTU_REGULAR,
                 new Locale("ko").getDisplayLanguage(new Locale("ko"))
             ),

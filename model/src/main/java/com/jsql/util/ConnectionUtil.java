@@ -79,8 +79,6 @@ public class ConnectionUtil {
      */
     private static final Integer TIMEOUT = 15000;
     private static final String NO_CACHE = "no-cache";
-
-    private SimpleEntry<String, String> tokenCsrf = null;
     
     private Random randomForUserAgent = new Random();
     
@@ -467,13 +465,5 @@ public class ConnectionUtil {
 
     public Integer getTimeout() {
         return ConnectionUtil.TIMEOUT;
-    }
-
-    public SimpleEntry<String, String> getTokenCsrf() {
-        return this.tokenCsrf;
-    }
-
-    public void setTokenCsrf(SimpleEntry<String, String> tokenCsrf) {
-        this.tokenCsrf = tokenCsrf;
     }
 }

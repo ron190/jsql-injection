@@ -237,7 +237,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
                 this.bruteForceManager.getResult(),
                 String
                 .format(
-                    "\n%s:\n%s => %s",
+                    "%n%s:%n%s => %s",
                     I18nUtil.valueByKey("BRUTEFORCE_FOUND_HASH"),
                     hashBruter.getGeneratedHash(),
                     hashBruter.getPassword()
