@@ -209,6 +209,7 @@ public class ManagerCoder extends JPanel implements Manager {
         return comboMenubar;
     }
     
+    
     // Getter and setter
 
     public JTextArea getTextInput() {

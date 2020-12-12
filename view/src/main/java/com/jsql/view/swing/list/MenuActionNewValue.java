@@ -91,7 +91,10 @@ public class MenuActionNewValue implements ActionListener {
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
-                new String[]{I18nUtil.valueByKey("LIST_ADD_VALUE_OK"), I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")},
+                new String[] {
+                    I18nUtil.valueByKey("LIST_ADD_VALUE_OK"),
+                    I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
+                },
                 I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
             );
             
@@ -106,6 +109,7 @@ public class MenuActionNewValue implements ActionListener {
             
         int lastIndex = 0;
         if (this.myList.getSelectedIndex() > 0) {
+            
             lastIndex = this.myList.getSelectedIndex();
         }
 

@@ -82,7 +82,8 @@ public class AddressMenuBar extends JMenuBar {
                 
             } else {
                 
-                final JToolTipI18n[] refTooltip = new JToolTipI18n[]{
+                final JToolTipI18n[] refTooltip = new JToolTipI18n[] {
+                        
                     new JToolTipI18n(
                         I18nUtil.valueByKey(
                             String.format(
@@ -106,7 +107,9 @@ public class AddressMenuBar extends JMenuBar {
                                 )
                             )
                         );
+                        
                         refTooltip[0] = (JToolTipI18n) tipI18n;
+                        
                         return tipI18n;
                     }
                 };
@@ -180,7 +183,10 @@ public class AddressMenuBar extends JMenuBar {
 
         int indexError = 0;
         
-        if (vendor != MediatorHelper.model().getMediatorVendor().getAuto() && vendor.instance().getModelYaml().getStrategy().getError() != null) {
+        if (
+            vendor != MediatorHelper.model().getMediatorVendor().getAuto()
+            && vendor.instance().getModelYaml().getStrategy().getError() != null
+        ) {
             
             for (Method methodError: vendor.instance().getModelYaml().getStrategy().getError().getMethod()) {
                 
@@ -249,6 +255,7 @@ public class AddressMenuBar extends JMenuBar {
             if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {
                 
                 this.menuStrategy.getItem(i).setSelected(true);
+                
                 break;
             }
         }
@@ -261,6 +268,7 @@ public class AddressMenuBar extends JMenuBar {
             if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {
                 
                 this.menuStrategy.getItem(i).setEnabled(false);
+                
                 break;
             }
         }
@@ -278,6 +286,7 @@ public class AddressMenuBar extends JMenuBar {
                 if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {
                     
                     ((JMenu) this.menuStrategy.getItem(i)).getItem(indexMethodError).setEnabled(false);
+                    
                     break;
                 }
             }
@@ -353,6 +362,7 @@ public class AddressMenuBar extends JMenuBar {
             if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {
                 
                 this.menuStrategy.getItem(i).setEnabled(true);
+                
                 break;
             }
         }

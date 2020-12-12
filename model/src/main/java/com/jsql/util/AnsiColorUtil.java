@@ -18,6 +18,10 @@ public class AnsiColorUtil {
     private static final String ERROR_COLOUR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_RED + SUFFIX;
     private static final String INFO_COLOUR = PREFIX + NORMAL+ SEPARATOR + FOREGROUND_GREEN + SUFFIX;
 
+    private AnsiColorUtil() {
+        // Util
+    }
+
     public static String addGreenColor(String text) {
         
         return INFO_COLOUR + text + END_COLOUR;
@@ -26,9 +30,5 @@ public class AnsiColorUtil {
     public static String addRedColor(String text) {
         
         return ERROR_COLOUR + text + END_COLOUR;
-    }
-
-    private AnsiColorUtil() {
-        // Util
     }
 }

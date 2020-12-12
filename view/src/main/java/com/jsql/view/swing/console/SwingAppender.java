@@ -42,14 +42,16 @@ public class SwingAppender extends WriterAppender {
     public static final SimpleAttributeSet ALL = new SimpleAttributeSet();
     
     static {
-        Stream.of(
+        Stream
+        .of(
             new AbstractMap.SimpleEntry<>(ERROR, Color.RED),
             new AbstractMap.SimpleEntry<>(WARN, Color.RED),
             new AbstractMap.SimpleEntry<>(INFO, Color.BLUE),
             new AbstractMap.SimpleEntry<>(DEBUG, UiUtil.COLOR_GREEN),
             new AbstractMap.SimpleEntry<>(TRACE, Color.BLACK),
             new AbstractMap.SimpleEntry<>(ALL, Color.BLACK)
-        ).forEach(entry -> {
+        )
+        .forEach(entry -> {
             
             StyleConstants.setFontFamily(entry.getKey(), UiUtil.FONT_NAME_UBUNTU_MONO);
             StyleConstants.setFontSize(entry.getKey(), 14);
@@ -71,11 +73,13 @@ public class SwingAppender extends WriterAppender {
     @Override
     public void append(final LoggingEvent event) {
         
-        SwingUtilities.invokeLater(() -> this.insertText(
-            this.layout.format(event),
-            event.getLevel(),
-            event.getThrowableInformation()
-        ));
+        SwingUtilities.invokeLater(() ->
+            this.insertText(
+                this.layout.format(event),
+                event.getLevel(),
+                event.getThrowableInformation()
+            )
+        );
     }
 
     /**
@@ -108,20 +112,31 @@ public class SwingAppender extends WriterAppender {
         
         switch (level.toInt()) {
             case Level.TRACE_INT:
-                if (throwableInformation == null || !(throwableInformation.getThrowable() instanceof IgnoreMessageException)) {
+                if (
+                    throwableInformation == null
+                    || !(throwableInformation.getThrowable() instanceof IgnoreMessageException)
+                ) {
+                    
                     consoleTextPane.append(message, TRACE);
                 }
+                
                 break;
                 
             case Priority.ERROR_INT:
                 javaTextPane.append(message, WARN);
                 javaTextPane.getProxy().setCaretPosition(javaTextPane.getProxy().getDocument().getLength());
                 
-                if (throwableInformation != null && throwableInformation.getThrowableStrRep() != null) {
+                if (
+                    throwableInformation != null
+                    && throwableInformation.getThrowableStrRep() != null
+                ) {
+                    
                     for (String rep: throwableInformation.getThrowableStrRep()) {
+                        
                         javaTextPane.append(rep, ERROR);
                     }
                 }
+                
                 break;
                 
             case Priority.WARN_INT:

@@ -41,9 +41,9 @@ public class Database extends AbstractElementDatabase {
     // A database has no parent.
     @Override
     public AbstractElementDatabase getParent() {
+        
         return null;
     }
-
     
     // Return the number of tables in the table.
     @Override
@@ -74,6 +74,13 @@ public class Database extends AbstractElementDatabase {
             LOGGER.warn("Incorrect number of tables for ["+ this +"].");
         }
         
-        return this.elementValue +" ("+ this.tableCount +" table"+ sPlural +")";
+        return
+            String
+            .format(
+                "%s (%s table%s)",
+                this.elementValue,
+                this.tableCount,
+                sPlural
+            );
     }
 }

@@ -96,11 +96,15 @@ public class PanelConnection extends JPanel {
         this.checkboxIsProcessingCsrf.setToolTipText(tooltipProcessCsrf);
         this.checkboxIsProcessingCsrf.setFocusable(false);
         JButton labelProcessingCsrf = new JButton(
-            "<html>"
-            + "Process CSRF token:<br>"
-            + "Input: Cookie XSRF-TOKEN, meta|input._csrf|_token|csrf-token, meta._csrf_header<br>"
-            + "Output: HTTP param _csrf, X-XSRF-TOKEN + X-CSRF-TOKEN"
-            + "</html>"
+            String
+            .format(
+                "%s%s%s%s%s",
+                "<html>",
+                "Process CSRF token:<br>",
+                "Input: Cookie XSRF-TOKEN, meta|input._csrf|_token|csrf-token, meta._csrf_header<br>",
+                "Output: HTTP param _csrf, X-XSRF-TOKEN + X-CSRF-TOKEN",
+                "</html>"
+            )
         );
         labelProcessingCsrf.setToolTipText(tooltipProcessCsrf);
         labelProcessingCsrf.addActionListener(actionEvent -> {
@@ -316,7 +320,6 @@ public class PanelConnection extends JPanel {
                 .addComponent(this.checkboxIsCsrfUserTag)
                 .addComponent(panelCsrfUserTag)
             )
-
         );
     }
 

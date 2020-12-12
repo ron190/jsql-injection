@@ -186,7 +186,11 @@ public abstract class AbstractTestSuite {
 
             LOGGER.info("ListDatabases: found "+ valuesFromInjection +" to find "+ valuesFromJdbc);
 
-            assertTrue(!valuesFromInjection.isEmpty() && !valuesFromJdbc.isEmpty() && valuesFromInjection.containsAll(valuesFromJdbc));
+            assertTrue(
+                !valuesFromInjection.isEmpty()
+                && !valuesFromJdbc.isEmpty()
+                && valuesFromInjection.containsAll(valuesFromJdbc)
+            );
             
         } catch (AssertionError e) {
             
@@ -221,7 +225,11 @@ public abstract class AbstractTestSuite {
             valuesFromJdbc.addAll(AbstractTestSuite.this.tablesFromJdbc);
 
             LOGGER.info(String.format("Tables: found %s to find %s", valuesFromInjection, valuesFromJdbc));
-            assertTrue(!valuesFromInjection.isEmpty() && !valuesFromJdbc.isEmpty() && valuesFromInjection.equals(valuesFromJdbc));
+            assertTrue(
+                !valuesFromInjection.isEmpty()
+                && !valuesFromJdbc.isEmpty()
+                && valuesFromInjection.equals(valuesFromJdbc)
+            );
             
         } catch (AssertionError e) {
             
@@ -260,7 +268,11 @@ public abstract class AbstractTestSuite {
             valuesFromJdbc.addAll(this.parse(AbstractTestSuite.this.columnsFromJdbc));
 
             LOGGER.info(String.format("listColumns: found %s to find %s", valuesFromInjection, valuesFromJdbc));
-            assertTrue(!valuesFromInjection.isEmpty() && !valuesFromJdbc.isEmpty() && valuesFromInjection.equals(valuesFromJdbc));
+            assertTrue(
+                !valuesFromInjection.isEmpty()
+                && !valuesFromJdbc.isEmpty()
+                && valuesFromInjection.equals(valuesFromJdbc)
+            );
             
         } catch (AssertionError e) {
             
@@ -327,7 +339,11 @@ public abstract class AbstractTestSuite {
             
             LOGGER.info(String.format("Values: found %s to find %s", logValuesFromInjection, logValuesFromJdbc));
             
-            assertTrue(!valuesFromInjection.isEmpty() && !valuesFromJdbc.isEmpty() && valuesFromInjection.equals(valuesFromJdbc));
+            assertTrue(
+                !valuesFromInjection.isEmpty()
+                && !valuesFromJdbc.isEmpty()
+                && valuesFromInjection.equals(valuesFromJdbc)
+            );
             
         } catch (AssertionError e) {
             

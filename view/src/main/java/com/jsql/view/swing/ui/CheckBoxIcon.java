@@ -61,6 +61,7 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
         g.translate(-x, -y);
         
         if (model.isSelected()) {
+            
             this.drawCheck(g, x, y);
         }
     }

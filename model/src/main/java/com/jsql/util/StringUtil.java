@@ -53,12 +53,14 @@ public final class StringUtil {
         private int radix;
         
         public CharEncoder(String prefix, String suffix, int radix) {
+            
             this.prefix = prefix;
             this.suffix = suffix;
             this.radix = radix;
         }
         
         protected void encode(char c, StringBuilder buff) {
+            
             buff
             .append(this.prefix)
             .append(Integer.toString(c, this.radix))
@@ -86,8 +88,15 @@ public final class StringUtil {
         String result = StringUtil.encode(text, DECIMAL_HTML_ENCODER);
         
         if (isRaw) {
-            return result.replace("<", "&lt;").replace(">", "&gt;").replace("&", "&amp;");
+            
+            return
+                result
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("&", "&amp;");
+            
         } else {
+            
             return result;
         }
     }
@@ -125,7 +134,9 @@ public final class StringUtil {
     public static String hexstr(String hex) {
         
         byte[] bytes = new byte[hex.length() / 2];
+        
         for (int i = 0 ; i < bytes.length ; i++) {
+            
             bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
         
@@ -135,6 +146,7 @@ public final class StringUtil {
     public static boolean isUtf8(String text) {
         
         if (text == null) {
+            
             return false;
         }
         
@@ -149,6 +161,7 @@ public final class StringUtil {
     public static String detectUtf8(String text) {
         
         if (text == null) {
+            
             return org.apache.commons.lang3.StringUtils.EMPTY;
         }
         
@@ -159,6 +172,7 @@ public final class StringUtil {
         
         String result = text;
         if (encoding != null) {
+            
             result = new String(text.getBytes(), StandardCharsets.UTF_8);
         }
         
@@ -348,6 +362,6 @@ public final class StringUtil {
             .replaceAll("(?s)(\\s+)([^\\s\\w])", "$2")
             // Replace spaces
             .replaceAll("(?s)\\s+", " ")
-            ;
+        ;
     }
 }

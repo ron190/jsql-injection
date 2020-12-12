@@ -66,13 +66,16 @@ public class BorderRoundBlu extends AbstractBorder {
     
     @Override
     public Insets getBorderInsets(Component c) {
+        
         return new Insets(4, 8, 4, 8);
     }
     
     @Override
     public Insets getBorderInsets(Component c, Insets insets) {
+        
         insets.left = insets.right = 8;
         insets.top = insets.bottom = 4;
+        
         return insets;
     }
 }

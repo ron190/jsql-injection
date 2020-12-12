@@ -92,8 +92,11 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
                 Class<?> columnClass;
                 
                 if (colNum == 0) {
+                    
                     columnClass = String.class;
+                    
                 } else {
+                    
                     columnClass = super.getColumnClass(colNum);
                 }
                 
@@ -119,7 +122,9 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
                 JComponent label = (JComponent) super.getTableCellRendererComponent(
                     table, value, isSelected, hasFocus, row, column
                 );
+                
                 label.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY));
+                
                 return label;
             }
         });
@@ -132,6 +137,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
             TableColumn column = columnModel.getColumn(i);
             column.setMinWidth(0);
             column.setMaxWidth(0);
+            
             this.fixedTable.getColumnModel().addColumn(new TableColumn(i));
         }
 
@@ -193,10 +199,12 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         
         //  Keep the fixed table in sync with the main table
         if ("selectionModel".equals(e.getPropertyName())) {
+            
             this.fixedTable.setSelectionModel(this.mainTable.getSelectionModel());
         }
 
         if ("model".equals(e.getPropertyName())) {
+            
             this.fixedTable.setModel(this.mainTable.getModel());
         }
     }

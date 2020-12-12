@@ -28,7 +28,10 @@ public class ActionCloseTabResult extends AbstractAction {
             Component tab = MediatorHelper.tabResults().getTabComponentAt(closeTabNumber);
             
             // Stop syntax color highlighter
-            if (tab instanceof TabHeader && ((TabHeader) tab).getCleanableTab() != null) {
+            if (
+                tab instanceof TabHeader
+                && ((TabHeader) tab).getCleanableTab() != null
+            ) {
                 
                 ((TabHeader) tab).getCleanableTab().clean();
             }

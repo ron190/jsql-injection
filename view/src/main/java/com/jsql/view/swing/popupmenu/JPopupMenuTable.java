@@ -55,6 +55,7 @@ public class JPopupMenuTable extends JPopupMenu {
         copyItem.setMnemonic('C');
         copyItem.setIcon(UiUtil.ICON_EMPTY);
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        
         this.add(copyItem);
 
         this.addSeparator();
@@ -66,6 +67,7 @@ public class JPopupMenuTable extends JPopupMenu {
         selectAllItem.setMnemonic('A');
         selectAllItem.setIcon(UiUtil.ICON_EMPTY);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        
         this.add(selectAllItem);
 
         // Show menu next mouse pointer
@@ -105,6 +107,7 @@ public class JPopupMenuTable extends JPopupMenu {
         search.setMnemonic('S');
         search.setIcon(UiUtil.ICON_EMPTY);
         search.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+        
         this.add(search);
     }
 

@@ -105,8 +105,13 @@ public class TabResults extends DnDTabbedPane {
     
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
-                "<html><b>URL</b><br>" + url + MediatorHelper.model().getResourceAccess().filenameWebshell
-                + "<br><b>Path</b><br>" + path + MediatorHelper.model().getResourceAccess().filenameWebshell + "</html>"
+                String.format(
+                    "<html><b>URL</b><br>%s%s<br><b>Path</b><br>%s%s</html>",
+                    url,
+                    MediatorHelper.model().getResourceAccess().filenameWebshell,
+                    path,
+                    MediatorHelper.model().getResourceAccess().filenameWebshell
+                )
             );
     
             // Apply the custom header to the tab
@@ -140,8 +145,13 @@ public class TabResults extends DnDTabbedPane {
     
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
-                "<html><b>URL</b><br>" + url + MediatorHelper.model().getResourceAccess().filenameSqlshell
-                + "<br><b>Path</b><br>" + path + MediatorHelper.model().getResourceAccess().filenameSqlshell + "</html>"
+                String.format(
+                    "<html><b>URL</b><br>%s%s<br><b>Path</b><br>%s%s</html>",
+                    url,
+                    MediatorHelper.model().getResourceAccess().filenameSqlshell,
+                    path,
+                    MediatorHelper.model().getResourceAccess().filenameSqlshell
+                )
             );
     
             // Apply the custom header to the tab
@@ -171,10 +181,12 @@ public class TabResults extends DnDTabbedPane {
         
         this.setToolTipTextAt(
             this.indexOfComponent(newTableJPanel),
-            "<html>"
-            + "<b>"+ table.getParent() +"."+ table +"</b><br>"
-            + "<i>"+ String.join("<br>", Arrays.copyOfRange(columnNames, 2, columnNames.length)) +"</i>"
-            + "</html>"
+            String.format(
+                "<html><b>%s.%s</b><br><i>%s</i></html>",
+                table.getParent(),
+                table,
+                String.join("<br>", Arrays.copyOfRange(columnNames, 2, columnNames.length))
+            )
         );
         
         // Apply the custom header to the tab

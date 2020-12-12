@@ -114,10 +114,15 @@ public class ComponentBorder implements Border {
     public void setAlignment(float alignment) {
         
         if (alignment > 1.0f) {
+            
             this.alignment = 1.0f;
+            
         } else if (alignment < 0.0f) {
+            
             this.alignment = 0.0f;
+            
         } else {
+            
             this.alignment = alignment;
         }
     }
@@ -178,7 +183,9 @@ public class ComponentBorder implements Border {
             ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
             ? (0 + this.component.getWidth()) * this.component.getAlignmentX() + x
             : (width - this.component.getWidth()) * this.component.getAlignmentX() + x;
+        
         float y2 = (height - this.component.getHeight()) * this.component.getAlignmentY() + y;
+        
         this.component.setLocation((int) x2 + this.addX, (int) y2 + this.addY);
     }
 
@@ -201,8 +208,11 @@ public class ComponentBorder implements Border {
         Border current = parent.getBorder();
 
         if (current == null) {
+            
             parent.setBorder(this);
+            
         } else {
+            
             CompoundBorder compound = new CompoundBorder(current, this);
             parent.setBorder(compound);
         }
@@ -232,16 +242,19 @@ public class ComponentBorder implements Border {
             this.borderInsets.top = this.component.getPreferredSize().height + this.gap;
             this.component.setAlignmentX(this.alignment);
             this.component.setAlignmentY(0.0f);
+            
         } else if (this.edge == Edge.BOTTOM) {
             
             this.borderInsets.bottom = this.component.getPreferredSize().height + this.gap;
             this.component.setAlignmentX(this.alignment);
             this.component.setAlignmentY(1.0f);
+            
         } else if (this.edge == Edge.LEFT) {
             
             this.borderInsets.left = this.component.getPreferredSize().width + this.gap;
             this.component.setAlignmentX(0.0f);
             this.component.setAlignmentY(this.alignment);
+            
         } else if (this.edge == Edge.RIGHT) {
             
             this.borderInsets.right = this.component.getPreferredSize().width + this.gap;
@@ -250,6 +263,7 @@ public class ComponentBorder implements Border {
         }
 
         if (this.adjustInsets) {
+            
             this.adjustBorderInsets();
         }
     }
@@ -265,6 +279,7 @@ public class ComponentBorder implements Border {
         // May need to adjust the height of the parent component to fit
         // the component in the Border
         if (this.edge == Edge.RIGHT || this.edge == Edge.LEFT) {
+            
             int parentHeight = this.parent.getPreferredSize().height - parentInsets.top - parentInsets.bottom;
             int diff = this.component.getHeight() - parentHeight;
 
@@ -279,6 +294,7 @@ public class ComponentBorder implements Border {
         // May need to adjust the width of the parent component to fit
         // the component in the Border
         if (this.edge == Edge.TOP || this.edge == Edge.BOTTOM) {
+            
             int parentWidth = this.parent.getPreferredSize().width - parentInsets.left - parentInsets.right;
             int diff = this.component.getWidth() - parentWidth;
 

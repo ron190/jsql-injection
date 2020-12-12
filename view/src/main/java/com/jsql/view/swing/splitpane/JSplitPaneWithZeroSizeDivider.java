@@ -77,6 +77,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
     }
 
     public void setDividerDragSize(int dividerDragSize) {
+        
         this.dividerDragSize = dividerDragSize;
         this.revalidate();
     }
@@ -86,6 +87,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
     }
 
     public void setDividerDragOffset(int dividerDragOffset) {
+        
         this.dividerDragOffset = dividerDragOffset;
         this.revalidate();
     }
@@ -98,13 +100,18 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
         // increase divider width or height
         BasicSplitPaneDivider divider = ((BasicSplitPaneUI) this.getUI()).getDivider();
         Rectangle bounds = divider.getBounds();
+        
         if (this.orientation == HORIZONTAL_SPLIT) {
+            
             bounds.x -= this.dividerDragOffset;
             bounds.width = this.dividerDragSize;
+            
         } else {
+            
             bounds.y -= this.dividerDragOffset;
             bounds.height = this.dividerDragSize;
         }
+        
         divider.setBounds(bounds);
     }
 
@@ -142,6 +149,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
             g.setColor(this.getBackground());
             
             if (this.orientation == HORIZONTAL_SPLIT) {
+                
                 // Fix #38925: ClassCastException on drawLine()
                 try {
                     g.drawLine(
@@ -150,10 +158,14 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
                         JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
                         this.getHeight() - 1
                     );
+                    
                 } catch (ClassCastException e) {
+                    
                     LOGGER.error(e, e);
                 }
+                
             } else {
+                
                 g.drawLine(
                     0,
                     JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
@@ -165,11 +177,13 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
 
         @Override
         protected void dragDividerTo(int location) {
+            
             super.dragDividerTo(location + JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);
         }
 
         @Override
         protected void finishDraggingTo(int location) {
+            
             super.finishDraggingTo(location + JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);
         }
     }

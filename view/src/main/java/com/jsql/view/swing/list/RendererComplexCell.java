@@ -37,7 +37,11 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
 
     @Override
     public Component getListCellRendererComponent(
-        JList<? extends ItemList> list, ItemList value, int index, boolean isSelected, boolean isFocused
+        JList<? extends ItemList> list,
+        ItemList value,
+        int index,
+        boolean isSelected,
+        boolean isFocused
     ) {
         
         JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, isFocused);
@@ -48,18 +52,26 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
         if (isSelected) {
             
             if (list.isFocusOwner()) {
+                
                 renderer.setBackground(UiUtil.COLOR_FOCUS_GAINED);
+                
             } else {
+                
                 renderer.setBackground(UiUtil.COLOR_FOCUS_LOST);
             }
+            
         } else {
+            
             renderer.setBackground(Color.WHITE);
         }
         
         // setForeground
         if (value.getIsVulnerable()) {
+            
             renderer.setForeground(UiUtil.COLOR_GREEN);
+            
         } else if (value.getIsDatabaseConfirmed()) {
+            
             renderer.setForeground(Color.BLUE);
         }
 
@@ -67,14 +79,20 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
         if (isSelected) {
             
             if (list.isFocusOwner()) {
+                
                 renderer.setBorder(UiUtil.BORDER_FOCUS_GAINED);
+                
             } else {
+                
                 renderer.setBorder(UiUtil.BORDER_FOCUS_LOST);
             }
+            
         } else if (isFocused) {
             
             renderer.setBorder(BorderFactory.createCompoundBorder(new BorderList(), BorderFactory.createEmptyBorder(0, 1, 0, 0)));
+            
         } else {
+            
             renderer.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }
 

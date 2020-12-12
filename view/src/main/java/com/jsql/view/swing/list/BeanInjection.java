@@ -40,7 +40,7 @@ public class BeanInjection {
                 .getMediatorMethod()
                 .getMethods()
                 .stream()
-                .filter(methodInjection -> methodInjection.name().equalsIgnoreCase(nameMethod))
+                .filter(m -> m.name().equalsIgnoreCase(nameMethod))
                 .findAny()
                 .orElse(MediatorHelper.model().getMediatorMethod().getQuery());
             
@@ -56,7 +56,7 @@ public class BeanInjection {
                 .getMediatorVendor()
                 .getVendors()
                 .stream()
-                .filter(m -> m.toString().equals(vendor))
+                .filter(v -> v.toString().equals(vendor))
                 .findAny()
                 .orElse(MediatorHelper.model().getMediatorVendor().getAuto());
             
@@ -65,8 +65,12 @@ public class BeanInjection {
             this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();
         }
         
-        this.requestType = requestType.isEmpty() ? "POST" : requestType;
+        this.requestType =
+            requestType.isEmpty()
+            ? "POST"
+            : requestType;
     }
+    
     
     // Json getter for serialization
     
@@ -77,6 +81,7 @@ public class BeanInjection {
     public String getVendor() {
         return this.vendor.toString();
     }
+    
     
     // Getter and setter
 

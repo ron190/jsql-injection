@@ -25,6 +25,7 @@ public class ManagerWebShell extends AbstractManagerShell {
     
     @Override
     protected void createPayload(String pathShell, String urlShell) throws JSqlException, InterruptedException {
+        
         MediatorHelper.model().getResourceAccess().createWebShell(pathShell, urlShell);
     }
 }

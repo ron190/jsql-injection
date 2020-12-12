@@ -124,14 +124,31 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         // Fix #42523: ExceptionInInitializerError on clean()
         try {
             this.textAreaNetworkTabPreview.setText(
-                Jsoup.clean(
+                Jsoup
+                .clean(
                     String
-                    .format("<html>%s</html>", StringUtil.detectUtf8(networkData.getSource()))
-                    .replaceAll("<img[^>]*>", StringUtils.EMPTY)
-                    .replaceAll("<input[^>]*type=\"?hidden\"?.*>", StringUtils.EMPTY)
-                    .replaceAll("<input[^>]*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
-                    .replaceAll("<input[^>]*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
-                    Whitelist.relaxed()
+                    .format(
+                        "<html>%s</html>",
+                        StringUtil.detectUtf8(networkData.getSource())
+                    )
+                    .replaceAll(
+                        "<img[^>]*>",
+                        StringUtils.EMPTY
+                    )
+                    .replaceAll(
+                        "<input[^>]*type=\"?hidden\"?.*>",
+                        StringUtils.EMPTY
+                    )
+                    .replaceAll(
+                        "<input[^>]*type=\"?(submit|button)\"?.*>",
+                        "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>"
+                    )
+                    .replaceAll(
+                        "<input[^>]*>",
+                        "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"
+                    ),
+                    Whitelist
+                    .relaxed()
                     .addTags("center", "div", "span")
                     .addAttributes(":all", "style")
                 )

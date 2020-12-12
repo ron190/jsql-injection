@@ -28,11 +28,13 @@ public class ShellWeb extends AbstractShell {
      * @throws MalformedURLException
      */
     public ShellWeb(UUID terminalID, String urlShell) throws MalformedURLException {
+        
         super(terminalID, urlShell, "system");
     }
 
     @Override
     public void action(String command, UUID terminalID, String urlShell, String... arg) {
+        
         MediatorHelper.model().getResourceAccess().runWebShell(command, terminalID, urlShell);
     }
 }

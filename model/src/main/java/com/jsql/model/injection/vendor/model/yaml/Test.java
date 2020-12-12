@@ -12,7 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 public class Test implements Serializable {
 
     private List<String> falses =
-        Arrays.asList(
+        Arrays
+        .asList(
             "true = false",
             "true %21= true",
             "false %21= false",
@@ -22,7 +23,8 @@ public class Test implements Serializable {
         );
             
     private List<String> trues =
-        Arrays.asList(
+        Arrays
+        .asList(
             "true = true",
             "false = false",
             "true %21= false",

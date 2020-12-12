@@ -145,7 +145,9 @@ public abstract class AbstractShell extends JTextPane {
         try {
             Document doc = this.getDocument();
             doc.insertString(doc.getLength(), string, null);
+            
         } catch (BadLocationException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
     }
@@ -179,19 +181,24 @@ public abstract class AbstractShell extends JTextPane {
         try {
             StyleConstants.setForeground(this.style, color);
             this.styledDocument.insertString(this.styledDocument.getLength(), string, this.style);
+            
             if (isAddingPrompt) {
+                
                 this.prompt += string;
             }
+            
         } catch (BadLocationException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
     }
 
-    /*
+    /**
      * NoWrap.
      */
     @Override
     public boolean getScrollableTracksViewportWidth() {
+        
         return this.getUI().getPreferredSize(this).width <= this.getParent().getSize().width;
     }
 
@@ -215,11 +222,17 @@ public abstract class AbstractShell extends JTextPane {
         Document doc = this.getDocument();
         
         if (offset < 0) {
+            
             throw new BadLocationException(errorMsg, -1);
+            
         } else if (offset > doc.getLength()) {
+            
             throw new BadLocationException(errorMsg, doc.getLength() + 1);
+            
         } else {
+            
             Element map = doc.getDefaultRootElement();
+            
             return map.getElementIndex(offset);
         }
     }
@@ -235,11 +248,17 @@ public abstract class AbstractShell extends JTextPane {
         Element map = this.getDocument().getDefaultRootElement();
         
         if (line < 0) {
+            
             throw new BadLocationException("Negative line", -1);
+            
         } else if (line >= map.getElementCount()) {
+            
             throw new BadLocationException("No such line", this.getDocument().getLength() + 1);
+            
         } else {
+            
             Element lineElem = map.getElement(line);
+            
             return lineElem.getStartOffset();
         }
     }

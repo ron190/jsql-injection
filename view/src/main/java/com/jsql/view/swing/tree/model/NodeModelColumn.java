@@ -44,6 +44,7 @@ public class NodeModelColumn extends NodeModelEmpty {
     ) {
         
         JCheckBox checkbox = new JCheckBox(this.toString(), this.isSelected());
+        
         checkbox.setFont(
             checkbox.getFont().deriveFont(
                 Font.PLAIN | Font.ITALIC,
@@ -54,14 +55,19 @@ public class NodeModelColumn extends NodeModelEmpty {
         checkbox.setText(UiStringUtil.detectUtf8HtmlNoWrap(this.toString()));
 
         if (isSelected) {
+            
             if (hasFocus) {
+                
                 checkbox.setBackground(UiUtil.COLOR_FOCUS_GAINED);
                 checkbox.setBorder(UiUtil.BORDER_FOCUS_GAINED);
+                
             } else {
+                
                 checkbox.setBackground(UiUtil.COLOR_FOCUS_LOST);
                 checkbox.setBorder(UiUtil.BORDER_FOCUS_LOST);
             }
         } else {
+            
             checkbox.setBackground(Color.WHITE);
             checkbox.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }

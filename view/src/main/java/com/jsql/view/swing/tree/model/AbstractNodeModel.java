@@ -243,13 +243,14 @@ public abstract class AbstractNodeModel {
             
             menuItemLoad.setEnabled(false);
         }
+        
         menuItemLoad.addActionListener(new ActionLoadStop(this, currentTableNode));
 
         JMenuItem menuItemPause = new JMenuItem(
             // Report #133: ignore if thread not found
             suspendableTask != null && suspendableTask.isPaused()
-                ? I18nViewUtil.valueByKey("THREAD_RESUME")
-                : I18nViewUtil.valueByKey("THREAD_PAUSE"),
+            ? I18nViewUtil.valueByKey("THREAD_RESUME")
+            : I18nViewUtil.valueByKey("THREAD_PAUSE"),
             's'
         );
         menuItemPause.setIcon(UiUtil.ICON_EMPTY);
@@ -317,12 +318,14 @@ public abstract class AbstractNodeModel {
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 
                 ImageIcon animatedGIFPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);
+                
                 animatedGIFPaused.setImageObserver(
                     new ImageObserverAnimated(
                         MediatorHelper.treeDatabase(),
                         currentNode
                     )
                 );
+                
                 this.panelNode.setLoaderIcon(animatedGIFPaused);
             }
         }
@@ -390,6 +393,7 @@ public abstract class AbstractNodeModel {
         
         // Report #135: ignore if thread not found
         AbstractSuspendable<?> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
+        
         if (suspendableTask != null && suspendableTask.isPaused()) {
             
             panelNode.getProgressBar().pause();
@@ -401,6 +405,7 @@ public abstract class AbstractNodeModel {
         
         return this.elementDatabase != null ? this.elementDatabase.getLabelCount() : this.textEmptyNode;
     }
+    
     
     // Getter and setter
 

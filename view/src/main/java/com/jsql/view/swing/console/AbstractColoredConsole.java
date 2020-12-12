@@ -90,13 +90,18 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
             );
             
             if (isCaretAtEnd || isScrollBarAtEnd) {
+                
                 scrollBar.setValue(scrollBar.getMaximum() + 1);
             }
 
             Color foregroundColor = Color.BLACK;
+            
             if (attribut == SwingAppender.WARN) {
+                
                 foregroundColor = Color.RED;
+                
             } else if (attribut == SwingAppender.DEBUG) {
+                
                 foregroundColor = UiUtil.COLOR_GREEN;
             }
             
@@ -105,13 +110,16 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
             if (0 <= tabIndex && tabIndex < MediatorHelper.tabConsoles().getTabCount()) {
                 
                 Component tabHeader = MediatorHelper.tabConsoles().getTabComponentAt(tabIndex);
+                
                 if (MediatorHelper.tabConsoles().getSelectedIndex() != tabIndex) {
                     
                     tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
                     tabHeader.setForeground(foregroundColor);
                 }
             }
+            
         } catch (Exception e) {
+            
             // Report #863: exception during report of exception
             // Route message to fatal and stderr
             LOGGER.trace(message, e);

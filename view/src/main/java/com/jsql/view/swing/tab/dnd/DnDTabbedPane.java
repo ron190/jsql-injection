@@ -169,6 +169,7 @@ public class DnDTabbedPane extends JTabbedPane {
         Icon icon = this.getIconAt(dragIndex);
         String tip = this.getToolTipTextAt(dragIndex);
         boolean isEnabled = this.isEnabledAt(dragIndex);
+        
         this.remove(dragIndex);
         target.insertTab(title, icon, cmp, tip, targetIndex);
         target.setEnabledAt(targetIndex, isEnabled);
@@ -191,6 +192,7 @@ public class DnDTabbedPane extends JTabbedPane {
         String tip = this.getToolTipTextAt(prev);
         boolean isEnabled = this.isEnabledAt(prev);
         int tgtindex = prev > next ? next : next - 1;
+        
         this.remove(prev);
         this.insertTab(title, icon, cmp, tip, tgtindex);
         this.setEnabledAt(tgtindex, isEnabled);
@@ -209,7 +211,8 @@ public class DnDTabbedPane extends JTabbedPane {
     
     public Optional<Rectangle> getDropLineRect() {
         
-        int index = Optional
+        int index =
+            Optional
             .ofNullable(this.getDropLocation())
             .filter(DnDDropLocation::isDroppable)
             .map(DnDDropLocation::getIndex)
@@ -249,6 +252,7 @@ public class DnDTabbedPane extends JTabbedPane {
         if (isTopBottomTabPlacement(tabPlacement)) {
             
             tabbedRect.height = tabbedRect.height - compRect.height;
+            
             if (tabPlacement == BOTTOM) {
                 
                 tabbedRect.y += compRect.y + compRect.height;
@@ -257,6 +261,7 @@ public class DnDTabbedPane extends JTabbedPane {
         } else {
             
             tabbedRect.width = tabbedRect.width - compRect.width;
+            
             if (tabPlacement == RIGHT) {
                 
                 tabbedRect.x += compRect.x + compRect.width;

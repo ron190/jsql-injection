@@ -65,7 +65,6 @@ public class ParameterUtil {
         boolean isScanning
     ) {
         try {
-            
             String urlQueryFixed = urlQuery;
                 
             if (!urlQueryFixed.isEmpty() && !urlQueryFixed.matches("(?i)^https?://.*")) {
@@ -95,7 +94,11 @@ public class ParameterUtil {
             } else {
                 
                 // Start the model injection process in a thread
-                new Thread(this.injectionModel::beginInjection, "ThreadBeginInjection").start();
+                new Thread(
+                    this.injectionModel::beginInjection,
+                    "ThreadBeginInjection"
+                )
+                .start();
             }
             
         } catch (MalformedURLException e) {
@@ -229,7 +232,10 @@ public class ParameterUtil {
         
         URL url = new URL(urlQuery);
         
-        if (StringUtils.isEmpty(urlQuery) || StringUtils.isEmpty(url.getHost())) {
+        if (
+            StringUtils.isEmpty(urlQuery)
+            || StringUtils.isEmpty(url.getHost())
+        ) {
             
             throw new MalformedURLException("empty URL");
         }
@@ -256,7 +262,14 @@ public class ParameterUtil {
                 .compile("&")
                 .splitAsStream(regexQueryString.group(2))
                 .map(s -> Arrays.copyOf(s.split("="), 2))
-                .map(o -> new SimpleEntry<>(o[0], o[1] == null ? StringUtils.EMPTY : o[1]))
+                .map(o ->
+                    new SimpleEntry<>(
+                        o[0],
+                        o[1] == null
+                        ? StringUtils.EMPTY
+                        : o[1]
+                    )
+                )
                 .collect(Collectors.toList());
         }
     }
@@ -273,7 +286,14 @@ public class ParameterUtil {
                 .compile("&")
                 .splitAsStream(request)
                 .map(s -> Arrays.copyOf(s.split("="), 2))
-                .map(o -> new SimpleEntry<>(o[0], o[1] == null ? StringUtils.EMPTY : o[1]))
+                .map(o ->
+                    new SimpleEntry<>(
+                        o[0],
+                        o[1] == null
+                        ? StringUtils.EMPTY
+                        : o[1]
+                    )
+                )
                 .collect(Collectors.toList());
         }
     }
@@ -288,8 +308,20 @@ public class ParameterUtil {
                 Pattern
                 .compile("\\\\r\\\\n")
                 .splitAsStream(header)
-                .map(commaEntry -> Arrays.copyOf(commaEntry.split(":"), 2))
-                .map(arrayEntry -> new SimpleEntry<>(arrayEntry[0], arrayEntry[1] == null ? StringUtils.EMPTY : arrayEntry[1]))
+                .map(commaEntry ->
+                    Arrays.copyOf(
+                        commaEntry.split(":"),
+                        2
+                    )
+                )
+                .map(arrayEntry ->
+                    new SimpleEntry<>(
+                        arrayEntry[0],
+                        arrayEntry[1] == null
+                        ? StringUtils.EMPTY
+                        : arrayEntry[1]
+                    )
+                )
                 .collect(Collectors.toList());
         }
     }
@@ -300,7 +332,13 @@ public class ParameterUtil {
             this.listQueryString
             .stream()
             .filter(Objects::nonNull)
-            .map(entry -> entry.getKey() +"="+ entry.getValue())
+            .map(entry ->
+                String.format(
+                    "%s=%s",
+                    entry.getKey(),
+                    entry.getValue()
+                )
+            )
             .collect(Collectors.joining("&"));
     }
 
@@ -310,7 +348,13 @@ public class ParameterUtil {
             this.listRequest
             .stream()
             .filter(Objects::nonNull)
-            .map(entry -> entry.getKey() +"="+ entry.getValue())
+            .map(entry ->
+                String.format(
+                    "%s=%s",
+                    entry.getKey(),
+                    entry.getValue()
+                )
+            )
             .collect(Collectors.joining("&"));
     }
     
@@ -320,15 +364,25 @@ public class ParameterUtil {
             this.listHeader
             .stream()
             .filter(Objects::nonNull)
-            .map(entry -> entry.getKey() +":"+ entry.getValue())
+            .map(entry ->
+                String.format(
+                    "%s:%s",
+                    entry.getKey(),
+                    entry.getValue()
+                )
+            )
             .collect(Collectors.joining("\\r\\n"));
     }
 
     public boolean isRequestSoap() {
         
-        return this.requestAsText.trim().matches("^(<soapenv:|<\\?xml).*");
+        return
+            this.requestAsText
+            .trim()
+            .matches("^(<soapenv:|<\\?xml).*");
     }
 
+    
     // Getters / setters
     
     public String getRawRequest() {

@@ -185,7 +185,6 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             if (StringUtils.isNotEmpty(refUrlShell)) {
                 
                 try {
-                    
                     new URL(refUrlShell);
                     
                 } catch (MalformedURLException e) {
@@ -199,18 +198,20 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
 
             for (final ItemList pathShell: AbstractManagerShell.this.getListPaths().getSelectedValuesList()) {
                 
-                new Thread(() -> {
-                    
-                    try {
-                        AbstractManagerShell.this.createPayload(pathShell.toString(), urlShellFinal);
+                new Thread(
+                    () -> {
                         
-                    } catch (JSqlException | InterruptedException e) {
-                        
-                        LOGGER.warn("Payload creation error: "+ e.getMessage(), e);
-                        Thread.currentThread().interrupt();
-                    }
-                    
-                }, "ThreadGetShell").start();
+                        try {
+                            AbstractManagerShell.this.createPayload(pathShell.toString(), urlShellFinal);
+                            
+                        } catch (JSqlException | InterruptedException e) {
+                            
+                            LOGGER.warn("Payload creation error: "+ e.getMessage(), e);
+                            Thread.currentThread().interrupt();
+                        }
+                    },
+                    "ThreadGetShell"
+                ).start();
             }
         }
     }

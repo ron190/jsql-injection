@@ -99,11 +99,14 @@ public class TabHeader extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         
         if (SwingUtilities.isRightMouseButton(e)) {
+            
             return;
         }
+        
         int closeTabNumber = MediatorHelper.tabResults().indexOfTabComponent(TabHeader.this);
         
         if (this.getCleanableTab() != null) {
+            
             this.getCleanableTab().clean();
         }
         

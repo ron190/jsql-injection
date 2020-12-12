@@ -37,11 +37,6 @@ public class CallablePageSource implements Callable<CallablePageSource> {
      * @param query
      * @param injectionModel
      */
-    public CallablePageSource(String query, InjectionModel injectionModel) {
-        
-        this.query = query;
-        this.injectionModel = injectionModel;
-    }
     public CallablePageSource(String query, InjectionModel injectionModel, String metadataInjectionProcess) {
         
         this.query = query;

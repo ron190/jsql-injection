@@ -91,11 +91,13 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
     @Override
     public void allow(int... i) {
+        
         this.markVulnerability(Interaction.MARK_BLIND_VULNERABLE);
     }
 
     @Override
     public void unallow(int... i) {
+        
         this.markVulnerability(Interaction.MARK_BLIND_INVULNERABLE);
     }
 

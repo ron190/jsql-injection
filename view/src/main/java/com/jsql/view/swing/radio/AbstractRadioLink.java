@@ -24,8 +24,11 @@ public abstract class AbstractRadioLink extends JLabel {
      * @param isSelected Is the radio selected by default?
      */
     protected AbstractRadioLink(String string, boolean isSelected) {
+        
         this(string);
+        
         if (isSelected) {
+            
             this.setUnderlined();
         }
     }
@@ -54,6 +57,7 @@ public abstract class AbstractRadioLink extends JLabel {
      * @return True if radio is not already selected
      */
     protected boolean isActivable() {
+        
         return !AbstractRadioLink.this.getFont().getAttributes().containsValue(TextAttribute.WEIGHT_BOLD);
     }
 
@@ -86,9 +90,13 @@ public abstract class AbstractRadioLink extends JLabel {
     public void setSelected() {
         
         for (JLabel label: this.getGroup()) {
+            
             if (this != label) {
+                
                 label.setFont(UiUtil.FONT_SEGOE);
+                
             } else {
+                
                 this.action();
             }
         }

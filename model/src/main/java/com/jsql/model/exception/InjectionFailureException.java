@@ -19,14 +19,17 @@ package com.jsql.model.exception;
 public class InjectionFailureException extends AbstractSlidingException {
     
     public InjectionFailureException() {
+        
         super("Execution stopped");
     }
     
     public InjectionFailureException(String message) {
+        
         super(message);
     }
 
     public InjectionFailureException(String message, Throwable e) {
+        
         super(message, e);
     }
 }

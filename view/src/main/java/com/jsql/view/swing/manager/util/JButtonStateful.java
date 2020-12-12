@@ -21,6 +21,7 @@ public class JButtonStateful extends JButton {
         this.defaultText = defaultText;
     }
     
+    
     // Getter and setter
 
     /**

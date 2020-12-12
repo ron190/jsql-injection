@@ -27,6 +27,7 @@ public class HashBruter extends Bruter {
         for (int size = this.minLength; size <= this.maxLength; size++) {
             
             if (this.found || this.done) {
+                
                 break;
             }
             
@@ -62,6 +63,7 @@ public class HashBruter extends Bruter {
     private void generateAllPossibleCombinations(String baseString, int length) throws NoSuchAlgorithmException, InterruptedException {
         
         while (this.paused) {
+            
             Thread.sleep(500);
         }
         
@@ -70,13 +72,13 @@ public class HashBruter extends Bruter {
             if (baseString.length() == length) {
                 
                 switch (this.type.toLowerCase()) {
-                case "adler32": this.generatedHash = HashUtil.toAdler32(baseString); break;
-                case "crc16":   this.generatedHash = Crc16Helper.generateCRC16(baseString); break;
-                case "crc32":   this.generatedHash = HashUtil.toCrc32(baseString); break;
-                case "crc64":   this.generatedHash = Crc64Helper.generateCRC64(baseString.getBytes()); break;
-                case "mysql":   this.generatedHash = HashUtil.toMySql(baseString); break;
-                case "md4":     this.generatedHash = HashUtil.toMd4(baseString); break;
-                default:        this.generatedHash = HashUtil.toHash(this.type, baseString); break;
+                    case "adler32": this.generatedHash = HashUtil.toAdler32(baseString); break;
+                    case "crc16":   this.generatedHash = Crc16Helper.generateCRC16(baseString); break;
+                    case "crc32":   this.generatedHash = HashUtil.toCrc32(baseString); break;
+                    case "crc64":   this.generatedHash = Crc64Helper.generateCRC64(baseString.getBytes()); break;
+                    case "mysql":   this.generatedHash = HashUtil.toMySql(baseString); break;
+                    case "md4":     this.generatedHash = HashUtil.toMd4(baseString); break;
+                    default:        this.generatedHash = HashUtil.toHash(this.type, baseString); break;
                 }
                 
                 this.password = baseString;
@@ -97,6 +99,7 @@ public class HashBruter extends Bruter {
             }
         }
     }
+    
     
     // Getter and setter
 

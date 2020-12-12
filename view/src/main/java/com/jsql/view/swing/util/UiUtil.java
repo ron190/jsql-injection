@@ -371,13 +371,13 @@ public class UiUtil {
                     @Override
                     public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
                         
-                        Graphics2D gg = (Graphics2D) g;
-                        gg.setColor(Color.GRAY);
-                        gg.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{1}, 0));
+                        Graphics2D g2D = (Graphics2D) g;
+                        g2D.setColor(Color.GRAY);
+                        g2D.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{1}, 0));
                         
                         // Fix #42291: InternalError on drawRect()
                         try {
-                            gg.drawRect(x, y, w - 1, h - 1);
+                            g2D.drawRect(x, y, w - 1, h - 1);
                             
                         } catch (InternalError e) {
                             

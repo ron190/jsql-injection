@@ -61,6 +61,7 @@ public class JTextPanePlaceholder extends JTextPane {
             super.paint(g);
             
             if (StringUtils.isEmpty(Jsoup.parse(this.getText()).text().trim())) {
+                
                 UiUtil.drawPlaceholder(this, g, this.placeholderText);
             }
         } catch (IllegalArgumentException | ConcurrentModificationException | IndexOutOfBoundsException | ClassCastException e) {

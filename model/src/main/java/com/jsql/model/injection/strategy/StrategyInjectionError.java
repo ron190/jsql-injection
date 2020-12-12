@@ -72,7 +72,14 @@ public class StrategyInjectionError extends AbstractStrategy {
                     
                 } else {
                     
-                    LOGGER.warn(I18nUtil.valueByKey("LOG_VULNERABLE") + StringUtils.SPACE + errorMethod.getName() +" but injectable size is incorrect");
+                    LOGGER.warn(
+                        String
+                        .format(
+                            "%s %s but injectable size is incorrect",
+                            I18nUtil.valueByKey("LOG_VULNERABLE"),
+                            errorMethod.getName()
+                        )
+                    );
                     methodIsApplicable = false;
                 }
             }
@@ -151,18 +158,28 @@ public class StrategyInjectionError extends AbstractStrategy {
             this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacityImproved);
         }
         
-        LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") + " [Error " + errorMethod.getName() +"] using ["+ Integer.toString(errorCapacityImproved) +"] characters");
+        LOGGER.debug(
+            String
+            .format(
+                "%s [Error %s] using [%s] characters",
+                I18nUtil.valueByKey("LOG_VULNERABLE"),
+                errorMethod.getName(),
+                Integer.toString(errorCapacityImproved)
+            )
+        );
         
         return errorCapacityImproved;
     }
 
     @Override
     public void allow(int... indexError) {
+        
         this.markVulnerability(Interaction.MARK_ERROR_VULNERABLE, indexError[0]);
     }
 
     @Override
     public void unallow(int... indexError) {
+        
         this.markVulnerability(Interaction.MARK_ERROR_INVULNERABLE, indexError[0]);
     }
 
@@ -179,12 +196,22 @@ public class StrategyInjectionError extends AbstractStrategy {
     public void activateStrategy() {
         
         LOGGER.info(
-            I18nUtil.valueByKey("LOG_USING_STRATEGY")
-            +" ["
-            + this.getName()
-            + StringUtils.SPACE
-            + this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(this.indexMethod).getName()
-            +"]"
+            String
+            .format(
+                "%s [%s %s]",
+                I18nUtil.valueByKey("LOG_USING_STRATEGY"),
+                this.getName(),
+                this.injectionModel
+                .getMediatorVendor()
+                .getVendor()
+                .instance()
+                .getModelYaml()
+                .getStrategy()
+                .getError()
+                .getMethod()
+                .get(this.indexMethod)
+                .getName()
+            )
         );
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());
         

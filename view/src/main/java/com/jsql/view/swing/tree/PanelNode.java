@@ -95,13 +95,15 @@ public class PanelNode extends JPanel {
         this.setBackground(Color.WHITE);
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         
-        Stream.of(
+        Stream
+        .of(
             this.icon,
             this.loader,
             this.progressBar,
             this.label,
             this.textFieldEditable
-        ).forEach(component -> {
+        )
+        .forEach(component -> {
             
             this.add(component);
             component.setVisible(false);
@@ -168,6 +170,7 @@ public class PanelNode extends JPanel {
             public void keyPressed(KeyEvent e) {
                 
                 AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
+                
                 if (e.getKeyCode() == KeyEvent.VK_F2 && !nodeModel.isRunning()) {
                     
                     nodeModel.setIsEdited(true);
@@ -222,6 +225,7 @@ public class PanelNode extends JPanel {
     public void showLoader() {
         this.loader.setVisible(true);
     }
+    
     
     // Getter and setter
 

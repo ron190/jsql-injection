@@ -52,7 +52,6 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             return;
         }
 
-        
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagFalse");
@@ -63,7 +62,6 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             
             listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this, booleanMode, "time#false"));
         }
-        
         
         // If one FALSE query makes less than X seconds,
         // then the test is a failure => exit
@@ -168,6 +166,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
     public boolean isInjectable() throws StoppedByUserSlidingException {
         
         if (this.injectionModel.isStoppedByUser()) {
+            
             throw new StoppedByUserSlidingException();
         }
         
@@ -181,7 +180,9 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         
         try {
             timeTest.call();
+            
         } catch (Exception e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
 
@@ -190,6 +191,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
 
     @Override
     public String getInfoMessage() {
+        
         return "Time strategy: request is true if delay does not exceed 5 seconds.";
     }
 }

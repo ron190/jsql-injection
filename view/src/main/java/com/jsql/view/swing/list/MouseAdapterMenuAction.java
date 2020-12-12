@@ -84,7 +84,9 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                     : mouseEvent.getX(),
                     mouseEvent.getY()
                 );
+                
             } catch (IllegalComponentStateException e) {
+                
                 LOGGER.error(e.getMessage(), e);
             }
             
@@ -126,11 +128,13 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             new SimpleEntry<>(mnSelectAll, "CONTEXT_MENU_SELECT_ALL")
         )
         .forEach(entry -> {
+            
             entry.getKey().setText(
                 isAsian
                 ? I18nViewUtil.valueByKey(entry.getValue())
                 : I18nUtil.valueByKey(entry.getValue())
             );
+            
             I18nViewUtil.addComponentForKey(entry.getValue(), entry.getKey());
             
             entry.getKey().setIcon(UiUtil.ICON_EMPTY);
@@ -156,11 +160,14 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             // Fix #42831: ClassCastException on showOpenDialog()
             try {
                 choice = importFileDialog.showOpenDialog(this.dndList.getTopLevelAncestor());
+                
             } catch (ClassCastException | NullPointerException e) {
+                
                 LOGGER.error(e, e);
             }
             
             if (choice == JFileChooser.APPROVE_OPTION) {
+                
                 this.dndList.dropPasteFile(
                     Arrays.asList(importFileDialog.getSelectedFiles()),
                     this.dndList.locationToIndex(mouseEvent.getPoint())
@@ -171,7 +178,9 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         mnCopy.addActionListener(actionEvent -> {
             
             Action action = this.dndList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
+            
             if (action != null) {
+                
                 action.actionPerformed(
                     new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
                 );
@@ -181,7 +190,9 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         mnCut.addActionListener(actionEvent -> {
             
             Action action = this.dndList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));
+            
             if (action != null) {
+                
                 action.actionPerformed(
                     new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
                 );
@@ -191,7 +202,9 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         mnPaste.addActionListener(actionEvent -> {
             
             Action action = this.dndList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));
+            
             if (action != null) {
+                
                 action.actionPerformed(
                     new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
                 );
@@ -208,7 +221,9 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             
             int start = 0;
             int end = this.dndList.getModel().getSize() - 1;
+            
             if (end >= 0) {
+                
                 this.dndList.setSelectionInterval(start, end);
             }
         });
@@ -239,13 +254,16 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             boolean containsIndex = false;
             
             for (int currentIndex: this.dndList.getSelectedIndices()) {
+                
                 if (currentIndex == clickIndex) {
+                    
                     containsIndex = true;
                     break;
                 }
             }
             
             if (!containsIndex) {
+                
                 this.dndList.setSelectedIndex(clickIndex);
             }
         }

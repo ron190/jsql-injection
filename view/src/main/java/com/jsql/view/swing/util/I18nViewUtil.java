@@ -19,7 +19,9 @@ public class I18nViewUtil {
      * Initialize the list of graphical components
      */
     static {
+        
         for (String keyI18n: I18nUtil.getLocaleRoot().keySet()) {
+            
             I18nViewUtil.componentsLocalized.put(keyI18n, new ArrayList<>());
         }
     }
@@ -35,6 +37,7 @@ public class I18nViewUtil {
      * @return a list of key names of a i18n key in the properties
      */
     public static Set<String> keys() {
+        
         return I18nViewUtil.componentsLocalized.keySet();
     }
     
@@ -45,6 +48,7 @@ public class I18nViewUtil {
      * @return a list of graphical components
      */
     public static List<Object> componentsByKey(String key) {
+        
         return I18nViewUtil.componentsLocalized.get(key);
     }
     
@@ -55,6 +59,7 @@ public class I18nViewUtil {
      * @param component graphical component which will receive the translated text
      */
     public static void addComponentForKey(String key, Object component) {
+        
         I18nViewUtil.componentsLocalized.get(key).add(component);
     }
     
@@ -68,8 +73,16 @@ public class I18nViewUtil {
         String result;
         
         if (I18nUtil.isAsian(I18nUtil.getLocaleDefault())) {
-            result = "<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ I18nUtil.valueByKey(key) +"</span></html>";
+            
+            result =
+                String
+                .format(
+                    "<html><span style=\"font-family:'%s'\">%s</span></html>",
+                    UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                    I18nUtil.valueByKey(key)
+                );
         } else {
+            
             result = I18nUtil.valueByKey(key);
         }
         

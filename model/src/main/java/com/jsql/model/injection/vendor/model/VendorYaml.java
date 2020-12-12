@@ -99,7 +99,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlDatabases() {
         
-        String sqlQuery;
+        String sqlQuery = this.modelYaml.getResource().getSchema().getDatabase();
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
             
@@ -116,7 +116,6 @@ public class VendorYaml implements AbstractVendor {
                         this.injectionModel.getMediatorVendor().getVendor()
                     )
                 );
-                sqlQuery = this.modelYaml.getResource().getSchema().getDatabase();
             }
 
         } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
@@ -134,12 +133,7 @@ public class VendorYaml implements AbstractVendor {
                         this.injectionModel.getMediatorVendor().getVendor()
                     )
                 );
-                sqlQuery = this.modelYaml.getResource().getSchema().getDatabase();
             }
-
-        } else {
-        
-            sqlQuery = this.modelYaml.getResource().getSchema().getDatabase();
         }
         
         return sqlQuery;
@@ -148,7 +142,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlTables(Database database) {
         
-        String sqlQuery;
+        String sqlQuery = this.modelYaml.getResource().getSchema().getTable();
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
             
@@ -165,7 +159,6 @@ public class VendorYaml implements AbstractVendor {
                         this.injectionModel.getMediatorVendor().getVendor()
                     )
                 );
-                sqlQuery = this.modelYaml.getResource().getSchema().getTable();
             }
 
         } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
@@ -183,12 +176,7 @@ public class VendorYaml implements AbstractVendor {
                         this.injectionModel.getMediatorVendor().getVendor()
                     )
                 );
-                sqlQuery = this.modelYaml.getResource().getSchema().getTable();
             }
-
-        } else {
-            
-            sqlQuery = this.modelYaml.getResource().getSchema().getTable();
         }
         
         return
@@ -203,7 +191,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlColumns(Table table) {
         
-        String sqlQuery;
+        String sqlQuery = this.modelYaml.getResource().getSchema().getColumn();
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
             
@@ -220,7 +208,6 @@ public class VendorYaml implements AbstractVendor {
                         this.injectionModel.getMediatorVendor().getVendor()
                     )
                 );
-                sqlQuery = this.modelYaml.getResource().getSchema().getColumn();
             }
 
         } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
@@ -238,12 +225,7 @@ public class VendorYaml implements AbstractVendor {
                         this.injectionModel.getMediatorVendor().getVendor()
                     )
                 );
-                sqlQuery = this.modelYaml.getResource().getSchema().getColumn();
             }
-
-        } else {
-        
-            sqlQuery = this.modelYaml.getResource().getSchema().getColumn();
         }
         
         return
@@ -260,9 +242,9 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlRows(String[] namesColumns, Database database, Table table) {
         
-        String sqlQuery;
-        String sqlField;
-        String sqlConcatFields;
+        String sqlField = this.modelYaml.getResource().getSchema().getRow().getFields().getField();
+        String sqlConcatFields = this.modelYaml.getResource().getSchema().getRow().getFields().getConcat();
+        String sqlQuery = this.modelYaml.getResource().getSchema().getRow().getQuery();
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
             
@@ -272,7 +254,6 @@ public class VendorYaml implements AbstractVendor {
                 sqlConcatFields = this.modelYaml.getResource().getDios().getRow().getFields().getConcat();
                 sqlQuery = this.modelYaml.getResource().getDios().getRow().getQuery();
             
-                
             } else {
                 
                 LOGGER.info(
@@ -282,10 +263,6 @@ public class VendorYaml implements AbstractVendor {
                         this.injectionModel.getMediatorVendor().getVendor()
                     )
                 );
-                sqlField = this.modelYaml.getResource().getSchema().getRow().getFields().getField();
-                sqlConcatFields = this.modelYaml.getResource().getSchema().getRow().getFields().getConcat();
-                sqlQuery = this.modelYaml.getResource().getSchema().getRow().getQuery();
-            
             }
 
         } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
@@ -296,7 +273,6 @@ public class VendorYaml implements AbstractVendor {
                 sqlConcatFields = this.modelYaml.getResource().getZip().getRow().getFields().getConcat();
                 sqlQuery = this.modelYaml.getResource().getZip().getRow().getQuery();
             
-                
             } else {
                 
                 LOGGER.info(
@@ -306,16 +282,7 @@ public class VendorYaml implements AbstractVendor {
                         this.injectionModel.getMediatorVendor().getVendor()
                     )
                 );
-                sqlField = this.modelYaml.getResource().getSchema().getRow().getFields().getField();
-                sqlConcatFields = this.modelYaml.getResource().getSchema().getRow().getFields().getConcat();
-                sqlQuery = this.modelYaml.getResource().getSchema().getRow().getQuery();
             }
-
-        } else {
-        
-            sqlField = this.modelYaml.getResource().getSchema().getRow().getFields().getField();
-            sqlConcatFields = this.modelYaml.getResource().getSchema().getRow().getFields().getConcat();
-            sqlQuery = this.modelYaml.getResource().getSchema().getRow().getQuery();
         }
         
         Matcher matcherSqlField = Pattern.compile("(?s)(.*)"+ Pattern.quote(FIELD) +"(.*)").matcher(sqlField);
@@ -336,7 +303,9 @@ public class VendorYaml implements AbstractVendor {
             
             try {
                 namesColumnUtf8[i] = URLEncoder.encode(namesColumnUtf8[i], StandardCharsets.UTF_8.name());
+                
             } catch (UnsupportedEncodingException e) {
+                
                 LOGGER.error(e.getMessage(), e);
             }
         }
@@ -345,7 +314,9 @@ public class VendorYaml implements AbstractVendor {
         
         try {
             nameDatabaseUtf8 = URLEncoder.encode(nameDatabaseUtf8, StandardCharsets.UTF_8.name());
+            
         } catch (UnsupportedEncodingException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
         
@@ -353,7 +324,9 @@ public class VendorYaml implements AbstractVendor {
         
         try {
             nameTableUtf8 = URLEncoder.encode(nameTableUtf8, StandardCharsets.UTF_8.name());
+            
         } catch (UnsupportedEncodingException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
         
@@ -362,7 +335,10 @@ public class VendorYaml implements AbstractVendor {
             .replace(
                 FIELDS,
                 leadSqlField
-                + String.join(trailSqlField + sqlConcatFields + leadSqlField, namesColumnUtf8)
+                + String.join(
+                    trailSqlField + sqlConcatFields + leadSqlField,
+                    namesColumnUtf8
+                )
                 + trailSqlField
             )
             .replace(DATABASE, nameDatabaseUtf8)
@@ -386,7 +362,10 @@ public class VendorYaml implements AbstractVendor {
             .getIndexesInUrl()
             .replaceAll(
                 "1337" + this.injectionModel.getMediatorStrategy().getNormal().getVisibleIndex() + "7331",
-                this.modelYaml.getResource().getFile().getCreate()
+                this.modelYaml
+                .getResource()
+                .getFile()
+                .getCreate()
                 .getContent()
                 .replace(
                     CONTENT_HEX,
@@ -405,9 +384,12 @@ public class VendorYaml implements AbstractVendor {
         
         return
             StringUtils.SPACE
-            + this.modelYaml.getStrategy().getBoolean()
+            + this.modelYaml
+            .getStrategy()
+            .getBoolean()
             .getBlind()
-            .replace(BOOLEAN_MODE,
+            .replace(
+                BOOLEAN_MODE,
                 blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
                 : this.modelYaml.getStrategy().getBoolean().getModeOr()
@@ -422,12 +404,14 @@ public class VendorYaml implements AbstractVendor {
             StringUtils.SPACE
             + this.modelYaml.getStrategy().getBoolean()
             .getBlind()
-            .replace(BOOLEAN_MODE,
+            .replace(
+                BOOLEAN_MODE,
                 blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
                 : this.modelYaml.getStrategy().getBoolean().getModeOr()
             )
-            .replace(TEST,
+            .replace(
+                TEST,
                 this.modelYaml.getStrategy().getBoolean().getTest().getBit()
                 .replace(INJECTION, inj)
                 .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
@@ -442,12 +426,14 @@ public class VendorYaml implements AbstractVendor {
             StringUtils.SPACE
             + this.modelYaml.getStrategy().getBoolean()
             .getBlind()
-            .replace(BOOLEAN_MODE,
+            .replace(
+                BOOLEAN_MODE,
                 blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
                 : this.modelYaml.getStrategy().getBoolean().getModeOr()
             )
-            .replace(TEST,
+            .replace(
+                TEST,
                 this.modelYaml.getStrategy().getBoolean().getTest()
                 .getLength()
                 .replace(INJECTION, inj)
@@ -462,7 +448,8 @@ public class VendorYaml implements AbstractVendor {
             StringUtils.SPACE
             + this.modelYaml.getStrategy().getBoolean()
             .getTime()
-            .replace(BOOLEAN_MODE,
+            .replace(
+                BOOLEAN_MODE,
                 blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
                 : this.modelYaml.getStrategy().getBoolean().getModeOr()
@@ -511,7 +498,10 @@ public class VendorYaml implements AbstractVendor {
             )
             .replace(
                 TEST,
-                this.modelYaml.getStrategy().getBoolean().getTest()
+                this.modelYaml
+                .getStrategy()
+                .getBoolean()
+                .getTest()
                 .getLength()
                 .replace(INJECTION, inj)
                 .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
@@ -553,7 +543,11 @@ public class VendorYaml implements AbstractVendor {
         
         return
             StringUtils.SPACE
-            + this.modelYaml.getStrategy().getError().getMethod().get(this.injectionModel.getMediatorStrategy().getError().getIndexMethodError())
+            + this.modelYaml
+            .getStrategy()
+            .getError()
+            .getMethod()
+            .get(this.injectionModel.getMediatorStrategy().getError().getIndexMethodError())
             .getQuery()
             .replace(WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
             .replace(INJECTION, this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(INDICE, "0"))
@@ -573,7 +567,17 @@ public class VendorYaml implements AbstractVendor {
                 .replace(WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
                 .replace(INJECTION, sqlQuery)
                 .replace(WINDOW_CHAR, startPosition)
-                .replace(CAPACITY, Integer.toString(this.modelYaml.getStrategy().getError().getMethod().get(indexMethodError).getCapacity()))
+                .replace(
+                    CAPACITY,
+                    Integer.toString(
+                        this.modelYaml
+                        .getStrategy()
+                        .getError()
+                        .getMethod()
+                        .get(indexMethodError)
+                        .getCapacity()
+                    )
+                )
             );
     }
 
@@ -597,7 +601,11 @@ public class VendorYaml implements AbstractVendor {
             this.injectionModel
             .getIndexesInUrl()
             .replaceAll(
-                "1337("+ String.join("|", indexes) +")7331",
+                String
+                .format(
+                    "1337(%s)7331",
+                    String.join("|", indexes)
+                ),
                 VendorYaml.replaceTags(
                     this.modelYaml.getStrategy().getNormal().getCapacity()
                     .replace(CALIBRATOR, this.modelYaml.getStrategy().getConfiguration().getCalibrator())
@@ -626,11 +634,22 @@ public class VendorYaml implements AbstractVendor {
         indice--;
         
         return
-            StringUtils.SPACE + this.modelYaml.getStrategy().getNormal()
+            StringUtils.SPACE
+            + this.modelYaml.getStrategy().getNormal()
             .getIndices()
-            .replace(INDICES, String.join(",", fields.toArray(new String[fields.size()])))
+            .replace(
+                INDICES,
+                String
+                .join(
+                    ",",
+                    fields.toArray(new String[fields.size()])
+                )
+            )
             .replace(INDICE_UNIQUE, replaceTag)
-            .replace(RESULT_RANGE, String.join(",", Collections.nCopies(indice, "r")));
+            .replace(
+                RESULT_RANGE,
+                String.join(",", Collections.nCopies(indice, "r"))
+            );
     }
 
     @Override

@@ -23,10 +23,12 @@ public class HashUtil {
     }
     
     public static String toCrc16(String text) {
+        
         return Crc16Helper.generateCRC16(text);
     }
     
     public static String toCrc64(String text) {
+        
         return Crc64Helper.generateCRC64(text.getBytes());
     }
     
@@ -100,6 +102,7 @@ public class HashUtil {
         int len = block.length;
         
         for (int i = 0; i < len; i++) {
+            
             HashUtil.byte2hex(block[i], buf);
         }
         

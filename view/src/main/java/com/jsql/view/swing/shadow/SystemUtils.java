@@ -197,8 +197,7 @@ public class SystemUtils {
 
     // Internal ***************************************************************
 
-    private static final String AWT_UTILITIES_CLASS_NAME =
-        "com.sun.awt.AWTUtilities";
+    private static final String AWT_UTILITIES_CLASS_NAME = "com.sun.awt.AWTUtilities";
 
     protected SystemUtils() {
         // Override default constructor; prevents instantiation.
@@ -222,11 +221,13 @@ public class SystemUtils {
         } catch (SecurityException e) {
             
             LOGGER.error("Can't access the System property "+ key +": "+ e.getMessage(), e);
+            
             return StringUtils.EMPTY;
         }
     }
 
     protected static boolean startsWith(String str, String prefix) {
+        
         return str != null && str.startsWith(prefix);
     }
 
@@ -243,8 +244,11 @@ public class SystemUtils {
         
         try {
             Class.forName(AWT_UTILITIES_CLASS_NAME);
+            
             return true;
+            
         } catch (ClassNotFoundException e) {
+            
             return false;
         }
     }
@@ -267,8 +271,9 @@ public class SystemUtils {
     private static boolean isWindowsXPLafEnabled() {
         
         return IS_OS_WINDOWS
-             && Boolean.TRUE.equals(Toolkit.getDefaultToolkit().
-                     getDesktopProperty("win.xpstyle.themeActive"))
+             && Boolean.TRUE.equals(
+                 Toolkit.getDefaultToolkit().getDesktopProperty("win.xpstyle.themeActive")
+             )
              && getSystemProperty("swing.noxp") == null;
     }
 
@@ -276,7 +281,9 @@ public class SystemUtils {
         
         try {
             return Toolkit.getDefaultToolkit().getScreenResolution() < 120;
+            
         } catch (HeadlessException e) {
+            
             LOGGER.error("This environment cannot support a display, keyboard, and mouse: "+ e.getMessage(), e);
             return true;
         }

@@ -141,14 +141,18 @@ public class JScrollIndicator extends JLayeredPane {
             this.vScrollBar = new JMyScrollBar(Adjustable.VERTICAL);
             scrollPane.setVerticalScrollBar(this.vScrollBar);
             scrollPane.remove(this.vScrollBar);
+            
             if (scrollPane.getVerticalScrollBarPolicy() != ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER) {
+                
                 this.add(this.vScrollBar, BorderLayout.EAST);
             }
 
             this.hScrollBar = new JMyScrollBar(Adjustable.HORIZONTAL);
             scrollPane.setHorizontalScrollBar(this.hScrollBar);
             scrollPane.remove(this.hScrollBar);
+            
             if (scrollPane.getHorizontalScrollBarPolicy() != ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER) {
+                
                 this.add(this.hScrollBar, BorderLayout.SOUTH);
             }
         }
@@ -168,15 +172,18 @@ public class JScrollIndicator extends JLayeredPane {
             int size = THUMB_THICKNESS + THUMB_MARGIN;
             this.setPreferredSize(new Dimension(size, size));
             this.scrollUI.setVisible();
+            
             this.addMouseListener(new MouseAdapter() {
                 
                 @Override
                 public void mouseEntered(MouseEvent e) {
+                    
                     JMyScrollBar.this.scrollUI.setVisible();
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
+                    
                     JMyScrollBar.this.scrollUI.setVisible();
                 }
             });
@@ -203,13 +210,16 @@ public class JScrollIndicator extends JLayeredPane {
         public void repaint(Rectangle r) {
             
             JScrollIndicator scrollIndicator = JScrollIndicator.this;
+            
             // Fix #15956: NullPointerException on convertRectangle()
             try {
                 Rectangle rect = SwingUtilities.convertRectangle(this, r, scrollIndicator);
                 rect.grow(1, 1);
                 // ensure for a translucent thumb, that the view is first painted
                 scrollIndicator.repaint(rect);
+                
             } catch (NullPointerException e) {
+                
                 LOGGER.error(e.getMessage(), e);
             }
         }
@@ -221,6 +231,7 @@ public class JScrollIndicator extends JLayeredPane {
         private int alpha = 0;
 
         private MyScrollBarUI(JMyScrollBar scrollBar) {
+            
             this.myScrollBar = scrollBar;
         }
 
@@ -229,12 +240,17 @@ public class JScrollIndicator extends JLayeredPane {
             
             this.incrButton = new JButton();
             this.decrButton = new JButton();
+            
             if (this.myScrollBar.getOrientation() == Adjustable.HORIZONTAL) {
+                
                 int size = THUMB_THICKNESS + THUMB_MARGIN; // let lower right corner empty
                 this.incrButton.setPreferredSize(new Dimension(size, size));
+                
             } else {
+                
                 this.incrButton.setPreferredSize(new Dimension(THUMB_MARGIN, THUMB_MARGIN));
             }
+            
             this.decrButton.setPreferredSize(new Dimension(THUMB_MARGIN, THUMB_MARGIN));
         }
 
@@ -246,20 +262,34 @@ public class JScrollIndicator extends JLayeredPane {
             // ensure the minimum size of the thumb
             int w = this.minimumThumbSize.width;
             int h = this.minimumThumbSize.height;
+            
             if (this.myScrollBar.getOrientation() == Adjustable.VERTICAL) {
+                
                 h = Math.max(h, Math.min(this.maximumThumbSize.height, THUMB_MIN_SIZE));
+                
             } else {
+                
                 w = Math.max(w, Math.min(this.maximumThumbSize.width, THUMB_MIN_SIZE));
             }
+            
             this.minimumThumbSize = new Dimension(w, h);
         }
 
         private void paintThumb(Graphics g) {
             
-            int alphaThumb = this.isThumbRollover() ? SCROLL_BAR_ALPHA_ROLLOVER : SCROLL_BAR_ALPHA;
+            int alphaThumb =
+                this.isThumbRollover()
+                ? SCROLL_BAR_ALPHA_ROLLOVER
+                : SCROLL_BAR_ALPHA;
 
-            g.setColor(new Color(this.getAlphaColor(THUMB_COLOR).getRed(),
-                    this.getAlphaColor(THUMB_COLOR).getGreen(), this.getAlphaColor(THUMB_COLOR).getBlue(), alphaThumb));
+            g.setColor(
+                new Color(
+                    this.getAlphaColor(THUMB_COLOR).getRed(),
+                    this.getAlphaColor(THUMB_COLOR).getGreen(),
+                    this.getAlphaColor(THUMB_COLOR).getBlue(),
+                    alphaThumb
+                )
+            );
             
             Rectangle thumbBounds = this.getThumbBounds();
 
@@ -269,8 +299,11 @@ public class JScrollIndicator extends JLayeredPane {
             int h = thumbBounds.height;
 
             if (this.myScrollBar.getOrientation() == Adjustable.VERTICAL) {
+                
                 w -= THUMB_MARGIN;
+                
             } else {
+                
                 h -= THUMB_MARGIN;
             }
 
@@ -280,19 +313,24 @@ public class JScrollIndicator extends JLayeredPane {
         private Color getAlphaColor(Color color) {
             
             if (this.alpha == 100) {
+                
                 return color;
             }
+            
             int rgb = color.getRGB() & 0xFFFFFF; // color without alpha values
             rgb |= (this.alpha / 100 * 255) << 24; // add alpha value
+            
             return new Color(rgb, true);
         }
 
         public void setAlpha(int alpha) {
+            
             this.alpha = alpha;
             this.myScrollBar.repaint(this.getThumbBounds());
         }
 
         public void setVisible() {
+            
             this.myScrollBar.repaint(this.getThumbBounds());
         }
     }

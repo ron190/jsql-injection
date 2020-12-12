@@ -64,6 +64,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
                 this.isApplicable = this.injectionTime.isInjectable();
                 
                 if (this.isApplicable) {
+                    
                     LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Time injection with OR");
                 }
                 
@@ -90,11 +91,13 @@ public class StrategyInjectionTime extends AbstractStrategy {
     
     @Override
     public void allow(int... i) {
+        
         this.markVulnerability(Interaction.MARK_TIME_VULNERABLE);
     }
 
     @Override
     public void unallow(int... i) {
+        
         this.markVulnerability(Interaction.MARK_TIME_INVULNERABLE);
     }
 

@@ -117,6 +117,7 @@ public class PanelTable extends JPanel {
         this.initializePanelSearch(rowSorter);
 
         Comparator<Object> comparatorNumeric = new ComparatorColumn<>();
+        
         for (int i = 0 ; i < this.tableValues.getColumnCount() ; i++) {
             
             rowSorter.setComparator(i, comparatorNumeric);
@@ -135,10 +136,9 @@ public class PanelTable extends JPanel {
                 PanelTable.this.tableValues.requestFocusInWindow();
 
                 if (SwingUtilities.isRightMouseButton(e)) {
-                    /**
-                     * Keep selection when multiple cells are selected,
-                     * move focus only
-                     */
+                    
+                    // Keep selection when multiple cells are selected,
+                    // move focus only
                     Point p = e.getPoint();
 
                     int rowNumber = PanelTable.this.tableValues.rowAtPoint(p);

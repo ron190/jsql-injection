@@ -49,6 +49,7 @@ public class JPopupComponent<T extends JComponent> extends JComponent implements
 
                 // Left button will unselect text after selectAll, so only for right click
                 if (SwingUtilities.isRightMouseButton(e)) {
+                    
                     JPopupComponent.this.proxy.requestFocusInWindow();
                 }
             }

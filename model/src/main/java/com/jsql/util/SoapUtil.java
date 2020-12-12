@@ -55,6 +55,7 @@ public class SoapUtil {
                 hasFoundInjection = this.injectTextNodes(doc, doc.getDocumentElement());
                 
             } catch (Exception e) {
+                
                 LOGGER.trace("SOAP not detected");
             }
         }

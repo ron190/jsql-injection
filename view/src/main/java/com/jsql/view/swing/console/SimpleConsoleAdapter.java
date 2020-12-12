@@ -26,6 +26,7 @@ public class SimpleConsoleAdapter extends AbstractColoredConsole {
 
     @Override
     public SimpleAttributeSet getColorAttribute() {
+        
         return this.attributeTimestamp;
     }
 }

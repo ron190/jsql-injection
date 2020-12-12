@@ -197,6 +197,7 @@ public class DialogAbout extends JDialog {
             ) {
                 String line;
                 while ((line = reader.readLine()) != null) {
+                    
                     result.append(line);
                 }
             }

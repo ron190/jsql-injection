@@ -75,7 +75,6 @@ class Colorer extends Thread {
         public void setAdjustment(int adjustment) {
             this.adjustment = adjustment;
         }
-        
     }
     
     /**
@@ -148,35 +147,51 @@ class Colorer extends Thread {
         // if it does, then adjust the place in the document
         // that gets highlighted.
         if (position < this.lastPosition) {
+            
             if (this.lastPosition < position - adjustment) {
+                
                 this.change -= this.lastPosition - position;
+                
             } else {
+                
                 this.change += adjustment;
             }
         }
         
         synchronized (this.eventsLock) {
+            
             if(!this.events.isEmpty()) {
+                
                 // check whether to coalesce with current last element
                 RecolorEvent curLast = this.events.getLast();
+                
                 if(adjustment < 0 && curLast.getAdjustment() < 0) {
+                    
                     // both are removals
                     if(position == curLast.getPosition()) {
+                        
                         curLast.setAdjustment(curLast.getAdjustment() + adjustment);
                         return;
                     }
+                    
                 } else if(adjustment >= 0 && curLast.getAdjustment() >= 0) {
+                    
                     // both are insertions
                     if(position == curLast.getPosition() + curLast.getAdjustment()) {
+                        
                         curLast.setAdjustment(curLast.getAdjustment() + adjustment);
                         return;
+                        
                     } else if(curLast.getPosition() == position + adjustment) {
+                        
                         curLast.setPosition(position);
                         curLast.setAdjustment(curLast.getAdjustment() + adjustment);
+                        
                         return;
                     }
                 }
             }
+            
             this.events.add(new RecolorEvent(position, adjustment));
             this.eventsLock.notifyAll();
         }
@@ -190,23 +205,30 @@ class Colorer extends Thread {
     public void run() {
         
         while (this.document.get() != null) {
+            
             try {
                 RecolorEvent re = new RecolorEvent(0, 0);
                 synchronized (this.eventsLock) {
+                    
                     // get the next event to process - stalling until the
                     // event becomes available
                     while(this.events.isEmpty() && this.document.get() != null) {
+                        
                         // stop waiting after a second in case document
                         // has been cleared.
                         this.eventsLock.wait(1000);
                     }
+                    
                     if (!this.events.isEmpty()) {
+                        
                         re = this.events.removeFirst();
                     }
                 }
                 this.processEvent(re.getPosition(), re.getAdjustment());
                 Thread.sleep(100);
+                
             } catch(InterruptedException e) {
+                
                 LOGGER.error(e, e);
                 Thread.currentThread().interrupt();
             }
@@ -217,6 +239,7 @@ class Colorer extends Thread {
         
         HighlightedDocument doc = this.document.get();
         if(doc == null) {
+            
             return;
         }
         
@@ -228,11 +251,15 @@ class Colorer extends Thread {
         Object docLock = doc.getDocumentLock();
 
         if (globalStyle != null) {
+            
             int start = Math.min(position, position + adjustment);
             int stop = Math.max(position, position + adjustment);
+            
             synchronized (docLock) {
+                
                 doc.setCharacterAttributes(start, stop - start, globalStyle, true);
             }
+            
             return;
         }
         
@@ -251,7 +278,9 @@ class Colorer extends Thread {
             workingSet = this.iniPositions.headSet(startRequest);
             // the last of the stuff before
             dpStart = workingSet.last();
+            
         } catch (NoSuchElementException e) {
+            
             // if there were no good positions before the requested
             // start,
             // we can always start at the very beginning.
@@ -265,10 +294,12 @@ class Colorer extends Thread {
         // if stuff was removed, take any removed positions off the
         // list.
         if (adjustment < 0) {
-            workingSet = this.iniPositions.subSet(startRequest,
-                    endRequest);
+            
+            workingSet = this.iniPositions.subSet(startRequest, endRequest);
             workingIt = workingSet.iterator();
+            
             while (workingIt.hasNext()) {
+                
                 workingIt.next();
                 workingIt.remove();
             }
@@ -279,6 +310,7 @@ class Colorer extends Thread {
         workingSet = this.iniPositions.tailSet(startRequest);
         workingIt = workingSet.iterator();
         while (workingIt.hasNext()) {
+            
             workingIt.next().adjustPosition(adjustment);
         }
 
@@ -286,14 +318,19 @@ class Colorer extends Thread {
         workingSet = this.iniPositions.tailSet(dpStart);
         workingIt = workingSet.iterator();
         dp = null;
+        
         if (workingIt.hasNext()) {
+            
             dp = workingIt.next();
         }
+        
         try {
             Token t;
             boolean done = false;
             dpEnd = dpStart;
+            
             synchronized (docLock) {
+                
                 // we are playing some games with the lexer for
                 // efficiency.
                 // we could just create a new lexer each time here,
@@ -322,21 +359,28 @@ class Colorer extends Thread {
                 // need to stop there.
                 t = syntaxLexer.getNextToken();
             }
+            
             this.newPositions.add(dpStart);
+            
             while (!done && t != null) {
                 // this is the actual command that colors the stuff.
                 // Color stuff with the description of the styles
                 // stored in tokenStyles.
                 if (t.getCharEnd() <= doc.getLength()) {
-                    doc.setCharacterAttributes(t.getCharBegin() + this.change,
-                            t.getCharEnd()    - t.getCharBegin(),
-                            TokenStyles.getStyle(t.getDescription()),
-                            true);
+                    
+                    doc.setCharacterAttributes(
+                        t.getCharBegin() + this.change,
+                        t.getCharEnd() - t.getCharBegin(),
+                        TokenStyles.getStyle(t.getDescription()),
+                        true
+                    );
                     // record the position of the last bit of
                     // text that we colored
                     dpEnd = new DocPosition(t.getCharEnd());
                 }
+                
                 this.lastPosition = t.getCharEnd() + this.change;
+                
                 // The other more complicated reason for doing no
                 // more highlighting
                 // is that all the colors are the same from here on
@@ -351,22 +395,26 @@ class Colorer extends Thread {
                 // text, everything
                 // from there on is fine already.
                 if (t.getState() == Token.INITIAL_STATE) {
+                    
                     // look at all the positions from last time that
                     // are less than or
                     // equal to the current position
-                    while (dp != null
-                            && dp.getPosition() <= t.getCharEnd()) {
-                        if (dp.getPosition() == t.getCharEnd()
-                                && dp.getPosition() >= endRequest
-                                        .getPosition()) {
+                    while (dp != null && dp.getPosition() <= t.getCharEnd()) {
+                        
+                        if (dp.getPosition() == t.getCharEnd() && dp.getPosition() >= endRequest.getPosition()) {
+                            
                             // we have found a state that is the
                             // same
                             done = true;
                             dp = null;
+                            
                         } else if (workingIt.hasNext()) {
+                            
                             // didn't find it, try again.
                             dp = workingIt.next();
+                            
                         } else {
+                            
                             // didn't find it, and there is no more
                             // info from last
                             // time. This means that we will just
@@ -375,12 +423,15 @@ class Colorer extends Thread {
                             dp = null;
                         }
                     }
+                    
                     // so that we can do this check next time,
                     // record all the
                     // initial states from this time.
                     this.newPositions.add(dpEnd);
                 }
+                
                 synchronized (docLock) {
+                    
                     t = syntaxLexer.getNextToken();
                 }
             }
@@ -390,9 +441,9 @@ class Colorer extends Thread {
             // we started doing the highlighting right up through
             // the last
             // bit of text we touched.
-            workingIt = this.iniPositions.subSet(dpStart, dpEnd)
-                    .iterator();
+            workingIt = this.iniPositions.subSet(dpStart, dpEnd).iterator();
             while (workingIt.hasNext()) {
+                
                 workingIt.next();
                 workingIt.remove();
             }
@@ -401,6 +452,7 @@ class Colorer extends Thread {
             // the file.:
             workingIt = this.iniPositions.tailSet(new DocPosition(doc.getLength())).iterator();
             while (workingIt.hasNext()) {
+                
                 workingIt.next();
                 workingIt.remove();
             }
@@ -409,6 +461,7 @@ class Colorer extends Thread {
             // on the list.
             this.iniPositions.addAll(this.newPositions);
             this.newPositions.clear();
+            
         } catch (IOException e) {
             
             // Ignore
@@ -417,6 +470,7 @@ class Colorer extends Thread {
         }
         
         synchronized (docLock) {
+            
             this.lastPosition = -1;
             this.change = 0;
         }

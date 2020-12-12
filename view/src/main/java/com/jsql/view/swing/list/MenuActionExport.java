@@ -20,7 +20,6 @@ import java.io.PrintStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
@@ -46,6 +45,7 @@ public class MenuActionExport implements ActionListener {
      * @param myList List to export.
      */
     public MenuActionExport(DnDList myList) {
+        
         this.myList = myList;
     }
 
@@ -60,29 +60,42 @@ public class MenuActionExport implements ActionListener {
                 
                 File file = this.getSelectedFile();
                 
-                if (file.exists() && this.getDialogType() == JFileChooser.SAVE_DIALOG) {
+                if (
+                    file.exists()
+                    && this.getDialogType() == JFileChooser.SAVE_DIALOG
+                ) {
                     
                     int replace = JOptionPane.showConfirmDialog(
                         this,
-                        file.getName() + StringUtils.SPACE + I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_LABEL"),
+                        String.format(
+                            "%s %s",
+                            file.getName(),
+                            I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_LABEL")
+                        ),
                         I18nUtil.valueByKey("LIST_EXPORT_CONFIRM_TITLE"),
                         JOptionPane.YES_NO_OPTION
                     );
                     
                     switch (replace) {
+                    
                         case JOptionPane.YES_OPTION:
                             super.approveSelection();
                             return;
+                            
                         case JOptionPane.NO_OPTION:
                         case JOptionPane.CLOSED_OPTION:
                             return;
+                            
                         case JOptionPane.CANCEL_OPTION:
                             this.cancelSelection();
                             return;
+                            
                         default:
                             break;
                     }
+                    
                 } else {
+                    
                     super.approveSelection();
                 }
             }
@@ -92,6 +105,7 @@ public class MenuActionExport implements ActionListener {
         int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());
         
         if (choice != JFileChooser.APPROVE_OPTION) {
+            
             return;
         }
 
@@ -102,9 +116,12 @@ public class MenuActionExport implements ActionListener {
             int len = this.myList.getModel().getSize();
             
             for (int i = 0 ; i < len ; i++) {
+                
                 out.println(this.myList.getModel().getElementAt(i).toString());
             }
+            
         } catch (IOException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
     }

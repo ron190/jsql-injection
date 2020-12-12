@@ -31,6 +31,7 @@ public class BorderlessTabButtonUI extends MetalTabbedPaneUI {
     protected JButton createScrollButton(int direction) {
         
         if (direction != SOUTH && direction != NORTH && direction != EAST && direction != WEST) {
+            
             throw new IllegalArgumentException("Direction must be one of: SOUTH, NORTH, EAST or WEST");
         }
 

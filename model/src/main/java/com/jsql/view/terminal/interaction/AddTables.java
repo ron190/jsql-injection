@@ -49,6 +49,7 @@ public class AddTables implements InteractionCommand {
         
         // Loop into the list of tables
         for (Table table: this.tables) {
+            
             LOGGER.debug(table);
         }
     }

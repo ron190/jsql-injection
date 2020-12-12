@@ -67,5 +67,4 @@ public class GetCountryResponse {
     public void setCountry(Country value) {
         this.country = value;
     }
-
 }

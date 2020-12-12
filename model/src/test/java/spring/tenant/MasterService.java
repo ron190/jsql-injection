@@ -57,6 +57,7 @@ public class MasterService {
     }
     
     public HashMap<String, ConnectionProvider> getDataSourceHashMap() {
+        
         return this.hashMap;
     }
 }

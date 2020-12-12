@@ -86,8 +86,11 @@ public class HighlightedDocument extends DefaultStyledDocument {
         this.documentReader = new DocumentReader(this);
         
         if (l == SQL_STYLE) {
+            
             this.syntaxLexer = new SQLLexer(this.documentReader);
+            
         } else {
+            
             this.syntaxLexer = new JavaScriptLexer(this.documentReader);
         }
     }
@@ -96,6 +99,7 @@ public class HighlightedDocument extends DefaultStyledDocument {
      * Color or recolor the entire document
      */
     public void colorAll() {
+        
         this.color(0, this.getLength());
     }
 
@@ -109,10 +113,12 @@ public class HighlightedDocument extends DefaultStyledDocument {
      *            amount of text inserted or removed at the starting point.
      */
     public void color(int position, int adjustment) {
+        
         this.colorer.color(position, adjustment);
     }
     
     public void setGlobalStyle(AttributeSet value) {
+        
         this.globalStyle = value;
         this.colorAll();
     }
@@ -122,30 +128,44 @@ public class HighlightedDocument extends DefaultStyledDocument {
         Object value = valueSource;
         
         if (value == HighlightedDocument.GRAYED_OUT_STYLE) {
+            
             this.setGlobalStyle(TokenStyles.getStyle("grayedOut"));
             return;
         }
 
         if (!(value instanceof Class)) {
+            
             value = HighlightedDocument.SQL_STYLE;
         }
+        
         Class<?> source = (Class<?>) value;
         Class<?>[] parms = { Reader.class };
         Object[] args = { this.documentReader };
+        
         try {
             Constructor<?> cons = source.getConstructor(parms);
             this.syntaxLexer = (Lexer) cons.newInstance(args);
             this.globalStyle = null;
             this.colorAll();
+            
         } catch (SecurityException e) {
+            
             LOGGER.error("HighlightEditor.SecurityException", e);
+            
         } catch (NoSuchMethodException e) {
+            
             LOGGER.error("HighlightEditor.NoSuchMethod", e);
+            
         } catch (InstantiationException e) {
+            
             LOGGER.error("HighlightEditor.InstantiationException", e);
+            
         } catch (InvocationTargetException e) {
+            
             LOGGER.error("HighlightEditor.InvocationTargetException", e);
+            
         } catch (IllegalAccessException e) {
+            
             LOGGER.error("HighlightEditor.IllegalAccessException", e);
         }
     }
@@ -155,7 +175,9 @@ public class HighlightedDocument extends DefaultStyledDocument {
     //
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+        
         synchronized (this.docLock) {
+            
             super.insertString(offs, str, a);
             this.color(offs, str.length());
             this.documentReader.update(offs, str.length());
@@ -164,7 +186,9 @@ public class HighlightedDocument extends DefaultStyledDocument {
 
     @Override
     public void remove(int offs, int len) throws BadLocationException {
+        
         synchronized (this.docLock) {
+            
             super.remove(offs, len);
             this.color(offs, -len);
             this.documentReader.update(offs, -len);

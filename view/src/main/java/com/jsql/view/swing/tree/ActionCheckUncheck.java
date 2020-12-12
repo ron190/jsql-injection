@@ -19,6 +19,7 @@ public class ActionCheckUncheck implements ActionListener {
     private DefaultMutableTreeNode currentTableNode;
 
     public ActionCheckUncheck(AbstractNodeModel nodeModel, DefaultMutableTreeNode currentTableNode) {
+        
         this.nodeModel = nodeModel;
         this.currentTableNode = currentTableNode;
     }
@@ -37,10 +38,15 @@ public class ActionCheckUncheck implements ActionListener {
         boolean isOneChildSelected = false;
         
         for (int i = 0 ; i < tableChildCount ; i++) {
+            
             DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
+            
             if (currentChild.getUserObject() instanceof AbstractNodeModel) {
+                
                 AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
+                
                 if (columnTreeNodeModel.isSelected()) {
+                    
                     isOneChildSelected = true;
                     break;
                 }

@@ -33,27 +33,29 @@ public class ActionHideShowConsole implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         
+        SplitHorizontalTopBottom splitHorizontalTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();
+        
         if (
-            MediatorHelper.frame().getSplitHorizontalTopBottom().getTopComponent().isVisible()
-            && MediatorHelper.frame().getSplitHorizontalTopBottom().getBottomComponent().isVisible()
+            splitHorizontalTopBottom.getTopComponent().isVisible()
+            && splitHorizontalTopBottom.getBottomComponent().isVisible()
         ) {
             
-            MediatorHelper.panelConsoles().setDividerLocation(MediatorHelper.frame().getSplitHorizontalTopBottom().getDividerLocation());
-            MediatorHelper.frame().getSplitHorizontalTopBottom().getBottomComponent().setVisible(false);
+            MediatorHelper.panelConsoles().setDividerLocation(splitHorizontalTopBottom.getDividerLocation());
+            splitHorizontalTopBottom.getBottomComponent().setVisible(false);
             this.panel.setVisible(true);
-            MediatorHelper.frame().getSplitHorizontalTopBottom().disableDragSize();
+            splitHorizontalTopBottom.disableDragSize();
             
         } else if (
             this.panel.isVisible()
-            || !MediatorHelper.frame().getSplitHorizontalTopBottom().getTopComponent().isVisible()
-            && MediatorHelper.frame().getSplitHorizontalTopBottom().getBottomComponent().isVisible()
+            || !splitHorizontalTopBottom.getTopComponent().isVisible()
+            && splitHorizontalTopBottom.getBottomComponent().isVisible()
         ) {
             
-            MediatorHelper.frame().getSplitHorizontalTopBottom().getBottomComponent().setVisible(true);
-            MediatorHelper.frame().getSplitHorizontalTopBottom().getTopComponent().setVisible(true);
+            splitHorizontalTopBottom.getBottomComponent().setVisible(true);
+            splitHorizontalTopBottom.getTopComponent().setVisible(true);
             this.panel.setVisible(false);
-            MediatorHelper.frame().getSplitHorizontalTopBottom().setDividerLocation(MediatorHelper.panelConsoles().getDividerLocation());
-            MediatorHelper.frame().getSplitHorizontalTopBottom().enableDragSize();
+            splitHorizontalTopBottom.setDividerLocation(MediatorHelper.panelConsoles().getDividerLocation());
+            splitHorizontalTopBottom.enableDragSize();
             MediatorHelper.panelConsoles().getButtonShowNorth().setVisible(true);
         }
     }

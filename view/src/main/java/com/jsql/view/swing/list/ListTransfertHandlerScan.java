@@ -60,7 +60,6 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
         StringBuilder stringTransferable = new StringBuilder();
         
         try {
-            
             for (ItemList itemPath: this.dragPaths) {
                 
                 ItemListScan itemScanPath = (ItemListScan) itemPath;
@@ -99,11 +98,11 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
                     listModel.add(indexDropLocation++, itemDrop);
                 }
             }
+            
         } else {
             
             // DnD from outside
             try {
-                
                 String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
                 
                 for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(importString)) {
@@ -120,6 +119,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
 
         int[] selectedIndices = new int[listSelectedIndices.size()];
         int i = 0;
+        
         for (Integer integer: listSelectedIndices) {
             
             selectedIndices[i] = integer;
@@ -134,7 +134,6 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
         List<ItemListScan> itemsParsed = new ArrayList<>();
         
         try {
-            
             parseJsonArray(clipboardText, itemsParsed);
             
         } catch (JSONException eJsonArray) {
@@ -170,7 +169,6 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
     private static void parseJsonObject(String clipboardText, List<ItemListScan> itemsParsed) {
         
         try {
-            
             JSONObject itemsJsonObject = new JSONObject(clipboardText);
             
             BeanInjection beanInjection = new BeanInjection(

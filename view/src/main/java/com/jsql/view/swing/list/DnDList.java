@@ -236,13 +236,18 @@ public class DnDList extends JList<ItemList> {
     public void dropPasteFile(final List<File> filesToImport, int position) {
         
         if (filesToImport.isEmpty()) {
+            
             return;
         }
         
         for (File fileToImport : filesToImport) {
             
             // Report NoSuchMethodError #1617
-            if (!FilenameUtils.getExtension(fileToImport.getPath()).matches("txt|csv|ini")) {
+            if (
+                !FilenameUtils
+                .getExtension(fileToImport.getPath())
+                .matches("txt|csv|ini")
+            ) {
                 
                 // Fix #42832: ClassCastException on showMessageDialog()
                 try {
@@ -343,7 +348,8 @@ public class DnDList extends JList<ItemList> {
                 if (
                     StringUtils.isNotEmpty(line)
                     // Fix Report #60
-                    && 0 <= endPosition && endPosition <= this.listModel.size()
+                    && 0 <= endPosition
+                    && endPosition <= this.listModel.size()
                 ) {
                     
                     this.addItem(endPosition++, line);

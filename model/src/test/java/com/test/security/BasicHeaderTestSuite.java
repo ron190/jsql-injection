@@ -33,7 +33,7 @@ public class BasicHeaderTestSuite extends ConcreteMySqlErrorTestSuite {
         .getParameterUtil()
         .setListHeader(Arrays.asList(
             new SimpleEntry<>(
-                "Authorization", 
+                "Authorization",
                 String.format(
                     "Basic %s",
                     StringUtil.base64Encode(

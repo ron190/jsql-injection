@@ -110,6 +110,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
         return this.responseCodeHttp.matches(".+[23]\\d\\d.+");
     }
     
+    
     // Getters and setters
     
     public String getUrl() {

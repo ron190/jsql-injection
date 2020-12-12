@@ -98,7 +98,10 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
     private void hideMenuBar() {
         
         // Avoid flickering and AltGr pollution
-        if (!MediatorHelper.panelAddressBar().isAdvanceActivated() && MediatorHelper.menubar().isVisible()) {
+        if (
+            !MediatorHelper.panelAddressBar().isAdvanceActivated()
+            && MediatorHelper.menubar().isVisible()
+        ) {
             
             MenuSelectionManager.defaultManager().clearSelectedPath();
             MediatorHelper.menubar().setVisible(false);

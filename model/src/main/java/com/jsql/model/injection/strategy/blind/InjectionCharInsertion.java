@@ -65,9 +65,13 @@ public class InjectionCharInsertion {
         
         // Call the SQL request which must be FALSE (usually ?id=-123456879)
         this.blankFalseMark = this.callUrl(
-            falseCharInsertion
-            +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().endingComment()
-            +"+fals+",
+            String
+            .join(
+                "+",
+                falseCharInsertion,
+                this.injectionModel.getMediatorVendor().getVendor().instance().endingComment(),
+                "fals+"
+            ),
             "fprint#ref"
         );
 
@@ -81,10 +85,13 @@ public class InjectionCharInsertion {
             
             listCallableTagTrue.add(
                 new CallableCharInsertion(
-                    prefixSuffix.replace("prefix", "" + RandomStringUtils.random(10, "345"))
-                    +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr()
-                    +"+"+ urlTest
-                    ,
+                    String
+                    .join(
+                        "+",
+                        prefixSuffix.replace("prefix", "" + RandomStringUtils.random(10, "345")),
+                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
+                        urlTest
+                    ),
                     this,
                     "fprint#true"
                 )
@@ -139,10 +146,13 @@ public class InjectionCharInsertion {
             
             listCallableTagFalse.add(
                 new CallableCharInsertion(
-                    this.prefixSuffix.replace("prefix", "" + RandomStringUtils.random(10, "345"))
-                    +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr()
-                    +"+"+ urlTest
-                    ,
+                    String
+                    .join(
+                        "+",
+                        this.prefixSuffix.replace("prefix", "" + RandomStringUtils.random(10, "345")),
+                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
+                        urlTest
+                    ),
                     this,
                     "fprint#false"
                 )
@@ -185,14 +195,18 @@ public class InjectionCharInsertion {
     public boolean isInjectable() throws StoppedByUserSlidingException {
         
         if (this.injectionModel.isStoppedByUser()) {
+            
             throw new StoppedByUserSlidingException();
         }
         
         CallableCharInsertion blindTest = new CallableCharInsertion(
-            this.prefixSuffix.replace("prefix", "" + RandomStringUtils.random(10, "678"))
-            +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr()
-            +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization()
-            ,
+            String
+            .join(
+                "+",
+                this.prefixSuffix.replace("prefix", "" + RandomStringUtils.random(10, "678")),
+                this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization()
+            ),
             this,
             "fprint#confirm"
         );

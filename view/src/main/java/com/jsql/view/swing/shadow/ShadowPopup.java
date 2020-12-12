@@ -234,6 +234,7 @@ public final class ShadowPopup extends Popup {
         this.owner = null;
         this.contents = null;
         this.popup = null;
+        
         recycle(this);
     }
 
@@ -277,6 +278,7 @@ public final class ShadowPopup extends Popup {
         // has a preferred size less than or equal to 0.
         // We can't use the size, because it is(0, 0) for new popups.
         Dimension contentsPrefSize = new Dimension();
+        
         // Fix #4172: NullPointerException on getPreferredSize()
         // Implementation by javax.swing.plaf.metal.MetalToolTipUI.getPreferredSize()
         try {
@@ -299,6 +301,7 @@ public final class ShadowPopup extends Popup {
                 // Workaround for the gray rect problem.
                 p.setBackground(contents.getBackground());
                 this.heavyWeightContainer = p;
+                
                 break;
             }
         }
@@ -429,6 +432,7 @@ public final class ShadowPopup extends Popup {
             Graphics g = shadowBg.createGraphics();
             g.translate(-RECT.x, -RECT.y);
             g.setClip(RECT);
+            
             if (layeredPane instanceof JComponent) {
                 
                 JComponent c = (JComponent) layeredPane;
@@ -441,6 +445,7 @@ public final class ShadowPopup extends Popup {
                 
                 layeredPane.paintAll(g);
             }
+            
             g.dispose();
         }
     }
@@ -464,11 +469,13 @@ public final class ShadowPopup extends Popup {
         
         // The code below is copied from PopupFactory#LightWeightPopup#show()
         Container parent = null;
+        
         if (this.owner != null) {
             
-            parent = this.owner instanceof Container
-                    ? (Container) this.owner
-                    : this.owner.getParent();
+            parent =
+                this.owner instanceof Container
+                ? (Container) this.owner
+                : this.owner.getParent();
         }
         
         // Try to find a JLayeredPane and Window to add
@@ -480,6 +487,7 @@ public final class ShadowPopup extends Popup {
                     
                     continue;
                 }
+                
                 parent = ((JRootPane) p).getLayeredPane();
                 // Continue, so that if there is a higher JRootPane, we'll
                 // pick it up.
@@ -489,6 +497,7 @@ public final class ShadowPopup extends Popup {
                 if (parent == null) {
                     parent = p;
                 }
+                
                 break;
             }
         }

@@ -76,7 +76,9 @@ public class ManagerUpload extends AbstractManagerList {
                 
                 pathsList.add(new ItemList(line));
             }
+            
         } catch (IOException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
 
@@ -150,6 +152,7 @@ public class ManagerUpload extends AbstractManagerList {
         if (ManagerUpload.this.getListPaths().getSelectedValuesList().isEmpty()) {
             
             LOGGER.warn("Select directory(ies) to upload a file into");
+            
             return;
         }
 
@@ -162,6 +165,7 @@ public class ManagerUpload extends AbstractManagerList {
             int returnVal = filechooser.showOpenDialog(MediatorHelper.frame());
             
             if (returnVal != JFileChooser.APPROVE_OPTION) {
+                
                 return;
             }
                 
@@ -177,24 +181,26 @@ public class ManagerUpload extends AbstractManagerList {
         
         for (final Object path: ManagerUpload.this.getListPaths().getSelectedValuesList()) {
             
-            new Thread(() -> {
+            new Thread(
+                () -> {
                 
-                File file = filechooser.getSelectedFile();
-                
-                try {
-                    ManagerUpload.this.loader.setVisible(true);
-                    MediatorHelper.model().getResourceAccess().uploadFile(path.toString(), shellURL.getText(), file);
+                    File file = filechooser.getSelectedFile();
                     
-                } catch (JSqlException e) {
-                    
-                    LOGGER.warn("Payload creation error: "+ e.getMessage(), e);
-                    
-                } catch (IOException e) {
-                    
-                    LOGGER.warn("Posting file failed: "+ e.getMessage(), e);
-                }
-                
-            }, "ThreadUpload").start();
+                    try {
+                        ManagerUpload.this.loader.setVisible(true);
+                        MediatorHelper.model().getResourceAccess().uploadFile(path.toString(), shellURL.getText(), file);
+                        
+                    } catch (JSqlException e) {
+                        
+                        LOGGER.warn("Payload creation error: "+ e.getMessage(), e);
+                        
+                    } catch (IOException e) {
+                        
+                        LOGGER.warn("Posting file failed: "+ e.getMessage(), e);
+                    }
+                },
+                "ThreadUpload"
+            ).start();
         }
     }
 }

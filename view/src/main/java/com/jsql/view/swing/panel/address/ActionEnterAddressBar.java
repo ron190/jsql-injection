@@ -16,6 +16,7 @@ public class ActionEnterAddressBar extends ActionStart {
         
         // No injection running
         if (this.panelAddressBar.getAddressMenuBar().getButtonInUrl().getState() == StateButton.STARTABLE) {
+            
             this.startInjection();
         }
     }

@@ -73,6 +73,7 @@ public abstract class AbstractModelObservable extends Observable {
         });
     }
 
+    
     // Getters and setters
     
     public boolean isStoppedByUser() {

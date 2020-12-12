@@ -45,6 +45,7 @@ public class MenuBarCoder extends JMenuBar {
                 
                 this.setListener(menuContainingItems.getItem(i), listener);
             }
+            
         } else if (item != null) { // null means separator
             item.addActionListener(listener);
         }

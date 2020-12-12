@@ -55,9 +55,12 @@ public class NodeModelEmpty extends AbstractNodeModel {
         labelEmpty.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         
         if (isSelected) {
+            
             panelEmpty.setBackground(UiUtil.COLOR_FOCUS_GAINED);
             labelEmpty.setBorder(UiUtil.BORDER_FOCUS_GAINED);
+            
         } else {
+            
             panelEmpty.setBackground(Color.WHITE);
             labelEmpty.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }

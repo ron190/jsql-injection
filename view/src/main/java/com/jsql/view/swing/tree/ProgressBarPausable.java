@@ -43,7 +43,9 @@ public class ProgressBarPausable extends JProgressBar {
         // Fix #42285: InternalError on paint()
         try {
             super.paint(g);
+            
         } catch (InternalError e) {
+            
             LOGGER.error(e, e);
         }
 
@@ -57,7 +59,9 @@ public class ProgressBarPausable extends JProgressBar {
                     (this.getHeight() - im2.getHeight()) / 2,
                     null
                 );
+                
             } catch (IOException e) {
+                
                 LOGGER.error(e.getMessage(), e);
             }
         }
@@ -67,6 +71,7 @@ public class ProgressBarPausable extends JProgressBar {
      * Activate pause state, hence display pause icon.
      */
     public void pause() {
+        
         this.isIconDisplayed = true;
     }
 }

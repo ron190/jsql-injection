@@ -216,33 +216,37 @@ public class ManagerScan extends AbstractManagerList {
             if (dndListScan.getSelectedValuesList().isEmpty()) {
                 
                 LOGGER.warn("Select URL(s) to scan");
+                
                 return;
             }
             
-            new Thread(() -> {
+            new Thread(
+                () -> {
                 
-                if (ManagerScan.this.run.getState() == StateButton.STARTABLE) {
-                    
-                    ManagerScan.this.run.setText(I18nViewUtil.valueByKey("SCAN_RUN_BUTTON_STOP"));
-                    ManagerScan.this.run.setState(StateButton.STOPPABLE);
-                    ManagerScan.this.loader.setVisible(true);
-                    
-                    DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) dndListScan.getModel();
-                    for (int i = 0 ; i < listModel.getSize() ; i++) {
+                    if (ManagerScan.this.run.getState() == StateButton.STARTABLE) {
                         
-                        listModel.get(i).reset();
+                        ManagerScan.this.run.setText(I18nViewUtil.valueByKey("SCAN_RUN_BUTTON_STOP"));
+                        ManagerScan.this.run.setState(StateButton.STOPPABLE);
+                        ManagerScan.this.loader.setVisible(true);
+                        
+                        DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) dndListScan.getModel();
+                        for (int i = 0 ; i < listModel.getSize() ; i++) {
+                            
+                            listModel.get(i).reset();
+                        }
+                        
+                        this.scan(dndListScan.getSelectedValuesList());
+                        
+                    } else {
+                        
+                        MediatorHelper.model().getResourceAccess().setScanStopped(true);
+                        MediatorHelper.model().setIsStoppedByUser(true);
+                        ManagerScan.this.run.setEnabled(false);
+                        ManagerScan.this.run.setState(StateButton.STOPPING);
                     }
-                    
-                    this.scan(dndListScan.getSelectedValuesList());
-                    
-                } else {
-                    
-                    MediatorHelper.model().getResourceAccess().setScanStopped(true);
-                    MediatorHelper.model().setIsStoppedByUser(true);
-                    ManagerScan.this.run.setEnabled(false);
-                    ManagerScan.this.run.setState(StateButton.STOPPING);
-                }
-            }, "ThreadScan").start();
+                },
+                "ThreadScan"
+            ).start();
         });
     }
     

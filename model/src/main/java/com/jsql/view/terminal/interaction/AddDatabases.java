@@ -49,6 +49,7 @@ public class AddDatabases implements InteractionCommand {
         
         // Loop into the list of databases
         for (Database database: this.databases) {
+            
             LOGGER.debug(database);
         }
     }

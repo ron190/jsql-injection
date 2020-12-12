@@ -47,6 +47,7 @@ public class Table extends AbstractElementDatabase {
     // Return the parent database.
     @Override
     public AbstractElementDatabase getParent() {
+        
         return this.parentDatabase;
     }
     
@@ -65,16 +66,10 @@ public class Table extends AbstractElementDatabase {
     @Override
     public String getLabelCount() {
         
-        String nbRow;
-        
-        if ("information_schema".equals(this.parentDatabase.toString())) {
-            
-            nbRow = "?";
-            
-        } else {
-            
-            nbRow = this.rowCount;
-        }
+        String nbRow =
+            "information_schema".equals(this.parentDatabase.toString())
+            ? "?"
+            : this.rowCount;
         
         // Report #138: detect incorrect number of rows
         String sPlural = StringUtils.EMPTY;
@@ -92,6 +87,13 @@ public class Table extends AbstractElementDatabase {
             LOGGER.warn("Incorrect number of rows.");
         }
         
-        return this.elementValue +" ("+ nbRow +" row"+ sPlural +")";
+        return
+            String
+            .format(
+                 "%s (%s row%s)",
+                 this.elementValue,
+                 nbRow,
+                 sPlural
+            );
     }
 }

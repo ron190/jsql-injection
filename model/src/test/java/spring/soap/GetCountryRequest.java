@@ -67,5 +67,4 @@ public class GetCountryRequest {
     public void setName(String value) {
         this.name = value;
     }
-
 }

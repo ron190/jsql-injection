@@ -36,13 +36,17 @@ public class ComparatorColumn<T> implements Comparator<T> {
 
         try {
             Long.parseLong(valueCellLeft);
+            
         } catch (NumberFormatException e) {
+            
             isFirstNumber = false;
         }
         
         try {
             Long.parseLong(valueCellRight);
+            
         } catch (NumberFormatException e) {
+            
             isSecondNumber = false;
         }
         
@@ -51,14 +55,17 @@ public class ComparatorColumn<T> implements Comparator<T> {
             
             // or Sort by Number
             sortOrder = Long.valueOf(valueCellLeft).compareTo(Long.valueOf(valueCellRight));
+            
         } else if (isFirstNumber) {
             
             // or Sort by Number first
             sortOrder = -1;
+            
         } else if (isSecondNumber) {
             
             // or Sort by Letter first
             sortOrder = 1;
+            
         } else {
             
             // Sort by Letter

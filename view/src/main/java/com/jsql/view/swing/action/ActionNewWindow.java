@@ -77,7 +77,9 @@ public class ActionNewWindow extends AbstractAction {
         
         try {
             processBuilder.start();
+            
         } catch (IOException e) {
+            
             LOGGER.error(I18nUtil.valueByKey("NEW_WINDOW_ERROR"), e);
         }
     }

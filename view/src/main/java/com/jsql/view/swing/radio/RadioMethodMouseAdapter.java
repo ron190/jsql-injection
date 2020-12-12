@@ -31,10 +31,15 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
         AbstractRadioLink radio = (AbstractRadioLink) e.getComponent();
         
         if (radio.isActivable() && SwingUtilities.isLeftMouseButton(e)) {
+            
             for (JLabel label: radio.getGroup()) {
+                
                 if ((JLabel) e.getComponent() != label) {
+                    
                     label.setFont(UiUtil.FONT_SEGOE);
+                    
                 } else {
+                    
                     radio.action();
                 }
             }
@@ -56,6 +61,7 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
         this.original = e.getComponent().getFont();
 
         if (radio.isActivable()) {
+            
             Font font = radio.getFont();
             Map<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
             attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);

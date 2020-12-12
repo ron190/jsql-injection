@@ -111,6 +111,7 @@ public class ManagerDatabase extends JPanel implements Manager {
                     if (treeNode != null) {
                         
                         AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
+                        
                         if (nodeModel != null && nodeModel.getPanel() != null && !nodeModel.isRunning()) {
                             
                             nodeModel.getPanel().getLabel().setBackground(UiUtil.COLOR_FOCUS_LOST);
@@ -229,6 +230,7 @@ public class ManagerDatabase extends JPanel implements Manager {
         }
     }
 
+    
     // Getter and setter
 
     public JTree getTree() {

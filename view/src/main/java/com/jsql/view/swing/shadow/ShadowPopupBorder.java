@@ -97,12 +97,18 @@ public final class ShadowPopupBorder extends AbstractBorder {
         try {
             // fake drop shadow effect in case of heavy weight popups
             JComponent popup = (JComponent) c;
+            
             Image hShadowBg = (Image) popup.getClientProperty(ShadowPopupFactory.PROP_HORIZONTAL_BACKGROUND);
+            
             if (hShadowBg != null) {
+                
                 g.drawImage(hShadowBg, x, y + height - 5, c);
             }
+            
             Image vShadowBg = (Image) popup.getClientProperty(ShadowPopupFactory.PROP_VERTICAL_BACKGROUND);
+            
             if (vShadowBg != null) {
+                
                 g.drawImage(vShadowBg, x + width - 5, y, c);
             }
     
@@ -112,7 +118,9 @@ public final class ShadowPopupBorder extends AbstractBorder {
             g.drawImage(shadow, x + width - 5, y + 5, x + width, y + 10, 6, 0, 11, 5, null, c);
             g.drawImage(shadow, x + width - 5, y + 10, x + width, y + height - 5, 6, 5, 11, 6, null, c);
             g.drawImage(shadow, x + width - 5, y + height - 5, x + width, y + height, 6, 6, 11, 11, null, c);
+            
         } catch (ClassCastException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
     }
@@ -123,6 +131,7 @@ public final class ShadowPopupBorder extends AbstractBorder {
      */
     @Override
     public Insets getBorderInsets(Component c) {
+        
         return new Insets(0, 0, SHADOW_SIZE, SHADOW_SIZE);
     }
 

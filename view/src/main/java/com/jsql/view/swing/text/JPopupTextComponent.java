@@ -75,6 +75,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
                 // Unhandled ArrayIndexOutOfBoundsException #92146 on undo()
                 try {
                     if (undo.canUndo()) {
+                        
                         undo.undo();
                     }
                     
@@ -101,6 +102,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
                 
                 try {
                     if (undo.canRedo()) {
+                        
                         undo.redo();
                     }
                     

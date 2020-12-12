@@ -110,11 +110,14 @@ public final class ShadowPopupFactory extends PopupFactory {
     public static void install() {
         
         if (SystemUtils.IS_OS_MAC) {
+            
             return;
         }
 
         PopupFactory factory = PopupFactory.getSharedInstance();
+        
         if (factory instanceof ShadowPopupFactory) {
+            
             return;
         }
 
@@ -130,7 +133,9 @@ public final class ShadowPopupFactory extends PopupFactory {
     public static void uninstall() {
         
         PopupFactory factory = PopupFactory.getSharedInstance();
+        
         if (!(factory instanceof ShadowPopupFactory)) {
+            
             return;
         }
 
@@ -172,6 +177,7 @@ public final class ShadowPopupFactory extends PopupFactory {
     public Popup getPopup(Component owner, Component contents, int x, int y) {
         
         Popup popup = super.getPopup(owner, contents, x, y);
+        
         return ShadowPopup.getInstance(owner, contents, x, y, popup);
     }
 }

@@ -11,16 +11,23 @@ public class TooltipCellRenderer extends DefaultTableCellRenderer {
     
     @Override
     public Component getTableCellRendererComponent(
-        JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
+        JTable table,
+        Object value,
+        boolean isSelected,
+        boolean hasFocus,
+        int row,
+        int column
     ) {
         
-        JLabel c = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        c.setToolTipText(
-            "<html><div style=\"font-size:10px;font-family:'Ubuntu Mono'\">"
-            + c.getText().replaceAll("(.{100})(?!$)", "$1<br>")
-            + "</div></html>"
+        JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        
+        label.setToolTipText(
+            String.format(
+                "<html><div style=\"font-size:10px;font-family:'Ubuntu Mono'\">%s</div></html>",
+                label.getText().replaceAll("(.{100})(?!$)", "$1<br>")
+            )
         );
         
-        return c;
+        return label;
     }
 }

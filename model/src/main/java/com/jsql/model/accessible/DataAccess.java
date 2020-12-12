@@ -179,6 +179,7 @@ public class DataAccess {
             }
             
         } catch (Exception e) {
+            
             LOGGER.warn(e.getMessage(), e);
         }
 
@@ -193,17 +194,14 @@ public class DataAccess {
             String username = resultToParse.split(ENCLOSE_VALUE_RGX)[2];
             
             String infos =
-                "Database ["
-                + nameDatabase
-                + "] "
-                + "on "
-                + this.injectionModel.getMediatorVendor().getVendor()
-                + " ["
-                + versionDatabase
-                + "] "
-                + "for user ["
-                + username
-                + "]";
+                String
+                .format(
+                    "Database [%s] on %s [%s] for user [%s]",
+                    nameDatabase,
+                    this.injectionModel.getMediatorVendor().getVendor(),
+                    versionDatabase,
+                    username
+                );
             
             LOGGER.debug(infos);
             
@@ -272,6 +270,7 @@ public class DataAccess {
             .matcher(resultToParse);
 
         if (!regexSearch.find()) {
+            
             throw new InjectionFailureException("No match while injecting databases");
         }
         
@@ -369,6 +368,7 @@ public class DataAccess {
         this.injectionModel.sendToViews(requestEndProgress);
         
         if (!regexSearch.find()) {
+            
             throw new InjectionFailureException("No match while injecting tables");
         }
         
@@ -466,6 +466,7 @@ public class DataAccess {
         this.injectionModel.sendToViews(requestEndProgress);
 
         if (!regexSearch.find()) {
+            
             throw new InjectionFailureException("No match while injecting columns");
         }
 
@@ -516,11 +517,9 @@ public class DataAccess {
             columnsName.add(e.toString());
         }
 
-        /*
-         * From that array, build the SQL fields nicely
-         * => col1{%}col2...
-         * ==> trim(ifnull(`col1`,0x00)),0x7f,trim(ifnull(`Col2`,0x00))...
-         */
+        // From that array, build the SQL fields nicely
+        // => col1{%}col2...
+        // ==> trim(ifnull(`col1`,0x00)),0x7f,trim(ifnull(`Col2`,0x00))...
         String[] arrayColumns = columnsName.toArray(new String[columnsName.size()]);
 
         List<List<String>> listValues = this.getRows(database, table, rowCount, arrayColumns);
@@ -580,6 +579,7 @@ public class DataAccess {
             }
             
         } catch (Exception e) {
+            
             LOGGER.warn(e.getMessage(), e);
         }
 

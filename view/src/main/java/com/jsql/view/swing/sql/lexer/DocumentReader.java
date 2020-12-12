@@ -76,10 +76,15 @@ class DocumentReader extends Reader {
      * the reader to compensate.
      */
     public void update(int position, int adjustment) {
+        
         if (position < this.position) {
+            
             if (this.position < position - adjustment) {
+                
                 this.position = position;
+                
             } else {
+                
                 this.position += adjustment;
             }
         }
@@ -121,18 +126,26 @@ class DocumentReader extends Reader {
      */
     @Override
     public int read() {
+        
         if (this.position < this.document.getLength()) {
+            
             try {
                 char c = this.document.getText((int)this.position, 1).charAt(0);
                 this.position++;
+                
                 return c;
+                
             } catch (BadLocationException e) {
+                
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
+                
                 return -1;
             }
+            
         } else {
+            
             return -1;
         }
     }
@@ -160,28 +173,38 @@ class DocumentReader extends Reader {
      */
     @Override
     public int read(char[] cbuf, int off, int len) {
+        
         if (this.position < this.document.getLength()) {
+            
             int length = len;
+            
             if (this.position + length >= this.document.getLength()) {
                 length = this.document.getLength() - (int)this.position;
             }
+            
             if (off + length >= cbuf.length) {
                 length = cbuf.length - off;
             }
+            
             try {
                 String s = this.document.getText((int)this.position, length);
                 this.position += length;
+                
                 for (int i=0; i<length; i++) {
                     cbuf[off+i] = s.charAt(i);
                 }
+                
                 return length;
+                
             } catch (BadLocationException e) {
+                
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
                 return -1;
             }
         } else {
+            
             return -1;
         }
     }
@@ -199,11 +222,16 @@ class DocumentReader extends Reader {
      */
     @Override
     public void reset() {
+        
         if (this.mark == -1) {
+            
             this.position = 0;
+            
         } else {
+            
             this.position = this.mark;
         }
+        
         this.mark = -1;
     }
 
@@ -217,10 +245,14 @@ class DocumentReader extends Reader {
      */
     @Override
     public long skip(long n) {
+        
         if (this.position + n <= this.document.getLength()) {
+            
             this.position += n;
             return n;
+            
         } else {
+            
             long oldPos = this.position;
             this.position = this.document.getLength();
             return this.document.getLength() - oldPos;
@@ -233,9 +265,13 @@ class DocumentReader extends Reader {
      * @param n the offset to which to seek.
      */
     public void seek(long n) {
+        
         if (n <= this.document.getLength()) {
+            
             this.position = n;
+            
         } else {
+            
             this.position = this.document.getLength();
         }
     }

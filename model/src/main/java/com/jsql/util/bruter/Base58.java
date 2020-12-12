@@ -10,10 +10,12 @@ public class Base58 {
     
     static {
         for (int i = 0; i < INDEXES.length; i++) {
+            
             INDEXES[i] = -1;
         }
         
         for (int i = 0; i < ALPHABET.length; i++) {
+            
             INDEXES[ALPHABET[i]] = i;
         }
     }
@@ -35,6 +37,7 @@ public class Base58 {
         // Count leading zeroes
         int zeroCount = 0;
         while (zeroCount < copyInput.length && copyInput[zeroCount] == 0) {
+            
             ++zeroCount;
         }
 
@@ -47,6 +50,7 @@ public class Base58 {
             
             byte mod = divmod58(copyInput, startAt);
             if (copyInput[startAt] == 0) {
+                
                 ++startAt;
             }
 
@@ -60,6 +64,7 @@ public class Base58 {
 
         // Add as many leading '1' as there were leading zeros.
         while (--zeroCount >= 0) {
+            
             temp[--j] = (byte) ALPHABET[0];
         }
 
@@ -71,6 +76,7 @@ public class Base58 {
     public static byte[] decode(String input) {
         
         if (input.length() == 0) {
+            
             // paying with the same coin
             return new byte[0];
         }
@@ -83,9 +89,12 @@ public class Base58 {
 
             int digit58 = -1;
             if (c >= 0 && c < 128) {
+                
                 digit58 = INDEXES[c];
             }
+            
             if (digit58 < 0) {
+                
                 throw new IllegalArgumentException("Not a Base58 input: " + input);
             }
 
@@ -95,6 +104,7 @@ public class Base58 {
         // Count leading zeroes
         int zeroCount = 0;
         while (zeroCount < input58.length && input58[zeroCount] == 0) {
+            
             ++zeroCount;
         }
 
@@ -107,6 +117,7 @@ public class Base58 {
             
             byte mod = divmod256(input58, startAt);
             if (input58[startAt] == 0) {
+                
                 ++startAt;
             }
 

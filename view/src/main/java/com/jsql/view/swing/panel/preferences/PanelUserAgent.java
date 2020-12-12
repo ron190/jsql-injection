@@ -54,6 +54,7 @@ public class PanelUserAgent extends JPanel {
                 
                 jsonScan.append(line + System.getProperty("line.separator"));
             }
+            
         } catch (IOException e) {
             
             LOGGER.error(e.getMessage(), e);
@@ -76,9 +77,11 @@ public class PanelUserAgent extends JPanel {
         this.checkboxIsCustomUserAgent.setToolTipText(tooltipIsTamperingBase64);
         this.checkboxIsCustomUserAgent.setFocusable(false);
         JButton labelIsCheckingUpdate = new JButton("Customize User Agent (randomize multiple agents)");
+        
         labelIsCheckingUpdate.addActionListener(actionEvent -> {
             
             this.checkboxIsCustomUserAgent.setSelected(!this.checkboxIsCustomUserAgent.isSelected());
+            
             MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setIsCustomUserAgent(
                 this.checkboxIsCustomUserAgent.isSelected()
             );
@@ -93,6 +96,7 @@ public class PanelUserAgent extends JPanel {
         Stream
         .of(labelIsCheckingUpdate)
         .forEach(label -> {
+            
             label.setHorizontalAlignment(SwingConstants.LEFT);
             label.setBorderPainted(false);
             label.setContentAreaFilled(false);

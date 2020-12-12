@@ -77,7 +77,13 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
         )
         .forEach(key ->
         
-            this.propertiesToTranslate.append("\n\n"+ key.getKey() +"="+ key.getValue().replace("{@|@}","\\\n"))
+            this.propertiesToTranslate.append(
+                String.format(
+                    "\n\n%s=%s",
+                    key.getKey(),
+                    key.getValue().replace("{@|@}","\\\n")
+                )
+            )
         );
         
         this.dialogTranslate.setTextBeforeChange(this.propertiesToTranslate.toString().trim());
@@ -91,7 +97,13 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             
             int percentTranslated = 100 * this.propertiesLanguageToTranslate.size() / this.propertiesRoot.size();
             this.dialogTranslate.getProgressBarTranslation().setValue(percentTranslated);
-            this.dialogTranslate.getProgressBarTranslation().setString(percentTranslated +"% translated into "+ this.dialogTranslate.getLanguage());
+            this.dialogTranslate.getProgressBarTranslation().setString(
+                String.format(
+                     "%s%% translated into %s",
+                     percentTranslated,
+                     this.dialogTranslate.getLanguage()
+                )
+            );
         }
     }
 
@@ -155,24 +167,48 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
         
         try {
             String pageSourceLanguage = this.connectionUtil.getSourceLineFeed(
-                this.propertiesUtil.getProperties().getProperty("github.webservice.i18n.locale")
-                + "jsql_"+ this.dialogTranslate.getLanguage().getLabelLocale() +".properties"
+                String.format(
+                    "%sjsql_%s.properties",
+                    this.propertiesUtil.getProperties().getProperty("github.webservice.i18n.locale"),
+                    this.dialogTranslate.getLanguage().getLabelLocale()
+                )
             );
             
             this.propertiesLanguageToTranslate.load(new StringReader(pageSourceLanguage));
             
-            LOGGER.info(I18nUtil.valueByKey("LOG_I18N_TEXT_LOADED") +" "+ this.dialogTranslate.getLanguage());
+            LOGGER.info(
+                String.format(
+                    "%s %s",
+                    I18nUtil.valueByKey("LOG_I18N_TEXT_LOADED"),
+                    this.dialogTranslate.getLanguage()
+                )
+            );
             
         } catch (IOException e) {
             
-            URI uri = ClassLoader.getSystemResource("i18n/jsql_"+ this.dialogTranslate.getLanguage().getLabelLocale() +".properties").toURI();
+            URI uri =
+                ClassLoader
+                .getSystemResource(
+                    String
+                    .format(
+                        "i18n/jsql_%s.properties",
+                        this.dialogTranslate.getLanguage().getLabelLocale()
+                    )
+                )
+                .toURI();
+            
             Path path = Paths.get(uri);
             byte[] root = Files.readAllBytes(path);
             String localeI18n = new String(root);
             String localeI18nFixed = Pattern.compile("\\\\[\n\r]+").matcher(localeI18n).replaceAll("{@|@}");
             
             this.propertiesLanguageToTranslate.load(new StringReader(localeI18nFixed));
-            LOGGER.info(this.dialogTranslate.getLanguage() +" translation loaded from local");
+            LOGGER.info(
+                String.format(
+                    "%s translation loaded from local",
+                    this.dialogTranslate.getLanguage()
+                )
+            );
             
             // Ignore
             IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);

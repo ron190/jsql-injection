@@ -125,17 +125,21 @@ public class DialogTranslate extends JDialog {
         DialogTranslate.this.language = language;
         
         this.labelTranslation.setText(
-            "<html>"
-            + "<b>Contribute and translate parts of jSQL Injection into "
-            + language
-            + "</b><br>"
-            + "Help the community and translate some buttons, menus, tabs and tooltips into "
-            + language
-            + ", "
-            + "then click on Send to forward your changes to the developer on Github.<br>"
-            + "<i>E.g. for Chinese, change <b>CONTEXT_MENU_COPY = Copy</b> to <b>CONTEXT_MENU_COPY = \u590d\u5236</b>, then click on Send. The list only displays what needs to be translated "
-            + "and is updated as soon as the developer processes your translation.</i>"
-            + "</html>"
+            String
+            .join(
+                "",
+                "<html>",
+                "<b>Contribute and translate parts of jSQL Injection into ",
+                language.toString(),
+                "</b><br>",
+                "Help the community and translate some buttons, menus, tabs and tooltips into ",
+                language.toString(),
+                ", ",
+                "then click on Send to forward your changes to the developer on Github.<br>",
+                "<i>E.g. for Chinese, change <b>CONTEXT_MENU_COPY = Copy</b> to <b>CONTEXT_MENU_COPY = \u590d\u5236</b>, then click on Send. The list only displays what needs to be translated ",
+                "and is updated as soon as the developer processes your translation.</i>",
+                "</html>"
+            )
         );
         this.labelTranslation.setIcon(language.getFlag());
         this.labelTranslation.setIconTextGap(8);
@@ -155,7 +159,13 @@ public class DialogTranslate extends JDialog {
             UIManager.getDefaults().getFont("TextField.font").getSize()
         ));
         
-        LOGGER.trace("Loading text to translate into "+ language +"...");
+        LOGGER.trace(
+            String
+            .format(
+                "Loading text to translate into %s...",
+                language
+            )
+        );
         
         new SwingWorkerGithubLocale(this).execute();
     }
@@ -170,10 +180,14 @@ public class DialogTranslate extends JDialog {
         this.buttonSend.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         this.buttonSend.setBackground(new Color(200, 221, 242));
         this.buttonSend.setToolTipText(
-            "<html>"
-            + "<b>Send your translation to the developer</b><br>"
-            + "Your translation will be integrated in the next version of jSQL"
-            + "</html>"
+            String
+            .join(
+                "",
+                "<html>",
+                "<b>Send your translation to the developer</b><br>",
+                "Your translation will be integrated in the next version of jSQL",
+                "</html>"
+            )
         );
         
         this.buttonSend.addMouseListener(new FlatButtonMouseAdapter(this.buttonSend));
@@ -188,13 +202,20 @@ public class DialogTranslate extends JDialog {
             
             String clientDescription =
                 // Escape Markdown character # for h1 in .properties
-                this.textToTranslate.getText()
-                    .replace("\\\\", "\\\\\\\\")
-                    .replaceAll("(?m)^#", "\\\\#")
-                    .replace("<", "\\<")
-                ;
+                this.textToTranslate
+                .getText()
+                .replace("\\\\", "\\\\\\\\")
+                .replaceAll(
+                    "(?m)^#",
+                    "\\\\#"
+                )
+                .replace("<", "\\<");
               
-            MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language +" translation");
+            MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(
+                clientDescription,
+                ShowOnConsole.YES,
+                DialogTranslate.this.language +" translation"
+            );
             DialogTranslate.this.setVisible(false);
         });
 
@@ -239,6 +260,9 @@ public class DialogTranslate extends JDialog {
 
         this.textToTranslate.setComponentPopupMenu(new JPopupMenuText(this.textToTranslate));
     }
+    
+    
+    // Getter / Setter
 
     public Language getLanguage() {
         return this.language;

@@ -43,6 +43,7 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
             
             @Override
             public boolean isEditable() {
+                
                 return false;
             }
         });

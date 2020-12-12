@@ -51,6 +51,7 @@ public class ItemList {
         return this.internalString;
     }
     
+    
     // Getter and setter
 
     public String getInternalString() {

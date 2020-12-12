@@ -44,6 +44,7 @@ public class ActionLoadStop implements ActionListener {
         final List<Column> columnsToSearch = this.getSelectedColumns();
 
         if (!this.nodeModel.isRunning() && columnsToSearch.isEmpty()) {
+            
             return;
         }
 

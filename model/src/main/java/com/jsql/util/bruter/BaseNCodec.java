@@ -171,8 +171,13 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @param lineLength if &gt; 0, use chunking with a length {@code lineLength}
      * @param chunkSeparatorLength the chunk separator length, if relevant
      */
-    protected BaseNCodec(final int unencodedBlockSize, final int encodedBlockSize,
-                         final int lineLength, final int chunkSeparatorLength) {
+    protected BaseNCodec(
+        final int unencodedBlockSize,
+        final int encodedBlockSize,
+        final int lineLength,
+        final int chunkSeparatorLength
+    ) {
+        
         this(unencodedBlockSize, encodedBlockSize, lineLength, chunkSeparatorLength, PAD_DEFAULT);
     }
 
@@ -185,8 +190,14 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @param chunkSeparatorLength the chunk separator length, if relevant
      * @param pad byte used as padding byte.
      */
-    protected BaseNCodec(final int unencodedBlockSize, final int encodedBlockSize,
-                         final int lineLength, final int chunkSeparatorLength, final byte pad) {
+    protected BaseNCodec(
+        final int unencodedBlockSize,
+        final int encodedBlockSize,
+        final int lineLength,
+        final int chunkSeparatorLength,
+        final byte pad
+    ) {
+        
         this(unencodedBlockSize, encodedBlockSize, lineLength, chunkSeparatorLength, pad, DECODING_POLICY_DEFAULT);
     }
 
@@ -201,8 +212,14 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @param decodingPolicy Decoding policy.
      * @since 1.15
      */
-    protected BaseNCodec(final int unencodedBlockSize, final int encodedBlockSize,
-                         final int lineLength, final int chunkSeparatorLength, final byte pad, final CodecPolicy decodingPolicy) {
+    protected BaseNCodec(
+        final int unencodedBlockSize,
+        final int encodedBlockSize,
+        final int lineLength,
+        final int chunkSeparatorLength,
+        final byte pad,
+        final CodecPolicy decodingPolicy
+    ) {
         
         this.unencodedBlockSize = unencodedBlockSize;
         this.encodedBlockSize = encodedBlockSize;
@@ -225,6 +242,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      *         unsigned values
      */
     private static int compareUnsigned(final int x, final int y) {
+        
         return Integer.compare(x + Integer.MIN_VALUE, y + Integer.MIN_VALUE);
     }
 
@@ -240,9 +258,11 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     private static int createPositiveCapacity(final int minCapacity) {
         
         if (minCapacity < 0) {
+            
             // overflow
             throw new OutOfMemoryError("Unable to allocate array size: " + (minCapacity & 0xffffffffL));
         }
+        
         // This is called when we require buffer expansion to a very big array.
         // Use the conservative maximum buffer size if possible, otherwise the biggest required.
         //
@@ -251,9 +271,10 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         // Integer.MAX_VALUE length array.
         // The result is that we may have to allocate an array of this size more than once if
         // the capacity must be expanded again.
-        return (minCapacity > MAX_BUFFER_SIZE) ?
-            minCapacity :
-            MAX_BUFFER_SIZE;
+        return
+            minCapacity > MAX_BUFFER_SIZE
+            ? minCapacity
+            : MAX_BUFFER_SIZE;
     }
 
     /**
@@ -264,6 +285,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @since 1.15
      */
     public static byte[] getChunkSeparator() {
+        
         return CHUNK_SEPARATOR.clone();
     }
 
@@ -299,10 +321,14 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         // Overflow-conscious code treats the min and new capacity as unsigned.
         final int oldCapacity = context.buffer.length;
         int newCapacity = oldCapacity * DEFAULT_BUFFER_RESIZE_FACTOR;
+        
         if (compareUnsigned(newCapacity, minCapacity) < 0) {
+            
             newCapacity = minCapacity;
         }
+        
         if (compareUnsigned(newCapacity, MAX_BUFFER_SIZE) > 0) {
+            
             newCapacity = createPositiveCapacity(minCapacity);
         }
 
@@ -320,6 +346,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return The amount of buffered data available for reading.
      */
     int available(final Context context) {  // package protected for access from I/O streams
+        
         return context.buffer != null ? context.pos - context.readPos : 0;
     }
 
@@ -335,10 +362,14 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     protected boolean containsAlphabetOrPad(final byte[] arrayOctet) {
         
         if (arrayOctet == null) {
+            
             return false;
         }
+        
         for (final byte element : arrayOctet) {
+            
             if (this.pad == element || this.isInAlphabet(element)) {
+                
                 return true;
             }
         }
@@ -357,8 +388,10 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     public byte[] decode(final byte[] pArray) {
         
         if (pArray == null || pArray.length == 0) {
+            
             return pArray;
         }
+        
         final Context context = new Context();
         this.decode(pArray, 0, pArray.length, context);
         this.decode(pArray, 0, EOF, context); // Notify decoder of EOF.
@@ -386,10 +419,15 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     public Object decode(final Object obj) throws DecoderException {
         
         if (obj instanceof byte[]) {
+            
             return this.decode((byte[]) obj);
+            
         } else if (obj instanceof String) {
+            
             return this.decode((String) obj);
+            
         } else {
+            
             throw new DecoderException("Parameter supplied to Base-N decode is not a byte[] or a String");
         }
     }
@@ -402,6 +440,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return a byte array containing binary data
      */
     public byte[] decode(final String pArray) {
+        
         return this.decode(StringUtils.getBytesUtf8(pArray));
     }
 
@@ -416,6 +455,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     public byte[] encode(final byte[] pArray) {
         
         if (pArray == null || pArray.length == 0) {
+            
             return pArray;
         }
         
@@ -438,6 +478,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     public byte[] encode(final byte[] pArray, final int offset, final int length) {
         
         if (pArray == null || pArray.length == 0) {
+            
             return pArray;
         }
         
@@ -483,6 +524,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * This is a duplicate of {@link #encodeToString(byte[])}; it was merged during refactoring.
     */
     public String encodeAsString(final byte[] pArray){
+        
         return StringUtils.newStringUtf8(this.encode(pArray));
     }
 
@@ -495,6 +537,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return A String containing only Base-N character data
      */
     public String encodeToString(final byte[] pArray) {
+        
         return StringUtils.newStringUtf8(this.encode(pArray));
     }
 
@@ -508,13 +551,16 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     protected byte[] ensureBufferSize(final int size, final Context context) {
         
         if (context.buffer == null) {
+            
             context.buffer = new byte[Math.max(size, this.getDefaultBufferSize())];
             context.pos = 0;
             context.readPos = 0;
 
             // Overflow-conscious:
             // x + y > z  ==  x + y - z > 0
+            
         } else if (context.pos + size - context.buffer.length > 0) {
+            
             return resizeBuffer(context, context.pos + size);
         }
         
@@ -534,6 +580,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @since 1.15
      */
     public CodecPolicy getCodecPolicy() {
+        
         return this.decodingPolicy;
     }
 
@@ -543,6 +590,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return the default buffer size.
      */
     protected int getDefaultBufferSize() {
+        
         return DEFAULT_BUFFER_SIZE;
     }
 
@@ -555,13 +603,16 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * Returns a long since a max-len array will require &gt; Integer.MAX_VALUE
      */
     public long getEncodedLength(final byte[] pArray) {
+        
         // Calculate non-chunked size - rounded up to allow for padding
         // cast to long is needed to avoid possibility of overflow
         long len = ((pArray.length + this.unencodedBlockSize-1)  / this.unencodedBlockSize) * (long) this.encodedBlockSize;
+        
         if (this.lineLength > 0) { // We're using chunking
             // Round up to nearest multiple
             len += ((len + this.lineLength-1) / this.lineLength) * this.chunkSeparatorLength;
         }
+        
         return len;
     }
 
@@ -572,6 +623,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @return true if there is data still available for reading.
      */
     boolean hasData(final Context context) {  // package protected for access from I/O streams
+        
         return context.buffer != null;
     }
 
@@ -621,6 +673,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @see #isInAlphabet(byte[], boolean)
      */
     public boolean isInAlphabet(final String basen) {
+        
         return this.isInAlphabet(StringUtils.getBytesUtf8(basen), true);
     }
 
@@ -637,6 +690,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @since 1.15
      */
     public boolean isStrictDecoding() {
+        
         return this.decodingPolicy == CodecPolicy.STRICT;
     }
 
@@ -663,7 +717,9 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
             final int len = Math.min(this.available(context), bAvail);
             System.arraycopy(context.buffer, context.readPos, b, bPos, len);
             context.readPos += len;
+            
             if (context.readPos >= context.pos) {
+                
                 context.buffer = null; // so hasData() will return false, and this method can return -1
             }
             
@@ -735,9 +791,19 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
         @SuppressWarnings("boxing") // OK to ignore boxing here
         @Override
         public String toString() {
-            return String.format("%s[buffer=%s, currentLinePos=%s, eof=%s, ibitWorkArea=%s, lbitWorkArea=%s, " +
-                    "modulus=%s, pos=%s, readPos=%s]", this.getClass().getSimpleName(), Arrays.toString(this.buffer),
-                    this.currentLinePos, this.eof, this.ibitWorkArea, this.lbitWorkArea, this.modulus, this.pos, this.readPos);
+            return
+                String.format(
+                    "%s[buffer=%s, currentLinePos=%s, eof=%s, ibitWorkArea=%s, lbitWorkArea=%s, modulus=%s, pos=%s, readPos=%s]",
+                    this.getClass().getSimpleName(),
+                    Arrays.toString(this.buffer),
+                    this.currentLinePos,
+                    this.eof,
+                    this.ibitWorkArea,
+                    this.lbitWorkArea,
+                    this.modulus,
+                    this.pos,
+                    this.readPos
+                );
         }
     }
 }

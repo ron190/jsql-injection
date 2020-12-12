@@ -43,8 +43,8 @@ public class ManagerSqlShell extends AbstractManagerShell {
         
         JPanel userPassPanel = new JPanel();
         
-        GroupLayout userPassLayout = new GroupLayout(userPassPanel);
-        userPassPanel.setLayout(userPassLayout);
+        GroupLayout layout = new GroupLayout(userPassPanel);
+        userPassPanel.setLayout(layout);
         userPassPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         userPassPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         
@@ -58,32 +58,32 @@ public class ManagerSqlShell extends AbstractManagerShell {
         panelPassword.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
         panelPassword.add(this.password);
         
-        userPassLayout
+        layout
         .setHorizontalGroup(
-            userPassLayout
+            layout
             .createSequentialGroup()
             .addGroup(
-                userPassLayout
+                layout
                 .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
             )
             .addGroup(
-                userPassLayout.createParallelGroup()
+                layout.createParallelGroup()
                 .addComponent(this.username)
                 .addComponent(panelPassword)
             )
         );
 
-        userPassLayout
+        layout
         .setVerticalGroup(
-            userPassLayout
+            layout
             .createSequentialGroup()
             .addGroup(
-                userPassLayout
+                layout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.username)
             )
             .addGroup(
-                userPassLayout
+                layout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(panelPassword)
             )

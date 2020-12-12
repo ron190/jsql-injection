@@ -62,6 +62,7 @@ public class LightScrollPane extends JComponent {
      * @param c Component to decorate
      */
     public LightScrollPane(int top, int left, int bottom, int right, JComponent c) {
+        
         this(c);
 
         this.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, UiUtil.COLOR_COMPONENT_BORDER));
@@ -98,9 +99,12 @@ public class LightScrollPane extends JComponent {
                 // Implementation by sun.swing.SwingUtilities2.getFontMetrics()
                 try {
                     this.viewport.setBounds(0, 0, LightScrollPane.this.getWidth(), LightScrollPane.this.getHeight() - 1);
+                    
                 } catch (NullPointerException e) {
+                    
                     LOGGER.error(e, e);
                 }
+                
                 SwingUtilities.invokeLater(() -> LightScrollPane.this.displayScrollBarsIfNecessary(this.viewport));
             }
         });
@@ -117,11 +121,18 @@ public class LightScrollPane extends JComponent {
                 super.layoutContainer(target);
                 int width = LightScrollPane.this.getWidth();
                 int height = LightScrollPane.this.getHeight();
+                
                 LightScrollPane.this.scrollPane.setBounds(0, 0, width, height);
 
                 int scrollBarSize = THUMB_SIZE;
-                int cornerOffset = LightScrollPane.this.verticalScrollBar.isVisible() && LightScrollPane.this.horizontalScrollBar.isVisible() ? scrollBarSize : 0;
+                int cornerOffset =
+                    LightScrollPane.this.verticalScrollBar.isVisible()
+                    && LightScrollPane.this.horizontalScrollBar.isVisible()
+                    ? scrollBarSize
+                    : 0;
+                
                 if (LightScrollPane.this.verticalScrollBar.isVisible()) {
+                    
                     LightScrollPane.this.verticalScrollBar.setBounds(
                         LightScrollPane.this.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT
                         ? 0
@@ -133,6 +144,7 @@ public class LightScrollPane extends JComponent {
                 }
                 
                 if (LightScrollPane.this.horizontalScrollBar.isVisible()) {
+                    
                     LightScrollPane.this.horizontalScrollBar.setBounds(
                         0,
                         height - scrollBarSize,
@@ -147,6 +159,7 @@ public class LightScrollPane extends JComponent {
     }
 
     private void displayScrollBarsIfNecessary(JViewport viewPort) {
+        
         this.displayVerticalScrollBarIfNecessary(viewPort);
         this.displayHorizontalScrollBarIfNecessary(viewPort);
     }
@@ -155,8 +168,8 @@ public class LightScrollPane extends JComponent {
         
         Rectangle viewRect = viewPort.getViewRect();
         Dimension viewSize = viewPort.getViewSize();
-        boolean isDisplayingVerticalScrollBar =
-                viewSize.getHeight() > viewRect.getHeight();
+        boolean isDisplayingVerticalScrollBar = viewSize.getHeight() > viewRect.getHeight();
+        
         this.verticalScrollBar.setVisible(isDisplayingVerticalScrollBar);
     }
 
@@ -164,8 +177,8 @@ public class LightScrollPane extends JComponent {
         
         Rectangle viewRect = viewPort.getViewRect();
         Dimension viewSize = viewPort.getViewSize();
-        boolean isDisplayingHorizontalScrollBar =
-                viewSize.getWidth() > viewRect.getWidth();
+        boolean isDisplayingHorizontalScrollBar = viewSize.getWidth() > viewRect.getWidth();
+        
         this.horizontalScrollBar.setVisible(isDisplayingHorizontalScrollBar);
     }
 
@@ -232,7 +245,9 @@ public class LightScrollPane extends JComponent {
             
             try {
                 colorThumbAlpha = new Color(LightScrollPane.this.colorThumb.getRed(), LightScrollPane.this.colorThumb.getGreen(), LightScrollPane.this.colorThumb.getBlue(), alpha);
+                
             } catch (NullPointerException e) {
+                
                 colorThumbAlpha = Color.GRAY;
                 
                 // Ignore

@@ -113,6 +113,7 @@ public final class MediatorHelper {
         return managerBruteForce;
     }
     
+    
     // Registering GUI components
     
     public static void register(JFrameView frame) {
@@ -146,6 +147,7 @@ public final class MediatorHelper {
     public static void register(TabManagersProxy tabManagers) {
         MediatorHelper.tabManagers = tabManagers;
     }
+    
     
     // Registering Managers
     

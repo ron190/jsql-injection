@@ -41,6 +41,7 @@ public abstract class AbstractCharAction extends TextAction {
         JTextComponent target = this.getTextComponent(event);
 
         if (target == null || !target.isEditable()) {
+            
             return;
         }
         

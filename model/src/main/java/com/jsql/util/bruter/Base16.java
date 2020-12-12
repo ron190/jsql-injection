@@ -168,8 +168,10 @@ public class Base16 extends BaseNCodec {
             
             context.eof = true;
             if (context.ibitWorkArea != 0) {
+                
                 this.validateTrailingCharacter();
             }
+            
             return;
         }
 
@@ -221,10 +223,12 @@ public class Base16 extends BaseNCodec {
         
         int decoded = -1;
         if ((octet & 0xff) < this.decodeTable.length) {
+            
             decoded = this.decodeTable[octet];
         }
 
         if (decoded == -1) {
+            
             throw new IllegalArgumentException("Invalid octet in encoded value: " + (int)octet);
         }
 
@@ -235,16 +239,19 @@ public class Base16 extends BaseNCodec {
     void encode(final byte[] data, final int offset, final int length, final Context context) {
         
         if (context.eof) {
+            
             return;
         }
 
         if (length < 0) {
+            
             context.eof = true;
             return;
         }
 
         final int size = length * BYTES_PER_ENCODED_BLOCK;
         if (size < 0) {
+            
             throw new IllegalArgumentException("Input length exceeds maximum size for encoded data: " + length);
         }
 
@@ -283,6 +290,7 @@ public class Base16 extends BaseNCodec {
     private void validateTrailingCharacter() {
         
         if (this.isStrictDecoding()) {
+            
             throw new IllegalArgumentException("Strict decoding: Last encoded character is a valid base 16 alphabet" +
                     "character but not a possible encoding. " +
                     "Decoding requires at least two characters to create one byte.");

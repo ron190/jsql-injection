@@ -40,6 +40,7 @@ class TokenStyles {
      * Create the styles and place them in the hash table.
      */
     static {
+        
         Color maroon = new Color(0xB03060);
         Color darkBlue = new Color(0x000080);
         Color darkGreen = Color.GREEN.darker();
@@ -65,8 +66,8 @@ class TokenStyles {
         TokenStyles.addStyle("grayedOut", Color.WHITE, Color.GRAY, false, false);
     }
     
-    private static void addStyle(String name, Color bg, Color fg, boolean bold,
-            boolean italic) {
+    private static void addStyle(String name, Color bg, Color fg, boolean bold, boolean italic) {
+        
         SimpleAttributeSet style = new SimpleAttributeSet();
         StyleConstants.setFontFamily(style, UiUtil.FONT_UBUNTU_MONO.getFontName());
         StyleConstants.setFontSize(style, UiUtil.FONT_UBUNTU_MONO.getSize());

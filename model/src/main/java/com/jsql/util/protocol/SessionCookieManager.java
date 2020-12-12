@@ -41,9 +41,9 @@ public class SessionCookieManager extends CookieHandler {
         
         // use default cookie policy if not specify one
         this.policyCallback =
-                (cookiePolicy == null)
-                ? CookiePolicy.ACCEPT_ALL //note that I changed it to ACCEPT_ALL
-                : cookiePolicy;
+            cookiePolicy == null
+            ? CookiePolicy.ACCEPT_ALL //note that I changed it to ACCEPT_ALL
+            : cookiePolicy;
 
         // if not specify CookieStore to use, use default one
     }
@@ -104,11 +104,8 @@ public class SessionCookieManager extends CookieHandler {
             // RFC 2965 3.2.2, key must be 'Set-Cookie2'
             // we also accept 'Set-Cookie' here for backward compatibility
             if (
-                entrySetHeader.getKey() == null
-                || !(
-                    entrySetHeader.getKey().equalsIgnoreCase("Set-Cookie2")
-                    || entrySetHeader.getKey().equalsIgnoreCase("Set-Cookie")
-                )
+                !"Set-Cookie2".equalsIgnoreCase(entrySetHeader.getKey())
+                && !"Set-Cookie".equalsIgnoreCase(entrySetHeader.getKey())
             ) {
                 continue;
             }
@@ -152,7 +149,7 @@ public class SessionCookieManager extends CookieHandler {
         }
     }
 
-    /*
+    /**
      * path-matches algorithm, as defined by RFC 2965
      */
     private boolean pathMatches(String path, String pathToMatchWith) {
@@ -170,7 +167,7 @@ public class SessionCookieManager extends CookieHandler {
         return path.startsWith(pathToMatchWith);
     }
 
-    /*
+    /**
      * sort cookies with respect to their path: those with more specific Path attributes
      * precede those with less specific, as defined in RFC 2965 sec. 3.3.4
      */
@@ -219,6 +216,7 @@ public class SessionCookieManager extends CookieHandler {
 
             // path rule only applies to the cookies with same name
             if (!c1.getName().equals(c2.getName())) {
+                
                 return 0;
             }
 

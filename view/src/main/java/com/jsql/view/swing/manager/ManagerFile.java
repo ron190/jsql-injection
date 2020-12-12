@@ -97,40 +97,46 @@ public class ManagerFile extends AbstractManagerList {
         this.run.addActionListener(actionEvent -> {
             
             if (this.listFile.getSelectedValuesList().isEmpty()) {
+                
                 LOGGER.warn("Select at least one file to read in the list");
+                
                 return;
             }
 
-            new Thread(() -> {
+            new Thread(
+                () -> {
                 
-                if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {
-                    
-                    ManagerFile.this.run.setText(I18nViewUtil.valueByKey("FILE_RUN_BUTTON_STOP"));
-                    ManagerFile.this.run.setState(StateButton.STOPPABLE);
-                    ManagerFile.this.loader.setVisible(true);
-                    
-                    MediatorHelper.managerWebshell().clearSelection();
-                    MediatorHelper.managerSqlshell().clearSelection();
-                    
-                    try {
-                        this.readFile(this.listFile.getSelectedValuesList());
+                    if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {
                         
-                    } catch (InterruptedException ex) {
+                        ManagerFile.this.run.setText(I18nViewUtil.valueByKey("FILE_RUN_BUTTON_STOP"));
+                        ManagerFile.this.run.setState(StateButton.STOPPABLE);
+                        ManagerFile.this.loader.setVisible(true);
                         
-                        LOGGER.warn("Interruption while waiting for Reading File termination", ex);
-                        Thread.currentThread().interrupt();
+                        MediatorHelper.managerWebshell().clearSelection();
+                        MediatorHelper.managerSqlshell().clearSelection();
                         
-                    } catch (Exception ex) {
+                        try {
+                            this.readFile(this.listFile.getSelectedValuesList());
+                            
+                        } catch (InterruptedException ex) {
+                            
+                            LOGGER.warn("Interruption while waiting for Reading File termination", ex);
+                            Thread.currentThread().interrupt();
+                            
+                        } catch (Exception ex) {
+                            
+                            LOGGER.warn(ex, ex);
+                        }
                         
-                        LOGGER.warn(ex, ex);
+                    } else {
+                        
+                        MediatorHelper.model().getResourceAccess().stopSearchingFile();
+                        ManagerFile.this.run.setEnabled(false);
+                        ManagerFile.this.run.setState(StateButton.STOPPING);
                     }
-                } else {
-                    
-                    MediatorHelper.model().getResourceAccess().stopSearchingFile();
-                    ManagerFile.this.run.setEnabled(false);
-                    ManagerFile.this.run.setState(StateButton.STOPPING);
-                }
-            }, "ThreadReadFile").start();
+                },
+                "ThreadReadFile"
+            ).start();
         });
     }
     
@@ -168,16 +174,22 @@ public class ManagerFile extends AbstractManagerList {
         int tasksHandled;
         
         for (
-            tasksHandled = 0;
-            tasksHandled < submittedTasks && !MediatorHelper.model().getResourceAccess().isSearchFileStopped();
-            tasksHandled++
+            tasksHandled = 0
+            ; tasksHandled < submittedTasks && !MediatorHelper.model().getResourceAccess().isSearchFileStopped()
+            ; tasksHandled++
         ) {
             
             CallableFile currentCallable = taskCompletionService.take().get();
             
             if (StringUtils.isNotEmpty(currentCallable.getSourceFile())) {
                 
-                String name = currentCallable.getPathFile().substring(currentCallable.getPathFile().lastIndexOf('/') + 1, currentCallable.getPathFile().length());
+                String name =
+                    currentCallable
+                    .getPathFile()
+                    .substring(
+                        currentCallable.getPathFile().lastIndexOf('/') + 1,
+                        currentCallable.getPathFile().length()
+                    );
                 String content = currentCallable.getSourceFile();
                 String path = currentCallable.getPathFile();
 
@@ -188,7 +200,13 @@ public class ManagerFile extends AbstractManagerList {
 
                 if (!duplicate.contains(path.replace(name, StringUtils.EMPTY))) {
                     
-                    LOGGER.info("Shell might be possible in folder "+ path.replace(name, StringUtils.EMPTY));
+                    LOGGER.info(
+                        String
+                        .format(
+                            "Shell might be possible in folder %s",
+                            path.replace(name, StringUtils.EMPTY)
+                        )
+                    );
                 }
                 
                 duplicate.add(path.replace(name, StringUtils.EMPTY));
@@ -211,14 +229,13 @@ public class ManagerFile extends AbstractManagerList {
         MediatorHelper.model().getResourceAccess().setSearchFileStopped(false);
         
         String result =
-            "Found "
-            + countFileFound
-            + " file" +( countFileFound > 1 ? 's' : StringUtils.EMPTY )
-            + StringUtils.SPACE
-            + (tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : StringUtils.EMPTY)
-            + "on "
-            + submittedTasks
-            +" files checked";
+            String.format(
+                "Found %s file%s %s on %s files checked",
+                countFileFound,
+                countFileFound > 1 ? 's' : StringUtils.EMPTY,
+                tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : StringUtils.EMPTY,
+                submittedTasks
+            );
         
         if (countFileFound > 0) {
             

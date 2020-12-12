@@ -38,13 +38,13 @@ public class UiStringUtil {
         if (encoding != null) {
             
             result =
-                "<html><span style=\"font-family:'"
-                + UiUtil.FONT_NAME_UBUNTU_REGULAR
-                + "';"
-                + ( nowrap ? "white-space:nowrap;" : StringUtils.EMPTY )
-                + "\">"
-                + new String(text.getBytes(), StandardCharsets.UTF_8)
-                + "</span></html>";
+                String
+                .format(
+                    "<html><span style=\"font-family:'%s';%s\">%s</span></html>",
+                    UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                    nowrap ? "white-space:nowrap;" : StringUtils.EMPTY,
+                    new String(text.getBytes(), StandardCharsets.UTF_8)
+                );
         }
         
         return result;

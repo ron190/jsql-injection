@@ -90,45 +90,55 @@ public class GitUtil {
         String osArch = System.getProperty("os.arch");
         
         String osMetadata =
-            String.format(
-                "%s%n%s%n%s%n%s%n%s%n%s%n",
-                String.format("jSQL: v%s", this.injectionModel.getVersionJsql()),
+            String
+            .join(
+                "\\n",
                 String.format(
-                    "Java: v%s-%s-%s on %s", 
-                    javaVersion, 
-                    osArch, 
-                    System.getProperty("user.language"), 
+                    "jSQL: v%s",
+                    this.injectionModel.getVersionJsql()
+                ),
+                String.format(
+                    "Java: v%s-%s-%s on %s",
+                    javaVersion,
+                    osArch,
+                    System.getProperty("user.language"),
                     System.getProperty("java.runtime.name")
                 ),
-                String.format("OS: %s (v%s)", System.getProperty("os.name"), System.getProperty("os.version")),
                 String.format(
-                    "Desktop: %s", 
-                    System.getProperty("sun.desktop") != null 
-                    ? System.getProperty("sun.desktop") 
+                    "OS: %s (v%s)",
+                    System.getProperty("os.name"), System.getProperty("os.version")
+                ),
+                String.format(
+                    "Desktop: %s",
+                    System.getProperty("sun.desktop") != null
+                    ? System.getProperty("sun.desktop")
                     : "undefined"
                 ),
                 String.format(
-                    "Strategy: %s", 
-                    this.injectionModel.getMediatorStrategy().getStrategy() != null 
-                    ? this.injectionModel.getMediatorStrategy().getStrategy().getName() 
+                    "Strategy: %s",
+                    this.injectionModel.getMediatorStrategy().getStrategy() != null
+                    ? this.injectionModel.getMediatorStrategy().getStrategy().getName()
                     : "undefined"
                 ),
-                String.format("Db engine: %s", this.injectionModel.getMediatorVendor().getVendor().toString())
+                String.format(
+                    "Db engine: %s",
+                    this.injectionModel.getMediatorVendor().getVendor().toString()
+                )
             );
         
-        String exceptionText = 
+        String exceptionText =
             String
             .format(
-                "Exception on %s%n%s%n", 
-                threadName, 
+                "Exception on %s%n%s%n",
+                threadName,
                 ExceptionUtils.getStackTrace(throwable).trim()
             );
         
-        String clientDescription = 
+        String clientDescription =
             String
             .format(
-                "```%n%s```%n```%n%s```", 
-                osMetadata, 
+                "```%n%s```%n```%n%s```",
+                osMetadata,
                 exceptionText
             );
         
@@ -237,6 +247,7 @@ public class GitUtil {
             JSONArray news = this.getJSONObject().getJSONArray("news");
             
             for (int index = 0 ; index < news.length() ; index++) {
+                
                 LOGGER.info(news.get(index));
             }
             
@@ -261,13 +272,11 @@ public class GitUtil {
             
             // Fix #45349: JSONException on new JSONObject(json)
             try {
-                
                 this.jsonObject = new JSONObject(json);
                 
             } catch (JSONException e) {
                 
                 try {
-                    
                     this.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
                     
                 } catch (JSONException e1) {

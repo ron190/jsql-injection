@@ -86,11 +86,11 @@ public class JsonUtil {
         
         if (jsonEntity instanceof JSONObject) {
             
-            scanJsonObject(jsonEntity, parentName, parentXPath, attributesXPath);
+            JsonUtil.scanJsonObject(jsonEntity, parentName, parentXPath, attributesXPath);
             
         } else if (jsonEntity instanceof JSONArray) {
             
-            scanJsonArray(jsonEntity, parentName, parentXPath, attributesXPath);
+            JsonUtil.scanJsonArray(jsonEntity, parentName, parentXPath, attributesXPath);
         }
         
         return attributesXPath;
@@ -187,10 +187,20 @@ public class JsonUtil {
             paramStar.setValue(jsonEntity.toString());
             
             try {
-                LOGGER.info("Checking JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));
+                LOGGER.info(
+                    String.format(
+                        "Checking JSON %s parameter %s=%s",
+                        methodInjection.name(),
+                        parentXPath.getKey(),
+                        parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
+                    )
+                );
                 
                 String paramBase64 = paramStar.getValue().replace("*", "");
-                if (Base64.isBase64(paramBase64) && StringUtil.isUtf8(StringUtil.base64Decode(paramBase64))) {
+                if (
+                    Base64.isBase64(paramBase64)
+                    && StringUtil.isUtf8(StringUtil.base64Decode(paramBase64))
+                ) {
                     
                     LOGGER.info(
                         String.format(
@@ -211,17 +221,45 @@ public class JsonUtil {
             } catch (JSqlException e) {
                 
                 // Injection failure
-                LOGGER.warn("No "+ methodInjection.name() +" injection found for JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY), e);
+                LOGGER.warn(
+                    String
+                    .format(
+                        "No injection found for JSON %s parameter %s=%s",
+                        methodInjection.name(),
+                        parentXPath.getKey(),
+                        parentXPath.getValue().replace(
+                            InjectionModel.STAR,
+                            StringUtils.EMPTY
+                        )
+                    ),
+                    e
+                );
                 
             } finally {
                 
                 // Erase * at the end of each params
                 // TODO useless
-                methodInjection.getParams().stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY)));
+                methodInjection
+                .getParams()
+                .stream()
+                .forEach(e ->
+                    e.setValue(
+                        e.getValue().replaceAll(
+                            Pattern.quote(InjectionModel.STAR) +"$",
+                            StringUtils.EMPTY
+                        )
+                    )
+                );
                 
                 // Erase * from JSON if failure
                 if (!hasFoundInjection) {
-                    paramStar.setValue(paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));
+                    
+                    paramStar.setValue(
+                        paramStar.getValue().replace(
+                            InjectionModel.STAR,
+                            StringUtils.EMPTY
+                        )
+                    );
                 }
             }
         }

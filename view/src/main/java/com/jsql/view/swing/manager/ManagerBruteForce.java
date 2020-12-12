@@ -250,6 +250,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
         this.minimumLength = new JSpinner(
             new SpinnerNumberModel(1, 1, 10000, 1)
         );
+        
         this.maximumLength = new JSpinner(
             new SpinnerNumberModel(5, 1, 10000, 1)
         );
@@ -276,6 +277,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
         return thirdLine;
     }
 
+    
     // Getter and setter
 
     public JButtonStateful getRun() {

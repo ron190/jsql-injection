@@ -166,6 +166,7 @@ public class TamperingUtil {
         return sqlQuery;
     }
 
+    
     // Builder
 
     public TamperingUtil withBase64() {
@@ -228,6 +229,7 @@ public class TamperingUtil {
         return this;
     }
 
+    
     // Getter and setter
 
     public String getCustomTamper() {

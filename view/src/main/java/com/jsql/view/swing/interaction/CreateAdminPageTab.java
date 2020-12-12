@@ -77,7 +77,6 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
         // Fix #44642: NoClassDefFoundError on get()
         // Fix #44641: ExceptionInInitializerError on get()
         try {
-            
             // Previous test for 2xx Success and 3xx Redirection was Header only,
             // now get the HTML content.
             // Proxy is used by jsoup
@@ -114,7 +113,6 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
         
         // Fix #43220: EmptyStackException on setText()
         try {
-            
             browser.setText(htmlSource);
             
         } catch (EmptyStackException e) {
@@ -190,7 +188,6 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
                     
                     // Fix #45348: IllegalComponentStateException on show()
                     try {
-                        
                         menu.show(evt.getComponent(), evt.getX(), evt.getY());
                         
                     } catch (IllegalComponentStateException e) {
@@ -215,9 +212,21 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
         MediatorHelper.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(this.url.replaceAll(".*/", StringUtils.EMPTY), UiUtil.ICON_ADMIN_SERVER);
+        TabHeader header = new TabHeader(
+            this.url.replaceAll(
+                ".*/",
+                StringUtils.EMPTY
+            ),
+            UiUtil.ICON_ADMIN_SERVER
+        );
 
-        MediatorHelper.tabResults().setToolTipTextAt(MediatorHelper.tabResults().indexOfComponent(scroller), "<html>"+ this.url +"</html>");
+        MediatorHelper.tabResults().setToolTipTextAt(
+            MediatorHelper.tabResults().indexOfComponent(scroller),
+            String.format(
+                "<html>%s</html>",
+                this.url
+            )
+        );
 
         // Apply the custom header to the tab
         MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);

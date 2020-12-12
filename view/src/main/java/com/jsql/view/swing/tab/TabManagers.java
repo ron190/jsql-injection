@@ -80,6 +80,7 @@ public class TabManagers extends TabbedPaneWheeled {
                 
                 JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey(keyTooltip));
                 refTooltip[0] = (JToolTipI18n) tipI18n;
+                
                 return tipI18n;
             }
         };

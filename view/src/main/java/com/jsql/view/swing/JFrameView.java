@@ -105,7 +105,9 @@ public class JFrameView extends JFrame {
                 // Divider location change when window is maximized, we can't save getDividerLocation()
                 preferences.putDouble(
                     SplitHorizontalTopBottom.getNameHSplitpane(),
-                    (JFrameView.this.splitHorizontalTopBottom.getDividerLocation()) * 100.0 / (JFrameView.this.splitHorizontalTopBottom.getHeight()) / 100
+                    JFrameView.this.splitHorizontalTopBottom.getDividerLocation() * 100.0
+                    / JFrameView.this.splitHorizontalTopBottom.getHeight()
+                    / 100
                 );
                 
                 preferences.putBoolean(UiUtil.BINARY_VISIBLE, false);
@@ -207,7 +209,8 @@ public class JFrameView extends JFrame {
             }
         }
         
-        Stream.of(
+        Stream
+        .of(
             MediatorHelper.managerUpload(),
             MediatorHelper.managerFile(),
             MediatorHelper.managerWebshell(),

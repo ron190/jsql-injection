@@ -141,16 +141,21 @@ public class ResourceAccess {
     public void logSearchAdminPage(int nbAdminPagesFound, int submittedTasks, int tasksHandled) {
         
         String result =
-            "Found "
-            + nbAdminPagesFound
-            + " admin page" +( nbAdminPagesFound > 1 ? 's' : StringUtils.EMPTY )
-            + StringUtils.SPACE
-            + (tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : StringUtils.EMPTY)
-            + "on "
-            + submittedTasks
-            + " page" + ( submittedTasks > 1 ? 's' : StringUtils.EMPTY )
-            + " searched"
-        ;
+            String
+            .format(
+                "Found %s admin page%s %s on %s page%s searched",
+                nbAdminPagesFound,
+                nbAdminPagesFound > 1
+                ? 's'
+                : StringUtils.EMPTY ,
+                tasksHandled != submittedTasks
+                ? "of "+ tasksHandled +" processed "
+                : StringUtils.EMPTY,
+                submittedTasks,
+                submittedTasks > 1
+                ? 's'
+                : StringUtils.EMPTY
+            );
         
         if (nbAdminPagesFound > 0) {
             
@@ -191,8 +196,11 @@ public class ResourceAccess {
         }
         
         this.injectionModel.injectWithoutIndex(
-                
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.filenameWebshell),
+            this.injectionModel
+            .getMediatorVendor()
+            .getVendor()
+            .instance()
+            .sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.filenameWebshell),
             "shell:create-web"
         );
 
@@ -323,7 +331,8 @@ public class ResourceAccess {
                     urlSuccess = currentCallable.getUrl();
 
                     if (
-                        !urlShellFixed.isEmpty() && urlSuccess.replace(this.filenameWebshell, StringUtils.EMPTY).equals(urlShellFixed)
+                        !urlShellFixed.isEmpty()
+                        && urlSuccess.replace(this.filenameWebshell, StringUtils.EMPTY).equals(urlShellFixed)
                         || urlSuccess.replace(this.filenameWebshell, StringUtils.EMPTY).equals(urlProtocol + urlWithoutFileName)
                     ) {
                         
@@ -588,7 +597,8 @@ public class ResourceAccess {
                     urlSuccess = currentCallable.getUrl();
 
                     if (
-                        !urlShellFixed.isEmpty() && urlSuccess.replace(this.filenameSqlshell, StringUtils.EMPTY).equals(urlShellFixed)
+                        !urlShellFixed.isEmpty()
+                        && urlSuccess.replace(this.filenameSqlshell, StringUtils.EMPTY).equals(urlShellFixed)
                         || urlSuccess.replace(this.filenameSqlshell, StringUtils.EMPTY).equals(urlProtocol + urlWithoutFileName)
                     ) {
                         
@@ -617,7 +627,12 @@ public class ResourceAccess {
             
             Request request = new Request();
             request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);
-            request.setParameters(pathShellFixed.replace(this.filenameSqlshell, StringUtils.EMPTY), urlSuccess, username, password);
+            request.setParameters(
+                pathShellFixed.replace(this.filenameSqlshell, StringUtils.EMPTY),
+                urlSuccess,
+                username,
+                password
+            );
             this.injectionModel.sendToViews(request);
             
         } else {
@@ -640,7 +655,14 @@ public class ResourceAccess {
         
         try {
             result = this.runCommandShell(
-                urlShell + "?q="+ URLEncoder.encode(command.trim(), "ISO-8859-1") +"&u="+ username +"&p="+ password
+                String
+                .format(
+                     "%s?q=%s&u=%s&p=%s",
+                     urlShell,
+                     URLEncoder.encode(command.trim(), "ISO-8859-1"),
+                     username,
+                     password
+                )
             );
             
             if (result.indexOf("<SQLr>") > -1) {
@@ -800,7 +822,14 @@ public class ResourceAccess {
         }
         
         this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile("<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">", pathShellFixed + this.filenameUpload),
+            this.injectionModel
+            .getMediatorVendor()
+            .getVendor()
+            .instance()
+            .sqlTextIntoFile(
+                "<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">",
+                pathShellFixed + this.filenameUpload
+            ),
             "upload"
         );
 
@@ -830,12 +859,29 @@ public class ResourceAccess {
         String urlFileFixed = urlFile;
         if (StringUtils.isEmpty(urlFileFixed)) {
             
-            urlFileFixed = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().substring(0, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().lastIndexOf('/') + 1);
+            urlFileFixed =
+                this.injectionModel
+                .getMediatorUtils()
+                .getConnectionUtil()
+                .getUrlBase()
+                .substring(
+                    0,
+                    this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().lastIndexOf('/') + 1
+                );
         }
         
         if (sourceShellInjected.indexOf(sourceShellToInject) > -1) {
             
-            LOGGER.debug("Upload payload deployed at '"+ urlFileFixed + this.filenameUpload +"' in '"+ pathShellFixed + this.filenameUpload +"'");
+            LOGGER.debug(
+                String
+                .format(
+                    "Upload payload deployed at '%s%s' in '%s%s'",
+                    urlFileFixed,
+                    this.filenameUpload,
+                    pathShellFixed,
+                    this.filenameUpload
+                )
+            );
             
             String crLf = "\r\n";
             
@@ -924,11 +970,25 @@ public class ResourceAccess {
    
             if (result.indexOf(DataAccess.LEAD +"y") > -1) {
                 
-                LOGGER.debug("File '"+ file.getName() +"' uploaded into '"+ pathShellFixed +"'");
+                LOGGER.debug(
+                    String
+                    .format(
+                        "File '%s' uploaded into '%s'",
+                        file.getName(),
+                        pathShellFixed
+                    )
+                );
                 
             } else {
                 
-                LOGGER.warn("Upload file '"+ file.getName() +"' into '"+ pathShellFixed +"' failed");
+                LOGGER.warn(
+                    String
+                    .format(
+                        "Upload file '%s' into '%s' failed",
+                        file.getName(),
+                        pathShellFixed
+                    )
+                );
             }
             
             Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
@@ -956,7 +1016,13 @@ public class ResourceAccess {
         // Fix #41055: NullPointerException on getFile()
         if (this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getResource().getFile() == null) {
             
-            LOGGER.warn("Reading file on "+ this.injectionModel.getMediatorVendor().getVendor() +" is currently not supported");
+            LOGGER.warn(
+                String
+                .format(
+                    "Reading file on %s is currently not supported",
+                    this.injectionModel.getMediatorVendor().getVendor()
+                )
+            );
             return false;
         }
         
@@ -1013,6 +1079,7 @@ public class ResourceAccess {
             callable.getSuspendableReadFile().stop();
         }
     }
+    
     
     // Getters and setters
     

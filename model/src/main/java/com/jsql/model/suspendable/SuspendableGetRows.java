@@ -133,7 +133,10 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
 
             // End of rows detected: \1\3\3\7
             // => \4xxxxxxxx\500\4\6\4...\4\1\3\3\7
-            if (countChunkRows > 0 || slidingWindowCurrentRow.toString().matches("(?s).*"+ TRAIL_RGX +".*")) {
+            if (
+                countChunkRows > 0
+                || slidingWindowCurrentRow.toString().matches("(?s).*"+ TRAIL_RGX +".*")
+            ) {
                 
                 this.scrapeTrailJunk(slidingWindowCurrentRow);
                 
@@ -152,6 +155,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
 
                     // Ending condition: every expected rows have been retrieved.
                     if (countAllRows == countRowsToFind) {
+                        
                         break;
                     }
 
@@ -187,12 +191,14 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         Matcher regexAtLeastOneRow =
             Pattern
             .compile(
-                MODE
-                + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]"
-                + ENCLOSE_VALUE_RGX
-                + SEPARATOR_CELL_RGX
-                + ENCLOSE_VALUE_RGX
-                + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
+                String
+                .format(
+                    "%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]%s%s%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$",
+                    MODE,
+                    ENCLOSE_VALUE_RGX,
+                    SEPARATOR_CELL_RGX,
+                    ENCLOSE_VALUE_RGX
+                )
             )
             .matcher(slidingWindowCurrentRow);
         
@@ -246,14 +252,13 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         Matcher regexAtLeastOneRow =
             Pattern
             .compile(
-                MODE
-                +"("
-                + ENCLOSE_VALUE_RGX
-                + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?"
-                + SEPARATOR_QTE_RGX
-                + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?"
-                + ENCLOSE_VALUE_RGX
-                + ")"
+                String.format(
+                    "%s(%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?%s)",
+                    MODE,
+                    ENCLOSE_VALUE_RGX,
+                    SEPARATOR_QTE_RGX,
+                    ENCLOSE_VALUE_RGX
+                )
             )
             .matcher(slidingWindowCurrentRow);
         
@@ -340,8 +345,15 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         
         // TODO: prevent to find the last line directly: MODE + LEAD + .* + TRAIL_RGX
         // It creates extra query which can be endless if not nullified
-        return Pattern
-            .compile("(?s)"+ LEAD +"(?i)"+ TRAIL_RGX)
+        return
+            Pattern
+            .compile(
+                String.format(
+                    "(?s)%s(?i)%s",
+                    LEAD,
+                    TRAIL_RGX
+                )
+            )
             .matcher(sourcePage);
     }
 
@@ -358,7 +370,13 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         try {
             regexAtLeastOneRow =
                 Pattern
-                .compile("(?s)"+ LEAD +"(?i)(.{1,"+ performanceLength +"})")
+                .compile(
+                    String.format(
+                        "(?s)%s(?i)(.{1,%s})",
+                        LEAD,
+                        performanceLength
+                    )
+                )
                 .matcher(sourcePage);
             
         } catch (PatternSyntaxException e) {
@@ -401,12 +419,13 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         slidingWindowAllRows.append(
             Pattern
             .compile(
-                MODE
-                +"("
-                + SEPARATOR_CELL_RGX + ENCLOSE_VALUE_RGX
-                +"|"
-                + SEPARATOR_QTE_RGX +"\\d*"
-                +")$"
+                String.format(
+                    "%s(%s%s|%s\\d*)$",
+                    MODE,
+                    SEPARATOR_CELL_RGX,
+                    ENCLOSE_VALUE_RGX,
+                    SEPARATOR_QTE_RGX
+                )
             )
             .matcher(allRowsLimit)
             .replaceAll(StringUtils.EMPTY)
@@ -430,12 +449,13 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         Matcher regexSearch =
             Pattern
             .compile(
-                MODE
-                + ENCLOSE_VALUE_RGX
-                + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)"
-                + SEPARATOR_QTE_RGX
-                + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"
-                + ENCLOSE_VALUE_RGX
+                String.format(
+                    "%s%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?%s",
+                    MODE,
+                    ENCLOSE_VALUE_RGX,
+                    SEPARATOR_QTE_RGX,
+                    ENCLOSE_VALUE_RGX
+                )
             )
             .matcher(rows);
 
@@ -460,6 +480,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             listValues.get(rowsFound).add("x"+ instances);
             
             for (String cellValue: values.split("\\x7F", -1)) {
+                
                 listValues.get(rowsFound).add(cellValue);
             }
 

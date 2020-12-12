@@ -166,7 +166,12 @@ public class TreeDatabase extends JTree {
                 treeModel.insertNodeInto(newNode, databaseNode, databaseNode.getChildCount());
             } else {
                 
-                LOGGER.warn("Missing database for table "+ table.toString() +".");
+                LOGGER.warn(
+                    String.format(
+                        "Missing database for table %s.",
+                        table
+                    )
+                );
             }
         }
 

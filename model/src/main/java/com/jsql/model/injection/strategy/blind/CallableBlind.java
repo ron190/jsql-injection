@@ -80,6 +80,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
             // Fix #4386: NullPointerException on contains()
             // opcodes is initialized to an empty new LinkedList<>()
             if (this.opcodes.contains(falseDiff)) {
+                
                 return false;
             }
         }

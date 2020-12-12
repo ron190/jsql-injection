@@ -80,6 +80,7 @@ public class NodeModelTable extends AbstractNodeModel {
             panelNode.showLoader();
             
             AbstractSuspendable<?> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
+            
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 
                 ImageIcon animatedGifPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);

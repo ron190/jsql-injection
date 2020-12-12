@@ -36,6 +36,7 @@ public class Bruter {
     protected boolean paused = false;
 
     public long getRemainder() {
+        
         return this.getNumberOfPossibilities() - this.count;
     }
 
@@ -54,6 +55,7 @@ public class Bruter {
     public void addLowerCaseLetters() {
         
         for (char c = 'a'; c <= 'z'; c++) {
+            
             this.characters.add(String.valueOf(c));
         }
     }
@@ -61,6 +63,7 @@ public class Bruter {
     public void addDigits() {
         
         for (int c = 0; c <= 9; c++) {
+            
             this.characters.add(String.valueOf(c));
         }
     }
@@ -68,6 +71,7 @@ public class Bruter {
     public void addUpperCaseLetters() {
         
         for (char c = 'A'; c <= 'Z'; c++) {
+            
             this.characters.add(String.valueOf(c));
         }
     }
@@ -75,6 +79,7 @@ public class Bruter {
     public void addSpecialCharacters() {
         
         for (char c: specialCharacters) {
+            
             this.characters.add(String.valueOf(c));
         }
     }
@@ -84,6 +89,7 @@ public class Bruter {
         char[] arrayChars = s.toCharArray();
         
         for (char arrayChar: arrayChars) {
+            
             this.characters.remove(Character.toString(arrayChar));
         }
     }
@@ -93,7 +99,6 @@ public class Bruter {
         int i;
         
         try {
-            
             i = (int) (this.count / this.calculateTimeDifference());
             
         } catch (Exception e) {
@@ -126,13 +131,22 @@ public class Bruter {
         days = hours / 24;
         hours = hours % 24;
         
-        return "Time elapsed: "+ days +"days "+ hours +"h "+ minutes +"min "+ seconds +"s";
+        return
+            String
+            .format(
+                "Time elapsed: %sdays %sh %smin %ss",
+                days,
+                hours,
+                minutes,
+                seconds
+            );
     }
 
     private long calculateTimeDifference() {
         
         return (long) ((this.endtime - this.starttime) * (1 * Math.pow(10, -9)));
     }
+    
     
     // Getter and setter
 

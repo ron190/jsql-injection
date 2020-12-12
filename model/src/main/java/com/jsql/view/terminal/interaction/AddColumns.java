@@ -49,6 +49,7 @@ public class AddColumns implements InteractionCommand {
         
         // Loop into the list of columns
         for (Column column: this.columns) {
+            
             LOGGER.debug(column);
         }
     }

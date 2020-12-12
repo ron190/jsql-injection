@@ -55,7 +55,9 @@ class DocPosition {
      * @return the DocPosition, adjusted properly.
      */
     public DocPosition adjustPosition(int adjustment) {
+        
         this.position += adjustment;
+        
         return this;
     }
 
@@ -66,10 +68,15 @@ class DocPosition {
      */
     @Override
     public boolean equals(Object obj) {
+        
         if (obj instanceof DocPosition) {
+            
             DocPosition d = (DocPosition) obj;
+            
             return this.position == d.position;
+            
         } else {
+            
             return false;
         }
     }

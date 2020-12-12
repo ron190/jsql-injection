@@ -62,6 +62,7 @@ public final class OrderedProperties {
     }
 
     private OrderedProperties(Map<String, String> properties, boolean suppressDate) {
+        
         this.properties = properties;
         this.suppressDate = suppressDate;
     }
@@ -179,8 +180,11 @@ public final class OrderedProperties {
         CustomProperties customProperties = new CustomProperties(this.properties);
         
         if (this.suppressDate) {
+            
             customProperties.store(new DateSuppressingPropertiesBufferedWriter(new OutputStreamWriter(stream, StandardCharsets.ISO_8859_1)), comments);
+            
         } else {
+            
             customProperties.store(stream, comments);
         }
     }
@@ -193,8 +197,11 @@ public final class OrderedProperties {
         CustomProperties customProperties = new CustomProperties(this.properties);
         
         if (this.suppressDate) {
+            
             customProperties.store(new DateSuppressingPropertiesBufferedWriter(writer), comments);
+            
         } else {
+            
             customProperties.store(writer, comments);
         }
     }
@@ -259,7 +266,10 @@ public final class OrderedProperties {
             return true;
         }
 
-        if (other == null || this.getClass() != other.getClass()) {
+        if (
+            other == null
+            || this.getClass() != other.getClass()
+        ) {
             return false;
         }
 
@@ -359,9 +369,10 @@ public final class OrderedProperties {
          * @return the new instance
          */
         public OrderedProperties build() {
-            Map<String, String> properties = this.comparator != null ?
-                    new TreeMap<>(this.comparator) :
-                    new LinkedHashMap<>();
+            Map<String, String> properties =
+                this.comparator != null
+                ? new TreeMap<>(this.comparator)
+                : new LinkedHashMap<>();
                     
             return new OrderedProperties(properties, this.suppressDate);
         }
@@ -429,6 +440,7 @@ public final class OrderedProperties {
         private String previousComment;
 
         private DateSuppressingPropertiesBufferedWriter(Writer out) {
+            
             super(out);
         }
 
@@ -442,15 +454,18 @@ public final class OrderedProperties {
                 if (string.endsWith(LINE_SEPARATOR)) {
                     
                     if (this.previousComment != null) {
+                        
                         super.write(this.previousComment);
                     }
 
                     this.previousComment = this.currentComment.toString();
                     this.currentComment = null;
                 }
+                
             } else if (string.startsWith("#")) {
                 
                 this.currentComment = new StringBuilder(string);
+                
             } else {
                 
                 super.write(string);

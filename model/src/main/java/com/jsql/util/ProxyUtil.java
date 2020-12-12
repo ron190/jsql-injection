@@ -196,7 +196,13 @@ public class ProxyUtil {
     private void logStatus(ShowOnConsole showOnConsole, String address, String port) {
         
         if (showOnConsole == ShowOnConsole.YES) {
-            ProxyUtil.LOGGER.debug("Connection to proxy "+ address +":"+ port +" successful");
+            LOGGER.debug(
+                String.format(
+                    "Connection to proxy %s:%s successful",
+                    address,
+                    port
+                )
+            );
         }
     }
     
@@ -206,17 +212,18 @@ public class ProxyUtil {
             
             String message = Optional.ofNullable(e.getMessage()).orElse(StringUtils.EMPTY);
             
-            ProxyUtil.LOGGER.warn(
-                "Connection to proxy "
-                + address
-                + ":"
-                + port
-                +" failed with error \""+ message.replace(e.getClass().getName() +": ", StringUtils.EMPTY)
-                +"\", verify your proxy settings",
+            LOGGER.warn(
+                String.format(
+                    "Connection to proxy %s:%s failed with error \"%s\", verify your proxy settings",
+                    address,
+                    port,
+                    message.replace(e.getClass().getName() +": ", StringUtils.EMPTY)
+                ),
                 e
             );
         }
     }
+    
     
     // Getters and setters
     

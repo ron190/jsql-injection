@@ -215,14 +215,17 @@ public class PanelConsoles extends JPanel {
             
             this.insertJavaTab();
         }
+        
         if (preferences.getBoolean(UiUtil.NETWORK_VISIBLE, true)) {
             
             this.insertNetworkTab();
         }
+        
         if (preferences.getBoolean(UiUtil.CHUNK_VISIBLE, true)) {
             
             this.insertChunkTab();
         }
+        
         if (preferences.getBoolean(UiUtil.BINARY_VISIBLE, true)) {
             
             this.insertBooleanTab();
@@ -373,6 +376,7 @@ public class PanelConsoles extends JPanel {
                 
                 JToolTip tipI18n = new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip));
                 refJToolTipI18n[0] = (JToolTipI18n) tipI18n;
+                
                 return tipI18n;
             }
         };
@@ -425,7 +429,13 @@ public class PanelConsoles extends JPanel {
     public void messageBinary(String text) {
         
         try {
-            this.binaryTextArea.append("\t"+ text);
+            this.binaryTextArea.append(
+                String
+                .format(
+                    "\t%s",
+                    text
+                )
+            );
             this.binaryTextArea.setCaretPosition(this.binaryTextArea.getDocument().getLength());
         
         } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {

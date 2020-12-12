@@ -94,7 +94,8 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
     @Override
     public boolean canImport(TransferSupport support) {
         
-        return support.isDataFlavorSupported(DataFlavor.stringFlavor)
+        return
+            support.isDataFlavorSupported(DataFlavor.stringFlavor)
             || support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
     }
 
@@ -149,7 +150,6 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
         int childIndex = dl.getIndex();
 
         try {
-            
             list.dropPasteFile(
                 (List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor),
                 childIndex
@@ -164,7 +164,6 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
     private void parseStringPaste(DnDList list, DefaultListModel<ItemList> listModel, Transferable transferableFromClipboard) {
         
         try {
-            
             String clipboardText = (String) transferableFromClipboard.getTransferData(DataFlavor.stringFlavor);
 
             int selectedIndexPaste = 0;
@@ -206,7 +205,6 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
     private void parseFilePaste(DnDList list, Transferable transferableFromClipboard) {
         
         try {
-            
             int selectedIndex = 0;
             
             if (list.getSelectedIndex() > 0) {

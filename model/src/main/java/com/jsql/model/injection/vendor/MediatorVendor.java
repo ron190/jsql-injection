@@ -136,7 +136,7 @@ public class MediatorVendor {
                     columnName = StringUtils.strip(columnName, "`");
                     
                     if (
-                        !"CONSTRAINT".equals(columnName) 
+                        !"CONSTRAINT".equals(columnName)
                         && !"UNIQUE".equals(columnName)
                     ) {
                         

@@ -71,7 +71,11 @@ public class ExceptionUtil {
                     if (!ExceptionUtil.this.exceptionsMd5Cached.contains(md5Exception)) {
                         
                         ExceptionUtil.this.exceptionsMd5Cached.add(md5Exception);
-                        ExceptionUtil.this.injectionModel.getMediatorUtils().getGitUtil().sendUnhandledException(thread.getName(), throwable);
+                        ExceptionUtil.this.injectionModel.getMediatorUtils().getGitUtil()
+                        .sendUnhandledException(
+                            thread.getName(),
+                            throwable
+                        );
                     }
                     
                 } catch (NoSuchAlgorithmException e) {
@@ -95,7 +99,6 @@ public class ExceptionUtil {
 
         // Event dispatching thread Exception
         try {
-            
             SwingUtilities.invokeAndWait(() ->
                 // We are in the event dispatching thread
                 Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())

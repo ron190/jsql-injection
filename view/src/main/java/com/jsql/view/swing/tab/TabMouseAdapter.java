@@ -44,7 +44,11 @@ public class TabMouseAdapter extends MouseAdapter {
         JPopupMenu menu = new JPopupMenu();
 
         // Copy menu items from menubar
-        for (int position = 0 ; position < MediatorHelper.menubar().getMenuView().getMenuComponentCount() ; position++) {
+        for (
+            int position = 0
+            ; position < MediatorHelper.menubar().getMenuView().getMenuComponentCount()
+            ; position++
+        ) {
             
             // Fix #35348: SerializationException on clone()
             try {

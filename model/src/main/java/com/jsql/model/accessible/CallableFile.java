@@ -81,8 +81,11 @@ public class CallableFile implements Callable<CallableFile> {
             
             // Get partial source
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
+                
                 resultToParse = e.getSlidingWindowAllRows();
+                
             } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
+                
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
             
@@ -95,6 +98,7 @@ public class CallableFile implements Callable<CallableFile> {
         
         return this;
     }
+    
     
     // Getters and setters
     

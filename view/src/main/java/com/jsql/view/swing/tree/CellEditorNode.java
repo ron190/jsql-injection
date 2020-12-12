@@ -74,7 +74,9 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
         
         try {
             this.nodeModel = (AbstractNodeModel) currentNodeModel;
+            
             if (componentRenderer instanceof JCheckBox) {
+                
                 ((JCheckBox) componentRenderer).addActionListener(
                     new ActionCheckUncheck(this.nodeModel, currentNode)
                 );

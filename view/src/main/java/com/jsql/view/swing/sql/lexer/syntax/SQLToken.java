@@ -379,5 +379,4 @@ public class SQLToken extends Token {
         return "Token #" + Integer.toHexString(this.id) + ": " + this.getDescription() + " Line " + this.lineNumber + " from "
                 + this.charBegin + " to " + this.charEnd + " : " + this.contents;
     }
-
 }

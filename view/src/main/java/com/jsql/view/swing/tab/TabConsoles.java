@@ -31,7 +31,11 @@ public class TabConsoles extends TabbedPaneWheeled {
         int tabIndex = this.indexOfTab(label);
         
         // Highlight only if tab not selected and tab exists
-        if (this.getSelectedIndex() != tabIndex && 0 <= tabIndex && tabIndex < this.getTabCount()) {
+        if (
+            this.getSelectedIndex() != tabIndex
+            && 0 <= tabIndex
+            && tabIndex < this.getTabCount()
+        ) {
             
             Component tabHeader = this.getTabComponentAt(tabIndex);
             

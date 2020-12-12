@@ -33,6 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.accessible.CallableHttpHead;
+import com.jsql.model.accessible.ResourceAccess;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
@@ -154,6 +155,7 @@ public class ManagerAdminPage extends AbstractManagerList {
                     Thread.currentThread().interrupt();
                 }
             }
+            
         } else if (this.run.getState() == StateButton.STOPPABLE) {
             
             MediatorHelper.model().getResourceAccess().setSearchAdminStopped(true);
@@ -210,24 +212,26 @@ public class ManagerAdminPage extends AbstractManagerList {
             }
         }
 
+        ResourceAccess resourceAccess = MediatorHelper.model().getResourceAccess();
+        
         int nbAdminPagesFound = 0;
         int submittedTasks = folderSplits.size() * pageNames.size();
         int tasksHandled;
         
         for (
-            tasksHandled = 0;
-            tasksHandled < submittedTasks && !MediatorHelper.model().getResourceAccess().isSearchAdminStopped();
-            tasksHandled++
+            tasksHandled = 0
+            ; tasksHandled < submittedTasks && !resourceAccess.isSearchAdminStopped()
+            ; tasksHandled++
         ) {
-            nbAdminPagesFound = MediatorHelper.model().getResourceAccess().callAdminPage(taskCompletionService, nbAdminPagesFound);
+            nbAdminPagesFound = resourceAccess.callAdminPage(taskCompletionService, nbAdminPagesFound);
         }
 
         taskExecutor.shutdown();
         taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
 
-        MediatorHelper.model().getResourceAccess().setSearchAdminStopped(false);
+        resourceAccess.setSearchAdminStopped(false);
 
-        MediatorHelper.model().getResourceAccess().logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);
+        resourceAccess.logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);
 
         Request request = new Request();
         request.setMessage(Interaction.END_ADMIN_SEARCH);

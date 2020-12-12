@@ -55,7 +55,15 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         
         if (this.isApplicable) {
             
-            LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Normal injection at index ["+ this.visibleIndex +"] using ["+ this.performanceLength +"] characters");
+            LOGGER.debug(
+                String
+                .format(
+                    "%s Normal injection at index [%s] using [%s] characters",
+                    I18nUtil.valueByKey("LOG_VULNERABLE"),
+                    this.visibleIndex,
+                    this.performanceLength
+                )
+            );
             this.allow();
             
         } else {
@@ -166,17 +174,19 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         // Sort by length of #######...#######
         Arrays.sort(lengthFields, (Integer[] s1, Integer[] s2) -> s1[0].compareTo(s2[0]));
         
-        this.performanceLength = lengthFields[lengthFields.length - 1][0].toString();
+        Integer[] bestLengthFields = lengthFields[lengthFields.length - 1];
+        
+        this.performanceLength = bestLengthFields[0].toString();
 
         // Replace all others indexes by 1
         indexesInUrl = indexesInUrl.replaceAll(
-            "1337(?!"+ lengthFields[lengthFields.length - 1][1] +"7331)\\d*7331",
+            "1337(?!"+ bestLengthFields[1] +"7331)\\d*7331",
             "1"
         );
         
         this.injectionModel.setIndexesInUrl(indexesInUrl);
         
-        return Integer.toString(lengthFields[lengthFields.length - 1][1]);
+        return Integer.toString(bestLengthFields[1]);
     }
     
     

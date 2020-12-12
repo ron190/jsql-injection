@@ -46,6 +46,7 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
         for (Diff trueDiff: this.injectionCharInsertion.getConstantTrueMark()) {
             
             if (!this.opcodes.contains(trueDiff)) {
+                
                 return false;
             }
         }

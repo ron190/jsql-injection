@@ -83,13 +83,24 @@ public class CoderListener implements ActionListener {
             
         } catch (IllegalArgumentException | NoSuchAlgorithmException | IOException | DecoderException e) {
             
-            result = String.format("<span style=\"color:red;\">Decoding failed: %s</span>", e.getMessage());
+            result =
+                String
+                .format(
+                    "<span style=\"color:red;\">Decoding failed: %s</span>",
+                    e.getMessage()
+                );
             
             // Ignore
             IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
             LOGGER.trace(exceptionIgnored, exceptionIgnored);
         }
         
-        this.coderManager.getResult().setText(String.format("<html><span style=\"font-family:'Ubuntu Mono'\">%s</span></html>", result));
+        this.coderManager.getResult().setText(
+            String
+            .format(
+                "<html><span style=\"font-family:'Ubuntu Mono'\">%s</span></html>",
+                result
+            )
+        );
     }
 }

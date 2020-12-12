@@ -89,14 +89,11 @@ public class Menubar extends JMenuBar {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    /**
-     * Checkbox item to show/hide chunk console.
-     */
+    
+    // Checkbox item to show/hide chunk console.
     private JCheckBoxMenuItem chunkMenu;
 
-    /**
-     * Checkbox item to show/hide java console.
-     */
+    // Checkbox item to show/hide java console.
     private JCheckBoxMenuItem javaDebugMenu;
     
     private JMenu menuView;
@@ -415,6 +412,7 @@ public class Menubar extends JMenuBar {
                 if (titleTabSqlEngine.equals(MediatorHelper.tabResults().getTitleAt(i))) {
                     
                     MediatorHelper.tabResults().setSelectedIndex(i);
+                    
                     return;
                 }
             }
@@ -455,6 +453,7 @@ public class Menubar extends JMenuBar {
                 if (titleTabPreferences.equals(MediatorHelper.tabResults().getTitleAt(i))) {
                     
                     MediatorHelper.tabResults().setSelectedIndex(i);
+                    
                     return;
                 }
             }
@@ -537,7 +536,11 @@ public class Menubar extends JMenuBar {
         
         // Unhandled ClassFormatError #73790 on constructor: Unknown constant tag 73 in class file java/awt/font/TextLine
         this.itemArabic = new JRadioButtonMenuItem(
-            "<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span></html>",
+            String.format(
+                "<html><span style=\"font-family:'%s'\">%s</span></html>",
+                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                new Locale("ar").getDisplayLanguage(new Locale("ar"))
+            ),
             UiUtil.ICON_FLAG_AR,
             new Locale("ar").getLanguage().equals(Locale.getDefault().getLanguage())
         );
@@ -616,7 +619,12 @@ public class Menubar extends JMenuBar {
         this.itemPortuguese.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("pt")));
         
         this.itemChinese = new JRadioButtonMenuItem(
-            "<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span></html>",
+            String
+            .format(
+                "<html><span style=\"font-family:'%s'\">%s</span></html>",
+                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                new Locale("zh").getDisplayLanguage(new Locale("zh"))
+            ),
             UiUtil.ICON_FLAG_ZH,
             new Locale("zh").getLanguage().equals(Locale.getDefault().getLanguage())
         );
@@ -644,7 +652,12 @@ public class Menubar extends JMenuBar {
         this.itemSwedish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("se")));
         
         this.itemKorean = new JRadioButtonMenuItem(
-            "<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ko").getDisplayLanguage(new Locale("ko")) +"</span></html>",
+            String
+            .format(
+                "<html><span style=\"font-family:'%s'\">%s</span></html>",
+                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                new Locale("ko").getDisplayLanguage(new Locale("ko"))
+            ),
             UiUtil.ICON_FLAG_KO,
             new Locale("ko").getLanguage().equals(Locale.getDefault().getLanguage())
         );
@@ -694,6 +707,7 @@ public class Menubar extends JMenuBar {
             private Language language;
             
             ActionTranslate(Language language) {
+                
                 this.language = language;
             }
             
@@ -845,7 +859,10 @@ public class Menubar extends JMenuBar {
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
-                new String[]{"Report", I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")},
+                new String[] {
+                    "Report",
+                    I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
+                },
                 I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
             );
 
@@ -1014,8 +1031,11 @@ public class Menubar extends JMenuBar {
                         methodSetText.setAccessible(true);
                         
                         if (I18nUtil.isAsian(newLocale)) {
+                            
                             methodSetText.invoke(componentSwing, I18nViewUtil.valueByKey(key));
+                            
                         } else {
+                            
                             methodSetText.invoke(componentSwing, I18nUtil.valueByKey(key));
                         }
                     }
@@ -1123,6 +1143,7 @@ public class Menubar extends JMenuBar {
         
         header.repaint();
     }
+    
     
     // Getter and setter
 

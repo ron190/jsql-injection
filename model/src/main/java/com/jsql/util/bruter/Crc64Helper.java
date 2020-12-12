@@ -38,11 +38,15 @@ public class Crc64Helper {
         for (int i = 0; i < 0x100; i++) {
             
             long v = i;
+            
             for (int j = 0; j < 8; j++) {
                 
                 if ((v & 1) == 1) {
+                    
                     v = (v >>> 1) ^ POLY64REV;
+                    
                 } else {
+                    
                     v = v >>> 1;
                 }
             }
@@ -62,6 +66,7 @@ public class Crc64Helper {
         
         long sum = 0;
         for (byte element : data) {
+            
             final int lookupidx = ((int) sum ^ element) & 0xff;
             sum = (sum >>> 8) ^ LOOKUPTABLE[lookupidx];
         }

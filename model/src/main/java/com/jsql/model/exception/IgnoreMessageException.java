@@ -5,6 +5,7 @@ package com.jsql.model.exception;
 public class IgnoreMessageException extends Exception {
 
     public IgnoreMessageException(Exception e) {
+        
         super(e);
     }
 }

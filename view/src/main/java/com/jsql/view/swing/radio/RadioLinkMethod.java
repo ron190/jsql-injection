@@ -52,17 +52,20 @@ public class RadioLinkMethod extends AbstractRadioLink {
      * Add radio to the radio group.
      */
     private void init() {
+        
         this.addMouseListener(new RadioMethodMouseAdapter());
         RadioLinkMethod.groupMethod.add(this);
     }
 
     @Override
     public void action() {
+        
         MediatorHelper.panelAddressBar().setMethodInjection(this.methodInjection);
     }
 
     @Override
     public List<JLabel> getGroup() {
+        
         return RadioLinkMethod.groupMethod;
     }
 }

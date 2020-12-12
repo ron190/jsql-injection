@@ -161,6 +161,13 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     
     public void highlight(String url, String strategy) {
         
+        String itemLabel =
+            String
+            .format(
+                " [%s]",
+                strategy
+            );
+        
         ListModel<ItemList> listModel = this.listPaths.getModel();
         
         for (int i = 0 ; i < listModel.getSize() ; i++) {
@@ -172,10 +179,8 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
                     listModel
                     .getElementAt(i)
                     .getInternalString()
-                    .replace(" ["+ strategy +"]", StringUtils.EMPTY)
-                    + " ["
-                    + strategy
-                    + "]"
+                    .replace(itemLabel, StringUtils.EMPTY)
+                    + itemLabel
                 );
                 
                 ((DefaultListModel<ItemList>) listModel).setElementAt(listModel.getElementAt(i), i);
@@ -195,6 +200,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * Unselect every element of the list.
      */
     public void clearSelection() {
+        
         this.listPaths.clearSelection();
     }
 
@@ -203,6 +209,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * @param isEnable The new state of the button
      */
     public void setButtonEnable(boolean isEnable) {
+        
         this.run.setEnabled(isEnable);
     }
 
@@ -211,8 +218,10 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * @param icon The new icon
      */
     public void changePrivilegeIcon(Icon icon) {
+        
         this.privilege.setIcon(icon);
     }
+    
     
     // Getter and setter
 

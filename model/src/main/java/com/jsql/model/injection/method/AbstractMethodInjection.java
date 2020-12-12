@@ -182,7 +182,15 @@ public abstract class AbstractMethodInjection implements Serializable {
         paramStar.setValue(paramStar.getValue() + InjectionModel.STAR);
         
         try {
-            LOGGER.info("Checking "+ this.name() +" parameter "+ paramStar.getKey() +"="+ paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));
+            LOGGER.info(
+                String
+                .format(
+                    "Checking %s parameter %s=%s",
+                    this.name(),
+                    paramStar.getKey(),
+                    paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
+                )
+            );
             
             // Test current standard value marked with * for injection
             // Keep original param

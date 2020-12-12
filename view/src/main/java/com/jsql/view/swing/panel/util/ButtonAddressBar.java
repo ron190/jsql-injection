@@ -50,6 +50,7 @@ public class ButtonAddressBar extends JButton {
      * @return State of process
      */
     public StateButton getState() {
+        
         return this.state;
     }
 

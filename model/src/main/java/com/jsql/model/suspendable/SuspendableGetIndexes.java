@@ -87,7 +87,16 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                         LOGGER.info("Calibrating indexes disabled, forcing to index [1]");
                     }
                     
-                    LOGGER.info("Normal strategy triggered with query ["+ currentCallable.getQuery().trim().replaceAll("1337(\\d*)7330%2b1", "$1") +"]");
+                    LOGGER.info(
+                        String
+                        .format(
+                            "Normal strategy triggered with query [%s]",
+                            currentCallable
+                            .getQuery()
+                            .trim()
+                            .replaceAll("1337(\\d*)7330%2b1", "$1")
+                        )
+                    );
                     
                     break;
                 }

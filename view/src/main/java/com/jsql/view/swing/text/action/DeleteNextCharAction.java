@@ -33,6 +33,7 @@ public class DeleteNextCharAction extends AbstractCharAction {
                 char c1 = dotChars.charAt(1);
 
                 if (c0 >= '\uD800' && c0 <= '\uDBFF' && c1 >= '\uDC00' && c1 <= '\uDFFF') {
+                    
                     delChars = 2;
                 }
             }

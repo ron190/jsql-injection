@@ -35,6 +35,7 @@ public class BlockCaret extends DefaultCaret {
      * Create a caret shaped for terminal.
      */
     public BlockCaret() {
+        
         // half a second
         this.setBlinkRate(500);
     }
@@ -43,6 +44,7 @@ public class BlockCaret extends DefaultCaret {
     protected synchronized void damage(Rectangle r) {
         
         if (r == null) {
+            
             return;
         }
 
@@ -57,6 +59,7 @@ public class BlockCaret extends DefaultCaret {
         // paint()
         // will receive a bogus clip area and caret will not get drawn properly.
         if (this.width <= 0) {
+            
             this.width = this.getComponent().getWidth();
         }
 
@@ -73,6 +76,7 @@ public class BlockCaret extends DefaultCaret {
         JTextComponent comp = this.getComponent();
 
         if (comp == null) {
+            
             return;
         }
 
@@ -82,9 +86,11 @@ public class BlockCaret extends DefaultCaret {
         
         try {
             r = comp.modelToView(dot);
+            
             if (r == null) {
                 return;
             }
+            
             dotChar = comp.getText(dot, 1).charAt(0);
             
         } catch (BadLocationException e) {
@@ -94,6 +100,7 @@ public class BlockCaret extends DefaultCaret {
         }
 
         if (Character.isWhitespace(dotChar)) {
+            
             dotChar = '_';
         }
 
@@ -103,6 +110,7 @@ public class BlockCaret extends DefaultCaret {
             // damage(), so do some cleanup. (This happens, for example, when
             // the text component is resized.)
             this.damage(r);
+            
             return;
         }
 
@@ -114,6 +122,7 @@ public class BlockCaret extends DefaultCaret {
         this.width = g.getFontMetrics().charWidth(dotChar);
         
         if (this.isVisible()) {
+            
             g.fillRect(r.x, r.y, this.width, r.height);
         }
     }

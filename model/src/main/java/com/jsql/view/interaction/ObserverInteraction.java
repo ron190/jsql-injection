@@ -40,7 +40,12 @@ public class ObserverInteraction implements Observer {
             Class<?>[] types = new Class[]{ Object[].class };
             Constructor<?> ct = cl.getConstructor(types);
 
-            InteractionCommand o2 = (InteractionCommand) ct.newInstance(new Object[]{ interaction.getParameters() });
+            InteractionCommand o2 =
+                (InteractionCommand) ct.newInstance(
+                    new Object[] {
+                        interaction.getParameters()
+                    }
+                );
             o2.execute();
             
         } catch (ClassNotFoundException e) {
@@ -50,8 +55,13 @@ public class ObserverInteraction implements Observer {
             LOGGER.trace(ignore, ignore);
             
         } catch (
-            InstantiationException | IllegalAccessException | NoSuchMethodException |
-            SecurityException | IllegalArgumentException | InvocationTargetException e
+            InstantiationException
+            | IllegalAccessException
+            | NoSuchMethodException
+            | SecurityException
+            | IllegalArgumentException
+            | InvocationTargetException
+            e
         ) {
             LOGGER.error(e.getMessage(), e);
         }

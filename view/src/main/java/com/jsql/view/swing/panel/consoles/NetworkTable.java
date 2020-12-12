@@ -79,19 +79,26 @@ public class NetworkTable extends JTable {
         this.setModel(new DefaultTableModel() {
             
             private String[] columns = {
+                    
                 I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"),
-                I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN") + " (KB)",
+                String
+                .format(
+                    "%s (KB)",
+                    I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN")
+                ),
                 "Strategy",
                 "Metadata"
             };
 
             @Override
             public int getColumnCount() {
+                
                 return this.columns.length;
             }
 
             @Override
             public String getColumnName(int index) {
+                
                 return this.columns[index];
             }
         });
@@ -119,6 +126,7 @@ public class NetworkTable extends JTable {
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
                 
                 JLabel label = (JLabel) tableCellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                
                 label.setBorder(
                     BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(0, 0, 1, 1, Color.LIGHT_GRAY),

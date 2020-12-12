@@ -41,13 +41,16 @@ public class SilentDeleteTextAction extends TextAction {
                 
                 // @see javax/swing/text/DefaultEditorKit.java DeletePrevCharAction
                 if (dot == 0 && mark == 0) {
+                    
                     return;
                 }
             } else {
                 
                 // @see javax/swing/text/DefaultEditorKit.java DeleteNextCharAction
                 Document doc = target.getDocument();
+                
                 if (dot == mark && doc.getLength() == dot) {
+                    
                     return;
                 }
             }

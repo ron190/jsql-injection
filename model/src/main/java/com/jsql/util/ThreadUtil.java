@@ -92,7 +92,9 @@ public final class ThreadUtil {
         try {
             this.suspendables.values().stream().forEach(AbstractSuspendable::stop);
             this.suspendables.clear();
+            
         } catch (ConcurrentModificationException e) {
+            
             LOGGER.error(e, e);
         }
     }

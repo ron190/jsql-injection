@@ -25,6 +25,7 @@ public class FlatButtonMouseAdapter extends MouseAdapter {
     public void mouseEntered(MouseEvent e) {
         
         if (this.buttonFlat.isEnabled() && !this.isVisible) {
+            
             this.buttonFlat.setContentAreaFilled(true);
             this.buttonFlat.setBorder(UiUtil.BORDER_ROUND_BLU);
         }
@@ -34,6 +35,7 @@ public class FlatButtonMouseAdapter extends MouseAdapter {
     public void mouseExited(MouseEvent e) {
         
         if (this.buttonFlat.isEnabled() && !this.isVisible) {
+            
             this.buttonFlat.setContentAreaFilled(false);
             this.buttonFlat.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         }

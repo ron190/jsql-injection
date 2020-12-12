@@ -74,9 +74,17 @@ public class HeaderUtil {
                 
             } else {
                 
-                connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, StandardCharsets.UTF_8.name()));
+                connection.addRequestProperty(
+                    keyHeader,
+                    URLDecoder.decode(
+                        valueHeader,
+                        StandardCharsets.UTF_8.name()
+                    )
+                );
             }
+            
         } catch (NullPointerException | UnsupportedEncodingException e) {
+            
             LOGGER.error(e, e);
         }
     }
@@ -110,7 +118,14 @@ public class HeaderUtil {
         if (optionalCookieCsrf.isPresent()) {
             
             SimpleEntry<String, String> cookieCsrf = optionalCookieCsrf.get();
-            LOGGER.warn("Found CSRF token in HTTP header: "+ cookieCsrf.getKey() +"="+ cookieCsrf.getValue());
+            LOGGER.warn(
+                String
+                .format(
+                    "Found CSRF token in HTTP header: %s=%s",
+                    cookieCsrf.getKey(),
+                    cookieCsrf.getValue()
+                )
+            );
             
             // TODO Add each CSRF tokens to each header and request, like Spring param _csrf and header XSRF-TOKEN
             SimpleEntry<String, String> headerCsrf =
@@ -126,8 +141,11 @@ public class HeaderUtil {
             ) {
                 
                 LOGGER.debug(
-                    "CSRF token added to querystring, request and header: "+
-                    "X-"+ cookieCsrf.getKey() +"="+ cookieCsrf.getValue()
+                    String.format(
+                        "CSRF token added to querystring, request and header: X-%s=%s",
+                        cookieCsrf.getKey(),
+                        cookieCsrf.getValue()
+                    )
                 );
                 this.injectionModel.getMediatorUtils().getConnectionUtil().setTokenCsrf(headerCsrf);
                 
@@ -152,6 +170,7 @@ public class HeaderUtil {
         this.injectionModel.sendToViews(request);
         
         if (exception != null) {
+            
             throw new IOException(exception);
         }
     }
@@ -161,7 +180,8 @@ public class HeaderUtil {
         Exception exceptionCsrf = exception;
         
         // TODO csrf in HTTP
-        Optional<SimpleEntry<String, String>> optionalTokenCsrf = Jsoup
+        Optional<SimpleEntry<String, String>> optionalTokenCsrf =
+            Jsoup
             .parse(pageSource.toString())
             .select("input")
             .select("[name=csrf_token], [name=csrfToken], [name=user_token], [name=csrfmiddlewaretoken], [name=form_build_id]")
@@ -178,12 +198,24 @@ public class HeaderUtil {
                 && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
             ) {
                 
-                LOGGER.debug("Found Csrf token "+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +" in HTML body, adding token to querystring, request and header");
+                LOGGER.debug(
+                    String.format(
+                        "Found Csrf token %s=%s in HTML body, adding token to querystring, request and header",
+                        tokenCsrfFound.getKey(),
+                        tokenCsrfFound.getValue()
+                    )
+                );
                 this.injectionModel.getMediatorUtils().getConnectionUtil().setTokenCsrf(tokenCsrfFound);
                 
             } else {
                 
-                LOGGER.warn("Found Csrf token in HTML body: "+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue());
+                LOGGER.warn(
+                    String.format(
+                        "Found Csrf token in HTML body: %s=%s",
+                        tokenCsrfFound.getKey(),
+                        tokenCsrfFound.getValue()
+                    )
+                );
                 exceptionCsrf = new IOException("please activate Csrf processing in Preferences");
             }
         }
@@ -207,19 +239,26 @@ public class HeaderUtil {
             
             mapForms.put(form, new ArrayList<>());
             
-            result.append("\n<form action=\"");
-            result.append(form.attr("action"));
-            result.append("\" method=\"");
-            result.append(form.attr(FORM_ATTR_VALUE));
-            result.append("\" />");
+            result.append(
+                String
+                .format(
+                    "\n<form action=\"%s\" method=\"%s\" />",
+                    form.attr("action"),
+                    form.attr(FORM_ATTR_VALUE)
+                )
+            );
             
             for (Element input: form.select("input")) {
                 
-                result.append("\n    <input name=\"");
-                result.append(input.attr("name"));
-                result.append("\" value=\"");
-                result.append(input.attr(INPUT_ATTR_VALUE));
-                result.append("\" />");
+                
+                result.append(
+                    String
+                    .format(
+                        "\n    <input name=\"%s\" value=\"%s\" />",
+                        input.attr("name"),
+                        input.attr(INPUT_ATTR_VALUE)
+                    )
+                );
                 
                 mapForms.get(form).add(input);
             }
@@ -239,7 +278,14 @@ public class HeaderUtil {
 
     private void addForms(Elements elementsForm, StringBuilder result, Map<Element, List<Element>> mapForms) {
         
-        LOGGER.debug(String.format("Found %s <form> in HTML body, adding input(s) to requests: %s", elementsForm.size(), result));
+        LOGGER.debug(
+            String
+            .format(
+                "Found %s <form> in HTML body, adding input(s) to requests: %s",
+                elementsForm.size(),
+                result
+            )
+        );
         
         for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
             
@@ -247,11 +293,23 @@ public class HeaderUtil {
                 
                 if ("get".equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {
                     
-                    this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(0, new SimpleEntry<>(input.attr("name"), input.attr(INPUT_ATTR_VALUE)));
+                    this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(
+                        0,
+                        new SimpleEntry<>(
+                            input.attr("name"),
+                            input.attr(INPUT_ATTR_VALUE)
+                        )
+                    );
                     
                 } else if ("post".equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {
                     
-                    this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(0, new SimpleEntry<>(input.attr("name"), input.attr(INPUT_ATTR_VALUE)));
+                    this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(
+                        0,
+                        new SimpleEntry<>(
+                            input.attr("name"),
+                            input.attr(INPUT_ATTR_VALUE)
+                        )
+                    );
                 }
             }
         }
@@ -261,12 +319,25 @@ public class HeaderUtil {
         
         if (connection.getResponseCode() != 200) {
             
-            LOGGER.trace(String.format("Found %s ignored <form> in HTML body: %s", elementsForm.size(), result));
+            LOGGER.trace(
+                String
+                .format(
+                    "Found %s ignored <form> in HTML body: %s",
+                    elementsForm.size(),
+                    result
+                )
+            );
             LOGGER.info("WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
             
         } else {
             
-            LOGGER.trace("Found "+ elementsForm.size() +" <form> in HTML body while status 200 Success:"+ result);
+            LOGGER.trace(
+                String.format(
+                    "Found %s <form> in HTML body while status 200 Success:%s",
+                    elementsForm.size(),
+                    result
+                )
+            );
         }
     }
 
@@ -285,6 +356,7 @@ public class HeaderUtil {
                 
                 sourceByteArray.write(buffer, 0, length);
             }
+            
         } catch (IOException errorInputStream) {
             
             exception = errorInputStream;
@@ -300,6 +372,7 @@ public class HeaderUtil {
                         
                         sourceByteArray.write(buffer, 0, length);
                     }
+                    
                 } catch (Exception errorErrorStream) {
                     
                     exception = new IOException("Exception reading Error Stream", errorErrorStream);
@@ -312,6 +385,7 @@ public class HeaderUtil {
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
             
             if (exception != null) {
+                
                 LOGGER.debug("Connection test disabled, ignoring response HTTP "+ connection.getResponseCode() +"...");
             }
             
@@ -469,8 +543,7 @@ public class HeaderUtil {
                 mapHeaders.put(
                     entries.getKey() == null
                     ? "Status code"
-                    : entries.getKey()
-                    ,
+                    : entries.getKey(),
                     String.join(",", entries.getValue())
                 );
             }

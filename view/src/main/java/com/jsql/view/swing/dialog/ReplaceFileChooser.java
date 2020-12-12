@@ -15,8 +15,6 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.jsql.util.I18nUtil;
 
 /**
@@ -47,7 +45,12 @@ public class ReplaceFileChooser extends JFileChooser {
                 
                 int result = JOptionPane.showConfirmDialog(
                     this,
-                    this.getSelectedFile().getName() + StringUtils.SPACE + I18nUtil.valueByKey("SAVE_TAB_CONFIRM_LABEL"),
+                    String
+                    .format(
+                        "%s %s",
+                        this.getSelectedFile().getName(),
+                        I18nUtil.valueByKey("SAVE_TAB_CONFIRM_LABEL")
+                    ),
                     I18nUtil.valueByKey("SAVE_TAB_CONFIRM_TITLE"),
                     JOptionPane.YES_NO_OPTION
                 );

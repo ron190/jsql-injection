@@ -60,13 +60,16 @@ public class I18nUtil {
             String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
             
             LOGGER.debug(
-                "Please contribute and translate parts of jSQL Injection into "
-                + languageHost
-                + ": "
-                + "click on the top right button and open menu [Community], choose [I help translate jSQL into > another language...] and "
-                + "translate some text into "
-                + languageHost
-                + " then click on [Send]. Your translation will be integrated to the next release by the developer."
+                String.join(
+                    "",
+                    "Please contribute and translate parts of jSQL Injection into ",
+                    languageHost,
+                    ": ",
+                    "click on the top right button and open menu [Community], choose [I help translate jSQL into > another language...] and ",
+                    "translate some text into ",
+                    languageHost,
+                    " then click on [Send]. Your translation will be integrated to the next release by the developer."
+                )
             );
         }
     }
@@ -77,6 +80,7 @@ public class I18nUtil {
             || new Locale("ko").getLanguage().equals(newLocale.getLanguage())
             || new Locale("ja").getLanguage().equals(newLocale.getLanguage());
     }
+    
     
     // Getters and setters
     

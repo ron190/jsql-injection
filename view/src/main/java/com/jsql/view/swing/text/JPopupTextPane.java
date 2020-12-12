@@ -33,6 +33,7 @@ public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements De
             
             @Override
             public boolean isEditable() {
+                
                 return false;
             }
         });

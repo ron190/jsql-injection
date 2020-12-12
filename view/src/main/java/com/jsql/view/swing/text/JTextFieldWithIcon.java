@@ -46,6 +46,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
         super.paintComponent(g);
 
         URL url = UiUtil.URL_GLOBE;
+        
         if (url == null) {
             // Fix NullPointerException in constructor ImageIcon()
             return;

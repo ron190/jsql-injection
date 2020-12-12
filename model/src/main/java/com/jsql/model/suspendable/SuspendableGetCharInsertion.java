@@ -90,7 +90,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 requestSetVendor.setParameters(mediatorVendor.getVendor());
                 this.injectionModel.sendToViews(requestSetVendor);
                 
-                
                 // Char insertion
                 charFromOrderBy = currentCallable.getCharacterInsertion();
                 
@@ -192,12 +191,23 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                         .getOrderByErrorMessage()
                         .split("[\\r\\n]{1,}")
                     )
-                    .filter(errorMessage -> Pattern.compile(".*" + errorMessage + ".*", Pattern.DOTALL).matcher(pageSource).matches())
+                    .filter(errorMessage ->
+                        Pattern
+                        .compile(".*" + errorMessage + ".*", Pattern.DOTALL)
+                        .matcher(pageSource)
+                        .matches()
+                    )
                     .findAny();
                 
                 if (optionalOrderByErrorMatch.isPresent()) {
                     
-                    LOGGER.info("Possibly [" + vendor + "] from Order by match");
+                    LOGGER.info(
+                        String
+                        .format(
+                            "Possibly [%s] from Order by match",
+                            vendor
+                        )
+                    );
                 }
                 
                 return optionalOrderByErrorMatch.isPresent();
@@ -290,7 +300,13 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 }
                 
                 charFromBooleanMatch[0] = prefix.replace(labelPrefix, root) + suffix;
-                LOGGER.info("Found character insertion ["+ charFromBooleanMatch[0] +"] using Boolean match");
+                LOGGER.info(
+                    String
+                    .format(
+                        "Found character insertion [%s] using Boolean match",
+                        charFromBooleanMatch[0]
+                    )
+                );
             }
         }
     }

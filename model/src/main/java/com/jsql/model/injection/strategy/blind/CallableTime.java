@@ -68,6 +68,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     
     @Override
     public boolean isTrue() {
+        
         return this.diffSeconds < InjectionTime.SLEEP_TIME;
     }
 

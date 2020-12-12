@@ -45,7 +45,9 @@ public class ArrowIcon implements Icon, SwingConstants {
         // Implementation by sun.awt.image
         try {
             this.iconRenderer.paintTriangle(g, x, y + 3, this.size, this.direction, this.isEnabled);
+            
         } catch(ClassCastException e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
     }
@@ -54,6 +56,7 @@ public class ArrowIcon implements Icon, SwingConstants {
     public int getIconWidth() {
         
         switch (this.direction) {
+        
             case NORTH:
             case SOUTH: return this.iconSize;
             case EAST:
@@ -66,6 +69,7 @@ public class ArrowIcon implements Icon, SwingConstants {
     public int getIconHeight() {
         
         switch (this.direction) {
+        
             case NORTH:
             case SOUTH: return this.size;
             case EAST:

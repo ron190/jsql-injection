@@ -113,8 +113,11 @@ public class PanelTampering extends JPanel implements Cleanable {
         labelIsTamperingSpaceToMultilineComment.addActionListener(actionEvent -> {
             
             if (this.radioIsTamperingSpaceToMultilineComment.isSelected()) {
+                
                 groupSpaceToComment.clearSelection();
+                
             } else {
+                
                 this.radioIsTamperingSpaceToMultilineComment.setSelected(!this.radioIsTamperingSpaceToMultilineComment.isSelected());
             }
             
@@ -129,8 +132,11 @@ public class PanelTampering extends JPanel implements Cleanable {
         labelIsTamperingSpaceToDashComment.addActionListener(actionEvent -> {
             
             if (this.radioIsTamperingSpaceToDashComment.isSelected()) {
+                
                 groupSpaceToComment.clearSelection();
+                
             } else {
+                
                 this.radioIsTamperingSpaceToDashComment.setSelected(!this.radioIsTamperingSpaceToDashComment.isSelected());
             }
             
@@ -145,8 +151,11 @@ public class PanelTampering extends JPanel implements Cleanable {
         labelIsTamperingSpaceToSharpComment.addActionListener(actionEvent -> {
             
             if (this.radioIsTamperingSpaceToSharpComment.isSelected()) {
+                
                 groupSpaceToComment.clearSelection();
+                
             } else {
+                
                 this.radioIsTamperingSpaceToSharpComment.setSelected(!this.radioIsTamperingSpaceToSharpComment.isSelected());
             }
             
@@ -377,6 +386,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         
         UiUtil.stopDocumentColorer(this.textPaneEval);
     }
+    
     
     // Getter and setter
 

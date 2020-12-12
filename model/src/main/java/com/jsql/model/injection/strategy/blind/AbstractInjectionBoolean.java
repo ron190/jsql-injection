@@ -94,7 +94,6 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         // Increment the number of active tasks
         AtomicInteger countTasksSubmitted = new AtomicInteger(1);
         AtomicInteger countBadAsciiCode = new AtomicInteger(0);
-
         
         // Process the job until there is no more active task,
         // in other word until all HTTP requests are done
@@ -201,7 +200,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         indexCharacter.incrementAndGet();
         
         // New undefined bits of the next character
-        // Chars all have the last bit set to 0 in Ascii table 
+        // Chars all have the last bit set to 0 in Ascii table
         bytes.add(new char[]{'0', 'x', 'x', 'x', 'x', 'x', 'x', 'x'});
         
         // Test if it's the end of the line
@@ -211,7 +210,13 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         // Ignore last bit 128 and only check for first seven bits
         for (int bit: new int[]{1, 2, 4, 8, 16, 32, 64}) {
             
-            taskCompletionService.submit(this.getCallableBitTest(sqlQuery, indexCharacter.get(), bit));
+            taskCompletionService.submit(
+                this.getCallableBitTest(
+                    sqlQuery,
+                    indexCharacter.get(),
+                    bit
+                )
+            );
         }
         
         // Add 9 new tasks
@@ -223,7 +228,10 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         // Bits for current url
         char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
         
-        int positionInMask = (int) (8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit())) / Math.log(2));
+        int positionInMask = (int) (
+            8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit()))
+            / Math.log(2)
+        );
         
         // Set current bit
         asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';
@@ -237,7 +245,6 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         boolean isTerminated = false;
         
         try {
-            
             taskExecutor.shutdown();
             isTerminated = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);
             
@@ -259,7 +266,6 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         for (char[] c: bytes) {
             
             try {
-                
                 int charCode = Integer.parseInt(new String(c), 2);
                 String str = Character.toString((char) charCode);
                 result.append(str);

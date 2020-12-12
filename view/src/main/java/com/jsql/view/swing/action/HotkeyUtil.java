@@ -112,8 +112,11 @@ public final class HotkeyUtil {
                     int selectedIndex = valuesTabbedPane.getSelectedIndex();
                     
                     if (selectedIndex + 1 < valuesTabbedPane.getTabCount()) {
+                        
                         valuesTabbedPane.setSelectedIndex(selectedIndex + 1);
+                        
                     } else {
+                        
                         valuesTabbedPane.setSelectedIndex(0);
                     }
                 }
@@ -130,8 +133,11 @@ public final class HotkeyUtil {
                     int selectedIndex = valuesTabbedPane.getSelectedIndex();
                     
                     if (selectedIndex - 1 > -1) {
+                        
                         valuesTabbedPane.setSelectedIndex(selectedIndex - 1);
+                        
                     } else {
+                        
                         valuesTabbedPane.setSelectedIndex(valuesTabbedPane.getTabCount() - 1);
                     }
                 }
@@ -187,7 +193,8 @@ public final class HotkeyUtil {
     public static void addShortcut(final Menubar menubar) {
         
         /* Hide Menubar when focusing any component */
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner",
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
+            "permanentFocusOwner",
             propertyChangeEvent -> SwingUtilities.invokeLater(() -> {
                 
                 if (
