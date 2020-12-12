@@ -68,6 +68,8 @@ public class AddressMenuBar extends JMenuBar {
         this.setBorder(null);
 
         this.menuStrategy = new ComboMenu("Strategy auto");
+        
+        final String patternKeyTooltipStrategy = "STRATEGY_%s_TOOLTIP";
 
         for (final AbstractStrategy strategy: MediatorHelper.model().getMediatorStrategy().getStrategies()) {
             
@@ -80,14 +82,30 @@ public class AddressMenuBar extends JMenuBar {
                 
             } else {
                 
-                final JToolTipI18n[] refTooltip = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("STRATEGY_" + strategy.getName().toUpperCase(Locale.ROOT) + "_TOOLTIP"))};
+                final JToolTipI18n[] refTooltip = new JToolTipI18n[]{
+                    new JToolTipI18n(
+                        I18nUtil.valueByKey(
+                            String.format(
+                                patternKeyTooltipStrategy,
+                                strategy.getName().toUpperCase(Locale.ROOT)
+                            )
+                        )
+                    )
+                };
                 
                 itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString()) {
                     
                     @Override
                     public JToolTip createToolTip() {
                         
-                        JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("STRATEGY_" + strategy.getName().toUpperCase(Locale.ROOT) + "_TOOLTIP"));
+                        JToolTip tipI18n = new JToolTipI18n(
+                            I18nUtil.valueByKey(
+                                String.format(
+                                    patternKeyTooltipStrategy,
+                                    strategy.getName().toUpperCase(Locale.ROOT)
+                                )
+                            )
+                        );
                         refTooltip[0] = (JToolTipI18n) tipI18n;
                         return tipI18n;
                     }
@@ -104,7 +122,14 @@ public class AddressMenuBar extends JMenuBar {
 
             this.menuStrategy.add((JMenuItem) itemRadioStrategy);
             
-            ((JComponent) itemRadioStrategy).setToolTipText(I18nUtil.valueByKey("STRATEGY_" + strategy.getName().toUpperCase(Locale.ROOT) + "_TOOLTIP"));
+            ((JComponent) itemRadioStrategy).setToolTipText(
+                I18nUtil.valueByKey(
+                    String.format(
+                        patternKeyTooltipStrategy,
+                        strategy.getName().toUpperCase(Locale.ROOT)
+                    )
+                )
+            );
             ((JComponent) itemRadioStrategy).setEnabled(false);
         }
 
@@ -332,6 +357,7 @@ public class AddressMenuBar extends JMenuBar {
             }
         }
     }
+    
     
     // Getter and setter
 

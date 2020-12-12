@@ -26,13 +26,14 @@ public class OrInjectionTestSuite extends ConcreteMySqlErrorTestSuite {
             new SimpleEntry<>("name", "")
         ));
         
+        model.setIsScanning(true);
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
         model.beginInjection();
     }
     

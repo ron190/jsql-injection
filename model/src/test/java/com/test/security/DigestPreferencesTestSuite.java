@@ -28,10 +28,15 @@ public class DigestPreferencesTestSuite extends ConcreteMySqlErrorTestSuite {
             new SimpleEntry<>("name", "")
         ));
         
-        model.getMediatorUtils().getAuthenticationUtil().setIsAuthentEnabled(true);
-        model.getMediatorUtils().getAuthenticationUtil().setUsernameAuthentication(SecurityConfiguration.DIGEST_USERNAME);
-        model.getMediatorUtils().getAuthenticationUtil().setPasswordAuthentication(SecurityConfiguration.DIGEST_PASSWORD);
-        model.getMediatorUtils().getAuthenticationUtil().setAuthentication();
+        model.setIsScanning(true);
+        
+        model
+        .getMediatorUtils()
+        .getAuthenticationUtil()
+        .withAuthentEnabled()
+        .withUsernameAuthentication(SecurityConfiguration.DIGEST_USERNAME)
+        .withPasswordAuthentication(SecurityConfiguration.DIGEST_PASSWORD)
+        .setAuthentication();
         
         model
         .getMediatorUtils()
@@ -39,7 +44,6 @@ public class DigestPreferencesTestSuite extends ConcreteMySqlErrorTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
         model.beginInjection();
     }
     

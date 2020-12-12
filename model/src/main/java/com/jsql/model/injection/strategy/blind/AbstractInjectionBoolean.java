@@ -74,7 +74,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
      * @return Final string: SQLiABCDEF...
      * @throws StoppedByUserSlidingException
      */
-    public String inject(String sqlQuery, AbstractSuspendable<String> suspendable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
+    public String inject(String sqlQuery, AbstractSuspendable<String> suspendable) throws StoppedByUserSlidingException {
 
         // List of the characters, each one represented by an array of 8 bits
         // e.g SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
@@ -201,19 +201,21 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         indexCharacter.incrementAndGet();
         
         // New undefined bits of the next character
-        bytes.add(new char[]{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'});
+        // Chars all have the last bit set to 0 in Ascii table 
+        bytes.add(new char[]{'0', 'x', 'x', 'x', 'x', 'x', 'x', 'x'});
         
         // Test if it's the end of the line
         taskCompletionService.submit(this.getCallableSizeTest(sqlQuery, indexCharacter.get()));
         
         // Test the 8 bits for the next character, save its position and current bit for later
-        for (int bit: new int[]{1, 2, 4, 8, 16, 32, 64, 128}) {
+        // Ignore last bit 128 and only check for first seven bits
+        for (int bit: new int[]{1, 2, 4, 8, 16, 32, 64}) {
             
             taskCompletionService.submit(this.getCallableBitTest(sqlQuery, indexCharacter.get(), bit));
         }
         
         // Add 9 new tasks
-        countTasksSubmitted.addAndGet(9);
+        countTasksSubmitted.addAndGet(8);
     }
 
     private char[] initializeBinaryMask(List<char[]> bytes, T currentCallable) {

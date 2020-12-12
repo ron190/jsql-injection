@@ -138,6 +138,9 @@ public class Menubar extends JMenuBar {
     private JMenuItem itemIntoJapanese;
     private JMenuItem itemIntoRomanian;
     private JMenuItem itemIntoTamil;
+    
+    private static final String KEY_MENU_SQL_ENGINE = "MENUBAR_SQL_ENGINE";
+    private static final String KEY_MENU_PREFERENCES = "MENUBAR_PREFERENCES";
 
     /**
      * Create a menubar on main frame.
@@ -399,8 +402,8 @@ public class Menubar extends JMenuBar {
 
     private JMenuItem initializeItemSqlEngine() {
         
-        JMenuItem itemSqlEngine = new JMenuItem(I18nUtil.valueByKey("MENUBAR_SQL_ENGINE"));
-        I18nViewUtil.addComponentForKey("MENUBAR_SQL_ENGINE", itemSqlEngine);
+        JMenuItem itemSqlEngine = new JMenuItem(I18nUtil.valueByKey(KEY_MENU_SQL_ENGINE));
+        I18nViewUtil.addComponentForKey(KEY_MENU_SQL_ENGINE, itemSqlEngine);
         
         // Render the SQL Engine dialog behind scene
         String titleTabSqlEngine = "SQL Engine";
@@ -426,8 +429,8 @@ public class Menubar extends JMenuBar {
             MediatorHelper.tabResults().setSelectedComponent(panelSqlEngine);
 
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18nViewUtil.valueByKey("MENUBAR_SQL_ENGINE"), UiUtil.ICON_COG, panelSqlEngine);
-            I18nViewUtil.addComponentForKey("MENUBAR_SQL_ENGINE", header.getTabTitleLabel());
+            TabHeader header = new TabHeader(I18nViewUtil.valueByKey(KEY_MENU_SQL_ENGINE), UiUtil.ICON_COG, panelSqlEngine);
+            I18nViewUtil.addComponentForKey(KEY_MENU_SQL_ENGINE, header.getTabTitleLabel());
 
             // Apply the custom header to the tab
             MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(panelSqlEngine), header);
@@ -438,9 +441,9 @@ public class Menubar extends JMenuBar {
 
     private JMenuItem initializeItemPreferences() {
         
-        JMenuItem itemPreferences = new JMenuItem(I18nUtil.valueByKey("MENUBAR_PREFERENCES"), 'P');
+        JMenuItem itemPreferences = new JMenuItem(I18nUtil.valueByKey(KEY_MENU_PREFERENCES), 'P');
         itemPreferences.setIcon(UiUtil.ICON_EMPTY);
-        I18nViewUtil.addComponentForKey("MENUBAR_PREFERENCES", itemPreferences);
+        I18nViewUtil.addComponentForKey(KEY_MENU_PREFERENCES, itemPreferences);
         
         // Render the Preferences dialog behind scene
         String titleTabPreferences = "Preferences";
@@ -479,8 +482,8 @@ public class Menubar extends JMenuBar {
             MediatorHelper.tabResults().setSelectedComponent(scroller);
 
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18nViewUtil.valueByKey("MENUBAR_PREFERENCES"), UiUtil.ICON_COG, panelPreferences.getPanelTampering());
-            I18nViewUtil.addComponentForKey("MENUBAR_PREFERENCES", header.getTabTitleLabel());
+            TabHeader header = new TabHeader(I18nViewUtil.valueByKey(KEY_MENU_PREFERENCES), UiUtil.ICON_COG, panelPreferences.getPanelTampering());
+            I18nViewUtil.addComponentForKey(KEY_MENU_PREFERENCES, header.getTabTitleLabel());
 
             // Apply the custom header to the tab
             MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);

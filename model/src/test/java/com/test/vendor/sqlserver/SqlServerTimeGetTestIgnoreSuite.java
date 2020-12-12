@@ -26,7 +26,7 @@ public class SqlServerTimeGetTestIgnoreSuite extends ConcreteSqlServerTestSuite 
             new SimpleEntry<>("name", "1'")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().withNotInjectingMetadata();
+        model.setIsScanning(true);
         
         model
         .getMediatorUtils()
@@ -34,8 +34,6 @@ public class SqlServerTimeGetTestIgnoreSuite extends ConcreteSqlServerTestSuite 
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getTime());
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlServer());
         model.beginInjection();
     }

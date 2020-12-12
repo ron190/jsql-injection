@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
 
 /**
@@ -87,7 +86,6 @@ public class InjectionCharInsertion {
                     +"+"+ urlTest
                     ,
                     this,
-                    BooleanMode.OR,
                     "fprint#true"
                 )
             );
@@ -126,10 +124,10 @@ public class InjectionCharInsertion {
             Thread.currentThread().interrupt();
         }
         
-        this.initializeFalseMarks(injectionModel);
+        this.initializeFalseMarks();
     }
     
-    private void initializeFalseMarks(InjectionModel injectionModel) {
+    private void initializeFalseMarks() {
         
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
@@ -146,7 +144,6 @@ public class InjectionCharInsertion {
                     +"+"+ urlTest
                     ,
                     this,
-                    BooleanMode.OR,
                     "fprint#false"
                 )
             );
@@ -197,7 +194,6 @@ public class InjectionCharInsertion {
             +"+"+ this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization()
             ,
             this,
-            BooleanMode.OR,
             "fprint#confirm"
         );
         

@@ -31,7 +31,6 @@ public class OracleNormalTestIgnoreSuite extends ConcreteOracleTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getOracle());
         model.beginInjection();
     }

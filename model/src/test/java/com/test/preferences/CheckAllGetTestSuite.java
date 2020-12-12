@@ -27,7 +27,12 @@ public class CheckAllGetTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("fake", "empty")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().withCheckingAllURLParam();
+        model.setIsScanning(true);
+        
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withCheckingAllURLParam();
         
         model
         .getMediatorUtils()
@@ -35,7 +40,6 @@ public class CheckAllGetTestSuite extends ConcreteMySqlTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
         model.beginInjection();
     }
     

@@ -26,12 +26,13 @@ public class JsonCheckAllParamTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("tenant", "mysql")
         ));
         
+        model.setIsScanning(true);
+        
         model
         .getMediatorUtils()
         .getPreferencesUtil()
         .withCheckingAllURLParam()
-        .withCheckingAllJsonParam()
-        .withNotTestingConnection();
+        .withCheckingAllJsonParam();
 
         model
         .getMediatorUtils()
@@ -39,7 +40,6 @@ public class JsonCheckAllParamTestSuite extends ConcreteMySqlTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
         model.beginInjection();
     }
     

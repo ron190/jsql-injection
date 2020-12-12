@@ -22,12 +22,15 @@ public class Db2BlindTestInstableSuite extends ConcreteDb2TestSuite {
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/blind");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "db2"),
-            // Instable fingerprinting
             new SimpleEntry<>("name", "1'*")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().withNotInjectingMetadata();
-        model.getMediatorUtils().getPreferencesUtil().withCountLimitingThreads(3);
+        model.setIsScanning(true);
+        
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withCountLimitingThreads(3);
         
         model
         .getMediatorUtils()

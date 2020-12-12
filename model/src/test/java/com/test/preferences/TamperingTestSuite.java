@@ -34,7 +34,7 @@ public class TamperingTestSuite extends ConcreteMySqlTestSuite {
         .withHexToChar()
         .withSpaceToMultilineComment();
         
-        model.getMediatorUtils().getPreferencesUtil().withNotTestingConnection();
+        model.setIsScanning(true);
         
         model
         .getMediatorUtils()
@@ -42,7 +42,6 @@ public class TamperingTestSuite extends ConcreteMySqlTestSuite {
         .withMethodInjection(model.getMediatorMethod().getRequest())
         .withTypeRequest("POST");
         
-        model.setIsScanning(true);
         model.beginInjection();
     }
     

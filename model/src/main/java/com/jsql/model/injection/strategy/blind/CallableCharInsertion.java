@@ -3,7 +3,6 @@ package com.jsql.model.injection.strategy.blind;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
 
@@ -28,7 +27,7 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
      * @param inj
      * @param injectionCharInsertion
      */
-    public CallableCharInsertion(String inj, InjectionCharInsertion injectionCharInsertion, BooleanMode blindMode, String metadataInjectionProcess) {
+    public CallableCharInsertion(String inj, InjectionCharInsertion injectionCharInsertion, String metadataInjectionProcess) {
         
         this.injectionCharInsertion = injectionCharInsertion;
         this.metadataInjectionProcess = metadataInjectionProcess;

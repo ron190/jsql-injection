@@ -22,8 +22,7 @@ public class Db2ErrorTestInstableSuite extends ConcreteDb2TestSuite {
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/errors");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "db2"),
-            // Instable fingerprinting
-            new SimpleEntry<>("name", "0'")
+            new SimpleEntry<>("name", "")
         ));
         
         model

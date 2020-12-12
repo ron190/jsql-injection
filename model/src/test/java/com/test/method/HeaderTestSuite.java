@@ -26,11 +26,13 @@ public class HeaderTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("name", "")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().withNotTestingConnection();
-        
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getHeader());
-        
         model.setIsScanning(true);
+        
+        model
+        .getMediatorUtils()
+        .getConnectionUtil()
+        .setMethodInjection(model.getMediatorMethod().getHeader());
+        
         model.beginInjection();
     }
     

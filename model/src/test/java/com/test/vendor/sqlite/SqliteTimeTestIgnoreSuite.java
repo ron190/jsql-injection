@@ -9,7 +9,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-//TODO SqliteTime
 public class SqliteTimeTestIgnoreSuite extends ConcreteSqliteTestSuite {
     
     @Override
@@ -26,14 +25,14 @@ public class SqliteTimeTestIgnoreSuite extends ConcreteSqliteTestSuite {
             new SimpleEntry<>("name", "1'")
         ));
         
+        model.setIsScanning(true);
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getTime());
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlite());
         model.beginInjection();
     }

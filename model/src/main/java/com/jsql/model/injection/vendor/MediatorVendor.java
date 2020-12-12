@@ -117,11 +117,11 @@ public class MediatorVendor {
                 
                 String resultTmp =
                     resultToParse
-                    .replaceFirst(".+?\\(", StringUtils.EMPTY)
+                    .replaceFirst("[^(]+\\(", StringUtils.EMPTY)
                     .trim()
                     .replaceAll("\\)$", StringUtils.EMPTY);
                 
-                resultTmp = resultTmp.replaceAll("\\(.+?\\)", StringUtils.EMPTY);
+                resultTmp = resultTmp.replaceAll("\\([^)]+\\)", StringUtils.EMPTY);
                 
                 for (String columnNameAndType: resultTmp.split(",")) {
                     
@@ -135,7 +135,10 @@ public class MediatorVendor {
                     // Some recent SQLite enclose names with ` => strip those `
                     columnName = StringUtils.strip(columnName, "`");
                     
-                    if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
+                    if (
+                        !"CONSTRAINT".equals(columnName) 
+                        && !"UNIQUE".equals(columnName)
+                    ) {
                         
                         // Generate pattern \4\5\4\6 for injection parsing
                         resultSqlite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
@@ -198,12 +201,12 @@ public class MediatorVendor {
     
     public Vendor fingerprintVendor() {
         
-        Vendor vendor = null;
+        Vendor vendorFound = null;
         
         if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAuto()) {
             
-            vendor = this.injectionModel.getMediatorVendor().getVendorByUser();
-            LOGGER.info(I18nUtil.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendor +"]");
+            vendorFound = this.injectionModel.getMediatorVendor().getVendorByUser();
+            LOGGER.info(I18nUtil.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendorFound +"]");
             
         } else {
             
@@ -213,7 +216,7 @@ public class MediatorVendor {
             String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, "vendor");
                 
             MediatorVendor mediatorVendor = this.injectionModel.getMediatorVendor();
-            Vendor[] vendors =
+            Vendor[] vendorsWithoutAuto =
                 mediatorVendor
                 .getVendors()
                 .stream()
@@ -221,26 +224,26 @@ public class MediatorVendor {
                 .toArray(Vendor[]::new);
             
             // Test each vendor
-            for (Vendor vendorTest: vendors) {
+            for (Vendor vendorTest: vendorsWithoutAuto) {
                 
                 if (
                     pageSource.matches("(?si)"+ vendorTest.instance().fingerprintErrorsAsRegex())
                 ) {
-                    vendor = vendorTest;
-                    LOGGER.info("Possibly ["+ vendor +"] from basic fingerprinting");
+                    vendorFound = vendorTest;
+                    LOGGER.info("Possibly ["+ vendorFound +"] from basic fingerprinting");
                     break;
                 }
             }
             
-            vendor = this.initializeVendor(vendor);
+            vendorFound = this.initializeVendor(vendorFound);
         }
         
         Request requestSetVendor = new Request();
         requestSetVendor.setMessage(Interaction.SET_VENDOR);
-        requestSetVendor.setParameters(vendor);
+        requestSetVendor.setParameters(vendorFound);
         this.injectionModel.sendToViews(requestSetVendor);
         
-        return vendor;
+        return vendorFound;
     }
 
     public Vendor initializeVendor(Vendor vendor) {

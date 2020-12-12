@@ -25,7 +25,7 @@ public class SqliteBlindTestSuite extends ConcreteSqliteTestSuite {
             new SimpleEntry<>("name", "1'*")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().withNotInjectingMetadata();
+        model.setIsScanning(true);
         
         model
         .getMediatorUtils()
@@ -33,8 +33,6 @@ public class SqliteBlindTestSuite extends ConcreteSqliteTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getBlind());
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlite());
         model.beginInjection();
     }

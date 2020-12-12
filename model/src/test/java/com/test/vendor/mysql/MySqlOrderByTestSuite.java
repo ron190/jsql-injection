@@ -25,13 +25,14 @@ public class MySqlOrderByTestSuite extends ConcreteMySqlErrorTestSuite {
             new SimpleEntry<>("name", "")
         ));
         
+        model.setIsScanning(true);
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
         model.beginInjection();
     }

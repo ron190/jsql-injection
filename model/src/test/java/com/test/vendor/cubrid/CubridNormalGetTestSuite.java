@@ -31,7 +31,6 @@ public class CubridNormalGetTestSuite extends ConcreteCubridTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getCubrid());
         model.beginInjection();
     }

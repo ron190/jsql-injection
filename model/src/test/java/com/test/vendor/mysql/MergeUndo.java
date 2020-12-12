@@ -18,6 +18,7 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.CompoundEdit;
 import javax.swing.undo.UndoableEdit;
 
+@SuppressWarnings("serial")
 public class MergeUndo extends JEditorPane {
     JButton btnUndo=new JButton("Undo");
     JButton btnRedo=new JButton("Redo");

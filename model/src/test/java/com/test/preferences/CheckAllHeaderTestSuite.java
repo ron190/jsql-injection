@@ -27,15 +27,18 @@ public class CheckAllHeaderTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("fake2", "")
         ));
         
+        model.setIsScanning(true);
+        
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withCheckingAllHeaderParam()
-        .withNotTestingConnection();
+        .withCheckingAllHeaderParam();
         
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethod().getHeader());
+        model
+        .getMediatorUtils()
+        .getConnectionUtil()
+        .setMethodInjection(model.getMediatorMethod().getHeader());
         
-        model.setIsScanning(true);
         model.beginInjection();
     }
     

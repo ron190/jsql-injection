@@ -27,13 +27,14 @@ public class MultipleIndexTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("name", StringUtils.EMPTY)
         ));
         
+        model.setIsScanning(true);
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
         model.beginInjection();
     }
     

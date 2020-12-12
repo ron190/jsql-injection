@@ -26,15 +26,14 @@ public class PostTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("name", "")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().withNotTestingConnection();
-
+        model.setIsScanning(true);
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getRequest())
         .withTypeRequest("POST");
         
-        model.setIsScanning(true);
         model.beginInjection();
     }
     

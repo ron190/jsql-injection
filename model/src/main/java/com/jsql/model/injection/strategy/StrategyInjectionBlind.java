@@ -104,8 +104,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
         
         return this.injectionBlind.inject(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition),
-            stoppable,
-            metadataInjectionProcess
+            stoppable
         );
     }
 

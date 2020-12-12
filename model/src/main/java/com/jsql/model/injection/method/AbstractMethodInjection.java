@@ -118,7 +118,7 @@ public abstract class AbstractMethodInjection implements Serializable {
                 if (paramStar == paramBase) {
                     
                     try {
-                        hasFoundInjection = this.testParam(paramStar);
+                        hasFoundInjection = this.testSingleFromAllParams(paramStar);
                         
                         if (hasFoundInjection) {
                             
@@ -136,7 +136,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         return hasFoundInjection;
     }
 
-    private boolean testParam(SimpleEntry<String, String> paramStar) {
+    private boolean testSingleFromAllParams(SimpleEntry<String, String> paramStar) {
         
         boolean hasFoundInjection;
         
@@ -168,13 +168,13 @@ public abstract class AbstractMethodInjection implements Serializable {
         } else {
             
             // Standard non JSON injection
-            hasFoundInjection = this.testStandardParam(paramStar);
+            hasFoundInjection = this.testJsonlessParam(paramStar);
         }
         
         return hasFoundInjection;
     }
     
-    public boolean testStandardParam(SimpleEntry<String, String> paramStar) {
+    public boolean testJsonlessParam(SimpleEntry<String, String> paramStar) {
 
         boolean hasFoundInjection = false;
         
@@ -192,15 +192,13 @@ public abstract class AbstractMethodInjection implements Serializable {
             
             // Injection failure
             LOGGER.warn(
-                "No "
-                + this.name()
-                + " injection found for parameter "
-                + paramStar.getKey()
-                + "="
-                + paramStar.getValue().replaceAll("\\+.?$|\\" + InjectionModel.STAR, StringUtils.EMPTY)
-                + " ("
-                + e.getMessage()
-                + ")"
+                String.format(
+                    "No %s injection found for parameter %s=%s (%s)",
+                    this.name(),
+                    paramStar.getKey(),
+                    paramStar.getValue().replaceAll("\\+.?$|\\" + InjectionModel.STAR, StringUtils.EMPTY),
+                    e.getMessage()
+                )
             );
             
         } finally {

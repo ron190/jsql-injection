@@ -29,13 +29,14 @@ public class SelfSignedCertTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("name", "")
         ));
         
+        model.setIsScanning(true);
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
         model.beginInjection();
     }
     

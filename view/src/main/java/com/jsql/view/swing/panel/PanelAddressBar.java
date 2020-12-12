@@ -52,6 +52,10 @@ public class PanelAddressBar extends JPanel {
     private RadioLinkMethod[] radioQueryString = new RadioLinkMethod[1];
     private RadioLinkMethod[] radioRequest = new RadioLinkMethod[1];
     private RadioLinkMethod[] radioHeader = new RadioLinkMethod[1];
+    
+    private static final String KEY_TOOLTIP_QUERY = "FIELD_QUERYSTRING_TOOLTIP";
+    private static final String KEY_TOOLTIP_REQUEST = "FIELD_REQUEST_TOOLTIP";
+    private static final String KEY_TOOLTIP_HEADER = "FIELD_HEADER_TOOLTIP";
 
     /**
      * Current injection method.
@@ -67,46 +71,46 @@ public class PanelAddressBar extends JPanel {
         
         this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
         
-        final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("FIELD_QUERYSTRING_TOOLTIP"))};
+        final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_QUERY))};
         JTextFieldWithIcon fieldWithIcon = new JTextFieldWithIcon(I18nUtil.valueByKey("ADDRESS_BAR")) {
             
             @Override
             public JToolTip createToolTip() {
                 
-                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("FIELD_QUERYSTRING_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_QUERY));
                 j[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
             }
         };
         this.textFieldAddress = new JTextFieldAddressBar(fieldWithIcon).getProxy();
         I18nViewUtil.addComponentForKey("ADDRESS_BAR", fieldWithIcon);
-        I18nViewUtil.addComponentForKey("FIELD_QUERYSTRING_TOOLTIP", j[0]);
+        I18nViewUtil.addComponentForKey(KEY_TOOLTIP_QUERY, j[0]);
         
-        final JToolTipI18n[] j2 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("FIELD_REQUEST_TOOLTIP"))};
+        final JToolTipI18n[] j2 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_REQUEST))};
         this.textFieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe=") {
             
             @Override
             public JToolTip createToolTip() {
                 
-                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("FIELD_REQUEST_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_REQUEST));
                 j2[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
             }
         }).getProxy();
-        I18nViewUtil.addComponentForKey("FIELD_REQUEST_TOOLTIP", j2[0]);
+        I18nViewUtil.addComponentForKey(KEY_TOOLTIP_REQUEST, j2[0]);
         
-        final JToolTipI18n[] j3 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey("FIELD_HEADER_TOOLTIP"))};
+        final JToolTipI18n[] j3 = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_HEADER))};
         this.textFieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key: value\\r\\nCookie: cKey1=cValue1; cKey2=cValue2\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:") {
             
             @Override
             public JToolTip createToolTip() {
                 
-                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey("FIELD_HEADER_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_HEADER));
                 j3[0] = (JToolTipI18n) tipI18n;
                 return j3[0];
             }
         }).getProxy();
-        I18nViewUtil.addComponentForKey("FIELD_HEADER_TOOLTIP", j3[0]);
+        I18nViewUtil.addComponentForKey(KEY_TOOLTIP_HEADER, j3[0]);
         
         Stream
         .of(
@@ -138,9 +142,9 @@ public class PanelAddressBar extends JPanel {
         this.radioHeader[0].setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));
 
         // Tooltip setting
-        this.textFieldAddress.setToolTipText(I18nUtil.valueByKey("FIELD_QUERYSTRING_TOOLTIP"));
-        this.textFieldRequest.setToolTipText(I18nUtil.valueByKey("FIELD_REQUEST_TOOLTIP"));
-        this.textFieldHeader.setToolTipText(I18nUtil.valueByKey("FIELD_HEADER_TOOLTIP"));
+        this.textFieldAddress.setToolTipText(I18nUtil.valueByKey(KEY_TOOLTIP_QUERY));
+        this.textFieldRequest.setToolTipText(I18nUtil.valueByKey(KEY_TOOLTIP_REQUEST));
+        this.textFieldHeader.setToolTipText(I18nUtil.valueByKey(KEY_TOOLTIP_HEADER));
 
         /**
          * Define UI and the left padding for addressBar
@@ -303,6 +307,7 @@ public class PanelAddressBar extends JPanel {
             this.radio = radio;
         }
     }
+    
     
     // Getter and setter
 

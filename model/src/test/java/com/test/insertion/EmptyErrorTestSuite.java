@@ -26,6 +26,8 @@ public class EmptyErrorTestSuite extends ConcreteMySqlErrorTestSuite {
             new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", StringUtils.EMPTY)
         ));
+        
+        model.setIsScanning(true);
 
         model
         .getMediatorUtils()
@@ -33,8 +35,6 @@ public class EmptyErrorTestSuite extends ConcreteMySqlErrorTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
         model.beginInjection();
     }
     

@@ -9,7 +9,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-//TODO OracleBlind not working
 public class OracleBlindGetTestNopeSuite extends ConcreteOracleTestSuite {
     
     @Override
@@ -26,7 +25,7 @@ public class OracleBlindGetTestNopeSuite extends ConcreteOracleTestSuite {
             new SimpleEntry<>("name", "")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().withNotInjectingMetadata();
+        model.setIsScanning(true);
         
         model
         .getMediatorUtils()
@@ -34,28 +33,8 @@ public class OracleBlindGetTestNopeSuite extends ConcreteOracleTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getBlind());
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getOracle());
         model.beginInjection();
-    }
-    
-    @Override
-    @RepeatFailedTest(3)
-    public void listDatabases() throws JSqlException {
-        super.listDatabases();
-    }
-    
-    @Override
-    @RepeatFailedTest(3)
-    public void listTables() throws JSqlException {
-        super.listTables();
-    }
-    
-    @Override
-    @RepeatFailedTest(3)
-    public void listColumns() throws JSqlException {
-        super.listColumns();
     }
     
     @Override

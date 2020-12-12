@@ -10,8 +10,6 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 
-// TODO unstable
-//
 public class CustomMethodTestIgnoreSuite extends ConcreteMySqlErrorTestSuite {
     
     @Override
@@ -29,7 +27,7 @@ public class CustomMethodTestIgnoreSuite extends ConcreteMySqlErrorTestSuite {
             new SimpleEntry<>("name", "")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().withNotTestingConnection();
+        model.setIsScanning(true);
         
         model
         .getMediatorUtils()
@@ -37,7 +35,6 @@ public class CustomMethodTestIgnoreSuite extends ConcreteMySqlErrorTestSuite {
         .withMethodInjection(model.getMediatorMethod().getRequest())
         .withTypeRequest("CUSTOM-JSQL");
         
-        model.setIsScanning(true);
         model.beginInjection();
     }
     

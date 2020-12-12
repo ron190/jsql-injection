@@ -28,9 +28,26 @@ public class BasicHeaderTestSuite extends ConcreteMySqlErrorTestSuite {
             new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", "")
         ));
-        model.getMediatorUtils().getParameterUtil().setListHeader(Arrays.asList(
-            new SimpleEntry<>("Authorization", "Basic " + StringUtil.base64Encode(SecurityConfiguration.BASIC_USERNAME + ":" + SecurityConfiguration.BASIC_PASSWORD))
+        model
+        .getMediatorUtils()
+        .getParameterUtil()
+        .setListHeader(Arrays.asList(
+            new SimpleEntry<>(
+                "Authorization", 
+                String.format(
+                    "Basic %s",
+                    StringUtil.base64Encode(
+                        String.format(
+                            "%s:%s",
+                            SecurityConfiguration.BASIC_USERNAME,
+                            SecurityConfiguration.BASIC_PASSWORD
+                        )
+                    )
+                )
+            )
         ));
+        
+        model.setIsScanning(true);
         
         model
         .getMediatorUtils()
@@ -38,7 +55,6 @@ public class BasicHeaderTestSuite extends ConcreteMySqlErrorTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
         model.beginInjection();
     }
     

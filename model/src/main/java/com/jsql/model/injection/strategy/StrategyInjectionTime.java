@@ -103,8 +103,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
         
         return this.injectionTime.inject(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(sqlQuery, startPosition),
-            stoppable,
-            metadataInjectionProcess
+            stoppable
         );
     }
 

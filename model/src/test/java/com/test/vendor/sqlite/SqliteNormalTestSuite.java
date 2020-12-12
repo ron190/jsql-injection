@@ -31,7 +31,6 @@ public class SqliteNormalTestSuite extends ConcreteSqliteTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlite());
         model.beginInjection();
     }

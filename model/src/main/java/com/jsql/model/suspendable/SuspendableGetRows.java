@@ -386,7 +386,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         } else if (strategy == null) {
             
             // Fix #1905 : NullPointerException on injectionStrategy.inject()
-            throw new InjectionFailureException("Undefined startegy");
+            throw new InjectionFailureException("Undefined strategy");
         }
     }
 

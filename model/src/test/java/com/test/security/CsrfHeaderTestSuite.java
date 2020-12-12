@@ -25,11 +25,12 @@ public class CsrfHeaderTestSuite extends ConcreteMySqlErrorTestSuite {
             new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", "")
         ));
+        
+        model.setIsScanning(true);
 
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withNotTestingConnection()
         .withProcessingCsrf();
 
         model
@@ -38,7 +39,6 @@ public class CsrfHeaderTestSuite extends ConcreteMySqlErrorTestSuite {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.setIsScanning(true);
         model.beginInjection();
     }
     

@@ -90,18 +90,47 @@ public class GitUtil {
         String osArch = System.getProperty("os.arch");
         
         String osMetadata =
-            "jSQL: v"+ this.injectionModel.getVersionJsql() +"\n"
-            + "Java: v"+ javaVersion +"-"+ osArch +"-"+ System.getProperty("user.language") +" on "+ System.getProperty("java.runtime.name") +"\n"
-            + "OS: "+ System.getProperty("os.name") +" (v"+ System.getProperty("os.version") +")\n"
-            + "Desktop: "+( System.getProperty("sun.desktop") != null ? System.getProperty("sun.desktop") : "undefined" )+"\n"
-            + "Strategy: "+( this.injectionModel.getMediatorStrategy().getStrategy() != null ? this.injectionModel.getMediatorStrategy().getStrategy().getName() : "undefined" )+"\n"
-            + "Db engine: "+ this.injectionModel.getMediatorVendor().getVendor().toString() +"\n";
+            String.format(
+                "%s%n%s%n%s%n%s%n%s%n%s%n",
+                String.format("jSQL: v%s", this.injectionModel.getVersionJsql()),
+                String.format(
+                    "Java: v%s-%s-%s on %s", 
+                    javaVersion, 
+                    osArch, 
+                    System.getProperty("user.language"), 
+                    System.getProperty("java.runtime.name")
+                ),
+                String.format("OS: %s (v%s)", System.getProperty("os.name"), System.getProperty("os.version")),
+                String.format(
+                    "Desktop: %s", 
+                    System.getProperty("sun.desktop") != null 
+                    ? System.getProperty("sun.desktop") 
+                    : "undefined"
+                ),
+                String.format(
+                    "Strategy: %s", 
+                    this.injectionModel.getMediatorStrategy().getStrategy() != null 
+                    ? this.injectionModel.getMediatorStrategy().getStrategy().getName() 
+                    : "undefined"
+                ),
+                String.format("Db engine: %s", this.injectionModel.getMediatorVendor().getVendor().toString())
+            );
         
-        String exceptionText =
-            "Exception on "+ threadName +"\n"
-            + ExceptionUtils.getStackTrace(throwable).trim() +"\n";
+        String exceptionText = 
+            String
+            .format(
+                "Exception on %s%n%s%n", 
+                threadName, 
+                ExceptionUtils.getStackTrace(throwable).trim()
+            );
         
-        String clientDescription = String.format("```\n%s```\n```\n%b```", osMetadata, exceptionText);
+        String clientDescription = 
+            String
+            .format(
+                "```%n%s```%n```%n%s```", 
+                osMetadata, 
+                exceptionText
+            );
         
         clientDescription = clientDescription.replaceAll("(https?://[.a-zA-Z_0-9]*)+", org.apache.commons.lang3.StringUtils.EMPTY);
           

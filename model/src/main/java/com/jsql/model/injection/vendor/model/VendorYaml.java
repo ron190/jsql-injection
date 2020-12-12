@@ -260,10 +260,9 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlRows(String[] namesColumns, Database database, Table table) {
         
-        String
-            sqlQuery,
-            sqlField,
-            sqlConcatFields;
+        String sqlQuery;
+        String sqlField;
+        String sqlConcatFields;
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
             

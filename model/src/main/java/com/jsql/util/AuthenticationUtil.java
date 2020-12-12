@@ -251,6 +251,7 @@ public class AuthenticationUtil {
         }
     }
     
+    
     // Getters and setters
 
     public String getUsernameDigest() {
@@ -287,5 +288,23 @@ public class AuthenticationUtil {
 
     public void setPasswordAuthentication(String passwordAuthentication) {
         this.passwordAuthentication = passwordAuthentication;
+    }
+    
+    
+    // Builder
+    
+    public AuthenticationUtil withAuthentEnabled() {
+        this.isAuthEnabled = true;
+        return this;
+    }
+    
+    public AuthenticationUtil withUsernameAuthentication(String usernameAuthentication) {
+        this.usernameAuthentication = usernameAuthentication;
+        return this;
+    }
+    
+    public AuthenticationUtil withPasswordAuthentication(String passwordAuthentication) {
+        this.passwordAuthentication = passwordAuthentication;
+        return this;
     }
 }

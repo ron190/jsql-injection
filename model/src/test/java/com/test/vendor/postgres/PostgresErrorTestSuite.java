@@ -22,7 +22,6 @@ public class PostgresErrorTestSuite extends ConcretePostgresTestSuite {
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/errors");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "postgres"),
-//            new SimpleEntry<>("name", "0'")
             new SimpleEntry<>("name", "")
         ));
         
@@ -33,7 +32,6 @@ public class PostgresErrorTestSuite extends ConcretePostgresTestSuite {
         .withTypeRequest("GET");
         
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
-//        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPostgreSQL());
         model.beginInjection();
     }
     

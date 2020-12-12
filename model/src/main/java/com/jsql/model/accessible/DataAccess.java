@@ -184,7 +184,7 @@ public class DataAccess {
 
         if (StringUtils.isEmpty(resultToParse)) {
             
-            this.injectionModel.sendResponseFromSite("Incorrect database informations", sourcePage[0].trim());
+            this.injectionModel.sendResponseFromSite("Incorrect metadata", sourcePage[0].trim());
         }
         
         try {
@@ -272,7 +272,7 @@ public class DataAccess {
             .matcher(resultToParse);
 
         if (!regexSearch.find()) {
-            throw new InjectionFailureException();
+            throw new InjectionFailureException("No match while injecting databases");
         }
         
         regexSearch.reset();
@@ -369,7 +369,7 @@ public class DataAccess {
         this.injectionModel.sendToViews(requestEndProgress);
         
         if (!regexSearch.find()) {
-            throw new InjectionFailureException();
+            throw new InjectionFailureException("No match while injecting tables");
         }
         
         regexSearch.reset();
@@ -466,7 +466,7 @@ public class DataAccess {
         this.injectionModel.sendToViews(requestEndProgress);
 
         if (!regexSearch.find()) {
-            throw new InjectionFailureException();
+            throw new InjectionFailureException("No match while injecting columns");
         }
 
         regexSearch.reset();
