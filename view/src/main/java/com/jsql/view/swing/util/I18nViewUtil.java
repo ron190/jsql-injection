@@ -3,6 +3,7 @@ package com.jsql.view.swing.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -87,5 +88,17 @@ public class I18nViewUtil {
         }
         
         return result;
+    }
+    
+    public static String valueByKey(String key, Locale newLocale) {
+        
+        if (I18nUtil.isAsian(newLocale)) {
+            
+            return I18nViewUtil.valueByKey(key);
+            
+        } else {
+            
+            return I18nUtil.valueByKey(key);
+        }
     }
 }

@@ -48,6 +48,7 @@ import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.CsrfUtil;
 import com.jsql.util.ExceptionUtil;
+import com.jsql.util.FormUtil;
 import com.jsql.util.GitUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.HeaderUtil;
@@ -127,6 +128,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.mediatorUtils.setTamperingUtil(new TamperingUtil());
         this.mediatorUtils.setUserAgentUtil(new UserAgentUtil());
         this.mediatorUtils.setCsrfUtil(new CsrfUtil(this));
+        this.mediatorUtils.setFormUtil(new FormUtil(this));
     }
 
     /**
@@ -274,7 +276,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         try {
             HttpURLConnection connection = this.initializeConnection(urlObject);
             
-            this.mediatorUtils.getCsrfUtil().addCsrfToken(connection);
+            this.mediatorUtils.getCsrfUtil().addHeaderToken(connection);
             
             this.mediatorUtils.getConnectionUtil().fixJcifsTimeout(connection);
             this.mediatorUtils.getConnectionUtil().setCustomUserAgent(connection);
@@ -366,7 +368,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 dataInjection
             );
 
-        urlInjectionFixed = this.mediatorUtils.getCsrfUtil().getCsrfTokenQueryString(urlInjectionFixed);
+        urlInjectionFixed = this.mediatorUtils.getCsrfUtil().addQueryStringToken(urlInjectionFixed);
         
         try {
             urlObjectFixed = new URL(urlInjectionFixed);
@@ -500,7 +502,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
    
             DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
             
-            this.mediatorUtils.getCsrfUtil().addCsrfToken(dataOut);
+            this.mediatorUtils.getCsrfUtil().addRequestToken(dataOut);
             
             if (this.mediatorUtils.getConnectionUtil().getTypeRequest().matches("PUT|POST")) {
                 

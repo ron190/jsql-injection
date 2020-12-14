@@ -61,24 +61,41 @@ class DocPosition {
         return this;
     }
 
-    /**
-     * Two DocPositions are equal iff they have the same internal position.
-     *
-     * @return if this DocPosition represents the same position as another.
-     */
     @Override
     public boolean equals(Object obj) {
         
-        if (obj instanceof DocPosition) {
+        if (this == obj) {
             
-            DocPosition d = (DocPosition) obj;
-            
-            return this.position == d.position;
-            
-        } else {
+            return true;
+        }
+        
+        if (obj == null) {
             
             return false;
         }
+        
+        if (getClass() != obj.getClass()) {
+            
+            return false;
+        }
+        
+        DocPosition other = (DocPosition) obj;
+        if (position != other.position) {
+            
+            return false;
+        }
+        
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + position;
+        
+        return result;
     }
 
     /**

@@ -4,6 +4,7 @@ import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.CsrfUtil;
 import com.jsql.util.ExceptionUtil;
+import com.jsql.util.FormUtil;
 import com.jsql.util.GitUtil;
 import com.jsql.util.HeaderUtil;
 import com.jsql.util.JsonUtil;
@@ -33,6 +34,7 @@ public class MediatorUtils {
     private TamperingUtil tamperingUtil;
     private UserAgentUtil userAgentUtil;
     private CsrfUtil csrfUtil;
+    private FormUtil formUtil;
 
     public PropertiesUtil getPropertiesUtil() {
         return this.propertiesUtil;
@@ -153,5 +155,13 @@ public class MediatorUtils {
 
     public void setCsrfUtil(CsrfUtil csrfUtil) {
         this.csrfUtil = csrfUtil;
+    }
+
+    public FormUtil getFormUtil() {
+        return formUtil;
+    }
+
+    public void setFormUtil(FormUtil formUtil) {
+        this.formUtil = formUtil;
     }
 }

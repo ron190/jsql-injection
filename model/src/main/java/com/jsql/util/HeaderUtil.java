@@ -9,23 +9,14 @@ import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
@@ -43,8 +34,6 @@ public class HeaderUtil {
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final String REGEX_HTTP_STATUS = "4\\d\\d";
     private static final String FOUND_STATUS_HTTP = "Found status HTTP ";
-    private static final String INPUT_ATTR_VALUE = "value";
-    private static final String FORM_ATTR_VALUE = "method";
 
     private InjectionModel injectionModel;
     
@@ -97,11 +86,11 @@ public class HeaderUtil {
      */
     public void checkResponseHeader(HttpURLConnection connection, String urlByUser) throws IOException {
         
-        Map<String, String> mapResponse = HeaderUtil.getHttpHeaders(connection);
+        Map<String, String> headers = HeaderUtil.getHttpHeaders(connection);
 
         String responseCode = Integer.toString(connection.getResponseCode());
         
-        this.checkResponse(responseCode, mapResponse);
+        this.checkResponse(responseCode, headers);
         
         // Request the web page to the server
         Exception exception = null;
@@ -110,13 +99,13 @@ public class HeaderUtil {
         
         exception = this.readSource(connection, pageSource);
         
-        this.parseForms(connection, pageSource);
+        this.injectionModel.getMediatorUtils().getFormUtil().parseForms(connection, pageSource);
         
-        exception = this.injectionModel.getMediatorUtils().getCsrfUtil().parseCsrf(exception, pageSource, mapResponse);
+        exception = this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(exception, pageSource, headers);
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, urlByUser);
-        msgHeader.put(Header.RESPONSE, mapResponse);
+        msgHeader.put(Header.RESPONSE, headers);
         msgHeader.put(Header.SOURCE, pageSource.toString());
         
         // Inform the view about the log info
@@ -128,123 +117,6 @@ public class HeaderUtil {
         if (exception != null) {
             
             throw new IOException(exception);
-        }
-    }
-
-    private void parseForms(HttpURLConnection connection, StringBuilder pageSource) throws IOException {
-        
-        Elements elementsForm = Jsoup.parse(pageSource.toString()).select("form");
-        
-        if (elementsForm.isEmpty()) {
-            return;
-        }
-        
-        StringBuilder result = new StringBuilder();
-        
-        Map<Element, List<Element>> mapForms = new HashMap<>();
-        
-        for (Element form: elementsForm) {
-            
-            mapForms.put(form, new ArrayList<>());
-            
-            result.append(
-                String
-                .format(
-                    "%n<form action=\"%s\" method=\"%s\" />",
-                    form.attr("action"),
-                    form.attr(FORM_ATTR_VALUE)
-                )
-            );
-            
-            for (Element input: form.select("input")) {
-                
-                result.append(
-                    String
-                    .format(
-                        "%n    <input name=\"%s\" value=\"%s\" />",
-                        input.attr("name"),
-                        input.attr(INPUT_ATTR_VALUE)
-                    )
-                );
-                
-                mapForms.get(form).add(input);
-            }
-            
-            Collections.reverse(mapForms.get(form));
-        }
-            
-        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isParsingForm()) {
-            
-            this.logForms(connection, elementsForm, result);
-            
-        } else {
-            
-            this.addForms(elementsForm, result, mapForms);
-        }
-    }
-
-    private void addForms(Elements elementsForm, StringBuilder result, Map<Element, List<Element>> mapForms) {
-        
-        LOGGER.debug(
-            String
-            .format(
-                "Found %s <form> in HTML body, adding input(s) to requests: %s",
-                elementsForm.size(),
-                result
-            )
-        );
-        
-        for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
-            
-            for (Element input: form.getValue()) {
-                
-                if ("get".equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {
-                    
-                    this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(
-                        0,
-                        new SimpleEntry<>(
-                            input.attr("name"),
-                            input.attr(INPUT_ATTR_VALUE)
-                        )
-                    );
-                    
-                } else if ("post".equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {
-                    
-                    this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(
-                        0,
-                        new SimpleEntry<>(
-                            input.attr("name"),
-                            input.attr(INPUT_ATTR_VALUE)
-                        )
-                    );
-                }
-            }
-        }
-    }
-
-    private void logForms(HttpURLConnection connection, Elements elementsForm, StringBuilder result) throws IOException {
-        
-        if (connection.getResponseCode() != 200) {
-            
-            LOGGER.trace(
-                String
-                .format(
-                    "Found %s ignored <form> in HTML body: %s",
-                    elementsForm.size(),
-                    result
-                )
-            );
-            LOGGER.info("WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
-            
-        } else {
-            
-            LOGGER.trace(
-                String.format(
-                    "Found %s <form> in HTML body while status 200 Success:%s",
-                    elementsForm.size(),
-                    result
-                )
-            );
         }
     }
 

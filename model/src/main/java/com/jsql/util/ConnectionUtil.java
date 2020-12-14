@@ -189,7 +189,7 @@ public class ConnectionUtil {
         msgHeader.put(Header.URL, url);
         msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
         
-        String pageSource = null;
+        String pageSource = StringUtils.EMPTY;
         try {
             if (lineFeed) {
                 

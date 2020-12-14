@@ -677,8 +677,8 @@ public class SqlEngine extends JPanel implements Cleanable {
             final Method[] refMethodError = new Method[]{ methodError };
             
             JTextPaneLexer textPaneError = new JTextPaneLexer(
-                v -> refMethodError[0].setQuery(v),
-                () -> refMethodError[0].getQuery()
+                refMethodError[0]::setQuery,
+                refMethodError[0]::getQuery
             );
             
             SqlEngine.resetLexer(textPaneError);

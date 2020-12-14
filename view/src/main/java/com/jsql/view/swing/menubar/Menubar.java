@@ -22,8 +22,6 @@ import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -50,6 +48,7 @@ import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.StyleConstants;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -67,6 +66,7 @@ import com.jsql.view.swing.dialog.DialogAbout;
 import com.jsql.view.swing.dialog.DialogTranslate;
 import com.jsql.view.swing.dialog.translate.Language;
 import com.jsql.view.swing.interaction.CreateTabHelper;
+import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.sql.SqlEngine;
@@ -74,6 +74,8 @@ import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextFieldPlaceholder;
+import com.jsql.view.swing.text.JToolTipI18n;
+import com.jsql.view.swing.tree.model.NodeModelEmpty;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -1017,36 +1019,42 @@ public class Menubar extends JMenuBar {
         
         for (String key: I18nViewUtil.keys()) {
             
+            String textI18n = I18nViewUtil.valueByKey(key, newLocale);
+            
             for (Object componentSwing: I18nViewUtil.componentsByKey(key)) {
                 
-                Class<?> classComponent = componentSwing.getClass();
-                
-                try {
-                    if (componentSwing instanceof JTextFieldPlaceholder) {
-                        
-                        Method setPlaceholderText = classComponent.getMethod("setPlaceholderText", String.class);
-                        setPlaceholderText.invoke(componentSwing, I18nUtil.valueByKey(key));
-                        
-                    } else {
-                        
-                        Method methodSetText = classComponent.getMethod("setText", String.class);
-                        methodSetText.setAccessible(true);
-                        
-                        if (I18nUtil.isAsian(newLocale)) {
-                            
-                            methodSetText.invoke(componentSwing, I18nViewUtil.valueByKey(key));
-                            
-                        } else {
-                            
-                            methodSetText.invoke(componentSwing, I18nUtil.valueByKey(key));
-                        }
-                    }
+                if (componentSwing instanceof JTextFieldPlaceholder) {
                     
-                } catch (
-                    NoSuchMethodException | SecurityException | IllegalAccessException |
-                    IllegalArgumentException | InvocationTargetException e
-                ) {
-                    LOGGER.error("Reflection for "+ key +" failed while switching locale", e);
+                    // Textfield does not need <html> tags for asian fonts
+                    ((JTextFieldPlaceholder) componentSwing).setPlaceholderText(I18nUtil.valueByKey(key));
+                    
+                } else if (componentSwing instanceof JToolTipI18n) {
+                    
+                    ((JToolTipI18n) componentSwing).setText(textI18n);
+                    
+                } else if (componentSwing instanceof JLabel) {
+                    
+                    ((JLabel) componentSwing).setText(textI18n);
+                    
+                } else if (componentSwing instanceof JCheckBoxMenuItem) {
+                    
+                    ((JCheckBoxMenuItem) componentSwing).setText(textI18n);
+                    
+                } else if (componentSwing instanceof JMenuItem) {
+                    
+                    ((JMenuItem) componentSwing).setText(textI18n);
+                    
+                } else if (componentSwing instanceof JButtonStateful) {
+                    
+                    ((JButtonStateful) componentSwing).setText(textI18n);
+                    
+                } else if (componentSwing instanceof NodeModelEmpty) {
+                    
+                    ((NodeModelEmpty) componentSwing).setText(textI18n);
+                    
+                } else {
+                        
+                    ((JTextComponent) componentSwing).setText(textI18n);
                 }
             }
         }

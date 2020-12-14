@@ -95,17 +95,7 @@ public class PanelConnection extends JPanel {
         String tooltipProcessCsrf = "Process CSRF token";
         this.checkboxIsProcessingCsrf.setToolTipText(tooltipProcessCsrf);
         this.checkboxIsProcessingCsrf.setFocusable(false);
-        JButton labelProcessingCsrf = new JButton(
-            String
-            .format(
-                "%s%s%s%s%s",
-                "<html>",
-                "Process CSRF token:<br>",
-                "Input: Cookie XSRF-TOKEN, meta|input._csrf|_token|csrf-token, meta._csrf_header<br>",
-                "Output: HTTP param _csrf, X-XSRF-TOKEN + X-CSRF-TOKEN",
-                "</html>"
-            )
-        );
+        JButton labelProcessingCsrf = new JButton("Process CSRF token (search for XSRF-TOKEN/.../_csrf ; then set X-XSRF-TOKEN/.../_csrf)");
         labelProcessingCsrf.setToolTipText(tooltipProcessCsrf);
         labelProcessingCsrf.addActionListener(actionEvent -> {
             
@@ -134,8 +124,8 @@ public class PanelConnection extends JPanel {
         String tooltipIsCsrfUserTag = "CSRF tag name";
         this.checkboxIsCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
         this.checkboxIsCsrfUserTag.setFocusable(false);
-        JButton labelCsrfUserTag = new JButton("Custom CSRF ; input tag");
-        JButton labelCsrfUserTagOutput = new JButton(", output tag");
+        JButton labelCsrfUserTag = new JButton("Custom CSRF processing ; Input tag");
+        JButton labelCsrfUserTagOutput = new JButton(", Output tag");
         labelCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
         labelCsrfUserTagOutput.setToolTipText(tooltipIsCsrfUserTag);
         labelCsrfUserTag.addActionListener(actionEvent -> {
