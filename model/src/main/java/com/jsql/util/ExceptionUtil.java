@@ -34,7 +34,7 @@ public class ExceptionUtil {
         
         this.injectionModel = injectionModel;
     }
-
+    
     /**
      * Handler class processing errors on top of the JVM in order to send
      * a report to Github automatically.
@@ -58,7 +58,7 @@ public class ExceptionUtil {
                     MessageDigest md = MessageDigest.getInstance("Md5");
                     
                     String stackTrace = ExceptionUtils.getStackTrace(throwable).trim();
-                    String passwordString = new String(stackTrace.toCharArray());
+                    String passwordString = String.valueOf(stackTrace.toCharArray());
                     
                     byte[] passwordByte = passwordString.getBytes();
                     md.update(passwordByte, 0, passwordByte.length);

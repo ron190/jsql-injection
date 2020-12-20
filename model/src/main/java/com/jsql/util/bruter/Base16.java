@@ -160,7 +160,7 @@ public class Base16 extends BaseNCodec {
     }
 
     @Override
-    void decode(final byte[] data, int offsetInput, final int length, final Context context) {
+    public void decode(final byte[] data, int offsetInput, final int length, final Context context) {
         
         int offset = offsetInput;
         

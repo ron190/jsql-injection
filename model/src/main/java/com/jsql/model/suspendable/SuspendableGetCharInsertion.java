@@ -36,7 +36,7 @@ import com.jsql.util.I18nUtil;
  * Force to user's value if no insertion char works,
  * Force to insertion char otherwise.
  */
-public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
+public class SuspendableGetCharInsertion extends AbstractSuspendable {
     
     /**
      * Log4j logger sent to view.
@@ -78,31 +78,30 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 
                 List<Vendor> vendorsOrderByMatch = this.getVendorsOrderByMatch(mediatorVendor, pageSource);
                 
-                if (vendorsOrderByMatch.isEmpty()) {
-                    continue;
-                }
-                    
-                this.setVendor(mediatorVendor, vendorsOrderByMatch);
-                
-                LOGGER.info("Using ["+ mediatorVendor.getVendor() +"]");
-                Request requestSetVendor = new Request();
-                requestSetVendor.setMessage(Interaction.SET_VENDOR);
-                requestSetVendor.setParameters(mediatorVendor.getVendor());
-                this.injectionModel.sendToViews(requestSetVendor);
-                
-                // Char insertion
-                charFromOrderBy = currentCallable.getCharacterInsertion();
-                
-                if (charFromOrderBy.equals(charFromBooleanMatch[0])) {
-                
-                    LOGGER.info("Confirmed character insertion ["+ charFromOrderBy +"] using Order by match");
+                if (!vendorsOrderByMatch.isEmpty()) {
 
-                } else {
+                    this.setVendor(mediatorVendor, vendorsOrderByMatch);
                     
-                    LOGGER.info("Found character insertion ["+ charFromOrderBy +"] using Order by match");
+                    LOGGER.info("Using ["+ mediatorVendor.getVendor() +"]");
+                    Request requestSetVendor = new Request();
+                    requestSetVendor.setMessage(Interaction.SET_VENDOR);
+                    requestSetVendor.setParameters(mediatorVendor.getVendor());
+                    this.injectionModel.sendToViews(requestSetVendor);
+                    
+                    // Char insertion
+                    charFromOrderBy = currentCallable.getCharacterInsertion();
+                    
+                    if (charFromOrderBy.equals(charFromBooleanMatch[0])) {
+                    
+                        LOGGER.info("Confirmed character insertion ["+ charFromOrderBy +"] using Order by match");
+    
+                    } else {
+                        
+                        LOGGER.info("Found character insertion ["+ charFromOrderBy +"] using Order by match");
+                    }
+                    
+                    break;
                 }
-                
-                break;
                     
             } catch (InterruptedException | ExecutionException e) {
                 

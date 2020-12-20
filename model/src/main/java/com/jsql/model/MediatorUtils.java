@@ -150,7 +150,7 @@ public class MediatorUtils {
     }
 
     public CsrfUtil getCsrfUtil() {
-        return csrfUtil;
+        return this.csrfUtil;
     }
 
     public void setCsrfUtil(CsrfUtil csrfUtil) {
@@ -158,7 +158,7 @@ public class MediatorUtils {
     }
 
     public FormUtil getFormUtil() {
-        return formUtil;
+        return this.formUtil;
     }
 
     public void setFormUtil(FormUtil formUtil) {

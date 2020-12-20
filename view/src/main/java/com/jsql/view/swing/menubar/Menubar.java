@@ -732,10 +732,35 @@ public class Menubar extends JMenuBar {
             }
         }
         
-        this.itemIntoHindi = new JMenuItem("<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("hi").getDisplayLanguage(new Locale("hi")) +"</span>...</html>", UiUtil.ICON_FLAG_HI);
-        this.itemIntoArabic = new JMenuItem("<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span>...</html>", UiUtil.ICON_FLAG_AR);
+        String formatMenuItemUTF8 = "<html><span style=\"font-family:'%s'\">%s</span>...</html>";
+        
+        this.itemIntoHindi = new JMenuItem(
+            String
+            .format(
+                formatMenuItemUTF8,
+                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                new Locale("hi").getDisplayLanguage(new Locale("hi"))
+            ),
+            UiUtil.ICON_FLAG_HI
+        );
+        this.itemIntoArabic = new JMenuItem(
+            String
+            .format(
+                formatMenuItemUTF8,
+                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                new Locale("ar").getDisplayLanguage(new Locale("ar"))
+            ), UiUtil.ICON_FLAG_AR
+        );
         this.itemIntoRussia = new JMenuItem(new Locale("ru").getDisplayLanguage(new Locale("ru")) +"...", UiUtil.ICON_FLAG_RU);
-        this.itemIntoChina = new JMenuItem("<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span>...</html>", UiUtil.ICON_FLAG_ZH);
+        this.itemIntoChina = new JMenuItem(
+            String
+            .format(
+                formatMenuItemUTF8,
+                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                new Locale("zh").getDisplayLanguage(new Locale("zh"))
+            ),
+            UiUtil.ICON_FLAG_ZH
+        );
         this.itemIntoFrench = new JMenuItem(new Locale("fr").getDisplayLanguage(new Locale("fr")) +"...", UiUtil.ICON_FLAG_FR);
         this.itemIntoTurkish = new JMenuItem(new Locale("tr").getDisplayLanguage(new Locale("tr")) +"...", UiUtil.ICON_FLAG_TR);
         this.itemIntoCzech = new JMenuItem(new Locale("cs").getDisplayLanguage(new Locale("cs")) +"...", UiUtil.ICON_FLAG_CS);
@@ -748,8 +773,24 @@ public class Menubar extends JMenuBar {
         this.itemIntoPolish = new JMenuItem(new Locale("pl").getDisplayLanguage(new Locale("pl")) +"...", UiUtil.ICON_FLAG_PL);
         this.itemIntoRomanian = new JMenuItem(new Locale("ro").getDisplayLanguage(new Locale("ro")) +"...", UiUtil.ICON_FLAG_RO);
         this.itemIntoTamil = new JMenuItem(new Locale("ta").getDisplayLanguage(new Locale("ta")) +"...", UiUtil.ICON_FLAG_LK);
-        this.itemIntoJapanese = new JMenuItem("<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ja").getDisplayLanguage(new Locale("ja")) +"</span>...</html>", UiUtil.ICON_FLAG_JA);
-        this.itemIntoKorean = new JMenuItem("<html><span style=\"font-family:'"+ UiUtil.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ko").getDisplayLanguage(new Locale("ko")) +"</span>...</html>", UiUtil.ICON_FLAG_KO);
+        this.itemIntoJapanese = new JMenuItem(
+            String
+            .format(
+                formatMenuItemUTF8,
+                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                new Locale("ja").getDisplayLanguage(new Locale("ja"))
+            ),
+            UiUtil.ICON_FLAG_JA
+        );
+        this.itemIntoKorean = new JMenuItem(
+            String
+            .format(
+                formatMenuItemUTF8,
+                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                new Locale("ko").getDisplayLanguage(new Locale("ko"))
+            ),
+            UiUtil.ICON_FLAG_KO
+        );
         this.itemIntoSwedish = new JMenuItem(new Locale("se").getDisplayLanguage(new Locale("se")) +"...", UiUtil.ICON_FLAG_SE);
         JMenuItem itemIntoOther = new JMenuItem(I18nUtil.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", itemIntoOther);

@@ -74,13 +74,13 @@ class DocPosition {
             return false;
         }
         
-        if (getClass() != obj.getClass()) {
+        if (this.getClass() != obj.getClass()) {
             
             return false;
         }
         
         DocPosition other = (DocPosition) obj;
-        if (position != other.position) {
+        if (this.position != other.position) {
             
             return false;
         }
@@ -93,7 +93,7 @@ class DocPosition {
         
         final int prime = 31;
         int result = 1;
-        result = prime * result + position;
+        result = prime * result + this.position;
         
         return result;
     }

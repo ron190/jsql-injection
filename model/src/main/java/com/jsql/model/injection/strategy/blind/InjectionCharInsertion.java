@@ -39,6 +39,8 @@ public class InjectionCharInsertion {
     protected InjectionModel injectionModel;
 
     private String prefixSuffix;
+    
+    private static final String PREFIX = "prefix";
 
     private List<String> falseTest;
     
@@ -88,7 +90,7 @@ public class InjectionCharInsertion {
                     String
                     .join(
                         "+",
-                        prefixSuffix.replace("prefix", "" + RandomStringUtils.random(10, "345")),
+                        prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "345")),
                         this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
                         urlTest
                     ),
@@ -149,7 +151,7 @@ public class InjectionCharInsertion {
                     String
                     .join(
                         "+",
-                        this.prefixSuffix.replace("prefix", "" + RandomStringUtils.random(10, "345")),
+                        this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "345")),
                         this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
                         urlTest
                     ),
@@ -203,7 +205,7 @@ public class InjectionCharInsertion {
             String
             .join(
                 "+",
-                this.prefixSuffix.replace("prefix", "" + RandomStringUtils.random(10, "678")),
+                this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "678")),
                 this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization()
             ),
@@ -213,7 +215,9 @@ public class InjectionCharInsertion {
         
         try {
             blindTest.call();
+            
         } catch (Exception e) {
+            
             LOGGER.error(e.getMessage(), e);
         }
 

@@ -101,7 +101,7 @@ public class HeaderUtil {
         
         this.injectionModel.getMediatorUtils().getFormUtil().parseForms(connection, pageSource);
         
-        exception = this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(exception, pageSource, headers);
+        this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(pageSource, headers);
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, urlByUser);

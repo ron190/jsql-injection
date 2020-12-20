@@ -102,7 +102,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
         
         return this.injectionBlind.inject(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition),

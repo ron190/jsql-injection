@@ -53,178 +53,178 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private static ModelYaml modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
 
-    private JTabbedPane tabbedPaneError = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
+    private static JTabbedPane tabbedPaneError = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
 
-    private transient Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
+    private transient static Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
     
     private transient MouseWheelListener tabbedPaneMouseWheelListener = new TabbedPaneMouseWheelListener();
     
-    private final List<JTextPaneLexer> textPanesError = new ArrayList<>();
+    private static final List<JTextPaneLexer> textPanesError = new ArrayList<>();
     
-    enum TEXT_WITH_COLOR {
+    enum TextareaWithColor {
         
         // Default
-        TEXTAREA_DATABASE(new JTextPaneLexer(
+        DATABASE_DEFAULT(new JTextPaneLexer(
             v -> modelYaml.getResource().getSchema().setDatabase(v),
             () -> modelYaml.getResource().getSchema().getDatabase()
         )),
-        TEXTAREA_TABLE(new JTextPaneLexer(
+        TABLE_DEFAULT(new JTextPaneLexer(
             v -> modelYaml.getResource().getSchema().setTable(v),
             () -> modelYaml.getResource().getSchema().getTable()
         )),
-        TEXTAREA_COLUMN(new JTextPaneLexer(
+        COLUMN_DEFAULT(new JTextPaneLexer(
             v -> modelYaml.getResource().getSchema().setColumn(v),
             () -> modelYaml.getResource().getSchema().getColumn()
         )),
-        TEXTAREA_QUERY(new JTextPaneLexer(
+        QUERY_DEFAULT(new JTextPaneLexer(
             v -> modelYaml.getResource().getSchema().getRow().setQuery(v),
             () -> modelYaml.getResource().getSchema().getRow().getQuery()
         )),
-        TEXTAREA_FIELD(new JTextPaneLexer(
+        FIELD_DEFAULT(new JTextPaneLexer(
             v -> modelYaml.getResource().getSchema().getRow().getFields().setField(v),
             () -> modelYaml.getResource().getSchema().getRow().getFields().getField()
         )),
-        TEXTAREA_CONCAT(new JTextPaneLexer(
+        CONCAT_DEFAULT(new JTextPaneLexer(
             v -> modelYaml.getResource().getSchema().getRow().getFields().setConcat(v),
             () -> modelYaml.getResource().getSchema().getRow().getFields().getConcat()
         )),
         
         // Zip
-        TEXTAREA_DATABASE_ZIP(new JTextPaneLexer(
+        DATABASE_ZIP(new JTextPaneLexer(
             v -> modelYaml.getResource().getZip().setDatabase(v),
             () -> modelYaml.getResource().getZip().getDatabase()
         )),
-        TEXTAREA_TABLE_ZIP(new JTextPaneLexer(
+        TABLE_ZIP(new JTextPaneLexer(
             v -> modelYaml.getResource().getZip().setTable(v),
             () -> modelYaml.getResource().getZip().getTable()
         )),
-        TEXTAREA_COLUMN_ZIP(new JTextPaneLexer(
+        COLUMN_ZIP(new JTextPaneLexer(
             v -> modelYaml.getResource().getZip().setColumn(v),
             () -> modelYaml.getResource().getZip().getColumn()
         )),
-        TEXTAREA_QUERY_ZIP(new JTextPaneLexer(
+        QUERY_ZIP(new JTextPaneLexer(
             v -> modelYaml.getResource().getZip().getRow().setQuery(v),
             () -> modelYaml.getResource().getZip().getRow().getQuery()
         )),
-        TEXTAREA_FIELD_ZIP(new JTextPaneLexer(
+        FIELD_ZIP(new JTextPaneLexer(
             v -> modelYaml.getResource().getZip().getRow().getFields().setField(v),
             () -> modelYaml.getResource().getZip().getRow().getFields().getField()
         )),
-        TEXTAREA_CONCAT_ZIP(new JTextPaneLexer(
+        CONCAT_ZIP(new JTextPaneLexer(
             v -> modelYaml.getResource().getZip().getRow().getFields().setConcat(v),
             () -> modelYaml.getResource().getZip().getRow().getFields().getConcat()
         )),
         
         // Dios
-        TEXTAREA_DATABASE_DIOS(new JTextPaneLexer(
+        DATABASE_DIOS(new JTextPaneLexer(
             v -> modelYaml.getResource().getDios().setDatabase(v),
             () -> modelYaml.getResource().getDios().getDatabase()
         )),
-        TEXTAREA_TABLE_DIOS(new JTextPaneLexer(
+        TABLE_DIOS(new JTextPaneLexer(
             v -> modelYaml.getResource().getDios().setTable(v),
             () -> modelYaml.getResource().getDios().getTable()
         )),
-        TEXTAREA_COLUMN_DIOS(new JTextPaneLexer(
+        COLUMN_DIOS(new JTextPaneLexer(
             v -> modelYaml.getResource().getDios().setColumn(v),
             () -> modelYaml.getResource().getDios().getColumn()
         )),
-        TEXTAREA_QUERY_DIOS(new JTextPaneLexer(
+        QUERY_DIOS(new JTextPaneLexer(
             v -> modelYaml.getResource().getDios().getRow().setQuery(v),
             () -> modelYaml.getResource().getDios().getRow().getQuery()
         )),
-        TEXTAREA_FIELD_DIOS(new JTextPaneLexer(
+        FIELD_DIOS(new JTextPaneLexer(
             v -> modelYaml.getResource().getDios().getRow().getFields().setField(v),
             () -> modelYaml.getResource().getDios().getRow().getFields().getField()
         )),
-        TEXTAREA_CONCAT_DIOS(new JTextPaneLexer(
+        CONCAT_DIOS(new JTextPaneLexer(
             v -> modelYaml.getResource().getDios().getRow().getFields().setConcat(v),
             () -> modelYaml.getResource().getDios().getRow().getFields().getConcat()
         )),
         
-        TEXTAREA_INFO(new JTextPaneLexer(
+        INFO(new JTextPaneLexer(
             v -> modelYaml.getResource().setInfo(v),
             () -> modelYaml.getResource().getInfo()
         )),
         
-        TEXTAREA_TRUTHY(new JTextPaneLexer(
+        TRUTHY(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getBoolean().getTest().setTruthy(v),
             () -> modelYaml.getStrategy().getBoolean().getTest().getTruthyAsString()
         )),
-        TEXTAREA_FALSY(new JTextPaneLexer(
+        FALSY(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getBoolean().getTest().setFalsy(v),
             () -> modelYaml.getStrategy().getBoolean().getTest().getFalsyAsString()
         )),
          
         // Configuration
-        TEXTAREA_SLIDING_WINDOW(new JTextPaneLexer(
+        SLIDING_WINDOW(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getConfiguration().setSlidingWindow(v),
             () -> modelYaml.getStrategy().getConfiguration().getSlidingWindow()
         )),
-        TEXTAREA_LIMIT(new JTextPaneLexer(
+        LIMIT(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getConfiguration().setLimit(v),
             () -> modelYaml.getStrategy().getConfiguration().getLimit()
         )),
-        TEXTAREA_FAILSAFE(new JTextPaneLexer(
+        FAILSAFE(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getConfiguration().setFailsafe(v),
             () -> modelYaml.getStrategy().getConfiguration().getFailsafe()
         )),
-        TEXTAREA_CALIBRATOR(new JTextPaneLexer(
+        CALIBRATOR(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getConfiguration().setCalibrator(v),
             () -> modelYaml.getStrategy().getConfiguration().getCalibrator()
         )),
-        TEXTAREA_ENDING_COMMENT(new JTextPaneLexer(
+        ENDING_COMMENT(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getConfiguration().setEndingComment(v),
             () -> modelYaml.getStrategy().getConfiguration().getEndingComment()
         )),
-        TEXTAREA_LIMIT_BOUNDARY(new JTextPaneLexer(
+        LIMIT_BOUNDARY(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getConfiguration().setLimitBoundary(v),
             () -> modelYaml.getStrategy().getConfiguration().getLimitBoundary()
         )),
-        TEXTAREA_ORDER_BY_ERROR_MESSAGE(new JTextPaneLexer(
+        ORDER_BY_ERROR_MESSAGE(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setOrderByErrorMessage(v),
             () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
         )),
-        TEXTAREA_INCORRECT_STRING_ERROR_MESSAGE(new JTextPaneLexer(
+        INCORRECT_STRING_ERROR_MESSAGE(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setErrorMessageAsString(v),
             () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getErrorMessageAsString()
         )),
         
         // Normal
-        TEXTAREA_INDICES(new JTextPaneLexer(
+        INDICES(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getNormal().setIndices(v),
             () -> modelYaml.getStrategy().getNormal().getIndices()
         )),
-        TEXTAREA_CAPACITY(new JTextPaneLexer(
+        CAPACITY(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getNormal().setCapacity(v),
             () -> modelYaml.getStrategy().getNormal().getCapacity()
         )),
-        TEXTAREA_ORDER_BY(new JTextPaneLexer(
+        ORDER_BY(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getNormal().setOrderBy(v),
             () -> modelYaml.getStrategy().getNormal().getOrderBy()
         )),
         
         // Boolean
-        TEXTAREA_MODE_AND(new JTextPaneLexer(
+        MODE_AND(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getBoolean().setModeAnd(v),
             () -> modelYaml.getStrategy().getBoolean().getModeAnd()
         )),
-        TEXTAREA_MODE_OR(new JTextPaneLexer(
+        MODE_OR(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getBoolean().setModeOr(v),
             () -> modelYaml.getStrategy().getBoolean().getModeOr()
         )),
-        TEXTAREA_BLIND(new JTextPaneLexer(
+        BLIND(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getBoolean().setBlind(v),
             () -> modelYaml.getStrategy().getBoolean().getBlind()
         )),
-        TEXTAREA_TIME(new JTextPaneLexer(
+        TIME(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getBoolean().setTime(v),
             () -> modelYaml.getStrategy().getBoolean().getTime()
         )),
-        TEXTAREA_BIT_TEST(new JTextPaneLexer(
+        BIT_TEST(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getBoolean().getTest().setBit(v),
             () -> modelYaml.getStrategy().getBoolean().getTest().getBit()
         )),
-        TEXTAREA_LENGTH_TEST(new JTextPaneLexer(
+        LENGTH_TEST(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getBoolean().getTest().setLength(v),
             () -> modelYaml.getStrategy().getBoolean().getTest().getLength()
         ))
@@ -236,49 +236,49 @@ public class SqlEngine extends JPanel implements Cleanable {
             return this.text;
         }
 
-        TEXT_WITH_COLOR(JTextPaneLexer text) {
+        TextareaWithColor(JTextPaneLexer text) {
             this.text = text;
         }
     }
     
     public SqlEngine() {
         
-        this.tabbedPaneError.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
+        SqlEngine.tabbedPaneError.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
 
-        this.initializeTextComponents();
+        SqlEngine.initializeTextComponents();
         
         Stream
         .of(
-            TEXT_WITH_COLOR.TEXTAREA_DATABASE,
-            TEXT_WITH_COLOR.TEXTAREA_TABLE,
-            TEXT_WITH_COLOR.TEXTAREA_COLUMN,
-            TEXT_WITH_COLOR.TEXTAREA_QUERY,
-            TEXT_WITH_COLOR.TEXTAREA_FIELD,
-            TEXT_WITH_COLOR.TEXTAREA_CONCAT,
-            TEXT_WITH_COLOR.TEXTAREA_INFO,
+            TextareaWithColor.DATABASE_DEFAULT,
+            TextareaWithColor.TABLE_DEFAULT,
+            TextareaWithColor.COLUMN_DEFAULT,
+            TextareaWithColor.QUERY_DEFAULT,
+            TextareaWithColor.FIELD_DEFAULT,
+            TextareaWithColor.CONCAT_DEFAULT,
+            TextareaWithColor.INFO,
             
-            TEXT_WITH_COLOR.TEXTAREA_DATABASE_ZIP,
-            TEXT_WITH_COLOR.TEXTAREA_TABLE_ZIP,
-            TEXT_WITH_COLOR.TEXTAREA_COLUMN_ZIP,
-            TEXT_WITH_COLOR.TEXTAREA_QUERY_ZIP,
-            TEXT_WITH_COLOR.TEXTAREA_FIELD_ZIP,
-            TEXT_WITH_COLOR.TEXTAREA_CONCAT_ZIP,
+            TextareaWithColor.DATABASE_ZIP,
+            TextareaWithColor.TABLE_ZIP,
+            TextareaWithColor.COLUMN_ZIP,
+            TextareaWithColor.QUERY_ZIP,
+            TextareaWithColor.FIELD_ZIP,
+            TextareaWithColor.CONCAT_ZIP,
             
-            TEXT_WITH_COLOR.TEXTAREA_DATABASE_DIOS,
-            TEXT_WITH_COLOR.TEXTAREA_TABLE_DIOS,
-            TEXT_WITH_COLOR.TEXTAREA_COLUMN_DIOS,
-            TEXT_WITH_COLOR.TEXTAREA_QUERY_DIOS,
-            TEXT_WITH_COLOR.TEXTAREA_FIELD_DIOS,
-            TEXT_WITH_COLOR.TEXTAREA_CONCAT_DIOS,
+            TextareaWithColor.DATABASE_DIOS,
+            TextareaWithColor.TABLE_DIOS,
+            TextareaWithColor.COLUMN_DIOS,
+            TextareaWithColor.QUERY_DIOS,
+            TextareaWithColor.FIELD_DIOS,
+            TextareaWithColor.CONCAT_DIOS,
             
-            TEXT_WITH_COLOR.TEXTAREA_MODE_AND,
-            TEXT_WITH_COLOR.TEXTAREA_MODE_OR,
-            TEXT_WITH_COLOR.TEXTAREA_BLIND,
-            TEXT_WITH_COLOR.TEXTAREA_TIME,
-            TEXT_WITH_COLOR.TEXTAREA_BIT_TEST,
-            TEXT_WITH_COLOR.TEXTAREA_LENGTH_TEST
+            TextareaWithColor.MODE_AND,
+            TextareaWithColor.MODE_OR,
+            TextareaWithColor.BLIND,
+            TextareaWithColor.TIME,
+            TextareaWithColor.BIT_TEST,
+            TextareaWithColor.LENGTH_TEST
         )
-        .forEach(textPane -> textPane.getText().setBorder(this.borderRight));
+        .forEach(textPane -> textPane.getText().setBorder(SqlEngine.borderRight));
         
         JPanel panelStructure = this.getPanelStructure();
         JPanel panelStrategy = this.getPanelStrategy();
@@ -310,7 +310,8 @@ public class SqlEngine extends JPanel implements Cleanable {
 
         this.setLayout(new OverlayLayout(this));
 
-        this.initializeMenuVendor();
+        JPanel panelCombo = SqlEngine.initializeMenuVendor();
+        this.add(panelCombo);
         
         this.add(tabsBottom);
         
@@ -337,13 +338,13 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         Stream
         .of(
-            new SimpleEntry<>(keyDatabases, TEXT_WITH_COLOR.TEXTAREA_DATABASE.getText()),
-            new SimpleEntry<>(keyTables, TEXT_WITH_COLOR.TEXTAREA_TABLE.getText()),
-            new SimpleEntry<>(keyColumns, TEXT_WITH_COLOR.TEXTAREA_COLUMN.getText()),
-            new SimpleEntry<>(keyRows, TEXT_WITH_COLOR.TEXTAREA_QUERY.getText()),
-            new SimpleEntry<>(keyField, TEXT_WITH_COLOR.TEXTAREA_FIELD.getText()),
-            new SimpleEntry<>(keyFieldSeparator, TEXT_WITH_COLOR.TEXTAREA_CONCAT.getText()),
-            new SimpleEntry<>("SQLENGINE_METADATA", TEXT_WITH_COLOR.TEXTAREA_INFO.getText())
+            new SimpleEntry<>(keyDatabases, TextareaWithColor.DATABASE_DEFAULT.getText()),
+            new SimpleEntry<>(keyTables, TextareaWithColor.TABLE_DEFAULT.getText()),
+            new SimpleEntry<>(keyColumns, TextareaWithColor.COLUMN_DEFAULT.getText()),
+            new SimpleEntry<>(keyRows, TextareaWithColor.QUERY_DEFAULT.getText()),
+            new SimpleEntry<>(keyField, TextareaWithColor.FIELD_DEFAULT.getText()),
+            new SimpleEntry<>(keyFieldSeparator, TextareaWithColor.CONCAT_DEFAULT.getText()),
+            new SimpleEntry<>("SQLENGINE_METADATA", TextareaWithColor.INFO.getText())
         )
         .forEach(entry -> {
             
@@ -365,12 +366,12 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         Stream
         .of(
-            new SimpleEntry<>(keyDatabases, TEXT_WITH_COLOR.TEXTAREA_DATABASE_ZIP.getText()),
-            new SimpleEntry<>(keyTables, TEXT_WITH_COLOR.TEXTAREA_TABLE_ZIP.getText()),
-            new SimpleEntry<>(keyColumns, TEXT_WITH_COLOR.TEXTAREA_COLUMN_ZIP.getText()),
-            new SimpleEntry<>(keyRows, TEXT_WITH_COLOR.TEXTAREA_QUERY_ZIP.getText()),
-            new SimpleEntry<>(keyField, TEXT_WITH_COLOR.TEXTAREA_FIELD_ZIP.getText()),
-            new SimpleEntry<>(keyFieldSeparator, TEXT_WITH_COLOR.TEXTAREA_CONCAT_ZIP.getText())
+            new SimpleEntry<>(keyDatabases, TextareaWithColor.DATABASE_ZIP.getText()),
+            new SimpleEntry<>(keyTables, TextareaWithColor.TABLE_ZIP.getText()),
+            new SimpleEntry<>(keyColumns, TextareaWithColor.COLUMN_ZIP.getText()),
+            new SimpleEntry<>(keyRows, TextareaWithColor.QUERY_ZIP.getText()),
+            new SimpleEntry<>(keyField, TextareaWithColor.FIELD_ZIP.getText()),
+            new SimpleEntry<>(keyFieldSeparator, TextareaWithColor.CONCAT_ZIP.getText())
         )
         .forEach(entry -> {
             
@@ -392,12 +393,12 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         Stream
         .of(
-            new SimpleEntry<>(keyDatabases, TEXT_WITH_COLOR.TEXTAREA_DATABASE_DIOS.getText()),
-            new SimpleEntry<>(keyTables, TEXT_WITH_COLOR.TEXTAREA_TABLE_DIOS.getText()),
-            new SimpleEntry<>(keyColumns, TEXT_WITH_COLOR.TEXTAREA_COLUMN_DIOS.getText()),
-            new SimpleEntry<>(keyRows, TEXT_WITH_COLOR.TEXTAREA_QUERY_DIOS.getText()),
-            new SimpleEntry<>(keyField, TEXT_WITH_COLOR.TEXTAREA_FIELD_DIOS.getText()),
-            new SimpleEntry<>(keyFieldSeparator, TEXT_WITH_COLOR.TEXTAREA_CONCAT_DIOS.getText())
+            new SimpleEntry<>(keyDatabases, TextareaWithColor.DATABASE_DIOS.getText()),
+            new SimpleEntry<>(keyTables, TextareaWithColor.TABLE_DIOS.getText()),
+            new SimpleEntry<>(keyColumns, TextareaWithColor.COLUMN_DIOS.getText()),
+            new SimpleEntry<>(keyRows, TextareaWithColor.QUERY_DIOS.getText()),
+            new SimpleEntry<>(keyField, TextareaWithColor.FIELD_DIOS.getText()),
+            new SimpleEntry<>(keyFieldSeparator, TextareaWithColor.CONCAT_DIOS.getText())
         )
         .forEach(entry -> {
             
@@ -443,7 +444,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         JTabbedPane tabsStrategy = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsStrategy.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
-        tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_NORMAL"), new LightScrollPane(1, 0, 1, 0, TEXT_WITH_COLOR.TEXTAREA_INDICES.getText()));
+        tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_NORMAL"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.INDICES.getText()));
         
         JPanel panelStrategy = new JPanel(new BorderLayout());
         panelStrategy.add(tabsStrategy, BorderLayout.CENTER);
@@ -451,7 +452,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         /* Error */
         JPanel panelError = new JPanel(new BorderLayout());
-        panelError.add(this.tabbedPaneError, BorderLayout.CENTER);
+        panelError.add(SqlEngine.tabbedPaneError, BorderLayout.CENTER);
         
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), panelError);
 
@@ -461,12 +462,12 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         Stream
         .of(
-            new SimpleEntry<>("AND mode", TEXT_WITH_COLOR.TEXTAREA_MODE_AND.getText()),
-            new SimpleEntry<>("OR mode", TEXT_WITH_COLOR.TEXTAREA_MODE_OR.getText()),
-            new SimpleEntry<>("Blind", TEXT_WITH_COLOR.TEXTAREA_BLIND.getText()),
-            new SimpleEntry<>("Time", TEXT_WITH_COLOR.TEXTAREA_TIME.getText()),
-            new SimpleEntry<>("Bit Test", TEXT_WITH_COLOR.TEXTAREA_BIT_TEST.getText()),
-            new SimpleEntry<>("Length Test", TEXT_WITH_COLOR.TEXTAREA_LENGTH_TEST.getText())
+            new SimpleEntry<>("AND mode", TextareaWithColor.MODE_AND.getText()),
+            new SimpleEntry<>("OR mode", TextareaWithColor.MODE_OR.getText()),
+            new SimpleEntry<>("Blind", TextareaWithColor.BLIND.getText()),
+            new SimpleEntry<>("Time", TextareaWithColor.TIME.getText()),
+            new SimpleEntry<>("Bit Test", TextareaWithColor.BIT_TEST.getText()),
+            new SimpleEntry<>("Length Test", TextareaWithColor.LENGTH_TEST.getText())
         )
         .forEach(entry ->
             tabsBoolean.addTab(
@@ -507,13 +508,13 @@ public class SqlEngine extends JPanel implements Cleanable {
         JTabbedPane tabsConfiguration = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsConfiguration.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
 
-        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, TEXT_WITH_COLOR.TEXTAREA_SLIDING_WINDOW.getText()));
-        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, TEXT_WITH_COLOR.TEXTAREA_LIMIT.getText()));
-        tabsConfiguration.addTab("Limit start index", new LightScrollPane(1, 0, 1, 0, TEXT_WITH_COLOR.TEXTAREA_LIMIT_BOUNDARY.getText()));
-        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CAPACITY"), new LightScrollPane(1, 0, 1, 0, TEXT_WITH_COLOR.TEXTAREA_CAPACITY.getText()));
-        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CALIBRATOR"), new LightScrollPane(1, 0, 1, 0, TEXT_WITH_COLOR.TEXTAREA_CALIBRATOR.getText()));
-        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_TRAPCANCELLER"), new LightScrollPane(1, 0, 1, 0, TEXT_WITH_COLOR.TEXTAREA_FAILSAFE.getText()));
-        tabsConfiguration.addTab("End comment", new LightScrollPane(1, 0, 1, 0, TEXT_WITH_COLOR.TEXTAREA_ENDING_COMMENT.getText()));
+        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.SLIDING_WINDOW.getText()));
+        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.LIMIT.getText()));
+        tabsConfiguration.addTab("Limit start index", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.LIMIT_BOUNDARY.getText()));
+        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CAPACITY"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.CAPACITY.getText()));
+        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CALIBRATOR"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.CALIBRATOR.getText()));
+        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_TRAPCANCELLER"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FAILSAFE.getText()));
+        tabsConfiguration.addTab("End comment", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.ENDING_COMMENT.getText()));
         
         Stream
         .of(
@@ -546,11 +547,11 @@ public class SqlEngine extends JPanel implements Cleanable {
         JTabbedPane tabs = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabs.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         
-        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new LightScrollPane(1, 0, 1, 0, TEXT_WITH_COLOR.TEXTAREA_ORDER_BY.getText()));
-        tabs.addTab("Order by error", new LightScrollPane(1, 0, 1, 0, TEXT_WITH_COLOR.TEXTAREA_ORDER_BY_ERROR_MESSAGE.getText()));
-        tabs.addTab("String error", new LightScrollPane(1, 0, 1, 0, TEXT_WITH_COLOR.TEXTAREA_INCORRECT_STRING_ERROR_MESSAGE.getText()));
-        tabs.addTab("Truthy", new LightScrollPane(1, 0, 1, 0, TEXT_WITH_COLOR.TEXTAREA_TRUTHY.getText()));
-        tabs.addTab("Falsy", new LightScrollPane(1, 0, 1, 0, TEXT_WITH_COLOR.TEXTAREA_FALSY.getText()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.ORDER_BY.getText()));
+        tabs.addTab("Order by error", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.ORDER_BY_ERROR_MESSAGE.getText()));
+        tabs.addTab("String error", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.INCORRECT_STRING_ERROR_MESSAGE.getText()));
+        tabs.addTab("Truthy", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.TRUTHY.getText()));
+        tabs.addTab("Falsy", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FALSY.getText()));
         
         Stream
         .of("SQLENGINE_ORDER_BY")
@@ -572,7 +573,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         return panel;
     }
 
-    private void initializeMenuVendor() {
+    private static JPanel initializeMenuVendor() {
         
         JPanel panelCombo = new JPanel();
         panelCombo.setLayout(new BorderLayout());
@@ -605,7 +606,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             itemRadioVendor.addActionListener(actionEvent -> {
                 
                 SqlEngine.modelYaml = vendor.instance().getModelYaml();
-                this.initializeTextComponents();
+                SqlEngine.initializeTextComponents();
                 comboMenuVendor.setText(vendor.toString());
             });
             
@@ -625,24 +626,26 @@ public class SqlEngine extends JPanel implements Cleanable {
         }
         
         panelCombo.add(menuBarVendor, BorderLayout.LINE_END);
-        this.add(panelCombo);
+//        this.add(panelCombo);
 
         // Do Overlay
         panelCombo.setAlignmentX(FlowLayout.TRAILING);
         panelCombo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+        
+        return panelCombo;
     }
     
     /**
      * Configure all text components with new coloring and new modelYaml setter.
      */
-    private void initializeTextComponents() {
+    private static void initializeTextComponents() {
         
-        this.getTextPanes().forEach(SqlEngine::resetLexer);
-        this.getTextPanes().forEach(JTextPaneObjectMethod::switchSetterToVendor);
-        this.getTextPanes().forEach(textPaneLexer -> textPaneLexer.setText(StringUtils.EMPTY));
+        SqlEngine.getTextPanes().forEach(SqlEngine::resetLexer);
+        SqlEngine.getTextPanes().forEach(JTextPaneObjectMethod::switchSetterToVendor);
+        SqlEngine.getTextPanes().forEach(textPaneLexer -> textPaneLexer.setText(StringUtils.EMPTY));
         
         Stream
-        .of(TEXT_WITH_COLOR.values())
+        .of(TextareaWithColor.values())
         .forEach(entry ->
             entry
             .getText()
@@ -655,15 +658,15 @@ public class SqlEngine extends JPanel implements Cleanable {
             )
         );
 
-        this.populateTabError();
+        SqlEngine.populateTabError();
     }
     
     /**
      * Dynamically add textPanes to Error tab for current vendor.
      */
-    private void populateTabError() {
+    private static void populateTabError() {
         
-        this.tabbedPaneError.removeAll();
+        SqlEngine.tabbedPaneError.removeAll();
         
         if (SqlEngine.modelYaml.getStrategy().getError() == null) {
             
@@ -684,7 +687,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             SqlEngine.resetLexer(textPaneError);
             textPaneError.switchSetterToVendor();
             textPaneError.setText(methodError.getQuery().trim());
-            textPaneError.setBorder(this.borderRight);
+            textPaneError.setBorder(SqlEngine.borderRight);
 
             panelError.add(new LightScrollPane(1, 0, 1, 0, textPaneError), BorderLayout.CENTER);
             
@@ -696,17 +699,17 @@ public class SqlEngine extends JPanel implements Cleanable {
             // TODO Integrate Error limit
             panelError.add(panelLimit, BorderLayout.SOUTH);
 
-            this.tabbedPaneError.addTab(methodError.getName(), panelError);
+            SqlEngine.tabbedPaneError.addTab(methodError.getName(), panelError);
             
-            this.tabbedPaneError.setTitleAt(
-                this.tabbedPaneError.getTabCount() - 1,
+            SqlEngine.tabbedPaneError.setTitleAt(
+                    SqlEngine.tabbedPaneError.getTabCount() - 1,
                 String.format(
                     "<html><div style=\"text-align:left;width:100px;\">%s</div></html>",
                     methodError.getName()
                 )
             );
             
-            this.textPanesError.add(textPaneError);
+            SqlEngine.textPanesError.add(textPaneError);
         }
     }
 
@@ -717,7 +720,7 @@ public class SqlEngine extends JPanel implements Cleanable {
     @Override
     public void clean() {
         
-        this.getTextPanes().forEach(UiUtil::stopDocumentColorer);
+        SqlEngine.getTextPanes().forEach(UiUtil::stopDocumentColorer);
     }
     
     /**
@@ -746,15 +749,15 @@ public class SqlEngine extends JPanel implements Cleanable {
      * Merge list of Error textPanes and list of other textAreas.
      * @return the merged list
      */
-    private List<JTextPaneLexer> getTextPanes() {
+    private static List<JTextPaneLexer> getTextPanes() {
         
         return
             Stream
             .concat(
-                this.textPanesError.stream(),
+                SqlEngine.textPanesError.stream(),
                 Stream
-                .of(TEXT_WITH_COLOR.values())
-                .map(TEXT_WITH_COLOR::getText)
+                .of(TextareaWithColor.values())
+                .map(TextareaWithColor::getText)
             )
             .collect(Collectors.toList());
     }

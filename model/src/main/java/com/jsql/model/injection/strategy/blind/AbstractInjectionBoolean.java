@@ -74,7 +74,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
      * @return Final string: SQLiABCDEF...
      * @throws StoppedByUserSlidingException
      */
-    public String inject(String sqlQuery, AbstractSuspendable<String> suspendable) throws StoppedByUserSlidingException {
+    public String inject(String sqlQuery, AbstractSuspendable suspendable) throws StoppedByUserSlidingException {
 
         // List of the characters, each one represented by an array of 8 bits
         // e.g SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...

@@ -152,19 +152,19 @@ public class SessionCookieManager extends CookieHandler {
     /**
      * path-matches algorithm, as defined by RFC 2965
      */
-    private boolean pathMatches(String path, String pathToMatchWith) {
+    private boolean pathMatches(String pathUri, String pathToMatchWith) {
         
-        if (path == pathToMatchWith) {
+        if (pathUri == pathToMatchWith) {
             
             return true;
         }
         
-        if (path == null || pathToMatchWith == null) {
+        if (pathUri == null || pathToMatchWith == null) {
             
             return false;
         }
         
-        return path.startsWith(pathToMatchWith);
+        return pathUri.startsWith(pathToMatchWith);
     }
 
     /**

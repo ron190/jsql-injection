@@ -31,7 +31,7 @@ public class ActionPauseUnpause implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        AbstractSuspendable<?> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
+        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
         
         if (suspendableTask == null) {
             return;

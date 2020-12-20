@@ -20,9 +20,9 @@ import javax.swing.undo.UndoableEdit;
 
 @SuppressWarnings("serial")
 public class MergeUndo extends JEditorPane {
-    JButton btnUndo=new JButton("Undo");
-    JButton btnRedo=new JButton("Redo");
-    UndoManager undoManager=new UndoManager();
+    private JButton btnUndo=new JButton("Undo");
+    private JButton btnRedo=new JButton("Redo");
+    private UndoManager undoManager=new UndoManager();
  
     public static void main(String[] args) {
         JFrame frame = new JFrame("Merge undoable actions in one group");
@@ -52,7 +52,7 @@ public class MergeUndo extends JEditorPane {
     }
  
     class MyCompoundEdit extends CompoundEdit {
-        boolean isUnDone=false;
+        private boolean isUnDone=false;
         public int getLength() {
             return this.edits.size();
         }
@@ -78,11 +78,11 @@ public class MergeUndo extends JEditorPane {
         }
  
     }
-    class UndoManager extends AbstractUndoableEdit implements UndoableEditListener {
-        String lastEditName=null;
-        ArrayList<MyCompoundEdit> edits=new ArrayList<>();
-        MyCompoundEdit current;
-        int pointer=-1;
+    private class UndoManager extends AbstractUndoableEdit implements UndoableEditListener {
+        private String lastEditName=null;
+        private ArrayList<MyCompoundEdit> edits=new ArrayList<>();
+        private MyCompoundEdit current;
+        private int pointer=-1;
  
         @Override
         public void undoableEditHappened(UndoableEditEvent e) {

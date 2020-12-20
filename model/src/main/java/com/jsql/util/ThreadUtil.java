@@ -40,7 +40,7 @@ public final class ThreadUtil {
      * List of running jobs associated to a database injection task.
      * We can interact with those tasks in order to pause/resume and stop the process.
      */
-    private final Map<AbstractElementDatabase, AbstractSuspendable<?>> suspendables = new HashMap<>();
+    private final Map<AbstractElementDatabase, AbstractSuspendable> suspendables = new HashMap<>();
 
     private InjectionModel injectionModel;
     
@@ -55,7 +55,7 @@ public final class ThreadUtil {
      * @param elementDatabase component associated to the active job
      * @param suspendable active job to act on
      */
-    public void put(AbstractElementDatabase elementDatabase, AbstractSuspendable<String> suspendable) {
+    public void put(AbstractElementDatabase elementDatabase, AbstractSuspendable suspendable) {
         
         this.suspendables.put(elementDatabase, suspendable);
     }
@@ -67,7 +67,7 @@ public final class ThreadUtil {
      * @param elementDatabase component associated to the active job
      * @return job currently running
      */
-    public AbstractSuspendable<?> get(AbstractElementDatabase elementDatabase) {
+    public AbstractSuspendable get(AbstractElementDatabase elementDatabase) {
         
         return this.suspendables.get(elementDatabase);
     }

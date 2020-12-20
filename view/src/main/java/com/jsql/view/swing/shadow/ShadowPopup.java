@@ -483,12 +483,10 @@ public final class ShadowPopup extends Popup {
             
             if (p instanceof JRootPane) {
                 
-                if (p.getParent() instanceof JInternalFrame) {
+                if (!(p.getParent() instanceof JInternalFrame)) {
                     
-                    continue;
+                    parent = ((JRootPane) p).getLayeredPane();
                 }
-                
-                parent = ((JRootPane) p).getLayeredPane();
                 // Continue, so that if there is a higher JRootPane, we'll
                 // pick it up.
                 

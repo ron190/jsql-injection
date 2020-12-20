@@ -85,7 +85,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
         
         return this.injectionModel.injectWithIndexes(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(sqlQuery, startPosition),

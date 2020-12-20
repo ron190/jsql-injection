@@ -8,7 +8,7 @@ import com.jsql.model.exception.JSqlException;
 /**
  * A thread used to inject database ; stoppable and pausable.
  */
-public abstract class AbstractSuspendable<T> {
+public abstract class AbstractSuspendable {
     
     /**
      * Log4j logger sent to view.
@@ -37,7 +37,7 @@ public abstract class AbstractSuspendable<T> {
      * @return
      * @throws JSqlException
      */
-    public abstract T run(Object... args) throws JSqlException;
+    public abstract String run(Object... args) throws JSqlException;
 
     /**
      * Thread's states Pause and Stop are processed by this method.<br>

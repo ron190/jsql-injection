@@ -2,12 +2,12 @@ package com.jsql.util;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;

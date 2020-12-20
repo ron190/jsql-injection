@@ -9,6 +9,7 @@ import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.DialogFixture;
 import org.assertj.swing.fixture.FrameFixture;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -35,8 +36,11 @@ public class ApplicationUiTest {
 
     @Test
     public void shouldFindOkButton() {
-        
-        window.button(withName("buttonInUrl")).click();
+        try {
+            window.button(withName("buttonInUrl")).click();
+        } catch (Exception e) {
+            Assert.fail();
+        }
     }
 
     @Test
@@ -45,7 +49,12 @@ public class ApplicationUiTest {
         window.button(withName("buttonShowSouth")).click();
         window.button(withName("buttonShowConsolesHidden")).click();
         window.button(withName("buttonShowNorth")).click();
-        window.button(withName("buttonShowSouth")).click();
+
+        try {
+            window.button(withName("buttonShowSouth")).click();
+        } catch (Exception e) {
+            Assert.fail();
+        }
     }
     
     @Test
@@ -54,7 +63,12 @@ public class ApplicationUiTest {
         window.button(withName("advancedButton")).click();
         window.menuItem("menuWindows").click();
         window.menuItem("itemPreferences").click();
-        window.button(withName("advancedButton")).click();
+
+        try {
+            window.button(withName("advancedButton")).click();
+        } catch (Exception e) {
+            Assert.fail();
+        }
     }
     
     @Test
@@ -63,7 +77,12 @@ public class ApplicationUiTest {
         window.button(withName("advancedButton")).click();
         window.menuItem("menuWindows").click();
         window.menuItem("itemSqlEngine").click();
-        window.button(withName("advancedButton")).click();
+
+        try {
+            window.button(withName("advancedButton")).click();
+        } catch (Exception e) {
+            Assert.fail();
+        }
     }
     
     @Test
@@ -73,7 +92,12 @@ public class ApplicationUiTest {
         window.menuItem("menuWindows").click();
         window.menuItem("menuTranslation").click();
         window.menuItem("itemRussian").click();
-        window.button(withName("advancedButton")).click();
+
+        try {
+            window.button(withName("advancedButton")).click();
+        } catch (Exception e) {
+            Assert.fail();
+        }
     }
     
     @Test
@@ -85,8 +109,12 @@ public class ApplicationUiTest {
         
         DialogFixture dialog = window.dialog();
         dialog.button(withText("Cancel")).click();
-        
-        window.button(withName("advancedButton")).click();
+
+        try {
+            window.button(withName("advancedButton")).click();
+        } catch (Exception e) {
+            Assert.fail();
+        }
     }
     
     @Test
@@ -99,8 +127,12 @@ public class ApplicationUiTest {
         
         DialogFixture dialog = window.dialog();
         dialog.close();
-        
-        window.button(withName("advancedButton")).click();
+
+        try {
+            window.button(withName("advancedButton")).click();
+        } catch (Exception e) {
+            Assert.fail();
+        }
     }
     
     @Test
@@ -113,6 +145,10 @@ public class ApplicationUiTest {
         DialogFixture dialog = window.dialog();
         dialog.button(withText("Close")).click();
         
-        window.button(withName("advancedButton")).click();
+        try {
+            window.button(withName("advancedButton")).click();
+        } catch (Exception e) {
+            Assert.fail();
+        }
     }
 }

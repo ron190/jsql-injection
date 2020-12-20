@@ -241,7 +241,7 @@ public class ResourceAccess {
 
         if (resultInjection.indexOf(sourceShellToInject) <= -1) {
             
-            throw new JSqlException("Incorrect Web payload integrity: "+ sourcePage[0].trim().replace("\\n", "\\\\\\n"));
+            throw this.getIntegrityError(sourcePage);
         }
             
         LOGGER.debug("Web payload created into '"+ pathShellFixed + this.filenameWebshell +"'");
@@ -525,7 +525,7 @@ public class ResourceAccess {
 
         if (resultInjection.indexOf(sourceShellToInject) <= -1) {
             
-            throw new JSqlException("Incorrect SQL payload integrity: "+ sourcePage[0].trim().replace("\\n", "\\\\\\n"));
+            throw this.getIntegrityError(sourcePage);
         }
             
         LOGGER.debug("SQL payload created into '"+ pathShellFixed + this.filenameSqlshell +"'");
@@ -853,7 +853,7 @@ public class ResourceAccess {
             
         } catch (JSqlException e) {
             
-            throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replace("\\n", "\\\\\\n"), e);
+            throw this.getIntegrityError(sourcePage);
         }
 
         String urlFileFixed = urlFile;
@@ -898,7 +898,7 @@ public class ResourceAccess {
             
         } else {
             
-            throw new JSqlException("Incorrect Upload payload integrity: "+ sourcePage[0].trim().replace("\\n", "\\\\\\n"));
+            throw this.getIntegrityError(sourcePage);
         }
         
         Request request = new Request();
@@ -1078,6 +1078,11 @@ public class ResourceAccess {
             
             callable.getSuspendableReadFile().stop();
         }
+    }
+    
+    private JSqlException getIntegrityError(String[] sourcePage) {
+        
+        return new JSqlException("Wrong payload integrity: "+ sourcePage[0].trim().replace("\\n", "\\\\\\n"));
     }
     
     

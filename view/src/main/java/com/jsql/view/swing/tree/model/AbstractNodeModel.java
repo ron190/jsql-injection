@@ -154,7 +154,7 @@ public abstract class AbstractNodeModel {
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
         
         JPopupMenuCustomExtract popupMenu = new JPopupMenuCustomExtract();
-        AbstractSuspendable<?> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
+        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
 
         this.initializeItemLoadPause(currentTableNode, popupMenu, suspendableTask);
         this.initializeItemRenameReload(currentTableNode, path, popupMenu);
@@ -228,7 +228,9 @@ public abstract class AbstractNodeModel {
     }
 
     private void initializeItemLoadPause(
-        DefaultMutableTreeNode currentTableNode, JPopupMenuCustomExtract popupMenu, AbstractSuspendable<?> suspendableTask
+        DefaultMutableTreeNode currentTableNode,
+        JPopupMenuCustomExtract popupMenu,
+        AbstractSuspendable suspendableTask
     ) {
         
         JMenuItem menuItemLoad = new JMenuItem(
@@ -314,7 +316,7 @@ public abstract class AbstractNodeModel {
             this.panelNode.showLoader();
             this.panelNode.hideIcon();
 
-            AbstractSuspendable<?> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
+            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 
                 ImageIcon animatedGIFPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);
@@ -392,7 +394,7 @@ public abstract class AbstractNodeModel {
         panelNode.getProgressBar().setVisible(true);
         
         // Report #135: ignore if thread not found
-        AbstractSuspendable<?> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
+        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
         
         if (suspendableTask != null && suspendableTask.isPaused()) {
             

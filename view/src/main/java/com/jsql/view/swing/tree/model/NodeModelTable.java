@@ -79,7 +79,7 @@ public class NodeModelTable extends AbstractNodeModel {
             
             panelNode.showLoader();
             
-            AbstractSuspendable<?> suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
+            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
             
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 

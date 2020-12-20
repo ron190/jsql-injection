@@ -204,7 +204,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 
                 if (this.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
                     
-                    LOGGER.info("Using minimal query size");
+                    LOGGER.info("Using Zip strategy for minimal query size");
+                    
+                } else if (this.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
+                    
+                    LOGGER.info("Using Dump In One Shot strategy for single query dump");
                 }
                 
                 if (!this.mediatorUtils.getPreferencesUtil().isNotInjectingMetadata()) {

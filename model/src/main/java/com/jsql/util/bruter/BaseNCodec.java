@@ -56,7 +56,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      *
      * @since 1.7
      */
-    static final int EOF = -1;
+    private static final int EOF = -1;
 
     /**
      *  MIME chunk size per RFC 2045 section 6.8.
@@ -121,7 +121,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      *
      * @see <a href="http://www.ietf.org/rfc/rfc2045.txt">RFC 2045 section 2.1</a>
      */
-    static final byte[] CHUNK_SEPARATOR = {'\r', '\n'};
+    private static final byte[] CHUNK_SEPARATOR = {'\r', '\n'};
 
     protected final byte pad; // instance variable just in case it needs to vary later
 
@@ -345,7 +345,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @param context the context to be used
      * @return The amount of buffered data available for reading.
      */
-    int available(final Context context) {  // package protected for access from I/O streams
+    private int available(final Context context) {  // package protected for access from I/O streams
         
         return context.buffer != null ? context.pos - context.readPos : 0;
     }
@@ -710,7 +710,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      *            the context to be used
      * @return The number of bytes successfully extracted into the provided byte[] array.
      */
-    int readResults(final byte[] b, final int bPos, final int bAvail, final Context context) {
+    private int readResults(final byte[] b, final int bPos, final int bAvail, final Context context) {
         
         if (context.buffer != null) {
             
@@ -736,52 +736,52 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      *
      * @since 1.7
      */
-    static class Context {
+    protected static class Context {
 
         /**
          * Place holder for the bytes we're dealing with for our based logic.
          * Bitwise operations store and extract the encoding or decoding from this variable.
          */
-        int ibitWorkArea;
+        protected int ibitWorkArea;
 
         /**
          * Place holder for the bytes we're dealing with for our based logic.
          * Bitwise operations store and extract the encoding or decoding from this variable.
          */
-        long lbitWorkArea;
+        protected long lbitWorkArea;
 
         /**
          * Buffer for streaming.
          */
-        byte[] buffer;
+        protected byte[] buffer;
 
         /**
          * Position where next character should be written in the buffer.
          */
-        int pos;
+        protected int pos;
 
         /**
          * Position where next character should be read from the buffer.
          */
-        int readPos;
+        protected int readPos;
 
         /**
          * Boolean flag to indicate the EOF has been reached. Once EOF has been reached, this object becomes useless,
          * and must be thrown away.
          */
-        boolean eof;
+        protected boolean eof;
 
         /**
          * Variable tracks how many characters have been written to the current line. Only used when encoding. We use
          * it to make sure each encoded line never goes beyond lineLength (if lineLength &gt; 0).
          */
-        int currentLinePos;
+        protected int currentLinePos;
 
         /**
          * Writes to the buffer only occur after every 3/5 reads when encoding, and every 4/8 reads when decoding. This
          * variable helps track that.
          */
-        int modulus;
+        protected int modulus;
 
         /**
          * Returns a String useful for debugging (especially within a debugger.)

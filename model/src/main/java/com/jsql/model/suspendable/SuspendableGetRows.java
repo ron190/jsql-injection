@@ -41,7 +41,7 @@ import com.jsql.util.StringUtil;
  * MID skips characters when collected, then LIMIT skips lines when collected.
  * The process can be interrupted by the user (stop/pause).
  */
-public class SuspendableGetRows extends AbstractSuspendable<String> {
+public class SuspendableGetRows extends AbstractSuspendable {
     
     public SuspendableGetRows(InjectionModel injectionModel) {
         super(injectionModel);

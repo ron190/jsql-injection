@@ -354,6 +354,16 @@ public class PreferencesUtil {
     
     // Builder true
 
+    public PreferencesUtil withDiosStrategy() {
+        this.isDiosStrategy = true;
+        return this;
+    }
+    
+    public PreferencesUtil withZipStrategy() {
+        this.isZipStrategy = true;
+        return this;
+    }
+    
     public PreferencesUtil withNotTestingConnection() {
         this.isNotTestingConnection = true;
         return this;

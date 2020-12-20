@@ -21,6 +21,13 @@ class StringUtilSpock extends Specification {
             StringUtil.isUtf8('יחא') == true
             StringUtil.base64Encode('יחא') == 'w6nDp8Og'
             StringUtil.base64Decode('w6nDp8Og') == 'יחא'
+            StringUtil.base16Encode('יחא') == 'C3A9C3A7C3A0'
+            StringUtil.base16Decode('C3A9C3A7C3A0') == 'יחא'
+            StringUtil.base32Encode('יחא') == 'YOU4HJ6DUA======'
+            StringUtil.base32Decode('YOU4HJ6DUA======') == 'יחא'
+            StringUtil.base58Encode('יחא') == '2gSCm18Kq'
+            StringUtil.base58Decode('2gSCm18Kq') == 'יחא'
+            StringUtil.clean('/**//*!*/  a  a  /*a*/-  b  b  -  c  c  d') == '/**//*!*/a a-b b-c c d'
 
             StringUtil.compress(null) == null
             StringUtil.decompress(null) == null

@@ -184,7 +184,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
         
         return this.injectionModel.injectWithoutIndex(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition),

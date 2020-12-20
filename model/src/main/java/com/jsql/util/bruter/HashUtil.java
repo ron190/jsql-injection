@@ -36,7 +36,7 @@ public class HashUtil {
         
         MessageDigest md = MessageDigest.getInstance("sha-1");
         
-        String password = new String(textInput.toCharArray());
+        String password = String.valueOf(textInput.toCharArray());
         
         byte[] passwordBytes = password.getBytes();
         md.update(passwordBytes, 0, passwordBytes.length);
@@ -44,7 +44,7 @@ public class HashUtil {
         byte[] hashSHA1 = md.digest();
         String stringSHA1 = HashUtil.digestToHexString(hashSHA1);
         
-        String passwordSHA1 = new String(StringUtil.hexstr(stringSHA1).toCharArray());
+        String passwordSHA1 = String.valueOf(StringUtil.hexstr(stringSHA1).toCharArray());
         byte[] passwordSHA1Bytes = passwordSHA1.getBytes();
         
         md.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);
@@ -69,7 +69,7 @@ public class HashUtil {
         
         MessageDigest md = new DigestMD4();
 
-        String passwordString = new String(textInput.toCharArray());
+        String passwordString = String.valueOf(textInput.toCharArray());
         byte[] passwordByte = passwordString.getBytes();
         
         md.update(passwordByte, 0, passwordByte.length);
@@ -82,7 +82,7 @@ public class HashUtil {
         
         MessageDigest md = MessageDigest.getInstance(nameMethod);
         
-        String passwordString = new String(textInput.toCharArray());
+        String passwordString = String.valueOf(textInput.toCharArray());
         byte[] passwordByte = passwordString.getBytes();
         
         md.update(passwordByte, 0, passwordByte.length);

@@ -19,7 +19,7 @@ import com.jsql.model.suspendable.callable.CallablePageSource;
  * Runnable class, search the correct number of fields in the SQL query.
  * Concurrent search with stop capability
  */
-public class SuspendableGetIndexes extends AbstractSuspendable<String> {
+public class SuspendableGetIndexes extends AbstractSuspendable {
     
     /**
      * Log4j logger sent to view.
