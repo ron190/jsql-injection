@@ -22,7 +22,7 @@ public class MySqlDiosTestSuite extends ConcreteMySqlTestSuite {
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
+            new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", "")
         ));
         
