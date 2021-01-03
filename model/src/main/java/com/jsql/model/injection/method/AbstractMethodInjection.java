@@ -57,8 +57,11 @@ public abstract class AbstractMethodInjection implements Serializable {
         // Force injection method of model to current running method
         this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(this);
         
-        // Injection by injection point
-        if (this.getParamsAsString().contains(InjectionModel.STAR)) {
+        // Injection by injection point in params or in path
+        if (
+            this.getParamsAsString().contains(InjectionModel.STAR)
+            || this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
+        ) {
             
             hasFoundInjection = this.checkParamWithStar();
             
@@ -146,17 +149,17 @@ public abstract class AbstractMethodInjection implements Serializable {
         // Define a tree of JSON attributes with path as the key: root.a => value of a
         List<SimpleEntry<String, String>> attributesJson = JsonUtil.createEntries(jsonEntity, "root", null);
         
-        String paramBase64 = paramStar.getValue().replace("*", "");
-        if (Base64.isBase64(paramBase64) && StringUtil.isUtf8(StringUtil.base64Decode(paramBase64))) {
-            
-            LOGGER.info(
-                String.format(
-                    "Param %s=%s appears to be Base64",
-                    paramStar.getKey(),
-                    paramStar.getValue()
-                )
-            );
-        }
+//        String paramBase64 = paramStar.getValue().replace("*", "");
+//        if (Base64.isBase64(paramBase64) && StringUtil.isUtf8(StringUtil.base64Decode(paramBase64))) {
+//            
+//            LOGGER.info(
+//                String.format(
+//                    "Param %s=%s appears to be Base64",
+//                    paramStar.getKey(),
+//                    paramStar.getValue()
+//                )
+//            );
+//        }
         
         // When option 'Inject JSON' is selected and there's a JSON entity to inject
         // then loop through each paths to add * at the end of value and test each strategies.

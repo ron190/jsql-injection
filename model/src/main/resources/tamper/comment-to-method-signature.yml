@@ -1,4 +1,4 @@
-tooltip: Method signature with comment, e.g concat/**/()
+tooltip: <html>Obfuscate all method's calls.<br>This technique can't apply to some methods.</html>
 description: Method signature with comment, e.g concat/**/()
 group: 
 javascript: |
@@ -6,7 +6,7 @@ javascript: |
     
      return sql
      
-         // Lock keywords not compatible
+         // Exclude incompatible keywords
          .replace(/group_concat\(/gi, 'jSqLlOcK1(')
          .replace(/mid\(/gi, 'jSqLlOcK2(')
          .replace(/cast\(/gi, 'jSqLlOcK3(')
@@ -14,8 +14,8 @@ javascript: |
          .replace(/trim\(/gi, 'jSqLlOcK5(')
          .replace(/substring\(/gi, 'jSqLlOcK6(')
          
-         // Replace 'text(' to 'text/**/('
          // Negative lookahead to exclude keywords
+         // Ignore comments already there
          .replace(
              /(?!jSqLlOcK\d+\()([a-zA-Z_]+)\(/gi,
              '$1/**/('

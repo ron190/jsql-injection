@@ -236,7 +236,7 @@ public class Base16 extends BaseNCodec {
     }
 
     @Override
-    void encode(final byte[] data, final int offset, final int length, final Context context) {
+    public void encode(final byte[] data, final int offset, final int length, final Context context) {
         
         if (context.eof) {
             

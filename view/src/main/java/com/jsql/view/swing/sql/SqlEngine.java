@@ -55,7 +55,7 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private static JTabbedPane tabbedPaneError = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
 
-    private transient static Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
+    private static transient Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
     
     private transient MouseWheelListener tabbedPaneMouseWheelListener = new TabbedPaneMouseWheelListener();
     
@@ -626,7 +626,6 @@ public class SqlEngine extends JPanel implements Cleanable {
         }
         
         panelCombo.add(menuBarVendor, BorderLayout.LINE_END);
-//        this.add(panelCombo);
 
         // Do Overlay
         panelCombo.setAlignmentX(FlowLayout.TRAILING);

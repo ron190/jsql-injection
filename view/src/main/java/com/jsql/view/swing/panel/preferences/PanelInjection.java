@@ -3,6 +3,8 @@ package com.jsql.view.swing.panel.preferences;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
@@ -20,6 +22,7 @@ import javax.swing.SwingConstants;
 import org.apache.commons.lang3.StringUtils;
 
 import com.jsql.view.swing.panel.PanelPreferences;
+import com.jsql.view.swing.ui.BasicColoredSpinnerUI;
 import com.jsql.view.swing.util.MediatorHelper;
 
 @SuppressWarnings("serial")
@@ -39,6 +42,8 @@ public class PanelInjection extends JPanel {
 
     private final JCheckBox checkboxIsLimitingNormalIndex = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex());
     private final JSpinner spinnerNormalIndexCount = new JSpinner();
+    private final JCheckBox checkboxIsSleepTimeStrategy = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isSleepTimeStrategy());
+    private final JSpinner spinnerSleepTimeStrategyCount = new JSpinner();
 
     private final JCheckBox checkboxIsPerfIndexDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
     private final JRadioButton checkboxIsZipStrategy = new JRadioButton(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy());
@@ -49,8 +54,16 @@ public class PanelInjection extends JPanel {
     public PanelInjection(PanelPreferences panelPreferences) {
         
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        
+        checkboxIsPerfIndexDisabled.setToolTipText(
+            "<html>Reduce Normal calibration URL, useful when host rejects large URL."
+            + "<br>Should be enabled when Zip mode is activated.</html>"
+        );
 
-        String tooltipParseForm = "Add <input> params to Query string and Request";
+        String tooltipParseForm = 
+            "<html>Create name=value params from HTML forms' extracted data.<br>"
+            + "Sometimes mandatory params are contained in forms.<br>"
+            + "It makes easy adding such params to requests.</html>";
         this.checkboxIsParsingForm.setToolTipText(tooltipParseForm);
         this.checkboxIsParsingForm.setFocusable(false);
         JButton labelParseForm = new JButton("Add <input> params to Query string and Request");
@@ -61,10 +74,10 @@ public class PanelInjection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsNotInjectingMetadata = "Disable database's metadata injection (speed-up boolean process)";
+        String tooltipIsNotInjectingMetadata = "Not injecting optional data saves time, particularly with Blind and Time strategies";
         this.checkboxIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
         this.checkboxIsNotInjectingMetadata.setFocusable(false);
-        JButton labelIsNotInjectingMetadata = new JButton("Disable database's metadata injection (speed-up boolean process)");
+        JButton labelIsNotInjectingMetadata = new JButton("Disable database's metadata injection");
         labelIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
         labelIsNotInjectingMetadata.addActionListener(actionEvent -> {
             
@@ -72,10 +85,41 @@ public class PanelInjection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsLimitingNormalIndex = "Limit Normal indexes to";
+        String tooltipIsSleepTimeStrategy = "<html>Time strategy waits an arbitrary number of seconds for a page to respond.<br>Amount of seconds can be lowered on a stable environment like local tests in order to save time.</html>";
+        this.checkboxIsSleepTimeStrategy.setToolTipText(tooltipIsSleepTimeStrategy);
+        this.checkboxIsSleepTimeStrategy.setFocusable(false);
+        JButton labelIsSleepTimeStrategy = new JButton("Delay Time strategy for");
+        labelIsSleepTimeStrategy.setToolTipText(tooltipIsSleepTimeStrategy);
+        labelIsSleepTimeStrategy.addActionListener(actionEvent -> {
+            
+            this.checkboxIsSleepTimeStrategy.setSelected(!this.checkboxIsSleepTimeStrategy.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+        
+        JPanel panelSleepTimeStrategy = new JPanel(new BorderLayout());
+        panelSleepTimeStrategy.add(labelIsSleepTimeStrategy, BorderLayout.WEST);
+        panelSleepTimeStrategy.add(this.spinnerSleepTimeStrategyCount, BorderLayout.CENTER);
+        panelSleepTimeStrategy.add(new JLabel(" s ; default 5s"), BorderLayout.EAST);
+        panelSleepTimeStrategy.setMaximumSize(new Dimension(125, this.spinnerSleepTimeStrategyCount.getPreferredSize().height));
+        this.spinnerSleepTimeStrategyCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
+        
+        int countSleepTimeStrategy = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy();
+        SpinnerNumberModel spinnerSleepTimeStrategy = new SpinnerNumberModel(
+            countSleepTimeStrategy <= 0
+            ? 15
+            : countSleepTimeStrategy,
+            1,
+            30,
+            1
+        );
+        this.spinnerSleepTimeStrategyCount.setModel(spinnerSleepTimeStrategy);
+        this.spinnerSleepTimeStrategyCount.setUI(new BasicColoredSpinnerUI());
+        spinnerSleepTimeStrategyCount.addMouseWheelListener(new SpinnerMouseWheelListener());
+        
+        String tooltipIsLimitingNormalIndex = "Maximum number of columns to check on UNION based queries";
         this.checkboxIsLimitingNormalIndex.setToolTipText(tooltipIsLimitingNormalIndex);
         this.checkboxIsLimitingNormalIndex.setFocusable(false);
-        JButton labelIsLimitingNormalIndex = new JButton("Limit Normal indexes to");
+        JButton labelIsLimitingNormalIndex = new JButton("Limit Normal UNION strategy to");
         labelIsLimitingNormalIndex.setToolTipText(tooltipIsLimitingNormalIndex);
         labelIsLimitingNormalIndex.addActionListener(actionEvent -> {
             
@@ -86,7 +130,7 @@ public class PanelInjection extends JPanel {
         JPanel panelIsLimitingNormalIndex = new JPanel(new BorderLayout());
         panelIsLimitingNormalIndex.add(labelIsLimitingNormalIndex, BorderLayout.WEST);
         panelIsLimitingNormalIndex.add(this.spinnerNormalIndexCount, BorderLayout.CENTER);
-        panelIsLimitingNormalIndex.add(new JLabel(" (default 50)"), BorderLayout.EAST);
+        panelIsLimitingNormalIndex.add(new JLabel(" column(s) ; default 50 columns"), BorderLayout.EAST);
         panelIsLimitingNormalIndex.setMaximumSize(new Dimension(250, this.spinnerNormalIndexCount.getPreferredSize().height));
         this.spinnerNormalIndexCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
         
@@ -96,10 +140,12 @@ public class PanelInjection extends JPanel {
             ? 50
             : countNormalIndex,
             1,
-            100,
+            200,
             1
         );
         this.spinnerNormalIndexCount.setModel(spinnerCountNormalIndex);
+        this.spinnerNormalIndexCount.setUI(new BasicColoredSpinnerUI());
+        spinnerNormalIndexCount.addMouseWheelListener(new SpinnerMouseWheelListener());
         
         JButton labelIsCheckingAllParam = new JButton("Inject each parameter and ignore user's method");
         JButton labelIsCheckingAllURLParam = new JButton("Inject each URL parameter if method is GET");
@@ -112,7 +158,15 @@ public class PanelInjection extends JPanel {
         
         JButton labelIsDefaultStrategy = new JButton("Use Default mode (use this ; no change to URL or processing)");
         JButton labelIsDiosStrategy = new JButton("Use Dios mode (less queries ; do not use with Error strategies)");
+        labelIsDiosStrategy.setToolTipText(
+            "<html>Mode Dump In One Shot injects a single query that gets all the data at once."
+            + "<br>Faster than default mode for Normal and Error strats but requires volume of data to not be huge.</html>"
+        );
         JButton labelIsZipStrategy = new JButton("Use Zip mode (smaller SQL queries ; reduce URL size but less efficient)");
+        labelIsZipStrategy.setToolTipText(
+            "<html>Zip mode injects small queries, useful when host rejects large URL."
+            + "<br>Downside is metadata like table or row count is not fetched.</html>"
+        );
         JButton labelIsUrlEncodingDisabled = new JButton("Disable URL encoding (smaller URL)");
         JButton labelIsPerfIndexDisabled = new JButton("Disable calibration (smaller SQL query during Normal index selection only)");
         
@@ -233,7 +287,8 @@ public class PanelInjection extends JPanel {
             this.checkboxIsPerfIndexDisabled,
             this.checkboxIsZipStrategy,
             this.checkboxIsUrlEncodingDisabled,
-            this.checkboxIsLimitingNormalIndex
+            this.checkboxIsLimitingNormalIndex,
+            this.checkboxIsSleepTimeStrategy
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
@@ -254,7 +309,8 @@ public class PanelInjection extends JPanel {
             labelIsDiosStrategy,
             labelIsDefaultStrategy,
             labelIsUrlEncodingDisabled,
-            labelIsLimitingNormalIndex
+            labelIsLimitingNormalIndex,
+            labelIsSleepTimeStrategy
         )
         .forEach(label -> {
             
@@ -282,6 +338,7 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsParsingForm)
                 .addComponent(this.checkboxIsNotInjectingMetadata)
                 .addComponent(this.checkboxIsLimitingNormalIndex)
+                .addComponent(this.checkboxIsSleepTimeStrategy)
                 
                 .addComponent(emptyLabelParamsInjection)
                 .addComponent(this.checkboxIsCheckingAllParam)
@@ -290,17 +347,17 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsCheckingAllHeaderParam)
                 
                 .addComponent(emptyLabelSpecial)
-                .addComponent(this.checkboxIsCheckingAllBase64Param)
+//                .addComponent(this.checkboxIsCheckingAllBase64Param)
                 .addComponent(this.checkboxIsCheckingAllJSONParam)
                 .addComponent(this.checkboxIsCheckingAllSOAPParam)
-                .addComponent(this.checkboxIsCheckingAllCookieParam)
+//                .addComponent(this.checkboxIsCheckingAllCookieParam)
                 
                 .addComponent(emptyLabelQuerySize)
                 .addComponent(this.checkboxIsDefaultStrategy)
                 .addComponent(this.checkboxIsDiosStrategy)
                 .addComponent(this.checkboxIsZipStrategy)
-                .addComponent(this.checkboxIsUrlEncodingDisabled)
                 .addComponent(this.checkboxIsPerfIndexDisabled)
+                .addComponent(this.checkboxIsUrlEncodingDisabled)
             )
             .addGroup(
                 groupLayout
@@ -309,6 +366,7 @@ public class PanelInjection extends JPanel {
                 .addComponent(labelParseForm)
                 .addComponent(labelIsNotInjectingMetadata)
                 .addComponent(panelIsLimitingNormalIndex)
+                .addComponent(panelSleepTimeStrategy)
                 
                 .addComponent(labelParamsInjection)
                 .addComponent(labelIsCheckingAllParam)
@@ -317,17 +375,17 @@ public class PanelInjection extends JPanel {
                 .addComponent(labelIsCheckingAllHeaderParam)
                 
                 .addComponent(labelSpecial)
-                .addComponent(labelIsCheckingAllBase64Param)
+//                .addComponent(labelIsCheckingAllBase64Param)
                 .addComponent(labelIsCheckingAllJSONParam)
                 .addComponent(labelIsCheckingAllSOAPParam)
-                .addComponent(labelIsCheckingAllCookieParam)
+//                .addComponent(labelIsCheckingAllCookieParam)
 
                 .addComponent(labelQuerySize)
                 .addComponent(labelIsDefaultStrategy)
                 .addComponent(labelIsDiosStrategy)
                 .addComponent(labelIsZipStrategy)
-                .addComponent(labelIsUrlEncodingDisabled)
                 .addComponent(labelIsPerfIndexDisabled)
+                .addComponent(labelIsUrlEncodingDisabled)
             )
         );
         
@@ -359,6 +417,12 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsLimitingNormalIndex)
                 .addComponent(panelIsLimitingNormalIndex)
             )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsSleepTimeStrategy)
+                .addComponent(panelSleepTimeStrategy)
+            )
             
             .addGroup(
                 groupLayout
@@ -397,12 +461,12 @@ public class PanelInjection extends JPanel {
                 .addComponent(emptyLabelSpecial)
                 .addComponent(labelSpecial)
             )
-            .addGroup(
-                groupLayout
-                .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsCheckingAllBase64Param)
-                .addComponent(labelIsCheckingAllBase64Param)
-            )
+//            .addGroup(
+//                groupLayout
+//                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+//                .addComponent(this.checkboxIsCheckingAllBase64Param)
+//                .addComponent(labelIsCheckingAllBase64Param)
+//            )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -415,12 +479,12 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsCheckingAllSOAPParam)
                 .addComponent(labelIsCheckingAllSOAPParam)
             )
-            .addGroup(
-                groupLayout
-                .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsCheckingAllCookieParam)
-                .addComponent(labelIsCheckingAllCookieParam)
-            )
+//            .addGroup(
+//                groupLayout
+//                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+//                .addComponent(this.checkboxIsCheckingAllCookieParam)
+//                .addComponent(labelIsCheckingAllCookieParam)
+//            )
             
             .addGroup(
                 groupLayout
@@ -449,14 +513,14 @@ public class PanelInjection extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsUrlEncodingDisabled)
-                .addComponent(labelIsUrlEncodingDisabled)
+                .addComponent(this.checkboxIsPerfIndexDisabled)
+                .addComponent(labelIsPerfIndexDisabled)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsPerfIndexDisabled)
-                .addComponent(labelIsPerfIndexDisabled)
+                .addComponent(this.checkboxIsUrlEncodingDisabled)
+                .addComponent(labelIsUrlEncodingDisabled)
             )
         );
     }
@@ -526,5 +590,13 @@ public class PanelInjection extends JPanel {
     
     public JSpinner getSpinnerNormalIndexCount() {
         return this.spinnerNormalIndexCount;
+    }
+    
+    public JCheckBox getCheckboxIsSleepTimeStrategy() {
+        return this.checkboxIsSleepTimeStrategy;
+    }
+    
+    public JSpinner getSpinnerSleepTimeStrategy() {
+        return this.spinnerSleepTimeStrategyCount;
     }
 }

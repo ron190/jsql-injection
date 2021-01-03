@@ -1,4 +1,4 @@
-tooltip: Hex 0x4142 ('ab') to ascii concat(char(65),char(66))
+tooltip: Obfuscate hex strings using char() 
 description: Hex 0x4142 ('ab') to ascii concat(char(65),char(66))
 group: 
 javascript: |

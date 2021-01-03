@@ -73,8 +73,8 @@ public class PanelUserAgent extends JPanel {
             }
         });
         
-        String tooltipIsTamperingBase64 = TamperingType.BASE64.instance().getTooltip();
-        this.checkboxIsCustomUserAgent.setToolTipText(tooltipIsTamperingBase64);
+//        String tooltipIsTamperingBase64 = TamperingType.BASE64.instance().getTooltip();
+//        this.checkboxIsCustomUserAgent.setToolTipText(tooltipIsTamperingBase64);
         this.checkboxIsCustomUserAgent.setFocusable(false);
         JButton labelIsCheckingUpdate = new JButton("Customize User Agent (randomize multiple agents)");
         

@@ -116,7 +116,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
         this.add(panelOptions, BorderLayout.NORTH);
 
         this.result = new JPopupTextPane("Result of brute force processing").getProxy();
-        this.add(new LightScrollPane(1, 1, 0, 0, this.result), BorderLayout.CENTER);
+        this.add(new LightScrollPane(1, 0, 0, 0, this.result), BorderLayout.CENTER);
         
         JPanel panelButton = this.initializePanelButton();
         this.add(panelButton, BorderLayout.SOUTH);
@@ -128,9 +128,12 @@ public class ManagerBruteForce extends JPanel implements Manager {
         
         lastLine.setOpaque(false);
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
+        lastLine.setPreferredSize(new Dimension(0, 26));
+
+
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
@@ -247,13 +250,11 @@ public class ManagerBruteForce extends JPanel implements Manager {
         );
         thirdLine.add(this.exclude);
 
-        this.minimumLength = new JSpinner(
-            new SpinnerNumberModel(1, 1, 10000, 1)
-        );
+        this.minimumLength = new JSpinner();
+        this.minimumLength.setModel(new SpinnerNumberModel(1, 1, 10000, 1));
         
-        this.maximumLength = new JSpinner(
-            new SpinnerNumberModel(5, 1, 10000, 1)
-        );
+        this.maximumLength = new JSpinner();
+        this.maximumLength.setModel(new SpinnerNumberModel(5, 1, 10000, 1));
         
         this.minimumLength.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_MIN_TOOLTIP"));
         this.maximumLength.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_MAX_TOOLTIP"));

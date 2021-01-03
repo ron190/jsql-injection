@@ -1,8 +1,8 @@
 {
     "version": "0.82",
     "news": [
-        "[Feature] Help the community and translate jSQL into your language, particularly Portuguese and Arabic. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer.",
-        "[Contribute] Devops APIs integration for PHP .NET Python Node, CTF and vuln application tests, ProGuard shrink",
+        "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer.",
+        "[Contribute] Devops APIs integration for PHP .NET Python and Node, CTF and vuln application tests, ProGuard shrink",
         "[Roadmap] WAF fingerprint, Inject user defined query, Inject range of rows",
         "[Done] Strategy Dios, Fingerprint database and insertion char"
     ]

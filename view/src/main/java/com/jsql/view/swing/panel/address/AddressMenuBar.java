@@ -204,7 +204,7 @@ public class AddressMenuBar extends JMenuBar {
                     
                     MediatorHelper.model().getMediatorStrategy().setStrategy(MediatorHelper.model().getMediatorStrategy().getError());
                     
-                    MediatorHelper.model().getMediatorStrategy().getError().setIndexMethod(indexErrorFinal);
+                    MediatorHelper.model().getMediatorStrategy().getError().setIndexErrorStrategy(indexErrorFinal);
                 });
 
                 indexError++;
@@ -304,7 +304,7 @@ public class AddressMenuBar extends JMenuBar {
         
         JMenu menuError = this.getMenuError();
         
-        int indexError = strategy.getIndexMethodError();
+        int indexError = strategy.getIndexErrorStrategy();
         String nameError = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();
         
         for (int i = 0 ; i < menuError.getItemCount() ; i++) {

@@ -15,6 +15,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -84,11 +86,17 @@ public class JFrameView extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             
             @Override
-            public void windowOpened(WindowEvent e) {
-                super.windowOpened(e);
+            public void windowOpened(WindowEvent event) {
+                
+                super.windowOpened(event);
                 
                 Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
-                double horizontalTopBottomSplitter = preferences.getDouble(SplitHorizontalTopBottom.NAME_TOP_BOTTOM_SPLITPANE, 0.75);
+                double horizontalTopBottomSplitter = preferences.getDouble(SplitHorizontalTopBottom.getNameHSplitpane(), 0.75);
+                
+                if (!(0.0 <= horizontalTopBottomSplitter && horizontalTopBottomSplitter <= 1.0)) {
+                    
+                    horizontalTopBottomSplitter = 0.75;
+                }
 
                 JFrameView.this.splitHorizontalTopBottom.setDividerLocation(horizontalTopBottomSplitter);
             }
@@ -102,12 +110,19 @@ public class JFrameView extends JFrame {
                     JFrameView.this.splitHorizontalTopBottom.getSplitVerticalLeftRight().getDividerLocation()
                 );
                 
+                BigDecimal roundDecimal = 
+                    new BigDecimal(
+                        JFrameView.this.splitHorizontalTopBottom.getDividerLocation() * 100.0
+                        / JFrameView.this.splitHorizontalTopBottom.getHeight()
+                        / 100
+                    );
+                roundDecimal = roundDecimal.setScale(2, RoundingMode.HALF_UP);
+                
                 // Divider location change when window is maximized, we can't save getDividerLocation()
                 preferences.putDouble(
                     SplitHorizontalTopBottom.getNameHSplitpane(),
-                    JFrameView.this.splitHorizontalTopBottom.getDividerLocation() * 100.0
-                    / JFrameView.this.splitHorizontalTopBottom.getHeight()
-                    / 100
+                    // Fix scale
+                    roundDecimal.doubleValue() - 0.01
                 );
                 
                 preferences.putBoolean(UiUtil.BINARY_VISIBLE, false);

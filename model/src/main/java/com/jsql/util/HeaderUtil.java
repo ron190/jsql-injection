@@ -225,7 +225,7 @@ public class HeaderUtil {
             
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()) {
                 
-                LOGGER.warn("If injection fails please test again with option 'Follow HTTP redirection' enabled.");
+                LOGGER.warn("If injection fails retry with option 'Follow HTTP redirection' activated");
                 
             } else {
                 

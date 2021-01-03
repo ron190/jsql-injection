@@ -402,7 +402,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     }
 
     // package protected for access from I/O streams
-    abstract void decode(byte[] pArray, int i, int length, Context context);
+    public abstract void decode(byte[] pArray, int i, int length, Context context);
 
     /**
      * Decodes an Object using the Base-N algorithm. This method is provided in order to satisfy the requirements of
@@ -492,7 +492,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
     }
 
     // package protected for access from I/O streams
-    abstract void encode(byte[] pArray, int i, int length, Context context);
+    public abstract void encode(byte[] pArray, int i, int length, Context context);
 
     /**
      * Encodes an Object using the Base-N algorithm. This method is provided in order to satisfy the requirements of
@@ -622,7 +622,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @param context the context to be used
      * @return true if there is data still available for reading.
      */
-    boolean hasData(final Context context) {  // package protected for access from I/O streams
+    public boolean hasData(final Context context) {  // package protected for access from I/O streams
         
         return context.buffer != null;
     }

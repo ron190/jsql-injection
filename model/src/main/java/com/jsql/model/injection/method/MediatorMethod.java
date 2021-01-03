@@ -40,7 +40,7 @@ public class MediatorMethod {
             @Override
             public String name() {
                 
-                return "QUERY";
+                return "Query";
             }
         };
         
@@ -67,7 +67,7 @@ public class MediatorMethod {
             @Override
             public String name() {
                 
-                return "REQUEST";
+                return "Request";
             }
         };
         
@@ -94,7 +94,7 @@ public class MediatorMethod {
             @Override
             public String name() {
                 
-                return "HEADER";
+                return "Header";
             }
         };
         

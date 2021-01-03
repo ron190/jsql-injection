@@ -160,7 +160,7 @@ public class ProxyUtil {
             && StringUtils.isNotEmpty(this.getProxyAddressHttp())
             && StringUtils.isNotEmpty(this.getProxyPortHttp())
         ) {
-            isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttp(), this.getProxyPortHttp());
+            isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttp(), this.getProxyPortHttp(), "HTTP");
         }
 
         if (
@@ -168,13 +168,13 @@ public class ProxyUtil {
             && StringUtils.isNotEmpty(this.getProxyAddressHttps())
             && StringUtils.isNotEmpty(this.getProxyPortHttps())
         ) {
-            isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttps(), this.getProxyPortHttps());
+            isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttps(), this.getProxyPortHttps(), "HTTPS");
         }
         
         return isLive;
     }
     
-    private boolean isSocketOn(ShowOnConsole showOnConsole, String address, String port) {
+    private boolean isSocketOn(ShowOnConsole showOnConsole, String address, String port, String tag) {
         
         boolean isSocketOn = true;
         
@@ -182,23 +182,24 @@ public class ProxyUtil {
             Socket socket = new Socket(address, Integer.parseInt(port));
             socket.close();
             
-            this.logStatus(showOnConsole, address, port);
+            this.logStatus(showOnConsole, address, port, tag);
             
         } catch (Exception e) {
             
             isSocketOn = false;
-            this.logStatus(showOnConsole, address, port, e);
+            this.logStatus(showOnConsole, address, port, tag, e);
         }
         
         return isSocketOn;
     }
     
-    private void logStatus(ShowOnConsole showOnConsole, String address, String port) {
+    private void logStatus(ShowOnConsole showOnConsole, String address, String port, String tag) {
         
         if (showOnConsole == ShowOnConsole.YES) {
             LOGGER.debug(
                 String.format(
-                    "Connection to proxy %s:%s successful",
+                    "Connection successful to %s proxy %s:%s",
+                    tag,
                     address,
                     port
                 )
@@ -206,7 +207,7 @@ public class ProxyUtil {
         }
     }
     
-    private void logStatus(ShowOnConsole showOnConsole, String address, String port, Exception e) {
+    private void logStatus(ShowOnConsole showOnConsole, String address, String port, String tag, Exception e) {
         
         if (showOnConsole == ShowOnConsole.YES) {
             

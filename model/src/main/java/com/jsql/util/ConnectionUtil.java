@@ -74,10 +74,6 @@ public class ConnectionUtil {
      */
     private String typeRequest = "POST";
 
-    /**
-     * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.
-     */
-    private static final Integer TIMEOUT = 15000;
     private static final String NO_CACHE = "no-cache";
     
     private Random randomForUserAgent = new Random();
@@ -463,7 +459,10 @@ public class ConnectionUtil {
         this.typeRequest = typeRequest;
     }
 
+    /**
+     * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.
+     */
     public Integer getTimeout() {
-        return ConnectionUtil.TIMEOUT;
+        return this.injectionModel.getMediatorUtils().getPreferencesUtil().countConnectionTimeout() * 1000;
     }
 }

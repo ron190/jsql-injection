@@ -333,6 +333,7 @@ public class PanelTable extends JPanel {
         this.tableValues.getActionMap().get(nev.getActionCommand()).actionPerformed(nev);
     }
 
+    
     // Getter and setter
     
     public JTable getTableValues() {

@@ -62,10 +62,14 @@ public class PreferencesUtil {
     private boolean isCsrfUserTag = false;
     private boolean isLimitingThreads = false;
     private int countLimitingThreads = 10;
+    private boolean isConnectionTimeout = false;
+    private int countConnectionTimeout = 15;
     private boolean isUnicodeDecodeDisabled = false;
 
     private boolean isLimitingNormalIndex = false;
     private int countNormalIndex = 50;
+    private boolean isSleepTimeStrategy = false;
+    private int countSleepTimeStrategy = 5;
 
     /**
      * Initialize the utility class with previously saved JVM preferences and apply
@@ -119,9 +123,13 @@ public class PreferencesUtil {
         this.csrfUserTagOutput = prefs.get("csrfUserTagOutput", "");
         this.isLimitingThreads = prefs.getBoolean("isLimitingThreads", false);
         this.countLimitingThreads = prefs.getInt("countLimitingThreads", 10);
+        this.isConnectionTimeout = prefs.getBoolean("isConnectionTimeout", false);
+        this.countConnectionTimeout = prefs.getInt("countConnectionTimeout", 15);
         this.isUnicodeDecodeDisabled = prefs.getBoolean("isUnicodeDecodeDisabled", false);
         this.countNormalIndex = prefs.getInt("countNormalIndex", 50);
         this.isLimitingNormalIndex = prefs.getBoolean("isLimitingNormalIndex", false);
+        this.countSleepTimeStrategy = prefs.getInt("countSleepTimeStrategy", 5);
+        this.isSleepTimeStrategy = prefs.getBoolean("isLimitingSleepTimeStrategy", false);
         
         HttpURLConnection.setFollowRedirects(this.isFollowingRedirection);
     }
@@ -137,11 +145,15 @@ public class PreferencesUtil {
         preferences.putBoolean("isCheckingUpdate", this.isCheckingUpdate);
         preferences.putBoolean("isReportingBugs", this.isReportingBugs);
         preferences.putBoolean("is4K", this.is4K);
-        preferences.putBoolean("isLimitingThreads", this.isLimitingThreads);
         preferences.putBoolean("isUnicodeDecodeDisabled", this.isUnicodeDecodeDisabled);
+        preferences.putBoolean("isLimitingThreads", this.isLimitingThreads);
         preferences.putInt("countLimitingThreads", this.countLimitingThreads);
+        preferences.putBoolean("isConnectionTimeout", this.isConnectionTimeout);
+        preferences.putInt("countConnectionTimeout", this.countConnectionTimeout);
         preferences.putBoolean("isLimitingNormalIndex", this.isLimitingNormalIndex);
         preferences.putInt("countNormalIndex", this.countNormalIndex);
+        preferences.putBoolean("isSleepTimeStrategy", this.isSleepTimeStrategy);
+        preferences.putInt("countSleepTimeStrategy", this.countSleepTimeStrategy);
         preferences.putBoolean("isCsrfUserTag", this.isCsrfUserTag);
         preferences.put("csrfUserTag", this.csrfUserTag);
         preferences.put("csrfUserTagOutput", this.csrfUserTagOutput);
@@ -307,6 +319,14 @@ public class PreferencesUtil {
         return this.isLimitingThreads;
     }
     
+    public boolean isSleepTimeStrategy() {
+        return this.isSleepTimeStrategy;
+    }
+    
+    public boolean isConnectionTimeout() {
+        return this.isConnectionTimeout;
+    }
+    
     public boolean isUnicodeDecodeDisabled() {
         return this.isUnicodeDecodeDisabled;
     }
@@ -315,8 +335,16 @@ public class PreferencesUtil {
         return this.countLimitingThreads;
     }
     
+    public int countConnectionTimeout() {
+        return this.countConnectionTimeout;
+    }
+    
     public int countNormalIndex() {
         return this.countNormalIndex;
+    }
+    
+    public int countSleepTimeStrategy() {
+        return this.countSleepTimeStrategy;
     }
     
     public boolean isLimitingNormalIndex() {
@@ -576,9 +604,29 @@ public class PreferencesUtil {
         this.isLimitingThreads = isLimitingThreads;
         return this;
     }
+    
+    public PreferencesUtil withIsConnectionTimeout(boolean isConnectionTimeout) {
+        this.isConnectionTimeout = isConnectionTimeout;
+        return this;
+    }
+    
+    public PreferencesUtil withIsSleepTimeStrategy(boolean isSleepTimeStrategy) {
+        this.isSleepTimeStrategy = isSleepTimeStrategy;
+        return this;
+    }
 
     public PreferencesUtil withCountLimitingThreads(int countLimitingThreads) {
         this.countLimitingThreads = countLimitingThreads;
+        return this;
+    }
+    
+    public PreferencesUtil withCountConnectionTimeout(int countConnectionTimeout) {
+        this.countConnectionTimeout = countConnectionTimeout;
+        return this;
+    }
+    
+    public PreferencesUtil withCountSleepTimeStrategy(int countSleepTimeStrategy) {
+        this.countSleepTimeStrategy = countSleepTimeStrategy;
         return this;
     }
     

@@ -38,6 +38,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
     private PropertiesUtil propertiesUtil = MediatorHelper.model().getMediatorUtils().getPropertiesUtil();
     
     private static final String LINE_FEED_ESCAPE = "{@|@}";
+    private static final String LINE_FEED = "\\\\[\n\r]+";
     
     public SwingWorkerGithubLocale(DialogTranslate dialogTranslate) {
         
@@ -142,7 +143,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
                 this.propertiesUtil.getProperties().getProperty("github.webservice.i18n.root")
             );
             
-            String pageSourceRootFixed = Pattern.compile("\\\\[\n\r]+").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll(LINE_FEED_ESCAPE);
+            String pageSourceRootFixed = Pattern.compile(LINE_FEED).matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll(LINE_FEED_ESCAPE);
             
             this.propertiesRoot.load(new StringReader(pageSourceRootFixed));
             
@@ -154,7 +155,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             Path path = Paths.get(uri);
             byte[] root = Files.readAllBytes(path);
             String rootI18n = new String(root);
-            String rootI18nFixed = Pattern.compile("\\\\[\n\r]+").matcher(Matcher.quoteReplacement(rootI18n)).replaceAll(LINE_FEED_ESCAPE);
+            String rootI18nFixed = Pattern.compile(LINE_FEED).matcher(Matcher.quoteReplacement(rootI18n)).replaceAll(LINE_FEED_ESCAPE);
             
             this.propertiesRoot.load(new StringReader(rootI18nFixed));
             LOGGER.info("Reference language loaded from local");
@@ -202,7 +203,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             Path path = Paths.get(uri);
             byte[] root = Files.readAllBytes(path);
             String localeI18n = new String(root);
-            String localeI18nFixed = Pattern.compile("\\\\[\n\r]+").matcher(localeI18n).replaceAll(LINE_FEED_ESCAPE);
+            String localeI18nFixed = Pattern.compile(LINE_FEED).matcher(localeI18n).replaceAll(LINE_FEED_ESCAPE);
             
             this.propertiesLanguageToTranslate.load(new StringReader(localeI18nFixed));
             LOGGER.info(

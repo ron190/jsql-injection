@@ -5,14 +5,13 @@ import java.util.regex.Pattern;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.tampering.TamperingType;
-
-import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
 public class TamperingUtil {
 
@@ -36,9 +35,10 @@ public class TamperingUtil {
 
     private String customTamper = null;
 
-    private static final NashornScriptEngineFactory NASHORN_FACTORY = new NashornScriptEngineFactory();
+    private static final ScriptEngineManager SCRIPT_ENGINE_MANAGER = new ScriptEngineManager();
 
     private static String eval(String sqlQuery, String jsTampering) {
+        
 
         Object resultSqlTampered = null;
 
@@ -48,7 +48,7 @@ public class TamperingUtil {
                 throw new ScriptException("Tampering context is empty");
             }
 
-            ScriptEngine nashornEngine = NASHORN_FACTORY.getScriptEngine();
+            ScriptEngine nashornEngine = SCRIPT_ENGINE_MANAGER.getEngineByName("nashorn");
             nashornEngine.eval(jsTampering);
 
             Invocable nashornInvocable = (Invocable) nashornEngine;

@@ -92,7 +92,7 @@ public class GitUtil {
         String osMetadata =
             String
             .join(
-                "\\n",
+                "\n",
                 String.format(
                     "jSQL: v%s",
                     this.injectionModel.getVersionJsql()
@@ -137,7 +137,7 @@ public class GitUtil {
         String clientDescription =
             String
             .format(
-                "```%n%s```%n```%n%s```",
+                "```%n%s%n```%n```%n%s```",
                 osMetadata,
                 exceptionText
             );

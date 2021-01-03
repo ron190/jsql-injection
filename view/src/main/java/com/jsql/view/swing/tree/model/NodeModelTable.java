@@ -127,7 +127,7 @@ public class NodeModelTable extends AbstractNodeModel {
     protected void buildMenu(JPopupMenuCustomExtract tablePopupMenu, final TreePath path) {
         
         this.addCheckUncheckItems(tablePopupMenu, path);
-        this.addCustomLoadItems(tablePopupMenu);
+//        this.addCustomLoadItems(tablePopupMenu);
     }
 
     private void addCustomLoadItems(JPopupMenuCustomExtract tablePopupMenu) {

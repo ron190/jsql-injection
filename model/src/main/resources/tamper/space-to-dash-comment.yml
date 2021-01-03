@@ -1,4 +1,4 @@
-tooltip: Space ' ' to dash comment '--\n'
+tooltip: Obfuscate space character
 description: Space ' ' to dash comment '--\n'
 group: 
 javascript: |

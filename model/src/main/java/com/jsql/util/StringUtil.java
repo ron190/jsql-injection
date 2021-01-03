@@ -28,6 +28,7 @@ import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
+import org.apache.log4j.Logger;
 import org.mozilla.universalchardet.UniversalDetector;
 
 import com.jsql.util.bruter.Base16;
@@ -38,6 +39,11 @@ import com.jsql.util.bruter.Base58;
  * part of standard JVM.
  */
 public final class StringUtil {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     // Define the schema of conversion to html entities
     private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#", ";", 10);
@@ -165,10 +171,19 @@ public final class StringUtil {
             return org.apache.commons.lang3.StringUtils.EMPTY;
         }
         
-        UniversalDetector detector = new UniversalDetector(null);
-        detector.handleData(text.getBytes(), 0, text.length() - 1);
-        detector.dataEnd();
-        String encoding = detector.getDetectedCharset();
+        String encoding = null;
+        
+        // ArrayIndexOutOfBoundsException on handleData()
+        try {
+            UniversalDetector detector = new UniversalDetector(null);
+            detector.handleData(text.getBytes(), 0, text.length() - 1);
+            detector.dataEnd();
+            encoding = detector.getDetectedCharset();
+            
+        } catch (ArrayIndexOutOfBoundsException e) {
+            
+            LOGGER.error(e, e);
+        }
         
         String result = text;
         if (encoding != null) {

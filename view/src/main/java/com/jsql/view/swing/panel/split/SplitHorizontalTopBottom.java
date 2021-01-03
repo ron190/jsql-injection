@@ -49,7 +49,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
      * Name of preference for splitter horizontal.
      * Reset divider position for current application version.
      */
-    public static final String NAME_TOP_BOTTOM_SPLITPANE = "horizontalSplitter-";
+    private static final String NAME_TOP_BOTTOM_SPLITPANE = "horizontalSplitter-";
     
     private static final int LOC_LEFT_RIGHT_SPLITTER = 350;
 

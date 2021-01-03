@@ -226,11 +226,10 @@ public class MediatorVendor {
             // Test each vendor
             for (Vendor vendorTest: vendorsWithoutAuto) {
                 
-                if (
-                    pageSource.matches("(?si)"+ vendorTest.instance().fingerprintErrorsAsRegex())
-                ) {
+                if (pageSource.matches("(?si)"+ vendorTest.instance().fingerprintErrorsAsRegex())) {
+                    
                     vendorFound = vendorTest;
-                    LOGGER.info("Possibly ["+ vendorFound +"] from basic fingerprinting");
+                    LOGGER.info("Basic fingerprint match for vendor ["+ vendorFound +"], compatible with Error strategy");
                     break;
                 }
             }

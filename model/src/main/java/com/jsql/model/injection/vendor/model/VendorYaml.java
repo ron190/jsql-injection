@@ -547,7 +547,7 @@ public class VendorYaml implements AbstractVendor {
             .getStrategy()
             .getError()
             .getMethod()
-            .get(this.injectionModel.getMediatorStrategy().getError().getIndexMethodError())
+            .get(this.injectionModel.getMediatorStrategy().getError().getIndexErrorStrategy())
             .getQuery()
             .replace(WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
             .replace(INJECTION, this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(INDICE, "0"))
@@ -557,7 +557,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlError(String sqlQuery, String startPosition) {
         
-        int indexMethodError = this.injectionModel.getMediatorStrategy().getError().getIndexMethodError();
+        int indexMethodError = this.injectionModel.getMediatorStrategy().getError().getIndexErrorStrategy();
         
         return
             StringUtils.SPACE

@@ -154,7 +154,8 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
             
             int asciiCode = Integer.parseInt(asciiCodeBinary, 2);
             
-            if (asciiCode == 255 || asciiCode == 0) {
+            // Stop if many 11111111, 01111111 or 00000000
+            if (asciiCode == 255 || asciiCode == 127 || asciiCode == 0) {
                 
                 if (
                     countTasksSubmitted.get() != 0
@@ -286,5 +287,9 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
      */
     public String callUrl(String urlString, String metadataInjectionProcess) {
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);
+    }
+
+    public BooleanMode getBooleanMode() {
+        return booleanMode;
     }
 }

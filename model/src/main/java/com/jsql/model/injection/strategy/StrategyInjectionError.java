@@ -30,7 +30,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     
     private String[] tabCapacityMethod;
     
-    private int indexMethod = 0;
+    private int indexErrorStrategy = 0;
 
     public StrategyInjectionError(InjectionModel injectionModel) {
         
@@ -46,6 +46,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         Strategy strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
         
         if (strategyYaml.getError().getMethod().isEmpty()) {
+            
             LOGGER.trace("No Error strategy for "+ this.injectionModel.getMediatorVendor().getVendor());
             return;
         }
@@ -80,13 +81,17 @@ public class StrategyInjectionError extends AbstractStrategy {
                             errorMethod.getName()
                         )
                     );
+                    
                     methodIsApplicable = false;
                 }
             }
             
             if (methodIsApplicable) {
+                
                 this.allow(indexErrorMethod);
+                
             } else {
+                
                 this.unallow(indexErrorMethod);
             }
             
@@ -151,7 +156,7 @@ public class StrategyInjectionError extends AbstractStrategy {
             
             if (errorCapacityImproved < regexSearch.group(1).length()) {
                 
-                this.indexMethod = indexErrorMethod;
+                this.indexErrorStrategy = indexErrorMethod;
             }
             
             errorCapacityImproved = regexSearch.group(1).length();
@@ -209,7 +214,7 @@ public class StrategyInjectionError extends AbstractStrategy {
                 .getStrategy()
                 .getError()
                 .getMethod()
-                .get(this.indexMethod)
+                .get(this.indexErrorStrategy)
                 .getName()
             )
         );
@@ -222,7 +227,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     
     @Override
     public String getPerformanceLength() {
-        return this.tabCapacityMethod[this.indexMethod];
+        return this.tabCapacityMethod[this.indexErrorStrategy];
     }
     
     @Override
@@ -230,11 +235,11 @@ public class StrategyInjectionError extends AbstractStrategy {
         return "Error";
     }
     
-    public Integer getIndexMethodError() {
-        return this.indexMethod;
+    public Integer getIndexErrorStrategy() {
+        return this.indexErrorStrategy;
     }
     
-    public void setIndexMethod(int indexMethod) {
-        this.indexMethod = indexMethod;
+    public void setIndexErrorStrategy(int indexErrorStrategy) {
+        this.indexErrorStrategy = indexErrorStrategy;
     }
 }

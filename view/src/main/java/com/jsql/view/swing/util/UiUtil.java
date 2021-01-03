@@ -80,7 +80,7 @@ public class UiUtil {
     public static final Color COLOR_COMPONENT_BORDER = UIManager.getColor("controlShadow");
     public static final Color COLOR_FOCUS_LOST = new Color(248, 249, 249);
     public static final Border BORDER_FOCUS_LOST = new LineBorder(new Color(218, 218, 218), 1, false);
-    public static final Border BORDER_FOCUS_GAINED = new LineBorder(UiUtil.COLOR_BLU, 1, false);
+    public static final Border BORDER_FOCUS_GAINED = new LineBorder(UiUtil.COLOR_COMPONENT_BORDER, 1, false);
     
     public static final URL URL_GLOBE = UiUtil.class.getClassLoader().getResource("swing/images/icons/globe.png");
     
@@ -288,10 +288,8 @@ public class UiUtil {
         UIManager.put("TitledBorder.font", UiUtil.FONT_SEGOE);
 
         UIManager.put("Spinner.arrowButtonBorder", UiUtil.BORDER_BLU);
-        UIManager.put("Spinner.border", BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(UiUtil.COLOR_BLU),
-            BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
-        ));
+        UIManager.put("Spinner.border", BorderFactory.createLineBorder(UiUtil.COLOR_COMPONENT_BORDER, 1, false));
+        UIManager.put("Spinner.disableOnBoundaryValues", Boolean.TRUE);
         
         // Custom button
         // Change border of button in default Save as, Confirm dialogs

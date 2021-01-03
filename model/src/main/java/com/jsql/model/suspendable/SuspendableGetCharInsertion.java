@@ -93,11 +93,11 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     
                     if (charFromOrderBy.equals(charFromBooleanMatch[0])) {
                     
-                        LOGGER.info("Confirmed character insertion ["+ charFromOrderBy +"] using Order by match");
+                        LOGGER.info("Confirmed character insertion ["+ charFromOrderBy +"] with Order by match, compatible with Error strategy");
     
                     } else {
                         
-                        LOGGER.info("Found character insertion ["+ charFromOrderBy +"] using Order by match");
+                        LOGGER.info("Found character insertion ["+ charFromOrderBy +"] with Order by match, compatible with Error strategy");
                     }
                     
                     break;
@@ -200,7 +200,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 
                 if (optionalOrderByErrorMatch.isPresent()) {
                     
-                    LOGGER.info(
+                    LOGGER.debug(
                         String
                         .format(
                             "Possibly [%s] from Order by match",
@@ -218,11 +218,11 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         
         List<String> roots =
             Arrays.asList(
-                "" + RandomStringUtils.random(10, "012"),
-                "-1",
-                "1",
-                characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY),
-                StringUtils.EMPTY
+                RandomStringUtils.random(10, "012"),
+//                "-1",
+                "1"
+//                characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY),
+//                StringUtils.EMPTY
             );
         
         final String labelPrefix = "prefix";
@@ -299,7 +299,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 }
                 
                 charFromBooleanMatch[0] = prefix.replace(labelPrefix, root) + suffix;
-                LOGGER.info(
+                LOGGER.debug(
                     String
                     .format(
                         "Found character insertion [%s] using Boolean match",
@@ -336,7 +336,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         } else if (!characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY).equals(characterInsertionDetectedFixed)) {
             
             String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY);
-            LOGGER.trace(
+            LOGGER.info(
                 String.format(
                     "Using [%s] and [%s]",
                     this.injectionModel.getMediatorVendor().getVendor(),

@@ -1,4 +1,4 @@
-tooltip: Space ' ' to sharp comment '#\n'
+tooltip: Obfuscate space character
 description: Space ' ' to sharp comment '#\n'
 group: 
 javascript: |

@@ -196,20 +196,20 @@ public class JsonUtil {
                     )
                 );
                 
-                String paramBase64 = paramStar.getValue().replace("*", "");
-                if (
-                    Base64.isBase64(paramBase64)
-                    && StringUtil.isUtf8(StringUtil.base64Decode(paramBase64))
-                ) {
-                    
-                    LOGGER.info(
-                        String.format(
-                            "Param %s=%s appears to be Base64",
-                            paramStar.getKey(),
-                            paramStar.getValue()
-                        )
-                    );
-                }
+//                String paramBase64 = paramStar.getValue().replace("*", "");
+//                if (
+//                    Base64.isBase64(paramBase64)
+//                    && StringUtil.isUtf8(StringUtil.base64Decode(paramBase64))
+//                ) {
+//                    
+//                    LOGGER.info(
+//                        String.format(
+//                            "Param %s=%s appears to be Base64",
+//                            paramStar.getKey(),
+//                            paramStar.getValue()
+//                        )
+//                    );
+//                }
                 
                 // Test current JSON value marked with * for injection
                 // Keep original param

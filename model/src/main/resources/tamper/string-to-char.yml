@@ -1,4 +1,4 @@
-tooltip: String 'ab' to concat(char(65),char(66))
+tooltip: Obfuscate string
 description: String 'ab' to concat(char(65),char(66))
 group: 
 javascript: |

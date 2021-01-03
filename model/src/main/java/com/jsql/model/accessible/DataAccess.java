@@ -255,6 +255,7 @@ public class DataAccess {
             }
             
         } catch (Exception e) {
+            
             LOGGER.warn(e.getMessage(), e);
         }
 

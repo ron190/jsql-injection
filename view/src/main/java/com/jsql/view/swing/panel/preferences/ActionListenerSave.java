@@ -34,6 +34,8 @@ public class ActionListenerSave implements ActionListener {
         .withIsProcessingCsrf(this.panelPreferences.getPanelConnection().getCheckboxProcessCsrf().isSelected())
         .withIsLimitingThreads(this.panelPreferences.getPanelConnection().getCheckboxIsLimitingThreads().isSelected())
         .withCountLimitingThreads((Integer) this.panelPreferences.getPanelConnection().getSpinnerLimitingThreads().getValue())
+        .withIsConnectionTimeout(this.panelPreferences.getPanelConnection().getCheckboxIsConnectionTimeout().isSelected())
+        .withCountConnectionTimeout((Integer) this.panelPreferences.getPanelConnection().getSpinnerConnectionTimeout().getValue())
         .withIsCsrfUserTag(this.panelPreferences.getPanelConnection().getCheckboxIsCsrfUserTag().isSelected())
         .withCsrfUserTag(this.panelPreferences.getPanelConnection().getTextfieldCsrfUserTag().getText())
         .withCsrfUserTagOutput(this.panelPreferences.getPanelConnection().getTextfieldCsrfUserTagOutput().getText())
@@ -54,6 +56,8 @@ public class ActionListenerSave implements ActionListener {
         .withIsDiosStrategy(this.panelPreferences.getPanelInjection().getCheckboxIsDiosStrategy().isSelected())
         .withIsUrlEncodingDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsUrlEncodingDisabled().isSelected())
         .withIsPerfIndexDisabled(this.panelPreferences.getPanelInjection().getCheckboxIsPerfIndexDisabled().isSelected())
+        .withIsSleepTimeStrategy(this.panelPreferences.getPanelInjection().getCheckboxIsSleepTimeStrategy().isSelected())
+        .withCountSleepTimeStrategy((Integer) this.panelPreferences.getPanelInjection().getSpinnerSleepTimeStrategy().getValue())
                 
         .withIsTamperingBase64(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingBase64().isSelected())
         .withIsTamperingEqualToLike(this.panelPreferences.getPanelTampering().getCheckboxIsTamperingEqualToLike().isSelected())

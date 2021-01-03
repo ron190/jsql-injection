@@ -1,4 +1,4 @@
-tooltip: Space ' ' to multiline comment '/**/'
+tooltip: Obfuscate space character
 description: Space ' ' to multiline comment '/**/'
 group: 
 javascript: |
