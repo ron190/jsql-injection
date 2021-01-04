@@ -164,6 +164,7 @@ public class TreeDatabase extends JTree {
                 
                 // Add the table to the database
                 treeModel.insertNodeInto(newNode, databaseNode, databaseNode.getChildCount());
+                
             } else {
                 
                 LOGGER.warn(

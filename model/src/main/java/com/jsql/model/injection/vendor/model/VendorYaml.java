@@ -179,9 +179,18 @@ public class VendorYaml implements AbstractVendor {
             }
         }
         
+        String databaseUtf8 = StringUtils.EMPTY;
+        try {
+            databaseUtf8 = Hex.encodeHexString(database.toString().getBytes(StandardCharsets.UTF_8.name()));
+            
+        } catch (UnsupportedEncodingException e) {
+            
+            LOGGER.error("Encoding UTF8 for table hex value failed", e);
+        }
+        
         return
             sqlQuery
-            .replace(DATABASE_HEX, Hex.encodeHexString(database.toString().getBytes()))
+            .replace(DATABASE_HEX, databaseUtf8)
             .replace(DATABASE, database.toString())
             // TODO Breaks Oracle <%2Fa>
             // .replace("%", "%25") // Encode % in name
@@ -228,10 +237,21 @@ public class VendorYaml implements AbstractVendor {
             }
         }
         
+        String databaseUtf8 = StringUtils.EMPTY;
+        String tableUtf8 = StringUtils.EMPTY;
+        try {
+            databaseUtf8 = Hex.encodeHexString(table.getParent().toString().getBytes(StandardCharsets.UTF_8.name()));
+            tableUtf8 = Hex.encodeHexString(table.toString().getBytes(StandardCharsets.UTF_8.name()));
+            
+        } catch (UnsupportedEncodingException e) {
+            
+            LOGGER.error("Encoding UTF8 for column hex value failed", e);
+        }
+        
         return
             sqlQuery
-            .replace(DATABASE_HEX, Hex.encodeHexString(table.getParent().toString().getBytes()))
-            .replace(TABLE_HEX, Hex.encodeHexString(table.toString().getBytes()))
+            .replace(DATABASE_HEX, databaseUtf8)
+            .replace(TABLE_HEX, tableUtf8)
             .replace(DATABASE, table.getParent().toString())
             .replace(TABLE, table.toString())
             // TODO Breaks Oracle <%2Fa>

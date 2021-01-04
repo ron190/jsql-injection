@@ -45,13 +45,6 @@ public class NodeModelColumn extends NodeModelEmpty {
         
         JCheckBox checkbox = new JCheckBox(this.toString(), this.isSelected());
         
-        checkbox.setFont(
-            checkbox.getFont().deriveFont(
-                Font.PLAIN | Font.ITALIC,
-                checkbox.getFont().getSize()
-            )
-        );
-        
         checkbox.setText(UiStringUtil.detectUtf8HtmlNoWrap(this.toString()));
 
         if (isSelected) {

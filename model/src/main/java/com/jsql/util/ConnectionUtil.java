@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -97,11 +98,21 @@ public class ConnectionUtil {
         // Allows CSRF token processing during ITs, can be used for batch scan
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()) {
             
-            CookieHandler.setDefault(SessionCookieManager.getInstance());
+            if ("true".equals(System.getenv("FROM_ITS"))) {
+                
+                CookieHandler.setDefault(SessionCookieManager.getInstance());
+                
+            } else {
+                
+                CookieHandler.setDefault(new CookieManager());
+            }
             
         } else {
             
-            SessionCookieManager.getInstance().clear();
+            if ("true".equals(System.getenv("FROM_ITS"))) {
+                
+                SessionCookieManager.getInstance().clear();
+            }
             CookieHandler.setDefault(null);
         }
 
@@ -255,7 +266,7 @@ public class ConnectionUtil {
                     byte[] buffer = new byte[1024];
                     int length;
                     
-                    while ((length = connection.getInputStream().read(buffer)) != -1) {
+                    while ((length = errorStream.read(buffer)) != -1) {
                         
                         pageSource.write(buffer, 0, length);
                     }

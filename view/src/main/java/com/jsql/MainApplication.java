@@ -130,7 +130,7 @@ public class MainApplication {
         
         if (width >= 3840 && !injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {
             
-            LOGGER.warn("Your screen seems compatible with 4K resolution, please activate high-definition mode in Preferences");
+            LOGGER.warn("Your screen seems compatible with 4K resolution, activate high-definition mode in Preferences");
         }
     }
 }

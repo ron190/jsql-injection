@@ -30,11 +30,22 @@ public class UiStringUtil {
         }
         
         UniversalDetector detector = new UniversalDetector(null);
-        detector.handleData(text.getBytes(), 0, text.length() - 1);
+        
+        // Decode bytes for potentially UTF8 chars
+        // Required by asian and hindi chars, otherwise wrong display in database tree
+        detector.handleData(
+            text.getBytes(StandardCharsets.UTF_8), 
+            0, 
+            text.length() - 1
+        );
+        
         detector.dataEnd();
+        
         String encoding = detector.getDetectedCharset();
         
         String result = text;
+        
+        // Confirm UTF8
         if (encoding != null) {
             
             result =
@@ -43,7 +54,7 @@ public class UiStringUtil {
                     "<html><span style=\"font-family:'%s';%s\">%s</span></html>",
                     UiUtil.FONT_NAME_UBUNTU_REGULAR,
                     nowrap ? "white-space:nowrap;" : StringUtils.EMPTY,
-                    new String(text.getBytes(), StandardCharsets.UTF_8)
+                    text
                 );
         }
         

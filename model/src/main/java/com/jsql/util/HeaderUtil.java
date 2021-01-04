@@ -147,7 +147,7 @@ public class HeaderUtil {
                     byte[] buffer = new byte[1024];
                     int length;
                     
-                    while ((length = connection.getInputStream().read(buffer)) != -1) {
+                    while ((length = errorStream.read(buffer)) != -1) {
                         
                         sourceByteArray.write(buffer, 0, length);
                     }
@@ -172,7 +172,7 @@ public class HeaderUtil {
             
         } else if (exception != null) {
             
-            LOGGER.info("Please select option 'Disable connection test' and run again");
+            LOGGER.info("Select option 'Disable connection test' and run again");
         }
         
         return exception;
@@ -184,7 +184,7 @@ public class HeaderUtil {
             
             LOGGER.warn(
                 "Basic Authentication detected.\n"
-                + "Please define and enable authentication information in the panel Preferences.\n"
+                + "Define and enable authentication information in the panel Preferences.\n"
                 + "Or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with "
                 + "the string 'osUserName:osPassword' encoded in Base64. You can use the Coder in jSQL to encode the string."
             );
@@ -193,7 +193,7 @@ public class HeaderUtil {
             
             LOGGER.warn(
                 "NTLM Authentication detected.\n"
-                + "Please define and enable authentication information in the panel Preferences.\n"
+                + "Define and enable authentication information in the panel Preferences.\n"
                 + "Or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
             );
         
@@ -201,14 +201,14 @@ public class HeaderUtil {
             
             LOGGER.warn(
                 "Digest Authentication detected.\n"
-                + "Please define and enable authentication information in the panel Preferences."
+                + "Define and enable authentication information in the panel Preferences."
             );
         
         } else if (this.isNegotiate(responseCode, mapResponse)) {
             
             LOGGER.warn(
                 "Negotiate Authentication detected.\n"
-                + "Please add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
+                + "Add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
             );
             
         } else if (Pattern.matches("1\\d\\d", responseCode)) {

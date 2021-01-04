@@ -103,10 +103,16 @@ public class CsrfUtil {
             ) {
                 
                 this.tokenCsrf = tokenCsrfFound;
+                LOGGER.debug(
+                    String.format(
+                        "Csrf token added to query and header: %s",
+                        tokenCsrfFound.getValue()
+                    )
+                );
                 
             } else {
                 
-                LOGGER.info("Please activate CSRF processing in Preferences if required");
+                LOGGER.info("Activate CSRF processing in Preferences if required");
             }
         }
     }
@@ -167,7 +173,7 @@ public class CsrfUtil {
                 
             } else {
                 
-                LOGGER.info("Please activate CSRF processing in Preferences if required");
+                LOGGER.info("Activate CSRF processing in Preferences if required");
             }
         }
     }
