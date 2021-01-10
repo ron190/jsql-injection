@@ -229,7 +229,7 @@ public class MediatorVendor {
                 if (pageSource.matches("(?si)"+ vendorTest.instance().fingerprintErrorsAsRegex())) {
                     
                     vendorFound = vendorTest;
-                    LOGGER.info("Basic fingerprint match for vendor ["+ vendorFound +"], compatible with Error strategy");
+                    LOGGER.debug("Basic fingerprint matching vendor ["+ vendorFound +"]");
                     break;
                 }
             }

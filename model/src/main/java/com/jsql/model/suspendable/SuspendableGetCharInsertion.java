@@ -91,14 +91,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     // Char insertion
                     charFromOrderBy = currentCallable.getCharacterInsertion();
                     
-                    if (charFromOrderBy.equals(charFromBooleanMatch[0])) {
-                    
-                        LOGGER.info("Confirmed character insertion ["+ charFromOrderBy +"] with Order by match, compatible with Error strategy");
-    
-                    } else {
-                        
-                        LOGGER.info("Found character insertion ["+ charFromOrderBy +"] with Order by match, compatible with Error strategy");
-                    }
+                    LOGGER.debug("Character insertion ["+ charFromOrderBy +"] matching with Order by and compatible with Error strategy");
                     
                     break;
                 }
@@ -203,7 +196,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     LOGGER.debug(
                         String
                         .format(
-                            "Possibly [%s] from Order by match",
+                            "Order by fingerprint matching vendor [%s]",
                             vendor
                         )
                     );

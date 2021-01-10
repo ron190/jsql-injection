@@ -32,7 +32,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
-import com.jsql.model.injection.strategy.blind.InjectionTime;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
 import com.jsql.util.StringUtil;
 
@@ -475,7 +474,7 @@ public class VendorYaml implements AbstractVendor {
                 : this.modelYaml.getStrategy().getBoolean().getModeOr()
             )
             .replace(TEST, check)
-            .replace(SLEEP_TIME, Long.toString(InjectionTime.SLEEP_TIME));
+            .replace(SLEEP_TIME, Long.toString(this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()));
     }
 
     @Override
@@ -500,7 +499,7 @@ public class VendorYaml implements AbstractVendor {
             )
             .replace(
                 SLEEP_TIME,
-                Long.toString(InjectionTime.SLEEP_TIME)
+                Long.toString(this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy())
             );
     }
 
@@ -528,7 +527,7 @@ public class VendorYaml implements AbstractVendor {
             )
             .replace(
                 SLEEP_TIME,
-                Long.toString(InjectionTime.SLEEP_TIME)
+                Long.toString(this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy())
             );
     }
 

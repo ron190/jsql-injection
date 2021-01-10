@@ -5,15 +5,14 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.util.JsonUtil;
-import com.jsql.util.StringUtil;
 
 @SuppressWarnings("serial")
 public abstract class AbstractMethodInjection implements Serializable {
@@ -104,8 +103,9 @@ public abstract class AbstractMethodInjection implements Serializable {
      * Params are tested one by one in two loops:
      * - inner loop erases * from previous param
      * - outer loop adds * to current param
+     * @throws StoppedByUserSlidingException
      */
-    private boolean checkAllParams() {
+    private boolean checkAllParams() throws StoppedByUserSlidingException {
         
         boolean hasFoundInjection = false;
         
@@ -139,7 +139,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         return hasFoundInjection;
     }
 
-    private boolean testSingleFromAllParams(SimpleEntry<String, String> paramStar) {
+    private boolean testSingleFromAllParams(SimpleEntry<String, String> paramStar) throws StoppedByUserSlidingException {
         
         boolean hasFoundInjection;
         
@@ -151,7 +151,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         
 //        String paramBase64 = paramStar.getValue().replace("*", "");
 //        if (Base64.isBase64(paramBase64) && StringUtil.isUtf8(StringUtil.base64Decode(paramBase64))) {
-//            
+//
 //            LOGGER.info(
 //                String.format(
 //                    "Param %s=%s appears to be Base64",
@@ -177,7 +177,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         return hasFoundInjection;
     }
     
-    public boolean testJsonlessParam(SimpleEntry<String, String> paramStar) {
+    public boolean testJsonlessParam(SimpleEntry<String, String> paramStar) throws StoppedByUserSlidingException {
 
         boolean hasFoundInjection = false;
         
@@ -198,6 +198,11 @@ public abstract class AbstractMethodInjection implements Serializable {
             // Test current standard value marked with * for injection
             // Keep original param
             hasFoundInjection = this.injectionModel.getMediatorStrategy().testStrategies(paramStar);
+            
+        } catch (StoppedByUserSlidingException e) {
+            
+            // Break all params processing in upper methods
+            throw e;
             
         } catch (JSqlException e) {
             

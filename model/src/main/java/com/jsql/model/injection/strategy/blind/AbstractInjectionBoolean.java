@@ -290,6 +290,6 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     }
 
     public BooleanMode getBooleanMode() {
-        return booleanMode;
+        return this.booleanMode;
     }
 }

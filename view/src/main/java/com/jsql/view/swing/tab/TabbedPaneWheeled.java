@@ -26,17 +26,7 @@ public class TabbedPaneWheeled extends JTabbedPane {
      */
     public TabbedPaneWheeled() {
         
-        // UIManager.put() is not enough
-        this.setUI(new CustomMetalTabbedPaneUI());
-        
-        this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-
-        // Hotkeys ctrl-TAB, ctrl-shift-TAB
-        HotkeyUtil.addShortcut(this);
-    }
-
-    public TabbedPaneWheeled(int bottom) {
-        super(bottom);
+        this(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     }
 
     public TabbedPaneWheeled(int tabPlacement, int tabLayoutPolicy) {
@@ -45,6 +35,11 @@ public class TabbedPaneWheeled extends JTabbedPane {
         
         // UIManager.put() is not enough
         this.setUI(new CustomMetalTabbedPaneUI());
+        
+        this.addMouseWheelListener(new TabbedPaneMouseWheelListener());
+        
+        // Hotkeys ctrl-TAB, ctrl-shift-TAB
+        HotkeyUtil.addShortcut(this);
     }
 
     /**

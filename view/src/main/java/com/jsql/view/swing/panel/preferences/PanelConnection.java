@@ -57,7 +57,7 @@ public class PanelConnection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsUnicodeDecodeDisabled = "<html>Unicode entities \\uXXXX are decoded to raw characters by default.<br>Disable this behavior.</html>";
+        String tooltipIsUnicodeDecodeDisabled = "<html>Unicode entities \\uXXXX are decoded to raw characters by default.<br>Check to disable this behavior.</html>";
         this.checkboxIsUnicodeDecodeDisabled.setToolTipText(tooltipIsUnicodeDecodeDisabled);
         this.checkboxIsUnicodeDecodeDisabled.setFocusable(false);
         JButton labelIsUnicodeDecodeDisabled = new JButton("Disable Unicode decoding in response");
@@ -68,7 +68,7 @@ public class PanelConnection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipTestConnection = 
+        String tooltipTestConnection =
                 "<html>Connectivity to target is checked first to stop when target is dead, like with 404 Not Found.<br>"
                 + "Check option to process with injection whatever problem exists.</html>";
         this.checkboxIsNotTestingConnection.setToolTipText(tooltipTestConnection);
@@ -87,7 +87,7 @@ public class PanelConnection extends JPanel {
         JButton labelIsNotProcessingCookies = new JButton("Disable session cookies");
         labelIsNotProcessingCookies.setToolTipText(tooltipIsNotProcessingCookies);
         
-        String tooltipIsLimitingThreads = 
+        String tooltipIsLimitingThreads =
             "<html>Various tasks are processed in parallel to save time.<br>"
             + "Target that detects too much calls during a period can close the connection,<br>"
             + "in that case it helps lowering threads or keeping a single thread.</html>";
@@ -141,7 +141,7 @@ public class PanelConnection extends JPanel {
         );
         this.spinnerConnectionTimeout.setModel(spinnerConnectionModel);
         this.spinnerConnectionTimeout.setUI(new BasicColoredSpinnerUI());
-        spinnerConnectionTimeout.addMouseWheelListener(new SpinnerMouseWheelListener());
+        this.spinnerConnectionTimeout.addMouseWheelListener(new SpinnerMouseWheelListener());
         
         JPanel panelThreadCount = new JPanel(new BorderLayout());
         panelThreadCount.add(labelIsLimitingThreads, BorderLayout.WEST);
@@ -161,7 +161,7 @@ public class PanelConnection extends JPanel {
         );
         this.spinnerLimitingThreads.setModel(spinnerNumberModel);
         this.spinnerLimitingThreads.setUI(new BasicColoredSpinnerUI());
-        spinnerLimitingThreads.addMouseWheelListener(new SpinnerMouseWheelListener());
+        this.spinnerLimitingThreads.addMouseWheelListener(new SpinnerMouseWheelListener());
         
         String tooltipIsCsrfUserTag = "<html>Process custom CSRF.<br>Read value from input token and write value to output token.</html>";
         this.checkboxIsCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);

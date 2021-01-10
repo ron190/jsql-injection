@@ -50,7 +50,6 @@ public class TabManagers extends TabbedPaneWheeled {
 
         this.addChangeListener(e -> MediatorHelper.tabManagers().setSelectedIndex(TabManagers.this.getSelectedIndex()));
         
-        this.addMouseWheelListener(new TabbedPaneMouseWheelListener());
         this.setMaximumSize(new Dimension(this.getMaximumSize().width, 25));
         this.setPreferredSize(new Dimension(this.getPreferredSize().width, 25));
         

@@ -140,9 +140,6 @@ public class PanelConsoles extends JPanel {
         
         this.tabbedPaneNetworkTab = new TabbedPaneNetworkTab();
         
-        this.tabbedPaneNetworkTab.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
-        this.tabConsoles.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
-        
         this.networkSplitPane.setRightComponent(this.tabbedPaneNetworkTab);
         
         this.networkTable = new NetworkTable(this.tabbedPaneNetworkTab);

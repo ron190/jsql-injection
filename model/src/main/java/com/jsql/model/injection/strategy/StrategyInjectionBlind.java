@@ -113,7 +113,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         
-        if (injectionBlind.getBooleanMode() == BooleanMode.OR) {
+        if (this.injectionBlind.getBooleanMode() == BooleanMode.OR) {
             
             LOGGER.info("Using OR statement, database optimizer's short-circuit can mess with Boolean strategies");
 

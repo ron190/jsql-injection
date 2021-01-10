@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -201,7 +200,7 @@ public class JsonUtil {
 //                    Base64.isBase64(paramBase64)
 //                    && StringUtil.isUtf8(StringUtil.base64Decode(paramBase64))
 //                ) {
-//                    
+//
 //                    LOGGER.info(
 //                        String.format(
 //                            "Param %s=%s appears to be Base64",

@@ -29,7 +29,6 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
      * Noting that sleep() functions will add up for each line from request.
      * A sleep time of 5 will be executed only if the SELECT returns exactly one line.
      */
-    public static final long SLEEP_TIME = 5;
 
     /**
      *  Time based works by default, many tests will

@@ -3,8 +3,6 @@ package com.jsql.view.swing.panel.preferences;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
@@ -55,12 +53,12 @@ public class PanelInjection extends JPanel {
         
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
-        checkboxIsPerfIndexDisabled.setToolTipText(
+        this.checkboxIsPerfIndexDisabled.setToolTipText(
             "<html>Reduce Normal calibration URL, useful when host rejects large URL."
             + "<br>Should be enabled when Zip mode is activated.</html>"
         );
 
-        String tooltipParseForm = 
+        String tooltipParseForm =
             "<html>Create name=value params from HTML forms' extracted data.<br>"
             + "Sometimes mandatory params are contained in forms.<br>"
             + "It makes easy adding such params to requests.</html>";
@@ -114,7 +112,7 @@ public class PanelInjection extends JPanel {
         );
         this.spinnerSleepTimeStrategyCount.setModel(spinnerSleepTimeStrategy);
         this.spinnerSleepTimeStrategyCount.setUI(new BasicColoredSpinnerUI());
-        spinnerSleepTimeStrategyCount.addMouseWheelListener(new SpinnerMouseWheelListener());
+        this.spinnerSleepTimeStrategyCount.addMouseWheelListener(new SpinnerMouseWheelListener());
         
         String tooltipIsLimitingNormalIndex = "Maximum number of columns to check on UNION based queries";
         this.checkboxIsLimitingNormalIndex.setToolTipText(tooltipIsLimitingNormalIndex);
@@ -145,7 +143,7 @@ public class PanelInjection extends JPanel {
         );
         this.spinnerNormalIndexCount.setModel(spinnerCountNormalIndex);
         this.spinnerNormalIndexCount.setUI(new BasicColoredSpinnerUI());
-        spinnerNormalIndexCount.addMouseWheelListener(new SpinnerMouseWheelListener());
+        this.spinnerNormalIndexCount.addMouseWheelListener(new SpinnerMouseWheelListener());
         
         JButton labelIsCheckingAllParam = new JButton("Inject each parameter and ignore user's method");
         JButton labelIsCheckingAllURLParam = new JButton("Inject each URL parameter if method is GET");

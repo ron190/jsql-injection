@@ -34,8 +34,8 @@ public class UiStringUtil {
         // Decode bytes for potentially UTF8 chars
         // Required by asian and hindi chars, otherwise wrong display in database tree
         detector.handleData(
-            text.getBytes(StandardCharsets.UTF_8), 
-            0, 
+            text.getBytes(StandardCharsets.UTF_8),
+            0,
             text.length() - 1
         );
         

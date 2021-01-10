@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.MouseWheelListener;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -41,7 +40,6 @@ import com.jsql.view.swing.sql.lexer.HighlightedDocument;
 import com.jsql.view.swing.sql.text.JTextPaneLexer;
 import com.jsql.view.swing.sql.text.JTextPaneObjectMethod;
 import com.jsql.view.swing.tab.TabHeader.Cleanable;
-import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.I18nViewUtil;
@@ -56,8 +54,6 @@ public class SqlEngine extends JPanel implements Cleanable {
     private static JTabbedPane tabbedPaneError = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
 
     private static transient Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
-    
-    private transient MouseWheelListener tabbedPaneMouseWheelListener = new TabbedPaneMouseWheelListener();
     
     private static final List<JTextPaneLexer> textPanesError = new ArrayList<>();
     
@@ -243,8 +239,6 @@ public class SqlEngine extends JPanel implements Cleanable {
     
     public SqlEngine() {
         
-        SqlEngine.tabbedPaneError.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
-
         SqlEngine.initializeTextComponents();
         
         Stream
@@ -286,7 +280,6 @@ public class SqlEngine extends JPanel implements Cleanable {
         JPanel panelFingerprinting = this.getPanelFingerprinting();
 
         JTabbedPane tabsBottom = new TabbedPaneWheeled(SwingConstants.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
-        tabsBottom.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         
         Stream
         .of(
@@ -331,10 +324,8 @@ public class SqlEngine extends JPanel implements Cleanable {
         final String keyFieldSeparator = "SQLENGINE_FIELDS_SEPARATOR";
         
         JTabbedPane tabsStandard = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
-        tabsStandard.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         
         JTabbedPane tabsSchema = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-        tabsSchema.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         
         Stream
         .of(
@@ -362,7 +353,6 @@ public class SqlEngine extends JPanel implements Cleanable {
         });
         
         JTabbedPane tabsZip = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-        tabsZip.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         
         Stream
         .of(
@@ -389,7 +379,6 @@ public class SqlEngine extends JPanel implements Cleanable {
         });
         
         JTabbedPane tabsDios = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-        tabsDios.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         
         Stream
         .of(
@@ -443,7 +432,6 @@ public class SqlEngine extends JPanel implements Cleanable {
     private JPanel getPanelStrategy() {
         
         JTabbedPane tabsStrategy = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-        tabsStrategy.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_NORMAL"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.INDICES.getText()));
         
         JPanel panelStrategy = new JPanel(new BorderLayout());
@@ -458,7 +446,6 @@ public class SqlEngine extends JPanel implements Cleanable {
 
         /* Boolean */
         JTabbedPane tabsBoolean = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
-        tabsBoolean.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         
         Stream
         .of(
@@ -506,7 +493,6 @@ public class SqlEngine extends JPanel implements Cleanable {
     private JPanel getPanelConfiguration() {
         
         JTabbedPane tabsConfiguration = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-        tabsConfiguration.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
 
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.SLIDING_WINDOW.getText()));
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.LIMIT.getText()));
@@ -545,7 +531,6 @@ public class SqlEngine extends JPanel implements Cleanable {
     private JPanel getPanelFingerprinting() {
         
         JTabbedPane tabs = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-        tabs.addMouseWheelListener(this.tabbedPaneMouseWheelListener);
         
         tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.ORDER_BY.getText()));
         tabs.addTab("Order by error", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.ORDER_BY_ERROR_MESSAGE.getText()));

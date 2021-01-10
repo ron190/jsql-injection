@@ -110,7 +110,7 @@ public class JFrameView extends JFrame {
                     JFrameView.this.splitHorizontalTopBottom.getSplitVerticalLeftRight().getDividerLocation()
                 );
                 
-                BigDecimal roundDecimal = 
+                BigDecimal roundDecimal =
                     new BigDecimal(
                         JFrameView.this.splitHorizontalTopBottom.getDividerLocation() * 100.0
                         / JFrameView.this.splitHorizontalTopBottom.getHeight()

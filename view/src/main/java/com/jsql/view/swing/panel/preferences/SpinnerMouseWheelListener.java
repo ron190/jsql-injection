@@ -8,15 +8,15 @@ import javax.swing.SpinnerNumberModel;
 
 public class SpinnerMouseWheelListener implements MouseWheelListener {
     
-    @Override 
+    @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         
         JSpinner source = (JSpinner) e.getComponent();
         SpinnerNumberModel model = (SpinnerNumberModel) source.getModel();
         Integer oldValue = (Integer) source.getValue();
         int intValue = oldValue.intValue() - e.getWheelRotation() * model.getStepSize().intValue();
-        int max = ((Integer) model.getMaximum()).intValue(); //1000
-        int min = ((Integer) model.getMinimum()).intValue(); //0
+        int max = ((Integer) model.getMaximum()); //1000
+        int min = ((Integer) model.getMinimum()); //0
         if (min <= intValue && intValue <= max) {
             
             source.setValue(intValue);

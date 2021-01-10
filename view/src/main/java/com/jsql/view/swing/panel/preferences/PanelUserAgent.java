@@ -18,7 +18,6 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.util.tampering.TamperingType;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;

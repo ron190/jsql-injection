@@ -13,7 +13,6 @@ package com.jsql.view.swing.tree.model;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
-import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
