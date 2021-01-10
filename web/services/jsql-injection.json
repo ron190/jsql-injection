@@ -1,9 +1,8 @@
 {
-    "version": "0.82",
+    "version": "0.83",
     "news": [
-        "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer.",
-        "[Contribute] Devops APIs integration for PHP .NET Python and Node, CTF and vuln application tests, ProGuard shrink",
-        "[Roadmap] WAF fingerprint, Inject user defined query, Inject range of rows",
-        "[Done] Strategy Dios, Fingerprint database and insertion char"
+        "[New release] Version 0.83 available on Github: various preferences for thread control, User agent, Zip and Dios modes, 11 new db engines, fingerprinting, stability and more",
+        "[Contribute] Devops integration for PHP .NET Python and Node APIs, CTF and vuln application tests, ProGuard shrink",
+        "[Roadmap] WAF fingerprint, Inject user defined query, Inject range of rows"
     ]
 }
