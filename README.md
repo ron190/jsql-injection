@@ -20,7 +20,7 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 [![Sonar Violations (long format)](https://img.shields.io/sonar/violations/jsql-injection:jsql-injection?format=long&label=%20&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
 
 ## Features
-- Automatic injection of 34 kinds of databases: Access, Altibase, C-treeACE, CockroachDB, CUBRID, DB2, Derby, Exasol, Firebird, FrontBase, H2, Hana, HSQLDB, Informix, Ingres, InterSystems-IRIS, MaxDB, Mckoi, MemSQL, MimerSQL, MonetDB, MySQL, Neo4j, Netezza, NuoDB, Oracle, PostgreSQL, Presto, SQLite, SQL Server, Sybase, Teradata and Vertica
+- Automatic injection of 33 kinds of databases: Access, Altibase, C-treeACE, CockroachDB, CUBRID, DB2, Derby, Exasol, Firebird, FrontBase, H2, Hana, HSQLDB, Informix, Ingres, InterSystems-IRIS, MaxDB, Mckoi, MemSQL, MimerSQL, MonetDB, MySQL, Neo4j, Netezza, NuoDB, Oracle, PostgreSQL, Presto, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Stacked, Blind and Time
 - Various injection processes: Default, Zip, Dios
 - Sandbox for SQL and tampering scripting
@@ -33,9 +33,9 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 - Authenticate using Basic, Digest, NTLM and Kerberos  
 - Proxy connection on HTTP, SOCKS4 and SOCKS5
 
-## Installation [[jsql-injection-v0.82.jar](https://github.com/ron190/jsql-injection/releases/download/v0.82/jsql-injection-v0.82.jar)]
-Install [Java](http://java.com) 8 or up to 15, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.82.jar` to launch the software.<br>
-You can also type `java -jar jsql-injection-v0.82.jar` in your terminal to start the program.<br>
+## Installation [[jsql-injection-v0.83.jar](https://github.com/ron190/jsql-injection/releases/download/v0.83/jsql-injection-v0.83.jar)]
+Install [Java](http://java.com) 8 or up to 15, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.83.jar` to launch the software.<br>
+You can also type `java -jar jsql-injection-v0.83.jar` in your terminal to start the program.<br>
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 ## Continuous integration
@@ -88,41 +88,40 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 
 ## [[Roadmap](https://github.com/ron190/jsql-injection/projects)]
 ```
-Full Path Disclosure, Injection strategies: routed query, WAF detection
+WAF fingerprinting, Inject user defined query, Inject range of rows, Full Path Disclosure, Strategies: DNS out-of-band and routed query
 ```
 
 ## In progress
 ```
-Fingerprint database and insertion char, Custom rows load
+WAF fingerprinting, DNS out-of-band
 ```
 
 ## Since latest release
 ```
-- New Strategy Dump In One Shot
-- New preferences for Threads, User-Agent, CSRF, Query size reduction 
-- Add Stacked query and new Error strategies, Database and char insertion identification
-- New databases: Altibase C-treeACE Exasol FrontBase InterSystems-IRIS MemSQL MimerSQL MonetDB Netezza Presto
+-
 ```
 
 ## Change log
 
+**v0.83** `Modes Zip and Dios, Insertion char and db fingerprinting, 33 dbs including Altibase C-treeACE Exasol FrontBase InterSystems-IRIS MemSQL MimerSQL MonetDB Netezza and Presto`
+
 **v0.82** `Tampering options, Refactoring for Cloud and multithreading`
 
-**v0.81** `Test all parameters including JSON, Parse forms and Csrf tokens, Databases: CockroachDB Mckoi Neo4j NuoDB Hana and Vertica, Translation complete: Russian, Chinese`
+**v0.81** `Test all parameters including JSON, Parse forms and Csrf tokens, 23 dbs including CockroachDB Mckoi Neo4j NuoDB Hana and Vertica, Translation complete: Russian, Chinese`
 
 **v0.79** `Error Strategies for MySQL and PostgreSQL compatible with Order/Group By, Wider range of Characters Insertion including multibyte %bf`
 
 **v0.78** `SQL Engine, MySQL Error strategy: DOUBLE, Translations: es pt de it nl id, 18 Database flavors including Access`
 
-**v0.76** `Translation: cz, 17 Database flavors including SQLite`
+**v0.76** `Translation: cz, 17 dbs including SQLite`
 
 **v0.75** `URI injection point, Source code mavenification, Upgrade to Java 7`
 
 **v0.73** `Authentication: Basic Digest Negotiate NTLM and Kerberos, Database flavor selection`
 
-**v0.7** `Scan multiple URLs, Github Issue reporter, 16 Database flavors including Cubrid Derby H2 HSQLDB MariaDB and Teradata`
+**v0.7** `Scan multiple URLs, Github Issue reporter, 16 dbs including Cubrid Derby H2 HSQLDB MariaDB and Teradata`
 
-**alpha-v0.6** `Speed x2: No more hex encoding, 10 Database flavors including MySQL Oracle SQLServer PostgreSQL DB2 Firebird Informix Ingres MaxDb and Sybase, JUnit tests, Log4j, GUI translation`
+**alpha-v0.6** `Speed x2: No more hex encoding, 10 dbs including Oracle SQLServer PostgreSQL DB2 Firebird Informix Ingres MaxDb and Sybase, JUnit tests, Log4j, GUI translation`
 
 **0.5** `SQL Shell, File Uploader`
 
