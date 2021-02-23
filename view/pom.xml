@@ -5,7 +5,7 @@
     <parent>
         <groupId>jsql-injection</groupId>
         <artifactId>jsql-injection</artifactId>
-        <version>v0.83</version>
+        <version>${jsql.version}</version>
     </parent>
     <artifactId>jsql-view</artifactId>
     <name>jsql-view</name>

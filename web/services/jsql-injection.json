@@ -1,7 +1,7 @@
 {
-    "version": "0.83",
+    "version": "0.84",
     "news": [
-        "[New release v0.83] 10 new db engines, preferences for thread control, User agent, Zip and Dios modes, fingerprinting, stability and more",
+        "[New release v0.84] Integrate Nashorn sandbox for Java 15, fix Mac glitches",
         "[Roadmap] WAF fingerprint, Inject user defined query, Inject range of rows",
         "[Since latest release] Dump jdk8 and ship Nashorn for jdk11 up to jdk15, Fix GUI glitches on Mac",
         "[Contribute] Devops integration for PHP .NET Python and Node APIs, CTF and vuln application tests, ProGuard shrink"
