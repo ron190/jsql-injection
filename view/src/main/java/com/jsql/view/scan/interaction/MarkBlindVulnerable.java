@@ -30,7 +30,7 @@ public class MarkBlindVulnerable implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MarkBlindVulnerable(Object[] interactionParams) {
 
-        Map<String, Object> params = (Map<String, Object>) interactionParams[0];
+        Map<Header, Object> params = (Map<Header, Object>) interactionParams[0];
         this.url = (String) params.get(Header.URL);
     }
 

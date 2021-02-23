@@ -14,6 +14,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.AbstractMap.SimpleEntry;
@@ -280,7 +281,7 @@ public class ConnectionUtil {
             }
         }
         
-        return pageSource.toString("UTF-8");
+        return pageSource.toString(StandardCharsets.UTF_8.name());
     }
     
     /**

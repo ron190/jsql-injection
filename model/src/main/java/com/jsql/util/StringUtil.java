@@ -269,7 +269,7 @@ public final class StringUtil {
         gzip.write(str.getBytes());
         gzip.close();
         
-        return out.toString("ISO-8859-1");
+        return out.toString(StandardCharsets.ISO_8859_1.name());
     }
 
     /**

@@ -38,7 +38,6 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
         
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
-        boolean isRequestFound = false;
         String initialQuery = StringUtils.EMPTY;
         int nbIndex;
         
@@ -65,7 +64,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
 
         try {
             // Start from 10 to 100 requests
-            while (!isRequestFound && nbIndex <= countNormalIndex) {
+            while (nbIndex <= countNormalIndex) {
 
                 if (this.isSuspended()) {
                     throw new StoppedByUserSlidingException();
@@ -79,7 +78,6 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                     
                     this.injectionModel.getMediatorStrategy().getNormal().setSourceIndexesFound(currentCallable.getContent());
                     initialQuery = currentCallable.getQuery().replace("0%2b1", "1");
-                    isRequestFound = true;
                     
                     if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {
                         
@@ -114,10 +112,6 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
             Thread.currentThread().interrupt();
         }
 
-        if (isRequestFound) {
-            return initialQuery;
-        }
-        
-        return StringUtils.EMPTY;
+        return initialQuery;
     }
 }

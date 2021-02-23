@@ -159,7 +159,7 @@ public class HeaderUtil {
             }
         }
         
-        pageSource.append(sourceByteArray.toString("UTF-8"));
+        pageSource.append(sourceByteArray.toString(StandardCharsets.UTF_8.name()));
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
             
