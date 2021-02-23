@@ -11,6 +11,7 @@
 package com.jsql.view.swing.tab;
 
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
@@ -26,7 +27,7 @@ public class TabbedPaneWheeled extends JTabbedPane {
      */
     public TabbedPaneWheeled() {
         
-        this(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+        this(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     }
 
     public TabbedPaneWheeled(int tabPlacement, int tabLayoutPolicy) {

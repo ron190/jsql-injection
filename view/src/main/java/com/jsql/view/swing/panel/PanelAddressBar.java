@@ -174,9 +174,9 @@ public class PanelAddressBar extends JPanel {
         );
 
         this.textFieldRequest.setPreferredSize(new Dimension(0, 27));
-        this.textFieldRequest.setFont(UiUtil.FONT_SEGOE_BIG);
+        this.textFieldRequest.setFont(UiUtil.FONT_NON_MONO_BIG);
         this.textFieldHeader.setPreferredSize(new Dimension(0, 27));
-        this.textFieldHeader.setFont(UiUtil.FONT_SEGOE_BIG);
+        this.textFieldHeader.setFont(UiUtil.FONT_NON_MONO_BIG);
 
         this.textFieldAddress.addActionListener(new ActionEnterAddressBar(this));
         this.textFieldRequest.addActionListener(new ActionEnterAddressBar(this));

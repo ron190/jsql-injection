@@ -33,7 +33,6 @@ import com.jsql.view.swing.dialog.ReplaceFileChooser;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Save the content of tab in a file.
@@ -53,7 +52,6 @@ public class ActionSaveTab extends AbstractAction {
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
         this.putValue(Action.NAME, "Save Tab As...");
-        this.putValue(Action.SMALL_ICON, UiUtil.ICON_EMPTY);
     }
     
     @Override

@@ -174,7 +174,7 @@ public class ProxyUtil {
         return isLive;
     }
     
-    private boolean isSocketOn(ShowOnConsole showOnConsole, String address, String port, String tag) {
+    private boolean isSocketOn(ShowOnConsole showOnConsole, String address, String port, String protocol) {
         
         boolean isSocketOn = true;
         
@@ -182,24 +182,25 @@ public class ProxyUtil {
             Socket socket = new Socket(address, Integer.parseInt(port));
             socket.close();
             
-            this.logStatus(showOnConsole, address, port, tag);
+            this.logStatus(showOnConsole, address, port, protocol);
             
         } catch (Exception e) {
             
             isSocketOn = false;
-            this.logStatus(showOnConsole, address, port, tag, e);
+            this.logStatus(showOnConsole, address, port, protocol, e);
         }
         
         return isSocketOn;
     }
     
-    private void logStatus(ShowOnConsole showOnConsole, String address, String port, String tag) {
+    private void logStatus(ShowOnConsole showOnConsole, String address, String port, String protocol) {
         
         if (showOnConsole == ShowOnConsole.YES) {
+            
             LOGGER.debug(
                 String.format(
                     "Connection successful to %s proxy %s:%s",
-                    tag,
+                    protocol,
                     address,
                     port
                 )
@@ -207,7 +208,7 @@ public class ProxyUtil {
         }
     }
     
-    private void logStatus(ShowOnConsole showOnConsole, String address, String port, String tag, Exception e) {
+    private void logStatus(ShowOnConsole showOnConsole, String address, String port, String protocol, Exception e) {
         
         if (showOnConsole == ShowOnConsole.YES) {
             
@@ -215,7 +216,8 @@ public class ProxyUtil {
             
             LOGGER.warn(
                 String.format(
-                    "Connection to proxy %s:%s failed with error \"%s\", verify your proxy settings",
+                    "Connection to %s proxy %s:%s failed with error \"%s\", verify your proxy settings",
+                    protocol,
                     address,
                     port,
                     message.replace(e.getClass().getName() +": ", StringUtils.EMPTY)

@@ -21,7 +21,6 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.prefs.Preferences;
 
 import javax.swing.BorderFactory;
@@ -52,7 +51,6 @@ import com.jsql.view.swing.scrollpane.JScrollIndicator;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.tab.TabConsoles;
-import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
 import com.jsql.view.swing.text.JToolTipI18n;
@@ -96,8 +94,6 @@ public class PanelConsoles extends JPanel {
     private TabbedPaneNetworkTab tabbedPaneNetworkTab;
     private NetworkTable networkTable;
     
-    private transient MouseWheelListener tabbedPaneMouseWheelListener = new TabbedPaneMouseWheelListener();
-
     private BasicArrowButton buttonShowNorth = new BasicArrowButton(SwingConstants.NORTH);
     private int location = 0;
     
@@ -440,6 +436,7 @@ public class PanelConsoles extends JPanel {
             LOGGER.error(e.getMessage(), e);
         }
     }
+    
     
     // Getter and setter
 

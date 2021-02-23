@@ -133,7 +133,7 @@ public class PanelNode extends JPanel {
 
     private void initializeTextFieldEditable(final JTree tree, final DefaultMutableTreeNode currentNode) {
         
-        this.textFieldEditable.setFont(UiUtil.FONT_SEGOE);
+        this.textFieldEditable.setFont(UiUtil.FONT_NON_MONO);
         this.textFieldEditable.setBorder(BorderFactory.createLineBorder(UiUtil.COLOR_FOCUS_GAINED, 1, false));
         
         this.textFieldEditable.addActionListener(e -> {

@@ -79,7 +79,7 @@ public class I18nViewUtil {
                 String
                 .format(
                     "<html><span style=\"font-family:'%s'\">%s</span></html>",
-                    UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                    UiUtil.FONT_NAME_MONO_ASIAN,
                     I18nUtil.valueByKey(key)
                 );
         } else {

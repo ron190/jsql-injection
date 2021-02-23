@@ -53,7 +53,7 @@ public class SwingAppender extends WriterAppender {
         )
         .forEach(entry -> {
             
-            StyleConstants.setFontFamily(entry.getKey(), UiUtil.FONT_NAME_UBUNTU_MONO);
+            StyleConstants.setFontFamily(entry.getKey(), UiUtil.FONT_NAME_MONO_NON_ASIAN);
             StyleConstants.setFontSize(entry.getKey(), 14);
             StyleConstants.setForeground(entry.getKey(), entry.getValue());
         });

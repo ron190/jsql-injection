@@ -1,8 +1,9 @@
 {
     "version": "0.83",
     "news": [
-        "[New release] Version 0.83 available on Github: various preferences for thread control, User agent, Zip and Dios modes, 11 new db engines, fingerprinting, stability and more",
-        "[Contribute] Devops integration for PHP .NET Python and Node APIs, CTF and vuln application tests, ProGuard shrink",
-        "[Roadmap] WAF fingerprint, Inject user defined query, Inject range of rows"
+        "[New release v0.83] 10 new db engines, preferences for thread control, User agent, Zip and Dios modes, fingerprinting, stability and more",
+        "[Roadmap] WAF fingerprint, Inject user defined query, Inject range of rows",
+        "[Since latest release] Dump jdk8 and ship Nashorn for jdk11 up to jdk15, Fix GUI glitches on Mac",
+        "[Contribute] Devops integration for PHP .NET Python and Node APIs, CTF and vuln application tests, ProGuard shrink"
     ]
 }

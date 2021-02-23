@@ -69,8 +69,8 @@ class TokenStyles {
     private static void addStyle(String name, Color bg, Color fg, boolean bold, boolean italic) {
         
         SimpleAttributeSet style = new SimpleAttributeSet();
-        StyleConstants.setFontFamily(style, UiUtil.FONT_UBUNTU_MONO.getFontName());
-        StyleConstants.setFontSize(style, UiUtil.FONT_UBUNTU_MONO.getSize());
+        StyleConstants.setFontFamily(style, UiUtil.FONT_MONO_NON_ASIAN.getFontName());
+        StyleConstants.setFontSize(style, UiUtil.FONT_MONO_NON_ASIAN.getSize());
         StyleConstants.setBackground(style, bg);
         StyleConstants.setForeground(style, fg);
         StyleConstants.setBold(style, bold);

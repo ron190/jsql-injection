@@ -39,6 +39,7 @@ import org.jsoup.safety.Whitelist;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.view.interaction.InteractionCommand;
+import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.util.I18nViewUtil;
@@ -112,30 +113,28 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
         browser.setEditable(false);
         
         // Fix #43220: EmptyStackException on setText()
+        // Fix #94242: IndexOutOfBoundsException on setText()
         try {
             browser.setText(htmlSource);
             
-        } catch (EmptyStackException e) {
+        } catch (IndexOutOfBoundsException | EmptyStackException e) {
             
             LOGGER.error(e, e);
         }
 
         final JPopupMenu menu = new JPopupMenu();
         
-        JMenuItem itemCopyUrl = new JMenuItem(I18nUtil.valueByKey("CONTEXT_MENU_COPY_PAGE_URL"));
+        JMenuItem itemCopyUrl = new JMenuItemWithMargin(I18nUtil.valueByKey("CONTEXT_MENU_COPY_PAGE_URL"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY_PAGE_URL", itemCopyUrl);
-        itemCopyUrl.setIcon(UiUtil.ICON_EMPTY);
         
-        JMenuItem itemCopy = new JMenuItem();
+        JMenuItem itemCopy = new JMenuItemWithMargin();
         itemCopy.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         itemCopy.setMnemonic('C');
         itemCopy.setText(I18nUtil.valueByKey("CONTEXT_MENU_COPY"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
-        itemCopy.setIcon(UiUtil.ICON_EMPTY);
         
-        JMenuItem itemSelectAll = new JMenuItem();
-        itemSelectAll.setIcon(UiUtil.ICON_EMPTY);
+        JMenuItem itemSelectAll = new JMenuItemWithMargin();
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.setText(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"));

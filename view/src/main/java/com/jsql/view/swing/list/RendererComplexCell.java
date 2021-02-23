@@ -46,7 +46,7 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
         
         JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, isFocused);
 
-        renderer.setFont(UiUtil.FONT_SEGOE);
+        renderer.setFont(UiUtil.FONT_NON_MONO);
 
         // setBackground
         if (isSelected) {
@@ -73,6 +73,11 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
         } else if (value.getIsDatabaseConfirmed()) {
             
             renderer.setForeground(Color.BLUE);
+            
+        } else {
+            
+            // Hardcode black for Mac default is white
+            renderer.setForeground(Color.BLACK);
         }
 
         // setBorder

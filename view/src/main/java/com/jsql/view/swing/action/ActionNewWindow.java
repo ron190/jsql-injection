@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 
 import com.jsql.MainApplication;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Open another jSQL instance in new process.
@@ -65,7 +64,6 @@ public class ActionNewWindow extends AbstractAction {
         this.commands.addAll(COMMANDS_DEFAULT);
         
         this.putValue(Action.NAME, name);
-        this.putValue(Action.SMALL_ICON, UiUtil.ICON_EMPTY);
     }
 
     @Override

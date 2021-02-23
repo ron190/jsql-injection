@@ -93,7 +93,7 @@ public abstract class AbstractRadioLink extends JLabel {
             
             if (this != label) {
                 
-                label.setFont(UiUtil.FONT_SEGOE);
+                label.setFont(UiUtil.FONT_NON_MONO);
                 
             } else {
                 

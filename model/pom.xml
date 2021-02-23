@@ -276,9 +276,9 @@
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <scope>test</scope>
             <!-- Version 2.5.1 fails on test listValues() -->
             <version>2.5.0</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.derby</groupId>
@@ -366,6 +366,13 @@
 
 
         <!-- jSQL purpose -->
+        
+        <!-- Standalone Nashorn build compatible with jdk11 -->
+        <dependency>
+            <groupId>org.openjdk.nashorn</groupId>
+            <artifactId>nashorn-core</artifactId>
+            <version>15.2</version>
+        </dependency>
 
         <dependency>
             <groupId>commons-codec</groupId>

@@ -178,8 +178,13 @@ public class PanelPreferences extends JPanel {
                 JLabel labelItemList = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 
                 if (isSelected) {
+                    
                     labelItemList.setBackground(UiUtil.COLOR_FOCUS_GAINED);
+                    
+                    // Hardcode color black for Mac uses white by default
+                    labelItemList.setForeground(Color.BLACK);
                 }
+                
                 labelItemList.setBorder(
                     BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(3, 3, 0, 3, Color.WHITE),

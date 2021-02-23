@@ -24,8 +24,8 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import com.jsql.util.I18nUtil;
+import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 import com.jsql.view.swing.util.I18nViewUtil;
-import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Default popup menu and shortcuts for a table.
@@ -48,24 +48,20 @@ public class JPopupMenuTable extends JPopupMenu {
 
         table.setComponentPopupMenu(this);
 
-        JMenuItem copyItem = new JMenuItem();
-        copyItem.setAction(new ActionCopy());
+        JMenuItem copyItem = new JMenuItemWithMargin(new ActionCopy());
         copyItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_COPY"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
         copyItem.setMnemonic('C');
-        copyItem.setIcon(UiUtil.ICON_EMPTY);
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         
         this.add(copyItem);
 
         this.addSeparator();
 
-        JMenuItem selectAllItem = new JMenuItem();
-        selectAllItem.setAction(new ActionSelectAll());
+        JMenuItem selectAllItem = new JMenuItemWithMargin(new ActionSelectAll());
         selectAllItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
         selectAllItem.setMnemonic('A');
-        selectAllItem.setIcon(UiUtil.ICON_EMPTY);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         
         this.add(selectAllItem);
@@ -101,11 +97,10 @@ public class JPopupMenuTable extends JPopupMenu {
         
         this.addSeparator();
 
-        JMenuItem search = new JMenuItem();
+        JMenuItem search = new JMenuItemWithMargin();
         search.setAction(actionShowSearchTable);
         search.setText("Search...");
         search.setMnemonic('S');
-        search.setIcon(UiUtil.ICON_EMPTY);
         search.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
         
         this.add(search);

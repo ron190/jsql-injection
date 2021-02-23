@@ -52,7 +52,7 @@ public class UiStringUtil {
                 String
                 .format(
                     "<html><span style=\"font-family:'%s';%s\">%s</span></html>",
-                    UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                    UiUtil.FONT_NAME_MONO_ASIAN,
                     nowrap ? "white-space:nowrap;" : StringUtils.EMPTY,
                     text
                 );

@@ -33,9 +33,9 @@ import javax.swing.TransferHandler;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
+import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
-import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A Mouse action to display a popupmenu on a JList.
@@ -105,15 +105,15 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         
         boolean isAsian = I18nUtil.isAsian(I18nUtil.getLocaleDefault());
         
-        JMenuItem mnImport = new JMenuItem();
-        JMenuItem mnExport = new JMenuItem();
-        JMenuItem mnCut = new JMenuItem();
-        JMenuItem mnCopy = new JMenuItem();
-        JMenuItem mnPaste = new JMenuItem();
-        JMenuItem mnDelete = new JMenuItem();
-        JMenuItem mnNew = new JMenuItem();
-        JMenuItem mnRestoreDefault = new JMenuItem();
-        JMenuItem mnSelectAll = new JMenuItem();
+        JMenuItem mnImport = new JMenuItemWithMargin();
+        JMenuItem mnExport = new JMenuItemWithMargin();
+        JMenuItem mnCut = new JMenuItemWithMargin();
+        JMenuItem mnCopy = new JMenuItemWithMargin();
+        JMenuItem mnPaste = new JMenuItemWithMargin();
+        JMenuItem mnDelete = new JMenuItemWithMargin();
+        JMenuItem mnNew = new JMenuItemWithMargin();
+        JMenuItem mnRestoreDefault = new JMenuItemWithMargin();
+        JMenuItem mnSelectAll = new JMenuItemWithMargin();
         
         Stream
         .of(
@@ -136,8 +136,6 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             );
             
             I18nViewUtil.addComponentForKey(entry.getValue(), entry.getKey());
-            
-            entry.getKey().setIcon(UiUtil.ICON_EMPTY);
         });
 
         mnCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));

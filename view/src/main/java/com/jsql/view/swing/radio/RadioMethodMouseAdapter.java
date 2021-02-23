@@ -36,7 +36,7 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
                 
                 if ((JLabel) e.getComponent() != label) {
                     
-                    label.setFont(UiUtil.FONT_SEGOE);
+                    label.setFont(UiUtil.FONT_NON_MONO);
                     
                 } else {
                     

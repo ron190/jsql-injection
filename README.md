@@ -1,7 +1,7 @@
 ## Description
 **jSQL Injection** is a lightweight application used to find database information from a distant server.
 
-It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac OS X with Java from version 8 to 15.
+It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac and works with Java from version 11 to 15.
 
 ![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in various other distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
 
@@ -20,12 +20,13 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 [![Sonar Violations (long format)](https://img.shields.io/sonar/violations/jsql-injection:jsql-injection?format=long&label=%20&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
 
 ## Features
-- Automatic injection of 33 kinds of databases: Access, Altibase, C-treeACE, CockroachDB, CUBRID, DB2, Derby, Exasol, Firebird, FrontBase, H2, Hana, HSQLDB, Informix, Ingres, InterSystems-IRIS, MaxDB, Mckoi, MemSQL, MimerSQL, MonetDB, MySQL, Neo4j, Netezza, NuoDB, Oracle, PostgreSQL, Presto, SQLite, SQL Server, Sybase, Teradata and Vertica
-- Multiple injection strategies: Normal, Error, Stacked, Blind and Time
+- Automatic injection of 33 database engines: Access, Altibase, C-treeACE, CockroachDB, CUBRID, DB2, Derby, Exasol, Firebird, FrontBase, H2, Hana, HSQLDB, Informix, Ingres, InterSystems-IRIS, MaxDB, Mckoi, MemSQL, MimerSQL, MonetDB, MySQL, Neo4j, Netezza, NuoDB, Oracle, PostgreSQL, Presto, SQLite, SQL Server, Sybase, Teradata and Vertica
+- Multiple injection strategies: Normal, Error, Blind and Time
 - Various injection processes: Default, Zip, Dios
-- Sandbox for SQL and tampering scripting
+- Database fingerprint: L1 (error pattern), L2 (boolean single query)
+- Script sandboxes for SQL and tampering
 - List to inject multiple targets
-- Read and write file using injection
+- Read and write files using injection
 - Create and display Web shell and SQL shell
 - Bruteforce password hash
 - Search for admin pages
@@ -57,8 +58,10 @@ Then quality checks are stored on code quality platforms.
 +---+ +-----------------------------------------------------------------------+
 ```
 
+## [[Test-bed scripts for Spring](https://github.com/ron190/jsql-injection/tree/master/model/src/test/java/spring/rest)]
+
 ## [[Test-bed scripts for PHP](https://github.com/ron190/jsql-injection/tree/master/web/test-bed)]
-Use the sample scripts to test injection on your local environment. First install a development environment like [EasyPHP](http://www.easyphp.org), then download the [test-bed PHP scripts](https://github.com/ron190/jsql-injection/tree/master/web/test-bed) and place them into `www/`.
+Use the sample scripts to test injection on your local environment. First install a development environment like [EasyPHP](http://www.easyphp.org), then download the [test-bed PHP scripts](https://github.com/ron190/jsql-injection/tree/master/web/test-bed) and move them into `www/`.
 ```php
 <?php
 # http://127.0.0.1/mysql/strategy/get-normal.php?id=0
@@ -71,9 +74,7 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
     echo join(',', $row);
 ```
 
-## [[Test-bed scripts for Spring](https://github.com/ron190/jsql-injection/tree/master/model/src/test/java/spring/rest)]
-
-## Screenshots and [[video](https://youtu.be/ZZkQRE3OL8E)]
+## Screenshots
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
 [![SQL Engine](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/sqlengine-mini.png "SQL Engine")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/sqlengine.png)
 [![Tamper](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/tamper-mini.png "Tamper")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/tamper.png)
@@ -88,17 +89,24 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 
 ## [[Roadmap](https://github.com/ron190/jsql-injection/projects)]
 ```
-WAF fingerprinting, Inject user defined query, Inject range of rows, Full Path Disclosure, Strategies: DNS out-of-band and routed query
+- Inject user defined query
+- Inject range of rows
+- Full Path Disclosure
+- Strategy routed query
 ```
 
 ## In progress
 ```
-WAF fingerprinting, DNS out-of-band
+- Database fingerprinting: L2 (boolean single query)
+- WAF fingerprinting
+- Strategy DNS out-of-band
 ```
 
 ## Since latest release
 ```
--
+- Fix GUI glitches on Mac
+- Add standalone Nashorn for jdk11 up to jdk15
+- Drop jdk version lower than jdk11
 ```
 
 ## Change log

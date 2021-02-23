@@ -72,10 +72,10 @@ public class PanelProxy extends JPanel {
         this.getTextProxyAddressHttps().setMaximumSize(new Dimension(200, 0));
         this.getTextProxyPortHttps().setMaximumSize(new Dimension(200, 0));
         
-        this.getTextProxyAddress().setFont(UiUtil.FONT_SEGOE_BIG);
-        this.getTextProxyPort().setFont(UiUtil.FONT_SEGOE_BIG);
-        this.getTextProxyAddressHttps().setFont(UiUtil.FONT_SEGOE_BIG);
-        this.getTextProxyPortHttps().setFont(UiUtil.FONT_SEGOE_BIG);
+        this.getTextProxyAddress().setFont(UiUtil.FONT_NON_MONO_BIG);
+        this.getTextProxyPort().setFont(UiUtil.FONT_NON_MONO_BIG);
+        this.getTextProxyAddressHttps().setFont(UiUtil.FONT_NON_MONO_BIG);
+        this.getTextProxyPortHttps().setFont(UiUtil.FONT_NON_MONO_BIG);
         
         Stream
         .of(

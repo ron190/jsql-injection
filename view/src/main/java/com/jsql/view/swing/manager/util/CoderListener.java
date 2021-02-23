@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.manager.ManagerCoder;
+import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Action run when this.coderManager.encoding.
@@ -98,7 +99,8 @@ public class CoderListener implements ActionListener {
         this.coderManager.getResult().setText(
             String
             .format(
-                "<html><span style=\"font-family:'Ubuntu Mono'\">%s</span></html>",
+                "<html><span style=\"font-family:'%s'\">%s</span></html>",
+                UiUtil.FONT_NAME_MONO_NON_ASIAN,
                 result
             )
         );

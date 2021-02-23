@@ -10,9 +10,9 @@ jdk: oraclejdk11
 jobs:
   include:
   
-  - env:
-    - JSQL_DOCKERFILE=3.6.3-jdk-8-slim
-    - MAVEN_NASHORN=
+#  - env:
+#    - JSQL_DOCKERFILE=3.6.3-jdk-8-slim
+#    - MAVEN_NASHORN=
     
   - env:
     - JSQL_DOCKERFILE=3.6.3-jdk-11-slim

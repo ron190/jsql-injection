@@ -30,6 +30,7 @@ import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.StringUtil;
+import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 import com.jsql.view.swing.tree.ActionLoadStop;
 import com.jsql.view.swing.tree.ActionPauseUnpause;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
@@ -201,14 +202,12 @@ public abstract class AbstractNodeModel {
             textReload = "?";
         }
         
-        JMenuItem menuItemReload = new JMenuItem(textReload);
-        menuItemReload.setIcon(UiUtil.ICON_EMPTY);
+        JMenuItem menuItemReload = new JMenuItemWithMargin(textReload);
 
         menuItemReload.setEnabled(!this.isRunning);
         menuItemReload.addActionListener(actionEvent -> AbstractNodeModel.this.runAction());
         
-        JMenuItem menuItemRename = new JMenuItem(I18nViewUtil.valueByKey("RENAME_NODE"));
-        menuItemRename.setIcon(UiUtil.ICON_EMPTY);
+        JMenuItem menuItemRename = new JMenuItemWithMargin(I18nViewUtil.valueByKey("RENAME_NODE"));
         
         menuItemRename.setEnabled(!this.isRunning);
         menuItemRename.addActionListener(actionEvent -> {
@@ -233,13 +232,12 @@ public abstract class AbstractNodeModel {
         AbstractSuspendable suspendableTask
     ) {
         
-        JMenuItem menuItemLoad = new JMenuItem(
+        JMenuItem menuItemLoad = new JMenuItemWithMargin(
             this.isRunning
             ? I18nViewUtil.valueByKey("THREAD_STOP")
             : I18nViewUtil.valueByKey("THREAD_LOAD"),
             'o'
         );
-        menuItemLoad.setIcon(UiUtil.ICON_EMPTY);
         
         if (!this.isContainingSelection && !this.isRunning) {
             
@@ -248,14 +246,13 @@ public abstract class AbstractNodeModel {
         
         menuItemLoad.addActionListener(new ActionLoadStop(this, currentTableNode));
 
-        JMenuItem menuItemPause = new JMenuItem(
+        JMenuItem menuItemPause = new JMenuItemWithMargin(
             // Report #133: ignore if thread not found
             suspendableTask != null && suspendableTask.isPaused()
             ? I18nViewUtil.valueByKey("THREAD_RESUME")
             : I18nViewUtil.valueByKey("THREAD_PAUSE"),
             's'
         );
-        menuItemPause.setIcon(UiUtil.ICON_EMPTY);
 
         if (!this.isRunning) {
             
@@ -370,11 +367,11 @@ public abstract class AbstractNodeModel {
         
         if (StringUtil.isUtf8(this.getElementDatabase().toString())) {
             
-            this.panelNode.getEditable().setFont(UiUtil.FONT_UBUNTU_REGULAR);
+            this.panelNode.getEditable().setFont(UiUtil.FONT_MONO_ASIAN);
             
         } else {
             
-            this.panelNode.getEditable().setFont(UiUtil.FONT_SEGOE);
+            this.panelNode.getEditable().setFont(UiUtil.FONT_NON_MONO);
         }
         
         this.panelNode.getEditable().setText(StringUtil.detectUtf8(this.getElementDatabase().toString()));

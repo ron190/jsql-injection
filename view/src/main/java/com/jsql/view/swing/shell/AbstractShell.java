@@ -99,7 +99,7 @@ public abstract class AbstractShell extends JTextPane {
         URL url = new URL(urlShell);
         this.host = url.getHost();
 
-        this.setFont(new Font(UiUtil.FONT_NAME_UBUNTU_MONO, Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));
+        this.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));
         this.setCaret(new BlockCaret());
         this.setBackground(Color.BLACK);
         this.setForeground(Color.LIGHT_GRAY);

@@ -167,12 +167,12 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("MENUBAR_WINDOWS", menuWindows);
         menuWindows.setMnemonic('W');
 
-        JMenuItem itemNewWindows = new JMenuItem(new ActionNewWindow());
+        JMenuItem itemNewWindows = new JMenuItemWithMargin(new ActionNewWindow());
         I18nViewUtil.addComponentForKey("NEW_WINDOW_MENU", itemNewWindows);
         
         menuWindows.add(itemNewWindows);
         JMenu menuAppearance = new JMenu("Appearance");
-        JMenuItem itemNewWindows4k = new JMenuItem(
+        JMenuItem itemNewWindows4k = new JMenuItemWithMargin(
             new ActionNewWindow("New 4K Window", "-Dsun.java2d.uiScale=2.5")
         );
         menuAppearance.add(itemNewWindows4k);
@@ -366,13 +366,11 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("MENUBAR_HELP", menuHelp);
         menuHelp.setName("menuHelp");
         
-        JMenuItem itemHelp = new JMenuItem(I18nUtil.valueByKey("MENUBAR_HELP_ABOUT"), 'A');
-        itemHelp.setIcon(UiUtil.ICON_EMPTY);
+        JMenuItem itemHelp = new JMenuItemWithMargin(I18nUtil.valueByKey("MENUBAR_HELP_ABOUT"), 'A');
         I18nViewUtil.addComponentForKey("MENUBAR_HELP_ABOUT", itemHelp);
         itemHelp.setName("itemHelp");
         
-        JMenuItem itemUpdate = new JMenuItem(I18nUtil.valueByKey("MENUBAR_HELP_UPDATE"), 'U');
-        itemUpdate.setIcon(UiUtil.ICON_EMPTY);
+        JMenuItem itemUpdate = new JMenuItemWithMargin(I18nUtil.valueByKey("MENUBAR_HELP_UPDATE"), 'U');
         I18nViewUtil.addComponentForKey("MENUBAR_HELP_UPDATE", itemUpdate);
 
         // Render the About dialog behind scene
@@ -441,8 +439,7 @@ public class Menubar extends JMenuBar {
 
     private JMenuItem initializeItemPreferences() {
         
-        JMenuItem itemPreferences = new JMenuItem(I18nUtil.valueByKey(KEY_MENU_PREFERENCES), 'P');
-        itemPreferences.setIcon(UiUtil.ICON_EMPTY);
+        JMenuItem itemPreferences = new JMenuItemWithMargin(I18nUtil.valueByKey(KEY_MENU_PREFERENCES), 'P');
         I18nViewUtil.addComponentForKey(KEY_MENU_PREFERENCES, itemPreferences);
         
         // Render the Preferences dialog behind scene
@@ -542,7 +539,7 @@ public class Menubar extends JMenuBar {
         this.itemArabic = new JRadioButtonMenuItem(
             String.format(
                 patternAsianDisplay,
-                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("ar").getDisplayLanguage(new Locale("ar"))
             ),
             UiUtil.ICON_FLAG_AR,
@@ -626,7 +623,7 @@ public class Menubar extends JMenuBar {
             String
             .format(
                 patternAsianDisplay,
-                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("zh").getDisplayLanguage(new Locale("zh"))
             ),
             UiUtil.ICON_FLAG_ZH,
@@ -659,7 +656,7 @@ public class Menubar extends JMenuBar {
             String
             .format(
                 patternAsianDisplay,
-                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("ko").getDisplayLanguage(new Locale("ko"))
             ),
             UiUtil.ICON_FLAG_KO,
@@ -738,7 +735,7 @@ public class Menubar extends JMenuBar {
             String
             .format(
                 formatMenuItemUTF8,
-                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("hi").getDisplayLanguage(new Locale("hi"))
             ),
             UiUtil.ICON_FLAG_HI
@@ -747,7 +744,7 @@ public class Menubar extends JMenuBar {
             String
             .format(
                 formatMenuItemUTF8,
-                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("ar").getDisplayLanguage(new Locale("ar"))
             ), UiUtil.ICON_FLAG_AR
         );
@@ -756,7 +753,7 @@ public class Menubar extends JMenuBar {
             String
             .format(
                 formatMenuItemUTF8,
-                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("zh").getDisplayLanguage(new Locale("zh"))
             ),
             UiUtil.ICON_FLAG_ZH
@@ -777,7 +774,7 @@ public class Menubar extends JMenuBar {
             String
             .format(
                 formatMenuItemUTF8,
-                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("ja").getDisplayLanguage(new Locale("ja"))
             ),
             UiUtil.ICON_FLAG_JA
@@ -786,7 +783,7 @@ public class Menubar extends JMenuBar {
             String
             .format(
                 formatMenuItemUTF8,
-                UiUtil.FONT_NAME_UBUNTU_REGULAR,
+                UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("ko").getDisplayLanguage(new Locale("ko"))
             ),
             UiUtil.ICON_FLAG_KO
@@ -859,8 +856,7 @@ public class Menubar extends JMenuBar {
 
     private JMenuItem initializeItemReportIssue() {
         
-        JMenuItem itemReportIssue = new JMenuItem(I18nUtil.valueByKey("MENUBAR_COMMUNITY_REPORTISSUE"), 'R');
-        itemReportIssue.setIcon(UiUtil.ICON_EMPTY);
+        JMenuItem itemReportIssue = new JMenuItemWithMargin(I18nUtil.valueByKey("MENUBAR_COMMUNITY_REPORTISSUE"), 'R');
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_REPORTISSUE", itemReportIssue);
         
         itemReportIssue.addActionListener(actionEvent -> {
@@ -927,9 +923,8 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("MENUBAR_EDIT", menuEdit);
         menuEdit.setMnemonic('E');
 
-        JMenuItem itemCopy = new JMenuItem(I18nUtil.valueByKey("CONTEXT_MENU_COPY"), 'C');
+        JMenuItem itemCopy = new JMenuItemWithMargin(I18nUtil.valueByKey("CONTEXT_MENU_COPY"), 'C');
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
-        itemCopy.setIcon(UiUtil.ICON_EMPTY);
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         itemCopy.addActionListener(actionEvent -> {
             
@@ -943,9 +938,8 @@ public class Menubar extends JMenuBar {
             }
         });
 
-        JMenuItem itemSelectAll = new JMenuItem(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"), 'A');
+        JMenuItem itemSelectAll = new JMenuItemWithMargin(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"), 'A');
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
-        itemSelectAll.setIcon(UiUtil.ICON_EMPTY);
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.addActionListener(actionEvent -> {
             
@@ -976,12 +970,11 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("MENUBAR_FILE", menuFile);
         menuFile.setMnemonic('F');
 
-        JMenuItem itemSave = new JMenuItem(new ActionSaveTab());
+        JMenuItem itemSave = new JMenuItemWithMargin(new ActionSaveTab());
         I18nViewUtil.addComponentForKey("MENUBAR_FILE_SAVETABAS", itemSave);
 
-        JMenuItem itemExit = new JMenuItem(I18nUtil.valueByKey("MENUBAR_FILE_EXIT"), 'x');
+        JMenuItem itemExit = new JMenuItemWithMargin(I18nUtil.valueByKey("MENUBAR_FILE_EXIT"), 'x');
         I18nViewUtil.addComponentForKey("MENUBAR_FILE_EXIT", itemExit);
-        itemExit.setIcon(UiUtil.ICON_EMPTY);
         itemExit.addActionListener(actionEvent -> MediatorHelper.frame().dispose());
 
         HotkeyUtil.addShortcut(Menubar.this);
@@ -1164,9 +1157,9 @@ public class Menubar extends JMenuBar {
                 SwingAppender.TRACE,
                 SwingAppender.ALL
             )
-            .forEach(attribute -> StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_UBUNTU_REGULAR));
+            .forEach(attribute -> StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_MONO_ASIAN));
             
-            MediatorHelper.managerBruteForce().getResult().setFont(UiUtil.FONT_UBUNTU_REGULAR);
+            MediatorHelper.managerBruteForce().getResult().setFont(UiUtil.FONT_MONO_ASIAN);
             
             colMod.getColumn(0).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
             colMod.getColumn(1).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN") +" (KB)");
@@ -1183,9 +1176,9 @@ public class Menubar extends JMenuBar {
                 SwingAppender.TRACE,
                 SwingAppender.ALL
             )
-            .forEach(attribute -> StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_UBUNTU_MONO));
+            .forEach(attribute -> StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_MONO_NON_ASIAN));
             
-            MediatorHelper.managerBruteForce().getResult().setFont(UiUtil.FONT_UBUNTU_MONO);
+            MediatorHelper.managerBruteForce().getResult().setFont(UiUtil.FONT_MONO_NON_ASIAN);
             
             colMod.getColumn(0).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
             colMod.getColumn(1).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN") +" (KB)");

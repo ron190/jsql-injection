@@ -66,7 +66,7 @@ public class TabResults extends DnDTabbedPane {
         
         JTextArea fileText = new JPopupTextArea().getProxy();
         fileText.setText(content);
-        fileText.setFont(new Font(UiUtil.FONT_NAME_UBUNTU_MONO, Font.PLAIN, 14));
+        fileText.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));
         LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, fileText);
         
         fileText.setCaretPosition(0);

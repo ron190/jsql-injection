@@ -17,8 +17,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
 
-import javax.swing.UIManager;
-
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -28,7 +26,7 @@ import com.jsql.view.swing.util.UiUtil;
 public class CustomMetalTabbedPaneUI extends BorderlessTabButtonUI {
     
     private static final float ADJ2 = 0f;
-    private final Color selectedTabColor = UIManager.getColor("TabbedPane.selected");
+    
     private static final Color TAB_BACKGROUND = UiUtil.COLOR_DEFAULT_BACKGROUND;
     private static final Color TAB_BORDER = UiUtil.COLOR_COMPONENT_BORDER;
     
@@ -111,7 +109,7 @@ public class CustomMetalTabbedPaneUI extends BorderlessTabButtonUI {
         trapezoid.lineTo(x + w - ADJ2, y + textShiftOffset);
         trapezoid.lineTo(x + w + ADJ2, (float) y + h);
 
-        g2.setColor(isSelected ? this.selectedTabColor : TAB_BACKGROUND);
+        g2.setColor(isSelected ? UiUtil.COLOR_FOCUS_GAINED : TAB_BACKGROUND);
         g2.fill(trapezoid);
 
         g2.setColor(TAB_BORDER);

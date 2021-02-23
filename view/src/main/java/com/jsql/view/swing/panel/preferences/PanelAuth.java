@@ -127,11 +127,11 @@ public class PanelAuth extends JPanel {
         this.getTextDigestAuthenticationUsername().setMaximumSize(new Dimension(200, 0));
         this.getTextDigestAuthenticationPassword().setMaximumSize(new Dimension(200, 0));
 
-        this.getTextKerberosLoginConf().setFont(UiUtil.FONT_SEGOE_BIG);
-        this.getTextKerberosKrb5Conf().setFont(UiUtil.FONT_SEGOE_BIG);
+        this.getTextKerberosLoginConf().setFont(UiUtil.FONT_NON_MONO_BIG);
+        this.getTextKerberosKrb5Conf().setFont(UiUtil.FONT_NON_MONO_BIG);
         
-        this.getTextDigestAuthenticationUsername().setFont(UiUtil.FONT_SEGOE_BIG);
-        this.getTextDigestAuthenticationPassword().setFont(UiUtil.FONT_SEGOE_BIG);
+        this.getTextDigestAuthenticationUsername().setFont(UiUtil.FONT_NON_MONO_BIG);
+        this.getTextDigestAuthenticationPassword().setFont(UiUtil.FONT_NON_MONO_BIG);
         
         Stream
         .of(

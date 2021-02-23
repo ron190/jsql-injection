@@ -36,6 +36,7 @@ import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.tree.CheckBoxMenuItemIconCustom;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
@@ -246,14 +247,11 @@ public class NodeModelTable extends AbstractNodeModel {
 
     private void addCheckUncheckItems(JPopupMenuCustomExtract tablePopupMenu, final TreePath path) {
         
-        JMenuItem menuItemCheckAll = new JMenuItem(I18nViewUtil.valueByKey("COLUMNS_CHECK_ALL"), 'C');
+        JMenuItem menuItemCheckAll = new JMenuItemWithMargin(I18nViewUtil.valueByKey("COLUMNS_CHECK_ALL"), 'C');
         I18nViewUtil.addComponentForKey("COLUMNS_CHECK_ALL", menuItemCheckAll);
         
-        JMenuItem menuItemUncheckAll = new JMenuItem(I18nViewUtil.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
+        JMenuItem menuItemUncheckAll = new JMenuItemWithMargin(I18nViewUtil.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
         I18nViewUtil.addComponentForKey("COLUMNS_UNCHECK_ALL", menuItemUncheckAll);
-
-        menuItemCheckAll.setIcon(UiUtil.ICON_EMPTY);
-        menuItemUncheckAll.setIcon(UiUtil.ICON_EMPTY);
 
         if (!this.isLoaded()) {
             
@@ -263,9 +261,6 @@ public class NodeModelTable extends AbstractNodeModel {
 
         menuItemCheckAll.addActionListener(new ActionCheckbox(true, path));
         menuItemUncheckAll.addActionListener(new ActionCheckbox(false, path));
-
-        menuItemCheckAll.setIcon(UiUtil.ICON_EMPTY);
-        menuItemUncheckAll.setIcon(UiUtil.ICON_EMPTY);
 
         tablePopupMenu.add(new JSeparator());
         tablePopupMenu.add(menuItemCheckAll);

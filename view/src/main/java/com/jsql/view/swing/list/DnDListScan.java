@@ -13,7 +13,7 @@ package com.jsql.view.swing.list;
 import java.util.List;
 
 /**
- * A list supporting drag and drop.
+ * A list supporting drag and drop with copy/paste object functionality.
  */
 @SuppressWarnings("serial")
 public class DnDListScan extends DnDList {
@@ -26,8 +26,6 @@ public class DnDListScan extends DnDList {
     @Override
     public void addItem(int endPosition, String line) {
         
-        int position = endPosition + 1;
-        
-        this.listModel.add(position, new ItemListScan(new BeanInjection(line.replace("\\", "/"))));
+        this.listModel.add(endPosition, new ItemListScan(new BeanInjection(line.replace("\\", "/"))));
     }
 }

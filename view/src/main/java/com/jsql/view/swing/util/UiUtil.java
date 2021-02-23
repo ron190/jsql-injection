@@ -52,6 +52,7 @@ import javax.swing.text.JTextComponent;
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.console.SwingAppender;
+import com.jsql.view.swing.shadow.SystemUtils;
 import com.jsql.view.swing.sql.lexer.HighlightedDocument;
 import com.jsql.view.swing.text.action.DeleteNextCharAction;
 import com.jsql.view.swing.text.action.DeletePrevCharAction;
@@ -74,7 +75,8 @@ public class UiUtil {
     public static final Color COLOR_GREEN = new Color(0, 128, 0);
     public static final String TEXTPANE_FONT = "TextPane.font";
 
-    public static final Color COLOR_FOCUS_GAINED = (Color) UIManager.get("TabbedPane.selected");
+    // Color TabbedPane.selected hardcoded for Mac value is missing
+    public static final Color COLOR_FOCUS_GAINED = new Color(200, 221, 242);
     
     public static final Color COLOR_DEFAULT_BACKGROUND = UIManager.getColor("Panel.background");
     public static final Color COLOR_COMPONENT_BORDER = UIManager.getColor("controlShadow");
@@ -155,6 +157,7 @@ public class UiUtil {
     public static final String PATH_WEB_FOLDERS = "swing/list/payload.txt";
     public static final String INPUT_STREAM_PAGES_SCAN = "swing/list/scan-page.json";
 
+    // Set a margin on menu item on non Mac OS
     public static final Icon ICON_EMPTY = new ImageIcon(new BufferedImage(16, 16, Transparency.TRANSLUCENT));
 
     public static final String PATH_PAUSE = "swing/images/icons/pause.png";
@@ -169,31 +172,33 @@ public class UiUtil {
     
     public static final Border BORDER_ROUND_BLU = new BorderRoundBlu();
 
-    public static final String FONT_NAME_UBUNTU_MONO = "Ubuntu Mono";
-    public static final String FONT_NAME_UBUNTU_REGULAR = "Ubuntu";
+    public static final String FONT_NAME_MONO_NON_ASIAN = "Ubuntu Mono";
+    public static final String FONT_NAME_MONO_ASIAN = "Monospace";
     
     // Used in Translation Dialog
+    // HTML engine considers Monospaced/Monospace to be the same Font
+    // Java engine recognizes only Monospaced
     public static final String FONT_NAME_MONOSPACED = "Monospaced";
 
-    public static final Font FONT_UBUNTU_MONO = new Font(
-        UiUtil.FONT_NAME_UBUNTU_MONO,
+    public static final Font FONT_MONO_NON_ASIAN = new Font(
+        UiUtil.FONT_NAME_MONO_NON_ASIAN,
         Font.PLAIN,
         UIManager.getDefaults().getFont("TextArea.font").getSize() + 2
     );
     
-    public static final Font FONT_UBUNTU_REGULAR = new Font(
-        UiUtil.FONT_NAME_UBUNTU_REGULAR,
+    public static final Font FONT_MONO_ASIAN = new Font(
+        UiUtil.FONT_NAME_MONO_ASIAN,
         Font.PLAIN,
         UIManager.getDefaults().getFont(TEXTPANE_FONT).getSize()
     );
     
-    public static final Font FONT_SEGOE = new Font(
+    public static final Font FONT_NON_MONO = new Font(
         "Segoe UI",
         Font.PLAIN,
         UIManager.getDefaults().getFont(TEXTPANE_FONT).getSize()
     );
     
-    public static final Font FONT_SEGOE_BIG = new Font(
+    public static final Font FONT_NON_MONO_BIG = new Font(
         UIManager.getDefaults().getFont("TextField.font").getName(),
         Font.PLAIN,
         UIManager.getDefaults().getFont("TextField.font").getSize() + 2
@@ -219,7 +224,7 @@ public class UiUtil {
         configureMenu();
         configureTabbedPane();
         
-        UIManager.put("FileChooser.listFont", UiUtil.FONT_SEGOE);
+        UIManager.put("FileChooser.listFont", UiUtil.FONT_NON_MONO);
         UIManager.put("FileChooser.listViewBorder", BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(UiUtil.COLOR_BLU),
             BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
@@ -247,16 +252,6 @@ public class UiUtil {
             
             LOGGER.warn("Loading Font Ubuntu Mono with control characters failed", e);
         }
-        
-        try (InputStream fontStream = new BufferedInputStream(SwingAppender.class.getClassLoader().getResourceAsStream("swing/font/Ubuntu-R.ttf"))) {
-            
-            Font ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
-            ge.registerFont(ubuntuFont);
-            
-        } catch (FontFormatException | IOException e) {
-            
-            LOGGER.warn("Loading Font Ubuntu failed", e);
-        }
     }
 
     private static void configureText() {
@@ -264,7 +259,7 @@ public class UiUtil {
         // Custom text component
         // Admin page
         UIManager.put("TextPane.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        UIManager.put(TEXTPANE_FONT, UiUtil.FONT_UBUNTU_MONO);
+        UIManager.put(TEXTPANE_FONT, UiUtil.FONT_MONO_NON_ASIAN);
         UIManager.put("TextPane.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
         
         UIManager.put("TextField.border", UiUtil.BORDER_BLU);
@@ -273,19 +268,19 @@ public class UiUtil {
         UIManager.put("EditorPane.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
         
         UIManager.put("TextArea.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        UIManager.put("TextArea.font", UiUtil.FONT_UBUNTU_MONO);
+        UIManager.put("TextArea.font", UiUtil.FONT_MONO_NON_ASIAN);
 
         // Custom Label
-        UIManager.put("Label.font", UiUtil.FONT_SEGOE);
+        UIManager.put("Label.font", UiUtil.FONT_NON_MONO);
         UIManager.put("Label.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
     }
 
     private static void configureButton() {
         
-        UIManager.put("Button.font", UiUtil.FONT_SEGOE);
-        UIManager.put("CheckBox.font", UiUtil.FONT_SEGOE);
-        UIManager.put("RadioButton.font", UiUtil.FONT_SEGOE);
-        UIManager.put("TitledBorder.font", UiUtil.FONT_SEGOE);
+        UIManager.put("Button.font", UiUtil.FONT_NON_MONO);
+        UIManager.put("CheckBox.font", UiUtil.FONT_NON_MONO);
+        UIManager.put("RadioButton.font", UiUtil.FONT_NON_MONO);
+        UIManager.put("TitledBorder.font", UiUtil.FONT_NON_MONO);
 
         UIManager.put("Spinner.arrowButtonBorder", UiUtil.BORDER_BLU);
         UIManager.put("Spinner.border", BorderFactory.createLineBorder(UiUtil.COLOR_COMPONENT_BORDER, 1, false));
@@ -316,14 +311,14 @@ public class UiUtil {
         UIManager.put("ToolTip.backgroundInactive", new Color(255, 255, 225));
         UIManager.put("ToolTip.foreground", Color.BLACK);
         UIManager.put("ToolTip.foregroundInactive", Color.BLACK);
-        UIManager.put("ToolTip.font", UiUtil.FONT_SEGOE);
+        UIManager.put("ToolTip.font", UiUtil.FONT_NON_MONO);
     }
 
     private static void configureTabbedPane() {
         
         // Custom tab
-        UIManager.put("TabbedPane.contentAreaColor", UiUtil.FONT_UBUNTU_MONO);
-        UIManager.put("TabbedPane.font", UiUtil.FONT_SEGOE);
+        UIManager.put("TabbedPane.contentAreaColor", UiUtil.FONT_MONO_NON_ASIAN);
+        UIManager.put("TabbedPane.font", UiUtil.FONT_NON_MONO);
         // margin of current tab panel
         UIManager.put("TabbedPane.contentBorderInsets", new Insets(0, 0, 0, 0));
         // margin above tabs
@@ -336,30 +331,34 @@ public class UiUtil {
 
     private static void configureMenu() {
         
-        // No bold for menu + round corner
-        UIManager.put("Menu.font", UiUtil.FONT_SEGOE);
-        UIManager.put("Menu.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        UIManager.put("Menu.borderPainted", false);
-        UIManager.put("PopupMenu.font", UiUtil.FONT_SEGOE);
-        UIManager.put("RadioButtonMenuItem.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        UIManager.put("RadioButtonMenuItem.font", UiUtil.FONT_SEGOE);
-        UIManager.put("RadioButtonMenuItem.borderPainted", false);
-        UIManager.put("MenuItem.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        UIManager.put("MenuItem.font", UiUtil.FONT_SEGOE);
-        UIManager.put("MenuItem.borderPainted", false);
-        UIManager.put("MenuItem.disabledAreNavigable", Boolean.TRUE);
-        
-        UIManager.put("CheckBoxMenuItem.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
-        UIManager.put("CheckBoxMenuItem.font", UiUtil.FONT_SEGOE);
-        UIManager.put("CheckBoxMenuItem.borderPainted", false);
-        UIManager.put("CheckBoxMenuItem.checkIcon", new CheckBoxIcon());
+        // Prevent green glitch on Mac menu
+        if (!SystemUtils.IS_OS_MAC) {
+            
+            // No bold for menu + round corner
+            UIManager.put("Menu.font", UiUtil.FONT_NON_MONO);
+            UIManager.put("Menu.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
+            UIManager.put("Menu.borderPainted", false);
+            UIManager.put("PopupMenu.font", UiUtil.FONT_NON_MONO);
+            UIManager.put("RadioButtonMenuItem.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
+            UIManager.put("RadioButtonMenuItem.font", UiUtil.FONT_NON_MONO);
+            UIManager.put("RadioButtonMenuItem.borderPainted", false);
+            UIManager.put("MenuItem.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
+            UIManager.put("MenuItem.font", UiUtil.FONT_NON_MONO);
+            UIManager.put("MenuItem.borderPainted", false);
+            UIManager.put("MenuItem.disabledAreNavigable", Boolean.TRUE);
+            
+            UIManager.put("CheckBoxMenuItem.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
+            UIManager.put("CheckBoxMenuItem.font", UiUtil.FONT_NON_MONO);
+            UIManager.put("CheckBoxMenuItem.borderPainted", false);
+            UIManager.put("CheckBoxMenuItem.checkIcon", new CheckBoxIcon());
+        }
     }
 
     private static void configureTable() {
         
         // Custom table
-        UIManager.put("Table.font", UiUtil.FONT_SEGOE);
-        UIManager.put("TableHeader.font", UiUtil.FONT_SEGOE);
+        UIManager.put("Table.font", UiUtil.FONT_NON_MONO);
+        UIManager.put("TableHeader.font", UiUtil.FONT_NON_MONO);
         UIManager.put("Table.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
         
         UIManager.put("Table.focusCellHighlightBorder",
@@ -404,7 +403,7 @@ public class UiUtil {
     private static void configureComboBox() {
         
         // Custom ComboBox
-        UIManager.put("ComboBox.font", UiUtil.FONT_SEGOE);
+        UIManager.put("ComboBox.font", UiUtil.FONT_NON_MONO);
         UIManager.put("ComboBox.selectionBackground", UiUtil.COLOR_FOCUS_GAINED);
         
         // Use ColorUIResource to preserve the background color for arrow

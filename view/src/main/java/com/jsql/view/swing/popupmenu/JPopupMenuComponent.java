@@ -28,10 +28,10 @@ import javax.swing.text.JTextComponent;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
+import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
 import com.jsql.view.swing.text.JTextPanePlaceholderConsole;
 import com.jsql.view.swing.util.I18nViewUtil;
-import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Popup menu for editable text component.
@@ -54,22 +54,19 @@ public class JPopupMenuComponent extends JPopupMenu {
         
         this.component = component;
         
-        JMenuItem copyItem = new JMenuItem();
-        copyItem.setAction(component.getActionMap().get(DefaultEditorKit.copyAction));
+        JMenuItem copyItem = new JMenuItemWithMargin(component.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
         copyItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_COPY"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
-        copyItem.setIcon(UiUtil.ICON_EMPTY);
-        this.setLightWeightPopupEnabled(false);
 
-        JMenuItem selectAllItem = new JMenuItem();
-        selectAllItem.setIcon(UiUtil.ICON_EMPTY);
-        selectAllItem.setAction(component.getActionMap().get(DefaultEditorKit.selectAllAction));
-        selectAllItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"));
-        I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
+        JMenuItem selectAllItem = new JMenuItemWithMargin(component.getActionMap().get(DefaultEditorKit.selectAllAction));
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         selectAllItem.setMnemonic('A');
+        selectAllItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"));
+        I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
+        
+        this.setLightWeightPopupEnabled(false);
         
         this.add(copyItem);
         this.addSeparator();
@@ -79,8 +76,7 @@ public class JPopupMenuComponent extends JPopupMenu {
             component instanceof JTextAreaPlaceholderConsole
             || component instanceof JTextPanePlaceholderConsole
         ) {
-            JMenuItem clearItem = new JMenuItem();
-            clearItem.setIcon(UiUtil.ICON_EMPTY);
+            JMenuItem clearItem = new JMenuItemWithMargin();
             
             clearItem.setAction(new AbstractAction() {
                 
