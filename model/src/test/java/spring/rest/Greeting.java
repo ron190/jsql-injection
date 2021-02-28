@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 
 public class Greeting {
 
-    private final long id;
+    private final long id = 0;
     private final String content;
 
     public Greeting(long id, String content) {
-        this.id = id;
+//        this.id = id;
         this.content = content;
     }
 
