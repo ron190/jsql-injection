@@ -43,6 +43,8 @@ before_script:
     sudo cat /proc/meminfo
     java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
     
+    # Prevent error 'You have reached your pull rate limit' with dedicated user
+    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     docker-compose -f ./model/src/test/resources/docker/docker-compose.yml build --parallel
     docker-compose -f ./model/src/test/resources/docker/docker-compose.yml up -d
     ./model/src/test/resources/docker/healthcheck/healthcheck.sh
