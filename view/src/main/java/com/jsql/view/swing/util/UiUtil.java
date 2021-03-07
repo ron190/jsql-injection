@@ -140,6 +140,7 @@ public class UiUtil {
     public static final Icon ICON_FLAG_RO = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/ro.png"));
     public static final Icon ICON_FLAG_LK = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/lk.png"));
     public static final Icon ICON_FLAG_SE = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/se.png"));
+    public static final Icon ICON_FLAG_FI = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/fi.png"));
     
     public static final URL URL_ICON_16 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug16.png");
     public static final URL URL_ICON_32 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug32.png");

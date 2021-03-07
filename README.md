@@ -93,12 +93,13 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 - Inject range of rows
 - Full Path Disclosure
 - Strategy routed query
+- WAF fingerprinting
 ```
 
 ## In progress
 ```
+- Replace Docker Compose with Kubernetes
 - Database fingerprinting: Boolean single query
-- WAF fingerprinting
 - Strategy DNS out-of-band
 ```
 

@@ -117,6 +117,7 @@ public class Menubar extends JMenuBar {
     private JMenuItem itemRomanian;
     private JMenuItem itemKorean;
     private JMenuItem itemSwedish;
+    private JMenuItem itemFinnish;
     
     private JMenuItem itemIntoHindi;
     private JMenuItem itemIntoArabic;
@@ -137,6 +138,7 @@ public class Menubar extends JMenuBar {
     private JMenuItem itemIntoJapanese;
     private JMenuItem itemIntoRomanian;
     private JMenuItem itemIntoTamil;
+    private JMenuItem itemIntoFinnish;
     
     private static final String KEY_MENU_SQL_ENGINE = "MENUBAR_SQL_ENGINE";
     private static final String KEY_MENU_PREFERENCES = "MENUBAR_PREFERENCES";
@@ -652,6 +654,13 @@ public class Menubar extends JMenuBar {
         );
         this.itemSwedish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("se")));
         
+        this.itemFinnish = new JRadioButtonMenuItem(
+            new Locale("fi").getDisplayLanguage(new Locale("fi")),
+            UiUtil.ICON_FLAG_FI,
+            new Locale("fi").getLanguage().equals(Locale.getDefault().getLanguage())
+        );
+        this.itemFinnish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("fi")));
+        
         this.itemKorean = new JRadioButtonMenuItem(
             String
             .format(
@@ -676,6 +685,7 @@ public class Menubar extends JMenuBar {
             this.itemTurkish,
             this.itemKorean,
             this.itemSwedish,
+            this.itemFinnish,
             this.itemArabic,
             this.itemCzech,
             this.itemItalian,
@@ -789,6 +799,7 @@ public class Menubar extends JMenuBar {
             UiUtil.ICON_FLAG_KO
         );
         this.itemIntoSwedish = new JMenuItem(new Locale("se").getDisplayLanguage(new Locale("se")) +"...", UiUtil.ICON_FLAG_SE);
+        this.itemIntoFinnish = new JMenuItem(new Locale("fi").getDisplayLanguage(new Locale("fi")) +"...", UiUtil.ICON_FLAG_FI);
         JMenuItem itemIntoOther = new JMenuItem(I18nUtil.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", itemIntoOther);
         
@@ -801,6 +812,7 @@ public class Menubar extends JMenuBar {
             this.itemIntoFrench,
             this.itemIntoSpanish,
             this.itemIntoSwedish,
+            this.itemIntoFinnish,
             this.itemIntoTurkish,
             this.itemIntoCzech,
             this.itemIntoRomanian,
@@ -843,6 +855,7 @@ public class Menubar extends JMenuBar {
             new SimpleEntry<>(this.itemIntoKorean, Language.KO),
             new SimpleEntry<>(this.itemIntoJapanese, Language.JA),
             new SimpleEntry<>(this.itemIntoSwedish, Language.SE),
+            new SimpleEntry<>(this.itemIntoFinnish, Language.FI),
             new SimpleEntry<>(itemIntoOther, Language.OT)
         )
         .forEach(
@@ -1111,6 +1124,7 @@ public class Menubar extends JMenuBar {
             this.itemGerman,
             this.itemRomanian,
             this.itemSwedish,
+            this.itemFinnish,
             this.itemKorean,
             this.itemTurkish,
             this.itemIndonesian,
@@ -1136,7 +1150,8 @@ public class Menubar extends JMenuBar {
             this.itemIntoKorean,
             this.itemIntoJapanese,
             this.itemIntoTamil,
-            this.itemIntoSwedish
+            this.itemIntoSwedish,
+            this.itemIntoFinnish
         )
         .forEach(menuItem -> menuItem.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT));
     }

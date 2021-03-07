@@ -26,6 +26,7 @@ public enum Language {
     RO("Romanian", "ro", UiUtil.ICON_FLAG_RO),
     TA("Tamil", "ta", UiUtil.ICON_FLAG_LK),
     SE("Swedish", "se", UiUtil.ICON_FLAG_SE),
+    FI("Finnish", "fi", UiUtil.ICON_FLAG_FI),
     OT("another language", null, null);
 
     private String nameEnglish;
