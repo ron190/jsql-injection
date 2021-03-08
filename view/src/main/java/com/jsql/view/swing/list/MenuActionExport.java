@@ -20,7 +20,8 @@ import java.io.PrintStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -33,7 +34,7 @@ public class MenuActionExport implements ActionListener {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
      * List to export.

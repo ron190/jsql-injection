@@ -25,7 +25,8 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.menubar.JMenuItemWithMargin;
@@ -42,7 +43,7 @@ public class JPopupMenuComponent extends JPopupMenu {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     private JComponent component;
     

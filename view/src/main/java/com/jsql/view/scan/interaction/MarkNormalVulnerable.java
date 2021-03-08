@@ -39,6 +39,6 @@ public class MarkNormalVulnerable implements InteractionCommand {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getNormal();
         
-        MediatorHelper.managerScan().highlight(url, strategy.toString());
+        MediatorHelper.managerScan().highlight(this.url, strategy.toString());
     }
 }

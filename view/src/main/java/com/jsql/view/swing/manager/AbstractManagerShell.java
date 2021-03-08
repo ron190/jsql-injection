@@ -32,7 +32,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.exception.JSqlException;
 import com.jsql.util.I18nUtil;
@@ -54,7 +55,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     private final JTextField textfieldUrlShell = new JPopupTextField(I18nUtil.valueByKey("SHELL_URL_LABEL")).getProxy();
     

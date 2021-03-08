@@ -19,7 +19,8 @@ import java.util.NoSuchElementException;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.util.bruter.ActionCoder;
@@ -34,7 +35,7 @@ public class CoderListener implements ActionListener {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     private ManagerCoder coderManager;
     

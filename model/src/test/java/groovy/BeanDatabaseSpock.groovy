@@ -1,7 +1,5 @@
 package groovy
 
-import org.apache.log4j.PropertyConfigurator
-
 import com.jsql.model.bean.database.Column
 import com.jsql.model.bean.database.Database
 import com.jsql.model.bean.database.Table
@@ -68,11 +66,5 @@ class BeanDatabaseSpock extends Specification {
         where:
             database = new Database("information_schema", "5")
             table = new Table("table", "5", database)
-    }
-    
-    def setup() {
-        
-        // jSQL model only logger
-        PropertyConfigurator.configure("src/test/resources/logger/jsql-log4j.properties")
     }
 }

@@ -30,7 +30,8 @@ import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.view.swing.util.UiUtil;
 
@@ -44,7 +45,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**
      * The size of the transparent drag area.

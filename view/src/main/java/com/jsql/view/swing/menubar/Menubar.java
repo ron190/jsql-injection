@@ -53,7 +53,8 @@ import javax.swing.text.StyleConstants;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.util.GitUtil.ShowOnConsole;
@@ -61,7 +62,7 @@ import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.action.ActionSaveTab;
 import com.jsql.view.swing.action.HotkeyUtil;
-import com.jsql.view.swing.console.SwingAppender;
+import com.jsql.view.swing.console.JTextPaneAppender;
 import com.jsql.view.swing.dialog.DialogAbout;
 import com.jsql.view.swing.dialog.DialogTranslate;
 import com.jsql.view.swing.dialog.translate.Language;
@@ -89,8 +90,7 @@ public class Menubar extends JMenuBar {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
-
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     // Checkbox item to show/hide chunk console.
     private JCheckBoxMenuItem chunkMenu;
@@ -1159,45 +1159,51 @@ public class Menubar extends JMenuBar {
     private void switchNetworkTable(Locale newLocale) {
         
         JTableHeader header = MediatorHelper.panelConsoles().getNetworkTable().getTableHeader();
-        TableColumnModel colMod = header.getColumnModel();
+        TableColumnModel columnModel = header.getColumnModel();
         
         if (I18nUtil.isAsian(newLocale)) {
             
             Stream
             .of(
-                SwingAppender.ERROR,
-                SwingAppender.WARN,
-                SwingAppender.INFO,
-                SwingAppender.DEBUG,
-                SwingAppender.TRACE,
-                SwingAppender.ALL
+                JTextPaneAppender.ERROR,
+                JTextPaneAppender.WARN,
+                JTextPaneAppender.INFO,
+                JTextPaneAppender.DEBUG,
+                JTextPaneAppender.TRACE,
+                JTextPaneAppender.ALL
             )
-            .forEach(attribute -> StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_MONO_ASIAN));
+            .forEach(attribute -> {
+                StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_MONO_ASIAN);
+                StyleConstants.setFontSize(attribute, UiUtil.FONT_SIZE_MONO_ASIAN);
+            });
             
             MediatorHelper.managerBruteForce().getResult().setFont(UiUtil.FONT_MONO_ASIAN);
             
-            colMod.getColumn(0).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
-            colMod.getColumn(1).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN") +" (KB)");
-            colMod.getColumn(2).setHeaderValue("Strategy");
+            columnModel.getColumn(0).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
+            columnModel.getColumn(1).setHeaderValue(I18nViewUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN") +" (KB)");
+            columnModel.getColumn(2).setHeaderValue("Strategy");
             
         } else {
             
             Stream
             .of(
-                SwingAppender.ERROR,
-                SwingAppender.WARN,
-                SwingAppender.INFO,
-                SwingAppender.DEBUG,
-                SwingAppender.TRACE,
-                SwingAppender.ALL
+                JTextPaneAppender.ERROR,
+                JTextPaneAppender.WARN,
+                JTextPaneAppender.INFO,
+                JTextPaneAppender.DEBUG,
+                JTextPaneAppender.TRACE,
+                JTextPaneAppender.ALL
             )
-            .forEach(attribute -> StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_MONO_NON_ASIAN));
+            .forEach(attribute -> {
+                StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_MONO_NON_ASIAN);
+                StyleConstants.setFontSize(attribute, UiUtil.FONT_SIZE_MONO_NON_ASIAN);
+            });
             
             MediatorHelper.managerBruteForce().getResult().setFont(UiUtil.FONT_MONO_NON_ASIAN);
             
-            colMod.getColumn(0).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
-            colMod.getColumn(1).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN") +" (KB)");
-            colMod.getColumn(2).setHeaderValue("Strategy");
+            columnModel.getColumn(0).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"));
+            columnModel.getColumn(1).setHeaderValue(I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN") +" (KB)");
+            columnModel.getColumn(2).setHeaderValue("Strategy");
         }
         
         header.repaint();

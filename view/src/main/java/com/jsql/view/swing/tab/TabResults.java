@@ -20,7 +20,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.I18nUtil;
@@ -47,7 +48,7 @@ public class TabResults extends DnDTabbedPane {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**
      * Create the panel containing injection results.

@@ -3,7 +3,8 @@ package com.jsql.util.bruter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.exception.IgnoreMessageException;
 
@@ -12,7 +13,7 @@ public class Bruter {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     protected List<String> characters = new ArrayList<>();
      

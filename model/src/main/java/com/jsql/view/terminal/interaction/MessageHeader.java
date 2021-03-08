@@ -12,7 +12,8 @@ package com.jsql.view.terminal.interaction;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.bean.util.Header;
 import com.jsql.util.AnsiColorUtil;
@@ -26,7 +27,7 @@ public class MessageHeader implements InteractionCommand {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     // The text to append to the tab
     private String url;

@@ -18,7 +18,8 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.util.bruter.HashBruter;
@@ -33,7 +34,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     private ManagerBruteForce bruteForceManager;
     

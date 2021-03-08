@@ -6,7 +6,8 @@ import java.util.ConcurrentModificationException;
 import javax.swing.JTextPane;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 
 import com.jsql.view.swing.util.UiUtil;
@@ -20,7 +21,7 @@ public class JTextPanePlaceholder extends JTextPane {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**
      * Text to display when empty.

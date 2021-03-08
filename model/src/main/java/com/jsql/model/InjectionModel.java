@@ -31,7 +31,8 @@ import java.util.stream.Stream;
 import javax.security.auth.login.LoginException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.ietf.jgss.GSSException;
 
 import com.jsql.model.accessible.DataAccess;
@@ -80,7 +81,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     private transient MediatorVendor mediatorVendor = new MediatorVendor(this);
     private transient MediatorMethod mediatorMethod = new MediatorMethod(this);
@@ -225,7 +226,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
         } catch (JSqlException e) {
             
-            LOGGER.warn(e.getMessage(), e);
+            LOGGER.warn(e.getMessage());
             
         } finally {
             

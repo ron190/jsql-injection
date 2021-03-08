@@ -52,7 +52,8 @@ import javax.swing.Popup;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.exception.IgnoreMessageException;
 
@@ -73,7 +74,7 @@ public final class ShadowPopup extends Popup {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
      * Max number of items to store in the cache.

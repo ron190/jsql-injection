@@ -11,7 +11,8 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.SerializationException;
 import org.apache.commons.lang3.SerializationUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -25,7 +26,7 @@ public class TabMouseAdapter extends MouseAdapter {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     private TabbedPaneWheeled tabbedPaneWheeled;
     

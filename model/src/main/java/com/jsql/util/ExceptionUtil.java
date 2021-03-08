@@ -9,7 +9,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.IgnoreMessageException;
@@ -24,7 +25,7 @@ public class ExceptionUtil {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     private InjectionModel injectionModel;
     

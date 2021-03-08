@@ -45,7 +45,8 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.exception.IgnoreMessageException;
 
@@ -66,7 +67,7 @@ public class DiffMatchPatch {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     // Defaults.
     // Set these on your diff_match_patch instance to override the defaults.

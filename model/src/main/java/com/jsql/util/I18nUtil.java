@@ -5,7 +5,8 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Utility class managing different text translations like English, Chinese and Arabic.
@@ -19,7 +20,7 @@ public class I18nUtil {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**
      * Bundle of standard i18n keys and translated text for root language English

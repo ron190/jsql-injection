@@ -11,7 +11,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 
 import com.jsql.model.InjectionModel;
@@ -21,7 +22,7 @@ public class CsrfUtil {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     private SimpleEntry<String, String> tokenCsrf = null;
     

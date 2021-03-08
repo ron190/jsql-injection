@@ -6,7 +6,8 @@ import java.net.PasswordAuthentication;
 import java.util.prefs.Preferences;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 
@@ -25,7 +26,7 @@ public class AuthenticationUtil {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     private static final String STR_JAVA_PROTO_HDL_PKGS = "java.protocol.handler.pkgs";
     

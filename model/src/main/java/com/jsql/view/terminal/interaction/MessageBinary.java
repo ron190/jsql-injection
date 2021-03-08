@@ -10,7 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.terminal.interaction;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.view.interaction.InteractionCommand;
 
@@ -22,7 +23,7 @@ public class MessageBinary implements InteractionCommand {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
      * Text to append to the Binary log area.

@@ -20,7 +20,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Handler for processing cut/copy/paste/drag/drop action on a JList items.
@@ -31,7 +32,7 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     @Override
     protected String initializeTransferable() {

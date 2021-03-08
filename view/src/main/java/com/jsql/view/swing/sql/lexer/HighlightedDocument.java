@@ -25,7 +25,8 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.view.swing.sql.lexer.syntax.JavaScriptLexer;
 import com.jsql.view.swing.sql.lexer.syntax.Lexer;
@@ -41,7 +42,7 @@ public class HighlightedDocument extends DefaultStyledDocument {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     public static final Object SQL_STYLE = SQLLexer.class;
     public static final Object JAVASCRIPT_STYLE = JavaScriptLexer.class;

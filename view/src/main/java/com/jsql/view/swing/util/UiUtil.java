@@ -49,9 +49,9 @@ import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import com.jsql.view.swing.console.SwingAppender;
 import com.jsql.view.swing.shadow.SystemUtils;
 import com.jsql.view.swing.sql.lexer.HighlightedDocument;
 import com.jsql.view.swing.text.action.DeleteNextCharAction;
@@ -69,7 +69,7 @@ public class UiUtil {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     public static final Color COLOR_BLU = new Color(132, 172, 221);
     public static final Color COLOR_GREEN = new Color(0, 128, 0);
@@ -174,7 +174,9 @@ public class UiUtil {
     public static final Border BORDER_ROUND_BLU = new BorderRoundBlu();
 
     public static final String FONT_NAME_MONO_NON_ASIAN = "Ubuntu Mono";
+    public static final int FONT_SIZE_MONO_NON_ASIAN = 14;
     public static final String FONT_NAME_MONO_ASIAN = "Monospace";
+    public static final int FONT_SIZE_MONO_ASIAN = 13;
     
     // Used in Translation Dialog
     // HTML engine considers Monospaced/Monospace to be the same Font
@@ -244,7 +246,7 @@ public class UiUtil {
         
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         
-        try (InputStream fontStream = new BufferedInputStream(SwingAppender.class.getClassLoader().getResourceAsStream("swing/font/UbuntuMono-R-ctrlchar.ttf"))) {
+        try (InputStream fontStream = new BufferedInputStream(UiUtil.class.getClassLoader().getResourceAsStream("swing/font/UbuntuMono-R-ctrlchar.ttf"))) {
             
             Font ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             ge.registerFont(ubuntuFont);

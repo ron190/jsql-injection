@@ -12,7 +12,8 @@ package com.jsql.view.terminal.interaction;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.bean.database.Database;
 import com.jsql.util.AnsiColorUtil;
@@ -26,7 +27,7 @@ public class AddDatabases implements InteractionCommand {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
      * Databases retrieved by the view.

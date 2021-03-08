@@ -27,7 +27,8 @@ import javax.swing.KeyStroke;
 import javax.swing.table.TableModel;
 import javax.swing.text.JTextComponent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -43,7 +44,7 @@ public class ActionSaveTab extends AbstractAction {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     private final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
 

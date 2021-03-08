@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.json.JSONObject;
@@ -38,7 +39,7 @@ public class HibernateRestController {
 
     private static final String template = "Hello, s!";
     private final AtomicLong counter = new AtomicLong();
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     private ObjectMapper objectMapper = new ObjectMapper();
     
     @Autowired

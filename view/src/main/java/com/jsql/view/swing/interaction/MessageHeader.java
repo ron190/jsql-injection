@@ -18,7 +18,8 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.HttpHeader;
@@ -34,7 +35,7 @@ public class MessageHeader implements InteractionCommand {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     // The text to append to the tab
     private String url;

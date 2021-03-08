@@ -39,6 +39,6 @@ public class MarkTimeVulnerable implements InteractionCommand {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getTime();
         
-        MediatorHelper.managerScan().highlight(url, strategy.toString());
+        MediatorHelper.managerScan().highlight(this.url, strategy.toString());
     }
 }

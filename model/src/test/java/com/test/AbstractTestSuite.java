@@ -18,8 +18,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.awaitility.Awaitility;
 import org.awaitility.Durations;
 import org.junit.Ignore;
@@ -46,7 +46,7 @@ public abstract class AbstractTestSuite {
     static {
         
         // jSQL model only logger
-        PropertyConfigurator.configure("src/test/resources/logger/jsql-log4j.properties");
+        System.setProperty("logback.configurationFile", "logger/jsql-logback.xml");
         
         // Use Timeout fix in Model
         jcifs.Config.registerSmbURLHandler();
@@ -55,7 +55,7 @@ public abstract class AbstractTestSuite {
     /**
      * Using default log4j.properties from root /
      */
-    protected static final Logger LOGGER = Logger.getRootLogger();
+    protected static final Logger LOGGER = LogManager.getRootLogger();
 
     private List<String> databasesFromJdbc = new ArrayList<>();
     private List<String> tablesFromJdbc = new ArrayList<>();

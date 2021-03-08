@@ -22,7 +22,8 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.text.action.SilentDeleteTextAction;
@@ -37,7 +38,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
      * Save the component to decorate, add the Undo/Redo.

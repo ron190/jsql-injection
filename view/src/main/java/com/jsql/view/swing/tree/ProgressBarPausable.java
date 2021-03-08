@@ -17,7 +17,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JProgressBar;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.view.swing.util.UiUtil;
 
@@ -30,7 +31,7 @@ public class ProgressBarPausable extends JProgressBar {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
      * True if icon should be displayed, false otherwise.

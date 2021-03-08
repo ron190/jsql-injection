@@ -39,6 +39,6 @@ public class MarkBlindVulnerable implements InteractionCommand {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlind();
         
-        MediatorHelper.managerScan().highlight(url, strategy.toString());
+        MediatorHelper.managerScan().highlight(this.url, strategy.toString());
     }
 }

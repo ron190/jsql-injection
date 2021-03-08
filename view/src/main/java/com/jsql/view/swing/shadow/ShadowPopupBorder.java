@@ -38,7 +38,8 @@ import java.awt.Insets;
 import javax.swing.JComponent;
 import javax.swing.border.AbstractBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.view.swing.util.UiUtil;
 
@@ -59,7 +60,7 @@ public final class ShadowPopupBorder extends AbstractBorder {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
      * The drop shadow needs 5 pixels at the bottom and the right hand side.

@@ -6,9 +6,8 @@ import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.net.URISyntaxException;
 
-import org.apache.log4j.Appender;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.util.CertificateUtil;
@@ -26,7 +25,7 @@ public class MainApplication {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     private static InjectionModel injectionModel;
     
@@ -41,10 +40,6 @@ public class MainApplication {
         
         MainApplication.apply4K();
     }
-    
-    // Keep referenced class for Maven shade minimizeJar
-    @SuppressWarnings("unused")
-    private Appender consoleAppender = new ConsoleAppender();
     
     private MainApplication() {
         // nothing

@@ -17,7 +17,8 @@ import java.util.Optional;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @SuppressWarnings("serial")
 public class TabTransferHandler extends TransferHandler {
@@ -25,7 +26,7 @@ public class TabTransferHandler extends TransferHandler {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     protected final DataFlavor localObjectFlavor;
     

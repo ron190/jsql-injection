@@ -5,7 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.IgnoreMessageException;
@@ -15,7 +16,7 @@ public class ObserverInteraction implements Observer {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     private String packageInteraction;
     

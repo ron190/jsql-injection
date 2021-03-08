@@ -18,7 +18,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * An icon composed of a main icon and another one displayed in the bottom right corner.
@@ -29,7 +30,7 @@ public class ImageOverlap extends ImageIcon {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
      * The path of icon displayed on the bottom right corner.

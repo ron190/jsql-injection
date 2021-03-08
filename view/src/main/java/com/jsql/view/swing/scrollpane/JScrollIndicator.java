@@ -23,7 +23,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.ScrollBarUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A scrollpane like component, where the scroll bars are floating over the
@@ -43,7 +44,7 @@ public class JScrollIndicator extends JLayeredPane {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     private static final int SCROLL_BAR_ALPHA_ROLLOVER = 100;
     private static final int SCROLL_BAR_ALPHA = 25;

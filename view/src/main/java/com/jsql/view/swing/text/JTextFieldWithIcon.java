@@ -19,7 +19,8 @@ import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.util.UiUtil;
@@ -33,7 +34,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     public JTextFieldWithIcon(String placeholder) {
         super(placeholder);

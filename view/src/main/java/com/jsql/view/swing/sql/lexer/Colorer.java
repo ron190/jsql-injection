@@ -28,7 +28,8 @@ import java.util.TreeSet;
 
 import javax.swing.text.AttributeSet;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.view.swing.sql.lexer.syntax.Lexer;
@@ -43,7 +44,7 @@ class Colorer extends Thread {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**
      * A simple wrapper representing something that needs to be colored. Placed

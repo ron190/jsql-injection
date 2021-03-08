@@ -38,12 +38,13 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.view.swing.console.JTextPaneAppender;
 import com.jsql.view.swing.console.JavaConsoleAdapter;
 import com.jsql.view.swing.console.SimpleConsoleAdapter;
-import com.jsql.view.swing.console.SwingAppender;
 import com.jsql.view.swing.panel.consoles.NetworkTable;
 import com.jsql.view.swing.panel.consoles.TabbedPaneNetworkTab;
 import com.jsql.view.swing.panel.split.SplitHorizontalTopBottom;
@@ -68,7 +69,7 @@ public class PanelConsoles extends JPanel {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
      * Console for java exception messages.
@@ -103,7 +104,8 @@ public class PanelConsoles extends JPanel {
     public PanelConsoles() {
         
         this.javaTextPane.getProxy().setEditable(false);
-        SwingAppender.register(this.javaTextPane);
+
+        JTextPaneAppender.register(this.javaTextPane);
         
         this.initializeSplit();
 
@@ -182,7 +184,8 @@ public class PanelConsoles extends JPanel {
         
         // Object creation after customization
         consoleTextPane.getProxy().setEditable(false);
-        SwingAppender.register(consoleTextPane);
+
+        JTextPaneAppender.register(consoleTextPane);
         
         this.tabConsoles.setUI(new CustomMetalTabbedPaneUI() {
             

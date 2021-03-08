@@ -5,7 +5,8 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.JTabbedPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Mousewheel allows to navigate to next/previous tab.
@@ -15,7 +16,7 @@ public class TabbedPaneMouseWheelListener implements MouseWheelListener {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {

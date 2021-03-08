@@ -12,7 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.text.SimpleAttributeSet;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.view.swing.text.JPopupTextPane;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -27,7 +28,7 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
      * Text name of tab.
@@ -96,11 +97,11 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
 
             Color foregroundColor = Color.BLACK;
             
-            if (attribut == SwingAppender.WARN) {
+            if (attribut == JTextPaneAppender.WARN) {
                 
                 foregroundColor = Color.RED;
                 
-            } else if (attribut == SwingAppender.DEBUG) {
+            } else if (attribut == JTextPaneAppender.DEBUG) {
                 
                 foregroundColor = UiUtil.COLOR_GREEN;
             }

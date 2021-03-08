@@ -16,7 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
@@ -31,7 +32,7 @@ public class PanelUserAgent extends JPanel {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     private final JCheckBox checkboxIsCustomUserAgent = new JCheckBox();
     private final JTextArea textfieldCustomUserAgent = new JPopupTextArea(new JTextAreaPlaceholder("Set User Agent")).getProxy();

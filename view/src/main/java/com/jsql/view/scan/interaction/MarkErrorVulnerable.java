@@ -39,6 +39,6 @@ public class MarkErrorVulnerable implements InteractionCommand {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();
         
-        MediatorHelper.managerScan().highlight(url, strategy.toString());
+        MediatorHelper.managerScan().highlight(this.url, strategy.toString());
     }
 }

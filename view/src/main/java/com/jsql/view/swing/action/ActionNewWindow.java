@@ -21,7 +21,8 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.MainApplication;
 import com.jsql.util.I18nUtil;
@@ -35,7 +36,7 @@ public class ActionNewWindow extends AbstractAction {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     private static final String SEPARATOR = System.getProperty("file.separator");
     private static final String CLASSPATH = System.getProperty("java.class.path");

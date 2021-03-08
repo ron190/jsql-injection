@@ -40,6 +40,6 @@ public class DatabaseIdentified implements InteractionCommand {
     @Override
     public void execute() {
         
-        MediatorHelper.managerScan().highlight(url, vendor.toString());
+        MediatorHelper.managerScan().highlight(this.url, this.vendor.toString());
     }
 }

@@ -13,7 +13,8 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.border.AbstractBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @SuppressWarnings("serial")
 public class BorderRoundBlu extends AbstractBorder {
@@ -21,7 +22,7 @@ public class BorderRoundBlu extends AbstractBorder {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {

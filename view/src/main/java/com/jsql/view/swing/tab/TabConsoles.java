@@ -13,7 +13,8 @@ package com.jsql.view.swing.tab;
 import java.awt.Component;
 import java.awt.Font;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Adapt MouseTabbedPane to another class in order to ease Mediator registering.
@@ -24,7 +25,7 @@ public class TabConsoles extends TabbedPaneWheeled {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     public void highlightTab(String label) {
         

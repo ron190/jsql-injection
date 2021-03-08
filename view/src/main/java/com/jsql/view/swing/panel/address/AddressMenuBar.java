@@ -16,7 +16,8 @@ import javax.swing.JSeparator;
 import javax.swing.JToolTip;
 import javax.swing.MenuElement;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.model.injection.strategy.StrategyInjectionError;
@@ -37,7 +38,7 @@ public class AddressMenuBar extends JMenuBar {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     private JMenu itemRadioStrategyError = new JMenu();
 

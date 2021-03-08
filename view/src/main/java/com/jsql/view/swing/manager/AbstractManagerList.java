@@ -27,7 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.ListModel;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ItemList;
@@ -46,7 +47,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     protected transient List<ItemList> itemsList = new ArrayList<>();
     

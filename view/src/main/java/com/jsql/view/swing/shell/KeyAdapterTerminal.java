@@ -20,7 +20,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Keyboard key processing for terminal.
@@ -30,7 +31,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
      * Terminal where keys are processed.

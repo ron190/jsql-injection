@@ -15,7 +15,8 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Interaction;
@@ -41,7 +42,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     public SuspendableGetCharInsertion(InjectionModel injectionModel) {
         super(injectionModel);

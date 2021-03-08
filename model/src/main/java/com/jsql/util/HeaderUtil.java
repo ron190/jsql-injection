@@ -16,7 +16,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
@@ -28,7 +29,7 @@ public class HeaderUtil {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     public static final String CONTENT_TYPE = "Content-Type";
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";

@@ -13,7 +13,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.SwingWorker;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.util.ConnectionUtil;
@@ -27,7 +28,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     private Properties propertiesLanguageToTranslate = new Properties();
     private OrderedProperties propertiesRoot = new OrderedProperties();

@@ -24,7 +24,8 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Handler for processing cut/copy/paste/drag/drop action on a JList items.
@@ -35,7 +36,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
      * List of cut/copy/paste/drag/drop items.

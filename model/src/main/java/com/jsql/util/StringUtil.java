@@ -28,7 +28,8 @@ import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mozilla.universalchardet.UniversalDetector;
 
 import com.jsql.util.bruter.Base16;
@@ -43,7 +44,7 @@ public final class StringUtil {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     // Define the schema of conversion to html entities
     private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#", ";", 10);

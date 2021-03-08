@@ -15,7 +15,8 @@ import java.util.stream.Stream;
 import javax.annotation.PreDestroy;
 
 import org.apache.derby.drda.NetworkServerControl;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.h2.tools.Server;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -37,7 +38,7 @@ public class SpringTargetApplication {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     private static NetworkServerControl serverDerby;
     private static org.hsqldb.server.Server serverHsqldb;
