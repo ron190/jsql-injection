@@ -97,11 +97,11 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
 
             Color foregroundColor = Color.BLACK;
             
-            if (attribut == JTextPaneAppender.WARN) {
+            if (attribut == JTextPaneAppender.ATTRIBUTE_WARN) {
                 
                 foregroundColor = Color.RED;
                 
-            } else if (attribut == JTextPaneAppender.DEBUG) {
+            } else if (attribut == JTextPaneAppender.ATTRIBUTE_DEBUG) {
                 
                 foregroundColor = UiUtil.COLOR_GREEN;
             }

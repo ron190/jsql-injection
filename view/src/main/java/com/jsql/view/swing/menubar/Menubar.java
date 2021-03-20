@@ -1165,12 +1165,12 @@ public class Menubar extends JMenuBar {
             
             Stream
             .of(
-                JTextPaneAppender.ERROR,
-                JTextPaneAppender.WARN,
-                JTextPaneAppender.INFO,
-                JTextPaneAppender.DEBUG,
-                JTextPaneAppender.TRACE,
-                JTextPaneAppender.ALL
+                JTextPaneAppender.ATTRIBUTE_ERROR,
+                JTextPaneAppender.ATTRIBUTE_WARN,
+                JTextPaneAppender.ATTRIBUTE_INFO,
+                JTextPaneAppender.ATTRIBUTE_DEBUG,
+                JTextPaneAppender.ATTRIBUTE_TRACE,
+                JTextPaneAppender.ATTRIBUTE_ALL
             )
             .forEach(attribute -> {
                 StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_MONO_ASIAN);
@@ -1187,12 +1187,12 @@ public class Menubar extends JMenuBar {
             
             Stream
             .of(
-                JTextPaneAppender.ERROR,
-                JTextPaneAppender.WARN,
-                JTextPaneAppender.INFO,
-                JTextPaneAppender.DEBUG,
-                JTextPaneAppender.TRACE,
-                JTextPaneAppender.ALL
+                JTextPaneAppender.ATTRIBUTE_ERROR,
+                JTextPaneAppender.ATTRIBUTE_WARN,
+                JTextPaneAppender.ATTRIBUTE_INFO,
+                JTextPaneAppender.ATTRIBUTE_DEBUG,
+                JTextPaneAppender.ATTRIBUTE_TRACE,
+                JTextPaneAppender.ATTRIBUTE_ALL
             )
             .forEach(attribute -> {
                 StyleConstants.setFontFamily(attribute, UiUtil.FONT_NAME_MONO_NON_ASIAN);

@@ -37,7 +37,8 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 ## Installation [[jsql-injection-v0.84.jar](https://github.com/ron190/jsql-injection/releases/download/v0.84/jsql-injection-v0.84.jar)]
 Install [Java](http://java.com) 11 or up to 15, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.84.jar` to launch the software.<br>
 You can also type `java -jar jsql-injection-v0.84.jar` in your terminal to start the program.<br>
-If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
+If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.<br>
+For Java 16+ use `java --illegal-access=warn --add-exports java.base/sun.net.www.protocol.http=ALL-UNNAMED -jar jsql-view-v0.84-jar-with-dependencies.jar`.
 
 ## Continuous integration
 This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using continuous integration platform like Travis CI and Github Actions.<br> 
@@ -101,6 +102,7 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 - Replace Docker Compose with Kubernetes
 - Database fingerprinting: Boolean single query
 - Strategy DNS out-of-band
+- Replace HttpUrlConnection with jdk11 HttpClient and remove jCIFS
 ```
 
 ## Since latest release

@@ -4,6 +4,7 @@ import static org.apache.logging.log4j.core.layout.PatternLayout.createDefaultLa
 
 import java.awt.Color;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.AbstractMap;
 import java.util.stream.Stream;
 
@@ -50,22 +51,22 @@ public class JTextPaneAppender extends AbstractAppender {
     // Java console
     private static JavaConsoleAdapter javaTextPane;
 
-    public static final SimpleAttributeSet ERROR = new SimpleAttributeSet();
-    public static final SimpleAttributeSet WARN = new SimpleAttributeSet();
-    public static final SimpleAttributeSet INFO = new SimpleAttributeSet();
-    public static final SimpleAttributeSet DEBUG = new SimpleAttributeSet();
-    public static final SimpleAttributeSet TRACE = new SimpleAttributeSet();
-    public static final SimpleAttributeSet ALL = new SimpleAttributeSet();
+    public static final SimpleAttributeSet ATTRIBUTE_ERROR = new SimpleAttributeSet();
+    public static final SimpleAttributeSet ATTRIBUTE_WARN = new SimpleAttributeSet();
+    public static final SimpleAttributeSet ATTRIBUTE_INFO = new SimpleAttributeSet();
+    public static final SimpleAttributeSet ATTRIBUTE_DEBUG = new SimpleAttributeSet();
+    public static final SimpleAttributeSet ATTRIBUTE_TRACE = new SimpleAttributeSet();
+    public static final SimpleAttributeSet ATTRIBUTE_ALL = new SimpleAttributeSet();
     
     static {
         Stream
         .of(
-            new AbstractMap.SimpleEntry<>(ERROR, Color.RED),
-            new AbstractMap.SimpleEntry<>(WARN, Color.RED),
-            new AbstractMap.SimpleEntry<>(INFO, Color.BLUE),
-            new AbstractMap.SimpleEntry<>(DEBUG, UiUtil.COLOR_GREEN),
-            new AbstractMap.SimpleEntry<>(TRACE, Color.BLACK),
-            new AbstractMap.SimpleEntry<>(ALL, Color.BLACK)
+            new AbstractMap.SimpleEntry<>(ATTRIBUTE_ERROR, Color.RED),
+            new AbstractMap.SimpleEntry<>(ATTRIBUTE_WARN, Color.RED),
+            new AbstractMap.SimpleEntry<>(ATTRIBUTE_INFO, Color.BLUE),
+            new AbstractMap.SimpleEntry<>(ATTRIBUTE_DEBUG, UiUtil.COLOR_GREEN),
+            new AbstractMap.SimpleEntry<>(ATTRIBUTE_TRACE, Color.BLACK),
+            new AbstractMap.SimpleEntry<>(ATTRIBUTE_ALL, Color.BLACK)
         )
         .forEach(entry -> {
             
@@ -111,50 +112,48 @@ public class JTextPaneAppender extends AbstractAppender {
             return;
         }
         
-        String[] m = new String[] { "" };
-        try {
-            m[0] = new String(this.getLayout().toByteArray(event), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            javaTextPane.append(e.toString(), WARN);
-        }
+        String[] messageLogEvent = new String[] { 
+            new String(this.getLayout().toByteArray(event), StandardCharsets.UTF_8) 
+        };
+        
         Throwable throwableInformation = event.getThrown();
         int level = event.getLevel().intLevel();
         
         SwingUtilities.invokeLater(() -> {
             
-            String message = m[0];
+            String message = messageLogEvent[0];
             
             if (level == StandardLevel.TRACE.intLevel()) {
                 
-                if (throwableInformation == null || !(throwableInformation instanceof IgnoreMessageException)) {
+                if (!(throwableInformation instanceof IgnoreMessageException)) {
 
-                    consoleTextPane.append(message, TRACE);
+                    consoleTextPane.append(message, ATTRIBUTE_TRACE);
                 }
                 
             } else if (level == StandardLevel.ERROR.intLevel()) {
                 
-                javaTextPane.append(message, WARN);
+                javaTextPane.append(message, ATTRIBUTE_WARN);
                 javaTextPane.getProxy().setCaretPosition(javaTextPane.getProxy().getDocument().getLength());
 
                 if (throwableInformation != null && throwableInformation.getStackTrace() != null) {
 
                     for (StackTraceElement rep : throwableInformation.getStackTrace()) {
 
-                        javaTextPane.append(rep.toString(), ERROR);
+                        javaTextPane.append(rep.toString(), ATTRIBUTE_ERROR);
                     }
                 }
                 
             } else if (level == StandardLevel.WARN.intLevel()) {
                 
-                consoleTextPane.append(message, WARN);
+                consoleTextPane.append(message, ATTRIBUTE_WARN);
                 
             } else if (level == StandardLevel.INFO.intLevel()) {
                 
-                consoleTextPane.append(message, INFO);
+                consoleTextPane.append(message, ATTRIBUTE_INFO);
                 
             } else if (level == StandardLevel.DEBUG.intLevel()) {
                 
-                consoleTextPane.append(message, DEBUG);
+                consoleTextPane.append(message, ATTRIBUTE_DEBUG);
                 
             } else if (level == StandardLevel.FATAL.intLevel()) {
                 
@@ -162,7 +161,7 @@ public class JTextPaneAppender extends AbstractAppender {
                 
             } else {
                 
-                consoleTextPane.append(message, ALL);
+                consoleTextPane.append(message, ATTRIBUTE_ALL);
             }
         });
     }

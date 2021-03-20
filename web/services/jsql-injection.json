@@ -3,7 +3,7 @@
     "news": [
         "[New release v0.84] Integrate Nashorn sandbox for Java 15, fix Mac glitches",
         "[Roadmap] WAF fingerprint, Inject user defined query, Inject range of rows",
-        "[Since latest release] Dump jdk8 and ship Nashorn for jdk11 up to jdk15, Fix GUI glitches on Mac",
+        "[Since latest release] Replace HttpUrlConnection with jdk11 HttpClient, remove jCIFS",
         "[Contribute] Devops integration for PHP .NET Python and Node APIs, CTF and vuln application tests, ProGuard shrink"
     ]
 }
