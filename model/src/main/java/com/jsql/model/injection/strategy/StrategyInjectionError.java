@@ -48,13 +48,13 @@ public class StrategyInjectionError extends AbstractStrategy {
         
         if (strategyYaml.getError().getMethod().isEmpty()) {
             
-            LOGGER.trace("No Error strategy for "+ this.injectionModel.getMediatorVendor().getVendor());
+            LOGGER.trace("No Error strategy for {}", this.injectionModel.getMediatorVendor().getVendor());
             return;
         }
         
         Configuration configurationYaml = strategyYaml.getConfiguration();
         
-        LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Error...");
+        LOGGER.trace("{} Error...", I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
         
         this.tabCapacityMethod = new String[strategyYaml.getError().getMethod().size()];
         int indexErrorMethod = 0;

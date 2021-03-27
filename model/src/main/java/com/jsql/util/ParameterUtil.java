@@ -104,7 +104,10 @@ public class ParameterUtil {
             
         } catch (MalformedURLException e) {
             
-            LOGGER.warn("Incorrect Url: "+ e.getMessage(), e);
+            LOGGER.warn(
+                String.format("Incorrect Url: %s", e.getMessage()),
+                e
+            );
             
             // Incorrect URL, reset the start button
             Request request = new Request();

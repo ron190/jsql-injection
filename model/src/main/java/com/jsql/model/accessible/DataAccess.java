@@ -208,7 +208,10 @@ public class DataAccess {
             
         } catch (ArrayIndexOutOfBoundsException e) {
 
-            LOGGER.warn(I18nUtil.valueByKey("LOG_DB_METADATA_INCORRECT") +": "+ resultToParse, e);
+            LOGGER.warn(
+                String.format("%s: %s", I18nUtil.valueByKey("LOG_DB_METADATA_INCORRECT"), resultToParse),
+                e
+            );
             LOGGER.info(I18nUtil.valueByKey("LOG_DB_METADATA_WARN"));
         }
     }
@@ -616,7 +619,11 @@ public class DataAccess {
             
             if (isIncomplete) {
                 
-                LOGGER.warn(I18nUtil.valueByKey("LOG_LIST_VALUES_TOO_LONG") + (indexRow + 1) +": ");
+                LOGGER.warn(
+                    "{}{}: ",
+                    I18nUtil.valueByKey("LOG_LIST_VALUES_TOO_LONG"),
+                    indexRow + 1
+                );
                 LOGGER.warn(String.join(", ", listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()])));
             }
         }

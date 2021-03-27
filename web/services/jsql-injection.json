@@ -2,8 +2,10 @@
     "version": "0.84",
     "news": [
         "[New release v0.84] Integrate Nashorn sandbox for Java 15, fix Mac glitches",
+        "[Compatibility with Java 16+] Go to github.com/ron190/jsql-injection for the run command",
         "[Roadmap] WAF fingerprint, Inject user defined query, Inject range of rows",
-        "[Since latest release] Replace HttpUrlConnection with jdk11 HttpClient, remove jCIFS",
-        "[Contribute] Devops integration for PHP .NET Python and Node APIs, CTF and vuln application tests, ProGuard shrink"
+        "[Since latest release] Replace HttpUrlConnection with jdk11 HttpClient",
+        "[Contribute] CI/CD with PHP .NET Python and Node APIs, CTF and vuln application tests, ProGuard shrink",
+        "[Ongoing] Add refresh token to Spring, add DNS server for out-of-band injection, remove jCIFS"
     ]
 }

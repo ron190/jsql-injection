@@ -166,7 +166,7 @@ public class HeaderUtil {
             
             if (exception != null) {
                 
-                LOGGER.debug("Connection test disabled, ignoring response HTTP "+ connection.getResponseCode() +"...");
+                LOGGER.debug("Connection test disabled, ignoring response HTTP {}...", connection.getResponseCode());
             }
             
             exception = null;
@@ -214,15 +214,15 @@ public class HeaderUtil {
             
         } else if (Pattern.matches("1\\d\\d", responseCode)) {
             
-            LOGGER.trace(FOUND_STATUS_HTTP + responseCode +" Informational");
+            LOGGER.trace("{} {} Informational", FOUND_STATUS_HTTP, responseCode);
             
         } else if (Pattern.matches("2\\d\\d", responseCode)) {
             
-            LOGGER.debug(FOUND_STATUS_HTTP + responseCode +" Success");
+            LOGGER.debug("{} {} Success", FOUND_STATUS_HTTP, responseCode);
             
         } else if (Pattern.matches("3\\d\\d", responseCode)) {
             
-            LOGGER.warn(FOUND_STATUS_HTTP + responseCode +" Redirection");
+            LOGGER.warn("{} {} Redirection", FOUND_STATUS_HTTP, responseCode);
             
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()) {
                 
@@ -235,15 +235,15 @@ public class HeaderUtil {
             
         } else if (Pattern.matches(REGEX_HTTP_STATUS, responseCode)) {
             
-            LOGGER.warn(FOUND_STATUS_HTTP + responseCode +" Client Error");
+            LOGGER.warn("{} {} Client Error", FOUND_STATUS_HTTP, responseCode);
             
         } else if (Pattern.matches("5\\d\\d", responseCode)) {
             
-            LOGGER.warn(FOUND_STATUS_HTTP + responseCode +" Server Error");
+            LOGGER.warn("{} {} Server Error", FOUND_STATUS_HTTP, responseCode);
             
         } else {
             
-            LOGGER.trace(FOUND_STATUS_HTTP + responseCode +" Unknown");
+            LOGGER.trace("{} {} Unknown", FOUND_STATUS_HTTP, responseCode);
         }
     }
     

@@ -57,12 +57,18 @@ public class TamperingUtil {
 
         } catch (ScriptException e) {
 
-            LOGGER.warn("Tampering context contains errors: " + e.getMessage(), e);
+            LOGGER.warn(
+                String.format("Tampering context contains errors: %s", e.getMessage()),
+                e
+            );
             resultSqlTampered = sqlQuery;
 
         } catch (NoSuchMethodException e) {
 
-            LOGGER.warn("Tampering context is not properly defined: " + e.getMessage(), e);
+            LOGGER.warn(
+                String.format("Tampering context is not properly defined: %s", e.getMessage()),
+                e
+            );
             LOGGER.warn("Minimal tampering context is: var tampering = function(sql) {return sql}");
             resultSqlTampered = sqlQuery;
         }

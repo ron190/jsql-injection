@@ -55,11 +55,11 @@ public class MessageHeader implements InteractionCommand {
     public void execute() {
         
         LOGGER.debug(AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
-        LOGGER.debug("Method: " + this.response.get("Method"));
-        LOGGER.debug("Url: " + this.url);
-        LOGGER.debug("Post: " + this.post);
-        LOGGER.debug("Header: " + this.header);
-        LOGGER.debug("Content-Length: " + this.response.get("Content-Length"));
-        LOGGER.debug("Content-Type: " + this.response.get("Content-Type"));
+        LOGGER.debug("Method: {}", this.response.get("Method"));
+        LOGGER.debug("Url: {}", this.url);
+        LOGGER.debug("Post: {}", this.post);
+        LOGGER.debug("Header: {}", this.header);
+        LOGGER.debug("Content-Length: {}", this.response.get("Content-Length"));
+        LOGGER.debug("Content-Type: {}", this.response.get("Content-Type"));
     }
 }

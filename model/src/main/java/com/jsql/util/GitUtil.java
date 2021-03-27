@@ -213,7 +213,10 @@ public class GitUtil {
             // Implemented by jcifs.http.NtlmHttpURLConnection.getOutputStream()
             if (showOnConsole == ShowOnConsole.YES) {
                 
-                LOGGER.warn("Error during Github report connection: "+ e.getMessage(), e);
+                LOGGER.warn(
+                    String.format("Error during Github report connection: %s", e.getMessage()),
+                    e
+                );
             }
         }
     }
@@ -228,7 +231,7 @@ public class GitUtil {
                 
                 JSONObject jsonObjectResponse = new JSONObject(sourcePage);
                 String urlIssue = jsonObjectResponse.getString("html_url");
-                LOGGER.debug("Sent to Github: "+ urlIssue);
+                LOGGER.debug("Sent to Github: {}", urlIssue);
             }
             
         } catch (Exception e) {

@@ -87,6 +87,9 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
                 .clean(
                     Jsoup
                     .connect(this.url)
+                    // Prevent exception on UnsupportedMimeTypeException: Unhandled content type. Must be text/*, application/xml, or application/*+xml
+                    .ignoreContentType(true)
+                    // Prevent exception on HTTP errors
                     .ignoreHttpErrors(true)
                     .get()
                     .html()
@@ -102,7 +105,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             
         } catch (IOException e) {
             
-            LOGGER.warn("Failure opening page: "+ e);
+            LOGGER.warn("Failure opening page: {}", e);
             
         } catch (ExceptionInInitializerError | NoClassDefFoundError e) {
             

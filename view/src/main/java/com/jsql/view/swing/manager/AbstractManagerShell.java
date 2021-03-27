@@ -190,7 +190,10 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                     
                 } catch (MalformedURLException e) {
                     
-                    LOGGER.warn("Incorrect URL: "+ e.getMessage(), e);
+                    LOGGER.warn(
+                        String.format("Incorrect URL: %s", e.getMessage()),
+                        e
+                    );
                     return;
                 }
             }
@@ -207,7 +210,10 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                             
                         } catch (JSqlException | InterruptedException e) {
                             
-                            LOGGER.warn("Payload creation error: "+ e.getMessage(), e);
+                            LOGGER.warn(
+                                String.format("Payload creation error: %s", e.getMessage()),
+                                e
+                            );
                             Thread.currentThread().interrupt();
                         }
                     },

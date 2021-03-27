@@ -34,7 +34,7 @@ public class SessionCookieManager extends CookieHandler {
 
     public void clear() {
         
-        this.getCookieStore().removeAll();
+        SessionCookieManager.COOKIE_JARS.remove();
     }
     
     public SessionCookieManager(CookiePolicy cookiePolicy) {

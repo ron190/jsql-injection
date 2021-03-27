@@ -46,7 +46,10 @@ public class ExceptionUtil {
         public void uncaughtException(Thread thread, Throwable throwable) {
             
             // for other uncaught exceptions
-            LOGGER.error("Unhandled Exception on "+ thread.getName(), throwable);
+            LOGGER.error(
+                String.format("Unhandled Exception on %s", thread.getName()),
+                throwable
+            );
 
             // Report #214: ignore if OutOfMemoryError: Java heap space
             if (

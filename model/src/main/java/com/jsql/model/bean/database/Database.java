@@ -72,7 +72,7 @@ public class Database extends AbstractElementDatabase {
         } catch (NumberFormatException e) {
             
             this.tableCount = "0";
-            LOGGER.warn("Incorrect number of tables for ["+ this +"].");
+            LOGGER.warn("Incorrect number of tables for [{}].", this);
         }
         
         return

@@ -127,7 +127,7 @@ public class ResourceAccess {
                 this.injectionModel.sendToViews(request);
 
                 nbAdminPagesFoundFixed++;
-                LOGGER.debug("Found page: "+ currentCallable.getUrl());
+                LOGGER.debug("Found page: {}", currentCallable.getUrl());
             }
             
         } catch (InterruptedException | ExecutionException e) {
@@ -144,18 +144,12 @@ public class ResourceAccess {
         String result =
             String
             .format(
-                "Found %s admin page%s %s on %s page%s searched",
+                "Found %s admin page%s%s on %s page%s searched",
                 nbAdminPagesFound,
-                nbAdminPagesFound > 1
-                ? 's'
-                : StringUtils.EMPTY ,
-                tasksHandled != submittedTasks
-                ? "of "+ tasksHandled +" processed "
-                : StringUtils.EMPTY,
+                nbAdminPagesFound > 1 ? 's' : StringUtils.EMPTY,
+                tasksHandled != submittedTasks ? " of "+ tasksHandled +" processed " : StringUtils.EMPTY,
                 submittedTasks,
-                submittedTasks > 1
-                ? 's'
-                : StringUtils.EMPTY
+                submittedTasks > 1 ? 's' : StringUtils.EMPTY
             );
         
         if (nbAdminPagesFound > 0) {
@@ -245,7 +239,7 @@ public class ResourceAccess {
             throw this.getIntegrityError(sourcePage);
         }
             
-        LOGGER.debug("Web payload created into '"+ pathShellFixed + this.filenameWebshell +"'");
+        LOGGER.debug("Web payload created into '{}{}'", pathShellFixed, this.filenameWebshell);
 
         String urlWithoutProtocol = url.replaceAll("^https?://[^/]*", StringUtils.EMPTY);
         
@@ -337,16 +331,16 @@ public class ResourceAccess {
                         || urlSuccess.replace(this.filenameWebshell, StringUtils.EMPTY).equals(urlProtocol + urlWithoutFileName)
                     ) {
                         
-                        LOGGER.debug("Connection to payload found at expected location '"+ urlSuccess +"'");
+                        LOGGER.debug("Connection to payload found at expected location '{}'", urlSuccess);
                         
                     } else {
                         
-                        LOGGER.debug("Connection to payload found at unexpected location '"+ urlSuccess +"'");
+                        LOGGER.debug("Connection to payload found at unexpected location '{}'", urlSuccess);
                     }
                     
                 } else {
                     
-                    LOGGER.trace("Connection to payload not found at '"+ currentCallable.getUrl() +"'");
+                    LOGGER.trace("Connection to payload not found at '{}'", currentCallable.getUrl());
                 }
                 
             } catch (InterruptedException | ExecutionException e) {
@@ -436,11 +430,17 @@ public class ResourceAccess {
             
         } catch (UnsupportedEncodingException e) {
             
-            LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e.getMessage(), e);
+            LOGGER.warn(
+                String.format("Encoding command to ISO-8859-1 failed: %s", e.getMessage()),
+                e
+            );
             
         } catch (IOException e) {
             
-            LOGGER.warn("Shell execution error: "+ e.getMessage(), e);
+            LOGGER.warn(
+                String.format("Shell execution error: %s", e.getMessage()),
+                e
+            );
             
         } finally {
             
@@ -529,7 +529,7 @@ public class ResourceAccess {
             throw this.getIntegrityError(sourcePage);
         }
             
-        LOGGER.debug("SQL payload created into '"+ pathShellFixed + this.filenameSqlshell +"'");
+        LOGGER.debug("SQL payload created into '{}{}'", pathShellFixed, this.filenameSqlshell);
         
         String urlWithoutProtocol = url.replaceAll("^https?://[^/]*", StringUtils.EMPTY);
         
@@ -603,15 +603,15 @@ public class ResourceAccess {
                         || urlSuccess.replace(this.filenameSqlshell, StringUtils.EMPTY).equals(urlProtocol + urlWithoutFileName)
                     ) {
                         
-                        LOGGER.debug("Connection to payload found at expected location '"+ urlSuccess +"'");
+                        LOGGER.debug("Connection to payload found at expected location '{}'", urlSuccess);
                         
                     } else {
                         
-                        LOGGER.debug("Connection to payload found at unexpected location '"+ urlSuccess +"'");
+                        LOGGER.debug("Connection to payload found at unexpected location '{}'", urlSuccess);
                     }
                 } else {
                     
-                    LOGGER.trace("Connection to payload not found at '"+ currentCallable.getUrl() +"'");
+                    LOGGER.trace("Connection to payload not found at '{}'", currentCallable.getUrl());
                 }
                 
             } catch (InterruptedException | ExecutionException e) {
@@ -689,11 +689,17 @@ public class ResourceAccess {
             
         } catch (UnsupportedEncodingException e) {
             
-            LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e.getMessage(), e);
+            LOGGER.warn(
+                String.format("Encoding command to ISO-8859-1 failed: %s", e.getMessage()),
+                e
+            );
             
         } catch (IOException e) {
             
-            LOGGER.warn("Shell execution error: "+ e.getMessage(), e);
+            LOGGER.warn(
+                String.format("Shell execution error: %s", e.getMessage()),
+                e
+            );
             
         } finally {
             

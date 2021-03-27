@@ -174,7 +174,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 return;
             }
             
-            LOGGER.info(I18nUtil.valueByKey("LOG_START_INJECTION") +": "+ this.mediatorUtils.getConnectionUtil().getUrlByUser());
+            LOGGER.info(
+                "{}: {}",
+                I18nUtil.valueByKey("LOG_START_INJECTION"),
+                this.mediatorUtils.getConnectionUtil().getUrlByUser()
+            );
             
             // Check general integrity if user's parameters
             this.mediatorUtils.getParameterUtil().checkParametersFormat();
@@ -260,7 +264,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
         } catch (MalformedURLException e) {
             
-            LOGGER.warn("Incorrect Query Url: "+ e.getMessage(), e);
+            LOGGER.warn(
+                String.format("Incorrect Query Url: %s", e.getMessage()),
+                e
+            );
             return StringUtils.EMPTY;
         }
 
@@ -331,7 +338,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             // Exception for General and Spnego Opening Connection
             IOException | LoginException | GSSException | PrivilegedActionException e
         ) {
-            LOGGER.warn("Error during connection: "+ e.getMessage(), e);
+            LOGGER.warn(
+                String.format("Error during connection: %s", e.getMessage()),
+                e
+            );
         }
 
         // return the source code of the page
@@ -380,7 +390,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
         } catch (MalformedURLException e) {
             
-            LOGGER.warn("Incorrect Url: "+ e.getMessage(), e);
+            LOGGER.warn(
+                String.format("Incorrect Url: %s", e.getMessage()),
+                e
+            );
         }
 
         msgHeader.put(Header.URL, urlInjectionFixed);
@@ -564,7 +577,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
             
         } catch (IOException e) {
-            LOGGER.warn("Error during Request connection: "+ e.getMessage(), e);
+            LOGGER.warn(
+                String.format("Error during Request connection: %s", e.getMessage()),
+                e
+            );
         }
     }
     
@@ -767,8 +783,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      */
     public void sendResponseFromSite(String message, String source) {
         
-        LOGGER.warn(message + ", response from site:");
-        LOGGER.warn(">>>" + source);
+        LOGGER.warn("{}, response from site:", message);
+        LOGGER.warn(">>>{}", source);
     }
     
     public void displayVersion() {

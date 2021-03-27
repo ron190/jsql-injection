@@ -1,13 +1,24 @@
 package com.jsql.model.accessible;
 
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpHeaders;
+import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.time.Duration;
+import java.util.AbstractMap;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +27,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.util.HeaderUtil;
 
 /**
  * Thread unit to test if an administration page exists on the server.
@@ -74,24 +84,53 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             || isUrlIncorrect
             || StringUtils.isEmpty(targetUrl.getHost())
         ) {
-            LOGGER.warn("Incorrect URL: "+ this.urlAdminPage);
+            LOGGER.warn("Incorrect URL: {}", this.urlAdminPage);
             return this;
         }
+        
+        HttpRequest httpRequest =
+            HttpRequest
+            .newBuilder()
+            .uri(URI.create(this.urlAdminPage))
+            .method("HEAD", BodyPublishers.noBody())
+            .timeout(Duration.ofSeconds(15))
+            .build();
+        
+        HttpClient httpClient =
+            HttpClient
+            .newBuilder()
+            .connectTimeout(Duration.ofSeconds(15))
+            .build();
             
-        HttpURLConnection connection = (HttpURLConnection) targetUrl.openConnection();
+        HttpResponse<Void> response = httpClient.send(httpRequest, BodyHandlers.discarding());
+        HttpHeaders httpHeaders = response.headers();
         
-        connection.setRequestProperty("Pragma", "no-cache");
-        connection.setRequestProperty("Cache-Control", "no-cache");
-        connection.setRequestProperty("Expires", "-1");
+        Map<String, String> mapHeaders =
+            httpHeaders
+            .map()
+            .entrySet()
+            .stream()
+            .sorted(Comparator.comparing(Entry::getKey))
+            .map(entrySet ->
+                new AbstractMap.SimpleEntry<>(
+                    entrySet.getKey(),
+                    String.join(", ", entrySet.getValue())
+                )
+            )
+            .collect(Collectors.toMap(
+                AbstractMap.SimpleEntry::getKey,
+                AbstractMap.SimpleEntry::getValue
+            ));
         
-        connection.setRequestMethod("HEAD");
-        this.responseCodeHttp = ObjectUtils.firstNonNull(connection.getHeaderField(0), StringUtils.EMPTY);
+        
+        this.responseCodeHttp = ""+ response.statusCode();
+        mapHeaders.put(":status", this.responseCodeHttp);
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, this.urlAdminPage);
         msgHeader.put(Header.POST, StringUtils.EMPTY);
         msgHeader.put(Header.HEADER, StringUtils.EMPTY);
-        msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
+        msgHeader.put(Header.RESPONSE, new TreeMap<>(mapHeaders));
         msgHeader.put(Header.METADATA_PROCESS, this.metadataInjectionProcess);
 
         Request request = new Request();
@@ -108,7 +147,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
      * @return true if HTTP code start with 2 or 3
      */
     public boolean isHttpResponseOk() {
-        return this.responseCodeHttp.matches(".+[23]\\d\\d.+");
+        return this.responseCodeHttp.matches("[23]\\d\\d");
     }
     
     

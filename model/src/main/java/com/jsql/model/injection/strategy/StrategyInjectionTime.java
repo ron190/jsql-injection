@@ -48,30 +48,30 @@ public class StrategyInjectionTime extends AbstractStrategy {
         
         if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanTime())) {
             
-            LOGGER.info("No Time strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
+            LOGGER.info("No Time strategy known for {}", this.injectionModel.getMediatorVendor().getVendor());
             
         } else {
             
-            LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Time with AND...");
+            LOGGER.trace("{} Time with AND...", I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
             
             this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.AND);
             this.isApplicable = this.injectionTime.isInjectable();
             
             if (!this.isApplicable) {
                 
-                LOGGER.trace(I18nUtil.valueByKey("LOG_CHECKING_STRATEGY") +" Time with OR...");
+                LOGGER.trace("{} Time with OR...", I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
                 
                 this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.OR);
                 this.isApplicable = this.injectionTime.isInjectable();
                 
                 if (this.isApplicable) {
                     
-                    LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Time injection with OR");
+                    LOGGER.debug("{} Time injection with OR", I18nUtil.valueByKey("LOG_VULNERABLE"));
                 }
                 
             } else {
                 
-                LOGGER.debug(I18nUtil.valueByKey("LOG_VULNERABLE") +" Time injection with AND");
+                LOGGER.debug("{} Time injection with AND", I18nUtil.valueByKey("LOG_VULNERABLE"));
             }
             
             if (this.isApplicable) {
@@ -123,7 +123,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
             LOGGER.info("Using AND statement");
         }
         
-        LOGGER.info(I18nUtil.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
+        LOGGER.info("{} [{}]", I18nUtil.valueByKey("LOG_USING_STRATEGY"), this.getName());
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getTime());
         
         Request requestMarkTimeStrategy = new Request();

@@ -11,18 +11,29 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.http.HttpClient;
+import java.net.http.HttpHeaders;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Random;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -185,31 +196,60 @@ public class ConnectionUtil {
     
     public String getSource(String url, boolean lineFeed) throws IOException {
         
-        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setReadTimeout(this.getTimeout());
-        connection.setConnectTimeout(this.getTimeout());
-        connection.setUseCaches(false);
-        
-        connection.setRequestProperty("Pragma", NO_CACHE);
-        connection.setRequestProperty("Cache-Control", NO_CACHE);
-        connection.setRequestProperty("Expires", "-1");
-        
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, url);
-        msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
         
         String pageSource = StringUtils.EMPTY;
+        
         try {
+            HttpRequest httpRequest =
+                HttpRequest
+                .newBuilder()
+                .uri(URI.create(url))
+                .timeout(Duration.ofSeconds(15))
+                .build();
+            
+            HttpClient httpClient =
+                HttpClient
+                .newBuilder()
+                .connectTimeout(Duration.ofSeconds(15))
+                .build();
+            
+            HttpHeaders httpHeaders;
+                
             if (lineFeed) {
                 
-                pageSource = ConnectionUtil.getSourceLineFeed(connection);
+                HttpResponse<Stream<String>> response = httpClient.send(httpRequest, BodyHandlers.ofLines());
+                pageSource = response.body().collect(Collectors.joining("\n"));
+                httpHeaders = response.headers();
                 
             } else {
                 
-                pageSource = ConnectionUtil.getSource(connection);
+                HttpResponse<String> response = httpClient.send(httpRequest, BodyHandlers.ofString(StandardCharsets.ISO_8859_1));
+                pageSource = response.body();
+                httpHeaders = response.headers();
             }
             
-        } catch (IOException e) {
+            Map<String, String> mapHeaders =
+                httpHeaders
+                .map()
+                .entrySet()
+                .stream()
+                .sorted(Comparator.comparing(Entry::getKey))
+                .map(entrySet ->
+                    new AbstractMap.SimpleEntry<>(
+                        entrySet.getKey(),
+                        String.join(", ", entrySet.getValue())
+                    )
+                )
+                .collect(Collectors.toMap(
+                    AbstractMap.SimpleEntry::getKey,
+                    AbstractMap.SimpleEntry::getValue
+                ));
+            
+            msgHeader.put(Header.RESPONSE, new TreeMap<>(mapHeaders));
+            
+        } catch (IOException | InterruptedException e) {
 
             LOGGER.error(e, e);
             
@@ -402,7 +442,10 @@ public class ConnectionUtil {
                 
             } catch (Exception e) {
                 
-                LOGGER.warn("Fix jcifs timeout failed: "+ e.getMessage(), e);
+                LOGGER.warn(
+                    String.format("Fix jcifs timeout failed: %s", e.getMessage()),
+                    e
+                );
             }
         }
     }

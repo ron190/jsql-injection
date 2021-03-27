@@ -105,7 +105,11 @@ public class SoapUtil {
                 this.injectionModel.getMediatorUtils().getParameterUtil().initializeRequest(SoapUtil.convertDocumentToString(doc));
                 
                 try {
-                    LOGGER.info("Checking SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY));
+                    LOGGER.info(
+                        "Checking SOAP Request injection for {}={}",
+                        currentNode.getParentNode().getNodeName(),
+                        currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY)
+                    );
                     
                     this.injectionModel.getMediatorMethod().getRequest().testParameters();
 
@@ -115,7 +119,14 @@ public class SoapUtil {
                 } catch (JSqlException e) {
                     
                     // Injection failure
-                    LOGGER.warn("No SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY), e);
+                    LOGGER.warn(
+                        String.format(
+                            "No SOAP Request injection for %s=%s",
+                            currentNode.getParentNode().getNodeName(),
+                            currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY)
+                        ),
+                        e
+                    );
                 }
             }
         }

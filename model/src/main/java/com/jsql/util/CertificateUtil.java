@@ -74,7 +74,10 @@ public class CertificateUtil {
             
         } catch (Exception e) {
             
-            LOGGER.warn("Error ignoring untrusted SSL: "+ e.getMessage(), e);
+            LOGGER.warn(
+                String.format("Error ignoring untrusted SSL: %s", e.getMessage()),
+                e
+            );
         }
         
         // Ignore CertificateException: No subject alternative names present

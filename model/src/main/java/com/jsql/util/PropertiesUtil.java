@@ -24,7 +24,7 @@ public class PropertiesUtil {
             
             if (input == null) {
                 
-                LOGGER.warn("Properties file "+ filename +" not found");
+                LOGGER.warn("Properties file {} not found", filename);
                 return;
             }
 

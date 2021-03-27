@@ -83,7 +83,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 
                     this.setVendor(mediatorVendor, vendorsOrderByMatch);
                     
-                    LOGGER.info("Using ["+ mediatorVendor.getVendor() +"]");
+                    LOGGER.info("Using [{}]", mediatorVendor.getVendor());
                     Request requestSetVendor = new Request();
                     requestSetVendor.setMessage(Interaction.SET_VENDOR);
                     requestSetVendor.setParameters(mediatorVendor.getVendor());
@@ -92,7 +92,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     // Char insertion
                     charFromOrderBy = currentCallable.getCharacterInsertion();
                     
-                    LOGGER.debug("Character insertion ["+ charFromOrderBy +"] matching with Order by and compatible with Error strategy");
+                    LOGGER.debug("Character insertion [{}] matching with Order by and compatible with Error strategy", charFromOrderBy);
                     
                     break;
                 }

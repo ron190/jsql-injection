@@ -143,23 +143,29 @@ public class ActionSaveTab extends AbstractAction {
             
         } catch (IOException e) {
             
-            LOGGER.warn("Error writing to "+ fileSelected.getName(), e);
+            LOGGER.warn(
+                String.format("Error writing to %s", fileSelected.getName()),
+                e
+            );
         }
     }
 
     private void saveTextToFile(JTextComponent textarea) {
         
-        File file = this.filechooser.getSelectedFile();
+        File fileSelected = this.filechooser.getSelectedFile();
         
         try (
-            FileWriter fileWriter = new FileWriter(file);
+            FileWriter fileWriter = new FileWriter(fileSelected);
             BufferedWriter fileOut = new BufferedWriter(fileWriter)
         ) {
             textarea.write(fileOut);
             
         } catch (IOException e) {
             
-            LOGGER.warn("Error writing to "+ file.getName(), e);
+            LOGGER.warn(
+                String.format("Error writing to %s", fileSelected.getName()),
+                e
+            );
         }
     }
 }

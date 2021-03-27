@@ -193,11 +193,17 @@ public class ManagerUpload extends AbstractManagerList {
                         
                     } catch (JSqlException e) {
                         
-                        LOGGER.warn("Payload creation error: "+ e.getMessage(), e);
+                        LOGGER.warn(
+                            String.format("Payload creation error: %s", e.getMessage()),
+                            e
+                        );
                         
                     } catch (IOException e) {
                         
-                        LOGGER.warn("Posting file failed: "+ e.getMessage(), e);
+                        LOGGER.warn(
+                            String.format("Posting file failed: %s", e.getMessage()),
+                            e
+                        );
                     }
                 },
                 "ThreadUpload"

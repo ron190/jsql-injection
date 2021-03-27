@@ -207,7 +207,7 @@ public class MediatorVendor {
         if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAuto()) {
             
             vendorFound = this.injectionModel.getMediatorVendor().getVendorByUser();
-            LOGGER.info(I18nUtil.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendorFound +"]");
+            LOGGER.info("{} [{}]", I18nUtil.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER"), vendorFound);
             
         } else {
             
@@ -230,7 +230,7 @@ public class MediatorVendor {
                 if (pageSource.matches("(?si)"+ vendorTest.instance().fingerprintErrorsAsRegex())) {
                     
                     vendorFound = vendorTest;
-                    LOGGER.debug("Basic fingerprint matching vendor ["+ vendorFound +"]");
+                    LOGGER.debug("Basic fingerprint matching vendor [{}]", vendorFound);
                     break;
                 }
             }
@@ -253,11 +253,11 @@ public class MediatorVendor {
         if (vendorFixed == null) {
             
             vendorFixed = this.injectionModel.getMediatorVendor().getMySQL();
-            LOGGER.info(I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendorFixed +"]");
+            LOGGER.info("{} [{}]", I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND"), vendorFixed);
             
         } else {
             
-            LOGGER.info(I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendorFixed +"]");
+            LOGGER.info("{} [{}]", I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE"), vendorFixed);
             
             Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
             msgHeader.put(

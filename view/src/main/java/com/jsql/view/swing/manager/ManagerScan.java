@@ -291,7 +291,7 @@ public class ManagerScan extends AbstractManagerList {
                 break;
             }
             
-            LOGGER.info("Scanning "+ urlItemListScan.getBeanInjection().getUrl());
+            LOGGER.info("Scanning {}", urlItemListScan.getBeanInjection().getUrl());
             
             MediatorHelper.model().getMediatorUtils().getParameterUtil().controlInput(
                 urlItemListScan.getBeanInjection().getUrl(),

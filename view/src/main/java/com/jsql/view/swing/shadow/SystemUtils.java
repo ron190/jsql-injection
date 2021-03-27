@@ -222,7 +222,10 @@ public class SystemUtils {
             
         } catch (SecurityException e) {
             
-            LOGGER.error("Can't access the System property "+ key +": "+ e.getMessage(), e);
+            LOGGER.error(
+                String.format("Can't access the System property %s: %s", key, e.getMessage()),
+                e
+            );
             
             return StringUtils.EMPTY;
         }
@@ -286,7 +289,10 @@ public class SystemUtils {
             
         } catch (HeadlessException e) {
             
-            LOGGER.error("This environment cannot support a display, keyboard, and mouse: "+ e.getMessage(), e);
+            LOGGER.error(
+                String.format("This environment cannot support a display, keyboard, and mouse: %s", e.getMessage()),
+                e
+            );
             return true;
         }
     }

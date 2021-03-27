@@ -79,7 +79,7 @@ public abstract class AbstractMethodInjection implements Serializable {
 
     private boolean checkParamWithStar() throws JSqlException {
         
-        LOGGER.info("Checking single "+ this.name() +" parameter with injection point at [*]");
+        LOGGER.info("Checking single {} parameter with injection point at [*]", this.name());
         
         // Will keep param value as is,
         // Does not test for insertion character (param is null)
