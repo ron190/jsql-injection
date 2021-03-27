@@ -36,6 +36,6 @@ public class MarkTimeInvulnerable implements InteractionCommand {
     @Override
     public void execute() {
 
-        LOGGER.debug(AnsiColorUtil.addRedColor(this.getClass().getSimpleName()));
+        LOGGER.debug(() -> AnsiColorUtil.addRedColor(this.getClass().getSimpleName()));
     }
 }

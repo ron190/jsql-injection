@@ -52,26 +52,26 @@ public class StrategyInjectionBlind extends AbstractStrategy {
             
         } else {
             
-            LOGGER.trace("{} Blind with AND...", I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+            LOGGER.trace("{} Blind with AND...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
             
             this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.AND);
             this.isApplicable = this.injectionBlind.isInjectable();
             
             if (!this.isApplicable) {
                 
-                LOGGER.trace("{} Blind with OR...", I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+                LOGGER.trace("{} Blind with OR...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
                 
                 this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.OR);
                 this.isApplicable = this.injectionBlind.isInjectable();
                 
                 if (this.isApplicable) {
                     
-                    LOGGER.debug("{} Blind injection with OR", I18nUtil.valueByKey("LOG_VULNERABLE"));
+                    LOGGER.debug("{} Blind injection with OR", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
                 }
                 
             } else {
                 
-                LOGGER.debug("{} Blind injection with AND", I18nUtil.valueByKey("LOG_VULNERABLE"));
+                LOGGER.debug("{} Blind injection with AND", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
             }
             
             if (this.isApplicable) {
@@ -123,7 +123,11 @@ public class StrategyInjectionBlind extends AbstractStrategy {
             LOGGER.info("Using AND statement");
         }
         
-        LOGGER.info("{} [{}]", I18nUtil.valueByKey("LOG_USING_STRATEGY"), this.getName());
+        LOGGER.info(
+            "{} [{}]", 
+            () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"), 
+            () -> this.getName()
+        );
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getBlind());
         
         Request requestMarkBlindStrategy = new Request();

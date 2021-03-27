@@ -202,11 +202,8 @@ public class ManagerFile extends AbstractManagerList {
                 if (!duplicate.contains(path.replace(name, StringUtils.EMPTY))) {
                     
                     LOGGER.info(
-                        String
-                        .format(
-                            "Shell might be possible in folder %s",
-                            path.replace(name, StringUtils.EMPTY)
-                        )
+                        "Shell might be possible in folder {}",
+                        () -> path.replace(name, StringUtils.EMPTY)
                     );
                 }
                 

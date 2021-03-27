@@ -36,6 +36,6 @@ public class MarkBlindVulnerable implements InteractionCommand {
     @Override
     public void execute() {
         
-        LOGGER.info(AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
+        LOGGER.info(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
     }
 }

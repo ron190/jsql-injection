@@ -105,7 +105,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             
         } catch (IOException e) {
             
-            LOGGER.warn("Failure opening page: {}", e);
+            LOGGER.warn("Failure opening page: {}", e.getMessage());
             
         } catch (ExceptionInInitializerError | NoClassDefFoundError e) {
             

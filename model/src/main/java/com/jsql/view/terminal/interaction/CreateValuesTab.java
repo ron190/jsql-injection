@@ -37,6 +37,7 @@ public class CreateValuesTab implements InteractionCommand {
      * @param interactionParams Names of columns, table's values and corresponding table
      */
     public CreateValuesTab(Object[] interactionParams) {
+        
         // 2D array of values
         this.data = (String[][]) interactionParams[1];
     }
@@ -44,7 +45,7 @@ public class CreateValuesTab implements InteractionCommand {
     @Override
     public void execute() {
         
-        LOGGER.debug(AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
-        LOGGER.debug(Arrays.deepToString(this.data));
+        LOGGER.debug(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
+        LOGGER.debug(() -> Arrays.deepToString(this.data));
     }
 }

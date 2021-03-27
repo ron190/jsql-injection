@@ -54,7 +54,8 @@ public class MessageHeader implements InteractionCommand {
     @Override
     public void execute() {
         
-        LOGGER.debug(AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
+        LOGGER.debug(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
+        
         LOGGER.debug("Method: {}", this.response.get("Method"));
         LOGGER.debug("Url: {}", this.url);
         LOGGER.debug("Post: {}", this.post);

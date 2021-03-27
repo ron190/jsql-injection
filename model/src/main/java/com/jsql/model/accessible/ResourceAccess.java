@@ -879,15 +879,14 @@ public class ResourceAccess {
         
         if (sourceShellInjected.indexOf(sourceShellToInject) > -1) {
             
+            String logUrlFileFixed = urlFileFixed;
+            String logPathShellFixed = pathShellFixed;
             LOGGER.debug(
-                String
-                .format(
-                    "Upload payload deployed at '%s%s' in '%s%s'",
-                    urlFileFixed,
-                    this.filenameUpload,
-                    pathShellFixed,
-                    this.filenameUpload
-                )
+                "Upload payload deployed at '{}{}' in '{}{}'",
+                () -> logUrlFileFixed,
+                () -> this.filenameUpload,
+                () -> logPathShellFixed,
+                () -> this.filenameUpload
             );
             
             String crLf = "\r\n";
@@ -978,23 +977,17 @@ public class ResourceAccess {
             if (result.indexOf(DataAccess.LEAD +"y") > -1) {
                 
                 LOGGER.debug(
-                    String
-                    .format(
-                        "File '%s' uploaded into '%s'",
-                        file.getName(),
-                        pathShellFixed
-                    )
+                    "File '{}' uploaded into '{}'",
+                    () -> file.getName(),
+                    () -> pathShellFixed
                 );
                 
             } else {
                 
                 LOGGER.warn(
-                    String
-                    .format(
-                        "Upload file '%s' into '%s' failed",
-                        file.getName(),
-                        pathShellFixed
-                    )
+                    "Upload file '{}' into '{}' failed",
+                    () -> file.getName(),
+                    () -> pathShellFixed
                 );
             }
             
@@ -1024,11 +1017,8 @@ public class ResourceAccess {
         if (this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getResource().getFile() == null) {
             
             LOGGER.warn(
-                String
-                .format(
-                    "Reading file on %s is currently not supported",
-                    this.injectionModel.getMediatorVendor().getVendor()
-                )
+                "Reading file on {} is currently not supported",
+                () -> this.injectionModel.getMediatorVendor().getVendor()
             );
             return false;
         }

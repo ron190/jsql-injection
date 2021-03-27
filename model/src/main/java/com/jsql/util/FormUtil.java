@@ -52,8 +52,7 @@ public class FormUtil {
             mapForms.put(form, new ArrayList<>());
             
             result.append(
-                String
-                .format(
+                String.format(
                     "%n<form action=\"%s\" method=\"%s\" />",
                     form.attr("action"),
                     form.attr(FORM_ATTR_VALUE)
@@ -63,8 +62,7 @@ public class FormUtil {
             for (Element input: form.select("input")) {
                 
                 result.append(
-                    String
-                    .format(
+                    String.format(
                         "%n    <input name=\"%s\" value=\"%s\" />",
                         input.attr("name"),
                         input.attr(INPUT_ATTR_VALUE)
@@ -90,12 +88,9 @@ public class FormUtil {
     private void addForms(Elements elementsForm, StringBuilder result, Map<Element, List<Element>> mapForms) {
         
         LOGGER.debug(
-            String
-            .format(
-                "Found %s <form> in HTML body, adding input(s) to requests: %s",
-                elementsForm.size(),
-                result
-            )
+            "Found {} <form> in HTML body, adding input(s) to requests: {}",
+            () -> elementsForm.size(),
+            () -> result
         );
         
         for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
@@ -131,23 +126,18 @@ public class FormUtil {
         if (connection.getResponseCode() != 200) {
             
             LOGGER.trace(
-                String
-                .format(
-                    "Found %s ignored <form> in HTML body: %s",
-                    elementsForm.size(),
-                    result
-                )
+                "Found {} ignored <form> in HTML body: {}",
+                () -> elementsForm.size(),
+                () -> result
             );
             LOGGER.info("WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
             
         } else {
             
             LOGGER.trace(
-                String.format(
-                    "Found %s <form> in HTML body while status 200 Success:%s",
-                    elementsForm.size(),
-                    result
-                )
+                "Found {} <form> in HTML body while status 200 Success:{}",
+                () -> elementsForm.size(),
+                () -> result
             );
         }
     }

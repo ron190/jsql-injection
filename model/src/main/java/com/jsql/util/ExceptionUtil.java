@@ -47,7 +47,7 @@ public class ExceptionUtil {
             
             // for other uncaught exceptions
             LOGGER.error(
-                String.format("Unhandled Exception on %s", thread.getName()),
+                () -> String.format("Unhandled Exception on %s", thread.getName()),
                 throwable
             );
 

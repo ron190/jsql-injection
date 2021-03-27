@@ -79,7 +79,7 @@ public abstract class AbstractMethodInjection implements Serializable {
 
     private boolean checkParamWithStar() throws JSqlException {
         
-        LOGGER.info("Checking single {} parameter with injection point at [*]", this.name());
+        LOGGER.info("Checking single {} parameter with injection point at [*]", () -> this.name());
         
         // Will keep param value as is,
         // Does not test for insertion character (param is null)
@@ -187,13 +187,10 @@ public abstract class AbstractMethodInjection implements Serializable {
         
         try {
             LOGGER.info(
-                String
-                .format(
-                    "Checking %s parameter %s=%s",
-                    this.name(),
-                    paramStar.getKey(),
-                    paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
-                )
+                "Checking {} parameter {}={}",
+                () -> this.name(),
+                () -> paramStar.getKey(),
+                () -> paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
             );
             
             // Test current standard value marked with * for injection
@@ -209,13 +206,11 @@ public abstract class AbstractMethodInjection implements Serializable {
             
             // Injection failure
             LOGGER.warn(
-                String.format(
-                    "No %s injection found for parameter %s=%s (%s)",
-                    this.name(),
-                    paramStar.getKey(),
-                    paramStar.getValue().replaceAll("\\+.?$|\\" + InjectionModel.STAR, StringUtils.EMPTY),
-                    e.getMessage()
-                )
+                "No {} injection found for parameter {}={} ({})",
+                this.name(),
+                paramStar.getKey(),
+                paramStar.getValue().replaceAll("\\+.?$|\\" + InjectionModel.STAR, StringUtils.EMPTY),
+                e.getMessage()
             );
             
         } finally {

@@ -36,35 +36,25 @@ public class ActionCheckIP implements ActionListener, Runnable {
         }
 
         try {
-            LOGGER.trace(I18nUtil.valueByKey("LOG_IP_ADDRESS_CHECK"));
+            LOGGER.trace(() -> I18nUtil.valueByKey("LOG_IP_ADDRESS_CHECK"));
             String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource("http://checkip.amazonaws.com");
             LOGGER.info(
-                String.format(
-                    "%s %s",
-                    I18nUtil.valueByKey("LOG_IP_ADDRESS_IS"),
-                    addressIp
-                )
+                "{} {}",
+                () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_IS"),
+                () -> addressIp
             );
             
         } catch (MalformedURLException e) {
             
             LOGGER.warn(
-                String
-                .format(
-                    "Malformed URL: %s",
-                    e.getMessage()
-                ),
+                String.format("Malformed URL: %s", e.getMessage()),
                 e
             );
             
         } catch (IOException e) {
             
             LOGGER.warn(
-                String
-                .format(
-                    "Error during AWS test: %s",
-                    e.getMessage()
-                ),
+                String.format("Error during AWS test: %s", e.getMessage()),
                 e
             );
         }

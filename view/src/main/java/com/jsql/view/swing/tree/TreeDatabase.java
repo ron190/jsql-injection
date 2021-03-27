@@ -168,12 +168,7 @@ public class TreeDatabase extends JTree {
                 
             } else {
                 
-                LOGGER.warn(
-                    String.format(
-                        "Missing database for table %s.",
-                        table
-                    )
-                );
+                LOGGER.warn("Missing database for table {}.", () -> table);
             }
         }
 

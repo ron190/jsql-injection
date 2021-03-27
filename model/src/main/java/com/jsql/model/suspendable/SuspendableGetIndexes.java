@@ -87,14 +87,11 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                     }
                     
                     LOGGER.info(
-                        String
-                        .format(
-                            "Normal strategy triggered with query [%s]",
-                            currentCallable
+                        "Normal strategy triggered with query [{}]",
+                        () -> currentCallable
                             .getQuery()
                             .trim()
                             .replaceAll("1337(\\d*)7330%2b1", "$1")
-                        )
                     );
                     
                     break;

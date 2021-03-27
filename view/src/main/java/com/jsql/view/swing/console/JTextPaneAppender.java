@@ -3,7 +3,6 @@ package com.jsql.view.swing.console;
 import static org.apache.logging.log4j.core.layout.PatternLayout.createDefaultLayout;
 
 import java.awt.Color;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.AbstractMap;
 import java.util.stream.Stream;

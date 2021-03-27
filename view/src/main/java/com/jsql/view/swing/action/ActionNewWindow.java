@@ -70,7 +70,7 @@ public class ActionNewWindow extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent event) {
         
-        LOGGER.info(I18nUtil.valueByKey("NEW_WINDOW_START"));
+        LOGGER.info(() -> I18nUtil.valueByKey("NEW_WINDOW_START"));
         
         ProcessBuilder processBuilder = new ProcessBuilder(this.commands.toArray(new String[0]));
         

@@ -34,6 +34,7 @@ public class MessageBinary implements InteractionCommand {
      * @param interactionParams Text to append
      */
     public MessageBinary(Object[] interactionParams) {
+        
         this.text = (String) interactionParams[0];
     }
 

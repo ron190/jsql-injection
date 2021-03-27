@@ -294,11 +294,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 
                 charFromBooleanMatch[0] = prefix.replace(labelPrefix, root) + suffix;
                 LOGGER.debug(
-                    String
-                    .format(
-                        "Found character insertion [%s] using Boolean match",
-                        charFromBooleanMatch[0]
-                    )
+                    "Found character insertion [{}] using Boolean match",
+                    () -> charFromBooleanMatch[0]
                 );
             }
         }
@@ -319,40 +316,32 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 characterInsertionDetectedFixed = characterInsertionByUser;
             }
             
+            String logCharacterInsertion = characterInsertionDetectedFixed;
             LOGGER.warn(
-                String
-                .format(
-                    "No character insertion found, forcing to [%s]",
-                    characterInsertionDetectedFixed.replace(InjectionModel.STAR, StringUtils.EMPTY)
-                )
+                "No character insertion found, forcing to [{}]",
+                () -> logCharacterInsertion.replace(InjectionModel.STAR, StringUtils.EMPTY)
             );
             
         } else if (!characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY).equals(characterInsertionDetectedFixed)) {
             
             String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY);
             LOGGER.info(
-                String.format(
-                    "Using [%s] and [%s]",
-                    this.injectionModel.getMediatorVendor().getVendor(),
-                    characterInsertionDetectedFixed
-                )
+                "Using [{}] and [{}]",
+                () -> this.injectionModel.getMediatorVendor().getVendor(),
+                () -> characterInsertionDetected
             );
             LOGGER.trace(
-                String.format(
-                    "Add manually the character * like [%s*] to force the value [%s]",
-                    characterInsertionByUserFormat,
-                    characterInsertionByUserFormat
-                )
+                "Add manually the character * like [{}*] to force the value [{}]",
+                () -> characterInsertionByUserFormat,
+                () -> characterInsertionByUserFormat
             );
             
         } else {
             
             LOGGER.info(
-                String.format(
-                    "%s [%s]",
-                    I18nUtil.valueByKey("LOG_USING_INSERTION_CHARACTER"),
-                    characterInsertionDetectedFixed.replace(InjectionModel.STAR, StringUtils.EMPTY)
-                )
+                "{} [{}]",
+                () -> I18nUtil.valueByKey("LOG_USING_INSERTION_CHARACTER"),
+                () -> characterInsertionDetected.replace(InjectionModel.STAR, StringUtils.EMPTY)
             );
         }
         

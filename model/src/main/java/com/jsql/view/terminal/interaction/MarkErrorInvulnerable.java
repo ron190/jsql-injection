@@ -48,7 +48,7 @@ public class MarkErrorInvulnerable implements InteractionCommand {
     public void execute() {
         
         LOGGER.debug(
-            AnsiColorUtil.addRedColor(
+            () -> AnsiColorUtil.addRedColor(
                 this.injectionModel
                 .getMediatorVendor()
                 .getVendor()

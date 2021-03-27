@@ -176,15 +176,15 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             LOGGER.info(
                 "{}: {}",
-                I18nUtil.valueByKey("LOG_START_INJECTION"),
-                this.mediatorUtils.getConnectionUtil().getUrlByUser()
+                () -> I18nUtil.valueByKey("LOG_START_INJECTION"),
+                () -> this.mediatorUtils.getConnectionUtil().getUrlByUser()
             );
             
             // Check general integrity if user's parameters
             this.mediatorUtils.getParameterUtil().checkParametersFormat();
             
             // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
-            LOGGER.trace(I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
+            LOGGER.trace(() -> I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
             this.mediatorUtils.getConnectionUtil().testConnection();
             
             boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters();
@@ -224,7 +224,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 this.dataAccess.listDatabases();
             }
             
-            LOGGER.trace(I18nUtil.valueByKey("LOG_DONE"));
+            LOGGER.trace(() -> I18nUtil.valueByKey("LOG_DONE"));
             
             this.shouldErasePreviousInjection = true;
             
@@ -793,13 +793,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         String architecture = System.getProperty("os.arch");
         
         LOGGER.trace(
-            String.format(
-                "jSQL Injection v%s on Java %s-%s-%s",
-                this.getVersionJsql(),
-                versionJava,
-                architecture,
-                System.getProperty("user.language")
-            )
+            "jSQL Injection v{} on Java {}-{}-{}",
+            () -> this.getVersionJsql(),
+            () -> versionJava,
+            () -> architecture,
+            () -> System.getProperty("user.language")
         );
     }
     

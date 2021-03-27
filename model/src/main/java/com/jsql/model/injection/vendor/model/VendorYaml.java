@@ -110,11 +110,8 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.info(
-                    String
-                    .format(
-                        "Strategy [Dios] activated but database query is undefined for [%s], fallback to default",
-                        this.injectionModel.getMediatorVendor().getVendor()
-                    )
+                    "Strategy [Dios] activated but database query is undefined for [{}], fallback to default",
+                    () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
             }
 
@@ -127,11 +124,8 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.info(
-                    String
-                    .format(
-                        "Strategy [Zip] activated but database query is undefined for [%s], fallback to default",
-                        this.injectionModel.getMediatorVendor().getVendor()
-                    )
+                    "Strategy [Zip] activated but database query is undefined for [{}], fallback to default",
+                    () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
             }
         }
@@ -153,11 +147,8 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.info(
-                    String
-                    .format(
-                        "Strategy [Dios] activated but table query is undefined for [%s], fallback to default",
-                        this.injectionModel.getMediatorVendor().getVendor()
-                    )
+                    "Strategy [Dios] activated but table query is undefined for [{}], fallback to default",
+                    () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
             }
 
@@ -170,11 +161,8 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.info(
-                    String
-                    .format(
-                        "Strategy [Zip] activated but table query is undefined for [%s], fallback to default",
-                        this.injectionModel.getMediatorVendor().getVendor()
-                    )
+                    "Strategy [Zip] activated but table query is undefined for [{}], fallback to default",
+                    () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
             }
         }
@@ -211,11 +199,8 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.info(
-                    String
-                    .format(
-                        "Strategy [Dios] activated but column query is undefined for [%s], fallback to default",
-                        this.injectionModel.getMediatorVendor().getVendor()
-                    )
+                    "Strategy [Dios] activated but column query is undefined for [{}], fallback to default",
+                    () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
             }
 
@@ -228,11 +213,8 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.info(
-                    String
-                    .format(
-                        "Strategy [Zip] activated but column query is undefined for [%s], fallback to default",
-                        this.injectionModel.getMediatorVendor().getVendor()
-                    )
+                    "Strategy [Zip] activated but column query is undefined for [{}], fallback to default",
+                    () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
             }
         }
@@ -277,11 +259,8 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.info(
-                    String
-                    .format(
-                        "Strategy [Dios] activated but row query is undefined for [%s], fallback to default",
-                        this.injectionModel.getMediatorVendor().getVendor()
-                    )
+                    "Strategy [Dios] activated but row query is undefined for [{}], fallback to default",
+                    () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
             }
 
@@ -296,11 +275,8 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.info(
-                    String
-                    .format(
-                        "Strategy [Zip] activated but row query is undefined for [%s], fallback to default",
-                        this.injectionModel.getMediatorVendor().getVendor()
-                    )
+                    "Strategy [Zip] activated but row query is undefined for [{}], fallback to default",
+                    () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
             }
         }

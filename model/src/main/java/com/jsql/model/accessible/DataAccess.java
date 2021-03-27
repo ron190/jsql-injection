@@ -149,7 +149,7 @@ public class DataAccess {
      */
     public void getDatabaseInfos() throws JSqlException {
         
-        LOGGER.trace(I18nUtil.valueByKey("LOG_FETCHING_INFORMATIONS"));
+        LOGGER.trace(() -> I18nUtil.valueByKey("LOG_FETCHING_INFORMATIONS"));
         
         String[] sourcePage = {StringUtils.EMPTY};
 
@@ -227,7 +227,7 @@ public class DataAccess {
      */
     public List<Database> listDatabases() throws JSqlException {
         
-        LOGGER.trace(I18nUtil.valueByKey("LOG_FETCHING_DATABASES"));
+        LOGGER.trace(() -> I18nUtil.valueByKey("LOG_FETCHING_DATABASES"));
         
         List<Database> databases = new ArrayList<>();
         
@@ -619,12 +619,18 @@ public class DataAccess {
             
             if (isIncomplete) {
                 
+                int logIndexRow = indexRow;
                 LOGGER.warn(
                     "{}{}: ",
-                    I18nUtil.valueByKey("LOG_LIST_VALUES_TOO_LONG"),
-                    indexRow + 1
+                    () -> I18nUtil.valueByKey("LOG_LIST_VALUES_TOO_LONG"),
+                    () -> logIndexRow + 1
                 );
-                LOGGER.warn(String.join(", ", listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()])));
+                LOGGER.warn(
+                    () -> String.join(
+                        ", ", 
+                        listValues.get(logIndexRow).toArray(new String[listValues.get(logIndexRow).size()])
+                    )
+                );
             }
         }
         

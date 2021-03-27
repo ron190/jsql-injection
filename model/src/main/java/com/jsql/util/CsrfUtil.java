@@ -91,11 +91,9 @@ public class CsrfUtil {
             SimpleEntry<String, String> tokenCsrfFound = optionalTokenCsrf.get();
             
             LOGGER.info(
-                String.format(
-                    "Found Csrf token from HTML body: %s=%s",
-                    tokenCsrfFound.getKey(),
-                    tokenCsrfFound.getValue()
-                )
+                "Found Csrf token from HTML body: {}={}",
+                () -> tokenCsrfFound.getKey(),
+                () -> tokenCsrfFound.getValue()
             );
             
             if (
@@ -105,10 +103,8 @@ public class CsrfUtil {
                 
                 this.tokenCsrf = tokenCsrfFound;
                 LOGGER.debug(
-                    String.format(
-                        "Csrf token added to query and header: %s",
-                        tokenCsrfFound.getValue()
-                    )
+                    "Csrf token added to query and header: {}",
+                    () -> tokenCsrfFound.getValue()
                 );
                 
             } else {
@@ -151,12 +147,9 @@ public class CsrfUtil {
             SimpleEntry<String, String> cookieCsrf = optionalCookieCsrf.get();
             
             LOGGER.warn(
-                String
-                .format(
-                    "Found CSRF token from Cookie: %s=%s",
-                    cookieCsrf.getKey(),
-                    cookieCsrf.getValue()
-                )
+                "Found CSRF token from Cookie: {}={}",
+                () -> cookieCsrf.getKey(),
+                () -> cookieCsrf.getValue()
             );
             
             SimpleEntry<String, String> headerCsrf =

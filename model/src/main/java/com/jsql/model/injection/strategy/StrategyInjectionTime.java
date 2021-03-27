@@ -52,26 +52,26 @@ public class StrategyInjectionTime extends AbstractStrategy {
             
         } else {
             
-            LOGGER.trace("{} Time with AND...", I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+            LOGGER.trace("{} Time with AND...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
             
             this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.AND);
             this.isApplicable = this.injectionTime.isInjectable();
             
             if (!this.isApplicable) {
                 
-                LOGGER.trace("{} Time with OR...", I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+                LOGGER.trace("{} Time with OR...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
                 
                 this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.OR);
                 this.isApplicable = this.injectionTime.isInjectable();
                 
                 if (this.isApplicable) {
                     
-                    LOGGER.debug("{} Time injection with OR", I18nUtil.valueByKey("LOG_VULNERABLE"));
+                    LOGGER.debug("{} Time injection with OR", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
                 }
                 
             } else {
                 
-                LOGGER.debug("{} Time injection with AND", I18nUtil.valueByKey("LOG_VULNERABLE"));
+                LOGGER.debug("{} Time injection with AND", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
             }
             
             if (this.isApplicable) {
@@ -123,7 +123,11 @@ public class StrategyInjectionTime extends AbstractStrategy {
             LOGGER.info("Using AND statement");
         }
         
-        LOGGER.info("{} [{}]", I18nUtil.valueByKey("LOG_USING_STRATEGY"), this.getName());
+        LOGGER.info(
+            "{} [{}]",
+            () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"), 
+            () -> this.getName()
+        );
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getTime());
         
         Request requestMarkTimeStrategy = new Request();

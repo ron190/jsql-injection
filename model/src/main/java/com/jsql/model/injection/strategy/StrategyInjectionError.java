@@ -54,7 +54,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         
         Configuration configurationYaml = strategyYaml.getConfiguration();
         
-        LOGGER.trace("{} Error...", I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+        LOGGER.trace("{} Error...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
         
         this.tabCapacityMethod = new String[strategyYaml.getError().getMethod().size()];
         int indexErrorMethod = 0;
@@ -75,12 +75,9 @@ public class StrategyInjectionError extends AbstractStrategy {
                 } else {
                     
                     LOGGER.warn(
-                        String
-                        .format(
-                            "%s %s but injectable size is incorrect",
-                            I18nUtil.valueByKey("LOG_VULNERABLE"),
-                            errorMethod.getName()
-                        )
+                        "{} {} but injectable size is incorrect",
+                        () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
+                        () -> errorMethod.getName()
                     );
                     
                     methodIsApplicable = false;
@@ -164,14 +161,12 @@ public class StrategyInjectionError extends AbstractStrategy {
             this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacityImproved);
         }
         
+        int logErrorCapacityImproved = errorCapacityImproved;
         LOGGER.debug(
-            String
-            .format(
-                "%s [Error %s] using [%s] characters",
-                I18nUtil.valueByKey("LOG_VULNERABLE"),
-                errorMethod.getName(),
-                Integer.toString(errorCapacityImproved)
-            )
+            "{} [Error {}] using [{}] characters",
+            () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
+            () -> errorMethod.getName(),
+            () -> Integer.toString(logErrorCapacityImproved)
         );
         
         return errorCapacityImproved;
@@ -202,12 +197,10 @@ public class StrategyInjectionError extends AbstractStrategy {
     public void activateStrategy() {
         
         LOGGER.info(
-            String
-            .format(
-                "%s [%s %s]",
-                I18nUtil.valueByKey("LOG_USING_STRATEGY"),
-                this.getName(),
-                this.injectionModel
+            "{} [{} {}]",
+            () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
+            () -> this.getName(),
+            () -> this.injectionModel
                 .getMediatorVendor()
                 .getVendor()
                 .instance()
@@ -217,7 +210,6 @@ public class StrategyInjectionError extends AbstractStrategy {
                 .getMethod()
                 .get(this.indexErrorStrategy)
                 .getName()
-            )
         );
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());
         

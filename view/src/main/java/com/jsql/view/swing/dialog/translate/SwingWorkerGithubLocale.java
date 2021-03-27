@@ -121,7 +121,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             
         } else {
             
-            LOGGER.info(I18nUtil.valueByKey("LOG_I18N_DEFAULT_LOADED"));
+            LOGGER.info(() -> I18nUtil.valueByKey("LOG_I18N_DEFAULT_LOADED"));
         }
     }
 
@@ -148,7 +148,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             
             this.propertiesRoot.load(new StringReader(pageSourceRootFixed));
             
-            LOGGER.info(I18nUtil.valueByKey("LOG_I18N_ROOT_LOADED"));
+            LOGGER.info(() -> I18nUtil.valueByKey("LOG_I18N_ROOT_LOADED"));
             
         } catch (IOException e) {
             
@@ -181,11 +181,9 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             this.propertiesLanguageToTranslate.load(new StringReader(pageSourceLanguage));
             
             LOGGER.info(
-                String.format(
-                    "%s %s",
-                    I18nUtil.valueByKey("LOG_I18N_TEXT_LOADED"),
-                    this.dialogTranslate.getLanguage()
-                )
+                "{} {}",
+                () -> I18nUtil.valueByKey("LOG_I18N_TEXT_LOADED"),
+                () -> this.dialogTranslate.getLanguage()
             );
             
         } catch (IOException e) {

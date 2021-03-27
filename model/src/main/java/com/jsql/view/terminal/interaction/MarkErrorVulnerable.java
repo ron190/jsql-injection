@@ -48,7 +48,7 @@ public class MarkErrorVulnerable implements InteractionCommand {
     public void execute() {
         
         LOGGER.info(
-            AnsiColorUtil.addGreenColor(
+            () -> AnsiColorUtil.addGreenColor(
                 this.injectionModel
                 .getMediatorVendor()
                 .getVendor()

@@ -188,12 +188,10 @@ public class JsonUtil {
             
             try {
                 LOGGER.info(
-                    String.format(
-                        "Checking JSON %s parameter %s=%s",
-                        methodInjection.name(),
-                        parentXPath.getKey(),
-                        parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
-                    )
+                    "Checking JSON {} parameter {}={}",
+                    () -> methodInjection.name(),
+                    () -> parentXPath.getKey(),
+                    () -> parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
                 );
                 
 //                String paramBase64 = paramStar.getValue().replace("*", "");

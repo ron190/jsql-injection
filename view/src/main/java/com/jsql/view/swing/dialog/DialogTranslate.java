@@ -160,13 +160,7 @@ public class DialogTranslate extends JDialog {
             UIManager.getDefaults().getFont("TextField.font").getSize()
         ));
         
-        LOGGER.trace(
-            String
-            .format(
-                "Loading text to translate into %s...",
-                language
-            )
-        );
+        LOGGER.trace("Loading text to translate into {}...", () -> language);
         
         new SwingWorkerGithubLocale(this).execute();
     }

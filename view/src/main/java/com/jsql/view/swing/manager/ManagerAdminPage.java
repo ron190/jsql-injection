@@ -114,12 +114,12 @@ public class ManagerAdminPage extends AbstractManagerList {
             
             if (!urlAddressBar.matches("(?i)^\\w+://.*")) {
                 
-                LOGGER.info(I18nUtil.valueByKey("LOG_ADMIN_NO_PROTOCOL"));
+                LOGGER.info(() -> I18nUtil.valueByKey("LOG_ADMIN_NO_PROTOCOL"));
                 urlAddressBar = "http://"+ urlAddressBar;
                 
             } else {
                 
-                LOGGER.info(I18nUtil.valueByKey("LOG_ADMIN_UNKNOWN_PROTOCOL"));
+                LOGGER.info(() -> I18nUtil.valueByKey("LOG_ADMIN_UNKNOWN_PROTOCOL"));
                 return;
             }
         }

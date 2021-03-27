@@ -199,12 +199,10 @@ public class ProxyUtil {
         if (showOnConsole == ShowOnConsole.YES) {
             
             LOGGER.debug(
-                String.format(
-                    "Connection successful to %s proxy %s:%s",
-                    protocol,
-                    address,
-                    port
-                )
+                "Connection successful to {} proxy {}:{}",
+                () -> protocol,
+                () -> address,
+                () ->port
             );
         }
     }
@@ -216,7 +214,7 @@ public class ProxyUtil {
             String message = Optional.ofNullable(e.getMessage()).orElse(StringUtils.EMPTY);
             
             LOGGER.warn(
-                String.format(
+                () -> String.format(
                     "Connection to %s proxy %s:%s failed with error \"%s\", verify your proxy settings",
                     protocol,
                     address,

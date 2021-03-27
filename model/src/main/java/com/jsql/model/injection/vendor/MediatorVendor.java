@@ -23,6 +23,8 @@ public class MediatorVendor {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
+    
+    private static final String LOG_VENDOR = "{} [{}]";
 
     /**
      * Database vendor currently used.
@@ -207,7 +209,11 @@ public class MediatorVendor {
         if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAuto()) {
             
             vendorFound = this.injectionModel.getMediatorVendor().getVendorByUser();
-            LOGGER.info("{} [{}]", I18nUtil.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER"), vendorFound);
+            LOGGER.info(
+                MediatorVendor.LOG_VENDOR, 
+                () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER"), 
+                () -> this.injectionModel.getMediatorVendor().getVendorByUser()
+            );
             
         } else {
             
@@ -230,7 +236,11 @@ public class MediatorVendor {
                 if (pageSource.matches("(?si)"+ vendorTest.instance().fingerprintErrorsAsRegex())) {
                     
                     vendorFound = vendorTest;
-                    LOGGER.debug("Basic fingerprint matching vendor [{}]", vendorFound);
+                    LOGGER.debug(
+                        MediatorVendor.LOG_VENDOR, 
+                        () -> "Basic fingerprint matching vendor", 
+                        () -> vendorTest
+                    );
                     break;
                 }
             }
@@ -253,11 +263,19 @@ public class MediatorVendor {
         if (vendorFixed == null) {
             
             vendorFixed = this.injectionModel.getMediatorVendor().getMySQL();
-            LOGGER.info("{} [{}]", I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND"), vendorFixed);
+            LOGGER.info(
+                MediatorVendor.LOG_VENDOR, 
+                () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND"), 
+                () -> this.injectionModel.getMediatorVendor().getMySQL()
+            );
             
         } else {
             
-            LOGGER.info("{} [{}]", I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE"), vendorFixed);
+            LOGGER.info(
+                MediatorVendor.LOG_VENDOR, 
+                () -> I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE"), 
+                () -> vendor
+            );
             
             Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
             msgHeader.put(

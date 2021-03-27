@@ -57,17 +57,17 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
             if (StringUtils.isEmpty(this.bruteForceManager.getHash().getText())) {
                 
-                LOGGER.warn(I18nUtil.valueByKey("BRUTEFORCE_EMPTY_HASH"));
+                LOGGER.warn(() -> I18nUtil.valueByKey("BRUTEFORCE_EMPTY_HASH"));
                 return;
                 
             } else if (this.isRangeNotSelected()) {
                 
-                LOGGER.warn(I18nUtil.valueByKey("BRUTEFORCE_CHARACTER_RANGE"));
+                LOGGER.warn(() -> I18nUtil.valueByKey("BRUTEFORCE_CHARACTER_RANGE"));
                 return;
                 
             } else if (this.isLengthNotValid()) {
                 
-                LOGGER.warn(I18nUtil.valueByKey("BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH"));
+                LOGGER.warn(() -> I18nUtil.valueByKey("BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH"));
                 return;
             }
 
@@ -230,14 +230,13 @@ public class ActionBruteForce implements ActionListener, Runnable {
         // Display the result
         if (this.isStopped) {
             
-            LOGGER.warn(I18nUtil.valueByKey("BRUTEFORCE_ABORTED"));
+            LOGGER.warn(() -> I18nUtil.valueByKey("BRUTEFORCE_ABORTED"));
             
         } else if (hashBruter.isFound()) {
             
             this.append(
                 this.bruteForceManager.getResult(),
-                String
-                .format(
+                String.format(
                     "%n%s:%n%s => %s",
                     I18nUtil.valueByKey("BRUTEFORCE_FOUND_HASH"),
                     hashBruter.getGeneratedHash(),
@@ -246,13 +245,10 @@ public class ActionBruteForce implements ActionListener, Runnable {
             );
 
             LOGGER.debug(
-                String
-                .format(
-                    "%s: %s => %s",
-                    I18nUtil.valueByKey("BRUTEFORCE_FOUND_HASH"),
-                    hashBruter.getGeneratedHash(),
-                    hashBruter.getPassword()
-                )
+                "{}: {} => {}",
+                () -> I18nUtil.valueByKey("BRUTEFORCE_FOUND_HASH"),
+                () -> hashBruter.getGeneratedHash(),
+                () -> hashBruter.getPassword()
             );
             
         } else if (hashBruter.isDone()) {
@@ -262,7 +258,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
                 "\n"+ I18nUtil.valueByKey("BRUTEFORCE_HASH_NOT_FOUND")
             );
             
-            LOGGER.warn(I18nUtil.valueByKey("BRUTEFORCE_HASH_NOT_FOUND"));
+            LOGGER.warn(() -> I18nUtil.valueByKey("BRUTEFORCE_HASH_NOT_FOUND"));
         }
     }
     

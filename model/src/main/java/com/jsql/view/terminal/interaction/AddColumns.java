@@ -39,6 +39,7 @@ public class AddColumns implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public AddColumns(Object[] interactionParams) {
+        
         // Get list of columns from the model
         this.columns = (List<Column>) interactionParams[0];
     }
@@ -46,7 +47,7 @@ public class AddColumns implements InteractionCommand {
     @Override
     public void execute() {
         
-        LOGGER.info(AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
+        LOGGER.info(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
         
         // Loop into the list of columns
         for (Column column: this.columns) {

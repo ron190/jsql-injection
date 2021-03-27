@@ -57,7 +57,7 @@ public class GitUtil {
         
         if (displayUpdateMessage == ShowOnConsole.YES) {
             
-            LOGGER.trace(I18nUtil.valueByKey("UPDATE_LOADING"));
+            LOGGER.trace(() -> I18nUtil.valueByKey("UPDATE_LOADING"));
         }
         
         try {
@@ -65,11 +65,11 @@ public class GitUtil {
             
             if (versionGit > Float.parseFloat(this.injectionModel.getVersionJsql())) {
                 
-                LOGGER.warn(I18nUtil.valueByKey("UPDATE_NEW_VERSION"));
+                LOGGER.warn(() -> I18nUtil.valueByKey("UPDATE_NEW_VERSION"));
                 
             } else if (displayUpdateMessage == ShowOnConsole.YES) {
                 
-                LOGGER.debug(I18nUtil.valueByKey("UPDATE_UPTODATE"));
+                LOGGER.debug(() -> I18nUtil.valueByKey("UPDATE_UPTODATE"));
             }
             
         } catch (NumberFormatException | IOException | JSONException e) {
