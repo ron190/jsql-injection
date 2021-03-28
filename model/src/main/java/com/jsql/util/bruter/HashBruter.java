@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
+
 public class HashBruter extends Bruter {
     
     /**
@@ -39,7 +41,7 @@ public class HashBruter extends Bruter {
                     
                 } catch (InterruptedException e) {
                     
-                    LOGGER.error("Interruption while sleeping for brute force", e);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                     Thread.currentThread().interrupt();
                 }
             }
@@ -49,11 +51,11 @@ public class HashBruter extends Bruter {
                 
             } catch (NoSuchAlgorithmException e) {
                 
-                LOGGER.error("Coding algorithm not found", e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                 
             } catch (InterruptedException e) {
                 
-                LOGGER.error("Interruption while generating brute force combinations", e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                 Thread.currentThread().interrupt();
             }
         }

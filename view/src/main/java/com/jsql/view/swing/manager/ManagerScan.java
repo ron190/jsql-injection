@@ -36,6 +36,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.scan.ScanListTerminal;
 import com.jsql.view.swing.list.BeanInjection;
 import com.jsql.view.swing.list.DnDList;
@@ -167,7 +168,7 @@ public class ManagerScan extends AbstractManagerList {
             
         } catch (IOException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
         
         List<ItemList> itemsList = new ArrayList<>();
@@ -193,7 +194,7 @@ public class ManagerScan extends AbstractManagerList {
             
         } catch (JSONException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
         
         return itemsList;
@@ -216,7 +217,7 @@ public class ManagerScan extends AbstractManagerList {
             
             if (dndListScan.getSelectedValuesList().isEmpty()) {
                 
-                LOGGER.warn("Select URL(s) to scan");
+                LOGGER.log(LogLevel.CONSOLE_ERROR, "Select URL(s) to scan");
                 
                 return;
             }
@@ -272,7 +273,7 @@ public class ManagerScan extends AbstractManagerList {
             
         } catch (InterruptedException e) {
             
-            LOGGER.error("Interruption while sleeping during scan", e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
         }
 
@@ -291,7 +292,7 @@ public class ManagerScan extends AbstractManagerList {
                 break;
             }
             
-            LOGGER.info("Scanning {}", urlItemListScan.getBeanInjection().getUrl());
+            LOGGER.log(LogLevel.CONSOLE_INFORM, "Scanning {}", urlItemListScan.getBeanInjection().getUrl());
             
             MediatorHelper.model().getMediatorUtils().getParameterUtil().controlInput(
                 urlItemListScan.getBeanInjection().getUrl(),
@@ -307,7 +308,7 @@ public class ManagerScan extends AbstractManagerList {
                 
             } catch (InterruptedException e) {
                 
-                LOGGER.error("Interruption while sleeping between two scans", e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                 Thread.currentThread().interrupt();
             }
         }

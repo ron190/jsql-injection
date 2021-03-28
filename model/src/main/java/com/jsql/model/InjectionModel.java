@@ -55,6 +55,7 @@ import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.HeaderUtil;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.JsonUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.util.PropertiesUtil;
@@ -174,7 +175,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 return;
             }
             
-            LOGGER.info(
+            LOGGER.log(
+                LogLevel.CONSOLE_INFORM, 
                 "{}: {}",
                 () -> I18nUtil.valueByKey("LOG_START_INJECTION"),
                 () -> this.mediatorUtils.getConnectionUtil().getUrlByUser()
@@ -184,7 +186,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             this.mediatorUtils.getParameterUtil().checkParametersFormat();
             
             // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
-            LOGGER.trace(() -> I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
+            LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
             this.mediatorUtils.getConnectionUtil().testConnection();
             
             boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters();
@@ -196,7 +198,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             if (!hasFoundInjection) {
                 
-                LOGGER.trace("Checking standard Request parameters");
+                LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Checking standard Request parameters");
                 hasFoundInjection = this.mediatorMethod.getRequest().testParameters();
             }
             
@@ -209,11 +211,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 
                 if (this.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
                     
-                    LOGGER.info("Using Zip strategy for minimal query size");
+                    LOGGER.log(LogLevel.CONSOLE_INFORM, "Using Zip strategy for minimal query size");
                     
                 } else if (this.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
                     
-                    LOGGER.info("Using Dump In One Shot strategy for single query dump");
+                    LOGGER.log(LogLevel.CONSOLE_INFORM, "Using Dump In One Shot strategy for single query dump");
                 }
                 
                 if (!this.mediatorUtils.getPreferencesUtil().isNotInjectingMetadata()) {
@@ -224,13 +226,13 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 this.dataAccess.listDatabases();
             }
             
-            LOGGER.trace(() -> I18nUtil.valueByKey("LOG_DONE"));
+            LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_DONE"));
             
             this.shouldErasePreviousInjection = true;
             
         } catch (JSqlException e) {
             
-            LOGGER.warn(e.getMessage());
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage());
             
         } finally {
             
@@ -264,7 +266,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
         } catch (MalformedURLException e) {
             
-            LOGGER.warn(
+            LOGGER.log(
+                LogLevel.CONSOLE_ERROR, 
                 String.format("Incorrect Query Url: %s", e.getMessage()),
                 e
             );
@@ -338,7 +341,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             // Exception for General and Spnego Opening Connection
             IOException | LoginException | GSSException | PrivilegedActionException e
         ) {
-            LOGGER.warn(
+            LOGGER.log(
+                LogLevel.CONSOLE_ERROR, 
                 String.format("Error during connection: %s", e.getMessage()),
                 e
             );
@@ -390,7 +394,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
         } catch (MalformedURLException e) {
             
-            LOGGER.warn(
+            LOGGER.log(
+                LogLevel.CONSOLE_ERROR, 
                 String.format("Incorrect Url: %s", e.getMessage()),
                 e
             );
@@ -577,7 +582,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
             
         } catch (IOException e) {
-            LOGGER.warn(
+            LOGGER.log(
+                LogLevel.CONSOLE_ERROR, 
                 String.format("Error during Request connection: %s", e.getMessage()),
                 e
             );
@@ -783,8 +789,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      */
     public void sendResponseFromSite(String message, String source) {
         
-        LOGGER.warn("{}, response from site:", message);
-        LOGGER.warn(">>>{}", source);
+        LOGGER.log(LogLevel.CONSOLE_ERROR, "{}, response from site:", message);
+        LOGGER.log(LogLevel.CONSOLE_ERROR, ">>>{}", source);
     }
     
     public void displayVersion() {
@@ -792,9 +798,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         String versionJava = System.getProperty("java.version");
         String architecture = System.getProperty("os.arch");
         
-        LOGGER.trace(
+        LOGGER.log(
+            LogLevel.CONSOLE_DEFAULT,
             "jSQL Injection v{} on Java {}-{}-{}",
-            () -> this.getVersionJsql(),
+            this::getVersionJsql,
             () -> versionJava,
             () -> architecture,
             () -> System.getProperty("user.language")

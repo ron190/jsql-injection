@@ -26,6 +26,7 @@ import javax.swing.tree.TreePath;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.util.MediatorHelper;
 
@@ -85,7 +86,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
             
         } catch (Exception e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
 
         return componentRenderer;

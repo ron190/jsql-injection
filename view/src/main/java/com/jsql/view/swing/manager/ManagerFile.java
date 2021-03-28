@@ -37,6 +37,7 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
@@ -99,7 +100,7 @@ public class ManagerFile extends AbstractManagerList {
             
             if (this.listFile.getSelectedValuesList().isEmpty()) {
                 
-                LOGGER.warn("Select at least one file to read in the list");
+                LOGGER.log(LogLevel.CONSOLE_ERROR, "Select at least one file to read in the list");
                 
                 return;
             }
@@ -119,14 +120,14 @@ public class ManagerFile extends AbstractManagerList {
                         try {
                             this.readFile(this.listFile.getSelectedValuesList());
                             
-                        } catch (InterruptedException ex) {
+                        } catch (InterruptedException e) {
                             
-                            LOGGER.warn("Interruption while waiting for Reading File termination", ex);
+                            LOGGER.log(LogLevel.CONSOLE_JAVA, e);
                             Thread.currentThread().interrupt();
                             
-                        } catch (Exception ex) {
+                        } catch (Exception e) {
                             
-                            LOGGER.warn(ex, ex);
+                            LOGGER.log(LogLevel.CONSOLE_ERROR, e, e);
                         }
                         
                     } else {
@@ -201,7 +202,8 @@ public class ManagerFile extends AbstractManagerList {
 
                 if (!duplicate.contains(path.replace(name, StringUtils.EMPTY))) {
                     
-                    LOGGER.info(
+                    LOGGER.log(
+                        LogLevel.CONSOLE_INFORM, 
                         "Shell might be possible in folder {}",
                         () -> path.replace(name, StringUtils.EMPTY)
                     );
@@ -237,11 +239,11 @@ public class ManagerFile extends AbstractManagerList {
         
         if (countFileFound > 0) {
             
-            LOGGER.debug(result);
+            LOGGER.log(LogLevel.CONSOLE_SUCCESS, result);
             
         } else {
             
-            LOGGER.warn(result);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, result);
         }
         
         Request request = new Request();

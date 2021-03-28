@@ -7,6 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
+
 /*
  * Copyright (c) 2009-2013 JGoodies Software GmbH. All Rights Reserved.
  *
@@ -222,7 +224,8 @@ public class SystemUtils {
             
         } catch (SecurityException e) {
             
-            LOGGER.error(
+            LOGGER.log(
+                LogLevel.CONSOLE_JAVA,
                 String.format("Can't access the System property %s: %s", key, e.getMessage()),
                 e
             );
@@ -275,11 +278,12 @@ public class SystemUtils {
      */
     private static boolean isWindowsXPLafEnabled() {
         
-        return IS_OS_WINDOWS
-             && Boolean.TRUE.equals(
-                 Toolkit.getDefaultToolkit().getDesktopProperty("win.xpstyle.themeActive")
-             )
-             && getSystemProperty("swing.noxp") == null;
+        return
+            IS_OS_WINDOWS
+            && Boolean.TRUE.equals(
+                Toolkit.getDefaultToolkit().getDesktopProperty("win.xpstyle.themeActive")
+            )
+            && getSystemProperty("swing.noxp") == null;
     }
 
     private static boolean isLowResolution() {
@@ -289,7 +293,8 @@ public class SystemUtils {
             
         } catch (HeadlessException e) {
             
-            LOGGER.error(
+            LOGGER.log(
+                LogLevel.CONSOLE_JAVA,
                 String.format("This environment cannot support a display, keyboard, and mouse: %s", e.getMessage()),
                 e
             );

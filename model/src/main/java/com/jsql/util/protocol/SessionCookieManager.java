@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 public class SessionCookieManager extends CookieHandler {
     
@@ -154,7 +155,7 @@ public class SessionCookieManager extends CookieHandler {
      */
     private boolean pathMatches(String pathUri, String pathToMatchWith) {
         
-        if (pathUri == pathToMatchWith) {
+        if (Objects.equals(pathUri, pathToMatchWith)) {
             
             return true;
         }

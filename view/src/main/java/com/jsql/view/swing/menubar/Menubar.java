@@ -59,6 +59,7 @@ import org.apache.logging.log4j.Logger;
 import com.jsql.model.InjectionModel;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.action.ActionSaveTab;
 import com.jsql.view.swing.action.HotkeyUtil;
@@ -1021,7 +1022,7 @@ public class Menubar extends JMenuBar {
             
         } catch (IllegalArgumentException e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 
@@ -1165,11 +1166,9 @@ public class Menubar extends JMenuBar {
             
             Stream
             .of(
-                JTextPaneAppender.ATTRIBUTE_ERROR,
                 JTextPaneAppender.ATTRIBUTE_WARN,
-                JTextPaneAppender.ATTRIBUTE_INFO,
-                JTextPaneAppender.ATTRIBUTE_DEBUG,
-                JTextPaneAppender.ATTRIBUTE_TRACE,
+                JTextPaneAppender.ATTRIBUTE_INFORM,
+                JTextPaneAppender.ATTRIBUTE_SUCCESS,
                 JTextPaneAppender.ATTRIBUTE_ALL
             )
             .forEach(attribute -> {
@@ -1187,11 +1186,9 @@ public class Menubar extends JMenuBar {
             
             Stream
             .of(
-                JTextPaneAppender.ATTRIBUTE_ERROR,
                 JTextPaneAppender.ATTRIBUTE_WARN,
-                JTextPaneAppender.ATTRIBUTE_INFO,
-                JTextPaneAppender.ATTRIBUTE_DEBUG,
-                JTextPaneAppender.ATTRIBUTE_TRACE,
+                JTextPaneAppender.ATTRIBUTE_INFORM,
+                JTextPaneAppender.ATTRIBUTE_SUCCESS,
                 JTextPaneAppender.ATTRIBUTE_ALL
             )
             .forEach(attribute -> {

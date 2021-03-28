@@ -17,9 +17,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class I18nUtil {
     
-    /**
-     * Using default log4j.properties from root /
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**
@@ -60,7 +57,8 @@ public class I18nUtil {
             
             String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
             
-            LOGGER.debug(
+            LOGGER.log(
+                LogLevel.CONSOLE_SUCCESS,
                 () -> String.join(
                     "",
                     "Please contribute and translate parts of jSQL Injection into ",

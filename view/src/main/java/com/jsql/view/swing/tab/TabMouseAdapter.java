@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.util.MediatorHelper;
 
 /**
@@ -35,13 +36,13 @@ public class TabMouseAdapter extends MouseAdapter {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(MouseEvent event) {
         
-        if (!SwingUtilities.isRightMouseButton(e)) {
+        if (!SwingUtilities.isRightMouseButton(event)) {
             return;
         }
             
-        Component componentSource = (Component) e.getSource();
+        Component componentSource = (Component) event.getSource();
         JPopupMenu menu = new JPopupMenu();
 
         // Copy menu items from menubar
@@ -59,19 +60,19 @@ public class TabMouseAdapter extends MouseAdapter {
                 final int positionFinal = position;
                 itemMenu.addActionListener(actionEvent -> this.tabbedPaneWheeled.setSelectedIndex(positionFinal));
                 
-            } catch (SerializationException ex) {
+            } catch (SerializationException e) {
                 
-                LOGGER.error(ex, ex);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             }
         }
 
-        menu.show(componentSource, e.getX(), e.getY());
+        menu.show(componentSource, event.getX(), event.getY());
         
         menu.setLocation(
             ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
-            ? e.getXOnScreen() - menu.getWidth()
-            : e.getXOnScreen(),
-            e.getYOnScreen()
+            ? event.getXOnScreen() - menu.getWidth()
+            : event.getXOnScreen(),
+            event.getYOnScreen()
         );
     }
 }

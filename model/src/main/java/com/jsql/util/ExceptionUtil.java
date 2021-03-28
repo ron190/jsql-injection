@@ -13,7 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.util.bruter.HashUtil;
 
 /**
@@ -22,9 +21,6 @@ import com.jsql.util.bruter.HashUtil;
  */
 public class ExceptionUtil {
     
-    /**
-     * Using default log4j.properties from root /
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private InjectionModel injectionModel;
@@ -46,7 +42,8 @@ public class ExceptionUtil {
         public void uncaughtException(Thread thread, Throwable throwable) {
             
             // for other uncaught exceptions
-            LOGGER.error(
+            LOGGER.log(
+                LogLevel.CONSOLE_JAVA,
                 () -> String.format("Unhandled Exception on %s", thread.getName()),
                 throwable
             );
@@ -84,9 +81,7 @@ public class ExceptionUtil {
                     
                 } catch (NoSuchAlgorithmException e) {
                     
-                    // Ignore
-                    IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
-                    LOGGER.trace(exceptionIgnored, exceptionIgnored);
+                    LOGGER.log(LogLevel.IGNORE, e);
                 }
             }
         }
@@ -110,7 +105,7 @@ public class ExceptionUtil {
             
         } catch (InvocationTargetException | InterruptedException e) {
             
-            LOGGER.error("Unhandled Exception on ExceptionUtil", e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
         }
     }

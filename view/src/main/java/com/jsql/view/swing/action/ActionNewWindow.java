@@ -26,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.MainApplication;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 
 /**
  * Open another jSQL instance in new process.
@@ -70,7 +71,7 @@ public class ActionNewWindow extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent event) {
         
-        LOGGER.info(() -> I18nUtil.valueByKey("NEW_WINDOW_START"));
+        LOGGER.log(LogLevel.CONSOLE_INFORM, () -> I18nUtil.valueByKey("NEW_WINDOW_START"));
         
         ProcessBuilder processBuilder = new ProcessBuilder(this.commands.toArray(new String[0]));
         
@@ -79,7 +80,7 @@ public class ActionNewWindow extends AbstractAction {
             
         } catch (IOException e) {
             
-            LOGGER.error(I18nUtil.valueByKey("NEW_WINDOW_ERROR"), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 }

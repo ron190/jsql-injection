@@ -74,7 +74,8 @@ public class CertificateUtil {
             
         } catch (Exception e) {
             
-            LOGGER.warn(
+            LOGGER.log(
+                LogLevel.CONSOLE_ERROR, 
                 String.format("Error ignoring untrusted SSL: %s", e.getMessage()),
                 e
             );

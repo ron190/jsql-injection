@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
+import com.jsql.util.LogLevel;
 
 /**
  * A blind attack class using concurrent threads.
@@ -126,11 +127,11 @@ public class InjectionCharInsertion {
             }
         } catch (ExecutionException e) {
             
-            LOGGER.error("Searching fails for Blind False tags", e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             
         } catch (InterruptedException e) {
             
-            LOGGER.error("Interruption while searching for Blind False tags", e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
         }
         
@@ -186,11 +187,11 @@ public class InjectionCharInsertion {
             
         } catch (ExecutionException e) {
             
-            LOGGER.error("Searching fails for Blind True tags", e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             
         } catch (InterruptedException e) {
             
-            LOGGER.error("Interruption while searching for Blind True tags", e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
         }
     }
@@ -219,7 +220,7 @@ public class InjectionCharInsertion {
             
         } catch (Exception e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
 
         return blindTest.isTrue() && !this.constantTrueMark.isEmpty();

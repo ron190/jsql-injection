@@ -20,6 +20,8 @@ import javax.swing.TransferHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
+
 @SuppressWarnings("serial")
 public class TabTransferHandler extends TransferHandler {
     
@@ -200,7 +202,7 @@ public class TabTransferHandler extends TransferHandler {
             
         } catch (UnsupportedFlavorException | IOException e) {
             
-            LOGGER.error("Dragging tab failed", e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
         return false;

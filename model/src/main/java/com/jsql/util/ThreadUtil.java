@@ -96,7 +96,7 @@ public final class ThreadUtil {
             
         } catch (ConcurrentModificationException e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
     

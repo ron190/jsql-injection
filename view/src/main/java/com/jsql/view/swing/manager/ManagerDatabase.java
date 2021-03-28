@@ -30,6 +30,7 @@ import javax.swing.tree.TreeSelectionModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tree.CellEditorNode;
 import com.jsql.view.swing.tree.CellRendererNode;
@@ -130,12 +131,12 @@ public class ManagerDatabase extends JPanel implements Manager {
         return new MouseAdapter() {
 
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(MouseEvent event) {
                 
-                int selRow = ManagerDatabase.this.tree.getRowForLocation(e.getX(), e.getY());
-                TreePath selPath = ManagerDatabase.this.tree.getPathForLocation(e.getX(), e.getY());
+                int selRow = ManagerDatabase.this.tree.getRowForLocation(event.getX(), event.getY());
+                TreePath selPath = ManagerDatabase.this.tree.getPathForLocation(event.getX(), event.getY());
                 
-                if (selRow != -1 && e.getClickCount() == 2) {
+                if (selRow != -1 && event.getClickCount() == 2) {
                     
                     // Fix ArrayIndexOutOfBoundsException on collapsePath()
                     try {
@@ -148,9 +149,9 @@ public class ManagerDatabase extends JPanel implements Manager {
                             ManagerDatabase.this.tree.expandPath(selPath);
                         }
                         
-                    } catch (ArrayIndexOutOfBoundsException err) {
+                    } catch (ArrayIndexOutOfBoundsException e) {
                         
-                        LOGGER.error(err.getMessage(), err);
+                        LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                     }
                 }
             }

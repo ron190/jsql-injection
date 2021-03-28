@@ -34,6 +34,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -88,7 +89,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                 
             } catch (IllegalComponentStateException e) {
                 
-                LOGGER.error(e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
             }
             
             popupMenuList.setLocation(
@@ -162,7 +163,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                 
             } catch (ClassCastException | NullPointerException e) {
                 
-                LOGGER.error(e, e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
             }
             
             if (choice == JFileChooser.APPROVE_OPTION) {

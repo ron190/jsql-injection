@@ -51,6 +51,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
 import com.jsql.view.swing.tab.ButtonClose;
@@ -198,7 +199,7 @@ public class PanelTable extends JPanel {
                     
                 } catch (NullPointerException e) {
                     
-                    LOGGER.error(e.getMessage(), e);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
                     return null;
                 }
             }

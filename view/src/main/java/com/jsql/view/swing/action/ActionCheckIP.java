@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.util.MediatorHelper;
 
 /**
@@ -36,9 +37,10 @@ public class ActionCheckIP implements ActionListener, Runnable {
         }
 
         try {
-            LOGGER.trace(() -> I18nUtil.valueByKey("LOG_IP_ADDRESS_CHECK"));
+            LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_CHECK"));
             String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource("http://checkip.amazonaws.com");
-            LOGGER.info(
+            LOGGER.log(
+                LogLevel.CONSOLE_INFORM, 
                 "{} {}",
                 () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_IS"),
                 () -> addressIp
@@ -46,14 +48,16 @@ public class ActionCheckIP implements ActionListener, Runnable {
             
         } catch (MalformedURLException e) {
             
-            LOGGER.warn(
+            LOGGER.log(
+                LogLevel.CONSOLE_ERROR, 
                 String.format("Malformed URL: %s", e.getMessage()),
                 e
             );
             
         } catch (IOException e) {
             
-            LOGGER.warn(
+            LOGGER.log(
+                LogLevel.CONSOLE_ERROR, 
                 String.format("Error during AWS test: %s", e.getMessage()),
                 e
             );

@@ -24,6 +24,7 @@ import com.jsql.model.injection.strategy.StrategyInjectionError;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.manager.util.ComboMenu;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.util.ButtonAddressBar;
@@ -294,7 +295,7 @@ public class AddressMenuBar extends JMenuBar {
             
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
     
@@ -322,7 +323,7 @@ public class AddressMenuBar extends JMenuBar {
                 
             } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
                 
-                LOGGER.error(e, e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
             }
         }
     }

@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
+import com.jsql.util.LogLevel;
 
 /**
  * A thread used to inject database ; stoppable and pausable.
@@ -56,7 +57,7 @@ public abstract class AbstractSuspendable {
                 
             } catch (InterruptedException e) {
                 
-                LOGGER.error("Interruption while suspendable is waiting", e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                 Thread.currentThread().interrupt();
             }
         }

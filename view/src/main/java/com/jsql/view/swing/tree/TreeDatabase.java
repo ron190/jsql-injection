@@ -16,6 +16,7 @@ import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.tree.model.NodeModelColumn;
 import com.jsql.view.swing.tree.model.NodeModelDatabase;
@@ -168,7 +169,7 @@ public class TreeDatabase extends JTree {
                 
             } else {
                 
-                LOGGER.warn("Missing database for table {}.", () -> table);
+                LOGGER.log(LogLevel.CONSOLE_ERROR, "Missing database for table {}.", () -> table);
             }
         }
 

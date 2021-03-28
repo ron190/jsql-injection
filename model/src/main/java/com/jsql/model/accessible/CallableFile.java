@@ -7,10 +7,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
+import com.jsql.util.LogLevel;
 
 /**
  * Thread unit to read source of a file by SQL injection.
@@ -74,9 +74,7 @@ public class CallableFile implements Callable<CallableFile> {
             
             // Usually thrown if File does not exist
             
-            // Ignore
-            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
-            LOGGER.trace(exceptionIgnored, exceptionIgnored);
+            LOGGER.log(LogLevel.IGNORE, e);
             
         } catch (StoppedByUserSlidingException e) {
             
@@ -90,9 +88,7 @@ public class CallableFile implements Callable<CallableFile> {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
             
-            // Ignore
-            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
-            LOGGER.trace(exceptionIgnored, exceptionIgnored);
+            LOGGER.log(LogLevel.IGNORE, e);
         }
         
         this.sourceFile = resultToParse;

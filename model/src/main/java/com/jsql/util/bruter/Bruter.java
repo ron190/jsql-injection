@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.model.exception.IgnoreMessageException;
+import com.jsql.util.LogLevel;
 
 public class Bruter {
     
@@ -104,9 +104,7 @@ public class Bruter {
             
         } catch (Exception e) {
             
-            // Ignore
-            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
-            LOGGER.trace(exceptionIgnored, exceptionIgnored);
+            LOGGER.log(LogLevel.IGNORE, e);
             
             // Ignore division by zero
             return 0;

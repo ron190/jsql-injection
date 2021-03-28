@@ -34,6 +34,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.exception.JSqlException;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
@@ -80,7 +81,7 @@ public class ManagerUpload extends AbstractManagerList {
             
         } catch (IOException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
 
         this.listPaths = new DnDList(pathsList);
@@ -152,7 +153,7 @@ public class ManagerUpload extends AbstractManagerList {
         
         if (ManagerUpload.this.getListPaths().getSelectedValuesList().isEmpty()) {
             
-            LOGGER.warn("Select directory(ies) to upload a file into");
+            LOGGER.log(LogLevel.CONSOLE_ERROR, "Select directory(ies) to upload a file into");
             
             return;
         }
@@ -174,7 +175,7 @@ public class ManagerUpload extends AbstractManagerList {
             
         } catch (NullPointerException | ClassCastException e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 
@@ -193,14 +194,16 @@ public class ManagerUpload extends AbstractManagerList {
                         
                     } catch (JSqlException e) {
                         
-                        LOGGER.warn(
+                        LOGGER.log(
+                            LogLevel.CONSOLE_ERROR, 
                             String.format("Payload creation error: %s", e.getMessage()),
                             e
                         );
                         
                     } catch (IOException e) {
                         
-                        LOGGER.warn(
+                        LOGGER.log(
+                            LogLevel.CONSOLE_ERROR, 
                             String.format("Posting file failed: %s", e.getMessage()),
                             e
                         );

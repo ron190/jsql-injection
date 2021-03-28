@@ -90,10 +90,11 @@ public class CsrfUtil {
             
             SimpleEntry<String, String> tokenCsrfFound = optionalTokenCsrf.get();
             
-            LOGGER.info(
+            LOGGER.log(
+                LogLevel.CONSOLE_INFORM, 
                 "Found Csrf token from HTML body: {}={}",
-                () -> tokenCsrfFound.getKey(),
-                () -> tokenCsrfFound.getValue()
+                tokenCsrfFound::getKey,
+                tokenCsrfFound::getValue
             );
             
             if (
@@ -102,14 +103,15 @@ public class CsrfUtil {
             ) {
                 
                 this.tokenCsrf = tokenCsrfFound;
-                LOGGER.debug(
+                LOGGER.log(
+                    LogLevel.CONSOLE_SUCCESS,
                     "Csrf token added to query and header: {}",
-                    () -> tokenCsrfFound.getValue()
+                    tokenCsrfFound::getValue
                 );
                 
             } else {
                 
-                LOGGER.info("Activate CSRF processing in Preferences if required");
+                LOGGER.log(LogLevel.CONSOLE_INFORM, "Activate CSRF processing in Preferences if required");
             }
         }
     }
@@ -146,10 +148,11 @@ public class CsrfUtil {
             
             SimpleEntry<String, String> cookieCsrf = optionalCookieCsrf.get();
             
-            LOGGER.warn(
+            LOGGER.log(
+                LogLevel.CONSOLE_ERROR, 
                 "Found CSRF token from Cookie: {}={}",
-                () -> cookieCsrf.getKey(),
-                () -> cookieCsrf.getValue()
+                cookieCsrf::getKey,
+                cookieCsrf::getValue
             );
             
             SimpleEntry<String, String> headerCsrf =
@@ -167,7 +170,7 @@ public class CsrfUtil {
                 
             } else {
                 
-                LOGGER.info("Activate CSRF processing in Preferences if required");
+                LOGGER.log(LogLevel.CONSOLE_INFORM, "Activate CSRF processing in Preferences if required");
             }
         }
     }

@@ -72,7 +72,7 @@ public class ParameterUtil {
                 
                 if (!urlQueryFixed.matches("(?i)^\\w+://.*")) {
                     
-                    LOGGER.info("Undefined URL protocol, forcing to [http://]");
+                    LOGGER.log(LogLevel.CONSOLE_INFORM, "Undefined URL protocol, forcing to [http://]");
                     urlQueryFixed = "http://"+ urlQueryFixed;
                     
                 } else {
@@ -104,10 +104,7 @@ public class ParameterUtil {
             
         } catch (MalformedURLException e) {
             
-            LOGGER.warn(
-                String.format("Incorrect Url: %s", e.getMessage()),
-                e
-            );
+            LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect Url: {}", e.getMessage());
             
             // Incorrect URL, reset the start button
             Request request = new Request();
@@ -233,7 +230,7 @@ public class ParameterUtil {
     }
 
     public void initializeQueryString(String urlQuery) throws MalformedURLException {
-        
+
         URL url = new URL(urlQuery);
         
         if (

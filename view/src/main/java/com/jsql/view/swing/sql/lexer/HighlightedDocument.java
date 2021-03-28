@@ -28,6 +28,7 @@ import javax.swing.text.DefaultStyledDocument;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.sql.lexer.syntax.JavaScriptLexer;
 import com.jsql.view.swing.sql.lexer.syntax.Lexer;
 import com.jsql.view.swing.sql.lexer.syntax.SQLLexer;
@@ -149,25 +150,16 @@ public class HighlightedDocument extends DefaultStyledDocument {
             this.globalStyle = null;
             this.colorAll();
             
-        } catch (SecurityException e) {
+        } catch (
+            SecurityException
+            | NoSuchMethodException
+            | InstantiationException
+            | IllegalAccessException
+            | IllegalArgumentException
+            | InvocationTargetException e
+        ) {
             
-            LOGGER.error("HighlightEditor.SecurityException", e);
-            
-        } catch (NoSuchMethodException e) {
-            
-            LOGGER.error("HighlightEditor.NoSuchMethod", e);
-            
-        } catch (InstantiationException e) {
-            
-            LOGGER.error("HighlightEditor.InstantiationException", e);
-            
-        } catch (InvocationTargetException e) {
-            
-            LOGGER.error("HighlightEditor.InvocationTargetException", e);
-            
-        } catch (IllegalAccessException e) {
-            
-            LOGGER.error("HighlightEditor.IllegalAccessException", e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
     

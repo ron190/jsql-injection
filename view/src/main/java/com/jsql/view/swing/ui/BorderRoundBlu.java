@@ -16,6 +16,8 @@ import javax.swing.border.AbstractBorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
+
 @SuppressWarnings("serial")
 public class BorderRoundBlu extends AbstractBorder {
     
@@ -47,7 +49,7 @@ public class BorderRoundBlu extends AbstractBorder {
                 
             } catch (NoClassDefFoundError | UnsatisfiedLinkError e) {
                 
-                LOGGER.error(e, e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             }
         }
         
@@ -59,7 +61,7 @@ public class BorderRoundBlu extends AbstractBorder {
             
         } catch (NoClassDefFoundError e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
             
         g2.dispose();

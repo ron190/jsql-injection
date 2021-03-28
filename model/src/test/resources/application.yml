@@ -12,5 +12,3 @@ server:
         key-store: classpath:keystore/jsql-injection.p12
         key-store-password: testtest
         key-alias: jsql-injection
-
-logging.config: src/test/resources/logger/jsql-logback.xml

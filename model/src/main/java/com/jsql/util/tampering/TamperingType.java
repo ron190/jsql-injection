@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
+import com.jsql.util.LogLevel;
+
 public enum TamperingType {
     
     BASE64("base64.yml"),
@@ -38,7 +40,7 @@ public enum TamperingType {
             
         } catch (IOException e) {
 
-            this.logger.error(e, e);
+            this.logger.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
     

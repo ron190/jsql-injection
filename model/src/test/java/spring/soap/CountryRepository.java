@@ -33,6 +33,7 @@ public class CountryRepository {
     private static final String template = "Hello, s!";
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    @SuppressWarnings("unchecked")
     @Transactional
 	public Country findCountry(String name) throws Exception {
 	    

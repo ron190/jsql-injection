@@ -27,6 +27,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
+import com.jsql.util.LogLevel;
 
 /**
  * Thread unit to test if an administration page exists on the server.
@@ -84,7 +85,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             || isUrlIncorrect
             || StringUtils.isEmpty(targetUrl.getHost())
         ) {
-            LOGGER.warn("Incorrect URL: {}", this.urlAdminPage);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect URL: {}", this.urlAdminPage);
             return this;
         }
         

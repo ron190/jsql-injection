@@ -20,6 +20,7 @@ import javax.swing.JProgressBar;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -47,7 +48,7 @@ public class ProgressBarPausable extends JProgressBar {
             
         } catch (InternalError e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         if (this.isIconDisplayed) {
@@ -63,7 +64,7 @@ public class ProgressBarPausable extends JProgressBar {
                 
             } catch (IOException e) {
                 
-                LOGGER.error(e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
             }
         }
     }

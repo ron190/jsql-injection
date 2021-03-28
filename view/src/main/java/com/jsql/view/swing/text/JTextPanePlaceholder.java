@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -67,7 +68,7 @@ public class JTextPanePlaceholder extends JTextPane {
             }
         } catch (IllegalArgumentException | ConcurrentModificationException | IndexOutOfBoundsException | ClassCastException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 }

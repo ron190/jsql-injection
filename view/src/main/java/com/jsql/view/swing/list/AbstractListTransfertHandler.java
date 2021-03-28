@@ -27,6 +27,8 @@ import javax.swing.TransferHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
+
 /**
  * Handler for processing cut/copy/paste/drag/drop action on a JList items.
  */
@@ -84,7 +86,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
                     
                 } catch (ArrayIndexOutOfBoundsException e) {
                     
-                    LOGGER.error(e, e);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
                 }
             }
             
@@ -158,7 +160,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
             
         } catch (UnsupportedFlavorException | IOException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 
@@ -198,7 +200,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
         } catch (NullPointerException | UnsupportedFlavorException | IOException e) {
             
             // Fix #8831: Multiple Exception on scrollRectToVisible()
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 
@@ -222,7 +224,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
             
         } catch (UnsupportedFlavorException | IOException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 }

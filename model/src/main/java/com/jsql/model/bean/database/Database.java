@@ -14,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
+
 /**
  * Define a Database, e.g is sent to the view by the model after injection.
  */
@@ -72,7 +74,7 @@ public class Database extends AbstractElementDatabase {
         } catch (NumberFormatException e) {
             
             this.tableCount = "0";
-            LOGGER.warn("Incorrect number of tables for [{}].", this);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect number of tables for [{}].", this);
         }
         
         return

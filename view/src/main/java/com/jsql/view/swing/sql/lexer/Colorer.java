@@ -31,7 +31,7 @@ import javax.swing.text.AttributeSet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.model.exception.IgnoreMessageException;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.sql.lexer.syntax.Lexer;
 import com.jsql.view.swing.sql.lexer.syntax.Token;
 
@@ -230,7 +230,7 @@ class Colorer extends Thread {
                 
             } catch(InterruptedException e) {
                 
-                LOGGER.error(e, e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
                 Thread.currentThread().interrupt();
             }
         }
@@ -287,9 +287,7 @@ class Colorer extends Thread {
             // we can always start at the very beginning.
             dpStart = new DocPosition(0);
             
-            // Ignore
-            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
-            LOGGER.trace(exceptionIgnored, exceptionIgnored);
+            LOGGER.log(LogLevel.IGNORE, e);
         }
 
         // if stuff was removed, take any removed positions off the
@@ -465,9 +463,7 @@ class Colorer extends Thread {
             
         } catch (IOException e) {
             
-            // Ignore
-            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
-            LOGGER.trace(exceptionIgnored, exceptionIgnored);
+            LOGGER.log(LogLevel.IGNORE, e);
         }
         
         synchronized (docLock) {

@@ -29,6 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.util.I18nViewUtil;
@@ -101,7 +102,7 @@ public class MenuActionNewValue implements ActionListener {
             
         } catch (NullPointerException | IllegalArgumentException | ClassCastException e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
 
         if (StringUtils.isEmpty(textarea.getText()) || result != JOptionPane.YES_OPTION) {

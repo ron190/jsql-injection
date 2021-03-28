@@ -39,6 +39,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
@@ -104,7 +105,7 @@ public class ManagerAdminPage extends AbstractManagerList {
         
         if (this.listFile.getSelectedValuesList().isEmpty()) {
             
-            LOGGER.warn("Select at least one admin page in the list");
+            LOGGER.log(LogLevel.CONSOLE_ERROR, "Select at least one admin page in the list");
             return;
         }
         
@@ -114,12 +115,12 @@ public class ManagerAdminPage extends AbstractManagerList {
             
             if (!urlAddressBar.matches("(?i)^\\w+://.*")) {
                 
-                LOGGER.info(() -> I18nUtil.valueByKey("LOG_ADMIN_NO_PROTOCOL"));
+                LOGGER.log(LogLevel.CONSOLE_INFORM, () -> I18nUtil.valueByKey("LOG_ADMIN_NO_PROTOCOL"));
                 urlAddressBar = "http://"+ urlAddressBar;
                 
             } else {
                 
-                LOGGER.info(() -> I18nUtil.valueByKey("LOG_ADMIN_UNKNOWN_PROTOCOL"));
+                LOGGER.log(LogLevel.CONSOLE_INFORM, () -> I18nUtil.valueByKey("LOG_ADMIN_UNKNOWN_PROTOCOL"));
                 return;
             }
         }
@@ -135,11 +136,11 @@ public class ManagerAdminPage extends AbstractManagerList {
             
             if (StringUtils.isEmpty(urlAddressBar)) {
                 
-                LOGGER.warn("URL in the address bar is missing");
+                LOGGER.log(LogLevel.CONSOLE_ERROR, "URL in the address bar is missing");
                 
             } else {
                 
-                LOGGER.trace("Checking admin page(s)...");
+                LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Checking admin page(s)...");
                 ManagerAdminPage.this.run.setText(I18nViewUtil.valueByKey("ADMIN_PAGE_RUN_BUTTON_STOP"));
                 ManagerAdminPage.this.run.setState(StateButton.STOPPABLE);
                 ManagerAdminPage.this.loader.setVisible(true);
@@ -150,9 +151,9 @@ public class ManagerAdminPage extends AbstractManagerList {
                         this.listFile.getSelectedValuesList()
                     );
                     
-                } catch (InterruptedException ex) {
+                } catch (InterruptedException e) {
                     
-                    LOGGER.error("Interruption while waiting for Opening Admin Page termination", ex);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                     Thread.currentThread().interrupt();
                 }
             }

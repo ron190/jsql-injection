@@ -20,9 +20,6 @@ import com.jsql.view.interaction.InteractionCommand;
  */
 public class MessageBinary implements InteractionCommand {
     
-    /**
-     * Using default log4j.properties from root /
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**

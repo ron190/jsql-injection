@@ -183,7 +183,7 @@ public final class StringUtil {
             
         } catch (ArrayIndexOutOfBoundsException e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
         
         String result = text;

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -64,7 +65,7 @@ public class ActionStart implements ActionListener {
                 
             } catch (IllegalArgumentException| ClassCastException e) {
                 
-                LOGGER.error(e, e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
             }
         }
 

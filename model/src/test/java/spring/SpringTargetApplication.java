@@ -30,14 +30,13 @@ import org.neo4j.driver.Result;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.jsql.util.LogLevel;
+
 import spring.rest.Student;
 
 @SpringBootApplication
 public class SpringTargetApplication {
     
-    /**
-     * Using default log4j.properties from root /
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private static NetworkServerControl serverDerby;
@@ -57,9 +56,6 @@ public class SpringTargetApplication {
     public static Properties propsDerby = new Properties();
 
     static {
-        
-        // Logger before Spring starts
-        System.setProperty("logback.configurationFile", "logger/jsql-logback.xml");
         
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
@@ -181,7 +177,7 @@ public class SpringTargetApplication {
             
         } catch (Exception e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
         
         driver.close();

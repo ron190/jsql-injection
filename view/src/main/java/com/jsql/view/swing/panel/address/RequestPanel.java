@@ -28,6 +28,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.util.RadioMenuItemIconCustom;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -104,7 +105,7 @@ public class RequestPanel extends JPanel {
                 
             } else {
                 
-                LOGGER.warn("Define label of Custom request method");
+                LOGGER.log(LogLevel.CONSOLE_ERROR, "Define label of Custom request method");
             }
         });
       

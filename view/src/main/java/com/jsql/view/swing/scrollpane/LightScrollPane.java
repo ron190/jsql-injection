@@ -26,7 +26,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.model.exception.IgnoreMessageException;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.util.UiUtil;
 
 @SuppressWarnings("serial")
@@ -103,7 +103,7 @@ public class LightScrollPane extends JComponent {
                     
                 } catch (NullPointerException e) {
                     
-                    LOGGER.error(e, e);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
                 }
                 
                 SwingUtilities.invokeLater(() -> LightScrollPane.this.displayScrollBarsIfNecessary(this.viewport));
@@ -251,9 +251,7 @@ public class LightScrollPane extends JComponent {
                 
                 colorThumbAlpha = Color.GRAY;
                 
-                // Ignore
-                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
-                LOGGER.trace(exceptionIgnored, exceptionIgnored);
+                LOGGER.log(LogLevel.IGNORE, e);
             }
             
             graphics2D.setColor(colorThumbAlpha);

@@ -36,6 +36,7 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
+import com.jsql.util.LogLevel;
 
 import spring.SpringTargetApplication;
 
@@ -45,16 +46,10 @@ public abstract class AbstractTestSuite {
     
     static {
         
-        // jSQL model only logger
-        System.setProperty("logback.configurationFile", "logger/jsql-logback.xml");
-        
         // Use Timeout fix in Model
         jcifs.Config.registerSmbURLHandler();
     }
     
-    /**
-     * Using default log4j.properties from root /
-     */
     protected static final Logger LOGGER = LogManager.getRootLogger();
 
     private List<String> databasesFromJdbc = new ArrayList<>();
@@ -162,7 +157,7 @@ public abstract class AbstractTestSuite {
             
         } catch (SQLException e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 
@@ -184,7 +179,7 @@ public abstract class AbstractTestSuite {
             valuesFromInjection.addAll(databases);
             valuesFromJdbc.addAll(AbstractTestSuite.this.databasesFromJdbc);
 
-            LOGGER.info("ListDatabases: found "+ valuesFromInjection +" to find "+ valuesFromJdbc);
+            LOGGER.info("ListDatabases: found {} to find {}", valuesFromInjection, valuesFromJdbc);
 
             assertTrue(
                 !valuesFromInjection.isEmpty()
@@ -224,7 +219,7 @@ public abstract class AbstractTestSuite {
             valuesFromInjection.addAll(tables);
             valuesFromJdbc.addAll(AbstractTestSuite.this.tablesFromJdbc);
 
-            LOGGER.info(String.format("Tables: found %s to find %s", valuesFromInjection, valuesFromJdbc));
+            LOGGER.info("Tables: found {} to find {}", valuesFromInjection, valuesFromJdbc);
             assertTrue(
                 !valuesFromInjection.isEmpty()
                 && !valuesFromJdbc.isEmpty()
@@ -267,7 +262,7 @@ public abstract class AbstractTestSuite {
             valuesFromInjection.addAll(columns);
             valuesFromJdbc.addAll(this.parse(AbstractTestSuite.this.columnsFromJdbc));
 
-            LOGGER.info(String.format("listColumns: found %s to find %s", valuesFromInjection, valuesFromJdbc));
+            LOGGER.info("listColumns: found {} to find {}", valuesFromInjection, valuesFromJdbc);
             assertTrue(
                 !valuesFromInjection.isEmpty()
                 && !valuesFromJdbc.isEmpty()
@@ -337,7 +332,7 @@ public abstract class AbstractTestSuite {
                 .replaceAll("\n", "[n]")
                 .replaceAll("\r", "[r]");
             
-            LOGGER.info(String.format("Values: found %s to find %s", logValuesFromInjection, logValuesFromJdbc));
+            LOGGER.info("Values: found {} to find {}", logValuesFromInjection, logValuesFromJdbc);
             
             assertTrue(
                 !valuesFromInjection.isEmpty()

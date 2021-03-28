@@ -16,6 +16,7 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 
 public class MediatorVendor {
     
@@ -209,15 +210,16 @@ public class MediatorVendor {
         if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAuto()) {
             
             vendorFound = this.injectionModel.getMediatorVendor().getVendorByUser();
-            LOGGER.info(
-                MediatorVendor.LOG_VENDOR, 
-                () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER"), 
+            LOGGER.log(
+                LogLevel.CONSOLE_INFORM, 
+                MediatorVendor.LOG_VENDOR,
+                () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER"),
                 () -> this.injectionModel.getMediatorVendor().getVendorByUser()
             );
             
         } else {
             
-            LOGGER.trace("Fingerprinting database...");
+            LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Fingerprinting database...");
         
             String insertionCharacter = "'\"#-)'\"*";
             String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, "vendor");
@@ -236,9 +238,10 @@ public class MediatorVendor {
                 if (pageSource.matches("(?si)"+ vendorTest.instance().fingerprintErrorsAsRegex())) {
                     
                     vendorFound = vendorTest;
-                    LOGGER.debug(
-                        MediatorVendor.LOG_VENDOR, 
-                        () -> "Basic fingerprint matching vendor", 
+                    LOGGER.log(
+                        LogLevel.CONSOLE_SUCCESS,
+                        MediatorVendor.LOG_VENDOR,
+                        () -> "Basic fingerprint matching vendor",
                         () -> vendorTest
                     );
                     break;
@@ -263,17 +266,19 @@ public class MediatorVendor {
         if (vendorFixed == null) {
             
             vendorFixed = this.injectionModel.getMediatorVendor().getMySQL();
-            LOGGER.info(
-                MediatorVendor.LOG_VENDOR, 
-                () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND"), 
+            LOGGER.log(
+                LogLevel.CONSOLE_INFORM, 
+                MediatorVendor.LOG_VENDOR,
+                () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND"),
                 () -> this.injectionModel.getMediatorVendor().getMySQL()
             );
             
         } else {
             
-            LOGGER.info(
-                MediatorVendor.LOG_VENDOR, 
-                () -> I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE"), 
+            LOGGER.log(
+                LogLevel.CONSOLE_INFORM, 
+                MediatorVendor.LOG_VENDOR,
+                () -> I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE"),
                 () -> vendor
             );
             

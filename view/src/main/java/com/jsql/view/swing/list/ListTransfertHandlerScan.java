@@ -26,6 +26,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.jsql.util.LogLevel;
+
 /**
  * Handler for processing cut/copy/paste/drag/drop action on a JList items.
  */
@@ -71,7 +73,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
             
         } catch (JSONException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
         
         return stringTransferable.toString();
@@ -114,7 +116,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
                 
             } catch (UnsupportedFlavorException | IOException e) {
                 
-                LOGGER.error(e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
             }
         }
 

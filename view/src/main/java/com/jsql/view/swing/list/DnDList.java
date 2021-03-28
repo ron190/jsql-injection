@@ -40,6 +40,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -225,7 +226,7 @@ public class DnDList extends JList<ItemList> {
         } catch (NullPointerException e) {
             
             // Report NullPointerException #1571 : manual scroll elsewhere then run action
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 
@@ -262,7 +263,7 @@ public class DnDList extends JList<ItemList> {
                     
                 } catch (ClassCastException e) {
                     
-                    LOGGER.error(e, e);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
                 }
                 
                 return;
@@ -330,7 +331,7 @@ public class DnDList extends JList<ItemList> {
         } catch (NullPointerException e) {
             
             // Report NullPointerException #1571 : manual scroll elsewhere then run action
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 
@@ -359,7 +360,7 @@ public class DnDList extends JList<ItemList> {
             
         } catch (IOException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
         
         return endPosition;

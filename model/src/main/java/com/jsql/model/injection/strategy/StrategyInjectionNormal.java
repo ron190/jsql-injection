@@ -19,6 +19,7 @@ import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.SuspendableGetIndexes;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 
 /**
  * Injection strategy using normal attack.
@@ -40,7 +41,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     @Override
     public void checkApplicability() throws JSqlException {
         
-        LOGGER.trace("{} Normal...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+        LOGGER.log(LogLevel.CONSOLE_DEFAULT, "{} Normal...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
         this.injectionModel.setIndexesInUrl(new SuspendableGetIndexes(this.injectionModel).run());
 
         // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body
@@ -56,7 +57,8 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         
         if (this.isApplicable) {
             
-            LOGGER.debug(
+            LOGGER.log(
+                LogLevel.CONSOLE_SUCCESS,
                 "{} Normal injection at index [{}] using [{}] characters",
                 () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
                 () -> this.visibleIndex,
@@ -94,10 +96,11 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         
-        LOGGER.info(
-            "{} [{}]", 
-            () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"), 
-            () -> this.getName()
+        LOGGER.log(
+            LogLevel.CONSOLE_INFORM, 
+            "{} [{}]",
+            () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
+            this::getName
         );
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getNormal());
         

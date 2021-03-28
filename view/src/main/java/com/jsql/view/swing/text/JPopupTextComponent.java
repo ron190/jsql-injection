@@ -25,6 +25,7 @@ import javax.swing.undo.UndoManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.text.action.SilentDeleteTextAction;
 
@@ -82,7 +83,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
                     
                 } catch (ArrayIndexOutOfBoundsException | CannotUndoException e) {
                     
-                    LOGGER.error(e.getMessage(), e);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
                 }
             }
        });
@@ -109,7 +110,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
                     
                 } catch (CannotRedoException e) {
                     
-                    LOGGER.error(e.getMessage(), e);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
                 }
             }
         });

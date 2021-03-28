@@ -41,6 +41,7 @@ import javax.swing.border.AbstractBorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -122,7 +123,7 @@ public final class ShadowPopupBorder extends AbstractBorder {
             
         } catch (ClassCastException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 

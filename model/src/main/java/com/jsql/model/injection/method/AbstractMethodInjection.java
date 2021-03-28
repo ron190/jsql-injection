@@ -14,6 +14,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.util.JsonUtil;
+import com.jsql.util.LogLevel;
 
 @SuppressWarnings("serial")
 public abstract class AbstractMethodInjection implements Serializable {
@@ -79,7 +80,7 @@ public abstract class AbstractMethodInjection implements Serializable {
 
     private boolean checkParamWithStar() throws JSqlException {
         
-        LOGGER.info("Checking single {} parameter with injection point at [*]", () -> this.name());
+        LOGGER.log(LogLevel.CONSOLE_INFORM, "Checking single {} parameter with injection point at [*]", this::name);
         
         // Will keep param value as is,
         // Does not test for insertion character (param is null)
@@ -131,7 +132,7 @@ public abstract class AbstractMethodInjection implements Serializable {
                         
                     } catch (JSONException e) {
                         
-                        LOGGER.error("Error parsing JSON parameters", e);
+                        LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                     }
                 }
             }
@@ -186,10 +187,11 @@ public abstract class AbstractMethodInjection implements Serializable {
         paramStar.setValue(paramStar.getValue() + InjectionModel.STAR);
         
         try {
-            LOGGER.info(
+            LOGGER.log(
+                LogLevel.CONSOLE_INFORM, 
                 "Checking {} parameter {}={}",
-                () -> this.name(),
-                () -> paramStar.getKey(),
+                this::name,
+                paramStar::getKey,
                 () -> paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
             );
             
@@ -205,7 +207,8 @@ public abstract class AbstractMethodInjection implements Serializable {
         } catch (JSqlException e) {
             
             // Injection failure
-            LOGGER.warn(
+            LOGGER.log(
+                LogLevel.CONSOLE_ERROR, 
                 "No {} injection found for parameter {}={} ({})",
                 this.name(),
                 paramStar.getKey(),

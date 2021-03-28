@@ -24,9 +24,6 @@ import com.jsql.view.interaction.InteractionCommand;
  */
 public class MessageHeader implements InteractionCommand {
     
-    /**
-     * Using default log4j.properties from root /
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     // The text to append to the tab

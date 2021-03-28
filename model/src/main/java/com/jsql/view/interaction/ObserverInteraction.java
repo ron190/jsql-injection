@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.IgnoreMessageException;
+import com.jsql.util.LogLevel;
 
 public class ObserverInteraction implements Observer {
 
@@ -52,8 +52,7 @@ public class ObserverInteraction implements Observer {
         } catch (ClassNotFoundException e) {
             
             // Ignore unused interaction message
-            IgnoreMessageException ignore = new IgnoreMessageException(e);
-            LOGGER.trace(ignore, ignore);
+            LOGGER.log(LogLevel.IGNORE, e);
             
         } catch (
             InstantiationException
@@ -64,7 +63,7 @@ public class ObserverInteraction implements Observer {
             | InvocationTargetException
             e
         ) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 }

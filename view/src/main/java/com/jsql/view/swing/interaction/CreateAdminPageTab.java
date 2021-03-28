@@ -39,6 +39,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -105,11 +106,11 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             
         } catch (IOException e) {
             
-            LOGGER.warn("Failure opening page: {}", e.getMessage());
+            LOGGER.log(LogLevel.CONSOLE_ERROR, "Failure opening page: {}", e.getMessage());
             
         } catch (ExceptionInInitializerError | NoClassDefFoundError e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
 
         final JTextPane browser = new JTextPane();
@@ -123,7 +124,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             
         } catch (IndexOutOfBoundsException | EmptyStackException e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
 
         final JPopupMenu menu = new JPopupMenu();
@@ -195,7 +196,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
                         
                     } catch (IllegalComponentStateException e) {
                         
-                        LOGGER.error(e, e);
+                        LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
                     }
                     
                     menu.setLocation(

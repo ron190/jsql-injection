@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -55,7 +56,7 @@ public class JTextFieldPlaceholder extends JTextField {
         } catch (ClassCastException e) {
             
             // Fix #4301, ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
         
         if (this.getText().length() == 0) {

@@ -52,6 +52,7 @@ import javax.swing.text.JTextComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.shadow.SystemUtils;
 import com.jsql.view.swing.sql.lexer.HighlightedDocument;
 import com.jsql.view.swing.text.action.DeleteNextCharAction;
@@ -253,7 +254,7 @@ public class UiUtil {
             
         } catch (FontFormatException | IOException e) {
             
-            LOGGER.warn("Loading Font Ubuntu Mono with control characters failed", e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, "Loading Font Ubuntu Mono with control characters failed", e);
         }
     }
 
@@ -381,7 +382,7 @@ public class UiUtil {
                             
                         } catch (InternalError e) {
                             
-                            LOGGER.error(e, e);
+                            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                         }
                     }
                 },
@@ -447,7 +448,7 @@ public class UiUtil {
             
         } catch (NoClassDefFoundError | IOException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
         
         return images;

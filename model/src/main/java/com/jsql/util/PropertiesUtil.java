@@ -24,7 +24,7 @@ public class PropertiesUtil {
             
             if (input == null) {
                 
-                LOGGER.warn("Properties file {} not found", filename);
+                LOGGER.log(LogLevel.CONSOLE_ERROR, "Properties file {} not found", filename);
                 return;
             }
 
@@ -33,7 +33,7 @@ public class PropertiesUtil {
             
         } catch (IOException e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 

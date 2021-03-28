@@ -187,10 +187,11 @@ public class JsonUtil {
             paramStar.setValue(jsonEntity.toString());
             
             try {
-                LOGGER.info(
+                LOGGER.log(
+                    LogLevel.CONSOLE_INFORM, 
                     "Checking JSON {} parameter {}={}",
-                    () -> methodInjection.name(),
-                    () -> parentXPath.getKey(),
+                    methodInjection::name,
+                    parentXPath::getKey,
                     () -> parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
                 );
                 
@@ -219,9 +220,9 @@ public class JsonUtil {
             } catch (JSqlException e) {
                 
                 // Injection failure
-                LOGGER.warn(
-                    String
-                    .format(
+                LOGGER.log(
+                    LogLevel.CONSOLE_ERROR, 
+                    String.format(
                         "No injection found for JSON %s parameter %s=%s",
                         methodInjection.name(),
                         parentXPath.getKey(),

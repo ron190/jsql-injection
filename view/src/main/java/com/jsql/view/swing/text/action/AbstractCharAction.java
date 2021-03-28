@@ -11,6 +11,8 @@ import javax.swing.text.TextAction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.util.LogLevel;
+
 /**
  * Action to cancel Beep sound when deleting last character.
  * Used on TextPane and TextArea.
@@ -61,7 +63,7 @@ public abstract class AbstractCharAction extends TextAction {
                 this.delete(doc, dot);
             }
         } catch (BadLocationException e) {
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 }

@@ -34,6 +34,7 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
+import com.jsql.util.LogLevel;
 import com.jsql.util.StringUtil;
 
 public class VendorYaml implements AbstractVendor {
@@ -109,7 +110,8 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info(
+                LOGGER.log(
+                    LogLevel.CONSOLE_INFORM, 
                     "Strategy [Dios] activated but database query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -123,7 +125,8 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info(
+                LOGGER.log(
+                    LogLevel.CONSOLE_INFORM, 
                     "Strategy [Zip] activated but database query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -146,7 +149,8 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info(
+                LOGGER.log(
+                    LogLevel.CONSOLE_INFORM, 
                     "Strategy [Dios] activated but table query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -160,7 +164,8 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info(
+                LOGGER.log(
+                    LogLevel.CONSOLE_INFORM, 
                     "Strategy [Zip] activated but table query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -173,7 +178,7 @@ public class VendorYaml implements AbstractVendor {
             
         } catch (UnsupportedEncodingException e) {
             
-            LOGGER.error("Encoding UTF8 for table hex value failed", e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
         return
@@ -198,7 +203,8 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info(
+                LOGGER.log(
+                    LogLevel.CONSOLE_INFORM, 
                     "Strategy [Dios] activated but column query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -212,7 +218,8 @@ public class VendorYaml implements AbstractVendor {
                 
             } else {
                 
-                LOGGER.info(
+                LOGGER.log(
+                    LogLevel.CONSOLE_INFORM, 
                     "Strategy [Zip] activated but column query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -227,7 +234,7 @@ public class VendorYaml implements AbstractVendor {
             
         } catch (UnsupportedEncodingException e) {
             
-            LOGGER.error("Encoding UTF8 for column hex value failed", e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
         return
@@ -258,7 +265,8 @@ public class VendorYaml implements AbstractVendor {
             
             } else {
                 
-                LOGGER.info(
+                LOGGER.log(
+                    LogLevel.CONSOLE_INFORM, 
                     "Strategy [Dios] activated but row query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -274,7 +282,8 @@ public class VendorYaml implements AbstractVendor {
             
             } else {
                 
-                LOGGER.info(
+                LOGGER.log(
+                    LogLevel.CONSOLE_INFORM, 
                     "Strategy [Zip] activated but row query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -302,7 +311,7 @@ public class VendorYaml implements AbstractVendor {
                 
             } catch (UnsupportedEncodingException e) {
                 
-                LOGGER.error(e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
             }
         }
         
@@ -313,7 +322,7 @@ public class VendorYaml implements AbstractVendor {
             
         } catch (UnsupportedEncodingException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
         
         String nameTableUtf8 = StringUtil.detectUtf8(table.toString());
@@ -323,7 +332,7 @@ public class VendorYaml implements AbstractVendor {
             
         } catch (UnsupportedEncodingException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
         
         return
@@ -658,7 +667,7 @@ public class VendorYaml implements AbstractVendor {
             
         } catch (NumberFormatException e) {
             
-            LOGGER.warn("Incorrect Limit start index, force to 0");
+            LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect Limit start index, force to 0");
         }
         
         return

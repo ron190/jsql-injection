@@ -42,6 +42,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.util.LogLevel;
 import com.jsql.view.swing.console.JTextPaneAppender;
 import com.jsql.view.swing.console.JavaConsoleAdapter;
 import com.jsql.view.swing.console.SimpleConsoleAdapter;
@@ -297,7 +298,7 @@ public class PanelConsoles extends JPanel {
             
         } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
         
         this.javaTextPane.getProxy().setText(StringUtils.EMPTY);
@@ -381,19 +382,19 @@ public class PanelConsoles extends JPanel {
         labelTab.addMouseListener(new MouseAdapter() {
             
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(MouseEvent event) {
                 
                 // Fix #90428: IllegalArgumentException in setSelectedComponent()
                 // ArrayIndexOutOfBoundsException #92973 on setSelectedComponent()
                 try {
                     PanelConsoles.this.tabConsoles.setSelectedComponent(manager);
                     
-                } catch (IllegalArgumentException err) {
+                } catch (IllegalArgumentException e) {
                     
-                    LOGGER.error(err, err);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                 }
                 
-                super.mousePressed(e);
+                super.mousePressed(event);
             }
         });
         
@@ -418,7 +419,7 @@ public class PanelConsoles extends JPanel {
             
             // Fix #67063: NullPointerException on chunkTab.append()
             // Fix #4770 on chunkTab.append()
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
     
@@ -436,7 +437,7 @@ public class PanelConsoles extends JPanel {
         
         } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
             
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
     

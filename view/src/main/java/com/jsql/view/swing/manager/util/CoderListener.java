@@ -22,7 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.model.exception.IgnoreMessageException;
+import com.jsql.util.LogLevel;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.manager.ManagerCoder;
 import com.jsql.view.swing.util.UiUtil;
@@ -83,18 +83,16 @@ public class CoderListener implements ActionListener {
                     .run(textInput);
             }
             
-        } catch (IllegalArgumentException | NoSuchAlgorithmException | IOException | DecoderException e) {
+        } catch (
+            IllegalArgumentException
+            | NoSuchAlgorithmException
+            | IOException
+            | DecoderException e
+        ) {
             
-            result =
-                String
-                .format(
-                    "<span style=\"color:red;\">Decoding failed: %s</span>",
-                    e.getMessage()
-                );
+            result = String.format("<span style=\"color:red;\">Decoding failed: %s</span>", e.getMessage());
             
-            // Ignore
-            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
-            LOGGER.trace(exceptionIgnored, exceptionIgnored);
+            LOGGER.log(LogLevel.IGNORE, e);
         }
         
         this.coderManager.getResult().setText(

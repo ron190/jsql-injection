@@ -17,6 +17,7 @@ import org.jsoup.safety.Whitelist;
 
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -111,7 +112,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
         
         // Reset EditorKit to disable previous document effect
@@ -157,7 +158,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             
         } catch (Exception | ExceptionInInitializerError e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
     
@@ -174,7 +175,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             
         } catch (NullPointerException e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
         
         // Fix #41879: ArrayIndexOutOfBoundsException on setText()
@@ -183,7 +184,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             
         } catch (ArrayIndexOutOfBoundsException e) {
             
-            LOGGER.error(e, e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 }

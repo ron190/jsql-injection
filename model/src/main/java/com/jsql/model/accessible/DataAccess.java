@@ -27,11 +27,11 @@ import com.jsql.model.bean.database.Table;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.AbstractSlidingException;
-import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevel;
 
 /**
  * Database resource object to read name of databases, tables, columns and values
@@ -149,7 +149,7 @@ public class DataAccess {
      */
     public void getDatabaseInfos() throws JSqlException {
         
-        LOGGER.trace(() -> I18nUtil.valueByKey("LOG_FETCHING_INFORMATIONS"));
+        LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_FETCHING_INFORMATIONS"));
         
         String[] sourcePage = {StringUtils.EMPTY};
 
@@ -167,7 +167,7 @@ public class DataAccess {
         
         } catch (AbstractSlidingException e) {
             
-            LOGGER.warn(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
             
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
@@ -181,7 +181,7 @@ public class DataAccess {
             
         } catch (Exception e) {
             
-            LOGGER.warn(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
         }
 
         if (StringUtils.isEmpty(resultToParse)) {
@@ -204,15 +204,16 @@ public class DataAccess {
                     username
                 );
             
-            LOGGER.debug(infos);
+            LOGGER.log(LogLevel.CONSOLE_SUCCESS, infos);
             
         } catch (ArrayIndexOutOfBoundsException e) {
 
-            LOGGER.warn(
+            LOGGER.log(
+                LogLevel.CONSOLE_ERROR, 
                 String.format("%s: %s", I18nUtil.valueByKey("LOG_DB_METADATA_INCORRECT"), resultToParse),
                 e
             );
-            LOGGER.info(I18nUtil.valueByKey("LOG_DB_METADATA_WARN"));
+            LOGGER.log(LogLevel.CONSOLE_INFORM, I18nUtil.valueByKey("LOG_DB_METADATA_WARN"));
         }
     }
     
@@ -227,7 +228,7 @@ public class DataAccess {
      */
     public List<Database> listDatabases() throws JSqlException {
         
-        LOGGER.trace(() -> I18nUtil.valueByKey("LOG_FETCHING_DATABASES"));
+        LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_FETCHING_DATABASES"));
         
         List<Database> databases = new ArrayList<>();
         
@@ -246,7 +247,7 @@ public class DataAccess {
             
         } catch (AbstractSlidingException e) {
             
-            LOGGER.warn(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
             
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
@@ -260,7 +261,7 @@ public class DataAccess {
             
         } catch (Exception e) {
             
-            LOGGER.warn(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
         }
 
         // Parse all data we have retrieved
@@ -340,7 +341,7 @@ public class DataAccess {
             
         } catch (AbstractSlidingException e) {
             
-            LOGGER.warn(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
             
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
@@ -353,7 +354,7 @@ public class DataAccess {
             }
             
         } catch (Exception e) {
-            LOGGER.warn(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
         }
 
         // Parse all the data we have retrieved
@@ -432,7 +433,7 @@ public class DataAccess {
             
         } catch (AbstractSlidingException e) {
             
-            LOGGER.warn(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
             
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
@@ -445,7 +446,7 @@ public class DataAccess {
             }
             
         } catch (Exception e) {
-            LOGGER.warn(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
         }
 
         // Build SQLite columns
@@ -571,7 +572,7 @@ public class DataAccess {
             
         } catch (AbstractSlidingException e) {
             
-            LOGGER.warn(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
             
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
@@ -585,7 +586,7 @@ public class DataAccess {
             
         } catch (Exception e) {
             
-            LOGGER.warn(e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
         }
 
         return SuspendableGetRows.parse(resultToParse);
@@ -609,25 +610,25 @@ public class DataAccess {
                     
                     isIncomplete = true;
                     
-                    LOGGER.trace(I18nUtil.valueByKey("LOG_LIST_VALUES_INCOMPLETE"));
+                    LOGGER.log(LogLevel.CONSOLE_DEFAULT, I18nUtil.valueByKey("LOG_LIST_VALUES_INCOMPLETE"));
                     
-                    // Ignore
-                    IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
-                    LOGGER.trace(exceptionIgnored, exceptionIgnored);
+                    LOGGER.log(LogLevel.IGNORE, e);
                 }
             }
             
             if (isIncomplete) {
                 
                 int logIndexRow = indexRow;
-                LOGGER.warn(
+                LOGGER.log(
+                    LogLevel.CONSOLE_ERROR, 
                     "{}{}: ",
                     () -> I18nUtil.valueByKey("LOG_LIST_VALUES_TOO_LONG"),
                     () -> logIndexRow + 1
                 );
-                LOGGER.warn(
+                LOGGER.log(
+                    LogLevel.CONSOLE_ERROR, 
                     () -> String.join(
-                        ", ", 
+                        ", ",
                         listValues.get(logIndexRow).toArray(new String[listValues.get(logIndexRow).size()])
                     )
                 );
