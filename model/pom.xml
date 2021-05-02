@@ -5,7 +5,7 @@
     <parent>
         <groupId>jsql-injection</groupId>
         <artifactId>jsql-injection</artifactId>
-        <version>${jsql.version}</version>
+        <version>v0.84</version>
     </parent>
     <artifactId>jsql-model</artifactId>
     <name>jsql-model</name>
@@ -410,24 +410,6 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20200518</version>
-        </dependency>
-
-        <dependency>
-            <groupId>net.sourceforge.spnego</groupId>
-            <artifactId>spnego</artifactId>
-            <version>7.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>jcifs</groupId>
-            <artifactId>jcifs</artifactId>
-            <version>1.3.17</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>servlet-api</artifactId>
-                    <groupId>javax.servlet</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>

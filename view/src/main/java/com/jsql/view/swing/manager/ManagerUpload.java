@@ -196,11 +196,18 @@ public class ManagerUpload extends AbstractManagerList {
                         
                         LOGGER.log(
                             LogLevel.CONSOLE_ERROR, 
-                            String.format("Payload creation error: %s", e.getMessage()),
-                            e
+                            String.format("Payload creation error: %s", e.getMessage())
                         );
                         
                     } catch (IOException e) {
+                        
+                        LOGGER.log(
+                            LogLevel.CONSOLE_ERROR, 
+                            String.format("Posting file failed: %s", e.getMessage()),
+                            e
+                        );
+                        
+                    } catch (InterruptedException e) {
                         
                         LOGGER.log(
                             LogLevel.CONSOLE_ERROR, 

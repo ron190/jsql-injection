@@ -71,6 +71,11 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
     @Override
     public CallableHttpHead call() throws Exception {
         
+        if (this.injectionModel.getResourceAccess().isSearchAdminStopped()) {
+            
+            return this;
+        }
+
         boolean isUrlIncorrect = false;
         
         URL targetUrl = null;
@@ -80,11 +85,8 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             isUrlIncorrect = true;
         }
         
-        if (
-            this.injectionModel.getResourceAccess().isSearchAdminStopped()
-            || isUrlIncorrect
-            || StringUtils.isEmpty(targetUrl.getHost())
-        ) {
+        if (isUrlIncorrect || StringUtils.isEmpty(targetUrl.getHost())) {
+            
             LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect URL: {}", this.urlAdminPage);
             return this;
         }
@@ -94,13 +96,13 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             .newBuilder()
             .uri(URI.create(this.urlAdminPage))
             .method("HEAD", BodyPublishers.noBody())
-            .timeout(Duration.ofSeconds(15))
+            .timeout(Duration.ofSeconds(4))
             .build();
         
         HttpClient httpClient =
             HttpClient
             .newBuilder()
-            .connectTimeout(Duration.ofSeconds(15))
+            .connectTimeout(Duration.ofSeconds(4))
             .build();
             
         HttpResponse<Void> response = httpClient.send(httpRequest, BodyHandlers.discarding());

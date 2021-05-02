@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>jsql-injection</groupId>
     <artifactId>jsql-injection</artifactId>
-    <version>${jsql.version}</version>
+    <version>v0.84</version>
     <packaging>pom</packaging>
     
     <modules>
@@ -21,7 +21,6 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.java.binaries>target/classes</sonar.java.binaries>
         <sonar.java.source>11</sonar.java.source>
-        <jsql.version>v0.84</jsql.version>
     </properties>
     
     <build>

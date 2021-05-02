@@ -55,10 +55,10 @@ public class SuspendableGetRows extends AbstractSuspendable {
         String[] sourcePage = (String[]) args[1];
         boolean isMultipleRows = (Boolean) args[2];
         int countRowsToFind = (Integer) args[3];
-        AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
+        AbstractElementDatabase elementDatabase = (AbstractElementDatabase) args[4];
         String metadataInjectionProcess = (String) args[5];
         
-        this.injectionModel.getMediatorUtils().getThreadUtil().put(searchName, this);
+        this.injectionModel.getMediatorUtils().getThreadUtil().put(elementDatabase, this);
 
         AbstractStrategy strategy;
         
@@ -99,7 +99,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 && StringUtils.isNotEmpty(slidingWindowAllRows.toString())
             ) {
                 
-                this.sendProgress(countRowsToFind, countRowsToFind, searchName);
+                this.sendProgress(countRowsToFind, countRowsToFind, elementDatabase);
                 break;
             }
 
@@ -123,13 +123,13 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 
             } catch (IllegalStateException | OutOfMemoryError e) {
                 
-                this.throwFatal(searchName, e);
+                this.endInjection(elementDatabase, e);
             }
 
             // Check how many rows we have collected from the beginning of that chunk
             int countChunkRows = this.getCountRows(slidingWindowCurrentRow);
 
-            this.sendProgress(countRowsToFind, countAllRows + countChunkRows, searchName);
+            this.sendProgress(countRowsToFind, countAllRows + countChunkRows, elementDatabase);
 
             // End of rows detected: \1\3\3\7
             // => \4xxxxxxxx\500\4\6\4...\4\1\3\3\7
@@ -151,7 +151,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
                     countAllRows = this.getCountRows(slidingWindowAllRows);
 
-                    this.sendProgress(countRowsToFind, countAllRows, searchName);
+                    this.sendProgress(countRowsToFind, countAllRows, elementDatabase);
 
                     // Ending condition: every expected rows have been retrieved.
                     if (countAllRows == countRowsToFind) {
@@ -167,7 +167,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                     
                 } else {
                     
-                    this.sendProgress(countRowsToFind, countRowsToFind, searchName);
+                    this.sendProgress(countRowsToFind, countRowsToFind, elementDatabase);
                     break;
                 }
             }
@@ -175,7 +175,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
             charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1;
         }
         
-        this.injectionModel.getMediatorUtils().getThreadUtil().remove(searchName);
+        this.injectionModel.getMediatorUtils().getThreadUtil().remove(elementDatabase);
 
         return slidingWindowAllRows.toString();
     }
@@ -270,7 +270,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         return nbCompleteLine;
     }
 
-    private void throwFatal(AbstractElementDatabase searchName, Throwable e) throws InjectionFailureException {
+    private void endInjection(AbstractElementDatabase searchName, Throwable e) throws InjectionFailureException {
         
         // Premature end of results
         // if it's not the root (empty tree)

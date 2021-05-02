@@ -127,10 +127,14 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                     this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
                 }
                 
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (InterruptedException e) {
                 
                 LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
                 Thread.currentThread().interrupt();
+                
+            } catch (ExecutionException e) {
+                
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
                 
             } catch (InjectionFailureException e) {
                 

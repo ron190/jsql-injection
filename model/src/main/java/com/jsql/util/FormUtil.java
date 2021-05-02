@@ -1,7 +1,6 @@
 package com.jsql.util;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,9 +34,9 @@ public class FormUtil {
         this.injectionModel = injectionModel;
     }
 
-    public void parseForms(HttpURLConnection connection, StringBuilder pageSource) throws IOException {
+    public void parseForms(int statusCode, String pageSource) throws IOException {
         
-        Elements elementsForm = Jsoup.parse(pageSource.toString()).select("form");
+        Elements elementsForm = Jsoup.parse(pageSource).select("form");
         
         if (elementsForm.isEmpty()) {
             return;
@@ -77,7 +76,7 @@ public class FormUtil {
             
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isParsingForm()) {
             
-            this.logForms(connection, elementsForm, result);
+            this.logForms(statusCode, elementsForm, result);
             
         } else {
             
@@ -122,9 +121,9 @@ public class FormUtil {
         }
     }
 
-    private void logForms(HttpURLConnection connection, Elements elementsForm, StringBuilder result) throws IOException {
+    private void logForms(int statusCode, Elements elementsForm, StringBuilder result) throws IOException {
         
-        if (connection.getResponseCode() != 200) {
+        if (statusCode != 200) {
             
             LOGGER.log(
                 LogLevel.CONSOLE_DEFAULT,

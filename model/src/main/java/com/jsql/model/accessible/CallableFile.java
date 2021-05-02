@@ -67,7 +67,8 @@ public class CallableFile implements Callable<CallableFile> {
                 sourcePage,
                 false,
                 1,
-                null
+                null,
+                "file"
             );
             
         } catch (InjectionFailureException e) {

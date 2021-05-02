@@ -1,12 +1,12 @@
 ## Description
 **jSQL Injection** is a lightweight application used to find database information from a distant server.
 
-It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac and works with Java from version 11 to 15.
+It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac and it works with Java from version 11 to 17.
 
 ![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in various other distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)<br>
-[![Java 11 to 15](https://img.shields.io/badge/java-11%20to%2015-orange?logo=java)](http://www.oracle.com/technetwork/java/javase/downloads/)
+[![Java 11 to 17](https://img.shields.io/badge/java-11%20to%2017-orange?logo=java)](http://www.oracle.com/technetwork/java/javase/downloads/)
 [![JUnit 5](https://img.shields.io/badge/junit-5-50940f)](http://junit.org)
 [![Maven 3.1](https://img.shields.io/badge/maven-3.1-a2265a)](https://maven.apache.org/)
 [![License](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
@@ -35,10 +35,10 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 - Proxy connection on HTTP, SOCKS4 and SOCKS5
 
 ## Installation [[jsql-injection-v0.84.jar](https://github.com/ron190/jsql-injection/releases/download/v0.84/jsql-injection-v0.84.jar)]
-Install [Java](http://java.com) 11 or up to 15, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.84.jar` to launch the software.<br>
+Install [Java](http://java.com) 11 or up to 17, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.84.jar` to launch the software.<br>
 You can also type `java -jar jsql-injection-v0.84.jar` in your terminal to start the program.<br>
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.<br>
-For Java 16+ use `java --illegal-access=warn --add-exports java.base/sun.net.www.protocol.http=ALL-UNNAMED -jar jsql-view-v0.84-jar-with-dependencies.jar`.
+For Java 16+ use `java --illegal-access=warn --add-exports java.base/sun.net.www.protocol.http=ALL-UNNAMED -jar jsql-injection-v0.84.jar`.
 
 ## Continuous integration
 This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using continuous integration platform like Travis CI and Github Actions.<br> 

@@ -1,9 +1,12 @@
 package com.jsql.util;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
+import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.time.Duration;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
@@ -163,54 +166,35 @@ public class GitUtil {
             return;
         }
 
-        // Connect to Github webservice
-        HttpURLConnection connection = null;
-        
-        try {
-            URL githubUrl = new URL(
-                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.issues.url")
-            );
-
-            connection = (HttpURLConnection) githubUrl.openConnection();
-            connection.setDefaultUseCaches(false);
-            connection.setUseCaches(false);
-            connection.setRequestProperty("Pragma", "no-cache");
-            connection.setRequestProperty("Cache-Control", "no-cache");
-            connection.setRequestProperty("Expires", "-1");
-            connection.setRequestProperty("Content-Type", "application/json");
-            
-            // Authenticate as jsql-robot
-            connection.setRequestProperty(
-                "Authorization",
-                "token "
-                + StringUtils.newStringUtf8(
-                    Base64.decodeBase64(
-                        this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.token")
+        HttpRequest httpRequest =
+                HttpRequest
+                .newBuilder()
+                .uri(URI.create(this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.issues.url")))
+                .setHeader(
+                    "Authorization",
+                    "token "
+                    + StringUtils.newStringUtf8(
+                        Base64.decodeBase64(
+                            this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.token")
+                        )
                     )
                 )
-            );
+                .POST(BodyPublishers.ofString(
+                    new JSONObject()
+                    .put("title", reportTitle)
+                    .put("body", StringUtil.decimalHtmlEncode(reportBody))
+                    .toString()
+                ))
+                .timeout(Duration.ofSeconds(15))
+                .build();
             
-            connection.setReadTimeout(this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout());
-            connection.setConnectTimeout(this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout());
-            connection.setDoOutput(true);
-
-            // Set the content of the Issue
-            DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
-            dataOut.writeBytes(
-                new JSONObject()
-                .put("title", reportTitle)
-                .put("body", StringUtil.decimalHtmlEncode(reportBody))
-                .toString()
-            );
-            dataOut.flush();
-            dataOut.close();
+        try {
+            HttpResponse<String> response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(httpRequest, BodyHandlers.ofString());
+                        
+            this.readGithubResponse(response, showOnConsole);
             
-            this.readGithubResponse(connection, showOnConsole);
+        } catch (InterruptedException | IOException e) {
             
-        } catch (IOException | NoClassDefFoundError | JSONException e) {
-            
-            // Fix #27623: NoClassDefFoundError on getOutputStream()
-            // Implemented by jcifs.http.NtlmHttpURLConnection.getOutputStream()
             if (showOnConsole == ShowOnConsole.YES) {
                 
                 LOGGER.log(
@@ -222,11 +206,11 @@ public class GitUtil {
         }
     }
     
-    private void readGithubResponse(HttpURLConnection connection, ShowOnConsole showOnConsole) throws IOException {
+    private void readGithubResponse(HttpResponse<String> response, ShowOnConsole showOnConsole) throws IOException {
         
         try {
             // Read the response
-            String sourcePage = ConnectionUtil.getSourceLineFeed(connection);
+            String sourcePage = response.body();
 
             if (showOnConsole == ShowOnConsole.YES) {
                 

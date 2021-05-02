@@ -2,7 +2,7 @@ package com.jsql.util;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.HttpURLConnection;
+import java.net.http.HttpRequest.Builder;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.List;
@@ -36,14 +36,14 @@ public class CsrfUtil {
         this.injectionModel = injectionModel;
     }
 
-    public void parseForCsrfToken(StringBuilder pageSource, Map<String, String> headers) {
+    public void parseForCsrfToken(String pageSource, Map<String, String> headers) {
         
         this.parseCsrfFromCookie(headers);
         
         this.parseCsrfFromHtml(pageSource);
     }
 
-    private void parseCsrfFromHtml(StringBuilder pageSource) {
+    private void parseCsrfFromHtml(String pageSource) {
         
         List<String> tags =
             Arrays
@@ -72,7 +72,7 @@ public class CsrfUtil {
         
         Optional<SimpleEntry<String, String>> optionalTokenCsrf =
             Jsoup
-            .parse(pageSource.toString())
+            .parse(pageSource)
             .select("input")
             .select(
                 String.join(",", tags)
@@ -174,27 +174,20 @@ public class CsrfUtil {
             }
         }
     }
-    
-    public void addHeaderToken(HttpURLConnection connection) {
+
+    public void addHeaderToken(Builder httpRequest) {
         
         if (this.tokenCsrf == null) {
             
              return;
         }
 
-        connection.setRequestProperty(
-            "X-XSRF-TOKEN",
-            this.tokenCsrf.getValue()
-        );
-        
-        connection.setRequestProperty(
-            "X-CSRF-TOKEN",
-            this.tokenCsrf.getValue()
-        );
+        httpRequest.setHeader("X-XSRF-TOKEN", this.tokenCsrf.getValue());
+        httpRequest.setHeader("X-CSRF-TOKEN", this.tokenCsrf.getValue());
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
 
-            connection.setRequestProperty(
+            httpRequest.setHeader(
                 this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),
                 this.tokenCsrf.getValue()
             );
@@ -226,6 +219,40 @@ public class CsrfUtil {
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
             
             dataOut.writeBytes(
+                String.format(
+                    "%s=%s&",
+                    this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),
+                    this.tokenCsrf.getValue()
+                )
+            );
+        }
+    }
+
+    public void addRequestToken(StringBuilder httpRequest) {
+
+        if (this.tokenCsrf == null) {
+            
+            return;
+        }
+
+        httpRequest.append(
+            String.format(
+                "%s=%s&",
+                this.tokenCsrf.getKey(),
+                this.tokenCsrf.getValue()
+            )
+        );
+        
+        httpRequest.append(
+            String.format(
+                "_csrf=%s&",
+                this.tokenCsrf.getValue()
+            )
+        );
+        
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
+            
+            httpRequest.append(
                 String.format(
                     "%s=%s&",
                     this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),

@@ -54,7 +54,6 @@ public class MainApplication {
         MediatorHelper.register(injectionModel);
         
         // Configure global environment settings
-        CertificateUtil.ignoreCertificationChain();
         injectionModel.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();
         injectionModel.getMediatorUtils().getProxyUtil().initializeProxy();
         injectionModel.getMediatorUtils().getAuthenticationUtil().setKerberosCifs();

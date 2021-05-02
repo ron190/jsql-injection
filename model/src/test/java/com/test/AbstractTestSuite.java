@@ -44,12 +44,6 @@ import spring.SpringTargetApplication;
 @Execution(ExecutionMode.CONCURRENT)
 public abstract class AbstractTestSuite {
     
-    static {
-        
-        // Use Timeout fix in Model
-        jcifs.Config.registerSmbURLHandler();
-    }
-    
     protected static final Logger LOGGER = LogManager.getRootLogger();
 
     private List<String> databasesFromJdbc = new ArrayList<>();

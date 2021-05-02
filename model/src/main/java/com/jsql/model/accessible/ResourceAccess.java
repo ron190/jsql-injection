@@ -14,17 +14,26 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.Duration;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
@@ -33,6 +42,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -46,9 +56,8 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
-import com.jsql.util.ConnectionUtil;
-import com.jsql.util.HeaderUtil;
 import com.jsql.util.LogLevel;
+import com.jsql.util.StringUtil;
 
 /**
  * Resource access object.
@@ -131,10 +140,14 @@ public class ResourceAccess {
                 LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Found page: {}", currentCallable.getUrl());
             }
             
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException e) {
             
             LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
+            
+        } catch (ExecutionException e) {
+            
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
         return nbAdminPagesFoundFixed;
@@ -145,10 +158,10 @@ public class ResourceAccess {
         String result =
             String
             .format(
-                "Found %s admin page%s%s on %s page%s searched",
+                "Found %s admin page%s%s on %s page%s",
                 nbAdminPagesFound,
                 nbAdminPagesFound > 1 ? 's' : StringUtils.EMPTY,
-                tasksHandled != submittedTasks ? " of "+ tasksHandled +" processed " : StringUtils.EMPTY,
+                tasksHandled != submittedTasks ? " of "+ tasksHandled +" processed" : StringUtils.EMPTY,
                 submittedTasks,
                 submittedTasks > 1 ? 's' : StringUtils.EMPTY
             );
@@ -178,10 +191,13 @@ public class ResourceAccess {
         }
         
         String sourceShellToInject =
-            this.injectionModel.getMediatorUtils()
-            .getPropertiesUtil()
-            .getProperties()
-            .getProperty("shell.web")
+            StringUtil
+            .base64Decode(
+                this.injectionModel.getMediatorUtils()
+                .getPropertiesUtil()
+                .getProperties()
+                .getProperty("shell.web")
+            )
             .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
             .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
 
@@ -209,7 +225,7 @@ public class ResourceAccess {
                 false,
                 1,
                 null,
-                "wshell"
+                "webshell"
             );
 
             if (StringUtils.isEmpty(resultInjection)) {
@@ -344,10 +360,14 @@ public class ResourceAccess {
                     LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Connection to payload not found at '{}'", currentCallable.getUrl());
                 }
                 
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (InterruptedException e) {
                 
                 LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                 Thread.currentThread().interrupt();
+                
+            } catch (ExecutionException e) {
+                
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             }
         }
         
@@ -362,16 +382,9 @@ public class ResourceAccess {
      */
     private String runCommandShell(String urlCommand) throws IOException {
         
-        HttpURLConnection connection;
-
-        String url = urlCommand;
-        connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setReadTimeout(this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout());
-        connection.setConnectTimeout(this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout());
-
         String pageSource = null;
         try {
-            pageSource = ConnectionUtil.getSource(connection);
+            pageSource = injectionModel.getMediatorUtils().getConnectionUtil().getSource(urlCommand);
             
         } catch (Exception e) {
             
@@ -393,19 +406,6 @@ public class ResourceAccess {
             result = StringUtils.EMPTY;
             LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect response from Web shell", e);
         }
-        
-        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, url);
-        msgHeader.put(Header.POST, StringUtils.EMPTY);
-        msgHeader.put(Header.HEADER, StringUtils.EMPTY);
-        msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
-        msgHeader.put(Header.SOURCE, pageSource);
-        msgHeader.put(Header.METADATA_PROCESS, "sshell#run");
-        
-        Request request = new Request();
-        request.setMessage(Interaction.MESSAGE_HEADER);
-        request.setParameters(msgHeader);
-        this.injectionModel.sendToViews(request);
         
         return result;
     }
@@ -473,10 +473,13 @@ public class ResourceAccess {
         }
         
         String sourceShellToInject =
-            this.injectionModel.getMediatorUtils()
-            .getPropertiesUtil()
-            .getProperties()
-            .getProperty("shell.sql")
+            StringUtil
+            .base64Decode(
+                this.injectionModel.getMediatorUtils()
+                .getPropertiesUtil()
+                .getProperties()
+                .getProperty("shell.sql")
+            )
             .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
             .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
 
@@ -501,7 +504,7 @@ public class ResourceAccess {
                 false,
                 1,
                 null,
-                "sshell"
+                "sqlshell"
             );
 
             if (StringUtils.isEmpty(resultInjection)) {
@@ -617,10 +620,14 @@ public class ResourceAccess {
                     LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Connection to payload not found at '{}'", currentCallable.getUrl());
                 }
                 
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (InterruptedException e) {
                 
                 LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                 Thread.currentThread().interrupt();
+                
+            } catch (ExecutionException e) {
+                
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             }
         }
 
@@ -811,8 +818,10 @@ public class ResourceAccess {
      * @param file File to upload
      * @throws JSqlException
      * @throws IOException
+     * @throws InterruptedException 
+     * @throws URISyntaxException 
      */
-    public void uploadFile(String pathFile, String urlFile, File file) throws JSqlException, IOException {
+    public void uploadFile(String pathFile, String urlFile, File file) throws JSqlException, IOException, InterruptedException {
         
         if (!this.isReadingAllowed()) {
             
@@ -820,10 +829,13 @@ public class ResourceAccess {
         }
         
         String sourceShellToInject =
-            this.injectionModel.getMediatorUtils()
-            .getPropertiesUtil()
-            .getProperties()
-            .getProperty("shell.upload")
+            StringUtil
+            .base64Decode(
+                this.injectionModel.getMediatorUtils()
+                .getPropertiesUtil()
+                .getProperties()
+                .getProperty("shell.upload")
+            )
             .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD);
         
         String pathShellFixed = pathFile;
@@ -897,15 +909,11 @@ public class ResourceAccess {
             
             String crLf = "\r\n";
             
-            URL urlUploadShell = new URL(urlFileFixed +"/"+ this.filenameUpload);
-            URLConnection connection = urlUploadShell.openConnection();
-            connection.setDoOutput(true);
-            
             try (InputStream streamToUpload = new FileInputStream(file)) {
 
-                this.upload(file, crLf, connection, streamToUpload);
+                HttpResponse<String> result = this.upload(file, crLf, urlFileFixed +"/"+ this.filenameUpload, streamToUpload);
                 
-                this.confirmUpload(file, pathShellFixed, urlFileFixed, connection);
+                this.confirmUpload(file, pathShellFixed, urlFileFixed, result);
             }
             
         } else {
@@ -918,7 +926,7 @@ public class ResourceAccess {
         this.injectionModel.sendToViews(request);
     }
 
-    private void upload(File file, String crLf, URLConnection connection, InputStream streamToUpload) throws IOException, JSqlException {
+    private HttpResponse<String> upload(File file, String crLf, String string, InputStream streamToUpload) throws IOException, JSqlException, InterruptedException {
         
         byte[] streamData = new byte[streamToUpload.available()];
         
@@ -936,81 +944,78 @@ public class ResourceAccess {
         String headerFile = StringUtils.EMPTY;
         headerFile += crLf +"-----------------------------4664151417711--"+ crLf;
 
-        connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=---------------------------4664151417711");
-        connection.setRequestProperty("Content-Length", String.valueOf(headerForm.length() + headerFile.length() + streamData.length));
-
-        try (OutputStream streamOutputFile = connection.getOutputStream()) {
+        HttpRequest httpRequest =
+                HttpRequest
+                .newBuilder()
+                .uri(URI.create(string))
+                .timeout(Duration.ofSeconds(15))
+                .POST(
+                    BodyPublishers.ofByteArrays(
+                        Arrays.asList(
+                            headerForm.getBytes(), 
+                            Files.readAllBytes(Paths.get(file.toURI())), 
+                            headerFile.getBytes()
+                        )
+                    )
+                )
+                .setHeader("Content-Type", "multipart/form-data; boundary=---------------------------4664151417711")
+                .build();
             
-            streamOutputFile.write(headerForm.getBytes());
-   
-            int index = 0;
-            int size = 1024;
-            
-            do {
-                if (index + size > streamData.length) {
-                    size = streamData.length - index;
-                }
-                
-                streamOutputFile.write(streamData, index, size);
-                index += size;
-                
-            } while (index < streamData.length);
-   
-            streamOutputFile.write(headerFile.getBytes());
-            streamOutputFile.flush();
-        }
+        HttpResponse<String> httpResponse = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(httpRequest, BodyHandlers.ofString());
+        
+        return httpResponse;
     }
 
-    private void confirmUpload(File file, String pathShellFixed, String urlFileFixed, URLConnection connection) throws IOException {
-        
-        try (InputStream streamInputFile = connection.getInputStream()) {
-            
-            char buff = 512;
-            int len;
-            byte[] data = new byte[buff];
-            StringBuilder result = new StringBuilder();
-            
-            do {
-                len = streamInputFile.read(data);
+    private void confirmUpload(File file, String pathShellFixed, String urlFileFixed, HttpResponse<String> result) throws IOException {
    
-                if (len > 0) {
-                    
-                    result.append(new String(data, 0, len));
-                }
-                
-            } while (len > 0);
-   
-            if (result.indexOf(DataAccess.LEAD +"y") > -1) {
-                
-                LOGGER.log(
-                    LogLevel.CONSOLE_SUCCESS,
-                    "File '{}' uploaded into '{}'",
-                    file::getName,
-                    () -> pathShellFixed
-                );
-                
-            } else {
-                
-                LOGGER.log(
-                    LogLevel.CONSOLE_ERROR, 
-                    "Upload file '{}' into '{}' failed",
-                    file::getName,
-                    () -> pathShellFixed
-                );
-            }
+        if (result.body().indexOf(DataAccess.LEAD +"y") > -1) {
             
-            Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-            msgHeader.put(Header.URL, urlFileFixed);
-            msgHeader.put(Header.POST, StringUtils.EMPTY);
-            msgHeader.put(Header.HEADER, StringUtils.EMPTY);
-            msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
-            msgHeader.put(Header.SOURCE, result.toString());
-   
-            Request request = new Request();
-            request.setMessage(Interaction.MESSAGE_HEADER);
-            request.setParameters(msgHeader);
-            this.injectionModel.sendToViews(request);
+            LOGGER.log(
+                LogLevel.CONSOLE_SUCCESS,
+                "File '{}' uploaded into '{}'",
+                file::getName,
+                () -> pathShellFixed
+            );
+            
+        } else {
+            
+            LOGGER.log(
+                LogLevel.CONSOLE_ERROR, 
+                "Upload file '{}' into '{}' failed",
+                file::getName,
+                () -> pathShellFixed
+            );
         }
+        
+        Map<String, String> headers =
+                result
+                .headers()
+                .map()
+                .entrySet()
+                .stream()
+                .sorted(Comparator.comparing(Entry::getKey))
+                .map(entrySet ->
+                    new AbstractMap.SimpleEntry<>(
+                        entrySet.getKey(),
+                        String.join(", ", entrySet.getValue())
+                        )
+                    )
+                    .collect(Collectors.toMap(
+                        AbstractMap.SimpleEntry::getKey,
+                        AbstractMap.SimpleEntry::getValue
+                    ));
+            
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader.put(Header.URL, urlFileFixed);
+        msgHeader.put(Header.POST, StringUtils.EMPTY);
+        msgHeader.put(Header.HEADER, StringUtils.EMPTY);
+        msgHeader.put(Header.RESPONSE, headers);
+        msgHeader.put(Header.SOURCE, result.toString());
+   
+        Request request = new Request();
+        request.setMessage(Interaction.MESSAGE_HEADER);
+        request.setParameters(msgHeader);
+        this.injectionModel.sendToViews(request);
     }
     
     /**
@@ -1040,7 +1045,7 @@ public class ResourceAccess {
             false,
             1,
             null,
-            "read"
+            "privilege"
         );
 
         if (StringUtils.isEmpty(resultInjection)) {
@@ -1053,7 +1058,7 @@ public class ResourceAccess {
             
         } else if ("false".equals(resultInjection)) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "Privilege FILE is not granted to current user, files can't be read");
+            LOGGER.log(LogLevel.CONSOLE_ERROR, "Privilege FILE is not granted to current user, files can\'t be read");
             Request request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);
             this.injectionModel.sendToViews(request);

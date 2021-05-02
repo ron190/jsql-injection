@@ -1,28 +1,17 @@
 package com.jsql.util;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
+import java.net.Authenticator;
 import java.net.CookieHandler;
 import java.net.CookieManager;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
+import java.net.PasswordAuthentication;
 import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
 import java.net.http.HttpClient;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
@@ -34,11 +23,8 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Random;
 import java.util.TreeMap;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -51,8 +37,6 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.util.protocol.SessionCookieManager;
-
-import net.sourceforge.spnego.SpnegoHttpURLConnection;
 
 /**
  * Utility class in charge of connection to web resources and management
@@ -93,6 +77,37 @@ public class ConnectionUtil {
     
     private InjectionModel injectionModel;
     
+    public HttpClient getHttpClient() {
+        
+        HttpClient.Builder httpClientBuilder = HttpClient
+            .newBuilder()
+            .connectTimeout(Duration.ofSeconds(15))
+            .sslContext(CertificateUtil.ignoreCertificationChain())
+            .followRedirects(
+                injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()
+                ? HttpClient.Redirect.ALWAYS
+                : HttpClient.Redirect.NEVER
+            );
+        
+        if (this.injectionModel.getMediatorUtils().getAuthenticationUtil().isAuthentEnabled()) {
+            
+            // TODO Make it work for basic, digest, ntlm
+            httpClientBuilder.authenticator(new Authenticator() {
+              
+              @Override
+              protected PasswordAuthentication getPasswordAuthentication() {
+                  
+                  return new PasswordAuthentication (
+                      ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().usernameAuthentication,
+                      ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().passwordAuthentication.toCharArray()
+                  );
+              }
+          });
+      }
+                
+        return httpClientBuilder.build();
+    }
+    
     public ConnectionUtil(InjectionModel injectionModel) {
         
         this.injectionModel = injectionModel;
@@ -129,58 +144,28 @@ public class ConnectionUtil {
         }
 
         // Test the HTTP connection
-        HttpURLConnection connection = null;
         try {
-            if (this.injectionModel.getMediatorUtils().getAuthenticationUtil().isKerberos()) {
-                
-                String loginKerberos =
-                    Pattern
-                    .compile("(?s)\\{.*")
-                    .matcher(
-                        StringUtils.join(
-                            Files.readAllLines(
-                                Paths.get(this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPathKerberosLogin()),
-                                Charset.defaultCharset()
-                            ),
-                            StringUtils.EMPTY
-                        )
-                    )
-                    .replaceAll(StringUtils.EMPTY)
-                    .trim();
-                
-                SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(loginKerberos);
-                connection = spnego.connect(new URL(this.getUrlByUser()));
-                
-            } else {
-                
-                connection =
-                    (HttpURLConnection) new URL(
+            Builder httpRequest = HttpRequest
+                .newBuilder()
+                .uri(
+                    URI.create(
                         this.getUrlByUser()
                         // Ignore injection point during the test
                         .replace(InjectionModel.STAR, StringUtils.EMPTY)
                     )
-                    .openConnection();
-            }
-            
-            connection.setReadTimeout(this.getTimeout());
-            connection.setConnectTimeout(this.getTimeout());
-            connection.setDefaultUseCaches(false);
-            connection.setRequestProperty("Pragma", NO_CACHE);
-            connection.setRequestProperty("Cache-Control", NO_CACHE);
-            connection.setRequestProperty("Expires", "-1");
-            connection.setRequestProperty("Content-Type", "text/plain");
-            
-            this.fixJcifsTimeout(connection);
+                )
+                .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, "text/plain")
+                .timeout(Duration.ofSeconds(15));
             
             // Add headers if exists (Authorization:Basic, etc)
             for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()) {
                 
-                HeaderUtil.sanitizeHeaders(connection, header);
+                HeaderUtil.sanitizeHeaders(httpRequest, header);
             }
 
             this.injectionModel.getMediatorUtils().getHeaderUtil()
             .checkResponseHeader(
-                connection,
+                httpRequest,
                 this.getUrlByUser().replace(InjectionModel.STAR, StringUtils.EMPTY)
             );
             
@@ -208,23 +193,17 @@ public class ConnectionUtil {
                 .timeout(Duration.ofSeconds(15))
                 .build();
             
-            HttpClient httpClient =
-                HttpClient
-                .newBuilder()
-                .connectTimeout(Duration.ofSeconds(15))
-                .build();
-            
             HttpHeaders httpHeaders;
                 
             if (lineFeed) {
                 
-                HttpResponse<Stream<String>> response = httpClient.send(httpRequest, BodyHandlers.ofLines());
+                HttpResponse<Stream<String>> response = getHttpClient().send(httpRequest, BodyHandlers.ofLines());
                 pageSource = response.body().collect(Collectors.joining("\n"));
                 httpHeaders = response.headers();
                 
             } else {
                 
-                HttpResponse<String> response = httpClient.send(httpRequest, BodyHandlers.ofString(StandardCharsets.ISO_8859_1));
+                HttpResponse<String> response = getHttpClient().send(httpRequest, BodyHandlers.ofString());
                 pageSource = response.body();
                 httpHeaders = response.headers();
             }
@@ -271,63 +250,6 @@ public class ConnectionUtil {
         return pageSource.trim();
     }
     
-    public static String getSourceLineFeed(HttpURLConnection connection) throws IOException {
-        
-        StringBuilder pageSource = new StringBuilder();
-    
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String line;
-        
-        while ((line = reader.readLine()) != null) {
-            
-            pageSource.append(line +"\n");
-        }
-        
-        reader.close();
-        
-        return pageSource.toString();
-    }
-    
-    public static String getSource(HttpURLConnection connection) throws IOException {
-        
-        ByteArrayOutputStream pageSource = new ByteArrayOutputStream();
-        
-        // Get connection content without null bytes %00
-        try {
-            byte[] buffer = new byte[1024];
-            int length;
-            
-            while ((length = connection.getInputStream().read(buffer)) != -1) {
-                
-                pageSource.write(buffer, 0, length);
-            }
-            
-        } catch (IOException errorInputStream) {
-            
-            InputStream errorStream = connection.getErrorStream();
-            
-            if (errorStream != null) {
-                
-                try {
-                    byte[] buffer = new byte[1024];
-                    int length;
-                    
-                    while ((length = errorStream.read(buffer)) != -1) {
-                        
-                        pageSource.write(buffer, 0, length);
-                    }
-                    
-                } catch (IOException e) {
-                    
-                    // Ignore errors related to wrong URLs generated by injection
-                    LOGGER.log(LogLevel.IGNORE, e);
-                }
-            }
-        }
-        
-        return pageSource.toString(StandardCharsets.UTF_8.name());
-    }
-    
     /**
      * Call an URL and return the source page.
      * @param url to call
@@ -343,114 +265,8 @@ public class ConnectionUtil {
         
         return this.getSource(url, false);
     }
-    
-    /**
-     * Fix a wrong doing by Java core developers on design of HTTP method definition.
-     * Compatible HTTP methods are stored in an array but it cannot be modified in order
-     * to define your own method, whereas method should be customizable.
-     * @param connection which HTTP method must be customized
-     * @param customMethod to set on the connection
-     * @throws ProtocolException if backup solution fails during reflectivity
-     */
-    public static void fixCustomRequestMethod(HttpURLConnection connection, String customMethod) throws ProtocolException {
-        
-        // Add a default or custom method: check whether we are running on a buggy JRE
-        try {
-            connection.setRequestMethod(customMethod);
-            
-        } catch (final ProtocolException pe) {
-            
-            LOGGER.log(LogLevel.IGNORE, pe);
-            
-            try {
-                final Class<?> httpURLConnectionClass = connection.getClass();
-                final Class<?> parentClass = httpURLConnectionClass.getSuperclass();
-                final Field methodField;
-                
-                Field methods = parentClass.getDeclaredField("methods");
-                methods.setAccessible(true);
-                Array.set(methods.get(connection), 1, customMethod);
-                
-                // If the implementation class is an Https URL Connection, we
-                // need to go up one level higher in the hierarchy to modify the
-                // 'method' field.
-                if (parentClass == HttpsURLConnection.class) {
-                    
-                    methodField = parentClass.getSuperclass().getDeclaredField("method");
-                    
-                } else {
-                    
-                    methodField = parentClass.getDeclaredField("method");
-                }
-                
-                methodField.setAccessible(true);
-                methodField.set(connection, customMethod);
-                
-            } catch (Exception e) {
-                
-                LOGGER.log(LogLevel.CONSOLE_ERROR, "Custom Request method definition failed, forcing method GET", e);
-                connection.setRequestMethod("GET");
-            }
-        }
-    }
-    
-    /**
-     * Fix a bug introduced by authentication library jcifs which ignore
-     * default timeout of connection.
-     * Use reflectivity to set connectTimeout and readTimeout attributes.
-     * @param connection whose default timeout attributes will be set
-     */
-    public void fixJcifsTimeout(HttpURLConnection connection) {
-        
-        Class<?> classConnection = connection.getClass();
-        boolean connectionIsWrapped = true;
-        
-        Field privateFieldURLConnection = null;
-        
-        try {
-            privateFieldURLConnection = classConnection.getDeclaredField("connection");
-            
-        } catch (Exception e) {
-            
-            // Ignore Fix
-            connectionIsWrapped = false;
 
-            LOGGER.log(LogLevel.IGNORE, e);
-        }
-        
-        if (connectionIsWrapped) {
-            
-            try {
-                privateFieldURLConnection.setAccessible(true);
-                
-                URLConnection privateURLConnection = (URLConnection) privateFieldURLConnection.get(connection);
-                Class<?> classURLConnectionPrivate = privateURLConnection.getClass();
-                
-                final Class<?> parentClass = classURLConnectionPrivate.getSuperclass();
-                if (parentClass == HttpsURLConnection.class) {
-                    return;
-                }
-    
-                Field privateFieldConnectTimeout = classURLConnectionPrivate.getDeclaredField("connectTimeout");
-                privateFieldConnectTimeout.setAccessible(true);
-                privateFieldConnectTimeout.setInt(privateURLConnection, this.getTimeout());
-                
-                Field privateFieldReadTimeout = classURLConnectionPrivate.getDeclaredField("readTimeout");
-                privateFieldReadTimeout.setAccessible(true);
-                privateFieldReadTimeout.setInt(privateURLConnection, this.getTimeout());
-                
-            } catch (Exception e) {
-                
-                LOGGER.log(
-                    LogLevel.CONSOLE_ERROR, 
-                    String.format("Fix jcifs timeout failed: %s", e.getMessage()),
-                    e
-                );
-            }
-        }
-    }
-    
-    public void setCustomUserAgent(HttpURLConnection connection) {
+    public void setCustomUserAgent(Builder httpRequest) {
         
         if (this.injectionModel.getMediatorUtils().getUserAgentUtil().isCustomUserAgent()) {
             
@@ -463,7 +279,7 @@ public class ConnectionUtil {
             
             String randomElement = listAgents.get(this.randomForUserAgent.nextInt(listAgents.size()));
             
-            connection.addRequestProperty("User-Agent", randomElement);
+            httpRequest.setHeader("User-Agent", randomElement);
         }
     }
     

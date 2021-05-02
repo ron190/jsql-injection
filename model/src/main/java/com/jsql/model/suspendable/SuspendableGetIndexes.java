@@ -106,10 +106,14 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                 taskExecutor.shutdownNow();
             }
             
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException e) {
             
             LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
+            
+        } catch (ExecutionException e) {
+            
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         return initialQuery;

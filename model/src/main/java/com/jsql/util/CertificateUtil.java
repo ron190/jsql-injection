@@ -2,9 +2,7 @@ package com.jsql.util;
 
 import java.security.cert.X509Certificate;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
@@ -25,14 +23,15 @@ public class CertificateUtil {
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     // Utility class
-    private CertificateUtil() {
-        // not called
+    public CertificateUtil() {
+        
+        System.setProperty("jdk.internal.httpclient.disableHostnameVerification", "true");
     }
     
     /**
      * Configure a fake SSL context in order to ignore malformed certificate.
      */
-    public static void ignoreCertificationChain() {
+    public static SSLContext ignoreCertificationChain() {
         
         // Create a trust manager that does not validate certificate chains
         // and ignore exception PKIX path building failed: unable to find valid certification path to requested target
@@ -67,10 +66,11 @@ public class CertificateUtil {
         };
 
         // Install the all-trusting trust manager
+        SSLContext sc = null;
+        
         try {
-            SSLContext sc = SSLContext.getInstance("TLSv1.2");
+            sc = SSLContext.getInstance("TLSv1.2");
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
             
         } catch (Exception e) {
             
@@ -81,10 +81,6 @@ public class CertificateUtil {
             );
         }
         
-        // Ignore CertificateException: No subject alternative names present
-        HttpsURLConnection.setDefaultHostnameVerifier(
-            // Always true
-            (String hostname, SSLSession sslSession) -> !StringUtils.EMPTY.equals(StringUtils.SPACE)
-        );
+        return sc;
     }
 }

@@ -11,8 +11,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 
-import sun.net.www.protocol.http.AuthCacheImpl;
-import sun.net.www.protocol.http.AuthCacheValue;
+//import sun.net.www.protocol.http.AuthCacheImpl;
+//import sun.net.www.protocol.http.AuthCacheValue;
 
 /**
  * Manage authentication protocols Basic, Digest, NTLM and Kerberos.
@@ -38,12 +38,12 @@ public class AuthenticationUtil {
     /**
      * Login for standard authentication.
      */
-    private String usernameAuthentication;
+    public String usernameAuthentication;
 
     /**
      * Pass for standard authentication.
      */
-    private String passwordAuthentication;
+    public String passwordAuthentication;
     
     /**
      * True if kerberos authentication is activated.
@@ -166,12 +166,12 @@ public class AuthenticationUtil {
         this.pathKerberosKrb5 = prefs.get("kerberosKrb5Conf", StringUtils.EMPTY);
         this.pathKerberosLogin = prefs.get("kerberosLoginConf", StringUtils.EMPTY);
 
-        AuthCacheValue.setAuthCache(new AuthCacheImpl());
+//        AuthCacheValue.setAuthCache(new AuthCacheImpl());
         Authenticator.setDefault(null);
         
         if (this.isAuthEnabled) {
             
-            AuthCacheValue.setAuthCache(new AuthCacheImpl());
+//            AuthCacheValue.setAuthCache(new AuthCacheImpl());
             Authenticator.setDefault(new Authenticator() {
                 
                 @Override
@@ -195,12 +195,12 @@ public class AuthenticationUtil {
      */
     public void setAuthentication() {
         
-        AuthCacheValue.setAuthCache(new AuthCacheImpl());
+//        AuthCacheValue.setAuthCache(new AuthCacheImpl());
         Authenticator.setDefault(null);
 
         if (this.isAuthEnabled) {
             
-            AuthCacheValue.setAuthCache(new AuthCacheImpl());
+//            AuthCacheValue.setAuthCache(new AuthCacheImpl());
             Authenticator.setDefault(new Authenticator() {
                 
                 @Override
@@ -215,7 +215,7 @@ public class AuthenticationUtil {
             
         } else {
             
-            AuthCacheValue.setAuthCache(new AuthCacheImpl());
+//            AuthCacheValue.setAuthCache(new AuthCacheImpl());
             Authenticator.setDefault(null);
         }
         
@@ -245,12 +245,12 @@ public class AuthenticationUtil {
             System.setProperty("spnego.krb5.conf", StringUtils.EMPTY);
             System.setProperty("spnego.login.conf", StringUtils.EMPTY);
             
-            System.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
-            System.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
-            jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
-            jcifs.Config.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
-            
-            jcifs.Config.registerSmbURLHandler();
+//            System.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
+//            System.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
+//            jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
+//            jcifs.Config.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
+//            
+//            jcifs.Config.registerSmbURLHandler();
         }
     }
     

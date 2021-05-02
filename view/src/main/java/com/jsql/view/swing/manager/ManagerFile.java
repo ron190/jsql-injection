@@ -230,10 +230,10 @@ public class ManagerFile extends AbstractManagerList {
         
         String result =
             String.format(
-                "Found %s file%s %s on %s files checked",
+                "Found %s file%s%s on %s files checked",
                 countFileFound,
                 countFileFound > 1 ? 's' : StringUtils.EMPTY,
-                tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : StringUtils.EMPTY,
+                tasksHandled != submittedTasks ? " of "+ tasksHandled +" processed " : StringUtils.EMPTY,
                 submittedTasks
             );
         

@@ -207,6 +207,7 @@ public class DialogTranslate extends JDialog {
                 )
                 .replace("<", "\\<");
               
+            // TODO Fix UTF8
             MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(
                 clientDescription,
                 ShowOnConsole.YES,

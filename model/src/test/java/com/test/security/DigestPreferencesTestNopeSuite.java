@@ -12,7 +12,7 @@ import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 
 import spring.security.SecurityConfiguration;
 
-public class DigestPreferencesTestSuite extends ConcreteMySqlErrorTestSuite {
+public class DigestPreferencesTestNopeSuite extends ConcreteMySqlErrorTestSuite {
     
     @Override
     public void setupInjection() throws Exception {

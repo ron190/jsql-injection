@@ -1,20 +1,22 @@
 package com.jsql.util;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.net.http.HttpHeaders;
+import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.Builder;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
+import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Comparator;
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,10 +33,10 @@ public class HeaderUtil {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    public static final String CONTENT_TYPE = "Content-Type";
-    private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
+    public static final String CONTENT_TYPE_REQUEST = "Content-Type";
+    private static final String WWW_AUTHENTICATE_RESPONSE = "www-authenticate";
     private static final String REGEX_HTTP_STATUS = "4\\d\\d";
-    private static final String FOUND_STATUS_HTTP = "Found status HTTP ";
+    private static final String FOUND_STATUS_HTTP = "Found status HTTP";
 
     private InjectionModel injectionModel;
     
@@ -49,7 +51,7 @@ public class HeaderUtil {
      * @param connection where decoded value will be set
      * @param header string to decode
      */
-    public static void sanitizeHeaders(HttpURLConnection connection, SimpleEntry<String, String> header) {
+    public static void sanitizeHeaders(Builder httpRequest, SimpleEntry<String, String> header) {
         
         String keyHeader = header.getKey().trim();
         String valueHeader = header.getValue().trim();
@@ -59,11 +61,11 @@ public class HeaderUtil {
             if ("Cookie".equalsIgnoreCase(keyHeader)) {
                 
                 // TODO enclose value in "" => Cookie: a="a"; b="b"
-                connection.addRequestProperty(keyHeader, valueHeader);
+                httpRequest.setHeader(keyHeader, valueHeader);
                 
             } else {
                 
-                connection.addRequestProperty(
+                httpRequest.setHeader(
                     keyHeader,
                     URLDecoder.decode(
                         valueHeader,
@@ -85,28 +87,49 @@ public class HeaderUtil {
      * @param urlByUser the website to request
      * @throws IOException when an error occurs during connection
      */
-    public void checkResponseHeader(HttpURLConnection connection, String urlByUser) throws IOException {
+    public void checkResponseHeader(Builder httpRequestBuilder, String replace) throws IOException, InterruptedException {
         
-        Map<String, String> headers = HeaderUtil.getHttpHeaders(connection);
-
-        String responseCode = Integer.toString(connection.getResponseCode());
+        HttpRequest httpRequest = httpRequestBuilder.build();
+        HttpResponse<String> response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(
+            httpRequest, 
+            BodyHandlers.ofString()
+        );
+        String pageSource = response.body();
+        HttpHeaders httpHeaders = response.headers();
         
-        this.checkResponse(responseCode, headers);
+        Map<String, String> mapHeaders =
+            httpHeaders
+                .map()
+                .entrySet()
+                .stream()
+                .sorted(Comparator.comparing(Entry::getKey))
+                .map(entrySet ->
+                    new AbstractMap.SimpleEntry<>(
+                        entrySet.getKey(),
+                        String.join(", ", entrySet.getValue())
+                    )
+                )
+                .collect(Collectors.toMap(
+                    AbstractMap.SimpleEntry::getKey,
+                    AbstractMap.SimpleEntry::getValue
+                ));
+        
+        String responseCode = Integer.toString(response.statusCode());
+        
+        this.checkResponse(responseCode, mapHeaders);
         
         // Request the web page to the server
         Exception exception = null;
         
-        StringBuilder pageSource = new StringBuilder();
+        exception = this.readSource(response);
         
-        exception = this.readSource(connection, pageSource);
+        this.injectionModel.getMediatorUtils().getFormUtil().parseForms(response.statusCode(), pageSource);
         
-        this.injectionModel.getMediatorUtils().getFormUtil().parseForms(connection, pageSource);
-        
-        this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(pageSource, headers);
+        this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(pageSource, mapHeaders);
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, urlByUser);
-        msgHeader.put(Header.RESPONSE, headers);
+        msgHeader.put(Header.URL, httpRequest.uri().toURL().toString());
+        msgHeader.put(Header.RESPONSE, mapHeaders);
         msgHeader.put(Header.SOURCE, pageSource.toString());
         
         // Inform the view about the log info
@@ -121,52 +144,20 @@ public class HeaderUtil {
         }
     }
 
-    private Exception readSource(HttpURLConnection connection, StringBuilder pageSource) throws IOException {
+    private Exception readSource(HttpResponse<String> response) throws IOException {
         
         Exception exception = null;
         
-        ByteArrayOutputStream sourceByteArray = new ByteArrayOutputStream();
-        
-        // Get connection content without null bytes %00
-        try {
-            byte[] buffer = new byte[1024];
-            int length;
+        if (response.statusCode() >= 400) {
             
-            while ((length = connection.getInputStream().read(buffer)) != -1) {
-                
-                sourceByteArray.write(buffer, 0, length);
-            }
-            
-        } catch (IOException errorInputStream) {
-            
-            exception = errorInputStream;
-            InputStream errorStream = connection.getErrorStream();
-            
-            if (errorStream != null) {
-                
-                try {
-                    byte[] buffer = new byte[1024];
-                    int length;
-                    
-                    while ((length = errorStream.read(buffer)) != -1) {
-                        
-                        sourceByteArray.write(buffer, 0, length);
-                    }
-                    
-                } catch (Exception errorErrorStream) {
-                    
-                    exception = new IOException("Exception reading Error Stream", errorErrorStream);
-                }
-            }
+            exception = new IOException(String.format("problem when calling %s", response.uri().toURL().toString()));
         }
-        
-        pageSource.append(sourceByteArray.toString(StandardCharsets.UTF_8.name()));
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
             
             if (exception != null) {
                 
-                LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Connection test disabled, ignoring response HTTP {}...", connection.getResponseCode());
+                LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Connection test disabled, ignoring response HTTP {}...", response.statusCode());
             }
             
             exception = null;
@@ -185,9 +176,9 @@ public class HeaderUtil {
             
             LOGGER.log(
                 LogLevel.CONSOLE_ERROR, 
-                "Basic Authentication detected.\n"
-                + "Define and enable authentication information in the panel Preferences.\n"
-                + "Or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with "
+                "Basic Authentication detected: "
+                + "define and enable authentication information in the panel Preferences, "
+                + "or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with "
                 + "the string 'osUserName:osPassword' encoded in Base64. You can use the Coder in jSQL to encode the string."
             );
         
@@ -195,25 +186,25 @@ public class HeaderUtil {
             
             LOGGER.log(
                 LogLevel.CONSOLE_ERROR, 
-                "NTLM Authentication detected.\n"
-                + "Define and enable authentication information in the panel Preferences.\n"
-                + "Or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
+                "NTLM Authentication detected: "
+                + "define and enable authentication information in the panel Preferences, "
+                + "or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
             );
         
         } else if (this.isDigest(responseCode, mapResponse)) {
             
             LOGGER.log(
                 LogLevel.CONSOLE_ERROR, 
-                "Digest Authentication detected.\n"
-                + "Define and enable authentication information in the panel Preferences."
+                "Digest Authentication detected: "
+                + "define and enable authentication information in the panel Preferences."
             );
         
         } else if (this.isNegotiate(responseCode, mapResponse)) {
             
             LOGGER.log(
                 LogLevel.CONSOLE_ERROR, 
-                "Negotiate Authentication detected.\n"
-                + "Add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
+                "Negotiate Authentication detected: "
+                + "add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
             );
             
         } else if (Pattern.matches("1\\d\\d", responseCode)) {
@@ -255,62 +246,33 @@ public class HeaderUtil {
         
         return
             Pattern.matches(REGEX_HTTP_STATUS, responseCode)
-            && mapResponse.containsKey(WWW_AUTHENTICATE)
-            && "Negotiate".equals(mapResponse.get(WWW_AUTHENTICATE));
+            && mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)
+            && "Negotiate".equals(mapResponse.get(WWW_AUTHENTICATE_RESPONSE));
     }
 
     private boolean isDigest(String responseCode, Map<String, String> mapResponse) {
         
         return
             Pattern.matches(REGEX_HTTP_STATUS, responseCode)
-            && mapResponse.containsKey(WWW_AUTHENTICATE)
-            && mapResponse.get(WWW_AUTHENTICATE) != null
-            && mapResponse.get(WWW_AUTHENTICATE).startsWith("Digest ");
+            && mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)
+            && mapResponse.get(WWW_AUTHENTICATE_RESPONSE) != null
+            && mapResponse.get(WWW_AUTHENTICATE_RESPONSE).startsWith("Digest ");
     }
 
     private boolean isNtlm(String responseCode, Map<String, String> mapResponse) {
         
         return
             Pattern.matches(REGEX_HTTP_STATUS, responseCode)
-            && mapResponse.containsKey(WWW_AUTHENTICATE)
-            && "NTLM".equals(mapResponse.get(WWW_AUTHENTICATE));
+            && mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)
+            && "NTLM".equals(mapResponse.get(WWW_AUTHENTICATE_RESPONSE));
     }
 
     private boolean isBasicAuth(String responseCode, Map<String, String> mapResponse) {
         
         return
             Pattern.matches(REGEX_HTTP_STATUS, responseCode)
-            && mapResponse.containsKey(WWW_AUTHENTICATE)
-            && mapResponse.get(WWW_AUTHENTICATE) != null
-            && mapResponse.get(WWW_AUTHENTICATE).startsWith("Basic ");
-    }
-    
-    /**
-     * Extract HTTP headers from a connection.
-     * @param connection Connection with HTTP headers
-     * @return Map of HTTP headers <name, value>
-     */
-    public static Map<String, String> getHttpHeaders(URLConnection connection) {
-        
-        Map<String, String> mapHeaders = new HashMap<>();
-        
-        // Unhandled NoSuchElementException #91041 on getHeaderFields()
-        try {
-            for (Map.Entry<String, List<String>> entries: connection.getHeaderFields().entrySet()) {
-                
-                mapHeaders.put(
-                    entries.getKey() == null
-                    ? "Status code"
-                    : entries.getKey(),
-                    String.join(",", entries.getValue())
-                );
-            }
-            
-        } catch (NoSuchElementException e) {
-            
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
-        }
-        
-        return mapHeaders;
+            && mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)
+            && mapResponse.get(WWW_AUTHENTICATE_RESPONSE) != null
+            && mapResponse.get(WWW_AUTHENTICATE_RESPONSE).startsWith("Basic ");
     }
 }

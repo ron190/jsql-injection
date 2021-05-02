@@ -7,7 +7,6 @@ import org.junitpioneer.jupiter.RepeatFailedTest;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.util.CertificateUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlTestSuite;
 
@@ -19,8 +18,6 @@ public class SelfSignedCertTestSuite extends ConcreteMySqlTestSuite {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
         
-        CertificateUtil.ignoreCertificationChain();
-
         model.addObserver(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString("https://localhost:8443/normal");

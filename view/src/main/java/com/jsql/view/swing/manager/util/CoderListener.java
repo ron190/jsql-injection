@@ -23,6 +23,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.LogLevel;
+import com.jsql.util.StringUtil;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.manager.ManagerCoder;
 import com.jsql.view.swing.util.UiUtil;
@@ -81,6 +82,9 @@ public class CoderListener implements ActionListener {
                     .forName(nameMethod)
                     .orElseThrow(() -> new NoSuchElementException("Unsupported encoding or decoding method"))
                     .run(textInput);
+                
+                // Prevent decoded HTML tags from result not rendered in Coder textPane
+                result = StringUtil.fromHtml(result);
             }
             
         } catch (

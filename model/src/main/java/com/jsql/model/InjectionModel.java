@@ -10,30 +10,33 @@
  ******************************************************************************/
 package com.jsql.model;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.PrivilegedActionException;
+import java.net.http.HttpHeaders;
+import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublisher;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpRequest.Builder;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.text.DecimalFormat;
+import java.time.Duration;
+import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.security.auth.login.LoginException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.ietf.jgss.GSSException;
 
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.accessible.ResourceAccess;
@@ -46,6 +49,7 @@ import com.jsql.model.injection.method.MediatorMethod;
 import com.jsql.model.injection.strategy.MediatorStrategy;
 import com.jsql.model.injection.vendor.MediatorVendor;
 import com.jsql.util.AuthenticationUtil;
+import com.jsql.util.CertificateUtil;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.CsrfUtil;
 import com.jsql.util.ExceptionUtil;
@@ -65,8 +69,6 @@ import com.jsql.util.StringUtil;
 import com.jsql.util.TamperingUtil;
 import com.jsql.util.ThreadUtil;
 import com.jsql.util.UserAgentUtil;
-
-import net.sourceforge.spnego.SpnegoHttpURLConnection;
 
 /**
  * Model class of MVC pattern for processing SQL injection automatically.<br>
@@ -115,6 +117,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         this.mediatorStrategy = new MediatorStrategy(this);
 
+        this.mediatorUtils.setCertificateUtil(new CertificateUtil());
         this.mediatorUtils.setPropertiesUtil(this.propertiesUtil);
         this.mediatorUtils.setConnectionUtil(new ConnectionUtil(this));
         this.mediatorUtils.setAuthenticationUtil(new AuthenticationUtil(this));
@@ -289,21 +292,45 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         // Define the connection
         try {
-            HttpURLConnection connection = this.initializeConnection(urlObject);
+            Builder httpRequest =
+                HttpRequest
+                    .newBuilder()
+                    .uri(URI.create(urlObject.toString()))
+                    .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, "text/plain")
+                    .timeout(Duration.ofSeconds(15));
             
-            this.mediatorUtils.getCsrfUtil().addHeaderToken(connection);
+            this.mediatorUtils.getCsrfUtil().addHeaderToken(httpRequest);
             
-            this.mediatorUtils.getConnectionUtil().fixJcifsTimeout(connection);
-            this.mediatorUtils.getConnectionUtil().setCustomUserAgent(connection);
+            this.mediatorUtils.getConnectionUtil().setCustomUserAgent(httpRequest);
             
-            this.initializeHeader(isUsingIndex, dataInjection, connection, msgHeader);
-            this.initializeRequest(isUsingIndex, dataInjection, connection, msgHeader);
+            this.initializeHeader(isUsingIndex, dataInjection, httpRequest, msgHeader);
+            this.initializeRequest(isUsingIndex, dataInjection, httpRequest, msgHeader);
             
-            Map<String, String> headers = HeaderUtil.getHttpHeaders(connection);
+            HttpResponse<String> response = this.getMediatorUtils().getConnectionUtil().getHttpClient().send(
+                httpRequest.build(), 
+                BodyHandlers.ofString()
+            );
+            pageSource = response.body();
+            HttpHeaders httpHeaders = response.headers();
+            
+            Map<String, String> headers =
+                httpHeaders
+                .map()
+                .entrySet()
+                .stream()
+                .sorted(Comparator.comparing(Entry::getKey))
+                .map(entrySet ->
+                    new AbstractMap.SimpleEntry<>(
+                        entrySet.getKey(),
+                        String.join(", ", entrySet.getValue())
+                    )
+                )
+                .collect(Collectors.toMap(
+                    AbstractMap.SimpleEntry::getKey,
+                    AbstractMap.SimpleEntry::getValue
+                ));
+            
             msgHeader.put(Header.RESPONSE, headers);
-            
-            // Calling connection.disconnect() is not required, further calls will follow
-            pageSource = ConnectionUtil.getSource(connection);
             
             int sizeHeaders =
                 headers
@@ -339,12 +366,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
         } catch (
             // Exception for General and Spnego Opening Connection
-            IOException | LoginException | GSSException | PrivilegedActionException e
+            IOException | InterruptedException e
         ) {
             LOGGER.log(
                 LogLevel.CONSOLE_ERROR, 
-                String.format("Error during connection: %s", e.getMessage()),
-                e
+                String.format("Error during connection: %s", e.getMessage())
             );
         }
 
@@ -406,52 +432,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         return urlObjectFixed;
     }
 
-    private HttpURLConnection initializeConnection(URL urlObject) throws IOException, LoginException, GSSException, PrivilegedActionException {
-        
-        HttpURLConnection connection;
-        
-        // Block Opening Connection
-        if (this.mediatorUtils.getAuthenticationUtil().isKerberos()) {
-            
-            String kerberosConfiguration =
-                Pattern
-                .compile("(?s)\\{.*")
-                .matcher(
-                    StringUtils.join(
-                        Files.readAllLines(
-                            Paths.get(this.mediatorUtils.getAuthenticationUtil().getPathKerberosLogin()),
-                            Charset.defaultCharset()
-                        ),
-                        StringUtils.EMPTY
-                    )
-                )
-                .replaceAll(StringUtils.EMPTY)
-                .trim();
-            
-            SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(kerberosConfiguration);
-            connection = spnego.connect(urlObject);
-            
-        } else {
-            
-            connection = (HttpURLConnection) urlObject.openConnection();
-        }
-        
-        connection.setReadTimeout(this.mediatorUtils.getConnectionUtil().getTimeout());
-        connection.setConnectTimeout(this.mediatorUtils.getConnectionUtil().getTimeout());
-        connection.setDefaultUseCaches(false);
-        
-        connection.setRequestProperty("Pragma", "no-cache");
-        connection.setRequestProperty("Cache-Control", "no-cache");
-        connection.setRequestProperty("Expires", "-1");
-        connection.setRequestProperty(HeaderUtil.CONTENT_TYPE, "text/plain");
-        
-        return connection;
-    }
-
     private void initializeHeader(
-        boolean isUsingIndex,
-        String dataInjection,
-        HttpURLConnection connection,
+        boolean isUsingIndex, 
+        String dataInjection, 
+        Builder httpRequest,
         Map<Header, Object> msgHeader
     ) {
         
@@ -472,7 +456,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 if (e.split(":").length == 2) {
                     
                     HeaderUtil.sanitizeHeaders(
-                        connection,
+                        httpRequest,
                         new SimpleEntry<>(
                             e.split(":")[0],
                             e.split(":")[1]
@@ -494,9 +478,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     }
 
     private void initializeRequest(
-        boolean isUsingIndex,
-        String dataInjection,
-        HttpURLConnection connection,
+        boolean isUsingIndex, 
+        String dataInjection, 
+        Builder httpRequest,
         Map<Header, Object> msgHeader
     ) {
         
@@ -507,59 +491,27 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             return;
         }
             
-        try {
-            // Set connection method
-            // Active for query string injection too, in that case inject query string still with altered method
-            ConnectionUtil.fixCustomRequestMethod(connection, this.mediatorUtils.getConnectionUtil().getTypeRequest());
+        // Set connection method
+        // Active for query string injection too, in that case inject query string still with altered method
+        
+        StringBuilder body = new StringBuilder();
+        
+        if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
             
-            connection.setDoOutput(true);
+            httpRequest.setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, "text/xml");
             
-            if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
-                
-                connection.setRequestProperty(HeaderUtil.CONTENT_TYPE, "text/xml");
-                
-            } else {
-                
-                connection.setRequestProperty(HeaderUtil.CONTENT_TYPE, "application/x-www-form-urlencoded");
-            }
+        } else {
+            
+            httpRequest.setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, "application/x-www-form-urlencoded");
+        }
    
-            DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
+        this.mediatorUtils.getCsrfUtil().addRequestToken(body);
             
-            this.mediatorUtils.getCsrfUtil().addRequestToken(dataOut);
-            
-            if (this.mediatorUtils.getConnectionUtil().getTypeRequest().matches("PUT|POST")) {
-                
-                if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
-                    
-                    dataOut.writeBytes(
-                        this.buildQuery(
-                            this.mediatorMethod.getRequest(),
-                            this.mediatorUtils.getParameterUtil().getRawRequest(),
-                            isUsingIndex,
-                            dataInjection
-                        )
-                    );
-                    
-                } else {
-                    
-                    dataOut.writeBytes(
-                        this.buildQuery(
-                            this.mediatorMethod.getRequest(),
-                            this.mediatorUtils.getParameterUtil().getRequestFromEntries(),
-                            isUsingIndex,
-                            dataInjection
-                        )
-                    );
-                }
-            }
-            
-            dataOut.flush();
-            dataOut.close();
+        if (this.mediatorUtils.getConnectionUtil().getTypeRequest().matches("PUT|POST")) {
             
             if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
                 
-                msgHeader.put(
-                    Header.POST,
+                body.append(
                     this.buildQuery(
                         this.mediatorMethod.getRequest(),
                         this.mediatorUtils.getParameterUtil().getRawRequest(),
@@ -570,8 +522,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 
             } else {
                 
-                msgHeader.put(
-                    Header.POST,
+                body.append(
                     this.buildQuery(
                         this.mediatorMethod.getRequest(),
                         this.mediatorUtils.getParameterUtil().getRequestFromEntries(),
@@ -580,12 +531,37 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                     )
                 );
             }
+        }
+        
+        BodyPublisher bodyPublisher = BodyPublishers.ofString(body.toString());
+        
+        httpRequest.method(
+            this.mediatorUtils.getConnectionUtil().getTypeRequest(), 
+            bodyPublisher
+        );
+        
+        if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
             
-        } catch (IOException e) {
-            LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
-                String.format("Error during Request connection: %s", e.getMessage()),
-                e
+            msgHeader.put(
+                Header.POST,
+                this.buildQuery(
+                    this.mediatorMethod.getRequest(),
+                    this.mediatorUtils.getParameterUtil().getRawRequest(),
+                    isUsingIndex,
+                    dataInjection
+                )
+            );
+            
+        } else {
+            
+            msgHeader.put(
+                Header.POST,
+                this.buildQuery(
+                    this.mediatorMethod.getRequest(),
+                    this.mediatorUtils.getParameterUtil().getRequestFromEntries(),
+                    isUsingIndex,
+                    dataInjection
+                )
             );
         }
     }

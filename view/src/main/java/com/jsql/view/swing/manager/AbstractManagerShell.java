@@ -210,12 +210,18 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                         try {
                             AbstractManagerShell.this.createPayload(pathShell.toString(), urlShellFinal);
                             
-                        } catch (JSqlException | InterruptedException e) {
+                        } catch (JSqlException e) {
                             
                             LOGGER.log(
                                 LogLevel.CONSOLE_ERROR, 
-                                String.format("Payload creation error: %s", e.getMessage()),
-                                e
+                                String.format("Payload creation error: %s", e.getMessage())
+                            );
+                            
+                        } catch (InterruptedException e) {
+                            
+                            LOGGER.log(
+                                LogLevel.CONSOLE_ERROR, 
+                                String.format("Payload creation error: %s", e.getMessage())
                             );
                             Thread.currentThread().interrupt();
                         }

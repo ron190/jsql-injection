@@ -1,6 +1,5 @@
 package com.jsql.util;
 
-import java.net.HttpURLConnection;
 import java.util.prefs.Preferences;
 
 import com.jsql.model.InjectionModel;
@@ -130,8 +129,6 @@ public class PreferencesUtil {
         this.isLimitingNormalIndex = prefs.getBoolean("isLimitingNormalIndex", false);
         this.countSleepTimeStrategy = prefs.getInt("countSleepTimeStrategy", 5);
         this.isSleepTimeStrategy = prefs.getBoolean("isLimitingSleepTimeStrategy", false);
-        
-        HttpURLConnection.setFollowRedirects(this.isFollowingRedirection);
     }
     
     /**
@@ -188,8 +185,6 @@ public class PreferencesUtil {
         preferences.putBoolean("isTamperingSpaceToDashComment", this.isTamperingSpaceToDashComment);
         preferences.putBoolean("isTamperingSpaceToMultilineComment", this.isTamperingSpaceToMultilineComment);
         preferences.putBoolean("isTamperingSpaceToSharpComment", this.isTamperingSpaceToSharpComment);
-        
-        HttpURLConnection.setFollowRedirects(this.isFollowingRedirection);
     }
     
     /**

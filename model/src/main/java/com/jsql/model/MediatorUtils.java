@@ -1,6 +1,7 @@
 package com.jsql.model;
 
 import com.jsql.util.AuthenticationUtil;
+import com.jsql.util.CertificateUtil;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.CsrfUtil;
 import com.jsql.util.ExceptionUtil;
@@ -35,6 +36,7 @@ public class MediatorUtils {
     private UserAgentUtil userAgentUtil;
     private CsrfUtil csrfUtil;
     private FormUtil formUtil;
+    private CertificateUtil certificateUtil;
 
     public PropertiesUtil getPropertiesUtil() {
         return this.propertiesUtil;
@@ -163,5 +165,13 @@ public class MediatorUtils {
 
     public void setFormUtil(FormUtil formUtil) {
         this.formUtil = formUtil;
+    }
+
+    public CertificateUtil getCertificateUtil() {
+        return certificateUtil;
+    }
+
+    public void setCertificateUtil(CertificateUtil certificateUtil) {
+        this.certificateUtil = certificateUtil;
     }
 }

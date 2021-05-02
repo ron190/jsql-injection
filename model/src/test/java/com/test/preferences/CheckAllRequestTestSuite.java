@@ -25,8 +25,8 @@ public class CheckAllRequestTestSuite extends ConcreteMySqlTestSuite {
             new SimpleEntry<>("tenant", "mysql")
         ));
         model.getMediatorUtils().getParameterUtil().setListRequest(Arrays.asList(
-            new SimpleEntry<>("fake", "empty"),
-            new SimpleEntry<>("name", "")
+            new SimpleEntry<>("name", ""),
+            new SimpleEntry<>("fake", "empty")
         ));
         
         model.setIsScanning(true);

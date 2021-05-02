@@ -2,7 +2,7 @@ tooltip: Obfuscate SQL words with non standard character case
 description: Random SQL characters case
 group: 
 javascript: |
- load('../model/src/main/resources/tamper/js/random-case.js');
+ load('classpath:tamper/js/random-case.js');
  
  var tampering = function(sql) {
     
