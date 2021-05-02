@@ -33,7 +33,7 @@ public class SilentDeleteTextAction extends TextAction {
         
         if (Objects.nonNull(target) && target.isEditable()) {
             
-            Caret caret = target.getCaret();
+            var caret = target.getCaret();
             int dot = caret.getDot();
             int mark = caret.getMark();
             
@@ -47,7 +47,7 @@ public class SilentDeleteTextAction extends TextAction {
             } else {
                 
                 // @see javax/swing/text/DefaultEditorKit.java DeleteNextCharAction
-                Document doc = target.getDocument();
+                var doc = target.getDocument();
                 
                 if (dot == mark && doc.getLength() == dot) {
                     

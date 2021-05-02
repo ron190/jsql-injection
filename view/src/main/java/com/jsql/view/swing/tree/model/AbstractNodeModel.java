@@ -156,7 +156,7 @@ public abstract class AbstractNodeModel {
      */
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
         
-        JPopupMenuCustomExtract popupMenu = new JPopupMenuCustomExtract();
+        var popupMenu = new JPopupMenuCustomExtract();
         AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
 
         this.initializeItemLoadPause(currentTableNode, popupMenu, suspendableTask);

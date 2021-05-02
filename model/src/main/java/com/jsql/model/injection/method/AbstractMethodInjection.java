@@ -44,7 +44,7 @@ public abstract class AbstractMethodInjection implements Serializable {
      */
     public boolean testParameters() throws JSqlException {
         
-        boolean hasFoundInjection = false;
+        var hasFoundInjection = false;
         
         // Injects URL, Request or Header params only if user tests every params
         // or method is selected by user.
@@ -109,7 +109,7 @@ public abstract class AbstractMethodInjection implements Serializable {
      */
     private boolean checkAllParams() throws StoppedByUserSlidingException {
         
-        boolean hasFoundInjection = false;
+        var hasFoundInjection = false;
         
         // This param will be marked by * if injection is found,
         // inner loop will erase mark * otherwise
@@ -181,14 +181,14 @@ public abstract class AbstractMethodInjection implements Serializable {
     
     public boolean testJsonlessParam(SimpleEntry<String, String> paramStar) throws StoppedByUserSlidingException {
 
-        boolean hasFoundInjection = false;
+        var hasFoundInjection = false;
         
         // Add * to end of value
         paramStar.setValue(paramStar.getValue() + InjectionModel.STAR);
         
         try {
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM, 
+                LogLevel.CONSOLE_INFORM,
                 "Checking {} parameter {}={}",
                 this::name,
                 paramStar::getKey,
@@ -208,7 +208,7 @@ public abstract class AbstractMethodInjection implements Serializable {
             
             // Injection failure
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 "No {} injection found for parameter {}={} ({})",
                 this.name(),
                 paramStar.getKey(),

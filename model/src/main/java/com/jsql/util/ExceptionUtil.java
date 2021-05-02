@@ -56,18 +56,18 @@ public class ExceptionUtil {
             ) {
                 
                 try {
-                    MessageDigest md = MessageDigest.getInstance("Md5");
+                    var md = MessageDigest.getInstance("Md5");
                     
                     String stackTrace = ExceptionUtils.getStackTrace(throwable).trim();
-                    String passwordString = String.valueOf(stackTrace.toCharArray());
+                    var passwordString = String.valueOf(stackTrace.toCharArray());
                     
                     byte[] passwordByte = passwordString.getBytes();
                     md.update(passwordByte, 0, passwordByte.length);
                     
                     byte[] encodedPassword = md.digest();
-                    String encodedPasswordInString = HashUtil.digestToHexString(encodedPassword);
+                    var encodedPasswordInString = HashUtil.digestToHexString(encodedPassword);
                     
-                    String md5Exception = encodedPasswordInString;
+                    var md5Exception = encodedPasswordInString;
                     
                     if (!ExceptionUtil.this.exceptionsMd5Cached.contains(md5Exception)) {
                         

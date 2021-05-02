@@ -92,7 +92,7 @@ public class ManagerScan extends AbstractManagerList {
                 return;
             }
             
-            BeanInjection beanInjection = ((ItemListScan) dndListScan.getSelectedValue()).getBeanInjection();
+            var beanInjection = ((ItemListScan) dndListScan.getSelectedValue()).getBeanInjection();
             
             MediatorHelper.panelAddressBar().getTextFieldAddress().setText(beanInjection.getUrl());
             MediatorHelper.panelAddressBar().getTextFieldHeader().setText(beanInjection.getHeader());
@@ -127,7 +127,7 @@ public class ManagerScan extends AbstractManagerList {
 
     private JPanel getLastLinePanel(final DnDList dndListScan) {
         
-        JPanel lastLine = new JPanel();
+        var lastLine = new JPanel();
         lastLine.setOpaque(false);
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
 
@@ -152,12 +152,12 @@ public class ManagerScan extends AbstractManagerList {
 
     private List<ItemList> getItemList() {
         
-        StringBuilder jsonScan = new StringBuilder();
+        var jsonScan = new StringBuilder();
         
         try (
-            InputStream inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.INPUT_STREAM_PAGES_SCAN);
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader reader = new BufferedReader(inputStreamReader)
+            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.INPUT_STREAM_PAGES_SCAN);
+            var inputStreamReader = new InputStreamReader(inputStream);
+            var reader = new BufferedReader(inputStreamReader)
         ) {
             
             String line;
@@ -174,13 +174,13 @@ public class ManagerScan extends AbstractManagerList {
         List<ItemList> itemsList = new ArrayList<>();
         
         try {
-            JSONArray jsonArrayScan = new JSONArray(jsonScan.toString());
+            var jsonArrayScan = new JSONArray(jsonScan.toString());
             
-            for (int i = 0 ; i < jsonArrayScan.length() ; i++) {
+            for (var i = 0 ; i < jsonArrayScan.length() ; i++) {
                 
-                JSONObject jsonObjectScan = jsonArrayScan.getJSONObject(i);
+                var jsonObjectScan = jsonArrayScan.getJSONObject(i);
                 
-                BeanInjection beanInjection = new BeanInjection(
+                var beanInjection = new BeanInjection(
                     jsonObjectScan.getString("url"),
                     jsonObjectScan.optString("request"),
                     jsonObjectScan.optString("header"),
@@ -232,7 +232,7 @@ public class ManagerScan extends AbstractManagerList {
                         ManagerScan.this.loader.setVisible(true);
                         
                         DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) dndListScan.getModel();
-                        for (int i = 0 ; i < listModel.getSize() ; i++) {
+                        for (var i = 0 ; i < listModel.getSize() ; i++) {
                             
                             listModel.get(i).reset();
                         }
@@ -263,7 +263,7 @@ public class ManagerScan extends AbstractManagerList {
     public void scan(List<ItemList> urlsItemList) {
         
         // Erase everything in the view from a previous injection
-        Request requests = new Request();
+        var requests = new Request();
         requests.setMessage(Interaction.RESET_INTERFACE);
         MediatorHelper.model().sendToViews(requests);
         
@@ -286,7 +286,7 @@ public class ManagerScan extends AbstractManagerList {
         
         for (ItemList urlItemList: urlsItemList) {
             
-            ItemListScan urlItemListScan = (ItemListScan) urlItemList;
+            var urlItemListScan = (ItemListScan) urlItemList;
             if (MediatorHelper.model().isStoppedByUser() || MediatorHelper.model().getResourceAccess().isScanStopped()) {
                 
                 break;
@@ -320,7 +320,7 @@ public class ManagerScan extends AbstractManagerList {
         MediatorHelper.model().setIsStoppedByUser(false);
         MediatorHelper.model().getResourceAccess().setScanStopped(false);
 
-        Request request = new Request();
+        var request = new Request();
         request.setMessage(Interaction.END_SCAN);
         MediatorHelper.model().sendToViews(request);
     }

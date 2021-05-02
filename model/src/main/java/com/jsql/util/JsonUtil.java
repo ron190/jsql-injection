@@ -33,7 +33,7 @@ public class JsonUtil {
 
     public static boolean isJson(String param) {
         
-        boolean isJson = false;
+        var isJson = false;
         
         try {
             // Test for JSON Object
@@ -98,9 +98,9 @@ public class JsonUtil {
 
     private static void scanJsonArray(Object jsonEntity, String parentName, SimpleEntry<String, String> parentXPath, List<SimpleEntry<String, String>> attributesXPath) {
         
-        JSONArray jsonArrayEntity = (JSONArray) jsonEntity;
+        var jsonArrayEntity = (JSONArray) jsonEntity;
         
-        for (int i = 0; i < jsonArrayEntity.length(); i++) {
+        for (var i = 0; i < jsonArrayEntity.length(); i++) {
             
             Object jsonEntityInArray = jsonArrayEntity.get(i);
             String xpath = parentName +"["+ i +"]";
@@ -129,14 +129,14 @@ public class JsonUtil {
 
     private static void scanJsonObject(Object jsonEntity, String parentName, SimpleEntry<String, String> parentXPath, List<SimpleEntry<String, String>> attributesXPath) {
         
-        JSONObject jsonObjectEntity = (JSONObject) jsonEntity;
+        var jsonObjectEntity = (JSONObject) jsonEntity;
         
         Iterator<?> keys = jsonObjectEntity.keys();
         
         while (keys.hasNext()) {
             
             String key = (String) keys.next();
-            Object value = jsonObjectEntity.get(key);
+            var value = jsonObjectEntity.get(key);
             String xpath = parentName +"."+ key;
             
             // Not possible to make generic with scanJsonObject() because of JSONArray.put(int) != JSONObject.put(String)
@@ -163,7 +163,7 @@ public class JsonUtil {
     
     public boolean testJsonParam(AbstractMethodInjection methodInjection, SimpleEntry<String, String> paramStar) {
         
-        boolean hasFoundInjection = false;
+        var hasFoundInjection = false;
         
         // Remove STAR at the end of parameter, STAR will be added inside json data instead
         paramStar.setValue(paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));
@@ -188,7 +188,7 @@ public class JsonUtil {
             
             try {
                 LOGGER.log(
-                    LogLevel.CONSOLE_INFORM, 
+                    LogLevel.CONSOLE_INFORM,
                     "Checking JSON {} parameter {}={}",
                     methodInjection::name,
                     parentXPath::getKey,
@@ -221,7 +221,7 @@ public class JsonUtil {
                 
                 // Injection failure
                 LOGGER.log(
-                    LogLevel.CONSOLE_ERROR, 
+                    LogLevel.CONSOLE_ERROR,
                     String.format(
                         "No injection found for JSON %s parameter %s=%s",
                         methodInjection.name(),

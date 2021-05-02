@@ -131,7 +131,7 @@ public class DnDList extends JList<ItemList> {
     private void initializeActionMap() {
         
         // Transform Cut, selects next value
-        ActionMap listActionMap = this.getActionMap();
+        var listActionMap = this.getActionMap();
         
         listActionMap.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
             
@@ -208,7 +208,7 @@ public class DnDList extends JList<ItemList> {
         }
         
         try {
-            Rectangle rectangle = this.getCellBounds(
+            var rectangle = this.getCellBounds(
                 this.getMinSelectionIndex(),
                 this.getMaxSelectionIndex()
             );
@@ -270,7 +270,7 @@ public class DnDList extends JList<ItemList> {
             }
         }
 
-        String[] options = {
+        var options = new String[] {
             I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_REPLACE"),
             I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_ADD"),
             I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
@@ -340,8 +340,8 @@ public class DnDList extends JList<ItemList> {
         int endPosition = startPosition;
         
         try (
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader)
+            var fileReader = new FileReader(file);
+            var bufferedReader = new BufferedReader(fileReader)
         ) {
             
             String line;

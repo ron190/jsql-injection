@@ -124,7 +124,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
 
     private JPanel initializePanelButton() {
         
-        JPanel lastLine = new JPanel();
+        var lastLine = new JPanel();
         
         lastLine.setOpaque(false);
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
@@ -163,13 +163,13 @@ public class ManagerBruteForce extends JPanel implements Manager {
 
     private JPanel initializeOptionsPanel() {
         
-        JPanel options = new JPanel(new BorderLayout());
+        var options = new JPanel(new BorderLayout());
         JPanel firstLine = this.initializeFirstLine();
 
         final JPanel secondLine = this.initializeSecondLine();
         JPanel thirdLine = this.initializeThirdLine();
         
-        final JPanel secondAndThirdLine = new JPanel(new BorderLayout());
+        final var secondAndThirdLine = new JPanel(new BorderLayout());
         secondAndThirdLine.add(secondLine, BorderLayout.NORTH);
         secondAndThirdLine.add(thirdLine, BorderLayout.SOUTH);
 
@@ -181,7 +181,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
 
     private JPanel initializeFirstLine() {
         
-        JPanel firstLine = new JPanel(new BorderLayout());
+        var firstLine = new JPanel(new BorderLayout());
 
         this.hash = new JPopupTextField(I18nUtil.valueByKey("BRUTEFORCE_HASH_LABEL")).getProxy();
         
@@ -201,7 +201,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
 
     private JPanel initializeSecondLine() {
         
-        final JPanel secondLine = new JPanel();
+        final var secondLine = new JPanel();
         secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));
         secondLine.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));
         
@@ -236,7 +236,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
 
     private JPanel initializeThirdLine() {
         
-        JPanel thirdLine = new JPanel();
+        var thirdLine = new JPanel();
         thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
         thirdLine.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));
         
@@ -266,11 +266,11 @@ public class ManagerBruteForce extends JPanel implements Manager {
         this.minimumLength.setMinimumSize(new Dimension(38, (int) this.minimumLength.getPreferredSize().getHeight()));
         this.maximumLength.setMinimumSize(new Dimension(38, (int) this.maximumLength.getPreferredSize().getHeight()));
 
-        JLabel labelMin = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey("BRUTEFORCE_MIN_LABEL"), SwingConstants.RIGHT);
+        var labelMin = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey("BRUTEFORCE_MIN_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMin);
         I18nViewUtil.addComponentForKey("BRUTEFORCE_MIN_LABEL", labelMin);
         thirdLine.add(this.minimumLength);
-        JLabel labelMax = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey("BRUTEFORCE_MAX_LABEL"), SwingConstants.RIGHT);
+        var labelMax = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey("BRUTEFORCE_MAX_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMax);
         I18nViewUtil.addComponentForKey("BRUTEFORCE_MAX_LABEL", labelMax);
         thirdLine.add(this.maximumLength);

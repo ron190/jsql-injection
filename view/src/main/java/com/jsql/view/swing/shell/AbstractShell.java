@@ -98,7 +98,7 @@ public abstract class AbstractShell extends JTextPane {
         this.urlShell = urlShell;
         this.labelShell = labelShell;
 
-        URL url = new URL(urlShell);
+        var url = new URL(urlShell);
         this.host = url.getHost();
 
         this.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));
@@ -145,7 +145,7 @@ public abstract class AbstractShell extends JTextPane {
     public void append(String string) {
         
         try {
-            Document doc = this.getDocument();
+            var doc = this.getDocument();
             doc.insertString(doc.getLength(), string, null);
             
         } catch (BadLocationException e) {
@@ -220,8 +220,8 @@ public abstract class AbstractShell extends JTextPane {
      */
     public int getLineOfOffset(int offset) throws BadLocationException {
         
-        String errorMsg = "Can't translate offset to line";
-        Document doc = this.getDocument();
+        var errorMsg = "Can't translate offset to line";
+        var doc = this.getDocument();
         
         if (offset < 0) {
             
@@ -233,7 +233,7 @@ public abstract class AbstractShell extends JTextPane {
             
         } else {
             
-            Element map = doc.getDefaultRootElement();
+            var map = doc.getDefaultRootElement();
             
             return map.getElementIndex(offset);
         }
@@ -247,7 +247,7 @@ public abstract class AbstractShell extends JTextPane {
      */
     public int getLineStartOffset(int line) throws BadLocationException {
         
-        Element map = this.getDocument().getDefaultRootElement();
+        var map = this.getDocument().getDefaultRootElement();
         
         if (line < 0) {
             
@@ -259,7 +259,7 @@ public abstract class AbstractShell extends JTextPane {
             
         } else {
             
-            Element lineElem = map.getElement(line);
+            var lineElem = map.getElement(line);
             
             return lineElem.getStartOffset();
         }

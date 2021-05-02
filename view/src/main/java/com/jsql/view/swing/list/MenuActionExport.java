@@ -60,7 +60,7 @@ public class MenuActionExport implements ActionListener {
             @Override
             public void approveSelection() {
                 
-                File file = this.getSelectedFile();
+                var file = this.getSelectedFile();
                 
                 if (
                     file.exists()
@@ -112,12 +112,12 @@ public class MenuActionExport implements ActionListener {
         }
 
         try (
-            FileOutputStream file = new FileOutputStream(importFileDialog.getSelectedFile());
-            PrintStream out = new PrintStream(file);
+            var file = new FileOutputStream(importFileDialog.getSelectedFile());
+            var out = new PrintStream(file);
         ) {
             int len = this.myList.getModel().getSize();
             
-            for (int i = 0 ; i < len ; i++) {
+            for (var i = 0 ; i < len ; i++) {
                 
                 out.println(this.myList.getModel().getElementAt(i).toString());
             }

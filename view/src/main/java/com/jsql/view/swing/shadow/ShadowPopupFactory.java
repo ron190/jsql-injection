@@ -114,7 +114,7 @@ public final class ShadowPopupFactory extends PopupFactory {
             return;
         }
 
-        PopupFactory factory = PopupFactory.getSharedInstance();
+        var factory = PopupFactory.getSharedInstance();
         
         if (factory instanceof ShadowPopupFactory) {
             
@@ -132,7 +132,7 @@ public final class ShadowPopupFactory extends PopupFactory {
      */
     public static void uninstall() {
         
-        PopupFactory factory = PopupFactory.getSharedInstance();
+        var factory = PopupFactory.getSharedInstance();
         
         if (!(factory instanceof ShadowPopupFactory)) {
             
@@ -176,7 +176,7 @@ public final class ShadowPopupFactory extends PopupFactory {
     @Override
     public Popup getPopup(Component owner, Component contents, int x, int y) {
         
-        Popup popup = super.getPopup(owner, contents, x, y);
+        var popup = super.getPopup(owner, contents, x, y);
         
         return ShadowPopup.getInstance(owner, contents, x, y, popup);
     }

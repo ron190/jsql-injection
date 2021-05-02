@@ -171,7 +171,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             throw new StoppedByUserSlidingException();
         }
         
-        CallableBlind blindTest = new CallableBlind(
+        var blindTest = new CallableBlind(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(),
             this.injectionModel,
             this,

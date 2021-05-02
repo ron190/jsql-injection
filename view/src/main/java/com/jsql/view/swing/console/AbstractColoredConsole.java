@@ -76,8 +76,8 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
             int extent = scrollBar.getModel().getExtent();
             boolean isScrollBarAtEnd = scrollBar.getValue() >= scrollBar.getMaximum() - extent;
             
-            String logMessage = message.substring(15);
-            String logTimestamp = message.substring(0, 15);
+            var logMessage = message.substring(15);
+            var logTimestamp = message.substring(0, 15);
             
             this.getProxy().getDocument().insertString(
                 this.getProxy().getDocument().getLength(),
@@ -96,7 +96,7 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
                 scrollBar.setValue(scrollBar.getMaximum() + 1);
             }
 
-            Color foregroundColor = Color.BLACK;
+            var foregroundColor = Color.BLACK;
             
             if (attribut == JTextPaneAppender.ATTRIBUTE_WARN) {
                 
@@ -111,7 +111,7 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
             
             if (0 <= tabIndex && tabIndex < MediatorHelper.tabConsoles().getTabCount()) {
                 
-                Component tabHeader = MediatorHelper.tabConsoles().getTabComponentAt(tabIndex);
+                var tabHeader = MediatorHelper.tabConsoles().getTabComponentAt(tabIndex);
                 
                 if (MediatorHelper.tabConsoles().getSelectedIndex() != tabIndex) {
                     

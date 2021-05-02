@@ -149,7 +149,7 @@ public class PanelConsoles extends JPanel {
 
     private JScrollIndicator initializeScrollerTable() {
         
-        JScrollIndicator scrollerNetwork = new JScrollIndicator(this.networkTable, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        var scrollerNetwork = new JScrollIndicator(this.networkTable, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollerNetwork.getScrollPane().setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         scrollerNetwork.getScrollPane().setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         
@@ -181,7 +181,7 @@ public class PanelConsoles extends JPanel {
         this.chunkTextArea.setLineWrap(true);
         this.binaryTextArea.setLineWrap(true);
         
-        SimpleConsoleAdapter consoleTextPane = new SimpleConsoleAdapter("Console", "Event logging");
+        var consoleTextPane = new SimpleConsoleAdapter("Console", "Event logging");
         
         // Object creation after customization
         consoleTextPane.getProxy().setEditable(false);
@@ -207,7 +207,7 @@ public class PanelConsoles extends JPanel {
         );
 
         // Order is important
-        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         if (preferences.getBoolean(UiUtil.JAVA_VISIBLE, false)) {
             
             this.insertJavaTab();
@@ -235,7 +235,7 @@ public class PanelConsoles extends JPanel {
             
             if (tabs.getSelectedIndex() > -1) {
                 
-                Component currentTabHeader = tabs.getTabComponentAt(tabs.getSelectedIndex());
+                var currentTabHeader = tabs.getTabComponentAt(tabs.getSelectedIndex());
                 
                 if (currentTabHeader != null) {
                     
@@ -248,7 +248,7 @@ public class PanelConsoles extends JPanel {
 
     private JPanel initializeExpandPanel() {
         
-        BasicArrowButton buttonShowSouth = new BasicArrowButton(SwingConstants.SOUTH);
+        var buttonShowSouth = new BasicArrowButton(SwingConstants.SOUTH);
         buttonShowSouth.setName("buttonShowSouth");
         
         buttonShowSouth.setBorderPainted(false);
@@ -266,7 +266,7 @@ public class PanelConsoles extends JPanel {
         this.buttonShowNorth.addActionListener(SplitHorizontalTopBottom.getActionHideShowResult());
         this.buttonShowNorth.setName("buttonShowNorth");
 
-        JPanel arrowDownPanel = new JPanel();
+        var arrowDownPanel = new JPanel();
         arrowDownPanel.setLayout(new BorderLayout());
         arrowDownPanel.setOpaque(false);
         
@@ -275,7 +275,7 @@ public class PanelConsoles extends JPanel {
         arrowDownPanel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 26));
         arrowDownPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 26));
 
-        JPanel panelExpander = new JPanel(new BorderLayout());
+        var panelExpander = new JPanel(new BorderLayout());
         panelExpander.setBorder(BorderFactory.createEmptyBorder());
         panelExpander.add(buttonShowSouth, BorderLayout.LINE_END);
         panelExpander.add(this.buttonShowNorth, BorderLayout.LINE_START);
@@ -364,9 +364,9 @@ public class PanelConsoles extends JPanel {
     
     private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, Component manager, int position) {
         
-        final JToolTipI18n[] refJToolTipI18n = new JToolTipI18n[]{new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip))};
+        final var refJToolTipI18n = new JToolTipI18n[]{ new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip)) };
         
-        JLabel labelTab = new JLabel(I18nViewUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {
+        var labelTab = new JLabel(I18nViewUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {
             
             @Override
             public JToolTip createToolTip() {

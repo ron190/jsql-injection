@@ -55,7 +55,7 @@ public class Bruter {
 
     public void addLowerCaseLetters() {
         
-        for (char c = 'a'; c <= 'z'; c++) {
+        for (var c = 'a'; c <= 'z'; c++) {
             
             this.characters.add(String.valueOf(c));
         }
@@ -63,7 +63,7 @@ public class Bruter {
 
     public void addDigits() {
         
-        for (int c = 0; c <= 9; c++) {
+        for (var c = 0; c <= 9; c++) {
             
             this.characters.add(String.valueOf(c));
         }
@@ -71,7 +71,7 @@ public class Bruter {
 
     public void addUpperCaseLetters() {
         
-        for (char c = 'A'; c <= 'Z'; c++) {
+        for (var c = 'A'; c <= 'Z'; c++) {
             
             this.characters.add(String.valueOf(c));
         }
@@ -119,9 +119,9 @@ public class Bruter {
         
         int seconds = (int) timeTaken;
         
-        int minutes = 0;
-        int hours = 0;
-        int days = 0;
+        var minutes = 0;
+        var hours = 0;
+        var days = 0;
         
         minutes = seconds / 60;
         seconds = seconds % 60;

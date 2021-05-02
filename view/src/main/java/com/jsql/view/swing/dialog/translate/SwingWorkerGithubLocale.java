@@ -152,10 +152,10 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             
         } catch (IOException e) {
             
-            URI uri = ClassLoader.getSystemResource("i18n/jsql.properties").toURI();
-            Path path = Paths.get(uri);
+            var uri = ClassLoader.getSystemResource("i18n/jsql.properties").toURI();
+            var path = Paths.get(uri);
             byte[] root = Files.readAllBytes(path);
-            String rootI18n = new String(root);
+            var rootI18n = new String(root);
             String rootI18nFixed = Pattern.compile(LINE_FEED).matcher(Matcher.quoteReplacement(rootI18n)).replaceAll(LINE_FEED_ESCAPE);
             
             this.propertiesRoot.load(new StringReader(rootI18nFixed));
@@ -187,8 +187,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             
         } catch (IOException e) {
             
-            URI uri =
-                ClassLoader
+            var uri = ClassLoader
                 .getSystemResource(
                     String
                     .format(
@@ -198,9 +197,9 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
                 )
                 .toURI();
             
-            Path path = Paths.get(uri);
+            var path = Paths.get(uri);
             byte[] root = Files.readAllBytes(path);
-            String localeI18n = new String(root);
+            var localeI18n = new String(root);
             String localeI18nFixed = Pattern.compile(LINE_FEED).matcher(localeI18n).replaceAll(LINE_FEED_ESCAPE);
             
             this.propertiesLanguageToTranslate.load(new StringReader(localeI18nFixed));

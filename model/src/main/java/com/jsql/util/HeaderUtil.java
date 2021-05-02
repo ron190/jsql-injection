@@ -3,20 +3,14 @@ package com.jsql.util;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.http.HttpHeaders;
-import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
-import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -87,53 +81,37 @@ public class HeaderUtil {
      * @param urlByUser the website to request
      * @throws IOException when an error occurs during connection
      */
-    public void checkResponseHeader(Builder httpRequestBuilder, String replace) throws IOException, InterruptedException {
+    public void checkResponseHeader(Builder httpRequestBuilder) throws IOException, InterruptedException {
         
-        HttpRequest httpRequest = httpRequestBuilder.build();
-        HttpResponse<String> response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(
-            httpRequest, 
+        var httpRequest = httpRequestBuilder.build();
+        HttpResponse<String> httpResponse = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(
+            httpRequest,
             BodyHandlers.ofString()
         );
-        String pageSource = response.body();
-        HttpHeaders httpHeaders = response.headers();
+        String pageSource = httpResponse.body();
         
-        Map<String, String> mapHeaders =
-            httpHeaders
-                .map()
-                .entrySet()
-                .stream()
-                .sorted(Comparator.comparing(Entry::getKey))
-                .map(entrySet ->
-                    new AbstractMap.SimpleEntry<>(
-                        entrySet.getKey(),
-                        String.join(", ", entrySet.getValue())
-                    )
-                )
-                .collect(Collectors.toMap(
-                    AbstractMap.SimpleEntry::getKey,
-                    AbstractMap.SimpleEntry::getValue
-                ));
+        Map<String, String> mapHeaders = ConnectionUtil.getHeadersMap(httpResponse);
         
-        String responseCode = Integer.toString(response.statusCode());
+        var responseCode = Integer.toString(httpResponse.statusCode());
         
         this.checkResponse(responseCode, mapHeaders);
         
         // Request the web page to the server
         Exception exception = null;
         
-        exception = this.readSource(response);
+        exception = this.readSource(httpResponse);
         
-        this.injectionModel.getMediatorUtils().getFormUtil().parseForms(response.statusCode(), pageSource);
+        this.injectionModel.getMediatorUtils().getFormUtil().parseForms(httpResponse.statusCode(), pageSource);
         
         this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(pageSource, mapHeaders);
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, httpRequest.uri().toURL().toString());
         msgHeader.put(Header.RESPONSE, mapHeaders);
-        msgHeader.put(Header.SOURCE, pageSource.toString());
+        msgHeader.put(Header.SOURCE, pageSource);
         
         // Inform the view about the log info
-        Request request = new Request();
+        var request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);
         request.setParameters(msgHeader);
         this.injectionModel.sendToViews(request);
@@ -175,7 +153,7 @@ public class HeaderUtil {
         if (this.isBasicAuth(responseCode, mapResponse)) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 "Basic Authentication detected: "
                 + "define and enable authentication information in the panel Preferences, "
                 + "or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with "
@@ -185,7 +163,7 @@ public class HeaderUtil {
         } else if (this.isNtlm(responseCode, mapResponse)) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 "NTLM Authentication detected: "
                 + "define and enable authentication information in the panel Preferences, "
                 + "or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
@@ -194,7 +172,7 @@ public class HeaderUtil {
         } else if (this.isDigest(responseCode, mapResponse)) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 "Digest Authentication detected: "
                 + "define and enable authentication information in the panel Preferences."
             );
@@ -202,7 +180,7 @@ public class HeaderUtil {
         } else if (this.isNegotiate(responseCode, mapResponse)) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 "Negotiate Authentication detected: "
                 + "add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
             );

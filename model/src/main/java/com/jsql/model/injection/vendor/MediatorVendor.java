@@ -211,7 +211,7 @@ public class MediatorVendor {
             
             vendorFound = this.injectionModel.getMediatorVendor().getVendorByUser();
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM, 
+                LogLevel.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
                 () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER"),
                 () -> this.injectionModel.getMediatorVendor().getVendorByUser()
@@ -267,7 +267,7 @@ public class MediatorVendor {
             
             vendorFixed = this.injectionModel.getMediatorVendor().getMySQL();
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM, 
+                LogLevel.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
                 () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND"),
                 () -> this.injectionModel.getMediatorVendor().getMySQL()
@@ -276,7 +276,7 @@ public class MediatorVendor {
         } else {
             
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM, 
+                LogLevel.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
                 () -> I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE"),
                 () -> vendor

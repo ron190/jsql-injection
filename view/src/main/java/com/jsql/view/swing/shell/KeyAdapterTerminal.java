@@ -62,7 +62,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
     public void keyPressed(KeyEvent keyEvent) {
         
         try {
-            final Element root = this.terminal.getDocument().getDefaultRootElement();
+            final var root = this.terminal.getDocument().getDefaultRootElement();
             final int caretPosition = this.terminal.getCaretPosition();
     
             // Get current line
@@ -76,9 +76,8 @@ public class KeyAdapterTerminal extends KeyAdapter {
             }
     
             // Get user input
-            final String[] command = {StringUtils.EMPTY};
-            command[0] =
-                this.terminal
+            final var command = new String[]{ StringUtils.EMPTY };
+            command[0] = this.terminal
                 .getText(
                     root.getElement(lineNumber).getStartOffset(),
                     root.getElement(lineNumber).getEndOffset() - root.getElement(lineNumber).getStartOffset()

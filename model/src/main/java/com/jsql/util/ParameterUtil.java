@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -107,7 +106,7 @@ public class ParameterUtil {
             LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect Url: {}", e.getMessage());
             
             // Incorrect URL, reset the start button
-            Request request = new Request();
+            var request = new Request();
             request.setMessage(Interaction.END_PREPARATION);
             this.injectionModel.sendToViews(request);
         }
@@ -126,7 +125,7 @@ public class ParameterUtil {
 
     private void checkOneOrLessStar() throws InjectionFailureException {
         
-        int nbStarInParameter = 0;
+        var nbStarInParameter = 0;
         
         if (this.getQueryStringFromEntries().contains(InjectionModel.STAR)) {
             
@@ -231,7 +230,7 @@ public class ParameterUtil {
 
     public void initializeQueryString(String urlQuery) throws MalformedURLException {
 
-        URL url = new URL(urlQuery);
+        var url = new URL(urlQuery);
         
         if (
             StringUtils.isEmpty(urlQuery)
@@ -247,7 +246,7 @@ public class ParameterUtil {
         this.listQueryString.clear();
         
         // Parse url and GET query string
-        Matcher regexQueryString = Pattern.compile("(.*\\?)(.*)").matcher(urlQuery);
+        var regexQueryString = Pattern.compile("(.*\\?)(.*)").matcher(urlQuery);
         
         if (!regexQueryString.find()) {
             

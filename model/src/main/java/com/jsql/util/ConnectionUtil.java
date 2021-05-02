@@ -41,8 +41,6 @@ import com.jsql.util.protocol.SessionCookieManager;
 /**
  * Utility class in charge of connection to web resources and management
  * of source page and request and response headers.
- * In the same time it allows to fix different lack of functionality induced by
- * library bugs (jcifs) or core design laziness (custom HTTP method).
  */
 public class ConnectionUtil {
     
@@ -71,20 +69,23 @@ public class ConnectionUtil {
      */
     private String typeRequest = "POST";
 
-    private static final String NO_CACHE = "no-cache";
-    
     private Random randomForUserAgent = new Random();
     
     private InjectionModel injectionModel;
     
+    public ConnectionUtil(InjectionModel injectionModel) {
+        
+        this.injectionModel = injectionModel;
+    }
+    
     public HttpClient getHttpClient() {
         
-        HttpClient.Builder httpClientBuilder = HttpClient
+        var httpClientBuilder = HttpClient
             .newBuilder()
             .connectTimeout(Duration.ofSeconds(15))
-            .sslContext(CertificateUtil.ignoreCertificationChain())
+            .sslContext(this.injectionModel.getMediatorUtils().getCertificateUtil().getSslContext())
             .followRedirects(
-                injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()
+                this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()
                 ? HttpClient.Redirect.ALWAYS
                 : HttpClient.Redirect.NEVER
             );
@@ -98,8 +99,8 @@ public class ConnectionUtil {
               protected PasswordAuthentication getPasswordAuthentication() {
                   
                   return new PasswordAuthentication (
-                      ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().usernameAuthentication,
-                      ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().passwordAuthentication.toCharArray()
+                      ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication(),
+                      ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication().toCharArray()
                   );
               }
           });
@@ -108,9 +109,28 @@ public class ConnectionUtil {
         return httpClientBuilder.build();
     }
     
-    public ConnectionUtil(InjectionModel injectionModel) {
+    public static Map<String, String> getHeadersMap(HttpResponse<String> httpResponse) {
         
-        this.injectionModel = injectionModel;
+        return getHeadersMap(httpResponse.headers());
+    }
+    
+    public static Map<String, String> getHeadersMap(HttpHeaders httpHeaders) {
+        
+        return httpHeaders
+            .map()
+            .entrySet()
+            .stream()
+            .sorted(Comparator.comparing(Entry::getKey))
+            .map(entrySet ->
+                new AbstractMap.SimpleEntry<>(
+                    entrySet.getKey(),
+                    String.join(", ", entrySet.getValue())
+                )
+            )
+            .collect(Collectors.toMap(
+                AbstractMap.SimpleEntry::getKey,
+                AbstractMap.SimpleEntry::getValue
+            ));
     }
     
     /**
@@ -163,11 +183,7 @@ public class ConnectionUtil {
                 HeaderUtil.sanitizeHeaders(httpRequest, header);
             }
 
-            this.injectionModel.getMediatorUtils().getHeaderUtil()
-            .checkResponseHeader(
-                httpRequest,
-                this.getUrlByUser().replace(InjectionModel.STAR, StringUtils.EMPTY)
-            );
+            this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(httpRequest);
             
             // Calling connection.disconnect() is not required, more calls will happen
             
@@ -186,8 +202,7 @@ public class ConnectionUtil {
         String pageSource = StringUtils.EMPTY;
         
         try {
-            HttpRequest httpRequest =
-                HttpRequest
+            var httpRequest = HttpRequest
                 .newBuilder()
                 .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(15))
@@ -197,33 +212,18 @@ public class ConnectionUtil {
                 
             if (lineFeed) {
                 
-                HttpResponse<Stream<String>> response = getHttpClient().send(httpRequest, BodyHandlers.ofLines());
+                HttpResponse<Stream<String>> response = this.getHttpClient().send(httpRequest, BodyHandlers.ofLines());
                 pageSource = response.body().collect(Collectors.joining("\n"));
                 httpHeaders = response.headers();
                 
             } else {
                 
-                HttpResponse<String> response = getHttpClient().send(httpRequest, BodyHandlers.ofString());
+                HttpResponse<String> response = this.getHttpClient().send(httpRequest, BodyHandlers.ofString());
                 pageSource = response.body();
                 httpHeaders = response.headers();
             }
             
-            Map<String, String> mapHeaders =
-                httpHeaders
-                .map()
-                .entrySet()
-                .stream()
-                .sorted(Comparator.comparing(Entry::getKey))
-                .map(entrySet ->
-                    new AbstractMap.SimpleEntry<>(
-                        entrySet.getKey(),
-                        String.join(", ", entrySet.getValue())
-                    )
-                )
-                .collect(Collectors.toMap(
-                    AbstractMap.SimpleEntry::getKey,
-                    AbstractMap.SimpleEntry::getValue
-                ));
+            Map<String, String> mapHeaders = ConnectionUtil.getHeadersMap(httpHeaders);
             
             msgHeader.put(Header.RESPONSE, new TreeMap<>(mapHeaders));
             
@@ -241,7 +241,7 @@ public class ConnectionUtil {
             msgHeader.put(Header.SOURCE, pageSource);
             
             // Inform the view about the log infos
-            Request request = new Request();
+            var request = new Request();
             request.setMessage(Interaction.MESSAGE_HEADER);
             request.setParameters(msgHeader);
             this.injectionModel.sendToViews(request);

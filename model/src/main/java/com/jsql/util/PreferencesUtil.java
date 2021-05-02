@@ -137,7 +137,7 @@ public class PreferencesUtil {
      */
     public void persist() {
         
-        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
         preferences.putBoolean("isCheckingUpdate", this.isCheckingUpdate);
         preferences.putBoolean("isReportingBugs", this.isReportingBugs);

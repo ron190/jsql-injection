@@ -56,8 +56,8 @@ public class RequestPanel extends JPanel {
         this.add(buttonRequestMethod);
         this.add(panelAddressBar.getRadioRequest());
         
-        final JPopupMenu popup = new JPopupMenu();
-        final ButtonGroup buttonGroup = new ButtonGroup();
+        final var popup = new JPopupMenu();
+        final var buttonGroup = new ButtonGroup();
         
         for (String protocol: new String[]{"OPTIONS", "HEAD", "POST", "PUT", "DELETE", "TRACE"}) {
             
@@ -87,10 +87,10 @@ public class RequestPanel extends JPanel {
             );
         }
         
-        JPanel panelCustomMethod = new JPanel(new BorderLayout());
+        var panelCustomMethod = new JPanel(new BorderLayout());
         final JTextField inputCustomMethod = new JPopupTextField("CUSTOM").getProxy();
 
-        final JRadioButton radioCustomMethod = new JRadioButton();
+        final var radioCustomMethod = new JRadioButton();
         radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
         radioCustomMethod.setIcon(new RadioMenuItemIconCustom());
         

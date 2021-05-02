@@ -11,15 +11,10 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 
-//import sun.net.www.protocol.http.AuthCacheImpl;
-//import sun.net.www.protocol.http.AuthCacheValue;
-
 /**
  * Manage authentication protocols Basic, Digest, NTLM and Kerberos.
  * Java class Authenticator processes Basic, Digest and NTLM, library spnego
- * processes kerberos. Library jcifs eases the configuration by providing
- * a way to define authentication directly in the URL and it's also compatible
- * with protocol Negotiate.
+ * processes kerberos.
  */
 public class AuthenticationUtil {
     
@@ -27,8 +22,6 @@ public class AuthenticationUtil {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
-    
-    private static final String STR_JAVA_PROTO_HDL_PKGS = "java.protocol.handler.pkgs";
     
     /**
      * True if standard authentication Basic, Digest, NTLM is activated.
@@ -38,12 +31,12 @@ public class AuthenticationUtil {
     /**
      * Login for standard authentication.
      */
-    public String usernameAuthentication;
+    private String usernameAuthentication;
 
     /**
      * Pass for standard authentication.
      */
-    public String passwordAuthentication;
+    private String passwordAuthentication;
     
     /**
      * True if kerberos authentication is activated.
@@ -59,13 +52,6 @@ public class AuthenticationUtil {
      * Path to the kerberos file krb5.
      */
     private String pathKerberosKrb5;
-    
-    private InjectionModel injectionModel;
-    
-    public AuthenticationUtil(InjectionModel injectionModel) {
-        
-        this.injectionModel = injectionModel;
-    }
 
     /**
      * Get new authentication settings from the view, update the utility class,
@@ -97,11 +83,12 @@ public class AuthenticationUtil {
 
     public void initializeSimpleAuthorization(boolean isAuthentication, String usernameAuthentication, String passwordAuthentication) {
         
+        // TODO Move to Preferences
         Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         
         preferences.putBoolean("isDigestAuthentication", this.isAuthEnabled);
-        preferences.put("usernameDigest", this.usernameAuthentication);
-        preferences.put("passwordDigest", this.passwordAuthentication);
+        preferences.put("usernameDigest", this.getUsernameAuthentication());
+        preferences.put("passwordDigest", this.getPasswordAuthentication());
         
         // Define proxy settings
         this.isAuthEnabled = isAuthentication;
@@ -112,7 +99,7 @@ public class AuthenticationUtil {
     private boolean initializeKerberos(boolean isKerberos, String kerberosKrb5Conf, String kerberosLoginConf) {
         
         // Persist to JVM
-        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         
         this.isKerberos = isKerberos;
         this.pathKerberosKrb5 = kerberosKrb5Conf;
@@ -153,7 +140,7 @@ public class AuthenticationUtil {
     public void setKerberosCifs() {
         
         // Use Preferences API to persist proxy configuration
-        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
+        var prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 
         // Default proxy disabled
         this.isAuthEnabled = prefs.getBoolean("isDigestAuthentication", false);
@@ -178,7 +165,7 @@ public class AuthenticationUtil {
                 protected PasswordAuthentication getPasswordAuthentication() {
                     
                     return new PasswordAuthentication (
-                        AuthenticationUtil.this.usernameAuthentication,
+                        AuthenticationUtil.this.getUsernameAuthentication(),
                         AuthenticationUtil.this.passwordAuthentication.toCharArray()
                     );
                 }
@@ -189,9 +176,7 @@ public class AuthenticationUtil {
     }
     
     /**
-     * Apply jcifs or kerberos authentication to the JVM.
-     * In case of jcifs, which is the default connection processing, it also defines
-     * standard timeout configuration.
+     * Apply kerberos authentication to the JVM.
      */
     public void setAuthentication() {
         
@@ -207,7 +192,7 @@ public class AuthenticationUtil {
                 protected PasswordAuthentication getPasswordAuthentication() {
                     
                     return new PasswordAuthentication (
-                        AuthenticationUtil.this.usernameAuthentication,
+                        AuthenticationUtil.this.getUsernameAuthentication(),
                         AuthenticationUtil.this.passwordAuthentication.toCharArray()
                     );
                 }
@@ -221,17 +206,6 @@ public class AuthenticationUtil {
         
         if (this.isKerberos) {
             
-            if (System.getProperty(STR_JAVA_PROTO_HDL_PKGS) != null) {
-                
-                System.setProperty(
-                    STR_JAVA_PROTO_HDL_PKGS,
-                    System
-                    .getProperty(STR_JAVA_PROTO_HDL_PKGS)
-                    .replace("|jcifs", StringUtils.EMPTY)
-                    .replace("jcifs", StringUtils.EMPTY)
-                );
-            }
-            
             System.setProperty("java.security.krb5.conf", this.pathKerberosKrb5);
             System.setProperty("java.security.auth.login.config", this.pathKerberosLogin);
             System.setProperty("spnego.krb5.conf", this.pathKerberosKrb5);
@@ -239,18 +213,10 @@ public class AuthenticationUtil {
             
         } else {
             
-            System.setProperty(STR_JAVA_PROTO_HDL_PKGS, StringUtils.EMPTY);
             System.setProperty("java.security.krb5.conf", StringUtils.EMPTY);
             System.setProperty("java.security.auth.login.config", StringUtils.EMPTY);
             System.setProperty("spnego.krb5.conf", StringUtils.EMPTY);
             System.setProperty("spnego.login.conf", StringUtils.EMPTY);
-            
-//            System.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
-//            System.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
-//            jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
-//            jcifs.Config.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
-//            
-//            jcifs.Config.registerSmbURLHandler();
         }
     }
     
@@ -258,11 +224,11 @@ public class AuthenticationUtil {
     // Getters and setters
 
     public String getUsernameDigest() {
-        return this.usernameAuthentication;
+        return this.getUsernameAuthentication();
     }
 
     public String getPasswordDigest() {
-        return this.passwordAuthentication;
+        return this.getPasswordAuthentication();
     }
 
     public boolean isAuthentEnabled() {
@@ -281,16 +247,12 @@ public class AuthenticationUtil {
         return this.isKerberos;
     }
 
-    public void setIsAuthentEnabled(boolean isAuthentEnabled) {
-        this.isAuthEnabled = isAuthentEnabled;
+    public String getUsernameAuthentication() {
+        return this.usernameAuthentication;
     }
 
-    public void setUsernameAuthentication(String usernameAuthentication) {
-        this.usernameAuthentication = usernameAuthentication;
-    }
-
-    public void setPasswordAuthentication(String passwordAuthentication) {
-        this.passwordAuthentication = passwordAuthentication;
+    public String getPasswordAuthentication() {
+        return this.passwordAuthentication;
     }
     
     

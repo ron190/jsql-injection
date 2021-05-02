@@ -70,9 +70,9 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         List<ItemList> itemsList = new ArrayList<>();
         
         try (
-            InputStream inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader reader = new BufferedReader(inputStreamReader)
+            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);
+            var inputStreamReader = new InputStreamReader(inputStream);
+            var reader = new BufferedReader(inputStreamReader)
         ) {
             String line;
             
@@ -92,7 +92,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         
         this.add(new LightScrollPane(0, 0, 0, 0, this.getListPaths()), BorderLayout.CENTER);
         
-        JPanel southPanel = new JPanel();
+        var southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 
         String urlTooltip = I18nUtil.valueByKey("SHELL_URL_TOOLTIP");
@@ -122,7 +122,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
 
         this.defaultText = "SHELL_RUN_BUTTON_LABEL";
         
-        JPanel lastLine = new JPanel();
+        var lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(

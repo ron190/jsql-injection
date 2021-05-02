@@ -41,9 +41,9 @@ public class ManagerSqlShell extends AbstractManagerShell {
 
         this.run.setText("Create SQL shell(s)");
         
-        JPanel userPassPanel = new JPanel();
+        var userPassPanel = new JPanel();
         
-        GroupLayout layout = new GroupLayout(userPassPanel);
+        var layout = new GroupLayout(userPassPanel);
         userPassPanel.setLayout(layout);
         userPassPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         userPassPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -54,7 +54,7 @@ public class ManagerSqlShell extends AbstractManagerShell {
         this.username.setBorder(UiUtil.BORDER_BLU);
         this.password.setBorder(UiUtil.BORDER_BLU);
         
-        JPanel panelPassword = new JPanel(new BorderLayout());
+        var panelPassword = new JPanel(new BorderLayout());
         panelPassword.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
         panelPassword.add(this.password);
         

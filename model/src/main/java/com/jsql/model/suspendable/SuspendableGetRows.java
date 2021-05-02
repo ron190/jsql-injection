@@ -73,13 +73,13 @@ public class SuspendableGetRows extends AbstractSuspendable {
         }
         
         // Stop injection if all rows are found, skip rows and characters collected
-        StringBuilder slidingWindowAllRows = new StringBuilder();
-        StringBuilder slidingWindowCurrentRow = new StringBuilder();
+        var slidingWindowAllRows = new StringBuilder();
+        var slidingWindowCurrentRow = new StringBuilder();
         
         String previousChunk = StringUtils.EMPTY;
-        int countAllRows = 0;
-        int charPositionInCurrentRow = 1;
-        int countInfiniteLoop = 0;
+        var countAllRows = 0;
+        var charPositionInCurrentRow = 1;
+        var countInfiniteLoop = 0;
         
         String queryGetRows = this.getQuery(initialSqlQuery, countAllRows);
         
@@ -188,8 +188,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
     private void appendRowFixed(StringBuilder slidingWindowAllRows, StringBuilder slidingWindowCurrentRow) {
         
         // Check either if there is more than 1 row and if there is less than 1 complete row
-        Matcher regexAtLeastOneRow =
-            Pattern
+        var regexAtLeastOneRow = Pattern
             .compile(
                 String
                 .format(
@@ -202,8 +201,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
             )
             .matcher(slidingWindowCurrentRow);
         
-        Matcher regexRowIncomplete =
-            Pattern
+        var regexRowIncomplete = Pattern
             .compile(
                 MODE
                 + ENCLOSE_VALUE_RGX
@@ -215,7 +213,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         // else if there is 1 row but incomplete, mark it as cut with the letter c
         if (regexAtLeastOneRow.find()) {
             
-            String allLine = slidingWindowAllRows.toString();
+            var allLine = slidingWindowAllRows.toString();
             slidingWindowAllRows.setLength(0);
             slidingWindowAllRows.append(
                 Pattern
@@ -237,7 +235,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         
         // Remove everything after chunk
         // => \4xxxxxxxx\500\4\6\4...\4 => \1\3\3\7junk
-        String currentRow = slidingWindowCurrentRow.toString();
+        var currentRow = slidingWindowCurrentRow.toString();
         slidingWindowCurrentRow.setLength(0);
         slidingWindowCurrentRow.append(
             Pattern
@@ -249,8 +247,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
     private int getCountRows(StringBuilder slidingWindowCurrentRow) {
         
-        Matcher regexAtLeastOneRow =
-            Pattern
+        var regexAtLeastOneRow = Pattern
             .compile(
                 String.format(
                     "%s(%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?%s)",
@@ -262,7 +259,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
             )
             .matcher(slidingWindowCurrentRow);
         
-        int nbCompleteLine = 0;
+        var nbCompleteLine = 0;
         while (regexAtLeastOneRow.find()) {
             nbCompleteLine++;
         }
@@ -276,13 +273,13 @@ public class SuspendableGetRows extends AbstractSuspendable {
         // if it's not the root (empty tree)
         if (searchName != null) {
             
-            Request request = new Request();
+            var request = new Request();
             request.setMessage(Interaction.END_PROGRESS);
             request.setParameters(searchName);
             this.injectionModel.sendToViews(request);
         }
 
-        StringBuilder messageError = new StringBuilder("Fetching fails: no data to parse");
+        var messageError = new StringBuilder("Fetching fails: no data to parse");
         
         if (searchName != null) {
             messageError.append(" for "+ StringUtil.detectUtf8(searchName.toString()));
@@ -297,7 +294,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
     private void sendChunk(String currentChunk) {
         
-        Request request = new Request();
+        var request = new Request();
         request.setMessage(Interaction.MESSAGE_CHUNK);
         request.setParameters(
             Pattern
@@ -414,7 +411,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         // 1. very start of a new row: XXXXX\4[\6\4]$
         // 2. very end of the last row: XXXXX[\500]$
 
-        String allRowsLimit = slidingWindowAllRows.toString();
+        var allRowsLimit = slidingWindowAllRows.toString();
         slidingWindowAllRows.setLength(0);
         slidingWindowAllRows.append(
             Pattern
@@ -436,7 +433,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         
         if (numberToFind > 0 && searchName != null) {
             
-            Request request = new Request();
+            var request = new Request();
             request.setMessage(Interaction.UPDATE_PROGRESS);
             request.setParameters(searchName, countProgress);
             this.injectionModel.sendToViews(request);
@@ -446,8 +443,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
     public static List<List<String>> parse(String rows) throws InjectionFailureException {
         
         // Parse all the data we have retrieved
-        Matcher regexSearch =
-            Pattern
+        var regexSearch = Pattern
             .compile(
                 String.format(
                     "%s%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?%s",
@@ -465,7 +461,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         
         regexSearch.reset();
 
-        int rowsFound = 0;
+        var rowsFound = 0;
         List<List<String>> listValues = new ArrayList<>();
 
         // Build a 2D array of strings from the data we have parsed
@@ -473,7 +469,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         while (regexSearch.find()) {
             
             String values = regexSearch.group(1);
-            int instances = Integer.parseInt(regexSearch.group(2));
+            var instances = Integer.parseInt(regexSearch.group(2));
 
             listValues.add(new ArrayList<>());
             listValues.get(rowsFound).add(Integer.toString(rowsFound + 1));

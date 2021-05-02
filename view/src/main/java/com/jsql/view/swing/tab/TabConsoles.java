@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.jsql.view.swing.tab;
 
-import java.awt.Component;
 import java.awt.Font;
 
 import org.apache.logging.log4j.LogManager;
@@ -40,7 +39,7 @@ public class TabConsoles extends TabbedPaneWheeled {
             && tabIndex < this.getTabCount()
         ) {
             
-            Component tabHeader = this.getTabComponentAt(tabIndex);
+            var tabHeader = this.getTabComponentAt(tabIndex);
             
             // Unhandled ClassCastException #91158 on setFont()
             try {

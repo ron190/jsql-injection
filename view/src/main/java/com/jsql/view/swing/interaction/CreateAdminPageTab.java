@@ -83,8 +83,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             // Previous test for 2xx Success and 3xx Redirection was Header only,
             // now get the HTML content.
             // Proxy is used by jsoup
-            htmlSource =
-                Jsoup
+            htmlSource = Jsoup
                 .clean(
                     Jsoup
                     .connect(this.url)
@@ -113,7 +112,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
 
-        final JTextPane browser = new JTextPane();
+        final var browser = new JTextPane();
         browser.setContentType("text/html");
         browser.setEditable(false);
         
@@ -127,7 +126,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
         }
 
-        final JPopupMenu menu = new JPopupMenu();
+        final var menu = new JPopupMenu();
         
         JMenuItem itemCopyUrl = new JMenuItemWithMargin(I18nUtil.valueByKey("CONTEXT_MENU_COPY_PAGE_URL"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY_PAGE_URL", itemCopyUrl);
@@ -155,8 +154,8 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
 
         itemCopyUrl.addActionListener(actionEvent -> {
             
-            StringSelection stringSelection = new StringSelection(CreateAdminPageTab.this.url);
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            var stringSelection = new StringSelection(CreateAdminPageTab.this.url);
+            var clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(stringSelection, null);
         });
 
@@ -209,14 +208,14 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             }
         });
 
-        final LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, browser);
+        final var scroller = new LightScrollPane(1, 0, 0, 0, browser);
         MediatorHelper.tabResults().addTab(this.url.replaceAll(".*/", StringUtils.EMPTY) + StringUtils.SPACE, scroller);
 
         // Focus on the new tab
         MediatorHelper.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(
+        var header = new TabHeader(
             this.url.replaceAll(
                 ".*/",
                 StringUtils.EMPTY

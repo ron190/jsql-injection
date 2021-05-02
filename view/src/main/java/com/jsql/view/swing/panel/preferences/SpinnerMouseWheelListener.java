@@ -14,9 +14,9 @@ public class SpinnerMouseWheelListener implements MouseWheelListener {
         JSpinner source = (JSpinner) e.getComponent();
         SpinnerNumberModel model = (SpinnerNumberModel) source.getModel();
         Integer oldValue = (Integer) source.getValue();
-        int intValue = oldValue.intValue() - e.getWheelRotation() * model.getStepSize().intValue();
-        int max = ((Integer) model.getMaximum()); //1000
-        int min = ((Integer) model.getMinimum()); //0
+        var intValue = oldValue.intValue() - e.getWheelRotation() * model.getStepSize().intValue();
+        int max = (Integer) model.getMaximum(); //1000
+        int min = (Integer) model.getMinimum(); //0
         if (min <= intValue && intValue <= max) {
             
             source.setValue(intValue);

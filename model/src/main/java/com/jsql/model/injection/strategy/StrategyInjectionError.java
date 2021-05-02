@@ -15,7 +15,6 @@ import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.injection.vendor.model.yaml.Configuration;
 import com.jsql.model.injection.vendor.model.yaml.Method;
-import com.jsql.model.injection.vendor.model.yaml.Strategy;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevel;
@@ -45,7 +44,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         // Reset applicability of new Vendor
         this.isApplicable = false;
         
-        Strategy strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
+        var strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
         
         if (strategyYaml.getError().getMethod().isEmpty()) {
             
@@ -53,13 +52,13 @@ public class StrategyInjectionError extends AbstractStrategy {
             return;
         }
         
-        Configuration configurationYaml = strategyYaml.getConfiguration();
+        var configurationYaml = strategyYaml.getConfiguration();
         
         LOGGER.log(LogLevel.CONSOLE_DEFAULT, "{} Error...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
         
         this.tabCapacityMethod = new String[strategyYaml.getError().getMethod().size()];
-        int indexErrorMethod = 0;
-        int errorCapacity = 0;
+        var indexErrorMethod = 0;
+        var errorCapacity = 0;
         
         for (Method errorMethod: strategyYaml.getError().getMethod()) {
             
@@ -76,7 +75,7 @@ public class StrategyInjectionError extends AbstractStrategy {
                 } else {
                     
                     LOGGER.log(
-                        LogLevel.CONSOLE_ERROR, 
+                        LogLevel.CONSOLE_ERROR,
                         "{} {} but injectable size is incorrect",
                         () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
                         errorMethod::getName
@@ -101,7 +100,7 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     private boolean isApplicable(Configuration configurationYaml, Method errorMethod) {
         
-        boolean methodIsApplicable = false;
+        var methodIsApplicable = false;
       
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(
             StringUtils.SPACE
@@ -200,7 +199,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     public void activateStrategy() {
         
         LOGGER.log(
-            LogLevel.CONSOLE_INFORM, 
+            LogLevel.CONSOLE_INFORM,
             "{} [{} {}]",
             () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
             this::getName,
@@ -217,7 +216,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         );
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());
         
-        Request request = new Request();
+        var request = new Request();
         request.setMessage(Interaction.MARK_ERROR_STRATEGY);
         this.injectionModel.sendToViews(request);
     }

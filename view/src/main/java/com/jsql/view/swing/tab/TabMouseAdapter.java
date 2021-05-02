@@ -42,12 +42,12 @@ public class TabMouseAdapter extends MouseAdapter {
             return;
         }
             
-        Component componentSource = (Component) event.getSource();
-        JPopupMenu menu = new JPopupMenu();
+        var componentSource = (Component) event.getSource();
+        var menu = new JPopupMenu();
 
         // Copy menu items from menubar
         for (
-            int position = 0
+            var position = 0
             ; position < MediatorHelper.menubar().getMenuView().getMenuComponentCount()
             ; position++
         ) {

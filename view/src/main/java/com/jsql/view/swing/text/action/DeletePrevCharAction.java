@@ -24,13 +24,13 @@ public class DeletePrevCharAction extends AbstractCharAction {
         
         if (dot > 0) {
             
-            int delChars = 1;
+            var delChars = 1;
 
             if (dot > 1) {
                 
                 String dotChars = doc.getText(dot - 2, 2);
-                char c0 = dotChars.charAt(0);
-                char c1 = dotChars.charAt(1);
+                var c0 = dotChars.charAt(0);
+                var c1 = dotChars.charAt(1);
 
                 if (c0 >= '\uD800' && c0 <= '\uDBFF' && c1 >= '\uDC00' && c1 <= '\uDFFF') {
                     

@@ -60,9 +60,9 @@ public class MenuActionNewValue implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent arg0) {
         
-        JPanel panel = new JPanel(new BorderLayout());
+        var panel = new JPanel(new BorderLayout());
         final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
-        JLabel labelAddValue = new JLabel(I18nUtil.valueByKey("LIST_ADD_VALUE_LABEL") + ":");
+        var labelAddValue = new JLabel(I18nUtil.valueByKey("LIST_ADD_VALUE_LABEL") + ":");
         panel.add(labelAddValue, BorderLayout.NORTH);
         I18nViewUtil.addComponentForKey("LIST_ADD_VALUE_LABEL", labelAddValue);
         panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
@@ -109,7 +109,7 @@ public class MenuActionNewValue implements ActionListener {
             return;
         }
             
-        int lastIndex = 0;
+        var lastIndex = 0;
         if (this.myList.getSelectedIndex() > 0) {
             
             lastIndex = this.myList.getSelectedIndex();

@@ -50,7 +50,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         String tooltipIsTamperingBase64 = TamperingType.BASE64.instance().getTooltip();
         this.checkboxIsTamperingBase64.setToolTipText(tooltipIsTamperingBase64);
         this.checkboxIsTamperingBase64.setFocusable(false);
-        JButton labelIsTamperingBase64 = new JButton(TamperingType.BASE64.instance().getDescription());
+        var labelIsTamperingBase64 = new JButton(TamperingType.BASE64.instance().getDescription());
         labelIsTamperingBase64.setToolTipText(tooltipIsTamperingBase64);
         labelIsTamperingBase64.addActionListener(actionEvent -> {
             
@@ -61,7 +61,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         String tooltipIsTamperingFunctionComment = TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getTooltip();
         this.checkboxIsTamperingFunctionComment.setToolTipText(tooltipIsTamperingFunctionComment);
         this.checkboxIsTamperingFunctionComment.setFocusable(false);
-        JButton labelIsTamperingFunctionComment = new JButton(TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());
+        var labelIsTamperingFunctionComment = new JButton(TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());
         labelIsTamperingFunctionComment.setToolTipText(tooltipIsTamperingFunctionComment);
         labelIsTamperingFunctionComment.addActionListener(actionEvent -> {
             
@@ -72,7 +72,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         String tooltipIsTamperingEqualToLike = TamperingType.EQUAL_TO_LIKE.instance().getTooltip();
         this.checkboxIsTamperingEqualToLike.setToolTipText(tooltipIsTamperingEqualToLike);
         this.checkboxIsTamperingEqualToLike.setFocusable(false);
-        JButton labelIsTamperingEqualToLike = new JButton(TamperingType.EQUAL_TO_LIKE.instance().getDescription());
+        var labelIsTamperingEqualToLike = new JButton(TamperingType.EQUAL_TO_LIKE.instance().getDescription());
         labelIsTamperingEqualToLike.setToolTipText(tooltipIsTamperingEqualToLike);
         labelIsTamperingEqualToLike.addActionListener(actionEvent -> {
             
@@ -83,7 +83,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         String tooltipIsTamperingRandomCase = TamperingType.RANDOM_CASE.instance().getTooltip();
         this.checkboxIsTamperingRandomCase.setToolTipText(tooltipIsTamperingRandomCase);
         this.checkboxIsTamperingRandomCase.setFocusable(false);
-        JButton labelIsTamperingRandomCase = new JButton(TamperingType.RANDOM_CASE.instance().getDescription());
+        var labelIsTamperingRandomCase = new JButton(TamperingType.RANDOM_CASE.instance().getDescription());
         labelIsTamperingRandomCase.setToolTipText(tooltipIsTamperingRandomCase);
         labelIsTamperingRandomCase.addActionListener(actionEvent -> {
             
@@ -91,16 +91,16 @@ public class PanelTampering extends JPanel implements Cleanable {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsTamperingEval = "Custom tamper in JavaScript, e.g sql.replace(/\\+/gm,'/**/')";
+        var tooltipIsTamperingEval = "Custom tamper in JavaScript, e.g sql.replace(/\\+/gm,'/**/')";
         this.checkboxIsTamperingEval.setToolTipText(tooltipIsTamperingEval);
         this.checkboxIsTamperingEval.setFocusable(false);
         
         this.textPaneEval = new JPopupTextPane(new JTextPanePlaceholder(tooltipIsTamperingEval)).getProxy();
-        LightScrollPane textAreaIsTamperingEval = new LightScrollPane(this.textPaneEval);
+        var textAreaIsTamperingEval = new LightScrollPane(this.textPaneEval);
         textAreaIsTamperingEval.setBorder(UiUtil.BORDER_FOCUS_LOST);
         textAreaIsTamperingEval.setMinimumSize(new Dimension(400, 100));
         
-        ButtonGroup groupSpaceToComment = new ButtonGroup();
+        var groupSpaceToComment = new ButtonGroup();
         groupSpaceToComment.add(this.radioIsTamperingSpaceToDashComment);
         groupSpaceToComment.add(this.radioIsTamperingSpaceToMultilineComment);
         groupSpaceToComment.add(this.radioIsTamperingSpaceToSharpComment);
@@ -108,7 +108,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         String tooltipIsTamperingSpaceToMultilineComment = TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getTooltip();
         this.radioIsTamperingSpaceToMultilineComment.setToolTipText(tooltipIsTamperingSpaceToMultilineComment);
         this.radioIsTamperingSpaceToMultilineComment.setFocusable(false);
-        JButton labelIsTamperingSpaceToMultilineComment = new JButton(TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getDescription());
+        var labelIsTamperingSpaceToMultilineComment = new JButton(TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getDescription());
         labelIsTamperingSpaceToMultilineComment.setToolTipText(tooltipIsTamperingSpaceToMultilineComment);
         labelIsTamperingSpaceToMultilineComment.addActionListener(actionEvent -> {
             
@@ -127,7 +127,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         String tooltipIsTamperingSpaceToDashComment = TamperingType.SPACE_TO_DASH_COMMENT.instance().getTooltip();
         this.radioIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);
         this.radioIsTamperingSpaceToDashComment.setFocusable(false);
-        JButton labelIsTamperingSpaceToDashComment = new JButton(TamperingType.SPACE_TO_DASH_COMMENT.instance().getDescription());
+        var labelIsTamperingSpaceToDashComment = new JButton(TamperingType.SPACE_TO_DASH_COMMENT.instance().getDescription());
         labelIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);
         labelIsTamperingSpaceToDashComment.addActionListener(actionEvent -> {
             
@@ -146,7 +146,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         String tooltipIsTamperingSpaceToSharpComment = TamperingType.SPACE_TO_SHARP_COMMENT.instance().getTooltip();
         this.radioIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);
         this.radioIsTamperingSpaceToSharpComment.setFocusable(false);
-        JButton labelIsTamperingSpaceToSharpComment = new JButton(TamperingType.SPACE_TO_SHARP_COMMENT.instance().getDescription());
+        var labelIsTamperingSpaceToSharpComment = new JButton(TamperingType.SPACE_TO_SHARP_COMMENT.instance().getDescription());
         labelIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);
         labelIsTamperingSpaceToSharpComment.addActionListener(actionEvent -> {
             
@@ -165,7 +165,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         String tooltipIsTamperingVersionComment = TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getTooltip();
         this.checkboxIsTamperingVersionComment.setToolTipText(tooltipIsTamperingVersionComment);
         this.checkboxIsTamperingVersionComment.setFocusable(false);
-        JButton labelIsTamperingVersionComment = new JButton(TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());
+        var labelIsTamperingVersionComment = new JButton(TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());
         labelIsTamperingVersionComment.setToolTipText(tooltipIsTamperingVersionComment);
         labelIsTamperingVersionComment.addActionListener(actionEvent -> {
             
@@ -176,7 +176,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         String tooltipIsTamperingHexToChar = TamperingType.HEX_TO_CHAR.instance().getTooltip();
         this.checkboxIsTamperingHexToChar.setToolTipText(tooltipIsTamperingHexToChar);
         this.checkboxIsTamperingHexToChar.setFocusable(false);
-        JButton labelIsTamperingHexToChar = new JButton(TamperingType.HEX_TO_CHAR.instance().getDescription());
+        var labelIsTamperingHexToChar = new JButton(TamperingType.HEX_TO_CHAR.instance().getDescription());
         labelIsTamperingHexToChar.setToolTipText(tooltipIsTamperingHexToChar);
         labelIsTamperingHexToChar.addActionListener(actionEvent -> {
             
@@ -187,7 +187,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         String tooltipIsTamperingQuoteToUtf8 = TamperingType.QUOTE_TO_UTF8.instance().getTooltip();
         this.checkboxIsTamperingQuoteToUtf8.setToolTipText(tooltipIsTamperingQuoteToUtf8);
         this.checkboxIsTamperingQuoteToUtf8.setFocusable(false);
-        JButton labelIsTamperingQuoteToUtf8 = new JButton(TamperingType.QUOTE_TO_UTF8.instance().getDescription());
+        var labelIsTamperingQuoteToUtf8 = new JButton(TamperingType.QUOTE_TO_UTF8.instance().getDescription());
         labelIsTamperingQuoteToUtf8.setToolTipText(tooltipIsTamperingQuoteToUtf8);
         labelIsTamperingQuoteToUtf8.addActionListener(actionEvent -> {
             
@@ -198,7 +198,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         String tooltipIsTamperingStringToChar = TamperingType.STRING_TO_CHAR.instance().getTooltip();
         this.checkboxIsTamperingStringToChar.setToolTipText(tooltipIsTamperingStringToChar);
         this.checkboxIsTamperingStringToChar.setFocusable(false);
-        JButton labelIsTamperingStringToChar = new JButton(TamperingType.STRING_TO_CHAR.instance().getDescription());
+        var labelIsTamperingStringToChar = new JButton(TamperingType.STRING_TO_CHAR.instance().getDescription());
         labelIsTamperingStringToChar.setToolTipText(tooltipIsTamperingStringToChar);
         labelIsTamperingStringToChar.addActionListener(actionEvent -> {
             
@@ -229,7 +229,7 @@ public class PanelTampering extends JPanel implements Cleanable {
             entry.getKey().setContentAreaFilled(false);
         });
         
-        HighlightedDocument document = new HighlightedDocument(HighlightedDocument.JAVASCRIPT_STYLE);
+        var document = new HighlightedDocument(HighlightedDocument.JAVASCRIPT_STYLE);
         document.setHighlightStyle(HighlightedDocument.JAVASCRIPT_STYLE);
         this.textPaneEval.setStyledDocument(document);
         
@@ -244,7 +244,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         
         this.textPaneEval.setText(MediatorHelper.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
         
-        GroupLayout groupLayout = new GroupLayout(this);
+        var groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
         
         groupLayout

@@ -25,7 +25,7 @@ public class ActionCloseTabResult extends AbstractAction {
         
         if (MediatorHelper.tabResults().getTabCount() > 0) {
             
-            Component tab = MediatorHelper.tabResults().getTabComponentAt(closeTabNumber);
+            var tab = MediatorHelper.tabResults().getTabComponentAt(closeTabNumber);
             
             // Stop syntax color highlighter
             if (
@@ -46,7 +46,7 @@ public class ActionCloseTabResult extends AbstractAction {
         
         if (MediatorHelper.tabResults().getTabCount() == 0) {
             
-            SplitHorizontalTopBottom splitPaneTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();
+            var splitPaneTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();
             JSplitPane splitPaneLeftRight = splitPaneTopBottom.getSplitVerticalLeftRight();
             
             int i = splitPaneLeftRight.getDividerLocation();

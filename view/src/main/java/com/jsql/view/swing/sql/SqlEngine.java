@@ -292,7 +292,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             
             tabsBottom.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());
             
-            JLabel label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
+            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
             tabsBottom.setTabComponentAt(
                 tabsBottom.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
                 label
@@ -316,12 +316,12 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private JPanel getPanelStructure() {
         
-        final String keyDatabases = "SQLENGINE_DATABASES";
-        final String keyTables = "SQLENGINE_TABLES";
-        final String keyColumns = "SQLENGINE_COLUMNS";
-        final String keyRows = "SQLENGINE_ROWS";
-        final String keyField = "SQLENGINE_FIELD";
-        final String keyFieldSeparator = "SQLENGINE_FIELDS_SEPARATOR";
+        final var keyDatabases = "SQLENGINE_DATABASES";
+        final var keyTables = "SQLENGINE_TABLES";
+        final var keyColumns = "SQLENGINE_COLUMNS";
+        final var keyRows = "SQLENGINE_ROWS";
+        final var keyField = "SQLENGINE_FIELD";
+        final var keyFieldSeparator = "SQLENGINE_FIELDS_SEPARATOR";
         
         JTabbedPane tabsStandard = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
         
@@ -344,7 +344,7 @@ public class SqlEngine extends JPanel implements Cleanable {
                 new LightScrollPane(1, 0, 1, 0, entry.getValue())
             );
             
-            JLabel label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
+            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
             tabsSchema.setTabComponentAt(
                 tabsSchema.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
                 label
@@ -370,7 +370,7 @@ public class SqlEngine extends JPanel implements Cleanable {
                 new LightScrollPane(1, 0, 1, 0, entry.getValue())
             );
             
-            JLabel label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
+            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
             tabsZip.setTabComponentAt(
                 tabsZip.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
                 label
@@ -396,7 +396,7 @@ public class SqlEngine extends JPanel implements Cleanable {
                 new LightScrollPane(1, 0, 1, 0, entry.getValue())
             );
             
-            JLabel label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
+            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
             tabsDios.setTabComponentAt(
                 tabsDios.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
                 label
@@ -414,7 +414,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             
             tabsStandard.addTab(I18nUtil.valueByKey(entry.getKey()), entry.getValue());
             
-            JLabel label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
+            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
             tabsStandard.setTabComponentAt(
                 tabsStandard.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
                 label
@@ -422,7 +422,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
         
-        JPanel panelStructure = new JPanel(new BorderLayout());
+        var panelStructure = new JPanel(new BorderLayout());
         panelStructure.add(tabsStandard, BorderLayout.CENTER);
         panelStructure.setBorder(BorderFactory.createEmptyBorder());
         
@@ -434,12 +434,12 @@ public class SqlEngine extends JPanel implements Cleanable {
         JTabbedPane tabsStrategy = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_NORMAL"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.INDICES.getText()));
         
-        JPanel panelStrategy = new JPanel(new BorderLayout());
+        var panelStrategy = new JPanel(new BorderLayout());
         panelStrategy.add(tabsStrategy, BorderLayout.CENTER);
         panelStrategy.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
         
         /* Error */
-        JPanel panelError = new JPanel(new BorderLayout());
+        var panelError = new JPanel(new BorderLayout());
         panelError.add(SqlEngine.tabbedPaneError, BorderLayout.CENTER);
         
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_ERROR"), panelError);
@@ -463,7 +463,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             )
         );
         
-        JPanel panelBoolean = new JPanel(new BorderLayout());
+        var panelBoolean = new JPanel(new BorderLayout());
         panelBoolean.add(tabsBoolean, BorderLayout.CENTER);
         
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_BOOLEAN"), panelBoolean);
@@ -477,7 +477,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         )
         .forEach(keyI18n -> {
             
-            JLabel label = new JLabel(I18nUtil.valueByKey(keyI18n));
+            var label = new JLabel(I18nUtil.valueByKey(keyI18n));
             
             tabsStrategy.setTabComponentAt(
                 tabsStrategy.indexOfTab(I18nUtil.valueByKey(keyI18n)),
@@ -512,7 +512,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         )
         .forEach(keyI18n -> {
             
-            JLabel label = new JLabel(I18nUtil.valueByKey(keyI18n));
+            var label = new JLabel(I18nUtil.valueByKey(keyI18n));
             tabsConfiguration.setTabComponentAt(
                 tabsConfiguration.indexOfTab(I18nUtil.valueByKey(keyI18n)),
                 label
@@ -521,7 +521,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             I18nViewUtil.addComponentForKey(keyI18n, label);
         });
         
-        JPanel panelConfiguration = new JPanel(new BorderLayout());
+        var panelConfiguration = new JPanel(new BorderLayout());
         panelConfiguration.add(tabsConfiguration, BorderLayout.CENTER);
         panelConfiguration.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
         
@@ -542,7 +542,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         .of("SQLENGINE_ORDER_BY")
         .forEach(keyI18n -> {
             
-            JLabel label = new JLabel(I18nUtil.valueByKey(keyI18n));
+            var label = new JLabel(I18nUtil.valueByKey(keyI18n));
             tabs.setTabComponentAt(
                 tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)),
                 label
@@ -551,7 +551,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             I18nViewUtil.addComponentForKey(keyI18n, label);
         });
         
-        JPanel panel = new JPanel(new BorderLayout());
+        var panel = new JPanel(new BorderLayout());
         panel.add(tabs, BorderLayout.CENTER);
         panel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
         
@@ -560,7 +560,7 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private static JPanel initializeMenuVendor() {
         
-        JPanel panelCombo = new JPanel();
+        var panelCombo = new JPanel();
         panelCombo.setLayout(new BorderLayout());
         panelCombo.setOpaque(false);
 
@@ -569,14 +569,14 @@ public class SqlEngine extends JPanel implements Cleanable {
         panelCombo.setPreferredSize(new Dimension(Integer.MAX_VALUE, 25));
         panelCombo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
 
-        JMenuBar menuBarVendor = new JMenuBar();
+        var menuBarVendor = new JMenuBar();
         menuBarVendor.setOpaque(false);
         menuBarVendor.setBorder(null);
         
         JMenu comboMenuVendor = new ComboMenu(MediatorHelper.model().getMediatorVendor().getVendor().toString());
         menuBarVendor.add(comboMenuVendor);
 
-        ButtonGroup groupVendor = new ButtonGroup();
+        var groupVendor = new ButtonGroup();
 
         List<Vendor> listVendors = new LinkedList<>(MediatorHelper.model().getMediatorVendor().getVendors());
         listVendors.removeIf(vendor -> vendor == MediatorHelper.model().getMediatorVendor().getAuto());
@@ -659,11 +659,11 @@ public class SqlEngine extends JPanel implements Cleanable {
             
         for (Method methodError: SqlEngine.modelYaml.getStrategy().getError().getMethod()) {
             
-            JPanel panelError = new JPanel(new BorderLayout());
+            var panelError = new JPanel(new BorderLayout());
             
-            final Method[] refMethodError = new Method[]{ methodError };
+            final var refMethodError = new Method[]{ methodError };
             
-            JTextPaneLexer textPaneError = new JTextPaneLexer(
+            var textPaneError = new JTextPaneLexer(
                 refMethodError[0]::setQuery,
                 refMethodError[0]::getQuery
             );
@@ -675,7 +675,7 @@ public class SqlEngine extends JPanel implements Cleanable {
 
             panelError.add(new LightScrollPane(1, 0, 1, 0, textPaneError), BorderLayout.CENTER);
             
-            JPanel panelLimit = new JPanel();
+            var panelLimit = new JPanel();
             panelLimit.setLayout(new BoxLayout(panelLimit, BoxLayout.LINE_AXIS));
             panelLimit.add(new JLabel(" Overflow limit: "));
             panelLimit.add(new JTextField(Integer.toString(methodError.getCapacity())));
@@ -715,7 +715,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         UiUtil.stopDocumentColorer(textPane);
         
-        HighlightedDocument document = new HighlightedDocument(HighlightedDocument.SQL_STYLE);
+        var document = new HighlightedDocument(HighlightedDocument.SQL_STYLE);
         document.setHighlightStyle(HighlightedDocument.SQL_STYLE);
         textPane.setStyledDocument(document);
         

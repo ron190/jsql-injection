@@ -191,7 +191,7 @@ public class Base16 extends BaseNCodec {
         final byte[] buffer = this.ensureBufferSize(charsToProcess / BYTES_PER_ENCODED_BLOCK, context);
 
         int result;
-        int i = 0;
+        var i = 0;
         if (dataLen < availableChars) {
             
             // we have 1/2 byte from previous invocation to decode

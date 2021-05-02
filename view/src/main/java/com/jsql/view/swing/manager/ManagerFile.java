@@ -158,7 +158,7 @@ public class ManagerFile extends AbstractManagerList {
             return;
         }
 
-        int countFileFound = 0;
+        var countFileFound = 0;
         
         ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableReadFile"));
         CompletionService<CallableFile> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
@@ -181,12 +181,11 @@ public class ManagerFile extends AbstractManagerList {
             ; tasksHandled++
         ) {
             
-            CallableFile currentCallable = taskCompletionService.take().get();
+            var currentCallable = taskCompletionService.take().get();
             
             if (StringUtils.isNotEmpty(currentCallable.getSourceFile())) {
                 
-                String name =
-                    currentCallable
+                var name = currentCallable
                     .getPathFile()
                     .substring(
                         currentCallable.getPathFile().lastIndexOf('/') + 1,
@@ -195,7 +194,7 @@ public class ManagerFile extends AbstractManagerList {
                 String content = currentCallable.getSourceFile();
                 String path = currentCallable.getPathFile();
 
-                Request request = new Request();
+                var request = new Request();
                 request.setMessage(Interaction.CREATE_FILE_TAB);
                 request.setParameters(name, content, path);
                 MediatorHelper.model().sendToViews(request);
@@ -228,8 +227,8 @@ public class ManagerFile extends AbstractManagerList {
         
         MediatorHelper.model().getResourceAccess().setSearchFileStopped(false);
         
-        String result =
-            String.format(
+        var result = String
+            .format(
                 "Found %s file%s%s on %s files checked",
                 countFileFound,
                 countFileFound > 1 ? 's' : StringUtils.EMPTY,
@@ -246,7 +245,7 @@ public class ManagerFile extends AbstractManagerList {
             LOGGER.log(LogLevel.CONSOLE_ERROR, result);
         }
         
-        Request request = new Request();
+        var request = new Request();
         request.setMessage(Interaction.END_FILE_SEARCH);
         MediatorHelper.model().sendToViews(request);
     }

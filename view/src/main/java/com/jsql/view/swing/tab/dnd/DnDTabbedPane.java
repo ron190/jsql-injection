@@ -119,7 +119,7 @@ public class DnDTabbedPane extends JTabbedPane {
         this.setUI(new CustomMetalTabbedPaneUI());
         this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
         
-        Handler h = new Handler();
+        var h = new Handler();
         this.addMouseListener(h);
         this.addMouseMotionListener(h);
         this.addPropertyChangeListener(h);
@@ -127,7 +127,7 @@ public class DnDTabbedPane extends JTabbedPane {
     
     public DnDDropLocation dropLocationForPointDnD(Point p) {
         
-        for (int i = 0; i < this.getTabCount(); i++) {
+        for (var i = 0; i < this.getTabCount(); i++) {
             
             if (this.getBoundsAt(i).contains(p)) {
                 
@@ -163,10 +163,10 @@ public class DnDTabbedPane extends JTabbedPane {
     
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
         
-        Component cmp = this.getComponentAt(dragIndex);
-        Component tab = this.getTabComponentAt(dragIndex);
+        var cmp = this.getComponentAt(dragIndex);
+        var tab = this.getTabComponentAt(dragIndex);
         String title = this.getTitleAt(dragIndex);
-        Icon icon = this.getIconAt(dragIndex);
+        var icon = this.getIconAt(dragIndex);
         String tip = this.getToolTipTextAt(dragIndex);
         boolean isEnabled = this.isEnabledAt(dragIndex);
         
@@ -185,10 +185,10 @@ public class DnDTabbedPane extends JTabbedPane {
     
     public void convertTab(int prev, int next) {
         
-        Component cmp = this.getComponentAt(prev);
-        Component tab = this.getTabComponentAt(prev);
+        var cmp = this.getComponentAt(prev);
+        var tab = this.getTabComponentAt(prev);
         String title = this.getTitleAt(prev);
-        Icon icon = this.getIconAt(prev);
+        var icon = this.getIconAt(prev);
         String tip = this.getToolTipTextAt(prev);
         boolean isEnabled = this.isEnabledAt(prev);
         int tgtindex = prev > next ? next : next - 1;
@@ -319,7 +319,7 @@ public class DnDTabbedPane extends JTabbedPane {
                 return;
             }
             
-            Point tabPt = e.getPoint();
+            var tabPt = e.getPoint();
             int idx = src.indexAtLocation(tabPt.x, tabPt.y);
             
             // disabled tab, null component problem.
@@ -332,12 +332,12 @@ public class DnDTabbedPane extends JTabbedPane {
         @Override
         public void mouseDragged(MouseEvent e) {
             
-            Point tabPt = e.getPoint();
+            var tabPt = e.getPoint();
             
             if (Objects.nonNull(this.startPt) && this.startPt.distance(tabPt) > this.gestureMotionThreshold) {
                 
                 DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
-                TransferHandler th = src.getTransferHandler();
+                var th = src.getTransferHandler();
                 DnDTabbedPane.this.dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
                 
                 // Unhandled NoClassDefFoundError #56620: Could not initialize class java.awt.dnd.DragSource
@@ -354,7 +354,7 @@ public class DnDTabbedPane extends JTabbedPane {
         @Override
         public void mouseClicked(MouseEvent e) {
             
-            Point tabPt = e.getPoint();
+            var tabPt = e.getPoint();
             JTabbedPane src = (JTabbedPane) e.getSource();
             
             int i = src.indexAtLocation(tabPt.x, tabPt.y);

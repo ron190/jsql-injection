@@ -15,23 +15,17 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
-import java.net.http.HttpRequest.BodyPublisher;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.text.DecimalFormat;
 import java.time.Duration;
-import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -120,7 +114,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.mediatorUtils.setCertificateUtil(new CertificateUtil());
         this.mediatorUtils.setPropertiesUtil(this.propertiesUtil);
         this.mediatorUtils.setConnectionUtil(new ConnectionUtil(this));
-        this.mediatorUtils.setAuthenticationUtil(new AuthenticationUtil(this));
+        this.mediatorUtils.setAuthenticationUtil(new AuthenticationUtil());
         this.mediatorUtils.setGitUtil(new GitUtil(this));
         this.mediatorUtils.setHeaderUtil(new HeaderUtil(this));
         this.mediatorUtils.setParameterUtil(new ParameterUtil(this));
@@ -179,7 +173,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
             
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM, 
+                LogLevel.CONSOLE_INFORM,
                 "{}: {}",
                 () -> I18nUtil.valueByKey("LOG_START_INJECTION"),
                 () -> this.mediatorUtils.getConnectionUtil().getUrlByUser()
@@ -239,7 +233,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
         } finally {
             
-            Request request = new Request();
+            var request = new Request();
             request.setMessage(Interaction.END_PREPARATION);
             this.sendToViews(request);
         }
@@ -270,7 +264,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         } catch (MalformedURLException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 String.format("Incorrect Query Url: %s", e.getMessage()),
                 e
             );
@@ -307,33 +301,16 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             this.initializeRequest(isUsingIndex, dataInjection, httpRequest, msgHeader);
             
             HttpResponse<String> response = this.getMediatorUtils().getConnectionUtil().getHttpClient().send(
-                httpRequest.build(), 
+                httpRequest.build(),
                 BodyHandlers.ofString()
             );
             pageSource = response.body();
-            HttpHeaders httpHeaders = response.headers();
             
-            Map<String, String> headers =
-                httpHeaders
-                .map()
-                .entrySet()
-                .stream()
-                .sorted(Comparator.comparing(Entry::getKey))
-                .map(entrySet ->
-                    new AbstractMap.SimpleEntry<>(
-                        entrySet.getKey(),
-                        String.join(", ", entrySet.getValue())
-                    )
-                )
-                .collect(Collectors.toMap(
-                    AbstractMap.SimpleEntry::getKey,
-                    AbstractMap.SimpleEntry::getValue
-                ));
+            Map<String, String> headers = ConnectionUtil.getHeadersMap(response);
             
             msgHeader.put(Header.RESPONSE, headers);
             
-            int sizeHeaders =
-                headers
+            int sizeHeaders = headers
                 .keySet()
                 .stream()
                 .map(key -> headers.get(key).length() + key.length())
@@ -341,7 +318,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 .sum();
             
             float size = (float) (pageSource.length() + sizeHeaders) / 1024;
-            DecimalFormat decimalFormat = new DecimalFormat("0.000");
+            var decimalFormat = new DecimalFormat("0.000");
             msgHeader.put(Header.PAGE_SIZE, decimalFormat.format(size));
             
             if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
@@ -359,7 +336,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             msgHeader.put(Header.METADATA_STRATEGY, this.mediatorStrategy.getMeta());
             
             // Send data to Views
-            Request request = new Request();
+            var request = new Request();
             request.setMessage(Interaction.MESSAGE_HEADER);
             request.setParameters(msgHeader);
             this.sendToViews(request);
@@ -369,7 +346,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             IOException | InterruptedException e
         ) {
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 String.format("Error during connection: %s", e.getMessage())
             );
         }
@@ -387,7 +364,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     ) {
         
         String urlInjectionFixed = urlInjection;
-        URL urlObjectFixed = urlObject;
+        var urlObjectFixed = urlObject;
         
         if (
             this.mediatorUtils.getParameterUtil().getListQueryString().isEmpty()
@@ -421,7 +398,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         } catch (MalformedURLException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 String.format("Incorrect Url: %s", e.getMessage()),
                 e
             );
@@ -433,8 +410,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     }
 
     private void initializeHeader(
-        boolean isUsingIndex, 
-        String dataInjection, 
+        boolean isUsingIndex,
+        String dataInjection,
         Builder httpRequest,
         Map<Header, Object> msgHeader
     ) {
@@ -478,8 +455,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     }
 
     private void initializeRequest(
-        boolean isUsingIndex, 
-        String dataInjection, 
+        boolean isUsingIndex,
+        String dataInjection,
         Builder httpRequest,
         Map<Header, Object> msgHeader
     ) {
@@ -494,7 +471,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         // Set connection method
         // Active for query string injection too, in that case inject query string still with altered method
         
-        StringBuilder body = new StringBuilder();
+        var body = new StringBuilder();
         
         if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
             
@@ -533,10 +510,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
         }
         
-        BodyPublisher bodyPublisher = BodyPublishers.ofString(body.toString());
+        var bodyPublisher = BodyPublishers.ofString(body.toString());
         
         httpRequest.method(
-            this.mediatorUtils.getConnectionUtil().getTypeRequest(), 
+            this.mediatorUtils.getConnectionUtil().getTypeRequest(),
             bodyPublisher
         );
         

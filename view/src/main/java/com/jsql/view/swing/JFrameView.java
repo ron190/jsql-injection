@@ -90,8 +90,8 @@ public class JFrameView extends JFrame {
                 
                 super.windowOpened(event);
                 
-                Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
-                double horizontalTopBottomSplitter = preferences.getDouble(SplitHorizontalTopBottom.getNameHSplitpane(), 0.75);
+                var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+                var horizontalTopBottomSplitter = preferences.getDouble(SplitHorizontalTopBottom.getNameHSplitpane(), 0.75);
                 
                 if (!(0.0 <= horizontalTopBottomSplitter && horizontalTopBottomSplitter <= 1.0)) {
                     
@@ -104,18 +104,17 @@ public class JFrameView extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 
-                Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+                var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
                 preferences.putInt(
                     SplitHorizontalTopBottom.getNameVSplitpane(),
                     JFrameView.this.splitHorizontalTopBottom.getSplitVerticalLeftRight().getDividerLocation()
                 );
                 
-                BigDecimal roundDecimal =
-                    BigDecimal.valueOf(
-                        JFrameView.this.splitHorizontalTopBottom.getDividerLocation() * 100.0
-                        / JFrameView.this.splitHorizontalTopBottom.getHeight()
-                        / 100
-                    );
+                var roundDecimal = BigDecimal.valueOf(
+                    JFrameView.this.splitHorizontalTopBottom.getDividerLocation() * 100.0
+                    / JFrameView.this.splitHorizontalTopBottom.getHeight()
+                    / 100
+                );
                 roundDecimal = roundDecimal.setScale(2, RoundingMode.HALF_UP);
                 
                 // Divider location change when window is maximized, we can't save getDividerLocation()
@@ -130,7 +129,7 @@ public class JFrameView extends JFrame {
                 preferences.putBoolean(UiUtil.NETWORK_VISIBLE, false);
                 preferences.putBoolean(UiUtil.JAVA_VISIBLE, false);
                 
-                for (int i = 0 ; i < MediatorHelper.tabConsoles().getTabCount() ; i++) {
+                for (var i = 0 ; i < MediatorHelper.tabConsoles().getTabCount() ; i++) {
                     
                     if ("CONSOLE_BINARY_LABEL".equals(MediatorHelper.tabConsoles().getTabComponentAt(i).getName())) {
                         
@@ -176,7 +175,7 @@ public class JFrameView extends JFrame {
     private void initializePaneComponents() {
         
         // Save controller
-        Menubar menubar = new Menubar();
+        var menubar = new Menubar();
         this.setJMenuBar(menubar);
         MediatorHelper.register(menubar);
         
@@ -185,12 +184,12 @@ public class JFrameView extends JFrame {
 
         // Main panel for tree and tables in the middle
         // Set proxy tabs dependency
-        JPanel mainPanel = new JPanel(new GridLayout(1, 0));
+        var mainPanel = new JPanel(new GridLayout(1, 0));
         this.splitHorizontalTopBottom = new SplitHorizontalTopBottom();
         mainPanel.add(this.splitHorizontalTopBottom);
         
         // Textfields at the top
-        PanelAddressBar panelAddressBar = new PanelAddressBar();
+        var panelAddressBar = new PanelAddressBar();
         
         // Tab manager use proxy tabs dependency
         JTabbedPane tabManagers = new TabManagers();
@@ -215,9 +214,9 @@ public class JFrameView extends JFrame {
         MediatorHelper.panelConsoles().reset();
         MediatorHelper.treeDatabase().reset();
         
-        for (int i = 0 ; i < MediatorHelper.tabConsoles().getTabCount() ; i++) {
+        for (var i = 0 ; i < MediatorHelper.tabConsoles().getTabCount() ; i++) {
             
-            Component tabComponent = MediatorHelper.tabConsoles().getTabComponentAt(i);
+            var tabComponent = MediatorHelper.tabConsoles().getTabComponentAt(i);
             if (tabComponent != null) {
                 
                 tabComponent.setFont(tabComponent.getFont().deriveFont(Font.PLAIN));

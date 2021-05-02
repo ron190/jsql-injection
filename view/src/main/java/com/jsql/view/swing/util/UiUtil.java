@@ -245,11 +245,11 @@ public class UiUtil {
 
     private static void loadFonts() {
         
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        var ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         
         try (InputStream fontStream = new BufferedInputStream(UiUtil.class.getClassLoader().getResourceAsStream("swing/font/UbuntuMono-R-ctrlchar.ttf"))) {
             
-            Font ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+            var ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             ge.registerFont(ubuntuFont);
             
         } catch (FontFormatException | IOException e) {
@@ -465,12 +465,12 @@ public class UiUtil {
         
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         
-        Insets ins = textComponent.getInsets();
-        FontMetrics fm = g.getFontMetrics();
+        var ins = textComponent.getInsets();
+        var fm = g.getFontMetrics();
         
         int c0 = textComponent.getBackground().getRGB();
         int c1 = textComponent.getForeground().getRGB();
-        int m = 0xfefefefe;
+        var m = 0xfefefefe;
         int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
         
         g.setColor(new Color(c2, true));

@@ -42,7 +42,7 @@ public class NodeModelColumn extends NodeModelEmpty {
         final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, boolean hasFocus
     ) {
         
-        JCheckBox checkbox = new JCheckBox(this.toString(), this.isSelected());
+        var checkbox = new JCheckBox(this.toString(), this.isSelected());
         
         checkbox.setText(UiStringUtil.detectUtf8HtmlNoWrap(this.toString()));
 

@@ -205,7 +205,7 @@ public class ComponentBorder implements Border {
         this.determineInsetsAndAlignment();
 
         // Add this Border to the parent
-        Border current = parent.getBorder();
+        var current = parent.getBorder();
 
         if (current == null) {
             
@@ -213,7 +213,7 @@ public class ComponentBorder implements Border {
             
         } else {
             
-            CompoundBorder compound = new CompoundBorder(current, this);
+            var compound = new CompoundBorder(current, this);
             parent.setBorder(compound);
         }
 
@@ -274,7 +274,7 @@ public class ComponentBorder implements Border {
      */
     private void adjustBorderInsets() {
         
-        Insets parentInsets = this.parent.getInsets();
+        var parentInsets = this.parent.getInsets();
 
         // May need to adjust the height of the parent component to fit
         // the component in the Border

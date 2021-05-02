@@ -77,7 +77,7 @@ public class ActionStart implements ActionListener {
             this.panelAddressBar.getAddressMenuBar().getLoader().setVisible(true);
 
             // Erase everything in the view from a previous injection
-            Request requests = new Request();
+            var requests = new Request();
             requests.setMessage(Interaction.RESET_INTERFACE);
             MediatorHelper.model().sendToViews(requests);
 

@@ -39,13 +39,13 @@ public class PanelAuth extends JPanel {
 
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
-        GroupLayout groupLayout = new GroupLayout(this);
+        var groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
 
         // Digest label
-        JLabel labelDigestAuthenticationUsername = new JLabel("Username  ");
-        JLabel labelDigestAuthenticationPassword = new JLabel("Password  ");
-        final JButton labelUseDigestAuthentication = new JButton("Enable Digest and NTLM");
+        var labelDigestAuthenticationUsername = new JLabel("Username  ");
+        var labelDigestAuthenticationPassword = new JLabel("Password  ");
+        final var labelUseDigestAuthentication = new JButton("Enable Digest and NTLM");
         String tooltipUseDigestAuthentication =
             TAG_HTML_ON
             + "Enable <b>Basic</b>, <b>Digest</b>, <b>NTLM</b> authentication (e.g. WWW-Authenticate).<br>"
@@ -59,9 +59,9 @@ public class PanelAuth extends JPanel {
         this.getCheckboxUseDigestAuthentication().setFocusable(false);
         
         // Digest label
-        JLabel labelKerberosLoginConf = new JLabel("login.conf  ");
-        JLabel labelKerberosKrb5Conf = new JLabel("krb5.conf  ");
-        final JButton labelUseKerberos = new JButton("Enable Kerberos");
+        var labelKerberosLoginConf = new JLabel("login.conf  ");
+        var labelKerberosKrb5Conf = new JLabel("krb5.conf  ");
+        final var labelUseKerberos = new JButton("Enable Kerberos");
         String tooltipUseKerberos =
             TAG_HTML_ON
             + "Activate Kerberos authentication, then define path to <b>login.conf</b> and <b>krb5.conf</b>.<br>"
@@ -170,8 +170,8 @@ public class PanelAuth extends JPanel {
             label.setContentAreaFilled(false);
         });
         
-        JLabel labelMarginHidden = new JLabel();
-        JLabel labelMargin = new JLabel();
+        var labelMarginHidden = new JLabel();
+        var labelMargin = new JLabel();
         labelMargin.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         
         groupLayout

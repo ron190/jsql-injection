@@ -58,7 +58,7 @@ public class CallableFile implements Callable<CallableFile> {
     @Override
     public CallableFile call() throws Exception {
         
-        String[] sourcePage = {StringUtils.EMPTY};
+        var sourcePage = new String[]{ StringUtils.EMPTY };
 
         String resultToParse = StringUtils.EMPTY;
         try {

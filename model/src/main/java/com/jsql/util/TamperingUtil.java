@@ -1,6 +1,5 @@
 package com.jsql.util;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.script.Invocable;
@@ -52,13 +51,13 @@ public class TamperingUtil {
             ScriptEngine nashornEngine = SCRIPT_ENGINE_MANAGER.getEngineByName("nashorn");
             nashornEngine.eval(jsTampering);
 
-            Invocable nashornInvocable = (Invocable) nashornEngine;
+            var nashornInvocable = (Invocable) nashornEngine;
             resultSqlTampered = nashornInvocable.invokeFunction("tampering", sqlQuery);
 
         } catch (ScriptException e) {
 
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 String.format("Tampering context contains errors: %s", e.getMessage()),
                 e
             );
@@ -67,7 +66,7 @@ public class TamperingUtil {
         } catch (NoSuchMethodException e) {
 
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 String.format("Tampering context is not properly defined: %s", e.getMessage()),
                 e
             );
@@ -86,7 +85,7 @@ public class TamperingUtil {
 
         // Transform only SQL query without HTTP parameters and syntax changed, like
         // p=1'+[sql]
-        Matcher matcherSql = Pattern.compile("(?s)(.*<tampering>)(.*)(</tampering>.*)").matcher(sqlQueryDefault);
+        var matcherSql = Pattern.compile("(?s)(.*<tampering>)(.*)(</tampering>.*)").matcher(sqlQueryDefault);
 
         if (matcherSql.find()) {
 

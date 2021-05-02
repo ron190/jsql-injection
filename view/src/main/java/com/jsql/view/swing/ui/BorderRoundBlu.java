@@ -31,7 +31,7 @@ public class BorderRoundBlu extends AbstractBorder {
         
         Graphics2D g2 = (Graphics2D)g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        int r = 5;
+        var r = 5;
         
         RoundRectangle2D round = new RoundRectangle2D.Float(x, y, width-1f, height-1f, r, r);
         Container parent = c.getParent();
@@ -39,7 +39,7 @@ public class BorderRoundBlu extends AbstractBorder {
         if (parent!=null) {
             
             g2.setColor(parent.getBackground());
-            Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
+            var corner = new Area(new Rectangle2D.Float(x, y, width, height));
             corner.subtract(new Area(round));
             
             // Fix #42304: NoClassDefFoundError on fill()

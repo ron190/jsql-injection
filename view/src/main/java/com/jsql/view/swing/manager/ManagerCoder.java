@@ -108,7 +108,7 @@ public class ManagerCoder extends JPanel implements Manager {
         this.result.setContentType("text/html");
         this.result.setEditorKit(new HTMLEditorKitTextPaneWrap());
         
-        JPanel bottom = new JPanel(new BorderLayout());
+        var bottom = new JPanel(new BorderLayout());
         bottom.add(new LightScrollPane(0, 0, 0, 0, this.result), BorderLayout.CENTER);
 
         JSplitPaneWithZeroSizeDivider divider = new JSplitPaneWithZeroSizeDivider(JSplitPane.VERTICAL_SPLIT);
@@ -124,13 +124,13 @@ public class ManagerCoder extends JPanel implements Manager {
 
     private JPanel initializeTopPanel() {
         
-        JPanel topMixed = new JPanel(new BorderLayout());
+        var topMixed = new JPanel(new BorderLayout());
 
-        final JPanel middleLine = new JPanel();
+        final var middleLine = new JPanel();
         middleLine.setLayout(new BorderLayout());
         middleLine.setBorder(BorderFactory.createEmptyBorder(1, 0, 1, 1));
 
-        MenuBarCoder comboMenubar = this.initializeMenuBarCoder();
+        var comboMenubar = this.initializeMenuBarCoder();
         
         this.menuMethod.setText("Encode to Base64");
         
@@ -154,12 +154,12 @@ public class ManagerCoder extends JPanel implements Manager {
         mapMenus.put("Url", new JMenu("Url"));
         mapMenus.put("Unicode", new JMenu("Unicode"));
         
-        JMenu menuHtml = new JMenu("Html");
+        var menuHtml = new JMenu("Html");
         mapMenus.put("Html", menuHtml);
         mapMenus.put("Base64(zipped)", new JMenu("Base64(zipped)"));
         mapMenus.put("Hex(zipped)", new JMenu("Hex(zipped)"));
 
-        JMenuItem menuEncodeHtmlDecimal = new JMenuItem("Encode to Html (decimal)");
+        var menuEncodeHtmlDecimal = new JMenuItem("Encode to Html (decimal)");
         menuHtml.add(menuEncodeHtmlDecimal);
         menuEncodeHtmlDecimal.addActionListener(this.actionCoder);
         menuEncodeHtmlDecimal.addChangeListener(new ChangeMenuListener("Encode to Html (decimal)"));
@@ -169,11 +169,11 @@ public class ManagerCoder extends JPanel implements Manager {
         .stream()
         .forEach(entryMap -> {
             
-            JMenuItem menuEncode = new JMenuItem("Encode to "+ entryMap.getKey());
+            var menuEncode = new JMenuItem("Encode to "+ entryMap.getKey());
             menuEncode.addActionListener(this.actionCoder);
             menuEncode.addChangeListener(new ChangeMenuListener("Encode to "+ entryMap.getKey()));
             
-            JMenuItem menuDecode = new JMenuItem("Decode from "+ entryMap.getKey());
+            var menuDecode = new JMenuItem("Decode from "+ entryMap.getKey());
             menuDecode.addActionListener(this.actionCoder);
             menuDecode.addChangeListener(new ChangeMenuListener("Decode from "+ entryMap.getKey()));
             
@@ -187,7 +187,7 @@ public class ManagerCoder extends JPanel implements Manager {
         .of("Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql")
         .forEach(hash -> {
             
-            JMenuItem menuEncode = new JMenuItem("Hash to "+ hash);
+            var menuEncode = new JMenuItem("Hash to "+ hash);
             menuEncode.addActionListener(this.actionCoder);
             menuEncode.addChangeListener(new ChangeMenuListener("Hash to "+ hash));
             
@@ -202,7 +202,7 @@ public class ManagerCoder extends JPanel implements Manager {
             comboMenu.add(menu);
         }
 
-        MenuBarCoder comboMenubar = new MenuBarCoder(comboMenu);
+        var comboMenubar = new MenuBarCoder(comboMenu);
         comboMenubar.setOpaque(false);
         comboMenubar.setBorder(null);
         

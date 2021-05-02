@@ -1,5 +1,8 @@
 package com.jsql.util;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLContext;
@@ -22,20 +25,16 @@ public class CertificateUtil {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
+    private SSLContext sslContext = null;
+    
     // Utility class
     public CertificateUtil() {
         
         System.setProperty("jdk.internal.httpclient.disableHostnameVerification", "true");
-    }
-    
-    /**
-     * Configure a fake SSL context in order to ignore malformed certificate.
-     */
-    public static SSLContext ignoreCertificationChain() {
         
         // Create a trust manager that does not validate certificate chains
         // and ignore exception PKIX path building failed: unable to find valid certification path to requested target
-        TrustManager[] trustAllCerts = new TrustManager[] {
+        var trustAllCerts = new TrustManager[] {
                 
             new X509TrustManager() {
                 
@@ -64,23 +63,23 @@ public class CertificateUtil {
                 }
             }
         };
-
-        // Install the all-trusting trust manager
-        SSLContext sc = null;
         
         try {
-            sc = SSLContext.getInstance("TLSv1.2");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            this.sslContext = SSLContext.getInstance("TLSv1.2");
+            this.sslContext.init(null, trustAllCerts, new SecureRandom());
             
-        } catch (Exception e) {
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 String.format("Error ignoring untrusted SSL: %s", e.getMessage()),
                 e
             );
         }
+    }
+    
+    public SSLContext getSslContext() {
         
-        return sc;
+        return this.sslContext;
     }
 }

@@ -58,10 +58,10 @@ public class TabManagersProxy extends JTabbedPane {
             }
         });
         
-        ManagerScan managerScanList = new ManagerScan();
-        ManagerDatabase managerDatabase = new ManagerDatabase();
-        ManagerAdminPage managerAdminPage = new ManagerAdminPage();
-        ManagerBruteForce managerBruteForce = new ManagerBruteForce();
+        var managerScanList = new ManagerScan();
+        var managerDatabase = new ManagerDatabase();
+        var managerAdminPage = new ManagerAdminPage();
+        var managerBruteForce = new ManagerBruteForce();
         
         MediatorHelper.register(this.managerWebShell);
         MediatorHelper.register(this.managerFile);

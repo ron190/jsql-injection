@@ -278,7 +278,7 @@ public final class ShadowPopup extends Popup {
         // Do not install the shadow border when the contents
         // has a preferred size less than or equal to 0.
         // We can't use the size, because it is(0, 0) for new popups.
-        Dimension contentsPrefSize = new Dimension();
+        var contentsPrefSize = new Dimension();
         
         // Fix #4172: NullPointerException on getPreferredSize()
         // Implementation by javax.swing.plaf.metal.MetalToolTipUI.getPreferredSize()
@@ -353,7 +353,7 @@ public final class ShadowPopup extends Popup {
                 return;
             }
 
-            Robot robot = new Robot(); // uses the default screen device
+            var robot = new Robot(); // uses the default screen device
 
             RECT.setBounds(this.x, this.y + height - SHADOW_SIZE, width, SHADOW_SIZE);
             BufferedImage hShadowBg = robot.createScreenCapture(RECT);

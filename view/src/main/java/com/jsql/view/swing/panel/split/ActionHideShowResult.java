@@ -19,7 +19,7 @@ public class ActionHideShowResult implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        SplitHorizontalTopBottom splitHorizontalTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();
+        var splitHorizontalTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();
         
         if (
             splitHorizontalTopBottom.getTopComponent().isVisible()

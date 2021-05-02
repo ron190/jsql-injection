@@ -68,9 +68,9 @@ public class ManagerUpload extends AbstractManagerList {
         List<ItemList> pathsList = new ArrayList<>();
         
         try (
-            InputStream inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader reader = new BufferedReader(inputStreamReader)
+            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);
+            var inputStreamReader = new InputStreamReader(inputStream);
+            var reader = new BufferedReader(inputStreamReader)
         ) {
             String line;
             
@@ -89,7 +89,7 @@ public class ManagerUpload extends AbstractManagerList {
         this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
         this.add(new LightScrollPane(0, 0, 0, 0, this.getListPaths()), BorderLayout.CENTER);
         
-        JPanel southPanel = new JPanel();
+        var southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 
         final JTextField shellURL = new JPopupTextField(I18nUtil.valueByKey("UPLOAD_URL_LABEL")).getProxy();
@@ -106,7 +106,7 @@ public class ManagerUpload extends AbstractManagerList {
             )
         );
 
-        JPanel lastLine = new JPanel();
+        var lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
@@ -158,7 +158,7 @@ public class ManagerUpload extends AbstractManagerList {
             return;
         }
 
-        final JFileChooser filechooser = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+        final var filechooser = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
         filechooser.setDialogTitle(I18nUtil.valueByKey("UPLOAD_DIALOG_TEXT"));
         
         // Fix #2402: NullPointerException on showOpenDialog()
@@ -186,7 +186,7 @@ public class ManagerUpload extends AbstractManagerList {
             new Thread(
                 () -> {
                 
-                    File file = filechooser.getSelectedFile();
+                    var file = filechooser.getSelectedFile();
                     
                     try {
                         ManagerUpload.this.loader.setVisible(true);
@@ -214,6 +214,7 @@ public class ManagerUpload extends AbstractManagerList {
                             String.format("Posting file failed: %s", e.getMessage()),
                             e
                         );
+                        Thread.currentThread().interrupt();
                     }
                 },
                 "ThreadUpload"

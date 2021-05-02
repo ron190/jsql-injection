@@ -118,7 +118,7 @@ public class ProxyUtil {
     public void initializeProxy() {
         
         // Use Preferences API to persist proxy configuration
-        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
         // Default proxy disabled
         this.setUsingProxyHttp(preferences.getBoolean("isUsingProxy", false));
@@ -154,7 +154,7 @@ public class ProxyUtil {
      */
     public boolean isLive(ShowOnConsole showOnConsole) {
         
-        boolean isLive = true;
+        var isLive = true;
         
         if (
             this.isUsingProxyHttp()
@@ -177,10 +177,10 @@ public class ProxyUtil {
     
     private boolean isSocketOn(ShowOnConsole showOnConsole, String address, String port, String protocol) {
         
-        boolean isSocketOn = true;
+        var isSocketOn = true;
         
         try {
-            Socket socket = new Socket(address, Integer.parseInt(port));
+            var socket = new Socket(address, Integer.parseInt(port));
             socket.close();
             
             this.logStatus(showOnConsole, address, port, protocol);
@@ -215,7 +215,7 @@ public class ProxyUtil {
             String message = Optional.ofNullable(e.getMessage()).orElse(StringUtils.EMPTY);
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 () -> String.format(
                     "Connection to %s proxy %s:%s failed with error \"%s\", verify your proxy settings",
                     protocol,

@@ -1,7 +1,5 @@
 package com.jsql.util;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.http.HttpRequest.Builder;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -91,7 +89,7 @@ public class CsrfUtil {
             SimpleEntry<String, String> tokenCsrfFound = optionalTokenCsrf.get();
             
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM, 
+                LogLevel.CONSOLE_INFORM,
                 "Found Csrf token from HTML body: {}={}",
                 tokenCsrfFound::getKey,
                 tokenCsrfFound::getValue
@@ -149,7 +147,7 @@ public class CsrfUtil {
             SimpleEntry<String, String> cookieCsrf = optionalCookieCsrf.get();
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 "Found CSRF token from Cookie: {}={}",
                 cookieCsrf::getKey,
                 cookieCsrf::getValue
@@ -190,40 +188,6 @@ public class CsrfUtil {
             httpRequest.setHeader(
                 this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),
                 this.tokenCsrf.getValue()
-            );
-        }
-    }
-    
-    public void addRequestToken(DataOutputStream dataOut) throws IOException {
-
-        if (this.tokenCsrf == null) {
-            
-            return;
-        }
-
-        dataOut.writeBytes(
-            String.format(
-                "%s=%s&",
-                this.tokenCsrf.getKey(),
-                this.tokenCsrf.getValue()
-            )
-        );
-        
-        dataOut.writeBytes(
-            String.format(
-                "_csrf=%s&",
-                this.tokenCsrf.getValue()
-            )
-        );
-        
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
-            
-            dataOut.writeBytes(
-                String.format(
-                    "%s=%s&",
-                    this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),
-                    this.tokenCsrf.getValue()
-                )
             );
         }
     }

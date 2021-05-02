@@ -73,7 +73,7 @@ public class ActionNewWindow extends AbstractAction {
         
         LOGGER.log(LogLevel.CONSOLE_INFORM, () -> I18nUtil.valueByKey("NEW_WINDOW_START"));
         
-        ProcessBuilder processBuilder = new ProcessBuilder(this.commands.toArray(new String[0]));
+        var processBuilder = new ProcessBuilder(this.commands.toArray(new String[0]));
         
         try {
             processBuilder.start();

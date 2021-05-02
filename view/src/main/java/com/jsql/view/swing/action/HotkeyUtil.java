@@ -75,8 +75,8 @@ public final class HotkeyUtil {
      */
     public static void addShortcut(JTabbedPane tabbedPane) {
         
-        KeyStroke ctrlTab = KeyStroke.getKeyStroke(STR_CTRL_TAB);
-        KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB);
+        var ctrlTab = KeyStroke.getKeyStroke(STR_CTRL_TAB);
+        var ctrlShiftTab = KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB);
 
         // Remove ctrl-tab from normal focus traversal
         Set<AWTKeyStroke> forwardKeys = new HashSet<>(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
@@ -89,7 +89,7 @@ public final class HotkeyUtil {
         tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
 
         // Add keys to the tab's input map
-        InputMap inputMap = tabbedPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        var inputMap = tabbedPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         inputMap.put(ctrlTab, "navigateNext");
         inputMap.put(ctrlShiftTab, "navigatePrevious");
     }
@@ -152,8 +152,8 @@ public final class HotkeyUtil {
         backwardKeys.remove(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB));
         rootPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
         
-        InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap actionMap = rootPane.getActionMap();
+        var inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        var actionMap = rootPane.getActionMap();
 
         inputMap.put(KeyStroke.getKeyStroke("ctrl W"), "actionString-closeTab");
         actionMap.put("actionString-closeTab", closeTab);
@@ -166,7 +166,7 @@ public final class HotkeyUtil {
         
         int tabCount = MediatorHelper.tabManagers().getTabCount();
         
-        for (int currentTab = 1 ; currentTab <= tabCount ; currentTab++) {
+        for (var currentTab = 1 ; currentTab <= tabCount ; currentTab++) {
             
             inputMap.put(KeyStroke.getKeyStroke("ctrl "+ currentTab), STR_SELECT_TAB + currentTab);
             inputMap.put(KeyStroke.getKeyStroke("ctrl NUMPAD"+ currentTab), STR_SELECT_TAB + currentTab);

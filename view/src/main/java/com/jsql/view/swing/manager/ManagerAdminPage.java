@@ -70,7 +70,7 @@ public class ManagerAdminPage extends AbstractManagerList {
         this.lastLine.setLayout(new BorderLayout());
         this.lastLine.setPreferredSize(new Dimension(0, 26));
         
-        JPanel panelRunButton = new JPanel();
+        var panelRunButton = new JPanel();
         panelRunButton.setLayout(new BoxLayout(panelRunButton, BoxLayout.X_AXIS));
         
         panelRunButton.add(Box.createHorizontalGlue());
@@ -174,7 +174,7 @@ public class ManagerAdminPage extends AbstractManagerList {
      */
     public void createAdminPages(String urlInjection, List<ItemList> pageNames) throws InterruptedException {
          
-        Matcher matcher = Pattern.compile("^((https?://)?[^/]*)(.*)").matcher(urlInjection);
+        var matcher = Pattern.compile("^((https?://)?[^/]*)(.*)").matcher(urlInjection);
         matcher.find();
         String urlProtocol = matcher.group(1);
         String urlWithoutProtocol = matcher.group(3);
@@ -196,7 +196,7 @@ public class ManagerAdminPage extends AbstractManagerList {
         ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableGetAdminPage"));
         CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
         
-        StringBuilder urlPart = new StringBuilder();
+        var urlPart = new StringBuilder();
         
         for (String segment: folderSplits) {
             
@@ -214,9 +214,9 @@ public class ManagerAdminPage extends AbstractManagerList {
             }
         }
 
-        ResourceAccess resourceAccess = MediatorHelper.model().getResourceAccess();
+        var resourceAccess = MediatorHelper.model().getResourceAccess();
         
-        int nbAdminPagesFound = 0;
+        var nbAdminPagesFound = 0;
         int submittedTasks = folderSplits.size() * pageNames.size();
         int tasksHandled;
         
@@ -235,7 +235,7 @@ public class ManagerAdminPage extends AbstractManagerList {
 
         resourceAccess.logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);
 
-        Request request = new Request();
+        var request = new Request();
         request.setMessage(Interaction.END_ADMIN_SEARCH);
         MediatorHelper.model().sendToViews(request);
     }

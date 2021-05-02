@@ -70,7 +70,7 @@ public class TabManagers extends TabbedPaneWheeled {
     
     private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, Component manager, int index) {
         
-        final JToolTipI18n[] refTooltip = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey(keyTooltip))};
+        final var refTooltip = new JToolTipI18n[]{ new JToolTipI18n(I18nUtil.valueByKey(keyTooltip)) };
         
         JLabel labelTab = new JLabel(I18nUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {
             

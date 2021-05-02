@@ -100,7 +100,7 @@ public class DialogAbout extends JDialog {
 
         JPanel lastLine = this.initializeLastLine(escapeListener);
 
-        JLabel iconJsql = new JLabel(new ImageIcon(UiUtil.URL_ICON_96));
+        var iconJsql = new JLabel(new ImageIcon(UiUtil.URL_ICON_96));
         dialogPane.add(iconJsql, BorderLayout.WEST);
         dialogPane.add(lastLine, BorderLayout.SOUTH);
 
@@ -115,7 +115,7 @@ public class DialogAbout extends JDialog {
 
     private JPanel initializeLastLine(ActionListener escapeListener) {
         
-        JPanel lastLine = new JPanel();
+        var lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));
         lastLine.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         
@@ -148,7 +148,7 @@ public class DialogAbout extends JDialog {
 
     private JButton initializeButtonWebpage() {
         
-        final JButton buttonWebpage = new JButton("Webpage");
+        final var buttonWebpage = new JButton("Webpage");
         
         buttonWebpage.setBorder(BorderFactory.createCompoundBorder(
             UiUtil.BORDER_FOCUS_GAINED,
@@ -185,17 +185,17 @@ public class DialogAbout extends JDialog {
 
     private JEditorPane initializeEditorPane() {
         
-        JEditorPane editorPane = new JEditorPane();
+        var editorPane = new JEditorPane();
         
         // Fix #82540: NoClassDefFoundError on setText()
         try {
             editorPane.setContentType("text/html");
 
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             
             try (
                 InputStream in = DialogAbout.class.getClassLoader().getResourceAsStream("swing/about.htm");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in))
+                var reader = new BufferedReader(new InputStreamReader(in))
             ) {
                 String line;
                 while ((line = reader.readLine()) != null) {

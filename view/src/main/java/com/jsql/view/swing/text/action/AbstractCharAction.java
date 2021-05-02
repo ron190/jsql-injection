@@ -49,8 +49,8 @@ public abstract class AbstractCharAction extends TextAction {
         }
         
         try {
-            Document doc = target.getDocument();
-            Caret caret = target.getCaret();
+            var doc = target.getDocument();
+            var caret = target.getCaret();
             int dot = caret.getDot();
             int mark = caret.getMark();
             

@@ -77,13 +77,13 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         
         super(JSplitPane.VERTICAL_SPLIT);
 
-        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         int verticalLeftRightSplitter = preferences.getInt(SplitHorizontalTopBottom.NAME_LEFT_RIGHT_SPLITPANE, LOC_LEFT_RIGHT_SPLITTER);
 
-        TabManagersProxy tabManagers = new TabManagersProxy();
+        var tabManagers = new TabManagersProxy();
         MediatorHelper.register(tabManagers);
 
-        TabResults tabResults = new TabResults();
+        var tabResults = new TabResults();
         tabResults.addMouseWheelListener(new TabbedPaneMouseWheelListener());
         MediatorHelper.register(tabResults);
 
@@ -105,7 +105,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         this.setDividerSize(0);
         this.setBorder(null);
 
-        JPanel panelManagerResult = new JPanel(new BorderLayout());
+        var panelManagerResult = new JPanel(new BorderLayout());
         panelManagerResult.add(this.splitVerticalLeftRight, BorderLayout.CENTER);
 
         PANEL_HIDDEN_CONSOLES.setLayout(new BorderLayout());
@@ -129,7 +129,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         // Setting for top and bottom components
         this.setTopComponent(panelManagerResult);
 
-        PanelConsoles panelConsoles = new PanelConsoles();
+        var panelConsoles = new PanelConsoles();
         MediatorHelper.register(panelConsoles);
 
         this.setBottomComponent(panelConsoles);

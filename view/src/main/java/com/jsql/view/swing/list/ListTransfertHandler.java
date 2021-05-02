@@ -39,7 +39,7 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
     @Override
     protected String initializeTransferable() {
         
-        StringBuilder stringTransferable = new StringBuilder();
+        var stringTransferable = new StringBuilder();
 
         for (ItemList itemPath: this.dragPaths) {
             
@@ -52,7 +52,7 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
     @Override
     protected void parseStringDrop(TransferSupport support, DnDList list, DefaultListModel<ItemList> listModel) {
         
-        JList.DropLocation dropLocation = (JList.DropLocation) support.getDropLocation();
+        var dropLocation = (JList.DropLocation) support.getDropLocation();
         int childIndex = dropLocation.getIndex();
 
         List<Integer> listSelectedIndices = new ArrayList<>();
@@ -67,8 +67,8 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
             this.addFromOutside(support, listModel, childIndex, listSelectedIndices);
         }
 
-        int[] selectedIndices = new int[listSelectedIndices.size()];
-        int i = 0;
+        var selectedIndices = new int[listSelectedIndices.size()];
+        var i = 0;
         
         for (Integer integer: listSelectedIndices) {
             
@@ -84,7 +84,7 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
         try {
             int childIndexTo = childIndexFrom;
             
-            String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
+            var importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
             
             for (String value: importString.split("\\n")) {
                 
@@ -110,7 +110,7 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
             if (StringUtils.isNotEmpty(value.toString())) {
                 
                 //! FUUuu
-                ItemList newValue = new ItemList(value.toString().replace("\\", "/"));
+                var newValue = new ItemList(value.toString().replace("\\", "/"));
                 listSelectedIndices.add(childIndexTo);
                 listModel.add(childIndexTo++, newValue);
             }
@@ -129,7 +129,7 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
             if (StringUtils.isNotEmpty(line)) {
                 
                 String newLine = line.replace("\\", "/");
-                ItemList newItem = new ItemList(newLine);
+                var newItem = new ItemList(newLine);
                 selectedIndexes.add(selectedIndexTo);
                 listModel.add(selectedIndexTo++, newItem);
             }

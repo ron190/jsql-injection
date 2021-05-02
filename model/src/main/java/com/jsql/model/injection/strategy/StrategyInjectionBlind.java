@@ -79,7 +79,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
                 
                 this.allow();
                 
-                Request requestMessageBinary = new Request();
+                var requestMessageBinary = new Request();
                 requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
                 requestMessageBinary.setParameters(this.injectionBlind.getInfoMessage());
                 this.injectionModel.sendToViews(requestMessageBinary);
@@ -125,14 +125,14 @@ public class StrategyInjectionBlind extends AbstractStrategy {
         }
         
         LOGGER.log(
-            LogLevel.CONSOLE_INFORM, 
+            LogLevel.CONSOLE_INFORM,
             "{} [{}]",
             () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
             this::getName
         );
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getBlind());
         
-        Request requestMarkBlindStrategy = new Request();
+        var requestMarkBlindStrategy = new Request();
         requestMarkBlindStrategy.setMessage(Interaction.MARK_BLIND_STRATEGY);
         this.injectionModel.sendToViews(requestMarkBlindStrategy);
     }

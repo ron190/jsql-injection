@@ -88,7 +88,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                     }
                     
                     LOGGER.log(
-                        LogLevel.CONSOLE_INFORM, 
+                        LogLevel.CONSOLE_INFORM,
                         "Normal strategy triggered with query [{}]",
                         () -> currentCallable
                             .getQuery()

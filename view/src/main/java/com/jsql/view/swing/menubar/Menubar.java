@@ -165,7 +165,7 @@ public class Menubar extends JMenuBar {
     private JMenu initializeMenuWindows() {
         
         // Window Menu > Preferences
-        JMenu menuWindows = new JMenu(I18nUtil.valueByKey("MENUBAR_WINDOWS"));
+        var menuWindows = new JMenu(I18nUtil.valueByKey("MENUBAR_WINDOWS"));
         menuWindows.setName("menuWindows");
         I18nViewUtil.addComponentForKey("MENUBAR_WINDOWS", menuWindows);
         menuWindows.setMnemonic('W');
@@ -174,7 +174,7 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("NEW_WINDOW_MENU", itemNewWindows);
         
         menuWindows.add(itemNewWindows);
-        JMenu menuAppearance = new JMenu("Appearance");
+        var menuAppearance = new JMenu("Appearance");
         JMenuItem itemNewWindows4k = new JMenuItemWithMargin(
             new ActionNewWindow("New 4K Window", "-Dsun.java2d.uiScale=2.5")
         );
@@ -192,46 +192,46 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("MENUBAR_VIEW", this.menuView);
         this.menuView.setMnemonic('V');
         
-        JMenuItem database = new JMenuItem(I18nUtil.valueByKey("DATABASE_TAB"), UiUtil.ICON_DATABASE_SERVER);
+        var database = new JMenuItem(I18nUtil.valueByKey("DATABASE_TAB"), UiUtil.ICON_DATABASE_SERVER);
         I18nViewUtil.addComponentForKey("DATABASE_TAB", database);
         this.menuView.add(database);
         
-        JMenuItem adminPage = new JMenuItem(I18nUtil.valueByKey("ADMINPAGE_TAB"), UiUtil.ICON_ADMIN_SERVER);
+        var adminPage = new JMenuItem(I18nUtil.valueByKey("ADMINPAGE_TAB"), UiUtil.ICON_ADMIN_SERVER);
         I18nViewUtil.addComponentForKey("ADMINPAGE_TAB", adminPage);
         this.menuView.add(adminPage);
         
-        JMenuItem file = new JMenuItem(I18nUtil.valueByKey("FILE_TAB"), UiUtil.ICON_FILE_SERVER);
+        var file = new JMenuItem(I18nUtil.valueByKey("FILE_TAB"), UiUtil.ICON_FILE_SERVER);
         I18nViewUtil.addComponentForKey("FILE_TAB", file);
         this.menuView.add(file);
         
-        JMenuItem webshell = new JMenuItem(I18nUtil.valueByKey("WEBSHELL_TAB"), UiUtil.ICON_SHELL_SERVER);
+        var webshell = new JMenuItem(I18nUtil.valueByKey("WEBSHELL_TAB"), UiUtil.ICON_SHELL_SERVER);
         I18nViewUtil.addComponentForKey("WEBSHELL_TAB", webshell);
         this.menuView.add(webshell);
         
-        JMenuItem sqlshell = new JMenuItem(I18nUtil.valueByKey("SQLSHELL_TAB"), UiUtil.ICON_SHELL_SERVER);
+        var sqlshell = new JMenuItem(I18nUtil.valueByKey("SQLSHELL_TAB"), UiUtil.ICON_SHELL_SERVER);
         I18nViewUtil.addComponentForKey("SQLSHELL_TAB", sqlshell);
         this.menuView.add(sqlshell);
         
-        JMenuItem upload = new JMenuItem(I18nUtil.valueByKey("UPLOAD_TAB"), UiUtil.ICON_UPLOAD);
+        var upload = new JMenuItem(I18nUtil.valueByKey("UPLOAD_TAB"), UiUtil.ICON_UPLOAD);
         I18nViewUtil.addComponentForKey("UPLOAD_TAB", upload);
         this.menuView.add(upload);
         
-        JMenuItem bruteforce = new JMenuItem(I18nUtil.valueByKey("BRUTEFORCE_TAB"), UiUtil.ICON_BRUTER);
+        var bruteforce = new JMenuItem(I18nUtil.valueByKey("BRUTEFORCE_TAB"), UiUtil.ICON_BRUTER);
         I18nViewUtil.addComponentForKey("BRUTEFORCE_TAB", bruteforce);
         this.menuView.add(bruteforce);
         
-        JMenuItem coder = new JMenuItem(I18nUtil.valueByKey("CODER_TAB"), UiUtil.ICON_CODER);
+        var coder = new JMenuItem(I18nUtil.valueByKey("CODER_TAB"), UiUtil.ICON_CODER);
         I18nViewUtil.addComponentForKey("CODER_TAB", coder);
         this.menuView.add(coder);
         
-        JMenuItem scanList = new JMenuItem(I18nUtil.valueByKey("SCANLIST_TAB"), UiUtil.ICON_SCANLIST);
+        var scanList = new JMenuItem(I18nUtil.valueByKey("SCANLIST_TAB"), UiUtil.ICON_SCANLIST);
         I18nViewUtil.addComponentForKey("SCANLIST_TAB", scanList);
         this.menuView.add(scanList);
         menuWindows.add(this.menuView);
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 
-        JMenu menuPanel = new JMenu(I18nUtil.valueByKey("MENUBAR_PANEL"));
+        var menuPanel = new JMenu(I18nUtil.valueByKey("MENUBAR_PANEL"));
         I18nViewUtil.addComponentForKey("MENUBAR_PANEL", menuPanel);
         this.menuView.setMnemonic('V');
         
@@ -243,7 +243,7 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("CONSOLE_CHUNK_LABEL", this.chunkMenu);
         menuPanel.add(this.chunkMenu);
         
-        JCheckBoxMenuItem binaryMenu = new JCheckBoxMenuItem(
+        var binaryMenu = new JCheckBoxMenuItem(
             I18nUtil.valueByKey("CONSOLE_BINARY_LABEL"),
             UiUtil.ICON_BINARY,
             prefs.getBoolean(UiUtil.BINARY_VISIBLE, true)
@@ -251,7 +251,7 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("CONSOLE_BINARY_LABEL", binaryMenu);
         menuPanel.add(binaryMenu);
         
-        JCheckBoxMenuItem networkMenu = new JCheckBoxMenuItem(
+        var networkMenu = new JCheckBoxMenuItem(
             I18nUtil.valueByKey("CONSOLE_NETWORK_LABEL"),
             UiUtil.ICON_HEADER,
             prefs.getBoolean(UiUtil.NETWORK_VISIBLE, true)
@@ -266,7 +266,7 @@ public class Menubar extends JMenuBar {
         );
         I18nViewUtil.addComponentForKey("CONSOLE_JAVA_LABEL", this.javaDebugMenu);
 
-        for (JCheckBoxMenuItem menuItem: new JCheckBoxMenuItem[]{this.chunkMenu, binaryMenu, networkMenu, this.javaDebugMenu}) {
+        for (var menuItem: new JCheckBoxMenuItem[]{ this.chunkMenu, binaryMenu, networkMenu, this.javaDebugMenu }) {
             
             menuItem.setUI(
                 new BasicCheckBoxMenuItemUI() {
@@ -343,7 +343,7 @@ public class Menubar extends JMenuBar {
         coder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_8, ActionEvent.CTRL_MASK));
         scanList.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_9, ActionEvent.CTRL_MASK));
 
-        for (int position = 0 ; position < this.menuView.getItemCount() ; position++) {
+        for (var position = 0 ; position < this.menuView.getItemCount() ; position++) {
             
             final JMenuItem itemMenu = this.menuView.getItem(position);
             final int positionFinal = position;
@@ -364,7 +364,7 @@ public class Menubar extends JMenuBar {
     private JMenu initializeMenuHelp() {
         
         // Help Menu > about
-        JMenu menuHelp = new JMenu(I18nUtil.valueByKey("MENUBAR_HELP"));
+        var menuHelp = new JMenu(I18nUtil.valueByKey("MENUBAR_HELP"));
         menuHelp.setMnemonic('H');
         I18nViewUtil.addComponentForKey("MENUBAR_HELP", menuHelp);
         menuHelp.setName("menuHelp");
@@ -377,7 +377,7 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("MENUBAR_HELP_UPDATE", itemUpdate);
 
         // Render the About dialog behind scene
-        final DialogAbout aboutDiag = new DialogAbout();
+        final var aboutDiag = new DialogAbout();
         itemHelp.addActionListener(actionEvent -> {
             
             // Center the dialog
@@ -402,15 +402,15 @@ public class Menubar extends JMenuBar {
 
     private JMenuItem initializeItemSqlEngine() {
         
-        JMenuItem itemSqlEngine = new JMenuItem(I18nUtil.valueByKey(KEY_MENU_SQL_ENGINE));
+        var itemSqlEngine = new JMenuItem(I18nUtil.valueByKey(KEY_MENU_SQL_ENGINE));
         I18nViewUtil.addComponentForKey(KEY_MENU_SQL_ENGINE, itemSqlEngine);
         
         // Render the SQL Engine dialog behind scene
-        String titleTabSqlEngine = "SQL Engine";
+        var titleTabSqlEngine = "SQL Engine";
         
         itemSqlEngine.addActionListener(actionEvent -> {
             
-            for (int i = 0; i < MediatorHelper.tabResults().getTabCount() ; i++) {
+            for (var i = 0; i < MediatorHelper.tabResults().getTabCount() ; i++) {
                 
                 if (titleTabSqlEngine.equals(MediatorHelper.tabResults().getTitleAt(i))) {
                     
@@ -422,7 +422,7 @@ public class Menubar extends JMenuBar {
             
             CreateTabHelper.initializeSplitOrientation();
 
-            SqlEngine panelSqlEngine = new SqlEngine();
+            var panelSqlEngine = new SqlEngine();
             
             MediatorHelper.tabResults().addTab(titleTabSqlEngine, panelSqlEngine);
 
@@ -430,7 +430,7 @@ public class Menubar extends JMenuBar {
             MediatorHelper.tabResults().setSelectedComponent(panelSqlEngine);
 
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18nViewUtil.valueByKey(KEY_MENU_SQL_ENGINE), UiUtil.ICON_COG, panelSqlEngine);
+            var header = new TabHeader(I18nViewUtil.valueByKey(KEY_MENU_SQL_ENGINE), UiUtil.ICON_COG, panelSqlEngine);
             I18nViewUtil.addComponentForKey(KEY_MENU_SQL_ENGINE, header.getTabTitleLabel());
 
             // Apply the custom header to the tab
@@ -446,11 +446,11 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey(KEY_MENU_PREFERENCES, itemPreferences);
         
         // Render the Preferences dialog behind scene
-        String titleTabPreferences = "Preferences";
+        var titleTabPreferences = "Preferences";
         
         itemPreferences.addActionListener(actionEvent -> {
             
-            for (int i = 0; i < MediatorHelper.tabResults().getTabCount() ; i++) {
+            for (var i = 0; i < MediatorHelper.tabResults().getTabCount() ; i++) {
                 
                 if (titleTabPreferences.equals(MediatorHelper.tabResults().getTitleAt(i))) {
                     
@@ -473,8 +473,8 @@ public class Menubar extends JMenuBar {
                 }
             };
 
-            PanelPreferences panelPreferences = new PanelPreferences();
-            LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, panelPreferences);
+            var panelPreferences = new PanelPreferences();
+            var scroller = new LightScrollPane(1, 0, 0, 0, panelPreferences);
             scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
             
             MediatorHelper.tabResults().addTab(titleTabPreferences, scroller);
@@ -483,7 +483,7 @@ public class Menubar extends JMenuBar {
             MediatorHelper.tabResults().setSelectedComponent(scroller);
 
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18nViewUtil.valueByKey(KEY_MENU_PREFERENCES), UiUtil.ICON_COG, panelPreferences.getPanelTampering());
+            var header = new TabHeader(I18nViewUtil.valueByKey(KEY_MENU_PREFERENCES), UiUtil.ICON_COG, panelPreferences.getPanelTampering());
             I18nViewUtil.addComponentForKey(KEY_MENU_PREFERENCES, header.getTabTitleLabel());
 
             // Apply the custom header to the tab
@@ -496,7 +496,7 @@ public class Menubar extends JMenuBar {
     private JMenu initializeMenuCommunity() {
         
         // Help Menu > about
-        JMenu menuCommunity = new JMenu(I18nUtil.valueByKey("MENUBAR_COMMUNITY"));
+        var menuCommunity = new JMenu(I18nUtil.valueByKey("MENUBAR_COMMUNITY"));
         menuCommunity.setMnemonic('C');
         menuCommunity.setName("menuCommunity");
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY", menuCommunity);
@@ -516,9 +516,9 @@ public class Menubar extends JMenuBar {
 
     private JMenu initializeMenuTranslation() {
         
-        String patternAsianDisplay = "<html><span style=\"font-family:'%s'\">%s</span></html>";
+        var patternAsianDisplay = "<html><span style=\"font-family:'%s'\">%s</span></html>";
         
-        JMenu menuTranslation = new JMenu(I18nUtil.valueByKey("MENUBAR_LANGUAGE"));
+        var menuTranslation = new JMenu(I18nUtil.valueByKey("MENUBAR_LANGUAGE"));
         I18nViewUtil.addComponentForKey("MENUBAR_LANGUAGE", menuTranslation);
         menuTranslation.setName("menuTranslation");
         
@@ -674,7 +674,7 @@ public class Menubar extends JMenuBar {
         );
         this.itemKorean.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ko")));
         
-        ButtonGroup groupRadioLanguage = new ButtonGroup();
+        var groupRadioLanguage = new ButtonGroup();
         
         Stream
         .of(
@@ -708,11 +708,11 @@ public class Menubar extends JMenuBar {
 
     private JMenu initializeMenuI18nContribution() {
         
-        JMenu menuI18nContribution = new JMenu(I18nUtil.valueByKey("MENUBAR_COMMUNITY_HELPTRANSLATE"));
+        var menuI18nContribution = new JMenu(I18nUtil.valueByKey("MENUBAR_COMMUNITY_HELPTRANSLATE"));
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_HELPTRANSLATE", menuI18nContribution);
         
         // Render the About dialog behind scene
-        final DialogTranslate dialogTranslate = new DialogTranslate();
+        final var dialogTranslate = new DialogTranslate();
         
         class ActionTranslate implements ActionListener {
             
@@ -740,7 +740,7 @@ public class Menubar extends JMenuBar {
             }
         }
         
-        String formatMenuItemUTF8 = "<html><span style=\"font-family:'%s'\">%s</span>...</html>";
+        var formatMenuItemUTF8 = "<html><span style=\"font-family:'%s'\">%s</span>...</html>";
         
         this.itemIntoHindi = new JMenuItem(
             String
@@ -801,7 +801,7 @@ public class Menubar extends JMenuBar {
         );
         this.itemIntoSwedish = new JMenuItem(new Locale("se").getDisplayLanguage(new Locale("se")) +"...", UiUtil.ICON_FLAG_SE);
         this.itemIntoFinnish = new JMenuItem(new Locale("fi").getDisplayLanguage(new Locale("fi")) +"...", UiUtil.ICON_FLAG_FI);
-        JMenuItem itemIntoOther = new JMenuItem(I18nUtil.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
+        var itemIntoOther = new JMenuItem(I18nUtil.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", itemIntoOther);
         
         this.itemIntoArabic.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -875,7 +875,7 @@ public class Menubar extends JMenuBar {
         
         itemReportIssue.addActionListener(actionEvent -> {
             
-            JPanel panel = new JPanel(new BorderLayout());
+            var panel = new JPanel(new BorderLayout());
             final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
             textarea.setFont(new Font(
                 UiUtil.FONT_NAME_MONOSPACED,
@@ -933,7 +933,7 @@ public class Menubar extends JMenuBar {
     private JMenu initializeMenuEdit() {
         
         // Edit Menu > copy | select all
-        JMenu menuEdit = new JMenu(I18nUtil.valueByKey("MENUBAR_EDIT"));
+        var menuEdit = new JMenu(I18nUtil.valueByKey("MENUBAR_EDIT"));
         I18nViewUtil.addComponentForKey("MENUBAR_EDIT", menuEdit);
         menuEdit.setMnemonic('E');
 
@@ -980,7 +980,7 @@ public class Menubar extends JMenuBar {
     private JMenu initializeMenuFile() {
         
         // File Menu > save tab | exit
-        JMenu menuFile = new JMenu(I18nUtil.valueByKey("MENUBAR_FILE"));
+        var menuFile = new JMenu(I18nUtil.valueByKey("MENUBAR_FILE"));
         I18nViewUtil.addComponentForKey("MENUBAR_FILE", menuFile);
         menuFile.setMnemonic('F');
 
@@ -1028,15 +1028,15 @@ public class Menubar extends JMenuBar {
 
     private void switchOrientation(Locale oldLocale, Locale newLocale, boolean isStartup) {
         
-        ComponentOrientation componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault());
+        var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault());
         MediatorHelper.frame().applyComponentOrientation(componentOrientation);
         
         if (ComponentOrientation.getOrientation(oldLocale) != ComponentOrientation.getOrientation(newLocale)) {
             
             JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight();
             
-            Component componentLeft = splitPaneLeftRight.getLeftComponent();
-            Component componentRight = splitPaneLeftRight.getRightComponent();
+            var componentLeft = splitPaneLeftRight.getLeftComponent();
+            var componentRight = splitPaneLeftRight.getRightComponent();
 
             // Reset components
             splitPaneLeftRight.setLeftComponent(null);

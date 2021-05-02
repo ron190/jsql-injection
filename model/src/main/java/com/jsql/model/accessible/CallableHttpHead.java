@@ -4,20 +4,15 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
-import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
-import java.util.AbstractMap;
-import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -27,6 +22,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
+import com.jsql.util.ConnectionUtil;
 import com.jsql.util.LogLevel;
 
 /**
@@ -76,7 +72,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             return this;
         }
 
-        boolean isUrlIncorrect = false;
+        var isUrlIncorrect = false;
         
         URL targetUrl = null;
         try {
@@ -91,40 +87,21 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             return this;
         }
         
-        HttpRequest httpRequest =
-            HttpRequest
+        var httpRequest = HttpRequest
             .newBuilder()
             .uri(URI.create(this.urlAdminPage))
             .method("HEAD", BodyPublishers.noBody())
             .timeout(Duration.ofSeconds(4))
             .build();
         
-        HttpClient httpClient =
-            HttpClient
+        var httpClient = HttpClient
             .newBuilder()
             .connectTimeout(Duration.ofSeconds(4))
             .build();
             
         HttpResponse<Void> response = httpClient.send(httpRequest, BodyHandlers.discarding());
-        HttpHeaders httpHeaders = response.headers();
         
-        Map<String, String> mapHeaders =
-            httpHeaders
-            .map()
-            .entrySet()
-            .stream()
-            .sorted(Comparator.comparing(Entry::getKey))
-            .map(entrySet ->
-                new AbstractMap.SimpleEntry<>(
-                    entrySet.getKey(),
-                    String.join(", ", entrySet.getValue())
-                )
-            )
-            .collect(Collectors.toMap(
-                AbstractMap.SimpleEntry::getKey,
-                AbstractMap.SimpleEntry::getValue
-            ));
-        
+        Map<String, String> mapHeaders = ConnectionUtil.getHeadersMap(response.headers());
         
         this.responseCodeHttp = ""+ response.statusCode();
         mapHeaders.put(":status", this.responseCodeHttp);
@@ -136,7 +113,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
         msgHeader.put(Header.RESPONSE, new TreeMap<>(mapHeaders));
         msgHeader.put(Header.METADATA_PROCESS, this.metadataInjectionProcess);
 
-        Request request = new Request();
+        var request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);
         request.setParameters(msgHeader);
         this.injectionModel.sendToViews(request);

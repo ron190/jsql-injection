@@ -38,7 +38,7 @@ public class ObserverInteraction implements Observer {
 
         try {
             Class<?> cl = Class.forName(this.packageInteraction +"."+ interaction.getMessage());
-            Class<?>[] types = new Class[]{ Object[].class };
+            var types = new Class[]{ Object[].class };
             Constructor<?> ct = cl.getConstructor(types);
 
             InteractionCommand o2 =

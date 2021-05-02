@@ -332,7 +332,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
             newCapacity = createPositiveCapacity(minCapacity);
         }
 
-        final byte[] b = new byte[newCapacity];
+        final var b = new byte[newCapacity];
         System.arraycopy(context.buffer, 0, b, 0, context.buffer.length);
         context.buffer = b;
         
@@ -392,10 +392,10 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
             return pArray;
         }
         
-        final Context context = new Context();
+        final var context = new Context();
         this.decode(pArray, 0, pArray.length, context);
         this.decode(pArray, 0, EOF, context); // Notify decoder of EOF.
-        final byte[] result = new byte[context.pos];
+        final var result = new byte[context.pos];
         this.readResults(result, 0, result.length, context);
         
         return result;
@@ -482,10 +482,10 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
             return pArray;
         }
         
-        final Context context = new Context();
+        final var context = new Context();
         this.encode(pArray, offset, length, context);
         this.encode(pArray, offset, EOF, context); // Notify encoder of EOF.
-        final byte[] buf = new byte[context.pos - context.readPos];
+        final var buf = new byte[context.pos - context.readPos];
         this.readResults(buf, 0, buf.length, context);
         
         return buf;

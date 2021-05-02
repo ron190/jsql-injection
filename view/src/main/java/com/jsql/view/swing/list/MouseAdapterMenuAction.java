@@ -103,7 +103,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
     private JPopupMenu initializeMenu(final MouseEvent mouseEvent) {
         
-        JPopupMenu popupMenuList = new JPopupMenu();
+        var popupMenuList = new JPopupMenu();
         
         boolean isAsian = I18nUtil.isAsian(I18nUtil.getLocaleDefault());
         
@@ -146,7 +146,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         
         //Create a file chooser
-        final JFileChooser importFileDialog = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+        final var importFileDialog = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
         importFileDialog.setDialogTitle(I18nUtil.valueByKey("LIST_IMPORT_CONFIRM_TITLE"));
         importFileDialog.setMultiSelectionEnabled(true);
 
@@ -154,7 +154,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
         mnImport.addActionListener(actionEvent -> {
             
-            int choice = 0;
+            var choice = 0;
             
             // Fix #1896: NullPointerException on showOpenDialog()
             // Fix #42831: ClassCastException on showOpenDialog()
@@ -177,7 +177,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
         mnCopy.addActionListener(actionEvent -> {
             
-            Action action = this.dndList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
+            var action = this.dndList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
             
             if (action != null) {
                 
@@ -189,7 +189,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
         mnCut.addActionListener(actionEvent -> {
             
-            Action action = this.dndList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));
+            var action = this.dndList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));
             
             if (action != null) {
                 
@@ -201,7 +201,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
         mnPaste.addActionListener(actionEvent -> {
             
-            Action action = this.dndList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));
+            var action = this.dndList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));
             
             if (action != null) {
                 
@@ -219,7 +219,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
         mnSelectAll.addActionListener(actionEvent -> {
             
-            int start = 0;
+            var start = 0;
             int end = this.dndList.getModel().getSize() - 1;
             
             if (end >= 0) {
@@ -251,7 +251,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         if (SwingUtilities.isRightMouseButton(e)) {
             
             int clickIndex = this.dndList.locationToIndex(e.getPoint());
-            boolean containsIndex = false;
+            var containsIndex = false;
             
             for (int currentIndex: this.dndList.getSelectedIndices()) {
                 

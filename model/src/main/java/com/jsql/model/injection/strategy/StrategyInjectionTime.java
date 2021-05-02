@@ -79,7 +79,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
                 
                 this.allow();
                 
-                Request requestMessageBinary = new Request();
+                var requestMessageBinary = new Request();
                 requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
                 requestMessageBinary.setParameters(this.injectionTime.getInfoMessage());
                 this.injectionModel.sendToViews(requestMessageBinary);
@@ -125,14 +125,14 @@ public class StrategyInjectionTime extends AbstractStrategy {
         }
         
         LOGGER.log(
-            LogLevel.CONSOLE_INFORM, 
+            LogLevel.CONSOLE_INFORM,
             "{} [{}]",
             () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
             this::getName
         );
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getTime());
         
-        Request requestMarkTimeStrategy = new Request();
+        var requestMarkTimeStrategy = new Request();
         requestMarkTimeStrategy.setMessage(Interaction.MARK_TIME_STRATEGY);
         this.injectionModel.sendToViews(requestMarkTimeStrategy);
     }

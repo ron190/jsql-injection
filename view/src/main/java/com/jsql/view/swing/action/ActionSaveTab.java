@@ -61,7 +61,7 @@ public class ActionSaveTab extends AbstractAction {
         
         this.filechooser.setDialogTitle("Save Tab As");
 
-        Component componentResult = MediatorHelper.tabResults().getSelectedComponent();
+        var componentResult = MediatorHelper.tabResults().getSelectedComponent();
         
         if (componentResult instanceof PanelTable) {
             
@@ -88,7 +88,7 @@ public class ActionSaveTab extends AbstractAction {
         
         if (stateSave == JFileChooser.APPROVE_OPTION) {
             
-            String folderSelectedFile = this.filechooser.getCurrentDirectory().toString();
+            var folderSelectedFile = this.filechooser.getCurrentDirectory().toString();
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);
             
             if (textarea instanceof JTextComponent) {
@@ -104,22 +104,22 @@ public class ActionSaveTab extends AbstractAction {
 
     private void saveTableToFile(JTable tableResults) {
         
-        File fileSelected = this.filechooser.getSelectedFile();
+        var fileSelected = this.filechooser.getSelectedFile();
         
-        try (FileWriter fileWriterExcel = new FileWriter(fileSelected)) {
+        try (var fileWriterExcel = new FileWriter(fileSelected)) {
             
-            TableModel tableModel = tableResults.getModel();
+            var tableModel = tableResults.getModel();
             
-            for (int i = 2 ; i < tableModel.getColumnCount() ; i++) {
+            for (var i = 2 ; i < tableModel.getColumnCount() ; i++) {
                 
                 fileWriterExcel.write(tableModel.getColumnName(i) + "\t");
             }
             
             fileWriterExcel.write("\n");
             
-            for (int i = 0 ; i < tableModel.getRowCount() ; i++) {
+            for (var i = 0 ; i < tableModel.getRowCount() ; i++) {
                 
-                for (int j = 2 ; j < tableModel.getColumnCount() ; j++) {
+                for (var j = 2 ; j < tableModel.getColumnCount() ; j++) {
                     
                     // Cell empty when string was too long to be injected (columnTooLong|cellEmpty|cellEmpty).
                     if (tableModel.getValueAt(i, j) == null) {
@@ -129,7 +129,7 @@ public class ActionSaveTab extends AbstractAction {
                     } else {
                         
                         // Encode line break.
-                        String line = tableModel.getValueAt(i, j).toString();
+                        var line = tableModel.getValueAt(i, j).toString();
                         line =
                             line
                             .replace("\n", "\\n")
@@ -154,11 +154,11 @@ public class ActionSaveTab extends AbstractAction {
 
     private void saveTextToFile(JTextComponent textarea) {
         
-        File fileSelected = this.filechooser.getSelectedFile();
+        var fileSelected = this.filechooser.getSelectedFile();
         
         try (
-            FileWriter fileWriter = new FileWriter(fileSelected);
-            BufferedWriter fileOut = new BufferedWriter(fileWriter)
+            var fileWriter = new FileWriter(fileSelected);
+            var fileOut = new BufferedWriter(fileWriter)
         ) {
             textarea.write(fileOut);
             

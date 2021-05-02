@@ -104,7 +104,7 @@ public class DialogTranslate extends JDialog {
         JPanel lastLine = this.initializeLastLine();
 
         this.labelTranslation.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        Container containerDialog = this.getContentPane();
+        var containerDialog = this.getContentPane();
         containerDialog.add(this.labelTranslation, BorderLayout.NORTH);
         containerDialog.add(lastLine, BorderLayout.SOUTH);
 
@@ -168,7 +168,7 @@ public class DialogTranslate extends JDialog {
 
     private JPanel initializeLastLine() {
         
-        JPanel lastLine = new JPanel();
+        var lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));
         lastLine.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         

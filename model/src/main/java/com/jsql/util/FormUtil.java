@@ -36,13 +36,13 @@ public class FormUtil {
 
     public void parseForms(int statusCode, String pageSource) throws IOException {
         
-        Elements elementsForm = Jsoup.parse(pageSource).select("form");
+        var elementsForm = Jsoup.parse(pageSource).select("form");
         
         if (elementsForm.isEmpty()) {
             return;
         }
         
-        StringBuilder result = new StringBuilder();
+        var result = new StringBuilder();
         
         Map<Element, List<Element>> mapForms = new HashMap<>();
         
@@ -121,27 +121,19 @@ public class FormUtil {
         }
     }
 
-    private void logForms(int statusCode, Elements elementsForm, StringBuilder result) throws IOException {
+    private void logForms(int statusCode, Elements elementsForm, StringBuilder result) {
+        
+        LOGGER.log(
+            LogLevel.CONSOLE_DEFAULT,
+            "Found {} ignored <form> in HTML body: {}",
+            elementsForm::size,
+            () -> result
+        );
         
         if (statusCode != 200) {
             
-            LOGGER.log(
-                LogLevel.CONSOLE_DEFAULT,
-                "Found {} ignored <form> in HTML body: {}",
-                elementsForm::size,
-                () -> result
-            );
             LOGGER.log(LogLevel.CONSOLE_INFORM, "WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
             
-        } else {
-            
-            LOGGER.log(
-                LogLevel.CONSOLE_DEFAULT,
-                "Found {} <form> in HTML body while status 200 Success:{}",
-                elementsForm::size,
-                () -> result
-            );
         }
     }
-
 }

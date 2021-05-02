@@ -59,11 +59,11 @@ public class NetworkTable extends JTable {
                 // move selected row and place cursor on focused cell
                 if (SwingUtilities.isRightMouseButton(e)) {
                     
-                    Point point = e.getPoint();
+                    var point = e.getPoint();
 
                     // get the row index that contains that coordinate
-                    int rowNumber = NetworkTable.this.rowAtPoint(point);
-                    int colNumber = NetworkTable.this.columnAtPoint(point);
+                    var rowNumber = NetworkTable.this.rowAtPoint(point);
+                    var colNumber = NetworkTable.this.columnAtPoint(point);
                     
                     // Get the ListSelectionModel of the JTable
                     DefaultListSelectionModel modelRow = (DefaultListSelectionModel) NetworkTable.this.getSelectionModel();
@@ -121,7 +121,7 @@ public class NetworkTable extends JTable {
         backward.add(KeyStroke.getKeyStroke("shift TAB"));
         this.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backward);
         
-        final TableCellRenderer tableCellRenderer = this.getTableHeader().getDefaultRenderer();
+        final var tableCellRenderer = this.getTableHeader().getDefaultRenderer();
         this.getTableHeader().setDefaultRenderer(
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
                 
@@ -148,7 +148,7 @@ public class NetworkTable extends JTable {
             // prevent double event
             if (!event.getValueIsAdjusting() && this.getSelectedRow() > -1) {
                 
-                HttpHeader httpHeader = this.listHttpHeader.get(this.getSelectedRow());
+                var httpHeader = this.listHttpHeader.get(this.getSelectedRow());
                 tabbedPaneNetworkTab.changeTextNetwork(httpHeader);
             }
         });

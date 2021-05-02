@@ -83,7 +83,7 @@ public abstract class AbstractStrategy {
     
     public void markVulnerability(Interaction message, int... indexErrorStrategy) {
         
-        Request request = new Request();
+        var request = new Request();
         request.setMessage(message);
         
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);

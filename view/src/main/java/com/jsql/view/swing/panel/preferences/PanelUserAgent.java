@@ -42,12 +42,12 @@ public class PanelUserAgent extends JPanel {
         
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
-        StringBuilder jsonScan = new StringBuilder();
+        var jsonScan = new StringBuilder();
         
         try (
-            InputStream inputStream = UiUtil.class.getClassLoader().getResourceAsStream("swing/list/user-agent.txt");
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader reader = new BufferedReader(inputStreamReader)
+            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream("swing/list/user-agent.txt");
+            var inputStreamReader = new InputStreamReader(inputStream);
+            var reader = new BufferedReader(inputStreamReader)
         ) {
             
             String line;
@@ -77,7 +77,7 @@ public class PanelUserAgent extends JPanel {
 //        String tooltipIsTamperingBase64 = TamperingType.BASE64.instance().getTooltip();
 //        this.checkboxIsCustomUserAgent.setToolTipText(tooltipIsTamperingBase64);
         this.checkboxIsCustomUserAgent.setFocusable(false);
-        JButton labelIsCheckingUpdate = new JButton("Customize User Agent (randomize multiple agents)");
+        var labelIsCheckingUpdate = new JButton("Customize User Agent (randomize multiple agents)");
         
         labelIsCheckingUpdate.addActionListener(actionEvent -> {
             
@@ -88,11 +88,11 @@ public class PanelUserAgent extends JPanel {
             );
         });
         
-        LightScrollPane textAreaIsTamperingEval = new LightScrollPane(this.textfieldCustomUserAgent);
+        var textAreaIsTamperingEval = new LightScrollPane(this.textfieldCustomUserAgent);
         textAreaIsTamperingEval.setBorder(UiUtil.BORDER_FOCUS_LOST);
         this.textfieldCustomUserAgent.setMinimumSize(new Dimension(40000, 100));
         
-        JLabel emptyLabelSessionManagement = new JLabel();
+        var emptyLabelSessionManagement = new JLabel();
         
         Stream
         .of(labelIsCheckingUpdate)
@@ -103,7 +103,7 @@ public class PanelUserAgent extends JPanel {
             label.setContentAreaFilled(false);
         });
         
-        GroupLayout groupLayout = new GroupLayout(this);
+        var groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
         
         groupLayout

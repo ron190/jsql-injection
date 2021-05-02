@@ -168,7 +168,7 @@ public class MediatorUtils {
     }
 
     public CertificateUtil getCertificateUtil() {
-        return certificateUtil;
+        return this.certificateUtil;
     }
 
     public void setCertificateUtil(CertificateUtil certificateUtil) {

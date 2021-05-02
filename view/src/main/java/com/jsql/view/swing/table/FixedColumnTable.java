@@ -132,7 +132,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         //  Remove the fixed columns from the main table
         //  and add them to the fixed table
         TableColumnModel columnModel = this.mainTable.getColumnModel();
-        for (int i = 0 ; i < fixedColumns ; i++) {
+        for (var i = 0 ; i < fixedColumns ; i++) {
             
             TableColumn column = columnModel.getColumn(i);
             column.setMinWidth(0);
@@ -153,7 +153,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
             modelFixedTable.fireTableDataChanged();
             
             // Copy data from hidden column in main table
-            for (int i = 0 ; i < FixedColumnTable.this.mainTable.getRowCount() ; i++) {
+            for (var i = 0 ; i < FixedColumnTable.this.mainTable.getRowCount() ; i++) {
                 
                 FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 0), i, 0);
                 FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 1), i, 1);
@@ -165,7 +165,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         );
         
         // Copy data from first column of main table to fixed column
-        for (int i = 0 ; i < this.mainTable.getRowCount() ; i++) {
+        for (var i = 0 ; i < this.mainTable.getRowCount() ; i++) {
             
             this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 0), i, 0);
             this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 1), i, 1);

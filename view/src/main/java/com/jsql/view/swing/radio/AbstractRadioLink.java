@@ -66,7 +66,7 @@ public abstract class AbstractRadioLink extends JLabel {
      */
     public final void setUnderlined() {
         
-        Font font = this.getFont();
+        var font = this.getFont();
         
         Map<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
@@ -80,7 +80,7 @@ public abstract class AbstractRadioLink extends JLabel {
      */
     public void removeFont() {
         
-        Font font = this.getFont();
+        var font = this.getFont();
         Map<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
         

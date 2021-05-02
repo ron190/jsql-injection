@@ -69,7 +69,7 @@ public class TabResults extends DnDTabbedPane {
         JTextArea fileText = new JPopupTextArea().getProxy();
         fileText.setText(content);
         fileText.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));
-        LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, fileText);
+        var scroller = new LightScrollPane(1, 0, 0, 0, fileText);
         
         fileText.setCaretPosition(0);
         this.addTab(name + StringUtils.SPACE, scroller);
@@ -78,7 +78,7 @@ public class TabResults extends DnDTabbedPane {
         this.setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(name, UiUtil.ICON_FILE_SERVER);
+        var header = new TabHeader(name, UiUtil.ICON_FILE_SERVER);
 
         this.setToolTipTextAt(this.indexOfComponent(scroller), path);
 
@@ -91,8 +91,8 @@ public class TabResults extends DnDTabbedPane {
     public void createShell(String url, String path) {
         
         try {
-            UUID terminalID = UUID.randomUUID();
-            ShellWeb terminal = new ShellWeb(terminalID, url);
+            var terminalID = UUID.randomUUID();
+            var terminal = new ShellWeb(terminalID, url);
             MediatorHelper.frame().getConsoles().put(terminalID, terminal);
             
             LightScrollPane scroller = new LightScrollPaneShell(terminal);
@@ -103,7 +103,7 @@ public class TabResults extends DnDTabbedPane {
             this.setSelectedComponent(scroller);
     
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader("Web shell", UiUtil.ICON_SHELL_SERVER);
+            var header = new TabHeader("Web shell", UiUtil.ICON_SHELL_SERVER);
     
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
@@ -129,9 +129,9 @@ public class TabResults extends DnDTabbedPane {
     public void createSQLShellTab(String url, String user, String pass, String path) {
         
         try {
-            UUID terminalID = UUID.randomUUID();
+            var terminalID = UUID.randomUUID();
             
-            ShellSql terminal = new ShellSql(terminalID, url, user, pass);
+            var terminal = new ShellSql(terminalID, url, user, pass);
             
             MediatorHelper.frame().getConsoles().put(terminalID, terminal);
     
@@ -143,7 +143,7 @@ public class TabResults extends DnDTabbedPane {
             this.setSelectedComponent(scroller);
     
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader("SQL shell", UiUtil.ICON_SHELL_SERVER);
+            var header = new TabHeader("SQL shell", UiUtil.ICON_SHELL_SERVER);
     
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
@@ -169,7 +169,7 @@ public class TabResults extends DnDTabbedPane {
     public void createValuesTab(String[][] data, String[] columnNames, AbstractElementDatabase table) {
         
         // Create a new table to display the values
-        PanelTable newTableJPanel = new PanelTable(data, columnNames);
+        var newTableJPanel = new PanelTable(data, columnNames);
         
         // Create a new tab: add header and table
         this.addTab(StringUtil.detectUtf8(table.toString()), newTableJPanel);
@@ -179,7 +179,7 @@ public class TabResults extends DnDTabbedPane {
         this.setSelectedComponent(newTableJPanel);
         
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()));
+        var header = new TabHeader(UiStringUtil.detectUtf8Html(table.toString()));
         
         this.setToolTipTextAt(
             this.indexOfComponent(newTableJPanel),

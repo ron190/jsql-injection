@@ -86,7 +86,7 @@ public class TreeDatabase extends JTree {
             AbstractNodeModel newTreeNodeModel = new NodeModelColumn(column);
 
             // Create the node
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newTreeNodeModel);
+            var newNode = new DefaultMutableTreeNode(newTreeNodeModel);
             
             // Get the parent table
             tableNode = this.getTreeNodeModels().get(column.getParent());
@@ -123,7 +123,7 @@ public class TreeDatabase extends JTree {
             // Create a node model with the database element
             AbstractNodeModel newTreeNodeModel = new NodeModelDatabase(database);
             // Create the node
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newTreeNodeModel);
+            var newNode = new DefaultMutableTreeNode(newTreeNodeModel);
             // Save the node
             this.getTreeNodeModels().put(database, newNode);
             // Add the node to the tree
@@ -153,7 +153,7 @@ public class TreeDatabase extends JTree {
             AbstractNodeModel newTreeNodeModel = new NodeModelTable(table);
             
             // Create the node
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newTreeNodeModel);
+            var newNode = new DefaultMutableTreeNode(newTreeNodeModel);
             
             // Save the node
             this.getTreeNodeModels().put(table, newNode);

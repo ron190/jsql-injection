@@ -60,7 +60,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
         
         List<JSONObject> jsons = new ArrayList<>();
 
-        StringBuilder stringTransferable = new StringBuilder();
+        var stringTransferable = new StringBuilder();
         
         try {
             for (ItemList itemPath: this.dragPaths) {
@@ -82,7 +82,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
     @Override
     protected void parseStringDrop(TransferSupport support, DnDList list, DefaultListModel<ItemList> listModel) {
         
-        JList.DropLocation dropLocation = (JList.DropLocation) support.getDropLocation();
+        var dropLocation = (JList.DropLocation) support.getDropLocation();
         int indexDropLocation = dropLocation.getIndex();
 
         List<Integer> listSelectedIndices = new ArrayList<>();
@@ -96,7 +96,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
                     
                     //! FUUuu
                     ItemListScan itemDrag = (ItemListScan) itemPath;
-                    ItemListScan itemDrop = new ItemListScan(itemDrag.getBeanInjection());
+                    var itemDrop = new ItemListScan(itemDrag.getBeanInjection());
                     listSelectedIndices.add(indexDropLocation);
                     listModel.add(indexDropLocation++, itemDrop);
                 }
@@ -106,7 +106,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
             
             // DnD from outside
             try {
-                String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
+                var importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
                 
                 for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(importString)) {
                     
@@ -120,8 +120,8 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
             }
         }
 
-        int[] selectedIndices = new int[listSelectedIndices.size()];
-        int i = 0;
+        var selectedIndices = new int[listSelectedIndices.size()];
+        var i = 0;
         
         for (Integer integer: listSelectedIndices) {
             
@@ -149,13 +149,13 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
 
     private static void parseJsonArray(String clipboardText, List<ItemListScan> itemsParsed) {
         
-        JSONArray itemsJsonArray = new JSONArray(clipboardText);
+        var itemsJsonArray = new JSONArray(clipboardText);
         
-        for (int i = 0; i < itemsJsonArray.length(); i++) {
+        for (var i = 0; i < itemsJsonArray.length(); i++) {
             
-            JSONObject itemJsonObject = itemsJsonArray.getJSONObject(i);
+            var itemJsonObject = itemsJsonArray.getJSONObject(i);
             
-            BeanInjection beanInjection = new BeanInjection(
+            var beanInjection = new BeanInjection(
                 itemJsonObject.optString("url", StringUtils.EMPTY),
                 itemJsonObject.optString("request", StringUtils.EMPTY),
                 itemJsonObject.optString("header", StringUtils.EMPTY),
@@ -172,9 +172,9 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
     private static void parseJsonObject(String clipboardText, List<ItemListScan> itemsParsed) {
         
         try {
-            JSONObject itemsJsonObject = new JSONObject(clipboardText);
+            var itemsJsonObject = new JSONObject(clipboardText);
             
-            BeanInjection beanInjection = new BeanInjection(
+            var beanInjection = new BeanInjection(
                 itemsJsonObject.optString("url", StringUtils.EMPTY),
                 itemsJsonObject.optString("request", StringUtils.EMPTY),
                 itemsJsonObject.optString("header", StringUtils.EMPTY),
@@ -183,16 +183,16 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
                 itemsJsonObject.optString("requestType", StringUtils.EMPTY)
             );
             
-            ItemListScan newItem = new ItemListScan(beanInjection);
+            var newItem = new ItemListScan(beanInjection);
             itemsParsed.add(newItem);
             
         } catch (JSONException e) {
             
             for (String url: clipboardText.split("\\n")) {
                 
-                BeanInjection beanInjection = new BeanInjection(url);
+                var beanInjection = new BeanInjection(url);
                 
-                ItemListScan newItem = new ItemListScan(beanInjection);
+                var newItem = new ItemListScan(beanInjection);
                 itemsParsed.add(newItem);
             }
         }

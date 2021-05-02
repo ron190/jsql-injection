@@ -84,7 +84,7 @@ public class LightScrollPane extends JComponent {
         this.horizontalScrollBar.setOpaque(false);
         this.horizontalScrollBar.setUI(new MyScrollBarUI());
 
-        JLayeredPane layeredPane = new JLayeredPane();
+        var layeredPane = new JLayeredPane();
         layeredPane.setLayer(this.verticalScrollBar, JLayeredPane.PALETTE_LAYER);
         layeredPane.setLayer(this.horizontalScrollBar, JLayeredPane.PALETTE_LAYER);
 
@@ -238,7 +238,7 @@ public class LightScrollPane extends JComponent {
             ;
             height = Math.max(height, THUMB_SIZE);
 
-            Graphics2D graphics2D = (Graphics2D) g.create();
+            var graphics2D = (Graphics2D) g.create();
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             
             // Fix Mac OS Color.DARK_GRAY and alpha incompatibility

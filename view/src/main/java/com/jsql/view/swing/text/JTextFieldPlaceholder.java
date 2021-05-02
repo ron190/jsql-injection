@@ -62,7 +62,7 @@ public class JTextFieldPlaceholder extends JTextField {
         if (this.getText().length() == 0) {
             
             int h = this.getHeight();
-            FontMetrics fm = g.getFontMetrics();
+            var fm = g.getFontMetrics();
 
             UiUtil.drawPlaceholder(this, g, this.placeholderText, h / 2 + fm.getAscent() / 2 - 1);
         }

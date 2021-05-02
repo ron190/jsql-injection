@@ -49,8 +49,8 @@ public class NodeModelEmpty extends AbstractNodeModel {
     ) {
         
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
-        JPanel panelEmpty = new JPanel(new BorderLayout());
-        JLabel labelEmpty = new JLabel(currentNode.getUserObject().toString());
+        var panelEmpty = new JPanel(new BorderLayout());
+        var labelEmpty = new JLabel(currentNode.getUserObject().toString());
         panelEmpty.add(labelEmpty);
         labelEmpty.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         

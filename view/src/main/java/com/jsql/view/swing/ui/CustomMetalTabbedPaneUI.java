@@ -69,8 +69,8 @@ public class CustomMetalTabbedPaneUI extends BorderlessTabButtonUI {
     protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
         int tabCount = this.tabPane.getTabCount();
 
-        Rectangle iconRect = new Rectangle();
-        Rectangle textRect = new Rectangle();
+        var iconRect = new Rectangle();
+        var textRect = new Rectangle();
         Rectangle clipRect = g.getClipBounds();
 
         // copied from BasicTabbedPaneUI#paintTabArea(...)
@@ -102,8 +102,8 @@ public class CustomMetalTabbedPaneUI extends BorderlessTabButtonUI {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        float textShiftOffset = 0f;
-        GeneralPath trapezoid = new GeneralPath();
+        var textShiftOffset = 0f;
+        var trapezoid = new GeneralPath();
         trapezoid.moveTo(x - ADJ2, (float) y + h);
         trapezoid.lineTo(x + ADJ2, y + textShiftOffset);
         trapezoid.lineTo(x + w - ADJ2, y + textShiftOffset);

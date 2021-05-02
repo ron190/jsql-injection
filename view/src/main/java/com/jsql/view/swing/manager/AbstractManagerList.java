@@ -91,9 +91,9 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         this.setLayout(new BorderLayout());
 
         try (
-            InputStream inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader reader = new BufferedReader(inputStreamReader);
+            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);
+            var inputStreamReader = new InputStreamReader(inputStream);
+            var reader = new BufferedReader(inputStreamReader);
         ) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -127,10 +127,10 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      */
     public void addToList(String element) {
         
-        boolean isFound = false;
+        var isFound = false;
         DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) this.listPaths.getModel();
         
-        for (int i = 0 ; i < listModel.size() ; i++) {
+        for (var i = 0 ; i < listModel.size() ; i++) {
             
             if (listModel.get(i).toString().equals(element)) {
                 
@@ -140,7 +140,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         
         if (!isFound) {
             
-            ItemList itemList = new ItemList(element);
+            var itemList = new ItemList(element);
             listModel.addElement(itemList);
         }
     }
@@ -149,7 +149,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         
         ListModel<ItemList> listModel = this.listPaths.getModel();
         
-        for (int i = 0 ; i < listModel.getSize() ; i++) {
+        for (var i = 0 ; i < listModel.getSize() ; i++) {
             
             if (url.contains(listModel.getElementAt(i).getOriginalString())) {
                 
@@ -163,8 +163,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     
     public void highlight(String url, String strategy) {
         
-        String itemLabel =
-            String
+        var itemLabel = String
             .format(
                 " [%s]",
                 strategy
@@ -172,7 +171,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         
         ListModel<ItemList> listModel = this.listPaths.getModel();
         
-        for (int i = 0 ; i < listModel.getSize() ; i++) {
+        for (var i = 0 ; i < listModel.getSize() ; i++) {
             
             if (url.contains(listModel.getElementAt(i).getOriginalString())) {
                 

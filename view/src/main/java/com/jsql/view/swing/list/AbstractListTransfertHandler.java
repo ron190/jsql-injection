@@ -64,7 +64,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
         
         this.dragPaths = list.getSelectedValuesList();
         
-        String stringTransferable = this.initializeTransferable();
+        var stringTransferable = this.initializeTransferable();
 
         return new StringSelection(stringTransferable.trim());
     }
@@ -128,7 +128,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
         } else {
             
             //This is a paste
-            Transferable transferableFromClipboard = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+            var transferableFromClipboard = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
             
             if (transferableFromClipboard != null) {
 
@@ -169,7 +169,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
         try {
             String clipboardText = (String) transferableFromClipboard.getTransferData(DataFlavor.stringFlavor);
 
-            int selectedIndexPaste = 0;
+            var selectedIndexPaste = 0;
             
             if (list.getSelectedIndex() > 0) {
                 selectedIndexPaste = list.getSelectedIndex();
@@ -179,9 +179,9 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
 
             List<Integer> selectedIndexes = this.initializeStringPaste(clipboardText, selectedIndexPaste, listModel);
 
-            int[] selectedIndexesPasted = new int[selectedIndexes.size()];
+            var selectedIndexesPasted = new int[selectedIndexes.size()];
             
-            int i = 0;
+            var i = 0;
             
             for (Integer selectedIndex: selectedIndexes) {
                 
@@ -208,7 +208,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
     private void parseFilePaste(DnDList list, Transferable transferableFromClipboard) {
         
         try {
-            int selectedIndex = 0;
+            var selectedIndex = 0;
             
             if (list.getSelectedIndex() > 0) {
                 

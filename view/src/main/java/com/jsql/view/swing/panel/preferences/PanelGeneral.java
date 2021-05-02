@@ -26,17 +26,17 @@ public class PanelGeneral extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
         this.getCheckboxIsCheckingUpdate().setFocusable(false);
-        JButton labelIsCheckingUpdate = new JButton("Check update at startup");
+        var labelIsCheckingUpdate = new JButton("Check update at startup");
         labelIsCheckingUpdate.addActionListener(actionEvent -> {
             
             this.getCheckboxIsCheckingUpdate().setSelected(!this.getCheckboxIsCheckingUpdate().isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsReportingBugs = "Send unhandled exception to developer in order to fix issues.";
+        var tooltipIsReportingBugs = "Send unhandled exception to developer in order to fix issues.";
         this.getCheckboxIsReportingBugs().setToolTipText(tooltipIsReportingBugs);
         this.getCheckboxIsReportingBugs().setFocusable(false);
-        JButton labelIsReportingBugs = new JButton("Report unhandled exceptions");
+        var labelIsReportingBugs = new JButton("Report unhandled exceptions");
         labelIsReportingBugs.setToolTipText(tooltipIsReportingBugs);
         labelIsReportingBugs.addActionListener(actionEvent -> {
             
@@ -44,10 +44,10 @@ public class PanelGeneral extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIs4K = "Upscale GUI by factor 2.5 for compatibility with high-definition screens";
+        var tooltipIs4K = "Upscale GUI by factor 2.5 for compatibility with high-definition screens";
         this.getCheckboxIs4K().setToolTipText(tooltipIs4K);
         this.getCheckboxIs4K().setFocusable(false);
-        JButton labelIs4K = new JButton("Activate high-definition mode for 4K screens (need a restart)");
+        var labelIs4K = new JButton("Activate high-definition mode for 4K screens (need a restart)");
         labelIs4K.setToolTipText(tooltipIs4K);
         labelIs4K.addActionListener(actionEvent -> {
             
@@ -55,7 +55,7 @@ public class PanelGeneral extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        GroupLayout groupLayout = new GroupLayout(this);
+        var groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
         
         Stream

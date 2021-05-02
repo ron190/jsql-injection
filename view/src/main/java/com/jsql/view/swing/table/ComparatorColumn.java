@@ -28,8 +28,8 @@ public class ComparatorColumn<T> implements Comparator<T> {
     @Override
     public int compare(T cellLeft, T cellRight) {
         
-        boolean isFirstNumber = true;
-        boolean isSecondNumber = true;
+        var isFirstNumber = true;
+        var isSecondNumber = true;
         
         String valueCellLeft = cellLeft.toString().trim();
         String valueCellRight = cellRight.toString().trim();

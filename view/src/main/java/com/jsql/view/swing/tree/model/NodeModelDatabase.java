@@ -80,7 +80,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
             protected Object doInBackground() throws Exception {
                 
                 Thread.currentThread().setName("SwingWorkerNodeModelDatabase");
-                Database selectedDatabase = (Database) NodeModelDatabase.this.getElementDatabase();
+                var selectedDatabase = (Database) NodeModelDatabase.this.getElementDatabase();
                 return MediatorHelper.model().getDataAccess().listTables(selectedDatabase);
             }
         }.execute();

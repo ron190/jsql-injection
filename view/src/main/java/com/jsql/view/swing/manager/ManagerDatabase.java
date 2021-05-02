@@ -63,7 +63,7 @@ public class ManagerDatabase extends JPanel implements Manager {
 
         this.initializeTree();
         
-        LightScrollPane scroller = new LightScrollPane(0, 0, 0, 0, this.tree);
+        var scroller = new LightScrollPane(0, 0, 0, 0, this.tree);
         this.add(scroller, BorderLayout.CENTER);
     }
 
@@ -71,7 +71,7 @@ public class ManagerDatabase extends JPanel implements Manager {
         
         // First node in tree
         AbstractNodeModel nodeModelEmpty = new NodeModelEmpty(I18nViewUtil.valueByKey("DATABASE_EMPTY"));
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(nodeModelEmpty);
+        var root = new DefaultMutableTreeNode(nodeModelEmpty);
         I18nViewUtil.addComponentForKey("DATABASE_EMPTY", nodeModelEmpty);
         
         this.tree = new TreeDatabase(root);

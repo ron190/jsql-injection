@@ -109,7 +109,7 @@ public class PanelTable extends JPanel {
         this.initializeMouseEvent();
         this.initializeTabShortcut();
 
-        AdjusterTableColumn columnAdjuster = new AdjusterTableColumn(this.tableValues);
+        var columnAdjuster = new AdjusterTableColumn(this.tableValues);
         columnAdjuster.adjustColumns();
 
         final TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(this.tableValues.getModel());
@@ -120,7 +120,7 @@ public class PanelTable extends JPanel {
 
         Comparator<Object> comparatorNumeric = new ComparatorColumn<>();
         
-        for (int i = 0 ; i < this.tableValues.getColumnCount() ; i++) {
+        for (var i = 0 ; i < this.tableValues.getColumnCount() ; i++) {
             
             rowSorter.setComparator(i, comparatorNumeric);
         }
@@ -141,10 +141,10 @@ public class PanelTable extends JPanel {
                     
                     // Keep selection when multiple cells are selected,
                     // move focus only
-                    Point p = e.getPoint();
+                    var p = e.getPoint();
 
-                    int rowNumber = PanelTable.this.tableValues.rowAtPoint(p);
-                    int colNumber = PanelTable.this.tableValues.columnAtPoint(p);
+                    var rowNumber = PanelTable.this.tableValues.rowAtPoint(p);
+                    var colNumber = PanelTable.this.tableValues.columnAtPoint(p);
 
                     DefaultListSelectionModel modelRow = (DefaultListSelectionModel) PanelTable.this.tableValues.getSelectionModel();
                     DefaultListSelectionModel modelColumn = (DefaultListSelectionModel) PanelTable.this.tableValues.getColumnModel().getSelectionModel();
@@ -159,7 +159,7 @@ public class PanelTable extends JPanel {
     private void initializeRenderer() {
         
         final TableCellRenderer cellRendererHeader = this.tableValues.getTableHeader().getDefaultRenderer();
-        final DefaultTableCellRenderer cellRendererDefault = new DefaultTableCellRenderer();
+        final var cellRendererDefault = new DefaultTableCellRenderer();
         
         this.tableValues.getTableHeader().setDefaultRenderer(
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
@@ -208,7 +208,7 @@ public class PanelTable extends JPanel {
 
     private void initializeTableScroller() {
         
-        JScrollIndicator scroller = new JScrollIndicator(this.tableValues);
+        var scroller = new JScrollIndicator(this.tableValues);
         scroller.getScrollPane().setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         scroller.getScrollPane().setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         
@@ -225,7 +225,7 @@ public class PanelTable extends JPanel {
         scroller.getScrollPane().getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
         scroller.getScrollPane().getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);
 
-        FixedColumnTable tableFixedColumn = new FixedColumnTable();
+        var tableFixedColumn = new FixedColumnTable();
         tableFixedColumn.fixColumnSize(2, scroller.getScrollPane());
         
         this.add(scroller, BorderLayout.CENTER);
@@ -233,7 +233,7 @@ public class PanelTable extends JPanel {
 
     private void initializePanelSearch(final TableRowSorter<TableModel> rowSorter) {
         
-        final JPanel panelSearch = new JPanel(new BorderLayout());
+        final var panelSearch = new JPanel(new BorderLayout());
         panelSearch.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         
         final JTextField textFilter = new JTextFieldPlaceholder("Find in table");
@@ -331,7 +331,7 @@ public class PanelTable extends JPanel {
      */
     public void copyTable() {
         
-        ActionEvent nev = new ActionEvent(this.tableValues, ActionEvent.ACTION_PERFORMED, "copy");
+        var nev = new ActionEvent(this.tableValues, ActionEvent.ACTION_PERFORMED, "copy");
         this.tableValues.getActionMap().get(nev.getActionCommand()).actionPerformed(nev);
     }
 

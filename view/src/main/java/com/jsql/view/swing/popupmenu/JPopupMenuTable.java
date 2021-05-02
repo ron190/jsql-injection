@@ -126,7 +126,7 @@ public class JPopupMenuTable extends JPopupMenu {
         @Override
         public void actionPerformed(ActionEvent e) {
             
-            ActionEvent copyEvent = new ActionEvent(
+            var copyEvent = new ActionEvent(
                 JPopupMenuTable.this.table,
                 ActionEvent.ACTION_PERFORMED,
                 "copy"

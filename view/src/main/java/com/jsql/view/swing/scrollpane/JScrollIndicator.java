@@ -216,7 +216,7 @@ public class JScrollIndicator extends JLayeredPane {
             
             // Fix #15956: NullPointerException on convertRectangle()
             try {
-                Rectangle rect = SwingUtilities.convertRectangle(this, r, scrollIndicator);
+                var rect = SwingUtilities.convertRectangle(this, r, scrollIndicator);
                 rect.grow(1, 1);
                 // ensure for a translucent thumb, that the view is first painted
                 scrollIndicator.repaint(rect);

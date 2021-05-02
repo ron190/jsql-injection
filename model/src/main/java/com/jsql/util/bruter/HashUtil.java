@@ -34,17 +34,17 @@ public class HashUtil {
     
     public static String toMySql(String textInput) throws NoSuchAlgorithmException {
         
-        MessageDigest md = MessageDigest.getInstance("sha-1");
+        var md = MessageDigest.getInstance("sha-1");
         
-        String password = String.valueOf(textInput.toCharArray());
+        var password = String.valueOf(textInput.toCharArray());
         
         byte[] passwordBytes = password.getBytes();
         md.update(passwordBytes, 0, passwordBytes.length);
         
         byte[] hashSHA1 = md.digest();
-        String stringSHA1 = HashUtil.digestToHexString(hashSHA1);
+        var stringSHA1 = HashUtil.digestToHexString(hashSHA1);
         
-        String passwordSHA1 = String.valueOf(StringUtil.hexstr(stringSHA1).toCharArray());
+        var passwordSHA1 = String.valueOf(StringUtil.hexstr(stringSHA1).toCharArray());
         byte[] passwordSHA1Bytes = passwordSHA1.getBytes();
         
         md.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);
@@ -69,7 +69,7 @@ public class HashUtil {
         
         MessageDigest md = new DigestMD4();
 
-        String passwordString = String.valueOf(textInput.toCharArray());
+        var passwordString = String.valueOf(textInput.toCharArray());
         byte[] passwordByte = passwordString.getBytes();
         
         md.update(passwordByte, 0, passwordByte.length);
@@ -80,9 +80,9 @@ public class HashUtil {
 
     public static String toHash(String nameMethod, String textInput) throws NoSuchAlgorithmException {
         
-        MessageDigest md = MessageDigest.getInstance(nameMethod);
+        var md = MessageDigest.getInstance(nameMethod);
         
-        String passwordString = String.valueOf(textInput.toCharArray());
+        var passwordString = String.valueOf(textInput.toCharArray());
         byte[] passwordByte = passwordString.getBytes();
         
         md.update(passwordByte, 0, passwordByte.length);
@@ -98,10 +98,10 @@ public class HashUtil {
      */
     public static String digestToHexString(byte[] block) {
         
-        StringBuilder buf = new StringBuilder();
+        var buf = new StringBuilder();
         int len = block.length;
         
-        for (int i = 0; i < len; i++) {
+        for (var i = 0; i < len; i++) {
             
             HashUtil.byte2hex(block[i], buf);
         }
@@ -116,7 +116,7 @@ public class HashUtil {
      */
     private static void byte2hex(byte b, StringBuilder buf) {
         
-        char[] hexChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+        var hexChars = new char[]{ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
         int high = (b & 0xf0) >> 4;
         int low = b & 0x0f;
         buf.append(hexChars[high]);

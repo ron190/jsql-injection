@@ -12,7 +12,6 @@ package com.jsql.model.accessible;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -151,9 +150,9 @@ public class DataAccess {
         
         LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_FETCHING_INFORMATIONS"));
         
-        String[] sourcePage = {StringUtils.EMPTY};
+        var sourcePage = new String[]{ StringUtils.EMPTY };
 
-        String resultToParse = "";
+        var resultToParse = "";
         
         try {
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
@@ -194,8 +193,7 @@ public class DataAccess {
             String nameDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[1];
             String username = resultToParse.split(ENCLOSE_VALUE_RGX)[2];
             
-            String infos =
-                String
+            var infos = String
                 .format(
                     "Database [%s] on %s [%s] for user [%s]",
                     nameDatabase,
@@ -209,7 +207,7 @@ public class DataAccess {
         } catch (ArrayIndexOutOfBoundsException e) {
 
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 String.format("%s: %s", I18nUtil.valueByKey("LOG_DB_METADATA_INCORRECT"), resultToParse),
                 e
             );
@@ -235,7 +233,7 @@ public class DataAccess {
         String resultToParse = StringUtils.EMPTY;
         
         try {
-            String[] sourcePage = {StringUtils.EMPTY};
+            var sourcePage = new String[]{ StringUtils.EMPTY };
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlDatabases(),
                 sourcePage,
@@ -265,8 +263,7 @@ public class DataAccess {
         }
 
         // Parse all data we have retrieved
-        Matcher regexSearch =
-            Pattern
+        var regexSearch = Pattern
             .compile(
                 MODE
                 + ENCLOSE_VALUE_RGX
@@ -288,11 +285,11 @@ public class DataAccess {
             String databaseName = regexSearch.group(1);
             String tableCount = regexSearch.group(2);
 
-            Database newDatabase = new Database(databaseName, tableCount);
+            var newDatabase = new Database(databaseName, tableCount);
             databases.add(newDatabase);
         }
 
-        Request request = new Request();
+        var request = new Request();
         request.setMessage(Interaction.ADD_DATABASES);
         request.setParameters(databases);
         this.injectionModel.sendToViews(request);
@@ -316,20 +313,18 @@ public class DataAccess {
         // and some Tables are still reachable
         this.injectionModel.setIsStoppedByUser(false);
         
-        List<Table> tables = new ArrayList<>();
-        
         // Inform the view that database has just been used
-        Request requestStartProgress = new Request();
+        var requestStartProgress = new Request();
         requestStartProgress.setMessage(Interaction.START_PROGRESS);
         requestStartProgress.setParameters(database);
         this.injectionModel.sendToViews(requestStartProgress);
 
-        String tableCount = Integer.toString(database.getChildCount());
+        var tableCount = Integer.toString(database.getChildCount());
         
         String resultToParse = StringUtils.EMPTY;
         
         try {
-            String[] pageSource = {StringUtils.EMPTY};
+            var pageSource = new String[]{ StringUtils.EMPTY };
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTables(database),
                 pageSource,
@@ -358,8 +353,7 @@ public class DataAccess {
         }
 
         // Parse all the data we have retrieved
-        Matcher regexSearch =
-            Pattern
+        var regexSearch = Pattern
             .compile(
                 MODE
                 + ENCLOSE_VALUE_RGX
@@ -368,7 +362,7 @@ public class DataAccess {
             )
             .matcher(resultToParse);
         
-        Request requestEndProgress = new Request();
+        var requestEndProgress = new Request();
         requestEndProgress.setMessage(Interaction.END_PROGRESS);
         requestEndProgress.setParameters(database);
         this.injectionModel.sendToViews(requestEndProgress);
@@ -380,17 +374,19 @@ public class DataAccess {
         
         regexSearch.reset();
         
+        List<Table> tables = new ArrayList<>();
+        
         // Build an array of Table objects from the data we have parsed
         while (regexSearch.find()) {
             
             String tableName = regexSearch.group(1);
             String rowCount = regexSearch.group(2);
             
-            Table newTable = new Table(tableName, rowCount, database);
+            var newTable = new Table(tableName, rowCount, database);
             tables.add(newTable);
         }
         
-        Request requestAddTables = new Request();
+        var requestAddTables = new Request();
         requestAddTables.setMessage(Interaction.ADD_TABLES);
         requestAddTables.setParameters(tables);
         this.injectionModel.sendToViews(requestAddTables);
@@ -413,7 +409,7 @@ public class DataAccess {
         List<Column> columns = new ArrayList<>();
         
         // Inform the view that table has just been used
-        Request requestStartProgress = new Request();
+        var requestStartProgress = new Request();
         requestStartProgress.setMessage(Interaction.START_INDETERMINATE_PROGRESS);
         requestStartProgress.setParameters(table);
         this.injectionModel.sendToViews(requestStartProgress);
@@ -421,7 +417,7 @@ public class DataAccess {
         String resultToParse = StringUtils.EMPTY;
         
         try {
-            String[] pageSource = {StringUtils.EMPTY};
+            var pageSource = new String[]{ StringUtils.EMPTY };
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlColumns(table),
                 pageSource,
@@ -456,8 +452,7 @@ public class DataAccess {
         }
         
         // Parse all the data we have retrieved
-        Matcher regexSearch =
-            Pattern
+        var regexSearch = Pattern
             .compile(
                 MODE
                 + ENCLOSE_VALUE_RGX
@@ -466,7 +461,7 @@ public class DataAccess {
             )
             .matcher(resultToParse);
 
-        Request requestEndProgress = new Request();
+        var requestEndProgress = new Request();
         requestEndProgress.setMessage(Interaction.END_INDETERMINATE_PROGRESS);
         requestEndProgress.setParameters(table);
         this.injectionModel.sendToViews(requestEndProgress);
@@ -483,11 +478,11 @@ public class DataAccess {
             
             String nameColumn = regexSearch.group(1);
 
-            Column column = new Column(nameColumn, table);
+            var column = new Column(nameColumn, table);
             columns.add(column);
         }
 
-        Request requestAddColumns = new Request();
+        var requestAddColumns = new Request();
         requestAddColumns.setMessage(Interaction.ADD_COLUMNS);
         requestAddColumns.setParameters(columns);
         this.injectionModel.sendToViews(requestAddColumns);
@@ -507,12 +502,12 @@ public class DataAccess {
      */
     public String[][] listValues(List<Column> columns) throws JSqlException {
         
-        Database database = (Database) columns.get(0).getParent().getParent();
-        Table table = (Table) columns.get(0).getParent();
+        var database = (Database) columns.get(0).getParent().getParent();
+        var table = (Table) columns.get(0).getParent();
         int rowCount = columns.get(0).getParent().getChildCount();
 
         // Inform the view that table has just been used
-        Request request = new Request();
+        var request = new Request();
         request.setMessage(Interaction.START_PROGRESS);
         request.setParameters(table);
         this.injectionModel.sendToViews(request);
@@ -539,14 +534,14 @@ public class DataAccess {
         arrayColumns = columnsName.toArray(new String[columnsName.size()]);
         
         // Group the columns names, values and Table object in one array
-        Object[] objectData = { arrayColumns, tableDatas, table };
+        var objectData = new Object[]{ arrayColumns, tableDatas, table };
 
-        Request requestCreateValuesTab = new Request();
+        var requestCreateValuesTab = new Request();
         requestCreateValuesTab.setMessage(Interaction.CREATE_VALUES_TAB);
         requestCreateValuesTab.setParameters(objectData);
         this.injectionModel.sendToViews(requestCreateValuesTab);
 
-        Request requestEndProgress = new Request();
+        var requestEndProgress = new Request();
         requestEndProgress.setMessage(Interaction.END_PROGRESS);
         requestEndProgress.setParameters(table);
         this.injectionModel.sendToViews(requestEndProgress);
@@ -559,7 +554,7 @@ public class DataAccess {
         String resultToParse = StringUtils.EMPTY;
         
         try {
-            String[] pageSource = {StringUtils.EMPTY};
+            var pageSource = new String[]{ StringUtils.EMPTY };
             
             resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlRows(columns, database, table),
@@ -595,13 +590,13 @@ public class DataAccess {
     private String[][] build2D(List<String> columnsName, List<List<String>> listValues) {
         
         // Build a proper 2D array from the data
-        String[][] tableDatas = new String[listValues.size()][columnsName.size()];
+        var tableDatas = new String[listValues.size()][columnsName.size()];
         
-        for (int indexRow = 0 ; indexRow < listValues.size() ; indexRow++) {
+        for (var indexRow = 0 ; indexRow < listValues.size() ; indexRow++) {
             
-            boolean isIncomplete = false;
+            var isIncomplete = false;
             
-            for (int indexColumn = 0 ; indexColumn < columnsName.size() ; indexColumn++) {
+            for (var indexColumn = 0 ; indexColumn < columnsName.size() ; indexColumn++) {
                 
                 try {
                     tableDatas[indexRow][indexColumn] = listValues.get(indexRow).get(indexColumn);
@@ -620,13 +615,13 @@ public class DataAccess {
                 
                 int logIndexRow = indexRow;
                 LOGGER.log(
-                    LogLevel.CONSOLE_ERROR, 
+                    LogLevel.CONSOLE_ERROR,
                     "{}{}: ",
                     () -> I18nUtil.valueByKey("LOG_LIST_VALUES_TOO_LONG"),
                     () -> logIndexRow + 1
                 );
                 LOGGER.log(
-                    LogLevel.CONSOLE_ERROR, 
+                    LogLevel.CONSOLE_ERROR,
                     () -> String.join(
                         ", ",
                         listValues.get(logIndexRow).toArray(new String[listValues.get(logIndexRow).size()])

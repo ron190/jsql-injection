@@ -28,7 +28,7 @@ public class MenuBarCoder extends JMenuBar {
         
         this.menu = menu;
         
-        MenuItemListener listener = new MenuItemListener();
+        var listener = new MenuItemListener();
         this.setListener(menu, listener);
         
         this.add(menu);
@@ -41,7 +41,7 @@ public class MenuBarCoder extends JMenuBar {
             JMenu menuContainingItems = (JMenu) item;
             int countItems = menuContainingItems.getItemCount();
             
-            for (int i = 0 ; i < countItems ; i++) {
+            for (var i = 0 ; i < countItems ; i++) {
                 
                 this.setListener(menuContainingItems.getItem(i), listener);
             }

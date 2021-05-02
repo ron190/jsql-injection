@@ -29,7 +29,7 @@ public class UiStringUtil {
             return StringUtils.EMPTY;
         }
         
-        UniversalDetector detector = new UniversalDetector(null);
+        var detector = new UniversalDetector(null);
         
         // Decode bytes for potentially UTF8 chars
         // Required by asian and hindi chars, otherwise wrong display in database tree
@@ -48,8 +48,7 @@ public class UiStringUtil {
         // Confirm UTF8
         if (encoding != null) {
             
-            result =
-                String
+            result = String
                 .format(
                     "<html><span style=\"font-family:'%s';%s\">%s</span></html>",
                     UiUtil.FONT_NAME_MONO_ASIAN,

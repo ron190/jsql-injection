@@ -102,7 +102,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         this.bruteForceManager.getResult().setText(null);
 
         // Configure the hasher
-        final HashBruter hashBruter = new HashBruter();
+        final var hashBruter = new HashBruter();
 
         this.initializeBruter(hashBruter);
 

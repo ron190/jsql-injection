@@ -67,12 +67,12 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
         JTree tree, Object nodeRenderer, boolean selected, boolean expanded, boolean leaf, int row
     ) {
 
-        Component componentRenderer = this.defaultTreeRenderer.getTreeCellRendererComponent(
+        var componentRenderer = this.defaultTreeRenderer.getTreeCellRendererComponent(
             tree, nodeRenderer, true, expanded, leaf, row, true
         );
 
         final DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
-        Object currentNodeModel = currentNode.getUserObject();
+        var currentNodeModel = currentNode.getUserObject();
         
         try {
             this.nodeModel = (AbstractNodeModel) currentNodeModel;

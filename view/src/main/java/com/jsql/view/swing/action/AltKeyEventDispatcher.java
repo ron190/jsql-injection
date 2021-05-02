@@ -17,7 +17,7 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
     @Override
     public boolean dispatchKeyEvent(KeyEvent keyEvent) {
         
-        boolean shouldNotTakeFurtherAction = false;
+        var shouldNotTakeFurtherAction = false;
         
         // Alt key press/release generates 2 events
         // AltGr key press/release generates 4 events including an Alt press/release

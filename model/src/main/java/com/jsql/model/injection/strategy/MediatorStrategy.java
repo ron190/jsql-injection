@@ -45,7 +45,7 @@ public class MediatorStrategy {
         
         String strategyName = this.strategy == null ? StringUtils.EMPTY : this.strategy.toString().toLowerCase();
         
-        String strategyMode = "default";
+        var strategyMode = "default";
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
             

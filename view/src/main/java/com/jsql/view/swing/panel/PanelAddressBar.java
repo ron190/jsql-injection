@@ -69,7 +69,7 @@ public class PanelAddressBar extends JPanel {
         
         this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
         
-        final JToolTipI18n[] tooltipQuery = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_QUERY))};
+        final var tooltipQuery = new JToolTipI18n[]{ new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_QUERY)) };
         JTextFieldWithIcon fieldWithIcon = new JTextFieldWithIcon(I18nUtil.valueByKey("ADDRESS_BAR")) {
             
             @Override
@@ -84,7 +84,7 @@ public class PanelAddressBar extends JPanel {
         I18nViewUtil.addComponentForKey("ADDRESS_BAR", fieldWithIcon);
         I18nViewUtil.addComponentForKey(KEY_TOOLTIP_QUERY, tooltipQuery[0]);
         
-        final JToolTipI18n[] tooltipRequest = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_REQUEST))};
+        final var tooltipRequest = new JToolTipI18n[]{ new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_REQUEST)) };
         this.textFieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe=") {
             
             @Override
@@ -119,7 +119,7 @@ public class PanelAddressBar extends JPanel {
         )
         .forEach(radioModel -> {
             
-            JToolTipI18n[] tooltip = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey(radioModel.i18n))};
+            var tooltip = new JToolTipI18n[]{ new JToolTipI18n(I18nUtil.valueByKey(radioModel.i18n)) };
             radioModel.radio[0] = new RadioLinkMethod(radioModel.request, radioModel.isSelected, radioModel.method) {
                 
                 @Override
@@ -202,8 +202,8 @@ public class PanelAddressBar extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
         // First panel at the top, contains text components
-        JPanel panelTextFields = new JPanel();
-        GroupLayout layoutTextFields = new GroupLayout(panelTextFields);
+        var panelTextFields = new JPanel();
+        var layoutTextFields = new GroupLayout(panelTextFields);
         panelTextFields.setLayout(layoutTextFields);
         panelTextFields.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
         this.add(panelTextFields);
@@ -263,7 +263,7 @@ public class PanelAddressBar extends JPanel {
 
     private BasicArrowButton initializeAdvancedButton(final JPanel panelHttpProtocol) {
         
-        final BasicArrowButton advancedButton = new BasicArrowButton(SwingConstants.SOUTH);
+        final var advancedButton = new BasicArrowButton(SwingConstants.SOUTH);
         advancedButton.setName("advancedButton");
         advancedButton.setBorderPainted(false);
         advancedButton.setOpaque(false);

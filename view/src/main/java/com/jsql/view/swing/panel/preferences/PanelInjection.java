@@ -58,13 +58,13 @@ public class PanelInjection extends JPanel {
             + "<br>Should be enabled when Zip mode is activated.</html>"
         );
 
-        String tooltipParseForm =
+        var tooltipParseForm =
             "<html>Create name=value params from HTML forms' extracted data.<br>"
             + "Sometimes mandatory params are contained in forms.<br>"
             + "It makes easy adding such params to requests.</html>";
         this.checkboxIsParsingForm.setToolTipText(tooltipParseForm);
         this.checkboxIsParsingForm.setFocusable(false);
-        JButton labelParseForm = new JButton("Add <input> params to Query string and Request");
+        var labelParseForm = new JButton("Add <input> params to Query string and Request");
         labelParseForm.setToolTipText(tooltipParseForm);
         labelParseForm.addActionListener(actionEvent -> {
             
@@ -72,10 +72,10 @@ public class PanelInjection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsNotInjectingMetadata = "Not injecting optional data saves time, particularly with Blind and Time strategies";
+        var tooltipIsNotInjectingMetadata = "Not injecting optional data saves time, particularly with Blind and Time strategies";
         this.checkboxIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
         this.checkboxIsNotInjectingMetadata.setFocusable(false);
-        JButton labelIsNotInjectingMetadata = new JButton("Disable database's metadata injection");
+        var labelIsNotInjectingMetadata = new JButton("Disable database's metadata injection");
         labelIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
         labelIsNotInjectingMetadata.addActionListener(actionEvent -> {
             
@@ -83,10 +83,10 @@ public class PanelInjection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsSleepTimeStrategy = "<html>Time strategy waits an arbitrary number of seconds for a page to respond.<br>Amount of seconds can be lowered on a stable environment like local tests in order to save time.</html>";
+        var tooltipIsSleepTimeStrategy = "<html>Time strategy waits an arbitrary number of seconds for a page to respond.<br>Amount of seconds can be lowered on a stable environment like local tests in order to save time.</html>";
         this.checkboxIsSleepTimeStrategy.setToolTipText(tooltipIsSleepTimeStrategy);
         this.checkboxIsSleepTimeStrategy.setFocusable(false);
-        JButton labelIsSleepTimeStrategy = new JButton("Delay Time strategy for");
+        var labelIsSleepTimeStrategy = new JButton("Delay Time strategy for");
         labelIsSleepTimeStrategy.setToolTipText(tooltipIsSleepTimeStrategy);
         labelIsSleepTimeStrategy.addActionListener(actionEvent -> {
             
@@ -94,7 +94,7 @@ public class PanelInjection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        JPanel panelSleepTimeStrategy = new JPanel(new BorderLayout());
+        var panelSleepTimeStrategy = new JPanel(new BorderLayout());
         panelSleepTimeStrategy.add(labelIsSleepTimeStrategy, BorderLayout.WEST);
         panelSleepTimeStrategy.add(this.spinnerSleepTimeStrategyCount, BorderLayout.CENTER);
         panelSleepTimeStrategy.add(new JLabel(" s ; default 5s"), BorderLayout.EAST);
@@ -102,7 +102,7 @@ public class PanelInjection extends JPanel {
         this.spinnerSleepTimeStrategyCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
         
         int countSleepTimeStrategy = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy();
-        SpinnerNumberModel spinnerSleepTimeStrategy = new SpinnerNumberModel(
+        var spinnerSleepTimeStrategy = new SpinnerNumberModel(
             countSleepTimeStrategy <= 0
             ? 15
             : countSleepTimeStrategy,
@@ -114,10 +114,10 @@ public class PanelInjection extends JPanel {
         this.spinnerSleepTimeStrategyCount.setUI(new BasicColoredSpinnerUI());
         this.spinnerSleepTimeStrategyCount.addMouseWheelListener(new SpinnerMouseWheelListener());
         
-        String tooltipIsLimitingNormalIndex = "Maximum number of columns to check on UNION based queries";
+        var tooltipIsLimitingNormalIndex = "Maximum number of columns to check on UNION based queries";
         this.checkboxIsLimitingNormalIndex.setToolTipText(tooltipIsLimitingNormalIndex);
         this.checkboxIsLimitingNormalIndex.setFocusable(false);
-        JButton labelIsLimitingNormalIndex = new JButton("Limit Normal UNION strategy to");
+        var labelIsLimitingNormalIndex = new JButton("Limit Normal UNION strategy to");
         labelIsLimitingNormalIndex.setToolTipText(tooltipIsLimitingNormalIndex);
         labelIsLimitingNormalIndex.addActionListener(actionEvent -> {
             
@@ -125,7 +125,7 @@ public class PanelInjection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        JPanel panelIsLimitingNormalIndex = new JPanel(new BorderLayout());
+        var panelIsLimitingNormalIndex = new JPanel(new BorderLayout());
         panelIsLimitingNormalIndex.add(labelIsLimitingNormalIndex, BorderLayout.WEST);
         panelIsLimitingNormalIndex.add(this.spinnerNormalIndexCount, BorderLayout.CENTER);
         panelIsLimitingNormalIndex.add(new JLabel(" column(s) ; default 50 columns"), BorderLayout.EAST);
@@ -133,7 +133,7 @@ public class PanelInjection extends JPanel {
         this.spinnerNormalIndexCount.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
         
         int countNormalIndex = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countNormalIndex();
-        SpinnerNumberModel spinnerCountNormalIndex = new SpinnerNumberModel(
+        var spinnerCountNormalIndex = new SpinnerNumberModel(
             countNormalIndex <= 0
             ? 50
             : countNormalIndex,
@@ -145,37 +145,37 @@ public class PanelInjection extends JPanel {
         this.spinnerNormalIndexCount.setUI(new BasicColoredSpinnerUI());
         this.spinnerNormalIndexCount.addMouseWheelListener(new SpinnerMouseWheelListener());
         
-        JButton labelIsCheckingAllParam = new JButton("Inject each parameter and ignore user's method");
-        JButton labelIsCheckingAllURLParam = new JButton("Inject each URL parameter if method is GET");
-        JButton labelIsCheckingAllRequestParam = new JButton("Inject each Request parameter if method is Request");
-        JButton labelIsCheckingAllHeaderParam = new JButton("Inject each Header parameter if method is Header");
-        JButton labelIsCheckingAllCookieParam = new JButton("Inject each Cookie parameter");
-        JButton labelIsCheckingAllJSONParam = new JButton("Inject JSON parameters");
-        JButton labelIsCheckingAllBase64Param = new JButton("Inject Base64 parameters");
-        JButton labelIsCheckingAllSOAPParam = new JButton("Inject SOAP parameters in Request body");
+        var labelIsCheckingAllParam = new JButton("Inject each parameter and ignore user's method");
+        var labelIsCheckingAllURLParam = new JButton("Inject each URL parameter if method is GET");
+        var labelIsCheckingAllRequestParam = new JButton("Inject each Request parameter if method is Request");
+        var labelIsCheckingAllHeaderParam = new JButton("Inject each Header parameter if method is Header");
+        var labelIsCheckingAllCookieParam = new JButton("Inject each Cookie parameter");
+        var labelIsCheckingAllJSONParam = new JButton("Inject JSON parameters");
+        var labelIsCheckingAllBase64Param = new JButton("Inject Base64 parameters");
+        var labelIsCheckingAllSOAPParam = new JButton("Inject SOAP parameters in Request body");
         
-        JButton labelIsDefaultStrategy = new JButton("Use Default mode (use this ; no change to URL or processing)");
-        JButton labelIsDiosStrategy = new JButton("Use Dios mode (less queries ; do not use with Error strategies)");
+        var labelIsDefaultStrategy = new JButton("Use Default mode (use this ; no change to URL or processing)");
+        var labelIsDiosStrategy = new JButton("Use Dios mode (less queries ; do not use with Error strategies)");
         labelIsDiosStrategy.setToolTipText(
             "<html>Mode Dump In One Shot injects a single query that gets all the data at once."
             + "<br>Faster than default mode for Normal and Error strats but requires volume of data to not be huge.</html>"
         );
-        JButton labelIsZipStrategy = new JButton("Use Zip mode (smaller SQL queries ; reduce URL size but less efficient)");
+        var labelIsZipStrategy = new JButton("Use Zip mode (smaller SQL queries ; reduce URL size but less efficient)");
         labelIsZipStrategy.setToolTipText(
             "<html>Zip mode injects small queries, useful when host rejects large URL."
             + "<br>Downside is metadata like table or row count is not fetched.</html>"
         );
-        JButton labelIsUrlEncodingDisabled = new JButton("Disable URL encoding (smaller URL)");
-        JButton labelIsPerfIndexDisabled = new JButton("Disable calibration (smaller SQL query during Normal index selection only)");
+        var labelIsUrlEncodingDisabled = new JButton("Disable URL encoding (smaller URL)");
+        var labelIsPerfIndexDisabled = new JButton("Disable calibration (smaller SQL query during Normal index selection only)");
         
-        JLabel emptyLabelGeneralInjection = new JLabel();
-        JLabel labelGeneralInjection = new JLabel("<html><b>Content processing</b></html>");
-        JLabel emptyLabelParamsInjection = new JLabel();
-        JLabel labelParamsInjection = new JLabel("<html><br /><b>URL parameters</b></html>");
-        JLabel emptyLabelSpecial = new JLabel();
-        JLabel labelSpecial = new JLabel("<html><br /><b>Special parameters</b></html>");
-        JLabel emptyLabelQuerySize = new JLabel();
-        JLabel labelQuerySize = new JLabel("<html><br /><b>Reduce processing and URL size (advanced)</b></html>");
+        var emptyLabelGeneralInjection = new JLabel();
+        var labelGeneralInjection = new JLabel("<html><b>Content processing</b></html>");
+        var emptyLabelParamsInjection = new JLabel();
+        var labelParamsInjection = new JLabel("<html><br /><b>URL parameters</b></html>");
+        var emptyLabelSpecial = new JLabel();
+        var labelSpecial = new JLabel("<html><br /><b>Special parameters</b></html>");
+        var emptyLabelQuerySize = new JLabel();
+        var labelQuerySize = new JLabel("<html><br /><b>Reduce processing and URL size (advanced)</b></html>");
         
         ActionListener actionListenerCheckingAllParam = actionEvent -> {
             
@@ -317,12 +317,12 @@ public class PanelInjection extends JPanel {
             label.setContentAreaFilled(false);
         });
         
-        ButtonGroup groupSpaceToComment = new ButtonGroup();
+        var groupSpaceToComment = new ButtonGroup();
         groupSpaceToComment.add(this.checkboxIsZipStrategy);
         groupSpaceToComment.add(this.checkboxIsDiosStrategy);
         groupSpaceToComment.add(this.checkboxIsDefaultStrategy);
         
-        GroupLayout groupLayout = new GroupLayout(this);
+        var groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
 
         groupLayout

@@ -3,7 +3,6 @@ package com.jsql.model.injection.strategy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -97,14 +96,14 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     public void activateStrategy() {
         
         LOGGER.log(
-            LogLevel.CONSOLE_INFORM, 
+            LogLevel.CONSOLE_INFORM,
             "{} [{}]",
             () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
             this::getName
         );
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getNormal());
         
-        Request request = new Request();
+        var request = new Request();
         request.setMessage(Interaction.MARK_NORMAL_STRATEGY);
         this.injectionModel.sendToViews(request);
     }
@@ -120,7 +119,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         
         // Parse all indexes found
         // Fix #4007 (initialize firstSuccessPageSource to empty String instead of null)
-        Matcher regexSearch = Pattern.compile("(?s)1337(\\d+?)7331").matcher(firstSuccessPageSource);
+        var regexSearch = Pattern.compile("(?s)1337(\\d+?)7331").matcher(firstSuccessPageSource);
         
         List<String> foundIndexes = new ArrayList<>();
         while (regexSearch.find()) {
@@ -164,9 +163,9 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         // Switch from previous array to 2D integer array
         //     column 1: length of #######...#######
         //     column 2: index
-        Integer[][] lengthFields = new Integer[performanceResults.size()][2];
+        var lengthFields = new Integer[performanceResults.size()][2];
         
-        for (int i = 0; i < performanceResults.size(); i++) {
+        for (var i = 0; i < performanceResults.size(); i++) {
             
             lengthFields[i] = new Integer[] {
                     

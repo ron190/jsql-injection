@@ -13,7 +13,6 @@ import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -64,7 +63,7 @@ public class GitUtil {
         }
         
         try {
-            float versionGit = Float.parseFloat(this.getJSONObject().getString("version"));
+            var versionGit = Float.parseFloat(this.getJSONObject().getString("version"));
             
             if (versionGit > Float.parseFloat(this.injectionModel.getVersionJsql())) {
                 
@@ -93,8 +92,7 @@ public class GitUtil {
         String javaVersion = System.getProperty("java.version");
         String osArch = System.getProperty("os.arch");
         
-        String osMetadata =
-            String
+        var osMetadata = String
             .join(
                 "\n",
                 String.format(
@@ -130,16 +128,14 @@ public class GitUtil {
                 )
             );
         
-        String exceptionText =
-            String
+        var exceptionText = String
             .format(
                 "Exception on %s%n%s%n",
                 threadName,
                 ExceptionUtils.getStackTrace(throwable).trim()
             );
         
-        String clientDescription =
-            String
+        var clientDescription = String
             .format(
                 "```%n%s%n```%n```%n%s```",
                 osMetadata,
@@ -166,27 +162,26 @@ public class GitUtil {
             return;
         }
 
-        HttpRequest httpRequest =
-                HttpRequest
-                .newBuilder()
-                .uri(URI.create(this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.issues.url")))
-                .setHeader(
-                    "Authorization",
-                    "token "
-                    + StringUtils.newStringUtf8(
-                        Base64.decodeBase64(
-                            this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.token")
-                        )
+        var httpRequest = HttpRequest
+            .newBuilder()
+            .uri(URI.create(this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.issues.url")))
+            .setHeader(
+                "Authorization",
+                "token "
+                + StringUtils.newStringUtf8(
+                    Base64.decodeBase64(
+                        this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.token")
                     )
                 )
-                .POST(BodyPublishers.ofString(
-                    new JSONObject()
-                    .put("title", reportTitle)
-                    .put("body", StringUtil.decimalHtmlEncode(reportBody))
-                    .toString()
-                ))
-                .timeout(Duration.ofSeconds(15))
-                .build();
+            )
+            .POST(BodyPublishers.ofString(
+                new JSONObject()
+                .put("title", reportTitle)
+                .put("body", StringUtil.decimalHtmlEncode(reportBody))
+                .toString()
+            ))
+            .timeout(Duration.ofSeconds(15))
+            .build();
             
         try {
             HttpResponse<String> response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(httpRequest, BodyHandlers.ofString());
@@ -198,7 +193,7 @@ public class GitUtil {
             if (showOnConsole == ShowOnConsole.YES) {
                 
                 LOGGER.log(
-                    LogLevel.CONSOLE_ERROR, 
+                    LogLevel.CONSOLE_ERROR,
                     String.format("Error during Github report connection: %s", e.getMessage()),
                     e
                 );
@@ -214,8 +209,8 @@ public class GitUtil {
 
             if (showOnConsole == ShowOnConsole.YES) {
                 
-                JSONObject jsonObjectResponse = new JSONObject(sourcePage);
-                String urlIssue = jsonObjectResponse.getString("html_url");
+                var jsonObjectResponse = new JSONObject(sourcePage);
+                var urlIssue = jsonObjectResponse.getString("html_url");
                 LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Sent to Github: {}", urlIssue);
             }
             
@@ -233,9 +228,9 @@ public class GitUtil {
     public void showNews() {
         
         try {
-            JSONArray news = this.getJSONObject().getJSONArray("news");
+            var news = this.getJSONObject().getJSONArray("news");
             
-            for (int index = 0 ; index < news.length() ; index++) {
+            for (var index = 0 ; index < news.length() ; index++) {
                 
                 LOGGER.log(LogLevel.CONSOLE_INFORM, news.get(index));
             }

@@ -71,7 +71,7 @@ public class PanelNode extends JPanel {
      */
     public PanelNode(final JTree tree, final DefaultMutableTreeNode currentNode) {
         
-        ImageIcon animatedGIF = new ImageIcon(PanelNode.class.getClassLoader().getResource(UiUtil.PATH_PROGRESSBAR));
+        var animatedGIF = new ImageIcon(PanelNode.class.getClassLoader().getResource(UiUtil.PATH_PROGRESSBAR));
         animatedGIF.setImageObserver(new ImageObserverAnimated(tree, currentNode));
         
         this.loader.setIcon(animatedGIF);

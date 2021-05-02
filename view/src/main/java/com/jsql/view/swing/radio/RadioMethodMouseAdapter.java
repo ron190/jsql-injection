@@ -62,7 +62,7 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
 
         if (radio.isActivable()) {
             
-            Font font = radio.getFont();
+            var font = radio.getFont();
             Map<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
             attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
             radio.setFont(font.deriveFont(attributes));

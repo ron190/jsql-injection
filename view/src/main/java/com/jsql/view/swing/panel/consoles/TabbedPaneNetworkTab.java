@@ -64,7 +64,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         .forEach(entry -> {
             
             this.addTab(I18nUtil.valueByKey(entry.getKey()), new LightScrollPane(1, 1, 0, 0, entry.getValue()));
-            JLabel label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
+            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));
             this.setTabComponentAt(
                 this.indexOfTab(I18nUtil.valueByKey(entry.getKey())),
                 label

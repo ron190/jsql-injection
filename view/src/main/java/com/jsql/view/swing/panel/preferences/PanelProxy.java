@@ -37,15 +37,15 @@ public class PanelProxy extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
         // Proxy label
-        JLabel labelProxyAddress = new JLabel("Address  ");
-        JLabel labelProxyPort = new JLabel("Port  ");
-        JLabel labelProxyAddressHttps = new JLabel("Address  ");
-        JLabel labelProxyPortHttps = new JLabel("Port  ");
-        JButton buttonIsUsingProxy = new JButton("Proxy for http://");
-        JButton buttonIsUsingProxyHttps = new JButton("Proxy for https://");
-        String tooltipIsUsingProxy = "Enable proxy communication (e.g. TOR with Privoxy or Burp) for HTTP protocol.";
+        var labelProxyAddress = new JLabel("Address  ");
+        var labelProxyPort = new JLabel("Port  ");
+        var labelProxyAddressHttps = new JLabel("Address  ");
+        var labelProxyPortHttps = new JLabel("Port  ");
+        var buttonIsUsingProxy = new JButton("Proxy for http://");
+        var buttonIsUsingProxyHttps = new JButton("Proxy for https://");
+        var tooltipIsUsingProxy = "Enable proxy communication (e.g. TOR with Privoxy or Burp) for HTTP protocol.";
         buttonIsUsingProxy.setToolTipText(tooltipIsUsingProxy);
-        String tooltipIsUsingProxyHttps = "Enable proxy communication (e.g. TOR with Privoxy or Burp) for HTTPS protocol.";
+        var tooltipIsUsingProxyHttps = "Enable proxy communication (e.g. TOR with Privoxy or Burp) for HTTPS protocol.";
         buttonIsUsingProxyHttps.setToolTipText(tooltipIsUsingProxyHttps);
 
         // Proxy setting: IP, port, checkbox to activate proxy
@@ -113,11 +113,11 @@ public class PanelProxy extends JPanel {
             label.setContentAreaFilled(false);
         });
         
-        GroupLayout groupLayout = new GroupLayout(this);
+        var groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
         
-        JLabel labelProxyHttpsHidden = new JLabel();
-        JLabel labelProxyHttps = new JLabel();
+        var labelProxyHttpsHidden = new JLabel();
+        var labelProxyHttps = new JLabel();
         labelProxyHttps.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         
         groupLayout

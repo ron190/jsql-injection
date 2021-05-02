@@ -57,10 +57,10 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetInsertionCharacter");
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
-        String[] charFromBooleanMatch = new String[1];
+        var charFromBooleanMatch = new String[1];
         List<String> charactersInsertion = this.initializeCallables(taskCompletionService, characterInsertionByUser, charFromBooleanMatch);
         
-        MediatorVendor mediatorVendor = this.injectionModel.getMediatorVendor();
+        var mediatorVendor = this.injectionModel.getMediatorVendor();
 
         LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Fingerprinting database and character insertion with Order by match...");
 
@@ -85,7 +85,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     this.setVendor(mediatorVendor, vendorsOrderByMatch);
                     
                     LOGGER.log(LogLevel.CONSOLE_INFORM, "Using [{}]", mediatorVendor.getVendor());
-                    Request requestSetVendor = new Request();
+                    var requestSetVendor = new Request();
                     requestSetVendor.setMessage(Interaction.SET_VENDOR);
                     requestSetVendor.setParameters(mediatorVendor.getVendor());
                     this.injectionModel.sendToViews(requestSetVendor);
@@ -212,8 +212,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 
     private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService, String characterInsertionByUser, String[] charFromBooleanMatch) throws JSqlException {
         
-        List<String> roots =
-            Arrays.asList(
+        List<String> roots = Arrays
+            .asList(
                 RandomStringUtils.random(10, "012"),
 //                "-1",
                 "1"
@@ -221,10 +221,9 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 //                StringUtils.EMPTY
             );
         
-        final String labelPrefix = "prefix";
+        final var labelPrefix = "prefix";
         
-        List<String> prefixes =
-            Arrays
+        List<String> prefixes = Arrays
             .asList(
                 labelPrefix,
                 labelPrefix +"'",
@@ -283,7 +282,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         // Skipping Boolean match when already found
         if (charFromBooleanMatch[0] == null) {
             
-            InjectionCharInsertion injectionCharInsertion = new InjectionCharInsertion(
+            var injectionCharInsertion = new InjectionCharInsertion(
                 this.injectionModel,
                 prefix.replace(labelPrefix, root) + suffix,
                 prefix + suffix
@@ -321,7 +320,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             
             String logCharacterInsertion = characterInsertionDetectedFixed;
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 "No character insertion found, forcing to [{}]",
                 () -> logCharacterInsertion.replace(InjectionModel.STAR, StringUtils.EMPTY)
             );
@@ -330,7 +329,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             
             String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY);
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM, 
+                LogLevel.CONSOLE_INFORM,
                 "Using [{}] and [{}]",
                 () -> this.injectionModel.getMediatorVendor().getVendor(),
                 () -> characterInsertionDetected
@@ -345,7 +344,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         } else {
             
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM, 
+                LogLevel.CONSOLE_INFORM,
                 "{} [{}]",
                 () -> I18nUtil.valueByKey("LOG_USING_INSERTION_CHARACTER"),
                 () -> characterInsertionDetected.replace(InjectionModel.STAR, StringUtils.EMPTY)

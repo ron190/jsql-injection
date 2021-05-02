@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.util.CertificateUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevel;
@@ -59,7 +58,7 @@ public class MainApplication {
         injectionModel.getMediatorUtils().getAuthenticationUtil().setKerberosCifs();
         
         try {
-            JFrameView view = new JFrameView();
+            var view = new JFrameView();
             MediatorHelper.register(view);
             
             injectionModel.addObserver(view.getObserver());

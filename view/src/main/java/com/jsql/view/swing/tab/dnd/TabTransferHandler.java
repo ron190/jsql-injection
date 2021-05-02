@@ -86,8 +86,8 @@ public class TabTransferHandler extends TransferHandler {
         }
         
         support.setDropAction(TransferHandler.MOVE);
-        DropLocation tdl = support.getDropLocation();
-        Point pt = tdl.getDropPoint();
+        var tdl = support.getDropLocation();
+        var pt = tdl.getDropPoint();
         
         DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
         
@@ -95,7 +95,7 @@ public class TabTransferHandler extends TransferHandler {
         DnDTabbedPane.DnDDropLocation dl = target.dropLocationForPointDnD(pt);
         int idx = dl.getIndex();
 
-        boolean isDroppable = false;
+        var isDroppable = false;
         boolean isAreaContains = target.getTabAreaBounds().contains(pt) && idx >= 0;
         
         if (target.equals(this.source)) {
@@ -123,7 +123,7 @@ public class TabTransferHandler extends TransferHandler {
     private BufferedImage makeDragTabImage(DnDTabbedPane tabbedPane) {
         
         Rectangle rect = tabbedPane.getBoundsAt(tabbedPane.dragTabIndex);
-        BufferedImage image = new BufferedImage(tabbedPane.getWidth(), tabbedPane.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        var image = new BufferedImage(tabbedPane.getWidth(), tabbedPane.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics g2 = image.createGraphics();
         tabbedPane.paint(g2);
         g2.dispose();

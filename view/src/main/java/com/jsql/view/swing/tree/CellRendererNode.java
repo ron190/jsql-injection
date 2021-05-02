@@ -31,7 +31,7 @@ public class CellRendererNode extends DefaultTreeCellRenderer {
     ) {
         
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
-        Object userObject = currentNode.getUserObject();
+        var userObject = currentNode.getUserObject();
         AbstractNodeModel dataModel = (AbstractNodeModel) userObject;
         
         return dataModel.getComponent(tree, nodeRenderer, selected, leaf, hasFocus);

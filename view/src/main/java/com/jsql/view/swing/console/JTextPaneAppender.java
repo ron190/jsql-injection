@@ -105,11 +105,11 @@ public class JTextPaneAppender extends AbstractAppender {
             return;
         }
         
-        String[] messageLogEvent = new String[] {
+        var messageLogEvent = new String[] {
             new String(this.getLayout().toByteArray(event), StandardCharsets.UTF_8)
         };
         
-        int level = event.getLevel().intLevel();
+        var level = event.getLevel().intLevel();
         
         SwingUtilities.invokeLater(() -> {
             

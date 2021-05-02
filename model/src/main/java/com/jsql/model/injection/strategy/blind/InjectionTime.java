@@ -171,7 +171,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             throw new StoppedByUserSlidingException();
         }
         
-        CallableTime timeTest = new CallableTime(
+        var timeTest = new CallableTime(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(),
             this.injectionModel,
             this,

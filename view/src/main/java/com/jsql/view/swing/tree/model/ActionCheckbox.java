@@ -35,7 +35,7 @@ public class ActionCheckbox implements ActionListener {
 
         int tableChildCount = treeModel.getChildCount(currentTableNode);
         
-        for (int i = 0 ; i < tableChildCount ; i++) {
+        for (var i = 0 ; i < tableChildCount ; i++) {
             
             DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);
             

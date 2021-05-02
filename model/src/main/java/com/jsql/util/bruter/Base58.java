@@ -35,14 +35,14 @@ public class Base58 {
         byte[] copyInput = copyOfRange(input, 0, input.length);
 
         // Count leading zeroes
-        int zeroCount = 0;
+        var zeroCount = 0;
         while (zeroCount < copyInput.length && copyInput[zeroCount] == 0) {
             
             ++zeroCount;
         }
 
         // The actual encoding
-        byte[] temp = new byte[copyInput.length * 2];
+        var temp = new byte[copyInput.length * 2];
         int j = temp.length;
 
         int startAt = zeroCount;
@@ -81,11 +81,12 @@ public class Base58 {
             return new byte[0];
         }
 
-        byte[] input58 = new byte[input.length()];
+        var input58 = new byte[input.length()];
         
         // Transform the String to a base58 byte sequence
-        for (int i = 0; i < input.length(); ++i) {
-            char c = input.charAt(i);
+        for (var i = 0; i < input.length(); ++i) {
+            
+            var c = input.charAt(i);
 
             int digit58 = -1;
             if (c >= 0 && c < 128) {
@@ -102,14 +103,14 @@ public class Base58 {
         }
 
         // Count leading zeroes
-        int zeroCount = 0;
+        var zeroCount = 0;
         while (zeroCount < input58.length && input58[zeroCount] == 0) {
             
             ++zeroCount;
         }
 
         // The encoding
-        byte[] temp = new byte[input.length()];
+        var temp = new byte[input.length()];
         int j = temp.length;
 
         int startAt = zeroCount;
@@ -134,7 +135,7 @@ public class Base58 {
 
     private static byte divmod58(byte[] number, int startAt) {
         
-        int remainder = 0;
+        var remainder = 0;
         for (int i = startAt; i < number.length; i++) {
             
             int digit256 = number[i] & 0xFF;
@@ -150,7 +151,7 @@ public class Base58 {
 
     private static byte divmod256(byte[] number58, int startAt) {
         
-        int remainder = 0;
+        var remainder = 0;
         for (int i = startAt; i < number58.length; i++) {
             
             int digit58 = number58[i] & 0xFF;
@@ -166,7 +167,7 @@ public class Base58 {
 
     private static byte[] copyOfRange(byte[] source, int from, int to) {
         
-        byte[] range = new byte[to - from];
+        var range = new byte[to - from];
         System.arraycopy(source, from, range, 0, range.length);
 
         return range;

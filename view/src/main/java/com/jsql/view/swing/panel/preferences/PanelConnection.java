@@ -46,10 +46,10 @@ public class PanelConnection extends JPanel {
         
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
-        String tooltipIsFollowingRedirection = "<html>HTTP 3XX response indicates page's location has changed.<br>Redirect automatically to the new location.</html>";
+        var tooltipIsFollowingRedirection = "<html>HTTP 3XX response indicates page's location has changed.<br>Redirect automatically to the new location.</html>";
         this.checkboxIsFollowingRedirection.setToolTipText(tooltipIsFollowingRedirection);
         this.checkboxIsFollowingRedirection.setFocusable(false);
-        JButton labelIsFollowingRedirection = new JButton("Follow redirection");
+        var labelIsFollowingRedirection = new JButton("Follow redirection");
         labelIsFollowingRedirection.setToolTipText(tooltipIsFollowingRedirection);
         labelIsFollowingRedirection.addActionListener(actionEvent -> {
             
@@ -57,10 +57,10 @@ public class PanelConnection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsUnicodeDecodeDisabled = "<html>Unicode entities \\uXXXX are decoded to raw characters by default.<br>Check to disable this behavior.</html>";
+        var tooltipIsUnicodeDecodeDisabled = "<html>Unicode entities \\uXXXX are decoded to raw characters by default.<br>Check to disable this behavior.</html>";
         this.checkboxIsUnicodeDecodeDisabled.setToolTipText(tooltipIsUnicodeDecodeDisabled);
         this.checkboxIsUnicodeDecodeDisabled.setFocusable(false);
-        JButton labelIsUnicodeDecodeDisabled = new JButton("Disable Unicode decoding in response");
+        var labelIsUnicodeDecodeDisabled = new JButton("Disable Unicode decoding in response");
         labelIsUnicodeDecodeDisabled.setToolTipText(tooltipIsUnicodeDecodeDisabled);
         labelIsUnicodeDecodeDisabled.addActionListener(actionEvent -> {
             
@@ -68,12 +68,12 @@ public class PanelConnection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipTestConnection =
+        var tooltipTestConnection =
                 "<html>Connectivity to target is checked first to stop when target is dead, like with 404 Not Found.<br>"
                 + "Check option to process with injection whatever problem exists.</html>";
         this.checkboxIsNotTestingConnection.setToolTipText(tooltipTestConnection);
         this.checkboxIsNotTestingConnection.setFocusable(false);
-        JButton labelTestConnection = new JButton("Disable connection test");
+        var labelTestConnection = new JButton("Disable connection test");
         labelTestConnection.setToolTipText(tooltipTestConnection);
         labelTestConnection.addActionListener(actionEvent -> {
             
@@ -81,19 +81,19 @@ public class PanelConnection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsNotProcessingCookies = "<html>Cookies persist data between connections.<br>Sometimes persisted data like user's session is messing with injection and have to be ignored.</html>";
+        var tooltipIsNotProcessingCookies = "<html>Cookies persist data between connections.<br>Sometimes persisted data like user's session is messing with injection and have to be ignored.</html>";
         this.checkboxIsNotProcessingCookies.setToolTipText(tooltipIsNotProcessingCookies);
         this.checkboxIsNotProcessingCookies.setFocusable(false);
-        JButton labelIsNotProcessingCookies = new JButton("Disable session cookies");
+        var labelIsNotProcessingCookies = new JButton("Disable session cookies");
         labelIsNotProcessingCookies.setToolTipText(tooltipIsNotProcessingCookies);
         
-        String tooltipIsLimitingThreads =
+        var tooltipIsLimitingThreads =
             "<html>Various tasks are processed in parallel to save time.<br>"
             + "Target that detects too much calls during a period can close the connection,<br>"
             + "in that case it helps lowering threads or keeping a single thread.</html>";
         this.checkboxIsLimitingThreads.setToolTipText(tooltipIsLimitingThreads);
         this.checkboxIsLimitingThreads.setFocusable(false);
-        JButton labelIsLimitingThreads = new JButton("Limit processing to");
+        var labelIsLimitingThreads = new JButton("Limit processing to");
         labelIsLimitingThreads.setToolTipText(tooltipIsLimitingThreads);
         labelIsLimitingThreads.addActionListener(actionEvent -> {
             
@@ -101,10 +101,10 @@ public class PanelConnection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsConnectionTimeout = "End connection when target takes this long to answer, it can be lowered down to save time in some cases.";
+        var tooltipIsConnectionTimeout = "End connection when target takes this long to answer, it can be lowered down to save time in some cases.";
         this.checkboxIsConnectionTimeout.setToolTipText(tooltipIsConnectionTimeout);
         this.checkboxIsConnectionTimeout.setFocusable(false);
-        JButton labelIsConnectionTimeout = new JButton("Timeout after");
+        var labelIsConnectionTimeout = new JButton("Timeout after");
         labelIsConnectionTimeout.setToolTipText(tooltipIsConnectionTimeout);
         labelIsConnectionTimeout.addActionListener(actionEvent -> {
             
@@ -112,10 +112,10 @@ public class PanelConnection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipProcessCsrf = "Search for commons CSRF token in target's response and inject back the value on each requests";
+        var tooltipProcessCsrf = "Search for commons CSRF token in target's response and inject back the value on each requests";
         this.checkboxIsProcessingCsrf.setToolTipText(tooltipProcessCsrf);
         this.checkboxIsProcessingCsrf.setFocusable(false);
-        JButton labelProcessingCsrf = new JButton("Process CSRF token (search for XSRF-TOKEN/.../_csrf ; then set X-XSRF-TOKEN/.../_csrf)");
+        var labelProcessingCsrf = new JButton("Process CSRF token (search for XSRF-TOKEN/.../_csrf ; then set X-XSRF-TOKEN/.../_csrf)");
         labelProcessingCsrf.setToolTipText(tooltipProcessCsrf);
         labelProcessingCsrf.addActionListener(actionEvent -> {
             
@@ -123,7 +123,7 @@ public class PanelConnection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        JPanel panelConnectionTimeout = new JPanel(new BorderLayout());
+        var panelConnectionTimeout = new JPanel(new BorderLayout());
         panelConnectionTimeout.add(labelIsConnectionTimeout, BorderLayout.WEST);
         panelConnectionTimeout.add(this.spinnerConnectionTimeout, BorderLayout.CENTER);
         panelConnectionTimeout.add(new JLabel(" s ; default 15s"), BorderLayout.EAST);
@@ -131,7 +131,7 @@ public class PanelConnection extends JPanel {
         this.spinnerConnectionTimeout.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
         
         int countConnectionTimeout = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countConnectionTimeout();
-        SpinnerNumberModel spinnerConnectionModel = new SpinnerNumberModel(
+        var spinnerConnectionModel = new SpinnerNumberModel(
             countConnectionTimeout <= 0
             ? 15
             : countConnectionTimeout,
@@ -143,7 +143,7 @@ public class PanelConnection extends JPanel {
         this.spinnerConnectionTimeout.setUI(new BasicColoredSpinnerUI());
         this.spinnerConnectionTimeout.addMouseWheelListener(new SpinnerMouseWheelListener());
         
-        JPanel panelThreadCount = new JPanel(new BorderLayout());
+        var panelThreadCount = new JPanel(new BorderLayout());
         panelThreadCount.add(labelIsLimitingThreads, BorderLayout.WEST);
         panelThreadCount.add(this.spinnerLimitingThreads, BorderLayout.CENTER);
         panelThreadCount.add(new JLabel(" thread(s) ; default 10 threads"), BorderLayout.EAST);
@@ -151,7 +151,7 @@ public class PanelConnection extends JPanel {
         this.spinnerLimitingThreads.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
         
         int countLimitingThreads = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countLimitingThreads();
-        SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(
+        var spinnerNumberModel = new SpinnerNumberModel(
             countLimitingThreads <= 0
             ? 10
             : countLimitingThreads,
@@ -163,11 +163,11 @@ public class PanelConnection extends JPanel {
         this.spinnerLimitingThreads.setUI(new BasicColoredSpinnerUI());
         this.spinnerLimitingThreads.addMouseWheelListener(new SpinnerMouseWheelListener());
         
-        String tooltipIsCsrfUserTag = "<html>Process custom CSRF.<br>Read value from input token and write value to output token.</html>";
+        var tooltipIsCsrfUserTag = "<html>Process custom CSRF.<br>Read value from input token and write value to output token.</html>";
         this.checkboxIsCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
         this.checkboxIsCsrfUserTag.setFocusable(false);
-        JButton labelCsrfUserTag = new JButton("Custom CSRF ; Input token");
-        JButton labelCsrfUserTagOutput = new JButton("; Output token");
+        var labelCsrfUserTag = new JButton("Custom CSRF ; Input token");
+        var labelCsrfUserTagOutput = new JButton("; Output token");
         labelCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
         labelCsrfUserTagOutput.setToolTipText(tooltipIsCsrfUserTag);
         labelCsrfUserTag.addActionListener(actionEvent -> {
@@ -181,7 +181,7 @@ public class PanelConnection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        JPanel panelCsrfUserTag = new JPanel();
+        var panelCsrfUserTag = new JPanel();
         panelCsrfUserTag.setLayout(new BoxLayout(panelCsrfUserTag, BoxLayout.X_AXIS));
         panelCsrfUserTag.add(labelCsrfUserTag);
         panelCsrfUserTag.add(this.textfieldCustomCsrfInputToken);
@@ -234,10 +234,10 @@ public class PanelConnection extends JPanel {
         labelCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
         labelCsrfUserTagOutput.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
         
-        JLabel emptyLabelSessionManagement = new JLabel();
-        JLabel labelSessionManagement = new JLabel("<html><br /><b>Session and Cookie management</b></html>");
+        var emptyLabelSessionManagement = new JLabel();
+        var labelSessionManagement = new JLabel("<html><br /><b>Session and Cookie management</b></html>");
         
-        GroupLayout groupLayout = new GroupLayout(this);
+        var groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
         
         Stream

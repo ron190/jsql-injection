@@ -117,7 +117,7 @@ public class InjectionCharInsertion {
             
             this.constantTrueMark = listTagTrue.get(0).get().getOpcodes();
             
-            for (int i = 1 ; i < listTagTrue.size() ; i++) {
+            for (var i = 1 ; i < listTagTrue.size() ; i++) {
                 
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
@@ -203,7 +203,7 @@ public class InjectionCharInsertion {
             throw new StoppedByUserSlidingException();
         }
         
-        CallableCharInsertion blindTest = new CallableCharInsertion(
+        var blindTest = new CallableCharInsertion(
             String
             .join(
                 "+",

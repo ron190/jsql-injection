@@ -53,8 +53,8 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
 
         this.getProxy().setDragEnabled(true);
 
-        UndoManager undoRedoManager = new UndoManager();
-        Document doc = this.getProxy().getDocument();
+        var undoRedoManager = new UndoManager();
+        var doc = this.getProxy().getDocument();
 
         // Listen for undo and redo events
         doc.addUndoableEditListener(undoableEditEvent -> undoRedoManager.addEdit(undoableEditEvent.getEdit()));
@@ -67,7 +67,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
     private void initializeUndo(final UndoManager undo) {
         
         // Create an undo action and add it to the text component
-        final String undoIdentifier = "Undo";
+        final var undoIdentifier = "Undo";
         
         this.getProxy().getActionMap().put(undoIdentifier, new AbstractAction(undoIdentifier) {
             
@@ -95,7 +95,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
     private void initializeRedo(final UndoManager undo) {
         
         // Create a redo action and add it to the text component
-        final String redoIdentifier = "Redo";
+        final var redoIdentifier = "Redo";
         
         this.getProxy().getActionMap().put(redoIdentifier, new AbstractAction(redoIdentifier) {
             
@@ -122,7 +122,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
     private void makeDeleteSilent() {
         
         // Silent delete
-        ActionMap actionMap = this.getProxy().getActionMap();
+        var actionMap = this.getProxy().getActionMap();
 
         String key = DefaultEditorKit.deletePrevCharAction;
         actionMap.put(key, new SilentDeleteTextAction(key, actionMap.get(key)));

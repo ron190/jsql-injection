@@ -18,7 +18,7 @@ public class PropertiesUtil {
     
     public PropertiesUtil() {
         
-        String filename = "config.properties";
+        var filename = "config.properties";
 
         try (InputStream input = PropertiesUtil.class.getClassLoader().getResourceAsStream(filename)) {
             

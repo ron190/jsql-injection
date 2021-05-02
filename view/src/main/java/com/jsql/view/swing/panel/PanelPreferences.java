@@ -82,7 +82,7 @@ public class PanelPreferences extends JPanel {
     
     public PanelPreferences() {
         
-        BorderLayout borderLayoutPreferences = new BorderLayout();
+        var borderLayoutPreferences = new BorderLayout();
         this.setLayout(borderLayoutPreferences);
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         
@@ -124,7 +124,7 @@ public class PanelPreferences extends JPanel {
         panelProxy.setLayout(new BoxLayout(panelProxy, BoxLayout.Y_AXIS));
         panelProxy.setBorder(this.panelBorder);
         
-        final JButton buttonCheckIp = new JButton("Check your IP");
+        final var buttonCheckIp = new JButton("Check your IP");
         buttonCheckIp.addActionListener(new ActionCheckIP());
         buttonCheckIp.setToolTipText(
             "<html><b>Verify what public IP address is used by jSQL</b><br>"
@@ -134,16 +134,16 @@ public class PanelPreferences extends JPanel {
         buttonCheckIp.setContentAreaFilled(true);
         buttonCheckIp.setBorder(UiUtil.BORDER_ROUND_BLU);
         
-        FlatButtonMouseAdapter flatButtonMouseAdapter = new FlatButtonMouseAdapter(buttonCheckIp);
+        var flatButtonMouseAdapter = new FlatButtonMouseAdapter(buttonCheckIp);
         flatButtonMouseAdapter.setContentVisible(true);
         buttonCheckIp.addMouseListener(flatButtonMouseAdapter);
         
-        JLabel labelProxy = new JLabel("<html><b>Proxy</b> / Settings for tools like Burp and Tor</html>");
+        var labelProxy = new JLabel("<html><b>Proxy</b> / Settings for tools like Burp and Tor</html>");
         panelProxy.removeAll();
         panelProxy.add(labelProxy, BorderLayout.NORTH);
         panelProxy.add(this.panelProxyPreferences);
         
-        JPanel panelCheckIp = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0));
+        var panelCheckIp = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0));
         panelCheckIp.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         panelCheckIp.add(buttonCheckIp);
         panelCheckIp.add(Box.createGlue());

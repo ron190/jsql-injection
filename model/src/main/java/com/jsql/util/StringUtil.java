@@ -92,7 +92,7 @@ public final class StringUtil {
     
     public static String decimalHtmlEncode(String text, boolean isRaw) {
         
-        String result = StringUtil.encode(text, DECIMAL_HTML_ENCODER);
+        var result = StringUtil.encode(text, DECIMAL_HTML_ENCODER);
         
         if (isRaw) {
             
@@ -116,9 +116,9 @@ public final class StringUtil {
      */
     private static String encode(String text, CharEncoder encoder) {
         
-        StringBuilder buff = new StringBuilder();
+        var buff = new StringBuilder();
         
-        for (int i = 0 ; i < text.length() ; i++) {
+        for (var i = 0 ; i < text.length() ; i++) {
             
             if (text.charAt(i) > 128) {
                 
@@ -140,9 +140,9 @@ public final class StringUtil {
      */
     public static String hexstr(String hex) {
         
-        byte[] bytes = new byte[hex.length() / 2];
+        var bytes = new byte[hex.length() / 2];
         
-        for (int i = 0 ; i < bytes.length ; i++) {
+        for (var i = 0 ; i < bytes.length ; i++) {
             
             bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
@@ -157,7 +157,7 @@ public final class StringUtil {
             return false;
         }
         
-        UniversalDetector detector = new UniversalDetector(null);
+        var detector = new UniversalDetector(null);
         detector.handleData(text.getBytes(), 0, text.length() - 1);
         detector.dataEnd();
         String encoding = detector.getDetectedCharset();
@@ -176,7 +176,7 @@ public final class StringUtil {
         
         // ArrayIndexOutOfBoundsException on handleData()
         try {
-            UniversalDetector detector = new UniversalDetector(null);
+            var detector = new UniversalDetector(null);
             detector.handleData(text.getBytes(), 0, text.length() - 1);
             detector.dataEnd();
             encoding = detector.getDetectedCharset();
@@ -197,13 +197,13 @@ public final class StringUtil {
     
     public static String base32Encode(String s) {
         
-        Base32 base32 = new Base32();
+        var base32 = new Base32();
         return base32.encodeToString(StringUtils.getBytesUtf8(s));
     }
     
     public static String base32Decode(String s) {
         
-        Base32 base32 = new Base32();
+        var base32 = new Base32();
         return StringUtils.newStringUtf8(base32.decode(s));
     }
     
@@ -219,13 +219,13 @@ public final class StringUtil {
     
     public static String base16Encode(String s) {
         
-        Base16 base16 = new Base16();
+        var base16 = new Base16();
         return base16.encodeToString(StringUtils.getBytesUtf8(s));
     }
     
     public static String base16Decode(String s) {
         
-        Base16 base16 = new Base16();
+        var base16 = new Base16();
         return StringUtils.newStringUtf8(base16.decode(s));
     }
 
@@ -265,8 +265,8 @@ public final class StringUtil {
             return str;
         }
         
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        GZIPOutputStream gzip = new GZIPOutputStream(out);
+        var out = new ByteArrayOutputStream();
+        var gzip = new GZIPOutputStream(out);
         gzip.write(str.getBytes());
         gzip.close();
         
@@ -285,13 +285,13 @@ public final class StringUtil {
             return str;
         }
         
-        final String encode = "ISO-8859-1";
-        GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(str.getBytes(encode)));
-        BufferedReader bf = new BufferedReader(new InputStreamReader(gis, encode));
+        final var encode = "ISO-8859-1";
+        var gis = new GZIPInputStream(new ByteArrayInputStream(str.getBytes(encode)));
+        var bf = new BufferedReader(new InputStreamReader(gis, encode));
 
-        char[] buff = new char[1024];
+        var buff = new char[1024];
         int read;
-        StringBuilder response = new StringBuilder();
+        var response = new StringBuilder();
         
         while ((read = bf.read(buff)) != -1) {
             response.append(buff, 0, read);
@@ -322,7 +322,7 @@ public final class StringUtil {
     public static String fromHexZip(String text) throws IOException, DecoderException {
         
         byte[] hex = Hex.decodeHex(text.toCharArray());
-        String zip = new String(hex, StandardCharsets.UTF_8.name());
+        var zip = new String(hex, StandardCharsets.UTF_8.name());
         
         return StringUtil.decompress(zip);
     }

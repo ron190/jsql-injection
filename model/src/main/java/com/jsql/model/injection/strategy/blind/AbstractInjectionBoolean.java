@@ -83,7 +83,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         List<char[]> bytes = new ArrayList<>();
         
         // Cursor for current character position
-        AtomicInteger indexCharacter = new AtomicInteger(0);
+        var indexCharacter = new AtomicInteger(0);
 
         // Concurrent URL requests
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableAbstractBoolean");
@@ -94,8 +94,8 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         taskCompletionService.submit(this.getCallableSizeTest(sqlQuery, 0));
         
         // Increment the number of active tasks
-        AtomicInteger countTasksSubmitted = new AtomicInteger(1);
-        AtomicInteger countBadAsciiCode = new AtomicInteger(0);
+        var countTasksSubmitted = new AtomicInteger(1);
+        var countBadAsciiCode = new AtomicInteger(0);
         
         // Process the job until there is no more active task,
         // in other word until all HTTP requests are done
@@ -109,7 +109,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
             
             try {
                 // The URL call is done, bring back the finished task
-                T currentCallable = taskCompletionService.take().get();
+                var currentCallable = taskCompletionService.take().get();
                 
                 // One task has just ended, decrease active tasks by 1
                 countTasksSubmitted.decrementAndGet();
@@ -153,12 +153,12 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         
         char[] asciiCodeMask = this.initializeBinaryMask(bytes, currentCallable);
         
-        String asciiCodeBinary = new String(asciiCodeMask);
+        var asciiCodeBinary = new String(asciiCodeMask);
         
         // Inform the View if bits array is complete, else nothing #Need fix
         if (asciiCodeBinary.matches("^[01]{8}$")) {
             
-            int asciiCode = Integer.parseInt(asciiCodeBinary, 2);
+            var asciiCode = Integer.parseInt(asciiCodeBinary, 2);
             
             // Stop if many 11111111, 01111111 or 00000000
             if (asciiCode == 255 || asciiCode == 127 || asciiCode == 0) {
@@ -174,9 +174,9 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 countBadAsciiCode.incrementAndGet();
             }
 
-            String charText = Character.toString((char) asciiCode);
+            var charText = Character.toString((char) asciiCode);
             
-            Request interaction = new Request();
+            var interaction = new Request();
             interaction.setMessage(Interaction.MESSAGE_BINARY);
             interaction.setParameters(
                 asciiCodeBinary
@@ -249,7 +249,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     private String stop(List<char[]> bytes, ExecutorService taskExecutor) {
         
         // Await for termination
-        boolean isTerminated = false;
+        var isTerminated = false;
         
         try {
             taskExecutor.shutdown();
@@ -268,13 +268,13 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         }
 
         // Get current progress and display
-        StringBuilder result = new StringBuilder();
+        var result = new StringBuilder();
         
         for (char[] c: bytes) {
             
             try {
-                int charCode = Integer.parseInt(new String(c), 2);
-                String str = Character.toString((char) charCode);
+                var charCode = Integer.parseInt(new String(c), 2);
+                var str = Character.toString((char) charCode);
                 result.append(str);
                 
             } catch (NumberFormatException err) {

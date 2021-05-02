@@ -150,7 +150,7 @@ public final class OrderedProperties {
      */
     public void load(InputStream stream) throws IOException {
         
-        CustomProperties customProperties = new CustomProperties(this.properties);
+        var customProperties = new CustomProperties(this.properties);
         customProperties.load(stream);
     }
 
@@ -159,7 +159,7 @@ public final class OrderedProperties {
      */
     public void load(Reader reader) throws IOException {
         
-        CustomProperties customProperties = new CustomProperties(this.properties);
+        var customProperties = new CustomProperties(this.properties);
         customProperties.load(reader);
     }
 
@@ -168,7 +168,7 @@ public final class OrderedProperties {
      */
     public void loadFromXML(InputStream stream) throws IOException {
         
-        CustomProperties customProperties = new CustomProperties(this.properties);
+        var customProperties = new CustomProperties(this.properties);
         customProperties.loadFromXML(stream);
     }
 
@@ -177,7 +177,7 @@ public final class OrderedProperties {
      */
     public void store(OutputStream stream, String comments) throws IOException {
         
-        CustomProperties customProperties = new CustomProperties(this.properties);
+        var customProperties = new CustomProperties(this.properties);
         
         if (this.suppressDate) {
             
@@ -194,7 +194,7 @@ public final class OrderedProperties {
      */
     public void store(Writer writer, String comments) throws IOException {
         
-        CustomProperties customProperties = new CustomProperties(this.properties);
+        var customProperties = new CustomProperties(this.properties);
         
         if (this.suppressDate) {
             
@@ -211,7 +211,7 @@ public final class OrderedProperties {
      */
     public void storeToXML(OutputStream stream, String comment) throws IOException {
         
-        CustomProperties customProperties = new CustomProperties(this.properties);
+        var customProperties = new CustomProperties(this.properties);
         customProperties.storeToXML(stream, comment);
     }
 
@@ -220,7 +220,7 @@ public final class OrderedProperties {
      */
     public void storeToXML(OutputStream stream, String comment, String encoding) throws IOException {
         
-        CustomProperties customProperties = new CustomProperties(this.properties);
+        var customProperties = new CustomProperties(this.properties);
         customProperties.storeToXML(stream, comment, encoding);
     }
 
@@ -229,7 +229,7 @@ public final class OrderedProperties {
      */
     public void list(PrintStream stream) {
         
-        CustomProperties customProperties = new CustomProperties(this.properties);
+        var customProperties = new CustomProperties(this.properties);
         customProperties.list(stream);
     }
 
@@ -238,7 +238,7 @@ public final class OrderedProperties {
      */
     public void list(PrintWriter writer) {
         
-        CustomProperties customProperties = new CustomProperties(this.properties);
+        var customProperties = new CustomProperties(this.properties);
         customProperties.list(writer);
     }
 
@@ -249,7 +249,7 @@ public final class OrderedProperties {
      */
     public Properties toJdkProperties() {
         
-        Properties jdkProperties = new Properties();
+        var jdkProperties = new Properties();
         
         for (Map.Entry<String, String> entry: this.entrySet()) {
             
@@ -312,7 +312,7 @@ public final class OrderedProperties {
     public static OrderedProperties copyOf(OrderedProperties source) {
         
         // create a copy that has the same behaviour
-        OrderedPropertiesBuilder builder = new OrderedPropertiesBuilder();
+        var builder = new OrderedPropertiesBuilder();
         builder.withSuppressDateInComment(source.suppressDate);
         
         if (source.properties instanceof TreeMap) {

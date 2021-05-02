@@ -1,7 +1,6 @@
 package com.jsql.util.tampering;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,9 +31,9 @@ public enum TamperingType {
     
     private TamperingType(String fileYaml) {
         
-        Yaml yaml = new Yaml();
+        var yaml = new Yaml();
         
-        try (InputStream inputStream = TamperingType.class.getClassLoader().getResourceAsStream("tamper/"+ fileYaml)) {
+        try (var inputStream = TamperingType.class.getClassLoader().getResourceAsStream("tamper/"+ fileYaml)) {
         
             this.instanceModelYaml = yaml.loadAs(inputStream, ModelYamlTampering.class);
             
