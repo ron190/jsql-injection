@@ -70,7 +70,7 @@ public class HeaderUtil {
             
         } catch (NullPointerException | UnsupportedEncodingException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 
@@ -79,9 +79,10 @@ public class HeaderUtil {
      * send the headers to the view.
      * @param connection contains headers response
      * @param urlByUser the website to request
+     * @return
      * @throws IOException when an error occurs during connection
      */
-    public void checkResponseHeader(Builder httpRequestBuilder) throws IOException, InterruptedException {
+    public HttpResponse<String> checkResponseHeader(Builder httpRequestBuilder) throws IOException, InterruptedException {
         
         var httpRequest = httpRequestBuilder.build();
         HttpResponse<String> httpResponse = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(
@@ -96,10 +97,7 @@ public class HeaderUtil {
         
         this.checkResponse(responseCode, mapHeaders);
         
-        // Request the web page to the server
-        Exception exception = null;
-        
-        exception = this.readSource(httpResponse);
+        this.checkStatus(httpResponse);
         
         this.injectionModel.getMediatorUtils().getFormUtil().parseForms(httpResponse.statusCode(), pageSource);
         
@@ -107,6 +105,7 @@ public class HeaderUtil {
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, httpRequest.uri().toURL().toString());
+        msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
         msgHeader.put(Header.RESPONSE, mapHeaders);
         msgHeader.put(Header.SOURCE, pageSource);
         
@@ -116,13 +115,10 @@ public class HeaderUtil {
         request.setParameters(msgHeader);
         this.injectionModel.sendToViews(request);
         
-        if (exception != null) {
-            
-            throw new IOException(exception);
-        }
+        return httpResponse;
     }
 
-    private Exception readSource(HttpResponse<String> response) throws IOException {
+    private Exception checkStatus(HttpResponse<String> response) throws IOException {
         
         Exception exception = null;
         
@@ -142,7 +138,7 @@ public class HeaderUtil {
             
         } else if (exception != null) {
             
-            LOGGER.log(LogLevel.CONSOLE_INFORM, "Select option 'Disable connection test' and run again");
+            LOGGER.log(LogLevel.CONSOLE_INFORM, "Select option 'Disable connection test' if required");
         }
         
         return exception;

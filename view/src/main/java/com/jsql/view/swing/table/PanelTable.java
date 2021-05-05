@@ -14,7 +14,6 @@ import java.awt.AWTKeyStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.KeyboardFocusManager;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
@@ -199,7 +198,7 @@ public class PanelTable extends JPanel {
                     
                 } catch (NullPointerException e) {
                     
-                    LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                     return null;
                 }
             }

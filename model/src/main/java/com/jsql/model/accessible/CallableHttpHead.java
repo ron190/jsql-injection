@@ -11,7 +11,6 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.lang3.StringUtils;
@@ -109,8 +108,8 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, this.urlAdminPage);
         msgHeader.put(Header.POST, StringUtils.EMPTY);
-        msgHeader.put(Header.HEADER, StringUtils.EMPTY);
-        msgHeader.put(Header.RESPONSE, new TreeMap<>(mapHeaders));
+        msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
+        msgHeader.put(Header.RESPONSE, ConnectionUtil.getHeadersMap(response));
         msgHeader.put(Header.METADATA_PROCESS, this.metadataInjectionProcess);
 
         var request = new Request();

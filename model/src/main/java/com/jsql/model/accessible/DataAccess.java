@@ -166,7 +166,7 @@ public class DataAccess {
         
         } catch (AbstractSlidingException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage());
             
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
@@ -180,6 +180,8 @@ public class DataAccess {
             
         } catch (Exception e) {
             
+            // TODO Check if useful
+            // Catch every other exception (timeout?)
             LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
         }
 
@@ -245,7 +247,7 @@ public class DataAccess {
             
         } catch (AbstractSlidingException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage());
             
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
@@ -259,6 +261,8 @@ public class DataAccess {
             
         } catch (Exception e) {
             
+            // TODO Check if useful
+            // Catch every other exception (timeout?)
             LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
         }
 
@@ -336,7 +340,7 @@ public class DataAccess {
             
         } catch (AbstractSlidingException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage());
             
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
@@ -349,6 +353,9 @@ public class DataAccess {
             }
             
         } catch (Exception e) {
+            
+            // TODO Check if useful
+            // Catch every other exception (timeout?)
             LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
         }
 
@@ -429,7 +436,7 @@ public class DataAccess {
             
         } catch (AbstractSlidingException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage());
             
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
@@ -442,6 +449,9 @@ public class DataAccess {
             }
             
         } catch (Exception e) {
+            
+            // TODO Check if useful
+            // Catch every other exception (timeout?)
             LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
         }
 

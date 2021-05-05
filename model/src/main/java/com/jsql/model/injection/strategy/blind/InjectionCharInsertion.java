@@ -220,7 +220,7 @@ public class InjectionCharInsertion {
             
         } catch (Exception e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         return blindTest.isTrue() && !this.constantTrueMark.isEmpty();

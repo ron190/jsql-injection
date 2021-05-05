@@ -15,7 +15,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
@@ -168,7 +166,7 @@ public class ManagerScan extends AbstractManagerList {
             
         } catch (IOException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
         List<ItemList> itemsList = new ArrayList<>();
@@ -194,7 +192,7 @@ public class ManagerScan extends AbstractManagerList {
             
         } catch (JSONException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
         return itemsList;

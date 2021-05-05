@@ -1,7 +1,6 @@
 package com.jsql.view.swing.radio;
 
 import java.awt.Cursor;
-import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.List;

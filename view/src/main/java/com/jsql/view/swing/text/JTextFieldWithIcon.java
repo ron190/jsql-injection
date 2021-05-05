@@ -13,11 +13,9 @@ package com.jsql.view.swing.text;
 import java.awt.ComponentOrientation;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,7 +60,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
         } catch (IllegalArgumentException e) {
             
             // Exception if globe.png is unavailable
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         var border = UIManager.getBorder("TextField.border");
@@ -83,7 +81,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
             
         } catch (ClassCastException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 }

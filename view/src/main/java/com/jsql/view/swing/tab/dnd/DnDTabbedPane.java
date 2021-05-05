@@ -12,7 +12,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;

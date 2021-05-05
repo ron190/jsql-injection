@@ -16,7 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -83,7 +82,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             
         } catch (IOException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         this.listPaths = new DnDList(itemsList);
@@ -192,7 +191,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                 } catch (MalformedURLException e) {
                     
                     LOGGER.log(
-                        LogLevel.CONSOLE_ERROR, 
+                        LogLevel.CONSOLE_ERROR,
                         String.format("Incorrect URL: %s", e.getMessage()),
                         e
                     );
@@ -213,14 +212,14 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                         } catch (JSqlException e) {
                             
                             LOGGER.log(
-                                LogLevel.CONSOLE_ERROR, 
+                                LogLevel.CONSOLE_ERROR,
                                 String.format("Payload creation error: %s", e.getMessage())
                             );
                             
                         } catch (InterruptedException e) {
                             
                             LOGGER.log(
-                                LogLevel.CONSOLE_ERROR, 
+                                LogLevel.CONSOLE_ERROR,
                                 String.format("Payload creation error: %s", e.getMessage())
                             );
                             Thread.currentThread().interrupt();

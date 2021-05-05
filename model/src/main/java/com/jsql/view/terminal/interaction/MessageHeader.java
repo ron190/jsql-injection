@@ -31,7 +31,7 @@ public class MessageHeader implements InteractionCommand {
     
     private String post;
     
-    private String header;
+    private Map<String, String> header;
     
     private Map<String, String> response;
 
@@ -44,7 +44,7 @@ public class MessageHeader implements InteractionCommand {
         Map<Header, Object> params = (Map<Header, Object>) interactionParams[0];
         this.url = (String) params.get(Header.URL);
         this.post = (String) params.get(Header.POST);
-        this.header = (String) params.get(Header.HEADER);
+        this.header = (Map<String, String>) params.get(Header.HEADER);
         this.response = (Map<String, String>) params.get(Header.RESPONSE);
     }
 

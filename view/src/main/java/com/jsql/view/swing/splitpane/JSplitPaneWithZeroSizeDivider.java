@@ -163,7 +163,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
                     
                 } catch (ClassCastException e) {
                     
-                    LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                 }
                 
             } else {

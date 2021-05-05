@@ -65,7 +65,7 @@ public class ActionStart implements ActionListener {
                 
             } catch (IllegalArgumentException| ClassCastException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             }
         }
 

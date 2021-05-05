@@ -5,35 +5,35 @@
     <parent>
         <groupId>jsql-injection</groupId>
         <artifactId>jsql-injection</artifactId>
-        <version>v0.84</version>
+        <version>v0.85</version>
     </parent>
     <artifactId>jsql-model</artifactId>
     <name>jsql-model</name>
     
     <repositories>
         <repository>
-            <id>jspresso-repository</id>
-            <url>http://repository.jspresso.org/maven2</url>
-        </repository>
-        <repository>
             <id>cubrid-repository</id>
             <url>http://maven.cubrid.org/</url>
         </repository>
-        <repository>
-            <id>exasol-repository</id>
-            <url>https://maven.exasol.com/artifactory/exasol-releases</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>oracle-repository</id>
-            <url>http://maven.geomajas.org/</url>
-        </repository>
-        <repository>
-            <id>monetdb-repository</id>
-            <url>https://clojars.org/repo/</url>
-        </repository>
+<!--         <repository> -->
+<!--             <id>jspresso-repository</id> -->
+<!--             <url>http://repository.jspresso.org/maven2</url> -->
+<!--         </repository> -->
+<!--         <repository> -->
+<!--             <id>exasol-repository</id> -->
+<!--             <url>https://maven.exasol.com/artifactory/exasol-releases</url> -->
+<!--             <snapshots> -->
+<!--                 <enabled>false</enabled> -->
+<!--             </snapshots> -->
+<!--         </repository> -->
+<!--         <repository> -->
+<!--             <id>oracle-repository</id> -->
+<!--             <url>http://maven.geomajas.org/</url> -->
+<!--         </repository> -->
+<!--         <repository> -->
+<!--             <id>monetdb-repository</id> -->
+<!--             <url>https://clojars.org/repo/</url> -->
+<!--         </repository> -->
     </repositories> 
     
     <properties>
@@ -355,30 +355,30 @@
 <!--             <version>3.40</version> -->
 <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/nzjdbc-1.0.jar</systemPath> -->
 <!--         </dependency> -->
-        <dependency>
-            <groupId>com.exasol</groupId>
-            <artifactId>exasol-jdbc</artifactId>
-            <version>7.0.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>monetdb</groupId>
-            <artifactId>monetdb-jdbc</artifactId>
-            <version>2.29</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.facebook.presto</groupId>
-            <artifactId>presto-jdbc</artifactId>
-            <version>0.243.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.firebirdsql.jdbc</groupId>
-            <artifactId>jaybird</artifactId>
-            <version>4.0.1.java7</version>
-            <scope>test</scope>
-        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>com.exasol</groupId> -->
+<!--             <artifactId>exasol-jdbc</artifactId> -->
+<!--             <version>7.0.3</version> -->
+<!--             <scope>test</scope> -->
+<!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>monetdb</groupId> -->
+<!--             <artifactId>monetdb-jdbc</artifactId> -->
+<!--             <version>2.29</version> -->
+<!--             <scope>test</scope> -->
+<!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>com.facebook.presto</groupId> -->
+<!--             <artifactId>presto-jdbc</artifactId> -->
+<!--             <version>0.243.2</version> -->
+<!--             <scope>test</scope> -->
+<!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>org.firebirdsql.jdbc</groupId> -->
+<!--             <artifactId>jaybird</artifactId> -->
+<!--             <version>4.0.1.java7</version> -->
+<!--             <scope>test</scope> -->
+<!--         </dependency> -->
 
 
         <!-- jSQL purpose -->

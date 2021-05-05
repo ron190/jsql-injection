@@ -129,16 +129,16 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 
             } catch (InterruptedException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                 Thread.currentThread().interrupt();
                 
             } catch (ExecutionException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                 
             } catch (InjectionFailureException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage());
                 break;
             }
         }
@@ -257,7 +257,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
         }
         

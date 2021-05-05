@@ -37,6 +37,7 @@ import com.jsql.model.accessible.ResourceAccess;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.method.MediatorMethod;
@@ -184,7 +185,23 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
             LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
-            this.mediatorUtils.getConnectionUtil().testConnection();
+            this.mediatorUtils.getConnectionUtil().CookieManager.getCookieStore().removeAll();
+            HttpResponse<String> httpResponse = this.mediatorUtils.getConnectionUtil().testConnection();
+            
+            // TODO Extract
+            if (
+                (httpResponse.statusCode() == 401 || httpResponse.statusCode() == 403)
+                && !this.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
+                && this.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
+            ) {
+                LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> "Testing handshake from previous connection...");
+                httpResponse = this.mediatorUtils.getConnectionUtil().testConnection();
+            }
+            
+            if (httpResponse.statusCode() >= 400 && !this.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
+                
+                throw new InjectionFailureException(String.format("Connection failed: problem when calling %s", httpResponse.uri().toURL().toString()));
+            }
             
             boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters();
 
@@ -227,9 +244,14 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             this.shouldErasePreviousInjection = true;
             
-        } catch (JSqlException e) {
+        } catch (JSqlException | IOException e) {
             
             LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage());
+            
+        } catch (InterruptedException e) {
+            
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            Thread.currentThread().interrupt();
             
         } finally {
             
@@ -258,6 +280,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
         URL urlObject = null;
         
+        // TODO Keep only a single check
         try {
             urlObject = new URL(urlInjection);
             
@@ -265,8 +288,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             LOGGER.log(
                 LogLevel.CONSOLE_ERROR,
-                String.format("Incorrect Query Url: %s", e.getMessage()),
-                e
+                String.format("Incorrect Query Url: %s", e.getMessage())
             );
             return StringUtils.EMPTY;
         }
@@ -286,22 +308,24 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         // Define the connection
         try {
-            Builder httpRequest =
+            Builder httpRequestBuilder =
                 HttpRequest
                     .newBuilder()
                     .uri(URI.create(urlObject.toString()))
                     .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, "text/plain")
                     .timeout(Duration.ofSeconds(15));
             
-            this.mediatorUtils.getCsrfUtil().addHeaderToken(httpRequest);
+            this.mediatorUtils.getCsrfUtil().addHeaderToken(httpRequestBuilder);
             
-            this.mediatorUtils.getConnectionUtil().setCustomUserAgent(httpRequest);
+            this.mediatorUtils.getConnectionUtil().setCustomUserAgent(httpRequestBuilder);
             
-            this.initializeHeader(isUsingIndex, dataInjection, httpRequest, msgHeader);
-            this.initializeRequest(isUsingIndex, dataInjection, httpRequest, msgHeader);
+            this.initializeHeader(isUsingIndex, dataInjection, httpRequestBuilder, msgHeader);
+            this.initializeRequest(isUsingIndex, dataInjection, httpRequestBuilder, msgHeader);
+            
+            HttpRequest httpRequest = httpRequestBuilder.build();
             
             HttpResponse<String> response = this.getMediatorUtils().getConnectionUtil().getHttpClient().send(
-                httpRequest.build(),
+                httpRequestBuilder.build(),
                 BodyHandlers.ofString()
             );
             pageSource = response.body();
@@ -309,6 +333,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             Map<String, String> headers = ConnectionUtil.getHeadersMap(response);
             
             msgHeader.put(Header.RESPONSE, headers);
+            msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
             
             int sizeHeaders = headers
                 .keySet()
@@ -341,14 +366,17 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             request.setParameters(msgHeader);
             this.sendToViews(request);
             
-        } catch (
-            // Exception for General and Spnego Opening Connection
-            IOException | InterruptedException e
-        ) {
+        } catch (IOException e) {
+            
             LOGGER.log(
                 LogLevel.CONSOLE_ERROR,
                 String.format("Error during connection: %s", e.getMessage())
             );
+            
+        } catch (InterruptedException e) {
+            
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            Thread.currentThread().interrupt();
         }
 
         // return the source code of the page
@@ -392,6 +420,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
         urlInjectionFixed = this.mediatorUtils.getCsrfUtil().addQueryStringToken(urlInjectionFixed);
         
+        // TODO Keep single check
         try {
             urlObjectFixed = new URL(urlInjectionFixed);
             
@@ -399,8 +428,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             LOGGER.log(
                 LogLevel.CONSOLE_ERROR,
-                String.format("Incorrect Url: %s", e.getMessage()),
-                e
+                String.format("Incorrect Url: %s", e.getMessage())
             );
         }
 
@@ -441,16 +469,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                     );
                 }
             });
-            
-            msgHeader.put(
-                Header.HEADER,
-                this.buildQuery(
-                    this.mediatorMethod.getHeader(),
-                    this.mediatorUtils.getParameterUtil().getHeaderFromEntries(),
-                    isUsingIndex,
-                    dataInjection
-                )
-            );
         }
     }
 

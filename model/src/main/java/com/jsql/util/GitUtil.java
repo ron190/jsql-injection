@@ -177,7 +177,7 @@ public class GitUtil {
             .POST(BodyPublishers.ofString(
                 new JSONObject()
                 .put("title", reportTitle)
-                .put("body", StringUtil.decimalHtmlEncode(reportBody))
+                .put("body", reportBody)
                 .toString()
             ))
             .timeout(Duration.ofSeconds(15))
@@ -197,6 +197,11 @@ public class GitUtil {
                     String.format("Error during Github report connection: %s", e.getMessage()),
                     e
                 );
+            }
+            
+            if (e instanceof InterruptedException) {
+                
+                Thread.currentThread().interrupt();
             }
         }
     }

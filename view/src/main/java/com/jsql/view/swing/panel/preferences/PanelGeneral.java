@@ -47,7 +47,7 @@ public class PanelGeneral extends JPanel {
         var tooltipIs4K = "Upscale GUI by factor 2.5 for compatibility with high-definition screens";
         this.getCheckboxIs4K().setToolTipText(tooltipIs4K);
         this.getCheckboxIs4K().setFocusable(false);
-        var labelIs4K = new JButton("Activate high-definition mode for 4K screens (need a restart)");
+        var labelIs4K = new JButton("Enable high-definition mode for 4K screens (need a restart)");
         labelIs4K.setToolTipText(tooltipIs4K);
         labelIs4K.addActionListener(actionEvent -> {
             

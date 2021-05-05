@@ -45,7 +45,7 @@ public class PanelAuth extends JPanel {
         // Digest label
         var labelDigestAuthenticationUsername = new JLabel("Username  ");
         var labelDigestAuthenticationPassword = new JLabel("Password  ");
-        final var labelUseDigestAuthentication = new JButton("Enable Digest and NTLM");
+        final var labelUseDigestAuthentication = new JButton("Enable Basic, Digest and NTLM");
         String tooltipUseDigestAuthentication =
             TAG_HTML_ON
             + "Enable <b>Basic</b>, <b>Digest</b>, <b>NTLM</b> authentication (e.g. WWW-Authenticate).<br>"
@@ -64,7 +64,7 @@ public class PanelAuth extends JPanel {
         final var labelUseKerberos = new JButton("Enable Kerberos");
         String tooltipUseKerberos =
             TAG_HTML_ON
-            + "Activate Kerberos authentication, then define path to <b>login.conf</b> and <b>krb5.conf</b>.<br>"
+            + "Enable Kerberos authentication, then define path to <b>login.conf</b> and <b>krb5.conf</b>.<br>"
             + "Path to <b>.keytab</b> file is defined in login.conf ; name of <b>principal</b> must be correct.<br>"
             + "<b>Realm</b> and <b>kdc</b> are defined in krb5.conf.<br>"
             + "Finally use the <b>correct hostname</b> in URL, e.g. http://servicename.corp.test/[..]"

@@ -10,7 +10,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 
-import spring.security.SecurityConfiguration;
+import spring.security.DigestWebSecurity;
 
 public class DigestPreferencesTestNopeSuite extends ConcreteMySqlErrorTestSuite {
     
@@ -34,8 +34,8 @@ public class DigestPreferencesTestNopeSuite extends ConcreteMySqlErrorTestSuite 
         .getMediatorUtils()
         .getAuthenticationUtil()
         .withAuthentEnabled()
-        .withUsernameAuthentication(SecurityConfiguration.DIGEST_USERNAME)
-        .withPasswordAuthentication(SecurityConfiguration.DIGEST_PASSWORD)
+        .withUsernameAuthentication(DigestWebSecurity.DIGEST_USERNAME)
+        .withPasswordAuthentication(DigestWebSecurity.DIGEST_PASSWORD)
         .setAuthentication();
         
         model

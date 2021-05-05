@@ -1,6 +1,5 @@
 package com.jsql.view.swing.text;
 
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 
 import javax.swing.JTextField;
@@ -56,7 +55,7 @@ public class JTextFieldPlaceholder extends JTextField {
         } catch (ClassCastException e) {
             
             // Fix #4301, ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
         if (this.getText().length() == 0) {

@@ -86,7 +86,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
             
         } catch (Exception e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         return componentRenderer;

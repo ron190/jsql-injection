@@ -7,13 +7,12 @@ import org.junitpioneer.jupiter.RepeatFailedTest;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.util.StringUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 
-import spring.security.SecurityConfiguration;
+import spring.security.BasicWebSecurity;
 
-public class BasicHeaderTestSuite extends ConcreteMySqlErrorTestSuite {
+public class BasicTestSuite extends ConcreteMySqlErrorTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
@@ -28,24 +27,14 @@ public class BasicHeaderTestSuite extends ConcreteMySqlErrorTestSuite {
             new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", "")
         ));
+        
         model
         .getMediatorUtils()
-        .getParameterUtil()
-        .setListHeader(Arrays.asList(
-            new SimpleEntry<>(
-                "Authorization",
-                String.format(
-                    "Basic %s",
-                    StringUtil.base64Encode(
-                        String.format(
-                            "%s:%s",
-                            SecurityConfiguration.BASIC_USERNAME,
-                            SecurityConfiguration.BASIC_PASSWORD
-                        )
-                    )
-                )
-            )
-        ));
+        .getAuthenticationUtil()
+        .withAuthentEnabled()
+        .withUsernameAuthentication(BasicWebSecurity.BASIC_USERNAME)
+        .withPasswordAuthentication(BasicWebSecurity.BASIC_PASSWORD)
+        .setAuthentication();
         
         model.setIsScanning(true);
         

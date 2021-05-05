@@ -39,7 +39,7 @@ public enum TamperingType {
             
         } catch (IOException e) {
 
-            this.logger.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            this.logger.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
     

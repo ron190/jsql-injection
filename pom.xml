@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>jsql-injection</groupId>
     <artifactId>jsql-injection</artifactId>
-    <version>v0.84</version>
+    <version>v0.85</version>
     <packaging>pom</packaging>
     
     <modules>

@@ -71,10 +71,10 @@ public class NodeModelDatabase extends AbstractNodeModel {
             
         } catch (ArrayIndexOutOfBoundsException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
-        new SwingWorker<Object, Object>() {
+        new SwingWorker<>() {
             
             @Override
             protected Object doInBackground() throws Exception {

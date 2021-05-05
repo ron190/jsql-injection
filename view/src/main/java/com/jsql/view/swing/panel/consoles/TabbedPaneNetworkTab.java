@@ -88,11 +88,17 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     
     public void changeTextNetwork(HttpHeader networkData) {
         
-        this.textAreaNetworkTabHeader.setText(networkData.getHeader());
         this.textAreaNetworkTabParams.setText(networkData.getPost());
         this.textAreaNetworkTabUrl.setText(networkData.getUrl());
         
+        this.textAreaNetworkTabHeader.setText(StringUtils.EMPTY);
         this.textAreaNetworkTabResponse.setText(StringUtils.EMPTY);
+        
+        for (String key: networkData.getHeader().keySet()) {
+            
+            this.textAreaNetworkTabHeader.append(key + ": " + networkData.getHeader().get(key));
+            this.textAreaNetworkTabHeader.append("\n");
+        }
         
         for (String key: networkData.getResponse().keySet()) {
             
@@ -112,7 +118,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
         // Reset EditorKit to disable previous document effect
@@ -158,7 +164,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             
         } catch (Exception | ExceptionInInitializerError e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
     
@@ -175,7 +181,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             
         } catch (NullPointerException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
         // Fix #41879: ArrayIndexOutOfBoundsException on setText()
@@ -184,7 +190,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             
         } catch (ArrayIndexOutOfBoundsException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 }

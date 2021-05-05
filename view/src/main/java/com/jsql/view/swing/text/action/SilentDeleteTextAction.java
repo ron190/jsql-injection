@@ -4,9 +4,7 @@ import java.awt.event.ActionEvent;
 import java.util.Objects;
 
 import javax.swing.Action;
-import javax.swing.text.Caret;
 import javax.swing.text.DefaultEditorKit;
-import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.TextAction;
 

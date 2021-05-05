@@ -13,7 +13,6 @@ package com.jsql.view.swing.interaction;
 import java.awt.ComponentOrientation;
 import java.awt.IllegalComponentStateException;
 import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
@@ -86,21 +85,21 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             htmlSource = Jsoup
                 .clean(
                     Jsoup
-                    .connect(this.url)
-                    // Prevent exception on UnsupportedMimeTypeException: Unhandled content type. Must be text/*, application/xml, or application/*+xml
-                    .ignoreContentType(true)
-                    // Prevent exception on HTTP errors
-                    .ignoreHttpErrors(true)
-                    .get()
-                    .html()
-                    .replaceAll("<img.*>", StringUtils.EMPTY)
-                    .replaceAll("<input.*type=\"?hidden\"?.*>", StringUtils.EMPTY)
-                    .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
-                    .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
+                        .connect(this.url)
+                        // Prevent exception on UnsupportedMimeTypeException: Unhandled content type. Must be text/*, application/xml, or application/*+xml
+                        .ignoreContentType(true)
+                        // Prevent exception on HTTP errors
+                        .ignoreHttpErrors(true)
+                        .get()
+                        .html()
+                        .replaceAll("<img.*>", StringUtils.EMPTY)
+                        .replaceAll("<input.*type=\"?hidden\"?.*>", StringUtils.EMPTY)
+                        .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
+                        .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
                     Whitelist
-                    .relaxed()
-                    .addTags("center", "div", "span")
-                    .addAttributes(":all", "style")
+                        .relaxed()
+                        .addTags("center", "div", "span")
+                        .addAttributes(":all", "style")
                 );
             
         } catch (IOException e) {
@@ -109,7 +108,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             
         } catch (ExceptionInInitializerError | NoClassDefFoundError e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         final var browser = new JTextPane();
@@ -123,7 +122,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             
         } catch (IndexOutOfBoundsException | EmptyStackException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         final var menu = new JPopupMenu();
@@ -195,7 +194,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
                         
                     } catch (IllegalComponentStateException e) {
                         
-                        LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                        LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                     }
                     
                     menu.setLocation(

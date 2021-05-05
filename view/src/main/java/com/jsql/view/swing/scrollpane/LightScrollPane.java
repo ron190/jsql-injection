@@ -103,7 +103,7 @@ public class LightScrollPane extends JComponent {
                     
                 } catch (NullPointerException e) {
                     
-                    LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                 }
                 
                 SwingUtilities.invokeLater(() -> LightScrollPane.this.displayScrollBarsIfNecessary(this.viewport));

@@ -1,6 +1,5 @@
 package com.jsql.view.swing.action;
 
-import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.event.ActionEvent;
 
@@ -8,7 +7,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JSplitPane;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.panel.split.SplitHorizontalTopBottom;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.util.MediatorHelper;
 

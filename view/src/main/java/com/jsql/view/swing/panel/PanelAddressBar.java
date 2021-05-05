@@ -97,7 +97,7 @@ public class PanelAddressBar extends JPanel {
         }).getProxy();
         I18nViewUtil.addComponentForKey(KEY_TOOLTIP_REQUEST, tooltipRequest[0]);
         
-        final JToolTipI18n[] tooltipHeader = new JToolTipI18n[]{new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_HEADER))};
+        final var tooltipHeader = new JToolTipI18n[]{ new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_HEADER)) };
         this.textFieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key: value\\r\\nCookie: cKey1=cValue1; cKey2=cValue2\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:") {
             
             @Override

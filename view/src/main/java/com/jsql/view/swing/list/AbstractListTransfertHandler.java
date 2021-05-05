@@ -160,7 +160,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
             
         } catch (UnsupportedFlavorException | IOException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 
@@ -200,7 +200,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
         } catch (NullPointerException | UnsupportedFlavorException | IOException e) {
             
             // Fix #8831: Multiple Exception on scrollRectToVisible()
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 
@@ -224,7 +224,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
             
         } catch (UnsupportedFlavorException | IOException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 }

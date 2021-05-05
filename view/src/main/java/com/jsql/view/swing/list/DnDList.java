@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.list;
 
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -25,7 +24,6 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ActionMap;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
 import javax.swing.JList;
@@ -226,7 +224,7 @@ public class DnDList extends JList<ItemList> {
         } catch (NullPointerException e) {
             
             // Report NullPointerException #1571 : manual scroll elsewhere then run action
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 

@@ -122,6 +122,7 @@ public class TabResults extends DnDTabbedPane {
             terminal.requestFocusInWindow();
             
         } catch (MalformedURLException e) {
+            
             LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect shell Url", e);
         }
     }
@@ -162,6 +163,7 @@ public class TabResults extends DnDTabbedPane {
             terminal.requestFocusInWindow();
             
         } catch (MalformedURLException e) {
+            
             LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect shell Url", e);
         }
     }

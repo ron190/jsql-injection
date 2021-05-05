@@ -298,7 +298,7 @@ public class PanelConsoles extends JPanel {
             
         } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
         this.javaTextPane.getProxy().setText(StringUtils.EMPTY);

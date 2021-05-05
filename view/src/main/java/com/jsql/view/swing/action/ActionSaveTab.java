@@ -10,11 +10,9 @@
  ******************************************************************************/
 package com.jsql.view.swing.action;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -24,7 +22,6 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
-import javax.swing.table.TableModel;
 import javax.swing.text.JTextComponent;
 
 import org.apache.logging.log4j.LogManager;
@@ -145,7 +142,7 @@ public class ActionSaveTab extends AbstractAction {
         } catch (IOException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 String.format("Error writing to %s", fileSelected.getName()),
                 e
             );
@@ -165,7 +162,7 @@ public class ActionSaveTab extends AbstractAction {
         } catch (IOException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
+                LogLevel.CONSOLE_ERROR,
                 String.format("Error writing to %s", fileSelected.getName()),
                 e
             );

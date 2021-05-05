@@ -41,12 +41,11 @@ public class ObserverInteraction implements Observer {
             var types = new Class[]{ Object[].class };
             Constructor<?> ct = cl.getConstructor(types);
 
-            InteractionCommand o2 =
-                (InteractionCommand) ct.newInstance(
-                    new Object[] {
-                        interaction.getParameters()
-                    }
-                );
+            InteractionCommand o2 = (InteractionCommand) ct.newInstance(
+                new Object[] {
+                    interaction.getParameters()
+                }
+            );
             o2.execute();
             
         } catch (ClassNotFoundException e) {
@@ -63,7 +62,7 @@ public class ObserverInteraction implements Observer {
             | InvocationTargetException
             e
         ) {
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 }

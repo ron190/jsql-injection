@@ -24,7 +24,7 @@ public class CsrfUtil {
 
     private SimpleEntry<String, String> tokenCsrf = null;
     
-    private static final String SET_COOKIE = "Set-Cookie";
+    private static final String SET_COOKIE_RESPONSE = "set-cookie";
     private static final String INPUT_ATTR_VALUE = "value";
     
     private InjectionModel injectionModel;
@@ -109,7 +109,7 @@ public class CsrfUtil {
                 
             } else {
                 
-                LOGGER.log(LogLevel.CONSOLE_INFORM, "Activate CSRF processing in Preferences if required");
+                LOGGER.log(LogLevel.CONSOLE_INFORM, "Enable CSRF processing in Preferences if required");
             }
         }
     }
@@ -118,17 +118,17 @@ public class CsrfUtil {
         
         Optional<SimpleEntry<String, String>> optionalCookieCsrf = Optional.empty();
         
-        if (mapResponse.containsKey(SET_COOKIE)) {
+        if (mapResponse.containsKey(SET_COOKIE_RESPONSE)) {
             
             // Spring: Cookie XSRF-TOKEN => Header X-XSRF-TOKEN, GET/POST parameter _csrf
             // Laravel, Zend, Symfony
             
-            String[] cookieValues = StringUtils.split(mapResponse.get(SET_COOKIE), ";");
+            String[] cookieValues = StringUtils.split(mapResponse.get(SET_COOKIE_RESPONSE), ";");
             
             optionalCookieCsrf =
                 Stream
                 .of(cookieValues)
-                .filter(cookie -> cookie.trim().startsWith("XSRF-TOKEN"))
+                .filter(cookie -> cookie.trim().toLowerCase().startsWith("xsrf-token"))
                 .map(cookie -> {
                     
                     String[] cookieEntry = StringUtils.split(cookie, "=");
@@ -168,7 +168,7 @@ public class CsrfUtil {
                 
             } else {
                 
-                LOGGER.log(LogLevel.CONSOLE_INFORM, "Activate CSRF processing in Preferences if required");
+                LOGGER.log(LogLevel.CONSOLE_INFORM, "Enable CSRF processing in Preferences if required");
             }
         }
     }

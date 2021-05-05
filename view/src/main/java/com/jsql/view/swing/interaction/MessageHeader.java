@@ -41,7 +41,7 @@ public class MessageHeader implements InteractionCommand {
     // The text to append to the tab
     private String url;
     private String post;
-    private String header;
+    private Map<String, String> header;
     private Map<String, String> response;
     private String source;
     private String size;
@@ -58,7 +58,7 @@ public class MessageHeader implements InteractionCommand {
         
         this.url = (String) params.get(Header.URL);
         this.post = (String) params.get(Header.POST);
-        this.header = (String) params.get(Header.HEADER);
+        this.header = (Map<String, String>) params.get(Header.HEADER);
         this.response = (Map<String, String>) params.get(Header.RESPONSE);
         this.source = (String) params.get(Header.SOURCE);
         this.size = (String) params.get(Header.PAGE_SIZE);
@@ -95,7 +95,7 @@ public class MessageHeader implements InteractionCommand {
         } catch(NullPointerException | IndexOutOfBoundsException e) {
             
             // Fix #4658, #2224, #1797 on model.addRow()
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 }

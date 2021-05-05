@@ -287,7 +287,7 @@ public final class ShadowPopup extends Popup {
             
         } catch(NullPointerException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
         if (contentsPrefSize.width <= 0 || contentsPrefSize.height <= 0) {

@@ -97,7 +97,7 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
             
         } catch (UnsupportedFlavorException | IOException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 

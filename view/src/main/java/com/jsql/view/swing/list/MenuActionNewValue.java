@@ -102,7 +102,7 @@ public class MenuActionNewValue implements ActionListener {
             
         } catch (NullPointerException | IllegalArgumentException | ClassCastException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         if (StringUtils.isEmpty(textarea.getText()) || result != JOptionPane.YES_OPTION) {

@@ -3,7 +3,6 @@ package com.jsql.view.swing.text.action;
 import java.awt.event.ActionEvent;
 
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Caret;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.TextAction;
@@ -63,7 +62,8 @@ public abstract class AbstractCharAction extends TextAction {
                 this.delete(doc, dot);
             }
         } catch (BadLocationException e) {
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 }

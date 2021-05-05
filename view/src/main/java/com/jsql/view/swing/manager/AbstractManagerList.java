@@ -13,7 +13,6 @@ package com.jsql.view.swing.manager;
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +101,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
             }
         } catch (IOException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         this.listFile = new DnDList(this.itemsList);

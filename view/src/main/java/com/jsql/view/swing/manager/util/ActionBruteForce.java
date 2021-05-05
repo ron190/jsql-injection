@@ -275,7 +275,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
             
         } catch (BadLocationException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 }

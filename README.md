@@ -34,11 +34,11 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 - Authenticate using Basic, Digest, NTLM and Kerberos  
 - Proxy connection on HTTP, SOCKS4 and SOCKS5
 
-## Installation [[jsql-injection-v0.84.jar](https://github.com/ron190/jsql-injection/releases/download/v0.84/jsql-injection-v0.84.jar)]
-Install [Java](http://java.com) 11 or up to 17, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.84.jar` to launch the software.<br>
-You can also type `java -jar jsql-injection-v0.84.jar` in your terminal to start the program.<br>
+## Installation [[jsql-injection-v0.85.jar](https://github.com/ron190/jsql-injection/releases/download/v0.85/jsql-injection-v0.85.jar)]
+Install [Java](http://java.com) 11 or up to 17, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.85.jar` to launch the software.<br>
+You can also type `java -jar jsql-injection-v0.85.jar` in your terminal to start the program.<br>
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.<br>
-For Java 16+ use `java --illegal-access=warn --add-exports java.base/sun.net.www.protocol.http=ALL-UNNAMED -jar jsql-injection-v0.84.jar`.
+To run older version on Java 16+ use `java --illegal-access=warn --add-exports java.base/sun.net.www.protocol.http=ALL-UNNAMED -jar jsql-injection-v0.84.jar`.
 
 ## Continuous integration
 This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using continuous integration platform like Travis CI and Github Actions.<br> 
@@ -90,26 +90,26 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 
 ## [[Roadmap](https://github.com/ron190/jsql-injection/projects)]
 ```
+- New manager: create auth token for Basic, Digest, Negotiate, NTLM
 - Inject user defined query
 - Inject range of rows
 - Full Path Disclosure
-- Strategy routed query
+- Routed query strategy
 - WAF fingerprinting
 ```
 
 ## In progress
 ```
+- Connect to Digest API using Digest token with HttpClient
+- Connect to Kerberos API using Negotiate token with HttpClient
 - Replace Docker Compose with Kubernetes
 - Database fingerprinting: Boolean single query
 - Strategy DNS out-of-band
-- Replace HttpUrlConnection with jdk11 HttpClient and remove jCIFS
 ```
 
 ## Since latest release
 ```
-- Fix GUI glitches on Mac
-- Add standalone Nashorn for jdk11 up to jdk15
-- Drop jdk version lower than jdk11
+- Java 17 compliant
 ```
 
 ## Change log

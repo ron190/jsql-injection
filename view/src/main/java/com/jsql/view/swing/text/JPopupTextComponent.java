@@ -13,10 +13,8 @@ package com.jsql.view.swing.text;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
 import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
-import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
@@ -83,7 +81,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
                     
                 } catch (ArrayIndexOutOfBoundsException | CannotUndoException e) {
                     
-                    LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                 }
             }
        });
@@ -110,7 +108,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
                     
                 } catch (CannotRedoException e) {
                     
-                    LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                    LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                 }
             }
         });

@@ -13,9 +13,7 @@ package com.jsql.view.swing.manager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +79,7 @@ public class ManagerUpload extends AbstractManagerList {
             
         } catch (IOException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         this.listPaths = new DnDList(pathsList);
@@ -175,7 +173,7 @@ public class ManagerUpload extends AbstractManagerList {
             
         } catch (NullPointerException | ClassCastException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 
@@ -195,14 +193,14 @@ public class ManagerUpload extends AbstractManagerList {
                     } catch (JSqlException e) {
                         
                         LOGGER.log(
-                            LogLevel.CONSOLE_ERROR, 
+                            LogLevel.CONSOLE_ERROR,
                             String.format("Payload creation error: %s", e.getMessage())
                         );
                         
                     } catch (IOException e) {
                         
                         LOGGER.log(
-                            LogLevel.CONSOLE_ERROR, 
+                            LogLevel.CONSOLE_ERROR,
                             String.format("Posting file failed: %s", e.getMessage()),
                             e
                         );
@@ -210,7 +208,7 @@ public class ManagerUpload extends AbstractManagerList {
                     } catch (InterruptedException e) {
                         
                         LOGGER.log(
-                            LogLevel.CONSOLE_ERROR, 
+                            LogLevel.CONSOLE_ERROR,
                             String.format("Posting file failed: %s", e.getMessage()),
                             e
                         );

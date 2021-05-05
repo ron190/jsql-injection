@@ -122,7 +122,7 @@ public class ManagerFile extends AbstractManagerList {
                             
                         } catch (InterruptedException e) {
                             
-                            LOGGER.log(LogLevel.CONSOLE_JAVA, e);
+                            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
                             Thread.currentThread().interrupt();
                             
                         } catch (Exception e) {
@@ -165,7 +165,7 @@ public class ManagerFile extends AbstractManagerList {
 
         for (ItemList pathFile: pathsFiles) {
             
-            CallableFile callableFile = new CallableFile(pathFile.toString(), MediatorHelper.model());
+            var callableFile = new CallableFile(pathFile.toString(), MediatorHelper.model());
             taskCompletionService.submit(callableFile);
             
             MediatorHelper.model().getResourceAccess().getCallablesReadFile().add(callableFile);
@@ -202,7 +202,7 @@ public class ManagerFile extends AbstractManagerList {
                 if (!duplicate.contains(path.replace(name, StringUtils.EMPTY))) {
                     
                     LOGGER.log(
-                        LogLevel.CONSOLE_INFORM, 
+                        LogLevel.CONSOLE_INFORM,
                         "Shell might be possible in folder {}",
                         () -> path.replace(name, StringUtils.EMPTY)
                     );

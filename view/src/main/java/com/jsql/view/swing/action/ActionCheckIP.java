@@ -3,7 +3,6 @@ package com.jsql.view.swing.action;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,25 +39,17 @@ public class ActionCheckIP implements ActionListener, Runnable {
             LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_CHECK"));
             String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource("http://checkip.amazonaws.com");
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM, 
+                LogLevel.CONSOLE_INFORM,
                 "{} {}",
                 () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_IS"),
                 () -> addressIp
             );
             
-        } catch (MalformedURLException e) {
-            
-            LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
-                String.format("Malformed URL: %s", e.getMessage()),
-                e
-            );
-            
         } catch (IOException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR, 
-                String.format("Error during AWS test: %s", e.getMessage()),
+                LogLevel.CONSOLE_ERROR,
+                String.format("Error during IP address test: %s", e.getMessage()),
                 e
             );
         }

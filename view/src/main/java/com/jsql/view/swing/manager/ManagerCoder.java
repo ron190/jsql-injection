@@ -111,7 +111,7 @@ public class ManagerCoder extends JPanel implements Manager {
         var bottom = new JPanel(new BorderLayout());
         bottom.add(new LightScrollPane(0, 0, 0, 0, this.result), BorderLayout.CENTER);
 
-        JSplitPaneWithZeroSizeDivider divider = new JSplitPaneWithZeroSizeDivider(JSplitPane.VERTICAL_SPLIT);
+        var divider = new JSplitPaneWithZeroSizeDivider(JSplitPane.VERTICAL_SPLIT);
         divider.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         divider.setDividerSize(0);
         divider.setResizeWeight(0.5);

@@ -181,8 +181,7 @@ public class VendorYaml implements AbstractVendor {
             LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
-        return
-            sqlQuery
+        return sqlQuery
             .replace(DATABASE_HEX, databaseUtf8)
             .replace(DATABASE, database.toString())
             // TODO Breaks Oracle <%2Fa>
@@ -311,7 +310,7 @@ public class VendorYaml implements AbstractVendor {
                 
             } catch (UnsupportedEncodingException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             }
         }
         
@@ -322,7 +321,7 @@ public class VendorYaml implements AbstractVendor {
             
         } catch (UnsupportedEncodingException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
         String nameTableUtf8 = StringUtil.detectUtf8(table.toString());
@@ -332,7 +331,7 @@ public class VendorYaml implements AbstractVendor {
             
         } catch (UnsupportedEncodingException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
         return

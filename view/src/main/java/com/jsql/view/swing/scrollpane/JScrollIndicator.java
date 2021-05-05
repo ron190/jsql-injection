@@ -223,7 +223,7 @@ public class JScrollIndicator extends JLayeredPane {
                 
             } catch (NullPointerException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             }
         }
     }

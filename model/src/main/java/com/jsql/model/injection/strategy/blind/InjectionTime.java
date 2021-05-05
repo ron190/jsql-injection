@@ -184,7 +184,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             
         } catch (Exception e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         return this.isTimeInjectable && timeTest.isTrue();

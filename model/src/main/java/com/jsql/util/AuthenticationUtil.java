@@ -84,7 +84,7 @@ public class AuthenticationUtil {
     public void initializeSimpleAuthorization(boolean isAuthentication, String usernameAuthentication, String passwordAuthentication) {
         
         // TODO Move to Preferences
-        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         
         preferences.putBoolean("isDigestAuthentication", this.isAuthEnabled);
         preferences.put("usernameDigest", this.getUsernameAuthentication());
@@ -152,25 +152,6 @@ public class AuthenticationUtil {
         this.isKerberos = prefs.getBoolean("enableKerberos", false);
         this.pathKerberosKrb5 = prefs.get("kerberosKrb5Conf", StringUtils.EMPTY);
         this.pathKerberosLogin = prefs.get("kerberosLoginConf", StringUtils.EMPTY);
-
-//        AuthCacheValue.setAuthCache(new AuthCacheImpl());
-        Authenticator.setDefault(null);
-        
-        if (this.isAuthEnabled) {
-            
-//            AuthCacheValue.setAuthCache(new AuthCacheImpl());
-            Authenticator.setDefault(new Authenticator() {
-                
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    
-                    return new PasswordAuthentication (
-                        AuthenticationUtil.this.getUsernameAuthentication(),
-                        AuthenticationUtil.this.passwordAuthentication.toCharArray()
-                    );
-                }
-            });
-        }
         
         this.setAuthentication();
     }
@@ -180,12 +161,10 @@ public class AuthenticationUtil {
      */
     public void setAuthentication() {
         
-//        AuthCacheValue.setAuthCache(new AuthCacheImpl());
         Authenticator.setDefault(null);
 
         if (this.isAuthEnabled) {
             
-//            AuthCacheValue.setAuthCache(new AuthCacheImpl());
             Authenticator.setDefault(new Authenticator() {
                 
                 @Override
@@ -200,7 +179,6 @@ public class AuthenticationUtil {
             
         } else {
             
-//            AuthCacheValue.setAuthCache(new AuthCacheImpl());
             Authenticator.setDefault(null);
         }
         

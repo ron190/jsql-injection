@@ -182,7 +182,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         try {
             blindTest.call();
         } catch (Exception e) {
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         return blindTest.isTrue() && !this.constantFalseMark.isEmpty();

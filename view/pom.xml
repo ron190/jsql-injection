@@ -5,7 +5,7 @@
     <parent>
         <groupId>jsql-injection</groupId>
         <artifactId>jsql-injection</artifactId>
-        <version>v0.84</version>
+        <version>v0.85</version>
     </parent>
     <artifactId>jsql-view</artifactId>
     <name>jsql-view</name>
@@ -14,7 +14,7 @@
         <dependency>
             <groupId>jsql-injection</groupId>
             <artifactId>jsql-model</artifactId>
-            <version>v0.84</version>
+            <version>v0.85</version>
         </dependency>
 
         <dependency>

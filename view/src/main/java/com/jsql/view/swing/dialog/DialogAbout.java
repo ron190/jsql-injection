@@ -160,17 +160,9 @@ public class DialogAbout extends JDialog {
             try {
                 Desktop.getDesktop().browse(new URI((String) MediatorHelper.model().getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")));
                 
-            } catch (IOException e) {
+            } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
                 
                 LOGGER.log(LogLevel.CONSOLE_ERROR, "Browsing to Url failed", e);
-                
-            } catch (URISyntaxException e) {
-                
-                LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect Url", e);
-                
-            } catch (UnsupportedOperationException e) {
-                
-                LOGGER.log(LogLevel.CONSOLE_ERROR, "BROWSE action not supported on current platform", e);
             }
         });
         
@@ -208,7 +200,7 @@ public class DialogAbout extends JDialog {
             
         } catch (NoClassDefFoundError | IOException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
 
         editorPane.addMouseListener(new MouseAdapter() {
@@ -244,17 +236,9 @@ public class DialogAbout extends JDialog {
                 try {
                     Desktop.getDesktop().browse(linkEvent.getURL().toURI());
                     
-                } catch (IOException e) {
+                } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
                     
                     LOGGER.log(LogLevel.CONSOLE_ERROR, "Browsing to Url failed", e);
-                    
-                } catch (URISyntaxException e) {
-                    
-                    LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect Url", e);
-                    
-                } catch (UnsupportedOperationException e) {
-                    
-                    LOGGER.log(LogLevel.CONSOLE_ERROR, "BROWSE action not supported on current platform", e);
                 }
             }
         });

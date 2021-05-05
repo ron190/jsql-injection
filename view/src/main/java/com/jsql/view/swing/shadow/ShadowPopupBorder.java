@@ -123,7 +123,7 @@ public final class ShadowPopupBorder extends AbstractBorder {
             
         } catch (ClassCastException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 

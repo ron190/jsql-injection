@@ -20,7 +20,7 @@ public class HttpHeader {
     /**
      * Header request.
      */
-    private String header;
+    private Map<String, String> header;
     
     /**
      * Header sent back by server.
@@ -39,7 +39,7 @@ public class HttpHeader {
     public HttpHeader(
         String url,
         String post,
-        String header,
+        Map<String, String> header,
         Map<String, String> response,
         String source
     ) {
@@ -66,7 +66,7 @@ public class HttpHeader {
         return this.post;
     }
 
-    public String getHeader() {
+    public Map<String, String> getHeader() {
         return this.header;
     }
 

@@ -12,7 +12,6 @@ package com.jsql.view.swing.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.event.ActionListener;

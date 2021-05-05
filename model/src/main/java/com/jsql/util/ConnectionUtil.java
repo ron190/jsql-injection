@@ -2,7 +2,6 @@ package com.jsql.util;
 
 import java.io.IOException;
 import java.net.Authenticator;
-import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.PasswordAuthentication;
 import java.net.URI;
@@ -20,7 +19,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -36,7 +34,6 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
-import com.jsql.util.protocol.SessionCookieManager;
 
 /**
  * Utility class in charge of connection to web resources and management
@@ -73,6 +70,8 @@ public class ConnectionUtil {
     
     private InjectionModel injectionModel;
     
+    public CookieManager CookieManager = new CookieManager();
+    
     public ConnectionUtil(InjectionModel injectionModel) {
         
         this.injectionModel = injectionModel;
@@ -82,13 +81,18 @@ public class ConnectionUtil {
         
         var httpClientBuilder = HttpClient
             .newBuilder()
-            .connectTimeout(Duration.ofSeconds(15))
+            .connectTimeout(Duration.ofSeconds(this.getTimeout()))
             .sslContext(this.injectionModel.getMediatorUtils().getCertificateUtil().getSslContext())
             .followRedirects(
                 this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()
                 ? HttpClient.Redirect.ALWAYS
                 : HttpClient.Redirect.NEVER
             );
+        
+        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()) {
+            
+            httpClientBuilder.cookieHandler(this.CookieManager);
+        }
         
         if (this.injectionModel.getMediatorUtils().getAuthenticationUtil().isAuthentEnabled()) {
             
@@ -98,7 +102,7 @@ public class ConnectionUtil {
               @Override
               protected PasswordAuthentication getPasswordAuthentication() {
                   
-                  return new PasswordAuthentication (
+                  return new PasswordAuthentication(
                       ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication(),
                       ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication().toCharArray()
                   );
@@ -108,15 +112,21 @@ public class ConnectionUtil {
                 
         return httpClientBuilder.build();
     }
-    
-    public static Map<String, String> getHeadersMap(HttpResponse<String> httpResponse) {
+
+
+    public static <T> Map<String, String> getHeadersMap(HttpResponse<T> httpResponse) {
         
-        return getHeadersMap(httpResponse.headers());
+        Map<String, String> sortedMap = getHeadersMap(httpResponse.headers());
+        
+        String responseCodeHttp = ""+ httpResponse.statusCode();
+        sortedMap.put(":status", responseCodeHttp);
+        
+        return sortedMap;
     }
     
     public static Map<String, String> getHeadersMap(HttpHeaders httpHeaders) {
         
-        return httpHeaders
+        Map<String, String> unsortedMap = httpHeaders
             .map()
             .entrySet()
             .stream()
@@ -131,67 +141,43 @@ public class ConnectionUtil {
                 AbstractMap.SimpleEntry::getKey,
                 AbstractMap.SimpleEntry::getValue
             ));
+        
+        return new TreeMap<>(unsortedMap);
     }
     
     /**
      * Check that the connection to the website is working correctly.
      * It uses authentication defined by user, with fixed timeout, and warn
      * user in case of authentication detected.
+     * @return
      * @throws InjectionFailureException when any error occurs during the connection
+     * @throws IOException
+     * @throws InterruptedException
      */
-    public void testConnection() throws InjectionFailureException {
-
-        // Set multithreaded Cookie handler
-        // Allows CSRF token processing during ITs, can be used for batch scan
-        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()) {
-            
-            if ("true".equals(System.getenv("FROM_ITS"))) {
-                
-                CookieHandler.setDefault(SessionCookieManager.getInstance());
-                
-            } else {
-                
-                CookieHandler.setDefault(new CookieManager());
-            }
-            
-        } else {
-            
-            if ("true".equals(System.getenv("FROM_ITS"))) {
-                
-                SessionCookieManager.getInstance().clear();
-            }
-            CookieHandler.setDefault(null);
-        }
+    public HttpResponse<String> testConnection() throws IOException, InterruptedException {
 
         // Test the HTTP connection
-        try {
-            Builder httpRequest = HttpRequest
-                .newBuilder()
-                .uri(
-                    URI.create(
-                        this.getUrlByUser()
-                        // Ignore injection point during the test
-                        .replace(InjectionModel.STAR, StringUtils.EMPTY)
-                    )
+        Builder httpRequest = HttpRequest
+            .newBuilder()
+            .uri(
+                URI.create(
+                    this.getUrlByUser()
+                    // Ignore injection point during the test
+                    .replace(InjectionModel.STAR, StringUtils.EMPTY)
                 )
-                .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, "text/plain")
-                .timeout(Duration.ofSeconds(15));
+            )
+            .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, "text/plain")
+            .timeout(Duration.ofSeconds(this.getTimeout()));
+        
+        this.injectionModel.getMediatorUtils().getCsrfUtil().addHeaderToken(httpRequest);
+        
+        // Add headers if exists (Authorization:Basic, etc)
+        for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()) {
             
-            // Add headers if exists (Authorization:Basic, etc)
-            for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()) {
-                
-                HeaderUtil.sanitizeHeaders(httpRequest, header);
-            }
-
-            this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(httpRequest);
-            
-            // Calling connection.disconnect() is not required, more calls will happen
-            
-        } catch (Exception e) {
-            
-            String message = Optional.ofNullable(e.getMessage()).orElse(StringUtils.EMPTY);
-            throw new InjectionFailureException("Connection failed: "+ message.replace(e.getClass().getName() +": ", StringUtils.EMPTY), e);
+            HeaderUtil.sanitizeHeaders(httpRequest, header);
         }
+
+        return this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(httpRequest);
     }
     
     public String getSource(String url, boolean lineFeed) throws IOException {
@@ -205,7 +191,7 @@ public class ConnectionUtil {
             var httpRequest = HttpRequest
                 .newBuilder()
                 .uri(URI.create(url))
-                .timeout(Duration.ofSeconds(15))
+                .timeout(Duration.ofSeconds(this.getTimeout()))
                 .build();
             
             HttpHeaders httpHeaders;
@@ -223,17 +209,16 @@ public class ConnectionUtil {
                 httpHeaders = response.headers();
             }
             
-            Map<String, String> mapHeaders = ConnectionUtil.getHeadersMap(httpHeaders);
-            
-            msgHeader.put(Header.RESPONSE, new TreeMap<>(mapHeaders));
+            msgHeader.put(Header.RESPONSE, ConnectionUtil.getHeadersMap(httpHeaders));
+            msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
             
         } catch (IOException e) {
 
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
             
         } finally {
@@ -335,6 +320,6 @@ public class ConnectionUtil {
      * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.
      */
     public Integer getTimeout() {
-        return this.injectionModel.getMediatorUtils().getPreferencesUtil().countConnectionTimeout() * 1000;
+        return this.injectionModel.getMediatorUtils().getPreferencesUtil().countConnectionTimeout();
     }
 }

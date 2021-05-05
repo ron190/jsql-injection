@@ -66,7 +66,8 @@ public class ParameterUtil {
     ) {
         try {
             String urlQueryFixed = urlQuery;
-                
+               
+            // Keep single check
             if (!urlQueryFixed.isEmpty() && !urlQueryFixed.matches("(?i)^https?://.*")) {
                 
                 if (!urlQueryFixed.matches("(?i)^\\w+://.*")) {

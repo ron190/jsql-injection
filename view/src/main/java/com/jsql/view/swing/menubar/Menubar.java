@@ -11,7 +11,6 @@
 package com.jsql.view.swing.menubar;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -1022,7 +1021,7 @@ public class Menubar extends JMenuBar {
             
         } catch (IllegalArgumentException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 

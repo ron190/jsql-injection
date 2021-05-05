@@ -123,8 +123,7 @@ public class SoapUtil {
                             "No SOAP Request injection for %s=%s",
                             currentNode.getParentNode().getNodeName(),
                             currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY)
-                        ),
-                        e
+                        )
                     );
                 }
             }

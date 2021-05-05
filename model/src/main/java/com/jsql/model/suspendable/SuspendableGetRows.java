@@ -22,8 +22,8 @@ import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.exception.AbstractSlidingException;
 import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.LoopDetectedSlidingException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.AbstractStrategy;
@@ -48,7 +48,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     @Override
-    public String run(Object... args) throws JSqlException {
+    public String run(Object... args) throws AbstractSlidingException {
         
         // TODO Map class
         String initialSqlQuery = (String) args[0];

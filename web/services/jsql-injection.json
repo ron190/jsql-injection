@@ -1,11 +1,7 @@
 {
     "version": "0.84",
     "news": [
-        "[New release v0.84] Integrate Nashorn sandbox for Java 15, fix Mac glitches",
-        "[Run now on Java 16+] Implementing Java 16+ compatibility is ongoing, in the meantime get the run command for Java 16+ from github.com/ron190/jsql-injection",
-        "[Roadmap] WAF fingerprinting, Inject user defined query, Inject range of rows",
-        "[Since latest release] Replace HttpUrlConnection with jdk11 HttpClient",
-        "[Contribute] CI/CD on Kubernetes with PHP .NET Python and Node APIs, CTF and vuln application tests, ProGuard shrink",
-        "[Ongoing] Add refresh token to Spring, add DNS server for out-of-band injection, remove jCifs"
+        "[New release v0.85] Java 17 compliance",
+        "[Community] We made it, the project will reach 1k stars on Github :) In a way it means something, even if there's a lot of other tools that do the same job and in greater ways for some. But surely enough you like jSQL for some reasons if you read this ;) So now we're close to 1k stars it's the moment you speak, tell us what improvements you need, you choose the topic (use Github or @ron190jsql on Twitter, email ron190@ymail.com)."
     ]
 }

@@ -89,7 +89,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                 
             } catch (IllegalComponentStateException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             }
             
             popupMenuList.setLocation(
@@ -163,7 +163,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                 
             } catch (ClassCastException | NullPointerException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             }
             
             if (choice == JFileChooser.APPROVE_OPTION) {

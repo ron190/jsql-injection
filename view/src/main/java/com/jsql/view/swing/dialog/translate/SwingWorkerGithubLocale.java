@@ -2,10 +2,8 @@ package com.jsql.view.swing.dialog.translate;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -179,7 +177,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             this.propertiesLanguageToTranslate.load(new StringReader(pageSourceLanguage));
             
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM, 
+                LogLevel.CONSOLE_INFORM,
                 "{} {}",
                 () -> I18nUtil.valueByKey("LOG_I18N_TEXT_LOADED"),
                 () -> this.dialogTranslate.getLanguage()
@@ -204,7 +202,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             
             this.propertiesLanguageToTranslate.load(new StringReader(localeI18nFixed));
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM, 
+                LogLevel.CONSOLE_INFORM,
                 String.format(
                     "%s translation loaded from local",
                     this.dialogTranslate.getLanguage()

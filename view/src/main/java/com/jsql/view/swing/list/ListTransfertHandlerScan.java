@@ -116,7 +116,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
                 
             } catch (UnsupportedFlavorException | IOException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             }
         }
 
@@ -164,7 +164,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
                 itemJsonObject.optString("requestType", StringUtils.EMPTY)
             );
             
-            ItemListScan newItem = new ItemListScan(beanInjection);
+            var newItem = new ItemListScan(beanInjection);
             itemsParsed.add(newItem);
         }
     }

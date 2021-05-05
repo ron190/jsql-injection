@@ -62,7 +62,7 @@ public class ActionLoadStop implements ActionListener {
 
     private void startListValues(final List<Column> columnsToSearch) {
         
-        new SwingWorker<Object, Object>() {
+        new SwingWorker<>() {
             
             @Override
             protected Object doInBackground() throws Exception {

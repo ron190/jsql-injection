@@ -51,7 +51,7 @@ public class ArrowIcon implements Icon, SwingConstants {
             
         } catch(ClassCastException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 

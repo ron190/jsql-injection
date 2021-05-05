@@ -66,7 +66,7 @@ public class JTextAreaPlaceholder extends JTextArea {
             
         } catch (IllegalArgumentException | NullPointerException | ArrayIndexOutOfBoundsException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
 }

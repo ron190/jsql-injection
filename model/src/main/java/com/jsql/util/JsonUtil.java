@@ -230,8 +230,7 @@ public class JsonUtil {
                             InjectionModel.STAR,
                             StringUtils.EMPTY
                         )
-                    ),
-                    e
+                    )
                 );
                 
             } finally {

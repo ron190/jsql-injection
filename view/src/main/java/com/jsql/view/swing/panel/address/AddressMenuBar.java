@@ -295,7 +295,7 @@ public class AddressMenuBar extends JMenuBar {
             
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
     }
     
@@ -323,7 +323,7 @@ public class AddressMenuBar extends JMenuBar {
                 
             } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             }
         }
     }

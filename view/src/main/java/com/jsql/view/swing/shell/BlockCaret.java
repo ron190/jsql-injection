@@ -98,7 +98,7 @@ public class BlockCaret extends DefaultCaret {
             
         } catch (BadLocationException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             return;
         }
 

@@ -5,29 +5,21 @@ import javax.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.DigestAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfFilter;
-import org.springframework.security.web.util.matcher.AndRequestMatcher;
-import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+@Order(1)
+public class DigestWebSecurity extends WebSecurityConfigurerAdapter {
     
     /**
      * url | header | global | ok | jcifs
@@ -70,11 +62,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      * ssh -D 9999 -C Watthieu-x64@127.0.0.1
      */
  
-    private static final String BASIC_REALM = "Basic Realm";
-    private static final String BASIC_ROLE = "ADMIN1";
-    public static final String BASIC_USERNAME = "login-basic";
-    public static final String BASIC_PASSWORD = "password-basic";
-    
     private static final String DIGEST_ROLE = "ADMIN2";
     private static final String DIGEST_REALM = "Digest Realm";
     public static final String DIGEST_USERNAME = "login-digest";
@@ -83,12 +70,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        
-        auth
-        .inMemoryAuthentication()
-        .withUser(BASIC_USERNAME)
-        .password(this.passwordEncoder().encode(BASIC_PASSWORD))
-        .roles(BASIC_ROLE);
         
         auth
         .inMemoryAuthentication()
@@ -102,31 +83,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
       
         http
-        .csrf()
-            .requireCsrfProtectionMatcher(
-                new AndRequestMatcher(
-                    CsrfFilter.DEFAULT_CSRF_MATCHER,
-                    new RegexRequestMatcher("/csrf.*", null)
-                )
-            )
-            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        .antMatcher("/digest/**")
+        .authorizeRequests()
+        .anyRequest()
+        .hasRole(DIGEST_ROLE)
         .and()
-            .authorizeRequests()
-            .antMatchers("/basic/**")
-            .hasRole(BASIC_ROLE)
-        .and()
-            .httpBasic()
-            .realmName(BASIC_REALM)
-            .authenticationEntryPoint(this.getBasicAuthEntryPoint())
-        .and()
-            .authorizeRequests()
-            .antMatchers("/digest/**")
-            .hasRole(DIGEST_ROLE)
-        .and()
-            .addFilterBefore(this.digestAuthenticationFilter(), BasicAuthenticationFilter.class)
-            .httpBasic()
-            .realmName(DIGEST_REALM)
-            .authenticationEntryPoint(this.digestEntryPoint())
+        .addFilter(this.digestAuthenticationFilter())
+        .csrf(csrf -> csrf.disable()) // Set to lowest position to work
+        .exceptionHandling()
+        .defaultAuthenticationEntryPointFor(this.digestEntryPoint(), new AntPathRequestMatcher("/digest/**"))
         ;
     }
 
@@ -140,13 +105,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return digestAuthenticationFilter;
     }
     
-    @Override
-    @Bean
-    public UserDetailsService userDetailsServiceBean() throws Exception {
-        
-        return super.userDetailsServiceBean();
-    }
-
     @Bean
     public DigestAuthenticationEntryPoint digestEntryPoint() {
         
@@ -155,17 +113,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         digestAuthenticationEntryPoint.setRealmName(DIGEST_REALM);
         
         return digestAuthenticationEntryPoint;
-    }
-     
-    @Bean
-    public CustomBasicAuthenticationEntryPoint getBasicAuthEntryPoint(){
-        
-        return new CustomBasicAuthenticationEntryPoint();
-    }
-    
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        
-        return new BCryptPasswordEncoder();
     }
 }

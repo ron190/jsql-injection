@@ -1,6 +1,5 @@
 package com.jsql.util;
 
-import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +33,7 @@ public class FormUtil {
         this.injectionModel = injectionModel;
     }
 
-    public void parseForms(int statusCode, String pageSource) throws IOException {
+    public void parseForms(int statusCode, String pageSource) {
         
         var elementsForm = Jsoup.parse(pageSource).select("form");
         
