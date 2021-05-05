@@ -100,11 +100,6 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             
         HttpResponse<Void> response = httpClient.send(httpRequest, BodyHandlers.discarding());
         
-        Map<String, String> mapHeaders = ConnectionUtil.getHeadersMap(response.headers());
-        
-        this.responseCodeHttp = ""+ response.statusCode();
-        mapHeaders.put(":status", this.responseCodeHttp);
-
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, this.urlAdminPage);
         msgHeader.put(Header.POST, StringUtils.EMPTY);

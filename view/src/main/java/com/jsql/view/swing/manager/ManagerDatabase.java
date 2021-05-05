@@ -75,6 +75,7 @@ public class ManagerDatabase extends JPanel implements Manager {
         I18nViewUtil.addComponentForKey("DATABASE_EMPTY", nodeModelEmpty);
         
         this.tree = new TreeDatabase(root);
+        this.tree.setName("treeDatabases");
         MediatorHelper.register(this.tree);
 
         // Graphic manager for components

@@ -84,6 +84,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         MediatorHelper.register(tabManagers);
 
         var tabResults = new TabResults();
+        tabResults.setName("tabResults");
         tabResults.addMouseWheelListener(new TabbedPaneMouseWheelListener());
         MediatorHelper.register(tabResults);
 

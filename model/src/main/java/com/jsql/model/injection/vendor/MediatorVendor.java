@@ -117,7 +117,7 @@ public class MediatorVendor {
             @Override
             public String transformSqlite(String resultToParse) {
                 
-                StringBuilder resultSqlite = new StringBuilder();
+                var resultSqlite = new StringBuilder();
                 
                 String resultTmp =
                     resultToParse
@@ -221,10 +221,10 @@ public class MediatorVendor {
             
             LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Fingerprinting database...");
         
-            String insertionCharacter = "'\"#-)'\"*";
+            var insertionCharacter = "'\"#-)'\"*";
             String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, "vendor");
                 
-            MediatorVendor mediatorVendor = this.injectionModel.getMediatorVendor();
+            var mediatorVendor = this.injectionModel.getMediatorVendor();
             Vendor[] vendorsWithoutAuto =
                 mediatorVendor
                 .getVendors()
@@ -251,7 +251,7 @@ public class MediatorVendor {
             vendorFound = this.initializeVendor(vendorFound);
         }
         
-        Request requestSetVendor = new Request();
+        var requestSetVendor = new Request();
         requestSetVendor.setMessage(Interaction.SET_VENDOR);
         requestSetVendor.setParameters(vendorFound);
         this.injectionModel.sendToViews(requestSetVendor);
@@ -261,7 +261,7 @@ public class MediatorVendor {
 
     public Vendor initializeVendor(Vendor vendor) {
         
-        Vendor vendorFixed = vendor;
+        var vendorFixed = vendor;
         
         if (vendorFixed == null) {
             
@@ -289,7 +289,7 @@ public class MediatorVendor {
             );
             msgHeader.put(Header.VENDOR, vendorFixed);
             
-            Request requestDatabaseIdentified = new Request();
+            var requestDatabaseIdentified = new Request();
             requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);
             requestDatabaseIdentified.setParameters(msgHeader);
             this.injectionModel.sendToViews(requestDatabaseIdentified);

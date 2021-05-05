@@ -93,7 +93,7 @@ public class VendorYaml implements AbstractVendor {
         
         this.injectionModel = injectionModel;
         
-        Yaml yaml = new Yaml();
+        var yaml = new Yaml();
         this.modelYaml = yaml.loadAs(VendorYaml.class.getClassLoader().getResourceAsStream("vendor/"+ fileYaml), ModelYaml.class);
     }
 
@@ -289,7 +289,7 @@ public class VendorYaml implements AbstractVendor {
             }
         }
         
-        Matcher matcherSqlField = Pattern.compile("(?s)(.*)"+ Pattern.quote(FIELD) +"(.*)").matcher(sqlField);
+        var matcherSqlField = Pattern.compile("(?s)(.*)"+ Pattern.quote(FIELD) +"(.*)").matcher(sqlField);
         String leadSqlField = StringUtils.EMPTY;
         String trailSqlField = StringUtils.EMPTY;
         
@@ -299,9 +299,9 @@ public class VendorYaml implements AbstractVendor {
             trailSqlField = matcherSqlField.group(2);
         }
         
-        String[] namesColumnUtf8 = new String[namesColumns.length];
+        var namesColumnUtf8 = new String[namesColumns.length];
         
-        for (int i = 0 ; i < namesColumns.length ; i++) {
+        for (var i = 0 ; i < namesColumns.length ; i++) {
             
             namesColumnUtf8[i] = StringUtil.detectUtf8(namesColumns[i]);
             
@@ -314,7 +314,7 @@ public class VendorYaml implements AbstractVendor {
             }
         }
         
-        String nameDatabaseUtf8 = StringUtil.detectUtf8(database.toString());
+        var nameDatabaseUtf8 = StringUtil.detectUtf8(database.toString());
         
         try {
             nameDatabaseUtf8 = URLEncoder.encode(nameDatabaseUtf8, StandardCharsets.UTF_8.name());
@@ -324,7 +324,7 @@ public class VendorYaml implements AbstractVendor {
             LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
-        String nameTableUtf8 = StringUtil.detectUtf8(table.toString());
+        var nameTableUtf8 = StringUtil.detectUtf8(table.toString());
         
         try {
             nameTableUtf8 = URLEncoder.encode(nameTableUtf8, StandardCharsets.UTF_8.name());
@@ -624,7 +624,7 @@ public class VendorYaml implements AbstractVendor {
         String replaceTag = StringUtils.EMPTY;
         List<String> fields = new ArrayList<>();
         
-        int indice = 1;
+        var indice = 1;
         
         for ( ; indice <= nbFields ; indice++) {
             
@@ -659,7 +659,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlLimit(Integer limitSQLResult) {
         
-        int limitBoundary = 0;
+        var limitBoundary = 0;
         
         try {
             limitBoundary = Integer.parseInt(this.modelYaml.getStrategy().getConfiguration().getLimitBoundary());

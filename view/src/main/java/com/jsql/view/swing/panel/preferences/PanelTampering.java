@@ -195,7 +195,7 @@ public class PanelTampering extends JPanel implements Cleanable {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        String tooltipIsTamperingStringToChar = TamperingType.STRING_TO_CHAR.instance().getTooltip();
+        var tooltipIsTamperingStringToChar = TamperingType.STRING_TO_CHAR.instance().getTooltip();
         this.checkboxIsTamperingStringToChar.setToolTipText(tooltipIsTamperingStringToChar);
         this.checkboxIsTamperingStringToChar.setFocusable(false);
         var labelIsTamperingStringToChar = new JButton(TamperingType.STRING_TO_CHAR.instance().getDescription());

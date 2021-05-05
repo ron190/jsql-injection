@@ -88,6 +88,7 @@ public class ProxyUtil {
         prefs.put("proxyAddressHttps", this.getProxyAddressHttps());
         prefs.put("proxyPortHttps", this.getProxyPortHttps());
 
+        // TODO Check if applied to HttpClient
         // Change the JVM configuration
         if (this.isUsingProxyHttp()) {
             

@@ -185,7 +185,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
             LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
-            this.mediatorUtils.getConnectionUtil().CookieManager.getCookieStore().removeAll();
+            this.mediatorUtils.getConnectionUtil().getCookieManager().getCookieStore().removeAll();
             HttpResponse<String> httpResponse = this.mediatorUtils.getConnectionUtil().testConnection();
             
             // TODO Extract
@@ -308,7 +308,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         // Define the connection
         try {
-            Builder httpRequestBuilder =
+            var httpRequestBuilder =
                 HttpRequest
                     .newBuilder()
                     .uri(URI.create(urlObject.toString()))
@@ -319,10 +319,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             this.mediatorUtils.getConnectionUtil().setCustomUserAgent(httpRequestBuilder);
             
-            this.initializeHeader(isUsingIndex, dataInjection, httpRequestBuilder, msgHeader);
+            this.initializeHeader(isUsingIndex, dataInjection, httpRequestBuilder);
             this.initializeRequest(isUsingIndex, dataInjection, httpRequestBuilder, msgHeader);
             
-            HttpRequest httpRequest = httpRequestBuilder.build();
+            var httpRequest = httpRequestBuilder.build();
             
             HttpResponse<String> response = this.getMediatorUtils().getConnectionUtil().getHttpClient().send(
                 httpRequestBuilder.build(),
@@ -440,8 +440,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     private void initializeHeader(
         boolean isUsingIndex,
         String dataInjection,
-        Builder httpRequest,
-        Map<Header, Object> msgHeader
+        Builder httpRequest
     ) {
         
         if (!this.mediatorUtils.getParameterUtil().getListHeader().isEmpty()) {

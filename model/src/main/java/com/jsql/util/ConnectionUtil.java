@@ -70,7 +70,7 @@ public class ConnectionUtil {
     
     private InjectionModel injectionModel;
     
-    public CookieManager CookieManager = new CookieManager();
+    public CookieManager cookieManager = new CookieManager();
     
     public ConnectionUtil(InjectionModel injectionModel) {
         
@@ -91,7 +91,7 @@ public class ConnectionUtil {
         
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()) {
             
-            httpClientBuilder.cookieHandler(this.CookieManager);
+            httpClientBuilder.cookieHandler(this.cookieManager);
         }
         
         if (this.injectionModel.getMediatorUtils().getAuthenticationUtil().isAuthentEnabled()) {
@@ -321,5 +321,9 @@ public class ConnectionUtil {
      */
     public Integer getTimeout() {
         return this.injectionModel.getMediatorUtils().getPreferencesUtil().countConnectionTimeout();
+    }
+
+    public CookieManager getCookieManager() {
+        return cookieManager;
     }
 }
