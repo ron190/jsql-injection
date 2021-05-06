@@ -11,10 +11,14 @@
     <name>jsql-model</name>
     
     <repositories>
-        <repository>
-            <id>cubrid-repository</id>
-            <url>http://maven.cubrid.org/</url>
-        </repository>
+<!--         <repository> -->
+<!--             <id>default</id> -->
+<!--             <url>https://repo.maven.apache.org/maven2/</url> -->
+<!--         </repository> -->
+<!--         <repository> -->
+<!--             <id>cubrid-repository</id> -->
+<!--             <url>http://maven.cubrid.org/</url> -->
+<!--         </repository> -->
 <!--         <repository> -->
 <!--             <id>jspresso-repository</id> -->
 <!--             <url>http://repository.jspresso.org/maven2</url> -->
@@ -278,12 +282,12 @@
             <version>4.0.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>cubrid</groupId>
-            <artifactId>cubrid-jdbc</artifactId>
-            <version>10.2.2.8874</version>
-            <scope>test</scope>
-        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>cubrid</groupId> -->
+<!--             <artifactId>cubrid-jdbc</artifactId> -->
+<!--             <version>10.2.2.8874</version> -->
+<!--             <scope>test</scope> -->
+<!--         </dependency> -->
         <dependency>
             <groupId>com.ibm.db2</groupId>
             <artifactId>jcc</artifactId>

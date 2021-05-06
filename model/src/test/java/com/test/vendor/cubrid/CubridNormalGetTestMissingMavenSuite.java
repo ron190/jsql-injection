@@ -9,7 +9,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-public class CubridNormalGetTestSuite extends ConcreteCubridTestSuite {
+public class CubridNormalGetTestMissingMavenSuite extends ConcreteCubridTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
