@@ -17,7 +17,7 @@ public class Db2BlindTestInstableSuite extends ConcreteDb2TestSuite {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
-        model.addObserver(new SystemOutTerminal());
+        model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/blind");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(

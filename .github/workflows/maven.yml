@@ -17,14 +17,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - jdk: 3.6.3-jdk-11-slim
+        - jdk: 3.8.1-jdk-11-slim
           nashorn: -Dnashorn.args=--no-deprecation-warning
-        - jdk: 3.6.3-openjdk-14-slim
+        - jdk: 3.8.1-openjdk-14-slim
           nashorn: -Dnashorn.args=--no-deprecation-warning
-#        - jdk: 3.6.3-openjdk-15-slim
-#          nashorn: ""
-#        - jdk: 3.6.3-openjdk-16-slim
-#          nashorn: ""
+        - jdk: 3.6.3-openjdk-17-slim
+          nashorn: ""
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
       MAVEN_NASHORN: ${{ matrix.nashorn }}

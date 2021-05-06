@@ -2,16 +2,19 @@ package com.jsql.view.interaction;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.concurrent.Flow.Subscriber;
+import java.util.concurrent.Flow.Subscription;
+
+import javax.swing.SwingUtilities;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.util.LogLevel;
 
-public class ObserverInteraction implements Observer {
+public class ObserverInteraction implements Subscriber<Request> {
 
     /**
      * Log4j logger sent to view.
@@ -31,38 +34,71 @@ public class ObserverInteraction implements Observer {
      * - Use the Request message to get the Interaction class,<br>
      * - Pass the parameters to that class.
      */
+    private Subscription subscription;
+    
     @Override
-    public void update(Observable model, Object newInteraction) {
+    public void onSubscribe(Subscription subscription) {
         
-        Request interaction = (Request) newInteraction;
+        this.subscription = subscription;
+        subscription.request(1);
+    }
 
-        try {
-            Class<?> cl = Class.forName(this.packageInteraction +"."+ interaction.getMessage());
-            var types = new Class[]{ Object[].class };
-            Constructor<?> ct = cl.getConstructor(types);
-
-            InteractionCommand o2 = (InteractionCommand) ct.newInstance(
-                new Object[] {
-                    interaction.getParameters()
-                }
-            );
-            o2.execute();
-            
-        } catch (ClassNotFoundException e) {
-            
-            // Ignore unused interaction message
-            LOGGER.log(LogLevel.IGNORE, e);
-            
-        } catch (
-            InstantiationException
-            | IllegalAccessException
-            | NoSuchMethodException
-            | SecurityException
-            | IllegalArgumentException
-            | InvocationTargetException
-            e
-        ) {
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+    @Override
+    public void onNext(Request request) {
+        
+        subscription.request(1);
+        
+        if (Interaction.UNSUBSCRIBE.equals(request.getMessage())) {
+            subscription.cancel();
+            return;
         }
+        
+        // Display model thread name in logs instead of the observer name
+        String nameThread = Thread.currentThread().getName();
+        
+        SwingUtilities.invokeLater(() -> {
+            
+            Thread.currentThread().setName("from " + nameThread);
+            
+            try {
+                Class<?> cl = Class.forName(this.packageInteraction +"."+ request.getMessage());
+                var types = new Class[]{ Object[].class };
+                Constructor<?> ct = cl.getConstructor(types);
+    
+                InteractionCommand o2 = (InteractionCommand) ct.newInstance(
+                    new Object[] {
+                        request.getParameters()
+                    }
+                );
+                o2.execute();
+                
+            } catch (ClassNotFoundException e) {
+                
+                // Ignore unused interaction message
+                LOGGER.log(LogLevel.IGNORE, e);
+                
+            } catch (
+                InstantiationException
+                | IllegalAccessException
+                | NoSuchMethodException
+                | SecurityException
+                | IllegalArgumentException
+                | InvocationTargetException
+                e
+            ) {
+                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            }
+        });
+    }
+
+    @Override
+    public void onError(Throwable e) {
+
+        LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+    }
+
+    @Override
+    public void onComplete() {
+        // Nothing
     }
 }

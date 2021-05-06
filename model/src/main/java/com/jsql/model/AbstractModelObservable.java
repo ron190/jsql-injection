@@ -10,9 +10,7 @@
  ******************************************************************************/
 package com.jsql.model;
 
-import java.util.Observable;
-
-import javax.swing.SwingUtilities;
+import java.util.concurrent.SubmissionPublisher;
 
 import com.jsql.model.bean.util.Request;
 
@@ -22,7 +20,7 @@ import com.jsql.model.bean.util.Request;
  * - Callable for parallelizing HTTP tasks,<br>
  * - communication with view, via Observable.
  */
-public abstract class AbstractModelObservable extends Observable {
+public abstract class AbstractModelObservable extends SubmissionPublisher<Request> {
     
     /**
      * True if user wants to stop preparation.<br>
@@ -57,20 +55,11 @@ public abstract class AbstractModelObservable extends Observable {
 
     /**
      * Send an interaction message to registered views.
-     * @param interaction The event bean corresponding to the interaction
+     * @param request The event bean corresponding to the interaction
      */
-    public void sendToViews(final Request interaction) {
+    public void sendToViews(final Request request) {
         
-        // Display model thread name in logs instead of the observer name
-        String nameThread = Thread.currentThread().getName();
-        
-        SwingUtilities.invokeLater(() -> {
-            
-            Thread.currentThread().setName("from " + nameThread);
-            
-            AbstractModelObservable.this.setChanged();
-            AbstractModelObservable.this.notifyObservers(interaction);
-        });
+        AbstractModelObservable.this.submit(request);
     }
 
     

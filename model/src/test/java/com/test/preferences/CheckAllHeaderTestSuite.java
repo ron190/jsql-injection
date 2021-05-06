@@ -18,7 +18,7 @@ public class CheckAllHeaderTestSuite extends ConcreteMySqlTestSuite {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
-        model.addObserver(new SystemOutTerminal());
+        model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/header?tenant=mysql");
         model.getMediatorUtils().getParameterUtil().setListHeader(Arrays.asList(

@@ -70,7 +70,7 @@ public class ConnectionUtil {
     
     private InjectionModel injectionModel;
     
-    public CookieManager cookieManager = new CookieManager();
+    private CookieManager cookieManager = new CookieManager();
     
     public ConnectionUtil(InjectionModel injectionModel) {
         

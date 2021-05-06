@@ -276,8 +276,10 @@ public class ManagerScan extends AbstractManagerList {
         }
 
         // Display result only in console
-        MediatorHelper.model().deleteObservers();
-        MediatorHelper.model().addObserver(new ScanListTerminal());
+        var requestUnsubscribe = new Request();
+        requestUnsubscribe.setMessage(Interaction.UNSUBSCRIBE);
+        MediatorHelper.model().sendToViews(requestUnsubscribe);
+        MediatorHelper.model().subscribe(new ScanListTerminal());
         
         MediatorHelper.model().setIsScanning(true);
         MediatorHelper.model().getResourceAccess().setScanStopped(false);
@@ -312,7 +314,8 @@ public class ManagerScan extends AbstractManagerList {
         }
         
         // Get back the normal view
-        MediatorHelper.model().addObserver(MediatorHelper.frame().getObserver());
+        MediatorHelper.model().sendToViews(requestUnsubscribe);
+        MediatorHelper.model().subscribe(MediatorHelper.frame().getObserver());
         
         MediatorHelper.model().setIsScanning(false);
         MediatorHelper.model().setIsStoppedByUser(false);

@@ -10,17 +10,14 @@ jdk: oraclejdk11
 jobs:
   include:
   - env:
-    - JSQL_DOCKERFILE=3.6.3-jdk-11-slim
+    - JSQL_DOCKERFILE=3.8.1-jdk-11-slim
     - MAVEN_NASHORN=-Dnashorn.args=--no-deprecation-warning
   - env:
-    - JSQL_DOCKERFILE=3.6.3-openjdk-14-slim
+    - JSQL_DOCKERFILE=3.8.1-openjdk-14-slim
     - MAVEN_NASHORN=-Dnashorn.args=--no-deprecation-warning
-#  - env:
-#    - JSQL_DOCKERFILE=3.6.3-openjdk-15-slim
-#    - MAVEN_NASHORN=
-#  - env:
-#    - JSQL_DOCKERFILE=3.6.3-openjdk-16-slim
-#    - MAVEN_NASHORN=
+  - env:
+    - JSQL_DOCKERFILE=3.8.1-openjdk-17-slim
+    - MAVEN_NASHORN=
 
 branches:
   only:

@@ -25,7 +25,7 @@ public class MarkNormalVulnerable implements InteractionCommand {
     private String url;
     
     /**
-     * @param nullParam
+     * @param interactionParams
      */
     @SuppressWarnings("unchecked")
     public MarkNormalVulnerable(Object[] interactionParams) {

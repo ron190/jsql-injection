@@ -18,7 +18,7 @@ public class PathParamTestSuite extends ConcreteMySqlTestSuite {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
-        model.addObserver(new SystemOutTerminal());
+        model.subscribe(new SystemOutTerminal());
 
         // TODO Test all PathParam URL segments
         // Analyze last required query param

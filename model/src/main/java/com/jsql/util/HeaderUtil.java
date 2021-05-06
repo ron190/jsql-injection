@@ -42,7 +42,7 @@ public class HeaderUtil {
     /**
      * Parse the header component and decode any character of the form %xy
      * except for cookie
-     * @param connection where decoded value will be set
+     * @param httpRequest where decoded value will be set
      * @param header string to decode
      */
     public static void sanitizeHeaders(Builder httpRequest, SimpleEntry<String, String> header) {
@@ -77,9 +77,8 @@ public class HeaderUtil {
     /**
      * Verify the headers received after a request, detect authentication response and
      * send the headers to the view.
-     * @param connection contains headers response
-     * @param urlByUser the website to request
-     * @return
+     * @param httpRequestBuilder calls URL
+     * @return httpResponse with response headers
      * @throws IOException when an error occurs during connection
      */
     public HttpResponse<String> checkResponseHeader(Builder httpRequestBuilder) throws IOException, InterruptedException {

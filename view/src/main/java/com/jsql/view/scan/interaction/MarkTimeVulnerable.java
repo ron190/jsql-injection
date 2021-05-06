@@ -25,7 +25,7 @@ public class MarkTimeVulnerable implements InteractionCommand {
     private String url;
     
     /**
-     * @param nullParam
+     * @param interactionParams
      */
     @SuppressWarnings("unchecked")
     public MarkTimeVulnerable(Object[] interactionParams) {

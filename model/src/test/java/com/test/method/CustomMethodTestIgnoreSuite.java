@@ -18,7 +18,7 @@ public class CustomMethodTestIgnoreSuite extends ConcreteMySqlErrorTestSuite {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
-        model.addObserver(new SystemOutTerminal());
+        model.subscribe(new SystemOutTerminal());
 
         // TODO Request params not passed when cutom method => fallback to querystring
         // Need custom method set also for querystring

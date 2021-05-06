@@ -52,7 +52,9 @@ public enum Interaction {
     RESET_STRATEGY_LABEL("ResetStrategyLabel"),
     
     SET_VENDOR("SetVendor"),
-    DATABASE_IDENTIFIED("DatabaseIdentified");
+    DATABASE_IDENTIFIED("DatabaseIdentified"),
+    
+    UNSUBSCRIBE("Unsubscribe");
     
     private String name;
     

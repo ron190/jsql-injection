@@ -46,7 +46,7 @@ public class ApplicationUiTest {
         
         window = new FrameFixture(frame);
         
-        injectionModel.addObserver(frame.getObserver());
+        injectionModel.subscribe(frame.getObserver());
     }
 
     @Test
