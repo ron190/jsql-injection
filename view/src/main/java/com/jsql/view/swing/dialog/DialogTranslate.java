@@ -195,9 +195,8 @@ public class DialogTranslate extends JDialog {
                 return;
             }
             
-            String clientDescription =
-                // Escape Markdown character # for h1 in .properties
-                this.textToTranslate
+            // Escape Markdown character # for h1 in .properties
+            String clientDescription = this.textToTranslate
                 .getText()
                 .replace("\\\\", "\\\\\\\\")
                 .replaceAll(
@@ -206,7 +205,6 @@ public class DialogTranslate extends JDialog {
                 )
                 .replace("<", "\\<");
               
-            // TODO Fix UTF8
             MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(
                 clientDescription,
                 ShowOnConsole.YES,

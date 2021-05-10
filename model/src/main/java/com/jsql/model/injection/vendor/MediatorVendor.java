@@ -119,8 +119,7 @@ public class MediatorVendor {
                 
                 var resultSqlite = new StringBuilder();
                 
-                String resultTmp =
-                    resultToParse
+                String resultTmp = resultToParse
                     .replaceFirst("[^(]+\\(", StringUtils.EMPTY)
                     .trim()
                     .replaceAll("\\)$", StringUtils.EMPTY);

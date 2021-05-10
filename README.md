@@ -91,28 +91,32 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 ## [[Roadmap](https://github.com/ron190/jsql-injection/projects)]
 ```
 - New manager: create auth token for Basic, Digest, Negotiate, NTLM
+- Full Path Disclosure
+- WAF fingerprinting
 - Inject user defined query
 - Inject range of rows
-- Full Path Disclosure
 - Routed query strategy
-- WAF fingerprinting
 ```
 
 ## In progress
 ```
-- Connect to Digest API using Digest token with HttpClient
-- Connect to Kerberos API using Negotiate token with HttpClient
-- Replace Docker Compose with Kubernetes
+- Implement DNS/HTTP out-of-band algorithm
+- Connect to Digest/Kerberos API with HttpClient
+- Replace Docker Compose by Kubernetes
 - Database fingerprinting: Boolean single query
-- Strategy DNS out-of-band
 ```
 
 ## Since latest release
 ```
-- Java 17 compliant
+- Testing DNS/HTTP out-of-band (Oracle)
+- Testing Websocket Basic/STOMP
+- Testing GraphQL
+- Testing Kerberos
 ```
 
 ## Change log
+
+**v0.84-85** `Upgrade to Java 11, compatible up to Java 17`
 
 **v0.83** `Modes Zip and Dios, Insertion char and db fingerprinting, 33 dbs including Altibase C-treeACE Exasol FrontBase InterSystems-IRIS MemSQL MimerSQL MonetDB Netezza and Presto`
 

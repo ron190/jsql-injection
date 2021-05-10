@@ -235,8 +235,7 @@ public class VendorYaml implements AbstractVendor {
             LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
-        return
-            sqlQuery
+        return sqlQuery
             .replace(DATABASE_HEX, databaseUtf8)
             .replace(TABLE_HEX, tableUtf8)
             .replace(DATABASE, table.getParent().toString())
@@ -333,8 +332,7 @@ public class VendorYaml implements AbstractVendor {
             LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }
         
-        return
-            sqlQuery
+        return sqlQuery
             .replace(
                 FIELDS,
                 leadSqlField
@@ -351,8 +349,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlFileRead(String filePath) {
         
-        return
-            this.modelYaml.getResource().getFile()
+        return this.modelYaml.getResource().getFile()
             .getRead()
             .replace(FILEPATH_HEX, Hex.encodeHexString(filePath.getBytes()));
     }
@@ -360,9 +357,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlTextIntoFile(String content, String filePath) {
         
-        return
-            this.injectionModel
-            .getIndexesInUrl()
+        return this.injectionModel.getIndexesInUrl()
             .replaceAll(
                 "1337" + this.injectionModel.getMediatorStrategy().getNormal().getVisibleIndex() + "7331",
                 this.modelYaml
@@ -385,9 +380,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlTestBlind(String check, BooleanMode blindMode) {
         
-        return
-            StringUtils.SPACE
-            + this.modelYaml
+        return StringUtils.SPACE + this.modelYaml
             .getStrategy()
             .getBoolean()
             .getBlind()
@@ -403,9 +396,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlBitTestBlind(String inj, int indexCharacter, int bit, BooleanMode blindMode) {
         
-        return
-            StringUtils.SPACE
-            + this.modelYaml.getStrategy().getBoolean()
+        return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean()
             .getBlind()
             .replace(
                 BOOLEAN_MODE,
@@ -425,9 +416,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlLengthTestBlind(String inj, int indexCharacter, BooleanMode blindMode) {
         
-        return
-            StringUtils.SPACE
-            + this.modelYaml.getStrategy().getBoolean()
+        return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean()
             .getBlind()
             .replace(
                 BOOLEAN_MODE,
@@ -447,9 +436,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlTimeTest(String check, BooleanMode blindMode) {
         
-        return
-            StringUtils.SPACE
-            + this.modelYaml.getStrategy().getBoolean()
+        return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean()
             .getTime()
             .replace(
                 BOOLEAN_MODE,
@@ -464,9 +451,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlBitTestTime(String inj, int indexCharacter, int bit, BooleanMode blindMode) {
         
-        return
-            StringUtils.SPACE
-            + this.modelYaml.getStrategy().getBoolean()
+        return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean()
             .getTime()
             .replace(BOOLEAN_MODE,
                 blindMode == BooleanMode.AND
@@ -490,9 +475,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlLengthTestTime(String inj, int indexCharacter, BooleanMode blindMode) {
         
-        return
-            StringUtils.SPACE
-            + this.modelYaml.getStrategy().getBoolean()
+        return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean()
             .getTime()
             .replace(BOOLEAN_MODE,
                 blindMode == BooleanMode.AND
@@ -518,35 +501,31 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlBlind(String sqlQuery, String startPosition) {
         
-        return
-            VendorYaml.replaceTags(
-                this.modelYaml.getStrategy().getConfiguration()
-                .getSlidingWindow()
-                .replace(INJECTION, sqlQuery)
-                .replace(WINDOW_CHAR, startPosition)
-                .replace(CAPACITY, "65565")
-            );
+        return VendorYaml.replaceTags(
+            this.modelYaml.getStrategy().getConfiguration()
+            .getSlidingWindow()
+            .replace(INJECTION, sqlQuery)
+            .replace(WINDOW_CHAR, startPosition)
+            .replace(CAPACITY, "65565")
+        );
     }
 
     @Override
     public String sqlTime(String sqlQuery, String startPosition) {
         
-        return
-            VendorYaml.replaceTags(
-                this.modelYaml.getStrategy().getConfiguration()
-                .getSlidingWindow()
-                .replace(INJECTION, sqlQuery)
-                .replace(WINDOW_CHAR, startPosition)
-                .replace(CAPACITY, "65565")
-            );
+        return VendorYaml.replaceTags(
+            this.modelYaml.getStrategy().getConfiguration()
+            .getSlidingWindow()
+            .replace(INJECTION, sqlQuery)
+            .replace(WINDOW_CHAR, startPosition)
+            .replace(CAPACITY, "65565")
+        );
     }
 
     @Override
     public String sqlTestError() {
         
-        return
-            StringUtils.SPACE
-            + this.modelYaml
+        return StringUtils.SPACE + this.modelYaml
             .getStrategy()
             .getError()
             .getMethod()
@@ -562,46 +541,42 @@ public class VendorYaml implements AbstractVendor {
         
         int indexMethodError = this.injectionModel.getMediatorStrategy().getError().getIndexErrorStrategy();
         
-        return
-            StringUtils.SPACE
-            + VendorYaml.replaceTags(
-                this.modelYaml.getStrategy().getError().getMethod().get(indexMethodError)
-                .getQuery()
-                .replace(WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
-                .replace(INJECTION, sqlQuery)
-                .replace(WINDOW_CHAR, startPosition)
-                .replace(
-                    CAPACITY,
-                    Integer.toString(
-                        this.modelYaml
-                        .getStrategy()
-                        .getError()
-                        .getMethod()
-                        .get(indexMethodError)
-                        .getCapacity()
-                    )
+        return StringUtils.SPACE + VendorYaml.replaceTags(
+            this.modelYaml.getStrategy().getError().getMethod().get(indexMethodError)
+            .getQuery()
+            .replace(WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
+            .replace(INJECTION, sqlQuery)
+            .replace(WINDOW_CHAR, startPosition)
+            .replace(
+                CAPACITY,
+                Integer.toString(
+                    this.modelYaml
+                    .getStrategy()
+                    .getError()
+                    .getMethod()
+                    .get(indexMethodError)
+                    .getCapacity()
                 )
-            );
+            )
+        );
     }
 
     @Override
     public String sqlNormal(String sqlQuery, String startPosition) {
         
-        return
-            VendorYaml.replaceTags(
-                this.modelYaml.getStrategy().getConfiguration()
-                .getSlidingWindow()
-                .replace(INJECTION, sqlQuery)
-                .replace(WINDOW_CHAR, startPosition)
-                .replace(CAPACITY, this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength())
-            );
+        return VendorYaml.replaceTags(
+            this.modelYaml.getStrategy().getConfiguration()
+            .getSlidingWindow()
+            .replace(INJECTION, sqlQuery)
+            .replace(WINDOW_CHAR, startPosition)
+            .replace(CAPACITY, this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength())
+        );
     }
 
     @Override
     public String sqlCapacity(String[] indexes) {
         
-        return
-            this.injectionModel
+        return this.injectionModel
             .getIndexesInUrl()
             .replaceAll(
                 String
@@ -636,9 +611,7 @@ public class VendorYaml implements AbstractVendor {
         
         indice--;
         
-        return
-            StringUtils.SPACE
-            + this.modelYaml.getStrategy().getNormal()
+        return StringUtils.SPACE + this.modelYaml.getStrategy().getNormal()
             .getIndices()
             .replace(
                 INDICES,
@@ -690,8 +663,7 @@ public class VendorYaml implements AbstractVendor {
     
     public static String replaceTags(String sqlRequest) {
         
-        return
-            sqlRequest
+        return sqlRequest
             .replace("${enclose_value_sql}", ENCLOSE_VALUE_SQL)
             .replace("${enclose_value_hex}", ENCLOSE_VALUE_HEX)
             .replace("${separator_qte_sql}", SEPARATOR_QTE_SQL)

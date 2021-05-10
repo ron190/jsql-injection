@@ -1,7 +1,8 @@
 {
     "version": "0.85",
     "news": [
-        "[New release v0.85] Run now on latest Java 17",
-        "[Community] We made it, the project will reach 1k stars on Github :) In a way it means something, even if there's a lot of other tools that do the same job. But surely enough you like jSQL for some reasons if you read this ;) So now we're close to 1k stars it's the moment you speak, tell us what improvements you need, you choose the topic (use Github, @ron190jsql on Twitter or email to ron190@ymail.com)."
+        "[New release v0.85] Various internal improvements, Run now on latest Java 17",
+        "[Ongoing] Experiment with Kerberos, Websocket, GraphQL, Kubernetes and DNS",
+        "[Roadmap] More tampers, DNS/HTTP Out of band, WAF fingerprint"
     ]
 }

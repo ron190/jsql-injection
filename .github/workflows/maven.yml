@@ -21,7 +21,7 @@ jobs:
           nashorn: -Dnashorn.args=--no-deprecation-warning
         - jdk: 3.6.3-openjdk-14-slim
           nashorn: -Dnashorn.args=--no-deprecation-warning
-        - jdk: 3.8.1-openjdk-17
+        - jdk: 3.8.1-openjdk-16-slim
           nashorn: ""
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}

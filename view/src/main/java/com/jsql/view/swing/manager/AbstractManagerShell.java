@@ -201,33 +201,32 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             
             String urlShellFinal = refUrlShell;
 
-            for (final ItemList pathShell: AbstractManagerShell.this.getListPaths().getSelectedValuesList()) {
-                
-                new Thread(
-                    () -> {
+            AbstractManagerShell.this.getListPaths()
+            .getSelectedValuesList()
+            .forEach(pathShell -> new Thread(
+                () -> {
+                    
+                    try {
+                        AbstractManagerShell.this.createPayload(pathShell.toString(), urlShellFinal);
                         
-                        try {
-                            AbstractManagerShell.this.createPayload(pathShell.toString(), urlShellFinal);
-                            
-                        } catch (JSqlException e) {
-                            
-                            LOGGER.log(
-                                LogLevel.CONSOLE_ERROR,
-                                String.format("Payload creation error: %s", e.getMessage())
-                            );
-                            
-                        } catch (InterruptedException e) {
-                            
-                            LOGGER.log(
-                                LogLevel.CONSOLE_ERROR,
-                                String.format("Payload creation error: %s", e.getMessage())
-                            );
-                            Thread.currentThread().interrupt();
-                        }
-                    },
-                    "ThreadGetShell"
-                ).start();
-            }
+                    } catch (JSqlException e) {
+                        
+                        LOGGER.log(
+                            LogLevel.CONSOLE_ERROR,
+                            String.format("Payload creation error: %s", e.getMessage())
+                        );
+                        
+                    } catch (InterruptedException e) {
+                        
+                        LOGGER.log(
+                            LogLevel.CONSOLE_ERROR,
+                            String.format("Payload creation error: %s", e.getMessage())
+                        );
+                        Thread.currentThread().interrupt();
+                    }
+                },
+                "ThreadGetShell"
+            ).start());
         }
     }
 }
