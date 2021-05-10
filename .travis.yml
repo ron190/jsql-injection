@@ -16,7 +16,7 @@ jobs:
     - JSQL_DOCKERFILE=3.6.3-openjdk-14-slim
     - MAVEN_NASHORN=-Dnashorn.args=--no-deprecation-warning
   - env:
-    - JSQL_DOCKERFILE=3.8.1-openjdk-16-slim
+    - JSQL_DOCKERFILE=3.8.1-openjdk-15-slim
     - MAVEN_NASHORN=
 
 branches:
