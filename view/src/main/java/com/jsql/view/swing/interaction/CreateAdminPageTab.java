@@ -92,10 +92,10 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
                         .ignoreHttpErrors(true)
                         .get()
                         .html()
-                        .replaceAll("<img.*>", StringUtils.EMPTY)
-                        .replaceAll("<input.*type=\"?hidden\"?.*>", StringUtils.EMPTY)
-                        .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
-                        .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
+                        .replaceAll("<img[^>]*>", StringUtils.EMPTY)
+                        .replaceAll("<input[^>]*type=\"?hidden\"?[^>]*>", StringUtils.EMPTY)
+                        .replaceAll("<input[^>]*type=\"?(submit|button)\"?[^>]*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
+                        .replaceAll("<input[^>]*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
                     Whitelist
                         .relaxed()
                         .addTags("center", "div", "span")

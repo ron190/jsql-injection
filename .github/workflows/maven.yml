@@ -19,8 +19,6 @@ jobs:
         include:
         - jdk: 3.8.1-jdk-11-slim
           nashorn: -Dnashorn.args=--no-deprecation-warning
-        - jdk: 3.6.3-openjdk-14-slim
-          nashorn: -Dnashorn.args=--no-deprecation-warning
         - jdk: 3.8.1-openjdk-15-slim
           nashorn: ""
     env:

@@ -201,6 +201,7 @@ public class PanelPreferences extends JPanel {
         return categories;
     }
     
+    
     // Getter and setter
 
     public PanelAuth getPanelAuth() {

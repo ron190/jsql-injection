@@ -80,8 +80,8 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         var verticalLeftRightSplitter = preferences.getInt(SplitHorizontalTopBottom.NAME_LEFT_RIGHT_SPLITPANE, LOC_LEFT_RIGHT_SPLITTER);
 
-        var tabManagers = new TabManagersProxy();
-        MediatorHelper.register(tabManagers);
+        var tabManagersProxy = new TabManagersProxy();
+        MediatorHelper.register(tabManagersProxy);
 
         var tabResults = new TabResults();
         tabResults.setName("tabResults");
@@ -90,7 +90,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
 
         // Tree and tabs on top
         this.splitVerticalLeftRight = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
-        this.splitVerticalLeftRight.setLeftComponent(tabManagers);
+        this.splitVerticalLeftRight.setLeftComponent(tabManagersProxy);
         
         this.labelPlaceholderResult = new JLabel(UiUtil.IMG_BUG);
         this.labelPlaceholderResult.setMinimumSize(new Dimension(100, 0));

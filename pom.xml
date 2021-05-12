@@ -74,6 +74,16 @@
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>**/graphql/QueryMethodAccess.class</exclude>
+                        <exclude>**/graphql/PostMethodAccess.class</exclude>
+                        <exclude>**/graphql/PostResolverMethodAccess.class</exclude>
+                        <exclude>**/graphql/AuthorMethodAccess.class</exclude>
+                        <exclude>**/graphql/AuthorResolverMethodAccess.class</exclude>
+                        <exclude>**/graphql/MutationMethodAccess.class</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
 
         </plugins>

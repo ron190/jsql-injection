@@ -118,6 +118,8 @@ public class ManagerBruteForce extends JPanel implements Manager {
         this.result = new JPopupTextPane("Result of brute force processing").getProxy();
         this.add(new LightScrollPane(1, 0, 0, 0, this.result), BorderLayout.CENTER);
         
+        this.result.setName("managerBruterResult");
+        
         JPanel panelButton = this.initializePanelButton();
         this.add(panelButton, BorderLayout.SOUTH);
     }
@@ -130,7 +132,6 @@ public class ManagerBruteForce extends JPanel implements Manager {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setPreferredSize(new Dimension(0, 26));
 
-
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),
@@ -141,6 +142,8 @@ public class ManagerBruteForce extends JPanel implements Manager {
         this.run = new JButtonStateful("BRUTEFORCE_RUN_BUTTON_LABEL");
         I18nViewUtil.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
+        
+        this.run.setName("managerBruterRun");
         
         this.run.setContentAreaFilled(false);
         this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
@@ -184,6 +187,8 @@ public class ManagerBruteForce extends JPanel implements Manager {
         var firstLine = new JPanel(new BorderLayout());
 
         this.hash = new JPopupTextField(I18nUtil.valueByKey("BRUTEFORCE_HASH_LABEL")).getProxy();
+        
+        this.hash.setName("managerBruterHash");
         
         this.hash.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_HASH_TOOLTIP"));
         

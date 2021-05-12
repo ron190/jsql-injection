@@ -14,6 +14,7 @@ import org.assertj.swing.fixture.FrameFixture;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.safety.Whitelist;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,6 +36,9 @@ public class ApplicationUiTest {
     private static FrameFixture window;
     private static JFrameView frame;
     
+    private static Connection connection = Mockito.mock(Connection.class);
+    private static Document document = Mockito.mock(Document.class);
+    
     @BeforeClass
     public static void setUpOnce() {
         
@@ -42,7 +46,13 @@ public class ApplicationUiTest {
         
         InjectionModel injectionModel = new InjectionModel();
         MediatorHelper.register(injectionModel);
-        frame = GuiActionRunner.execute(() -> new JFrameView());
+        frame = GuiActionRunner.execute(() -> {
+            
+            // Static mock on current ThreadLocal
+            ApplicationUiTest.initMockAdminPage();
+
+            return new JFrameView();
+        });
         
         window = new FrameFixture(frame);
         
@@ -50,7 +60,18 @@ public class ApplicationUiTest {
     }
 
     @Test
-    public void shouldFindWebshell() throws IOException, InterruptedException {
+    public void shouldFindFile() {
+        
+        var request = new Request();
+        request.setMessage(Interaction.CREATE_FILE_TAB);
+        request.setParameters("file", "content", "path");
+        MediatorHelper.model().sendToViews(request);
+        
+        window.tabbedPane("tabResults").selectTab("file ").requireVisible();
+    }
+    
+    @Test
+    public void shouldFindWebshell() {
         
         var request = new Request();
         request.setMessage(Interaction.CREATE_SHELL_TAB);
@@ -61,7 +82,7 @@ public class ApplicationUiTest {
     }
 
     @Test
-    public void shouldFindSqlshell() throws IOException, InterruptedException {
+    public void shouldFindSqlshell() {
         
         var request = new Request();
         request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);
@@ -74,27 +95,14 @@ public class ApplicationUiTest {
     @Test
     public void shouldFindAdminpage() throws IOException {
         
-        try (MockedStatic<Jsoup> utilities = Mockito.mockStatic(Jsoup.class)) {
-            
-            var request = new Request();
-            request.setMessage(Interaction.CREATE_ADMIN_PAGE_TAB);
-            request.setParameters("http://adminpage");
-            MediatorHelper.model().sendToViews(request);
-            
-            Connection connection = Mockito.mock(Connection.class);
-            utilities.when(() -> Jsoup.connect(ArgumentMatchers.anyString())).thenReturn(connection);
-            
-            Mockito.when(connection.ignoreContentType(ArgumentMatchers.anyBoolean())).thenReturn(connection);
-            Mockito.when(connection.ignoreHttpErrors(ArgumentMatchers.anyBoolean())).thenReturn(connection);
-            
-            Document document = Mockito.mock(Document.class);
-            Mockito.when(connection.get()).thenReturn(document);
-            Mockito.when(document.html()).thenReturn("<html>test</html>");
-            
-            Mockito.verify(document, Mockito.times(2));
-            
-            window.tabbedPane("tabResults").selectTab("adminpage ").requireVisible();
-        }
+        var request = new Request();
+        request.setMessage(Interaction.CREATE_ADMIN_PAGE_TAB);
+        request.setParameters("http://adminpage");
+        MediatorHelper.model().sendToViews(request);
+        
+        window.tabbedPane("tabResults").selectTab("adminpage ").requireVisible();
+
+        ApplicationUiTest.verifyMockAdminPage();
     }
     
     @Test
@@ -110,6 +118,7 @@ public class ApplicationUiTest {
         
         assertEquals(nameDatabase +" (1 table)", window.tree("treeDatabases").valueAt(0));
         
+        
         var nameTable = "table";
         Table table = new Table(nameTable, "2", database);
         
@@ -119,6 +128,7 @@ public class ApplicationUiTest {
         MediatorHelper.model().sendToViews(requestTable);
         
         assertEquals(nameTable +" (2 rows)", window.tree("treeDatabases").valueAt(1));
+        
         
         var nameColumn0 = "column 0";
         var nameColumn1 = "column 1";
@@ -132,6 +142,7 @@ public class ApplicationUiTest {
         
         assertEquals(nameColumn0, window.tree("treeDatabases").valueAt(2));
         assertEquals(nameColumn1, window.tree("treeDatabases").valueAt(3));
+        
         
         var arrayColumns = new String[] { Strings.EMPTY, Strings.EMPTY, nameColumn0, nameColumn1 };
         
@@ -148,6 +159,11 @@ public class ApplicationUiTest {
         MediatorHelper.model().sendToViews(requestValues);
         
         window.tabbedPane("tabResults").selectTab(nameTable).requireVisible();
+        
+        
+        window.tree("treeDatabases").rightClickRow(0);
+        window.tabbedPane("tabResults").click();
+        window.tree("treeDatabases").rightClickRow(1);
     }
 
     @Test
@@ -179,6 +195,54 @@ public class ApplicationUiTest {
         window.button("advancedButton").click();
         window.menuItem("menuWindows").click();
         window.menuItem("itemPreferences").click();
+        
+        window.checkBox("checkboxIsNotInjectingMetadata").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata());
+        
+        window.checkBox("checkboxIsParsingForm").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm());
+        
+        window.checkBox("checkboxIsCheckingAllURLParam").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam());
+        
+        window.checkBox("checkboxIsCheckingAllRequestParam").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam());
+        
+        window.checkBox("checkboxIsCheckingAllHeaderParam").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam());
+        
+        window.checkBox("checkboxIsCheckingAllJSONParam").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam());
+        
+//        window.checkBox("checkboxIsCheckingAllBase64Param").check();
+//        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllBase64Param());
+        
+//        window.checkBox("checkboxIsCheckingAllCookieParam").check();
+//        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
+        
+        window.checkBox("checkboxIsCheckingAllSOAPParam").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam());
+        
+        window.checkBox("checkboxIsPerfIndexDisabled").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
+        
+        window.radioButton("radioIsZipStrategy").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy());
+        
+        window.radioButton("radioIsDefaultStrategy").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy());
+        
+        window.radioButton("radioIsDiosStrategy").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy());
+        
+        window.checkBox("checkboxIsUrlEncodingDisabled").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled());
+        
+        window.checkBox("checkboxIsLimitingNormalIndex").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex());
+        
+        window.checkBox("checkboxIsSleepTimeStrategy").check();
+        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isSleepTimeStrategy());
 
         try {
             window.button("advancedButton").click();
@@ -266,5 +330,30 @@ public class ApplicationUiTest {
         } catch (Exception e) {
             Assert.fail();
         }
+    }
+
+    private static void initMockAdminPage() throws IOException {
+        
+        MockedStatic<Jsoup> utilities = Mockito.mockStatic(Jsoup.class);
+            
+        utilities.when(() -> Jsoup.connect(ArgumentMatchers.anyString())).thenReturn(connection);
+        utilities.when(() -> Jsoup.clean(ArgumentMatchers.anyString(), ArgumentMatchers.any(Whitelist.class))).thenReturn("cleaned");
+        
+        Mockito.when(connection.ignoreContentType(ArgumentMatchers.anyBoolean())).thenReturn(connection);
+        Mockito.when(connection.ignoreHttpErrors(ArgumentMatchers.anyBoolean())).thenReturn(connection);
+        
+        Mockito.when(connection.get()).thenReturn(document);
+        Mockito.when(document.html()).thenReturn("<html><input/>test</html>");
+        
+        Mockito.when(document.text()).thenReturn("<html><input/>test</html>");
+        utilities.when(() -> Jsoup.parse(Mockito.anyString())).thenReturn(document);
+    }
+
+    private static void verifyMockAdminPage() throws IOException {
+        
+        Mockito.verify(document, Mockito.times(1)).html();
+        Mockito.verify(connection, Mockito.times(1)).get();
+        Mockito.verify(connection, Mockito.times(1)).ignoreContentType(ArgumentMatchers.anyBoolean());
+        Mockito.verify(connection, Mockito.times(1)).ignoreHttpErrors(ArgumentMatchers.anyBoolean());
     }
 }

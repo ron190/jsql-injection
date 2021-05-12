@@ -37,6 +37,7 @@ public class PreferencesUtil {
     private boolean isCheckingAllSoapParam = false;
     
     private boolean isPerfIndexDisabled = false;
+    private boolean isDefaultStrategy = false;
     private boolean isZipStrategy = false;
     private boolean isDiosStrategy = false;
     private boolean isUrlEncodingDisabled = false;
@@ -97,6 +98,7 @@ public class PreferencesUtil {
         this.isCheckingAllSoapParam = prefs.getBoolean("isCheckingAllSoapParam", false);
         
         this.isPerfIndexDisabled = prefs.getBoolean("isPerfIndexDisabled", false);
+        this.isDefaultStrategy = prefs.getBoolean("isDefaultStrategy", false);
         this.isZipStrategy = prefs.getBoolean("isZipStrategy", false);
         this.isDiosStrategy = prefs.getBoolean("isDiosStrategy", false);
         this.isUrlEncodingDisabled = prefs.getBoolean("isUrlEncodingDisabled", false);
@@ -172,6 +174,7 @@ public class PreferencesUtil {
         preferences.putBoolean("isProcessingCsrf", this.isProcessingCsrf);
         
         preferences.putBoolean("isPerfIndexDisabled", this.isPerfIndexDisabled);
+        preferences.putBoolean("isDefaultStrategy", this.isDefaultStrategy);
         preferences.putBoolean("isZipStrategy", this.isZipStrategy);
         preferences.putBoolean("isDiosStrategy", this.isDiosStrategy);
         preferences.putBoolean("isUrlEncodingDisabled", this.isUrlEncodingDisabled);
@@ -366,6 +369,10 @@ public class PreferencesUtil {
         return this.isZipStrategy;
     }
     
+    public boolean isDefaultStrategy() {
+        return this.isDefaultStrategy;
+    }
+    
     public boolean isDiosStrategy() {
         return this.isDiosStrategy;
     }
@@ -384,6 +391,11 @@ public class PreferencesUtil {
     
     public PreferencesUtil withZipStrategy() {
         this.isZipStrategy = true;
+        return this;
+    }
+    
+    public PreferencesUtil withDefaultStrategy() {
+        this.isDefaultStrategy = true;
         return this;
     }
     
@@ -627,6 +639,11 @@ public class PreferencesUtil {
     
     public PreferencesUtil withIsZipStrategy(boolean isZipStrategy) {
         this.isZipStrategy = isZipStrategy;
+        return this;
+    }
+    
+    public PreferencesUtil withIsDefaultStrategy(boolean isDefaultStrategy) {
+        this.isDefaultStrategy = isDefaultStrategy;
         return this;
     }
     

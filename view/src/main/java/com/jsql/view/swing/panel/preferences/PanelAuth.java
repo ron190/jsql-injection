@@ -27,8 +27,8 @@ public class PanelAuth extends JPanel {
     private final JCheckBox checkboxUseDigestAuthentication = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isAuthentEnabled());
     private final JCheckBox checkboxUseKerberos = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isKerberos());
 
-    private final JTextField textDigestAuthenticationUsername = new JPopupTextField("Host system user", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getUsernameDigest()).getProxy();
-    private final JTextField textDigestAuthenticationPassword = new JPopupTextField("Host system password", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getPasswordDigest()).getProxy();
+    private final JTextField textDigestAuthenticationUsername = new JPopupTextField("Host system user", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication()).getProxy();
+    private final JTextField textDigestAuthenticationPassword = new JPopupTextField("Host system password", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication()).getProxy();
     private final JTextField textKerberosLoginConf = new JPopupTextField("Path to login.conf", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getPathKerberosLogin()).getProxy();
     private final JTextField textKerberosKrb5Conf = new JPopupTextField("Path to krb5.conf", MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getPathKerberosKrb5()).getProxy();
 

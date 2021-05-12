@@ -44,12 +44,29 @@ public class PanelInjection extends JPanel {
     private final JSpinner spinnerSleepTimeStrategyCount = new JSpinner();
 
     private final JCheckBox checkboxIsPerfIndexDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
-    private final JRadioButton checkboxIsZipStrategy = new JRadioButton(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy());
-    private final JRadioButton checkboxIsDefaultStrategy = new JRadioButton(StringUtils.EMPTY, true);
-    private final JRadioButton checkboxIsDiosStrategy = new JRadioButton(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy());
+    private final JRadioButton radioIsZipStrategy = new JRadioButton(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy());
+    private final JRadioButton radioIsDefaultStrategy = new JRadioButton(StringUtils.EMPTY, true);
+    private final JRadioButton radioIsDiosStrategy = new JRadioButton(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy());
     private final JCheckBox checkboxIsUrlEncodingDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled());
     
     public PanelInjection(PanelPreferences panelPreferences) {
+        
+        this.checkboxIsNotInjectingMetadata.setName("checkboxIsNotInjectingMetadata");
+        this.checkboxIsParsingForm.setName("checkboxIsParsingForm");
+        this.checkboxIsCheckingAllURLParam.setName("checkboxIsCheckingAllURLParam");
+        this.checkboxIsCheckingAllRequestParam.setName("checkboxIsCheckingAllRequestParam");
+        this.checkboxIsCheckingAllHeaderParam.setName("checkboxIsCheckingAllHeaderParam");
+        this.checkboxIsCheckingAllJSONParam.setName("checkboxIsCheckingAllJSONParam");
+        this.checkboxIsCheckingAllBase64Param.setName("checkboxIsCheckingAllBase64Param");
+        this.checkboxIsCheckingAllCookieParam.setName("checkboxIsCheckingAllCookieParam");
+        this.checkboxIsCheckingAllSOAPParam.setName("checkboxIsCheckingAllSOAPParam");
+        this.checkboxIsPerfIndexDisabled.setName("checkboxIsPerfIndexDisabled");
+        this.radioIsZipStrategy.setName("radioIsZipStrategy");
+        this.radioIsDefaultStrategy.setName("radioIsDefaultStrategy");
+        this.radioIsDiosStrategy.setName("radioIsDiosStrategy");
+        this.checkboxIsUrlEncodingDisabled.setName("checkboxIsUrlEncodingDisabled");
+        this.checkboxIsLimitingNormalIndex.setName("checkboxIsLimitingNormalIndex");
+        this.checkboxIsSleepTimeStrategy.setName("checkboxIsSleepTimeStrategy");
         
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
@@ -250,17 +267,17 @@ public class PanelInjection extends JPanel {
         });
         labelIsZipStrategy.addActionListener(actionEvent -> {
             
-            this.checkboxIsZipStrategy.setSelected(!this.checkboxIsZipStrategy.isSelected());
+            this.radioIsZipStrategy.setSelected(!this.radioIsZipStrategy.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         labelIsDiosStrategy.addActionListener(actionEvent -> {
             
-            this.checkboxIsDiosStrategy.setSelected(!this.checkboxIsDiosStrategy.isSelected());
+            this.radioIsDiosStrategy.setSelected(!this.radioIsDiosStrategy.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         labelIsDefaultStrategy.addActionListener(actionEvent -> {
             
-            this.checkboxIsDefaultStrategy.setSelected(!this.checkboxIsDefaultStrategy.isSelected());
+            this.radioIsDefaultStrategy.setSelected(!this.radioIsDefaultStrategy.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         labelIsUrlEncodingDisabled.addActionListener(actionEvent -> {
@@ -283,7 +300,9 @@ public class PanelInjection extends JPanel {
             this.checkboxIsCheckingAllCookieParam,
             this.checkboxIsCheckingAllSOAPParam,
             this.checkboxIsPerfIndexDisabled,
-            this.checkboxIsZipStrategy,
+            this.radioIsZipStrategy,
+            this.radioIsDiosStrategy,
+            this.radioIsDefaultStrategy,
             this.checkboxIsUrlEncodingDisabled,
             this.checkboxIsLimitingNormalIndex,
             this.checkboxIsSleepTimeStrategy
@@ -318,9 +337,9 @@ public class PanelInjection extends JPanel {
         });
         
         var groupSpaceToComment = new ButtonGroup();
-        groupSpaceToComment.add(this.checkboxIsZipStrategy);
-        groupSpaceToComment.add(this.checkboxIsDiosStrategy);
-        groupSpaceToComment.add(this.checkboxIsDefaultStrategy);
+        groupSpaceToComment.add(this.radioIsZipStrategy);
+        groupSpaceToComment.add(this.radioIsDiosStrategy);
+        groupSpaceToComment.add(this.radioIsDefaultStrategy);
         
         var groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
@@ -351,9 +370,9 @@ public class PanelInjection extends JPanel {
 //                .addComponent(this.checkboxIsCheckingAllCookieParam)
                 
                 .addComponent(emptyLabelQuerySize)
-                .addComponent(this.checkboxIsDefaultStrategy)
-                .addComponent(this.checkboxIsDiosStrategy)
-                .addComponent(this.checkboxIsZipStrategy)
+                .addComponent(this.radioIsDefaultStrategy)
+                .addComponent(this.radioIsDiosStrategy)
+                .addComponent(this.radioIsZipStrategy)
                 .addComponent(this.checkboxIsPerfIndexDisabled)
                 .addComponent(this.checkboxIsUrlEncodingDisabled)
             )
@@ -493,19 +512,19 @@ public class PanelInjection extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsDefaultStrategy)
+                .addComponent(this.radioIsDefaultStrategy)
                 .addComponent(labelIsDefaultStrategy)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsDiosStrategy)
+                .addComponent(this.radioIsDiosStrategy)
                 .addComponent(labelIsDiosStrategy)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsZipStrategy)
+                .addComponent(this.radioIsZipStrategy)
                 .addComponent(labelIsZipStrategy)
             )
             .addGroup(
@@ -570,12 +589,16 @@ public class PanelInjection extends JPanel {
         return this.checkboxIsPerfIndexDisabled;
     }
 
-    public JRadioButton getCheckboxIsZipStrategy() {
-        return this.checkboxIsZipStrategy;
+    public JRadioButton getRadioIsZipStrategy() {
+        return this.radioIsZipStrategy;
     }
     
-    public JRadioButton getCheckboxIsDiosStrategy() {
-        return this.checkboxIsDiosStrategy;
+    public JRadioButton getRadioIsDiosStrategy() {
+        return this.radioIsDiosStrategy;
+    }
+    
+    public JRadioButton getRadioIsDefaultStrategy() {
+        return this.radioIsDefaultStrategy;
     }
     
     public JCheckBox getCheckboxIsUrlEncodingDisabled() {

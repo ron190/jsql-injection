@@ -192,6 +192,7 @@ public class JFrameView extends JFrame {
         
         // Tab manager use proxy tabs dependency
         JTabbedPane tabManagers = new TabManagers();
+        tabManagers.setName("tabManagers");
 
         this.add(tabManagers);
         this.add(panelAddressBar);

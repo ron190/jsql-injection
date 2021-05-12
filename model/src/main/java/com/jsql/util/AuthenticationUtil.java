@@ -26,7 +26,7 @@ public class AuthenticationUtil {
     /**
      * True if standard authentication Basic, Digest, NTLM is activated.
      */
-    private boolean isAuthEnabled = false;
+    private boolean isAuthentication = false;
 
     /**
      * Login for standard authentication.
@@ -86,12 +86,12 @@ public class AuthenticationUtil {
         // TODO Move to Preferences
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         
-        preferences.putBoolean("isDigestAuthentication", this.isAuthEnabled);
-        preferences.put("usernameDigest", this.getUsernameAuthentication());
-        preferences.put("passwordDigest", this.getPasswordAuthentication());
+        preferences.putBoolean("isAuthentication", isAuthentication);
+        preferences.put("usernameAuthentication", usernameAuthentication);
+        preferences.put("passwordAuthentication", passwordAuthentication);
         
         // Define proxy settings
-        this.isAuthEnabled = isAuthentication;
+        this.isAuthentication = isAuthentication;
         this.usernameAuthentication = usernameAuthentication;
         this.passwordAuthentication = passwordAuthentication;
     }
@@ -140,18 +140,18 @@ public class AuthenticationUtil {
     public void setKerberosCifs() {
         
         // Use Preferences API to persist proxy configuration
-        var prefs = Preferences.userRoot().node(InjectionModel.class.getName());
+        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
         // Default proxy disabled
-        this.isAuthEnabled = prefs.getBoolean("isDigestAuthentication", false);
+        this.isAuthentication = preferences.getBoolean("isAuthentication", false);
 
         // Default TOR config
-        this.usernameAuthentication = prefs.get("usernameDigest", StringUtils.EMPTY);
-        this.passwordAuthentication = prefs.get("passwordDigest", StringUtils.EMPTY);
+        this.usernameAuthentication = preferences.get("usernameAuthentication", StringUtils.EMPTY);
+        this.passwordAuthentication = preferences.get("passwordAuthentication", StringUtils.EMPTY);
         
-        this.isKerberos = prefs.getBoolean("enableKerberos", false);
-        this.pathKerberosKrb5 = prefs.get("kerberosKrb5Conf", StringUtils.EMPTY);
-        this.pathKerberosLogin = prefs.get("kerberosLoginConf", StringUtils.EMPTY);
+        this.isKerberos = preferences.getBoolean("enableKerberos", false);
+        this.pathKerberosKrb5 = preferences.get("kerberosKrb5Conf", StringUtils.EMPTY);
+        this.pathKerberosLogin = preferences.get("kerberosLoginConf", StringUtils.EMPTY);
         
         this.setAuthentication();
     }
@@ -163,7 +163,7 @@ public class AuthenticationUtil {
         
         Authenticator.setDefault(null);
 
-        if (this.isAuthEnabled) {
+        if (this.isAuthentication) {
             
             Authenticator.setDefault(new Authenticator() {
                 
@@ -171,7 +171,7 @@ public class AuthenticationUtil {
                 protected PasswordAuthentication getPasswordAuthentication() {
                     
                     return new PasswordAuthentication (
-                        AuthenticationUtil.this.getUsernameAuthentication(),
+                        AuthenticationUtil.this.usernameAuthentication,
                         AuthenticationUtil.this.passwordAuthentication.toCharArray()
                     );
                 }
@@ -201,16 +201,8 @@ public class AuthenticationUtil {
     
     // Getters and setters
 
-    public String getUsernameDigest() {
-        return this.getUsernameAuthentication();
-    }
-
-    public String getPasswordDigest() {
-        return this.getPasswordAuthentication();
-    }
-
     public boolean isAuthentEnabled() {
-        return this.isAuthEnabled;
+        return this.isAuthentication;
     }
 
     public String getPathKerberosLogin() {
@@ -237,7 +229,7 @@ public class AuthenticationUtil {
     // Builder
     
     public AuthenticationUtil withAuthentEnabled() {
-        this.isAuthEnabled = true;
+        this.isAuthentication = true;
         return this;
     }
     
