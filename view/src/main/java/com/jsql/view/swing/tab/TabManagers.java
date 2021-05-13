@@ -39,6 +39,8 @@ public class TabManagers extends TabbedPaneWheeled {
      */
     public TabManagers() {
         
+        this.setName("tabManagers");
+        
         this.setUI(new CustomMetalTabbedPaneUI() {
             
             @Override

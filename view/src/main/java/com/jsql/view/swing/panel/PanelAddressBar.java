@@ -84,6 +84,8 @@ public class PanelAddressBar extends JPanel {
         I18nViewUtil.addComponentForKey("ADDRESS_BAR", fieldWithIcon);
         I18nViewUtil.addComponentForKey(KEY_TOOLTIP_QUERY, tooltipQuery[0]);
         
+        this.textFieldAddress.setName("textFieldAddress");
+        
         final var tooltipRequest = new JToolTipI18n[]{ new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_REQUEST)) };
         this.textFieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe=") {
             

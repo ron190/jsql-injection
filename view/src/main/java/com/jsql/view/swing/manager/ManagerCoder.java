@@ -92,6 +92,7 @@ public class ManagerCoder extends JPanel implements Manager {
         this.textInput = new JPopupTextArea(new JTextAreaPlaceholder("Type a string to convert")).getProxy();
         this.textInput.setEditable(true);
         this.textInput.setLineWrap(true);
+        this.textInput.setName("textInputManagerCoder");
         
         this.textInput.getDocument().addDocumentListener(new DocumentListenerEditing() {
             
@@ -107,6 +108,7 @@ public class ManagerCoder extends JPanel implements Manager {
         this.result = new JPopupTextPane("Result of conversion").getProxy();
         this.result.setContentType("text/html");
         this.result.setEditorKit(new HTMLEditorKitTextPaneWrap());
+        this.result.setName("resultManagerCoder");
         
         var bottom = new JPanel(new BorderLayout());
         bottom.add(new LightScrollPane(0, 0, 0, 0, this.result), BorderLayout.CENTER);
@@ -172,16 +174,20 @@ public class ManagerCoder extends JPanel implements Manager {
             var menuEncode = new JMenuItem("Encode to "+ entryMap.getKey());
             menuEncode.addActionListener(this.actionCoder);
             menuEncode.addChangeListener(new ChangeMenuListener("Encode to "+ entryMap.getKey()));
+            menuEncode.setName("encodeTo"+ entryMap.getKey());
             
             var menuDecode = new JMenuItem("Decode from "+ entryMap.getKey());
             menuDecode.addActionListener(this.actionCoder);
             menuDecode.addChangeListener(new ChangeMenuListener("Decode from "+ entryMap.getKey()));
+            menuDecode.setName("decodeFrom"+ entryMap.getKey());
             
             entryMap.getValue().add(menuEncode);
             entryMap.getValue().add(menuDecode);
+            entryMap.getValue().setName(entryMap.getKey());
         });
 
         mapMenus.put("Hash", new JMenu("Hash"));
+        mapMenus.get("Hash").setName("Hash");
         
         Stream
         .of("Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql")
@@ -190,12 +196,14 @@ public class ManagerCoder extends JPanel implements Manager {
             var menuEncode = new JMenuItem("Hash to "+ hash);
             menuEncode.addActionListener(this.actionCoder);
             menuEncode.addChangeListener(new ChangeMenuListener("Hash to "+ hash));
+            menuEncode.setName("hashTo"+ hash);
             
             mapMenus.get("Hash").add(menuEncode);
         });
 
         JMenu comboMenu = MenuBarCoder.createMenu("Choose method...");
         this.menuMethod = comboMenu;
+        this.menuMethod.setName("menuMethodManagerCoder");
         
         for (JMenu menu: mapMenus.values()) {
             

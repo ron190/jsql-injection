@@ -4,8 +4,13 @@ import static org.assertj.swing.core.matcher.JButtonMatcher.withText;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
+import org.apache.commons.codec.DecoderException;
 import org.apache.logging.log4j.util.Strings;
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
@@ -28,6 +33,7 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
+import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.JFrameView;
 import com.jsql.view.swing.util.MediatorHelper;
 
@@ -93,7 +99,60 @@ public class ApplicationUiTest {
     }
     
     @Test
+    public void shouldRunCoder() throws IOException {
+
+        window.tabbedPane("tabManagers").selectTab("Encoding");
+        window.menuItem("menuMethodManagerCoder").click();
+        
+        window.textBox("textInputManagerCoder").setText("a");
+        
+        window.robot().moveMouse(window.menuItem("Base16").target());
+        window.robot().moveMouse(window.menuItem("encodeToBase16").target());
+        window.textBox("resultManagerCoder").requireText(Pattern.compile(".*<span><font[^>]*>61</font></span>.*", Pattern.DOTALL));
+        
+        window.robot().moveMouse(window.menuItem("Base32").target());
+        window.robot().moveMouse(window.menuItem("encodeToBase32").target());
+        window.textBox("resultManagerCoder").requireText(Pattern.compile(".*<span><font[^>]*>ME======</font></span>.*", Pattern.DOTALL));
+        
+        window.robot().moveMouse(window.menuItem("Base58").target());
+        window.robot().moveMouse(window.menuItem("encodeToBase58").target());
+        window.textBox("resultManagerCoder").requireText(Pattern.compile(".*<span><font[^>]*>2g</font></span>.*", Pattern.DOTALL));
+        
+        window.robot().moveMouse(window.menuItem("Base64").target());
+        window.robot().moveMouse(window.menuItem("encodeToBase64").target());
+        window.textBox("resultManagerCoder").requireText(Pattern.compile(".*<span><font[^>]*>YQ==</font></span>.*", Pattern.DOTALL));
+        
+        window.robot().moveMouse(window.menuItem("Hash").target());
+        
+        Stream
+        .of("Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql")
+        .forEach(hash -> {
+            
+            String result = null;
+            try {
+                result = ActionCoder
+                    .forName(hash)
+                    .orElseThrow(() -> new NoSuchElementException("Unsupported encoding or decoding method"))
+                    .run("a");
+            } catch (NoSuchAlgorithmException | NoSuchElementException | DecoderException | IOException e) {
+                Assert.fail();
+            }
+            
+            window.robot().moveMouse(window.menuItem("hashTo"+ hash).target());
+            window.textBox("resultManagerCoder").requireText(Pattern.compile(".*<span><font[^>]*>"+ result +"</font></span>.*", Pattern.DOTALL));
+        });
+        
+//        window.textBox("textInputManagerCoder").setText("YQ==");
+//        window.menuItem("menuMethodManagerCoder").click();
+//        window.menuItem("decodeFromBase64").focus();
+//        window.textBox("resultManagerCoder").requireText(Pattern.compile(".*<span><font[^>]*>a</font></span>.*", Pattern.DOTALL));
+    }
+    
+    @Test
     public void shouldFindAdminpage() throws IOException {
+
+        window.tabbedPane("tabManagers").selectTab("Admin page");
+        window.list("listManagerAdminPage").item(0).select().rightClick();
         
         var request = new Request();
         request.setMessage(Interaction.CREATE_ADMIN_PAGE_TAB);
@@ -107,6 +166,8 @@ public class ApplicationUiTest {
     
     @Test
     public void shouldFindDatabase() {
+
+        window.tabbedPane("tabManagers").selectTab("Database");
         
         var nameDatabase = "database";
         Database database = new Database(nameDatabase, "1");

@@ -48,6 +48,8 @@ public class TabManagersProxy extends JTabbedPane {
      */
     public TabManagersProxy() {
         
+        this.setName("tabManagersProxy");
+        
         // Hide tab headers
         this.setUI(new MetalTabbedPaneUI() {
             
