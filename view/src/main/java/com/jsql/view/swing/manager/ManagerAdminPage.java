@@ -65,6 +65,9 @@ public class ManagerAdminPage extends AbstractManagerList {
 
         this.initializeRunButton();
         
+        this.listFile.setName("listManagerAdminPage");
+        this.run.setName("runManagerAdminPage");
+        
         this.lastLine.setLayout(new BorderLayout());
         this.lastLine.setPreferredSize(new Dimension(0, 26));
         
