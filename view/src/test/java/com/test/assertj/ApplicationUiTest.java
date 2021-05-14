@@ -126,7 +126,10 @@ public class ApplicationUiTest {
         request.setMessage(Interaction.CREATE_FILE_TAB);
         request.setParameters("file", "content", "path");
         MediatorHelper.model().sendToViews(request);
+
         
+        window.tabbedPane("tabResults").requireVisible();
+        window.tabbedPane("tabResults").requireTitle("file ", Index.atIndex(0));
         window.tabbedPane("tabResults").selectTab("file ").requireVisible();
         
         window.label("file").click(MouseButton.MIDDLE_BUTTON);
@@ -139,7 +142,9 @@ public class ApplicationUiTest {
         request.setMessage(Interaction.CREATE_SHELL_TAB);
         request.setParameters("http://webshell", "http://webshell/path");
         MediatorHelper.model().sendToViews(request);
-        
+
+        window.tabbedPane("tabResults").requireVisible();
+        window.tabbedPane("tabResults").requireTitle("Web shell ", Index.atIndex(0));
         window.tabbedPane("tabResults").selectTab("Web shell ").requireVisible();
         
         window.label("Web shell").click(MouseButton.MIDDLE_BUTTON);
@@ -152,7 +157,9 @@ public class ApplicationUiTest {
         request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);
         request.setParameters("http://sqlshell", "http://sqlshell/path", "username", "password");
         MediatorHelper.model().sendToViews(request);
-        
+
+        window.tabbedPane("tabResults").requireVisible();
+        window.tabbedPane("tabResults").requireTitle("SQL shell ", Index.atIndex(0));
         window.tabbedPane("tabResults").selectTab("SQL shell ").requireVisible();
         
         window.label("SQL shell").click(MouseButton.MIDDLE_BUTTON);
@@ -216,9 +223,11 @@ public class ApplicationUiTest {
         
         var request = new Request();
         request.setMessage(Interaction.CREATE_ADMIN_PAGE_TAB);
-        request.setParameters("http://adminpage");
+        request.setParameters("http://host/adminpage");
         MediatorHelper.model().sendToViews(request);
         
+        window.tabbedPane("tabResults").requireVisible();
+        window.tabbedPane("tabResults").requireTitle("adminpage ", Index.atIndex(0));
         window.tabbedPane("tabResults").selectTab("adminpage ").requireVisible();
 
         ApplicationUiTest.verifyMockAdminPage();
