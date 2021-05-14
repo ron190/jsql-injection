@@ -118,10 +118,6 @@ public class ApplicationUiTest {
             window.tabbedPane("tabResults").target().removeTabAt(0);
             window.tabbedPane("tabResults").target().removeTabAt(0);
         });
-        
-//        window.label("dragfile").click(MouseButton.MIDDLE_BUTTON);
-//        window.label("jumpfile").click(MouseButton.MIDDLE_BUTTON);
-//        window.label("dropfile").click(MouseButton.MIDDLE_BUTTON);
     }
     
     @Test
@@ -300,6 +296,7 @@ public class ApplicationUiTest {
         window.tree("treeDatabases").rightClickRow(0);
         window.tabbedPane("tabResults").click();
         window.tree("treeDatabases").rightClickRow(1);
+        
         GuiActionRunner.execute(() -> {
             window.tabbedPane("tabResults").target().removeTabAt(0);
         });
