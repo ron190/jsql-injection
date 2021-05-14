@@ -44,7 +44,6 @@ script:
     --rm                                                \
     -v "$HOME/.m2":/root/.m2                            \
     -v "$HOME/.sonar/cache":/root/.sonar/cache          \
-    --network docker_jsql-network                       \
     -e SONAR_TOKEN                                      \
     -e CODACY_PROJECT_TOKEN                             \
     -e CODECOV_TOKEN                                    \
