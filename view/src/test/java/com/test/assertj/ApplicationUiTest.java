@@ -74,6 +74,9 @@ public class ApplicationUiTest {
         MediatorHelper.model().sendToViews(request);
         
         window.tabbedPane("tabResults").selectTab("file ").requireVisible();
+        GuiActionRunner.execute(() -> {
+        window.tabbedPane("tabResults").target().removeTabAt(0);
+        });
     }
     
     @Test
@@ -85,6 +88,9 @@ public class ApplicationUiTest {
         MediatorHelper.model().sendToViews(request);
         
         window.tabbedPane("tabResults").selectTab("Web shell ").requireVisible();
+        GuiActionRunner.execute(() -> {
+        window.tabbedPane("tabResults").target().removeTabAt(0);
+        });
     }
 
     @Test
@@ -96,6 +102,9 @@ public class ApplicationUiTest {
         MediatorHelper.model().sendToViews(request);
         
         window.tabbedPane("tabResults").selectTab("SQL shell ").requireVisible();
+        GuiActionRunner.execute(() -> {
+        window.tabbedPane("tabResults").target().removeTabAt(0);
+        });
     }
     
     @Test
@@ -162,6 +171,9 @@ public class ApplicationUiTest {
         window.tabbedPane("tabResults").selectTab("adminpage ").requireVisible();
 
         ApplicationUiTest.verifyMockAdminPage();
+        GuiActionRunner.execute(() -> {
+        window.tabbedPane("tabResults").target().removeTabAt(0);
+        });
     }
     
     @Test
@@ -225,6 +237,9 @@ public class ApplicationUiTest {
         window.tree("treeDatabases").rightClickRow(0);
         window.tabbedPane("tabResults").click();
         window.tree("treeDatabases").rightClickRow(1);
+        GuiActionRunner.execute(() -> {
+        window.tabbedPane("tabResults").target().removeTabAt(0);
+        });
     }
 
     @Test
@@ -310,6 +325,10 @@ public class ApplicationUiTest {
         } catch (Exception e) {
             Assert.fail();
         }
+
+        GuiActionRunner.execute(() -> {
+        window.tabbedPane("tabResults").target().removeTabAt(0);
+        });
     }
     
     @Test
@@ -324,6 +343,9 @@ public class ApplicationUiTest {
         } catch (Exception e) {
             Assert.fail();
         }
+        GuiActionRunner.execute(() -> {
+        window.tabbedPane("tabResults").target().removeTabAt(0);
+        });
     }
     
     @Test
