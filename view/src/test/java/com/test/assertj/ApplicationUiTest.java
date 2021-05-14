@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.logging.log4j.util.Strings;
+import org.assertj.swing.core.MouseButton;
+import org.assertj.swing.data.Index;
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.DialogFixture;
@@ -66,6 +68,63 @@ public class ApplicationUiTest {
     }
 
     @Test
+    public void shouldDnDList() {
+
+        window.tabbedPane("tabManagers").selectTab("Admin page");
+        Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(0));
+        Assert.assertNotEquals("admin", window.list("listManagerAdminPage").valueAt(1));
+        window.list("listManagerAdminPage").drag(0);
+        window.list("listManagerAdminPage").drop(1);
+        Assert.assertNotEquals("admin", window.list("listManagerAdminPage").valueAt(0));
+        Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(1));
+    }
+    
+    @Test
+    public void shouldDnDTabs() {
+        
+        var request = new Request();
+        request.setMessage(Interaction.CREATE_FILE_TAB);
+        request.setParameters("dragfile", "content", "path");
+        MediatorHelper.model().sendToViews(request);
+        
+        request = new Request();
+        request.setMessage(Interaction.CREATE_FILE_TAB);
+        request.setParameters("jumpfile", "content", "path");
+        MediatorHelper.model().sendToViews(request);
+        
+        request = new Request();
+        request.setMessage(Interaction.CREATE_FILE_TAB);
+        request.setParameters("dropfile", "content", "path");
+        MediatorHelper.model().sendToViews(request);
+        
+        window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(0));
+        window.tabbedPane("tabResults").requireTitle("jumpfile ", Index.atIndex(1));
+        window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
+        
+        window.robot().pressMouse(
+            window.label("dragfile").target(), 
+            window.label("dragfile").target().getLocation()
+        );
+        
+        window.robot().moveMouse(window.label("dragfile").target());  // required
+        window.label("dropfile").drop();
+        
+        window.tabbedPane("tabResults").requireTitle("jumpfile ", Index.atIndex(0));
+        window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(1));
+        window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
+        
+        GuiActionRunner.execute(() -> {
+            window.tabbedPane("tabResults").target().removeTabAt(0);
+            window.tabbedPane("tabResults").target().removeTabAt(0);
+            window.tabbedPane("tabResults").target().removeTabAt(0);
+        });
+        
+//        window.label("dragfile").click(MouseButton.MIDDLE_BUTTON);
+//        window.label("jumpfile").click(MouseButton.MIDDLE_BUTTON);
+//        window.label("dropfile").click(MouseButton.MIDDLE_BUTTON);
+    }
+    
+    @Test
     public void shouldFindFile() {
         
         var request = new Request();
@@ -74,8 +133,9 @@ public class ApplicationUiTest {
         MediatorHelper.model().sendToViews(request);
         
         window.tabbedPane("tabResults").selectTab("file ").requireVisible();
+        
         GuiActionRunner.execute(() -> {
-        window.tabbedPane("tabResults").target().removeTabAt(0);
+            window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
     
@@ -88,8 +148,9 @@ public class ApplicationUiTest {
         MediatorHelper.model().sendToViews(request);
         
         window.tabbedPane("tabResults").selectTab("Web shell ").requireVisible();
+        
         GuiActionRunner.execute(() -> {
-        window.tabbedPane("tabResults").target().removeTabAt(0);
+            window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
 
@@ -102,8 +163,9 @@ public class ApplicationUiTest {
         MediatorHelper.model().sendToViews(request);
         
         window.tabbedPane("tabResults").selectTab("SQL shell ").requireVisible();
+        
         GuiActionRunner.execute(() -> {
-        window.tabbedPane("tabResults").target().removeTabAt(0);
+            window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
     
@@ -171,8 +233,9 @@ public class ApplicationUiTest {
         window.tabbedPane("tabResults").selectTab("adminpage ").requireVisible();
 
         ApplicationUiTest.verifyMockAdminPage();
+        
         GuiActionRunner.execute(() -> {
-        window.tabbedPane("tabResults").target().removeTabAt(0);
+            window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
     
@@ -238,7 +301,7 @@ public class ApplicationUiTest {
         window.tabbedPane("tabResults").click();
         window.tree("treeDatabases").rightClickRow(1);
         GuiActionRunner.execute(() -> {
-        window.tabbedPane("tabResults").target().removeTabAt(0);
+            window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
 
@@ -327,7 +390,7 @@ public class ApplicationUiTest {
         }
 
         GuiActionRunner.execute(() -> {
-        window.tabbedPane("tabResults").target().removeTabAt(0);
+            window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
     
@@ -344,7 +407,7 @@ public class ApplicationUiTest {
             Assert.fail();
         }
         GuiActionRunner.execute(() -> {
-        window.tabbedPane("tabResults").target().removeTabAt(0);
+            window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
     
@@ -355,6 +418,10 @@ public class ApplicationUiTest {
         window.menuItem("menuWindows").click();
         window.menuItem("menuTranslation").click();
         window.menuItem("itemRussian").click();
+        
+        window.menuItem("menuWindows").click();
+        window.menuItem("menuTranslation").click();
+        window.menuItem("itemEnglish").click();
 
         try {
             window.button("advancedButton").click();

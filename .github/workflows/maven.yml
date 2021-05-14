@@ -49,15 +49,6 @@ jobs:
       run: |
         mvn clean install -DskipTests dependency:tree
         
-    - name: Build and start databases Docker images
-      run: |
-        docker-compose -f ./model/src/test/resources/docker/docker-compose.yml build --parallel
-        docker-compose -f ./model/src/test/resources/docker/docker-compose.yml up -d
-        
-        ./model/src/test/resources/docker/healthcheck/healthcheck.sh
-        ./model/src/test/resources/docker/script/buff.sh
-        ./model/src/test/resources/docker/script/verify.sh
-        
     - name: Build project Docker containers
       run: |
         docker rmi jsql:latest -f

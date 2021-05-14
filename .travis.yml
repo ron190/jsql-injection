@@ -33,11 +33,6 @@ before_script:
     
     # Prevent error 'You have reached your pull rate limit' with dedicated user
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    docker-compose -f ./model/src/test/resources/docker/docker-compose.yml build --parallel
-    docker-compose -f ./model/src/test/resources/docker/docker-compose.yml up -d
-    ./model/src/test/resources/docker/healthcheck/healthcheck.sh
-    ./model/src/test/resources/docker/script/buff.sh
-    ./model/src/test/resources/docker/script/verify.sh
     
     docker rmi jsql:latest -f
     docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
