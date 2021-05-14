@@ -80,44 +80,44 @@ public class ApplicationUiTest {
         Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(1));
     }
     
-    @Test
-    public void shouldDnDTabs() throws AWTException {
-        
-        var request = new Request();
-        request.setMessage(Interaction.CREATE_FILE_TAB);
-        request.setParameters("dragfile", "content", "path");
-        MediatorHelper.model().sendToViews(request);
-        
-        request = new Request();
-        request.setMessage(Interaction.CREATE_FILE_TAB);
-        request.setParameters("jumpfile", "content", "path");
-        MediatorHelper.model().sendToViews(request);
-        
-        request = new Request();
-        request.setMessage(Interaction.CREATE_FILE_TAB);
-        request.setParameters("dropfile", "content", "path");
-        MediatorHelper.model().sendToViews(request);
-        
-        window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(0));
-        window.tabbedPane("tabResults").requireTitle("jumpfile ", Index.atIndex(1));
-        window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
-        
-        window.robot().pressMouse(
-            window.label("dragfile").target(), 
-            window.label("dragfile").target().getLocation()
-        );
-        
-        window.robot().moveMouse(window.label("dragfile").target());  // required
-        window.label("dropfile").drop();
-        
-        window.tabbedPane("tabResults").requireTitle("jumpfile ", Index.atIndex(0));
-        window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(1));
-        window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
-        
-        window.label("dragfile").click(MouseButton.MIDDLE_BUTTON);
-        window.label("jumpfile").click(MouseButton.MIDDLE_BUTTON);
-        window.label("dropfile").click(MouseButton.MIDDLE_BUTTON);
-    }
+//    @Test
+//    public void shouldDnDTabs() throws AWTException {
+//        
+//        var request = new Request();
+//        request.setMessage(Interaction.CREATE_FILE_TAB);
+//        request.setParameters("dragfile", "content", "path");
+//        MediatorHelper.model().sendToViews(request);
+//        
+//        request = new Request();
+//        request.setMessage(Interaction.CREATE_FILE_TAB);
+//        request.setParameters("jumpfile", "content", "path");
+//        MediatorHelper.model().sendToViews(request);
+//        
+//        request = new Request();
+//        request.setMessage(Interaction.CREATE_FILE_TAB);
+//        request.setParameters("dropfile", "content", "path");
+//        MediatorHelper.model().sendToViews(request);
+//        
+//        window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(0));
+//        window.tabbedPane("tabResults").requireTitle("jumpfile ", Index.atIndex(1));
+//        window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
+//        
+//        window.robot().pressMouse(
+//            window.label("dragfile").target(), 
+//            window.label("dragfile").target().getLocation()
+//        );
+//        
+//        window.robot().moveMouse(window.label("dragfile").target());  // required
+//        window.label("dropfile").drop();
+//        
+//        window.tabbedPane("tabResults").requireTitle("jumpfile ", Index.atIndex(0));
+//        window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(1));
+//        window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
+//        
+//        window.label("dragfile").click(MouseButton.MIDDLE_BUTTON);
+//        window.label("jumpfile").click(MouseButton.MIDDLE_BUTTON);
+//        window.label("dropfile").click(MouseButton.MIDDLE_BUTTON);
+//    }
     
     @Test
     public void shouldFindFile() {
