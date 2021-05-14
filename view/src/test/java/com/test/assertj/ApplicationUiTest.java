@@ -281,6 +281,7 @@ public class ApplicationUiTest {
         requestValues.setParameters(objectData);
         MediatorHelper.model().sendToViews(requestValues);
         
+        window.tabbedPane("tabResults").requireTitle(nameTable, Index.atIndex(0));
         window.tabbedPane("tabResults").selectTab(nameTable).requireVisible();
         
         
