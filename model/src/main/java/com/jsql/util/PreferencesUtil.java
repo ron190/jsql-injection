@@ -68,7 +68,7 @@ public class PreferencesUtil {
 
     private boolean isLimitingNormalIndex = false;
     private int countNormalIndex = 50;
-    private boolean isSleepTimeStrategy = false;
+    private boolean isLimitingSleepTimeStrategy = false;
     private int countSleepTimeStrategy = 5;
 
     /**
@@ -130,7 +130,7 @@ public class PreferencesUtil {
         this.countNormalIndex = prefs.getInt("countNormalIndex", 50);
         this.isLimitingNormalIndex = prefs.getBoolean("isLimitingNormalIndex", false);
         this.countSleepTimeStrategy = prefs.getInt("countSleepTimeStrategy", 5);
-        this.isSleepTimeStrategy = prefs.getBoolean("isLimitingSleepTimeStrategy", false);
+        this.isLimitingSleepTimeStrategy = prefs.getBoolean("isLimitingSleepTimeStrategy", false);
     }
     
     /**
@@ -151,7 +151,7 @@ public class PreferencesUtil {
         preferences.putInt("countConnectionTimeout", this.countConnectionTimeout);
         preferences.putBoolean("isLimitingNormalIndex", this.isLimitingNormalIndex);
         preferences.putInt("countNormalIndex", this.countNormalIndex);
-        preferences.putBoolean("isSleepTimeStrategy", this.isSleepTimeStrategy);
+        preferences.putBoolean("isLimitingSleepTimeStrategy", this.isLimitingSleepTimeStrategy);
         preferences.putInt("countSleepTimeStrategy", this.countSleepTimeStrategy);
         preferences.putBoolean("isCsrfUserTag", this.isCsrfUserTag);
         preferences.put("csrfUserTag", this.csrfUserTag);
@@ -317,8 +317,8 @@ public class PreferencesUtil {
         return this.isLimitingThreads;
     }
     
-    public boolean isSleepTimeStrategy() {
-        return this.isSleepTimeStrategy;
+    public boolean isLimitingSleepTimeStrategy() {
+        return this.isLimitingSleepTimeStrategy;
     }
     
     public boolean isConnectionTimeout() {
@@ -617,8 +617,8 @@ public class PreferencesUtil {
         return this;
     }
     
-    public PreferencesUtil withIsSleepTimeStrategy(boolean isSleepTimeStrategy) {
-        this.isSleepTimeStrategy = isSleepTimeStrategy;
+    public PreferencesUtil withIsLimitingSleepTimeStrategy(boolean isLimitingSleepTimeStrategy) {
+        this.isLimitingSleepTimeStrategy = isLimitingSleepTimeStrategy;
         return this;
     }
 

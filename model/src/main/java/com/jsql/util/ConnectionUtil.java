@@ -154,7 +154,7 @@ public class ConnectionUtil {
      * @throws IOException
      * @throws InterruptedException
      */
-    public HttpResponse<String> testConnection() throws IOException, InterruptedException {
+    public HttpResponse<String> checkConnectionResponse() throws IOException, InterruptedException {
 
         // Test the HTTP connection
         Builder httpRequest = HttpRequest
@@ -178,6 +178,28 @@ public class ConnectionUtil {
         }
 
         return this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(httpRequest);
+    }
+    
+    public void testConnection() throws IOException, InterruptedException, InjectionFailureException {
+        
+        // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
+        LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
+        this.getCookieManager().getCookieStore().removeAll();
+        HttpResponse<String> httpResponse = this.checkConnectionResponse();
+        
+        if (
+            (httpResponse.statusCode() == 401 || httpResponse.statusCode() == 403)
+            && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
+            && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
+        ) {
+            LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> "Testing handshake from previous connection...");
+            httpResponse = this.checkConnectionResponse();
+        }
+        
+        if (httpResponse.statusCode() >= 400 && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
+            
+            throw new InjectionFailureException(String.format("Connection failed: problem when calling %s", httpResponse.uri().toURL().toString()));
+        }
     }
     
     public String getSource(String url, boolean lineFeed) throws IOException {

@@ -686,7 +686,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             SqlEngine.tabbedPaneError.addTab(methodError.getName(), panelError);
             
             SqlEngine.tabbedPaneError.setTitleAt(
-                    SqlEngine.tabbedPaneError.getTabCount() - 1,
+                SqlEngine.tabbedPaneError.getTabCount() - 1,
                 String.format(
                     "<html><div style=\"text-align:left;width:100px;\">%s</div></html>",
                     methodError.getName()

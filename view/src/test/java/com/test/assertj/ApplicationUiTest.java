@@ -1,8 +1,9 @@
 package com.test.assertj;
 
-import static org.assertj.swing.core.matcher.JButtonMatcher.withText;
-import static org.junit.Assert.assertEquals;
-
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -12,7 +13,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.logging.log4j.util.Strings;
-import org.assertj.swing.core.MouseButton;
+import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.data.Index;
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
@@ -77,6 +78,56 @@ public class ApplicationUiTest {
         window.list("listManagerAdminPage").drop(1);
         Assert.assertNotEquals("admin", window.list("listManagerAdminPage").valueAt(0));
         Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(1));
+        
+        window.list("listManagerAdminPage").selectItem(0).pressKey(KeyEvent.VK_DELETE);
+        window.list("listManagerAdminPage").selectItem(0);
+        window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_C);
+        window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_C);
+        window.list("listManagerAdminPage").selectItem(1);
+        window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        
+        Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(0));
+        Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(1));
+        
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection stringSelection = new StringSelection("paste-from-clipboard");
+        clipboard.setContents(stringSelection, null);
+        window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        
+        Assert.assertEquals("paste-from-clipboard", window.list("listManagerAdminPage").valueAt(1));
+    }
+    
+    @Test
+    public void shouldDnDScanList() {
+        
+        window.tabbedPane("tabManagers").selectTab("Batch scan");
+        Assert.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(0));
+        Assert.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(1));
+        window.list("listManagerScan").drag(0);
+        window.list("listManagerScan").drop(1);
+        Assert.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(0));
+        Assert.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(1));
+        
+        window.list("listManagerScan").selectItem(0).pressKey(KeyEvent.VK_DELETE);
+        window.list("listManagerScan").selectItem(0);
+        window.list("listManagerScan").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_C);
+        window.list("listManagerScan").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_C);
+        window.list("listManagerScan").selectItem(1);
+        window.list("listManagerScan").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        window.list("listManagerScan").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        
+        Assert.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(0));
+        Assert.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(1));
+        
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection stringSelection = new StringSelection("paste-from-clipboard");
+        clipboard.setContents(stringSelection, null);
+        window.list("listManagerScan").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        window.list("listManagerScan").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        
+        Assert.assertEquals("paste-from-clipboard", window.list("listManagerScan").valueAt(1));
     }
     
     @Test
@@ -105,15 +156,19 @@ public class ApplicationUiTest {
             window.label("dragfile").target(), 
             window.label("dragfile").target().getLocation()
         );
-        
         window.robot().moveMouse(window.label("dragfile").target());  // required
         window.label("dropfile").drop();
         
-        window.tabbedPane("tabResults").requireTitle("jumpfile ", Index.atIndex(0));
-        window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(1));
-        window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
+        try {
+            window.tabbedPane("tabResults").requireTitle("jumpfile ", Index.atIndex(0));
+            window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(1));
+            window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
+        } catch (Exception e) {
+            Assert.fail();
+        }
         
         GuiActionRunner.execute(() -> {
+            
             window.tabbedPane("tabResults").target().removeTabAt(0);
             window.tabbedPane("tabResults").target().removeTabAt(0);
             window.tabbedPane("tabResults").target().removeTabAt(0);
@@ -128,9 +183,14 @@ public class ApplicationUiTest {
         request.setParameters("file", "content", "path");
         MediatorHelper.model().sendToViews(request);
         
-        window.tabbedPane("tabResults").selectTab("file ").requireVisible();
+        try {
+            window.tabbedPane("tabResults").selectTab("file ").requireVisible();
+        } catch (Exception e) {
+            Assert.fail();
+        }
         
         GuiActionRunner.execute(() -> {
+            
             window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
@@ -143,9 +203,14 @@ public class ApplicationUiTest {
         request.setParameters("http://webshell", "http://webshell/path");
         MediatorHelper.model().sendToViews(request);
         
-        window.tabbedPane("tabResults").selectTab("Web shell ").requireVisible();
+        try {
+            window.tabbedPane("tabResults").selectTab("Web shell ").requireVisible();
+        } catch (Exception e) {
+            Assert.fail();
+        }
         
         GuiActionRunner.execute(() -> {
+            
             window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
@@ -158,9 +223,14 @@ public class ApplicationUiTest {
         request.setParameters("http://sqlshell", "http://sqlshell/path", "username", "password");
         MediatorHelper.model().sendToViews(request);
         
-        window.tabbedPane("tabResults").selectTab("SQL shell ").requireVisible();
+        try {
+            window.tabbedPane("tabResults").selectTab("SQL shell ").requireVisible();
+        } catch (Exception e) {
+            Assert.fail();
+        }
         
         GuiActionRunner.execute(() -> {
+            
             window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
@@ -208,11 +278,6 @@ public class ApplicationUiTest {
             window.robot().moveMouse(window.menuItem("hashTo"+ hash).target());
             window.textBox("resultManagerCoder").requireText(Pattern.compile(".*<span><font[^>]*>"+ result +"</font></span>.*", Pattern.DOTALL));
         });
-        
-//        window.textBox("textInputManagerCoder").setText("YQ==");
-//        window.menuItem("menuMethodManagerCoder").click();
-//        window.menuItem("decodeFromBase64").focus();
-//        window.textBox("resultManagerCoder").requireText(Pattern.compile(".*<span><font[^>]*>a</font></span>.*", Pattern.DOTALL));
     }
     
     @Test
@@ -231,6 +296,7 @@ public class ApplicationUiTest {
         ApplicationUiTest.verifyMockAdminPage();
         
         GuiActionRunner.execute(() -> {
+            
             window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
@@ -248,7 +314,7 @@ public class ApplicationUiTest {
         requestDatabase.setParameters(Arrays.asList(database));
         MediatorHelper.model().sendToViews(requestDatabase);
         
-        assertEquals(nameDatabase +" (1 table)", window.tree("treeDatabases").valueAt(0));
+        Assert.assertEquals(nameDatabase +" (1 table)", window.tree("treeDatabases").valueAt(0));
         
         
         var nameTable = "table";
@@ -259,7 +325,7 @@ public class ApplicationUiTest {
         requestTable.setParameters(Arrays.asList(table));
         MediatorHelper.model().sendToViews(requestTable);
         
-        assertEquals(nameTable +" (2 rows)", window.tree("treeDatabases").valueAt(1));
+        Assert.assertEquals(nameTable +" (2 rows)", window.tree("treeDatabases").valueAt(1));
         
         
         var nameColumn0 = "column 0";
@@ -272,8 +338,8 @@ public class ApplicationUiTest {
         request.setParameters(Arrays.asList(column1, column2));
         MediatorHelper.model().sendToViews(request);
         
-        assertEquals(nameColumn0, window.tree("treeDatabases").valueAt(2));
-        assertEquals(nameColumn1, window.tree("treeDatabases").valueAt(3));
+        Assert.assertEquals(nameColumn0, window.tree("treeDatabases").valueAt(2));
+        Assert.assertEquals(nameColumn1, window.tree("treeDatabases").valueAt(3));
         
         
         var arrayColumns = new String[] { Strings.EMPTY, Strings.EMPTY, nameColumn0, nameColumn1 };
@@ -298,12 +364,14 @@ public class ApplicationUiTest {
         window.tree("treeDatabases").rightClickRow(1);
         
         GuiActionRunner.execute(() -> {
+            
             window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
 
     @Test
     public void shouldFindOkButton() {
+        
         try {
             window.button("buttonInUrl").click();
         } catch (Exception e) {
@@ -332,35 +400,46 @@ public class ApplicationUiTest {
         window.menuItem("menuWindows").click();
         window.menuItem("itemPreferences").click();
         
-        window.checkBox("checkboxIsNotInjectingMetadata").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata());
-        
         window.checkBox("checkboxIsParsingForm").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm());
-        
+        window.checkBox("checkboxIsNotInjectingMetadata").check();
+        window.checkBox("checkboxIsLimitingNormalIndex").check();
+        window.checkBox("checkboxIsLimitingSleepTimeStrategy").check();
         window.checkBox("checkboxIsCheckingAllURLParam").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam());
-        
         window.checkBox("checkboxIsCheckingAllRequestParam").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam());
-        
         window.checkBox("checkboxIsCheckingAllHeaderParam").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam());
-        
         window.checkBox("checkboxIsCheckingAllJSONParam").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam());
-        
-//        window.checkBox("checkboxIsCheckingAllBase64Param").check();
-//        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllBase64Param());
-        
-//        window.checkBox("checkboxIsCheckingAllCookieParam").check();
-//        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam());
-        
         window.checkBox("checkboxIsCheckingAllSOAPParam").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam());
-        
         window.checkBox("checkboxIsPerfIndexDisabled").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
+        window.checkBox("checkboxIsUrlEncodingDisabled").check();
+        
+        Assert.assertArrayEquals(
+            new boolean[] {
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
+            }
+        );
+
         
         window.radioButton("radioIsZipStrategy").check();
         Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy());
@@ -371,22 +450,10 @@ public class ApplicationUiTest {
         window.radioButton("radioIsDiosStrategy").check();
         Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy());
         
-        window.checkBox("checkboxIsUrlEncodingDisabled").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled());
-        
-        window.checkBox("checkboxIsLimitingNormalIndex").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex());
-        
-        window.checkBox("checkboxIsSleepTimeStrategy").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isSleepTimeStrategy());
-
-        try {
-            window.button("advancedButton").click();
-        } catch (Exception e) {
-            Assert.fail();
-        }
+        window.button("advancedButton").click();
 
         GuiActionRunner.execute(() -> {
+            
             window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
@@ -403,7 +470,9 @@ public class ApplicationUiTest {
         } catch (Exception e) {
             Assert.fail();
         }
+        
         GuiActionRunner.execute(() -> {
+            
             window.tabbedPane("tabResults").target().removeTabAt(0);
         });
     }
@@ -435,7 +504,7 @@ public class ApplicationUiTest {
         window.menuItem("itemReportIssue").click();
         
         DialogFixture dialog = window.dialog();
-        dialog.button(withText("Cancel")).click();
+        dialog.button(JButtonMatcher.withText("Cancel")).click();
 
         try {
             window.button("advancedButton").click();
@@ -470,7 +539,7 @@ public class ApplicationUiTest {
         window.menuItem("itemHelp").click();
         
         DialogFixture dialog = window.dialog();
-        dialog.button(withText("Close")).click();
+        dialog.button(JButtonMatcher.withText("Close")).click();
         
         try {
             window.button("advancedButton").click();

@@ -96,19 +96,22 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 - Inject user defined query
 - Inject range of rows
 - Routed query strategy
-```
-
-## In progress
-```
-- Implement DNS/HTTP out-of-band algorithm
 - Connect to Digest/Kerberos API with HttpClient
 - Replace Docker Compose by Kubernetes
 - Database fingerprinting: Boolean single query
 ```
 
+## In progress
+```
+- Implement DNS/HTTP out-of-band algorithm
+- Inject each Cookie parameters
+- Rows custom load
+```
+
 ## Since latest release
 ```
-- Testing DNS/HTTP out-of-band (Oracle)
+- Testing Oracle DNS/HTTP out-of-band
+- Testing PostgreSQL DNS out-of-band
 - Testing Websocket Basic/STOMP
 - Testing GraphQL
 - Testing Kerberos

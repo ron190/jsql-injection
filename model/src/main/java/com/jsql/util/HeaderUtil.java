@@ -50,7 +50,6 @@ public class HeaderUtil {
         String keyHeader = header.getKey().trim();
         String valueHeader = header.getValue().trim();
         
-        // Fix #2124: NullPointerException on addRequestProperty()
         try {
             if ("Cookie".equalsIgnoreCase(keyHeader)) {
                 
@@ -68,7 +67,7 @@ public class HeaderUtil {
                 );
             }
             
-        } catch (NullPointerException | UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             
             LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
         }

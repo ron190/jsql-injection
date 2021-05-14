@@ -40,7 +40,7 @@ public class PanelInjection extends JPanel {
 
     private final JCheckBox checkboxIsLimitingNormalIndex = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex());
     private final JSpinner spinnerNormalIndexCount = new JSpinner();
-    private final JCheckBox checkboxIsSleepTimeStrategy = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isSleepTimeStrategy());
+    private final JCheckBox checkboxIsLimitingSleepTimeStrategy = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy());
     private final JSpinner spinnerSleepTimeStrategyCount = new JSpinner();
 
     private final JCheckBox checkboxIsPerfIndexDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled());
@@ -66,7 +66,7 @@ public class PanelInjection extends JPanel {
         this.radioIsDiosStrategy.setName("radioIsDiosStrategy");
         this.checkboxIsUrlEncodingDisabled.setName("checkboxIsUrlEncodingDisabled");
         this.checkboxIsLimitingNormalIndex.setName("checkboxIsLimitingNormalIndex");
-        this.checkboxIsSleepTimeStrategy.setName("checkboxIsSleepTimeStrategy");
+        this.checkboxIsLimitingSleepTimeStrategy.setName("checkboxIsLimitingSleepTimeStrategy");
         
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
@@ -101,13 +101,13 @@ public class PanelInjection extends JPanel {
         });
         
         var tooltipIsSleepTimeStrategy = "<html>Time strategy waits an arbitrary number of seconds for a page to respond.<br>Amount of seconds can be lowered on a stable environment like local tests in order to save time.</html>";
-        this.checkboxIsSleepTimeStrategy.setToolTipText(tooltipIsSleepTimeStrategy);
-        this.checkboxIsSleepTimeStrategy.setFocusable(false);
+        this.checkboxIsLimitingSleepTimeStrategy.setToolTipText(tooltipIsSleepTimeStrategy);
+        this.checkboxIsLimitingSleepTimeStrategy.setFocusable(false);
         var labelIsSleepTimeStrategy = new JButton("Delay Time strategy for");
         labelIsSleepTimeStrategy.setToolTipText(tooltipIsSleepTimeStrategy);
         labelIsSleepTimeStrategy.addActionListener(actionEvent -> {
             
-            this.checkboxIsSleepTimeStrategy.setSelected(!this.checkboxIsSleepTimeStrategy.isSelected());
+            this.checkboxIsLimitingSleepTimeStrategy.setSelected(!this.checkboxIsLimitingSleepTimeStrategy.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
@@ -305,7 +305,7 @@ public class PanelInjection extends JPanel {
             this.radioIsDefaultStrategy,
             this.checkboxIsUrlEncodingDisabled,
             this.checkboxIsLimitingNormalIndex,
-            this.checkboxIsSleepTimeStrategy
+            this.checkboxIsLimitingSleepTimeStrategy
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
@@ -355,7 +355,7 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsParsingForm)
                 .addComponent(this.checkboxIsNotInjectingMetadata)
                 .addComponent(this.checkboxIsLimitingNormalIndex)
-                .addComponent(this.checkboxIsSleepTimeStrategy)
+                .addComponent(this.checkboxIsLimitingSleepTimeStrategy)
                 
                 .addComponent(emptyLabelParamsInjection)
                 .addComponent(this.checkboxIsCheckingAllParam)
@@ -367,7 +367,7 @@ public class PanelInjection extends JPanel {
 //                .addComponent(this.checkboxIsCheckingAllBase64Param)
                 .addComponent(this.checkboxIsCheckingAllJSONParam)
                 .addComponent(this.checkboxIsCheckingAllSOAPParam)
-//                .addComponent(this.checkboxIsCheckingAllCookieParam)
+                .addComponent(this.checkboxIsCheckingAllCookieParam)
                 
                 .addComponent(emptyLabelQuerySize)
                 .addComponent(this.radioIsDefaultStrategy)
@@ -395,7 +395,7 @@ public class PanelInjection extends JPanel {
 //                .addComponent(labelIsCheckingAllBase64Param)
                 .addComponent(labelIsCheckingAllJSONParam)
                 .addComponent(labelIsCheckingAllSOAPParam)
-//                .addComponent(labelIsCheckingAllCookieParam)
+                .addComponent(labelIsCheckingAllCookieParam)
 
                 .addComponent(labelQuerySize)
                 .addComponent(labelIsDefaultStrategy)
@@ -437,7 +437,7 @@ public class PanelInjection extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsSleepTimeStrategy)
+                .addComponent(this.checkboxIsLimitingSleepTimeStrategy)
                 .addComponent(panelSleepTimeStrategy)
             )
             
@@ -496,12 +496,12 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsCheckingAllSOAPParam)
                 .addComponent(labelIsCheckingAllSOAPParam)
             )
-//            .addGroup(
-//                groupLayout
-//                .createParallelGroup(GroupLayout.Alignment.BASELINE)
-//                .addComponent(this.checkboxIsCheckingAllCookieParam)
-//                .addComponent(labelIsCheckingAllCookieParam)
-//            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsCheckingAllCookieParam)
+                .addComponent(labelIsCheckingAllCookieParam)
+            )
             
             .addGroup(
                 groupLayout
@@ -613,8 +613,8 @@ public class PanelInjection extends JPanel {
         return this.spinnerNormalIndexCount;
     }
     
-    public JCheckBox getCheckboxIsSleepTimeStrategy() {
-        return this.checkboxIsSleepTimeStrategy;
+    public JCheckBox getCheckboxIsLimitingSleepTimeStrategy() {
+        return this.checkboxIsLimitingSleepTimeStrategy;
     }
     
     public JSpinner getSpinnerSleepTimeStrategy() {

@@ -183,25 +183,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             // Check general integrity if user's parameters
             this.mediatorUtils.getParameterUtil().checkParametersFormat();
             
-            // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
-            LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
-            this.mediatorUtils.getConnectionUtil().getCookieManager().getCookieStore().removeAll();
-            HttpResponse<String> httpResponse = this.mediatorUtils.getConnectionUtil().testConnection();
-            
-            // TODO Extract
-            if (
-                (httpResponse.statusCode() == 401 || httpResponse.statusCode() == 403)
-                && !this.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
-                && this.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
-            ) {
-                LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> "Testing handshake from previous connection...");
-                httpResponse = this.mediatorUtils.getConnectionUtil().testConnection();
-            }
-            
-            if (httpResponse.statusCode() >= 400 && !this.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
-                
-                throw new InjectionFailureException(String.format("Connection failed: problem when calling %s", httpResponse.uri().toURL().toString()));
-            }
+            this.mediatorUtils.getConnectionUtil().testConnection();
             
             boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters();
 

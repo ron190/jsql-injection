@@ -594,25 +594,25 @@ public class ResourceAccess {
             try {
                 CallableHttpHead currentCallable = taskCompletionService.take().get();
                 
-                if (currentCallable.isHttpResponseOk()) {
-                    
-                    urlSuccess = currentCallable.getUrl();
-
-                    if (
-                        !urlShellFixed.isEmpty()
-                        && urlSuccess.replace(this.filenameSqlshell, StringUtils.EMPTY).equals(urlShellFixed)
-                        || urlSuccess.replace(this.filenameSqlshell, StringUtils.EMPTY).equals(urlProtocol + urlWithoutFileName)
-                    ) {
-                        
-                        LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Connection to payload found at expected location '{}'", urlSuccess);
-                        
-                    } else {
-                        
-                        LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Connection to payload found at unexpected location '{}'", urlSuccess);
-                    }
-                } else {
+                if (!currentCallable.isHttpResponseOk()) {
                     
                     LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Connection to payload not found at '{}'", currentCallable.getUrl());
+                    continue;
+                }
+                    
+                urlSuccess = currentCallable.getUrl();
+
+                if (
+                    !urlShellFixed.isEmpty()
+                    && urlSuccess.replace(this.filenameSqlshell, StringUtils.EMPTY).equals(urlShellFixed)
+                    || urlSuccess.replace(this.filenameSqlshell, StringUtils.EMPTY).equals(urlProtocol + urlWithoutFileName)
+                ) {
+                    
+                    LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Connection to payload found at expected location '{}'", urlSuccess);
+                    
+                } else {
+                    
+                    LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Connection to payload found at unexpected location '{}'", urlSuccess);
                 }
                 
             } catch (InterruptedException e) {
