@@ -76,20 +76,27 @@ public class TabHeader extends JPanel implements MouseListener {
     public TabHeader(String label, Icon imageIcon) {
         
         this(imageIcon);
+        
         this.getTabTitleLabel().setText(label);
+        tabTitleLabel.setName(label.trim());
     }
 
     public TabHeader(String label, Icon imageIcon, Cleanable cleanableTab) {
         
         this(imageIcon);
+        
         this.getTabTitleLabel().setText(label);
+        tabTitleLabel.setName(label.trim());
+        
         this.cleanableTab = cleanableTab;
     }
     
     public TabHeader(String label) {
         
         this();
+        
         this.getTabTitleLabel().setText(label);
+        tabTitleLabel.setName(label.trim());
     }
 
     /**

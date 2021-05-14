@@ -536,6 +536,7 @@ public class Menubar extends JMenuBar {
             isEnglish
         );
         this.itemEnglish.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.ROOT));
+        this.itemEnglish.setName("itemEnglish");
         
         // Unhandled ClassFormatError #73790 on constructor: Unknown constant tag 73 in class file java/awt/font/TextLine
         this.itemArabic = new JRadioButtonMenuItem(

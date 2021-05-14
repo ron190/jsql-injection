@@ -3,6 +3,7 @@ package com.test.assertj;
 import static org.assertj.swing.core.matcher.JButtonMatcher.withText;
 import static org.junit.Assert.assertEquals;
 
+import java.awt.AWTException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -12,6 +13,8 @@ import java.util.stream.Stream;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.logging.log4j.util.Strings;
+import org.assertj.swing.core.MouseButton;
+import org.assertj.swing.data.Index;
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.DialogFixture;
@@ -66,6 +69,57 @@ public class ApplicationUiTest {
     }
 
     @Test
+    public void shouldDnDList() throws AWTException {
+
+        window.tabbedPane("tabManagers").selectTab("Admin page");
+        Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(0));
+        Assert.assertNotEquals("admin", window.list("listManagerAdminPage").valueAt(1));
+        window.list("listManagerAdminPage").drag(0);
+        window.list("listManagerAdminPage").drop(1);
+        Assert.assertNotEquals("admin", window.list("listManagerAdminPage").valueAt(0));
+        Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(1));
+    }
+    
+    @Test
+    public void shouldDnDTabs() throws AWTException {
+        
+        var request = new Request();
+        request.setMessage(Interaction.CREATE_FILE_TAB);
+        request.setParameters("dragfile", "content", "path");
+        MediatorHelper.model().sendToViews(request);
+        
+        request = new Request();
+        request.setMessage(Interaction.CREATE_FILE_TAB);
+        request.setParameters("jumpfile", "content", "path");
+        MediatorHelper.model().sendToViews(request);
+        
+        request = new Request();
+        request.setMessage(Interaction.CREATE_FILE_TAB);
+        request.setParameters("dropfile", "content", "path");
+        MediatorHelper.model().sendToViews(request);
+        
+        window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(0));
+        window.tabbedPane("tabResults").requireTitle("jumpfile ", Index.atIndex(1));
+        window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
+        
+        window.robot().pressMouse(
+            window.label("dragfile").target(), 
+            window.label("dragfile").target().getLocation()
+        );
+        
+        window.robot().moveMouse(window.label("dragfile").target());  // required
+        window.label("dropfile").drop();
+        
+        window.tabbedPane("tabResults").requireTitle("jumpfile ", Index.atIndex(0));
+        window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(1));
+        window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
+        
+        window.label("dragfile").click(MouseButton.MIDDLE_BUTTON);
+        window.label("jumpfile").click(MouseButton.MIDDLE_BUTTON);
+        window.label("dropfile").click(MouseButton.MIDDLE_BUTTON);
+    }
+    
+    @Test
     public void shouldFindFile() {
         
         var request = new Request();
@@ -74,6 +128,8 @@ public class ApplicationUiTest {
         MediatorHelper.model().sendToViews(request);
         
         window.tabbedPane("tabResults").selectTab("file ").requireVisible();
+        
+        window.label("file").click(MouseButton.MIDDLE_BUTTON);
     }
     
     @Test
@@ -85,6 +141,8 @@ public class ApplicationUiTest {
         MediatorHelper.model().sendToViews(request);
         
         window.tabbedPane("tabResults").selectTab("Web shell ").requireVisible();
+        
+        window.label("Web shell").click(MouseButton.MIDDLE_BUTTON);
     }
 
     @Test
@@ -96,6 +154,8 @@ public class ApplicationUiTest {
         MediatorHelper.model().sendToViews(request);
         
         window.tabbedPane("tabResults").selectTab("SQL shell ").requireVisible();
+        
+        window.label("SQL shell").click(MouseButton.MIDDLE_BUTTON);
     }
     
     @Test
@@ -162,6 +222,8 @@ public class ApplicationUiTest {
         window.tabbedPane("tabResults").selectTab("adminpage ").requireVisible();
 
         ApplicationUiTest.verifyMockAdminPage();
+        
+        window.label("adminpage").click(MouseButton.MIDDLE_BUTTON);
     }
     
     @Test
@@ -225,6 +287,8 @@ public class ApplicationUiTest {
         window.tree("treeDatabases").rightClickRow(0);
         window.tabbedPane("tabResults").click();
         window.tree("treeDatabases").rightClickRow(1);
+        
+        window.label("table").click(MouseButton.MIDDLE_BUTTON);
     }
 
     @Test
@@ -310,6 +374,8 @@ public class ApplicationUiTest {
         } catch (Exception e) {
             Assert.fail();
         }
+        
+        window.label("Preferences").click(MouseButton.MIDDLE_BUTTON);
     }
     
     @Test
@@ -324,6 +390,8 @@ public class ApplicationUiTest {
         } catch (Exception e) {
             Assert.fail();
         }
+        
+        window.label("SQL Engine").click(MouseButton.MIDDLE_BUTTON);
     }
     
     @Test
@@ -333,6 +401,10 @@ public class ApplicationUiTest {
         window.menuItem("menuWindows").click();
         window.menuItem("menuTranslation").click();
         window.menuItem("itemRussian").click();
+        
+        window.menuItem("menuWindows").click();
+        window.menuItem("menuTranslation").click();
+        window.menuItem("itemEnglish").click();
 
         try {
             window.button("advancedButton").click();
