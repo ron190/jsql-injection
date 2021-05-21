@@ -72,7 +72,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
         try {
             g.drawImage(
                 image,
-                ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
                 ? JTextFieldWithIcon.this.getWidth() - (16 + x + 4)
                 : x + 4,
                 y + 1,

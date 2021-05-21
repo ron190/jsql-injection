@@ -77,8 +77,7 @@ public class CoderListener implements ActionListener {
                 
             } else {
                 
-                result =
-                    ActionCoder
+                result = ActionCoder
                     .forName(nameMethod)
                     .orElseThrow(() -> new NoSuchElementException("Unsupported encoding or decoding method"))
                     .run(textInput);

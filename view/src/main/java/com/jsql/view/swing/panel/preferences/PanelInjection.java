@@ -81,9 +81,9 @@ public class PanelInjection extends JPanel {
             + "It makes easy adding such params to requests.</html>";
         this.checkboxIsParsingForm.setToolTipText(tooltipParseForm);
         this.checkboxIsParsingForm.setFocusable(false);
-        var labelParseForm = new JButton("Add <input> params to Query string and Request");
-        labelParseForm.setToolTipText(tooltipParseForm);
-        labelParseForm.addActionListener(actionEvent -> {
+        var labelIsParsingForm = new JButton("Add <input> params to Query string and Request");
+        labelIsParsingForm.setToolTipText(tooltipParseForm);
+        labelIsParsingForm.addActionListener(actionEvent -> {
             
             this.checkboxIsParsingForm.setSelected(!this.checkboxIsParsingForm.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
@@ -103,16 +103,16 @@ public class PanelInjection extends JPanel {
         var tooltipIsSleepTimeStrategy = "<html>Time strategy waits an arbitrary number of seconds for a page to respond.<br>Amount of seconds can be lowered on a stable environment like local tests in order to save time.</html>";
         this.checkboxIsLimitingSleepTimeStrategy.setToolTipText(tooltipIsSleepTimeStrategy);
         this.checkboxIsLimitingSleepTimeStrategy.setFocusable(false);
-        var labelIsSleepTimeStrategy = new JButton("Delay Time strategy for");
-        labelIsSleepTimeStrategy.setToolTipText(tooltipIsSleepTimeStrategy);
-        labelIsSleepTimeStrategy.addActionListener(actionEvent -> {
+        var labelIsLimitingSleepTimeStrategy = new JButton("Delay Time strategy for");
+        labelIsLimitingSleepTimeStrategy.setToolTipText(tooltipIsSleepTimeStrategy);
+        labelIsLimitingSleepTimeStrategy.addActionListener(actionEvent -> {
             
             this.checkboxIsLimitingSleepTimeStrategy.setSelected(!this.checkboxIsLimitingSleepTimeStrategy.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
         var panelSleepTimeStrategy = new JPanel(new BorderLayout());
-        panelSleepTimeStrategy.add(labelIsSleepTimeStrategy, BorderLayout.WEST);
+        panelSleepTimeStrategy.add(labelIsLimitingSleepTimeStrategy, BorderLayout.WEST);
         panelSleepTimeStrategy.add(this.spinnerSleepTimeStrategyCount, BorderLayout.CENTER);
         panelSleepTimeStrategy.add(new JLabel(" s ; default 5s"), BorderLayout.EAST);
         panelSleepTimeStrategy.setMaximumSize(new Dimension(125, this.spinnerSleepTimeStrategyCount.getPreferredSize().height));
@@ -311,7 +311,7 @@ public class PanelInjection extends JPanel {
         
         Stream
         .of(
-            labelParseForm,
+            labelIsParsingForm,
             labelIsNotInjectingMetadata,
             labelIsCheckingAllParam,
             labelIsCheckingAllURLParam,
@@ -327,7 +327,7 @@ public class PanelInjection extends JPanel {
             labelIsDefaultStrategy,
             labelIsUrlEncodingDisabled,
             labelIsLimitingNormalIndex,
-            labelIsSleepTimeStrategy
+            labelIsLimitingSleepTimeStrategy
         )
         .forEach(label -> {
             
@@ -335,6 +335,23 @@ public class PanelInjection extends JPanel {
             label.setBorderPainted(false);
             label.setContentAreaFilled(false);
         });
+        
+        labelIsNotInjectingMetadata.setName("labelIsNotInjectingMetadata");
+        labelIsParsingForm.setName("labelIsParsingForm");
+        labelIsCheckingAllURLParam.setName("labelIsCheckingAllURLParam");
+        labelIsCheckingAllRequestParam.setName("labelIsCheckingAllRequestParam");
+        labelIsCheckingAllHeaderParam.setName("labelIsCheckingAllHeaderParam");
+        labelIsCheckingAllJSONParam.setName("labelIsCheckingAllJSONParam");
+        labelIsCheckingAllBase64Param.setName("labelIsCheckingAllBase64Param");
+        labelIsCheckingAllCookieParam.setName("labelIsCheckingAllCookieParam");
+        labelIsCheckingAllSOAPParam.setName("labelIsCheckingAllSOAPParam");
+        labelIsPerfIndexDisabled.setName("labelIsPerfIndexDisabled");
+        labelIsZipStrategy.setName("labelIsZipStrategy");
+        labelIsDefaultStrategy.setName("labelIsDefaultStrategy");
+        labelIsDiosStrategy.setName("labelIsDiosStrategy");
+        labelIsUrlEncodingDisabled.setName("labelIsUrlEncodingDisabled");
+        labelIsLimitingNormalIndex.setName("labelIsLimitingNormalIndex");
+        labelIsLimitingSleepTimeStrategy.setName("labelIsLimitingSleepTimeStrategy");
         
         var groupSpaceToComment = new ButtonGroup();
         groupSpaceToComment.add(this.radioIsZipStrategy);
@@ -380,7 +397,7 @@ public class PanelInjection extends JPanel {
                 groupLayout
                 .createParallelGroup()
                 .addComponent(labelGeneralInjection)
-                .addComponent(labelParseForm)
+                .addComponent(labelIsParsingForm)
                 .addComponent(labelIsNotInjectingMetadata)
                 .addComponent(panelIsLimitingNormalIndex)
                 .addComponent(panelSleepTimeStrategy)
@@ -420,7 +437,7 @@ public class PanelInjection extends JPanel {
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsParsingForm)
-                .addComponent(labelParseForm)
+                .addComponent(labelIsParsingForm)
             )
             .addGroup(
                 groupLayout

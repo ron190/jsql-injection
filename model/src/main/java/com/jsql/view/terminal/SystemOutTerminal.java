@@ -10,12 +10,12 @@ package com.jsql.view.terminal;
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
 
-import com.jsql.view.interaction.ObserverInteraction;
+import com.jsql.view.interaction.SubscriberInteraction;
 
 /**
  * View in the MVC pattern for integration test, process actions sent by the model.<br>
  */
-public class SystemOutTerminal extends ObserverInteraction {
+public class SystemOutTerminal extends SubscriberInteraction {
 
     public SystemOutTerminal() {
         

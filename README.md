@@ -97,7 +97,7 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 - Inject range of rows
 - Routed query strategy
 - Connect to Digest/Kerberos API with HttpClient
-- Replace Docker Compose by Kubernetes
+- Replace Docker with Kubernetes
 - Database fingerprinting: Boolean single query
 ```
 

@@ -375,7 +375,7 @@ public class ResourceAccess {
      * @return
      * @throws IOException
      */
-    private String runCommandShell(String urlCommand) throws IOException {
+    public String runCommandShell(String urlCommand) throws IOException {
         
         String pageSource = null;
         try {

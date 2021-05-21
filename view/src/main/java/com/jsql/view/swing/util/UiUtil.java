@@ -477,7 +477,7 @@ public class UiUtil {
 
         g.drawString(
             placeholderText,
-            textComponent.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT
+            ComponentOrientation.RIGHT_TO_LEFT.equals(textComponent.getComponentOrientation())
             ? w - (fm.stringWidth(placeholderText) + ins.left + 2)
             : ins.left + 2,
             y

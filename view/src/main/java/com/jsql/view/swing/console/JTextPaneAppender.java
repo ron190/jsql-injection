@@ -3,6 +3,7 @@ package com.jsql.view.swing.console;
 import java.awt.Color;
 import java.nio.charset.StandardCharsets;
 import java.util.AbstractMap;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.swing.SwingUtilities;
@@ -73,26 +74,23 @@ public class JTextPaneAppender extends AbstractAppender {
         super(name, filter, layout, ignoreExceptions, Property.EMPTY_ARRAY);
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({ "unused", "rawtypes" })
     @PluginFactory
     public static JTextPaneAppender createAppender(
         @PluginAttribute("name") String name,
         @PluginAttribute("ignoreExceptions") boolean ignoreExceptions,
-        @PluginElement("Layout") Layout<?> layout,
+        @PluginElement("Layout") Layout layout,
         @PluginElement("Filters") Filter filter
     ) {
         if (name == null) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, "No name provided for JTextAreaAppender");
+            LOGGER.log(LogLevel.CONSOLE_JAVA, "No name provided for JTextPaneAppender");
             return null;
         }
 
-        if (layout == null) {
-            
-            layout = PatternLayout.createDefaultLayout();
-        }
+        var layoutTextPane = Optional.ofNullable(layout).orElse(PatternLayout.createDefaultLayout());
         
-        return new JTextPaneAppender(name, layout, filter, ignoreExceptions);
+        return new JTextPaneAppender(name, layoutTextPane, filter, ignoreExceptions);
     }
 
     @Override
@@ -147,6 +145,7 @@ public class JTextPaneAppender extends AbstractAppender {
      * @param javaConsole
      */
     public static void register(JavaConsoleAdapter javaConsole) {
+        
         JTextPaneAppender.javaTextPane = javaConsole;
     }
 
@@ -155,6 +154,7 @@ public class JTextPaneAppender extends AbstractAppender {
      * @param consoleColored
      */
     public static void register(SimpleConsoleAdapter consoleColored) {
+        
         JTextPaneAppender.consoleTextPane = consoleColored;
     }
 }

@@ -1,5 +1,6 @@
 package com.test.assertj;
 
+import java.awt.AWTException;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -55,8 +56,9 @@ public class ApplicationUiTest {
         
         InjectionModel injectionModel = new InjectionModel();
         MediatorHelper.register(injectionModel);
+        
         frame = GuiActionRunner.execute(() -> {
-            
+
             // Static mock on current ThreadLocal
             ApplicationUiTest.initMockAdminPage();
 
@@ -65,7 +67,7 @@ public class ApplicationUiTest {
         
         window = new FrameFixture(frame);
         
-        injectionModel.subscribe(frame.getObserver());
+        injectionModel.subscribe(frame.getSubscriber());
     }
 
     @Test
@@ -196,7 +198,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindWebshell() {
+    public void shouldFindWebshell() throws AWTException, IOException {
         
         var request = new Request();
         request.setMessage(Interaction.CREATE_SHELL_TAB);
@@ -208,6 +210,21 @@ public class ApplicationUiTest {
         } catch (Exception e) {
             Assert.fail();
         }
+        
+        window.textBox("webShell").pressAndReleaseKeys(
+            KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, 
+            KeyEvent.VK_DELETE, KeyEvent.VK_BACK_SPACE, 
+            KeyEvent.VK_UP, KeyEvent.VK_DOWN,
+            KeyEvent.VK_PAGE_UP, KeyEvent.VK_PAGE_DOWN, KeyEvent.VK_TAB,
+            KeyEvent.VK_A, KeyEvent.VK_B,
+            KeyEvent.VK_HOME, KeyEvent.VK_END,
+            KeyEvent.VK_BACK_SPACE, 
+            KeyEvent.VK_BACK_SPACE, 
+            KeyEvent.VK_DELETE, KeyEvent.VK_DELETE,
+            KeyEvent.VK_ENTER, KeyEvent.VK_ENTER, KeyEvent.VK_ENTER,
+            KeyEvent.VK_A, KeyEvent.VK_B, KeyEvent.VK_ENTER,
+            KeyEvent.VK_PAGE_UP, KeyEvent.VK_PAGE_DOWN
+        );
         
         GuiActionRunner.execute(() -> {
             
@@ -259,7 +276,11 @@ public class ApplicationUiTest {
         window.robot().moveMouse(window.menuItem("encodeToBase64").target());
         window.textBox("resultManagerCoder").requireText(Pattern.compile(".*<span><font[^>]*>YQ==</font></span>.*", Pattern.DOTALL));
         
-        window.robot().moveMouse(window.menuItem("Hash").target());
+        try {
+            window.robot().moveMouse(window.menuItem("Hash").target());
+        } catch (Exception e) {
+            Assert.fail();
+        }
         
         Stream
         .of("Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql")
@@ -271,6 +292,7 @@ public class ApplicationUiTest {
                     .forName(hash)
                     .orElseThrow(() -> new NoSuchElementException("Unsupported encoding or decoding method"))
                     .run("a");
+                
             } catch (NoSuchAlgorithmException | NoSuchElementException | DecoderException | IOException e) {
                 Assert.fail();
             }
@@ -291,7 +313,11 @@ public class ApplicationUiTest {
         request.setParameters("http://adminpage");
         MediatorHelper.model().sendToViews(request);
         
-        window.tabbedPane("tabResults").selectTab("adminpage ").requireVisible();
+        try {
+            window.tabbedPane("tabResults").selectTab("adminpage ").requireVisible();
+        } catch (Exception e) {
+            Assert.fail();
+        }
 
         ApplicationUiTest.verifyMockAdminPage();
         
@@ -394,11 +420,171 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindPreferences() {
+    public void shouldFindConnectionPreferences() {
         
         window.button("advancedButton").click();
         window.menuItem("menuWindows").click();
         window.menuItem("itemPreferences").click();
+        
+        window.list("listCategoriesPreference").selectItem(Pattern.compile(".*Connection.*"));
+        
+        Assert.assertArrayEquals(
+            new boolean[] {
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
+            }
+        );
+        
+        window.checkBox("checkboxIsFollowingRedirection").check();
+        window.checkBox("checkboxIsUnicodeDecodeDisabled").check();
+        window.checkBox("checkboxIsNotTestingConnection").check();
+        window.checkBox("checkboxIsProcessingCsrf").check();
+        window.checkBox("checkboxIsCsrfUserTag").check();
+        window.checkBox("checkboxIsNotProcessingCookies").check();
+        window.checkBox("checkboxIsLimitingThreads").check();
+        window.checkBox("checkboxIsConnectionTimeout").check();
+        
+        Assert.assertArrayEquals(
+            new boolean[] {
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
+            }
+        );
+        
+        window.checkBox("checkboxIsFollowingRedirection").uncheck();
+        window.checkBox("checkboxIsUnicodeDecodeDisabled").uncheck();
+        window.checkBox("checkboxIsNotTestingConnection").uncheck();
+        window.checkBox("checkboxIsProcessingCsrf").uncheck();
+        window.checkBox("checkboxIsCsrfUserTag").uncheck();
+        window.checkBox("checkboxIsNotProcessingCookies").uncheck();
+        window.checkBox("checkboxIsLimitingThreads").uncheck();
+        window.checkBox("checkboxIsConnectionTimeout").uncheck();
+        
+        Assert.assertArrayEquals(
+            new boolean[] {
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
+            }
+        );
+
+        window.button("labelIsFollowingRedirection").click();
+        window.button("labelIsUnicodeDecodeDisabled").click();
+        window.button("labelIsNotTestingConnection").click();
+        window.button("labelIsProcessingCsrf").click();
+        window.button("labelIsCsrfUserTag").click();
+        window.button("labelIsNotProcessingCookies").click();
+        window.button("labelIsLimitingThreads").click();
+        window.button("labelIsConnectionTimeout").click();
+        
+        Assert.assertArrayEquals(
+            new boolean[] {
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
+            }
+        );
+        
+        window.button("advancedButton").click();
+
+        GuiActionRunner.execute(() -> {
+            
+            window.tabbedPane("tabResults").target().removeTabAt(0);
+        });
+    }
+    
+    @Test
+    public void shouldFindInjectionPreferences() {
+        
+        window.button("advancedButton").click();
+        window.menuItem("menuWindows").click();
+        window.menuItem("itemPreferences").click();
+        
+        Assert.assertArrayEquals(
+            new boolean[] {
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
+            }
+        );
         
         window.checkBox("checkboxIsParsingForm").check();
         window.checkBox("checkboxIsNotInjectingMetadata").check();
@@ -439,16 +625,164 @@ public class ApplicationUiTest {
                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
             }
         );
-
+        
+        window.checkBox("checkboxIsParsingForm").uncheck();
+        window.checkBox("checkboxIsNotInjectingMetadata").uncheck();
+        window.checkBox("checkboxIsLimitingNormalIndex").uncheck();
+        window.checkBox("checkboxIsLimitingSleepTimeStrategy").uncheck();
+        window.checkBox("checkboxIsCheckingAllURLParam").uncheck();
+        window.checkBox("checkboxIsCheckingAllRequestParam").uncheck();
+        window.checkBox("checkboxIsCheckingAllHeaderParam").uncheck();
+        window.checkBox("checkboxIsCheckingAllJSONParam").uncheck();
+        window.checkBox("checkboxIsCheckingAllSOAPParam").uncheck();
+        window.checkBox("checkboxIsPerfIndexDisabled").uncheck();
+        window.checkBox("checkboxIsUrlEncodingDisabled").uncheck();
+        
+        Assert.assertArrayEquals(
+            new boolean[] {
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
+            }
+        );
+        
+        window.button("labelIsParsingForm").click();
+        window.button("labelIsNotInjectingMetadata").click();
+        window.button("labelIsLimitingNormalIndex").click();
+        window.button("labelIsLimitingSleepTimeStrategy").click();
+        window.button("labelIsCheckingAllURLParam").click();
+        window.button("labelIsCheckingAllRequestParam").click();
+        window.button("labelIsCheckingAllHeaderParam").click();
+        window.button("labelIsCheckingAllJSONParam").click();
+        window.button("labelIsCheckingAllSOAPParam").click();
+        window.button("labelIsPerfIndexDisabled").click();
+        window.button("labelIsUrlEncodingDisabled").click();
+        
+        Assert.assertArrayEquals(
+            new boolean[] {
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
+            }
+        );
         
         window.radioButton("radioIsZipStrategy").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy());
+        Assert.assertArrayEquals(
+            new boolean[] {
+                true,
+                false,
+                false,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+            }
+        );
         
         window.radioButton("radioIsDefaultStrategy").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy());
+        Assert.assertArrayEquals(
+            new boolean[] {
+                false,
+                true,
+                false,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+            }
+        );
         
         window.radioButton("radioIsDiosStrategy").check();
-        Assert.assertTrue(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy());
+        Assert.assertArrayEquals(
+            new boolean[] {
+                false,
+                false,
+                true,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+            }
+        );
+        
+        window.button("labelIsZipStrategy").click();
+        Assert.assertArrayEquals(
+            new boolean[] {
+                true,
+                false,
+                false,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+            }
+        );
+        
+        window.button("labelIsDefaultStrategy").click();
+        Assert.assertArrayEquals(
+            new boolean[] {
+                false,
+                true,
+                false,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+            }
+        );
+        
+        window.button("labelIsDiosStrategy").click();
+        Assert.assertArrayEquals(
+            new boolean[] {
+                false,
+                false,
+                true,
+            }, new boolean[] {
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+            }
+        );
         
         window.button("advancedButton").click();
 

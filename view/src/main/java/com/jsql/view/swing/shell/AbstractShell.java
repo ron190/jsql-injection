@@ -263,6 +263,7 @@ public abstract class AbstractShell extends JTextPane {
         }
     }
 
+    
     // Getter and setter
     
     public boolean[] getIsEdited() {

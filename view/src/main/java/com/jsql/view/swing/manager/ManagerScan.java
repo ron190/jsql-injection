@@ -317,7 +317,7 @@ public class ManagerScan extends AbstractManagerList {
         
         // Get back the normal view
         MediatorHelper.model().sendToViews(requestUnsubscribe);
-        MediatorHelper.model().subscribe(MediatorHelper.frame().getObserver());
+        MediatorHelper.model().subscribe(MediatorHelper.frame().getSubscriber());
         
         MediatorHelper.model().setIsScanning(false);
         MediatorHelper.model().setIsStoppedByUser(false);

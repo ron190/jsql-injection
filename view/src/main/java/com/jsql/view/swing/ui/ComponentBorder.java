@@ -180,7 +180,7 @@ public class ComponentBorder implements Border {
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         
         float x2 =
-            ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
             ? (0 + this.component.getWidth()) * this.component.getAlignmentX() + x
             : (width - this.component.getWidth()) * this.component.getAlignmentX() + x;
         

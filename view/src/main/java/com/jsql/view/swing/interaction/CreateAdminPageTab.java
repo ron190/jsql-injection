@@ -198,7 +198,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
                     }
                     
                     menu.setLocation(
-                        ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                        ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
                         ? evt.getXOnScreen() - menu.getWidth()
                         : evt.getXOnScreen(),
                         evt.getYOnScreen()

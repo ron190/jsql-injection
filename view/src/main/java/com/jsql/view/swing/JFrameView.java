@@ -31,7 +31,7 @@ import javax.swing.WindowConstants;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.util.I18nUtil;
-import com.jsql.view.interaction.ObserverInteraction;
+import com.jsql.view.interaction.SubscriberInteraction;
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.menubar.Menubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
@@ -59,7 +59,7 @@ public class JFrameView extends JFrame {
     // List of terminal by unique identifier
     private Map<UUID, AbstractShell> mapShells = new HashMap<>();
     
-    private transient ObserverInteraction observer = new ObserverInteraction("com.jsql.view.swing.interaction");
+    private transient SubscriberInteraction subscriber = new SubscriberInteraction("com.jsql.view.swing.interaction");
     
     // Build the GUI: add app icon, tree icons, the 3 main panels
     public JFrameView() {
@@ -247,8 +247,8 @@ public class JFrameView extends JFrame {
         return this.mapShells;
     }
 
-    public ObserverInteraction getObserver() {
-        return this.observer;
+    public SubscriberInteraction getSubscriber() {
+        return this.subscriber;
     }
 
     public SplitHorizontalTopBottom getSplitHorizontalTopBottom() {

@@ -10,7 +10,7 @@ package com.jsql.view.scan;
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
 
-import com.jsql.view.interaction.ObserverInteraction;
+import com.jsql.view.interaction.SubscriberInteraction;
 
 /**
  * View in the MVC pattern, defines all the components
@@ -20,7 +20,7 @@ import com.jsql.view.interaction.ObserverInteraction;
  * - at the center: tree on the left, table on the right,<br>
  * - at the bottom: information labels.
  */
-public class ScanListTerminal extends ObserverInteraction {
+public class ScanListTerminal extends SubscriberInteraction {
     
     public ScanListTerminal() {
         

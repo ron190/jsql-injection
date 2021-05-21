@@ -16,6 +16,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingWorker;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 
@@ -138,6 +139,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
     }
 
     private void cancelCommand(KeyEvent keyEvent) {
+        
         keyEvent.consume();
    
         this.terminal.append("\n");
@@ -220,6 +222,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
     }
 
     private void runCommand(KeyEvent keyEvent, final String[] command) {
+        
         this.terminal.getIsEdited()[0] = true;
         keyEvent.consume();
         this.terminal.setEditable(false);
@@ -232,28 +235,36 @@ public class KeyAdapterTerminal extends KeyAdapter {
         }
    
         // Thread to give back control of the GUI to the user (SwingUtilities does not)
-        new Thread(() -> {
+        new SwingWorker<>() {
             
-            AbstractShell terminalCommand = KeyAdapterTerminal.this.terminal;
-            
-            // Inside Swing thread to avoid flickering
-            terminalCommand.append("\n");
-            
-            if (StringUtils.isNotEmpty(command[0].trim())) {
+            @Override
+            protected Object doInBackground() throws Exception {
                 
-                terminalCommand.setCaretPosition(terminalCommand.getDocument().getLength());
+                Thread.currentThread().setName("SwingWorkerKeyAdapterTerminal");
                 
-                terminalCommand.action(
-                    command[0],
-                    terminalCommand.getUuidShell(),
-                    terminalCommand.getUrlShell(),
-                    terminalCommand.loginPassword
-                );
+                AbstractShell terminalCommand = KeyAdapterTerminal.this.terminal;
                 
-            } else {
+                // Inside Swing thread to avoid flickering
+                terminalCommand.append("\n");
                 
-                terminalCommand.reset();
+                if (StringUtils.isNotEmpty(command[0].trim())) {
+                    
+                    terminalCommand.setCaretPosition(terminalCommand.getDocument().getLength());
+                    
+                    terminalCommand.action(
+                        command[0],
+                        terminalCommand.getUuidShell(),
+                        terminalCommand.getUrlShell(),
+                        terminalCommand.loginPassword
+                    );
+                    
+                } else {
+                    
+                    terminalCommand.reset();
+                }
+                
+                return null;
             }
-        }).start();
+        }.execute();
     }
 }

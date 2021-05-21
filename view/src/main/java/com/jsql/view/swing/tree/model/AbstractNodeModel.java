@@ -173,7 +173,7 @@ public abstract class AbstractNodeModel {
 
         popupMenu.show(
             MediatorHelper.treeDatabase(),
-            ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
             ? e.getX() - popupMenu.getWidth()
             : e.getX(),
             e.getY()

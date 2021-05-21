@@ -49,7 +49,7 @@ public class ActionCloseTabResult extends AbstractAction {
             
             int i = splitPaneLeftRight.getDividerLocation();
             
-            if (ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.LEFT_TO_RIGHT) {
+            if (ComponentOrientation.LEFT_TO_RIGHT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {
                 
                 splitPaneLeftRight.setRightComponent(
                     splitPaneTopBottom.getLabelPlaceholderResult()

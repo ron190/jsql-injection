@@ -120,7 +120,7 @@ public class RequestPanel extends JPanel {
                 
                 popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
                 
-                if (ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT) {
+                if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {
                     
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
                     
@@ -131,7 +131,7 @@ public class RequestPanel extends JPanel {
                 
                 popup.show(
                     e.getComponent(),
-                    ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
                     ? e.getComponent().getX() - e.getComponent().getWidth() - popup.getWidth()
                     : e.getComponent().getX(),
                     e.getComponent().getY() + e.getComponent().getWidth()

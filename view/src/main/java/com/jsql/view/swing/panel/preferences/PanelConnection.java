@@ -73,9 +73,9 @@ public class PanelConnection extends JPanel {
                 + "Check option to process with injection whatever problem exists.</html>";
         this.checkboxIsNotTestingConnection.setToolTipText(tooltipTestConnection);
         this.checkboxIsNotTestingConnection.setFocusable(false);
-        var labelTestConnection = new JButton("Disable connection test");
-        labelTestConnection.setToolTipText(tooltipTestConnection);
-        labelTestConnection.addActionListener(actionEvent -> {
+        var labelIsNotTestingConnection = new JButton("Disable connection test");
+        labelIsNotTestingConnection.setToolTipText(tooltipTestConnection);
+        labelIsNotTestingConnection.addActionListener(actionEvent -> {
             
             this.checkboxIsNotTestingConnection.setSelected(!this.checkboxIsNotTestingConnection.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
@@ -115,9 +115,9 @@ public class PanelConnection extends JPanel {
         var tooltipProcessCsrf = "Search for commons CSRF token in target's response and inject back the value on each requests";
         this.checkboxIsProcessingCsrf.setToolTipText(tooltipProcessCsrf);
         this.checkboxIsProcessingCsrf.setFocusable(false);
-        var labelProcessingCsrf = new JButton("Process CSRF token (search for XSRF-TOKEN/.../_csrf ; then set X-XSRF-TOKEN/.../_csrf)");
-        labelProcessingCsrf.setToolTipText(tooltipProcessCsrf);
-        labelProcessingCsrf.addActionListener(actionEvent -> {
+        var labelIsProcessingCsrf = new JButton("Process CSRF token (search for XSRF-TOKEN/.../_csrf ; then set X-XSRF-TOKEN/.../_csrf)");
+        labelIsProcessingCsrf.setToolTipText(tooltipProcessCsrf);
+        labelIsProcessingCsrf.addActionListener(actionEvent -> {
             
             this.checkboxIsProcessingCsrf.setSelected(!this.checkboxIsProcessingCsrf.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
@@ -166,16 +166,16 @@ public class PanelConnection extends JPanel {
         var tooltipIsCsrfUserTag = "<html>Process custom CSRF.<br>Read value from input token and write value to output token.</html>";
         this.checkboxIsCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
         this.checkboxIsCsrfUserTag.setFocusable(false);
-        var labelCsrfUserTag = new JButton("Custom CSRF ; Input token");
-        var labelCsrfUserTagOutput = new JButton("; Output token");
-        labelCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
-        labelCsrfUserTagOutput.setToolTipText(tooltipIsCsrfUserTag);
-        labelCsrfUserTag.addActionListener(actionEvent -> {
+        var labelIsCsrfUserTag = new JButton("Custom CSRF ; Input token");
+        var labelIsCsrfUserTagOutput = new JButton("; Output token");
+        labelIsCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);
+        labelIsCsrfUserTagOutput.setToolTipText(tooltipIsCsrfUserTag);
+        labelIsCsrfUserTag.addActionListener(actionEvent -> {
             
             this.checkboxIsCsrfUserTag.setSelected(!this.checkboxIsCsrfUserTag.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
-        labelCsrfUserTagOutput.addActionListener(actionEvent -> {
+        labelIsCsrfUserTagOutput.addActionListener(actionEvent -> {
             
             this.checkboxIsCsrfUserTag.setSelected(!this.checkboxIsCsrfUserTag.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
@@ -183,9 +183,9 @@ public class PanelConnection extends JPanel {
         
         var panelCsrfUserTag = new JPanel();
         panelCsrfUserTag.setLayout(new BoxLayout(panelCsrfUserTag, BoxLayout.X_AXIS));
-        panelCsrfUserTag.add(labelCsrfUserTag);
+        panelCsrfUserTag.add(labelIsCsrfUserTag);
         panelCsrfUserTag.add(this.textfieldCustomCsrfInputToken);
-        panelCsrfUserTag.add(labelCsrfUserTagOutput);
+        panelCsrfUserTag.add(labelIsCsrfUserTagOutput);
         panelCsrfUserTag.add(this.textfieldCustomCsrfOutputToken);
         panelCsrfUserTag.setMaximumSize(new Dimension(450, this.textfieldCustomCsrfInputToken.getPreferredSize().height));
         this.textfieldCustomCsrfInputToken.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -212,27 +212,27 @@ public class PanelConnection extends JPanel {
             this.checkboxIsNotProcessingCookies.setSelected(!this.checkboxIsNotProcessingCookies.isSelected());
             
             this.checkboxIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
-            labelProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+            labelIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
             
             this.textfieldCustomCsrfInputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
             this.textfieldCustomCsrfOutputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
             this.checkboxIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
-            labelCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
-            labelCsrfUserTagOutput.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+            labelIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+            labelIsCsrfUserTagOutput.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
             
             panelPreferences.getActionListenerSave().actionPerformed(null);
         };
         
         labelIsNotProcessingCookies.addActionListener(actionListenerNotProcessingCookies);
         
-        labelProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+        labelIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
         
         this.textfieldCustomCsrfInputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
         this.textfieldCustomCsrfOutputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
         this.checkboxIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
         this.checkboxIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
-        labelCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
-        labelCsrfUserTagOutput.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+        labelIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
+        labelIsCsrfUserTagOutput.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());
         
         var emptyLabelSessionManagement = new JLabel();
         var labelSessionManagement = new JLabel("<html><br /><b>Session and Cookie management</b></html>");
@@ -253,14 +253,33 @@ public class PanelConnection extends JPanel {
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
+        this.checkboxIsFollowingRedirection.setName("checkboxIsFollowingRedirection");
+        this.checkboxIsUnicodeDecodeDisabled.setName("checkboxIsUnicodeDecodeDisabled");
+        this.checkboxIsNotTestingConnection.setName("checkboxIsNotTestingConnection");
+        this.checkboxIsProcessingCsrf.setName("checkboxIsProcessingCsrf");
+        this.checkboxIsCsrfUserTag.setName("checkboxIsCsrfUserTag");
+        this.checkboxIsNotProcessingCookies.setName("checkboxIsNotProcessingCookies");
+        this.checkboxIsLimitingThreads.setName("checkboxIsLimitingThreads");
+        this.checkboxIsConnectionTimeout.setName("checkboxIsConnectionTimeout");
+
+        labelIsFollowingRedirection.setName("labelIsFollowingRedirection");
+        labelIsUnicodeDecodeDisabled.setName("labelIsUnicodeDecodeDisabled");
+        labelIsNotTestingConnection.setName("labelIsNotTestingConnection");
+        labelIsProcessingCsrf.setName("labelIsProcessingCsrf");
+        labelIsCsrfUserTag.setName("labelIsCsrfUserTag");
+        labelIsCsrfUserTagOutput.setName("labelIsCsrfUserTagOutput");
+        labelIsNotProcessingCookies.setName("labelIsNotProcessingCookies");
+        labelIsLimitingThreads.setName("labelIsLimitingThreads");
+        labelIsConnectionTimeout.setName("labelIsConnectionTimeout");
+        
         Stream
         .of(
             labelIsFollowingRedirection,
             labelIsUnicodeDecodeDisabled,
-            labelTestConnection,
-            labelProcessingCsrf,
-            labelCsrfUserTag,
-            labelCsrfUserTagOutput,
+            labelIsNotTestingConnection,
+            labelIsProcessingCsrf,
+            labelIsCsrfUserTag,
+            labelIsCsrfUserTagOutput,
             labelIsNotProcessingCookies,
             labelIsLimitingThreads,
             labelIsConnectionTimeout
@@ -294,12 +313,12 @@ public class PanelConnection extends JPanel {
                 .createParallelGroup()
                 .addComponent(labelIsFollowingRedirection)
                 .addComponent(labelIsUnicodeDecodeDisabled)
-                .addComponent(labelTestConnection)
+                .addComponent(labelIsNotTestingConnection)
                 .addComponent(panelThreadCount)
                 .addComponent(panelConnectionTimeout)
                 .addComponent(labelSessionManagement)
                 .addComponent(labelIsNotProcessingCookies)
-                .addComponent(labelProcessingCsrf)
+                .addComponent(labelIsProcessingCsrf)
                 .addComponent(panelCsrfUserTag)
             )
         );
@@ -325,7 +344,7 @@ public class PanelConnection extends JPanel {
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsNotTestingConnection)
-                .addComponent(labelTestConnection)
+                .addComponent(labelIsNotTestingConnection)
             )
             .addGroup(
                 groupLayout
@@ -356,7 +375,7 @@ public class PanelConnection extends JPanel {
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsProcessingCsrf)
-                .addComponent(labelProcessingCsrf)
+                .addComponent(labelIsProcessingCsrf)
             )
             .addGroup(
                 groupLayout

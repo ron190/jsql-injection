@@ -61,7 +61,7 @@ public class MainApplication {
             var view = new JFrameView();
             MediatorHelper.register(view);
             
-            injectionModel.subscribe(view.getObserver());
+            injectionModel.subscribe(view.getSubscriber());
             
         } catch (HeadlessException e) {
             

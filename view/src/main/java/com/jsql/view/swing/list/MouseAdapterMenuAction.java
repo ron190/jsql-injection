@@ -81,7 +81,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             try {
                 popupMenuList.show(
                     list,
-                    ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
                     ? mouseEvent.getX() - popupMenuList.getWidth()
                     : mouseEvent.getX(),
                     mouseEvent.getY()

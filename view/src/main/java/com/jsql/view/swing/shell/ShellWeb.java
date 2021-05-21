@@ -30,6 +30,8 @@ public class ShellWeb extends AbstractShell {
     public ShellWeb(UUID terminalID, String urlShell) throws MalformedURLException {
         
         super(terminalID, urlShell, "system");
+        
+        this.setName("webShell");
     }
 
     @Override

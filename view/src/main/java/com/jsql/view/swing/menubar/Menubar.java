@@ -447,6 +447,9 @@ public class Menubar extends JMenuBar {
         // Render the Preferences dialog behind scene
         var titleTabPreferences = "Preferences";
         
+        // Single rendering
+        var panelPreferences = new PanelPreferences();
+        
         itemPreferences.addActionListener(actionEvent -> {
             
             for (var i = 0; i < MediatorHelper.tabResults().getTabCount() ; i++) {
@@ -472,7 +475,6 @@ public class Menubar extends JMenuBar {
                 }
             };
 
-            var panelPreferences = new PanelPreferences();
             var scroller = new LightScrollPane(1, 0, 0, 0, panelPreferences);
             scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
             
@@ -1031,7 +1033,7 @@ public class Menubar extends JMenuBar {
         var componentOrientation = ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault());
         MediatorHelper.frame().applyComponentOrientation(componentOrientation);
         
-        if (ComponentOrientation.getOrientation(oldLocale) != ComponentOrientation.getOrientation(newLocale)) {
+        if (!ComponentOrientation.getOrientation(oldLocale).equals(ComponentOrientation.getOrientation(newLocale))) {
             
             JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight();
             

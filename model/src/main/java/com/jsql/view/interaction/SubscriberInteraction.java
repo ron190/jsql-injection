@@ -14,7 +14,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.util.LogLevel;
 
-public class ObserverInteraction implements Subscriber<Request> {
+public class SubscriberInteraction implements Subscriber<Request> {
 
     /**
      * Log4j logger sent to view.
@@ -23,11 +23,6 @@ public class ObserverInteraction implements Subscriber<Request> {
     
     private String packageInteraction;
     
-    public ObserverInteraction(String packageInteraction) {
-        
-        this.packageInteraction = packageInteraction;
-    }
-        
     /**
      * Observer pattern.<br>
      * Receive an update order from the model:<br>
@@ -35,6 +30,11 @@ public class ObserverInteraction implements Subscriber<Request> {
      * - Pass the parameters to that class.
      */
     private Subscription subscription;
+    
+    public SubscriberInteraction(String packageInteraction) {
+        
+        this.packageInteraction = packageInteraction;
+    }
     
     @Override
     public void onSubscribe(Subscription subscription) {
@@ -49,6 +49,7 @@ public class ObserverInteraction implements Subscriber<Request> {
         subscription.request(1);
         
         if (Interaction.UNSUBSCRIBE.equals(request.getMessage())) {
+            
             subscription.cancel();
             return;
         }

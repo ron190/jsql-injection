@@ -157,6 +157,7 @@ public class PanelPreferences extends JPanel {
     private JList<CategoryPreference> getCategories(BorderLayout borderLayoutPreferences) {
         
         JList<CategoryPreference> categories = new JList<>(CategoryPreference.values());
+        categories.setName("listCategoriesPreference");
         categories.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         categories.setSelectedIndex(0);
         
