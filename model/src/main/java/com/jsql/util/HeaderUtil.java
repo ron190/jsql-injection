@@ -1,7 +1,6 @@
 package com.jsql.util;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
@@ -50,26 +49,22 @@ public class HeaderUtil {
         String keyHeader = header.getKey().trim();
         String valueHeader = header.getValue().trim();
         
-        try {
-            if ("Cookie".equalsIgnoreCase(keyHeader)) {
-                
-                // TODO enclose value in "" => Cookie: a="a"; b="b"
-                httpRequest.setHeader(keyHeader, valueHeader);
-                
-            } else {
-                
-                httpRequest.setHeader(
-                    keyHeader,
-                    URLDecoder.decode(
-                        valueHeader,
-                        StandardCharsets.UTF_8.name()
-                    )
-                );
-            }
+        if ("Cookie".equalsIgnoreCase(keyHeader)) {
             
-        } catch (UnsupportedEncodingException e) {
+            // TODO enclose value in "" => Cookie: a="a"; b="b"
+            httpRequest.setHeader(keyHeader, valueHeader);
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+        } else {
+            
+            httpRequest.setHeader(
+                keyHeader,
+                URLDecoder
+                .decode(
+                    valueHeader,
+                    StandardCharsets.UTF_8
+                )
+                .replaceAll("[^\\p{ASCII}]", "")
+            );
         }
     }
 
