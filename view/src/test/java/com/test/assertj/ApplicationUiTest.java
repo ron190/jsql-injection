@@ -8,7 +8,10 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -20,6 +23,7 @@ import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.DialogFixture;
 import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.timing.Timeout;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,6 +39,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
+import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.util.bruter.ActionCoder;
@@ -74,10 +79,13 @@ public class ApplicationUiTest {
     public void shouldDnDList() {
 
         window.tabbedPane("tabManagers").selectTab("Admin page");
+        
         Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(0));
         Assert.assertNotEquals("admin", window.list("listManagerAdminPage").valueAt(1));
+        
         window.list("listManagerAdminPage").drag(0);
         window.list("listManagerAdminPage").drop(1);
+        
         Assert.assertNotEquals("admin", window.list("listManagerAdminPage").valueAt(0));
         Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(1));
         
@@ -99,6 +107,15 @@ public class ApplicationUiTest {
         window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
         
         Assert.assertEquals("paste-from-clipboard", window.list("listManagerAdminPage").valueAt(1));
+        
+        window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_X);
+        window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_X);
+        window.list("listManagerAdminPage").selectItem(3);
+        window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        
+        Assert.assertNotEquals("paste-from-clipboard", window.list("listManagerAdminPage").valueAt(1));
+        Assert.assertEquals("paste-from-clipboard", window.list("listManagerAdminPage").valueAt(3));
     }
     
     @Test
@@ -232,6 +249,90 @@ public class ApplicationUiTest {
         });
     }
 
+    @Test
+    public void shouldFindVendorAndErrorMethods() {
+        
+        window.menuItem("menuStrategy").click();
+        window.menuItem("itemRadioStrategyError").requireDisabled();
+        
+        var request = new Request();
+        request.setMessage(Interaction.SET_VENDOR);
+        request.setParameters(MediatorHelper.model().getMediatorVendor().getMySQL());
+        
+        MediatorHelper.model().sendToViews(request);
+        
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader.put(Header.URL, "");
+        msgHeader.put(Header.INDEX_ERROR_STRATEGY, 0);
+        msgHeader.put(Header.INJECTION_MODEL, MediatorHelper.model());
+        
+        var requestError = new Request();
+        requestError.setMessage(Interaction.MARK_ERROR_VULNERABLE);
+        requestError.setParameters(msgHeader);
+        MediatorHelper.model().sendToViews(requestError);
+        
+        window.menuItem("itemRadioStrategyError").requireEnabled(Timeout.timeout(1000));
+        
+        window.robot().moveMouse(window.menuItem("menuVendor").target());
+        Assert.assertEquals("Vendor should be MySQL", "MySQL", window.menuItem("menuVendor").target().getText());
+        
+        window.robot().moveMouse(window.menuItem("menuStrategy").target());
+        window.menuItem("itemRadioVendorMySQL").requireVisible();
+        
+        window.menuItem("menuStrategy").requireVisible();
+        
+        try {
+            window.menuItem("itemRadioVendorUnsigned:or").requireVisible();
+        } catch (Exception e) {
+            Assert.fail();
+        }
+        
+        window.robot().showPopupMenu(window.menuItem("itemRadioStrategyError").target());
+        
+        window.menuItem("itemRadioStrategyError").requireEnabled();
+        window.menuItem("itemRadioVendorUnsigned:or").click();
+    }
+    
+    @Test
+    public void shouldFindNetworkHeader() {
+        
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader.put(Header.URL, "url");
+        msgHeader.put(Header.POST, "post");
+        msgHeader.put(Header.HEADER, new TreeMap<>(Map.of("key1","value1", "key2", "value2")));
+        msgHeader.put(Header.RESPONSE, new TreeMap<>(Map.of("key1","value1", "key2", "value2")));
+        msgHeader.put(Header.SOURCE, "source");
+        msgHeader.put(Header.PAGE_SIZE, "1");
+        msgHeader.put(Header.METADATA_PROCESS, "meta process");
+        msgHeader.put(Header.METADATA_STRATEGY, "meta strategy");
+        
+        var request = new Request();
+        request.setMessage(Interaction.MESSAGE_HEADER);
+        request.setParameters(msgHeader);
+        MediatorHelper.model().sendToViews(request);
+        
+        try {
+            window.label("CONSOLE_NETWORK_LABEL").click().requireVisible();
+        } catch (Exception e) {
+            Assert.fail();
+        }
+
+        window.table("networkTable").selectRows(0).requireContents(new String[][] { { "url", "1", "meta strategy", "meta process" } });
+        
+        window.label("labelNETWORK_TAB_URL_LABEL").click();
+        window.textBox("textNETWORK_TAB_URL_LABEL").requireText("url");
+        window.label("labelNETWORK_TAB_RESPONSE_LABEL").click();
+        window.textBox("textNETWORK_TAB_RESPONSE_LABEL").requireText(Pattern.compile(".*key1: value1.*key2: value2.*", Pattern.DOTALL));
+        window.label("labelNETWORK_TAB_SOURCE_LABEL").click();
+        window.textBox("textNETWORK_TAB_SOURCE_LABEL").requireText("source");
+        window.label("labelNETWORK_TAB_PREVIEW_LABEL").click();
+        window.textBox("textNETWORK_TAB_PREVIEW_LABEL").requireText(Pattern.compile(".*<html>.*cleaned.*</html>.*", Pattern.DOTALL));
+        window.label("labelNETWORK_TAB_HEADERS_LABEL").click();
+        window.textBox("textNETWORK_TAB_HEADERS_LABEL").requireText(Pattern.compile(".*key1: value1.*key2: value2.*", Pattern.DOTALL));
+        window.label("labelNETWORK_TAB_PARAMS_LABEL").click();
+        window.textBox("textNETWORK_TAB_PARAMS_LABEL").requireText("post");
+    }
+    
     @Test
     public void shouldFindSqlshell() {
         
@@ -481,14 +582,14 @@ public class ApplicationUiTest {
             }
         );
         
-        window.checkBox("checkboxIsFollowingRedirection").uncheck();
-        window.checkBox("checkboxIsUnicodeDecodeDisabled").uncheck();
-        window.checkBox("checkboxIsNotTestingConnection").uncheck();
-        window.checkBox("checkboxIsProcessingCsrf").uncheck();
-        window.checkBox("checkboxIsCsrfUserTag").uncheck();
-        window.checkBox("checkboxIsNotProcessingCookies").uncheck();
-        window.checkBox("checkboxIsLimitingThreads").uncheck();
-        window.checkBox("checkboxIsConnectionTimeout").uncheck();
+        window.button("labelIsFollowingRedirection").click();
+        window.button("labelIsUnicodeDecodeDisabled").click();
+        window.button("labelIsNotTestingConnection").click();
+        window.button("labelIsProcessingCsrf").click();
+        window.button("labelIsCsrfUserTag").click();
+        window.button("labelIsNotProcessingCookies").click();
+        window.button("labelIsLimitingThreads").click();
+        window.button("labelIsConnectionTimeout").click();
         
         Assert.assertArrayEquals(
             new boolean[] {
@@ -626,17 +727,17 @@ public class ApplicationUiTest {
             }
         );
         
-        window.checkBox("checkboxIsParsingForm").uncheck();
-        window.checkBox("checkboxIsNotInjectingMetadata").uncheck();
-        window.checkBox("checkboxIsLimitingNormalIndex").uncheck();
-        window.checkBox("checkboxIsLimitingSleepTimeStrategy").uncheck();
-        window.checkBox("checkboxIsCheckingAllURLParam").uncheck();
-        window.checkBox("checkboxIsCheckingAllRequestParam").uncheck();
-        window.checkBox("checkboxIsCheckingAllHeaderParam").uncheck();
-        window.checkBox("checkboxIsCheckingAllJSONParam").uncheck();
-        window.checkBox("checkboxIsCheckingAllSOAPParam").uncheck();
-        window.checkBox("checkboxIsPerfIndexDisabled").uncheck();
-        window.checkBox("checkboxIsUrlEncodingDisabled").uncheck();
+        window.button("labelIsParsingForm").click();
+        window.button("labelIsNotInjectingMetadata").click();
+        window.button("labelIsLimitingNormalIndex").click();
+        window.button("labelIsLimitingSleepTimeStrategy").click();
+        window.button("labelIsCheckingAllURLParam").click();
+        window.button("labelIsCheckingAllRequestParam").click();
+        window.button("labelIsCheckingAllHeaderParam").click();
+        window.button("labelIsCheckingAllJSONParam").click();
+        window.button("labelIsCheckingAllSOAPParam").click();
+        window.button("labelIsPerfIndexDisabled").click();
+        window.button("labelIsUrlEncodingDisabled").click();
         
         Assert.assertArrayEquals(
             new boolean[] {

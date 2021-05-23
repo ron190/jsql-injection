@@ -25,6 +25,7 @@ import java.time.Duration;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.stream.Stream;
 
@@ -37,7 +38,6 @@ import com.jsql.model.accessible.ResourceAccess;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.method.MediatorMethod;
 import com.jsql.model.injection.strategy.MediatorStrategy;
@@ -225,14 +225,18 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             this.shouldErasePreviousInjection = true;
             
-        } catch (JSqlException | IOException e) {
-            
-            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage());
-            
         } catch (InterruptedException e) {
             
             LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
+            
+        } catch (Exception e) {  // Catch all exceptions like interrupt, URL format and JSqlException
+            
+            String eMessageImplicit = "Problem connecting to URL (implicit reason): "+ getImplicitReason(e);
+            
+            String eMessage = Optional.ofNullable(e.getMessage()).orElse(eMessageImplicit);
+
+            LOGGER.log(LogLevel.CONSOLE_ERROR, eMessage);
             
         } finally {
             
@@ -240,6 +244,23 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             request.setMessage(Interaction.END_PREPARATION);
             this.sendToViews(request);
         }
+    }
+    
+    public static String getImplicitReason(Throwable e) {
+        
+        String eMessage = e.getClass().getSimpleName();
+        
+        if (e.getMessage() != null) {
+            
+            eMessage += ": "+ e.getMessage();
+        }
+        
+        if (e.getCause() != null && !e.equals(e.getCause())) {
+            
+            eMessage += " > "+ getImplicitReason(e.getCause());
+        }
+        
+        return eMessage;
     }
     
     /**
@@ -391,13 +412,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             urlInjectionFixed += "?";
         }
 
-        urlInjectionFixed +=
-            this.buildQuery(
-                this.mediatorMethod.getQuery(),
-                this.mediatorUtils.getParameterUtil().getQueryStringFromEntries(),
-                isUsingIndex,
-                dataInjection
-            );
+        urlInjectionFixed += this.buildQuery(
+            this.mediatorMethod.getQuery(),
+            this.mediatorUtils.getParameterUtil().getQueryStringFromEntries(),
+            isUsingIndex,
+            dataInjection
+        );
 
         urlInjectionFixed = this.mediatorUtils.getCsrfUtil().addQueryStringToken(urlInjectionFixed);
         

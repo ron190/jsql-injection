@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
@@ -171,13 +172,21 @@ public class ConnectionUtil {
         
         this.injectionModel.getMediatorUtils().getCsrfUtil().addHeaderToken(httpRequest);
         
+        var body = this.injectionModel.getMediatorUtils().getParameterUtil().getRequestFromEntries();
+        var bodyPublisher = BodyPublishers.ofString(body.toString());
+        
+        httpRequest.method(
+            this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(),
+            bodyPublisher
+        );
+        
         // Add headers if exists (Authorization:Basic, etc)
         for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()) {
             
             HeaderUtil.sanitizeHeaders(httpRequest, header);
         }
 
-        return this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(httpRequest);
+        return this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(httpRequest, body);
     }
     
     public void testConnection() throws IOException, InterruptedException, InjectionFailureException {

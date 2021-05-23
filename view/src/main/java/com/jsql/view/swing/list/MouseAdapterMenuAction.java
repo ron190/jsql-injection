@@ -136,6 +136,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                 ? I18nViewUtil.valueByKey(entry.getValue())
                 : I18nUtil.valueByKey(entry.getValue())
             );
+            entry.getKey().setName(entry.getValue());
             
             I18nViewUtil.addComponentForKey(entry.getValue(), entry.getKey());
         });

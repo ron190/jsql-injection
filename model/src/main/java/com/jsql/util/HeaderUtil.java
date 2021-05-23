@@ -77,10 +77,11 @@ public class HeaderUtil {
      * Verify the headers received after a request, detect authentication response and
      * send the headers to the view.
      * @param httpRequestBuilder calls URL
+     * @param body 
      * @return httpResponse with response headers
      * @throws IOException when an error occurs during connection
      */
-    public HttpResponse<String> checkResponseHeader(Builder httpRequestBuilder) throws IOException, InterruptedException {
+    public HttpResponse<String> checkResponseHeader(Builder httpRequestBuilder, String body) throws IOException, InterruptedException {
         
         var httpRequest = httpRequestBuilder.build();
         HttpResponse<String> httpResponse = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(
@@ -103,6 +104,7 @@ public class HeaderUtil {
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, httpRequest.uri().toURL().toString());
+        msgHeader.put(Header.POST, body);
         msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
         msgHeader.put(Header.RESPONSE, mapHeaders);
         msgHeader.put(Header.SOURCE, pageSource);

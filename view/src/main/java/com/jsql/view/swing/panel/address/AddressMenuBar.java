@@ -70,6 +70,7 @@ public class AddressMenuBar extends JMenuBar {
         this.setBorder(null);
 
         this.menuStrategy = new ComboMenu("Strategy auto");
+        this.menuStrategy.setName("menuStrategy");
         
         final var patternKeyTooltipStrategy = "STRATEGY_%s_TOOLTIP";
 
@@ -81,6 +82,7 @@ public class AddressMenuBar extends JMenuBar {
                 
                 itemRadioStrategy = new JMenu(strategy.toString());
                 this.itemRadioStrategyError = (JMenu) itemRadioStrategy;
+                itemRadioStrategy.getComponent().setName("itemRadioStrategyError");
                 
             } else {
                 
@@ -116,6 +118,8 @@ public class AddressMenuBar extends JMenuBar {
                     }
                 };
                 
+                itemRadioStrategy.getComponent().setName("itemRadioStrategy"+ strategy.toString());
+                
                 ((AbstractButton) itemRadioStrategy).addActionListener(actionEvent -> {
                     
                     this.menuStrategy.setText(strategy.toString());
@@ -139,6 +143,7 @@ public class AddressMenuBar extends JMenuBar {
         }
 
         this.menuVendor = new ComboMenu(MediatorHelper.model().getMediatorVendor().getAuto().toString());
+        this.menuVendor.setName("menuVendor");
 
         var groupVendor = new ButtonGroup();
 
@@ -146,6 +151,7 @@ public class AddressMenuBar extends JMenuBar {
         for (final Vendor vendor: MediatorHelper.model().getMediatorVendor().getVendors()) {
             
             JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorHelper.model().getMediatorVendor().getAuto());
+            itemRadioVendor.setName("itemRadioVendor"+ vendor.toString());
             itemRadioVendor.addActionListener(actionEvent -> {
                 
                 this.menuVendor.setText(vendor.toString());
@@ -194,6 +200,7 @@ public class AddressMenuBar extends JMenuBar {
                 
                 JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
                 itemRadioVendor.setEnabled(false);
+                itemRadioVendor.setName("itemRadioVendor"+ methodError.getName());
                 
                 this.itemRadioStrategyError.add(itemRadioVendor);
                 this.groupStrategy.add(itemRadioVendor);

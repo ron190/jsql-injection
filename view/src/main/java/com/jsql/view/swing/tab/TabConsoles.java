@@ -27,6 +27,11 @@ public class TabConsoles extends TabbedPaneWheeled {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
+    
+    public TabConsoles() {
+
+        this.setName("tabConsoles");
+    }
 
     public void highlightTab(String label) {
         

@@ -71,6 +71,9 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             );
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
             
+            label.setName("label"+ entry.getKey());
+            entry.getValue().setName("text"+ entry.getKey());
+            
             DefaultCaret caret = (DefaultCaret) entry.getValue().getCaret();
             caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         });

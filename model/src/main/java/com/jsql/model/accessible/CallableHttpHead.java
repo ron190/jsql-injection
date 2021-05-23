@@ -1,17 +1,18 @@
 package com.jsql.model.accessible;
 
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -70,47 +71,68 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             
             return this;
         }
-
-        var isUrlIncorrect = false;
         
-        URL targetUrl = null;
         try {
-            targetUrl = new URL(this.urlAdminPage);
-        } catch (MalformedURLException e) {
-            isUrlIncorrect = true;
-        }
-        
-        if (isUrlIncorrect || StringUtils.isEmpty(targetUrl.getHost())) {
+            var builderHttpRequest = HttpRequest
+                .newBuilder()
+                .uri(URI.create(this.urlAdminPage))
+                .method("HEAD", BodyPublishers.noBody())
+                .timeout(Duration.ofSeconds(4));
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect URL: {}", this.urlAdminPage);
-            return this;
-        }
-        
-        var httpRequest = HttpRequest
-            .newBuilder()
-            .uri(URI.create(this.urlAdminPage))
-            .method("HEAD", BodyPublishers.noBody())
-            .timeout(Duration.ofSeconds(4))
-            .build();
-        
-        var httpClient = HttpClient
-            .newBuilder()
-            .connectTimeout(Duration.ofSeconds(4))
-            .build();
+            Stream
+            .of(
+                this.injectionModel.getMediatorUtils().getParameterUtil().getHeaderFromEntries()
+                .split("\\\\r\\\\n")
+            )
+            .map(e -> {
+                
+                if (e.split(":").length == 2) {
+                    
+                    return new SimpleEntry<>(
+                        e.split(":")[0],
+                        e.split(":")[1]
+                    );
+                } else {
+                    
+                    return null;
+                }
+            })
+            .filter(e -> e != null)
+            .forEach(e -> builderHttpRequest.header(e.getKey(), e.getValue()));
             
-        HttpResponse<Void> response = httpClient.send(httpRequest, BodyHandlers.discarding());
-        
-        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, this.urlAdminPage);
-        msgHeader.put(Header.POST, StringUtils.EMPTY);
-        msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
-        msgHeader.put(Header.RESPONSE, ConnectionUtil.getHeadersMap(response));
-        msgHeader.put(Header.METADATA_PROCESS, this.metadataInjectionProcess);
-
-        var request = new Request();
-        request.setMessage(Interaction.MESSAGE_HEADER);
-        request.setParameters(msgHeader);
-        this.injectionModel.sendToViews(request);
+            var httpRequest = builderHttpRequest.build();
+            
+            var httpClient = HttpClient
+                .newBuilder()
+                .connectTimeout(Duration.ofSeconds(4))
+                .build();
+            
+            HttpResponse<Void> response = httpClient.send(httpRequest, BodyHandlers.discarding());
+            
+            Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+            msgHeader.put(Header.URL, this.urlAdminPage);
+            msgHeader.put(Header.POST, StringUtils.EMPTY);
+            msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
+            msgHeader.put(Header.RESPONSE, ConnectionUtil.getHeadersMap(response));
+            msgHeader.put(Header.METADATA_PROCESS, this.metadataInjectionProcess);
+            
+            var request = new Request();
+            request.setMessage(Interaction.MESSAGE_HEADER);
+            request.setParameters(msgHeader);
+            this.injectionModel.sendToViews(request);
+            
+        } catch (Exception e) {
+            
+            String eMessageImplicit = String.format(
+                "Problem connecting to %s (implicit reason): %s", 
+                this.urlAdminPage,
+                InjectionModel.getImplicitReason(e)
+            );
+            
+            String eMessage = Optional.ofNullable(e.getMessage()).orElse(eMessageImplicit);
+            
+            LOGGER.log(LogLevel.CONSOLE_ERROR, eMessage);
+        }
         
         return this;
     }

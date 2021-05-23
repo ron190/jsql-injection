@@ -39,6 +39,7 @@ public class NetworkTable extends JTable {
         
         super(0, 4);
         
+        this.setName("networkTable");
         this.setComponentPopupMenu(new JPopupMenuTable(this));
         this.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         this.setRowSelectionAllowed(true);
