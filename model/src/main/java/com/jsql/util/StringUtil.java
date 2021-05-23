@@ -300,21 +300,21 @@ public final class StringUtil {
         return response.toString();
     }
     
-    public static String toHex(String text) throws UnsupportedEncodingException {
+    public static String toHex(String text) {
         
-        return Hex.encodeHexString(text.getBytes(StandardCharsets.UTF_8.name())).trim();
+        return Hex.encodeHexString(text.getBytes(StandardCharsets.UTF_8)).trim();
     }
     
-    public static String fromHex(String text) throws UnsupportedEncodingException, DecoderException {
+    public static String fromHex(String text) throws DecoderException {
         
         byte[] hex = Hex.decodeHex(text.toCharArray());
         
-        return new String(hex, StandardCharsets.UTF_8.name());
+        return new String(hex, StandardCharsets.UTF_8);
     }
     
     public static String toHexZip(String text) throws IOException {
         
-        byte[] zip = StringUtil.compress(text).getBytes(StandardCharsets.UTF_8.name());
+        byte[] zip = StringUtil.compress(text).getBytes(StandardCharsets.UTF_8);
         
         return Hex.encodeHexString(zip).trim();
     }
@@ -322,7 +322,7 @@ public final class StringUtil {
     public static String fromHexZip(String text) throws IOException, DecoderException {
         
         byte[] hex = Hex.decodeHex(text.toCharArray());
-        var zip = new String(hex, StandardCharsets.UTF_8.name());
+        var zip = new String(hex, StandardCharsets.UTF_8);
         
         return StringUtil.decompress(zip);
     }
@@ -354,14 +354,14 @@ public final class StringUtil {
             .replace(">", "&gt;");
     }
     
-    public static String toUrl(String text) throws UnsupportedEncodingException {
+    public static String toUrl(String text) {
         
-        return URLEncoder.encode(text, StandardCharsets.UTF_8.name());
+        return URLEncoder.encode(text, StandardCharsets.UTF_8);
     }
     
-    public static String fromUrl(String text) throws UnsupportedEncodingException {
+    public static String fromUrl(String text) {
         
-        return URLDecoder.decode(text, StandardCharsets.UTF_8.name());
+        return URLDecoder.decode(text, StandardCharsets.UTF_8);
     }
     
     public static String clean(String query) {

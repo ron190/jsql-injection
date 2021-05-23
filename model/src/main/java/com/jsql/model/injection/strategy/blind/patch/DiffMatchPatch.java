@@ -1460,12 +1460,12 @@ public class DiffMatchPatch {
      * @return Delta text.
      * @throws UnsupportedEncodingException
      */
-    public String diffToDelta(List<Diff> diffs) throws UnsupportedEncodingException {
+    public String diffToDelta(List<Diff> diffs) {
         StringBuilder text = new StringBuilder();
         for (Diff aDiff : diffs) {
             switch (aDiff.getOperation()) {
             case INSERT:
-                text.append("+").append(URLEncoder.encode(aDiff.getText(), StandardCharsets.UTF_8.name())
+                text.append("+").append(URLEncoder.encode(aDiff.getText(), StandardCharsets.UTF_8)
                         .replace('+', ' ')).append("\t");
                 break;
             case DELETE:
@@ -1511,7 +1511,7 @@ public class DiffMatchPatch {
                 // decode would change all "+" to " "
                 param = param.replace("+", "%2B");
                 try {
-                    param = URLDecoder.decode(param, StandardCharsets.UTF_8.name());
+                    param = URLDecoder.decode(param, StandardCharsets.UTF_8);
                 } catch (IllegalArgumentException e) {
                     // Malformed URI sequence.
                     throw new IllegalArgumentException(
@@ -2284,7 +2284,7 @@ public class DiffMatchPatch {
                 line = text.getFirst().substring(1);
                 line = line.replace("+", "%2B");  // decode would change all "+" to " "
                 try {
-                    line = URLDecoder.decode(line, StandardCharsets.UTF_8.name());
+                    line = URLDecoder.decode(line, StandardCharsets.UTF_8);
                 } catch (IllegalArgumentException e) {
                     // Malformed URI sequence.
                     throw new IllegalArgumentException(

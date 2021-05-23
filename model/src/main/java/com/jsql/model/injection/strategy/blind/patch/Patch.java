@@ -63,13 +63,8 @@ public class Patch {
                 text.append(' ');
                 break;
             }
-            try {
-                text.append(URLEncoder.encode(aDiff.getText(), StandardCharsets.UTF_8.name()).replace('+', ' '))
-                .append("\n");
-            } catch (UnsupportedEncodingException e) {
-                // Not likely on modern system.
-                throw new IllegalArgumentException("This system does not support UTF-8.", e);
-            }
+            text.append(URLEncoder.encode(aDiff.getText(), StandardCharsets.UTF_8).replace('+', ' '))
+            .append("\n");
         }
         return unescapeForEncodeUriCompatability(text.toString());
     }

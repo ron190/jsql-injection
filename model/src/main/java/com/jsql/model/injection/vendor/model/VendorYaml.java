@@ -172,13 +172,7 @@ public class VendorYaml implements AbstractVendor {
         }
         
         String databaseUtf8 = StringUtils.EMPTY;
-        try {
-            databaseUtf8 = Hex.encodeHexString(database.toString().getBytes(StandardCharsets.UTF_8.name()));
-            
-        } catch (UnsupportedEncodingException e) {
-            
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
-        }
+        databaseUtf8 = Hex.encodeHexString(database.toString().getBytes(StandardCharsets.UTF_8));
         
         return sqlQuery
             .replace(DATABASE_HEX, databaseUtf8)
@@ -226,14 +220,8 @@ public class VendorYaml implements AbstractVendor {
         
         String databaseUtf8 = StringUtils.EMPTY;
         String tableUtf8 = StringUtils.EMPTY;
-        try {
-            databaseUtf8 = Hex.encodeHexString(table.getParent().toString().getBytes(StandardCharsets.UTF_8.name()));
-            tableUtf8 = Hex.encodeHexString(table.toString().getBytes(StandardCharsets.UTF_8.name()));
-            
-        } catch (UnsupportedEncodingException e) {
-            
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
-        }
+        databaseUtf8 = Hex.encodeHexString(table.getParent().toString().getBytes(StandardCharsets.UTF_8));
+        tableUtf8 = Hex.encodeHexString(table.toString().getBytes(StandardCharsets.UTF_8));
         
         return sqlQuery
             .replace(DATABASE_HEX, databaseUtf8)
@@ -303,34 +291,14 @@ public class VendorYaml implements AbstractVendor {
             
             namesColumnUtf8[i] = StringUtil.detectUtf8(namesColumns[i]);
             
-            try {
-                namesColumnUtf8[i] = URLEncoder.encode(namesColumnUtf8[i], StandardCharsets.UTF_8.name());
-                
-            } catch (UnsupportedEncodingException e) {
-                
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
-            }
+            namesColumnUtf8[i] = URLEncoder.encode(namesColumnUtf8[i], StandardCharsets.UTF_8);
         }
         
         var nameDatabaseUtf8 = StringUtil.detectUtf8(database.toString());
-        
-        try {
-            nameDatabaseUtf8 = URLEncoder.encode(nameDatabaseUtf8, StandardCharsets.UTF_8.name());
-            
-        } catch (UnsupportedEncodingException e) {
-            
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
-        }
+        nameDatabaseUtf8 = URLEncoder.encode(nameDatabaseUtf8, StandardCharsets.UTF_8);
         
         var nameTableUtf8 = StringUtil.detectUtf8(table.toString());
-        
-        try {
-            nameTableUtf8 = URLEncoder.encode(nameTableUtf8, StandardCharsets.UTF_8.name());
-            
-        } catch (UnsupportedEncodingException e) {
-            
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
-        }
+        nameTableUtf8 = URLEncoder.encode(nameTableUtf8, StandardCharsets.UTF_8);
         
         return sqlQuery
             .replace(
