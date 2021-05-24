@@ -167,6 +167,96 @@ public class HibernateRestController {
         return greeting;
     }
     
+    @RequestMapping("/inside")
+    public Greeting greetingInside(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            
+            Query query = session.createNativeQuery("select '"+ inject +"'");
+            
+            // Do not display anything, error message is mandatory
+            query.getResultList();
+            
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
+        }
+        
+        return greeting;
+    }
+    
+    @RequestMapping("/delete")
+    public Greeting greetingDelete(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            
+            session.beginTransaction();
+            Query query = session.createNativeQuery("delete from Student where 'not_found' = '"+ inject +"'");
+            
+            // Do not display anything, error message is mandatory
+            query.executeUpdate();
+            session.getTransaction().commit();
+            
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
+        }
+        
+        return greeting;
+    }
+    
+    @RequestMapping("/insert")
+    public Greeting greetingInsert(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            
+            session.beginTransaction();
+            Query query = session.createNativeQuery("insert into Student select * from Student where 'not_found' = '"+ inject +"'");
+            
+            // Do not display anything, error message is mandatory
+            query.executeUpdate();
+            session.getTransaction().commit();
+            
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
+        }
+        
+        return greeting;
+    }
+    
+    @RequestMapping("/update")
+    public Greeting greetingUpdate(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            
+            session.beginTransaction();
+            Query query = session.createNativeQuery("update Student set roll_no='' where 'not_found' = '"+ inject +"'");
+            
+            // Do not display anything, error message is mandatory
+            query.executeUpdate();
+            session.getTransaction().commit();
+            
+        } catch (Exception e) {
+            
+            greeting = this.initializeErrorMessage(e);
+        }
+        
+        return greeting;
+    }
+    
     
     // Special
 
