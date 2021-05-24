@@ -6,6 +6,7 @@ import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.EnumMap;
 import java.util.Map;
@@ -85,24 +86,38 @@ public class HeaderUtil {
         );
         String pageSource = httpResponse.body();
         
-        Map<String, String> mapHeaders = ConnectionUtil.getHeadersMap(httpResponse);
+        Map<String, String> mapResponseHeaders = ConnectionUtil.getHeadersMap(httpResponse);
         
         var responseCode = Integer.toString(httpResponse.statusCode());
         
-        this.checkResponse(responseCode, mapHeaders);
+        this.checkResponse(responseCode, mapResponseHeaders);
         
         this.checkStatus(httpResponse);
         
         this.injectionModel.getMediatorUtils().getFormUtil().parseForms(httpResponse.statusCode(), pageSource);
         
-        this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(pageSource, mapHeaders);
+        this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(pageSource, mapResponseHeaders);
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        
+        int sizeHeaders = mapResponseHeaders
+            .keySet()
+            .stream()
+            .map(key -> mapResponseHeaders.get(key).length() + key.length())
+            .mapToInt(Integer::intValue)
+            .sum();
+        
+        float size = (float) (pageSource.length() + sizeHeaders) / 1024;
+        var decimalFormat = new DecimalFormat("0.000");
+        msgHeader.put(Header.PAGE_SIZE, decimalFormat.format(size));
+            
         msgHeader.put(Header.URL, httpRequest.uri().toURL().toString());
         msgHeader.put(Header.POST, body);
         msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
-        msgHeader.put(Header.RESPONSE, mapHeaders);
+        msgHeader.put(Header.RESPONSE, mapResponseHeaders);
         msgHeader.put(Header.SOURCE, pageSource);
+        msgHeader.put(Header.METADATA_STRATEGY, "#none");
+        msgHeader.put(Header.METADATA_PROCESS, "test#conn");
         
         // Inform the view about the log info
         var request = new Request();

@@ -577,7 +577,7 @@ public class DataAccess {
             
         } catch (AbstractSlidingException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage(), e);
+            LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage());
             
             // Get pieces of data already retrieved instead of losing them
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {

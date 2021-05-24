@@ -60,14 +60,10 @@ public class SuspendableGetRows extends AbstractSuspendable {
         
         this.injectionModel.getMediatorUtils().getThreadUtil().put(elementDatabase, this);
 
-        AbstractStrategy strategy;
+        AbstractStrategy strategy = this.injectionModel.getMediatorStrategy().getStrategy();
         
         // Fix #14417
-        if (this.injectionModel.getMediatorStrategy().getStrategy() != null) {
-            
-            strategy = this.injectionModel.getMediatorStrategy().getStrategy();
-            
-        } else {
+        if (strategy == null) {
             
             return StringUtils.EMPTY;
         }

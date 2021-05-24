@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.stream.Stream;
@@ -97,7 +98,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
                     return null;
                 }
             })
-            .filter(e -> e != null)
+            .filter(Objects::nonNull)
             .forEach(e -> builderHttpRequest.header(e.getKey(), e.getValue()));
             
             var httpRequest = builderHttpRequest.build();
@@ -121,9 +122,14 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             request.setParameters(msgHeader);
             this.injectionModel.sendToViews(request);
             
+        } catch (InterruptedException e) {
+            
+            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            Thread.currentThread().interrupt();
+            
         } catch (Exception e) {
             
-            String eMessageImplicit = String.format(
+            var eMessageImplicit = String.format(
                 "Problem connecting to %s (implicit reason): %s", 
                 this.urlAdminPage,
                 InjectionModel.getImplicitReason(e)

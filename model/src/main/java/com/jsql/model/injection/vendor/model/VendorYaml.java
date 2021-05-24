@@ -13,7 +13,6 @@ import static com.jsql.model.accessible.DataAccess.SEPARATOR_QTE_SQL;
 import static com.jsql.model.accessible.DataAccess.TRAIL_HEX;
 import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -171,8 +170,7 @@ public class VendorYaml implements AbstractVendor {
             }
         }
         
-        String databaseUtf8 = StringUtils.EMPTY;
-        databaseUtf8 = Hex.encodeHexString(database.toString().getBytes(StandardCharsets.UTF_8));
+        String databaseUtf8 = Hex.encodeHexString(database.toString().getBytes(StandardCharsets.UTF_8));
         
         return sqlQuery
             .replace(DATABASE_HEX, databaseUtf8)
@@ -218,10 +216,8 @@ public class VendorYaml implements AbstractVendor {
             }
         }
         
-        String databaseUtf8 = StringUtils.EMPTY;
-        String tableUtf8 = StringUtils.EMPTY;
-        databaseUtf8 = Hex.encodeHexString(table.getParent().toString().getBytes(StandardCharsets.UTF_8));
-        tableUtf8 = Hex.encodeHexString(table.toString().getBytes(StandardCharsets.UTF_8));
+        String databaseUtf8 = Hex.encodeHexString(table.getParent().toString().getBytes(StandardCharsets.UTF_8));
+        String tableUtf8 = Hex.encodeHexString(table.toString().getBytes(StandardCharsets.UTF_8));
         
         return sqlQuery
             .replace(DATABASE_HEX, databaseUtf8)

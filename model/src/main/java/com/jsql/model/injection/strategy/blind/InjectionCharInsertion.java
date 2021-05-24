@@ -76,7 +76,7 @@ public class InjectionCharInsertion {
                 this.injectionModel.getMediatorVendor().getVendor().instance().endingComment(),
                 "fals+"
             ),
-            "fprint#ref"
+            "root#ref"
         );
 
         // Concurrent calls to the FALSE statements,
@@ -97,7 +97,7 @@ public class InjectionCharInsertion {
                         urlTest
                     ),
                     this,
-                    "fprint#true"
+                    "root#true"
                 )
             );
         }
@@ -158,7 +158,7 @@ public class InjectionCharInsertion {
                         urlTest
                     ),
                     this,
-                    "fprint#false"
+                    "root#false"
                 )
             );
         }
@@ -212,7 +212,7 @@ public class InjectionCharInsertion {
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization()
             ),
             this,
-            "fprint#confirm"
+            "root#confirm"
         );
         
         try {

@@ -58,7 +58,7 @@ jobs:
         ./model/src/test/resources/docker/script/buff.sh
         ./model/src/test/resources/docker/script/verify.sh
         
-    - name: Build project Docker containers
+    - name: Build project Docker container
       run: |
         docker rmi jsql:latest -f
         docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .

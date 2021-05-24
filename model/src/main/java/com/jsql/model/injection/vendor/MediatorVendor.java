@@ -221,7 +221,7 @@ public class MediatorVendor {
             LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Fingerprinting database...");
         
             var insertionCharacter = "'\"#-)'\"*";
-            String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, "vendor");
+            String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, "test#vendor");
                 
             var mediatorVendor = this.injectionModel.getMediatorVendor();
             Vendor[] vendorsWithoutAuto =

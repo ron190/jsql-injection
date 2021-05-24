@@ -162,7 +162,8 @@ public class ConnectionUtil {
             .newBuilder()
             .uri(
                 URI.create(
-                    this.getUrlByUser()
+                    // Get encoded params without fragment
+                    (this.getUrlBase() + this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries())
                     // Ignore injection point during the test
                     .replace(InjectionModel.STAR, StringUtils.EMPTY)
                 )
@@ -173,11 +174,10 @@ public class ConnectionUtil {
         this.injectionModel.getMediatorUtils().getCsrfUtil().addHeaderToken(httpRequest);
         
         var body = this.injectionModel.getMediatorUtils().getParameterUtil().getRequestFromEntries();
-        var bodyPublisher = BodyPublishers.ofString(body.toString());
         
         httpRequest.method(
             this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(),
-            bodyPublisher
+            BodyPublishers.ofString(body)
         );
         
         // Add headers if exists (Authorization:Basic, etc)

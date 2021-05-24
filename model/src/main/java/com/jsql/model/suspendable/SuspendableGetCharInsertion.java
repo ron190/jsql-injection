@@ -260,7 +260,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     + this.injectionModel.getMediatorVendor().getVendor().instance().sqlOrderBy(),
                     characterInsertion,
                     this.injectionModel,
-                    "fprint#order"
+                    "root#orderby"
                 )
             );
         }

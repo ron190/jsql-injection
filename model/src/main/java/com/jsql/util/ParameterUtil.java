@@ -2,6 +2,9 @@ package com.jsql.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -231,6 +234,7 @@ public class ParameterUtil {
 
     public void initializeQueryString(String urlQuery) throws MalformedURLException {
 
+        // Format and get rid of anchor fragment using native URL
         var url = new URL(urlQuery);
         
         if (
@@ -258,17 +262,17 @@ public class ParameterUtil {
         
         if (StringUtils.isNotEmpty(url.getQuery())) {
             
-            this.listQueryString =
-                Pattern
+            this.listQueryString = Pattern
                 .compile("&")
-                .splitAsStream(regexQueryString.group(2))
+                .splitAsStream(url.getQuery())
                 .map(s -> Arrays.copyOf(s.split("="), 2))
                 .map(o ->
                     new SimpleEntry<>(
                         o[0],
                         o[1] == null
                         ? StringUtils.EMPTY
-                        : o[1]
+                        // Encode invalid chars provided by user
+                        : URLEncoder.encode(o[1], StandardCharsets.UTF_8)
                     )
                 )
                 .collect(Collectors.toList());
