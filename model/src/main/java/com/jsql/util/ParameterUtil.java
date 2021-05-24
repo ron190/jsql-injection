@@ -266,13 +266,12 @@ public class ParameterUtil {
                 .compile("&")
                 .splitAsStream(url.getQuery())
                 .map(s -> Arrays.copyOf(s.split("="), 2))
-                .map(o ->
+                .map(o -> 
                     new SimpleEntry<>(
                         o[0],
                         o[1] == null
                         ? StringUtils.EMPTY
-                        // Encode invalid chars provided by user
-                        : URLEncoder.encode(o[1], StandardCharsets.UTF_8)
+                        : o[1]
                     )
                 )
                 .collect(Collectors.toList());

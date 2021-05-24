@@ -5,6 +5,7 @@ import java.net.Authenticator;
 import java.net.CookieManager;
 import java.net.PasswordAuthentication;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
@@ -12,6 +13,7 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
@@ -157,7 +159,10 @@ public class ConnectionUtil {
      */
     public HttpResponse<String> checkConnectionResponse() throws IOException, InterruptedException {
 
-        var queryString = this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();
+        var queryString = URLEncoder.encode(
+            this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries(), 
+            StandardCharsets.UTF_8
+        );
         var testUrl = this.getUrlBase().replaceAll("\\?$", "");
 
         if (StringUtils.isNotEmpty(queryString)) {
