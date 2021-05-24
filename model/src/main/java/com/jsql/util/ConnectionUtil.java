@@ -157,13 +157,21 @@ public class ConnectionUtil {
      */
     public HttpResponse<String> checkConnectionResponse() throws IOException, InterruptedException {
 
+        var queryString = this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();
+        var testUrl = this.getUrlBase().replaceAll("\\?$", "");
+
+        if (StringUtils.isNotEmpty(queryString)) {
+        
+            testUrl += "?"+ queryString;
+        }
+        
         // Test the HTTP connection
         Builder httpRequest = HttpRequest
             .newBuilder()
             .uri(
                 URI.create(
                     // Get encoded params without fragment
-                    (this.getUrlBase() + this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries())
+                    testUrl
                     // Ignore injection point during the test
                     .replace(InjectionModel.STAR, StringUtils.EMPTY)
                 )
