@@ -59,7 +59,7 @@ public class GitUtil {
         
         if (displayUpdateMessage == ShowOnConsole.YES) {
             
-            LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("UPDATE_LOADING"));
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("UPDATE_LOADING"));
         }
         
         try {
@@ -67,16 +67,16 @@ public class GitUtil {
             
             if (versionGit > Float.parseFloat(this.injectionModel.getVersionJsql())) {
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, () -> I18nUtil.valueByKey("UPDATE_NEW_VERSION"));
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("UPDATE_NEW_VERSION"));
                 
             } else if (displayUpdateMessage == ShowOnConsole.YES) {
                 
-                LOGGER.log(LogLevel.CONSOLE_SUCCESS, () -> I18nUtil.valueByKey("UPDATE_UPTODATE"));
+                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, () -> I18nUtil.valueByKey("UPDATE_UPTODATE"));
             }
             
         } catch (NumberFormatException | IOException | JSONException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, I18nUtil.valueByKey("UPDATE_EXCEPTION"), e);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, I18nUtil.valueByKey("UPDATE_EXCEPTION"), e);
         }
     }
     
@@ -193,7 +193,7 @@ public class GitUtil {
             if (showOnConsole == ShowOnConsole.YES) {
                 
                 LOGGER.log(
-                    LogLevel.CONSOLE_ERROR,
+                    LogLevelUtil.CONSOLE_ERROR,
                     String.format("Error during Github report connection: %s", e.getMessage()),
                     e
                 );
@@ -216,7 +216,7 @@ public class GitUtil {
                 
                 var jsonObjectResponse = new JSONObject(sourcePage);
                 var urlIssue = jsonObjectResponse.getString("html_url");
-                LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Sent to Github: {}", urlIssue);
+                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Sent to Github: {}", urlIssue);
             }
             
         } catch (Exception e) {
@@ -237,12 +237,12 @@ public class GitUtil {
             
             for (var index = 0 ; index < news.length() ; index++) {
                 
-                LOGGER.log(LogLevel.CONSOLE_INFORM, news.get(index));
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, news.get(index));
             }
             
         } catch (IOException | JSONException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "Connection to the Github API failed", e);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Connection to the Github API failed", e);
         }
     }
     
@@ -270,10 +270,10 @@ public class GitUtil {
                     
                 } catch (JSONException e1) {
 
-                    LOGGER.log(LogLevel.CONSOLE_ERROR, "Fetching default JSON failed", e);
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Fetching default JSON failed", e);
                 }
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, "Fetching configuration from Github failed. Wait for service to be available, check your connection or update jsql", e);
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Fetching configuration from Github failed. Wait for service to be available, check your connection or update jsql", e);
             }
         }
         

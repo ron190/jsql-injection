@@ -89,7 +89,7 @@ public class CsrfUtil {
             SimpleEntry<String, String> tokenCsrfFound = optionalTokenCsrf.get();
             
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM,
+                LogLevelUtil.CONSOLE_INFORM,
                 "Found Csrf token from HTML body: {}={}",
                 tokenCsrfFound::getKey,
                 tokenCsrfFound::getValue
@@ -102,14 +102,14 @@ public class CsrfUtil {
                 
                 this.tokenCsrf = tokenCsrfFound;
                 LOGGER.log(
-                    LogLevel.CONSOLE_SUCCESS,
+                    LogLevelUtil.CONSOLE_SUCCESS,
                     "Csrf token added to query and header: {}",
                     tokenCsrfFound::getValue
                 );
                 
             } else {
                 
-                LOGGER.log(LogLevel.CONSOLE_INFORM, "Enable CSRF processing in Preferences if required");
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Enable CSRF processing in Preferences if required");
             }
         }
     }
@@ -147,7 +147,7 @@ public class CsrfUtil {
             SimpleEntry<String, String> cookieCsrf = optionalCookieCsrf.get();
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 "Found CSRF token from Cookie: {}={}",
                 cookieCsrf::getKey,
                 cookieCsrf::getValue
@@ -168,7 +168,7 @@ public class CsrfUtil {
                 
             } else {
                 
-                LOGGER.log(LogLevel.CONSOLE_INFORM, "Enable CSRF processing in Preferences if required");
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Enable CSRF processing in Preferences if required");
             }
         }
     }

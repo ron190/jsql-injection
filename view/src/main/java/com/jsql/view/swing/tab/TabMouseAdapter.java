@@ -15,7 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 
 /**
@@ -62,7 +62,7 @@ public class TabMouseAdapter extends MouseAdapter {
                 
             } catch (SerializationException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
 

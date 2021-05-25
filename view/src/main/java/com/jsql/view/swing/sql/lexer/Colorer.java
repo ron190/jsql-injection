@@ -31,7 +31,7 @@ import javax.swing.text.AttributeSet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.sql.lexer.syntax.Lexer;
 import com.jsql.view.swing.sql.lexer.syntax.Token;
 
@@ -230,7 +230,7 @@ class Colorer extends Thread {
                 
             } catch(InterruptedException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 Thread.currentThread().interrupt();
             }
         }
@@ -287,7 +287,7 @@ class Colorer extends Thread {
             // we can always start at the very beginning.
             dpStart = new DocPosition(0);
             
-            LOGGER.log(LogLevel.IGNORE, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e);
         }
 
         // if stuff was removed, take any removed positions off the
@@ -463,7 +463,7 @@ class Colorer extends Thread {
             
         } catch (IOException e) {
             
-            LOGGER.log(LogLevel.IGNORE, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e);
         }
         
         synchronized (docLock) {

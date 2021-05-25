@@ -188,7 +188,7 @@ public class JsonUtil {
             
             try {
                 LOGGER.log(
-                    LogLevel.CONSOLE_INFORM,
+                    LogLevelUtil.CONSOLE_INFORM,
                     "Checking JSON {} parameter {}={}",
                     methodInjection::name,
                     parentXPath::getKey,
@@ -221,7 +221,7 @@ public class JsonUtil {
                 
                 // Injection failure
                 LOGGER.log(
-                    LogLevel.CONSOLE_ERROR,
+                    LogLevelUtil.CONSOLE_ERROR,
                     String.format(
                         "No injection found for JSON %s parameter %s=%s",
                         methodInjection.name(),

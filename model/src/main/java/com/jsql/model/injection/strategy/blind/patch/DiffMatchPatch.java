@@ -48,7 +48,7 @@ import java.util.regex.Pattern;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /*
  * Functions for diff, match and patch.
@@ -2275,7 +2275,7 @@ public class DiffMatchPatch {
                     sign = text.getFirst().charAt(0);
                 } catch (IndexOutOfBoundsException e) {
                     
-                    LOGGER.log(LogLevel.IGNORE, e);
+                    LOGGER.log(LogLevelUtil.IGNORE, e);
                     
                     // Blank line?  Whatever.
                     text.removeFirst();

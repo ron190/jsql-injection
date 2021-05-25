@@ -8,7 +8,7 @@ import javax.swing.JTabbedPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * Mousewheel allows to navigate to next/previous tab.
@@ -47,7 +47,7 @@ public class TabbedPaneMouseWheelListener implements MouseWheelListener {
                 
             } catch (IllegalArgumentException | NullPointerException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
     }

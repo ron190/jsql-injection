@@ -55,7 +55,7 @@ import javax.swing.border.Border;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * Does all the magic for getting popups with drop shadows.
@@ -218,7 +218,7 @@ public final class ShadowPopup extends Popup {
         JComponent parent = (JComponent) this.contents.getParent();
         this.popup.hide();
         
-        if ((parent != null) && parent.getBorder() == SHADOW_BORDER) {
+        if ((parent != null) && SHADOW_BORDER.equals(parent.getBorder())) {
             
             parent.setBorder(this.oldBorder);
             parent.setOpaque(this.oldOpaque);
@@ -287,7 +287,7 @@ public final class ShadowPopup extends Popup {
             
         } catch(NullPointerException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         if (contentsPrefSize.width <= 0 || contentsPrefSize.height <= 0) {
@@ -388,7 +388,7 @@ public final class ShadowPopup extends Popup {
             
             this.canSnapshot = false;
             
-            LOGGER.log(LogLevel.IGNORE, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e);
         }
     }
 
@@ -457,7 +457,7 @@ public final class ShadowPopup extends Popup {
             
         } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException | NullPointerException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
 

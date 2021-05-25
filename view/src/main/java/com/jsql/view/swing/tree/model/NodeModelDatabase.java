@@ -19,7 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.bean.database.Database;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -71,7 +71,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
             
         } catch (ArrayIndexOutOfBoundsException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         new SwingWorker<>() {

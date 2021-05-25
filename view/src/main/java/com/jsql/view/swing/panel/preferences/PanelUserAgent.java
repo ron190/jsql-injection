@@ -18,7 +18,7 @@ import javax.swing.SwingConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
@@ -57,7 +57,7 @@ public class PanelUserAgent extends JPanel {
             
         } catch (IOException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         this.textfieldCustomUserAgent.setText(jsonScan.toString());

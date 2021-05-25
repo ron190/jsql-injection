@@ -30,7 +30,7 @@ import org.apache.logging.log4j.Logger;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 import com.jsql.view.swing.tree.ActionLoadStop;
@@ -180,7 +180,7 @@ public abstract class AbstractNodeModel {
         );
         
         popupMenu.setLocation(
-            ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
             ? e.getXOnScreen() - popupMenu.getWidth()
             : e.getXOnScreen(),
             e.getYOnScreen()
@@ -340,7 +340,7 @@ public abstract class AbstractNodeModel {
             
         } catch (NullPointerException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         this.panelNode.getLabel().setVisible(!isEdited);

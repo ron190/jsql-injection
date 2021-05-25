@@ -21,7 +21,7 @@ import javax.swing.text.JTextComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * A caret in a block shape.
@@ -98,7 +98,7 @@ public class BlockCaret extends DefaultCaret {
             
         } catch (BadLocationException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             return;
         }
 

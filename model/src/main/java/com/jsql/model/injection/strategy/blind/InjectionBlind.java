@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * A blind attack class using concurrent threads.
@@ -93,11 +93,11 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             }
         } catch (ExecutionException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
         }
 
@@ -143,11 +143,11 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             
         } catch (ExecutionException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
         }
     }
@@ -182,7 +182,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         try {
             blindTest.call();
         } catch (Exception e) {
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
         return blindTest.isTrue() && !this.constantFalseMark.isEmpty();

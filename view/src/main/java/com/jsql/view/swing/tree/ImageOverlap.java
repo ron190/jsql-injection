@@ -21,7 +21,7 @@ import javax.swing.ImageIcon;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * An icon composed of a main icon and another one displayed in the bottom right corner.
@@ -68,7 +68,7 @@ public class ImageOverlap extends ImageIcon {
             
         } catch (IOException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 }

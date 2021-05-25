@@ -25,7 +25,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -123,7 +123,7 @@ public class TabResults extends DnDTabbedPane {
             
         } catch (MalformedURLException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect shell Url", e);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect shell Url", e);
         }
     }
     
@@ -164,7 +164,7 @@ public class TabResults extends DnDTabbedPane {
             
         } catch (MalformedURLException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect shell Url", e);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect shell Url", e);
         }
     }
     

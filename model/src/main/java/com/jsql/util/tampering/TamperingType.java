@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 public enum TamperingType {
     
@@ -39,7 +39,7 @@ public enum TamperingType {
             
         } catch (IOException e) {
 
-            this.logger.log(LogLevel.CONSOLE_JAVA, e, e);
+            this.logger.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
     

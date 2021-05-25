@@ -23,7 +23,7 @@ import org.apache.logging.log4j.core.config.plugins.PluginElement;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -84,7 +84,7 @@ public class JTextPaneAppender extends AbstractAppender {
     ) {
         if (name == null) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, "No name provided for JTextPaneAppender");
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "No name provided for JTextPaneAppender");
             return null;
         }
 
@@ -113,27 +113,23 @@ public class JTextPaneAppender extends AbstractAppender {
             
             String message = messageLogEvent[0];
             
-            if (level == LogLevel.CONSOLE_JAVA.intLevel()) {
+            if (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {
                 
                 javaTextPane.append(message, ATTRIBUTE_WARN);
                 
-            } else if (level == LogLevel.CONSOLE_ERROR.intLevel()) {
+            } else if (level == LogLevelUtil.CONSOLE_ERROR.intLevel()) {
                 
                 consoleTextPane.append(message, ATTRIBUTE_WARN);
                 
-            } else if (level == LogLevel.CONSOLE_INFORM.intLevel()) {
+            } else if (level == LogLevelUtil.CONSOLE_INFORM.intLevel()) {
                 
                 consoleTextPane.append(message, ATTRIBUTE_INFORM);
                 
-            } else if (level == LogLevel.CONSOLE_SUCCESS.intLevel()) {
+            } else if (level == LogLevelUtil.CONSOLE_SUCCESS.intLevel()) {
                 
                 consoleTextPane.append(message, ATTRIBUTE_SUCCESS);
                 
-            } else if (level == LogLevel.IGNORE.intLevel()) {
-                
-                // Ignore exception
-                
-            } else {
+            } else if (level != LogLevelUtil.IGNORE.intLevel()) {
                 
                 consoleTextPane.append(message, ATTRIBUTE_ALL);
             }

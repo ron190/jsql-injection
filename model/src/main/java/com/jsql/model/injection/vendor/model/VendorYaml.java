@@ -32,7 +32,7 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 
 public class VendorYaml implements AbstractVendor {
@@ -109,7 +109,7 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.log(
-                    LogLevel.CONSOLE_INFORM,
+                    LogLevelUtil.CONSOLE_INFORM,
                     "Strategy [Dios] activated but database query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -124,7 +124,7 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.log(
-                    LogLevel.CONSOLE_INFORM,
+                    LogLevelUtil.CONSOLE_INFORM,
                     "Strategy [Zip] activated but database query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -148,7 +148,7 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.log(
-                    LogLevel.CONSOLE_INFORM,
+                    LogLevelUtil.CONSOLE_INFORM,
                     "Strategy [Dios] activated but table query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -163,7 +163,7 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.log(
-                    LogLevel.CONSOLE_INFORM,
+                    LogLevelUtil.CONSOLE_INFORM,
                     "Strategy [Zip] activated but table query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -194,7 +194,7 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.log(
-                    LogLevel.CONSOLE_INFORM,
+                    LogLevelUtil.CONSOLE_INFORM,
                     "Strategy [Dios] activated but column query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -209,7 +209,7 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.log(
-                    LogLevel.CONSOLE_INFORM,
+                    LogLevelUtil.CONSOLE_INFORM,
                     "Strategy [Zip] activated but column query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -247,7 +247,7 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.log(
-                    LogLevel.CONSOLE_INFORM,
+                    LogLevelUtil.CONSOLE_INFORM,
                     "Strategy [Dios] activated but row query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -264,7 +264,7 @@ public class VendorYaml implements AbstractVendor {
             } else {
                 
                 LOGGER.log(
-                    LogLevel.CONSOLE_INFORM,
+                    LogLevelUtil.CONSOLE_INFORM,
                     "Strategy [Zip] activated but row query is undefined for [{}], fallback to default",
                     () -> this.injectionModel.getMediatorVendor().getVendor()
                 );
@@ -602,7 +602,7 @@ public class VendorYaml implements AbstractVendor {
             
         } catch (NumberFormatException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect Limit start index, force to 0");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect Limit start index, force to 0");
         }
         
         return

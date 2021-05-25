@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 public class SubscriberInteraction implements Subscriber<Request> {
 
@@ -76,7 +76,7 @@ public class SubscriberInteraction implements Subscriber<Request> {
             } catch (ClassNotFoundException e) {
                 
                 // Ignore unused interaction message
-                LOGGER.log(LogLevel.IGNORE, e);
+                LOGGER.log(LogLevelUtil.IGNORE, e);
                 
             } catch (
                 InstantiationException
@@ -87,7 +87,7 @@ public class SubscriberInteraction implements Subscriber<Request> {
                 | InvocationTargetException
                 e
             ) {
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         });
     }
@@ -95,7 +95,7 @@ public class SubscriberInteraction implements Subscriber<Request> {
     @Override
     public void onError(Throwable e) {
 
-        LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
     }
 
     @Override

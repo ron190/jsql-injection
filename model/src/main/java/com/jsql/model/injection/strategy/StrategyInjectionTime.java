@@ -22,7 +22,7 @@ import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanM
 import com.jsql.model.injection.strategy.blind.InjectionTime;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * Injection strategy using time attack.
@@ -49,30 +49,30 @@ public class StrategyInjectionTime extends AbstractStrategy {
         
         if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanTime())) {
             
-            LOGGER.log(LogLevel.CONSOLE_INFORM, "No Time strategy known for {}", this.injectionModel.getMediatorVendor().getVendor());
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "No Time strategy known for {}", this.injectionModel.getMediatorVendor().getVendor());
             
         } else {
             
-            LOGGER.log(LogLevel.CONSOLE_DEFAULT, "{} Time with AND...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with AND...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
             
             this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.AND);
             this.isApplicable = this.injectionTime.isInjectable();
             
             if (!this.isApplicable) {
                 
-                LOGGER.log(LogLevel.CONSOLE_DEFAULT, "{} Time with OR...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with OR...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
                 
                 this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.OR);
                 this.isApplicable = this.injectionTime.isInjectable();
                 
                 if (this.isApplicable) {
                     
-                    LOGGER.log(LogLevel.CONSOLE_SUCCESS, "{} Time injection with OR", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with OR", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
                 }
                 
             } else {
                 
-                LOGGER.log(LogLevel.CONSOLE_SUCCESS, "{} Time injection with AND", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
+                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with AND", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
             }
             
             if (this.isApplicable) {
@@ -117,15 +117,15 @@ public class StrategyInjectionTime extends AbstractStrategy {
         
         if (this.injectionTime.getBooleanMode() == BooleanMode.OR) {
             
-            LOGGER.log(LogLevel.CONSOLE_INFORM, "Using OR statement, database optimizer\'s short-circuit can mess with Boolean strategies");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using OR statement, database optimizer\'s short-circuit can mess with Boolean strategies");
 
         } else {
             
-            LOGGER.log(LogLevel.CONSOLE_INFORM, "Using AND statement");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using AND statement");
         }
         
         LOGGER.log(
-            LogLevel.CONSOLE_INFORM,
+            LogLevelUtil.CONSOLE_INFORM,
             "{} [{}]",
             () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
             this::getName

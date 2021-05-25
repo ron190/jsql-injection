@@ -17,7 +17,7 @@ import com.jsql.model.injection.vendor.model.yaml.Configuration;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * Injection strategy using error attack.
@@ -48,13 +48,13 @@ public class StrategyInjectionError extends AbstractStrategy {
         
         if (strategyYaml.getError().getMethod().isEmpty()) {
             
-            LOGGER.log(LogLevel.CONSOLE_DEFAULT, "No Error strategy for {}", this.injectionModel.getMediatorVendor().getVendor());
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "No Error strategy for {}", this.injectionModel.getMediatorVendor().getVendor());
             return;
         }
         
         var configurationYaml = strategyYaml.getConfiguration();
         
-        LOGGER.log(LogLevel.CONSOLE_DEFAULT, "{} Error...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Error...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
         
         this.tabCapacityMethod = new String[strategyYaml.getError().getMethod().size()];
         var indexErrorMethod = 0;
@@ -75,7 +75,7 @@ public class StrategyInjectionError extends AbstractStrategy {
                 } else {
                     
                     LOGGER.log(
-                        LogLevel.CONSOLE_ERROR,
+                        LogLevelUtil.CONSOLE_ERROR,
                         "{} {} but injectable size is incorrect",
                         () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
                         errorMethod::getName
@@ -164,7 +164,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         
         int logErrorCapacityImproved = errorCapacityImproved;
         LOGGER.log(
-            LogLevel.CONSOLE_SUCCESS,
+            LogLevelUtil.CONSOLE_SUCCESS,
             "{} [Error {}] using [{}] characters",
             () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
             errorMethod::getName,
@@ -199,7 +199,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     public void activateStrategy() {
         
         LOGGER.log(
-            LogLevel.CONSOLE_INFORM,
+            LogLevelUtil.CONSOLE_INFORM,
             "{} [{} {}]",
             () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
             this::getName,

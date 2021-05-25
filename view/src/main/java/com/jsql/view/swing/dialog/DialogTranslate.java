@@ -41,7 +41,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.GitUtil.ShowOnConsole;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.dialog.translate.Language;
 import com.jsql.view.swing.dialog.translate.SwingWorkerGithubLocale;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
@@ -160,7 +160,7 @@ public class DialogTranslate extends JDialog {
             UIManager.getDefaults().getFont("TextField.font").getSize()
         ));
         
-        LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Loading text to translate into {}...", () -> language);
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Loading text to translate into {}...", () -> language);
         
         new SwingWorkerGithubLocale(this).execute();
     }
@@ -191,7 +191,7 @@ public class DialogTranslate extends JDialog {
             
             if (this.textToTranslate.getText().equals(this.textBeforeChange)) {
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, "Nothing changed, translate a piece of text then click on Send");
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Nothing changed, translate a piece of text then click on Send");
                 return;
             }
             

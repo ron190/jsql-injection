@@ -24,7 +24,7 @@ import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.util.ConnectionUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * Thread unit to test if an administration page exists on the server.
@@ -124,7 +124,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
             
         } catch (Exception e) {
@@ -137,7 +137,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             
             String eMessage = Optional.ofNullable(e.getMessage()).orElse(eMessageImplicit);
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, eMessage);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, eMessage);
         }
         
         return this;

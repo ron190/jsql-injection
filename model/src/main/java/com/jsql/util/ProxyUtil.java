@@ -200,7 +200,7 @@ public class ProxyUtil {
         if (showOnConsole == ShowOnConsole.YES) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_SUCCESS,
+                LogLevelUtil.CONSOLE_SUCCESS,
                 "Connection successful to {} proxy {}:{}",
                 () -> protocol,
                 () -> address,
@@ -216,7 +216,7 @@ public class ProxyUtil {
             String message = Optional.ofNullable(e.getMessage()).orElse(StringUtils.EMPTY);
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 () -> String.format(
                     "Connection to %s proxy %s:%s failed with error \"%s\", verify your proxy settings",
                     protocol,

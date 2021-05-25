@@ -58,7 +58,7 @@ import org.apache.logging.log4j.Logger;
 import com.jsql.model.InjectionModel;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.action.ActionSaveTab;
 import com.jsql.view.swing.action.HotkeyUtil;
@@ -1024,7 +1024,7 @@ public class Menubar extends JMenuBar {
             
         } catch (IllegalArgumentException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 

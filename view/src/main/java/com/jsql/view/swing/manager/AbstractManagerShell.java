@@ -36,7 +36,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.exception.JSqlException;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
@@ -82,7 +82,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             
         } catch (IOException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
         this.listPaths = new DnDList(itemsList);
@@ -163,7 +163,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             
             if (AbstractManagerShell.this.getListPaths().getSelectedValuesList().isEmpty()) {
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, "Select at least one directory in the list");
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Select at least one directory in the list");
                 return;
             }
 
@@ -173,12 +173,12 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                 
                 if (!refUrlShell.matches("(?i)^\\w+://.*")) {
                     
-                    LOGGER.log(LogLevel.CONSOLE_INFORM, "Undefined shell URL protocol, forcing to [http://]");
+                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Undefined shell URL protocol, forcing to [http://]");
                     refUrlShell = "http://"+ refUrlShell;
                     
                 } else {
                     
-                    LOGGER.log(LogLevel.CONSOLE_ERROR, "Unknown URL protocol");
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Unknown URL protocol");
                     return;
                 }
             }
@@ -191,7 +191,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                 } catch (MalformedURLException e) {
                     
                     LOGGER.log(
-                        LogLevel.CONSOLE_ERROR,
+                        LogLevelUtil.CONSOLE_ERROR,
                         String.format("Incorrect URL: %s", e.getMessage()),
                         e
                     );
@@ -212,14 +212,14 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                     } catch (JSqlException e) {
                         
                         LOGGER.log(
-                            LogLevel.CONSOLE_ERROR,
+                            LogLevelUtil.CONSOLE_ERROR,
                             String.format("Payload creation error: %s", e.getMessage())
                         );
                         
                     } catch (InterruptedException e) {
                         
                         LOGGER.log(
-                            LogLevel.CONSOLE_ERROR,
+                            LogLevelUtil.CONSOLE_ERROR,
                             String.format("Payload creation error: %s", e.getMessage())
                         );
                         Thread.currentThread().interrupt();

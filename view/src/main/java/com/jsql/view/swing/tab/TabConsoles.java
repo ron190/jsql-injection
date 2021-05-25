@@ -15,7 +15,7 @@ import java.awt.Font;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * Adapt MouseTabbedPane to another class in order to ease Mediator registering.
@@ -52,7 +52,7 @@ public class TabConsoles extends TabbedPaneWheeled {
                 
             } catch (ClassCastException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
     }

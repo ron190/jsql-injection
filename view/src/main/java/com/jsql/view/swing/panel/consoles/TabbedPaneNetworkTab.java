@@ -17,7 +17,7 @@ import org.jsoup.safety.Whitelist;
 
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -36,11 +36,11 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     private JTextArea textAreaNetworkTabUrl = new JPopupTextArea("Request URL").getProxy();
-    private JTextArea textAreaNetworkTabResponse = new JPopupTextArea("Header server response").getProxy();
-    private JTextArea textAreaNetworkTabSource = new JPopupTextArea("Raw page source").getProxy();
-    private JTextPane textAreaNetworkTabPreview = new JTextPanePlaceholder("Web browser rendering");
-    private JTextArea textAreaNetworkTabHeader = new JPopupTextArea("Header client request").getProxy();
-    private JTextArea textAreaNetworkTabParams = new JPopupTextArea("HTTP POST parameters").getProxy();
+    private JTextArea textAreaNetworkTabResponse = new JPopupTextArea("Response headers").getProxy();
+    private JTextArea textAreaNetworkTabSource = new JPopupTextArea("Page source").getProxy();
+    private JTextPane textAreaNetworkTabPreview = new JTextPanePlaceholder("Page rendering");
+    private JTextArea textAreaNetworkTabHeader = new JPopupTextArea("Request headers").getProxy();
+    private JTextArea textAreaNetworkTabParams = new JPopupTextArea("Request body").getProxy();
     
     public TabbedPaneNetworkTab() {
 
@@ -55,11 +55,11 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         Stream
         .of(
             new SimpleEntry<>("NETWORK_TAB_URL_LABEL", this.textAreaNetworkTabUrl),
+            new SimpleEntry<>("NETWORK_TAB_HEADERS_LABEL", this.textAreaNetworkTabHeader),
+            new SimpleEntry<>("NETWORK_TAB_PARAMS_LABEL", this.textAreaNetworkTabParams),
             new SimpleEntry<>("NETWORK_TAB_RESPONSE_LABEL", this.textAreaNetworkTabResponse),
             new SimpleEntry<>("NETWORK_TAB_SOURCE_LABEL", this.textAreaNetworkTabSource),
-            new SimpleEntry<>("NETWORK_TAB_PREVIEW_LABEL", this.textAreaNetworkTabPreview),
-            new SimpleEntry<>("NETWORK_TAB_HEADERS_LABEL", this.textAreaNetworkTabHeader),
-            new SimpleEntry<>("NETWORK_TAB_PARAMS_LABEL", this.textAreaNetworkTabParams)
+            new SimpleEntry<>("NETWORK_TAB_PREVIEW_LABEL", this.textAreaNetworkTabPreview)
         )
         .forEach(entry -> {
             
@@ -97,16 +97,22 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         this.textAreaNetworkTabHeader.setText(StringUtils.EMPTY);
         this.textAreaNetworkTabResponse.setText(StringUtils.EMPTY);
         
-        for (String key: networkData.getHeader().keySet()) {
+        if (networkData.getHeader() != null) {
             
-            this.textAreaNetworkTabHeader.append(key + ": " + networkData.getHeader().get(key));
-            this.textAreaNetworkTabHeader.append("\n");
+            for (String key: networkData.getHeader().keySet()) {
+                
+                this.textAreaNetworkTabHeader.append(key + ": " + networkData.getHeader().get(key));
+                this.textAreaNetworkTabHeader.append("\n");
+            }
         }
         
-        for (String key: networkData.getResponse().keySet()) {
+        if (networkData.getResponse() != null) {
             
-            this.textAreaNetworkTabResponse.append(key + ": " + networkData.getResponse().get(key));
-            this.textAreaNetworkTabResponse.append("\n");
+            for (String key: networkData.getResponse().keySet()) {
+                
+                this.textAreaNetworkTabResponse.append(key + ": " + networkData.getResponse().get(key));
+                this.textAreaNetworkTabResponse.append("\n");
+            }
         }
         
         // Fix #53736: ArrayIndexOutOfBoundsException on setText()
@@ -121,7 +127,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         // Reset EditorKit to disable previous document effect
@@ -167,7 +173,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             
         } catch (Exception | ExceptionInInitializerError e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
     
@@ -184,7 +190,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             
         } catch (NullPointerException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         // Fix #41879: ArrayIndexOutOfBoundsException on setText()
@@ -193,7 +199,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             
         } catch (ArrayIndexOutOfBoundsException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 }

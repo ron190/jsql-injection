@@ -14,7 +14,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.util.JsonUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 @SuppressWarnings("serial")
 public abstract class AbstractMethodInjection implements Serializable {
@@ -80,7 +80,7 @@ public abstract class AbstractMethodInjection implements Serializable {
 
     private boolean checkParamWithStar() throws JSqlException {
         
-        LOGGER.log(LogLevel.CONSOLE_INFORM, "Checking single {} parameter with injection point at [*]", this::name);
+        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Checking single {} parameter with injection point at [*]", this::name);
         
         // Will keep param value as is,
         // Does not test for insertion character (param is null)
@@ -132,7 +132,7 @@ public abstract class AbstractMethodInjection implements Serializable {
                         
                     } catch (JSONException e) {
                         
-                        LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                     }
                 }
             }
@@ -188,7 +188,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         
         try {
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM,
+                LogLevelUtil.CONSOLE_INFORM,
                 "Checking {} parameter {}={}",
                 this::name,
                 paramStar::getKey,
@@ -208,7 +208,7 @@ public abstract class AbstractMethodInjection implements Serializable {
             
             // Injection failure
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 "No {} injection found for parameter {}={} ({})",
                 this.name(),
                 paramStar.getKey(),

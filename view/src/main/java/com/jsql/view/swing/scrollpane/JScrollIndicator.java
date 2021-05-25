@@ -26,7 +26,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * A scrollpane like component, where the scroll bars are floating over the
@@ -223,7 +223,7 @@ public class JScrollIndicator extends JLayeredPane {
                 
             } catch (NullPointerException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
     }

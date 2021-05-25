@@ -15,7 +15,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.callable.CallablePageSource;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * Runnable class, search the correct number of fields in the SQL query.
@@ -84,11 +84,11 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                     if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {
                         
                         initialQuery = initialQuery.replaceAll("1337(?!17331)\\d+7331", "1");
-                        LOGGER.log(LogLevel.CONSOLE_INFORM, "Calibrating indexes disabled, forcing to index [1]");
+                        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Calibrating indexes disabled, forcing to index [1]");
                     }
                     
                     LOGGER.log(
-                        LogLevel.CONSOLE_INFORM,
+                        LogLevelUtil.CONSOLE_INFORM,
                         "Normal strategy triggered with query [{}]",
                         () -> currentCallable
                             .getQuery()
@@ -108,12 +108,12 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
             
         } catch (ExecutionException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
         return initialQuery;

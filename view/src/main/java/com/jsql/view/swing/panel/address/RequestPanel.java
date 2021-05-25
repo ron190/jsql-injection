@@ -28,7 +28,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.util.RadioMenuItemIconCustom;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -105,7 +105,7 @@ public class RequestPanel extends JPanel {
                 
             } else {
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, "Define label of Custom request method");
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Define label of Custom request method");
             }
         });
       
@@ -138,7 +138,7 @@ public class RequestPanel extends JPanel {
                 );
                 
                 popup.setLocation(
-                    ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
                     ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popup.getWidth()
                     : e.getComponent().getLocationOnScreen().x,
                     e.getComponent().getLocationOnScreen().y + e.getComponent().getWidth()

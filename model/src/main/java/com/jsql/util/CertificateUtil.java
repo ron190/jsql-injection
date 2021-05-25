@@ -71,7 +71,7 @@ public class CertificateUtil {
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 String.format("Error ignoring untrusted SSL: %s", e.getMessage()),
                 e
             );

@@ -22,7 +22,7 @@ import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanM
 import com.jsql.model.injection.strategy.blind.InjectionBlind;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * Injection strategy using blind attack.
@@ -49,30 +49,30 @@ public class StrategyInjectionBlind extends AbstractStrategy {
         
         if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanBlind())) {
             
-            LOGGER.log(LogLevel.CONSOLE_INFORM, "No Blind strategy known for {}", this.injectionModel.getMediatorVendor().getVendor());
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "No Blind strategy known for {}", this.injectionModel.getMediatorVendor().getVendor());
             
         } else {
             
-            LOGGER.log(LogLevel.CONSOLE_DEFAULT, "{} Blind with AND...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with AND...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
             
             this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.AND);
             this.isApplicable = this.injectionBlind.isInjectable();
             
             if (!this.isApplicable) {
                 
-                LOGGER.log(LogLevel.CONSOLE_DEFAULT, "{} Blind with OR...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with OR...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
                 
                 this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.OR);
                 this.isApplicable = this.injectionBlind.isInjectable();
                 
                 if (this.isApplicable) {
                     
-                    LOGGER.log(LogLevel.CONSOLE_SUCCESS, "{} Blind injection with OR", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with OR", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
                 }
                 
             } else {
                 
-                LOGGER.log(LogLevel.CONSOLE_SUCCESS, "{} Blind injection with AND", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
+                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with AND", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
             }
             
             if (this.isApplicable) {
@@ -117,15 +117,15 @@ public class StrategyInjectionBlind extends AbstractStrategy {
         
         if (this.injectionBlind.getBooleanMode() == BooleanMode.OR) {
             
-            LOGGER.log(LogLevel.CONSOLE_INFORM, "Using OR statement, database optimizer\'s short-circuit can mess with Boolean strategies");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using OR statement, database optimizer\'s short-circuit can mess with Boolean strategies");
 
         } else {
             
-            LOGGER.log(LogLevel.CONSOLE_INFORM, "Using AND statement");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using AND statement");
         }
         
         LOGGER.log(
-            LogLevel.CONSOLE_INFORM,
+            LogLevelUtil.CONSOLE_INFORM,
             "{} [{}]",
             () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
             this::getName

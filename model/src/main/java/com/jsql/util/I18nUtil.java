@@ -58,7 +58,7 @@ public class I18nUtil {
             String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
             
             LOGGER.log(
-                LogLevel.CONSOLE_SUCCESS,
+                LogLevelUtil.CONSOLE_SUCCESS,
                 () -> String.join(
                     "",
                     "Please contribute and translate parts of jSQL Injection into ",

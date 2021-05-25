@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 public class AttributeSetterForVendor {
     
@@ -26,7 +26,7 @@ public class AttributeSetterForVendor {
             
         } catch (NullPointerException | NoSuchMethodException | SecurityException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
     

@@ -10,7 +10,7 @@ import javax.swing.text.TextAction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * Action to cancel Beep sound when deleting last character.
@@ -63,7 +63,7 @@ public abstract class AbstractCharAction extends TextAction {
             }
         } catch (BadLocationException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 }

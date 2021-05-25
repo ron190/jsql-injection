@@ -205,7 +205,7 @@ public class ConnectionUtil {
     public void testConnection() throws IOException, InterruptedException, InjectionFailureException {
         
         // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
-        LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
         this.getCookieManager().getCookieStore().removeAll();
         HttpResponse<String> httpResponse = this.checkConnectionResponse();
         
@@ -214,7 +214,7 @@ public class ConnectionUtil {
             && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
             && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
         ) {
-            LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> "Testing handshake from previous connection...");
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> "Testing handshake from previous connection...");
             httpResponse = this.checkConnectionResponse();
         }
         
@@ -258,11 +258,11 @@ public class ConnectionUtil {
             
         } catch (IOException e) {
 
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
             
         } finally {

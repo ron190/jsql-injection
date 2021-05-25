@@ -16,7 +16,7 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 public class MediatorVendor {
     
@@ -210,7 +210,7 @@ public class MediatorVendor {
             
             vendorFound = this.injectionModel.getMediatorVendor().getVendorByUser();
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM,
+                LogLevelUtil.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
                 () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER"),
                 () -> this.injectionModel.getMediatorVendor().getVendorByUser()
@@ -218,7 +218,7 @@ public class MediatorVendor {
             
         } else {
             
-            LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Fingerprinting database...");
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database...");
         
             var insertionCharacter = "'\"#-)'\"*";
             String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, "test#vendor");
@@ -238,7 +238,7 @@ public class MediatorVendor {
                     
                     vendorFound = vendorTest;
                     LOGGER.log(
-                        LogLevel.CONSOLE_SUCCESS,
+                        LogLevelUtil.CONSOLE_SUCCESS,
                         MediatorVendor.LOG_VENDOR,
                         () -> "Basic fingerprint matching vendor",
                         () -> vendorTest
@@ -266,7 +266,7 @@ public class MediatorVendor {
             
             vendorFixed = this.injectionModel.getMediatorVendor().getMySQL();
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM,
+                LogLevelUtil.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
                 () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND"),
                 () -> this.injectionModel.getMediatorVendor().getMySQL()
@@ -275,7 +275,7 @@ public class MediatorVendor {
         } else {
             
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM,
+                LogLevelUtil.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
                 () -> I18nUtil.valueByKey("LOG_USING_DATABASE_TYPE"),
                 () -> vendor

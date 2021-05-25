@@ -25,7 +25,7 @@ import javax.swing.text.BadLocationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * A reader interface for an abstract document.  Since
@@ -138,7 +138,7 @@ class DocumentReader extends Reader {
                 
             } catch (BadLocationException e) {
                 
-                LOGGER.log(LogLevel.IGNORE, e);
+                LOGGER.log(LogLevelUtil.IGNORE, e);
                 return -1;
             }
             
@@ -196,7 +196,7 @@ class DocumentReader extends Reader {
                 
             } catch (BadLocationException e) {
                 
-                LOGGER.log(LogLevel.IGNORE, e);
+                LOGGER.log(LogLevelUtil.IGNORE, e);
                 return -1;
             }
         } else {

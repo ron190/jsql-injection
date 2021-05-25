@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /*
  * Copyright (c) 2009-2013 JGoodies Software GmbH. All Rights Reserved.
@@ -225,7 +225,7 @@ public class SystemUtils {
         } catch (SecurityException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_JAVA,
+                LogLevelUtil.CONSOLE_JAVA,
                 String.format("Can't access the System property %s: %s", key, e.getMessage()),
                 e
             );
@@ -294,7 +294,7 @@ public class SystemUtils {
         } catch (HeadlessException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_JAVA,
+                LogLevelUtil.CONSOLE_JAVA,
                 String.format("This environment cannot support a display, keyboard, and mouse: %s", e.getMessage()),
                 e
             );

@@ -2,7 +2,7 @@ package com.jsql.util;
 
 import org.apache.logging.log4j.Level;
 
-public class LogLevel {
+public class LogLevelUtil {
 
     // ERROR 200
     public static final Level CONSOLE_JAVA = Level.forName("CONSOLE_JAVA", 202);
@@ -16,7 +16,7 @@ public class LogLevel {
     // TRACE 600
     public static final Level IGNORE = Level.forName("IGNORE", 601);
     
-    private LogLevel() {
+    private LogLevelUtil() {
         // Utility class
     }
 }

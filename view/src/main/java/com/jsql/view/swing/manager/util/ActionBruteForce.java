@@ -22,7 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.util.bruter.HashBruter;
 import com.jsql.view.swing.manager.ManagerBruteForce;
 import com.jsql.view.swing.util.I18nViewUtil;
@@ -58,17 +58,17 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
             if (StringUtils.isEmpty(this.bruteForceManager.getHash().getText())) {
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_EMPTY_HASH"));
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_EMPTY_HASH"));
                 return;
                 
             } else if (this.isRangeNotSelected()) {
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_CHARACTER_RANGE"));
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_CHARACTER_RANGE"));
                 return;
                 
             } else if (this.isLengthNotValid()) {
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH"));
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH"));
                 return;
             }
 
@@ -119,7 +119,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
                 
             } catch (InterruptedException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 Thread.currentThread().interrupt();
             }
             
@@ -231,7 +231,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         // Display the result
         if (this.isStopped) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_ABORTED"));
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_ABORTED"));
             
         } else if (hashBruter.isFound()) {
             
@@ -246,7 +246,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
             );
 
             LOGGER.log(
-                LogLevel.CONSOLE_SUCCESS,
+                LogLevelUtil.CONSOLE_SUCCESS,
                 "{}: {} => {}",
                 () -> I18nUtil.valueByKey("BRUTEFORCE_FOUND_HASH"),
                 hashBruter::getGeneratedHash,
@@ -260,7 +260,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
                 "\n"+ I18nUtil.valueByKey("BRUTEFORCE_HASH_NOT_FOUND")
             );
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_HASH_NOT_FOUND"));
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_HASH_NOT_FOUND"));
         }
     }
     
@@ -275,7 +275,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
             
         } catch (BadLocationException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 }

@@ -36,7 +36,7 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 import spring.SpringTargetApplication;
 
@@ -151,7 +151,7 @@ public abstract class AbstractTestSuite {
             
         } catch (SQLException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 

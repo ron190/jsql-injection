@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * Define a Table, e.g is sent to the view by the model after injection.
@@ -87,7 +87,7 @@ public class Table extends AbstractElementDatabase {
             
             this.rowCount = "0";
             nbRow = "0";
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect number of rows.");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect number of rows.");
         }
         
         return

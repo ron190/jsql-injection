@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.text.JPopupTextPane;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
@@ -122,7 +122,7 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
         } catch (Exception e) {
             
             // Report #863: exception during report of exception
-            LOGGER.log(LogLevel.CONSOLE_DEFAULT, message, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, message, e);
         }
     }
 }

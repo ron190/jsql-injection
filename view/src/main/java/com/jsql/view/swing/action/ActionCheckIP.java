@@ -9,11 +9,11 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 
 /**
- * Action performing a IP localisation test.
+ * Action performing a IP localization test.
  */
 public class ActionCheckIP implements ActionListener, Runnable {
     
@@ -36,10 +36,10 @@ public class ActionCheckIP implements ActionListener, Runnable {
         }
 
         try {
-            LOGGER.log(LogLevel.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_CHECK"));
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_CHECK"));
             String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource("http://checkip.amazonaws.com");
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM,
+                LogLevelUtil.CONSOLE_INFORM,
                 "{} {}",
                 () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_IS"),
                 () -> addressIp
@@ -48,7 +48,7 @@ public class ActionCheckIP implements ActionListener, Runnable {
         } catch (IOException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 String.format("Error during IP address test: %s", e.getMessage()),
                 e
             );

@@ -48,13 +48,13 @@ public class SoapUtil {
         ) {
             try {
                 var doc = SoapUtil.convertToDocument(this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest());
-                LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Parsing SOAP from Request...");
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Parsing SOAP from Request...");
                 
                 hasFoundInjection = this.injectTextNodes(doc, doc.getDocumentElement());
                 
             } catch (Exception e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_DEFAULT, "SOAP not detected");
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "SOAP not detected");
             }
         }
         
@@ -103,7 +103,7 @@ public class SoapUtil {
                 
                 try {
                     LOGGER.log(
-                        LogLevel.CONSOLE_INFORM,
+                        LogLevelUtil.CONSOLE_INFORM,
                         "Checking SOAP Request injection for {}={}",
                         () -> currentNode.getParentNode().getNodeName(),
                         () -> currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY)
@@ -118,7 +118,7 @@ public class SoapUtil {
                     
                     // Injection failure
                     LOGGER.log(
-                        LogLevel.CONSOLE_ERROR,
+                        LogLevelUtil.CONSOLE_ERROR,
                         String.format(
                             "No SOAP Request injection for %s=%s",
                             currentNode.getParentNode().getNodeName(),

@@ -23,7 +23,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.HttpHeader;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -95,7 +95,7 @@ public class MessageHeader implements InteractionCommand {
         } catch(NullPointerException | IndexOutOfBoundsException e) {
             
             // Fix #4658, #2224, #1797 on model.addRow()
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 }

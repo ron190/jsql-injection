@@ -21,7 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -60,7 +60,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
         } catch (IllegalArgumentException e) {
             
             // Exception if globe.png is unavailable
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
         var border = UIManager.getBorder("TextField.border");
@@ -81,7 +81,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
             
         } catch (ClassCastException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 }

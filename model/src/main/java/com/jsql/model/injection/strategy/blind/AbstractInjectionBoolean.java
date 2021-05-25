@@ -18,7 +18,7 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean<T>> {
     
@@ -129,16 +129,16 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 
             } catch (InterruptedException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 Thread.currentThread().interrupt();
                 
             } catch (ExecutionException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 
             } catch (InjectionFailureException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, e.getMessage());
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());
                 break;
             }
         }
@@ -257,7 +257,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
         }
         

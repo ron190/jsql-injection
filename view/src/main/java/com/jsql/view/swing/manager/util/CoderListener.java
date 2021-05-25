@@ -22,7 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.manager.ManagerCoder;
@@ -95,7 +95,7 @@ public class CoderListener implements ActionListener {
             
             result = String.format("<span style=\"color:red;\">Decoding failed: %s</span>", e.getMessage());
             
-            LOGGER.log(LogLevel.IGNORE, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e);
         }
         
         this.coderManager.getResult().setText(

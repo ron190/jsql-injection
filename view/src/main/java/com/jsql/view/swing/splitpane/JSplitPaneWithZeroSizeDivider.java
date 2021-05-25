@@ -33,7 +33,7 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.util.UiUtil;
 
 /**
@@ -163,7 +163,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
                     
                 } catch (ClassCastException e) {
                     
-                    LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 }
                 
             } else {

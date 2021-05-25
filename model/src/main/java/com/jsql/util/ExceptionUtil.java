@@ -43,7 +43,7 @@ public class ExceptionUtil {
             
             // for other uncaught exceptions
             LOGGER.log(
-                LogLevel.CONSOLE_JAVA,
+                LogLevelUtil.CONSOLE_JAVA,
                 () -> String.format("Unhandled Exception on %s", thread.getName()),
                 throwable
             );
@@ -81,7 +81,7 @@ public class ExceptionUtil {
                     
                 } catch (NoSuchAlgorithmException e) {
                     
-                    LOGGER.log(LogLevel.IGNORE, e);
+                    LOGGER.log(LogLevelUtil.IGNORE, e);
                 }
             }
         }
@@ -105,7 +105,7 @@ public class ExceptionUtil {
             
         } catch (InvocationTargetException | InterruptedException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
         }
     }

@@ -10,7 +10,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * Thread unit to read source of a file by SQL injection.
@@ -75,7 +75,7 @@ public class CallableFile implements Callable<CallableFile> {
             
             // Usually thrown if File does not exist
             
-            LOGGER.log(LogLevel.IGNORE, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e);
             
         } catch (StoppedByUserSlidingException e) {
             
@@ -89,7 +89,7 @@ public class CallableFile implements Callable<CallableFile> {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
             
-            LOGGER.log(LogLevel.IGNORE, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e);
         }
         
         this.sourceFile = resultToParse;

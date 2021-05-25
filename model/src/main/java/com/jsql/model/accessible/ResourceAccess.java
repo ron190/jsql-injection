@@ -52,7 +52,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.ConnectionUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 
 /**
@@ -133,17 +133,17 @@ public class ResourceAccess {
                 this.injectionModel.sendToViews(request);
 
                 nbAdminPagesFoundFixed++;
-                LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Found page: {}", currentCallable.getUrl());
+                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Found page: {}", currentCallable.getUrl());
             }
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
             
         } catch (ExecutionException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         return nbAdminPagesFoundFixed;
@@ -163,11 +163,11 @@ public class ResourceAccess {
         
         if (nbAdminPagesFound > 0) {
             
-            LOGGER.log(LogLevel.CONSOLE_SUCCESS, result);
+            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, result);
             
         } else {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, result);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, result);
         }
     }
     
@@ -251,7 +251,7 @@ public class ResourceAccess {
             throw this.getIntegrityError(sourcePage);
         }
             
-        LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Web payload created into '{}{}'", pathShellFixed, this.filenameWebshell);
+        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Web payload created into '{}{}'", pathShellFixed, this.filenameWebshell);
 
         String urlWithoutProtocol = url.replaceAll("^https?://[^/]*", StringUtils.EMPTY);
         
@@ -317,7 +317,7 @@ public class ResourceAccess {
             
         } else {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "HTTP connection to Web payload not found");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "HTTP connection to Web payload not found");
         }
     }
 
@@ -343,26 +343,26 @@ public class ResourceAccess {
                         || urlSuccess.replace(this.filenameWebshell, StringUtils.EMPTY).equals(urlProtocol + urlWithoutFileName)
                     ) {
                         
-                        LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Connection to payload found at expected location '{}'", urlSuccess);
+                        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection to payload found at expected location '{}'", urlSuccess);
                         
                     } else {
                         
-                        LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Connection to payload found at unexpected location '{}'", urlSuccess);
+                        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection to payload found at unexpected location '{}'", urlSuccess);
                     }
                     
                 } else {
                     
-                    LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Connection to payload not found at '{}'", currentCallable.getUrl());
+                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Connection to payload not found at '{}'", currentCallable.getUrl());
                 }
                 
             } catch (InterruptedException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 Thread.currentThread().interrupt();
                 
             } catch (ExecutionException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
         
@@ -399,7 +399,7 @@ public class ResourceAccess {
             
             // Fix return null from regex
             result = StringUtils.EMPTY;
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect response from Web shell", e);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect response from Web shell", e);
         }
         
         return result;
@@ -427,7 +427,7 @@ public class ResourceAccess {
         } catch (UnsupportedEncodingException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 String.format("Encoding command to ISO-8859-1 failed: %s", e.getMessage()),
                 e
             );
@@ -435,7 +435,7 @@ public class ResourceAccess {
         } catch (IOException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 String.format("Shell execution error: %s", e.getMessage()),
                 e
             );
@@ -530,7 +530,7 @@ public class ResourceAccess {
             throw this.getIntegrityError(sourcePage);
         }
             
-        LOGGER.log(LogLevel.CONSOLE_SUCCESS, "SQL payload created into '{}{}'", pathShellFixed, this.filenameSqlshell);
+        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "SQL payload created into '{}{}'", pathShellFixed, this.filenameSqlshell);
         
         String urlWithoutProtocol = url.replaceAll("^https?://[^/]*", StringUtils.EMPTY);
         
@@ -596,7 +596,7 @@ public class ResourceAccess {
                 
                 if (!currentCallable.isHttpResponseOk()) {
                     
-                    LOGGER.log(LogLevel.CONSOLE_DEFAULT, "Connection to payload not found at '{}'", currentCallable.getUrl());
+                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Connection to payload not found at '{}'", currentCallable.getUrl());
                     continue;
                 }
                     
@@ -608,21 +608,21 @@ public class ResourceAccess {
                     || urlSuccess.replace(this.filenameSqlshell, StringUtils.EMPTY).equals(urlProtocol + urlWithoutFileName)
                 ) {
                     
-                    LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Connection to payload found at expected location '{}'", urlSuccess);
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection to payload found at expected location '{}'", urlSuccess);
                     
                 } else {
                     
-                    LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Connection to payload found at unexpected location '{}'", urlSuccess);
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection to payload found at unexpected location '{}'", urlSuccess);
                 }
                 
             } catch (InterruptedException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 Thread.currentThread().interrupt();
                 
             } catch (ExecutionException e) {
                 
-                LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
 
@@ -643,7 +643,7 @@ public class ResourceAccess {
             
         } else {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "HTTP connection to SQL payload not found");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "HTTP connection to SQL payload not found");
         }
     }
 
@@ -695,7 +695,7 @@ public class ResourceAccess {
         } catch (UnsupportedEncodingException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 String.format("Encoding command to ISO-8859-1 failed: %s", e.getMessage()),
                 e
             );
@@ -703,7 +703,7 @@ public class ResourceAccess {
         } catch (IOException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 String.format("Shell execution error: %s", e.getMessage()),
                 e
             );
@@ -892,7 +892,7 @@ public class ResourceAccess {
             String logUrlFileFixed = urlFileFixed;
             String logPathShellFixed = pathShellFixed;
             LOGGER.log(
-                LogLevel.CONSOLE_SUCCESS,
+                LogLevelUtil.CONSOLE_SUCCESS,
                 "Upload payload deployed at '{}{}' in '{}{}'",
                 () -> logUrlFileFixed,
                 () -> this.filenameUpload,
@@ -962,7 +962,7 @@ public class ResourceAccess {
         if (httpResponse.body().indexOf(DataAccess.LEAD +"y") > -1) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_SUCCESS,
+                LogLevelUtil.CONSOLE_SUCCESS,
                 "File '{}' uploaded into '{}'",
                 file::getName,
                 () -> pathShellFixed
@@ -971,7 +971,7 @@ public class ResourceAccess {
         } else {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 "Upload file '{}' into '{}' failed",
                 file::getName,
                 () -> pathShellFixed
@@ -1005,7 +1005,7 @@ public class ResourceAccess {
         if (this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getResource().getFile() == null) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 "Reading file on {} is currently not supported",
                 () -> this.injectionModel.getMediatorVendor().getVendor()
             );
@@ -1033,7 +1033,7 @@ public class ResourceAccess {
             
         } else if ("false".equals(resultInjection)) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "Privilege FILE is not granted to current user, files can\'t be read");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Privilege FILE is not granted to current user, files can\'t be read");
             var request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);
             this.injectionModel.sendToViews(request);

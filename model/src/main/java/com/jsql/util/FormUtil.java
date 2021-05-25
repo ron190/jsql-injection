@@ -86,7 +86,7 @@ public class FormUtil {
     private void addForms(Elements elementsForm, StringBuilder result, Map<Element, List<Element>> mapForms) {
         
         LOGGER.log(
-            LogLevel.CONSOLE_SUCCESS,
+            LogLevelUtil.CONSOLE_SUCCESS,
             "Found {} <form> in HTML body, adding input(s) to requests: {}",
             elementsForm::size,
             () -> result
@@ -123,7 +123,7 @@ public class FormUtil {
     private void logForms(int statusCode, Elements elementsForm, StringBuilder result) {
         
         LOGGER.log(
-            LogLevel.CONSOLE_DEFAULT,
+            LogLevelUtil.CONSOLE_DEFAULT,
             "Found {} ignored <form> in HTML body: {}",
             elementsForm::size,
             () -> result
@@ -131,7 +131,7 @@ public class FormUtil {
         
         if (statusCode != 200) {
             
-            LOGGER.log(LogLevel.CONSOLE_INFORM, "WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
             
         }
     }

@@ -19,7 +19,7 @@ import javax.swing.TransferHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 @SuppressWarnings("serial")
 public class TabTransferHandler extends TransferHandler {
@@ -201,7 +201,7 @@ public class TabTransferHandler extends TransferHandler {
             
         } catch (UnsupportedFlavorException | IOException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         return false;

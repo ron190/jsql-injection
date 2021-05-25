@@ -27,7 +27,7 @@ import javax.swing.text.JTextComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.table.PanelTable;
@@ -142,7 +142,7 @@ public class ActionSaveTab extends AbstractAction {
         } catch (IOException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 String.format("Error writing to %s", fileSelected.getName()),
                 e
             );
@@ -162,7 +162,7 @@ public class ActionSaveTab extends AbstractAction {
         } catch (IOException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 String.format("Error writing to %s", fileSelected.getName()),
                 e
             );

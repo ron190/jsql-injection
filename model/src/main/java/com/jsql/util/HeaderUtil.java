@@ -141,14 +141,14 @@ public class HeaderUtil {
             
             if (exception != null) {
                 
-                LOGGER.log(LogLevel.CONSOLE_SUCCESS, "Connection test disabled, ignoring response HTTP {}...", response.statusCode());
+                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection test disabled, ignoring response HTTP {}...", response.statusCode());
             }
             
             exception = null;
             
         } else if (exception != null) {
             
-            LOGGER.log(LogLevel.CONSOLE_INFORM, "Select option 'Disable connection test' if required");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Select option 'Disable connection test' if required");
         }
         
         return exception;
@@ -159,7 +159,7 @@ public class HeaderUtil {
         if (this.isBasicAuth(responseCode, mapResponse)) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 "Basic Authentication detected: "
                 + "define and enable authentication information in the panel Preferences, "
                 + "or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with "
@@ -169,7 +169,7 @@ public class HeaderUtil {
         } else if (this.isNtlm(responseCode, mapResponse)) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 "NTLM Authentication detected: "
                 + "define and enable authentication information in the panel Preferences, "
                 + "or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
@@ -178,7 +178,7 @@ public class HeaderUtil {
         } else if (this.isDigest(responseCode, mapResponse)) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 "Digest Authentication detected: "
                 + "define and enable authentication information in the panel Preferences."
             );
@@ -186,43 +186,43 @@ public class HeaderUtil {
         } else if (this.isNegotiate(responseCode, mapResponse)) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_ERROR,
+                LogLevelUtil.CONSOLE_ERROR,
                 "Negotiate Authentication detected: "
                 + "add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
             );
             
         } else if (Pattern.matches("1\\d\\d", responseCode)) {
             
-            LOGGER.log(LogLevel.CONSOLE_DEFAULT, "{} {} Informational", FOUND_STATUS_HTTP, responseCode);
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} {} Informational", FOUND_STATUS_HTTP, responseCode);
             
         } else if (Pattern.matches("2\\d\\d", responseCode)) {
             
-            LOGGER.log(LogLevel.CONSOLE_SUCCESS, "{} {} Success", FOUND_STATUS_HTTP, responseCode);
+            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} {} Success", FOUND_STATUS_HTTP, responseCode);
             
         } else if (Pattern.matches("3\\d\\d", responseCode)) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "{} {} Redirection", FOUND_STATUS_HTTP, responseCode);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{} {} Redirection", FOUND_STATUS_HTTP, responseCode);
             
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()) {
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, "If injection fails retry with option 'Follow HTTP redirection' activated");
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "If injection fails retry with option 'Follow HTTP redirection' activated");
                 
             } else {
                 
-                LOGGER.log(LogLevel.CONSOLE_INFORM, "Redirecting to the next page...");
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Redirecting to the next page...");
             }
             
         } else if (Pattern.matches(REGEX_HTTP_STATUS, responseCode)) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "{} {} Client Error", FOUND_STATUS_HTTP, responseCode);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{} {} Client Error", FOUND_STATUS_HTTP, responseCode);
             
         } else if (Pattern.matches("5\\d\\d", responseCode)) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "{} {} Server Error", FOUND_STATUS_HTTP, responseCode);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{} {} Server Error", FOUND_STATUS_HTTP, responseCode);
             
         } else {
             
-            LOGGER.log(LogLevel.CONSOLE_DEFAULT, "{} {} Unknown", FOUND_STATUS_HTTP, responseCode);
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} {} Unknown", FOUND_STATUS_HTTP, responseCode);
         }
     }
     

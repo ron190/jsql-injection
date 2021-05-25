@@ -42,7 +42,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.console.JTextPaneAppender;
 import com.jsql.view.swing.console.JavaConsoleAdapter;
 import com.jsql.view.swing.console.SimpleConsoleAdapter;
@@ -298,7 +298,7 @@ public class PanelConsoles extends JPanel {
             
         } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         this.javaTextPane.getProxy().setText(StringUtils.EMPTY);
@@ -391,7 +391,7 @@ public class PanelConsoles extends JPanel {
                     
                 } catch (IllegalArgumentException e) {
                     
-                    LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 }
                 
                 super.mousePressed(event);
@@ -419,7 +419,7 @@ public class PanelConsoles extends JPanel {
             
             // Fix #67063: NullPointerException on chunkTab.append()
             // Fix #4770 on chunkTab.append()
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
     
@@ -437,7 +437,7 @@ public class PanelConsoles extends JPanel {
         
         } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e.getMessage(), e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
         }
     }
     

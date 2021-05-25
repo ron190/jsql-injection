@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import com.jsql.model.InjectionModel;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.JFrameView;
 import com.jsql.view.swing.util.MediatorHelper;
 
@@ -66,7 +66,7 @@ public class MainApplication {
         } catch (HeadlessException e) {
             
             LOGGER.log(
-                LogLevel.CONSOLE_JAVA,
+                LogLevelUtil.CONSOLE_JAVA,
                 String.format(
                     "HeadlessException, command line execution in jSQL not supported yet: %s",
                     e.getMessage()
@@ -79,7 +79,7 @@ public class MainApplication {
             
             // Fix #22668: Assistive Technology not found
             LOGGER.log(
-                LogLevel.CONSOLE_JAVA,
+                LogLevelUtil.CONSOLE_JAVA,
                 String.format(
                     "Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: %s",
                     e.getMessage()
@@ -123,7 +123,7 @@ public class MainApplication {
         
         if (width >= 3840 && !injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "Your screen seems compatible with 4K resolution, enable high-definition mode in Preferences");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Your screen seems compatible with 4K resolution, enable high-definition mode in Preferences");
         }
     }
 }

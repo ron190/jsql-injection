@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 /**
  * A time attack class using parallel threads.
@@ -91,11 +91,11 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             }
         } catch (ExecutionException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
         }
         
@@ -142,11 +142,11 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             
         } catch (ExecutionException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             Thread.currentThread().interrupt();
         }
     }
@@ -184,7 +184,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             
         } catch (Exception e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
         return this.isTimeInjectable && timeTest.isTrue();

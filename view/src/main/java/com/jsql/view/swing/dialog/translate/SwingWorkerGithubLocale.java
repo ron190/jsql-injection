@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.util.PropertiesUtil;
 import com.jsql.view.swing.dialog.DialogTranslate;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -119,7 +119,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             
         } else {
             
-            LOGGER.log(LogLevel.CONSOLE_INFORM, () -> I18nUtil.valueByKey("LOG_I18N_DEFAULT_LOADED"));
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -> I18nUtil.valueByKey("LOG_I18N_DEFAULT_LOADED"));
         }
     }
 
@@ -127,7 +127,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
         
         if (this.propertiesLanguageToTranslate.size() == 0) {
             
-            LOGGER.log(LogLevel.CONSOLE_INFORM, "Language file not found, text to translate loaded from local", eGithub);
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Language file not found, text to translate loaded from local", eGithub);
             
         } else if (this.propertiesRoot.size() == 0) {
             
@@ -146,7 +146,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             
             this.propertiesRoot.load(new StringReader(pageSourceRootFixed));
             
-            LOGGER.log(LogLevel.CONSOLE_INFORM, () -> I18nUtil.valueByKey("LOG_I18N_ROOT_LOADED"));
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -> I18nUtil.valueByKey("LOG_I18N_ROOT_LOADED"));
             
         } catch (IOException e) {
             
@@ -157,9 +157,9 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             String rootI18nFixed = Pattern.compile(LINE_FEED).matcher(Matcher.quoteReplacement(rootI18n)).replaceAll(LINE_FEED_ESCAPE);
             
             this.propertiesRoot.load(new StringReader(rootI18nFixed));
-            LOGGER.log(LogLevel.CONSOLE_INFORM, "Reference language loaded from local");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Reference language loaded from local");
             
-            LOGGER.log(LogLevel.IGNORE, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e);
         }
     }
     
@@ -177,7 +177,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             this.propertiesLanguageToTranslate.load(new StringReader(pageSourceLanguage));
             
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM,
+                LogLevelUtil.CONSOLE_INFORM,
                 "{} {}",
                 () -> I18nUtil.valueByKey("LOG_I18N_TEXT_LOADED"),
                 () -> this.dialogTranslate.getLanguage()
@@ -202,14 +202,14 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             
             this.propertiesLanguageToTranslate.load(new StringReader(localeI18nFixed));
             LOGGER.log(
-                LogLevel.CONSOLE_INFORM,
+                LogLevelUtil.CONSOLE_INFORM,
                 String.format(
                     "%s translation loaded from local",
                     this.dialogTranslate.getLanguage()
                 )
             );
             
-            LOGGER.log(LogLevel.IGNORE, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e);
         }
     }
 }

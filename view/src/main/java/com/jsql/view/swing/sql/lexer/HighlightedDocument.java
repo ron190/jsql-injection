@@ -28,7 +28,7 @@ import javax.swing.text.DefaultStyledDocument;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.sql.lexer.syntax.JavaScriptLexer;
 import com.jsql.view.swing.sql.lexer.syntax.Lexer;
 import com.jsql.view.swing.sql.lexer.syntax.SQLLexer;
@@ -159,7 +159,7 @@ public class HighlightedDocument extends DefaultStyledDocument {
             | InvocationTargetException e
         ) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
     

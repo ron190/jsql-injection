@@ -121,12 +121,12 @@ public class AuthenticationUtil {
             // Fix #23877: NoClassDefFoundError on java/nio/file/Paths
             if (!new File(this.pathKerberosKrb5).exists()) {
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, "Krb5 file not found: {}", this.pathKerberosKrb5);
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Krb5 file not found: {}", this.pathKerberosKrb5);
             }
             
             if (!new File(this.pathKerberosLogin).exists()) {
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, "Login file not found: {}", this.pathKerberosLogin);
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Login file not found: {}", this.pathKerberosLogin);
             }
         }
         

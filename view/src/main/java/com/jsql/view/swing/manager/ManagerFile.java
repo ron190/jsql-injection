@@ -37,7 +37,7 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
@@ -100,7 +100,7 @@ public class ManagerFile extends AbstractManagerList {
             
             if (this.listFile.getSelectedValuesList().isEmpty()) {
                 
-                LOGGER.log(LogLevel.CONSOLE_ERROR, "Select at least one file to read in the list");
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Select at least one file to read in the list");
                 
                 return;
             }
@@ -122,12 +122,12 @@ public class ManagerFile extends AbstractManagerList {
                             
                         } catch (InterruptedException e) {
                             
-                            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+                            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                             Thread.currentThread().interrupt();
                             
                         } catch (Exception e) {
                             
-                            LOGGER.log(LogLevel.CONSOLE_ERROR, e, e);
+                            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e, e);
                         }
                         
                     } else {
@@ -202,7 +202,7 @@ public class ManagerFile extends AbstractManagerList {
                 if (!duplicate.contains(path.replace(name, StringUtils.EMPTY))) {
                     
                     LOGGER.log(
-                        LogLevel.CONSOLE_INFORM,
+                        LogLevelUtil.CONSOLE_INFORM,
                         "Shell might be possible in folder {}",
                         () -> path.replace(name, StringUtils.EMPTY)
                     );
@@ -238,11 +238,11 @@ public class ManagerFile extends AbstractManagerList {
         
         if (countFileFound > 0) {
             
-            LOGGER.log(LogLevel.CONSOLE_SUCCESS, result);
+            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, result);
             
         } else {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, result);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, result);
         }
         
         var request = new Request();
