@@ -3,7 +3,7 @@ services: docker
 
 git:
   # Disable shallow clone to send Git blame to Sonar
-  depth: false
+  depth: 3
 
 jdk: oraclejdk11
 
