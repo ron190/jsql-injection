@@ -59,9 +59,9 @@ script:
     bash -c '                                           \
         java -version                                   \
         && env|sort                                     \
-        && mvn clean verify sonar:sonar                 \
-        && (cd view/ ; mvn sonar:sonar)                 \
-        && (cd model/ ; mvn sonar:sonar)                \
+        && mvn -T 1C clean verify sonar:sonar                 \
+        && (cd view/ ; mvn -T 1C sonar:sonar)                 \
+        && (cd model/ ; mvn -T 1C sonar:sonar)                \
         && (bash <(curl -s https://codecov.io/bash) || true)             \
         && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true) \
     ' 
