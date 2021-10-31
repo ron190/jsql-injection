@@ -11,7 +11,6 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 [![Maven 3.1](https://img.shields.io/badge/maven-3.1-a2265a)](https://maven.apache.org/)
 [![License](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ron190/jsql-injection/Java%20CI%20with%20Maven%20and%20Docker?label=%20&logo=github "Github build status")](https://github.com/ron190/jsql-injection/actions)
-[![Travis (.org)](https://img.shields.io/travis/ron190/jsql-injection?label=%20&logo=travis "Travis CI build status")](https://travis-ci.org/ron190/jsql-injection)
 [![Sonar](https://img.shields.io/sonar/coverage/jsql-injection:jsql-injection?label=%20&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io "Sonar coverage")](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
 [![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=%20&logo=codecov "Codecov coverage")](https://codecov.io/gh/ron190/jsql-injection)
 [![Codacy](https://img.shields.io/codacy/coverage/e7ccb247f9b74d489a1fa9f9483c978f?label=%20&logo=codacy "Codacy coverage")](https://app.codacy.com/manual/ron190/jsql-injection/dashboard)
