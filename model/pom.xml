@@ -184,7 +184,7 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.27</version>
+            <version>1.32</version>
         </dependency>
     
         <!-- Log4j2 -->
