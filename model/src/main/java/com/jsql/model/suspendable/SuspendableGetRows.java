@@ -8,6 +8,8 @@ import static com.jsql.model.accessible.DataAccess.SEPARATOR_QTE_RGX;
 import static com.jsql.model.accessible.DataAccess.TRAIL_RGX;
 import static com.jsql.model.injection.vendor.model.VendorYaml.LIMIT;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -106,7 +108,12 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 
                 if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()) {
                     
-                    currentChunk = StringEscapeUtils.unescapeJava(currentChunk); // Transform \u0000 entities to text
+                    currentChunk = StringEscapeUtils.unescapeJava(currentChunk);  // Transform \u0000 entities to text
+                }
+                
+                if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled()) {
+                    
+                    currentChunk = URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text
                 }
                 
                 countInfiniteLoop = this.checkInfinite(countInfiniteLoop, previousChunk, currentChunk, slidingWindowCurrentRow, slidingWindowAllRows);

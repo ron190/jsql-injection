@@ -24,6 +24,7 @@ public class PreferencesUtil {
     
     // True if HTTP 302 redirection are followed to the new URL.
     private boolean isFollowingRedirection = false;
+    private boolean isHttp2Disabled = false;
     
     private boolean isNotInjectingMetadata = false;
     
@@ -65,6 +66,7 @@ public class PreferencesUtil {
     private boolean isConnectionTimeout = false;
     private int countConnectionTimeout = 15;
     private boolean isUnicodeDecodeDisabled = false;
+    private boolean isUrlDecodeDisabled = false;
 
     private boolean isLimitingNormalIndex = false;
     private int countNormalIndex = 50;
@@ -86,6 +88,7 @@ public class PreferencesUtil {
         this.isReportingBugs = prefs.getBoolean("isReportingBugs", true);
         
         this.isFollowingRedirection = prefs.getBoolean("isFollowingRedirection", false);
+        this.isHttp2Disabled = prefs.getBoolean("isHttp2Disabled", false);
         this.isNotInjectingMetadata = prefs.getBoolean("isNotInjectingMetadata", false);
         
         this.isCheckingAllParam = prefs.getBoolean("isCheckingAllParam", false);
@@ -127,6 +130,7 @@ public class PreferencesUtil {
         this.isConnectionTimeout = prefs.getBoolean("isConnectionTimeout", false);
         this.countConnectionTimeout = prefs.getInt("countConnectionTimeout", 15);
         this.isUnicodeDecodeDisabled = prefs.getBoolean("isUnicodeDecodeDisabled", false);
+        this.isUrlDecodeDisabled = prefs.getBoolean("isUrlDecodeDisabled", false);
         this.countNormalIndex = prefs.getInt("countNormalIndex", 50);
         this.isLimitingNormalIndex = prefs.getBoolean("isLimitingNormalIndex", false);
         this.countSleepTimeStrategy = prefs.getInt("countSleepTimeStrategy", 5);
@@ -145,6 +149,7 @@ public class PreferencesUtil {
         preferences.putBoolean("isReportingBugs", this.isReportingBugs);
         preferences.putBoolean("is4K", this.is4K);
         preferences.putBoolean("isUnicodeDecodeDisabled", this.isUnicodeDecodeDisabled);
+        preferences.putBoolean("isUrlDecodeDisabled", this.isUrlDecodeDisabled);
         preferences.putBoolean("isLimitingThreads", this.isLimitingThreads);
         preferences.putInt("countLimitingThreads", this.countLimitingThreads);
         preferences.putBoolean("isConnectionTimeout", this.isConnectionTimeout);
@@ -158,6 +163,7 @@ public class PreferencesUtil {
         preferences.put("csrfUserTagOutput", this.csrfUserTagOutput);
         
         preferences.putBoolean("isFollowingRedirection", this.isFollowingRedirection);
+        preferences.putBoolean("isHttp2Disabled", this.isHttp2Disabled);
         preferences.putBoolean("isNotInjectingMetadata", this.isNotInjectingMetadata);
         preferences.putBoolean("isCheckingAllParam", this.isCheckingAllParam);
         preferences.putBoolean("isCheckingAllURLParam", this.isCheckingAllURLParam);
@@ -215,6 +221,10 @@ public class PreferencesUtil {
     
     public boolean isFollowingRedirection() {
         return this.isFollowingRedirection;
+    }
+    
+    public boolean isHttp2Disabled() {
+        return this.isHttp2Disabled;
     }
     
     public boolean isReportingBugs() {
@@ -327,6 +337,10 @@ public class PreferencesUtil {
     
     public boolean isUnicodeDecodeDisabled() {
         return this.isUnicodeDecodeDisabled;
+    }
+    
+    public boolean isUrlDecodeDisabled() {
+        return this.isUrlDecodeDisabled;
     }
     
     public int countLimitingThreads() {
@@ -477,8 +491,18 @@ public class PreferencesUtil {
         return this;
     }
     
+    public PreferencesUtil withIsHttp2Disabled(boolean isHttp2Disabled) {
+        this.isHttp2Disabled = isHttp2Disabled;
+        return this;
+    }
+    
     public PreferencesUtil withIsUnicodeDecodeDisabled(boolean isUnicodeDecodeDisabled) {
         this.isUnicodeDecodeDisabled = isUnicodeDecodeDisabled;
+        return this;
+    }
+    
+    public PreferencesUtil withIsUrlDecodeDisabled(boolean isUrlDecodeDisabled) {
+        this.isUrlDecodeDisabled = isUrlDecodeDisabled;
         return this;
     }
 

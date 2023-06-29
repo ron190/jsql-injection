@@ -102,26 +102,26 @@ public class JsonUtil {
         
         for (var i = 0; i < jsonArrayEntity.length(); i++) {
             
-            Object jsonEntityInArray = jsonArrayEntity.get(i);
+            Object value = jsonArrayEntity.get(i);
             String xpath = parentName +"["+ i +"]";
             
             // Not possible to make generic with scanJsonObject() because of JSONArray.put(int) != JSONObject.put(String)
-            if (jsonEntityInArray instanceof JSONArray || jsonEntityInArray instanceof JSONObject) {
+            if (value instanceof JSONArray || value instanceof JSONObject) {
                 
-                attributesXPath.addAll(JsonUtil.createEntries(jsonEntityInArray, xpath, parentXPath));
+                attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));
                 
-            } else if (jsonEntityInArray instanceof String) {
+            } else if (value instanceof String) {
                 
-                SimpleEntry<String, String> stringValue = new SimpleEntry<>(xpath, (String) jsonEntityInArray);
+                SimpleEntry<String, String> stringValue = new SimpleEntry<>(xpath, (String) value);
                 attributesXPath.add(stringValue);
                 
                 if (parentXPath == null) {
                     
-                    jsonArrayEntity.put(i, jsonEntityInArray.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY));
+                    jsonArrayEntity.put(i, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY));
                     
                 } else if (stringValue.equals(parentXPath)) {
                     
-                    jsonArrayEntity.put(i, jsonEntityInArray + InjectionModel.STAR);
+                    jsonArrayEntity.put(i, value + InjectionModel.STAR);
                 }
             }
         }

@@ -107,7 +107,7 @@ public class NetworkTable extends JTable {
         DefaultTableCellRenderer centerHorizontalAlignment = new CenterRenderer();
         this.getColumnModel().getColumn(1).setCellRenderer(centerHorizontalAlignment);
         this.getColumnModel().getColumn(2).setCellRenderer(centerHorizontalAlignment);
-        this.getColumnModel().getColumn(3).setCellRenderer(centerHorizontalAlignment);
+        this.getColumnModel().getColumn(3).setCellRenderer(new CenterRendererWithColor());
         
         this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), null);
         this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), null);

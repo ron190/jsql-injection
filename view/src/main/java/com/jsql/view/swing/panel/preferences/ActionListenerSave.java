@@ -28,7 +28,9 @@ public class ActionListenerSave implements ActionListener {
         .withIs4K(this.panelPreferences.getPanelGeneral().getCheckboxIs4K().isSelected())
         
         .withIsFollowingRedirection(this.panelPreferences.getPanelConnection().getCheckboxIsFollowingRedirection().isSelected())
+        .withIsHttp2Disabled(this.panelPreferences.getPanelConnection().getCheckboxIsHttp2Disabled().isSelected())
         .withIsUnicodeDecodeDisabled(this.panelPreferences.getPanelConnection().getCheckboxIsUnicodeDecodeDisabled().isSelected())
+        .withIsUrlDecodeDisabled(this.panelPreferences.getPanelConnection().getCheckboxIsUrlDecodeDisabled().isSelected())
         .withIsNotTestingConnection(this.panelPreferences.getPanelConnection().getCheckboxIsNotTestingConnection().isSelected())
         .withIsNotProcessingCookies(this.panelPreferences.getPanelConnection().getCheckboxIsNotProcessingCookies().isSelected())
         .withIsProcessingCsrf(this.panelPreferences.getPanelConnection().getCheckboxProcessCsrf().isSelected())

@@ -175,6 +175,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
             }
 
             var charText = Character.toString((char) asciiCode);
+            currentCallable.charText = charText;
             
             var interaction = new Request();
             interaction.setMessage(Interaction.MESSAGE_BINARY);
@@ -293,6 +294,10 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
      */
     public String callUrl(String urlString, String metadataInjectionProcess) {
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);
+    }
+
+    public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
+        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);
     }
 
     public BooleanMode getBooleanMode() {

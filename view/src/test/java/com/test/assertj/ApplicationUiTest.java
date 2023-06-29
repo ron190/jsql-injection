@@ -27,7 +27,7 @@ import org.assertj.swing.timing.Timeout;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -988,7 +988,7 @@ public class ApplicationUiTest {
         MockedStatic<Jsoup> utilities = Mockito.mockStatic(Jsoup.class);
             
         utilities.when(() -> Jsoup.connect(ArgumentMatchers.anyString())).thenReturn(connection);
-        utilities.when(() -> Jsoup.clean(ArgumentMatchers.anyString(), ArgumentMatchers.any(Whitelist.class))).thenReturn("cleaned");
+        utilities.when(() -> Jsoup.clean(ArgumentMatchers.anyString(), ArgumentMatchers.any(Safelist.class))).thenReturn("cleaned");
         
         Mockito.when(connection.ignoreContentType(ArgumentMatchers.anyBoolean())).thenReturn(connection);
         Mockito.when(connection.ignoreHttpErrors(ArgumentMatchers.anyBoolean())).thenReturn(connection);

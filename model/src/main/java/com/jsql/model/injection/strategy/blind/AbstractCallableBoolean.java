@@ -27,11 +27,13 @@ public abstract class AbstractCallableBoolean<T extends AbstractCallableBoolean<
      */
     protected boolean isTestingLength = false;
     
+    protected String charText;
+    
     /**
      * Check if a response time means the SQL query is true.
      * @return true if the current SQL test is confirmed
      */
-    protected abstract boolean isTrue();
+    public abstract boolean isTrue();
     
     public boolean isTestingLength() {
         return this.isTestingLength;
@@ -43,5 +45,9 @@ public abstract class AbstractCallableBoolean<T extends AbstractCallableBoolean<
     
     public int getCurrentBit() {
         return this.currentBit;
+    }
+
+    public String getCharText() {
+        return charText;
     }
 }

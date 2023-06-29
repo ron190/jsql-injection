@@ -7,6 +7,7 @@ import java.net.PasswordAuthentication;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
+import java.net.http.HttpClient.Version;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
@@ -91,6 +92,11 @@ public class ConnectionUtil {
                 ? HttpClient.Redirect.ALWAYS
                 : HttpClient.Redirect.NEVER
             );
+        
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isHttp2Disabled()) {
+            
+            httpClientBuilder.version(Version.HTTP_1_1);
+        }
         
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()) {
             

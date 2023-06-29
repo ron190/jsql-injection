@@ -35,7 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
@@ -96,7 +96,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
                         .replaceAll("<input[^>]*type=\"?hidden\"?[^>]*>", StringUtils.EMPTY)
                         .replaceAll("<input[^>]*type=\"?(submit|button)\"?[^>]*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
                         .replaceAll("<input[^>]*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
-                    Whitelist
+                    Safelist
                         .relaxed()
                         .addTags("center", "div", "span")
                         .addAttributes(":all", "style")

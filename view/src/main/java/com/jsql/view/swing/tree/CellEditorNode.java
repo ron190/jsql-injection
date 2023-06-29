@@ -64,7 +64,12 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
 
     @Override
     public Component getTreeCellEditorComponent(
-        JTree tree, Object nodeRenderer, boolean selected, boolean expanded, boolean leaf, int row
+        JTree tree, 
+        Object nodeRenderer, 
+        boolean selected, 
+        boolean expanded, 
+        boolean leaf, 
+        int row
     ) {
 
         var componentRenderer = this.defaultTreeRenderer.getTreeCellRendererComponent(

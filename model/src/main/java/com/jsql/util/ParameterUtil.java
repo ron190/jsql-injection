@@ -1,10 +1,8 @@
 package com.jsql.util;
 
+import java.net.IDN;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,7 +73,7 @@ public class ParameterUtil {
                 
                 if (!urlQueryFixed.matches("(?i)^\\w+://.*")) {
                     
-                    LOGGER.log(LogLevel.CONSOLE_INFORM, "Undefined URL protocol, forcing to [http://]");
+                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Undefined URL protocol, forcing to [http://]");
                     urlQueryFixed = "http://"+ urlQueryFixed;
                     
                 } else {
@@ -107,7 +105,7 @@ public class ParameterUtil {
             
         } catch (MalformedURLException e) {
             
-            LOGGER.log(LogLevel.CONSOLE_ERROR, "Incorrect Url: {}", e.getMessage());
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect Url: {}", e.getMessage());
             
             // Incorrect URL, reset the start button
             var request = new Request();
@@ -356,7 +354,7 @@ public class ParameterUtil {
                 String.format(
                     "%s=%s",
                     entry.getKey(),
-                    entry.getValue()
+                    StringUtils.isEmpty(entry.getValue()) ? "" : entry.getValue()
                 )
             )
             .collect(Collectors.joining("&"));

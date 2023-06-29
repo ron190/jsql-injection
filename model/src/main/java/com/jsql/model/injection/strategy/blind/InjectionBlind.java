@@ -65,7 +65,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         
         for (String urlTest: this.falseTest) {
             
-            listCallableTagFalse.add(new CallableBlind(urlTest, injectionModel, this, blindMode, "blind#false"));
+            listCallableTagFalse.add(new CallableBlind(urlTest, injectionModel, this, blindMode, "blind#falsy"));
         }
         
         // Delete junk from the results of FALSE statements,
@@ -118,7 +118,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         
         for (String urlTest: this.trueTest) {
             
-            listCallableTagTrue.add(new CallableBlind(urlTest, injectionModel, this, blindMode, "blind#true"));
+            listCallableTagTrue.add(new CallableBlind(urlTest, injectionModel, this, blindMode, "blind#truthy"));
         }
         
         // Remove TRUE opcodes in the FALSE opcodes, because
@@ -155,13 +155,13 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
     @Override
     public CallableBlind getCallableSizeTest(String string, int indexCharacter) {
         
-        return new CallableBlind(string, indexCharacter, this.injectionModel, this, this.booleanMode, "blind#size");
+        return new CallableBlind(string, indexCharacter, this.injectionModel, this, this.booleanMode, "size:" + indexCharacter);
     }
 
     @Override
     public CallableBlind getCallableBitTest(String string, int indexCharacter, int bit) {
         
-        return new CallableBlind(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "blind#bit");
+        return new CallableBlind(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "bit#" + indexCharacter + "~" + bit);
     }
 
     @Override

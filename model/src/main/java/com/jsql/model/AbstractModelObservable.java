@@ -13,6 +13,8 @@ package com.jsql.model;
 import java.util.concurrent.SubmissionPublisher;
 
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.injection.strategy.blind.AbstractCallableBoolean;
+import com.jsql.model.injection.strategy.blind.CallableBlind;
 
 /**
  * Define the features of the injection model :<br>
@@ -36,7 +38,7 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
      * useVisibleIndex false if injection indexes aren't needed,
      * return source page after the HTTP call.
      */
-    public abstract String inject(String dataInjection, boolean isUsingIndex, String metadataInjectionProcess);
+    public abstract String inject(String dataInjection, boolean isUsingIndex, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean);
     
     /**
      * Inject without the need of index like in "select 1,2,..."<br>
@@ -45,12 +47,17 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
      */
     public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess) {
         
-        return this.inject(dataInjection, false, metadataInjectionProcess);
+        return this.inject(dataInjection, false, metadataInjectionProcess, null);
+    }
+
+    public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
+        
+        return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean);
     }
 
     public String injectWithIndexes(String dataInjection, String metadataInjectionProcess) {
         
-        return this.inject(dataInjection, true, metadataInjectionProcess);
+        return this.inject(dataInjection, true, metadataInjectionProcess, null);
     }
 
     /**

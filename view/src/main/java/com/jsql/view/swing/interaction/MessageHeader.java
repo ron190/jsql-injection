@@ -12,6 +12,7 @@ package com.jsql.view.swing.interaction;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Arrays;
 import java.util.Map;
 
 import javax.swing.JTable;
@@ -23,6 +24,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.HttpHeader;
+import com.jsql.model.injection.strategy.blind.AbstractCallableBoolean;
+import com.jsql.model.injection.strategy.blind.CallableBlind;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
@@ -47,6 +50,7 @@ public class MessageHeader implements InteractionCommand {
     private String size;
     private String metadataProcess;
     private String metadataStrategy;
+    private AbstractCallableBoolean<?> metadataBoolean;
 
     /**
      * @param interactionParams Text to append
@@ -64,6 +68,7 @@ public class MessageHeader implements InteractionCommand {
         this.size = (String) params.get(Header.PAGE_SIZE);
         this.metadataProcess = (String) params.get(Header.METADATA_PROCESS);
         this.metadataStrategy = (String) params.get(Header.METADATA_STRATEGY);
+        this.metadataBoolean = (AbstractCallableBoolean<?>) params.get(Header.METADATA_BOOLEAN);
     }
 
     @Override
@@ -82,7 +87,7 @@ public class MessageHeader implements InteractionCommand {
                 this.url,
                 this.size,
                 this.metadataStrategy,
-                this.metadataProcess
+                Arrays.asList(this.metadataProcess, this.metadataBoolean)
             });
             
             Rectangle rect = table.getCellRect(table.getRowCount() - 1, 0, true);

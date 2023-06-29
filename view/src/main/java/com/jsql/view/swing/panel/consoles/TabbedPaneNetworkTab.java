@@ -1,6 +1,5 @@
 package com.jsql.view.swing.panel.consoles;
 
-import java.awt.FontMetrics;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.stream.Stream;
 
@@ -13,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.util.I18nUtil;
@@ -24,7 +23,6 @@ import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
-import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import com.jsql.view.swing.util.I18nViewUtil;
 
 @SuppressWarnings("serial")
@@ -44,13 +42,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     
     public TabbedPaneNetworkTab() {
 
-        this.setUI(new CustomMetalTabbedPaneUI() {
-            
-            @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-                
-                return Math.max(65, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
-            }
-        });
+        this.setName("tabNetwork");
         
         Stream
         .of(
@@ -164,7 +156,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
                         "<input[^>]*>",
                         "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"
                     ),
-                    Whitelist
+                    Safelist
                     .relaxed()
                     .addTags("center", "div", "span")
                     .addAttributes(":all", "style")

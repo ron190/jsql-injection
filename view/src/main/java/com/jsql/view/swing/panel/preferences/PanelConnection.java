@@ -28,12 +28,14 @@ import com.jsql.view.swing.util.MediatorHelper;
 public class PanelConnection extends JPanel {
 
     private final JCheckBox checkboxIsFollowingRedirection = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection());
+    private final JCheckBox checkboxIsHttp2Disabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isHttp2Disabled());
     private final JCheckBox checkboxIsNotTestingConnection = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection());
     private final JCheckBox checkboxIsNotProcessingCookies = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies());
     private final JCheckBox checkboxIsProcessingCsrf = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf());
     private final JCheckBox checkboxIsLimitingThreads = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads());
     private final JCheckBox checkboxIsConnectionTimeout = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout());
     private final JCheckBox checkboxIsUnicodeDecodeDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled());
+    private final JCheckBox checkboxIsUrlDecodeDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled());
     
     private final JSpinner spinnerLimitingThreads = new JSpinner();
     private final JSpinner spinnerConnectionTimeout = new JSpinner();
@@ -57,6 +59,17 @@ public class PanelConnection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
+        var tooltipIsHttp2Disabled = "<html>Some website works with HTTP/1.1 only.<br>Disable HTTP/2 in favor of HTTP/1.1.</html>";
+        this.checkboxIsHttp2Disabled.setToolTipText(tooltipIsHttp2Disabled);
+        this.checkboxIsHttp2Disabled.setFocusable(false);
+        var labelIsHttp2Disabled = new JButton("Disable HTTP/2");
+        labelIsHttp2Disabled.setToolTipText(tooltipIsHttp2Disabled);
+        labelIsHttp2Disabled.addActionListener(actionEvent -> {
+            
+            this.checkboxIsHttp2Disabled.setSelected(!this.checkboxIsHttp2Disabled.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+        
         var tooltipIsUnicodeDecodeDisabled = "<html>Unicode entities \\uXXXX are decoded to raw characters by default.<br>Check to disable this behavior.</html>";
         this.checkboxIsUnicodeDecodeDisabled.setToolTipText(tooltipIsUnicodeDecodeDisabled);
         this.checkboxIsUnicodeDecodeDisabled.setFocusable(false);
@@ -65,6 +78,17 @@ public class PanelConnection extends JPanel {
         labelIsUnicodeDecodeDisabled.addActionListener(actionEvent -> {
             
             this.checkboxIsUnicodeDecodeDisabled.setSelected(!this.checkboxIsUnicodeDecodeDisabled.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+        
+        var tooltipIsUrlDecodeDisabled = "<html>Url entities %XX are decoded to raw characters by default.<br>Check to disable this behavior.</html>";
+        this.checkboxIsUrlDecodeDisabled.setToolTipText(tooltipIsUrlDecodeDisabled);
+        this.checkboxIsUrlDecodeDisabled.setFocusable(false);
+        var labelIsUrlDecodeDisabled = new JButton("Disable Url decoding in response");
+        labelIsUrlDecodeDisabled.setToolTipText(tooltipIsUrlDecodeDisabled);
+        labelIsUrlDecodeDisabled.addActionListener(actionEvent -> {
+            
+            this.checkboxIsUrlDecodeDisabled.setSelected(!this.checkboxIsUrlDecodeDisabled.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
@@ -243,7 +267,9 @@ public class PanelConnection extends JPanel {
         Stream
         .of(
             this.checkboxIsFollowingRedirection,
+            this.checkboxIsHttp2Disabled,
             this.checkboxIsUnicodeDecodeDisabled,
+            this.checkboxIsUrlDecodeDisabled,
             this.checkboxIsNotTestingConnection,
             this.checkboxIsProcessingCsrf,
             this.checkboxIsCsrfUserTag,
@@ -254,7 +280,9 @@ public class PanelConnection extends JPanel {
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
         this.checkboxIsFollowingRedirection.setName("checkboxIsFollowingRedirection");
+        this.checkboxIsHttp2Disabled.setName("checkboxIsHttp2Disabled");
         this.checkboxIsUnicodeDecodeDisabled.setName("checkboxIsUnicodeDecodeDisabled");
+        this.checkboxIsUrlDecodeDisabled.setName("checkboxIsUrlDecodeDisabled");
         this.checkboxIsNotTestingConnection.setName("checkboxIsNotTestingConnection");
         this.checkboxIsProcessingCsrf.setName("checkboxIsProcessingCsrf");
         this.checkboxIsCsrfUserTag.setName("checkboxIsCsrfUserTag");
@@ -263,7 +291,9 @@ public class PanelConnection extends JPanel {
         this.checkboxIsConnectionTimeout.setName("checkboxIsConnectionTimeout");
 
         labelIsFollowingRedirection.setName("labelIsFollowingRedirection");
+        labelIsHttp2Disabled.setName("labelIsHttp2Disabled");
         labelIsUnicodeDecodeDisabled.setName("labelIsUnicodeDecodeDisabled");
+        labelIsUrlDecodeDisabled.setName("labelIsUrlDecodeDisabled");
         labelIsNotTestingConnection.setName("labelIsNotTestingConnection");
         labelIsProcessingCsrf.setName("labelIsProcessingCsrf");
         labelIsCsrfUserTag.setName("labelIsCsrfUserTag");
@@ -275,7 +305,9 @@ public class PanelConnection extends JPanel {
         Stream
         .of(
             labelIsFollowingRedirection,
+            labelIsHttp2Disabled,
             labelIsUnicodeDecodeDisabled,
+            labelIsUrlDecodeDisabled,
             labelIsNotTestingConnection,
             labelIsProcessingCsrf,
             labelIsCsrfUserTag,
@@ -299,7 +331,9 @@ public class PanelConnection extends JPanel {
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                 .addComponent(this.checkboxIsFollowingRedirection)
+                .addComponent(this.checkboxIsHttp2Disabled)
                 .addComponent(this.checkboxIsUnicodeDecodeDisabled)
+                .addComponent(this.checkboxIsUrlDecodeDisabled)
                 .addComponent(this.checkboxIsNotTestingConnection)
                 .addComponent(this.checkboxIsLimitingThreads)
                 .addComponent(this.checkboxIsConnectionTimeout)
@@ -312,7 +346,9 @@ public class PanelConnection extends JPanel {
                 groupLayout
                 .createParallelGroup()
                 .addComponent(labelIsFollowingRedirection)
+                .addComponent(labelIsHttp2Disabled)
                 .addComponent(labelIsUnicodeDecodeDisabled)
+                .addComponent(labelIsUrlDecodeDisabled)
                 .addComponent(labelIsNotTestingConnection)
                 .addComponent(panelThreadCount)
                 .addComponent(panelConnectionTimeout)
@@ -337,8 +373,20 @@ public class PanelConnection extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsHttp2Disabled)
+                .addComponent(labelIsHttp2Disabled)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsUnicodeDecodeDisabled)
                 .addComponent(labelIsUnicodeDecodeDisabled)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsUrlDecodeDisabled)
+                .addComponent(labelIsUrlDecodeDisabled)
             )
             .addGroup(
                 groupLayout
@@ -393,8 +441,16 @@ public class PanelConnection extends JPanel {
         return this.checkboxIsFollowingRedirection;
     }
     
+    public JCheckBox getCheckboxIsHttp2Disabled() {
+        return this.checkboxIsHttp2Disabled;
+    }
+    
     public JCheckBox getCheckboxIsUnicodeDecodeDisabled() {
         return this.checkboxIsUnicodeDecodeDisabled;
+    }
+    
+    public JCheckBox getCheckboxIsUrlDecodeDisabled() {
+        return this.checkboxIsUrlDecodeDisabled;
     }
     
     public JCheckBox getCheckboxIsNotTestingConnection() {

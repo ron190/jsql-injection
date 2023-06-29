@@ -1,5 +1,5 @@
 ## Description
-**jSQL Injection** is a lightweight application used to find database information from a distant server.
+**jSQL Injection** is a lightweight application used to find database information from a server.
 
 It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac and it works with Java from version 11 to 17.
 
@@ -11,7 +11,6 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 [![Maven 3.1](https://img.shields.io/badge/maven-3.1-a2265a)](https://maven.apache.org/)
 [![License](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ron190/jsql-injection/Java%20CI%20with%20Maven%20and%20Docker?label=%20&logo=github "Github build status")](https://github.com/ron190/jsql-injection/actions)
-[![Travis (.org)](https://img.shields.io/travis/ron190/jsql-injection?label=%20&logo=travis "Travis CI build status")](https://travis-ci.org/ron190/jsql-injection)
 [![Sonar](https://img.shields.io/sonar/coverage/jsql-injection:jsql-injection?label=%20&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io "Sonar coverage")](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
 [![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=%20&logo=codecov "Codecov coverage")](https://codecov.io/gh/ron190/jsql-injection)
 [![Codacy](https://img.shields.io/codacy/coverage/e7ccb247f9b74d489a1fa9f9483c978f?label=%20&logo=codacy "Codacy coverage")](https://app.codacy.com/manual/ron190/jsql-injection/dashboard)
@@ -41,28 +40,28 @@ If you are using Kali Linux then get the latest release using command `sudo apt-
 To run older version on Java 16+ use `java --illegal-access=warn --add-exports java.base/sun.net.www.protocol.http=ALL-UNNAMED -jar jsql-injection-v0.84.jar`.
 
 ## Continuous integration
-This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using continuous integration platform like Travis CI and Github Actions.<br> 
-Non regression tests run against dockerized and in memory databases and GUI is tested on VNC screen in the cloud on CI platforms.<br>
-Then quality checks are stored on code quality platforms.
+This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using continuous integration platform Github Actions.<br> 
+Non regression tests are run against dockerized and in memory databases and GUI is tested on VNC screen on the CI platforms, then quality checks are stored on code quality platforms.
 ```
-+---+ +-----------------------------------------------------------------------+
-|   | |                         JUNIT TEST FRAMEWORK                          |
-|   | +-----------------|-------------------------------------|---------------+
-| D | +-----------------v-------------------+  +--------------v---------------+
-| O | |          INJECTION MODEL            <--+             GUI              |
-| C | +-----------------|-------------------+  +------------------------------+
-| K | +-----------------v-----------------------------------------------------+
-| E | |                              SPRING API                               |
-| R | +---|---------|----------|----------|------|------|-------|--------|----+
-|   | +---v---------v----------v----------v------v------v-------v--------v----+
-|   | | MYSQL | POSTGRES | SQL SERVER | CUBRID | H2 | DERBY | HSQLDB | SQLITE |
-+---+ +-----------------------------------------------------------------------+
++-------+ +-----------------------------------------------------------------------+
+|       | |                         JUNIT TEST FRAMEWORK                          |
+|       | +-----------------|-------------------------------------|---------------+
+|   D   | +-----------------v-------------------+  +--------------v---------------+
+|   O   | |          INJECTION MODEL            <--+             GUI              |
+|   C   | +-----------------|-------------------+  +------------------------------+
+|   K   | +-----------------v-----------------------------------------------------+
+|   E   | |                              SPRING API                               |
+|   R   | +---|---------|----------|----------|------|------|-------|--------|----+
+|       | +---v---------v----------v----------v------v------v-------v--------v----+
+|       | | MYSQL | POSTGRES | SQL SERVER | CUBRID | H2 | DERBY | HSQLDB | SQLITE |
++-------+ +-----------------------------------------------------------------------+
 ```
 
 ## [[Test-bed scripts for Spring](https://github.com/ron190/jsql-injection/tree/master/model/src/test/java/spring/rest)]
+See test scripts used for CI integration.
 
 ## [[Test-bed scripts for PHP](https://github.com/ron190/jsql-injection/tree/master/web/test-bed)]
-Use the sample scripts to test injection on your local environment. First install a development environment like [EasyPHP](http://www.easyphp.org), then download the [test-bed PHP scripts](https://github.com/ron190/jsql-injection/tree/master/web/test-bed) and move them into `www/`.
+Use the sample PHP scripts to test injection on your local environment. First install a development environment like [EasyPHP](http://www.easyphp.org), then download the [test-bed PHP scripts](https://github.com/ron190/jsql-injection/tree/master/web/test-bed) and move them into `www/`.
 ```php
 <?php
 # http://127.0.0.1/mysql/strategy/get-normal.php?id=0

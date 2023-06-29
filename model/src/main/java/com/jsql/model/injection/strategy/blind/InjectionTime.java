@@ -61,7 +61,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         
         for (String urlTest: this.falseTest) {
             
-            listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this, booleanMode, "time#false"));
+            listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this, booleanMode, "time#falsy"));
         }
         
         // If one FALSE query makes less than X seconds,
@@ -112,7 +112,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         
         for (String urlTest: this.trueTest) {
             
-            listCallableTagTrue.add(new CallableTime(urlTest, this.injectionModel, this, booleanMode, "time#true"));
+            listCallableTagTrue.add(new CallableTime(urlTest, this.injectionModel, this, booleanMode, "time#truthy"));
         }
 
         // If one TRUE query makes more than X seconds,
@@ -154,13 +154,13 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
     @Override
     public CallableTime getCallableSizeTest(String string, int indexCharacter) {
         
-        return new CallableTime(string, indexCharacter, this.injectionModel, this, this.booleanMode, "time#size");
+        return new CallableTime(string, indexCharacter, this.injectionModel, this, this.booleanMode, "size:" + indexCharacter);
     }
 
     @Override
     public CallableTime getCallableBitTest(String string, int indexCharacter, int bit) {
         
-        return new CallableTime(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "time#bit");
+        return new CallableTime(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "bit#" + indexCharacter + "~" + bit);
     }
 
     @Override

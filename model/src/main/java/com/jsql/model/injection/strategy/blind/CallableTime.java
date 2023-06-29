@@ -81,7 +81,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     public CallableTime call() throws Exception {
         
         this.calendar1.setTime(new Date());
-        this.injectionTime.callUrl(this.booleanUrl, this.metadataInjectionProcess);
+        this.injectionTime.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
         this.calendar2.setTime(new Date());
         
         long milliseconds1 = this.calendar1.getTimeInMillis();

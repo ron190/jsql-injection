@@ -96,7 +96,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     @Override
     public CallableBlind call() throws Exception {
         
-        String ctnt = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess);
+        String ctnt = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
         
         this.opcodes = DIFFMATCHPATCH.diffMain(this.injectionBlind.getBlankTrueMark(), ctnt, true);
         
