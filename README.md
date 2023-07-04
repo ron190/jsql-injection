@@ -10,6 +10,7 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 [![JUnit 5](https://img.shields.io/badge/junit-5-50940f)](http://junit.org)
 [![Maven 3.1](https://img.shields.io/badge/maven-3.1-a2265a)](https://maven.apache.org/)
 [![License](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
+[![Sonar](https://img.shields.io/sonar/coverage/jsql-injection:jsql-injection?label=%20&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io "Sonar coverage")](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
 
 ## Features
 - Automatic injection of 33 database engines: Access, Altibase, C-treeACE, CockroachDB, CUBRID, DB2, Derby, Exasol, Firebird, FrontBase, H2, Hana, HSQLDB, Informix, Ingres, InterSystems-IRIS, MaxDB, Mckoi, MemSQL, MimerSQL, MonetDB, MySQL, Neo4j, Netezza, NuoDB, Oracle, PostgreSQL, Presto, SQLite, SQL Server, Sybase, Teradata and Vertica
@@ -35,8 +36,8 @@ To run older version on Java 16+ use `java --illegal-access=warn --add-exports j
 ## Continuous integration
 This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using continuous integration platform Github Actions.<br> 
 Non regression tests are run against dockerized and in memory databases and GUI is tested on VNC screen on the CI platforms, then quality checks are stored on code quality platforms.
-```
-flowchart TB
+```mermaid
+graph TB
     id022(JUnit Tests)
     subgraph jSQL
     id01(Injection Model)
@@ -58,9 +59,6 @@ flowchart TB
     id0 --> Docker & Memory
     id01 --> id0
     id022 --> id01 & id02   
-    click id01 "https://github.com/ron190/jsql-injection/tree/master/model/src/main/java/com/jsql/model" _blank
-    click id02 "https://github.com/ron190/jsql-injection/tree/master/view/src/main/java/com/jsql" _blank
-    click id0 "https://github.com/ron190/jsql-injection/tree/master/model/src/test/java/spring" _blank 
 ```
 
 ## [[Test-bed scripts for Spring](https://github.com/ron190/jsql-injection/tree/master/model/src/test/java/spring/rest)]
