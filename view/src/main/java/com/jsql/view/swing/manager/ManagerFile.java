@@ -187,10 +187,7 @@ public class ManagerFile extends AbstractManagerList {
                 
                 var name = currentCallable
                     .getPathFile()
-                    .substring(
-                        currentCallable.getPathFile().lastIndexOf('/') + 1,
-                        currentCallable.getPathFile().length()
-                    );
+                    .substring(currentCallable.getPathFile().lastIndexOf('/') + 1);
                 String content = currentCallable.getSourceFile();
                 String path = currentCallable.getPathFile();
 

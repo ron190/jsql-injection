@@ -582,7 +582,7 @@ public class VendorYaml implements AbstractVendor {
                 String
                 .join(
                     ",",
-                    fields.toArray(new String[fields.size()])
+                    fields.toArray(new String[0])
                 )
             )
             .replace(INDICE_UNIQUE, replaceTag)

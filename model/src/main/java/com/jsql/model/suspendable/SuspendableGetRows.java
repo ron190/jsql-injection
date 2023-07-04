@@ -143,7 +143,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 
                 this.scrapeTrailJunk(slidingWindowCurrentRow);
                 
-                slidingWindowAllRows.append(slidingWindowCurrentRow.toString());
+                slidingWindowAllRows.append(slidingWindowCurrentRow);
                 
                 if (isMultipleRows) {
                     

@@ -13,6 +13,7 @@ package com.jsql.view.swing.tree;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.JProgressBar;
@@ -54,7 +55,7 @@ public class ProgressBarPausable extends JProgressBar {
         if (this.isIconDisplayed) {
             
             try {
-                BufferedImage im2 = ImageIO.read(ProgressBarPausable.class.getClassLoader().getResource(UiUtil.PATH_PAUSE));
+                BufferedImage im2 = ImageIO.read(Objects.requireNonNull(ProgressBarPausable.class.getClassLoader().getResource(UiUtil.PATH_PAUSE)));
                 g.drawImage(
                     im2,
                     (this.getWidth() - im2.getWidth()) / 2,

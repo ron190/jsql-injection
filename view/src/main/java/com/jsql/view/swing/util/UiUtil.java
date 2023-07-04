@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -86,61 +87,63 @@ public class UiUtil {
     
     public static final URL URL_GLOBE = UiUtil.class.getClassLoader().getResource("swing/images/icons/globe.png");
     
-    public static final Icon ICON_TICK = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/check.png"));
-    public static final Icon ICON_SQUARE_RED = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/squareRed.png"));
-    public static final Icon ICON_SQUARE_GREY = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/squareGrey.png"));
-    public static final Icon ICON_LOADER_GIF = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/spinner.gif"));
+    public static final Icon ICON_TICK = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/check.png")));
+    public static final Icon ICON_SQUARE_RED = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/squareRed.png")));
+    public static final Icon ICON_SQUARE_GREY = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/squareGrey.png")));
+    public static final Icon ICON_LOADER_GIF = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/spinner.gif")));
 
-    public static final Icon ICON_ADMIN_SERVER = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/admin.png"));
-    public static final Icon ICON_SHELL_SERVER = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/application_xp_terminal.png"));
-    public static final Icon ICON_DATABASE_SERVER = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/database.png"));
-    public static final Icon ICON_FILE_SERVER = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/file.png"));
-    public static final Icon ICON_COG = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/cog.png"));
-    public static final Icon ICON_BRUTER = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/lock_open.png"));
-    public static final Icon ICON_CODER = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/textfield.png"));
-    public static final Icon ICON_UPLOAD = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/disk.png"));
-    public static final Icon ICON_SCANLIST = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/table_multiple.png"));
+    public static final Icon ICON_ADMIN_SERVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/admin.png")));
+    public static final Icon ICON_SHELL_SERVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/application_xp_terminal.png")));
+    public static final Icon ICON_DATABASE_SERVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/database.png")));
+    public static final Icon ICON_FILE_SERVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/file.png")));
+    public static final Icon ICON_COG = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/cog.png")));
+    public static final Icon ICON_BRUTER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/lock_open.png")));
+    public static final Icon ICON_CODER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/textfield.png")));
+    public static final Icon ICON_UPLOAD = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/disk.png")));
+    public static final Icon ICON_SCANLIST = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/table_multiple.png")));
 
-    public static final Icon ICON_TABLE = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/table.png"));
-    public static final Icon ICON_TABLE_GO = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/tableGo.png"));
-    public static final Icon ICON_DATABASE = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/database.png"));
-    public static final Icon ICON_DATABASE_GO = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/databaseGo.png"));
+    public static final Icon ICON_TABLE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/table.png")));
+    public static final Icon ICON_TABLE_GO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/tableGo.png")));
+    public static final Icon ICON_DATABASE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/database.png")));
+    public static final Icon ICON_DATABASE_GO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/databaseGo.png")));
     
-    public static final Icon ICON_CONSOLE = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/console.gif"));
-    public static final Icon ICON_HEADER = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/header.gif"));
-    public static final Icon ICON_CHUNK = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/chunk.gif"));
-    public static final Icon ICON_BINARY = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/binary.gif"));
-    public static final Icon ICON_CUP = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/cup.png"));
+    public static final Icon ICON_CONSOLE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/console.gif")));
+    public static final Icon ICON_HEADER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/header.gif")));
+    public static final Icon ICON_CHUNK = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/chunk.gif")));
+    public static final Icon ICON_BINARY = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/binary.gif")));
+    public static final Icon ICON_CUP = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/cup.png")));
     
-    public static final Icon ICON_CLOSE = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/close.png"));
-    public static final Icon ICON_CLOSE_ROLLOVER = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/closeRollover.png"));
-    public static final Icon ICON_CLOSE_PRESSED = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/closePressed.png"));
+    public static final Icon ICON_CLOSE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/close.png")));
+    public static final Icon ICON_CLOSE_ROLLOVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/closeRollover.png")));
+    public static final Icon ICON_CLOSE_PRESSED = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/closePressed.png")));
 
-    public static final Icon ICON_ARROW_DEFAULT = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/arrowDefault.png"));
-    public static final Icon ICON_ARROW_ROLLOVER = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/arrowRollover.png"));
-    public static final Icon ICON_ARROW_PRESSED = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/arrowPressed.png"));
+    public static final Icon ICON_ARROW_DEFAULT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/arrowDefault.png")));
+    public static final Icon ICON_ARROW_ROLLOVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/arrowRollover.png")));
+    public static final Icon ICON_ARROW_PRESSED = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/arrowPressed.png")));
 
-    public static final Icon ICON_FLAG_AR = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/ar.png"));
-    public static final Icon ICON_FLAG_ZH = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/zh.png"));
-    public static final Icon ICON_FLAG_RU = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/ru.png"));
-    public static final Icon ICON_FLAG_TR = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/tr.png"));
-    public static final Icon ICON_FLAG_EN = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/en.png"));
-    public static final Icon ICON_FLAG_FR = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/fr.png"));
-    public static final Icon ICON_FLAG_HI = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/hi.png"));
-    public static final Icon ICON_FLAG_CS = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/cs.png"));
-    public static final Icon ICON_FLAG_DE = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/de.png"));
-    public static final Icon ICON_FLAG_NL = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/nl.png"));
-    public static final Icon ICON_FLAG_IN_ID = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/id.png"));
-    public static final Icon ICON_FLAG_IT = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/it.png"));
-    public static final Icon ICON_FLAG_ES = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/es.png"));
-    public static final Icon ICON_FLAG_PT = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/pt.png"));
-    public static final Icon ICON_FLAG_PL = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/pl.png"));
-    public static final Icon ICON_FLAG_JA = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/ja.png"));
-    public static final Icon ICON_FLAG_KO = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/ko.png"));
-    public static final Icon ICON_FLAG_RO = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/ro.png"));
-    public static final Icon ICON_FLAG_LK = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/lk.png"));
-    public static final Icon ICON_FLAG_SE = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/se.png"));
-    public static final Icon ICON_FLAG_FI = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/flags/fi.png"));
+    public static final Icon ICON_EXPAND_TEXT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/expand.png")));
+
+    public static final Icon ICON_FLAG_AR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ar.png")));
+    public static final Icon ICON_FLAG_ZH = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/zh.png")));
+    public static final Icon ICON_FLAG_RU = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ru.png")));
+    public static final Icon ICON_FLAG_TR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/tr.png")));
+    public static final Icon ICON_FLAG_EN = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/en.png")));
+    public static final Icon ICON_FLAG_FR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/fr.png")));
+    public static final Icon ICON_FLAG_HI = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/hi.png")));
+    public static final Icon ICON_FLAG_CS = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/cs.png")));
+    public static final Icon ICON_FLAG_DE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/de.png")));
+    public static final Icon ICON_FLAG_NL = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/nl.png")));
+    public static final Icon ICON_FLAG_IN_ID = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/id.png")));
+    public static final Icon ICON_FLAG_IT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/it.png")));
+    public static final Icon ICON_FLAG_ES = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/es.png")));
+    public static final Icon ICON_FLAG_PT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/pt.png")));
+    public static final Icon ICON_FLAG_PL = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/pl.png")));
+    public static final Icon ICON_FLAG_JA = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ja.png")));
+    public static final Icon ICON_FLAG_KO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ko.png")));
+    public static final Icon ICON_FLAG_RO = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/ro.png")));
+    public static final Icon ICON_FLAG_LK = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/lk.png")));
+    public static final Icon ICON_FLAG_SE = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/se.png")));
+    public static final Icon ICON_FLAG_FI = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/flags/fi.png")));
     
     public static final URL URL_ICON_16 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug16.png");
     public static final URL URL_ICON_32 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug32.png");
@@ -148,12 +151,12 @@ public class UiUtil {
     public static final URL URL_ICON_128 = UiUtil.class.getClassLoader().getResource("swing/images/software/bug128.png");
 
     // The drop shadow is created from a PNG image with 8 bit alpha channel.
-    public static final Image IMG_SHADOW = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/shadow.png")).getImage();
+    public static final Image IMG_SHADOW = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/shadow.png"))).getImage();
     
-    public static final ImageIcon IMG_BUG = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/bug.png"));
-    public static final ImageIcon IMG_STOP_DEFAULT = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/stopDefault.png"));
-    public static final ImageIcon IMG_STOP_ROLLOVER = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/stopRollover.png"));
-    public static final ImageIcon IMG_STOP_PPRESSED = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/stopPressed.png"));
+    public static final ImageIcon IMG_BUG = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/bug.png")));
+    public static final ImageIcon IMG_STOP_DEFAULT = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/stopDefault.png")));
+    public static final ImageIcon IMG_STOP_ROLLOVER = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/stopRollover.png")));
+    public static final ImageIcon IMG_STOP_PPRESSED = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/stopPressed.png")));
     
     public static final String PATH_WEB_FOLDERS = "swing/list/payload.txt";
     public static final String INPUT_STREAM_PAGES_SCAN = "swing/list/scan-page.json";
@@ -164,7 +167,7 @@ public class UiUtil {
     public static final String PATH_PAUSE = "swing/images/icons/pause.png";
     public static final String PATH_PROGRESSBAR = "swing/images/icons/progressBar.gif";
     
-    public static final Icon ICON_ERROR = new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/error.png"));
+    public static final Icon ICON_ERROR = new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/error.png")));
     
     public static final Border BORDER_BLU = BorderFactory.createCompoundBorder(
         BORDER_FOCUS_GAINED,
@@ -246,7 +249,7 @@ public class UiUtil {
         
         var ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         
-        try (InputStream fontStream = new BufferedInputStream(UiUtil.class.getClassLoader().getResourceAsStream("swing/font/UbuntuMono-R-ctrlchar.ttf"))) {
+        try (InputStream fontStream = new BufferedInputStream(Objects.requireNonNull(UiUtil.class.getClassLoader().getResourceAsStream("swing/font/UbuntuMono-R-ctrlchar.ttf")))) {
             
             var ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             ge.registerFont(ubuntuFont);
@@ -393,8 +396,8 @@ public class UiUtil {
     private static void configureTree() {
         
         // Custom tree
-        UIManager.put("Tree.expandedIcon", new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/expanded.png")));
-        UIManager.put("Tree.collapsedIcon", new ImageIcon(UiUtil.class.getClassLoader().getResource("swing/images/icons/collapsed.png")));
+        UIManager.put("Tree.expandedIcon", new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/expanded.png"))));
+        UIManager.put("Tree.collapsedIcon", new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource("swing/images/icons/collapsed.png"))));
         UIManager.put("Tree.lineTypeDashed", true);
         
         // No default icon for tree nodes
@@ -440,10 +443,10 @@ public class UiUtil {
         
         // Fix #2154: NoClassDefFoundError on read()
         try {
-            images.add(ImageIO.read(UiUtil.URL_ICON_128));
-            images.add(ImageIO.read(UiUtil.URL_ICON_96));
-            images.add(ImageIO.read(UiUtil.URL_ICON_32));
-            images.add(ImageIO.read(UiUtil.URL_ICON_16));
+            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_128)));
+            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_96)));
+            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_32)));
+            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_16)));
             
         } catch (NoClassDefFoundError | IOException e) {
             

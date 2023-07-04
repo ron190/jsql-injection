@@ -1,9 +1,7 @@
 package spring.rest;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @RestController
 public class HibernateRestController {
@@ -54,7 +53,7 @@ public class HibernateRestController {
             Stream
             .concat(
                 Stream.of("CUSTOM-JSQL"),
-                Arrays.asList(RequestMethod.values()).stream().map(requestMethod -> requestMethod.name())
+                Arrays.stream(RequestMethod.values()).map(Enum::name)
             )
             .collect(Collectors.toList());
         
@@ -79,7 +78,7 @@ public class HibernateRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, inject)
+                template
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
             
@@ -107,7 +106,7 @@ public class HibernateRestController {
                 
                 greeting = new Greeting(
                     this.counter.getAndIncrement(),
-                    String.format(template+"#", inject)
+                    template+"#"
                     + StringEscapeUtils.unescapeJava("PREFIX It's true SUFFIX")
                 );
                 
@@ -115,7 +114,7 @@ public class HibernateRestController {
                 
                 greeting = new Greeting(
                     this.counter.getAndIncrement(),
-                    String.format(template+"#", inject)
+                    template+"#"
                     + StringEscapeUtils.unescapeJava("PREFIX It's false SUFFIX")
                 );
             }
@@ -268,7 +267,7 @@ public class HibernateRestController {
     )
     public Greeting greetingCsrf(HttpServletRequest request) throws IOException {
         
-        Greeting greeting = null;
+        Greeting greeting;
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
@@ -282,7 +281,7 @@ public class HibernateRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, inject)
+                template
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
             
@@ -296,35 +295,73 @@ public class HibernateRestController {
 
     @SuppressWarnings("unchecked")
     @RequestMapping(
-        method = { RequestMethod.GET, RequestMethod.POST },
-        path = "/post",
-        consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.TEXT_PLAIN_VALUE }
+            method = { RequestMethod.GET, RequestMethod.POST },
+            path = "/post",
+            consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.TEXT_PLAIN_VALUE }
     )
     public Greeting greetingPost(HttpServletRequest request) throws IOException {
-        
-        Greeting greeting = null;
-        
+
+        Greeting greeting;
+
         try (Session session = this.sessionFactory.getCurrentSession()) {
-            
+
             // Inside try because test connection do not send param
             String inject = request.getParameterMap().get("name")[0];
             inject = inject.replace(":", "\\:");
-            
+
             Query query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '"+ inject +"'");
-            
+
             List<Object[]> results = query.getResultList();
-            
+
             greeting = new Greeting(
-                this.counter.getAndIncrement(),
-                String.format(template, inject)
-                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+                    this.counter.getAndIncrement(),
+                    template
+                            + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
-            
+
         } catch (Exception e) {
-            
+
             greeting = this.initializeErrorMessage(e);
         }
-        
+
+        return greeting;
+    }
+
+    @SuppressWarnings("unchecked")
+    @RequestMapping(
+        method = { RequestMethod.GET, RequestMethod.POST },
+        path = "/multipart",
+        consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }
+    )
+    public Greeting greetingPostMultipart(HttpServletRequest request) {
+
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        for (Enumeration<String> e = multipartRequest.getParameterNames(); e.hasMoreElements();)
+            LOGGER.info(e.nextElement());
+        String name = String.join("", multipartRequest.getParameterValues("name"));
+
+        Greeting greeting;
+
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+
+            // Inside try because test connection do not send param
+            String inject = name.replace(":", "\\:");
+
+            Query query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '"+ inject +"'");
+
+            List<Object[]> results = query.getResultList();
+
+            greeting = new Greeting(
+                    this.counter.getAndIncrement(),
+                    template
+                            + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
+
+        } catch (Exception e) {
+
+            greeting = this.initializeErrorMessage(e);
+        }
+
         return greeting;
     }
     
@@ -332,7 +369,7 @@ public class HibernateRestController {
     @RequestMapping("/cookie")
     public Greeting greetingCookie(HttpServletRequest request, @CookieValue("name") String name) throws IOException {
 
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
@@ -343,7 +380,7 @@ public class HibernateRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, inject)
+                template
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
             
@@ -375,7 +412,7 @@ public class HibernateRestController {
                 
                 greeting = new Greeting(
                     this.counter.getAndIncrement(),
-                    String.format(template, inject)
+                    template
                     + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
                 );
             }
@@ -392,7 +429,7 @@ public class HibernateRestController {
     @RequestMapping("/json")
     public Greeting greetingJson(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replaceAll("\\\\:", ":");
 
         try (Session session = this.sessionFactory.getCurrentSession()) {
@@ -407,7 +444,7 @@ public class HibernateRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, inject)
+                template
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
             
@@ -423,7 +460,7 @@ public class HibernateRestController {
     @RequestMapping("/integer-insertion-char")
     public Greeting greetingIntegerInsertionChar(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
@@ -434,7 +471,7 @@ public class HibernateRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, inject)
+                template
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
             
@@ -450,7 +487,7 @@ public class HibernateRestController {
     @RequestMapping("/multiple-index")
     public Greeting greetingMultipleIndex(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
@@ -462,7 +499,7 @@ public class HibernateRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, inject)
+                template
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
             
@@ -518,7 +555,7 @@ public class HibernateRestController {
     @RequestMapping("/insertion-char")
     public Greeting greetingInsertionChar(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
@@ -529,7 +566,7 @@ public class HibernateRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, inject)
+                template
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
             
@@ -545,14 +582,14 @@ public class HibernateRestController {
     @RequestMapping("/custom")
     public Greeting greetingCustom(HttpServletRequest request, @RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Greeting greeting = null;
+        Greeting greeting;
         
         // TODO 1x GET and 12x POST instead of CUSTOM-JSQL
         if (!"CUSTOM-JSQL".equals(request.getMethod())) {
             
             return new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, "")
+                template
                 + StringEscapeUtils.unescapeJava("Missing method CUSTOM-JSQL: ")
                 + request.getMethod()
                 + request.getParameter("name")
@@ -569,7 +606,7 @@ public class HibernateRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, inject)
+                template
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
                 + request.getMethod()
                 + request.getParameter("name")
@@ -609,7 +646,7 @@ public class HibernateRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, inject)
+                template
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
             
@@ -625,7 +662,7 @@ public class HibernateRestController {
     @GetMapping("/path/{name}/suffix")
     public Greeting greetingPathParam(@PathVariable("name") String name) throws IOException {
         
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
@@ -636,7 +673,7 @@ public class HibernateRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, inject)
+                template
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
             

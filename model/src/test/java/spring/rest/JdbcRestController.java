@@ -43,7 +43,7 @@ public class JdbcRestController {
         
         try (
             Connection con = DriverManager.getConnection("jdbc:Altibase://jsql-altibase:20300/mydb", "sys", "manager");
-            PreparedStatement pstmt = con.prepareStatement("select db_name from SYSTEM_.SYS_DATABASE_ where '1' = '"+ inject +"'");
+            PreparedStatement pstmt = con.prepareStatement("select db_name from SYSTEM_.SYS_DATABASE_ where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
@@ -56,7 +56,7 @@ public class JdbcRestController {
         
         greeting = new Greeting(
             this.counter.getAndIncrement(),
-            String.format(template, name)
+            template
             + StringEscapeUtils.unescapeJava(result.toString())
         );
         
@@ -74,7 +74,7 @@ public class JdbcRestController {
         
         try (
             Connection con = DriverManager.getConnection("jdbc:ctree://localhost:6597/ctreeSQL", "ADMIN", "ADMIN");
-            PreparedStatement pstmt = con.prepareStatement("select tbl from systables where '1' = '"+ inject +"'");
+            PreparedStatement pstmt = con.prepareStatement("select tbl from systables where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
@@ -87,7 +87,7 @@ public class JdbcRestController {
         
         greeting = new Greeting(
             this.counter.getAndIncrement(),
-            String.format(template, name)
+            template
             + StringEscapeUtils.unescapeJava(result.toString())
         );
         
@@ -105,7 +105,7 @@ public class JdbcRestController {
         
         try (
             Connection con = DriverManager.getConnection("jdbc:exa:127.0.0.1:8563", "sys", "exasol");
-            PreparedStatement pstmt = con.prepareStatement("select COLUMN_SCHEMA from EXA_SYS_COLUMNS where '1' = '"+ inject +"'");
+            PreparedStatement pstmt = con.prepareStatement("select COLUMN_SCHEMA from EXA_SYS_COLUMNS where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
@@ -118,7 +118,7 @@ public class JdbcRestController {
         
         greeting = new Greeting(
             this.counter.getAndIncrement(),
-            String.format(template, name)
+            template
             + StringEscapeUtils.unescapeJava(result.toString())
         );
         
@@ -136,7 +136,7 @@ public class JdbcRestController {
         
         try (
             Connection con = DriverManager.getConnection("jdbc:ignite:thin://127.0.0.1", "ignite", "ignite");
-            PreparedStatement pstmt = con.prepareStatement("select 'name' from PUBLIC.STUDENT where '1' = '"+ inject +"'");
+            PreparedStatement pstmt = con.prepareStatement("select 'name' from PUBLIC.STUDENT where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
@@ -149,7 +149,7 @@ public class JdbcRestController {
         
         greeting = new Greeting(
             this.counter.getAndIncrement(),
-            String.format(template, name)
+            template
             + StringEscapeUtils.unescapeJava(result.toString())
         );
         
@@ -178,7 +178,7 @@ public class JdbcRestController {
         
         try (
             Connection con = DriverManager.getConnection("jdbc:FrontBase://127.0.0.1/firstdb", "_system", "");
-            PreparedStatement pstmt = con.prepareStatement("select \"SCHEMA_NAME\" from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'");
+            PreparedStatement pstmt = con.prepareStatement("select \"SCHEMA_NAME\" from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
@@ -191,7 +191,7 @@ public class JdbcRestController {
         
         greeting = new Greeting(
             this.counter.getAndIncrement(),
-            String.format(template, name)
+            template
             + StringEscapeUtils.unescapeJava(result.toString())
         );
         
@@ -208,7 +208,7 @@ public class JdbcRestController {
         
         try (
             Connection con = DriverManager.getConnection("jdbc:IRIS://127.0.0.1:1972/USER", "_SYSTEM", "Mw7SUqLPFbZWUu4");
-            PreparedStatement pstmt = con.prepareStatement("select SCHEMA_NAME from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'");
+            PreparedStatement pstmt = con.prepareStatement("select SCHEMA_NAME from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
@@ -221,7 +221,7 @@ public class JdbcRestController {
         
         greeting = new Greeting(
             this.counter.getAndIncrement(),
-            String.format(template, name)
+            template
             + StringEscapeUtils.unescapeJava(result.toString())
         );
         
@@ -238,7 +238,7 @@ public class JdbcRestController {
         
         try (
             Connection con = DriverManager.getConnection("jdbc:monetdb://127.0.0.1:50001/db", "monetdb", "monetdb");
-            PreparedStatement pstmt = con.prepareStatement("select name from schemas where '1' = '"+ inject +"'");
+            PreparedStatement pstmt = con.prepareStatement("select name from schemas where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
@@ -251,7 +251,7 @@ public class JdbcRestController {
         
         greeting = new Greeting(
             this.counter.getAndIncrement(),
-            String.format(template, name)
+            template
             + StringEscapeUtils.unescapeJava(result.toString())
         );
         
@@ -268,7 +268,7 @@ public class JdbcRestController {
         
         try (
             Connection con = DriverManager.getConnection("jdbc:mimer://127.0.0.1:1360/mimerdb", "SYSADM", "SYSADM");
-            PreparedStatement pstmt = con.prepareStatement("select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'");
+            PreparedStatement pstmt = con.prepareStatement("select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
@@ -281,7 +281,7 @@ public class JdbcRestController {
         
         greeting = new Greeting(
             this.counter.getAndIncrement(),
-            String.format(template, name)
+            template
             + StringEscapeUtils.unescapeJava(result.toString())
         );
         
@@ -298,7 +298,7 @@ public class JdbcRestController {
         
         try (
             Connection con = DriverManager.getConnection("jdbc:presto://127.0.0.1:8078/system", "test", "");
-            PreparedStatement pstmt = con.prepareStatement("select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'");
+            PreparedStatement pstmt = con.prepareStatement("select schema_name from INFORMATION_SCHEMA.SCHEMATA where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
@@ -311,7 +311,7 @@ public class JdbcRestController {
         
         greeting = new Greeting(
             this.counter.getAndIncrement(),
-            String.format(template, name)
+            template
             + StringEscapeUtils.unescapeJava(result.toString())
         );
         
@@ -323,13 +323,13 @@ public class JdbcRestController {
         // Service Firebird Server - DefaultInstance
         Class.forName("org.firebirdsql.jdbc.FBDriver");
         
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
         try (
             Connection con = DriverManager.getConnection("jdbc:firebirdsql://127.0.0.1:3050/E:/Dev/Firebird/Firebird-2.5.9.27139-0_x64/examples/empbuild/EMPLOYEE.FDB", "sysdba", "masterkey");
-            PreparedStatement pstmt = con.prepareStatement("select rdb$get_context('SYSTEM', 'DB_NAME') from rdb$database where '1' = '"+ inject +"'");
+            PreparedStatement pstmt = con.prepareStatement("select rdb$get_context('SYSTEM', 'DB_NAME') from rdb$database where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
@@ -338,7 +338,7 @@ public class JdbcRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, name)
+                template
                 + StringEscapeUtils.unescapeJava(result.toString())
             );
         } catch (Exception e) {
@@ -353,13 +353,13 @@ public class JdbcRestController {
     public Greeting greetingNetezza(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
         Class.forName("org.netezza.Driver");
         
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
         try (
             Connection con = DriverManager.getConnection("jdbc:netezza://127.0.0.1:5480/SYSTEM", "admin", "password");
-            PreparedStatement pstmt = con.prepareStatement("select schema_name from schemata where '1' = '"+ inject +"'");
+            PreparedStatement pstmt = con.prepareStatement("select schema_name from schemata where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
@@ -368,7 +368,7 @@ public class JdbcRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, name)
+                template
                 + StringEscapeUtils.unescapeJava(result.toString())
             );
         } catch (Exception e) {
@@ -383,13 +383,13 @@ public class JdbcRestController {
     public Greeting greetingOracle(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
         Class.forName("oracle.jdbc.OracleDriver");
         
-        Greeting greeting = null;
+        Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
         
         try (
             Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:11521:ORCLCDB", "system", "Password1_One");
-            PreparedStatement pstmt = con.prepareStatement("select distinct owner from all_tables where '1' = '"+ inject +"'");
+            PreparedStatement pstmt = con.prepareStatement("select distinct owner from all_tables where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()) {
@@ -398,7 +398,7 @@ public class JdbcRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, name)
+                template
                 + StringEscapeUtils.unescapeJava(result.toString())
             );
         } catch (Exception e) {
@@ -412,7 +412,7 @@ public class JdbcRestController {
     @RequestMapping("/neo4j")
     public Greeting greetingNeo4j(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Greeting greeting = null;
+        Greeting greeting;
         
         try (org.neo4j.driver.Session session = this.driver.session()) {
             Result result = session.run("MATCH (n:Person) where 1="+ name +" RETURN n.name, n.from, n.title, n.hobby");
@@ -429,7 +429,7 @@ public class JdbcRestController {
             
             greeting = new Greeting(
                 this.counter.getAndIncrement(),
-                String.format(template, name)
+                template
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(a))
             );
             

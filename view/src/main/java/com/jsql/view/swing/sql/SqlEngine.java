@@ -1,9 +1,6 @@
 package com.jsql.view.swing.sql;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -53,7 +50,7 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private static JTabbedPane tabbedPaneError = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
 
-    private static transient Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
+    private static Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
     
     private static final List<JTextPaneLexer> textPanesError = new ArrayList<>();
     
@@ -226,7 +223,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         ))
         ;
         
-        JTextPaneLexer text;
+        final JTextPaneLexer text;
 
         public JTextPaneLexer getText() {
             return this.text;
@@ -574,6 +571,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         menuBarVendor.setBorder(null);
         
         JMenu comboMenuVendor = new ComboMenu(MediatorHelper.model().getMediatorVendor().getVendor().toString());
+        comboMenuVendor.getPopupMenu().setLayout(new GridLayout(MediatorHelper.model().getMediatorVendor().getVendors().size() / 2, 2));
         menuBarVendor.add(comboMenuVendor);
 
         var groupVendor = new ButtonGroup();

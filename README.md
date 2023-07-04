@@ -36,18 +36,31 @@ To run older version on Java 16+ use `java --illegal-access=warn --add-exports j
 This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using continuous integration platform Github Actions.<br> 
 Non regression tests are run against dockerized and in memory databases and GUI is tested on VNC screen on the CI platforms, then quality checks are stored on code quality platforms.
 ```
-+-------+ +-----------------------------------------------------------------------+
-|       | |                         JUNIT TEST FRAMEWORK                          |
-|       | +-----------------|-------------------------------------|---------------+
-|   D   | +-----------------v-------------------+  +--------------v---------------+
-|   O   | |          INJECTION MODEL            <--+             GUI              |
-|   C   | +-----------------|-------------------+  +------------------------------+
-|   K   | +-----------------v-----------------------------------------------------+
-|   E   | |                              SPRING API                               |
-|   R   | +---|---------|----------|----------|------|------|-------|--------|----+
-|       | +---v---------v----------v----------v------v------v-------v--------v----+
-|       | | MYSQL | POSTGRES | SQL SERVER | CUBRID | H2 | DERBY | HSQLDB | SQLITE |
-+-------+ +-----------------------------------------------------------------------+
+flowchart TB
+    id022(JUnit Tests)
+    subgraph jSQL
+    id01(Injection Model)
+    id02(GUI)
+    end
+    id0(Spring APIs)
+    subgraph Docker
+    direction TB
+    id1[(MySQL)]   
+    id2[(Postgres)]   
+    id3[(...)]      
+    end
+    subgraph Memory
+    direction TB
+    id5[(H2)]    
+    id8[(SQLite)]
+    id6[(...)]      
+    end
+    id0 --> Docker & Memory
+    id01 --> id0
+    id022 --> id01 & id02   
+    click id01 "https://github.com/ron190/jsql-injection/tree/master/model/src/main/java/com/jsql/model" _blank
+    click id02 "https://github.com/ron190/jsql-injection/tree/master/view/src/main/java/com/jsql" _blank
+    click id0 "https://github.com/ron190/jsql-injection/tree/master/model/src/test/java/spring" _blank 
 ```
 
 ## [[Test-bed scripts for Spring](https://github.com/ron190/jsql-injection/tree/master/model/src/test/java/spring/rest)]

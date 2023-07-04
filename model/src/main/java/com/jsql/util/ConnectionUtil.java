@@ -139,7 +139,7 @@ public class ConnectionUtil {
             .map()
             .entrySet()
             .stream()
-            .sorted(Comparator.comparing(Entry::getKey))
+            .sorted(Entry.comparingByKey())
             .map(entrySet ->
                 new AbstractMap.SimpleEntry<>(
                     entrySet.getKey(),
@@ -159,7 +159,6 @@ public class ConnectionUtil {
      * It uses authentication defined by user, with fixed timeout, and warn
      * user in case of authentication detected.
      * @return
-     * @throws InjectionFailureException when any error occurs during the connection
      * @throws IOException
      * @throws InterruptedException
      */
@@ -226,7 +225,7 @@ public class ConnectionUtil {
         
         if (httpResponse.statusCode() >= 400 && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
             
-            throw new InjectionFailureException(String.format("Connection failed: problem when calling %s", httpResponse.uri().toURL().toString()));
+            throw new InjectionFailureException(String.format("Connection failed: problem when calling %s", httpResponse.uri().toURL()));
         }
     }
     
@@ -308,7 +307,7 @@ public class ConnectionUtil {
             String agents = this.injectionModel.getMediatorUtils().getUserAgentUtil().getCustomUserAgent();
             List<String> listAgents =
                 Stream
-                .of(agents.split("[\\r\\n]{1,}"))
+                .of(agents.split("[\\r\\n]+"))
                 .filter(q -> !q.matches("^#.*"))
                 .collect(Collectors.toList());
             

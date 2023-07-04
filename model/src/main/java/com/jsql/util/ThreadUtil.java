@@ -91,7 +91,7 @@ public final class ThreadUtil {
         
         // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()
         try {
-            this.suspendables.values().stream().forEach(AbstractSuspendable::stop);
+            this.suspendables.values().forEach(AbstractSuspendable::stop);
             this.suspendables.clear();
             
         } catch (ConcurrentModificationException e) {

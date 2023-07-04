@@ -3,7 +3,7 @@ services:
 
   mysql:
     ports: 
-      - 3306:3306
+      - "3306:3306"
     build:
       context: .
       dockerfile: Dockerfile.mysql
@@ -15,7 +15,7 @@ services:
       
   mysql-5-5-40:
     ports: 
-      - 3307:3307
+      - "3307:3307"
     build:
       context: .
       dockerfile: Dockerfile.mysql-5-5-40
@@ -27,7 +27,7 @@ services:
 
   postgres:
     ports: 
-      - 5432:5432
+      - "5432:5432"
     build:
       context: .
       dockerfile: Dockerfile.postgres
@@ -39,8 +39,8 @@ services:
 
   sqlserver:
     ports: 
-      - 1434:1434
-      - 1433:1433
+      - "1434:1434"
+      - "1433:1433"
     build:
       context: .
       dockerfile: Dockerfile.sqlserver
@@ -53,7 +53,7 @@ services:
 
   neo4j:
     ports: 
-      - 7687:7687
+      - "7687:7687"
     build:
       context: .
       dockerfile: Dockerfile.neo4j
@@ -65,7 +65,7 @@ services:
 
   cubrid:
     ports: 
-      - 33000:33000
+      - "33000:33000"
     build:
       context: .
       dockerfile: Dockerfile.cubrid
@@ -75,7 +75,7 @@ services:
 
   db2:
     ports: 
-      - 50000:50000
+      - "50000:50000"
     privileged: true
     build:
       context: .

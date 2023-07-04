@@ -41,7 +41,7 @@ public class GitUtil {
      */
     public enum ShowOnConsole {
         YES,
-        NO;
+        NO
     }
 
     private InjectionModel injectionModel;

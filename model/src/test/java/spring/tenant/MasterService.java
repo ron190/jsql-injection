@@ -38,7 +38,6 @@ public class MasterService {
         );
         
         properties
-        .stream()
         .forEach(props -> {
             
             DatasourceConnectionProviderImpl connectionProviderPostgres = new DatasourceConnectionProviderImpl();

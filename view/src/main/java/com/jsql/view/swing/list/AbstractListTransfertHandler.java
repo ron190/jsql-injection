@@ -168,11 +168,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
         try {
             String clipboardText = (String) transferableFromClipboard.getTransferData(DataFlavor.stringFlavor);
 
-            var selectedIndexPaste = 0;
-            
-            if (list.getSelectedIndex() > 0) {
-                selectedIndexPaste = list.getSelectedIndex();
-            }
+            var selectedIndexPaste = Math.max(list.getSelectedIndex(), 0);
             
             list.clearSelection();
 
@@ -207,20 +203,12 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
     private void parseFilePaste(DnDList list, Transferable transferableFromClipboard) {
         
         try {
-            var selectedIndex = 0;
-            
-            if (list.getSelectedIndex() > 0) {
-                
-                selectedIndex = list.getSelectedIndex();
-            }
-            
+            var selectedIndex = Math.max(list.getSelectedIndex(), 0);
             list.clearSelection();
-
             list.dropPasteFile(
                 (List<File>) transferableFromClipboard.getTransferData(DataFlavor.javaFileListFlavor),
                 selectedIndex
             );
-            
         } catch (UnsupportedFlavorException | IOException e) {
             
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);

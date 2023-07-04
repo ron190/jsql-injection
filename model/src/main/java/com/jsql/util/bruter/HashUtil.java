@@ -99,11 +99,10 @@ public class HashUtil {
     public static String digestToHexString(byte[] block) {
         
         var buf = new StringBuilder();
-        int len = block.length;
-        
-        for (var i = 0; i < len; i++) {
-            
-            HashUtil.byte2hex(block[i], buf);
+
+        for (byte b : block) {
+
+            HashUtil.byte2hex(b, buf);
         }
         
         return buf.toString();

@@ -1,5 +1,7 @@
 package com.jsql.util.bruter;
 
+import java.util.Arrays;
+
 public class Base58 {
 
     private static final char[] ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz".toCharArray();
@@ -9,10 +11,7 @@ public class Base58 {
     private static final int[] INDEXES = new int[128];
     
     static {
-        for (int i = 0; i < INDEXES.length; i++) {
-            
-            INDEXES[i] = -1;
-        }
+        Arrays.fill(INDEXES, -1);
         
         for (int i = 0; i < ALPHABET.length; i++) {
             

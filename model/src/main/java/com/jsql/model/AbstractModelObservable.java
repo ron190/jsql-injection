@@ -10,11 +10,10 @@
  ******************************************************************************/
 package com.jsql.model;
 
-import java.util.concurrent.SubmissionPublisher;
-
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.strategy.blind.AbstractCallableBoolean;
-import com.jsql.model.injection.strategy.blind.CallableBlind;
+
+import java.util.concurrent.SubmissionPublisher;
 
 /**
  * Define the features of the injection model :<br>

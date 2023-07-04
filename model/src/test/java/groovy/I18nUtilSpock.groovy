@@ -8,9 +8,10 @@ class I18nUtilSpock extends Specification {
 
     def 'Check locale is asian'() {
 
-        expect: I18nUtil.isAsian(Locale.FRANCE) == false
-        and: I18nUtil.isAsian(Locale.KOREAN) == true
-        and: I18nUtil.isAsian(Locale.JAPANESE) == true
-        and: I18nUtil.isAsian(Locale.CHINESE) == true
+        expect:
+            !I18nUtil.isAsian(Locale.FRANCE)
+            I18nUtil.isAsian(Locale.KOREAN)
+            I18nUtil.isAsian(Locale.JAPANESE)
+            I18nUtil.isAsian(Locale.CHINESE)
     }
 }

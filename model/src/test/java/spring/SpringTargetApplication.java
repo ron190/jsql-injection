@@ -30,7 +30,7 @@ import org.neo4j.driver.Result;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.jsql.util.LogLevel;
+import com.jsql.util.LogLevelUtil;
 
 import spring.rest.Student;
 
@@ -161,7 +161,7 @@ public class SpringTargetApplication {
 
     private static void initializeNeo4j() throws IOException {
         
-        String graphMovie = Files.readAllLines(Paths.get("src/test/resources/neo4j/movie-graph.txt")).stream().collect(Collectors.joining("\n"));
+        String graphMovie = String.join("\n", Files.readAllLines(Paths.get("src/test/resources/neo4j/movie-graph.txt")));
         
         Driver driver = GraphDatabase.driver("bolt://jsql-neo4j:7687", AuthTokens.basic("neo4j", "test"));
         
@@ -170,14 +170,11 @@ public class SpringTargetApplication {
             session.run("MATCH (n) DETACH DELETE n");
             
             Result result = session.run(graphMovie);
-            result.forEachRemaining(record -> {
-                
-                LOGGER.info(record);
-            });
+            result.forEachRemaining(LOGGER::info);
             
         } catch (Exception e) {
             
-            LOGGER.log(LogLevel.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         driver.close();

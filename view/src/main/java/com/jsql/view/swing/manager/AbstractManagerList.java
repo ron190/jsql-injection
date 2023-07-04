@@ -92,7 +92,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         try (
             var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);
             var inputStreamReader = new InputStreamReader(inputStream);
-            var reader = new BufferedReader(inputStreamReader);
+            var reader = new BufferedReader(inputStreamReader)
         ) {
             String line;
             while ((line = reader.readLine()) != null) {

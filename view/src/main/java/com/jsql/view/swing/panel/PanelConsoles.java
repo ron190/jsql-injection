@@ -371,8 +371,8 @@ public class PanelConsoles extends JPanel {
             @Override
             public JToolTip createToolTip() {
                 
-                JToolTip tipI18n = new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip));
-                refJToolTipI18n[0] = (JToolTipI18n) tipI18n;
+                JToolTipI18n tipI18n = new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip));
+                refJToolTipI18n[0] = tipI18n;
                 
                 return tipI18n;
             }

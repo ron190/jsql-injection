@@ -13,7 +13,7 @@ public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentif
         
         // TODO Set dummy value instead to avoid fallback on mysql
         // Used by SOAP
-        String tenant = "mysql";
+        String tenant;
         
         if (attributes != null) {
             

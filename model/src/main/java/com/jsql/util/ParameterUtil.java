@@ -1,25 +1,21 @@
 package com.jsql.util;
 
-import java.net.IDN;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ParameterUtil {
     
@@ -37,6 +33,7 @@ public class ParameterUtil {
      * Request submitted by user.
      */
     private List<SimpleEntry<String, String>> listRequest = new ArrayList<>();
+    private List<SimpleEntry<String, String>> listMultipart = new ArrayList<>();
 
     /**
      * Header submitted by user.
@@ -44,6 +41,7 @@ public class ParameterUtil {
     private List<SimpleEntry<String, String>> listHeader = new ArrayList<>();
     
     private String requestAsText = StringUtils.EMPTY;
+    private boolean isMultipartRequest = false;
 
     private InjectionModel injectionModel;
     
@@ -84,6 +82,7 @@ public class ParameterUtil {
                      
             this.initializeQueryString(urlQueryFixed);
             this.initializeRequest(dataRequest);
+//            this.initializeMultipart(dataRequest, dataHeader);
             this.initializeHeader(dataHeader);
             
             this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);
@@ -123,6 +122,33 @@ public class ParameterUtil {
         this.checkOneOrLessStar();
         this.checkStarMatchMethod();
         this.checkMethodNotEmpty();
+        this.checkMultipart();
+    }
+
+    private void checkMultipart() throws InjectionFailureException {
+        if (
+            this.getListHeader()
+            .stream()
+            .filter(entry -> "Content-Type".equals(entry.getKey()))
+            .anyMatch(entry ->
+                entry.getValue() != null
+                && entry.getValue().contains("multipart/form-data")
+                && entry.getValue().contains("boundary=")
+            )
+        ) {
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Multipart and boundary found in header");
+            Matcher matcherBoundary = Pattern.compile("boundary=([^;]*)").matcher(this.getHeaderFromEntries());
+            if (matcherBoundary.find()) {
+                String boundary = matcherBoundary.group(1);
+                if (!this.requestAsText.contains(boundary)) {
+                    throw new InjectionFailureException(
+                        String.format("Incorrect multipart data, boundary not found in body: %s", boundary)
+                    );
+                } else {
+                    isMultipartRequest = true;
+                }
+            }
+        }
     }
 
     private void checkOneOrLessStar() throws InjectionFailureException {
@@ -277,12 +303,12 @@ public class ParameterUtil {
     }
 
     public void initializeRequest(String request) {
-        
+
         this.requestAsText = request;
         this.listRequest.clear();
-        
+
         if (StringUtils.isNotEmpty(request)) {
-            
+
             this.listRequest =
                 Pattern
                 .compile("&")
@@ -297,6 +323,27 @@ public class ParameterUtil {
                     )
                 )
                 .collect(Collectors.toList());
+        }
+    }
+
+    public void initializeMultipart(String request, String dataHeader) {
+
+        this.listMultipart.clear();
+
+        if (StringUtils.isEmpty(request)) {
+            return;
+        }
+
+        Matcher matcherBoundary = Pattern.compile("boundary=([^;]*)").matcher(dataHeader);
+        if (matcherBoundary.find()) {
+            String boundary = matcherBoundary.group(1);
+
+            Matcher a = Pattern
+                .compile("Content-Disposition: form-data; name=\"(.*?)\"(?:(?:\\\\r)?(?:\\\\n))+(.*?)" + boundary, Pattern.DOTALL)
+                .matcher(request);
+            while (a.find()) {
+                this.listMultipart.add(new SimpleEntry<>(a.group(1), a.group(2)));
+            }
         }
     }
 
@@ -345,7 +392,7 @@ public class ParameterUtil {
     }
 
     public String getRequestFromEntries() {
-        
+
         return
             this.listRequest
             .stream()
@@ -358,6 +405,30 @@ public class ParameterUtil {
                 )
             )
             .collect(Collectors.joining("&"));
+    }
+
+    public String getMultipartFromEntries() {
+
+        String boundary = StringUtils.EMPTY;
+        Matcher matcherBoundary = Pattern.compile("boundary=([^;]*)").matcher(this.getHeaderFromEntries());
+        if (matcherBoundary.find()) {
+            boundary = matcherBoundary.group(1);
+        }
+
+        String finalBoundary = boundary;
+        return finalBoundary + "\\n" +
+            this.listMultipart
+                .stream()
+                .filter(Objects::nonNull)
+                .map(entry ->
+                    String.format(
+                        "Content-Disposition: form-data; name=\"%s\"\\n\\n%s\\n%s",
+                        entry.getKey(),
+                        StringUtils.isEmpty(entry.getValue()) ? "" : entry.getValue(),
+                        finalBoundary
+                    )
+                )
+                .collect(Collectors.joining(""));
     }
     
     public String getHeaderFromEntries() {
@@ -390,9 +461,13 @@ public class ParameterUtil {
     public String getRawRequest() {
         return this.requestAsText;
     }
-    
+
     public List<SimpleEntry<String, String>> getListRequest() {
         return this.listRequest;
+    }
+
+    public List<SimpleEntry<String, String>> getListMultipart() {
+        return this.listMultipart;
     }
 
     public void setListRequest(List<SimpleEntry<String, String>> listRequest) {
@@ -413,5 +488,9 @@ public class ParameterUtil {
     
     public void setListQueryString(List<SimpleEntry<String, String>> listQueryString) {
         this.listQueryString = listQueryString;
+    }
+
+    public boolean isMultipartRequest() {
+        return isMultipartRequest;
     }
 }

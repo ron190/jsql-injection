@@ -38,11 +38,7 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
                 g.drawLine( 2, 8, 8, 8 );
 
                 g.setColor( MetalLookAndFeel.getPrimaryControl() );
-                g.drawLine( 1, 1, 7, 1 );
-                g.drawLine( 1, 1, 1, 7 );
-                g.drawLine( 9, 1, 9, 9 );
-                g.drawLine( 1, 9, 9, 9 );
-                
+
             } else {
                 
                 g.setColor( MetalLookAndFeel.getControlDarkShadow() );
@@ -52,11 +48,13 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
                 g.drawLine( 2, 8, 8, 8 );
 
                 g.setColor( MetalLookAndFeel.getControlHighlight() );
-                g.drawLine( 1, 1, 7, 1 );
-                g.drawLine( 1, 1, 1, 7 );
-                g.drawLine( 9, 1, 9, 9 );
-                g.drawLine( 1, 9, 9, 9 );
             }
+
+            g.drawLine( 1, 1, 7, 1 );
+            g.drawLine( 1, 1, 1, 7 );
+            g.drawLine( 9, 1, 9, 9 );
+            g.drawLine( 1, 9, 9, 9 );
+
         } else {
             
             g.setColor( MetalLookAndFeel.getMenuDisabledForeground() );

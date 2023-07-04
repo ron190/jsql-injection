@@ -189,7 +189,7 @@ public class ManagerAdminPage extends AbstractManagerList {
         
         String[] splits = urlWithoutProtocol.split("/", -1);
         String[] folderNames = Arrays.copyOf(splits, splits.length - 1);
-        for (String folderName: Arrays.asList(folderNames)) {
+        for (String folderName: folderNames) {
             
             folderSplits.add(folderName +"/");
         }
@@ -207,7 +207,7 @@ public class ManagerAdminPage extends AbstractManagerList {
                 
                 taskCompletionService.submit(
                     new CallableHttpHead(
-                        urlProtocol + urlPart.toString() + pageName.toString(),
+                        urlProtocol + urlPart + pageName.toString(),
                         MediatorHelper.model(),
                         "check:page"
                     )

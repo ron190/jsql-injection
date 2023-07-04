@@ -19,6 +19,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
@@ -71,7 +72,7 @@ public class PanelNode extends JPanel {
      */
     public PanelNode(final JTree tree, final DefaultMutableTreeNode currentNode) {
         
-        var animatedGIF = new ImageIcon(PanelNode.class.getClassLoader().getResource(UiUtil.PATH_PROGRESSBAR));
+        var animatedGIF = new ImageIcon(Objects.requireNonNull(PanelNode.class.getClassLoader().getResource(UiUtil.PATH_PROGRESSBAR)));
         animatedGIF.setImageObserver(new ImageObserverAnimated(tree, currentNode));
         
         this.loader.setIcon(animatedGIF);

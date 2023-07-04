@@ -43,7 +43,7 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
 
         for (ItemList itemPath: this.dragPaths) {
             
-            stringTransferable.append(itemPath + "\n");
+            stringTransferable.append(itemPath).append("\n");
         }
         
         return stringTransferable.toString();

@@ -29,11 +29,11 @@ public enum Language {
     FI("Finnish", "fi", UiUtil.ICON_FLAG_FI),
     OT("another language", null, null);
 
-    private String nameEnglish;
-    private Icon flag;
-    private String labelLocale;
+    private final String nameEnglish;
+    private final Icon flag;
+    private final String labelLocale;
     
-    private Language(String nameEnglish, String labelLocale, Icon flag) {
+    Language(String nameEnglish, String labelLocale, Icon flag) {
         
         this.nameEnglish = nameEnglish;
         this.flag = flag;

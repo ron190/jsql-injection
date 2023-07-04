@@ -14,7 +14,7 @@ class JsonUtilSpock extends Specification {
 
     def 'Add STAR when searching for key'() {
         
-        when: List<SimpleEntry<String, String>> entries = JsonUtil.createEntries(oJsonObject, "root", parentXPath)
+        when: JsonUtil.createEntries(oJsonObject, "root", parentXPath)
         
         then:
             ((JSONObject) oJsonObject)
@@ -119,8 +119,9 @@ class JsonUtilSpock extends Specification {
     
     def 'Test json container'() {
         
-        expect: JsonUtil.isJson("{}") == true
-        and: JsonUtil.isJson("[]") == true
-        and: JsonUtil.isJson("0") == false
+        expect:
+            JsonUtil.isJson("{}")
+            JsonUtil.isJson("[]")
+            !JsonUtil.isJson("0")
     }
 }

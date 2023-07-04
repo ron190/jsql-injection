@@ -10,6 +10,7 @@ public class MediatorMethod {
 
     private AbstractMethodInjection query;
     private AbstractMethodInjection request;
+    private AbstractMethodInjection multipart;
     private AbstractMethodInjection header;
     
     private List<AbstractMethodInjection> methods;
@@ -43,31 +44,58 @@ public class MediatorMethod {
                 return "Query";
             }
         };
-        
+
         this.request = new AbstractMethodInjection(injectionModel) {
-            
+
             @Override
             public boolean isCheckingAllParam() {
-                
+
                 return this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam();
             }
 
             @Override
             public String getParamsAsString() {
-                
+
                 return this.injectionModel.getMediatorUtils().getParameterUtil().getRequestFromEntries();
             }
 
             @Override
             public List<SimpleEntry<String, String>> getParams() {
-                
+
                 return this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest();
             }
 
             @Override
             public String name() {
-                
+
                 return "Request";
+            }
+        };
+
+        this.multipart = new AbstractMethodInjection(injectionModel) {
+
+            @Override
+            public boolean isCheckingAllParam() {
+
+                return this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam();
+            }
+
+            @Override
+            public String getParamsAsString() {
+
+                return this.injectionModel.getMediatorUtils().getParameterUtil().getMultipartFromEntries();
+            }
+
+            @Override
+            public List<SimpleEntry<String, String>> getParams() {
+
+                return this.injectionModel.getMediatorUtils().getParameterUtil().getListMultipart();
+            }
+
+            @Override
+            public String name() {
+
+                return "Multipart";
             }
         };
         
@@ -98,7 +126,7 @@ public class MediatorMethod {
             }
         };
         
-        this.methods = Arrays.asList(this.getQuery(), this.getRequest(), this.getHeader());
+        this.methods = Arrays.asList(this.query, this.request, this.header);
     }
 
     public AbstractMethodInjection getQuery() {
@@ -107,6 +135,10 @@ public class MediatorMethod {
 
     public AbstractMethodInjection getRequest() {
         return this.request;
+    }
+
+    public AbstractMethodInjection getMultipart() {
+        return this.multipart;
     }
 
     public AbstractMethodInjection getHeader() {

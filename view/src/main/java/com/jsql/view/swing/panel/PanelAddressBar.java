@@ -13,13 +13,7 @@ package com.jsql.view.swing.panel;
 import java.awt.Dimension;
 import java.util.stream.Stream;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JToolTip;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import com.jsql.model.injection.method.AbstractMethodInjection;
@@ -27,12 +21,9 @@ import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.panel.address.ActionEnterAddressBar;
 import com.jsql.view.swing.panel.address.AddressMenuBar;
 import com.jsql.view.swing.panel.address.RequestPanel;
+import com.jsql.view.swing.panel.util.ButtonExpandText;
 import com.jsql.view.swing.radio.RadioLinkMethod;
-import com.jsql.view.swing.text.JPopupTextField;
-import com.jsql.view.swing.text.JTextFieldAddressBar;
-import com.jsql.view.swing.text.JTextFieldPlaceholder;
-import com.jsql.view.swing.text.JTextFieldWithIcon;
-import com.jsql.view.swing.text.JToolTipI18n;
+import com.jsql.view.swing.text.*;
 import com.jsql.view.swing.ui.ComponentBorder;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -48,7 +39,7 @@ public class PanelAddressBar extends JPanel {
     private JTextField textFieldAddress;
     private JTextField textFieldRequest;
     private JTextField textFieldHeader;
-    
+
     private RadioLinkMethod[] radioQueryString = new RadioLinkMethod[1];
     private RadioLinkMethod[] radioRequest = new RadioLinkMethod[1];
     private RadioLinkMethod[] radioHeader = new RadioLinkMethod[1];
@@ -75,8 +66,8 @@ public class PanelAddressBar extends JPanel {
             @Override
             public JToolTip createToolTip() {
                 
-                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_QUERY));
-                tooltipQuery[0] = (JToolTipI18n) tipI18n;
+                JToolTipI18n tipI18n = new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_QUERY));
+                tooltipQuery[0] = tipI18n;
                 return tipI18n;
             }
         };
@@ -92,8 +83,8 @@ public class PanelAddressBar extends JPanel {
             @Override
             public JToolTip createToolTip() {
                 
-                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_REQUEST));
-                tooltipRequest[0] = (JToolTipI18n) tipI18n;
+                JToolTipI18n tipI18n = new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_REQUEST));
+                tooltipRequest[0] = tipI18n;
                 return tipI18n;
             }
         }).getProxy();
@@ -105,8 +96,8 @@ public class PanelAddressBar extends JPanel {
             @Override
             public JToolTip createToolTip() {
                 
-                JToolTip tipI18n = new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_HEADER));
-                tooltipHeader[0] = (JToolTipI18n) tipI18n;
+                JToolTipI18n tipI18n = new JToolTipI18n(I18nUtil.valueByKey(KEY_TOOLTIP_HEADER));
+                tooltipHeader[0] = tipI18n;
                 
                 return tooltipHeader[0];
             }
@@ -186,6 +177,8 @@ public class PanelAddressBar extends JPanel {
 
         this.addressMenuBar = new AddressMenuBar(this);
         new ComponentBorder(this.addressMenuBar, 17, 0).install(this.textFieldAddress);
+        new ComponentBorder(new ButtonExpandText("Body", this.textFieldRequest), 0, 0).install(this.textFieldRequest);
+        new ComponentBorder(new ButtonExpandText("Header", this.textFieldHeader), 0, 0).install(this.textFieldHeader);
 
         this.radioQueryString[0].setVisible(false);
         this.textFieldRequest.setVisible(false);

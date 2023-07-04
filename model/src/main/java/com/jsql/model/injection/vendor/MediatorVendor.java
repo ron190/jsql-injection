@@ -40,44 +40,44 @@ public class MediatorVendor {
     private Vendor vendorByUser;
 
     // TODO Replace with enum
-    private Vendor auto;
-    private Vendor access;
-    private Vendor altibase;
-    private Vendor ctreeACE;
-    private Vendor cockroachDB;
-    private Vendor cubrid;
-    private Vendor db2;
-    private Vendor derby;
-    private Vendor exasol;
-    private Vendor frontbase;
-    private Vendor firebird;
-    private Vendor h2;
-    private Vendor hana;
-    private Vendor hsqldb;
-    private Vendor informix;
-    private Vendor ingres;
-    private Vendor iris;
-    private Vendor maxDB;
-    private Vendor mckoi;
-    private Vendor memSQL;
-    private Vendor mimerSQL;
-    private Vendor monetDB;
-    private Vendor mySQL;
-    private Vendor neo4j;
-    private Vendor netezza;
-    private Vendor nuoDB;
-    private Vendor oracle;
-    private Vendor postgreSQL;
-    private Vendor presto;
-    private Vendor sqlite;
-    private Vendor sqlServer;
-    private Vendor sybase;
-    private Vendor teradata;
-    private Vendor vertica;
+    private final Vendor auto;
+    private final Vendor access;
+    private final Vendor altibase;
+    private final Vendor ctreeACE;
+    private final Vendor cockroachDB;
+    private final Vendor cubrid;
+    private final Vendor db2;
+    private final Vendor derby;
+    private final Vendor exasol;
+    private final Vendor frontbase;
+    private final Vendor firebird;
+    private final Vendor h2;
+    private final Vendor hana;
+    private final Vendor hsqldb;
+    private final Vendor informix;
+    private final Vendor ingres;
+    private final Vendor iris;
+    private final Vendor maxDB;
+    private final Vendor mckoi;
+    private final Vendor memSQL;
+    private final Vendor mimerSQL;
+    private final Vendor monetDB;
+    private final Vendor mySQL;
+    private final Vendor neo4j;
+    private final Vendor netezza;
+    private final Vendor nuoDB;
+    private final Vendor oracle;
+    private final Vendor postgreSQL;
+    private final Vendor presto;
+    private final Vendor sqlite;
+    private final Vendor sqlServer;
+    private final Vendor sybase;
+    private final Vendor teradata;
+    private final Vendor vertica;
     
-    private List<Vendor> vendors;
+    private final List<Vendor> vendors;
     
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
     public MediatorVendor(InjectionModel injectionModel) {
         

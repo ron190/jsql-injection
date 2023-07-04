@@ -29,7 +29,7 @@ public enum TamperingType {
     
     private ModelYamlTampering instanceModelYaml;
     
-    private TamperingType(String fileYaml) {
+    TamperingType(String fileYaml) {
         
         var yaml = new Yaml();
         

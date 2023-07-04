@@ -1,24 +1,5 @@
 package com.jsql.view.swing.panel.address;
 
-import java.awt.Cursor;
-import java.util.Locale;
-
-import javax.swing.AbstractButton;
-import javax.swing.Box;
-import javax.swing.ButtonGroup;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JSeparator;
-import javax.swing.JToolTip;
-import javax.swing.MenuElement;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.model.injection.strategy.StrategyInjectionError;
 import com.jsql.model.injection.vendor.model.Vendor;
@@ -32,6 +13,12 @@ import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.ui.ComponentBorder;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Locale;
 
 @SuppressWarnings("serial")
 public class AddressMenuBar extends JMenuBar {
@@ -76,7 +63,7 @@ public class AddressMenuBar extends JMenuBar {
 
         for (final AbstractStrategy strategy: MediatorHelper.model().getMediatorStrategy().getStrategies()) {
             
-            MenuElement itemRadioStrategy;
+            JMenuItem itemRadioStrategy;
 
             if (strategy == MediatorHelper.model().getMediatorStrategy().getError()) {
                 
@@ -103,7 +90,7 @@ public class AddressMenuBar extends JMenuBar {
                     @Override
                     public JToolTip createToolTip() {
                         
-                        JToolTip tipI18n = new JToolTipI18n(
+                        JToolTipI18n tipI18n = new JToolTipI18n(
                             I18nUtil.valueByKey(
                                 String.format(
                                     patternKeyTooltipStrategy,
@@ -112,26 +99,26 @@ public class AddressMenuBar extends JMenuBar {
                             )
                         );
                         
-                        refTooltip[0] = (JToolTipI18n) tipI18n;
+                        refTooltip[0] = tipI18n;
                         
                         return tipI18n;
                     }
                 };
                 
-                itemRadioStrategy.getComponent().setName("itemRadioStrategy"+ strategy.toString());
+                itemRadioStrategy.getComponent().setName("itemRadioStrategy"+ strategy);
                 
-                ((AbstractButton) itemRadioStrategy).addActionListener(actionEvent -> {
+                itemRadioStrategy.addActionListener(actionEvent -> {
                     
                     this.menuStrategy.setText(strategy.toString());
                     MediatorHelper.model().getMediatorStrategy().setStrategy(strategy);
                 });
                 
-                this.groupStrategy.add((AbstractButton) itemRadioStrategy);
+                this.groupStrategy.add(itemRadioStrategy);
             }
 
-            this.menuStrategy.add((JMenuItem) itemRadioStrategy);
+            this.menuStrategy.add(itemRadioStrategy);
             
-            ((JComponent) itemRadioStrategy).setToolTipText(
+            itemRadioStrategy.setToolTipText(
                 I18nUtil.valueByKey(
                     String.format(
                         patternKeyTooltipStrategy,
@@ -144,14 +131,14 @@ public class AddressMenuBar extends JMenuBar {
 
         this.menuVendor = new ComboMenu(MediatorHelper.model().getMediatorVendor().getAuto().toString());
         this.menuVendor.setName("menuVendor");
+        this.menuVendor.getPopupMenu().setLayout(new GridLayout(MediatorHelper.model().getMediatorVendor().getVendors().size() / 2, 2));
 
         var groupVendor = new ButtonGroup();
 
-        var indexVendor = 0;
         for (final Vendor vendor: MediatorHelper.model().getMediatorVendor().getVendors()) {
             
             JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorHelper.model().getMediatorVendor().getAuto());
-            itemRadioVendor.setName("itemRadioVendor"+ vendor.toString());
+            itemRadioVendor.setName("itemRadioVendor"+ vendor);
             itemRadioVendor.addActionListener(actionEvent -> {
                 
                 this.menuVendor.setText(vendor.toString());
@@ -160,12 +147,6 @@ public class AddressMenuBar extends JMenuBar {
             
             this.menuVendor.add(itemRadioVendor);
             groupVendor.add(itemRadioVendor);
-            
-            if (indexVendor == 0) {
-                this.menuVendor.add(new JSeparator());
-            }
-            
-            indexVendor++;
         }
 
         this.add(Box.createHorizontalGlue());

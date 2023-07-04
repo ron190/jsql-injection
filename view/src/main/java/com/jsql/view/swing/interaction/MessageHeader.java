@@ -10,26 +10,21 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.Arrays;
-import java.util.Map;
-
-import javax.swing.JTable;
-import javax.swing.JViewport;
-import javax.swing.table.DefaultTableModel;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.model.injection.strategy.blind.AbstractCallableBoolean;
-import com.jsql.model.injection.strategy.blind.CallableBlind;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Append a text to the tab Header.

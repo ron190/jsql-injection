@@ -27,7 +27,7 @@ public class JTextPanePlaceholder extends JTextPane {
     /**
      * Text to display when empty.
      */
-    private String placeholderText = StringUtils.EMPTY;
+    private String placeholderText;
     
     /**
      * Create a textfield with hint and default value.

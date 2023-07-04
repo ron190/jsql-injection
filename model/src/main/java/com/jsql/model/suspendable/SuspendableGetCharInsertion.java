@@ -187,7 +187,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                         .getConfiguration()
                         .getFingerprint()
                         .getOrderByErrorMessage()
-                        .split("[\\r\\n]{1,}")
+                        .split("[\\r\\n]+")
                     )
                     .filter(errorMessage ->
                         Pattern
@@ -276,15 +276,16 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         String prefix,
         String suffix
     ) throws StoppedByUserSlidingException {
-        
-        charactersInsertion.add(prefix.replace(labelPrefix, root) + suffix);
+
+        String characterInsertion = prefix.replace(labelPrefix, root) + suffix;
+        charactersInsertion.add(characterInsertion);
         
         // Skipping Boolean match when already found
         if (charFromBooleanMatch[0] == null) {
             
             var injectionCharInsertion = new InjectionCharInsertion(
                 this.injectionModel,
-                prefix.replace(labelPrefix, root) + suffix,
+                characterInsertion,
                 prefix + suffix
             );
             if (injectionCharInsertion.isInjectable()) {
@@ -293,7 +294,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     throw new StoppedByUserSlidingException();
                 }
                 
-                charFromBooleanMatch[0] = prefix.replace(labelPrefix, root) + suffix;
+                charFromBooleanMatch[0] = characterInsertion;
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_SUCCESS,
                     "Found character insertion [{}] using Boolean match",

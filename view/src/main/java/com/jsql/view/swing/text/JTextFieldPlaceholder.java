@@ -25,7 +25,7 @@ public class JTextFieldPlaceholder extends JTextField {
     /**
      * Text to display when empty.
      */
-    private String placeholderText = StringUtils.EMPTY;
+    private String placeholderText;
     
     /**
      * Create a textfield with hint and default value.

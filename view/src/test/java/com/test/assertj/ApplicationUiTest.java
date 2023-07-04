@@ -208,10 +208,7 @@ public class ApplicationUiTest {
             Assert.fail();
         }
         
-        GuiActionRunner.execute(() -> {
-            
-            window.tabbedPane("tabResults").target().removeTabAt(0);
-        });
+        GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
     }
     
     @Test
@@ -243,10 +240,7 @@ public class ApplicationUiTest {
             KeyEvent.VK_PAGE_UP, KeyEvent.VK_PAGE_DOWN
         );
         
-        GuiActionRunner.execute(() -> {
-            
-            window.tabbedPane("tabResults").target().removeTabAt(0);
-        });
+        GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
     }
 
     @Test
@@ -347,10 +341,7 @@ public class ApplicationUiTest {
             Assert.fail();
         }
         
-        GuiActionRunner.execute(() -> {
-            
-            window.tabbedPane("tabResults").target().removeTabAt(0);
-        });
+        GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
     }
     
     @Test
@@ -422,10 +413,7 @@ public class ApplicationUiTest {
 
         ApplicationUiTest.verifyMockAdminPage();
         
-        GuiActionRunner.execute(() -> {
-            
-            window.tabbedPane("tabResults").target().removeTabAt(0);
-        });
+        GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
     }
     
     @Test
@@ -490,10 +478,7 @@ public class ApplicationUiTest {
         window.tabbedPane("tabResults").click();
         window.tree("treeDatabases").rightClickRow(1);
         
-        GuiActionRunner.execute(() -> {
-            
-            window.tabbedPane("tabResults").target().removeTabAt(0);
-        });
+        GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
     }
 
     @Test
@@ -646,10 +631,7 @@ public class ApplicationUiTest {
         
         window.button("advancedButton").click();
 
-        GuiActionRunner.execute(() -> {
-            
-            window.tabbedPane("tabResults").target().removeTabAt(0);
-        });
+        GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
     }
     
     @Test
@@ -887,10 +869,7 @@ public class ApplicationUiTest {
         
         window.button("advancedButton").click();
 
-        GuiActionRunner.execute(() -> {
-            
-            window.tabbedPane("tabResults").target().removeTabAt(0);
-        });
+        GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
     }
     
     @Test
@@ -906,10 +885,7 @@ public class ApplicationUiTest {
             Assert.fail();
         }
         
-        GuiActionRunner.execute(() -> {
-            
-            window.tabbedPane("tabResults").target().removeTabAt(0);
-        });
+        GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
     }
     
     @Test

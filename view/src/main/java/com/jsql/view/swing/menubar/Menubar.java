@@ -527,7 +527,6 @@ public class Menubar extends JMenuBar {
             Stream
             .of("ru zh es fr tr ko se ar cs it pt pl in nl ro de".split(StringUtils.SPACE))
             .map(flag -> new Locale(flag).getLanguage())
-            .collect(Collectors.toList())
             .toArray();
         
         boolean isEnglish = !ArrayUtils.contains(languages, Locale.getDefault().getLanguage());

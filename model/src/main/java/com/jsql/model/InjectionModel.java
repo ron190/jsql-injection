@@ -10,6 +10,22 @@
  ******************************************************************************/
 package com.jsql.model;
 
+import com.jsql.model.accessible.DataAccess;
+import com.jsql.model.accessible.ResourceAccess;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
+import com.jsql.model.bean.util.Request;
+import com.jsql.model.injection.method.AbstractMethodInjection;
+import com.jsql.model.injection.method.MediatorMethod;
+import com.jsql.model.injection.strategy.MediatorStrategy;
+import com.jsql.model.injection.strategy.blind.AbstractCallableBoolean;
+import com.jsql.model.injection.vendor.MediatorVendor;
+import com.jsql.util.*;
+import com.jsql.util.GitUtil.ShowOnConsole;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -28,43 +44,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.stream.Stream;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.accessible.ResourceAccess;
-import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
-import com.jsql.model.injection.method.AbstractMethodInjection;
-import com.jsql.model.injection.method.MediatorMethod;
-import com.jsql.model.injection.strategy.MediatorStrategy;
-import com.jsql.model.injection.strategy.blind.AbstractCallableBoolean;
-import com.jsql.model.injection.strategy.blind.CallableBlind;
-import com.jsql.model.injection.vendor.MediatorVendor;
-import com.jsql.util.AuthenticationUtil;
-import com.jsql.util.CertificateUtil;
-import com.jsql.util.ConnectionUtil;
-import com.jsql.util.CsrfUtil;
-import com.jsql.util.ExceptionUtil;
-import com.jsql.util.FormUtil;
-import com.jsql.util.GitUtil;
-import com.jsql.util.GitUtil.ShowOnConsole;
-import com.jsql.util.HeaderUtil;
-import com.jsql.util.I18nUtil;
-import com.jsql.util.JsonUtil;
-import com.jsql.util.LogLevelUtil;
-import com.jsql.util.ParameterUtil;
-import com.jsql.util.PreferencesUtil;
-import com.jsql.util.PropertiesUtil;
-import com.jsql.util.ProxyUtil;
-import com.jsql.util.SoapUtil;
-import com.jsql.util.StringUtil;
-import com.jsql.util.TamperingUtil;
-import com.jsql.util.ThreadUtil;
-import com.jsql.util.UserAgentUtil;
 
 /**
  * Model class of MVC pattern for processing SQL injection automatically.<br>
@@ -187,6 +166,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             this.mediatorUtils.getConnectionUtil().testConnection();
             
             boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters();
+//            boolean hasFoundInjection = this.mediatorMethod.getMultipart().testParameters();
 
             if (!hasFoundInjection) {
                 
@@ -194,11 +174,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
             
             if (!hasFoundInjection) {
-                
+
                 LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking standard Request parameters");
                 hasFoundInjection = this.mediatorMethod.getRequest().testParameters();
             }
-            
+
             if (!hasFoundInjection) {
                 
                 hasFoundInjection = this.mediatorMethod.getHeader().testParameters();
@@ -287,7 +267,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         urlInjection = StringUtil.clean(urlInjection.trim());
 
-        URL urlObject = null;
+        URL urlObject;
         
         // TODO Keep only a single check
         try {
@@ -694,11 +674,13 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         if (
             methodInjection == this.mediatorMethod.getRequest()
-            && this.mediatorUtils.getParameterUtil().isRequestSoap()
+            && (
+                this.mediatorUtils.getParameterUtil().isRequestSoap()
+                || this.mediatorUtils.getParameterUtil().isMultipartRequest()
+            )
         ) {
             
-            queryFixed =
-                queryFixed
+            queryFixed = queryFixed
                 // Remove SQL comments except tamper /**/ /*!...*/
                 // Negative lookahead: don't match tamper empty comment /**/ or version comment /*!...*/
                 // JavaScript: (?!\/\*!.*\*\/|\/\*\*\/)\/\*.*\*\/
@@ -709,6 +691,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 // End comment
                 .replace("%23", "#")
                 ;
+
+            if (this.mediatorUtils.getParameterUtil().isMultipartRequest()) {
+                // restore linefeed from textfield
+                queryFixed = queryFixed.replaceAll("(?s)\\\\n", "\r\n");
+            }
             
         } else {
             

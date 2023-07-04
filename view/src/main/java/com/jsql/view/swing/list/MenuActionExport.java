@@ -112,7 +112,7 @@ public class MenuActionExport implements ActionListener {
 
         try (
             var file = new FileOutputStream(importFileDialog.getSelectedFile());
-            var out = new PrintStream(file);
+            var out = new PrintStream(file)
         ) {
             int len = this.myList.getModel().getSize();
             

@@ -40,7 +40,7 @@ public class TamperingUtil {
     private static String eval(String sqlQuery, String jsTampering) {
         
 
-        Object resultSqlTampered = null;
+        Object resultSqlTampered;
 
         try {
             if (StringUtils.isEmpty(jsTampering)) {
@@ -79,9 +79,9 @@ public class TamperingUtil {
 
     public String tamper(String sqlQueryDefault) {
 
-        String lead = null;
-        String sqlQuery = null;
-        String trail = null;
+        String lead;
+        String sqlQuery;
+        String trail;
 
         // Transform only SQL query without HTTP parameters and syntax changed, like
         // p=1'+[sql]

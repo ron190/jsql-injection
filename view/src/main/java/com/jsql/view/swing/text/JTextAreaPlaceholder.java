@@ -25,7 +25,7 @@ public class JTextAreaPlaceholder extends JTextArea {
     /**
      * Text to display when empty.
      */
-    private String placeholderText = StringUtils.EMPTY;
+    private String placeholderText;
     
     /**
      * Create a textfield with hint and default value.

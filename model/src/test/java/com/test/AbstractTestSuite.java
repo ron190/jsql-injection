@@ -305,8 +305,7 @@ public abstract class AbstractTestSuite {
             
             List<String> valuesFound =
                 Arrays
-                .asList(rows)
-                .stream()
+                .stream(rows)
                 // => row number, occurrence, value1, value2...
                 .map(row -> row[2].replaceAll("\r\n", "\n"))
                 .collect(Collectors.toList());

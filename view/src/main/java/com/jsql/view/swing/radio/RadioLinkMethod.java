@@ -19,7 +19,7 @@ public class RadioLinkMethod extends AbstractRadioLink {
      */
     private static List<JLabel> groupMethod = new ArrayList<>();
 
-    private AbstractMethodInjection methodInjection = null;
+    private AbstractMethodInjection methodInjection;
     
     /**
      * A default radio label.

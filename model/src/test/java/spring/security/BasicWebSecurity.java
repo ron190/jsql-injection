@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,7 +58,7 @@ public class BasicWebSecurity extends WebSecurityConfigurerAdapter {
         .antMatchers("/basic/**")
         .authenticated()
         .and()
-        .csrf(csrf -> csrf.disable()) // Set to lowest position to work
+        .csrf(AbstractHttpConfigurer::disable) // Set to lowest position to work
         .httpBasic()
         .authenticationEntryPoint(this.authenticationEntryPoint)
         ;

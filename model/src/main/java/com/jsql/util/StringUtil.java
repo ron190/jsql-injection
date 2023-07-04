@@ -269,7 +269,7 @@ public final class StringUtil {
         gzip.write(str.getBytes());
         gzip.close();
         
-        return out.toString(StandardCharsets.ISO_8859_1.name());
+        return out.toString(StandardCharsets.ISO_8859_1);
     }
 
     /**
@@ -365,8 +365,7 @@ public final class StringUtil {
     
     public static String clean(String query) {
         
-        return
-            query
+        return query
             // Remove SQL comments except tamper /**/ /*!...*/
             // Negative lookahead: don't match tamper empty comment /**/ or version comment /*!...*/
             // JavaScript: (?!\/\*!.*\*\/|\/\*\*\/)\/\*.*\*\/

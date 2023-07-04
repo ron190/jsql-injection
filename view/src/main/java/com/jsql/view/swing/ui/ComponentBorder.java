@@ -30,7 +30,7 @@ public class ComponentBorder implements Border {
         TOP,
         LEFT,
         BOTTOM,
-        RIGHT;
+        RIGHT
     }
 
     public static final float LEADING  = 0.0f;
@@ -117,13 +117,9 @@ public class ComponentBorder implements Border {
             
             this.alignment = 1.0f;
             
-        } else if (alignment < 0.0f) {
-            
-            this.alignment = 0.0f;
-            
         } else {
-            
-            this.alignment = alignment;
+
+            this.alignment = Math.max(alignment, 0.0f);
         }
     }
 

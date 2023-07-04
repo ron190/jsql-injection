@@ -56,9 +56,9 @@ public enum Interaction {
     
     UNSUBSCRIBE("Unsubscribe");
     
-    private String name;
+    private final String name;
     
-    private Interaction(String name) {
+    Interaction(String name) {
         this.name = name;
     }
     

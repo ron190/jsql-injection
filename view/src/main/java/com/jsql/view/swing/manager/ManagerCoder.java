@@ -167,23 +167,21 @@ public class ManagerCoder extends JPanel implements Manager {
         menuEncodeHtmlDecimal.addChangeListener(new ChangeMenuListener("Encode to Html (decimal)"));
         
         mapMenus
-        .entrySet()
-        .stream()
-        .forEach(entryMap -> {
-            
-            var menuEncode = new JMenuItem("Encode to "+ entryMap.getKey());
+        .forEach((key, value) -> {
+
+            var menuEncode = new JMenuItem("Encode to " + key);
             menuEncode.addActionListener(this.actionCoder);
-            menuEncode.addChangeListener(new ChangeMenuListener("Encode to "+ entryMap.getKey()));
-            menuEncode.setName("encodeTo"+ entryMap.getKey());
-            
-            var menuDecode = new JMenuItem("Decode from "+ entryMap.getKey());
+            menuEncode.addChangeListener(new ChangeMenuListener("Encode to " + key));
+            menuEncode.setName("encodeTo" + key);
+
+            var menuDecode = new JMenuItem("Decode from " + key);
             menuDecode.addActionListener(this.actionCoder);
-            menuDecode.addChangeListener(new ChangeMenuListener("Decode from "+ entryMap.getKey()));
-            menuDecode.setName("decodeFrom"+ entryMap.getKey());
-            
-            entryMap.getValue().add(menuEncode);
-            entryMap.getValue().add(menuDecode);
-            entryMap.getValue().setName(entryMap.getKey());
+            menuDecode.addChangeListener(new ChangeMenuListener("Decode from " + key));
+            menuDecode.setName("decodeFrom" + key);
+
+            value.add(menuEncode);
+            value.add(menuDecode);
+            value.setName(key);
         });
 
         mapMenus.put("Hash", new JMenu("Hash"));

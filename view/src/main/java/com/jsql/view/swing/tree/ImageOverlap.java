@@ -14,6 +14,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -57,7 +58,7 @@ public class ImageOverlap extends ImageIcon {
         super.paintIcon(c, g, x, y);
         
         try {
-            BufferedImage im2 = ImageIO.read(ImageOverlap.class.getClassLoader().getResource(this.iconPathOverlap));
+            BufferedImage im2 = ImageIO.read(Objects.requireNonNull(ImageOverlap.class.getClassLoader().getResource(this.iconPathOverlap)));
             
             g.drawImage(
                 im2,

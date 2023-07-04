@@ -10,10 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.swing;
 
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
@@ -23,11 +21,7 @@ import java.util.UUID;
 import java.util.prefs.Preferences;
 import java.util.stream.Stream;
 
-import javax.swing.BoxLayout;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.util.I18nUtil;
@@ -153,7 +147,6 @@ public class JFrameView extends JFrame {
         // Size of window
         this.setSize(1024, 768);
         this.setVisible(true);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Center the window
         this.setLocationRelativeTo(null);

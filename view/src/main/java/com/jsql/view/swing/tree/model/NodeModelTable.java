@@ -108,15 +108,15 @@ public class NodeModelTable extends AbstractNodeModel {
         
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();
         treeModel.reload(treeNode);
-        
-        new SwingWorker<Object, Object>() {
+
+        new SwingWorker<>() {
 
             @Override
             protected Object doInBackground() throws Exception {
-                
+
                 Thread.currentThread().setName("SwingWorkerNodeModelTable");
                 var selectedTable = (Table) NodeModelTable.this.getElementDatabase();
-                
+
                 return MediatorHelper.model().getDataAccess().listColumns(selectedTable);
             }
         }.execute();

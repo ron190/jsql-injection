@@ -108,12 +108,8 @@ public class MenuActionNewValue implements ActionListener {
         if (StringUtils.isEmpty(textarea.getText()) || result != JOptionPane.YES_OPTION) {
             return;
         }
-            
-        var lastIndex = 0;
-        if (this.myList.getSelectedIndex() > 0) {
-            
-            lastIndex = this.myList.getSelectedIndex();
-        }
+
+        var lastIndex = Math.max(this.myList.getSelectedIndex(), 0);
 
         int firstIndex = lastIndex;
         

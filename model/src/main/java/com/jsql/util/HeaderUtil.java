@@ -134,7 +134,7 @@ public class HeaderUtil {
         
         if (response.statusCode() >= 400) {
             
-            exception = new IOException(String.format("problem when calling %s", response.uri().toURL().toString()));
+            exception = new IOException(String.format("problem when calling %s", response.uri().toURL()));
         }
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {

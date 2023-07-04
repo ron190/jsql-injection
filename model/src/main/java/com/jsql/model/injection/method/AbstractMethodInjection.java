@@ -39,7 +39,7 @@ public abstract class AbstractMethodInjection implements Serializable {
     /**
      * Verify if injection works for specific Method using 3 modes: standard (last param), injection point
      * and full params injection. Special injections like JSON and SOAP are checked.
-     * @return true if injection didn't failed
+     * @return true if injection didn't fail
      * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
      */
     public boolean testParameters() throws JSqlException {
@@ -127,7 +127,7 @@ public abstract class AbstractMethodInjection implements Serializable {
                         
                         if (hasFoundInjection) {
                             
-                            return hasFoundInjection;
+                            return true;
                         }
                         
                     } catch (JSONException e) {
@@ -222,7 +222,7 @@ public abstract class AbstractMethodInjection implements Serializable {
             if (!hasFoundInjection) {
                 
                 // Erase * at the end of each params
-                this.getParams().stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY)));
+                this.getParams().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY)));
                 
                 // TODO It erases STAR from value => * can't be used in parameter
                 paramStar.setValue(paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));

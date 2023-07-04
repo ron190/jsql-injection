@@ -64,9 +64,9 @@ public class PanelPreferences extends JPanel {
         PROXY(panelProxy),
         GENERAL(panelGeneral);
         
-        private Component panel;
+        private final Component panel;
 
-        private CategoryPreference(Component panel) {
+        CategoryPreference(Component panel) {
             this.panel = panel;
         }
         

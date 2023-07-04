@@ -20,7 +20,7 @@ public class HibernateConf {
         return sessionFactory;
     }
  
-    private final Properties hibernateProperties() {
+    private Properties hibernateProperties() {
         
         Properties hibernateProperties = new Properties();
         

@@ -22,6 +22,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -246,7 +247,7 @@ public class ResourceAccess {
             url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
         }
 
-        if (resultInjection.indexOf(sourceShellToInject) <= -1) {
+        if (!resultInjection.contains(sourceShellToInject)) {
             
             throw this.getIntegrityError(sourcePage);
         }
@@ -295,14 +296,14 @@ public class ResourceAccess {
             urlPart.append(segment);
             taskCompletionService.submit(
                 new CallableHttpHead(
-                    urlProtocol + urlPart.toString() + this.filenameWebshell,
+                    urlProtocol + urlPart + this.filenameWebshell,
                     this.injectionModel,
                     "wshell#run"
                 )
             );
         }
 
-        int submittedTasks = directoryNames.size() * 1;
+        int submittedTasks = directoryNames.size();
         String urlSuccess = this.injectShell(urlShellFixed, urlProtocol, urlWithoutFileName, taskCompletionService, submittedTasks);
 
         taskExecutor.shutdown();
@@ -377,7 +378,7 @@ public class ResourceAccess {
      */
     public String runCommandShell(String urlCommand) throws IOException {
         
-        String pageSource = null;
+        String pageSource;
         try {
             pageSource = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(urlCommand);
             
@@ -417,7 +418,7 @@ public class ResourceAccess {
         
         try {
             result = this.runCommandShell(
-                urlShell + "?c="+ URLEncoder.encode(command.trim(), "ISO-8859-1")
+                urlShell + "?c="+ URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1)
             );
             
             if (StringUtils.isBlank(result)) {
@@ -525,7 +526,7 @@ public class ResourceAccess {
             url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
         }
 
-        if (resultInjection.indexOf(sourceShellToInject) <= -1) {
+        if (!resultInjection.contains(sourceShellToInject)) {
             
             throw this.getIntegrityError(sourcePage);
         }
@@ -578,14 +579,14 @@ public class ResourceAccess {
             urlPart.append(segment);
             taskCompletionService.submit(
                 new CallableHttpHead(
-                    urlProtocol + urlPart.toString() + this.filenameSqlshell,
+                    urlProtocol + urlPart + this.filenameSqlshell,
                     this.injectionModel,
                     "sqlshell:create"
                 )
             );
         }
 
-        int submittedTasks = directoryNames.size() * 1;
+        int submittedTasks = directoryNames.size();
         int tasksHandled;
         String urlSuccess = null;
         
@@ -665,13 +666,13 @@ public class ResourceAccess {
                 .format(
                      "%s?q=%s&u=%s&p=%s",
                      urlShell,
-                     URLEncoder.encode(command.trim(), "ISO-8859-1"),
+                     URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1),
                      username,
                      password
                 )
             );
             
-            if (result.indexOf("<SQLr>") > -1) {
+            if (result.contains("<SQLr>")) {
                 
                 List<List<String>> listRows = this.parse(result);
 
@@ -683,11 +684,11 @@ public class ResourceAccess {
 
                 result = this.convert(listRows, listFieldsLength);
                 
-            } else if (result.indexOf("<SQLm>") > -1) {
+            } else if (result.contains("<SQLm>")) {
                 
                 result = result.replace("<SQLm>", StringUtils.EMPTY) + "\n";
                 
-            } else if (result.indexOf("<SQLe>") > -1) {
+            } else if (result.contains("<SQLe>")) {
                 
                 result = result.replace("<SQLe>", StringUtils.EMPTY) + "\n";
             }
@@ -772,8 +773,7 @@ public class ResourceAccess {
             
             int indexLongestRowSearchFinal = indexLongestRowSearch;
             
-            Collections.sort(
-                listRows,
+            listRows.sort(
                 (firstRow, secondRow) -> secondRow.get(indexLongestRowSearchFinal).length() - firstRow.get(indexLongestRowSearchFinal).length()
             );
 
@@ -887,7 +887,7 @@ public class ResourceAccess {
                 );
         }
         
-        if (sourceShellInjected.indexOf(sourceShellToInject) > -1) {
+        if (sourceShellInjected.contains(sourceShellToInject)) {
             
             String logUrlFileFixed = urlFileFixed;
             String logPathShellFixed = pathShellFixed;
@@ -959,7 +959,7 @@ public class ResourceAccess {
 
     private void confirmUpload(File file, String pathShellFixed, String urlFileFixed, HttpResponse<String> httpResponse) {
    
-        if (httpResponse.body().indexOf(DataAccess.LEAD +"y") > -1) {
+        if (httpResponse.body().contains(DataAccess.LEAD + "y")) {
             
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
@@ -1033,7 +1033,7 @@ public class ResourceAccess {
             
         } else if ("false".equals(resultInjection)) {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Privilege FILE is not granted to current user, files can\'t be read");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Privilege FILE is not granted to current user, files can't be read");
             var request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);
             this.injectionModel.sendToViews(request);

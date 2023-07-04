@@ -317,9 +317,9 @@ public enum ActionCoder {
         }
     };
 
-    protected String name;
+    protected final String name;
 
-    private ActionCoder(String name) {
+    ActionCoder(String name) {
         this.name = name;
     }
 
@@ -327,8 +327,7 @@ public enum ActionCoder {
         
         return
             Arrays
-            .asList(ActionCoder.values())
-            .stream()
+            .stream(ActionCoder.values())
             .filter(action -> name.equals(action.name))
             .findFirst();
     }

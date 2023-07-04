@@ -58,7 +58,7 @@ public class JsonUtil {
     public static Object getJson(String param) {
         
         // Will test if current value is a JSON entity
-        Object jsonEntity = null;
+        Object jsonEntity;
         
         try {
             // Test for JSON Object
@@ -239,7 +239,6 @@ public class JsonUtil {
                 // TODO useless
                 methodInjection
                 .getParams()
-                .stream()
                 .forEach(e ->
                     e.setValue(
                         e.getValue().replaceAll(

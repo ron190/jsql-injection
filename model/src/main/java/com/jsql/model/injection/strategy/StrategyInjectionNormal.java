@@ -2,6 +2,7 @@ package com.jsql.model.injection.strategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -127,7 +128,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
             foundIndexes.add(regexSearch.group(1));
         }
 
-        String[] indexes = foundIndexes.toArray(new String[foundIndexes.size()]);
+        String[] indexes = foundIndexes.toArray(new String[0]);
 
         // Make url shorter, replace useless indexes from 1337[index]7331 to 1
         String indexesInUrl = this.injectionModel.getIndexesInUrl().replaceAll(
@@ -176,7 +177,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         }
 
         // Sort by length of #######...#######
-        Arrays.sort(lengthFields, (Integer[] s1, Integer[] s2) -> s1[0].compareTo(s2[0]));
+        Arrays.sort(lengthFields, Comparator.comparing((Integer[] s) -> s[0]));
         
         Integer[] bestLengthFields = lengthFields[lengthFields.length - 1];
         
