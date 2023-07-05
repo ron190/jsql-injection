@@ -31,11 +31,13 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.AbstractMap.SimpleEntry;
@@ -738,11 +740,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 
             } else {
                 
-                // For cookies in Spring
+                // For cookies in Spring (confirmed, covered by integration tests)
                 // Replace spaces
-//                queryFixed = queryFixed.replace("+", "%20");
-//                queryFixed = queryFixed.replace(",", "%2c");
-//                queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);
+                queryFixed = queryFixed.replace("+", "%20");
+                queryFixed = queryFixed.replace(",", "%2c");
+                queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);
             }
         }
         

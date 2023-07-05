@@ -19,7 +19,7 @@ public class MySqlInsertTestSuite extends ConcreteMySqlErrorTestSuite {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/inside");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/insert");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", "")
@@ -37,9 +37,10 @@ public class MySqlInsertTestSuite extends ConcreteMySqlErrorTestSuite {
         model.beginInjection();
     }
     
+    // Insert API add row to the table: listValues() not usable
     @Override
     @RepeatFailedTest(3)
-    public void listValues() throws JSqlException {
-        super.listValues();
+    public void listDatabases() throws JSqlException {
+        super.listDatabases();
     }
 }
