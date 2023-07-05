@@ -713,7 +713,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         if (!this.mediatorUtils.getParameterUtil().isRequestSoap()) {
         
-            if (methodInjection != this.mediatorMethod.getHeader() && methodInjection != this.mediatorMethod.getRequest()) {
+            if (methodInjection == this.mediatorMethod.getQuery()) {
                 
                 // URL encode each character because no query parameter context
                 if (!this.mediatorUtils.getPreferencesUtil().isUrlEncodingDisabled()) {
@@ -738,7 +738,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 queryFixed = queryFixed.replace("|", "%7c");
                 queryFixed = queryFixed.replace("\\", "%5c");
                 
-            } else {
+            } else if (methodInjection != this.mediatorMethod.getRequest()) {
                 
                 // For cookies in Spring (confirmed, covered by integration tests)
                 // Replace spaces
