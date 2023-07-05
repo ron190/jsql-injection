@@ -95,37 +95,10 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 [![Bruteforce](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter-mini.png "Bruteforce")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter.png)
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
-## [[Roadmap](https://github.com/ron190/jsql-injection/projects)]
-```
-- New manager: create auth token for Basic, Digest, Negotiate, NTLM
-- Full Path Disclosure
-- WAF fingerprinting
-- Inject user defined query
-- Inject range of rows
-- Routed query strategy
-- Connect to Digest/Kerberos API with HttpClient
-- Replace Docker with Kubernetes
-- Database fingerprinting: Boolean single query
-```
-
-## In progress
-```
-- Implement DNS/HTTP out-of-band algorithm
-- Inject each Cookie parameters
-- Rows custom load
-```
-
-## Since latest release
-```
-- Testing Oracle DNS/HTTP out-of-band
-- Testing PostgreSQL DNS out-of-band
-- Testing Websocket Basic/STOMP
-- Testing GraphQL
-- Testing Kerberos
-```
-
-## Change log
-
+## Informations
+<details>
+<summary>Change log</summary>
+    
 **v0.84-85** `Upgrade to Java 11, compatible up to Java 17`
 
 **v0.83** `Modes Zip and Dios, Insertion char and db fingerprinting, 33 dbs including Altibase C-treeACE Exasol FrontBase InterSystems-IRIS MemSQL MimerSQL MonetDB Netezza and Presto`
@@ -157,6 +130,39 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 **0.2** `Strategy Time, Multi-thread control: Start Pause Resume and Stop, Log URL calls`
 
 **0.0-0.1** `Method GET POST Header and Cookie, Strategies Normal Error and Blind, Best strategy selection, Progression bars, Simple evasion, Proxy settings, MySQL only`
+</details>
+<details>
+<summary>Roadmap</summary>
+
+## [[Taskboard](https://github.com/ron190/jsql-injection/projects)]
+```
+- New manager: create auth token for Basic, Digest, Negotiate, NTLM
+- Full Path Disclosure
+- WAF fingerprinting
+- Inject user defined query
+- Inject range of rows
+- Routed query strategy
+- Connect to Digest/Kerberos API with HttpClient
+- Replace Docker with Kubernetes
+- Database fingerprinting: Boolean single query
+```
+
+## In progress
+```
+- Implement DNS/HTTP out-of-band algorithm
+- Inject each Cookie parameters
+- Rows custom load
+```
+
+## Since latest release
+```
+- Testing Oracle DNS/HTTP out-of-band
+- Testing PostgreSQL DNS out-of-band
+- Testing Websocket Basic/STOMP
+- Testing GraphQL
+- Testing Kerberos
+```
+</details>
 
 ## Disclaimer
 Attacking web-server is illegal without prior mutual consent. The end user is responsible and obeys all applicable laws.
