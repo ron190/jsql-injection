@@ -336,8 +336,6 @@ public class HibernateRestController {
     public Greeting greetingPostMultipart(HttpServletRequest request) {
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        for (Enumeration<String> e = multipartRequest.getParameterNames(); e.hasMoreElements();)
-            LOGGER.info(e.nextElement());
         String name = String.join("", multipartRequest.getParameterValues("name"));
 
         Greeting greeting;

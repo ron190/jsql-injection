@@ -361,18 +361,6 @@ public class AddressMenuBar extends JMenuBar {
     
     // Getter and setter
 
-    public JMenu getMenuVendor() {
-        return this.menuVendor;
-    }
-
-    public JMenu getMenuStrategy() {
-        return this.menuStrategy;
-    }
-
-    public ButtonGroup getGroupStrategy() {
-        return this.groupStrategy;
-    }
-
     public JLabel getLoader() {
         return this.loader;
     }

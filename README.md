@@ -36,7 +36,7 @@ To run older version on Java 16+ use `java --illegal-access=warn --add-exports j
 
 ## Continuous integration
 This software is developed using open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org) and is tested using continuous integration platform Github Actions.<br> 
-Non regression tests are run against dockerized and in memory databases and GUI is tested on VNC screen on the CI platforms, then quality checks are stored on code quality platforms.
+Non regression tests are run against dockerized and in memory databases and GUI is tested on VNC screen on the CI platform, then quality checks are stored on code quality platform.
 ```mermaid
 ---
 title: Architecture diagram

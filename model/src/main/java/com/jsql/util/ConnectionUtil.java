@@ -18,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -192,12 +191,16 @@ public class ConnectionUtil {
         this.injectionModel.getMediatorUtils().getCsrfUtil().addHeaderToken(httpRequest);
         
         var body = this.injectionModel.getMediatorUtils().getParameterUtil().getRequestFromEntries();
-        
+
+        if (this.injectionModel.getMediatorUtils().getParameterUtil().isMultipartRequest()) {
+            body = body.replaceAll("(?s)\\\\n", "\r\n");
+        }
+
         httpRequest.method(
             this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(),
             BodyPublishers.ofString(body)
         );
-        
+
         // Add headers if exists (Authorization:Basic, etc)
         for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()) {
             

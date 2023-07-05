@@ -19,8 +19,7 @@ public class EmptyErrorTestSuite extends ConcreteMySqlErrorTestSuite {
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
-//      model.subscribe(new SystemOutTerminal());
-      model.subscribe(new SystemOutTerminal());
+        model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/errors");
         model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(

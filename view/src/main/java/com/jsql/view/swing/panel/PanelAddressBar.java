@@ -177,6 +177,7 @@ public class PanelAddressBar extends JPanel {
 
         this.addressMenuBar = new AddressMenuBar(this);
         new ComponentBorder(this.addressMenuBar, 17, 0).install(this.textFieldAddress);
+
         new ComponentBorder(new ButtonExpandText("Body", this.textFieldRequest), 0, 0).install(this.textFieldRequest);
         new ComponentBorder(new ButtonExpandText("Header", this.textFieldHeader), 0, 0).install(this.textFieldHeader);
 

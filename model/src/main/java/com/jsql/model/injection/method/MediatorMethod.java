@@ -10,7 +10,7 @@ public class MediatorMethod {
 
     private AbstractMethodInjection query;
     private AbstractMethodInjection request;
-    private AbstractMethodInjection multipart;
+//    private AbstractMethodInjection multipart;
     private AbstractMethodInjection header;
     
     private List<AbstractMethodInjection> methods;
@@ -72,32 +72,32 @@ public class MediatorMethod {
             }
         };
 
-        this.multipart = new AbstractMethodInjection(injectionModel) {
-
-            @Override
-            public boolean isCheckingAllParam() {
-
-                return this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam();
-            }
-
-            @Override
-            public String getParamsAsString() {
-
-                return this.injectionModel.getMediatorUtils().getParameterUtil().getMultipartFromEntries();
-            }
-
-            @Override
-            public List<SimpleEntry<String, String>> getParams() {
-
-                return this.injectionModel.getMediatorUtils().getParameterUtil().getListMultipart();
-            }
-
-            @Override
-            public String name() {
-
-                return "Multipart";
-            }
-        };
+//        this.multipart = new AbstractMethodInjection(injectionModel) {
+//
+//            @Override
+//            public boolean isCheckingAllParam() {
+//
+//                return this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam();
+//            }
+//
+//            @Override
+//            public String getParamsAsString() {
+//
+//                return this.injectionModel.getMediatorUtils().getParameterUtil().getMultipartFromEntries();
+//            }
+//
+//            @Override
+//            public List<SimpleEntry<String, String>> getParams() {
+//
+//                return this.injectionModel.getMediatorUtils().getParameterUtil().getListMultipart();
+//            }
+//
+//            @Override
+//            public String name() {
+//
+//                return "Multipart";
+//            }
+//        };
         
         this.header = new AbstractMethodInjection(injectionModel) {
             
@@ -137,9 +137,9 @@ public class MediatorMethod {
         return this.request;
     }
 
-    public AbstractMethodInjection getMultipart() {
-        return this.multipart;
-    }
+//    public AbstractMethodInjection getMultipart() {
+//        return this.multipart;
+//    }
 
     public AbstractMethodInjection getHeader() {
         return this.header;

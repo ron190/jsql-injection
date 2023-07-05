@@ -25,7 +25,6 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.swing.ButtonGroup;

@@ -35,11 +35,9 @@ public class ButtonExpandText extends JButton {
         this.setOpaque(false);
         this.setContentAreaFilled(false);
         this.setBorderPainted(false);
-        
-        this.setRolloverEnabled(true);
+        this.setFocusPainted(false);
+
         this.setIcon(UiUtil.ICON_EXPAND_TEXT);
-        this.setRolloverIcon(UiUtil.ICON_EXPAND_TEXT);
-        this.setPressedIcon(UiUtil.ICON_EXPAND_TEXT);
 
         JTextArea textArea = new JTextArea();
         final JDialog frameWithTextarea = new JDialog(MediatorHelper.frame(), titleFrame, true);
