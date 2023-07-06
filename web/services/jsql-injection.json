@@ -1,8 +1,8 @@
 {
-    "version": "0.85",
+    "version": "0.86",
     "news": [
-        "[New release v0.85] Various internal improvements, Run now on latest Java 17",
-        "[Ongoing] Experiment with Kerberos, Websocket, GraphQL, Kubernetes and DNS",
-        "[Roadmap] More tampers, DNS/HTTP Out of band, WAF fingerprint"
+        "[v0.86] Add visual feedback on logs, support multipart boundaries",
+        "[Ongoing] Optimize algorithm, reduce number of queries, parse multipart boundaries",
+        "[Roadmap] Speed up CI pipeline, DNS/HTTP Out of band, WAF fingerprint"
     ]
 }

@@ -41,7 +41,7 @@ public class ButtonExpandText extends JButton {
 
         this.setIcon(UiUtil.ICON_EXPAND_TEXT);
 
-        JTextArea textArea = new JPopupTextArea(new JTextAreaPlaceholder("Text body")).getProxy();
+        JTextArea textArea = new JPopupTextArea(new JTextAreaPlaceholder("Multiline text")).getProxy();
 
         final JDialog frameWithTextarea = new JDialog(MediatorHelper.frame(), titleFrame, true);
         frameWithTextarea.getContentPane().add(textArea);

@@ -136,7 +136,7 @@ public class ParameterUtil {
                 && entry.getValue().contains("boundary=")
             )
         ) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Multipart and boundary found in header");
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Multipart boundary found in header");
             Matcher matcherBoundary = Pattern.compile("boundary=([^;]*)").matcher(this.getHeaderFromEntries());
             if (matcherBoundary.find()) {
                 String boundary = matcherBoundary.group(1);
