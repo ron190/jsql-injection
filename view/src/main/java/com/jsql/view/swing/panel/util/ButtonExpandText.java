@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.jsql.view.swing.panel.util;
 
+import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.text.JTextAreaPlaceholder;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
@@ -39,7 +41,8 @@ public class ButtonExpandText extends JButton {
 
         this.setIcon(UiUtil.ICON_EXPAND_TEXT);
 
-        JTextArea textArea = new JTextArea();
+        JTextArea textArea = new JPopupTextArea(new JTextAreaPlaceholder("Text body")).getProxy();
+
         final JDialog frameWithTextarea = new JDialog(MediatorHelper.frame(), titleFrame, true);
         frameWithTextarea.getContentPane().add(textArea);
         frameWithTextarea.pack();

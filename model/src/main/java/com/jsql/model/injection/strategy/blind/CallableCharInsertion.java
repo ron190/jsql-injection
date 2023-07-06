@@ -62,7 +62,7 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
     @Override
     public CallableCharInsertion call() throws Exception {
         
-        String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess);
+        String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
         
         this.opcodes = this.diffMatchPatch.diffMain(this.injectionCharInsertion.getBlankFalseMark(), source, false);
         

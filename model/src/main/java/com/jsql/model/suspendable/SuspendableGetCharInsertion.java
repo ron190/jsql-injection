@@ -212,7 +212,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 
     private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService, String characterInsertionByUser, String[] charFromBooleanMatch) throws JSqlException {
         
-        List<String> roots = Arrays
+        List<String> prefixValues = Arrays
             .asList(
                 RandomStringUtils.random(10, "012"),
 //                "-1",
@@ -223,7 +223,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         
         final var labelPrefix = "prefix";
         
-        List<String> prefixes = Arrays
+        List<String> prefixQuotes = Arrays
             .asList(
                 labelPrefix,
                 labelPrefix +"'",
@@ -235,18 +235,18 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 //                "\"prefix\"",
             );
         
-        List<String> suffixes = Arrays.asList(StringUtils.EMPTY, ")", "))");
+        List<String> prefixParentheses = Arrays.asList(StringUtils.EMPTY, ")", "))");
         
         List<String> charactersInsertion = new ArrayList<>();
         
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting character insertion with Boolean match...");
-        for (String root: roots) {
+        for (String prefixValue: prefixValues) {
             
-            for (String prefix: prefixes) {
+            for (String prefixQuote: prefixQuotes) {
                 
-                for (String suffix: suffixes) {
+                for (String prefixParenthesis: prefixParentheses) {
                     
-                    this.checkInsertionChar(charFromBooleanMatch, labelPrefix, charactersInsertion, root, prefix, suffix);
+                    this.checkInsertionChar(charFromBooleanMatch, labelPrefix, charactersInsertion, prefixValue, prefixQuote, prefixParenthesis);
                 }
             }
         }
@@ -260,7 +260,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     + this.injectionModel.getMediatorVendor().getVendor().instance().sqlOrderBy(),
                     characterInsertion,
                     this.injectionModel,
-                    "root#orderby"
+                    "prefix#orderby"
                 )
             );
         }
@@ -272,12 +272,12 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         String[] charFromBooleanMatch,
         final String labelPrefix,
         List<String> charactersInsertion,
-        String root,
-        String prefix,
-        String suffix
+        String prefixValue,
+        String prefixQuote,
+        String prefixParenthesis
     ) throws StoppedByUserSlidingException {
 
-        String characterInsertion = prefix.replace(labelPrefix, root) + suffix;
+        String characterInsertion = prefixQuote.replace(labelPrefix, prefixValue) + prefixParenthesis;
         charactersInsertion.add(characterInsertion);
         
         // Skipping Boolean match when already found
@@ -286,7 +286,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             var injectionCharInsertion = new InjectionCharInsertion(
                 this.injectionModel,
                 characterInsertion,
-                prefix + suffix
+                prefixQuote + prefixParenthesis
             );
             if (injectionCharInsertion.isInjectable()) {
    

@@ -76,7 +76,7 @@ public class InjectionCharInsertion {
                 this.injectionModel.getMediatorVendor().getVendor().instance().endingComment(),
                 "fals+"
             ),
-            "root#ref"
+            "prefix#ref"
         );
 
         // Concurrent calls to the FALSE statements,
@@ -97,7 +97,7 @@ public class InjectionCharInsertion {
                         urlTest
                     ),
                     this,
-                    "root#true"
+                    "prefix#true"
                 )
             );
         }
@@ -158,7 +158,7 @@ public class InjectionCharInsertion {
                         urlTest
                     ),
                     this,
-                    "root#false"
+                    "prefix#false"
                 )
             );
         }
@@ -212,7 +212,7 @@ public class InjectionCharInsertion {
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization()
             ),
             this,
-            "root#confirm"
+            "prefix#confirm"
         );
         
         try {
@@ -230,7 +230,11 @@ public class InjectionCharInsertion {
         
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);
     }
-    
+
+    public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
+
+        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);
+    }
     
     // Getter and setter
 
