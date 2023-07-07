@@ -47,7 +47,6 @@
     
     <build>
         <plugins>
-
             <!-- Spock -->
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
@@ -76,7 +75,6 @@
                     </execution>
                 </executions>
             </plugin>
-            
             <!-- Unit tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -92,7 +90,6 @@
                     <reportFormat>plain</reportFormat>
                 </configuration>
             </plugin>
-
             <!-- Integration tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -119,13 +116,11 @@
                     <reportFormat>plain</reportFormat>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.3.4.RELEASE</version>
+                <version>2.5.15</version>
             </plugin>
-
         </plugins>
     </build>
 
@@ -135,7 +130,7 @@
                 <!-- Import dependency management from Spring Boot -->
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.4.5</version>
+                <version>2.5.15</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -143,88 +138,76 @@
     </dependencyManagement>
 
     <dependencies>
-
         <!-- jSQL purpose -->
-        
         <!-- Standalone Nashorn build compatible with jdk11 -->
         <dependency>
             <groupId>org.openjdk.nashorn</groupId>
             <artifactId>nashorn-core</artifactId>
-            <version>15.2</version>
+            <version>15.4</version>
         </dependency>
-
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.15.3</version>
+            <version>1.15.4</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20200518</version>
+            <version>20230227</version>
         </dependency>
-
         <dependency>
             <groupId>com.googlecode.juniversalchardet</groupId>
             <artifactId>juniversalchardet</artifactId>
             <version>1.0.3</version>
         </dependency>
-
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
             <version>1.31</version>
         </dependency>
-    
-        <!-- Log4j2 -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-        </dependency>
+        <!-- Logger -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
         </dependency>
-        
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <scope>test</scope>
         </dependency>
         
-        
         <!-- Test purpose -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-websocket</artifactId>
             <scope>test</scope>
         </dependency>
-        
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-messaging</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-messaging</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -280,7 +263,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
-            <version>3.1.1-1</version>
+            <version>3.6.4</version>
             <scope>test</scope>
         </dependency>
         
@@ -321,28 +304,22 @@
             <version>5.0.2</version>
             <scope>test</scope>
         </dependency>
-        
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
+
         <!-- Spock -->
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
+            <groupId>org.apache.groovy</groupId>
             <artifactId>groovy-test-junit5</artifactId>
+            <version>4.0.10</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
-            <version>1.3-groovy-2.5</version>
+            <version>2.4-M1-groovy-4.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <!--Only necessary for surefire to run spock tests during the 
-                maven build -->
+            <!-- For surefire to run spock tests during build -->
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
             <scope>test</scope>
@@ -379,11 +356,20 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
+            <version>5.6.15.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
+            <!-- display c3p0 logs -->
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-c3p0</artifactId>
+            <version>5.6.15.Final</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -401,14 +387,15 @@
         <dependency>
             <groupId>org.junit-pioneer</groupId>
             <artifactId>junit-pioneer</artifactId>
-            <version>0.4.2</version>
+            <version>2.0.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
+            <!-- Colors in logs -->
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-log</artifactId>
-            <version>0.18.1</version>
+            <version>0.22.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -437,30 +424,25 @@
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>8.2.1.jre8</version>
+            <version>9.4.1.jre8</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.gwenn</groupId>
-            <artifactId>sqlite-dialect</artifactId>
-            <version>0.1.0</version>
+            <version>3.42.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.neo4j.driver</groupId>
             <artifactId>neo4j-java-driver</artifactId>
-            <version>4.0.1</version>
+            <version>4.3.8</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-jdbc-driver</artifactId>
-            <version>4.0.0</version>
+            <version>4.0.9</version>
             <scope>test</scope>
         </dependency>
 <!--         <dependency> -->
@@ -477,8 +459,7 @@
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <!-- Version 2.5.1 fails on test listValues() -->
-            <version>2.5.0</version>
+            <version>2.7.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -493,8 +474,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.oracle.ojdbc</groupId>
+            <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc8</artifactId>
+            <version>23.2.0.0</version>
             <scope>test</scope>
         </dependency>
             

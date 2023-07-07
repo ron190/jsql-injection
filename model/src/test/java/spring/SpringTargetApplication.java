@@ -9,11 +9,11 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.PreDestroy;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.derby.drda.NetworkServerControl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,9 +32,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.jsql.util.LogLevelUtil;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.core.io.ClassPathResource;
 import spring.rest.Student;
 
 @SpringBootApplication
+@EntityScan({"spring.rest"})
 public class SpringTargetApplication {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
@@ -161,7 +164,10 @@ public class SpringTargetApplication {
 
     private static void initializeNeo4j() throws IOException {
         
-        String graphMovie = String.join("\n", Files.readAllLines(Paths.get("src/test/resources/neo4j/movie-graph.txt")));
+        String graphMovie;
+        try (InputStream stream = new ClassPathResource("neo4j/movie-graph.txt").getInputStream()) {
+            graphMovie = IOUtils.toString(stream);
+        }
         
         Driver driver = GraphDatabase.driver("bolt://jsql-neo4j:7687", AuthTokens.basic("neo4j", "test"));
         

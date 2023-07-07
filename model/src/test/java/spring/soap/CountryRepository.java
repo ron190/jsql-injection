@@ -1,25 +1,23 @@
 package spring.soap;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-import javax.persistence.Query;
-import javax.transaction.Transactional;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import org.springframework.transaction.annotation.Transactional;
 import spring.rest.Greeting;
+
+import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class CountryRepository {
@@ -35,14 +33,14 @@ public class CountryRepository {
 
     @SuppressWarnings("unchecked")
     @Transactional
-	public Country findCountry(String name) throws Exception {
+	public Country findCountry(String name) throws JsonProcessingException {
 	    
         Country country = new Country();
-        
+
         Session session = this.sessionFactory.getCurrentSession();
-        
+
         try {
-            Query query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '"+ name +"'");
+            NativeQuery<Object[]> query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '" + name + "'", Object[].class);
             
             List<Object[]> results = query.getResultList();
             

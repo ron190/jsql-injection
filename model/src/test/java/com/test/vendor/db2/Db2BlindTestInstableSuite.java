@@ -3,7 +3,7 @@ package com.test.vendor.db2;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junitpioneer.jupiter.RepeatFailedTest;
+import org.junitpioneer.jupiter.RetryingTest;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -44,7 +44,7 @@ public class Db2BlindTestInstableSuite extends ConcreteDb2TestSuite {
     }
     
     @Override
-    @RepeatFailedTest(3)
+    @RetryingTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
     }

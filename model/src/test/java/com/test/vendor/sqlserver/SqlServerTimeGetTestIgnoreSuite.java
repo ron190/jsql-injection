@@ -3,7 +3,7 @@ package com.test.vendor.sqlserver;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junitpioneer.jupiter.RepeatFailedTest;
+import org.junitpioneer.jupiter.RetryingTest;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -39,7 +39,7 @@ public class SqlServerTimeGetTestIgnoreSuite extends ConcreteSqlServerTestSuite 
     }
     
     @Override
-    @RepeatFailedTest(3)
+    @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }

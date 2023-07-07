@@ -3,12 +3,11 @@ package com.test.preferences;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junitpioneer.jupiter.RepeatFailedTest;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlTestSuite;
+import org.junitpioneer.jupiter.RetryingTest;
 
 public class TamperingTestSuite extends ConcreteMySqlTestSuite {
     
@@ -46,7 +45,7 @@ public class TamperingTestSuite extends ConcreteMySqlTestSuite {
     }
     
     @Override
-    @RepeatFailedTest(3)
+    @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }

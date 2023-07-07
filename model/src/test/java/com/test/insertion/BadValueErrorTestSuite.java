@@ -1,14 +1,13 @@
 package com.test.insertion;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-
-import org.junitpioneer.jupiter.RepeatFailedTest;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
+import org.junitpioneer.jupiter.RetryingTest;
+
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
 
 public class BadValueErrorTestSuite extends ConcreteMySqlErrorTestSuite {
 
@@ -38,7 +37,7 @@ public class BadValueErrorTestSuite extends ConcreteMySqlErrorTestSuite {
     }
     
     @Override
-    @RepeatFailedTest(3)
+    @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }

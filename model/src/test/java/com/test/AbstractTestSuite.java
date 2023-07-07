@@ -1,23 +1,12 @@
 package com.test;
 
-import static org.junit.Assert.assertTrue;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.database.Column;
+import com.jsql.model.bean.database.Database;
+import com.jsql.model.bean.database.Table;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.JSqlException;
+import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.awaitility.Awaitility;
@@ -29,16 +18,15 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.boot.SpringApplication;
-
-import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.database.Column;
-import com.jsql.model.bean.database.Database;
-import com.jsql.model.bean.database.Table;
-import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.JSqlException;
-import com.jsql.util.LogLevelUtil;
-
 import spring.SpringTargetApplication;
+
+import java.sql.*;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.junit.Assert.assertTrue;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)

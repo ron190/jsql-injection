@@ -1,37 +1,32 @@
 package spring.rest;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.persistence.Query;
-import javax.servlet.http.HttpServletRequest;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 public class HibernateRestController {
@@ -39,7 +34,7 @@ public class HibernateRestController {
     private static final String template = "Hello, s!";
     private final AtomicLong counter = new AtomicLong();
     private static final Logger LOGGER = LogManager.getRootLogger();
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
     
     @Autowired
     private SessionFactory sessionFactory;
@@ -63,7 +58,6 @@ public class HibernateRestController {
         return firewall;
     }
     
-    @SuppressWarnings("unchecked")
     @RequestMapping("/normal")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name, @RequestHeader Map<String, String> headers) throws IOException {
         
@@ -71,8 +65,8 @@ public class HibernateRestController {
         String inject = name.replace(":", "\\:");
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
-            
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+
+            NativeQuery<Object[]> query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
         
             List<Object[]> results = query.getResultList();
             
@@ -98,7 +92,7 @@ public class HibernateRestController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
         
             List<Object[]> results = query.getResultList();
             
@@ -134,7 +128,7 @@ public class HibernateRestController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
             
             query.getResultList();
             
@@ -153,7 +147,7 @@ public class HibernateRestController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
             
             // Do not display anything, error message is mandatory
             query.getResultList();
@@ -174,7 +168,7 @@ public class HibernateRestController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("select '"+ inject +"'");
             
             // Do not display anything, error message is mandatory
             query.getResultList();
@@ -196,7 +190,7 @@ public class HibernateRestController {
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
             session.beginTransaction();
-            Query query = session.createNativeQuery("delete from Student where 'not_found' = '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("delete from Student where 'not_found' = '"+ inject +"'");
             
             // Do not display anything, error message is mandatory
             query.executeUpdate();
@@ -219,7 +213,7 @@ public class HibernateRestController {
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
             session.beginTransaction();
-            Query query = session.createNativeQuery("insert into Student select * from Student where 'not_found' = '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("insert into Student select * from Student where 'not_found' = '"+ inject +"'");
             
             // Do not display anything, error message is mandatory
             query.executeUpdate();
@@ -242,7 +236,7 @@ public class HibernateRestController {
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
             session.beginTransaction();
-            Query query = session.createNativeQuery("update Student set roll_no='' where 'not_found' = '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("update Student set roll_no='' where 'not_found' = '"+ inject +"'");
             
             // Do not display anything, error message is mandatory
             query.executeUpdate();
@@ -275,7 +269,7 @@ public class HibernateRestController {
             String inject = request.getParameterMap().get("name")[0];
             inject = inject.replace(":", "\\:");
             
-            Query query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '"+ inject +"'");
             
             List<Object[]> results = query.getResultList();
             
@@ -309,7 +303,7 @@ public class HibernateRestController {
             String inject = request.getParameterMap().get("name")[0];
             inject = inject.replace(":", "\\:");
 
-            Query query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '"+ inject +"'");
 
             List<Object[]> results = query.getResultList();
 
@@ -345,7 +339,7 @@ public class HibernateRestController {
             // Inside try because test connection do not send param
             String inject = name.replace(":", "\\:");
 
-            Query query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '"+ inject +"'");
 
             List<Object[]> results = query.getResultList();
 
@@ -372,7 +366,7 @@ public class HibernateRestController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6 from Student where '1' = '"+inject+"'");
+            Query<Object[]> query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6 from Student where '1' = '"+inject+"'");
             
             List<Object[]> results = query.getResultList();
             
@@ -404,7 +398,7 @@ public class HibernateRestController {
                 
                 inject = inject.replace(":", "\\:");
     
-                Query query = session.createNativeQuery("select 1,2,First_Name from Student where '1' = '"+ inject +"'");
+                Query<Object[]> query = session.createNativeQuery("select 1,2,First_Name from Student where '1' = '"+ inject +"'");
                 
                 List<Object[]> results = query.getResultList();
                 
@@ -436,7 +430,7 @@ public class HibernateRestController {
             inject = inject.replaceAll(":", "\\\\:");
             inject = inject.replace(":", "\\:");
             
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
             
             List<Object[]> results = query.getResultList();
             
@@ -463,7 +457,7 @@ public class HibernateRestController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select First_Name from Student where 1 = "+ inject);
+            Query<Object[]> query = session.createNativeQuery("select First_Name from Student where 1 = "+ inject);
         
             List<Object[]> results = query.getResultList();
             
@@ -491,7 +485,7 @@ public class HibernateRestController {
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
             // Postgres union int on ()::text fails: PSQLException: ERROR: UNION types integer and text cannot be matched
-            Query query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6 from Student where 1 = "+ inject);
+            Query<Object[]> query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6 from Student where 1 = "+ inject);
         
             List<Object[]> results = query.getResultList();
             
@@ -517,7 +511,7 @@ public class HibernateRestController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select 1,2,3,4,5,6,7,8,9,First_Name,10,11 from Student where 999 = "+ inject);
+            Query<Object[]> query = session.createNativeQuery("select 1,2,3,4,5,6,7,8,9,First_Name,10,11 from Student where 999 = "+ inject);
             
             query.getResultList();
             
@@ -537,7 +531,7 @@ public class HibernateRestController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select 1,2,3,4,5,6,7,8,9,First_Name,10,11 from Student where 999 = "+ inject);
+            Query<Object[]> query = session.createNativeQuery("select 1,2,3,4,5,6,7,8,9,First_Name,10,11 from Student where 999 = "+ inject);
             
             query.getResultList();
             
@@ -558,7 +552,7 @@ public class HibernateRestController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select First_Name from Student where ((\"1\" = \""+ inject +"\"))");
+            Query<Object[]> query = session.createNativeQuery("select First_Name from Student where ((\"1\" = \""+ inject +"\"))");
         
             List<Object[]> results = query.getResultList();
             
@@ -598,7 +592,7 @@ public class HibernateRestController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
         
             List<Object[]> results = query.getResultList();
             
@@ -638,7 +632,7 @@ public class HibernateRestController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
             
             List<Object[]> results = query.getResultList();
             
@@ -665,7 +659,7 @@ public class HibernateRestController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
+            Query<Object[]> query = session.createNativeQuery("select First_Name from Student where '1' = '"+ inject +"'");
             
             List<Object[]> results = query.getResultList();
             
@@ -691,7 +685,7 @@ public class HibernateRestController {
         
         try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            Query query = session.createNativeQuery("select First_Name from Student order by 1, "+ inject);
+            Query<Object[]> query = session.createNativeQuery("select First_Name from Student order by 1, "+ inject);
             
             query.getResultList();
             

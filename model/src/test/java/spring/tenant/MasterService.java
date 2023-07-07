@@ -1,10 +1,7 @@
 package spring.tenant;
 
 import java.sql.DriverManager;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Properties;
+import java.util.*;
 
 import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
@@ -47,10 +44,10 @@ public class MasterService {
             dataSource.setUsername(props.getProperty("hibernate.connection.username"));
             dataSource.setPassword(props.getProperty("hibernate.connection.password"));
             
-            Properties propertiesDataSource = new Properties();
-            propertiesDataSource.put(Environment.DATASOURCE, dataSource);
-            connectionProviderPostgres.configure(propertiesDataSource);
-            
+            connectionProviderPostgres.configure(Map.of(
+                Environment.DATASOURCE, dataSource
+            ));
+
             this.hashMap.put(props.getProperty("jsql.tenant"), connectionProviderPostgres);
         });
     }

@@ -3,7 +3,7 @@ package com.test.method;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junitpioneer.jupiter.RepeatFailedTest;
+import org.junitpioneer.jupiter.RetryingTest;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -36,7 +36,7 @@ public class CookieTestSuite extends ConcreteMySqlTestSuite {
     }
     
     @Override
-    @RepeatFailedTest(3)
+    @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }
