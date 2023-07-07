@@ -65,7 +65,7 @@
         <hibernate-core.version>5.6.15.Final</hibernate-core.version>
         <jaxb-api.version>2.1</jaxb-api.version>
         <junit-pioneer.version>2.0.0</junit-pioneer.version>
-        <jcabi-log.version>0.22.0</jcabi-log.version>
+        <jcabi-log.version>0.23.0</jcabi-log.version>
         <mssql-jdbc.version>9.4.1.jre8</mssql-jdbc.version>
         <sqlite-jdbc.version>3.42.0.0</sqlite-jdbc.version>
         <sqlite-dialect.version>0.1.2</sqlite-dialect.version>
