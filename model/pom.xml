@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>jsql-injection</groupId>
@@ -9,49 +9,82 @@
     </parent>
     <artifactId>jsql-model</artifactId>
     <name>jsql-model</name>
-    
+
     <repositories>
-<!--         <repository> -->
-<!--             <id>default</id> -->
-<!--             <url>https://repo.maven.apache.org/maven2/</url> -->
-<!--         </repository> -->
-<!--         <repository> -->
-<!--             <id>cubrid-repository</id> -->
-<!--             <url>http://maven.cubrid.org/</url> -->
-<!--         </repository> -->
-<!--         <repository> -->
-<!--             <id>jspresso-repository</id> -->
-<!--             <url>http://repository.jspresso.org/maven2</url> -->
-<!--         </repository> -->
-<!--         <repository> -->
-<!--             <id>exasol-repository</id> -->
-<!--             <url>https://maven.exasol.com/artifactory/exasol-releases</url> -->
-<!--             <snapshots> -->
-<!--                 <enabled>false</enabled> -->
-<!--             </snapshots> -->
-<!--         </repository> -->
-<!--         <repository> -->
-<!--             <id>oracle-repository</id> -->
-<!--             <url>http://maven.geomajas.org/</url> -->
-<!--         </repository> -->
-<!--         <repository> -->
-<!--             <id>monetdb-repository</id> -->
-<!--             <url>https://clojars.org/repo/</url> -->
-<!--         </repository> -->
-    </repositories> 
-    
+        <!--         <repository> -->
+        <!--             <id>default</id> -->
+        <!--             <url>https://repo.maven.apache.org/maven2/</url> -->
+        <!--         </repository> -->
+        <!--         <repository> -->
+        <!--             <id>cubrid-repository</id> -->
+        <!--             <url>http://maven.cubrid.org/</url> -->
+        <!--         </repository> -->
+        <!--         <repository> -->
+        <!--             <id>jspresso-repository</id> -->
+        <!--             <url>http://repository.jspresso.org/maven2</url> -->
+        <!--         </repository> -->
+        <!--         <repository> -->
+        <!--             <id>exasol-repository</id> -->
+        <!--             <url>https://maven.exasol.com/artifactory/exasol-releases</url> -->
+        <!--             <snapshots> -->
+        <!--                 <enabled>false</enabled> -->
+        <!--             </snapshots> -->
+        <!--         </repository> -->
+        <!--         <repository> -->
+        <!--             <id>oracle-repository</id> -->
+        <!--             <url>http://maven.geomajas.org/</url> -->
+        <!--         </repository> -->
+        <!--         <repository> -->
+        <!--             <id>monetdb-repository</id> -->
+        <!--             <url>https://clojars.org/repo/</url> -->
+        <!--         </repository> -->
+    </repositories>
+
     <properties>
-      <sonar.projectKey>jsql-injection:model</sonar.projectKey>
-      <sonar.exclusions>**/blind/patch/*, **/DigestMD4.java</sonar.exclusions>
+        <sonar.projectKey>jsql-injection:model</sonar.projectKey>
+        <sonar.exclusions>**/blind/patch/*, **/DigestMD4.java</sonar.exclusions>
+
+        <gmavenplus-plugin.version>1.10.1</gmavenplus-plugin.version>
+        <spring-boot-dependencies.version>2.6.11</spring-boot-dependencies.version>
+        <nashorn-core.version>15.4</nashorn-core.version>
+        <jsoup.version>1.15.4</jsoup.version>
+        <json.version>20230227</json.version>
+        <juniversalchardet.version>1.0.3</juniversalchardet.version>
+        <snakeyaml.version>1.31</snakeyaml.version>
+        <javafaker.version>1.0.2</javafaker.version>
+        <sockjs-client.version>1.0.2</sockjs-client.version>
+        <stomp-websocket.version>2.3.3</stomp-websocket.version>
+        <bootstrap.version>3.3.7</bootstrap.version>
+        <jquery.version>3.6.4</jquery.version>
+        <dnsjava.version>3.3.1</dnsjava.version>
+        <jna.version>5.6.0</jna.version>
+        <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
+        <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
+        <groovy-test-junit5.version>4.0.10</groovy-test-junit5.version>
+        <spock-core.version>2.4-M1-groovy-4.0</spock-core.version>
+        <hibernate-core.version>5.6.15.Final</hibernate-core.version>
+        <jaxb-api.version>2.1</jaxb-api.version>
+        <junit-pioneer.version>2.0.0</junit-pioneer.version>
+        <jcabi-log.version>0.22.0</jcabi-log.version>
+        <mssql-jdbc.version>9.4.1.jre8</mssql-jdbc.version>
+        <sqlite-jdbc.version>3.42.0.0</sqlite-jdbc.version>
+        <sqlite-dialect.version>0.1.2</sqlite-dialect.version>
+        <neo4j-java-driver.version>4.3.8</neo4j-java-driver.version>
+        <neo4j-jdbc-driver.version>4.0.9</neo4j-jdbc-driver.version>
+        <hsqldb.version>2.7.2</hsqldb.version>
+        <derbynet.version>10.14.2.0</derbynet.version>
+        <ojdbc8.version>23.2.0.0</ojdbc8.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M4</maven-failsafe-plugin.version>
     </properties>
-    
+
     <build>
         <plugins>
             <!-- Spock -->
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>1.10.1</version>
+                <version>${gmavenplus-plugin.version}</version>
                 <configuration>
                     <testSources>
                         <testSource>
@@ -79,7 +112,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <!-- Compatible only jdk > 9 -->
                     <argLine>@{argLine} ${MAVEN_NASHORN}</argLine>
@@ -95,7 +128,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <!-- Version 3.0.0-M5 does not trigger ITs -->
-                <version>3.0.0-M4</version>
+                <version>${maven-failsafe-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -119,7 +152,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.5.15</version>
+                <version>${spring-boot-dependencies.version}</version>
             </plugin>
         </plugins>
     </build>
@@ -130,7 +163,7 @@
                 <!-- Import dependency management from Spring Boot -->
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.5.15</version>
+                <version>${spring-boot-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -143,7 +176,7 @@
         <dependency>
             <groupId>org.openjdk.nashorn</groupId>
             <artifactId>nashorn-core</artifactId>
-            <version>15.4</version>
+            <version>${nashorn-core.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -152,7 +185,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.15.4</version>
+            <version>${jsoup.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -161,17 +194,17 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20230227</version>
+            <version>${json.version}</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.juniversalchardet</groupId>
             <artifactId>juniversalchardet</artifactId>
-            <version>1.0.3</version>
+            <version>${juniversalchardet.version}</version>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.31</version>
+            <version>${snakeyaml.version}</version>
         </dependency>
         <!-- Logger -->
         <dependency>
@@ -183,7 +216,7 @@
             <artifactId>logback-classic</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
         <!-- Test purpose -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -212,7 +245,7 @@
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId> 
+            <artifactId>jackson-databind</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -223,7 +256,7 @@
         <dependency>
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
-            <version>1.0.2</version>
+            <version>${javafaker.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -231,7 +264,7 @@
             <artifactId>gson</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
@@ -245,63 +278,63 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>sockjs-client</artifactId>
-            <version>1.0.2</version>
+            <version>${sockjs-client.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>stomp-websocket</artifactId>
-            <version>2.3.3</version>
+            <version>${stomp-websocket.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>3.3.7</version>
+            <version>${bootstrap.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
-            <version>3.6.4</version>
+            <version>${jquery.version}</version>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
-          <groupId>dnsjava</groupId>
-          <artifactId>dnsjava</artifactId>
-          <version>3.3.1</version>
+            <groupId>dnsjava</groupId>
+            <artifactId>dnsjava</artifactId>
+            <version>${dnsjava.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
-            <version>5.6.0</version>
+            <version>${jna.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna-platform</artifactId>
-            <version>5.6.0</version>
+            <version>${jna.version}</version>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-spring-boot-starter</artifactId>
-            <version>5.0.2</version>
+            <version>${graphql-spring-boot-starter.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java-tools</artifactId>
-            <version>5.2.4</version>
+            <version>${graphql-java-tools.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphiql-spring-boot-starter</artifactId>
-            <version>5.0.2</version>
+            <version>${graphql-spring-boot-starter.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -309,13 +342,13 @@
         <dependency>
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy-test-junit5</artifactId>
-            <version>4.0.10</version>
+            <version>${groovy-test-junit5.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
-            <version>2.4-M1-groovy-4.0</version>
+            <version>${spock-core.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -356,20 +389,20 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.6.15.Final</version>
+            <version>${hibernate-core.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <!-- display c3p0 logs -->
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-c3p0</artifactId>
-            <version>5.6.15.Final</version>
+            <version>${hibernate-core.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.1</version>
+            <version>${jaxb-api.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -387,7 +420,7 @@
         <dependency>
             <groupId>org.junit-pioneer</groupId>
             <artifactId>junit-pioneer</artifactId>
-            <version>2.0.0</version>
+            <version>${junit-pioneer.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -395,7 +428,7 @@
             <!-- Colors in logs -->
             <groupId>com.jcabi</groupId>
             <artifactId>jcabi-log</artifactId>
-            <version>0.22.0</version>
+            <version>${jcabi-log.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -424,39 +457,39 @@
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>9.4.1.jre8</version>
+            <version>${mssql-jdbc.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.42.0.0</version>
+            <version>${sqlite-jdbc.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.github.gwenn</groupId>
             <artifactId>sqlite-dialect</artifactId>
-            <version>0.1.2</version>
+            <version>${sqlite-dialect.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.neo4j.driver</groupId>
             <artifactId>neo4j-java-driver</artifactId>
-            <version>4.3.8</version>
+            <version>${neo4j-java-driver.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-jdbc-driver</artifactId>
-            <version>4.0.9</version>
+            <version>${neo4j-jdbc-driver.version}</version>
             <scope>test</scope>
         </dependency>
-<!--         <dependency> -->
-<!--             <groupId>cubrid</groupId> -->
-<!--             <artifactId>cubrid-jdbc</artifactId> -->
-<!--             <version>10.2.2.8874</version> -->
-<!--             <scope>test</scope> -->
-<!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>cubrid</groupId> -->
+        <!--             <artifactId>cubrid-jdbc</artifactId> -->
+        <!--             <version>10.2.2.8874</version> -->
+        <!--             <scope>test</scope> -->
+        <!--         </dependency> -->
         <dependency>
             <groupId>com.ibm.db2</groupId>
             <artifactId>jcc</artifactId>
@@ -465,7 +498,7 @@
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <version>2.7.2</version>
+            <version>${hsqldb.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -476,82 +509,82 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derbynet</artifactId>
-            <version>10.14.2.0</version>
+            <version>${derbynet.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc8</artifactId>
-            <version>23.2.0.0</version>
+            <version>${ojdbc8.version}</version>
             <scope>test</scope>
         </dependency>
-            
-<!--         <dependency> -->
-<!--             <groupId>altibase</groupId> -->
-<!--             <artifactId>altibase-connector-java</artifactId> -->
-<!--             <scope>system</scope> -->
-<!--             <version>7.1</version> -->
-<!--             <systemPath>${project.basedir}/src/test/resources/jdbc/Altibase.jar</systemPath> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>ctreeACE</groupId> -->
-<!--             <artifactId>ctreeace-connector-java</artifactId> -->
-<!--             <scope>system</scope> -->
-<!--             <version>0.0</version> -->
-<!--             <systemPath>${project.basedir}/src/test/resources/jdbc/ctreeJDBC.jar</systemPath> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>frontbase</groupId> -->
-<!--             <artifactId>frontbase-connector-java</artifactId> -->
-<!--             <scope>system</scope> -->
-<!--             <version>2.5.9</version> -->
-<!--             <systemPath>${project.basedir}/src/test/resources/jdbc/frontbasejdbc.jar</systemPath> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>intersystems-iris</groupId> -->
-<!--             <artifactId>intersystems-iris-connector-java</artifactId> -->
-<!--             <scope>system</scope> -->
-<!--             <version>3.1.0</version> -->
-<!--             <systemPath>${project.basedir}/src/test/resources/jdbc/intersystems-jdbc-3.1.0.jar</systemPath> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>mimersql</groupId> -->
-<!--             <artifactId>mimersql</artifactId> -->
-<!--             <scope>system</scope> -->
-<!--             <version>3.40</version> -->
-<!--             <systemPath>${project.basedir}/src/test/resources/jdbc/mimjdbc3.jar</systemPath> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>netezza</groupId> -->
-<!--             <artifactId>netezza</artifactId> -->
-<!--             <scope>system</scope> -->
-<!--             <version>3.40</version> -->
-<!--             <systemPath>${project.basedir}/src/test/resources/jdbc/nzjdbc-1.0.jar</systemPath> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>com.exasol</groupId> -->
-<!--             <artifactId>exasol-jdbc</artifactId> -->
-<!--             <version>7.0.3</version> -->
-<!--             <scope>test</scope> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>monetdb</groupId> -->
-<!--             <artifactId>monetdb-jdbc</artifactId> -->
-<!--             <version>2.29</version> -->
-<!--             <scope>test</scope> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>com.facebook.presto</groupId> -->
-<!--             <artifactId>presto-jdbc</artifactId> -->
-<!--             <version>0.243.2</version> -->
-<!--             <scope>test</scope> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>org.firebirdsql.jdbc</groupId> -->
-<!--             <artifactId>jaybird</artifactId> -->
-<!--             <version>4.0.1.java7</version> -->
-<!--             <scope>test</scope> -->
-<!--         </dependency> -->
+
+        <!--         <dependency> -->
+        <!--             <groupId>altibase</groupId> -->
+        <!--             <artifactId>altibase-connector-java</artifactId> -->
+        <!--             <scope>system</scope> -->
+        <!--             <version>7.1</version> -->
+        <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/Altibase.jar</systemPath> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>ctreeACE</groupId> -->
+        <!--             <artifactId>ctreeace-connector-java</artifactId> -->
+        <!--             <scope>system</scope> -->
+        <!--             <version>0.0</version> -->
+        <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/ctreeJDBC.jar</systemPath> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>frontbase</groupId> -->
+        <!--             <artifactId>frontbase-connector-java</artifactId> -->
+        <!--             <scope>system</scope> -->
+        <!--             <version>2.5.9</version> -->
+        <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/frontbasejdbc.jar</systemPath> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>intersystems-iris</groupId> -->
+        <!--             <artifactId>intersystems-iris-connector-java</artifactId> -->
+        <!--             <scope>system</scope> -->
+        <!--             <version>3.1.0</version> -->
+        <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/intersystems-jdbc-3.1.0.jar</systemPath> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>mimersql</groupId> -->
+        <!--             <artifactId>mimersql</artifactId> -->
+        <!--             <scope>system</scope> -->
+        <!--             <version>3.40</version> -->
+        <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/mimjdbc3.jar</systemPath> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>netezza</groupId> -->
+        <!--             <artifactId>netezza</artifactId> -->
+        <!--             <scope>system</scope> -->
+        <!--             <version>3.40</version> -->
+        <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/nzjdbc-1.0.jar</systemPath> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>com.exasol</groupId> -->
+        <!--             <artifactId>exasol-jdbc</artifactId> -->
+        <!--             <version>7.0.3</version> -->
+        <!--             <scope>test</scope> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>monetdb</groupId> -->
+        <!--             <artifactId>monetdb-jdbc</artifactId> -->
+        <!--             <version>2.29</version> -->
+        <!--             <scope>test</scope> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>com.facebook.presto</groupId> -->
+        <!--             <artifactId>presto-jdbc</artifactId> -->
+        <!--             <version>0.243.2</version> -->
+        <!--             <scope>test</scope> -->
+        <!--         </dependency> -->
+        <!--         <dependency> -->
+        <!--             <groupId>org.firebirdsql.jdbc</groupId> -->
+        <!--             <artifactId>jaybird</artifactId> -->
+        <!--             <version>4.0.1.java7</version> -->
+        <!--             <scope>test</scope> -->
+        <!--         </dependency> -->
 
     </dependencies>
 </project>

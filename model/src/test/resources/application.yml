@@ -13,8 +13,5 @@ server:
         key-store-password: testtest
         key-alias: jsql-injection
 
-#spring:
-#    main:
-#        allow-circular-references: true
-#
-#spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.DerbyTenSevenDialect
+# Prevent BasicWebSecurity error: Requested bean is currently in creation: Is there an unresolvable circular reference?
+spring.main.allow-circular-references: true
