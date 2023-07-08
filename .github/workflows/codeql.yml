@@ -83,6 +83,7 @@ jobs:
       with:
         patterns: |
           -**/test/**/HibernateRestController.java
+          -**/test/**/JdbcRestController.java
         input: sarif-results/${{ matrix.language }}.sarif
         output: sarif-results/${{ matrix.language }}.sarif
 
