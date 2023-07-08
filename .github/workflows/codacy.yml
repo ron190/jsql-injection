@@ -1,7 +1,7 @@
 name: Codacy Analysis CLI
-
 on: ["push"]
-
+permissions:
+  contents: read
 jobs:
   codacy-analysis-cli:
     permissions:
@@ -13,7 +13,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@main
-
       - name: Run Codacy Analysis CLI
         uses: codacy/codacy-analysis-cli-action@master
         with:
