@@ -6,7 +6,7 @@ on:
     
 env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  CODACY_API_TOKEN: ${{ secrets.CODACY_API_TOKEN }}
+  CODACY_API_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
 jobs:
