@@ -3,7 +3,6 @@ package groovy
 import com.jsql.model.bean.database.Column
 import com.jsql.model.bean.database.Database
 import com.jsql.model.bean.database.Table
-
 import spock.lang.Specification
 
 class BeanDatabaseSpock extends Specification {

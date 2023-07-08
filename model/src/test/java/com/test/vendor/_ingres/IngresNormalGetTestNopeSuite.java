@@ -1,11 +1,10 @@
 package com.test.vendor._ingres;
 
-import java.sql.SQLException;
-
+import com.jsql.model.exception.InjectionFailureException;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 
-import com.jsql.model.exception.InjectionFailureException;
+import java.sql.SQLException;
 
 @Ignore
 public class IngresNormalGetTestNopeSuite extends ConcreteIngresTestNopeSuite {

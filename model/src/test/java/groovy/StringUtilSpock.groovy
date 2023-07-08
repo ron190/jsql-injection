@@ -1,13 +1,11 @@
 package groovy
 
-import java.nio.charset.StandardCharsets
-
-import org.apache.commons.lang3.StringUtils
-
 import com.jsql.util.StringUtil
 import com.jsql.util.bruter.HashUtil
-
+import org.apache.commons.lang3.StringUtils
 import spock.lang.Specification
+
+import java.nio.charset.StandardCharsets
 
 class StringUtilSpock extends Specification {
     

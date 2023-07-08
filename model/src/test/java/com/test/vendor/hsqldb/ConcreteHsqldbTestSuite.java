@@ -1,8 +1,7 @@
 package com.test.vendor.hsqldb;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.test.AbstractTestSuite;
+import org.apache.commons.lang3.StringUtils;
 
 public abstract class ConcreteHsqldbTestSuite extends AbstractTestSuite {
 

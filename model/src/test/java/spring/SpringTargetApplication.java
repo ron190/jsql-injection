@@ -1,18 +1,6 @@
 package spring;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.SQLException;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Properties;
-import java.util.stream.Stream;
-
-import javax.annotation.PreDestroy;
-
+import com.jsql.util.LogLevelUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.derby.drda.NetworkServerControl;
 import org.apache.logging.log4j.LogManager;
@@ -29,14 +17,22 @@ import org.neo4j.driver.GraphDatabase;
 import org.neo4j.driver.Result;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.jsql.util.LogLevelUtil;
-
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.core.io.ClassPathResource;
 import spring.rest.Student;
 
-@SpringBootApplication
+import javax.annotation.PreDestroy;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Properties;
+import java.util.stream.Stream;
+
+@SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class)
 @EntityScan({"spring.rest"})
 public class SpringTargetApplication {
     

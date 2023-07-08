@@ -1,13 +1,12 @@
 package com.test.vendor.neo4j;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-
-import org.junitpioneer.jupiter.RetryingTest;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import org.junitpioneer.jupiter.RetryingTest;
+
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
 
 public class Neo4jNormalGetTestSuite extends ConcreteNeo4jTestSuite {
     

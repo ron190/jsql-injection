@@ -17,6 +17,10 @@ public class MultiTenantConnectionProviderImpl extends AbstractMultiTenantConnec
     @Override
     protected ConnectionProvider selectConnectionProvider(String tenant) {
         
-        return MASTER_SERVICE.getDataSourceHashMap().get(tenant);
+        return MASTER_SERVICE.getDataSourceHashMap().getOrDefault(
+            tenant,
+            // Provide default connection to prevent error logs when tenant is undefined
+            getAnyConnectionProvider()
+        );
     }
 }

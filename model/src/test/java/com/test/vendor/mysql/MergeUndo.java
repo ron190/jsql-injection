@@ -1,13 +1,6 @@
 package com.test.vendor.mysql;
 
-import java.awt.BorderLayout;
-import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
+import javax.swing.*;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.text.AbstractDocument;
@@ -17,6 +10,8 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.CompoundEdit;
 import javax.swing.undo.UndoableEdit;
+import java.awt.*;
+import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class MergeUndo extends JEditorPane {

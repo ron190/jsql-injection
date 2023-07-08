@@ -1,14 +1,12 @@
 package groovy
 
-import java.util.AbstractMap.SimpleEntry
-import java.util.stream.Collectors
-
+import com.jsql.util.JsonUtil
 import org.json.JSONArray
 import org.json.JSONObject
-
-import com.jsql.util.JsonUtil
-
 import spock.lang.Specification
+
+import java.util.AbstractMap.SimpleEntry
+import java.util.stream.Collectors
 
 class JsonUtilSpock extends Specification {
 

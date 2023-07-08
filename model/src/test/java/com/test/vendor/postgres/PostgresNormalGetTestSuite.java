@@ -1,13 +1,12 @@
 package com.test.vendor.postgres;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-
-import org.junitpioneer.jupiter.RetryingTest;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import org.junitpioneer.jupiter.RetryingTest;
+
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
 
 public class PostgresNormalGetTestSuite extends ConcretePostgresTestSuite {
     

@@ -1,14 +1,13 @@
 package spring.tenant;
 
-import java.sql.DriverManager;
-import java.util.*;
-
 import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
 import spring.SpringTargetApplication;
+
+import java.sql.DriverManager;
+import java.util.*;
 
 public class MasterService {
     

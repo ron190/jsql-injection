@@ -8,7 +8,7 @@
 
 package spring.soap;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlRegistry;
 
 
 /**

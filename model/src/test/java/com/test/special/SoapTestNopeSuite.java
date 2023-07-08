@@ -1,11 +1,10 @@
 package com.test.special;
 
-import org.junitpioneer.jupiter.RetryingTest;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
+import org.junitpioneer.jupiter.RetryingTest;
 
 public class SoapTestNopeSuite extends ConcreteMySqlErrorTestSuite {
     

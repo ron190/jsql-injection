@@ -1,16 +1,16 @@
 package com.test.preferences;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-
-import org.junitpioneer.jupiter.RetryingTest;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 import com.test.vendor.mysql.ConcreteMySqlTestSuite;
+import org.junitpioneer.jupiter.RetryingTest;
 
-public class MySqlDiosTestSuite extends ConcreteMySqlTestSuite {
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
+
+public class MySqlDiosTestSuite extends ConcreteMySqlErrorTestSuite {
     
     @Override
     public void setupInjection() throws Exception {

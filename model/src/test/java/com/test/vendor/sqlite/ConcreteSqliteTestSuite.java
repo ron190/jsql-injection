@@ -1,15 +1,14 @@
 package com.test.vendor.sqlite;
 
+import com.jsql.model.accessible.DataAccess;
+import com.test.AbstractTestSuite;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.jsql.model.accessible.DataAccess;
-import com.test.AbstractTestSuite;
 
 public abstract class ConcreteSqliteTestSuite extends AbstractTestSuite {
 

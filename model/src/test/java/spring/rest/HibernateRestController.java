@@ -23,8 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-// Rollback for error based injection
-@Transactional(rollbackFor = Exception.class)
+@Transactional
 @RestController
 public class HibernateRestController {
 
@@ -132,7 +131,7 @@ public class HibernateRestController {
 
             
         } catch (Exception e) {
-            
+
             greeting = this.initializeErrorMessage(e);
         }
         
@@ -153,7 +152,7 @@ public class HibernateRestController {
             query.getResultList();
 
         } catch (Exception e) {
-            
+
             greeting = this.initializeErrorMessage(e);
         }
         
@@ -222,7 +221,26 @@ public class HibernateRestController {
         
         return greeting;
     }
-    
+
+    @RequestMapping("/order-by")
+    public Greeting greetingOrderBy(@RequestParam(value="name", defaultValue="World") String name) {
+
+        Greeting greeting = null;
+        String inject = name.replace(":", "\\:");
+
+        try {
+            Session session = this.sessionFactory.getCurrentSession();
+            Query<Object[]> query = session.createNativeQuery("select First_Name from Student order by 1, "+ inject);
+
+            query.getResultList();
+
+        } catch (Exception e) {
+
+            greeting = this.initializeErrorMessage(e);
+        }
+
+        return greeting;
+    }
     
     // Special
 
@@ -642,26 +660,6 @@ public class HibernateRestController {
                 + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
             
-        } catch (Exception e) {
-            
-            greeting = this.initializeErrorMessage(e);
-        }
-        
-        return greeting;
-    }
-    
-    @RequestMapping("/order-by")
-    public Greeting greetingOrderBy(@RequestParam(value="name", defaultValue="World") String name) {
-        
-        Greeting greeting = null;
-        String inject = name.replace(":", "\\:");
-        
-        try {
-            Session session = this.sessionFactory.getCurrentSession();            
-            Query<Object[]> query = session.createNativeQuery("select First_Name from Student order by 1, "+ inject);
-
-            query.getResultList();
-
         } catch (Exception e) {
             
             greeting = this.initializeErrorMessage(e);

@@ -1,7 +1,6 @@
 package groovy
 
 import com.jsql.util.I18nUtil
-
 import spock.lang.Specification
 
 class I18nUtilSpock extends Specification {

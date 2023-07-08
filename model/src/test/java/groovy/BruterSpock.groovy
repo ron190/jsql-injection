@@ -1,7 +1,6 @@
 package groovy
 
 import com.jsql.util.bruter.HashBruter
-
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 

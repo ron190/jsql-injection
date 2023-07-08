@@ -2,7 +2,6 @@ package groovy
 
 import com.jsql.model.InjectionModel
 import com.jsql.model.exception.InjectionFailureException
-
 import spock.lang.Specification
 
 class ParameterUtilSpock extends Specification {

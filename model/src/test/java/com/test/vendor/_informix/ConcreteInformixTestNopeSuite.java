@@ -1,10 +1,9 @@
 package com.test.vendor._informix;
 
-import java.sql.SQLException;
-
+import com.test.AbstractTestSuite;
 import org.apache.commons.lang3.StringUtils;
 
-import com.test.AbstractTestSuite;
+import java.sql.SQLException;
 
 public abstract class ConcreteInformixTestNopeSuite extends AbstractTestSuite {
 

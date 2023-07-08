@@ -15,10 +15,10 @@
  */
 package spring.security;
 
+import org.springframework.security.crypto.codec.Hex;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import org.springframework.security.crypto.codec.Hex;
 
 final class DigestAuthUtils {
 

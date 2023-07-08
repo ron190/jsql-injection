@@ -45,7 +45,8 @@
         <sonar.exclusions>**/blind/patch/*, **/DigestMD4.java</sonar.exclusions>
 
         <gmavenplus-plugin.version>1.10.1</gmavenplus-plugin.version>
-        <spring-boot-dependencies.version>2.6.11</spring-boot-dependencies.version>
+        <!-- latest version to work, upgrade make error based ITs to fail-->
+        <spring-boot-dependencies.version>2.5.15</spring-boot-dependencies.version>
         <nashorn-core.version>15.4</nashorn-core.version>
         <jsoup.version>1.15.4</jsoup.version>
         <json.version>20230227</json.version>
@@ -62,7 +63,6 @@
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
         <groovy-test-junit5.version>4.0.10</groovy-test-junit5.version>
         <spock-core.version>2.4-M1-groovy-4.0</spock-core.version>
-        <hibernate-core.version>5.6.15.Final</hibernate-core.version>
         <jaxb-api.version>2.1</jaxb-api.version>
         <junit-pioneer.version>2.0.0</junit-pioneer.version>
         <jcabi-log.version>0.22.0</jcabi-log.version>
@@ -384,19 +384,20 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
+            <!-- version by spring -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>${hibernate-core.version}</version>
+            <!-- version by spring -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <!-- display c3p0 logs -->
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-c3p0</artifactId>
-            <version>${hibernate-core.version}</version>
+            <!-- version by spring -->
             <scope>test</scope>
         </dependency>
         <dependency>
