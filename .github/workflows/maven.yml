@@ -71,6 +71,7 @@ jobs:
           -v "$HOME/.m2":/root/.m2                          \
           -v "$HOME/.sonar/cache":/root/.sonar/cache        \
           --network docker_jsql-network                     \
+          -e GITHUB_SHA                                     \
           -e SONAR_TOKEN                                    \
           -e CODACY_PROJECT_TOKEN                           \
           -e CODECOV_TOKEN                                  \
@@ -81,10 +82,10 @@ jobs:
             java -version                                   \
             && env|sort                                     \
             && mvn clean verify sonar:sonar                 \
-            && (cd view/ ; mvn sonar:sonar)                 \
-            && (cd model/ ; mvn sonar:sonar)                \
             && (bash <(curl -s https://codecov.io/bash) || true)              \
             && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)  \
+            && (cd view/ ; mvn sonar:sonar)                 \
+            && (cd model/ ; mvn sonar:sonar)                \
           '
         
         DOCKER_RUN="$?"
