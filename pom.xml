@@ -24,11 +24,10 @@
     </properties>
     
     <build>
-
         <plugins>
     
-            <!-- Generate reports for Sonar and Codecov -->
             <plugin>
+                <!-- Generate reports for Sonar and Codecov -->
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.8</version>
@@ -85,9 +84,7 @@
                     </excludes>
                 </configuration>
             </plugin>
-
         </plugins>
-        
     </build>
     
     <dependencyManagement>
@@ -103,12 +100,11 @@
     </dependencyManagement>
 
     <dependencies>
-
         <dependency>
+            <!-- Unescape unicode encoding -->
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
             <version>1.10.0</version>
         </dependency>
-    
     </dependencies>
 </project>

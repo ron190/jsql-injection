@@ -1,7 +1,6 @@
 package spring;
 
 import com.jsql.util.LogLevelUtil;
-import org.apache.commons.io.IOUtils;
 import org.apache.derby.drda.NetworkServerControl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +24,7 @@ import spring.rest.Student;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -162,7 +162,7 @@ public class SpringTargetApplication {
         
         String graphMovie;
         try (InputStream stream = new ClassPathResource("neo4j/movie-graph.txt").getInputStream()) {
-            graphMovie = IOUtils.toString(stream);
+            graphMovie = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
         }
         
         Driver driver = GraphDatabase.driver("bolt://jsql-neo4j:7687", AuthTokens.basic("neo4j", "test"));
