@@ -44,38 +44,43 @@
         <sonar.projectKey>jsql-injection:model</sonar.projectKey>
         <sonar.exclusions>**/blind/patch/*, **/DigestMD4.java</sonar.exclusions>
 
-        <gmavenplus-plugin.version>1.10.1</gmavenplus-plugin.version>
-        <!-- latest version to work, upgrade make error based ITs to fail-->
-        <spring-boot-dependencies.version>2.5.15</spring-boot-dependencies.version>
-        <nashorn-core.version>15.4</nashorn-core.version>
+        <bootstrap.version>3.3.7</bootstrap.version>
+        <!-- Spring startup frozen on later version -->
+        <derbynet.version>10.14.2.0</derbynet.version>
+        <dnsjava.version>3.3.1</dnsjava.version>
         <jsoup.version>1.15.4</jsoup.version>
         <json.version>20230227</json.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
-        <snakeyaml.version>1.31</snakeyaml.version>
         <javafaker.version>1.0.2</javafaker.version>
-        <sockjs-client.version>1.0.2</sockjs-client.version>
-        <stomp-websocket.version>2.3.3</stomp-websocket.version>
-        <bootstrap.version>3.3.7</bootstrap.version>
-        <jquery.version>3.6.4</jquery.version>
-        <dnsjava.version>3.3.1</dnsjava.version>
-        <jna.version>5.6.0</jna.version>
+        <gmavenplus-plugin.version>3.0.0</gmavenplus-plugin.version>
         <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
-        <groovy-test-junit5.version>4.0.10</groovy-test-junit5.version>
-        <spock-core.version>2.4-M1-groovy-4.0</spock-core.version>
-        <jaxb-api.version>2.1</jaxb-api.version>
-        <junit-pioneer.version>2.0.0</junit-pioneer.version>
-        <jcabi-log.version>0.22.0</jcabi-log.version>
-        <mssql-jdbc.version>9.4.1.jre8</mssql-jdbc.version>
-        <sqlite-jdbc.version>3.42.0.0</sqlite-jdbc.version>
-        <sqlite-dialect.version>0.1.2</sqlite-dialect.version>
-        <neo4j-java-driver.version>4.3.8</neo4j-java-driver.version>
-        <neo4j-jdbc-driver.version>4.0.9</neo4j-jdbc-driver.version>
+        <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
         <hsqldb.version>2.7.2</hsqldb.version>
-        <derbynet.version>10.14.2.0</derbynet.version>
-        <ojdbc8.version>23.2.0.0</ojdbc8.version>
-        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <jaxb-api.version>2.1</jaxb-api.version>
+        <jcabi-log.version>0.23.0</jcabi-log.version>
+        <jna.version>5.6.0</jna.version>
+        <jquery.version>3.6.4</jquery.version>
+        <junit-pioneer.version>2.0.0</junit-pioneer.version>
+        <!-- maven-surefire-plugin:3.1.2 fails to find Spock UTs -->
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>3.0.0-M4</maven-failsafe-plugin.version>
+        <!-- Spring startup PKIX error on later version -->
+        <mssql-jdbc.version>9.4.1.jre8</mssql-jdbc.version>
+        <nashorn-core.version>15.4</nashorn-core.version>
+        <!-- Max version for Java 11 -->
+        <neo4j-java-driver.version>4.4.2</neo4j-java-driver.version>
+        <neo4j-jdbc-driver.version>4.0.9</neo4j-jdbc-driver.version>
+        <ojdbc8.version>23.2.0.0</ojdbc8.version>
+        <snakeyaml.version>1.31</snakeyaml.version>
+        <sockjs-client.version>1.0.2</sockjs-client.version>
+        <spock-core.version>2.4-M1-groovy-4.0</spock-core.version>
+        <!-- Error-based ITs fail on later version -->
+        <spring-boot-dependencies.version>2.5.15</spring-boot-dependencies.version>
+        <sqlite-jdbc.version>3.42.0.0</sqlite-jdbc.version>
+        <sqlite-dialect.version>0.1.4</sqlite-dialect.version>
+        <stomp-websocket.version>2.3.3</stomp-websocket.version>
+        <mysql-connector-j.version>8.0.33</mysql-connector-j.version>
     </properties>
 
     <build>
@@ -88,7 +93,7 @@
                 <configuration>
                     <testSources>
                         <testSource>
-                            <directory>${project.basedir}/src/test/java</directory>
+                            <directory>${project.basedir}/src/test/groovy</directory>
                             <includes>
                                 <include>**/*.groovy</include>
                             </includes>
@@ -114,6 +119,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
+                    <failIfNoTests>true</failIfNoTests>
                     <!-- Compatible only jdk > 9 -->
                     <argLine>@{argLine} ${MAVEN_NASHORN}</argLine>
                     <includes>
@@ -171,6 +177,7 @@
     </dependencyManagement>
 
     <dependencies>
+
         <!-- jSQL purpose -->
         <!-- Standalone Nashorn build compatible with jdk11 -->
         <dependency>
@@ -351,12 +358,6 @@
             <version>${spock-core.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <!-- For surefire to run spock tests during build -->
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
 
         <!-- Spring -->
         <dependency>
@@ -419,6 +420,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <!-- Retrying Failing Tests -->
             <groupId>org.junit-pioneer</groupId>
             <artifactId>junit-pioneer</artifactId>
             <version>${junit-pioneer.version}</version>
@@ -446,8 +448,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <!-- new mysql artifact -->
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>${mysql-connector-j.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -485,12 +489,6 @@
             <version>${neo4j-jdbc-driver.version}</version>
             <scope>test</scope>
         </dependency>
-        <!--         <dependency> -->
-        <!--             <groupId>cubrid</groupId> -->
-        <!--             <artifactId>cubrid-jdbc</artifactId> -->
-        <!--             <version>10.2.2.8874</version> -->
-        <!--             <scope>test</scope> -->
-        <!--         </dependency> -->
         <dependency>
             <groupId>com.ibm.db2</groupId>
             <artifactId>jcc</artifactId>
