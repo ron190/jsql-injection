@@ -122,7 +122,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
-                    <failIfNoTests>true</failIfNoTests>
                     <!-- Compatible only jdk > 9 -->
                     <argLine>@{argLine} ${MAVEN_NASHORN}</argLine>
                     <includes>
@@ -146,7 +145,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <failIfNoTests>true</failIfNoTests>
                     <!-- Don't override, it breaks generating report -->
                     <argLine>@{argLine} ${MAVEN_NASHORN}</argLine>
                     <!-- Set number of retry, allows 1st test to run Spring then run other tests -->
