@@ -128,6 +128,7 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>${maven-surefire-plugin.version}</version>
                         <configuration>
+                            <skipTests>false</skipTests>
                             <!-- Compatible only jdk > 9 -->
                             <argLine>@{argLine} ${MAVEN_NASHORN}</argLine>
                             <includes>
@@ -166,23 +167,6 @@
             </build>
         </profile>
     </profiles>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
-                <configuration>
-                    <skipTests>true</skipTests>
-                    <includes>
-                        <include>**/*UiTest</include>
-                    </includes>
-                    <reportFormat>plain</reportFormat>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
     <dependencyManagement>
         <dependencies>

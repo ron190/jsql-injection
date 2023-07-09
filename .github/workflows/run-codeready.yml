@@ -1,0 +1,31 @@
+name: CodeReady scan
+
+on:
+  workflow_call:
+
+jobs:
+  crda:
+    name: CodeReady scan
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          # Disable shallow clone to send Git blame to Sonar
+          fetch-depth: 0
+
+      - name: Install CRDA
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          source: github
+          crda: latest
+
+      - name: CRDA Scan
+        id: crda_scan
+        uses: redhat-actions/crda@v1
+        with:
+          snyk_token: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Print Report Link
+        run: echo ${{ steps.crda_scan.outputs.report_link }}
