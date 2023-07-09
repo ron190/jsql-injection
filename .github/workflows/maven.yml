@@ -170,7 +170,7 @@ jobs:
       id: crda_scan
       uses: redhat-actions/crda@v1
       with:
-        synk_token: ${{ secrets.SYNK_TOKEN }}
+        snyk_token: ${{ secrets.SNYK_TOKEN }}
 
     - name: Print Report Link
       run: echo ${{ steps.crda_scan.outputs.report_link }}  
