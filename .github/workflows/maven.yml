@@ -11,6 +11,7 @@ env:
 
 jobs:
   build:
+    needs: [codeql, crda]
     name: Run tests on Docker
     runs-on: ubuntu-latest
     strategy:
@@ -97,9 +98,8 @@ jobs:
       run: |
         ./model/src/test/resources/docker/script/verify.sh
 
-  analyze:
-    needs: build
-    name: Analyze
+  codeql:
+    name: CodeQL scan
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
     timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
     permissions:
@@ -147,3 +147,22 @@ jobs:
       uses: github/codeql-action/upload-sarif@v2
       with:
         sarif_file: sarif-results/${{ matrix.language }}.sarif
+
+  crda:
+    name: CodeReady scan
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install CRDA
+      uses: redhat-actions/openshift-tools-installer@v1
+      with:
+        source: github
+        crda: latest
+
+    - name: CRDA Scan
+      id: crda_scan
+      uses: redhat-actions/crda@v1
+      with:
+        crda_key: ${{ secrets.CRDA_KEY }}
+
+    - name: Print Report Link
+      run: echo ${{ steps.crda_scan.outputs.report_link }}  
