@@ -64,36 +64,31 @@ jobs:
       run: |
         docker rmi jsql:latest -f
         docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
-        
-    - name: Run unit and integration tests
-      # Pass GITHUB_SHA to Docker container
-      run: |
-        docker run                                          \
-          -t                                                \
-          --rm                                              \
-          -v "$HOME/.m2":/root/.m2                          \
-          -v "$HOME/.sonar/cache":/root/.sonar/cache        \
-          --network docker_jsql-network                     \
-          -e GITHUB_SHA                                     \
-          -e SONAR_TOKEN                                    \
-          -e CODACY_PROJECT_TOKEN                           \
-          -e CODECOV_TOKEN                                  \
-          -e MAVEN_NASHORN                                  \
-          jsql:latest                                       \
-          ./model/src/test/resources/vnc/execute-on-vnc.sh  \
-          bash -c '                                         \
-            java -version                                   \
-            && env|sort                                     \
-            && mvn clean verify -P jsql sonar:sonar         \
-            && (bash <(curl -s https://codecov.io/bash) || true)              \
-            && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)  \
-            && (cd view/ ; mvn sonar:sonar)                 \
-            && (cd model/ ; mvn sonar:sonar)                \
-          '
-        
-        DOCKER_RUN="$?"
-        echo docker run exit code: $DOCKER_RUN
-        if [ "${DOCKER_RUN}" != "0" ]; then exit 1; fi
+
+    - name: Run Maven unit and integration tests
+      uses: ./.github/workflows/run-on-docker.yml
+      with:
+        command: mvn clean verify -P jsql sonar:sonar
+
+    - name: Codecov scan
+      uses: ./.github/workflows/run-on-docker.yml
+      with:
+        command: (bash <(curl -s https://codecov.io/bash) || true)
+
+    - name: Codacy scan
+      uses: ./.github/workflows/run-on-docker.yml
+      with:
+        command: (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)
+
+    - name: Sonar scan on module View
+      uses: ./.github/workflows/run-on-docker.yml
+      with:
+        command: (cd view/ ; mvn sonar:sonar)
+
+    - name: Sonar scan on module Model
+      uses: ./.github/workflows/run-on-docker.yml
+      with:
+        command: (cd model/ ; mvn sonar:sonar)
         
     - name: Verify database Docker containers statistics
       run: |
@@ -104,3 +99,4 @@ jobs:
 
   crda:
     uses: ./.github/workflows/run-codeready.yml
+    secrets: inherit
