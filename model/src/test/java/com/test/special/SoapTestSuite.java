@@ -28,7 +28,7 @@ public class SoapTestSuite extends ConcreteMySqlErrorTestSuite {
             "</soapenv:Envelope>"
         );
         model.getMediatorUtils().getPreferencesUtil()
-        .withNotTestingConnection()
+        .withNotTestingConnection()  // Expected error 500 on connection test (SQL failure)
         .withCheckingAllSoapParam();
         
         model.setIsScanning(true);

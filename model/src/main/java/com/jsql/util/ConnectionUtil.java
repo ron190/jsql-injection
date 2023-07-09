@@ -1,11 +1,17 @@
 package com.jsql.util;
 
+import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
+import com.jsql.model.bean.util.Request;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.injection.method.AbstractMethodInjection;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
-import java.net.Authenticator;
-import java.net.CookieManager;
-import java.net.PasswordAuthentication;
-import java.net.URI;
-import java.net.URLEncoder;
+import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Version;
 import java.net.http.HttpHeaders;
@@ -16,27 +22,11 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.AbstractMap;
+import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.injection.method.AbstractMethodInjection;
 
 /**
  * Utility class in charge of connection to web resources and management
@@ -164,7 +154,7 @@ public class ConnectionUtil {
     public HttpResponse<String> checkConnectionResponse() throws IOException, InterruptedException {
 
         var queryString = URLEncoder.encode(
-            this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries(), 
+            this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries(),
             StandardCharsets.UTF_8
         );
         var testUrl = this.getUrlBase().replaceAll("\\?$", "");
@@ -173,7 +163,19 @@ public class ConnectionUtil {
         
             testUrl += "?"+ queryString;
         }
-        
+
+        String contentTypeRequest = "text/plain";
+
+        var body = this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest();
+
+        if (this.injectionModel.getMediatorUtils().getParameterUtil().isMultipartRequest()) {
+            body = body.replaceAll("(?s)\\\\n", "\r\n");
+        } else if (this.injectionModel.getMediatorUtils().getParameterUtil().isRequestSoap()) {
+            contentTypeRequest = "text/xml";
+        } else if (!this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().isEmpty()) {
+            contentTypeRequest = "application/x-www-form-urlencoded";
+        }
+
         // Test the HTTP connection
         Builder httpRequest = HttpRequest
             .newBuilder()
@@ -185,16 +187,10 @@ public class ConnectionUtil {
                     .replace(InjectionModel.STAR, StringUtils.EMPTY)
                 )
             )
-            .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, "text/plain")
+            .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, contentTypeRequest)
             .timeout(Duration.ofSeconds(this.getTimeout()));
         
         this.injectionModel.getMediatorUtils().getCsrfUtil().addHeaderToken(httpRequest);
-        
-        var body = this.injectionModel.getMediatorUtils().getParameterUtil().getRequestFromEntries();
-
-        if (this.injectionModel.getMediatorUtils().getParameterUtil().isMultipartRequest()) {
-            body = body.replaceAll("(?s)\\\\n", "\r\n");
-        }
 
         httpRequest.method(
             this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(),

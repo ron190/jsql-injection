@@ -20,10 +20,8 @@ public class TamperingTestSuite extends ConcreteMySqlTestSuite {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/post?tenant=mysql");
-        model.getMediatorUtils().getParameterUtil().setListRequest(Arrays.asList(
-            new SimpleEntry<>("name", "")
-        ));
-        
+        model.getMediatorUtils().getParameterUtil().initializeRequest("name=");
+
         model
         .getMediatorUtils()
         .getTamperingUtil()

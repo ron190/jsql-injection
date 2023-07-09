@@ -59,12 +59,7 @@ public class HeaderUtil {
             
             httpRequest.setHeader(
                 keyHeader,
-                URLDecoder
-                .decode(
-                    valueHeader,
-                    StandardCharsets.UTF_8
-                )
-                .replaceAll("[^\\p{ASCII}]", "")
+                valueHeader.replaceAll("[^\\p{ASCII}]", "")
             );
         }
     }

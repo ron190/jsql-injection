@@ -33,7 +33,6 @@ public class ParameterUtil {
      * Request submitted by user.
      */
     private List<SimpleEntry<String, String>> listRequest = new ArrayList<>();
-//    private List<SimpleEntry<String, String>> listMultipart = new ArrayList<>();
 
     /**
      * Header submitted by user.
@@ -338,27 +337,6 @@ public class ParameterUtil {
         }
     }
 
-//    public void initializeMultipart(String request, String dataHeader) {
-//
-//        this.listMultipart.clear();
-//
-//        if (StringUtils.isEmpty(request)) {
-//            return;
-//        }
-//
-//        Matcher matcherBoundary = Pattern.compile("boundary=([^;]*)").matcher(dataHeader);
-//        if (matcherBoundary.find()) {
-//            String boundary = matcherBoundary.group(1);
-//
-//            Matcher a = Pattern
-//                .compile("Content-Disposition: form-data; name=\"(.*?)\"(?:(?:\\\\r)?(?:\\\\n))+(.*?)" + boundary, Pattern.DOTALL)
-//                .matcher(request);
-//            while (a.find()) {
-//                this.listMultipart.add(new SimpleEntry<>(a.group(1), a.group(2)));
-//            }
-//        }
-//    }
-
     public void initializeHeader(String rawHeader) {
         
         this.rawHeader = rawHeader;
@@ -390,8 +368,7 @@ public class ParameterUtil {
     
     public String getQueryStringFromEntries() {
         
-        return
-            this.listQueryString
+        return this.listQueryString
             .stream()
             .filter(Objects::nonNull)
             .map(entry ->
@@ -406,8 +383,7 @@ public class ParameterUtil {
 
     public String getRequestFromEntries() {
 
-        return
-            this.listRequest
+        return this.listRequest
             .stream()
             .filter(Objects::nonNull)
             .map(entry ->
@@ -419,30 +395,6 @@ public class ParameterUtil {
             )
             .collect(Collectors.joining("&"));
     }
-
-//    public String getMultipartFromEntries() {
-//
-//        String boundary = StringUtils.EMPTY;
-//        Matcher matcherBoundary = Pattern.compile("boundary=([^;]*)").matcher(this.getHeaderFromEntries());
-//        if (matcherBoundary.find()) {
-//            boundary = matcherBoundary.group(1);
-//        }
-//
-//        String finalBoundary = boundary;
-//        return finalBoundary + "\\n" +
-//            this.listMultipart
-//                .stream()
-//                .filter(Objects::nonNull)
-//                .map(entry ->
-//                    String.format(
-//                        "Content-Disposition: form-data; name=\"%s\"\\n\\n%s\\n%s",
-//                        entry.getKey(),
-//                        StringUtils.isEmpty(entry.getValue()) ? "" : entry.getValue(),
-//                        finalBoundary
-//                    )
-//                )
-//                .collect(Collectors.joining(""));
-//    }
     
     public String getHeaderFromEntries() {
         
