@@ -8,6 +8,7 @@ env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  MAVEN_NASHORN: ""
 
 jobs:
   build:
@@ -169,7 +170,7 @@ jobs:
       id: crda_scan
       uses: redhat-actions/crda@v1
       with:
-        crda_key: ${{ secrets.CRDA_KEY }}
+        synk_token: ${{ secrets.SYNK_TOKEN }}
 
     - name: Print Report Link
       run: echo ${{ steps.crda_scan.outputs.report_link }}  
