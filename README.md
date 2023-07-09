@@ -12,7 +12,7 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 [![License](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ron190/jsql-injection/maven.yml?logo=github "Github Actions status")](https://github.com/ron190/jsql-injection/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=coverage&logo=codecov "Codecov coverage")](https://codecov.io/gh/ron190/jsql-injection)
-[![Codacy](https://img.shields.io/codacy/grade/e7ccb247f9b74d489a1fa9f9483c978f?label=level&logo=codacy "Codacy level")](https://app.codacy.com/manual/ron190/jsql-injection/dashboard)<br>
+[![Codacy](https://img.shields.io/codacy/grade/e7ccb247f9b74d489a1fa9f9483c978f?label=level&logo=codacy "Codacy level")](https://app.codacy.com/gh/ron190/jsql-injection/dashboard)<br>
 [![Sonar issues](https://img.shields.io/sonar/violations/jsql-injection:jsql-injection?format=long&label=issues&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io "Sonar issues")](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
 
 ## Features

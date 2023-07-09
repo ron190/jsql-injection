@@ -34,10 +34,10 @@ import javax.xml.bind.annotation.*;
 @XmlType(name = "", propOrder = {
     "name"
 })
-@XmlRootElement(name = "getCountryRequest")
+@XmlRootElement(namespace = "http://www.baeldung.com/springsoap/gen", name = "getCountryRequest")
 public class GetCountryRequest {
 
-    @XmlElement(required = true)
+    @XmlElement(namespace = "http://www.baeldung.com/springsoap/gen", required = true)
     protected String name;
 
     /**

@@ -64,6 +64,7 @@ jobs:
         docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
         
     - name: Run unit and integration tests
+      # Pass GITHUB_SHA to Docker container
       run: |
         docker run                                          \
           -t                                                \

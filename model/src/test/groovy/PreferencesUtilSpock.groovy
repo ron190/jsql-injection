@@ -1,5 +1,3 @@
-package groovy
-
 import com.jsql.util.PreferencesUtil
 import spock.lang.Specification
 

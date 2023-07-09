@@ -1,5 +1,3 @@
-package groovy
-
 import com.jsql.util.StringUtil
 import com.jsql.util.bruter.HashUtil
 import org.apache.commons.lang3.StringUtils

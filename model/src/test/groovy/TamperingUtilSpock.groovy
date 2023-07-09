@@ -1,5 +1,3 @@
-package groovy
-
 import com.jsql.util.TamperingUtil
 import spock.lang.Specification
 

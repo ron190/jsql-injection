@@ -1,22 +1,6 @@
 package com.jsql.model;
 
-import com.jsql.util.AuthenticationUtil;
-import com.jsql.util.CertificateUtil;
-import com.jsql.util.ConnectionUtil;
-import com.jsql.util.CsrfUtil;
-import com.jsql.util.ExceptionUtil;
-import com.jsql.util.FormUtil;
-import com.jsql.util.GitUtil;
-import com.jsql.util.HeaderUtil;
-import com.jsql.util.JsonUtil;
-import com.jsql.util.ParameterUtil;
-import com.jsql.util.PreferencesUtil;
-import com.jsql.util.PropertiesUtil;
-import com.jsql.util.ProxyUtil;
-import com.jsql.util.SoapUtil;
-import com.jsql.util.TamperingUtil;
-import com.jsql.util.ThreadUtil;
-import com.jsql.util.UserAgentUtil;
+import com.jsql.util.*;
 
 public class MediatorUtils {
     
@@ -28,6 +12,7 @@ public class MediatorUtils {
     private ParameterUtil parameterUtil;
     private ExceptionUtil exceptionUtil;
     private SoapUtil soapUtil;
+    private MultipartUtil multipartUtil;
     private JsonUtil jsonUtil;
     private PreferencesUtil preferencesUtil;
     private ProxyUtil proxyUtil;
@@ -37,6 +22,14 @@ public class MediatorUtils {
     private CsrfUtil csrfUtil;
     private FormUtil formUtil;
     private CertificateUtil certificateUtil;
+
+    public MultipartUtil getMultipartUtil() {
+        return multipartUtil;
+    }
+
+    public void setMultipartUtil(MultipartUtil multipartUtil) {
+        this.multipartUtil = multipartUtil;
+    }
 
     public PropertiesUtil getPropertiesUtil() {
         return this.propertiesUtil;

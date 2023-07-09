@@ -1,5 +1,3 @@
-package groovy
-
 import com.jsql.util.JsonUtil
 import org.json.JSONArray
 import org.json.JSONObject

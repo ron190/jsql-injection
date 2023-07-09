@@ -40,7 +40,8 @@ public class ParameterUtil {
      */
     private List<SimpleEntry<String, String>> listHeader = new ArrayList<>();
     
-    private String requestAsText = StringUtils.EMPTY;
+    private String rawRequest = StringUtils.EMPTY;
+    private String rawHeader = StringUtils.EMPTY;
     private boolean isMultipartRequest = false;
 
     private InjectionModel injectionModel;
@@ -57,8 +58,8 @@ public class ParameterUtil {
      */
     public void controlInput(
         String urlQuery,
-        String dataRequest,
-        String dataHeader,
+        String rawRequest,
+        String rawHeader,
         AbstractMethodInjection methodInjection,
         String typeRequest,
         boolean isScanning
@@ -81,10 +82,9 @@ public class ParameterUtil {
             }
                      
             this.initializeQueryString(urlQueryFixed);
-            this.initializeRequest(dataRequest);
-//            this.initializeMultipart(dataRequest, dataHeader);
-            this.initializeHeader(dataHeader);
-            
+            this.initializeHeader(rawHeader);
+            this.initializeRequest(rawRequest);
+
             this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(methodInjection);
             this.injectionModel.getMediatorUtils().getConnectionUtil().setTypeRequest(typeRequest);
             
@@ -126,6 +126,9 @@ public class ParameterUtil {
     }
 
     private void checkMultipart() throws InjectionFailureException {
+
+        isMultipartRequest = false;
+
         if (
             this.getListHeader()
             .stream()
@@ -140,7 +143,7 @@ public class ParameterUtil {
             Matcher matcherBoundary = Pattern.compile("boundary=([^;]*)").matcher(this.getHeaderFromEntries());
             if (matcherBoundary.find()) {
                 String boundary = matcherBoundary.group(1);
-                if (!this.requestAsText.contains(boundary)) {
+                if (!this.rawRequest.contains(boundary)) {
                     throw new InjectionFailureException(
                         String.format("Incorrect multipart data, boundary not found in body: %s", boundary)
                     );
@@ -302,27 +305,36 @@ public class ParameterUtil {
         }
     }
 
-    public void initializeRequest(String request) {
+    public void initializeRequest(String rawRequest) {
 
-        this.requestAsText = request;
+        this.rawRequest = rawRequest;
         this.listRequest.clear();
 
-        if (StringUtils.isNotEmpty(request)) {
+        if (StringUtils.isNotEmpty(rawRequest)) {
 
-            this.listRequest =
-                Pattern
-                .compile("&")
-                .splitAsStream(request)
-                .map(s -> Arrays.copyOf(s.split("="), 2))
-                .map(o ->
-                    new SimpleEntry<>(
-                        o[0],
-                        o[1] == null
-                        ? StringUtils.EMPTY
-                        : o[1]
+            if (isMultipartRequest()) {
+                // Pass request containing star * param without any parsing
+                this.listRequest = new ArrayList<>(
+                    List.of(new SimpleEntry<>(
+                        rawRequest,
+                        ""
+                    ))
+                );
+            } else {
+                this.listRequest = Pattern
+                    .compile("&")
+                    .splitAsStream(rawRequest)
+                    .map(s -> Arrays.copyOf(s.split("="), 2))
+                    .map(o ->
+                        new SimpleEntry<>(
+                            o[0],
+                            o[1] == null
+                            ? StringUtils.EMPTY
+                            : o[1]
+                        )
                     )
-                )
-                .collect(Collectors.toList());
+                    .collect(Collectors.toList());
+            }
         }
     }
 
@@ -347,16 +359,17 @@ public class ParameterUtil {
 //        }
 //    }
 
-    public void initializeHeader(String header) {
+    public void initializeHeader(String rawHeader) {
         
+        this.rawHeader = rawHeader;
         this.listHeader.clear();
-        
-        if (StringUtils.isNotEmpty(header)) {
+
+        if (StringUtils.isNotEmpty(rawHeader)) {
             
             this.listHeader =
                 Pattern
                 .compile("\\\\r\\\\n")
-                .splitAsStream(header)
+                .splitAsStream(rawHeader)
                 .map(commaEntry ->
                     Arrays.copyOf(
                         commaEntry.split(":"),
@@ -433,8 +446,7 @@ public class ParameterUtil {
     
     public String getHeaderFromEntries() {
         
-        return
-            this.listHeader
+        return this.listHeader
             .stream()
             .filter(Objects::nonNull)
             .map(entry ->
@@ -449,8 +461,7 @@ public class ParameterUtil {
 
     public boolean isRequestSoap() {
         
-        return
-            this.requestAsText
+        return this.rawRequest
             .trim()
             .matches("^(<soapenv:|<\\?xml).*");
     }
@@ -459,16 +470,16 @@ public class ParameterUtil {
     // Getters / setters
     
     public String getRawRequest() {
-        return this.requestAsText;
+        return this.rawRequest;
+    }
+
+    public String getRawHeader() {
+        return this.rawHeader;
     }
 
     public List<SimpleEntry<String, String>> getListRequest() {
         return this.listRequest;
     }
-
-//    public List<SimpleEntry<String, String>> getListMultipart() {
-//        return this.listMultipart;
-//    }
 
     public void setListRequest(List<SimpleEntry<String, String>> listRequest) {
         this.listRequest = listRequest;

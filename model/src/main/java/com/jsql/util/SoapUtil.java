@@ -112,6 +112,7 @@ public class SoapUtil {
                     this.injectionModel.getMediatorMethod().getRequest().testParameters();
 
                     // Injection successful
+                    // TODO May be false
                     return true;
                     
                 } catch (JSqlException e) {

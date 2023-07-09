@@ -1,13 +1,12 @@
-package groovy
-
 import com.jsql.model.InjectionModel
 import com.jsql.model.exception.InjectionFailureException
+import com.jsql.util.ParameterUtil
 import spock.lang.Specification
 
 class ParameterUtilSpock extends Specification {
-    
-    def injectionModel
-    def parameterUtil
+
+    InjectionModel injectionModel
+    ParameterUtil parameterUtil
 
     def 'Check STAR is used by correct method injection when check all param is disabled'() {
         

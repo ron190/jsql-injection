@@ -103,6 +103,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.mediatorUtils.setParameterUtil(new ParameterUtil(this));
         this.mediatorUtils.setExceptionUtil(new ExceptionUtil(this));
         this.mediatorUtils.setSoapUtil(new SoapUtil(this));
+        this.mediatorUtils.setMultipartUtil(new MultipartUtil(this));
         this.mediatorUtils.setJsonUtil(new JsonUtil(this));
         this.mediatorUtils.setPreferencesUtil(new PreferencesUtil());
         this.mediatorUtils.setProxyUtil(new ProxyUtil(this));
@@ -168,16 +169,20 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             this.mediatorUtils.getConnectionUtil().testConnection();
             
             boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters();
-//            boolean hasFoundInjection = this.mediatorMethod.getMultipart().testParameters();
 
             if (!hasFoundInjection) {
-                
+
+                hasFoundInjection = this.mediatorUtils.getMultipartUtil().testParameters();
+            }
+
+            if (!hasFoundInjection) {
+
                 hasFoundInjection = this.mediatorUtils.getSoapUtil().testParameters();
             }
             
             if (!hasFoundInjection) {
 
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking standard Request parameters");
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking standard request parameters");
                 hasFoundInjection = this.mediatorMethod.getRequest().testParameters();
             }
 

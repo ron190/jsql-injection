@@ -6,7 +6,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class SoapTestNopeSuite extends ConcreteMySqlErrorTestSuite {
+public class SoapTestSuite extends ConcreteMySqlErrorTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
@@ -17,8 +17,16 @@ public class SoapTestNopeSuite extends ConcreteMySqlErrorTestSuite {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/ws");
-        model.getMediatorUtils().getParameterUtil().initializeRequest("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:gs=\"http://www.baeldung.com/springsoap/gen\"><soapenv:Header/><soapenv:Body><gs:getCountryRequest><gs:name>1'</gs:name></gs:getCountryRequest></soapenv:Body></soapenv:Envelope>");
-        
+        model.getMediatorUtils().getParameterUtil().initializeRequest(
+            "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:gs=\"http://www.baeldung.com/springsoap/gen\">" +
+            "    <soapenv:Header/>" +
+            "    <soapenv:Body>" +
+            "        <gs:getCountryRequest>" +
+            "            <gs:name>1'</gs:name>" +
+            "        </gs:getCountryRequest>" +
+            "    </soapenv:Body>" +
+            "</soapenv:Envelope>"
+        );
         model.getMediatorUtils().getPreferencesUtil()
         .withNotTestingConnection()
         .withCheckingAllSoapParam();
