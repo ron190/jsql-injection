@@ -85,16 +85,20 @@ jobs:
     - name: Sonar scan on View module
       run: |
         $PATH_SCRIPTS/run-on-docker.sh '
-          (cd view/ ; mvn -P jsql sonar:sonar) \
+          pwd \
+          && ls \
+          && (cd view/ ; mvn -P jsql sonar:sonar) \
           && pwd \
           && ls \
-          && ls ./model/target/site/jacoco/
+          && ls ./view/target/site/jacoco/
         '
 
     - name: Sonar scan on Model module
       run: |
         $PATH_SCRIPTS/run-on-docker.sh '
-          (cd model/ ; mvn -P jsql sonar:sonar) \
+          pwd \
+          && ls \
+          && (cd model/ ; mvn -P jsql sonar:sonar) \
           && pwd \
           && ls \
           && ls ./model/target/site/jacoco/
@@ -103,7 +107,9 @@ jobs:
     - name: Codecov scan
       run: |
         $PATH_SCRIPTS/run-on-docker.sh '
-          (bash <(curl -s https://codecov.io/bash) || true) \
+          pwd \
+          && ls \
+          && (bash <(curl -s https://codecov.io/bash) || true) \
           && pwd \
           && ls \
           && ls ./model/target/site/jacoco/
@@ -112,7 +118,9 @@ jobs:
     - name: Codacy scan
       run: |
         $PATH_SCRIPTS/run-on-docker.sh '
-          (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true) \
+          pwd \
+          && ls \
+          && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true) \
           && pwd \
           && ls \
           && ls ./view/target/site/jacoco/
