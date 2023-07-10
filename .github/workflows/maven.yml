@@ -12,7 +12,7 @@ env:
 
 jobs:
   build:
-    name: Run tests on Docker
+    name: Start databases and build project image
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -50,7 +50,7 @@ jobs:
       run: |
         mvn clean install -DskipTests dependency:tree
         
-    - name: Build and start databases Docker images
+    - name: Build and start databases
       run: |
         docker-compose -f ./model/src/test/resources/docker/docker-compose.yml build --parallel
         docker-compose -f ./model/src/test/resources/docker/docker-compose.yml up -d
@@ -59,52 +59,33 @@ jobs:
         ./model/src/test/resources/docker/script/buff.sh
         ./model/src/test/resources/docker/script/verify.sh
         
-    - name: Build project Docker container
+    - name: Build project container
       run: |
-        docker rmi jsql:latest -f
         docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
 
-  tests:
-    name: Run Maven unit and integration tests
-    needs: build
-    uses: ./.github/workflows/run-on-docker.yml
-    with:
-      command: mvn clean verify -P jsql sonar:sonar
+    - name: Run Maven unit and integration tests
+      run: |
+        ./.github/workflows/scripts/run-on-docker.sh "mvn clean verify -P jsql sonar:sonar"
 
-  codecov:
-    name: Codecov scan
-    needs: tests
-    uses: ./.github/workflows/run-on-docker.yml
-    with:
-      command: (bash <(curl -s https://codecov.io/bash) || true)
+    - name: Display database stats
+      run: |
+        ./model/src/test/resources/docker/script/verify.sh
 
-  codacy:
-    name: Codacy scan
-    needs: tests
-    uses: ./.github/workflows/run-on-docker.yml
-    with:
-      command: (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)
+    - name: Codecov scan
+      run: |
+        ./.github/workflows/scripts/run-on-docker.sh "(bash <(curl -s https://codecov.io/bash) || true)"
 
-  sonar-view:
-    name: Sonar scan on module View
-    needs: tests
-    uses: ./.github/workflows/run-on-docker.yml
-    with:
-      command: (cd view/ ; mvn sonar:sonar)
+    - name: Codacy scan
+      run: |
+        ./.github/workflows/scripts/run-on-docker.sh "(bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)"
 
-  sonar-model:
-    name: Sonar scan on module Model
-    needs: tests
-    uses: ./.github/workflows/run-on-docker.yml
-    with:
-      command: (cd model/ ; mvn sonar:sonar)
+    - name: Sonar scan on View module
+      run: |
+        ./.github/workflows/scripts/run-on-docker.sh "(cd view/ ; mvn sonar:sonar)"
 
-  stats:
-    name: Verify database Docker containers statistics
-    needs: tests
-    runs-on: ubuntu-latest
-    steps:
-    - run: ./model/src/test/resources/docker/script/verify.sh
+    - name: Sonar scan on Model module
+      run: |
+        ./.github/workflows/scripts/run-on-docker.sh "(cd model/ ; mvn sonar:sonar)"
 
   codeql:
     uses: ./.github/workflows/run-codeql.yml
