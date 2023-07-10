@@ -12,7 +12,6 @@ env:
 
 jobs:
   build:
-    needs: [codeql, crda]
     name: Run tests on Docker
     runs-on: ubuntu-latest
     strategy:

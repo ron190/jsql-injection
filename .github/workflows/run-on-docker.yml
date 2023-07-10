@@ -16,6 +16,10 @@ jobs:
       - name: Run unit and integration tests
         # Pass GITHUB_SHA to Docker container
         run: |
+          pwd
+          ls -l
+          docker images
+          docker ps
           docker run                                          \
             -t                                                \
             -v "$HOME/.m2":/root/.m2                          \
