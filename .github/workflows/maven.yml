@@ -21,9 +21,11 @@ jobs:
           nashorn: -Dnashorn.args=--no-deprecation-warning
         - jdk: 3.8.1-openjdk-15-slim
           nashorn: ""
-        - jdk: 3.8.7-openjdk-18-slim
-          nashorn: ""
         - jdk: 3.9.3-eclipse-temurin-17
+          nashorn: ""
+        - jdk: 3.8.6-eclipse-temurin-18
+          nashorn: ""
+        - jdk: 3.9.0-eclipse-temurin-19
           nashorn: ""
         - jdk: 3.9.3-eclipse-temurin-20
           nashorn: ""
@@ -69,62 +71,19 @@ jobs:
       run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
 
     - name: Run Maven unit and integration tests
-      run: |
-        $PATH_SCRIPTS/run-on-docker.sh '
-          mvn clean verify -P jsql sonar:sonar \
-          && (bash <(curl -s https://codecov.io/bash) || true) \
-          && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true) \
-          && pwd \
-          && ls \
-          && ls ./model/target/site/jacoco/
-        '
+      run: $PATH_SCRIPTS/run-on-docker.sh 'mvn clean verify -P jsql'
 
     - name: Display database stats
       run: $PATH_SCRIPTS/verify.sh
 
-    - name: Sonar scan on View module
-      run: |
-        $PATH_SCRIPTS/run-on-docker.sh '
-          pwd \
-          && ls \
-          && (cd view/ ; mvn -P jsql sonar:sonar) \
-          && pwd \
-          && ls \
-          && ls ./view/target/site/jacoco/
-        '
-
-    - name: Sonar scan on Model module
-      run: |
-        $PATH_SCRIPTS/run-on-docker.sh '
-          pwd \
-          && ls \
-          && (cd model/ ; mvn -P jsql sonar:sonar) \
-          && pwd \
-          && ls \
-          && ls ./model/target/site/jacoco/
-        '
+    - name: Sonar scan
+      run: $PATH_SCRIPTS/run-on-docker.sh 'mvn sonar:sonar'
 
     - name: Codecov scan
-      run: |
-        $PATH_SCRIPTS/run-on-docker.sh '
-          pwd \
-          && ls \
-          && (bash <(curl -s https://codecov.io/bash) || true) \
-          && pwd \
-          && ls \
-          && ls ./model/target/site/jacoco/
-        '
+      run: $PATH_SCRIPTS/run-on-docker.sh '(bash <(curl -s https://codecov.io/bash) || true)'
 
     - name: Codacy scan
-      run: |
-        $PATH_SCRIPTS/run-on-docker.sh '
-          pwd \
-          && ls \
-          && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true) \
-          && pwd \
-          && ls \
-          && ls ./view/target/site/jacoco/
-        '
+      run: $PATH_SCRIPTS/run-on-docker.sh '(bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)'
 
   codeql:
     name: CodeQL scan

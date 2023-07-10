@@ -41,7 +41,6 @@
     </repositories>
 
     <properties>
-        <sonar.projectKey>jsql-injection:model</sonar.projectKey>
         <sonar.exclusions>**/blind/patch/*, **/DigestMD4.java</sonar.exclusions>
 
         <awaitility.version>4.2.0</awaitility.version>
