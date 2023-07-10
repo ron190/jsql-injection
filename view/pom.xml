@@ -14,12 +14,15 @@
         <sonar.projectKey>jsql-injection:view</sonar.projectKey>
         <sonar.exclusions>**/view/swing/sql/lexer**/*</sonar.exclusions>
 
-        <jsql-model.version>v0.86</jsql-model.version>
-        <commons-io.version>2.11.0</commons-io.version>
-        <junit-bom.version>5.7.1</junit-bom.version>
         <assertj-swing-junit.version>3.17.1</assertj-swing-junit.version>
-        <mockito-inline.version>5.2.0</mockito-inline.version>
         <awaitility.version>4.2.0</awaitility.version>
+        <commons-io.version>2.11.0</commons-io.version>
+        <jsql-model.version>v0.86</jsql-model.version>
+        <junit-bom.version>5.7.1</junit-bom.version>
+        <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
+        <maven-assembly-plugin.version>3.2.0</maven-assembly-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <mockito-inline.version>5.2.0</mockito-inline.version>
     </properties>
 
     <dependencyManagement>
@@ -72,7 +75,7 @@
                     <plugin>
                         <artifactId>maven-assembly-plugin</artifactId>
                         <!-- Fix message from 2.2-beta-5 'already added, skipping'  -->
-                        <version>3.2.0</version>
+                        <version>${maven-assembly-plugin.version}</version>
                         <configuration>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -100,7 +103,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-shade-plugin</artifactId>
-                        <version>3.2.1</version>
+                        <version>${maven-shade-plugin.version}</version>
                         <executions>
                             <execution>
                                 <phase>package</phase>
@@ -140,7 +143,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.0.0-M5</version>
+                        <version>${maven-surefire-plugin.version}</version>
                         <configuration>
                             <skipTests>false</skipTests>
                             <includes>

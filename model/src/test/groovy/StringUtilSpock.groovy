@@ -40,9 +40,15 @@ class StringUtilSpock extends Specification {
             
             StringUtil.toHex('eac') == '656163'
             StringUtil.fromHex('656163') == 'eac'
-            StringUtil.toHexZip('eac') == '1fc28b08000000000000004b4d4c0600c39dc2ba001903000000'
+            [
+                '1fc28b08000000000000004b4d4c0600c39dc2ba001903000000',     // Java 11
+                '1fc28b08000000000000c3bf4b4d4c0600c39dc2ba001903000000'    // Java >=17
+            ].contains(StringUtil.toHexZip('eac'))
             StringUtil.fromHexZip('1fc28b08000000000000004b4d4c0600c39dc2ba001903000000') == 'eac'
-            StringUtil.toBase64Zip('eac') == 'H8KLCAAAAAAAAABLTUwGAMOdwroAGQMAAAA='
+            [
+                'H8KLCAAAAAAAAABLTUwGAMOdwroAGQMAAAA=', // Java 11
+                'H8KLCAAAAAAAAMO/S01MBgDDncK6ABkDAAAA'  // Java >=17
+            ].contains(StringUtil.toBase64Zip('eac'))
             StringUtil.fromBase64Zip('H8KLCAAAAAAAAABLTUwGAMOdwroAGQMAAAA=') == 'eac'
             StringUtil.toUrl('eac') == 'eac'
             StringUtil.fromUrl('eac') == 'eac'

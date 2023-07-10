@@ -73,23 +73,50 @@ jobs:
         $PATH_SCRIPTS/run-on-docker.sh '
           mvn clean verify -P jsql sonar:sonar \
           && (bash <(curl -s https://codecov.io/bash) || true) \
-          && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)
+          && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true) \
+          && pwd \
+          && ls \
+          && ls ./model/target/site/jacoco/
         '
 
     - name: Display database stats
       run: $PATH_SCRIPTS/verify.sh
 
     - name: Sonar scan on View module
-      run: $PATH_SCRIPTS/run-on-docker.sh "(cd view/ ; mvn -P jsql sonar:sonar)"
+      run: |
+        $PATH_SCRIPTS/run-on-docker.sh '
+          (cd view/ ; mvn -P jsql sonar:sonar) \
+          && pwd \
+          && ls \
+          && ls ./model/target/site/jacoco/
+        '
 
     - name: Sonar scan on Model module
-      run: $PATH_SCRIPTS/run-on-docker.sh "(cd model/ ; mvn -P jsql sonar:sonar)"
+      run: |
+        $PATH_SCRIPTS/run-on-docker.sh '
+          (cd model/ ; mvn -P jsql sonar:sonar) \
+          && pwd \
+          && ls \
+          && ls ./model/target/site/jacoco/
+        '
 
     - name: Codecov scan
-      run: $PATH_SCRIPTS/run-on-docker.sh "(bash <(curl -s https://codecov.io/bash) || true)"
+      run: |
+        $PATH_SCRIPTS/run-on-docker.sh '
+          (bash <(curl -s https://codecov.io/bash) || true) \
+          && pwd \
+          && ls \
+          && ls ./model/target/site/jacoco/
+        '
 
     - name: Codacy scan
-      run: $PATH_SCRIPTS/run-on-docker.sh "(bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)"
+      run: |
+        $PATH_SCRIPTS/run-on-docker.sh '
+          (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true) \
+          && pwd \
+          && ls \
+          && ls ./view/target/site/jacoco/
+        '
 
   codeql:
     name: CodeQL scan
