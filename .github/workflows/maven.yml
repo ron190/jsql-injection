@@ -65,45 +65,46 @@ jobs:
         docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
 
   tests:
-    needs: build
     name: Run Maven unit and integration tests
+    needs: build
     uses: ./.github/workflows/run-on-docker.yml
     with:
       command: mvn clean verify -P jsql sonar:sonar
 
   codecov:
-    needs: tests
     name: Codecov scan
+    needs: tests
     uses: ./.github/workflows/run-on-docker.yml
     with:
       command: (bash <(curl -s https://codecov.io/bash) || true)
 
   codacy:
-    needs: tests
     name: Codacy scan
+    needs: tests
     uses: ./.github/workflows/run-on-docker.yml
     with:
       command: (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)
 
   sonar-view:
-    needs: tests
     name: Sonar scan on module View
+    needs: tests
     uses: ./.github/workflows/run-on-docker.yml
     with:
       command: (cd view/ ; mvn sonar:sonar)
 
   sonar-model:
-    needs: tests
     name: Sonar scan on module Model
+    needs: tests
     uses: ./.github/workflows/run-on-docker.yml
     with:
       command: (cd model/ ; mvn sonar:sonar)
 
   stats:
-    needs: tests
     name: Verify database Docker containers statistics
-    run: |
-      ./model/src/test/resources/docker/script/verify.sh
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+    - run: ./model/src/test/resources/docker/script/verify.sh
 
   codeql:
     uses: ./.github/workflows/run-codeql.yml
