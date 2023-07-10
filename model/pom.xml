@@ -49,7 +49,7 @@
         <!-- Spring startup frozen on later version -->
         <derbynet.version>10.14.2.0</derbynet.version>
         <dnsjava.version>3.3.1</dnsjava.version>
-        <jsoup.version>1.15.4</jsoup.version>
+        <jsoup.version>1.16.1</jsoup.version>
         <json.version>20230227</json.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <javafaker.version>1.0.2</javafaker.version>
