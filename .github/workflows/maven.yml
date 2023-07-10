@@ -64,34 +64,46 @@ jobs:
         docker rmi jsql:latest -f
         docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
 
-    - name: Run Maven unit and integration tests
-      uses: ./.github/workflows/run-on-docker.yml
-      with:
-        command: mvn clean verify -P jsql sonar:sonar
+  tests:
+    needs: build
+    name: Run Maven unit and integration tests
+    uses: ./.github/workflows/run-on-docker.yml
+    with:
+      command: mvn clean verify -P jsql sonar:sonar
 
-    - name: Codecov scan
-      uses: ./.github/workflows/run-on-docker.yml
-      with:
-        command: (bash <(curl -s https://codecov.io/bash) || true)
+  codecov:
+    needs: tests
+    name: Codecov scan
+    uses: ./.github/workflows/run-on-docker.yml
+    with:
+      command: (bash <(curl -s https://codecov.io/bash) || true)
 
-    - name: Codacy scan
-      uses: ./.github/workflows/run-on-docker.yml
-      with:
-        command: (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)
+  codacy:
+    needs: tests
+    name: Codacy scan
+    uses: ./.github/workflows/run-on-docker.yml
+    with:
+      command: (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)
 
-    - name: Sonar scan on module View
-      uses: ./.github/workflows/run-on-docker.yml
-      with:
-        command: (cd view/ ; mvn sonar:sonar)
+  sonar-view:
+    needs: tests
+    name: Sonar scan on module View
+    uses: ./.github/workflows/run-on-docker.yml
+    with:
+      command: (cd view/ ; mvn sonar:sonar)
 
-    - name: Sonar scan on module Model
-      uses: ./.github/workflows/run-on-docker.yml
-      with:
-        command: (cd model/ ; mvn sonar:sonar)
-        
-    - name: Verify database Docker containers statistics
-      run: |
-        ./model/src/test/resources/docker/script/verify.sh
+  sonar-model:
+    needs: tests
+    name: Sonar scan on module Model
+    uses: ./.github/workflows/run-on-docker.yml
+    with:
+      command: (cd model/ ; mvn sonar:sonar)
+
+  stats:
+    needs: tests
+    name: Verify database Docker containers statistics
+    run: |
+      ./model/src/test/resources/docker/script/verify.sh
 
   codeql:
     uses: ./.github/workflows/run-codeql.yml
