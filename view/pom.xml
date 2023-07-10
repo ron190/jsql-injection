@@ -11,6 +11,7 @@
     <name>jsql-view</name>
 
     <properties>
+        <sonar.moduleKey>jsql-injection:view</sonar.moduleKey>
         <sonar.exclusions>**/view/swing/sql/lexer**/*</sonar.exclusions>
 
         <assertj-swing-junit.version>3.17.1</assertj-swing-junit.version>

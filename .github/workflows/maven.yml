@@ -19,15 +19,7 @@ jobs:
         include:
         - jdk: 3.8.1-jdk-11-slim
           nashorn: -Dnashorn.args=--no-deprecation-warning
-        - jdk: 3.8.1-openjdk-15-slim
-          nashorn: ""
-        - jdk: 3.9.3-eclipse-temurin-17
-          nashorn: ""
         - jdk: 3.8.6-eclipse-temurin-18
-          nashorn: ""
-        - jdk: 3.9.0-eclipse-temurin-19
-          nashorn: ""
-        - jdk: 3.9.3-eclipse-temurin-20
           nashorn: ""
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
@@ -76,13 +68,13 @@ jobs:
     - name: Display database stats
       run: $PATH_SCRIPTS/verify.sh
 
-    - name: Sonar scan
+    - name: Scan Sonar
       run: $PATH_SCRIPTS/run-on-docker.sh 'mvn sonar:sonar'
 
-    - name: Codecov scan
+    - name: Scan Codecov
       run: $PATH_SCRIPTS/run-on-docker.sh '(bash <(curl -s https://codecov.io/bash) || true)'
 
-    - name: Codacy scan
+    - name: Scan Codacy
       run: $PATH_SCRIPTS/run-on-docker.sh '(bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)'
 
   codeql:
