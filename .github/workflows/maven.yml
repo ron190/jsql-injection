@@ -1,4 +1,4 @@
-name: Java CI with Maven and Docker
+name: Run tests on Docker
 
 on:
   push:
@@ -12,7 +12,6 @@ env:
 
 jobs:
   build:
-    name: Start databases and build project image
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -25,7 +24,9 @@ jobs:
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
       MAVEN_NASHORN: ${{ matrix.nashorn }}
-    
+      PATH_DOCKER: ./model/src/test/resources/docker
+      PATH_SCRIPTS: ./model/src/test/resources/docker/scripts
+
     steps:
     
     - name: Checkout code
@@ -47,49 +48,43 @@ jobs:
         restore-keys: ${{ runner.os }}-maven-
               
     - name: Install Maven dependencies
-      run: |
-        mvn clean install -DskipTests dependency:tree
+      run: mvn clean install -DskipTests dependency:tree
         
     - name: Build and start databases
       run: |
-        docker-compose -f ./model/src/test/resources/docker/docker-compose.yml build --parallel
-        docker-compose -f ./model/src/test/resources/docker/docker-compose.yml up -d
+        docker-compose -f $PATH_DOCKER/docker-compose.yml build --parallel
+        docker-compose -f $PATH_DOCKER/docker-compose.yml up -d
         
-        ./model/src/test/resources/docker/healthcheck/healthcheck.sh
-        ./model/src/test/resources/docker/script/buff.sh
-        ./model/src/test/resources/docker/script/verify.sh
+        $PATH_SCRIPTS/healthcheck/healthcheck.sh
+        $PATH_SCRIPTS/buff.sh
+        $PATH_SCRIPTS/verify.sh
         
     - name: Build project container
-      run: |
-        docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
+      run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
 
     - name: Run Maven unit and integration tests
-      run: |
-        ./.github/workflows/scripts/run-on-docker.sh "mvn clean verify -P jsql sonar:sonar"
+      run: $PATH_SCRIPTS/run-on-docker.sh "mvn clean verify -P jsql sonar:sonar"
 
     - name: Display database stats
-      run: |
-        ./model/src/test/resources/docker/script/verify.sh
-
-    - name: Codecov scan
-      run: |
-        ./.github/workflows/scripts/run-on-docker.sh "(bash <(curl -s https://codecov.io/bash) || true)"
-
-    - name: Codacy scan
-      run: |
-        ./.github/workflows/scripts/run-on-docker.sh "(bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)"
+      run: $PATH_SCRIPTS/verify.sh
 
     - name: Sonar scan on View module
-      run: |
-        ./.github/workflows/scripts/run-on-docker.sh "(cd view/ ; mvn sonar:sonar)"
+      run: $PATH_SCRIPTS/run-on-docker.sh "(cd view/ ; mvn sonar:sonar)"
 
     - name: Sonar scan on Model module
-      run: |
-        ./.github/workflows/scripts/run-on-docker.sh "(cd model/ ; mvn sonar:sonar)"
+      run: $PATH_SCRIPTS/run-on-docker.sh "(cd model/ ; mvn sonar:sonar)"
+
+    - name: Codecov scan
+      run: $PATH_SCRIPTS/run-on-docker.sh "(bash <(curl -s https://codecov.io/bash) || true)"
+
+    - name: Codacy scan
+      run: $PATH_SCRIPTS/run-on-docker.sh "(bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)"
 
   codeql:
+    name: CodeQL scan
     uses: ./.github/workflows/run-codeql.yml
 
   crda:
+    name: CodeReady scan
     uses: ./.github/workflows/run-codeready.yml
     secrets: inherit

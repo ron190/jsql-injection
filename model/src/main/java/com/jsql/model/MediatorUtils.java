@@ -13,6 +13,7 @@ public class MediatorUtils {
     private ExceptionUtil exceptionUtil;
     private SoapUtil soapUtil;
     private MultipartUtil multipartUtil;
+    private CookiesUtil cookiesUtil;
     private JsonUtil jsonUtil;
     private PreferencesUtil preferencesUtil;
     private ProxyUtil proxyUtil;
@@ -22,6 +23,14 @@ public class MediatorUtils {
     private CsrfUtil csrfUtil;
     private FormUtil formUtil;
     private CertificateUtil certificateUtil;
+
+    public CookiesUtil getCookiesUtil() {
+        return cookiesUtil;
+    }
+
+    public void setCookiesUtil(CookiesUtil cookiesUtil) {
+        this.cookiesUtil = cookiesUtil;
+    }
 
     public MultipartUtil getMultipartUtil() {
         return multipartUtil;

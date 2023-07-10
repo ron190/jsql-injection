@@ -50,18 +50,10 @@ public class HeaderUtil {
         String keyHeader = header.getKey().trim();
         String valueHeader = header.getValue().trim();
         
-        if ("Cookie".equalsIgnoreCase(keyHeader)) {
-            
-            // TODO enclose value in "" => Cookie: a="a"; b="b"
-            httpRequest.setHeader(keyHeader, valueHeader);
-            
-        } else {
-            
-            httpRequest.setHeader(
-                keyHeader,
-                valueHeader.replaceAll("[^\\p{ASCII}]", "")
-            );
-        }
+        httpRequest.setHeader(
+            keyHeader,
+            valueHeader.replaceAll("[^\\p{ASCII}]", "")
+        );
     }
 
     /**

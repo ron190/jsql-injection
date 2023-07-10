@@ -1,19 +1,25 @@
 package com.jsql.model.injection.strategy;
 
+import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.JSqlException;
+import com.jsql.model.suspendable.SuspendableGetCharInsertion;
+import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.jsql.model.InjectionModel;
-import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.JSqlException;
-import com.jsql.model.suspendable.SuspendableGetCharInsertion;
-import com.jsql.util.StringUtil;
-
 public class MediatorStrategy {
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = LogManager.getRootLogger();
     
     private AbstractStrategy time;
     private AbstractStrategy blind;
@@ -201,8 +207,9 @@ public class MediatorStrategy {
                 
                 parameterToInject.setValue(parameterOriginalValue.replace(InjectionModel.STAR, StringUtils.EMPTY));
             }
-            
-            throw new InjectionFailureException("No injection found");
+
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "No injection found");
+            return false;
         }
         
         return true;

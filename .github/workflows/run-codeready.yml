@@ -1,11 +1,8 @@
-name: CodeReady scan
-
 on:
   workflow_call:
 
 jobs:
   crda:
-    name: CodeReady scan
     runs-on: ubuntu-latest
     steps:
 

@@ -52,7 +52,7 @@ public abstract class AbstractMethodInjection implements Serializable {
             !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
             && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this
         ) {
-            return hasFoundInjection;
+            return false;
         }
         
         // Force injection method of model to current running method

@@ -32,58 +32,59 @@ public class MultipartUtil {
 
         Matcher matcherBoundary = Pattern.compile("boundary=([^;]*)").matcher(rawHeader);
 
-        if (matcherBoundary.find()) {
-            String boundary = matcherBoundary.group(1);
+        if (!matcherBoundary.find()) {
+            return false;
+        }
+        
+        String boundary = matcherBoundary.group(1);
 
-            Matcher matcherFormDataParameters = Pattern
-                .compile("Content-Disposition\\s*:\\s*form-data\\s*;\\s*name\\s*=\"(.*?)\"(.*?)--" + boundary, Pattern.DOTALL)
-                .matcher(rawRequest);
+        Matcher matcherFormDataParameters = Pattern
+            .compile("Content-Disposition\\s*:\\s*form-data\\s*;\\s*name\\s*=\"(.*?)\"(.*?)--" + boundary, Pattern.DOTALL)
+            .matcher(rawRequest);
 
-            while (matcherFormDataParameters.find()) {
-                String nameParameter = matcherFormDataParameters.group(1);
-                String valueParameter = matcherFormDataParameters.group(2);
-
-                String rawRequestWithStar = rawRequest.replaceAll(
-                    "(?i)(Content-Disposition\\s*:\\s*form-data\\s*;\\s*name\\s*=\\s*\"" + nameParameter + "\".*?)([\\\\r\\\\n]*--" + boundary + ")",
-                    "$1" + InjectionModel.STAR + "$2"
-                );
-
-                this.injectionModel.getMediatorUtils().getParameterUtil().initializeRequest(rawRequestWithStar);
-                LOGGER.log(
-                    LogLevelUtil.CONSOLE_INFORM,
-                    "getRequestFromEntries: {}",
-                    () -> this.injectionModel.getMediatorUtils().getParameterUtil().getRequestFromEntries()
-                );
-
-                try {
-                    LOGGER.log(
-                        LogLevelUtil.CONSOLE_INFORM,
-                        "Checking Multipart Request injection for {}={}",
-                        () -> nameParameter,
-                        () -> valueParameter.replace(InjectionModel.STAR, StringUtils.EMPTY)
-                    );
-
-                    this.injectionModel.getMediatorMethod().getRequest().testParameters();
-
-                    // Injection successful
-                    // TODO May be false
-                    return true;
-
-                } catch (JSqlException e) {
-
-                    // Injection failure
-                    LOGGER.log(
-                        LogLevelUtil.CONSOLE_ERROR,
-                        String.format(
-                            "No Multipart Request injection for %s=%s",
-                            nameParameter,
-                            valueParameter.replace(InjectionModel.STAR, StringUtils.EMPTY)
-                        )
-                    );
-                }
+        while (matcherFormDataParameters.find()) {
+            if (isBoundaryInjectable(rawRequest, boundary, matcherFormDataParameters)) {
+                return true;
             }
         }
 
         return hasFoundInjection;
+    }
+
+    private boolean isBoundaryInjectable(String rawRequest, String boundary, Matcher matcherFormDataParameters) {
+
+        String nameParameter = matcherFormDataParameters.group(1);
+        String valueParameter = matcherFormDataParameters.group(2);
+
+        String rawRequestWithStar = rawRequest.replaceAll(
+            "(?i)(Content-Disposition\\s*:\\s*form-data\\s*;\\s*name\\s*=\\s*\"" + nameParameter + "\".*?)([\\\\r\\\\n]*--" + boundary + ")",
+            "$1" + InjectionModel.STAR + "$2"
+        );
+
+        this.injectionModel.getMediatorUtils().getParameterUtil().initializeRequest(rawRequestWithStar);
+
+        try {
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_INFORM,
+                "Checking Multipart boundary injection for {}={}",
+                () -> nameParameter,
+                () -> valueParameter.replace(InjectionModel.STAR, StringUtils.EMPTY)
+            );
+
+            return this.injectionModel.getMediatorMethod().getRequest().testParameters();
+
+        } catch (JSqlException e) {
+
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_ERROR,
+                String.format(
+                    "No Multipart boundary injection for %s=%s",
+                    nameParameter,
+                    valueParameter.replace(InjectionModel.STAR, StringUtils.EMPTY)
+                )
+            );
+        }
+
+        return false;
     }
 }

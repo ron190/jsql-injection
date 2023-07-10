@@ -109,12 +109,10 @@ public class SoapUtil {
                         () -> currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY)
                     );
                     
-                    this.injectionModel.getMediatorMethod().getRequest().testParameters();
+                    if (this.injectionModel.getMediatorMethod().getRequest().testParameters()) {
+                        return true;
+                    }
 
-                    // Injection successful
-                    // TODO May be false
-                    return true;
-                    
                 } catch (JSqlException e) {
                     
                     // Injection failure

@@ -104,6 +104,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.mediatorUtils.setExceptionUtil(new ExceptionUtil(this));
         this.mediatorUtils.setSoapUtil(new SoapUtil(this));
         this.mediatorUtils.setMultipartUtil(new MultipartUtil(this));
+        this.mediatorUtils.setCookiesUtil(new CookiesUtil(this));
         this.mediatorUtils.setJsonUtil(new JsonUtil(this));
         this.mediatorUtils.setPreferencesUtil(new PreferencesUtil());
         this.mediatorUtils.setProxyUtil(new ProxyUtil(this));
@@ -167,28 +168,38 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             this.mediatorUtils.getParameterUtil().checkParametersFormat();
             
             this.mediatorUtils.getConnectionUtil().testConnection();
-            
+
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking query params...");
             boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters();
 
             if (!hasFoundInjection) {
 
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking multipart params...");
                 hasFoundInjection = this.mediatorUtils.getMultipartUtil().testParameters();
             }
 
             if (!hasFoundInjection) {
 
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking SOAP params...");
                 hasFoundInjection = this.mediatorUtils.getSoapUtil().testParameters();
             }
-            
+
             if (!hasFoundInjection) {
 
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking standard request parameters");
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking request params...");
                 hasFoundInjection = this.mediatorMethod.getRequest().testParameters();
             }
 
             if (!hasFoundInjection) {
-                
+
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking header params...");
                 hasFoundInjection = this.mediatorMethod.getHeader().testParameters();
+            }
+
+            if (!hasFoundInjection) {
+
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking cookies params...");
+                hasFoundInjection = this.mediatorUtils.getCookiesUtil().testParameters();
             }
             
             if (hasFoundInjection && !this.isScanning) {
