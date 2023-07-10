@@ -1,11 +1,8 @@
 package com.jsql.util;
 
 import java.net.http.HttpRequest.Builder;
+import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -42,10 +39,10 @@ public class CsrfUtil {
     }
 
     private void parseCsrfFromHtml(String pageSource) {
-        
-        List<String> tags =
-            Arrays
-            .asList(
+
+        // Change immutable list to mutable for adding user tag
+        List<String> tags = new ArrayList<>(
+            Arrays.asList(
                 "[name=_csrf]",
                 "[name=_token]",
                 "[name=csrf-token]",
@@ -55,7 +52,8 @@ public class CsrfUtil {
                 "[name=user_token]",
                 "[name=csrfmiddlewaretoken]",
                 "[name=form_build_id]"
-            );
+            )
+        );
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
             

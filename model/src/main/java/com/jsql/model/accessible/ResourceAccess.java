@@ -1032,7 +1032,7 @@ public class ResourceAccess {
             
         } else if ("false".equals(resultInjection)) {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Privilege FILE is not granted to current user, files can't be read");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Privilege FILE not granted to current user: files not readable");
             var request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);
             this.injectionModel.sendToViews(request);

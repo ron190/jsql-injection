@@ -1,24 +1,21 @@
 package com.jsql.util;
 
+import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
+import com.jsql.model.bean.util.Request;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
 
 public class HeaderUtil {
     

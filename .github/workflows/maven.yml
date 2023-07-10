@@ -21,6 +21,12 @@ jobs:
           nashorn: -Dnashorn.args=--no-deprecation-warning
         - jdk: 3.8.1-openjdk-15-slim
           nashorn: ""
+        - jdk: 3.8.7-openjdk-18-slim
+          nashorn: ""
+        - jdk: 3.9.3-eclipse-temurin-17
+          nashorn: ""
+        - jdk: 3.9.3-eclipse-temurin-20
+          nashorn: ""
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
       MAVEN_NASHORN: ${{ matrix.nashorn }}
@@ -63,16 +69,21 @@ jobs:
       run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
 
     - name: Run Maven unit and integration tests
-      run: $PATH_SCRIPTS/run-on-docker.sh "mvn clean verify -P jsql sonar:sonar"
+      run: |
+        $PATH_SCRIPTS/run-on-docker.sh '
+          mvn clean verify -P jsql sonar:sonar \
+          && (bash <(curl -s https://codecov.io/bash) || true) \
+          && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)
+        '
 
     - name: Display database stats
       run: $PATH_SCRIPTS/verify.sh
 
     - name: Sonar scan on View module
-      run: $PATH_SCRIPTS/run-on-docker.sh "(cd view/ ; mvn sonar:sonar)"
+      run: $PATH_SCRIPTS/run-on-docker.sh "(cd view/ ; mvn -P jsql sonar:sonar)"
 
     - name: Sonar scan on Model module
-      run: $PATH_SCRIPTS/run-on-docker.sh "(cd model/ ; mvn sonar:sonar)"
+      run: $PATH_SCRIPTS/run-on-docker.sh "(cd model/ ; mvn -P jsql sonar:sonar)"
 
     - name: Codecov scan
       run: $PATH_SCRIPTS/run-on-docker.sh "(bash <(curl -s https://codecov.io/bash) || true)"
