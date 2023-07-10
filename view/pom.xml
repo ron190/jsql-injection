@@ -2,11 +2,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>jsql-injection</groupId>
         <artifactId>jsql-injection</artifactId>
-        <version>v0.86</version>
+        <version>${revision}</version>
     </parent>
+
     <artifactId>jsql-view</artifactId>
     <name>jsql-view</name>
 
@@ -17,7 +19,6 @@
         <assertj-swing-junit.version>3.17.1</assertj-swing-junit.version>
         <awaitility.version>4.2.0</awaitility.version>
         <commons-io.version>2.11.0</commons-io.version>
-        <jsql-model.version>v0.86</jsql-model.version>
         <junit-bom.version>5.7.1</junit-bom.version>
         <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
         <maven-assembly-plugin.version>3.2.0</maven-assembly-plugin.version>
@@ -39,9 +40,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>jsql-injection</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>jsql-model</artifactId>
-            <version>${jsql-model.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <!-- Manage file pattern in drag'n drop list -->
