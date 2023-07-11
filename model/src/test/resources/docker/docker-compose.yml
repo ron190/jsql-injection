@@ -1,17 +1,17 @@
 version: "3.7"
-#services:
-#
-#  mysql:
-#    ports:
-#      - "3306:3306"
-#    build:
-#      context: .
-#      dockerfile: Dockerfile.mysql
-#    environment:
-#      MYSQL_ROOT_PASSWORD: my-secret-pw
-#    container_name: jsql-mysql
-#    networks:
-#      - jsql-network
+services:
+
+  mysql:
+    ports:
+      - "3306:3306"
+    build:
+      context: .
+      dockerfile: Dockerfile.mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+    container_name: jsql-mysql
+    networks:
+      - jsql-network
 #
 #  mysql-5-5-40:
 #    ports:
