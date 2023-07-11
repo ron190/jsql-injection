@@ -2,7 +2,7 @@ on:
   workflow_call:
 
 env:
-  _JAVA_OPTIONS: -DskipTests
+  MAVEN_OPTS: -DskipTests
 
 jobs:
   crda:
