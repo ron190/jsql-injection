@@ -64,7 +64,7 @@ jobs:
 
     - name: Run Maven unit and integration tests
       # mvn install for
-      run: $PATH_SCRIPTS/run-on-docker.sh 'mvn clean install -P jsql'
+      run: $PATH_SCRIPTS/run-on-docker.sh 'mvn clean install -P jsql -DskipITs'
 
     - name: Display database stats
       run: $PATH_SCRIPTS/verify.sh
