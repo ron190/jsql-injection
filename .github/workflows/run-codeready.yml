@@ -2,7 +2,7 @@ on:
   workflow_call:
 
 env:
-  skipTests: "true"
+  _JAVA_OPTIONS: -DskipTests
 
 jobs:
   crda:

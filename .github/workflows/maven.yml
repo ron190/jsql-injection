@@ -9,7 +9,7 @@ env:
   CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   MAVEN_NASHORN: ""
-  skipITs: "true"
+  _JAVA_OPTIONS: -DskipITs
 
 jobs:
   build:
