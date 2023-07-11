@@ -79,21 +79,21 @@ jobs:
 
     - name: Copy files from container
       run: |
-        mkdir -p "$HOME/jsql/model" "$HOME/jsql/view"
-        docker cp docker_jsql-container:/view/. $HOME/jsql/view/
-        docker cp docker_jsql-container:/model/. $HOME/jsql/model/
-        docker cp docker_jsql-container:/pom.xml $HOME/jsql/
+        mkdir -p "jsql/model" "jsql/view"
+        docker cp docker_jsql-container:/view/. jsql/view/
+        docker cp docker_jsql-container:/model/. jsql/model/
+        docker cp docker_jsql-container:/pom.xml jsql/
 
     - name: Scan Codecov
-      run: cd "$HOME/jsql/" && bash <(curl -s https://codecov.io/bash) || true
+      run: cd "jsql/" && bash <(curl -s https://codecov.io/bash) || true
 
     - name: Scan Codacy
-      run: cd "$HOME/jsql/" && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
+      run: cd "jsql/" && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
 
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
       with:
-        projectBaseDir: $HOME/jsql
+        projectBaseDir: jsql
 
   codeql:
     name: CodeQL scan
