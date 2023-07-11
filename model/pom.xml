@@ -5,12 +5,11 @@
 
     <parent>
         <groupId>jsql-injection</groupId>
-        <artifactId>jsql-injection</artifactId>
+        <artifactId>parent</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>jsql-model</artifactId>
-    <name>jsql-model</name>
+    <artifactId>model</artifactId>
 
     <repositories>
         <!--         <repository> -->

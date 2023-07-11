@@ -5,12 +5,11 @@
 
     <parent>
         <groupId>jsql-injection</groupId>
-        <artifactId>jsql-injection</artifactId>
+        <artifactId>parent</artifactId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>jsql-view</artifactId>
-    <name>jsql-view</name>
+    <artifactId>view</artifactId>
 
     <properties>
         <sonar.moduleKey>jsql-injection:view</sonar.moduleKey>
@@ -41,7 +40,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>jsql-model</artifactId>
+            <artifactId>model</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
