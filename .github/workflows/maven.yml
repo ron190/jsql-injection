@@ -66,8 +66,8 @@ jobs:
       # mvn install for
       run: $PATH_SCRIPTS/run-on-docker.sh 'mvn clean install -P jsql -DskipITs'
 
-    - name: Display database stats
-      run: $PATH_SCRIPTS/verify.sh
+#    - name: Display database stats
+#      run: $PATH_SCRIPTS/verify.sh
 
     - name: Scan Sonar
       run: $PATH_SCRIPTS/run-on-docker.sh 'ls && ls /model && ls /view && ls /report-aggregate-module && mvn sonar:sonar'
