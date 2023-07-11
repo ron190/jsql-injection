@@ -1,6 +1,9 @@
 on:
   workflow_call:
 
+env:
+  skipTests: "true"
+
 jobs:
   crda:
     runs-on: ubuntu-latest
