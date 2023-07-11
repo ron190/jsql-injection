@@ -1,7 +1,8 @@
 docker run                                          \
-  -td                                               \
+  -t                                                \
   -v "$HOME/.m2":/root/.m2                          \
   -v "$HOME/.sonar/cache":/root/.sonar/cache        \
+  -v "$HOME/.jsql":/        \
   --network docker_jsql-network                     \
   --name docker_jsql-container                      \
   -e GITHUB_SHA                                     \
