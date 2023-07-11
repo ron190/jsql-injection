@@ -90,6 +90,11 @@ jobs:
     - name: Scan Codacy
       run: cd "$HOME/jsql/" && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
 
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@master
+      with:
+        projectBaseDir: $HOME/jsql
+
     - name: Scan Sonar
       run: |
         mkdir -p "dir/home/runner/.sonar/_tmp"
