@@ -78,7 +78,7 @@ jobs:
 #      run: $PATH_SCRIPTS/verify.sh
 
     - name: Scan Codecov
-      run: $PATH_SCRIPTS/exec-on-docker.sh 'bash <(curl -s https://codecov.io/bash) || true'
+      run: $PATH_SCRIPTS/exec-on-docker.sh 'pwd && ls && bash <(curl -s https://codecov.io/bash) || true'
 
     - name: Scan Codacy
       run: $PATH_SCRIPTS/exec-on-docker.sh "bash <(curl -Ls https://coverage.codacy.com/get.sh) || true"
