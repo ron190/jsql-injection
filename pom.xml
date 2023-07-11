@@ -25,7 +25,7 @@
         <sonar.java.binaries>target/classes</sonar.java.binaries>
         <sonar.java.source>11</sonar.java.source>
         <sonar.coverage.jacoco.xmlReportPaths>
-            report-aggregate-module/target/site/jacoco-aggregate/jacoco.xml
+            target/site/jacoco-aggregate/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
 
         <commons-text.version>1.10.0</commons-text.version>
