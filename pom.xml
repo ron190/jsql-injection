@@ -31,6 +31,16 @@
         <skipTests>true</skipTests>
         <skipITs>true</skipITs>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>tests</id>
+            <properties>
+                <skipTests>false</skipTests>
+                <skipITs>true</skipITs>
+            </properties>
+        </profile>
+    </profiles>
     
     <dependencyManagement>
         <dependencies>
@@ -52,16 +62,6 @@
             <version>${commons-text.version}</version>
         </dependency>
     </dependencies>
-
-    <profiles>
-        <profile>
-            <id>tests</id>
-            <properties>
-                <skipTests>false</skipTests>
-                <skipITs>true</skipITs>
-            </properties>
-        </profile>
-    </profiles>
 
     <build>
         <plugins>
