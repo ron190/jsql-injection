@@ -80,8 +80,10 @@ jobs:
     - name: Scan Codecov
 #      run: $PATH_SCRIPTS/exec-on-docker.sh 'pwd && ls && bash <(curl -s https://codecov.io/bash) || true'
       run: |
-        docker cp docker_jsql-container:/view/target/site/jacoco/jacoco.xml $HOME/.jsql/view/jacoco.xml
-        docker cp docker_jsql-container:/model/target/site/jacoco/jacoco.xml $HOME/.jsql/model/jacoco.xml
+        mkdir -p ".jsql/model"
+        mkdir -p ".jsql/view"
+        docker cp docker_jsql-container:/view/target/site/jacoco/jacoco.xml $HOME/.jsql/view
+        docker cp docker_jsql-container:/model/target/site/jacoco/jacoco.xml $HOME/.jsql/model
         ls && ls .jsql/ && ls .jsql/view/
 
     - name: Scan Codecov
