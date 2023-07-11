@@ -53,8 +53,8 @@ jobs:
     - name: Build and start databases
       run: |
         docker-compose -f $PATH_DOCKER/docker-compose.yml build --parallel
-#        docker-compose -f $PATH_DOCKER/docker-compose.yml up -d
-#
+        docker-compose -f $PATH_DOCKER/docker-compose.yml up -d
+
 #        $PATH_SCRIPTS/healthcheck/healthcheck.sh
 #        $PATH_SCRIPTS/buff.sh
 #        $PATH_SCRIPTS/verify.sh
