@@ -79,11 +79,11 @@ jobs:
 
     - name: Scan Codecov
 #      run: $PATH_SCRIPTS/exec-on-docker.sh 'pwd && ls && bash <(curl -s https://codecov.io/bash) || true'
-      run: cd "$HOME/.jsql" && bash <(curl -s https://codecov.io/bash) || true
+      run: cd "$HOME/.jsql/" && bash <(curl -s https://codecov.io/bash) || true
 
     - name: Scan Codacy
 #      run: $PATH_SCRIPTS/exec-on-docker.sh "bash <(curl -Ls https://coverage.codacy.com/get.sh) || true"
-      run: cd "$HOME/.jsql" && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
+      run: cd "$HOME/.jsql/" && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
 
     - name: Scan Sonar
       run: $PATH_SCRIPTS/exec-on-docker.sh "mvn sonar:sonar"

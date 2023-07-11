@@ -1,8 +1,11 @@
+mkdir $HOME/.jsql/model/
+mkdir $HOME/.jsql/view/
 docker run                                          \
   -t                                                \
   -v "$HOME/.m2":/root/.m2                          \
   -v "$HOME/.sonar/cache":/root/.sonar/cache        \
-  -v "$HOME/.jsql":/        \
+  -v "$HOME/.jsql/model/":/model/        \
+  -v "$HOME/.jsql/view/":/view/        \
   --network docker_jsql-network                     \
   --name docker_jsql-container                      \
   -e GITHUB_SHA                                     \
