@@ -24,9 +24,6 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.java.binaries>target/classes</sonar.java.binaries>
         <sonar.java.source>11</sonar.java.source>
-        <sonar.coverage.jacoco.xmlReportPaths>
-            target/site/jacoco-aggregate/jacoco.xml
-        </sonar.coverage.jacoco.xmlReportPaths>
 
         <commons-text.version>1.10.0</commons-text.version>
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
