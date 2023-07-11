@@ -72,10 +72,10 @@ jobs:
 #      run: $PATH_SCRIPTS/verify.sh
 
     - name: Scan Codecov
-      run: $PATH_SCRIPTS/run-on-docker.sh '(bash <(curl -s https://codecov.io/bash) -f /model/target/site/jacoco/jacoco.xml,/view/target/site/jacoco/jacoco.xml || true)'
+      run: $PATH_SCRIPTS/run-on-docker.sh 'ls model/target/site/jacoco && (bash <(curl -s https://codecov.io/bash) -f ./model/target/site/jacoco/jacoco.xml,./view/target/site/jacoco/jacoco.xml || true)'
 
     - name: Scan Codacy
-      run: $PATH_SCRIPTS/run-on-docker.sh '(bash <(curl -Ls https://coverage.codacy.com/get.sh) report $(find . -name 'jacoco*.xml' -printf '-r %p ')) || true)'
+      run: $PATH_SCRIPTS/run-on-docker.sh "ls view/target/site/jacoco && (bash <(curl -Ls https://coverage.codacy.com/get.sh) report -f ./model/target/site/jacoco/jacoco.xml,./view/target/site/jacoco/jacoco.xml) || true)"
 
   codeql:
     name: CodeQL scan
