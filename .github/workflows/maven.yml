@@ -74,8 +74,8 @@ jobs:
           && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)
         '
 
-    - name: Display database stats
-      run: $PATH_SCRIPTS/verify.sh
+#    - name: Display database stats
+#      run: $PATH_SCRIPTS/verify.sh
 
     - name: Scan Codecov
       run: $PATH_SCRIPTS/exec-on-docker.sh '(bash <(curl -s https://codecov.io/bash) || true)'
