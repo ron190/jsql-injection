@@ -1,5 +1,5 @@
-mkdir -p "$(pwd)/.jsql/model/"
-mkdir -p "$(pwd)/.jsql/view/"
+mkdir -p "$HOME/.jsql/model/"
+mkdir -p "$HOME/.jsql/view/"
 #  -v "$(pwd)/.jsql/model":/model        \
 #  -v "$(pwd)/.jsql/view":/view        \
 docker run                                          \
