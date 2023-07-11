@@ -97,7 +97,7 @@ jobs:
         args: >
           -Dsonar.projectKey=ron190:jsql-injection
           -Dsonar.organization=ron190-github
-          -Dsonar.java.binaries=jsql/view/target/classes,jsql/model/target/classes
+          -Dsonar.java.binaries=view/target/classes,model/target/classes
           -Dsonar.java.source=11
 
   codeql:
