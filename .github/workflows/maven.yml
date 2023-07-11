@@ -95,11 +95,11 @@ jobs:
       with:
         projectBaseDir: jsql
         args: >
-          -Dsonar.projectKey = ron190:jsql-injection
-          -Dsonar.organization = ron190-github
-          -Dsonar.host.url = https://sonarcloud.io
-          -Dsonar.java.binaries = target/classes
-          -Dsonar.java.source = 11
+          -Dsonar.projectKey=ron190:jsql-injection
+          -Dsonar.organization=ron190-github
+          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.java.binaries=target/classes
+          -Dsonar.java.source=11
 
   codeql:
     name: CodeQL scan
