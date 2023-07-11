@@ -6,11 +6,7 @@ on:
     
 env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  SONAR_PROJECTKEY: ron190:jsql-injection
-  SONAR_ORGANIZATION: ron190-github
   SONAR_HOST_URL: https://sonarcloud.io
-  SONAR_JAVA_BINARIES: target/classes
-  SONAR_JAVA_SOURCE: 11
   CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   MAVEN_NASHORN: ""
