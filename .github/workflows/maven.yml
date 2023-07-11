@@ -82,6 +82,7 @@ jobs:
         mkdir -p "$HOME/jsql/view"
         docker cp docker_jsql-container:/view/. $HOME/jsql/view/
         docker cp docker_jsql-container:/model/. $HOME/jsql/model/
+        docker cp docker_jsql-container:/pom.xml $HOME/jsql/
 
     - name: Scan Codecov
       run: cd "$HOME/jsql/" && bash <(curl -s https://codecov.io/bash) || true
