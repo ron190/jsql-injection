@@ -6,9 +6,12 @@ on:
     
 env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  SONAR_HOST_URL: https://sonarcloud.io
   CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   MAVEN_NASHORN: ""
+  PATH_DOCKER: ./model/src/test/resources/docker
+  PATH_SCRIPTS: ./model/src/test/resources/docker/scripts
 
 jobs:
   build:
@@ -24,8 +27,6 @@ jobs:
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
       MAVEN_NASHORN: ${{ matrix.nashorn }}
-      PATH_DOCKER: ./model/src/test/resources/docker
-      PATH_SCRIPTS: ./model/src/test/resources/docker/scripts
 
     steps:
     
@@ -76,10 +77,9 @@ jobs:
 #    - name: Display database stats
 #      run: $PATH_SCRIPTS/verify.sh
 
-    - name: Scan Codecov
+    - name: Copy files from container
       run: |
-        mkdir -p "$HOME/jsql/model"
-        mkdir -p "$HOME/jsql/view"
+        mkdir -p "$HOME/jsql/model" "$HOME/jsql/view"
         docker cp docker_jsql-container:/view/. $HOME/jsql/view/
         docker cp docker_jsql-container:/model/. $HOME/jsql/model/
         docker cp docker_jsql-container:/pom.xml $HOME/jsql/
@@ -94,13 +94,6 @@ jobs:
       uses: sonarsource/sonarqube-scan-action@master
       with:
         projectBaseDir: $HOME/jsql
-
-    - name: Scan Sonar
-      run: |
-        mkdir -p "dir/home/runner/.sonar/_tmp"
-        sudo mkdir -p "dir/home/runner/.sonar/_tmp"
-        cd "$HOME/jsql/"
-        mvn install sonar:sonar -DskipTests
 
   codeql:
     name: CodeQL scan
