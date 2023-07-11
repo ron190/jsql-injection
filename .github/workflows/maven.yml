@@ -79,6 +79,12 @@ jobs:
 
     - name: Scan Codecov
 #      run: $PATH_SCRIPTS/exec-on-docker.sh 'pwd && ls && bash <(curl -s https://codecov.io/bash) || true'
+      run: |
+        docker cp docker_jsql-container:/view/target/site/jacoco/jacoco.xml $(pwd)/.jsql/view/jacoco.xml
+        docker cp docker_jsql-container:/model/target/site/jacoco/jacoco.xml $(pwd)/.jsql/model/jacoco.xml
+
+    - name: Scan Codecov
+#      run: $PATH_SCRIPTS/exec-on-docker.sh 'pwd && ls && bash <(curl -s https://codecov.io/bash) || true'
       run: cd "$HOME/.jsql/" && bash <(curl -s https://codecov.io/bash) || true
 
     - name: Scan Codacy
