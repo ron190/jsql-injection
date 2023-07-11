@@ -6,7 +6,6 @@ on:
     
 env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  SONAR_HOST_URL: https://sonarcloud.io
   CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   MAVEN_NASHORN: ""
@@ -94,6 +93,12 @@ jobs:
       uses: sonarsource/sonarqube-scan-action@master
       with:
         projectBaseDir: jsql
+        args: >
+          -Dsonar.projectKey = ron190:jsql-injection
+          -Dsonar.organization = ron190-github
+          -Dsonar.host.url = https://sonarcloud.io
+          -Dsonar.java.binaries = target/classes
+          -Dsonar.java.source = 11
 
   codeql:
     name: CodeQL scan
