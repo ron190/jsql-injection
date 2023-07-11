@@ -1,5 +1,5 @@
 docker run                                          \
-  -t                                                \
+  -td                                               \
   -v "$HOME/.m2":/root/.m2                          \
   -v "$HOME/.sonar/cache":/root/.sonar/cache        \
   --network docker_jsql-network                     \
