@@ -6,6 +6,7 @@ docker run                                          \
   -t                                                \
   -v "$HOME/.m2":/root/.m2                          \
   -v "$HOME/.sonar/cache":/root/.sonar/cache        \
+  --mount type=bind,source="$(pwd)/.jsql/model",target="/model" \
   --network docker_jsql-network                     \
   --name docker_jsql-container                      \
   -e GITHUB_SHA                                     \
