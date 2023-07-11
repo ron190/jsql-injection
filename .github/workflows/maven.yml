@@ -87,7 +87,7 @@ jobs:
         docker cp docker_jsql-container:/view/. $HOME/jsql/view/
         docker cp docker_jsql-container:/model/. $HOME/jsql/model/
         docker cp docker_jsql-container:/pom.xml $HOME/jsql/
-        ls && ls jsql/ && ls jsql/view/
+        ls && ls $HOME/jsql/ && ls $HOME/jsql/view/
 
     - name: Scan Codecov
 #      run: $PATH_SCRIPTS/exec-on-docker.sh 'pwd && ls && bash <(curl -s https://codecov.io/bash) || true'
