@@ -66,13 +66,18 @@ jobs:
       # Note: impossible to use just 'mvn sonar:sonar', modules reports not found
       # Sonar uploads the modules report unmerged, Codacy/Codecov needs a merged report or each files uploaded
       # Profile for skipITs/skipTests to be recognized (env var MAVEN_OPS not working)
-      run: $PATH_SCRIPTS/run-on-docker.sh 'mvn clean install sonar:sonar -P tests'
+      run: | 
+        $PATH_SCRIPTS/run-on-docker.sh '
+          mvn clean install sonar:sonar -P tests \
+          && (bash <(curl -s https://codecov.io/bash) || true) \
+          && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)
+        '
 
 #    - name: Display database stats
 #      run: $PATH_SCRIPTS/verify.sh
 
     - name: Scan Codecov
-      run: $PATH_SCRIPTS/run-on-docker.sh '(pwd ; ls ; cd view/ ; bash <(curl -s https://codecov.io/bash) || true)'
+      run: $PATH_SCRIPTS/run-on-docker.sh '(pwd ; ls view/ ; ls view/target/ ; ls view/target/site/ ; ls view/target/site/jacoco/ ; cd view/ ; bash <(curl -s https://codecov.io/bash) || true)'
 
     - name: Scan Codacy
       run: $PATH_SCRIPTS/run-on-docker.sh "(cd model/ ; bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)"
