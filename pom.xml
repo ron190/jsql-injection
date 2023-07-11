@@ -55,6 +55,13 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+    <profile>
+    <id>jsql</id>
+    <activation>
+        <activeByDefault>false</activeByDefault>
+    </activation>
+
     <build>
         <plugins>
 
@@ -118,4 +125,5 @@
             </plugin>
         </plugins>
     </build>
+    </profile></profiles>
 </project>
