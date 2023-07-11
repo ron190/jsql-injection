@@ -71,11 +71,11 @@ jobs:
 #    - name: Display database stats
 #      run: $PATH_SCRIPTS/verify.sh
 
-    - name: Scan Codacy
-      run: $PATH_SCRIPTS/run-on-docker.sh "ls && (bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Java $(find . -name 'jacoco*.xml' -printf '-r %p ')) || true)"
-
     - name: Scan Codecov
-      run: $PATH_SCRIPTS/run-on-docker.sh 'pwd && ls && (bash <(curl -s https://codecov.io/bash) -f ./model/target/site/jacoco/jacoco.xml,./view/target/site/jacoco/jacoco.xml || true)'
+      run: $PATH_SCRIPTS/run-on-docker.sh '(pwd ; ls ; cd view/ ; bash <(curl -s https://codecov.io/bash) || true)'
+
+    - name: Scan Codacy
+      run: $PATH_SCRIPTS/run-on-docker.sh "(cd model/ ; bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)"
 
   codeql:
     name: CodeQL scan
