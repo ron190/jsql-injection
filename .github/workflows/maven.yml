@@ -50,14 +50,14 @@ jobs:
     - name: Install Maven dependencies
       run: mvn clean install -DskipTests dependency:tree
         
-#    - name: Build and start databases
-#      run: |
-#        docker-compose -f $PATH_DOCKER/docker-compose.yml build --parallel
-#        docker-compose -f $PATH_DOCKER/docker-compose.yml up -d
-#
-#        $PATH_SCRIPTS/healthcheck/healthcheck.sh
-#        $PATH_SCRIPTS/buff.sh
-#        $PATH_SCRIPTS/verify.sh
+    - name: Build and start databases
+      run: |
+        docker-compose -f $PATH_DOCKER/docker-compose.yml build --parallel
+        docker-compose -f $PATH_DOCKER/docker-compose.yml up -d
+
+        $PATH_SCRIPTS/healthcheck/healthcheck.sh
+        $PATH_SCRIPTS/buff.sh
+        $PATH_SCRIPTS/verify.sh
         
     - name: Build project container
       run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
