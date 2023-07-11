@@ -70,7 +70,7 @@ jobs:
 #      run: $PATH_SCRIPTS/verify.sh
 
     - name: Scan Sonar
-      run: $PATH_SCRIPTS/run-on-docker.sh '(ls ; ls /report-aggregate-module/target/site/jacoco-aggregate ; cd report-aggregate-module ; mvn sonar:sonar)'
+      run: $PATH_SCRIPTS/run-on-docker.sh 'mvn sonar:sonar'
 
     - name: Scan Codecov
       run: $PATH_SCRIPTS/run-on-docker.sh '(bash <(curl -s https://codecov.io/bash) || true)'
