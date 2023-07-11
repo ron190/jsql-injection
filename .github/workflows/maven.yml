@@ -80,22 +80,26 @@ jobs:
     - name: Scan Codecov
 #      run: $PATH_SCRIPTS/exec-on-docker.sh 'pwd && ls && bash <(curl -s https://codecov.io/bash) || true'
       run: |
-        mkdir -p ".jsql/model"
-        mkdir -p ".jsql/view"
-        docker cp docker_jsql-container:/view/target/site/jacoco/jacoco.xml $HOME/.jsql/view
-        docker cp docker_jsql-container:/model/target/site/jacoco/jacoco.xml $HOME/.jsql/model
+        mkdir -p "$HOME/jsql/model"
+        mkdir -p "$HOME/jsql/view"
+#        docker cp docker_jsql-container:/view/target/site/jacoco/jacoco.xml $HOME/.jsql/view
+#        docker cp docker_jsql-container:/model/target/site/jacoco/jacoco.xml $HOME/.jsql/model
+        docker cp docker_jsql-container:/view/. $HOME/jsql/view/
+        docker cp docker_jsql-container:/model/. $HOME/jsql/model/
+        docker cp docker_jsql-container:/pom.xml $HOME/jsql/
         ls && ls .jsql/ && ls .jsql/view/
 
     - name: Scan Codecov
 #      run: $PATH_SCRIPTS/exec-on-docker.sh 'pwd && ls && bash <(curl -s https://codecov.io/bash) || true'
-      run: cd "$HOME/.jsql/" && bash <(curl -s https://codecov.io/bash) || true
+      run: cd "$HOME/jsql/" && bash <(curl -s https://codecov.io/bash) || true
 
     - name: Scan Codacy
 #      run: $PATH_SCRIPTS/exec-on-docker.sh "bash <(curl -Ls https://coverage.codacy.com/get.sh) || true"
-      run: cd "$HOME/.jsql/" && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
+      run: cd "$HOME/jsql/" && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
 
     - name: Scan Sonar
-      run: $PATH_SCRIPTS/exec-on-docker.sh "mvn sonar:sonar"
+#      run: $PATH_SCRIPTS/exec-on-docker.sh "mvn sonar:sonar"
+      run: cd "$HOME/jsql/" && mvn sonar:sonar
 
   codeql:
     name: CodeQL scan

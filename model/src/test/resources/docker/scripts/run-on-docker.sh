@@ -1,7 +1,3 @@
-mkdir -p "$HOME/.jsql/model/"
-mkdir -p "$HOME/.jsql/view/"
-#  -v "$(pwd)/.jsql/model":/model        \
-#  -v "$(pwd)/.jsql/view":/view        \
 docker run                                          \
   -t                                                \
   -v "$HOME/.m2":/root/.m2                          \
