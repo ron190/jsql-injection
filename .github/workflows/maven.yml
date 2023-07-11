@@ -63,7 +63,8 @@ jobs:
       run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
 
     - name: Run Maven unit and integration tests
-      # Note: impossible to use just 'mvn sonar:sonar', modules reports not found
+      # Note: impossible to just 'mvn sonar:sonar' in a step, modules reports not found
+      # Note: impossible to just scan Codecov/Codacy in a step, module/target/site/ not found
       # Sonar uploads the modules report unmerged, Codacy/Codecov needs a merged report or each files uploaded
       # Profile for skipITs/skipTests to be recognized (env var MAVEN_OPS not working)
       run: | 
@@ -73,14 +74,17 @@ jobs:
           && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)
         '
 
-#    - name: Display database stats
-#      run: $PATH_SCRIPTS/verify.sh
+    - name: Display database stats
+      run: $PATH_SCRIPTS/verify.sh
 
     - name: Scan Codecov
-      run: $PATH_SCRIPTS/run-on-docker.sh '(pwd ; ls view/ ; ls view/target/ ; ls view/target/site/ ; ls view/target/site/jacoco/ ; cd view/ ; bash <(curl -s https://codecov.io/bash) || true)'
+      run: $PATH_SCRIPTS/exec-on-docker.sh '(bash <(curl -s https://codecov.io/bash) || true)'
 
     - name: Scan Codacy
-      run: $PATH_SCRIPTS/run-on-docker.sh "(cd model/ ; bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)"
+      run: $PATH_SCRIPTS/exec-on-docker.sh "(bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)"
+
+    - name: Scan Sonar
+      run: $PATH_SCRIPTS/exec-on-docker.sh "mvn sonar:sonar"
 
   codeql:
     name: CodeQL scan
