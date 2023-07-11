@@ -86,18 +86,18 @@
         <stomp-websocket.version>2.3.3</stomp-websocket.version>
     </properties>
 
-    <profiles>
-        <profile>
-            <id>jsql</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <skipTests>false</skipTests>
-                <MAVEN_NASHORN>${env.MAVEN_NASHORN}</MAVEN_NASHORN>
-                <!-- Required to pass param value -->
-                <argLine/>
-            </properties>
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>jsql</id>-->
+<!--            <activation>-->
+<!--                <activeByDefault>false</activeByDefault>-->
+<!--            </activation>-->
+<!--            <properties>-->
+<!--                <skipTests>false</skipTests>-->
+<!--                <MAVEN_NASHORN>${env.MAVEN_NASHORN}</MAVEN_NASHORN>-->
+<!--                &lt;!&ndash; Required to pass param value &ndash;&gt;-->
+<!--                <argLine/>-->
+<!--            </properties>-->
             <build>
                 <plugins>
                     <plugin>
@@ -170,8 +170,8 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-    </profiles>
+<!--        </profile>-->
+<!--    </profiles>-->
 
     <dependencyManagement>
         <dependencies>
