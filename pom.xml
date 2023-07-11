@@ -26,7 +26,7 @@
         <sonar.java.source>11</sonar.java.source>
 
         <commons-text.version>1.10.0</commons-text.version>
-        <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <log4j-bom.version>2.20.0</log4j-bom.version>
 
         <!-- Disable tests for 3rd party Github Actions, use mvn profile to enable -->
@@ -64,7 +64,6 @@
 
     <build>
         <plugins>
-
             <plugin>
                 <!-- Generate reports for Sonar and Codecov -->
                 <groupId>org.jacoco</groupId>
