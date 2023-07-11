@@ -33,6 +33,7 @@
         <!-- Disable tests for 3rd party Github Actions, use mvn profile to enable -->
         <!-- Note: run UTs with env.MAVEN_NASHORN depending on jdk version -->
 <!--        <skipTests>true</skipTests>-->
+        <skipITs>true</skipITs>
     </properties>
     
     <dependencyManagement>
