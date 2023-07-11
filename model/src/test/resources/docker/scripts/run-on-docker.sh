@@ -3,6 +3,7 @@ docker run                                          \
   -v "$HOME/.m2":/root/.m2                          \
   -v "$HOME/.sonar/cache":/root/.sonar/cache        \
   --network docker_jsql-network                     \
+  --name docker_jsql-container                      \
   -e GITHUB_SHA                                     \
   -e SONAR_TOKEN                                    \
   -e CODACY_PROJECT_TOKEN                           \
