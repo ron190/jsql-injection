@@ -94,6 +94,12 @@
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
+            <properties>
+                <skipTests>false</skipTests>
+                <MAVEN_NASHORN>${env.MAVEN_NASHORN}</MAVEN_NASHORN>
+                <!-- Required to pass param value -->
+                <argLine/>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -130,7 +136,6 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>${maven-surefire-plugin.version}</version>
                         <configuration>
-                            <skipTests>false</skipTests>
                             <!-- Compatible only jdk > 9 -->
                             <argLine>@{argLine} ${MAVEN_NASHORN}</argLine>
                             <includes>
