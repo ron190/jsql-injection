@@ -9,7 +9,7 @@
     
     <modules>
         <module>model</module>
-<!--        <module>view</module>-->
+        <module>view</module>
 <!--        <module>report-aggregate-module</module>-->
     </modules>
 
