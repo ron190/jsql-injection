@@ -1,9 +1,6 @@
 on:
   workflow_call:
 
-env:
-  MAVEN_OPTS: -DskipTests
-
 jobs:
   crda:
     runs-on: ubuntu-latest

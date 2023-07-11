@@ -27,6 +27,9 @@
         <commons-text.version>1.10.0</commons-text.version>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <log4j-bom.version>2.20.0</log4j-bom.version>
+
+        <skipTests>true</skipTests>
+        <skipITs>true</skipITs>
     </properties>
     
     <dependencyManagement>
@@ -49,6 +52,16 @@
             <version>${commons-text.version}</version>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>tests</id>
+            <properties>
+                <skipTests>false</skipTests>
+                <skipITs>true</skipITs>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
