@@ -25,7 +25,7 @@
         <sonar.java.source>11</sonar.java.source>
 
         <commons-text.version>1.10.0</commons-text.version>
-        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <log4j-bom.version>2.20.0</log4j-bom.version>
 
         <skipTests>true</skipTests>
@@ -34,10 +34,11 @@
 
     <profiles>
         <profile>
+            <!-- Tests are disabled for scans by default, profile restores the tests -->
             <id>tests</id>
             <properties>
                 <skipTests>false</skipTests>
-                <skipITs>true</skipITs>
+                <skipITs>false</skipITs>
             </properties>
         </profile>
     </profiles>

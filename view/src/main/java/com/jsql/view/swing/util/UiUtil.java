@@ -497,20 +497,21 @@ public class UiUtil {
                 super.setSelectionVisible(true);
             }
         });
-        
+
+        // Side effect: disable caret blink, editable texts must restore blink rate
         component.addFocusListener(new FocusListener() {
-            
+
             @Override
             public void focusLost(FocusEvent e) {
-                
+
                 component.setSelectionColor(UiUtil.COLOR_FOCUS_LOST);
                 component.revalidate();
                 component.repaint();
             }
-            
+
             @Override
             public void focusGained(FocusEvent e) {
-                
+
                 component.setSelectionColor(UiUtil.COLOR_FOCUS_GAINED);
                 component.revalidate();
                 component.repaint();

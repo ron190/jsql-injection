@@ -96,6 +96,7 @@ public class PanelTampering extends JPanel implements Cleanable {
         this.checkboxIsTamperingEval.setFocusable(false);
         
         this.textPaneEval = new JPopupTextPane(new JTextPanePlaceholder(tooltipIsTamperingEval)).getProxy();
+        this.textPaneEval.getCaret().setBlinkRate(500);
         var textAreaIsTamperingEval = new LightScrollPane(this.textPaneEval);
         textAreaIsTamperingEval.setBorder(UiUtil.BORDER_FOCUS_LOST);
         textAreaIsTamperingEval.setMinimumSize(new Dimension(400, 100));

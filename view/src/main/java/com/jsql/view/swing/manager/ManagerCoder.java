@@ -47,15 +47,15 @@ public class ManagerCoder extends JPanel implements Manager {
     private JTextArea textInput;
 
     /**
+     * JTextArea displaying result of encoding/decoding.
+     */
+    private JTextPane result;
+
+    /**
      * Encoding choice by user.
      */
     private JMenuItem menuMethod;
 
-    /**
-     * JTextArea displaying result of encoding/decoding.
-     */
-    private JTextPane result;
-    
     private transient CoderListener actionCoder = new CoderListener(this);
     
     private class ChangeMenuListener implements ChangeListener {
@@ -90,6 +90,7 @@ public class ManagerCoder extends JPanel implements Manager {
         super(new BorderLayout());
 
         this.textInput = new JPopupTextArea(new JTextAreaPlaceholder("Type a string to convert")).getProxy();
+        this.textInput.getCaret().setBlinkRate(500);
         this.textInput.setEditable(true);
         this.textInput.setLineWrap(true);
         this.textInput.setName("textInputManagerCoder");

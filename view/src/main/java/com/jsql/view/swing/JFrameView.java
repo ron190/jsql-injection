@@ -10,19 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
-import java.util.prefs.Preferences;
-import java.util.stream.Stream;
-
-import javax.swing.*;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.interaction.SubscriberInteraction;
@@ -35,6 +22,19 @@ import com.jsql.view.swing.shell.AbstractShell;
 import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
+import java.util.prefs.Preferences;
+import java.util.stream.Stream;
 
 /**
  * View in the MVC pattern, defines all the components

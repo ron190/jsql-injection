@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.jsql.view.swing.panel.util;
 
-import com.jsql.view.swing.scrollpane.JScrollIndicator;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
 import com.jsql.view.swing.util.MediatorHelper;
@@ -43,9 +43,10 @@ public class ButtonExpandText extends JButton {
         this.setIcon(UiUtil.ICON_EXPAND_TEXT);
 
         JTextArea textArea = new JPopupTextArea(new JTextAreaPlaceholder("Multiline text")).getProxy();
+        textArea.getCaret().setBlinkRate(500);
 
         final JDialog frameWithTextarea = new JDialog(MediatorHelper.frame(), titleFrame, true);
-        frameWithTextarea.getContentPane().add(new JScrollIndicator(textArea));
+        frameWithTextarea.getContentPane().add(new LightScrollPane(textArea));
         frameWithTextarea.pack();
         frameWithTextarea.setSize(400, 300);
         frameWithTextarea.setLocationRelativeTo(null);

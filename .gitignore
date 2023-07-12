@@ -16,3 +16,4 @@ build.xml
 jsql-sqlite-its.db
 derby.log
 .idea/
+.run/

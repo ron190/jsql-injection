@@ -137,8 +137,8 @@ public class DialogTranslate extends JDialog {
                 language.toString(),
                 ", ",
                 "then click on Send to forward your changes to the developer on Github.<br>",
-                "<i>E.g. for Chinese, change <b>CONTEXT_MENU_COPY = Copy</b> to <b>CONTEXT_MENU_COPY = \u590d\u5236</b>, then click on Send. The list only displays what needs to be translated ",
-                "and is updated as soon as the developer processes your translation.</i>",
+                "<i>E.g. for French, change <b>CONTEXT_MENU_COPY = Copy</b> to <b>CONTEXT_MENU_COPY = Copier</b>, then click on Send. The list only displays what needs to be translated ",
+                "and is updated as soon as the developer processes your request.</i>",
                 "</html>"
             )
         );
@@ -251,6 +251,7 @@ public class DialogTranslate extends JDialog {
 
         this.textToTranslate.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         this.textToTranslate.setDragEnabled(true);
+        this.textToTranslate.getCaret().setBlinkRate(500);
 
         this.textToTranslate.setComponentPopupMenu(new JPopupMenuText(this.textToTranslate));
     }

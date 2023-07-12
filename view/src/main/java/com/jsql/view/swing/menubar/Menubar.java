@@ -891,7 +891,7 @@ public class Menubar extends JMenuBar {
                 + "  2. ...\n\n"
                 + "## [Community] Request for new feature\n\n"
             );
-            panel.add(new JLabel("Describe your issue or the bug you encountered :"), BorderLayout.NORTH);
+            panel.add(new JLabel("Describe your bug or issue :"), BorderLayout.NORTH);
             panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
             
             panel.setPreferredSize(new Dimension(400, 250));

@@ -60,6 +60,7 @@ public class PanelUserAgent extends JPanel {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
+        this.textfieldCustomUserAgent.getCaret().setBlinkRate(500);
         this.textfieldCustomUserAgent.setText(jsonScan.toString());
         MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(jsonScan.toString());
         this.textfieldCustomUserAgent.getDocument().addDocumentListener(new DocumentListenerEditing() {
