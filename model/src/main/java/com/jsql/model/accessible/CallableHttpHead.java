@@ -109,7 +109,9 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
                 .build();
             
             HttpResponse<Void> response = httpClient.send(httpRequest, BodyHandlers.discarding());
-            
+
+            this.responseCodeHttp = ""+ response.statusCode();
+
             Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
             msgHeader.put(Header.URL, this.urlAdminPage);
             msgHeader.put(Header.POST, StringUtils.EMPTY);
