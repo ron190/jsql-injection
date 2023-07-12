@@ -6,12 +6,10 @@ on:
     
 env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  SONAR_HOST_URL: https://sonarcloud.io
   CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   MAVEN_NASHORN: ""
   PATH_DOCKER: ./model/src/test/resources/docker
-  PATH_SCRIPTS: ./model/src/test/resources/docker/scripts
 
 jobs:
   build:
@@ -56,49 +54,37 @@ jobs:
         docker-compose -f $PATH_DOCKER/docker-compose.yml build --parallel
         docker-compose -f $PATH_DOCKER/docker-compose.yml up -d
 
-#        $PATH_SCRIPTS/healthcheck/healthcheck.sh
-#        $PATH_SCRIPTS/buff.sh
-#        $PATH_SCRIPTS/verify.sh
+#    - name: Database health checks and configuration
+#      run: |
+#        $PATH_DOCKER/scripts/healthcheck/healthcheck.sh
+#        $PATH_DOCKER/scripts/buff.sh
+#        $PATH_DOCKER/scripts/verify.sh
         
     - name: Build project container
       run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f model/src/test/resources/docker/Dockerfile.jsql .
 
-    - name: Run Maven unit and integration tests
-      # Note: impossible to just 'mvn sonar:sonar' in a step, modules reports not found
-      # Sonar uploads the modules report unmerged, Codacy/Codecov needs a merged report or each files uploaded
-      # Profile for skipITs/skipTests (env var MAVEN_OPS not working)
-      run: | 
-        $PATH_SCRIPTS/run-on-docker.sh '
-          mvn clean install sonar:sonar -P tests \
-          && (bash <(curl -s https://codecov.io/bash) || true) \
-          && (bash <(curl -Ls https://coverage.codacy.com/get.sh) || true)
-        '
+    - name: Run Maven unit tests and integration tests with Sonar scan
+      # Profile usage for skipITs/skipTests (env var MAVEN_OPS not working)
+      # Note: 'mvn sonar:sonar' not working, modules reports not found, use 'mvn verify sonar:sonar' for reliability
+      # Note: gh actions sonarsource/sonarqube-scan-action not working properly => analysis not reliable
+      run: $PATH_DOCKER/scripts/run-on-docker.sh 'mvn clean install sonar:sonar -P tests'
 
 #    - name: Display database stats
-#      run: $PATH_SCRIPTS/verify.sh
+#      run: $PATH_DOCKER/scripts/verify.sh
 
-    - name: Copy files from container
+    - name: Copy files and coverage reports from container
+      # Sonar scans unmerged reports, Codacy/Codecov requires scanning each files (or reports merged)
       run: |
-        mkdir -p "jsql/model" "jsql/view"
-        docker cp docker_jsql-container:/view/. jsql/view/
-        docker cp docker_jsql-container:/model/. jsql/model/
-        docker cp docker_jsql-container:/pom.xml jsql/
+        mkdir -p "shared-resources/model" "shared-resources/view"
+        docker cp docker_jsql-container:view/. shared-resources/view
+        docker cp docker_jsql-container:model/. shared-resources/model
+        docker cp docker_jsql-container:pom.xml shared-resources
 
-    - name: Scan Codecov
-      run: cd "jsql/" && bash <(curl -s https://codecov.io/bash) || true
+    - name: Codecov scan
+      run: cd shared-resources && bash <(curl -s https://codecov.io/bash) || true
 
-    - name: Scan Codacy
-      run: cd "jsql/" && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
-
-    - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@master
-      with:
-        projectBaseDir: jsql
-        args: >
-          -Dsonar.projectKey=ron190:jsql-injection
-          -Dsonar.organization=ron190-github
-          -Dsonar.java.binaries=view/target/classes,model/target/classes
-          -Dsonar.java.source=11
+    - name: Codacy scan
+      run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
 
   codeql:
     name: CodeQL scan
