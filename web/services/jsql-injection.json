@@ -1,8 +1,9 @@
 {
-    "version": "0.86",
+    "version": "0.87",
     "news": [
-        "[v0.86] Add visual feedback on logs, support multipart boundaries",
-        "[Ongoing] Optimize algorithm, reduce number of queries, parse multipart boundaries",
+        "[v0.87] Auto inject multipart and cookie params, optimize connection test",
+        "[Also in v0.87] Restore issue tracking, translation submit and bug report",
+        "[Ongoing] Optimize algorithm, reduce number of queries",
         "[Roadmap] Speed up CI pipeline, DNS/HTTP Out of band, WAF fingerprint"
     ]
 }

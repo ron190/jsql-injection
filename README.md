@@ -31,9 +31,9 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 - Authenticate using Basic, Digest, NTLM and Kerberos  
 - Proxy connection on HTTP, SOCKS4 and SOCKS5
 
-## Installation [[jsql-injection-v0.86.jar](https://github.com/ron190/jsql-injection/releases/download/v0.86/jsql-injection-v0.86.jar)]
-Install [Java](http://java.com) 11 or up to 17, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.86.jar` to launch the software.<br>
-You can also type `java -jar jsql-injection-v0.86.jar` in your terminal to start the program.<br>
+## Installation [[jsql-injection-v0.87.jar](https://github.com/ron190/jsql-injection/releases/download/v0.87/jsql-injection-v0.87.jar)]
+Install [Java](http://java.com) 11 or up to 18, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.87.jar` to launch the software.<br>
+You can also type `java -jar jsql-injection-v0.87.jar` in your terminal to start the program.<br>
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.<br>
 To run older version on Java 16+ use `java --illegal-access=warn --add-exports java.base/sun.net.www.protocol.http=ALL-UNNAMED -jar jsql-injection-v0.84.jar`.
 
