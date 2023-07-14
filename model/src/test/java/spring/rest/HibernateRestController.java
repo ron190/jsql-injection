@@ -37,15 +37,25 @@ public class HibernateRestController {
         return getResponse(name, sqlQuery, isError, isUpdate, isVisible, false, false);
     }
     
-    private Greeting getResponse(String name, String sqlQuery, boolean isError, boolean isUpdate, boolean isVisible, boolean isOracle, boolean isBoolean) {
+    private Greeting getResponse(
+        String name,
+        String sqlQuery,
+        boolean isError,
+        boolean isUpdate,
+        boolean isVisible,
+        boolean isOracle,
+        boolean isBoolean
+    ) {
+        if (name == null) {
+            // Empty when scanning
+            return null;
+        }
 
         String inject = isOracle ? name : name.replace(":", "\\:");
 
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            Query<Object[]> query = session.createNativeQuery(
-                    String.format(sqlQuery, inject)
-            );
+            Query<Object[]> query = session.createNativeQuery(String.format(sqlQuery, inject));
             if (isUpdate) {
                 query.executeUpdate();
             } else {
@@ -195,7 +205,7 @@ public class HibernateRestController {
     }
 
     @RequestMapping("/cookie")
-    public Greeting endpointCookie(HttpServletRequest request, @CookieValue("name") String name) {
+    public Greeting endpointCookie(HttpServletRequest request, @CookieValue(name = "name", required = false) String name) {
         return getResponse(name, "select 1,2,3,4,First_Name,5,6 from Student where '1' = '%s'", true, false, true);
     }
 

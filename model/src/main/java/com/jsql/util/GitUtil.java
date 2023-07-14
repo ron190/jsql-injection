@@ -10,6 +10,7 @@ import java.time.Duration;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -89,9 +90,6 @@ public class GitUtil {
      */
     public void sendUnhandledException(String threadName, Throwable throwable) {
         
-        String javaVersion = System.getProperty("java.version");
-        String osArch = System.getProperty("os.arch");
-        
         var osMetadata = String
             .join(
                 "\n",
@@ -101,14 +99,14 @@ public class GitUtil {
                 ),
                 String.format(
                     "Java: v%s-%s-%s on %s",
-                    javaVersion,
-                    osArch,
-                    System.getProperty("user.language"),
-                    System.getProperty("java.runtime.name")
+                    SystemUtils.JAVA_VERSION,
+                    SystemUtils.OS_ARCH,
+                    SystemUtils.USER_LANGUAGE,
+                    SystemUtils.JAVA_RUNTIME_NAME
                 ),
                 String.format(
                     "OS: %s (v%s)",
-                    System.getProperty("os.name"), System.getProperty("os.version")
+                    SystemUtils.OS_NAME, SystemUtils.OS_VERSION
                 ),
                 String.format(
                     "Desktop: %s",
@@ -137,7 +135,7 @@ public class GitUtil {
         
         var clientDescription = String
             .format(
-                "```%n%s%n```%n```%n%s```",
+                "```yaml%n%s%n```%n```java%n%s```",
                 osMetadata,
                 exceptionText
             );

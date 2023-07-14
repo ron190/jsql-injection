@@ -434,8 +434,6 @@ public final class OrderedProperties {
      */
     private static final class DateSuppressingPropertiesBufferedWriter extends BufferedWriter {
 
-        private static final String LINE_SEPARATOR = System.getProperty("line.separator");
-
         private StringBuilder currentComment;
         private String previousComment;
 
@@ -451,7 +449,7 @@ public final class OrderedProperties {
                 
                 this.currentComment.append(string);
                 
-                if (string.endsWith(LINE_SEPARATOR)) {
+                if (string.endsWith(System.lineSeparator())) {
                     
                     if (this.previousComment != null) {
                         

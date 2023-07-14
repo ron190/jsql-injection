@@ -3,8 +3,8 @@ package com.jsql.view.swing.menubar;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 
-import com.jsql.view.swing.shadow.SystemUtils;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.SystemUtils;
 
 @SuppressWarnings("serial")
 public class JMenuItemWithMargin extends JMenuItem {

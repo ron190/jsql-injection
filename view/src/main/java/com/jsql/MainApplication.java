@@ -1,11 +1,9 @@
 package com.jsql;
 
-import java.awt.AWTError;
-import java.awt.Dimension;
-import java.awt.HeadlessException;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.net.URISyntaxException;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,9 +22,17 @@ public class MainApplication {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private static InjectionModel injectionModel;
+    private static final InjectionModel injectionModel;
     
     static {
+
+        if (GraphicsEnvironment.isHeadless()) {
+            LOGGER.log(
+                Level.ERROR,
+                "Headless runtime detected, please install or use the default Java runtime instead of a headless runtime"
+            );
+            System.exit(1);
+        }
         
         injectionModel = new InjectionModel();
         

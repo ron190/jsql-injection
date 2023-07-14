@@ -1,13 +1,13 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
 
 @SuppressWarnings("serial")
 public class Fingerprint implements Serializable {
@@ -36,7 +36,7 @@ public class Fingerprint implements Serializable {
             this.errorMessage
             .stream()
             .collect(
-                Collectors.joining(System.getProperty("line.separator"))
+                Collectors.joining(System.lineSeparator())
             );
     }
     

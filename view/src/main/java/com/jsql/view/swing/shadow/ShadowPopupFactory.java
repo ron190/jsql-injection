@@ -30,6 +30,8 @@ package com.jsql.view.swing.shadow;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.apache.commons.lang3.SystemUtils;
+
 import java.awt.Component;
 
 import javax.swing.Popup;

@@ -3,6 +3,7 @@ package com.jsql.util;
 import java.util.prefs.Preferences;
 
 import com.jsql.model.InjectionModel;
+import org.apache.commons.lang3.SystemUtils;
 
 /**
  * Utility class to manage JVM preferences previously saved into the system.
@@ -82,7 +83,7 @@ public class PreferencesUtil {
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
         
-        this.pathFile = prefs.get("pathFile", System.getProperty("user.dir"));
+        this.pathFile = prefs.get("pathFile", SystemUtils.USER_DIR);
         
         this.isCheckingUpdate = prefs.getBoolean("isCheckingUpdate", true);
         this.isReportingBugs = prefs.getBoolean("isReportingBugs", true);

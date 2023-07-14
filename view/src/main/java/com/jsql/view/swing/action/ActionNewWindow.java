@@ -10,23 +10,21 @@
  ******************************************************************************/
 package com.jsql.view.swing.action;
 
+import com.jsql.MainApplication;
+import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.KeyStroke;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.MainApplication;
-import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevelUtil;
 
 /**
  * Open another jSQL instance in new process.
@@ -39,13 +37,11 @@ public class ActionNewWindow extends AbstractAction {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private static final String SEPARATOR = System.getProperty("file.separator");
-    private static final String CLASSPATH = System.getProperty("java.class.path");
-    private static final String PATH = System.getProperty("java.home") + SEPARATOR +"bin"+ SEPARATOR +"java";
+    private static final String PATH = SystemUtils.JAVA_HOME + File.separator +"bin"+ File.separator +"java";
     
     private static final List<String> COMMANDS_DEFAULT = Arrays.asList(
         "-cp",
-        CLASSPATH,
+        SystemUtils.JAVA_CLASS_PATH,
         MainApplication.class.getName()
     );
     
@@ -53,7 +49,7 @@ public class ActionNewWindow extends AbstractAction {
     
     public ActionNewWindow() {
         
-        this(I18nUtil.valueByKey("NEW_WINDOW_MENU"), new String[0]);
+        this(I18nUtil.valueByKey("NEW_WINDOW_MENU"));
         
         this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));

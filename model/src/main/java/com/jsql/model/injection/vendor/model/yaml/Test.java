@@ -82,7 +82,7 @@ public class Test implements Serializable {
             this.trues
             .stream()
             .collect(
-                Collectors.joining(System.getProperty("line.separator"))
+                Collectors.joining(System.lineSeparator())
             );
     }
     
@@ -95,7 +95,7 @@ public class Test implements Serializable {
             this.falses
             .stream()
             .collect(
-                Collectors.joining(System.getProperty("line.separator"))
+                Collectors.joining(System.lineSeparator())
             );
     }
     

@@ -23,6 +23,7 @@ import com.jsql.model.injection.vendor.MediatorVendor;
 import com.jsql.util.*;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -780,16 +781,13 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     
     public void displayVersion() {
         
-        String versionJava = System.getProperty("java.version");
-        String architecture = System.getProperty("os.arch");
-        
         LOGGER.log(
             LogLevelUtil.CONSOLE_DEFAULT,
             "jSQL Injection v{} on Java {}-{}-{}",
             this::getVersionJsql,
-            () -> versionJava,
-            () -> architecture,
-            () -> System.getProperty("user.language")
+            () -> SystemUtils.JAVA_VERSION,
+            () -> SystemUtils.OS_ARCH,
+            () -> SystemUtils.USER_LANGUAGE
         );
     }
     

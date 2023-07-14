@@ -12,8 +12,9 @@ public abstract class ConcreteOracleTestSuite extends AbstractTestSuite {
         
         /*
             Oracle Database 19c (19.3.0) Enterprise Edition and Standard Edition 2
-            
-            buildDockerImage.sh -v 19.3.0 -e
+
+            - Download LINUX.X64_193000_db_home.zip in folder 19.3.0
+            - buildDockerImage.sh -v 19.3.0 -e
             
             docker run --name oracle19ee \
             -p 1521:1521 -p 5500:5500 \

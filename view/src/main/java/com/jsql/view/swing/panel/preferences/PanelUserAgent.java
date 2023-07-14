@@ -52,7 +52,7 @@ public class PanelUserAgent extends JPanel {
             String line;
             while ((line = reader.readLine()) != null) {
                 
-                jsonScan.append(line + System.getProperty("line.separator"));
+                jsonScan.append(line + System.lineSeparator());
             }
             
         } catch (IOException e) {

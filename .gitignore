@@ -17,3 +17,5 @@ jsql-sqlite-its.db
 derby.log
 .idea/
 .run/
+.flattened-pom.xml
+pom.xml.versionsBackup
