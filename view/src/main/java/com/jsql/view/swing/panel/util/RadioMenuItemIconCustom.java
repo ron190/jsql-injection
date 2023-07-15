@@ -16,7 +16,12 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 public class RadioMenuItemIconCustom implements Icon, UIResource, Serializable {
     
     public void paintOceanIcon(Component c, Graphics g, int x, int y) {
-        
+
+        // Fix #95383, NullPointerException on c.getModel()
+        if (c == null) {
+            return;
+        }
+
         ButtonModel model = ((AbstractButton) c).getModel();
         boolean isSelected = model.isSelected();
         boolean isEnabled = model.isEnabled();

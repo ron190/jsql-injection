@@ -58,16 +58,14 @@ public class CsrfUtil {
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
             
             tags.add(
-                String
-                .format(
+                String.format(
                     "[name=%s]",
                     this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTag()
                 )
             );
         }
         
-        Optional<SimpleEntry<String, String>> optionalTokenCsrf =
-            Jsoup
+        Optional<SimpleEntry<String, String>> optionalTokenCsrf = Jsoup
             .parse(pageSource)
             .select("input")
             .select(

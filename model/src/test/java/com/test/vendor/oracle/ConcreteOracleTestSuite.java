@@ -23,7 +23,9 @@ public abstract class ConcreteOracleTestSuite extends AbstractTestSuite {
             -e ORACLE_PWD=Password1_One \
             -e ORACLE_CHARACTERSET=AL32UTF8 \
             oracle/database:19.3.0-ee
-            
+
+            - Virtualbox port forward 11521 => 1521
+
             jdbc:oracle:thin:@localhost:11521:ORCLCDB
             system
             Password1_One
