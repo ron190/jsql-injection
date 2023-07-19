@@ -1,4 +1,4 @@
-name: Run tests on Docker
+name: DevOps CI/CD
 
 on:
   push:
@@ -13,6 +13,7 @@ env:
 
 jobs:
   build:
+    name: Tests on Docker
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -30,6 +31,9 @@ jobs:
     
     - name: Checkout code
       uses: actions/checkout@v3
+      with:
+        # Disable shallow clone to prevent Sonar warning
+        fetch-depth: 0
     
     - name: Set up JDK
       uses: actions/setup-java@v2
@@ -61,13 +65,13 @@ jobs:
     - name: Build project container
       run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
 
-    - name: Run Maven unit tests and integration tests with Sonar scan
+    - name: Unit and integration tests with Sonar scan
       # Profile usage for skipITs/skipTests (env var MAVEN_OPS not working)
       # Note: 'mvn sonar:sonar' not working, modules reports not found, use 'mvn verify sonar:sonar' for reliability
       # Note: gh actions sonarsource/sonarqube-scan-action not working properly => analysis not reliable
       run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'mvn clean install sonar:sonar -P tests'
 
-    - name: Show databases stats after integration tests
+    - name: Databases statistics
       run: $DOCKER_RESOURCES/scripts/verify.sh
 
     - name: Copy files and coverage reports from container
@@ -95,6 +99,6 @@ jobs:
 
   release:
     needs: [codeql, crda, build]
-    name: Publish release
+    name: Publish
     uses: ./.github/workflows/release.yml
     secrets: inherit

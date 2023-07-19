@@ -63,7 +63,7 @@
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <!-- Fails to find Spock UTs on later version -->
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <!-- Does not trigger ITs on later version -->
+        <!-- Fails to find ITs on later version -->
         <maven-failsafe-plugin.version>3.0.0-M4</maven-failsafe-plugin.version>
         <!-- Spring startup PKIX error on later version -->
         <mssql-jdbc.version>9.4.1.jre8</mssql-jdbc.version>
@@ -144,6 +144,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <failIfNoTests>true</failIfNoTests>
                     <!-- Don't override, it breaks generating report -->
                     <argLine>@{argLine} ${MAVEN_NASHORN}</argLine>
                     <!-- Set number of retry, allows 1st test to run Spring then run other tests -->

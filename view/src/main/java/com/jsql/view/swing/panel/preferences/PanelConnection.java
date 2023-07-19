@@ -136,7 +136,7 @@ public class PanelConnection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        var tooltipProcessCsrf = "Search for commons CSRF token in target's response and inject back the value on each requests";
+        var tooltipProcessCsrf = "<html>Search for common CSRF tokens in response header and body.<br>Inject back the value in the query, header and request body.</html>";
         this.checkboxIsProcessingCsrf.setToolTipText(tooltipProcessCsrf);
         this.checkboxIsProcessingCsrf.setFocusable(false);
         var labelIsProcessingCsrf = new JButton("Process CSRF token (search for XSRF-TOKEN/.../_csrf ; then set X-XSRF-TOKEN/.../_csrf)");

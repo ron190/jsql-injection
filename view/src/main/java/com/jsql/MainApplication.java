@@ -29,7 +29,7 @@ public class MainApplication {
         if (GraphicsEnvironment.isHeadless()) {
             LOGGER.log(
                 Level.ERROR,
-                "Headless runtime detected, please install or use the default Java runtime instead of a headless runtime"
+                "Headless runtime detected, please install or use default Java runtime instead of headless runtime"
             );
             System.exit(1);
         }
