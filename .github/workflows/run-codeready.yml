@@ -2,7 +2,7 @@ on:
   workflow_call:
 
 jobs:
-  crda:
+  scan:
     runs-on: ubuntu-latest
     steps:
 

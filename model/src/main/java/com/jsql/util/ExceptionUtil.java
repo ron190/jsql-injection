@@ -23,9 +23,9 @@ public class ExceptionUtil {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
-    private Set<String> exceptionsMd5Cached = new CopyOnWriteArraySet<>();
+    private final Set<String> exceptionsMd5Cached = new CopyOnWriteArraySet<>();
     
     public ExceptionUtil(InjectionModel injectionModel) {
         
@@ -54,33 +54,42 @@ public class ExceptionUtil {
                 && ExceptionUtils.getStackTrace(throwable).contains("com.jsql")
                 && !(throwable instanceof OutOfMemoryError)
             ) {
-                
+
+                if (ExceptionUtils.getStackTrace(throwable).contains("Could not initialize class java.awt.Toolkit")) {
+
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "System libraries are missing, please use a proper Java runtime instead of headless runtime");
+                    return;
+
+                } else if (ExceptionUtils.getStackTrace(throwable).contains("Could not initialize class sun.awt.X11.XToolkit")) {
+
+                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "System libraries are missing or wrong DISPLAY variable, please verify your settings");
+                    return;
+                }
+
                 try {
                     var md = MessageDigest.getInstance("Md5");
-                    
+
                     String stackTrace = ExceptionUtils.getStackTrace(throwable).trim();
                     var passwordString = String.valueOf(stackTrace.toCharArray());
-                    
+
                     byte[] passwordByte = passwordString.getBytes();
                     md.update(passwordByte, 0, passwordByte.length);
-                    
+
                     byte[] encodedPassword = md.digest();
-                    var encodedPasswordInString = HashUtil.digestToHexString(encodedPassword);
-                    
-                    var md5Exception = encodedPasswordInString;
-                    
+
+                    var md5Exception = HashUtil.digestToHexString(encodedPassword);
+
                     if (!ExceptionUtil.this.exceptionsMd5Cached.contains(md5Exception)) {
-                        
+
                         ExceptionUtil.this.exceptionsMd5Cached.add(md5Exception);
-                        ExceptionUtil.this.injectionModel.getMediatorUtils().getGitUtil()
-                        .sendUnhandledException(
+                        ExceptionUtil.this.injectionModel.getMediatorUtils().getGitUtil().sendUnhandledException(
                             thread.getName(),
                             throwable
                         );
                     }
-                    
+
                 } catch (NoSuchAlgorithmException e) {
-                    
+
                     LOGGER.log(LogLevelUtil.IGNORE, e);
                 }
             }

@@ -1,4 +1,4 @@
-name: DevOps CI/CD
+name: DevOps
 
 on:
   push:
@@ -89,11 +89,11 @@ jobs:
       run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
 
   codeql:
-    name: CodeQL scan
+    name: CodeQL
     uses: ./.github/workflows/run-codeql.yml
 
   crda:
-    name: CodeReady scan
+    name: CodeReady
     uses: ./.github/workflows/run-codeready.yml
     secrets: inherit
 

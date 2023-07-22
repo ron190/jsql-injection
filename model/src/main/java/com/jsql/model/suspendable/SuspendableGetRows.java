@@ -103,6 +103,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
             // Add the result to the data already found.
             // Fix #40947: OutOfMemoryError on append()
+            // Fix #95382: IllegalArgumentException on URLDecoder.decode()
             try {
                 String currentChunk = regexLeadFound.group(1);
                 
@@ -124,7 +125,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
                 this.sendChunk(currentChunk);
                 
-            } catch (IllegalStateException | OutOfMemoryError e) {
+            } catch (IllegalArgumentException | IllegalStateException | OutOfMemoryError e) {
                 
                 this.endInjection(elementDatabase, e);
             }
@@ -285,7 +286,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         var messageError = new StringBuilder("Fetching fails: no data to parse");
         
         if (searchName != null) {
-            messageError.append(" for "+ StringUtil.detectUtf8(searchName.toString()));
+            messageError.append(" for ").append(StringUtil.detectUtf8(searchName.toString()));
         }
         
         if (searchName instanceof Table && searchName.getChildCount() > 0) {

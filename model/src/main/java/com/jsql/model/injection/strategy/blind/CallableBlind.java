@@ -1,5 +1,6 @@
 package com.jsql.model.injection.strategy.blind;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -74,13 +75,15 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      */
     @Override
     public boolean isTrue() {
-        
-        for (Diff falseDiff: this.injectionBlind.getConstantFalseMark()) {
-            
+
+        // noinspection ForLoopReplaceableByForEach: prevent ConcurrentModificationException #95397
+        for (Iterator<Diff> iterator = this.injectionBlind.getConstantFalseMark().iterator(); iterator.hasNext(); ) {
+            Diff falseDiff = iterator.next();
+
             // Fix #4386: NullPointerException on contains()
             // opcodes is initialized to an empty new LinkedList<>()
             if (this.opcodes.contains(falseDiff)) {
-                
+
                 return false;
             }
         }

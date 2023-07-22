@@ -1,5 +1,6 @@
 package com.jsql.model.injection.strategy.blind;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,15 +43,17 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
      */
     @Override
     public boolean isTrue() {
-        
-        for (Diff trueDiff: this.injectionCharInsertion.getConstantTrueMark()) {
-            
+
+        // noinspection ForLoopReplaceableByForEach: prevent ConcurrentModificationException #95387
+        for (Iterator<Diff> iterator = this.injectionCharInsertion.getConstantTrueMark().iterator(); iterator.hasNext(); ) {
+            Diff trueDiff = iterator.next();
+
             if (!this.opcodes.contains(trueDiff)) {
-                
+
                 return false;
             }
         }
-        
+
         return true;
     }
 
