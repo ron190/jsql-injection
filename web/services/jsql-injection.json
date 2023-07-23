@@ -1,5 +1,5 @@
 {
-    "version": "0.88",
+    "version": "0.89",
     "news": [
         "[v0.87] Auto inject multipart and cookie params, optimize connection test",
         "[Also in v0.87] Restore issue tracking, translation submit and bug report",
