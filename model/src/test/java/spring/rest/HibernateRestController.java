@@ -19,14 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Transactional
 @RestController
 public class HibernateRestController {
 
     private static final String template = "Hello, s!";
-    private final AtomicLong counter = new AtomicLong();
     private static final Logger LOGGER = LogManager.getRootLogger();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -62,7 +60,6 @@ public class HibernateRestController {
                 List<Object[]> results = query.getResultList();
                 if (isVisible) {
                     return new Greeting(
-                        this.counter.getAndIncrement(),
                         isBoolean
                         ? results.isEmpty() ? "true" : "false"
                         : template + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
@@ -83,10 +80,7 @@ public class HibernateRestController {
 
         String stacktrace = ExceptionUtils.getStackTrace(e);
         LOGGER.debug(stacktrace);
-        return new Greeting(
-            0,
-            template + "#" + StringEscapeUtils.unescapeJava(stacktrace)
-        );
+        return new Greeting(template + "#" + StringEscapeUtils.unescapeJava(stacktrace));
     }
 
     // Visible injection

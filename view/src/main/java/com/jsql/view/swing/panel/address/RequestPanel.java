@@ -41,7 +41,7 @@ public class RequestPanel extends JPanel {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private String typeRequest = "POST";
+    private String typeRequest = "GET";
 
     public RequestPanel(PanelAddressBar panelAddressBar) {
         
@@ -59,9 +59,9 @@ public class RequestPanel extends JPanel {
         final var popup = new JPopupMenu();
         final var buttonGroup = new ButtonGroup();
         
-        for (String protocol: new String[]{"OPTIONS", "HEAD", "POST", "PUT", "DELETE", "TRACE"}) {
+        for (String protocol: new String[]{"DELETE", "GET", "HEAD", "OPTIONS", "POST", "PUT", "TRACE"}) {
             
-            final JMenuItem newMenuItem = new JRadioButtonMenuItem(protocol, "POST".equals(protocol));
+            final JMenuItem newMenuItem = new JRadioButtonMenuItem(protocol, "GET".equals(protocol));
             
             newMenuItem.addActionListener(actionEvent -> {
                 

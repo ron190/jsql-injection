@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets
 
 class StringUtilSpock extends Specification {
     
-    def 'Check decimalHtmlEncode'() {
+    def 'Check encoding/decoding methods from StringUtil and HashUtil'() {
         
         expect:
             StringUtil.decimalHtmlEncode('יאח') == '&#233;&#224;&#231;'
@@ -33,11 +33,9 @@ class StringUtilSpock extends Specification {
             HashUtil.toCrc16('eac') == 'a679'
             HashUtil.toCrc32('eac') == '419478237'
             HashUtil.toCrc64('eac') == '6380454362392559616'
+            HashUtil.toMySql('eac') != null  // unstable
             HashUtil.toHash('md5', 'eac') == '31E0E4C9C2AEE79C4BFC58C460F4DDBF'
-            
-            // Unstable
-            // StringUtil.toMySql('eac') == '11B486AA8E872E374B5174BF1BE1592AEA28D7CE'
-            
+
             StringUtil.toHex('eac') == '656163'
             StringUtil.fromHex('656163') == 'eac'
             [

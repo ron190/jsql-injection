@@ -18,12 +18,8 @@ public class MySqlInsideTestSuite extends ConcreteMySqlErrorTestSuite {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/inside");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "")
-        ));
-        
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/inside?tenant=mysql-error&name=");
+
         model.setIsScanning(true);
         
         model

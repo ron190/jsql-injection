@@ -5,7 +5,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 import org.junitpioneer.jupiter.RetryingTest;
-import spring.security.BasicWebSecurity;
+import spring.security.BasicSecurityConfig;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -25,15 +25,15 @@ public class BasicTestSuite extends ConcreteMySqlErrorTestSuite {
             new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", "")
         ));
-        
+
         model
         .getMediatorUtils()
         .getAuthenticationUtil()
         .withAuthentEnabled()
-        .withUsernameAuthentication(BasicWebSecurity.BASIC_USERNAME)
-        .withPasswordAuthentication(BasicWebSecurity.BASIC_PASSWORD)
+        .withUsernameAuthentication(BasicSecurityConfig.BASIC_USERNAME)
+        .withPasswordAuthentication(BasicSecurityConfig.BASIC_PASSWORD)
         .setAuthentication();
-        
+
         model.setIsScanning(true);
         
         model

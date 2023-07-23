@@ -10,10 +10,10 @@ import com.jsql.view.swing.util.MediatorHelper;
 
 public class BeanInjection {
     
-    private String url = StringUtils.EMPTY;
+    private String url;
     private String request = StringUtils.EMPTY;
     private String header = StringUtils.EMPTY;
-    private String requestType = StringUtils.EMPTY;
+    private String requestType;
     
     private AbstractMethodInjection method;
     private Vendor vendor;
@@ -23,7 +23,7 @@ public class BeanInjection {
         this.url = url;
         this.method = MediatorHelper.model().getMediatorMethod().getQuery();
         this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();
-        this.requestType = "POST";
+        this.requestType = "GET";
     }
     
     public BeanInjection(String url, String request, String header, String nameMethod, String vendor, String requestType) {
@@ -34,9 +34,7 @@ public class BeanInjection {
         this.header = header;
         
         try {
-            this.method =
-                MediatorHelper
-                .model()
+            this.method = MediatorHelper.model()
                 .getMediatorMethod()
                 .getMethods()
                 .stream()
@@ -50,9 +48,7 @@ public class BeanInjection {
         }
         
         try {
-            this.vendor =
-                MediatorHelper
-                .model()
+            this.vendor = MediatorHelper.model()
                 .getMediatorVendor()
                 .getVendors()
                 .stream()
@@ -65,9 +61,8 @@ public class BeanInjection {
             this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();
         }
         
-        this.requestType =
-            requestType.isEmpty()
-            ? "POST"
+        this.requestType = requestType.isEmpty()
+            ? "GET"
             : requestType;
     }
     
@@ -103,9 +98,5 @@ public class BeanInjection {
 
     public AbstractMethodInjection getMethodInstance() {
         return this.method;
-    }
-
-    public Vendor getVendorInstance() {
-        return this.vendor;
     }
 }

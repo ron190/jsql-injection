@@ -106,8 +106,7 @@ public class AuthenticationUtil {
         this.pathKerberosLogin = kerberosLoginConf;
         
         // Check if krb file has change
-        boolean isRestartRequired =
-            this.isKerberos
+        boolean isRestartRequired = this.isKerberos
             && !new File(this.pathKerberosKrb5).exists()
             && !kerberosKrb5Conf.equals(this.pathKerberosKrb5);
         

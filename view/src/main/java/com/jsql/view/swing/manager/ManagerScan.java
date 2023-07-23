@@ -105,7 +105,7 @@ public class ManagerScan extends AbstractManagerList {
                 
             } else {
                 
-                MediatorHelper.panelAddressBar().getRadioRequest().setText("POST");
+                MediatorHelper.panelAddressBar().getRadioRequest().setText("GET");
             }
             
             AbstractMethodInjection method = beanInjection.getMethodInstance();

@@ -114,6 +114,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.mediatorUtils.setUserAgentUtil(new UserAgentUtil());
         this.mediatorUtils.setCsrfUtil(new CsrfUtil(this));
         this.mediatorUtils.setFormUtil(new FormUtil(this));
+        this.mediatorUtils.setDigestUtil(new DigestUtil(this));
     }
 
     /**
@@ -131,7 +132,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.indexesInUrl = StringUtils.EMPTY;
         
         this.mediatorUtils.getCsrfUtil().setTokenCsrf(null);
-        
+        this.mediatorUtils.getDigestUtil().setTokenDigest(null);
+
         this.setIsStoppedByUser(false);
         
         this.shouldErasePreviousInjection = false;

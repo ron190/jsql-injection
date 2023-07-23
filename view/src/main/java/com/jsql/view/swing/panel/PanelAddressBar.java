@@ -106,8 +106,8 @@ public class PanelAddressBar extends JPanel {
         
         Stream
         .of(
-            new RadioModel("GET", true, MediatorHelper.model().getMediatorMethod().getQuery(), "METHOD_QUERYSTRING_TOOLTIP", this.radioQueryString),
-            new RadioModel("POST", false, MediatorHelper.model().getMediatorMethod().getRequest(), "METHOD_REQUEST_TOOLTIP", this.radioRequest),
+            new RadioModel("Url", true, MediatorHelper.model().getMediatorMethod().getQuery(), "METHOD_QUERYSTRING_TOOLTIP", this.radioQueryString),
+            new RadioModel("GET", false, MediatorHelper.model().getMediatorMethod().getRequest(), "METHOD_REQUEST_TOOLTIP", this.radioRequest),
             new RadioModel("Header", false, MediatorHelper.model().getMediatorMethod().getHeader(), "METHOD_HEADER_TOOLTIP", this.radioHeader)
         )
         .forEach(radioModel -> {

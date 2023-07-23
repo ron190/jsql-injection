@@ -57,7 +57,7 @@ public class ConnectionUtil {
     /**
      * Default HTTP method. It can be changed to a custom method.
      */
-    private String typeRequest = "POST";
+    private String typeRequest = "GET";
 
     private Random randomForUserAgent = new Random();
     
@@ -142,7 +142,7 @@ public class ConnectionUtil {
         
         return new TreeMap<>(unsortedMap);
     }
-    
+
     /**
      * Check that the connection to the website is working correctly.
      * It uses authentication defined by user, with fixed timeout, and warn
@@ -177,8 +177,7 @@ public class ConnectionUtil {
         }
 
         // Test the HTTP connection
-        Builder httpRequest = HttpRequest
-            .newBuilder()
+        Builder httpRequest = HttpRequest.newBuilder()
             .uri(
                 URI.create(
                     // Get encoded params without fragment
@@ -191,6 +190,7 @@ public class ConnectionUtil {
             .timeout(Duration.ofSeconds(this.getTimeout()));
         
         this.injectionModel.getMediatorUtils().getCsrfUtil().addHeaderToken(httpRequest);
+        this.injectionModel.getMediatorUtils().getDigestUtil().addHeaderToken(httpRequest);
 
         httpRequest.method(
             this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(),
@@ -205,29 +205,32 @@ public class ConnectionUtil {
 
         return this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(httpRequest, body);
     }
-    
+
     public void testConnection() throws IOException, InterruptedException, InjectionFailureException {
-        
+
         // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_CONNECTION_TEST"));
         this.getCookieManager().getCookieStore().removeAll();
         HttpResponse<String> httpResponse = this.checkConnectionResponse();
-        
+
         if (
             (httpResponse.statusCode() == 401 || httpResponse.statusCode() == 403)
             && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
-            && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
         ) {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> "Testing handshake from previous connection...");
+            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()) {
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -> "Testing CSRF handshake from previous connection...");
+            } else if (StringUtils.isNotEmpty(this.injectionModel.getMediatorUtils().getDigestUtil().tokenDigest)) {
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -> "Testing Digest handshake from previous connection...");
+            }
             httpResponse = this.checkConnectionResponse();
         }
-        
+
         if (httpResponse.statusCode() >= 400 && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
-            
+
             throw new InjectionFailureException(String.format("Connection failed: problem when calling %s", httpResponse.uri().toURL()));
         }
     }
-    
+
     public String getSource(String url, boolean lineFeed) throws IOException {
         
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
@@ -304,9 +307,7 @@ public class ConnectionUtil {
         if (this.injectionModel.getMediatorUtils().getUserAgentUtil().isCustomUserAgent()) {
             
             String agents = this.injectionModel.getMediatorUtils().getUserAgentUtil().getCustomUserAgent();
-            List<String> listAgents =
-                Stream
-                .of(agents.split("[\\r\\n]+"))
+            List<String> listAgents = Stream.of(agents.split("[\\r\\n]+"))
                 .filter(q -> !q.matches("^#.*"))
                 .collect(Collectors.toList());
             

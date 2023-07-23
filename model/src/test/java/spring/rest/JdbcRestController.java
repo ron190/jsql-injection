@@ -49,11 +49,7 @@ public class JdbcRestController {
             greeting = this.initializeErrorMessage(e);
         }
         
-        greeting = new Greeting(
-            this.counter.getAndIncrement(),
-            template
-            + StringEscapeUtils.unescapeJava(result.toString())
-        );
+        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
         
         return greeting;
     }
@@ -80,11 +76,7 @@ public class JdbcRestController {
             greeting = this.initializeErrorMessage(e);
         }
         
-        greeting = new Greeting(
-            this.counter.getAndIncrement(),
-            template
-            + StringEscapeUtils.unescapeJava(result.toString())
-        );
+        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
         
         return greeting;
     }
@@ -111,11 +103,7 @@ public class JdbcRestController {
             greeting = this.initializeErrorMessage(e);
         }
         
-        greeting = new Greeting(
-            this.counter.getAndIncrement(),
-            template
-            + StringEscapeUtils.unescapeJava(result.toString())
-        );
+        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
         
         return greeting;
     }
@@ -142,11 +130,7 @@ public class JdbcRestController {
             greeting = this.initializeErrorMessage(e);
         }
         
-        greeting = new Greeting(
-            this.counter.getAndIncrement(),
-            template
-            + StringEscapeUtils.unescapeJava(result.toString())
-        );
+        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
         
         return greeting;
     }
@@ -184,11 +168,7 @@ public class JdbcRestController {
             greeting = this.initializeErrorMessage(e);
         }
         
-        greeting = new Greeting(
-            this.counter.getAndIncrement(),
-            template
-            + StringEscapeUtils.unescapeJava(result.toString())
-        );
+        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
         
         return greeting;
     }
@@ -214,11 +194,7 @@ public class JdbcRestController {
             greeting = this.initializeErrorMessage(e);
         }
         
-        greeting = new Greeting(
-            this.counter.getAndIncrement(),
-            template
-            + StringEscapeUtils.unescapeJava(result.toString())
-        );
+        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
         
         return greeting;
     }
@@ -244,11 +220,7 @@ public class JdbcRestController {
             greeting = this.initializeErrorMessage(e);
         }
         
-        greeting = new Greeting(
-            this.counter.getAndIncrement(),
-            template
-            + StringEscapeUtils.unescapeJava(result.toString())
-        );
+        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
         
         return greeting;
     }
@@ -274,11 +246,7 @@ public class JdbcRestController {
             greeting = this.initializeErrorMessage(e);
         }
         
-        greeting = new Greeting(
-            this.counter.getAndIncrement(),
-            template
-            + StringEscapeUtils.unescapeJava(result.toString())
-        );
+        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
         
         return greeting;
     }
@@ -304,11 +272,7 @@ public class JdbcRestController {
             greeting = this.initializeErrorMessage(e);
         }
         
-        greeting = new Greeting(
-            this.counter.getAndIncrement(),
-            template
-            + StringEscapeUtils.unescapeJava(result.toString())
-        );
+        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
         
         return greeting;
     }
@@ -331,11 +295,7 @@ public class JdbcRestController {
                 result.append(rs.getString(1));
             }
             
-            greeting = new Greeting(
-                this.counter.getAndIncrement(),
-                template
-                + StringEscapeUtils.unescapeJava(result.toString())
-            );
+            greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             
             greeting = this.initializeErrorMessage(e);
@@ -361,11 +321,7 @@ public class JdbcRestController {
                 result.append(rs.getString(1));
             }
             
-            greeting = new Greeting(
-                this.counter.getAndIncrement(),
-                template
-                + StringEscapeUtils.unescapeJava(result.toString())
-            );
+            greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             
             greeting = this.initializeErrorMessage(e);
@@ -391,11 +347,7 @@ public class JdbcRestController {
                 result.append(rs.getString(1));
             }
             
-            greeting = new Greeting(
-                this.counter.getAndIncrement(),
-                template
-                + StringEscapeUtils.unescapeJava(result.toString())
-            );
+            greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
         } catch (Exception e) {
             
             greeting = this.initializeErrorMessage(e);
@@ -422,11 +374,7 @@ public class JdbcRestController {
                 
             ).collect(Collectors.joining());
             
-            greeting = new Greeting(
-                this.counter.getAndIncrement(),
-                template
-                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(a))
-            );
+            greeting = new Greeting(template+ StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(a)));
             
         } catch (Exception e) {
             
@@ -449,15 +397,7 @@ public class JdbcRestController {
     private Greeting initializeErrorMessage(Exception e) {
         
         String stacktrace = ExceptionUtils.getStackTrace(e);
-        
         LOGGER.debug(stacktrace);
-        
-        Greeting greeting = new Greeting(
-            0,
-            template+"#"
-            + StringEscapeUtils.unescapeJava(stacktrace)
-        );
-        
-        return greeting;
+        return new Greeting(template + "#" + StringEscapeUtils.unescapeJava(stacktrace));
     }
 }

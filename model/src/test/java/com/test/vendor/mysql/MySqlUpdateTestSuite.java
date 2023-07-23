@@ -12,18 +12,14 @@ public class MySqlUpdateTestSuite extends ConcreteMySqlErrorTestSuite {
 
     @Override
     public void setupInjection() throws Exception {
-        
+
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/update");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "")
-        ));
-        
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/update?tenant=mysql-error&name=");
+
         model.setIsScanning(true);
         
         model

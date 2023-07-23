@@ -67,14 +67,8 @@ public class CountryRepository {
         String stacktrace = ExceptionUtils.getStackTrace(e);
         
         LOGGER.debug(stacktrace);
-        
-        Greeting greeting = new Greeting(
-            0,
-            template+"#"
-            + StringEscapeUtils.unescapeJava(stacktrace)
-        );
-        
-        return greeting;
+
+        return new Greeting(template + "#" + StringEscapeUtils.unescapeJava(stacktrace));
     }
 
     @PostConstruct

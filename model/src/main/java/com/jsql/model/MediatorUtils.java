@@ -21,6 +21,7 @@ public class MediatorUtils {
     private TamperingUtil tamperingUtil;
     private UserAgentUtil userAgentUtil;
     private CsrfUtil csrfUtil;
+    private DigestUtil digestUtil;
     private FormUtil formUtil;
     private CertificateUtil certificateUtil;
 
@@ -159,6 +160,14 @@ public class MediatorUtils {
 
     public void setCsrfUtil(CsrfUtil csrfUtil) {
         this.csrfUtil = csrfUtil;
+    }
+
+    public DigestUtil getDigestUtil() {
+        return digestUtil;
+    }
+
+    public void setDigestUtil(DigestUtil digestUtil) {
+        this.digestUtil = digestUtil;
     }
 
     public FormUtil getFormUtil() {

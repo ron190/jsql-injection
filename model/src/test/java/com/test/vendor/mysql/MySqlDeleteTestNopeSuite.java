@@ -9,6 +9,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
 public class MySqlDeleteTestNopeSuite extends ConcreteMySqlErrorTestSuite {
+    // TODO Test removes rows, should be used on a dedicated table
 
     @Override
     public void setupInjection() throws Exception {

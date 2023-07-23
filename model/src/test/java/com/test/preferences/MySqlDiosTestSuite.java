@@ -19,12 +19,8 @@ public class MySqlDiosTestSuite extends ConcreteMySqlErrorTestSuite {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "")
-        ));
-        
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal?tenant=mysql-error&name=");
+
         model
         .getMediatorUtils()
         .getPreferencesUtil()

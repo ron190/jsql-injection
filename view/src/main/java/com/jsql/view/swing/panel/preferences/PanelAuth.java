@@ -45,7 +45,7 @@ public class PanelAuth extends JPanel {
         // Digest label
         var labelDigestAuthenticationUsername = new JLabel("Username  ");
         var labelDigestAuthenticationPassword = new JLabel("Password  ");
-        final var labelUseDigestAuthentication = new JButton("Enable Basic, Digest and NTLM");
+        final var labelUseDigestAuthentication = new JButton("<html>Enable <b>Basic</b> and <b>NTLM</b> (for <b>Digest</b>: do not enable but just set the user and pass)</html>");
         String tooltipUseDigestAuthentication =
             TAG_HTML_ON
             + "Enable <b>Basic</b>, <b>Digest</b>, <b>NTLM</b> authentication (e.g. WWW-Authenticate).<br>"

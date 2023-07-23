@@ -25,7 +25,7 @@ public class HeaderUtil {
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     public static final String CONTENT_TYPE_REQUEST = "Content-Type";
-    private static final String WWW_AUTHENTICATE_RESPONSE = "www-authenticate";
+    public static final String WWW_AUTHENTICATE_RESPONSE = "www-authenticate";
     private static final String REGEX_HTTP_STATUS = "4\\d\\d";
     private static final String FOUND_STATUS_HTTP = "Found status HTTP";
 
@@ -79,13 +79,14 @@ public class HeaderUtil {
         this.checkStatus(httpResponse);
         
         this.injectionModel.getMediatorUtils().getFormUtil().parseForms(httpResponse.statusCode(), pageSource);
-        
+
         this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(pageSource, mapResponseHeaders);
+
+        this.injectionModel.getMediatorUtils().getDigestUtil().parseWwwAuthenticate(mapResponseHeaders);
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         
-        int sizeHeaders = mapResponseHeaders
-            .keySet()
+        int sizeHeaders = mapResponseHeaders.keySet()
             .stream()
             .map(key -> mapResponseHeaders.get(key).length() + key.length())
             .mapToInt(Integer::intValue)

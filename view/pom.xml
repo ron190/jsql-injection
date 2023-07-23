@@ -79,6 +79,8 @@
                         </manifest>
                         <manifestEntries>
                             <Built-By>ron190</Built-By>
+                            <!-- Remove WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance. -->
+                            <Multi-Release>true</Multi-Release>
                         </manifestEntries>
                     </archive>
                 </configuration>

@@ -18,11 +18,8 @@ public class Neo4jNormalGetTestSuite extends ConcreteNeo4jTestSuite {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/neo4j");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("name", "1")
-        ));
-        
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/neo4j?name=1");
+
         model
         .getMediatorUtils()
         .getConnectionUtil()

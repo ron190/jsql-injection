@@ -288,8 +288,7 @@ public class ParameterUtil {
         
         if (StringUtils.isNotEmpty(url.getQuery())) {
             
-            this.listQueryString = Pattern
-                .compile("&")
+            this.listQueryString = Pattern.compile("&")
                 .splitAsStream(url.getQuery())
                 .map(s -> Arrays.copyOf(s.split("="), 2))
                 .map(o -> 
