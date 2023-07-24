@@ -20,24 +20,22 @@ public class JsonCheckAllParamTestSuite extends ConcreteMySqlTestSuite {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/json");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("name", "{\"c\": 1, \"b\": {\"b\": [1, true, null, {\"a\": {\"a\": \"0'\"}}]}}"),
-            new SimpleEntry<>("tenant", "mysql")
-        ));
-        
+        model.getMediatorUtils().getParameterUtil().initializeRequest("tenant=mysql&name={\"c\": 1, \"b\": {\"b\": [1, true, null, {\"a\": {\"a\": \"0'\"}}]}}");
+
+
         model.setIsScanning(true);
         
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withCheckingAllURLParam()
+        .withCheckingAllRequestParam()
         .withCheckingAllJsonParam();
 
         model
         .getMediatorUtils()
         .getConnectionUtil()
-        .withMethodInjection(model.getMediatorMethod().getQuery())
-        .withTypeRequest("GET");
+        .withMethodInjection(model.getMediatorMethod().getRequest())
+        .withTypeRequest("POST");
         
         model.beginInjection();
     }

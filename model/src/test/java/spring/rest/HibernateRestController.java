@@ -152,9 +152,14 @@ public class HibernateRestController {
         return getResponse(name, "select First_Name from Student where ((\"1\" = \"%s\"))", true, false, true);
     }
 
-    @RequestMapping("/json")
-    public Greeting endpointJson(@RequestParam(value="name", defaultValue="World") String name) {
-        String inject = name.replaceAll("\\\\:", ":");
+    @RequestMapping(
+        method = { RequestMethod.GET, RequestMethod.POST },
+        path = "/json",
+        consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.TEXT_PLAIN_VALUE }
+    )
+    public Greeting endpointJson(HttpServletRequest request) {
+        String inject = request.getParameterMap().get("name")[0];
+        inject = inject.replaceAll("\\\\:", ":");
         try {
             new JSONObject(inject);
         } catch (Exception e) {

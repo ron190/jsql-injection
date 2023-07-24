@@ -153,10 +153,7 @@ public class ConnectionUtil {
      */
     public HttpResponse<String> checkConnectionResponse() throws IOException, InterruptedException {
 
-        var queryString = URLEncoder.encode(
-            this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries(),
-            StandardCharsets.UTF_8
-        );
+        var queryString = this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();
         var testUrl = this.getUrlBase().replaceAll("\\?$", "");
 
         if (StringUtils.isNotEmpty(queryString)) {
