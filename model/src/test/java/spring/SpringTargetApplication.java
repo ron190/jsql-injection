@@ -43,7 +43,6 @@ public class SpringTargetApplication {
     private static Server serverH2;
 
     public static Properties propsH2 = new Properties();
-    public static Properties propsH2Api = new Properties();
     public static Properties propsMysql = new Properties();
     public static Properties propsMysqlError = new Properties();
     public static Properties propsPostgres = new Properties();

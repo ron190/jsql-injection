@@ -21,7 +21,7 @@ resource:
            '${enclose_value_sql}'
            || r
            || '${separator_qte_sql}'
-           || cast(q as char)
+           || cast(q as varchar)
            || '${enclose_value_sql}'
            order by r
            separator '${separator_cell_sql}'
@@ -29,7 +29,7 @@ resource:
        '${trail_sql}'
    ) from (
        select
-           cast(schema_name as char) r,
+           cast(schema_name as varchar) r,
            count(TABLE_NAME) q
        from INFORMATION_SCHEMA.tables t
        right join INFORMATION_SCHEMA.schemata s
@@ -42,7 +42,7 @@ resource:
    select concat(
        group_concat(
            '${enclose_value_sql}'
-           || cast(r as char)
+           || cast(r as varchar)
            || '${separator_qte_sql}0${enclose_value_sql}'
            order by r
            separator '${separator_cell_sql}'
@@ -60,7 +60,7 @@ resource:
    select concat(
        group_concat(
            '${enclose_value_sql}'
-           || cast(n as char)
+           || cast(n as varchar)
            || '${separator_qte_sql}0${enclose_value_sql}'
            order by n
            separator '${separator_cell_sql}'
@@ -82,7 +82,7 @@ resource:
             '${enclose_value_sql}'
             || r
             || '${separator_qte_sql}'
-            || cast(q as char)
+            || cast(q as varchar)
             || '${enclose_value_sql}'
             order by r
             separator '${separator_cell_sql}'
@@ -90,7 +90,7 @@ resource:
         '${trail_sql}'
     ) from (
         select
-            cast(${fields} as char) r,
+            cast(${fields} as varchar) r,
             count(*) q
         from `${database}`.`${table}`
         group by r
