@@ -12,6 +12,45 @@ env:
   DOCKER_RESOURCES: ./model/src/test/resources/docker
 
 jobs:
+
+  build-jdk11:
+    name: Tests on Docker
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    env:
+      JSQL_DOCKERFILE: 3.8.1-jdk-11-slim
+      MAVEN_NASHORN: -Dnashorn.args=--no-deprecation-warning
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          # Disable shallow clone to prevent Sonar warning
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 18
+
+      - name: Set Maven dependencies cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
+      - name: Install Maven dependencies
+        run: mvn clean install -DskipTests dependency:tree
+
+      - name: Build project container
+        run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
+
+      - name: Unit tests
+        run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'cd view/ && mvn clean install -P tests'
+
   build:
     name: Tests on Docker
     runs-on: ubuntu-latest
@@ -19,14 +58,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - jdk: 3.8.1-jdk-11-slim
-          nashorn: -Dnashorn.args=--no-deprecation-warning
         - jdk: 3.8.6-eclipse-temurin-18
+          nashorn: ""
+        - jdk: 3.9.3-eclipse-temurin-20
           nashorn: ""
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
       MAVEN_NASHORN: ${{ matrix.nashorn }}
-
     steps:
     
     - name: Checkout code
@@ -88,17 +126,19 @@ jobs:
     - name: Codacy scan
       run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
 
-  codeql:
-    name: CodeQL
-    uses: ./.github/workflows/run-codeql.yml
+#  codeql:
+#    Workflow not jdk compatible
+#    name: CodeQL
+#    uses: ./.github/workflows/run-codeql.yml
 
-  crda:
-    name: CodeReady
-    uses: ./.github/workflows/run-codeready.yml
-    secrets: inherit
+#  crda:
+#    Workflow not jdk compatible
+#    name: CodeReady
+#    uses: ./.github/workflows/run-codeready.yml
+#    secrets: inherit
 
   release:
-    needs: [codeql, crda, build]
+    needs: [build-jdk11, build]
     name: Publish
     uses: ./.github/workflows/release.yml
     secrets: inherit
