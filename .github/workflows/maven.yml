@@ -14,7 +14,7 @@ env:
 jobs:
 
   build-jdk11:
-    name: Tests on Docker
+    name: Test view on Docker (jdk-11)
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

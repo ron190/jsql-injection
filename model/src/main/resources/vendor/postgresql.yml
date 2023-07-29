@@ -122,7 +122,7 @@ strategy:
   slidingWindow: |
    select
        /* If reach end of string (${lead}i) then NULLIF nullifies the result.
-          Prevent parsing the query displayed on error message with split ${lead} (similar to 0+1) */
+          TODO Prevent parsing the query displayed on error message with split ${lead} (similar to 0+1) */
        'Sq' || 'Li'
        || nullif(
            substr(

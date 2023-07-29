@@ -207,8 +207,8 @@ public class HibernateRestController {
     }
 
     @GetMapping("/cookie")
-    public Greeting endpointCookie(HttpServletRequest request, @CookieValue(name = "name", required = false) String name) {
-        // Recent cookie RFC prevents ()<>@,;:\"/[]?={}
+    public Greeting endpointCookie(HttpServletRequest request, @CookieValue(name = "name", required = false, defaultValue = "") String name) {
+        // TODO Recent cookie RFC prevents ()<>@,;:\"/[]?={}
         name = URLDecoder.decode(name, StandardCharsets.UTF_8);
         return getResponse(name, "select 1,2,3,4,First_Name,5,6 from Student where '1' = '%s'", true, false, true);
     }

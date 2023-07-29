@@ -336,8 +336,14 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 httpRequestBuilder.build(),
                 BodyHandlers.ofString()
             );
-            pageSource = response.body();
-            
+
+            if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
+                // Invalid XML control chars like \x04 requires urlencoding from server
+                pageSource = URLDecoder.decode(response.body(), StandardCharsets.UTF_8);
+            } else {
+                pageSource = response.body();
+            }
+
             Map<String, String> headersResponse = ConnectionUtil.getHeadersMap(response);
             
             msgHeader.put(Header.RESPONSE, headersResponse);
@@ -519,7 +525,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                         dataInjection
                     )
                     // Invalid XML characters in recent Spring version
-                    // Server needs to urldecode, or stop using out of range chars
+                    // TODO Server needs to urldecode, or stop using out of range chars
                     .replaceAll("\\x01", "&#01;")
                     .replaceAll("\\x03", "&#03;")
                     .replaceAll("\\x04", "&#04;")
