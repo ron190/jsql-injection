@@ -49,7 +49,7 @@ jobs:
         run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
 
       - name: Unit tests
-        run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'cd view/ && mvn clean install -P tests'
+        run: $DOCKER_RESOURCES/scripts/run-on-docker-no-network.sh 'cd view/ && mvn clean install -P tests'
 
   build:
     name: Tests on Docker

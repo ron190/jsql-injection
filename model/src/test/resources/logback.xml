@@ -12,7 +12,7 @@
     <!-- Disable massive SQL error logging during injection -->
     <!-- Detailed Exception must also be try/caught -->
     <logger name="org.hibernate" level="OFF" additivity="false" />
-    <logger name="org.springframework.security" level="INFO" additivity="false">
-        <appender-ref ref="STDOUT"/>
-    </logger>
+<!--    <logger name="org.springframework.security" level="DEBUG" additivity="false">-->
+<!--        <appender-ref ref="STDOUT"/>-->
+<!--    </logger>-->
 </configuration>

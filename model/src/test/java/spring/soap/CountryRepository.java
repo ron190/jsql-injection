@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.rest.Greeting;
 
 import jakarta.annotation.PostConstruct;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +41,8 @@ public class CountryRepository {
         Country country = new Country();
 
         Session session = this.sessionFactory.getCurrentSession();
+
+        name = URLDecoder.decode(name, StandardCharsets.UTF_8);
 
         try {
             NativeQuery<Object[]> query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '" + name + "'");

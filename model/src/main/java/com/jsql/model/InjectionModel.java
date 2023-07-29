@@ -44,7 +44,6 @@ import java.time.Duration;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.stream.Stream;
 
@@ -519,6 +518,15 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                         isUsingIndex,
                         dataInjection
                     )
+                    // Invalid XML characters in recent Spring version
+                    // Server needs to urldecode, or stop using out of range chars
+                    .replaceAll("\\x01", "&#01;")
+                    .replaceAll("\\x03", "&#03;")
+                    .replaceAll("\\x04", "&#04;")
+                    .replaceAll("\\x05", "&#05;")
+                    .replaceAll("\\x06", "&#06;")
+                    .replaceAll("\\x07", "&#07;")
+                    .replace("+", "%2B")  // Prevent replace '+' into 'space' on server side urldecode
                 );
                 
             } else {

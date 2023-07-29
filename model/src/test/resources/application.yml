@@ -15,3 +15,4 @@ server:
 
 # Prevent BasicWebSecurity error: Requested bean is currently in creation: Is there an unresolvable circular reference?
 spring.main.allow-circular-references: true
+# logging.level.org.springframework.security.web.FilterChainProxy: DEBUG
