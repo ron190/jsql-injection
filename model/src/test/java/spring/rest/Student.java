@@ -1,6 +1,6 @@
 package spring.rest;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * This class represents a persistent class for Student.

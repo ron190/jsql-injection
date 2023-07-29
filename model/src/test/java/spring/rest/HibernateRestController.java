@@ -15,7 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -203,8 +206,10 @@ public class HibernateRestController {
         return getResponse(name, "select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '%s'", true, false, true);
     }
 
-    @RequestMapping("/cookie")
+    @GetMapping("/cookie")
     public Greeting endpointCookie(HttpServletRequest request, @CookieValue(name = "name", required = false) String name) {
+        // Recent cookie RFC prevents ()<>@,;:\"/[]?={}
+        name = URLDecoder.decode(name, StandardCharsets.UTF_8);
         return getResponse(name, "select 1,2,3,4,First_Name,5,6 from Student where '1' = '%s'", true, false, true);
     }
 

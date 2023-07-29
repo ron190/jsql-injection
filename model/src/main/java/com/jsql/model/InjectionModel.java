@@ -234,16 +234,16 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             Thread.currentThread().interrupt();
             
         } catch (Exception e) {  // Catch all exceptions like interrupt, URL format and JSqlException
-            
-            String eMessageImplicit = "Problem connecting to URL (implicit reason): "+ getImplicitReason(e);
-            
-            String eMessage = Optional.ofNullable(e.getMessage()).orElse(eMessageImplicit);
 
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, eMessage);
-            
+            if (e.getMessage() == null) {
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Something went wrong: "+ getImplicitReason(e));
+            } else {
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Something went wrong: "+ e.getMessage());
+            }
+
             if (e.toString().contains("HTTP/1.1")) {
                 
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Something went wrong with HTTP/2, enable HTTP/1.1 in preferences");
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Something went wrong with HTTP/2, try to switch manually to HTTP/1.1 in preferences");
             }
             
         } finally {
@@ -318,15 +318,14 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         // Define the connection
         try {
-            var httpRequestBuilder =
-                HttpRequest
-                    .newBuilder()
-                    .uri(URI.create(urlObject.toString()))
-                    .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, "text/plain")
-                    .timeout(Duration.ofSeconds(15));
+            var httpRequestBuilder = HttpRequest.newBuilder()
+                .uri(URI.create(urlObject.toString()))
+                .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, "text/plain")
+                .timeout(Duration.ofSeconds(15));
             
             this.mediatorUtils.getCsrfUtil().addHeaderToken(httpRequestBuilder);
-            
+            this.mediatorUtils.getDigestUtil().addHeaderToken(httpRequestBuilder);
+
             this.mediatorUtils.getConnectionUtil().setCustomUserAgent(httpRequestBuilder);
             
             this.initializeRequest(isUsingIndex, dataInjection, httpRequestBuilder, msgHeader);
@@ -345,8 +344,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             msgHeader.put(Header.RESPONSE, headersResponse);
             msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
             
-            int sizeHeaders = headersResponse
-                .keySet()
+            int sizeHeaders = headersResponse.keySet()
                 .stream()
                 .map(key -> headersResponse.get(key).length() + key.length())
                 .mapToInt(Integer::intValue)
@@ -452,11 +450,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         String dataInjection,
         Builder httpRequest
     ) {
-        
+
         if (!this.mediatorUtils.getParameterUtil().getListHeader().isEmpty()) {
             
-            Stream
-            .of(
+            Stream.of(
                 this.buildQuery(
                     this.mediatorMethod.getHeader(),
                     this.mediatorUtils.getParameterUtil().getHeaderFromEntries(),
@@ -544,30 +541,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             bodyPublisher
         );
         
-        if (this.mediatorUtils.getParameterUtil().isRequestSoap()) {
-            
-            msgHeader.put(
-                Header.POST,
-                this.buildQuery(
-                    this.mediatorMethod.getRequest(),
-                    this.mediatorUtils.getParameterUtil().getRawRequest(),
-                    isUsingIndex,
-                    dataInjection
-                )
-            );
-            
-        } else {
-            
-            msgHeader.put(
-                Header.POST,
-                this.buildQuery(
-                    this.mediatorMethod.getRequest(),
-                    this.mediatorUtils.getParameterUtil().getRequestFromEntries(),
-                    isUsingIndex,
-                    dataInjection
-                )
-            );
-        }
+        msgHeader.put(Header.POST, body.toString());
     }
     
     private String buildQuery(AbstractMethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
@@ -658,12 +632,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         // Injection point is always at the end?
         if (!isUsingIndex) {
             
-            query =
-                paramLead
-                .replace(
-                    InjectionModel.STAR,
-                    sqlTrail + this.mediatorVendor.getVendor().instance().endingComment()
-                );
+            query = paramLead.replace(
+                InjectionModel.STAR,
+                sqlTrail + this.mediatorVendor.getVendor().instance().endingComment()
+            );
             
         } else {
             
@@ -710,8 +682,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 // Trap canceller
                 .replace("%2b", "+")
                 // End comment
-                .replace("%23", "#")
-                ;
+                .replace("%23", "#");
 
             if (this.mediatorUtils.getParameterUtil().isMultipartRequest()) {
                 // restore linefeed from textfield

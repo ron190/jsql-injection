@@ -23,7 +23,8 @@ public class CsrfUtil {
     
     private static final String SET_COOKIE_RESPONSE = "set-cookie";
     private static final String INPUT_ATTR_VALUE = "value";
-    
+    private static final String MSG_ENABLE_CSRF = "Try with option CSRF processing enabled in preferences";
+
     private InjectionModel injectionModel;
     
     public CsrfUtil(InjectionModel injectionModel) {
@@ -105,7 +106,7 @@ public class CsrfUtil {
                 
             } else {
                 
-                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Enable CSRF processing in Preferences if required");
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);
             }
         }
     }
@@ -149,11 +150,10 @@ public class CsrfUtil {
                 cookieCsrf::getValue
             );
             
-            SimpleEntry<String, String> headerCsrf =
-                new SimpleEntry<>(
-                    cookieCsrf.getKey(),
-                    cookieCsrf.getValue()
-                );
+            SimpleEntry<String, String> headerCsrf = new SimpleEntry<>(
+                cookieCsrf.getKey(),
+                cookieCsrf.getValue()
+            );
             
             if (
                 !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
@@ -164,7 +164,7 @@ public class CsrfUtil {
                 
             } else {
                 
-                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Enable CSRF processing in Preferences if required");
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);
             }
         }
     }
@@ -231,27 +231,24 @@ public class CsrfUtil {
             return urlInjectionFixed;
         }
 
-        urlInjectionFixed +=
-            String.format(
-                "&%s=%s",
-                this.tokenCsrf.getKey(),
-                this.tokenCsrf.getValue()
-            );
+        urlInjectionFixed += String.format(
+            "&%s=%s",
+            this.tokenCsrf.getKey(),
+            this.tokenCsrf.getValue()
+        );
         
-        urlInjectionFixed +=
-            String.format(
-                "&_csrf=%s",
-                this.tokenCsrf.getValue()
-            );
+        urlInjectionFixed += String.format(
+            "&_csrf=%s",
+            this.tokenCsrf.getValue()
+        );
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
 
-            urlInjectionFixed +=
-                String.format(
-                    "&%s=%s",
-                    this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),
-                    this.tokenCsrf.getValue()
-                );
+            urlInjectionFixed += String.format(
+                "&%s=%s",
+                this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),
+                this.tokenCsrf.getValue()
+            );
         }
         
         return urlInjectionFixed;
@@ -259,6 +256,10 @@ public class CsrfUtil {
     
     
     // Getter / Setter
+
+    public boolean isCsrf() {
+        return this.tokenCsrf != null;
+    }
 
     public SimpleEntry<String, String> getTokenCsrf() {
         return this.tokenCsrf;

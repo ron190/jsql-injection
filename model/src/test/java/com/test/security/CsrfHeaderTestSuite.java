@@ -4,7 +4,11 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Order;
 import org.junitpioneer.jupiter.RetryingTest;
+import spring.security.CsrfWebSecurity;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -45,5 +49,12 @@ public class CsrfHeaderTestSuite extends ConcreteMySqlErrorTestSuite {
     @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
+    }
+
+    @AfterAll
+    @Order(Order.DEFAULT)
+    public synchronized void assertResult() {
+        Assertions.assertTrue(CsrfWebSecurity.FILTER.count > 0);
+        LOGGER.info("CsrfWebSecurity.filter.count: {}", CsrfWebSecurity.FILTER.count);
     }
 }

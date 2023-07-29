@@ -31,7 +31,7 @@ public class CookiesUtil {
 
         List<AbstractMap.SimpleEntry<String, String>> cookies = this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()
             .stream()
-            .filter(entry -> "Cookie".equals(entry.getKey()))
+            .filter(entry -> "cookie".equalsIgnoreCase(entry.getKey()))
             .findFirst()
             .map(cookieHeader -> cookieHeader.getValue().split(";"))
             .stream()
@@ -47,15 +47,15 @@ public class CookiesUtil {
 
             String headerCookieWithStar = rawHeader.replace(
                 cookie.getKey() + "=" + cookie.getValue(),
-                cookie.getKey() + "=\"" + cookie.getValue().replaceAll("^\\s*\"|\"\\s*$", "") + InjectionModel.STAR + "\""
+                cookie.getKey() + "=\"" + cookie.getValue().replaceAll("^\\s*\"|\"\\s*$", "").replaceAll("(.+)\"(.+)", "$1\\\"$2") + InjectionModel.STAR + "\""
             );
 
             this.injectionModel.getMediatorUtils().getParameterUtil().initializeHeader(headerCookieWithStar);
 
             try {
                 LOGGER.log(
-                    LogLevelUtil.CONSOLE_INFORM,
-                    "Checking Cookie injection for {}={}",
+                    LogLevelUtil.CONSOLE_DEFAULT,
+                    "Checking cookie {}={}",
                     cookie::getKey,
                     () -> cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
                 );

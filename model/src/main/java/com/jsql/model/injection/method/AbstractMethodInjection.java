@@ -80,8 +80,6 @@ public abstract class AbstractMethodInjection implements Serializable {
 
     private boolean checkParamWithStar() throws JSqlException {
         
-        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Checking single {} parameter with injection point at [*]", this::name);
-        
         // Will keep param value as is,
         // Does not test for insertion character (param is null)
         return this.injectionModel.getMediatorStrategy().testStrategies(null);

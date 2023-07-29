@@ -44,13 +44,12 @@
 
         <awaitility.version>4.2.0</awaitility.version>
         <bootstrap.version>3.3.7</bootstrap.version>
-        <!-- Spring startup frozen on later version -->
-        <derbynet.version>10.14.2.0</derbynet.version>
         <dnsjava.version>3.5.2</dnsjava.version>
         <gmavenplus-plugin.version>3.0.0</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
         <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
+        <h2.version>2.2.220</h2.version>
         <hsqldb.version>2.7.2</hsqldb.version>
         <javafaker.version>1.0.2</javafaker.version>
         <jaxb-api.version>2.1</jaxb-api.version>
@@ -78,12 +77,10 @@
         <snakeyaml.version>1.33</snakeyaml.version>
         <sockjs-client.version>1.0.2</sockjs-client.version>
         <spock-core.version>2.4-M1-groovy-4.0</spock-core.version>
-        <!-- Error-based ITs fail on later version -->
-        <spring-boot-dependencies.version>2.7.0</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>3.0.0</spring-boot-dependencies.version>
         <sqlite-jdbc.version>3.42.0.0</sqlite-jdbc.version>
         <sqlite-dialect.version>0.1.4</sqlite-dialect.version>
         <stomp-websocket.version>2.3.3</stomp-websocket.version>
-        <h2.version>2.2.220</h2.version>
     </properties>
 
     <build>
@@ -392,15 +389,22 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <!-- SQLite's dialect missing on later version, keep Spring version -->
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
+            <version>6.0.0.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <!-- display c3p0 logs -->
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-c3p0</artifactId>
+            <version>6.0.0.Final</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>5.0.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -463,17 +467,15 @@
             <version>${mssql-jdbc.version}</version>
             <scope>test</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.xerial</groupId>-->
+<!--            <artifactId>sqlite-jdbc</artifactId>-->
+<!--            <version>3.25.2</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>org.xerial</groupId>
-            <artifactId>sqlite-jdbc</artifactId>
-            <version>${sqlite-jdbc.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.gwenn</groupId>
-            <artifactId>sqlite-dialect</artifactId>
-            <version>${sqlite-dialect.version}</version>
-            <scope>test</scope>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-community-dialects</artifactId>
         </dependency>
         <dependency>
             <groupId>org.neo4j.driver</groupId>
@@ -506,7 +508,6 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derbynet</artifactId>
-            <version>${derbynet.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -4,12 +4,14 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
+import org.junit.jupiter.api.*;
 import org.junitpioneer.jupiter.RetryingTest;
 import spring.security.BasicSecurityConfig;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BasicTestSuite extends ConcreteMySqlErrorTestSuite {
     
     @Override
@@ -49,5 +51,12 @@ public class BasicTestSuite extends ConcreteMySqlErrorTestSuite {
     @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
+    }
+
+    @AfterAll
+    @Order(Order.DEFAULT)
+    public void assertResult() {
+        Assertions.assertTrue(BasicSecurityConfig.FILTER.count > 0);
+        LOGGER.info("BasicSecurityConfig.filter.count: {}", BasicSecurityConfig.FILTER.count);
     }
 }

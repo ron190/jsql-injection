@@ -213,6 +213,10 @@ public class ConnectionUtil {
         if (
             (httpResponse.statusCode() == 401 || httpResponse.statusCode() == 403)
             && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
+            && (
+                this.injectionModel.getMediatorUtils().getCsrfUtil().isCsrf()
+                || this.injectionModel.getMediatorUtils().getDigestUtil().isDigest()
+            )
         ) {
             if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()) {
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -> "Testing CSRF handshake from previous connection...");

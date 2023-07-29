@@ -5,6 +5,9 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorTestSuite;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Order;
 import org.junitpioneer.jupiter.RetryingTest;
 import spring.security.DigestSecurityConfig;
 
@@ -60,5 +63,12 @@ public class DigestTestSuite extends ConcreteMySqlErrorTestSuite {
     @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
+    }
+
+    @AfterAll
+    @Order(Order.DEFAULT)
+    public synchronized void assertResult() {
+        Assertions.assertTrue(DigestSecurityConfig.FILTER.count > 0);
+        LOGGER.info("DigestSecurityConfig.filter.count: {}", DigestSecurityConfig.FILTER.count);
     }
 }

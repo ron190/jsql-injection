@@ -8,14 +8,20 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.net.HttpCookie;
+import java.net.URLEncoder;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class HeaderUtil {
     
@@ -46,7 +52,22 @@ public class HeaderUtil {
         
         String keyHeader = header.getKey().trim();
         String valueHeader = header.getValue().trim();
-        
+
+        if ("cookie".equalsIgnoreCase(keyHeader) && Pattern.compile(".+=.*").matcher(valueHeader).find()) {
+            // Encode cookies in double quotes: Cookie: key="<value>"
+            List<String> cookies = Stream.of(valueHeader.split(";"))
+                .filter(value -> value != null && value.contains("="))
+                .map(cookie -> cookie.split("=", 2))
+                .map(arrayEntry -> arrayEntry[0].trim() + "=" + (arrayEntry[1] == null
+                    ? "\"\""
+                    // Url encode: new cookie RFC restricts chars to non ()<>@,;:\"/[]?={} => server must url decode the request
+                    // No url encode may work on legacy RFC
+                    : "\"" + URLEncoder.encode(arrayEntry[1].trim().replaceAll("^\\s*\"|\"\\s*$", "").replace("+", "%2B"), StandardCharsets.UTF_8) + "\""
+                ))
+                .collect(Collectors.toList());
+            valueHeader = String.join("; ", cookies);
+        }
+
         httpRequest.setHeader(
             keyHeader,
             valueHeader.replaceAll("[^\\p{ASCII}]", "")
@@ -73,7 +94,12 @@ public class HeaderUtil {
         Map<String, String> mapResponseHeaders = ConnectionUtil.getHeadersMap(httpResponse);
         
         var responseCode = Integer.toString(httpResponse.statusCode());
-        
+
+        List<HttpCookie> cookies = this.injectionModel.getMediatorUtils().getConnectionUtil().getCookieManager().getCookieStore().getCookies();
+        if (!cookies.isEmpty()) {
+            LOGGER.info("Cookies from host response: {}", cookies);
+        }
+
         this.checkResponse(responseCode, mapResponseHeaders);
         
         this.checkStatus(httpResponse);
@@ -95,7 +121,7 @@ public class HeaderUtil {
         float size = (float) (pageSource.length() + sizeHeaders) / 1024;
         var decimalFormat = new DecimalFormat("0.000");
         msgHeader.put(Header.PAGE_SIZE, decimalFormat.format(size));
-            
+
         msgHeader.put(Header.URL, httpRequest.uri().toURL().toString());
         msgHeader.put(Header.POST, body);
         msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
@@ -113,30 +139,19 @@ public class HeaderUtil {
         return httpResponse;
     }
 
-    private Exception checkStatus(HttpResponse<String> response) throws IOException {
-        
-        Exception exception = null;
-        
+    private void checkStatus(HttpResponse<String> response) {
+
         if (response.statusCode() >= 400) {
-            
-            exception = new IOException(String.format("problem when calling %s", response.uri().toURL()));
-        }
-        
-        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
-            
-            if (exception != null) {
-                
-                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection test disabled, ignoring response HTTP {}...", response.statusCode());
+
+            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
+
+                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection test disabled, skipping error {}...", response.statusCode());
+
+            } else {
+
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Option 'Disable connection test' can help skip HTTP error {}", response.statusCode());
             }
-            
-            exception = null;
-            
-        } else if (exception != null) {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Select option 'Disable connection test' if required");
         }
-        
-        return exception;
     }
 
     private void checkResponse(String responseCode, Map<String, String> mapResponse) {
@@ -146,9 +161,9 @@ public class HeaderUtil {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 "Basic Authentication detected: "
-                + "define and enable authentication information in the panel Preferences, "
-                + "or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with "
-                + "the string 'osUserName:osPassword' encoded in Base64. You can use the Coder in jSQL to encode the string."
+                + "set authentication in preferences, "
+                + "or add header 'Authorization: Basic b3N..3Jk', with b3N..3Jk as "
+                + "'osUserName:osPassword' encoded in Base64. Use the Coder in jSQL to encode the string."
             );
         
         } else if (this.isNtlm(responseCode, mapResponse)) {
@@ -156,7 +171,7 @@ public class HeaderUtil {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 "NTLM Authentication detected: "
-                + "define and enable authentication information in the panel Preferences, "
+                + "set authentication in preferences, "
                 + "or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
             );
         
@@ -164,8 +179,7 @@ public class HeaderUtil {
             
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
-                "Digest Authentication detected: "
-                + "define and enable authentication information in the panel Preferences."
+                "Digest Authentication detected: set authentication in preferences."
             );
         
         } else if (this.isNegotiate(responseCode, mapResponse)) {
