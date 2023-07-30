@@ -26,6 +26,7 @@
         <commons-text.version>1.10.0</commons-text.version>
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
         <log4j-bom.version>2.20.0</log4j-bom.version>
+        <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
 
         <skipTests>true</skipTests>
         <skipITs>true</skipITs>
@@ -127,7 +128,7 @@
                 <!-- Manage version revision properly -->
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.5.0</version>
+                <version>${flatten-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>flatten</id>

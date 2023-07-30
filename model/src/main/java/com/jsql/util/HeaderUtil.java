@@ -97,7 +97,7 @@ public class HeaderUtil {
 
         List<HttpCookie> cookies = this.injectionModel.getMediatorUtils().getConnectionUtil().getCookieManager().getCookieStore().getCookies();
         if (!cookies.isEmpty()) {
-            LOGGER.info("Cookies from host response: {}", cookies);
+            LOGGER.info("Cookies set by host: {}", cookies);
         }
 
         this.checkResponse(responseCode, mapResponseHeaders);
@@ -149,7 +149,7 @@ public class HeaderUtil {
 
             } else {
 
-                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Option 'Disable connection test' can help skip HTTP error {}", response.statusCode());
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Try with option 'Disable connection test' to skip HTTP error {}", response.statusCode());
             }
         }
     }
@@ -163,7 +163,7 @@ public class HeaderUtil {
                 "Basic Authentication detected: "
                 + "set authentication in preferences, "
                 + "or add header 'Authorization: Basic b3N..3Jk', with b3N..3Jk as "
-                + "'osUserName:osPassword' encoded in Base64. Use the Coder in jSQL to encode the string."
+                + "'osUserName:osPassword' encoded in Base64 (use the Coder in jSQL to encode the string)."
             );
         
         } else if (this.isNtlm(responseCode, mapResponse)) {

@@ -4,12 +4,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -28,7 +30,7 @@ public class CsrfWebSecurity {
 
         return http.securityMatcher("/csrf/**")
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/csrf/**").permitAll()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/csrf/**")).permitAll()
             )
             .csrf((csrf) -> csrf
                 .csrfTokenRepository(tokenRepository)
@@ -41,8 +43,7 @@ public class CsrfWebSecurity {
                 )
             )
             .addFilterAfter(FILTER, AuthorizationFilter.class)
-            .exceptionHandling()
-            .and()
+            .exceptionHandling(Customizer.withDefaults())
             .build();
     }
 

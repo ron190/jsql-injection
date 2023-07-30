@@ -235,9 +235,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         } catch (Exception e) {  // Catch all exceptions like interrupt, URL format and JSqlException
 
             if (e.getMessage() == null) {
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Something went wrong: "+ getImplicitReason(e));
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Unexpected: {}", getImplicitReason(e));
             } else {
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Something went wrong: "+ e.getMessage());
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Unexpected: {}", e.getMessage());
             }
 
             if (e.toString().contains("HTTP/1.1")) {
@@ -526,12 +526,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                     )
                     // Invalid XML characters in recent Spring version
                     // TODO Server needs to urldecode, or stop using out of range chars
-                    .replaceAll("\\x01", "&#01;")
-                    .replaceAll("\\x03", "&#03;")
-                    .replaceAll("\\x04", "&#04;")
-                    .replaceAll("\\x05", "&#05;")
-                    .replaceAll("\\x06", "&#06;")
-                    .replaceAll("\\x07", "&#07;")
+                    .replace(String.valueOf(0x01), "&#01;")
+                    .replace(String.valueOf(0x03), "&#03;")
+                    .replace(String.valueOf(0x04), "&#04;")
+                    .replace(String.valueOf(0x05), "&#05;")
+                    .replace(String.valueOf(0x06), "&#06;")
+                    .replace(String.valueOf(0x07), "&#07;")
                     .replace("+", "%2B")  // Prevent replace '+' into 'space' on server side urldecode
                 );
                 

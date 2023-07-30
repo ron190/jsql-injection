@@ -11,7 +11,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.Authenticator;
+import java.net.CookieManager;
+import java.net.PasswordAuthentication;
+import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Version;
 import java.net.http.HttpHeaders;
@@ -20,7 +23,6 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
@@ -220,7 +222,7 @@ public class ConnectionUtil {
         ) {
             if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()) {
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -> "Testing CSRF handshake from previous connection...");
-            } else if (StringUtils.isNotEmpty(this.injectionModel.getMediatorUtils().getDigestUtil().tokenDigest)) {
+            } else if (StringUtils.isNotEmpty(this.injectionModel.getMediatorUtils().getDigestUtil().getTokenDigest())) {
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -> "Testing Digest handshake from previous connection...");
             }
             httpResponse = this.checkConnectionResponse();

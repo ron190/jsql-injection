@@ -1,16 +1,12 @@
 # project configuration
 .settings/
 target/
-.classpath
-.project
 .groovy
 
 # code quality plugin properties
 test-output/
 .codepro/
 .sonar/
-.checkstyle
-.pmd
 dependency-reduced-pom.xml
 build.xml
 jsql-sqlite-its.db
@@ -19,3 +15,4 @@ derby.log
 .run/
 .flattened-pom.xml
 pom.xml.versionsBackup
+model/src/test/resources/jdbc/

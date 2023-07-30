@@ -21,7 +21,7 @@ public class DigestUtil {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    public String tokenDigest = null;
+    private String tokenDigest = null;
 
     private final InjectionModel injectionModel;
 
@@ -67,14 +67,14 @@ public class DigestUtil {
                 URL url = new URL(this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
                 String path = url.getFile();
 
-                String HA1 = DigestUtils.md5Hex(
+                String ha1 = DigestUtils.md5Hex(
                     String.format("%s:%s:%s", username, realm, password)
                 );
-                String HA2 = DigestUtils.md5Hex(
+                String ha2 = DigestUtils.md5Hex(
                     String.format("%s:%s", this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(), path)
                 );
                 String response = DigestUtils.md5Hex(
-                    String.format("%s:%s:%s:%s:%s:%s", HA1, nonce, nc, cnonce, qop, HA2)
+                    String.format("%s:%s:%s:%s:%s:%s", ha1, nonce, nc, cnonce, qop, ha2)
                 );
 
                 this.tokenDigest = String.format(
@@ -103,5 +103,9 @@ public class DigestUtil {
 
     public void setTokenDigest(String tokenDigest) {
         this.tokenDigest = tokenDigest;
+    }
+
+    public String getTokenDigest() {
+        return tokenDigest;
     }
 }

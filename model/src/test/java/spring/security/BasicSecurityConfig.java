@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @Order(1)
@@ -23,7 +25,7 @@ public class BasicSecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Autowired
@@ -31,7 +33,7 @@ public class BasicSecurityConfig {
 
         auth.inMemoryAuthentication()
             .withUser(BASIC_USERNAME)
-            .password(this.passwordEncoder().encode(BASIC_PASSWORD))
+            .password(passwordEncoder().encode(BASIC_PASSWORD))
             .authorities(BASIC_ROLE);
     }
 
@@ -39,13 +41,12 @@ public class BasicSecurityConfig {
     public SecurityFilterChain filterChainBasic(HttpSecurity http) throws Exception {
 
         return http.securityMatcher("/basic/**")
-            .csrf().disable()
+            .csrf(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/basic/**").hasAuthority(BASIC_ROLE)
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/basic/**")).hasAuthority(BASIC_ROLE)
             )
             .addFilterAfter(FILTER, AuthorizationFilter.class)
-            .httpBasic()
-            .and()
+            .httpBasic(Customizer.withDefaults())
             .build();
     }
 }
