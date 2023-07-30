@@ -21,7 +21,6 @@ import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
-@SuppressWarnings("serial")
 public class PanelProxy extends JPanel {
 
     private final JCheckBox checkboxIsUsingProxy = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getProxyUtil().isUsingProxyHttp());

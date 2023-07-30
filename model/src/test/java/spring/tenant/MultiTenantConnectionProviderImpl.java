@@ -3,7 +3,6 @@ package spring.tenant;
 import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 
-@SuppressWarnings("serial")
 public class MultiTenantConnectionProviderImpl extends AbstractMultiTenantConnectionProvider {
 
     private static final MasterService MASTER_SERVICE = new MasterService();

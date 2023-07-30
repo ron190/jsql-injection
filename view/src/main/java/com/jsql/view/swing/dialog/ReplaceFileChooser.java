@@ -18,7 +18,6 @@ import com.jsql.util.I18nUtil;
 /**
  * File chooser for supporting 'file already exists'.
  */
-@SuppressWarnings("serial")
 public class ReplaceFileChooser extends JFileChooser {
     
     /**

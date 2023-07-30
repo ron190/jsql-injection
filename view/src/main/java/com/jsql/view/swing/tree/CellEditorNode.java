@@ -33,7 +33,6 @@ import com.jsql.view.swing.util.MediatorHelper;
 /**
  * Tree cell editor responsible for mouse action on nodes.
  */
-@SuppressWarnings("serial")
 public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor, TreeSelectionListener, MouseListener {
     
     /**
@@ -44,7 +43,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
     /**
      * Renderer for nodes included JPanel, button, checkbox, icons...
      */
-    private CellRendererNode defaultTreeRenderer;
+    private final CellRendererNode defaultTreeRenderer;
 
     /**
      * Value contained in the editor.

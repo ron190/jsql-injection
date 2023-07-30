@@ -6,7 +6,6 @@ import javax.swing.JButton;
 
 import com.jsql.view.swing.util.UiUtil;
 
-@SuppressWarnings("serial")
 public class ButtonClose extends JButton {
     
     public ButtonClose() {

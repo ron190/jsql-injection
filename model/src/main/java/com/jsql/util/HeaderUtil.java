@@ -35,7 +35,7 @@ public class HeaderUtil {
     private static final String REGEX_HTTP_STATUS = "4\\d\\d";
     private static final String FOUND_STATUS_HTTP = "Found status HTTP";
 
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
     public HeaderUtil(InjectionModel injectionModel) {
         

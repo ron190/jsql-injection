@@ -134,7 +134,7 @@ public class DataAccess {
      */
     public static final String CELL_TABLE = "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)"+ SEPARATOR_QTE_RGX +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?";
     
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
     public DataAccess(InjectionModel injectionModel) {
         
@@ -144,9 +144,8 @@ public class DataAccess {
     /**
      * Get general database informations.<br>
      * => version{%}database{%}user{%}CURRENT_USER
-     * @throws JSqlException
      */
-    public void getDatabaseInfos() throws JSqlException {
+    public void getDatabaseInfos() {
         
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_FETCHING_INFORMATIONS"));
         
@@ -531,7 +530,7 @@ public class DataAccess {
         // From that array, build the SQL fields nicely
         // => col1{%}col2...
         // ==> trim(ifnull(`col1`,0x00)),0x7f,trim(ifnull(`Col2`,0x00))...
-        String[] arrayColumns = columnsName.toArray(new String[columnsName.size()]);
+        String[] arrayColumns = columnsName.toArray(new String[0]);
 
         List<List<String>> listValues = this.getRows(database, table, rowCount, arrayColumns);
 
@@ -541,7 +540,7 @@ public class DataAccess {
 
         String[][] tableDatas = this.build2D(columnsName, listValues);
 
-        arrayColumns = columnsName.toArray(new String[columnsName.size()]);
+        arrayColumns = columnsName.toArray(new String[0]);
         
         // Group the columns names, values and Table object in one array
         var objectData = new Object[]{ arrayColumns, tableDatas, table };
@@ -634,7 +633,7 @@ public class DataAccess {
                     LogLevelUtil.CONSOLE_ERROR,
                     () -> String.join(
                         ", ",
-                        listValues.get(logIndexRow).toArray(new String[listValues.get(logIndexRow).size()])
+                        listValues.get(logIndexRow).toArray(new String[0])
                     )
                 );
             }

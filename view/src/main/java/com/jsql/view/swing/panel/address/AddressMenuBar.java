@@ -11,6 +11,7 @@ import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.util.ButtonAddressBar;
 import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.ui.ComponentBorder;
+import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +21,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Locale;
 
-@SuppressWarnings("serial")
 public class AddressMenuBar extends JMenuBar {
     
     /**
@@ -30,19 +30,19 @@ public class AddressMenuBar extends JMenuBar {
 
     private JMenu itemRadioStrategyError = new JMenu();
 
-    private JMenu menuVendor;
-    private JMenu menuStrategy;
-    private ButtonGroup groupStrategy = new ButtonGroup();
+    private final JMenu menuVendor;
+    private final JMenu menuStrategy;
+    private final ButtonGroup groupStrategy = new ButtonGroup();
 
     /**
      * Animated GIF displayed during injection.
      */
-    private JLabel loader = new JLabel(UiUtil.ICON_LOADER_GIF);
+    private final JLabel loader = new JLabel(UiUtil.ICON_LOADER_GIF);
 
     /**
      * Connection button.
      */
-    private ButtonAddressBar buttonInUrl = new ButtonAddressBar();
+    private final ButtonAddressBar buttonInUrl = new ButtonAddressBar();
     
     public AddressMenuBar(PanelAddressBar panelAddressBar) {
         
@@ -105,6 +105,14 @@ public class AddressMenuBar extends JMenuBar {
                     }
                 };
                 
+                I18nViewUtil.addComponentForKey(
+                    String.format(
+                        patternKeyTooltipStrategy,
+                        strategy.getName().toUpperCase(Locale.ROOT)
+                    ),
+                    refTooltip[0]
+                );
+
                 itemRadioStrategy.getComponent().setName("itemRadioStrategy"+ strategy);
                 
                 itemRadioStrategy.addActionListener(actionEvent -> {

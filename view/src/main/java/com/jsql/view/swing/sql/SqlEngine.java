@@ -43,14 +43,13 @@ import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
-@SuppressWarnings("serial")
 public class SqlEngine extends JPanel implements Cleanable {
 
     private static ModelYaml modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
 
-    private static JTabbedPane tabbedPaneError = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
+    private static final JTabbedPane tabbedPaneError = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
 
-    private static Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
+    private static final Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
     
     private static final List<JTextPaneLexer> textPanesError = new ArrayList<>();
     

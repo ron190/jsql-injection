@@ -9,8 +9,8 @@ import com.jsql.util.tampering.TamperingType;
 
 public class TamperingMouseAdapter extends MouseAdapter {
     
-    private TamperingType tampering;
-    private JTextPane textPaneEval;
+    private final TamperingType tampering;
+    private final JTextPane textPaneEval;
     private String eval = null;
     
     public TamperingMouseAdapter(TamperingType tampering, JTextPane textPaneEval) {

@@ -22,7 +22,7 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class ActionPauseUnpause implements ActionListener {
     
-    private AbstractNodeModel nodeModel;
+    private final AbstractNodeModel nodeModel;
 
     public ActionPauseUnpause(AbstractNodeModel nodeModel) {
         this.nodeModel = nodeModel;

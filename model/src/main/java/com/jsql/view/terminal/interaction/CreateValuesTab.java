@@ -28,7 +28,7 @@ public class CreateValuesTab implements InteractionCommand {
     /**
      * 2D array of values.
      */
-    private String[][] data;
+    private final String[][] data;
 
     /**
      * @param interactionParams Names of columns, table's values and corresponding table

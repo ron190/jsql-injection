@@ -9,7 +9,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,20 +45,12 @@ public class CertificateUtil {
                 
                 @Override
                 public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                    
-                    if (StringUtils.EMPTY.equals(StringUtils.SPACE)) {
-                        
-                        throw new IllegalArgumentException();
-                    }
+                    // nothing
                 }
-                
+
                 @Override
                 public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                    
-                    if (StringUtils.EMPTY.equals(StringUtils.SPACE)) {
-                        
-                        throw new IllegalArgumentException();
-                    }
+                    // nothing
                 }
             }
         };

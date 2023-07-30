@@ -38,8 +38,7 @@ public class BorderlessTabButtonUI extends MetalTabbedPaneUI {
         return new ScrollableTabButton(direction);
     }
     
-    @SuppressWarnings("serial")
-    private class ScrollableTabButton extends BasicArrowButton implements UIResource, SwingConstants {
+    private static class ScrollableTabButton extends BasicArrowButton implements UIResource, SwingConstants {
         
         public ScrollableTabButton(int direction) {
             

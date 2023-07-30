@@ -47,7 +47,7 @@ public class MenuActionNewValue implements ActionListener {
     /**
      * List to add new items.
      */
-    private DnDList myList;
+    private final DnDList myList;
     
     /**
      * Create action to add new item list.

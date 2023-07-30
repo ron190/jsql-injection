@@ -1,6 +1,5 @@
 package com.jsql.model.exception;
 
-@SuppressWarnings("serial")
 public class JSqlException extends Exception {
     
     public JSqlException(String message) {

@@ -58,7 +58,7 @@ class DocumentReader extends Reader {
     /**
      * The document that we are working with.
      */
-    private AbstractDocument document;
+    private final AbstractDocument document;
     
     /**
      * Construct a reader on the given document.

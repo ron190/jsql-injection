@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
-@SuppressWarnings("serial")
 public class Test implements Serializable {
 
     private List<String> falses =

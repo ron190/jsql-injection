@@ -28,13 +28,13 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private Properties propertiesLanguageToTranslate = new Properties();
-    private OrderedProperties propertiesRoot = new OrderedProperties();
-    private StringBuilder propertiesToTranslate = new StringBuilder();
-    private DialogTranslate dialogTranslate;
+    private final Properties propertiesLanguageToTranslate = new Properties();
+    private final OrderedProperties propertiesRoot = new OrderedProperties();
+    private final StringBuilder propertiesToTranslate = new StringBuilder();
+    private final DialogTranslate dialogTranslate;
     
-    private ConnectionUtil connectionUtil = MediatorHelper.model().getMediatorUtils().getConnectionUtil();
-    private PropertiesUtil propertiesUtil = MediatorHelper.model().getMediatorUtils().getPropertiesUtil();
+    private final ConnectionUtil connectionUtil = MediatorHelper.model().getMediatorUtils().getConnectionUtil();
+    private final PropertiesUtil propertiesUtil = MediatorHelper.model().getMediatorUtils().getPropertiesUtil();
     
     private static final String LINE_FEED_ESCAPE = "{@|@}";
     private static final String LINE_FEED = "\\\\[\n\r]+";

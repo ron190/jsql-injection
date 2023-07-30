@@ -38,7 +38,7 @@ public class ComponentBorder implements Border {
     public static final float TRAILING = 1.0f;
 
     private JComponent parent;
-    private JComponent component;
+    private final JComponent component;
     private Edge edge;
     private float alignment;
     private int gap = 5;

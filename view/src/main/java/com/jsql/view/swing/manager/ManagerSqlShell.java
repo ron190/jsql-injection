@@ -27,7 +27,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Manager for uploading PHP SQL shell to the host and send queries.
  */
-@SuppressWarnings("serial")
 public class ManagerSqlShell extends AbstractManagerShell {
     
     private final JTextField username = new JPopupTextField(I18nUtil.valueByKey("SQL_SHELL_USERNAME_LABEL")).getProxy();

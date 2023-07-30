@@ -30,8 +30,8 @@ public class MarkErrorInvulnerable implements InteractionCommand {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private int indexMethodError;
-    private InjectionModel injectionModel;
+    private final int indexMethodError;
+    private final InjectionModel injectionModel;
     
     /**
      * @param interactionParams

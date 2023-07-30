@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.popupmenu;
 
-import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JMenuItem;
@@ -23,7 +23,6 @@ import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 /**
  * Default popup menu for textfield and texteditor.
  */
-@SuppressWarnings("serial")
 public class JPopupMenuText extends JPopupMenuComponent {
     
     /**
@@ -39,13 +38,13 @@ public class JPopupMenuText extends JPopupMenuComponent {
             JMenuItem cutItem = new JMenuItemWithMargin();
             cutItem.setAction(component.getActionMap().get(DefaultEditorKit.cutAction));
             cutItem.setText("Cut");
-            cutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+            cutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
             cutItem.setMnemonic('t');
 
             JMenuItem pasteItem = new JMenuItemWithMargin();
             pasteItem.setAction(component.getActionMap().get(DefaultEditorKit.pasteAction));
             pasteItem.setText("Paste");
-            pasteItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
+            pasteItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
             pasteItem.setMnemonic('P');
 
             // Before Copy menu

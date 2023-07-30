@@ -43,7 +43,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * TabbedPane containing result injection panels.
  */
-@SuppressWarnings("serial")
 public class TabResults extends DnDTabbedPane {
     
     /**

@@ -21,7 +21,7 @@ public class SubscriberInteraction implements Subscriber<Request> {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private String packageInteraction;
+    private final String packageInteraction;
     
     /**
      * Observer pattern.<br>

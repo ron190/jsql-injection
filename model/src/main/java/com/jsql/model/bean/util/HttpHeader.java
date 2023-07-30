@@ -10,24 +10,24 @@ public class HttpHeader {
     /**
      * GET request.
      */
-    private String url;
+    private final String url;
     
     /**
      * POST request.
      */
-    private String post;
+    private final String post;
     
     /**
      * Header request.
      */
-    private Map<String, String> header;
+    private final Map<String, String> header;
     
     /**
      * Header sent back by server.
      */
-    private Map<String, String> response;
+    private final Map<String, String> response;
     
-    private String source;
+    private final String source;
     
     /**
      * Create object containing HTTP data to display in Network panel.

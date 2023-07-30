@@ -36,7 +36,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * A Terminal completely built from swing text pane.
  */
-@SuppressWarnings("serial")
 public abstract class AbstractShell extends JTextPane {
     
     /**
@@ -47,7 +46,7 @@ public abstract class AbstractShell extends JTextPane {
     /**
      * True if terminal is processing command.
      */
-    private boolean[] isEdited = {false};
+    private final boolean[] isEdited = {false};
 
     /**
      * Server name or IP to display on prompt.
@@ -59,19 +58,19 @@ public abstract class AbstractShell extends JTextPane {
      */
     protected String[] loginPassword = null;
 
-    private UUID uuidShell;
+    private final UUID uuidShell;
     
-    private String urlShell;
+    private final String urlShell;
 
     /**
      * Document used to append colored text.
      */
-    private transient StyledDocument styledDocument = this.getStyledDocument();
+    private final transient StyledDocument styledDocument = this.getStyledDocument();
 
     /**
      * Style used for coloring text.
      */
-    private transient Style style = this.addStyle("Necrophagist's next album is 2014.", null);
+    private final transient Style style = this.addStyle("Necrophagist's next album is 2014.", null);
 
     /**
      * Length of prompt.
@@ -81,7 +80,7 @@ public abstract class AbstractShell extends JTextPane {
     /**
      * Text to display next caret.
      */
-    private String labelShell;
+    private final String labelShell;
     
     /**
      * Build a shell instance.

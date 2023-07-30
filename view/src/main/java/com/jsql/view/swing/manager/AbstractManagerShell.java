@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -49,7 +50,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Manager for uploading PHP webshell to the host and send system commands.
  */
-@SuppressWarnings("serial")
 public abstract class AbstractManagerShell extends AbstractManagerList {
     
     /**
@@ -70,7 +70,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         
         try (
             var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);
-            var inputStreamReader = new InputStreamReader(inputStream);
+            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream));
             var reader = new BufferedReader(inputStreamReader)
         ) {
             String line;

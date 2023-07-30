@@ -7,10 +7,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-@SuppressWarnings("serial")
 public class MenuBarCoder extends JMenuBar {
     
-    private JMenu menu;
+    private final JMenu menu;
 
     private class MenuItemListener implements ActionListener {
         

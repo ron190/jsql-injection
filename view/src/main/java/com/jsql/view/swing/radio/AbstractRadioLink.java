@@ -14,7 +14,6 @@ import com.jsql.view.swing.util.UiUtil;
  * A label to mimic a radiobox contained in a group.
  * Display as underlined if label is selected.
  */
-@SuppressWarnings("serial")
 public abstract class AbstractRadioLink extends JLabel {
     
     /**

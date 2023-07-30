@@ -7,11 +7,10 @@ import javax.swing.JTextPane;
 
 import org.apache.commons.lang3.StringUtils;
 
-@SuppressWarnings("serial")
 public class JTextPaneLexer extends JTextPane implements JTextPaneObjectMethod {
     
-    private transient Consumer<String> consumerSetter;
-    private transient Supplier<String> supplierGetter;
+    private final transient Consumer<String> consumerSetter;
+    private final transient Supplier<String> supplierGetter;
     
     public JTextPaneLexer(
         Consumer<String> consumer,

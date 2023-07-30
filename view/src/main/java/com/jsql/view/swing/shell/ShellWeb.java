@@ -18,7 +18,6 @@ import com.jsql.view.swing.util.MediatorHelper;
 /**
  * A terminal for web shell injection.
  */
-@SuppressWarnings("serial")
 public class ShellWeb extends AbstractShell {
     
     /**

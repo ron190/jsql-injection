@@ -10,7 +10,6 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-@SuppressWarnings("serial")
 public class CheckBoxIcon implements Icon, UIResource, Serializable {
 
     private static final int CONTROL_SIZE = 12;

@@ -21,10 +21,10 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     
     private static final DiffMatchPatch DIFFMATCHPATCH = new DiffMatchPatch();
 
-    private InjectionBlind injectionBlind;
+    private final InjectionBlind injectionBlind;
     
-    private InjectionModel injectionModel;
-    private String metadataInjectionProcess;
+    private final InjectionModel injectionModel;
+    private final String metadataInjectionProcess;
     
     /**
      * Constructor for preparation and blind confirmation.
@@ -97,7 +97,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      * @return Functional Blind Callable
      */
     @Override
-    public CallableBlind call() throws Exception {
+    public CallableBlind call() {
         
         String ctnt = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
         

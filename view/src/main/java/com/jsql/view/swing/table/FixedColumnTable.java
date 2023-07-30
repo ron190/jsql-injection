@@ -44,8 +44,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
      *  Specify the number of columns to be fixed and the scroll pane
      *  containing the table.
      */
-    @SuppressWarnings("serial")
-    public void fixColumnSize(int fixedColumns, JScrollPane scrollPane) {
+        public void fixColumnSize(int fixedColumns, JScrollPane scrollPane) {
         
         this.scrollPane = scrollPane;
 

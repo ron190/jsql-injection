@@ -11,6 +11,7 @@
 package com.jsql.view.swing.action;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -36,7 +37,6 @@ import com.jsql.view.swing.util.MediatorHelper;
 /**
  * Save the content of tab in a file.
  */
-@SuppressWarnings("serial")
 public class ActionSaveTab extends AbstractAction {
     
     /**
@@ -48,7 +48,7 @@ public class ActionSaveTab extends AbstractAction {
 
     public ActionSaveTab() {
         
-        this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
         this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
         this.putValue(Action.NAME, "Save Tab As...");
     }

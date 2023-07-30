@@ -22,9 +22,9 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class DatabaseIdentified implements InteractionCommand {
     
-    private String url;
+    private final String url;
     
-    private Vendor vendor;
+    private final Vendor vendor;
     
     /**
      * @param interactionParams

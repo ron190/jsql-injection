@@ -37,7 +37,6 @@ import com.jsql.view.swing.sql.lexer.syntax.SQLLexer;
  * A <a href="http://ostermiller.org/syntax/editor.html">demonstration text
  * editor</a> that uses syntax highlighting.
  */
-@SuppressWarnings("serial")
 public class HighlightedDocument extends DefaultStyledDocument {
     
     /**
@@ -54,7 +53,7 @@ public class HighlightedDocument extends DefaultStyledDocument {
      * A reader wrapped around the document so that the document can be fed into
      * the lexer.
      */
-    private transient DocumentReader documentReader;
+    private final transient DocumentReader documentReader;
     
     /** If non-null, all is drawn with this style (no lexing). */
     private transient AttributeSet globalStyle = null;
@@ -67,13 +66,13 @@ public class HighlightedDocument extends DefaultStyledDocument {
     /**
      * A thread that handles the actual coloring.
      */
-    private transient Colorer colorer;
+    private final transient Colorer colorer;
 
     /**
      * A lock for modifying the document, or for actions that depend on the
      * document not being modified.
      */
-    private transient Object docLock = new Object();
+    private final transient Object docLock = new Object();
 
     /**
      * Create a new Demo

@@ -54,9 +54,9 @@ public final class StringUtil {
      */
     private static class CharEncoder {
         
-        private String prefix;
-        private String suffix;
-        private int radix;
+        private final String prefix;
+        private final String suffix;
+        private final int radix;
         
         public CharEncoder(String prefix, String suffix, int radix) {
             
@@ -91,12 +91,11 @@ public final class StringUtil {
     
     public static String decimalHtmlEncode(String text, boolean isRaw) {
         
-        var result = StringUtil.encode(text, DECIMAL_HTML_ENCODER);
+        var result = StringUtil.encode(text);
         
         if (isRaw) {
             
-            return
-                result
+            return result
                 .replace("<", "&lt;")
                 .replace(">", "&gt;")
                 .replace("&", "&amp;");
@@ -109,11 +108,11 @@ public final class StringUtil {
     
     /**
      * Non trivial methods to convert unicode characters to html entities.
+     *
      * @param text string to encode
-     * @param encoder schema of encoding
      * @return string representation using the encoder schema
      */
-    private static String encode(String text, CharEncoder encoder) {
+    private static String encode(String text) {
         
         var buff = new StringBuilder();
         
@@ -121,7 +120,7 @@ public final class StringUtil {
             
             if (text.charAt(i) > 128) {
                 
-                encoder.encode(text.charAt(i), buff);
+                StringUtil.DECIMAL_HTML_ENCODER.encode(text.charAt(i), buff);
                 
             } else {
                 

@@ -17,19 +17,19 @@ done
 
 echo "Using first available display :${NEW_DISPLAY}"
 
-mkdir $HOME/.vnc/
-vncpasswd -f > $HOME/.vnc/passwd <<EOF
+mkdir "$HOME/.vnc/"
+vncpasswd -f > "$HOME/.vnc/passwd" <<EOF
 123456
 123456
 EOF
 
-chmod 600 $HOME/.vnc/passwd
+chmod 600 "$HOME/.vnc/passwd"
 
 OLD_DISPLAY=${DISPLAY}
 vncserver ":${NEW_DISPLAY}" -localhost -geometry 1920x1080 -depth 24 
 export DISPLAY=:${NEW_DISPLAY}
 
-echo MAVEN_NASHORN=${MAVEN_NASHORN}
+echo MAVEN_NASHORN="${MAVEN_NASHORN}"
 
 "$@"
 JSQL_EXIT_CODE=$?

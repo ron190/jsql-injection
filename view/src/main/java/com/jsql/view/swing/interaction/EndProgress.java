@@ -22,7 +22,7 @@ public class EndProgress implements InteractionCommand {
     /**
      * The element in the database tree for which the progress ends.
      */
-    private AbstractElementDatabase dataElementDatabase;
+    private final AbstractElementDatabase dataElementDatabase;
 
     /**
      * @param interactionParams Element to update

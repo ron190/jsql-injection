@@ -14,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.util.MediatorHelper;
 
-@SuppressWarnings("serial")
 public class PanelGeneral extends JPanel {
 
     private final JCheckBox checkboxIsCheckingUpdate = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingUpdate());

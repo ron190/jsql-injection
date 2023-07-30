@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -41,7 +42,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Abstract manager containing a drag and drop list of item.
  */
-@SuppressWarnings("serial")
 public abstract class AbstractManagerList extends JPanel implements Manager {
     
     /**
@@ -49,11 +49,11 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    protected transient List<ItemList> itemsList = new ArrayList<>();
+    protected final transient List<ItemList> itemsList = new ArrayList<>();
     
     protected DnDList listFile;
     
-    protected JPanel lastLine = new JPanel();
+    protected final JPanel lastLine = new JPanel();
     
     /**
      * Contains the paths of webshell.
@@ -79,7 +79,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     /**
      * A animated GIF displayed during processing.
      */
-    protected JLabel loader = new JLabel(UiUtil.ICON_LOADER_GIF);
+    protected final JLabel loader = new JLabel(UiUtil.ICON_LOADER_GIF);
     
     protected AbstractManagerList() {
         // Nothing
@@ -91,7 +91,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
 
         try (
             var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);
-            var inputStreamReader = new InputStreamReader(inputStream);
+            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream));
             var reader = new BufferedReader(inputStreamReader)
         ) {
             String line;

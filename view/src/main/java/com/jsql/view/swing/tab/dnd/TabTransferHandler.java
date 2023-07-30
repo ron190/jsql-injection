@@ -21,7 +21,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.LogLevelUtil;
 
-@SuppressWarnings("serial")
 public class TabTransferHandler extends TransferHandler {
     
     /**
@@ -63,7 +62,7 @@ public class TabTransferHandler extends TransferHandler {
             }
             
             @Override
-            public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+            public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
                 
                 if (this.isDataFlavorSupported(flavor)) {
                     

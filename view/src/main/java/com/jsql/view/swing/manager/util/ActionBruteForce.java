@@ -37,7 +37,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private ManagerBruteForce bruteForceManager;
+    private final ManagerBruteForce bruteForceManager;
     
     private boolean isStopped = false;
     

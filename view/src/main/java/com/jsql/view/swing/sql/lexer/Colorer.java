@@ -84,7 +84,7 @@ class Colorer extends Thread {
      * it is no longer being used. At that point, this thread will
      * shut down itself.
      */
-    private WeakReference<HighlightedDocument> document;
+    private final WeakReference<HighlightedDocument> document;
 
     /**
      * Keep a list of places in the file that it is safe to restart the
@@ -93,7 +93,7 @@ class Colorer extends Thread {
      * we need to be able to retrieve ranges from it, it is stored in a
      * balanced tree.
      */
-    private TreeSet<DocPosition> iniPositions = new TreeSet<>(DocPositionComparator.instance);
+    private final TreeSet<DocPosition> iniPositions = new TreeSet<>(DocPositionComparator.instance);
 
     /**
      * As we go through and remove invalid positions we will also be finding
@@ -102,19 +102,19 @@ class Colorer extends Thread {
      * positions and simply add it to the list of positions once all the old
      * positions have been removed.
      */
-    private HashSet<DocPosition> newPositions = new HashSet<>();
+    private final HashSet<DocPosition> newPositions = new HashSet<>();
 
     /**
      * Vector that stores the communication between the two threads.
      */
-    private volatile LinkedList<RecolorEvent> events = new LinkedList<>();
+    private final LinkedList<RecolorEvent> events = new LinkedList<>();
 
     /**
      * When accessing the linked list, we need to create a critical section.
      * we will synchronize on this object to ensure that we don't get unsafe
      * thread behavior.
      */
-    private Object eventsLock = new Object();
+    private final Object eventsLock = new Object();
 
     /**
      * The amount of change that has occurred before the place in the

@@ -20,7 +20,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Scroller with border.
  */
-@SuppressWarnings("serial")
 public class JScrollPanePixelBorder extends JScrollPane {
     
     /**

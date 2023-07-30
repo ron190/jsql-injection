@@ -18,7 +18,7 @@ public class CookiesUtil {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
 
     public CookiesUtil(InjectionModel injectionModel) {
         

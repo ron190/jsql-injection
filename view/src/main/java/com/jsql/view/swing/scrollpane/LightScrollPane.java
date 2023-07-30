@@ -29,7 +29,6 @@ import org.apache.logging.log4j.Logger;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.util.UiUtil;
 
-@SuppressWarnings("serial")
 public class LightScrollPane extends JComponent {
     
     /**

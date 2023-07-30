@@ -29,7 +29,7 @@ public class AddTables implements InteractionCommand {
     /**
      * Tables retrieved by the view.
      */
-    private List<Table> tables;
+    private final List<Table> tables;
 
     /**
      * @param interactionParams List of tables retrieved by the Model

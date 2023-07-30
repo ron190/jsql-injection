@@ -7,11 +7,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -49,10 +45,9 @@ import com.jsql.view.swing.util.MediatorHelper;
 public class ApplicationUiTest {
     
     private static FrameFixture window;
-    private static JFrameView frame;
-    
-    private static Connection connection = Mockito.mock(Connection.class);
-    private static Document document = Mockito.mock(Document.class);
+
+    private static final Connection connection = Mockito.mock(Connection.class);
+    private static final Document document = Mockito.mock(Document.class);
     
     @BeforeClass
     public static void setUpOnce() {
@@ -61,8 +56,9 @@ public class ApplicationUiTest {
         
         InjectionModel injectionModel = new InjectionModel();
         MediatorHelper.register(injectionModel);
-        
-        frame = GuiActionRunner.execute(() -> {
+
+        // Static mock on current ThreadLocal
+        JFrameView frame = GuiActionRunner.execute(() -> {
 
             // Static mock on current ThreadLocal
             ApplicationUiTest.initMockAdminPage();
@@ -212,7 +208,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindWebshell() throws AWTException, IOException {
+    public void shouldFindWebshell() {
         
         var request = new Request();
         request.setMessage(Interaction.CREATE_SHELL_TAB);
@@ -345,7 +341,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldRunCoder() throws IOException {
+    public void shouldRunCoder() {
 
         window.tabbedPane("tabManagers").selectTab("Encoding");
         window.menuItem("menuMethodManagerCoder").click();
@@ -426,7 +422,7 @@ public class ApplicationUiTest {
         
         var requestDatabase = new Request();
         requestDatabase.setMessage(Interaction.ADD_DATABASES);
-        requestDatabase.setParameters(Arrays.asList(database));
+        requestDatabase.setParameters(List.of(database));
         MediatorHelper.model().sendToViews(requestDatabase);
         
         Assert.assertEquals(nameDatabase +" (1 table)", window.tree("treeDatabases").valueAt(0));
@@ -437,7 +433,7 @@ public class ApplicationUiTest {
         
         var requestTable = new Request();
         requestTable.setMessage(Interaction.ADD_TABLES);
-        requestTable.setParameters(Arrays.asList(table));
+        requestTable.setParameters(List.of(table));
         MediatorHelper.model().sendToViews(requestTable);
         
         Assert.assertEquals(nameTable +" (2 rows)", window.tree("treeDatabases").valueAt(1));

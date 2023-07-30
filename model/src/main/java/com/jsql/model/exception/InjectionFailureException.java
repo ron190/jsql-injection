@@ -15,7 +15,6 @@ package com.jsql.model.exception;
  * Concerns every steps before the user can interact
  * with database elements (database, table, column)
  */
-@SuppressWarnings("serial")
 public class InjectionFailureException extends AbstractSlidingException {
     
     public InjectionFailureException() {

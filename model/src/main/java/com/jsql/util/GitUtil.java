@@ -45,7 +45,7 @@ public class GitUtil {
         NO
     }
 
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
     public GitUtil(InjectionModel injectionModel) {
         

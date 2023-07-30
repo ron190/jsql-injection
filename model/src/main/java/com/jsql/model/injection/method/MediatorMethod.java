@@ -8,14 +8,13 @@ import com.jsql.model.InjectionModel;
 
 public class MediatorMethod {
 
-    private AbstractMethodInjection query;
-    private AbstractMethodInjection request;
-    private AbstractMethodInjection header;
+    private final AbstractMethodInjection query;
+    private final AbstractMethodInjection request;
+    private final AbstractMethodInjection header;
     
-    private List<AbstractMethodInjection> methods;
+    private final List<AbstractMethodInjection> methods;
     
-    @SuppressWarnings("serial")
-    public MediatorMethod(InjectionModel injectionModel) {
+        public MediatorMethod(InjectionModel injectionModel) {
         
         this.query = new AbstractMethodInjection(injectionModel) {
             

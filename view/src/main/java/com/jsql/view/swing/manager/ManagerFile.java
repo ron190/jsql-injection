@@ -49,7 +49,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Manager to read a file from the host.
  */
-@SuppressWarnings("serial")
 public class ManagerFile extends AbstractManagerList {
     
     /**

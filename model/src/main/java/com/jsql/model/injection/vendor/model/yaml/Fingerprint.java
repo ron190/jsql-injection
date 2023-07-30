@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("serial")
 public class Fingerprint implements Serializable {
 
     private List<String> errorMessage = new ArrayList<>();

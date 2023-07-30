@@ -27,7 +27,7 @@ public abstract class AbstractSuspendable {
      */
     private boolean isPaused = false;
 
-    protected InjectionModel injectionModel;
+    protected final InjectionModel injectionModel;
     
     protected AbstractSuspendable(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;

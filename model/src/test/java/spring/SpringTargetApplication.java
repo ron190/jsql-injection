@@ -42,16 +42,16 @@ public class SpringTargetApplication {
     private static org.hsqldb.server.Server serverHsqldb;
     private static Server serverH2;
 
-    public static Properties propsH2 = new Properties();
-    public static Properties propsMysql = new Properties();
-    public static Properties propsMysqlError = new Properties();
-    public static Properties propsPostgres = new Properties();
-    public static Properties propsSqlServer = new Properties();
-    public static Properties propsSqlite = new Properties();
-    public static Properties propsCubrid = new Properties();
-    public static Properties propsDb2 = new Properties();
-    public static Properties propsHsqldb = new Properties();
-    public static Properties propsDerby = new Properties();
+    public static final Properties propsH2 = new Properties();
+    public static final Properties propsMysql = new Properties();
+    public static final Properties propsMysqlError = new Properties();
+    public static final Properties propsPostgres = new Properties();
+    public static final Properties propsSqlServer = new Properties();
+    public static final Properties propsSqlite = new Properties();
+    public static final Properties propsCubrid = new Properties();
+    public static final Properties propsDb2 = new Properties();
+    public static final Properties propsHsqldb = new Properties();
+    public static final Properties propsDerby = new Properties();
 
     static {
         

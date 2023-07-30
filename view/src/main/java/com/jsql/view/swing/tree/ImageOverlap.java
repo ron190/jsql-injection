@@ -27,7 +27,6 @@ import com.jsql.util.LogLevelUtil;
 /**
  * An icon composed of a main icon and another one displayed in the bottom right corner.
  */
-@SuppressWarnings("serial")
 public class ImageOverlap extends ImageIcon {
     
     /**
@@ -38,7 +37,7 @@ public class ImageOverlap extends ImageIcon {
     /**
      * The path of icon displayed on the bottom right corner.
      */
-    private String iconPathOverlap;
+    private final String iconPathOverlap;
 
     /**
      * Create icon with tiny icon on top layer.
@@ -47,7 +46,7 @@ public class ImageOverlap extends ImageIcon {
      */
     public ImageOverlap(String main, String iconPathOverlap) {
         
-        super(ImageOverlap.class.getClassLoader().getResource(main));
+        super(Objects.requireNonNull(ImageOverlap.class.getClassLoader().getResource(main)));
 
         this.iconPathOverlap = iconPathOverlap;
     }

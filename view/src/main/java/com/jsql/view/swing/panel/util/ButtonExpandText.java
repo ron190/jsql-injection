@@ -26,7 +26,6 @@ import java.awt.event.WindowEvent;
 /**
  * A button displayed in address.
  */
-@SuppressWarnings("serial")
 public class ButtonExpandText extends JButton {
 
     /**

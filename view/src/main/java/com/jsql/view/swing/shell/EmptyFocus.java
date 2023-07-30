@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
  */
 public class EmptyFocus implements MouseListener {
     
-    private AbstractShell abstractShell;
+    private final AbstractShell abstractShell;
     
     public EmptyFocus(AbstractShell abstractShell) {
         this.abstractShell = abstractShell;

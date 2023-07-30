@@ -44,7 +44,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Manager to code/decode string in various methods.
  */
-@SuppressWarnings("serial")
 public class ManagerDatabase extends JPanel implements Manager {
     
     /**

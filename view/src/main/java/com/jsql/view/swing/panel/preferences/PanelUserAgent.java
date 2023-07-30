@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
@@ -26,7 +27,6 @@ import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
-@SuppressWarnings("serial")
 public class PanelUserAgent extends JPanel {
     
     /**
@@ -45,16 +45,16 @@ public class PanelUserAgent extends JPanel {
         
         try (
             var inputStream = UiUtil.class.getClassLoader().getResourceAsStream("swing/list/user-agent.txt");
-            var inputStreamReader = new InputStreamReader(inputStream);
+            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream));
             var reader = new BufferedReader(inputStreamReader)
         ) {
-            
+
             String line;
             while ((line = reader.readLine()) != null) {
-                
-                jsonScan.append(line + System.lineSeparator());
+
+                jsonScan.append(line).append(System.lineSeparator());
             }
-            
+
         } catch (IOException e) {
             
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);

@@ -15,8 +15,8 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class ActionCheckUncheck implements ActionListener {
 
-    private AbstractNodeModel nodeModel;
-    private DefaultMutableTreeNode currentTableNode;
+    private final AbstractNodeModel nodeModel;
+    private final DefaultMutableTreeNode currentTableNode;
 
     public ActionCheckUncheck(AbstractNodeModel nodeModel, DefaultMutableTreeNode currentTableNode) {
         

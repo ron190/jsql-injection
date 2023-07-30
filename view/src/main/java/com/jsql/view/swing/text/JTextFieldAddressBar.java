@@ -17,7 +17,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * A JTextField displaying an icon and buttons.
  */
-@SuppressWarnings("serial")
 public class JTextFieldAddressBar extends JPopupTextField implements DecoratorJComponent<JTextField> {
     
     public JTextFieldAddressBar(JTextField c) {

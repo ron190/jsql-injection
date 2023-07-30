@@ -13,22 +13,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.sql.*;
-import java.util.concurrent.atomic.AtomicLong;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.stream.Collectors;
 
 @RestController
 public class JdbcRestController {
 
     private static final String template = "Hello, s!";
-    private final AtomicLong counter = new AtomicLong();
     private static final Logger LOGGER = LogManager.getRootLogger();
-    private Driver driver = GraphDatabase.driver("bolt://jsql-neo4j:7687", AuthTokens.basic("neo4j", "test"));
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final Driver driver = GraphDatabase.driver("bolt://jsql-neo4j:7687", AuthTokens.basic("neo4j", "test"));
+    private final ObjectMapper objectMapper = new ObjectMapper();
     
     @RequestMapping("/altibase")
-    public Greeting greetingAltibase(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+    public Greeting greetingAltibase(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         Class.forName("Altibase.jdbc.driver.AltibaseDriver");
         // docker run -it altibase/altibase
 
@@ -55,7 +55,7 @@ public class JdbcRestController {
     }
     
     @RequestMapping("/ctreeace")
-    public Greeting greetingCTreeAce(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+    public Greeting greetingCTreeAce(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         // c-treeACE-Express.windows.64bit.v11.5.1.64705.190310.ACE.msi
         Class.forName("ctree.jdbc.ctreeDriver");
 
@@ -82,7 +82,7 @@ public class JdbcRestController {
     }
     
     @RequestMapping("/exasol")
-    public Greeting greetingExasol(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+    public Greeting greetingExasol(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         Class.forName("com.exasol.jdbc.EXADriver");
         // docker run --name exasoldb -p 8563:8563 --detach --privileged --stop-timeout 120  exasol/docker-db
         
@@ -109,7 +109,7 @@ public class JdbcRestController {
     }
     
     @RequestMapping("/ignite")
-    public Greeting greetingIgnite(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+    public Greeting greetingIgnite(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         Class.forName("org.apache.ignite.IgniteJdbcThinDriver");
         // docker run -d -p 10800:10800 apacheignite/ignite
         
@@ -136,7 +136,7 @@ public class JdbcRestController {
     }
     
     @RequestMapping("/frontbase")
-    public Greeting greetingFrontbase(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+    public Greeting greetingFrontbase(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         /* FrontBase-8.2.18-WinNT.zip
          * sql92.exe
          * sql92#1> create database firstdb;
@@ -174,7 +174,7 @@ public class JdbcRestController {
     }
     
     @RequestMapping("/iris")
-    public Greeting greetingIris(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+    public Greeting greetingIris(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         Class.forName("com.intersystems.jdbc.IRISDriver");
         
         Greeting greeting = null;
@@ -200,7 +200,7 @@ public class JdbcRestController {
     }
     
     @RequestMapping("/monetdb")
-    public Greeting greetingMonetDB(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+    public Greeting greetingMonetDB(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         Class.forName("nl.cwi.monetdb.jdbc.MonetDriver");
         
         Greeting greeting = null;
@@ -226,7 +226,7 @@ public class JdbcRestController {
     }
     
     @RequestMapping("/mimersql")
-    public Greeting greetingMimerSQL(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+    public Greeting greetingMimerSQL(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         Class.forName("com.mimer.jdbc.Driver");
         
         Greeting greeting = null;
@@ -252,7 +252,7 @@ public class JdbcRestController {
     }
     
     @RequestMapping("/presto")
-    public Greeting greetingPresto(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+    public Greeting greetingPresto(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         Class.forName("com.facebook.presto.jdbc.PrestoDriver");
         
         Greeting greeting = null;
@@ -278,7 +278,7 @@ public class JdbcRestController {
     }
     
     @RequestMapping("/firebird")
-    public Greeting greetingFirebird(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+    public Greeting greetingFirebird(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         // Service Firebird Server - DefaultInstance
         Class.forName("org.firebirdsql.jdbc.FBDriver");
         
@@ -305,7 +305,7 @@ public class JdbcRestController {
     }
     
     @RequestMapping("/netezza")
-    public Greeting greetingNetezza(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+    public Greeting greetingNetezza(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         Class.forName("org.netezza.Driver");
         
         Greeting greeting;
@@ -331,7 +331,7 @@ public class JdbcRestController {
     }
     
     @RequestMapping("/oracle")
-    public Greeting greetingOracle(@RequestParam(value="name", defaultValue="World") String name) throws IOException, ClassNotFoundException, SQLException {
+    public Greeting greetingOracle(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
         Class.forName("oracle.jdbc.OracleDriver");
         
         Greeting greeting;
@@ -357,7 +357,7 @@ public class JdbcRestController {
     }
     
     @RequestMapping("/neo4j")
-    public Greeting greetingNeo4j(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+    public Greeting greetingNeo4j(@RequestParam(value="name", defaultValue="World") String name) {
         
         Greeting greeting;
         

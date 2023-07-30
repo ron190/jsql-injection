@@ -24,8 +24,8 @@ import javax.swing.tree.TreePath;
  */
 public class ImageObserverAnimated implements ImageObserver {
     
-    private JTree tree;
-    private TreePath path;
+    private final JTree tree;
+    private final TreePath path;
     
     /**
      * Build GIF animator for tree node.

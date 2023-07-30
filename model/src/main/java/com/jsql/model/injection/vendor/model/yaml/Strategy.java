@@ -3,7 +3,6 @@ package com.jsql.model.injection.vendor.model.yaml;
 
 import java.io.Serializable;
 
-@SuppressWarnings("serial")
 public class Strategy implements Serializable {
 
     private Configuration configuration = new Configuration();

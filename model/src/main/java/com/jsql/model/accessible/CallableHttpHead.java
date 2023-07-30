@@ -40,16 +40,16 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
     /**
      * URL to an administration page on the website to get tested.
      */
-    private String urlAdminPage;
+    private final String urlAdminPage;
     
     /**
      * HTTP header response code.
      */
     private String responseCodeHttp = StringUtils.EMPTY;
 
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
 
-    private String metadataInjectionProcess;
+    private final String metadataInjectionProcess;
     
     /**
      * Create a callable to find admin page.
@@ -66,7 +66,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
      * Call URL to a administration page in HEAD mode and send the result back to view.
      */
     @Override
-    public CallableHttpHead call() throws Exception {
+    public CallableHttpHead call() {
         
         if (this.injectionModel.getResourceAccess().isSearchAdminStopped()) {
             

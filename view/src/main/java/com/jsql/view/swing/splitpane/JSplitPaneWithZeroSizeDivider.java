@@ -40,7 +40,6 @@ import com.jsql.view.swing.util.UiUtil;
  * A JSplitPane that uses a 1 pixel thin visible divider,
  * but a 9 pixel wide transparent drag area.
  */
-@SuppressWarnings("serial")
 public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
     
     /**

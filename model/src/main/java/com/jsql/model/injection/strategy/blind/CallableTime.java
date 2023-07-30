@@ -15,22 +15,22 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     /**
      * Time before the url call.
      */
-    private Calendar calendar1 = Calendar.getInstance();
+    private final Calendar calendar1 = Calendar.getInstance();
     
     /**
      * Time at the end of the url call.
      */
-    private Calendar calendar2 = Calendar.getInstance();
+    private final Calendar calendar2 = Calendar.getInstance();
     
     /**
      * Current page loading time.
      */
     private long diffSeconds;
 
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
-    private InjectionTime injectionTime;
-    private String metadataInjectionProcess;
+    private final InjectionTime injectionTime;
+    private final String metadataInjectionProcess;
     
     /**
      * Constructor for preparation and blind confirmation.
@@ -78,7 +78,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
      * @return Functional Time callable
      */
     @Override
-    public CallableTime call() throws Exception {
+    public CallableTime call() {
         
         this.calendar1.setTime(new Date());
         this.injectionTime.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);

@@ -20,7 +20,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * A button displayed in address.
  */
-@SuppressWarnings("serial")
 public class ButtonAddressBar extends JButton {
     
     /**

@@ -19,7 +19,6 @@ import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 /**
  * Tabs with mousewheel and right click action.
  */
-@SuppressWarnings("serial")
 public class TabbedPaneWheeled extends JTabbedPane {
     
     /**

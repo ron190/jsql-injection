@@ -11,15 +11,14 @@ import com.jsql.view.swing.util.MediatorHelper;
 /**
  * Radio label for HTTP method (GET, POST, etc).
  */
-@SuppressWarnings("serial")
 public class RadioLinkMethod extends AbstractRadioLink {
     
     /**
      * Group of radio label for address bar.
      */
-    private static List<JLabel> groupMethod = new ArrayList<>();
+    private static final List<JLabel> groupMethod = new ArrayList<>();
 
-    private AbstractMethodInjection methodInjection;
+    private final AbstractMethodInjection methodInjection;
     
     /**
      * A default radio label.

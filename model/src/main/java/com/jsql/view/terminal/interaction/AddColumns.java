@@ -29,7 +29,7 @@ public class AddColumns implements InteractionCommand {
     /**
      * Columns retrieved by the view.
      */
-    private List<Column> columns;
+    private final List<Column> columns;
 
     /**
      * @param interactionParams List of columns retrieved by the Model

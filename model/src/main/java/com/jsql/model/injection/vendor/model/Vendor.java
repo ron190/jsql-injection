@@ -2,7 +2,7 @@ package com.jsql.model.injection.vendor.model;
 
 public class Vendor {
     
-    private String labelVendor;
+    private final String labelVendor;
     
     private AbstractVendor instanceVendor;
     

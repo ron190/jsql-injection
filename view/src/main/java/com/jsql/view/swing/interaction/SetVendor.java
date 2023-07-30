@@ -19,7 +19,7 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class SetVendor implements InteractionCommand {
     
-    private Vendor vendor;
+    private final Vendor vendor;
     
     /**
      * @param interactionParams

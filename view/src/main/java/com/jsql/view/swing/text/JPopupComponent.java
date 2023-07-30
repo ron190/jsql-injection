@@ -22,13 +22,12 @@ import com.jsql.view.swing.popupmenu.JPopupMenuComponent;
  * Add a popup menu to Decorated component.
  * @param <T> Component like JTextField or JTextArea to decorate
  */
-@SuppressWarnings("serial")
 public class JPopupComponent<T extends JComponent> extends JComponent implements DecoratorJComponent<T> {
     
     /**
      * Decorated component.
      */
-    private T proxy;
+    private final T proxy;
 
     /**
      * Get the decorated component, add popup menu Select All and Copy.

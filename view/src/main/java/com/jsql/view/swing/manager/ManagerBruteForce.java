@@ -42,7 +42,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Manager to brute force a hash of various types.
  */
-@SuppressWarnings("serial")
 public class ManagerBruteForce extends JPanel implements Manager {
     
     /**
@@ -98,7 +97,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     /**
      * Textarea displaying result.
      */
-    private JTextPane result;
+    private final JTextPane result;
     
     /**
      * Animated GIF displayed during attack.

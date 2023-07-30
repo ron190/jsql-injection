@@ -33,7 +33,7 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
     /**
      * List component renderer.
      */
-    private static DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+    private static final DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
     @Override
     public Component getListCellRendererComponent(
@@ -104,8 +104,7 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
         return renderer;
     }
     
-    @SuppressWarnings("serial")
-    private class BorderList extends AbstractBorder {
+        private static class BorderList extends AbstractBorder {
         
         @Override
         public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {

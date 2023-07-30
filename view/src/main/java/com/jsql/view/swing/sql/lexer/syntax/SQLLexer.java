@@ -996,7 +996,7 @@ public class SQLLexer implements Lexer {
     /* user code: */
     private int lastToken;
     private int nextState = YYINITIAL;
-    private StringBuilder commentBuffer = new StringBuilder();
+    private final StringBuilder commentBuffer = new StringBuilder();
     private int commentNestCount = 0;
     private int commentStartLine = 0;
     private int commentStartChar = 0;
@@ -1030,11 +1030,9 @@ public class SQLLexer implements Lexer {
      *            first token.
      * @param yycolumn
      *            The position (relative to the line) of the first token.
-     * @throws IOException
-     *             if an IOExecption occurs while switching readers.
      */
     @Override
-    public void reset(java.io.Reader reader, int yyline, int yychar, int yycolumn) throws IOException {
+    public void reset(java.io.Reader reader, int yyline, int yychar, int yycolumn) {
         this.yyreset(reader);
         this.yyline = yyline;
         this.yychar = yychar;

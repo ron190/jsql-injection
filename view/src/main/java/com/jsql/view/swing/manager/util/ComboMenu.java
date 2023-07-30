@@ -9,10 +9,9 @@ import javax.swing.SwingConstants;
 import com.jsql.view.swing.combomenu.ArrowIcon;
 import com.jsql.view.swing.combomenu.BlankIcon;
 
-@SuppressWarnings("serial")
 public class ComboMenu extends JMenu {
     
-    private transient ArrowIcon iconRenderer;
+    private final transient ArrowIcon iconRenderer;
 
     public ComboMenu(String label) {
         

@@ -43,7 +43,7 @@ public final class ThreadUtil {
      */
     private final Map<AbstractElementDatabase, AbstractSuspendable> suspendables = new HashMap<>();
 
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
     public ThreadUtil(InjectionModel injectionModel) {
         

@@ -38,7 +38,7 @@ public class CoderListener implements ActionListener {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private ManagerCoder coderManager;
+    private final ManagerCoder coderManager;
     
     public CoderListener(ManagerCoder coderManager) {
         

@@ -31,7 +31,7 @@ public class SoapUtil {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
     public SoapUtil(InjectionModel injectionModel) {
         
@@ -50,7 +50,7 @@ public class SoapUtil {
                 var doc = SoapUtil.convertToDocument(this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest());
                 LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Parsing SOAP from Request...");
                 
-                hasFoundInjection = this.injectTextNodes(doc, doc.getDocumentElement());
+                hasFoundInjection = this.isTextNodeInjectable(doc, doc.getDocumentElement());
                 
             } catch (Exception e) {
                 
@@ -75,11 +75,10 @@ public class SoapUtil {
         return builder.parse(new InputSource(new StringReader(xmlStr)));
     }
 
-    public boolean injectTextNodes(Document doc, Node node) {
+    public boolean isTextNodeInjectable(Document doc, Node node) {
         
         var nodeList = node.getChildNodes();
-        var hasFoundInjection = false;
-        
+
         for (var i = 0; i < nodeList.getLength(); i++) {
             
             var currentNode = nodeList.item(i);
@@ -87,9 +86,7 @@ public class SoapUtil {
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
                 
                 //calls this method for all the children which is Element
-                hasFoundInjection = this.injectTextNodes(doc, currentNode);
-                
-                if (hasFoundInjection) {
+                if (this.isTextNodeInjectable(doc, currentNode)) {
                     return true;
                 }
                 
@@ -128,7 +125,7 @@ public class SoapUtil {
             }
         }
         
-        return hasFoundInjection;
+        return false;
     }
 
     public static void removeInjectionPoint(Document doc, Node node) {

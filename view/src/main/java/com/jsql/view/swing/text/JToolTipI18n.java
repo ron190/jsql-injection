@@ -6,7 +6,6 @@ import javax.swing.JToolTip;
  * Tooltip which text can be changed using setText() when switching i18n language.
  * Overriden method getTipText() provide text to Swing after i18n switch.
  */
-@SuppressWarnings("serial")
 public class JToolTipI18n extends JToolTip {
     
     private String textTooltip;

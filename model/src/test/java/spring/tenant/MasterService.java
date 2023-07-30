@@ -11,7 +11,7 @@ import java.util.*;
 
 public class MasterService {
     
-    private HashMap<String, ConnectionProvider> hashMap = new HashMap<>();
+    private final HashMap<String, ConnectionProvider> hashMap = new HashMap<>();
     
     public MasterService() {
         

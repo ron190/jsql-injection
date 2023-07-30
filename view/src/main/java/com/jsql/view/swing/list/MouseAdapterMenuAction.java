@@ -12,10 +12,7 @@ package com.jsql.view.swing.list;
 
 import java.awt.ComponentOrientation;
 import java.awt.IllegalComponentStateException;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -52,7 +49,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
     /**
      * JList to add popupmenu.
      */
-    private DnDList dndList;
+    private final DnDList dndList;
     
     /**
      * Create a popup menu for current JList item.
@@ -141,10 +138,10 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             I18nViewUtil.addComponentForKey(entry.getValue(), entry.getKey());
         });
 
-        mnCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
-        mnCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
-        mnPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
-        mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        mnCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
+        mnCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
+        mnPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
+        mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
         
         //Create a file chooser
         final var importFileDialog = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());

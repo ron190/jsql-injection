@@ -14,12 +14,7 @@ import java.awt.ComponentOrientation;
 import java.awt.IllegalComponentStateException;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.EmptyStackException;
 
@@ -132,14 +127,14 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
         
         JMenuItem itemCopy = new JMenuItemWithMargin();
         itemCopy.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
-        itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
         itemCopy.setMnemonic('C');
         itemCopy.setText(I18nUtil.valueByKey("CONTEXT_MENU_COPY"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
         
         JMenuItem itemSelectAll = new JMenuItemWithMargin();
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
-        itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
         itemSelectAll.setText(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
         itemSelectAll.setMnemonic('A');

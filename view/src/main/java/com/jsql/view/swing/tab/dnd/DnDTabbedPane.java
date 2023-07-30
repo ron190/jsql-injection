@@ -22,7 +22,6 @@ import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import com.jsql.view.swing.util.UiUtil;
 
-@SuppressWarnings("serial")
 public class DnDTabbedPane extends JTabbedPane {
     
     private static final int SCROLL_SIZE = 20; // Test
@@ -39,7 +38,7 @@ public class DnDTabbedPane extends JTabbedPane {
         private final int index;
         private boolean dropable = true;
         
-        protected DnDDropLocation(Point p, int index) {
+        private DnDDropLocation(Point p, int index) {
             super(p);
             this.index = index;
         }
@@ -142,7 +141,7 @@ public class DnDTabbedPane extends JTabbedPane {
         return new DnDDropLocation(p, -1);
     }
     
-    public Object setDropLocation(TransferHandler.DropLocation location, boolean forDrop) {
+    public void setDropLocation(TransferHandler.DropLocation location, boolean forDrop) {
         
         DnDDropLocation old = this.dropLocation;
         
@@ -156,8 +155,6 @@ public class DnDTabbedPane extends JTabbedPane {
         }
         
         this.firePropertyChange("dropLocation", old, this.dropLocation);
-        
-        return null;
     }
     
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {

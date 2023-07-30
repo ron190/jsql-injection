@@ -169,12 +169,12 @@ public class JavaScriptToken extends Token {
   public final static int ERROR_FLOAT = 0xF38;
   public final static int ERROR_UNCLOSED_COMMENT = 0xF40;
   
-  private int ID;
-  private String contents;
-  private int lineNumber;
-  private int charBegin;
-  private int charEnd;
-  private int state;
+  private final int ID;
+  private final String contents;
+  private final int lineNumber;
+  private final int charBegin;
+  private final int charEnd;
+  private final int state;
 
   /**
    * Create a new token.

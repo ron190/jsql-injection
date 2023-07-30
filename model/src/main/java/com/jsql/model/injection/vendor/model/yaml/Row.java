@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.StringUtils;
 
-@SuppressWarnings("serial")
 public class Row implements Serializable {
 
     private String query = StringUtils.EMPTY;

@@ -33,16 +33,15 @@ import com.jsql.view.swing.util.UiUtil;
  * Create panel at the top of the window.
  * Contains textfields in a panel.
  */
-@SuppressWarnings("serial")
 public class PanelAddressBar extends JPanel {
     
-    private JTextField textFieldAddress;
-    private JTextField textFieldRequest;
-    private JTextField textFieldHeader;
+    private final JTextField textFieldAddress;
+    private final JTextField textFieldRequest;
+    private final JTextField textFieldHeader;
 
-    private RadioLinkMethod[] radioQueryString = new RadioLinkMethod[1];
-    private RadioLinkMethod[] radioRequest = new RadioLinkMethod[1];
-    private RadioLinkMethod[] radioHeader = new RadioLinkMethod[1];
+    private final RadioLinkMethod[] radioQueryString = new RadioLinkMethod[1];
+    private final RadioLinkMethod[] radioRequest = new RadioLinkMethod[1];
+    private final RadioLinkMethod[] radioHeader = new RadioLinkMethod[1];
     
     private static final String KEY_TOOLTIP_QUERY = "FIELD_QUERYSTRING_TOOLTIP";
     private static final String KEY_TOOLTIP_REQUEST = "FIELD_REQUEST_TOOLTIP";
@@ -51,8 +50,8 @@ public class PanelAddressBar extends JPanel {
     // Current injection method.
     private AbstractMethodInjection methodInjection = MediatorHelper.model().getMediatorMethod().getQuery();
 
-    private AddressMenuBar addressMenuBar;
-    private RequestPanel requestPanel;
+    private final AddressMenuBar addressMenuBar;
+    private final RequestPanel requestPanel;
 
     private boolean isAdvanceActivated = false;
     
@@ -104,8 +103,7 @@ public class PanelAddressBar extends JPanel {
         }).getProxy();
         I18nViewUtil.addComponentForKey(KEY_TOOLTIP_HEADER, tooltipHeader[0]);
         
-        Stream
-        .of(
+        Stream.of(
             new RadioModel("Url", true, MediatorHelper.model().getMediatorMethod().getQuery(), "METHOD_QUERYSTRING_TOOLTIP", this.radioQueryString),
             new RadioModel("GET", false, MediatorHelper.model().getMediatorMethod().getRequest(), "METHOD_REQUEST_TOOLTIP", this.radioRequest),
             new RadioModel("Header", false, MediatorHelper.model().getMediatorMethod().getHeader(), "METHOD_HEADER_TOOLTIP", this.radioHeader)
@@ -286,13 +284,13 @@ public class PanelAddressBar extends JPanel {
         return advancedButton;
     }
     
-    private class RadioModel {
+    private static class RadioModel {
         
-        private String request;
-        private Boolean isSelected;
-        private AbstractMethodInjection method;
-        private String i18n;
-        private RadioLinkMethod[] radio;
+        private final String request;
+        private final Boolean isSelected;
+        private final AbstractMethodInjection method;
+        private final String i18n;
+        private final RadioLinkMethod[] radio;
 
         public RadioModel(String request, Boolean isSelected, AbstractMethodInjection method, String i18n, RadioLinkMethod[] radio) {
             

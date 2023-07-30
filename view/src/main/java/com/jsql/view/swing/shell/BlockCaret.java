@@ -26,7 +26,6 @@ import com.jsql.util.LogLevelUtil;
 /**
  * A caret in a block shape.
  */
-@SuppressWarnings("serial")
 public class BlockCaret extends DefaultCaret {
     
     /**

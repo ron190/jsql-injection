@@ -4,7 +4,6 @@ import javax.swing.JButton;
 
 import com.jsql.view.swing.util.I18nViewUtil;
 
-@SuppressWarnings("serial")
 public class JButtonStateful extends JButton {
 
     /**

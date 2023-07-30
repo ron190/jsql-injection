@@ -121,9 +121,9 @@ public class DiffMatchPatch {
      * Other less paranoid languages just use a three-element array.
      */
     protected static class LinesToCharsResult {
-        protected String chars1;
-        protected String chars2;
-        protected List<String> lineArray;
+        protected final String chars1;
+        protected final String chars2;
+        protected final List<String> lineArray;
 
         protected LinesToCharsResult(String chars1, String chars2,
                 List<String> lineArray) {
@@ -1491,10 +1491,8 @@ public class DiffMatchPatch {
      * @param text1 Source string for the diff.
      * @param delta Delta text.
      * @return Array of Diff objects or null if invalid.
-     * @throws IllegalArgumentException If invalid input.
-     * @throws UnsupportedEncodingException
      */
-    public List<Diff> diffFromDelta(String text1, String delta) throws UnsupportedEncodingException {
+    public List<Diff> diffFromDelta(String text1, String delta) {
         List<Diff> diffs = new LinkedList<>();
         int pointer = 0;  // Cursor in text1
         String[] tokens = delta.split("\t");
@@ -2224,10 +2222,8 @@ public class DiffMatchPatch {
      * objects.
      * @param textline Text representation of patches.
      * @return List of Patch objects.
-     * @throws IllegalArgumentException If invalid input.
-     * @throws UnsupportedEncodingException
      */
-    public List<Patch> patchFromText(String textline) throws UnsupportedEncodingException {
+    public List<Patch> patchFromText(String textline) {
         List<Patch> patches = new LinkedList<>();
         if (textline.length() == 0) {
             return patches;

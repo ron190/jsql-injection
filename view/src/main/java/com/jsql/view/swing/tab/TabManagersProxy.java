@@ -35,13 +35,12 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Panel on the left with functionalities like webshell, file reading and admin page finder.
  */
-@SuppressWarnings("serial")
 public class TabManagersProxy extends JTabbedPane {
     
-    private ManagerWebShell managerWebShell = new ManagerWebShell();
-    private ManagerFile managerFile = new ManagerFile();
-    private ManagerUpload managerUpload = new ManagerUpload();
-    private ManagerSqlShell managerSqlShell = new ManagerSqlShell();
+    private final ManagerWebShell managerWebShell = new ManagerWebShell();
+    private final ManagerFile managerFile = new ManagerFile();
+    private final ManagerUpload managerUpload = new ManagerUpload();
+    private final ManagerSqlShell managerSqlShell = new ManagerSqlShell();
     
     /**
      * Create manager panel.

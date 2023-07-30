@@ -22,7 +22,6 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Render a tree node based on node model.
  * Can render default tree node, or node for database, table or column.
  */
-@SuppressWarnings("serial")
 public class CellRendererNode extends DefaultTreeCellRenderer {
     
     @Override

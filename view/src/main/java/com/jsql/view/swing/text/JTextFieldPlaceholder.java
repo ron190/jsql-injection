@@ -13,7 +13,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Textfield with information text displayed when empty.
  */
-@SuppressWarnings("serial")
 public class JTextFieldPlaceholder extends JTextField {
     
     /**

@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +30,6 @@ import java.util.List;
 /**
  * Open another jSQL instance in new process.
  */
-@SuppressWarnings("serial")
 public class ActionNewWindow extends AbstractAction {
     
     /**
@@ -45,14 +45,14 @@ public class ActionNewWindow extends AbstractAction {
         MainApplication.class.getName()
     );
     
-    private List<String> commands;
+    private final List<String> commands;
     
     public ActionNewWindow() {
         
         this(I18nUtil.valueByKey("NEW_WINDOW_MENU"));
         
         this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
-        this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+        this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
     }
 
     public ActionNewWindow(String name, String... commands) {

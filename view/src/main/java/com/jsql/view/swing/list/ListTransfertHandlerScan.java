@@ -31,7 +31,6 @@ import com.jsql.util.LogLevelUtil;
 /**
  * Handler for processing cut/copy/paste/drag/drop action on a JList items.
  */
-@SuppressWarnings("serial")
 public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
     
     /**

@@ -27,13 +27,12 @@ import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 
-@SuppressWarnings("serial")
 public class NetworkTable extends JTable {
     
     /**
      * List of HTTP injection requests and responses.
      */
-    private transient List<HttpHeader> listHttpHeader = new ArrayList<>();
+    private final transient List<HttpHeader> listHttpHeader = new ArrayList<>();
 
     public NetworkTable(TabbedPaneNetworkTab tabbedPaneNetworkTab) {
         
@@ -77,11 +76,10 @@ public class NetworkTable extends JTable {
 
         this.setModel(new DefaultTableModel() {
             
-            private String[] columns = {
+            private final String[] columns = {
                     
                 I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"),
-                String
-                .format(
+                String.format(
                     "%s (KB)",
                     I18nUtil.valueByKey("NETWORK_TAB_SIZE_COLUMN")
                 ),

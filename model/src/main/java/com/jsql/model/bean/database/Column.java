@@ -19,7 +19,7 @@ public class Column extends AbstractElementDatabase {
     /**
      * The table that contains the current column.
      */
-    private Table parentTable;
+    private final Table parentTable;
 
     /**
      * Define the column label and parent table.

@@ -61,11 +61,11 @@ public class ConnectionUtil {
      */
     private String typeRequest = "GET";
 
-    private Random randomForUserAgent = new Random();
+    private final Random randomForUserAgent = new Random();
     
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
-    private CookieManager cookieManager = new CookieManager();
+    private final CookieManager cookieManager = new CookieManager();
     
     public ConnectionUtil(InjectionModel injectionModel) {
         
@@ -234,7 +234,7 @@ public class ConnectionUtil {
         }
     }
 
-    public String getSource(String url, boolean lineFeed) throws IOException {
+    public String getSource(String url, boolean lineFeed) {
         
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, url);

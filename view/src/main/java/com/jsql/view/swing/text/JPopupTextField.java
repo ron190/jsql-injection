@@ -18,7 +18,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * A JTextField decorated with popup menu and border.
  */
-@SuppressWarnings("serial")
 public class JPopupTextField extends JPopupTextComponent<JTextField> implements DecoratorJComponent<JTextField> {
     
     public JPopupTextField(String placeholder) {

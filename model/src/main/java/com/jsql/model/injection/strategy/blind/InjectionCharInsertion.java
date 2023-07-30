@@ -38,13 +38,13 @@ public class InjectionCharInsertion {
      */
     private List<Diff> constantTrueMark = new ArrayList<>();
     
-    protected InjectionModel injectionModel;
+    protected final InjectionModel injectionModel;
 
-    private String prefixSuffix;
+    private final String prefixSuffix;
     
     private static final String PREFIX = "prefix";
 
-    private List<String> falseTest;
+    private final List<String> falseTest;
     
     /**
      * Create blind attack initialization.

@@ -22,17 +22,17 @@ public class CreateValuesTab extends CreateTabHelper implements InteractionComma
     /**
      * Array of column names, displayed in header table.
      */
-    private String[] columnNames;
+    private final String[] columnNames;
 
     /**
      * 2D array of values.
      */
-    private String[][] data;
+    private final String[][] data;
 
     /**
      * The table containing the data.
      */
-    private AbstractElementDatabase table;
+    private final AbstractElementDatabase table;
 
     /**
      * @param interactionParams Names of columns, table's values and corresponding table

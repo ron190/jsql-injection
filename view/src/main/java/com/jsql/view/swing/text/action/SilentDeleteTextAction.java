@@ -12,7 +12,6 @@ import javax.swing.text.TextAction;
  * Action to cancel Beep sound when deleting last character.
  * Used on TextField.
  */
-@SuppressWarnings("serial")
 public class SilentDeleteTextAction extends TextAction {
     
     private final transient Action deleteAction;

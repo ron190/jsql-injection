@@ -22,7 +22,7 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkTimeVulnerable implements InteractionCommand {
 
-    private String url;
+    private final String url;
     
     /**
      * @param interactionParams

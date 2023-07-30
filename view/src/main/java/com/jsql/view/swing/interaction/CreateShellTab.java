@@ -21,12 +21,12 @@ public class CreateShellTab extends CreateTabHelper implements InteractionComman
     /**
      * Full path of the shell file on remote host.
      */
-    private String path;
+    private final String path;
 
     /**
      * Url of the shell webpage on remote host.
      */
-    private String url;
+    private final String url;
 
     /**
      * @param interactionParams The local path and url for the shell

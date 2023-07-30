@@ -40,7 +40,6 @@ import com.jsql.util.LogLevelUtil;
  *
  * @author Jolly Littlebottom
  */
-@SuppressWarnings("serial")
 public class JScrollIndicator extends JLayeredPane {
     
     /**
@@ -133,30 +132,27 @@ public class JScrollIndicator extends JLayeredPane {
 
     private class ControlPanel extends JPanel {
 
-        private final JMyScrollBar vScrollBar;
-        private final JMyScrollBar hScrollBar;
-
         private ControlPanel(JScrollPane scrollPane) {
             
             this.setLayout(new BorderLayout());
             this.setOpaque(false);
 
-            this.vScrollBar = new JMyScrollBar(Adjustable.VERTICAL);
-            scrollPane.setVerticalScrollBar(this.vScrollBar);
-            scrollPane.remove(this.vScrollBar);
+            JMyScrollBar vScrollBar = new JMyScrollBar(Adjustable.VERTICAL);
+            scrollPane.setVerticalScrollBar(vScrollBar);
+            scrollPane.remove(vScrollBar);
             
             if (scrollPane.getVerticalScrollBarPolicy() != ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER) {
                 
-                this.add(this.vScrollBar, BorderLayout.EAST);
+                this.add(vScrollBar, BorderLayout.EAST);
             }
 
-            this.hScrollBar = new JMyScrollBar(Adjustable.HORIZONTAL);
-            scrollPane.setHorizontalScrollBar(this.hScrollBar);
-            scrollPane.remove(this.hScrollBar);
+            JMyScrollBar hScrollBar = new JMyScrollBar(Adjustable.HORIZONTAL);
+            scrollPane.setHorizontalScrollBar(hScrollBar);
+            scrollPane.remove(hScrollBar);
             
             if (scrollPane.getHorizontalScrollBarPolicy() != ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER) {
                 
-                this.add(this.hScrollBar, BorderLayout.SOUTH);
+                this.add(hScrollBar, BorderLayout.SOUTH);
             }
         }
     }
@@ -230,7 +226,7 @@ public class JScrollIndicator extends JLayeredPane {
 
     public class MyScrollBarUI extends BasicScrollBarUI {
         
-        private JMyScrollBar myScrollBar;
+        private final JMyScrollBar myScrollBar;
         private int alpha = 0;
 
         private MyScrollBarUI(JMyScrollBar scrollBar) {
@@ -287,9 +283,9 @@ public class JScrollIndicator extends JLayeredPane {
 
             g.setColor(
                 new Color(
-                    this.getAlphaColor(THUMB_COLOR).getRed(),
-                    this.getAlphaColor(THUMB_COLOR).getGreen(),
-                    this.getAlphaColor(THUMB_COLOR).getBlue(),
+                    this.getAlphaColor().getRed(),
+                    this.getAlphaColor().getGreen(),
+                    this.getAlphaColor().getBlue(),
                     alphaThumb
                 )
             );
@@ -313,14 +309,14 @@ public class JScrollIndicator extends JLayeredPane {
             g.fillRect(x, y, w, h);
         }
 
-        private Color getAlphaColor(Color color) {
+        private Color getAlphaColor() {
             
             if (this.alpha == 100) {
                 
-                return color;
+                return JScrollIndicator.THUMB_COLOR;
             }
             
-            int rgb = color.getRGB() & 0xFFFFFF; // color without alpha values
+            int rgb = JScrollIndicator.THUMB_COLOR.getRGB() & 0xFFFFFF; // color without alpha values
             rgb |= (this.alpha / 100 * 255) << 24; // add alpha value
             
             return new Color(rgb, true);

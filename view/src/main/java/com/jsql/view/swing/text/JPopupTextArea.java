@@ -22,7 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * A JTextArea decorated with popup menu and border.
  */
-@SuppressWarnings("serial")
 public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements DecoratorJComponent<JTextArea> {
     
     /**

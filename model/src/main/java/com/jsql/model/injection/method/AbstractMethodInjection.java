@@ -16,7 +16,6 @@ import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.util.JsonUtil;
 import com.jsql.util.LogLevelUtil;
 
-@SuppressWarnings("serial")
 public abstract class AbstractMethodInjection implements Serializable {
     
     /**
@@ -24,7 +23,7 @@ public abstract class AbstractMethodInjection implements Serializable {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    protected InjectionModel injectionModel;
+    protected final InjectionModel injectionModel;
     
     protected AbstractMethodInjection(InjectionModel injectionModel) {
         
@@ -107,8 +106,6 @@ public abstract class AbstractMethodInjection implements Serializable {
      */
     private boolean checkAllParams() throws StoppedByUserSlidingException {
         
-        var hasFoundInjection = false;
-        
         // This param will be marked by * if injection is found,
         // inner loop will erase mark * otherwise
         for (SimpleEntry<String, String> paramBase: this.getParams()) {
@@ -121,13 +118,10 @@ public abstract class AbstractMethodInjection implements Serializable {
                 if (paramStar == paramBase) {
                     
                     try {
-                        hasFoundInjection = this.testSingleFromAllParams(paramStar);
-                        
-                        if (hasFoundInjection) {
+                        if (this.isParamInjectable(paramStar)) {
                             
                             return true;
                         }
-                        
                     } catch (JSONException e) {
                         
                         LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
@@ -136,10 +130,10 @@ public abstract class AbstractMethodInjection implements Serializable {
             }
         }
     
-        return hasFoundInjection;
+        return false;
     }
 
-    private boolean testSingleFromAllParams(SimpleEntry<String, String> paramStar) throws StoppedByUserSlidingException {
+    private boolean isParamInjectable(SimpleEntry<String, String> paramStar) throws StoppedByUserSlidingException {
         
         boolean hasFoundInjection;
         

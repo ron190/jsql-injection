@@ -26,7 +26,7 @@ public class CallableFile implements Callable<CallableFile> {
     /**
      * Path to the file to read.
      */
-    private String pathFile;
+    private final String pathFile;
 
     /**
      * Source of file.
@@ -36,9 +36,9 @@ public class CallableFile implements Callable<CallableFile> {
     /**
      * Suspendable task that reads lines of the file by injection.
      */
-    private SuspendableGetRows suspendableReadFile;
+    private final SuspendableGetRows suspendableReadFile;
 
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
     /**
      * Create Callable to read a file.

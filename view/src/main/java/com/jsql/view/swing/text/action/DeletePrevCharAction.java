@@ -8,7 +8,6 @@ import javax.swing.text.Document;
  * Action to cancel Beep sound when deleting last character.
  * Used on TextPane and TextArea.
  */
-@SuppressWarnings("serial")
 public class DeletePrevCharAction extends AbstractCharAction {
     
     /**

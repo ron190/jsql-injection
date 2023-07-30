@@ -25,12 +25,12 @@ public class AbstractGetShellResult implements InteractionCommand {
      * Unique identifier for the terminal. Used to output results of
      * commands in the right shell tab (in case of multiple shell opened).
      */
-    private UUID terminalID;
+    private final UUID terminalID;
 
     /**
      * The result of a command executed in shell.
      */
-    private String result;
+    private final String result;
 
     /**
      * @param interactionParams The unique identifier of the terminal and the command's result to display

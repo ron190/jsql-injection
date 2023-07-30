@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("serial")
 public class Error implements Serializable {
 
     private List<Method> method = new ArrayList<>();

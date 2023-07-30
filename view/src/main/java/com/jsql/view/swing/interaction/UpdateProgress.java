@@ -22,12 +22,12 @@ public class UpdateProgress implements InteractionCommand {
     /**
      * The element in the database tree to refresh.
      */
-    private AbstractElementDatabase dataElementDatabase;
+    private final AbstractElementDatabase dataElementDatabase;
 
     /**
      * The index of progression.
      */
-    private int dataCount;
+    private final int dataCount;
 
     /**
      * @param interactionParams Element in the database tree and progression index

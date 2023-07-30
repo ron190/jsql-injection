@@ -11,7 +11,6 @@ import javax.swing.JMenu;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-@SuppressWarnings("serial")
 public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializable {
 
     @Override

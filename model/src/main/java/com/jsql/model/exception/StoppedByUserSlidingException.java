@@ -15,7 +15,6 @@ package com.jsql.model.exception;
  * concerns every steps when user interact with
  * database elements (database, table, column).
  */
-@SuppressWarnings("serial")
 public class StoppedByUserSlidingException extends AbstractSlidingException {
     
     private static final String STR_STOPPED_BY_USER = "Stopped by user";

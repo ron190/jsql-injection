@@ -14,7 +14,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Textfield with information text displayed when empty.
  */
-@SuppressWarnings("serial")
 public class JTextAreaPlaceholder extends JTextArea {
     
     /**
@@ -25,7 +24,7 @@ public class JTextAreaPlaceholder extends JTextArea {
     /**
      * Text to display when empty.
      */
-    private String placeholderText;
+    private final String placeholderText;
     
     /**
      * Create a textfield with hint and default value.

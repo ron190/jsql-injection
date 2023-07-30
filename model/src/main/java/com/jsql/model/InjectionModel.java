@@ -55,7 +55,6 @@ import java.util.stream.Stream;
  * databases, tables, columns and values, and it can also retrieve resources like files and shell.<br>
  * Tasks are run in multi-threads in general to speed the process.
  */
-@SuppressWarnings("serial")
 public class InjectionModel extends AbstractModelObservable implements Serializable {
     
     /**
@@ -63,15 +62,15 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private transient MediatorVendor mediatorVendor = new MediatorVendor(this);
-    private transient MediatorMethod mediatorMethod = new MediatorMethod(this);
-    private transient MediatorUtils mediatorUtils;
-    private transient MediatorStrategy mediatorStrategy;
+    private final transient MediatorVendor mediatorVendor = new MediatorVendor(this);
+    private final transient MediatorMethod mediatorMethod = new MediatorMethod(this);
+    private final transient MediatorUtils mediatorUtils;
+    private final transient MediatorStrategy mediatorStrategy;
 
-    private transient PropertiesUtil propertiesUtil = new PropertiesUtil();
+    private final transient PropertiesUtil propertiesUtil = new PropertiesUtil();
              
-    private transient DataAccess dataAccess = new DataAccess(this);
-    private transient ResourceAccess resourceAccess = new ResourceAccess(this);
+    private final transient DataAccess dataAccess = new DataAccess(this);
+    private final transient ResourceAccess resourceAccess = new ResourceAccess(this);
     
     public static final String STAR = "*";
     
@@ -526,12 +525,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                     )
                     // Invalid XML characters in recent Spring version
                     // TODO Server needs to urldecode, or stop using out of range chars
-                    .replace(String.valueOf(0x01), "&#01;")
-                    .replace(String.valueOf(0x03), "&#03;")
-                    .replace(String.valueOf(0x04), "&#04;")
-                    .replace(String.valueOf(0x05), "&#05;")
-                    .replace(String.valueOf(0x06), "&#06;")
-                    .replace(String.valueOf(0x07), "&#07;")
+                    .replaceAll("\\x01", "&#01;")
+                    .replaceAll("\\x03", "&#03;")
+                    .replaceAll("\\x04", "&#04;")
+                    .replaceAll("\\x05", "&#05;")
+                    .replaceAll("\\x06", "&#06;")
+                    .replaceAll("\\x07", "&#07;")
                     .replace("+", "%2B")  // Prevent replace '+' into 'space' on server side urldecode
                 );
                 
@@ -606,18 +605,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         String query;
         
         // Method is selected by user and there's no injection point
-        if (
+        if (!isUsingIndex) {
             // Several SQL expressions does not use indexes in SELECT,
             // like Boolean, Error, Shell and search for character insertion,
             // in that case concat SQL expression to the end of param.
-            !isUsingIndex
-        ) {
-            
             query = paramLead + sqlTrail;
-            
-            // Add ending line comment by vendor
-            query = query + this.mediatorVendor.getVendor().instance().endingComment();
-            
+
         } else {
             
             // Concat indexes found for Normal strategy to params
@@ -628,11 +621,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 // => need to be escape with quoteReplacement()
                 Matcher.quoteReplacement(sqlTrail)
             );
-            
-            // Add ending line comment by vendor
-            query = query + this.mediatorVendor.getVendor().instance().endingComment();
         }
-        
+
+        // Add ending line comment by vendor
+        query = query + this.mediatorVendor.getVendor().instance().endingComment();
+
         return query;
     }
 

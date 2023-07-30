@@ -4,7 +4,7 @@ import spock.lang.Specification
 class TamperingUtilSpock extends Specification {
     
     def tamperingUtil
-    def result
+    String result
     
 
     def 'Check Base64'() {

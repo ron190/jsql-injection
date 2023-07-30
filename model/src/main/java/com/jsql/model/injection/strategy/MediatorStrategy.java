@@ -21,19 +21,19 @@ public class MediatorStrategy {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private AbstractStrategy time;
-    private AbstractStrategy blind;
-    private StrategyInjectionError error;
-    private AbstractStrategy normal;
+    private final AbstractStrategy time;
+    private final AbstractStrategy blind;
+    private final StrategyInjectionError error;
+    private final AbstractStrategy normal;
     
-    private List<AbstractStrategy> strategies;
+    private final List<AbstractStrategy> strategies;
     
     /**
      * Current injection strategy.
      */
     private AbstractStrategy strategy;
 
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
     public MediatorStrategy(InjectionModel injectionModel) {
         

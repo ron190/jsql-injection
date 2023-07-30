@@ -231,7 +231,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
             );
             
         } else if (regexRowIncomplete.find()) {
-            slidingWindowAllRows.append(StringUtil.hexstr("05") + "1" + StringUtil.hexstr("0804"));
+            slidingWindowAllRows.append(StringUtil.hexstr("05")).append("1").append(StringUtil.hexstr("0804"));
         }
     }
 

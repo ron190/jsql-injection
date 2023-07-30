@@ -45,6 +45,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
+    private static final String labelPrefix = "prefix";
+
     public SuspendableGetCharInsertion(InjectionModel injectionModel) {
         super(injectionModel);
     }
@@ -221,19 +223,16 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 //                StringUtils.EMPTY
             );
         
-        final var labelPrefix = "prefix";
-        
-        List<String> prefixQuotes = Arrays
-            .asList(
-                labelPrefix,
-                labelPrefix +"'",
-                labelPrefix +"\"",
-                labelPrefix +"%bf'"
+        List<String> prefixQuotes = Arrays.asList(
+            labelPrefix,
+            labelPrefix +"'",
+            labelPrefix +"\"",
+            labelPrefix +"%bf'"
 //                "prefix`",
 //                "'prefix'"
 //                "`prefix`",
 //                "\"prefix\"",
-            );
+        );
         
         List<String> prefixParentheses = Arrays.asList(StringUtils.EMPTY, ")", "))");
         
@@ -246,7 +245,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                 
                 for (String prefixParenthesis: prefixParentheses) {
                     
-                    this.checkInsertionChar(charFromBooleanMatch, labelPrefix, charactersInsertion, prefixValue, prefixQuote, prefixParenthesis);
+                    this.checkInsertionChar(charFromBooleanMatch, charactersInsertion, prefixValue, prefixQuote, prefixParenthesis);
                 }
             }
         }
@@ -270,7 +269,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
 
     private void checkInsertionChar(
         String[] charFromBooleanMatch,
-        final String labelPrefix,
         List<String> charactersInsertion,
         String prefixValue,
         String prefixQuote,

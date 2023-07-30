@@ -29,19 +29,19 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     
     // Every FALSE SQL statements will be checked,
     // more statements means a more robust application
-    protected List<String> falseTest;
+    protected final List<String> falseTest;
     
     // Every TRUE SQL statements will be checked,
     // more statements means a more robust application
-    protected List<String> trueTest;
+    protected final List<String> trueTest;
     
     public enum BooleanMode {
         AND, OR
     }
     
-    protected InjectionModel injectionModel;
+    protected final InjectionModel injectionModel;
     
-    protected BooleanMode booleanMode;
+    protected final BooleanMode booleanMode;
     
     protected AbstractInjectionBoolean(InjectionModel injectionModel, BooleanMode booleanMode) {
         

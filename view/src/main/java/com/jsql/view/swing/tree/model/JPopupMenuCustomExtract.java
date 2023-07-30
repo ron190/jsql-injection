@@ -5,7 +5,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-@SuppressWarnings("serial")
 public class JPopupMenuCustomExtract extends JPopupMenu {
     
     private ButtonGroup buttonGroupLoadRows;

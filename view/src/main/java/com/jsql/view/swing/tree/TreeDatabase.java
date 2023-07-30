@@ -23,7 +23,6 @@ import com.jsql.view.swing.tree.model.NodeModelDatabase;
 import com.jsql.view.swing.tree.model.NodeModelTable;
 import com.jsql.view.swing.util.MediatorHelper;
 
-@SuppressWarnings("serial")
 public class TreeDatabase extends JTree {
     
     /**
@@ -36,7 +35,7 @@ public class TreeDatabase extends JTree {
      * The injection model send a database element to the view, then
      * the view access its graphic component to update.
      */
-    private transient Map<AbstractElementDatabase, DefaultMutableTreeNode> mapNodes = new HashMap<>();
+    private final transient Map<AbstractElementDatabase, DefaultMutableTreeNode> mapNodes = new HashMap<>();
 
     public TreeDatabase(DefaultMutableTreeNode root) {
         super(root);

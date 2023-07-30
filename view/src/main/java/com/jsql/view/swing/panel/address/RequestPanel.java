@@ -33,7 +33,6 @@ import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.util.RadioMenuItemIconCustom;
 import com.jsql.view.swing.text.JPopupTextField;
 
-@SuppressWarnings("serial")
 public class RequestPanel extends JPanel {
     
     /**

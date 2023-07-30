@@ -9,7 +9,7 @@ import java.util.LinkedList;
  */
 public class Patch {
     
-    private LinkedList<Diff> diffs;
+    private final LinkedList<Diff> diffs;
     private int start1;
     private int start2;
     private int length1;

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.jsql.view.swing.tab;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.event.MouseAdapter;
@@ -31,7 +30,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Panel on the left with functionalities like webshell, file reading and admin page finder.
  */
-@SuppressWarnings("serial")
 public class TabManagers extends TabbedPaneWheeled {
     
     /**
@@ -59,18 +57,18 @@ public class TabManagers extends TabbedPaneWheeled {
         
         this.setMinimumSize(new Dimension(100, 0));
         
-        this.buildI18nTab("DATABASE_TAB", "DATABASE_TOOLTIP", UiUtil.ICON_DATABASE_SERVER, null, 0);
-        this.buildI18nTab("ADMINPAGE_TAB", "ADMINPAGE_TOOLTIP", UiUtil.ICON_ADMIN_SERVER, null, 1);
-        this.buildI18nTab("FILE_TAB", "FILE_TOOLTIP", UiUtil.ICON_FILE_SERVER, null, 2);
-        this.buildI18nTab("WEBSHELL_TAB", "WEBSHELL_TOOLTIP", UiUtil.ICON_SHELL_SERVER, null, 3);
-        this.buildI18nTab("SQLSHELL_TAB", "SQLSHELL_TOOLTIP", UiUtil.ICON_SHELL_SERVER, null, 4);
-        this.buildI18nTab("UPLOAD_TAB", "UPLOAD_TOOLTIP", UiUtil.ICON_UPLOAD, null, 5);
-        this.buildI18nTab("BRUTEFORCE_TAB", "BRUTEFORCE_TOOLTIP", UiUtil.ICON_BRUTER, null, 6);
-        this.buildI18nTab("CODER_TAB", "CODER_TOOLTIP", UiUtil.ICON_CODER, null, 7);
-        this.buildI18nTab("SCANLIST_TAB", "SCANLIST_TOOLTIP", UiUtil.ICON_SCANLIST, null, 8);
+        this.buildI18nTab("DATABASE_TAB", "DATABASE_TOOLTIP", UiUtil.ICON_DATABASE_SERVER, 0);
+        this.buildI18nTab("ADMINPAGE_TAB", "ADMINPAGE_TOOLTIP", UiUtil.ICON_ADMIN_SERVER, 1);
+        this.buildI18nTab("FILE_TAB", "FILE_TOOLTIP", UiUtil.ICON_FILE_SERVER, 2);
+        this.buildI18nTab("WEBSHELL_TAB", "WEBSHELL_TOOLTIP", UiUtil.ICON_SHELL_SERVER, 3);
+        this.buildI18nTab("SQLSHELL_TAB", "SQLSHELL_TOOLTIP", UiUtil.ICON_SHELL_SERVER, 4);
+        this.buildI18nTab("UPLOAD_TAB", "UPLOAD_TOOLTIP", UiUtil.ICON_UPLOAD, 5);
+        this.buildI18nTab("BRUTEFORCE_TAB", "BRUTEFORCE_TOOLTIP", UiUtil.ICON_BRUTER, 6);
+        this.buildI18nTab("CODER_TAB", "CODER_TOOLTIP", UiUtil.ICON_CODER, 7);
+        this.buildI18nTab("SCANLIST_TAB", "SCANLIST_TOOLTIP", UiUtil.ICON_SCANLIST, 8);
     }
     
-    private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, Component manager, int index) {
+    private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, int index) {
         
         final var refTooltip = new JToolTipI18n[]{ new JToolTipI18n(I18nUtil.valueByKey(keyTooltip)) };
         
@@ -97,12 +95,8 @@ public class TabManagers extends TabbedPaneWheeled {
             }
         });
         
-        this.addTab(I18nUtil.valueByKey(keyLabel), icon, manager);
-        this.setTabComponentAt(
-            this.indexOfTab(I18nUtil.valueByKey(keyLabel)),
-            labelTab
-        );
-        
+        this.addTab(I18nUtil.valueByKey(keyLabel), icon, labelTab);
+
         I18nViewUtil.addComponentForKey(keyLabel, labelTab);
         I18nViewUtil.addComponentForKey(keyTooltip, refTooltip[0]);
         

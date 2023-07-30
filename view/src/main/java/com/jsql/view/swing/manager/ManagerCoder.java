@@ -38,29 +38,28 @@ import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 /**
  * Manager to code/decode string in various methods.
  */
-@SuppressWarnings("serial")
 public class ManagerCoder extends JPanel implements Manager {
     
     /**
      * User input to encode.
      */
-    private JTextArea textInput;
+    private final JTextArea textInput;
 
     /**
      * JTextArea displaying result of encoding/decoding.
      */
-    private JTextPane result;
+    private final JTextPane result;
 
     /**
      * Encoding choice by user.
      */
     private JMenuItem menuMethod;
 
-    private transient CoderListener actionCoder = new CoderListener(this);
+    private final transient CoderListener actionCoder = new CoderListener(this);
     
     private class ChangeMenuListener implements ChangeListener {
         
-        private String nameMethod;
+        private final String nameMethod;
         
         ChangeMenuListener(String nameMethod) {
             

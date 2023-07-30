@@ -23,7 +23,7 @@ public class ActionStart implements ActionListener {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    protected PanelAddressBar panelAddressBar;
+    protected final PanelAddressBar panelAddressBar;
     
     public ActionStart(PanelAddressBar panelAddressBar) {
         

@@ -16,7 +16,7 @@ public class MultipartUtil {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
 
     public MultipartUtil(InjectionModel injectionModel) {
         

@@ -10,7 +10,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 public class CountryEndpoint {
 	private static final String NAMESPACE_URI = "http://www.baeldung.com/springsoap/gen";
 
-	private CountryRepository countryRepository;
+	private final CountryRepository countryRepository;
 
 	@Autowired
 	public CountryEndpoint(CountryRepository countryRepository) {

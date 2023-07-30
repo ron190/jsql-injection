@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -46,7 +47,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Manager to upload files to the host.
  */
-@SuppressWarnings("serial")
 public class ManagerUpload extends AbstractManagerList {
     
     /**
@@ -67,7 +67,7 @@ public class ManagerUpload extends AbstractManagerList {
         
         try (
             var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);
-            var inputStreamReader = new InputStreamReader(inputStream);
+            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream));
             var reader = new BufferedReader(inputStreamReader)
         ) {
             String line;

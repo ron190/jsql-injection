@@ -8,10 +8,9 @@ import javax.swing.text.StyleConstants;
 /**
  * A textpane with color.
  */
-@SuppressWarnings("serial")
 public class SimpleConsoleAdapter extends AbstractColoredConsole {
     
-    private SimpleAttributeSet attributeTimestamp = new SimpleAttributeSet();
+    private final SimpleAttributeSet attributeTimestamp = new SimpleAttributeSet();
     
     /**
      * Create adapter for console.

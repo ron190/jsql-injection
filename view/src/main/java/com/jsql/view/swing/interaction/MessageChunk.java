@@ -21,7 +21,7 @@ public class MessageChunk implements InteractionCommand {
     /**
      * Text to append to the Chunk log area.
      */
-    private String text;
+    private final String text;
 
     /**
      * @param interactionParams Text to append

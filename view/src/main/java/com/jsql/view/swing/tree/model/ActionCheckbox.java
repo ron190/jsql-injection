@@ -15,8 +15,8 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class ActionCheckbox implements ActionListener {
     
-    private boolean isCheckboxesSelected;
-    private TreePath path;
+    private final boolean isCheckboxesSelected;
+    private final TreePath path;
     
     ActionCheckbox(boolean isCheckboxesSelected, TreePath path) {
         

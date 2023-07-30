@@ -8,7 +8,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import com.jsql.view.swing.util.UiUtil;
 
-@SuppressWarnings("serial")
 public class TooltipCellRenderer extends DefaultTableCellRenderer {
     
     @Override

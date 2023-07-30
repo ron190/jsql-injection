@@ -43,7 +43,7 @@ public class ParameterUtil {
     private String rawHeader = StringUtils.EMPTY;
     private boolean isMultipartRequest = false;
 
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
     public ParameterUtil(InjectionModel injectionModel) {
         

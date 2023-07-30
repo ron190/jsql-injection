@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.StringUtils;
 
-@SuppressWarnings("serial")
 public class Fields implements Serializable {
 
     private String field = StringUtils.EMPTY;

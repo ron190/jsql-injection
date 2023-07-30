@@ -21,12 +21,7 @@ public enum TamperingType {
     HEX_TO_CHAR("hex-to-char.yml"),
     STRING_TO_CHAR("string-to-char.yml"),
     QUOTE_TO_UTF8("quote-to-utf8.yml");
-    
-    /**
-     * Log4j logger sent to view.
-     */
-    private final Logger logger = LogManager.getRootLogger();
-    
+
     private ModelYamlTampering instanceModelYaml;
     
     TamperingType(String fileYaml) {
@@ -39,7 +34,7 @@ public enum TamperingType {
             
         } catch (IOException e) {
 
-            this.logger.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            LogManager.getRootLogger().log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
     

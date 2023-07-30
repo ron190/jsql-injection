@@ -41,40 +41,18 @@ public class MediatorVendor {
 
     // TODO Replace with enum
     private final Vendor auto;
-    private final Vendor access;
-    private final Vendor altibase;
-    private final Vendor ctreeACE;
-    private final Vendor cockroachDB;
     private final Vendor cubrid;
     private final Vendor db2;
     private final Vendor derby;
-    private final Vendor exasol;
-    private final Vendor frontbase;
-    private final Vendor firebird;
     private final Vendor h2;
-    private final Vendor hana;
     private final Vendor hsqldb;
-    private final Vendor informix;
-    private final Vendor ingres;
-    private final Vendor iris;
-    private final Vendor maxDB;
-    private final Vendor mckoi;
-    private final Vendor memSQL;
-    private final Vendor mimerSQL;
-    private final Vendor monetDB;
     private final Vendor mySQL;
     private final Vendor neo4j;
-    private final Vendor netezza;
-    private final Vendor nuoDB;
     private final Vendor oracle;
     private final Vendor postgreSQL;
-    private final Vendor presto;
     private final Vendor sqlite;
     private final Vendor sqlServer;
-    private final Vendor sybase;
-    private final Vendor teradata;
-    private final Vendor vertica;
-    
+
     private final List<Vendor> vendors;
     
     private final InjectionModel injectionModel;
@@ -83,114 +61,115 @@ public class MediatorVendor {
         
         this.injectionModel = injectionModel;
         
+        Vendor access = new Vendor(new VendorYaml("access.yml", injectionModel));
+        Vendor altibase = new Vendor(new VendorYaml("altibase.yml", injectionModel));
+        Vendor ctreeACE = new Vendor(new VendorYaml("ctreeace.yml", injectionModel));
+        Vendor cockroachDB = new Vendor(new VendorYaml("cockroachdb.yml", injectionModel));
+        Vendor exasol = new Vendor(new VendorYaml("exasol.yml", injectionModel));
+        Vendor frontbase = new Vendor(new VendorYaml("frontbase.yml", injectionModel));
+        Vendor firebird = new Vendor(new VendorYaml("firebird.yml", injectionModel));
+        Vendor hana = new Vendor(new VendorYaml("hana.yml", injectionModel));
+        Vendor informix = new Vendor(new VendorYaml("informix.yml", injectionModel));
+        Vendor ingres = new Vendor(new VendorYaml("ingres.yml", injectionModel));
+        Vendor iris = new Vendor(new VendorYaml("iris.yml", injectionModel));
+        Vendor maxDB = new Vendor(new VendorYaml("maxdb.yml", injectionModel));
+        Vendor mckoi = new Vendor(new VendorYaml("mckoi.yml", injectionModel));
+        Vendor memSQL = new Vendor(new VendorYaml("memsql.yml", injectionModel));
+        Vendor mimerSQL = new Vendor(new VendorYaml("mimersql.yml", injectionModel));
+        Vendor monetDB = new Vendor(new VendorYaml("monetdb.yml", injectionModel));
+        Vendor netezza = new Vendor(new VendorYaml("netezza.yml", injectionModel));
+        Vendor nuoDB = new Vendor(new VendorYaml("nuodb.yml", injectionModel));
+        Vendor presto = new Vendor(new VendorYaml("presto.yml", injectionModel));
+        Vendor sybase = new Vendor(new VendorYaml("sybase.yml", injectionModel));
+        Vendor teradata = new Vendor(new VendorYaml("teradata.yml", injectionModel));
+        Vendor vertica = new Vendor(new VendorYaml("vertica.yml", injectionModel));
+
         this.auto = new Vendor();
-        this.access = new Vendor(new VendorYaml("access.yml", injectionModel));
-        this.altibase = new Vendor(new VendorYaml("altibase.yml", injectionModel));
-        this.ctreeACE = new Vendor(new VendorYaml("ctreeace.yml", injectionModel));
-        this.cockroachDB = new Vendor(new VendorYaml("cockroachdb.yml", injectionModel));
         this.cubrid = new Vendor(new VendorYaml("cubrid.yml", injectionModel));
         this.db2 = new Vendor(new VendorYaml("db2.yml", injectionModel));
         this.derby = new Vendor(new VendorYaml("derby.yml", injectionModel));
-        this.exasol = new Vendor(new VendorYaml("exasol.yml", injectionModel));
-        this.frontbase = new Vendor(new VendorYaml("frontbase.yml", injectionModel));
-        this.firebird = new Vendor(new VendorYaml("firebird.yml", injectionModel));
         this.h2 = new Vendor(new VendorYaml("h2.yml", injectionModel));
-        this.hana = new Vendor(new VendorYaml("hana.yml", injectionModel));
         this.hsqldb = new Vendor(new VendorYaml("hsqldb.yml", injectionModel));
-        this.informix = new Vendor(new VendorYaml("informix.yml", injectionModel));
-        this.ingres = new Vendor(new VendorYaml("ingres.yml", injectionModel));
-        this.iris = new Vendor(new VendorYaml("iris.yml", injectionModel));
-        this.maxDB = new Vendor(new VendorYaml("maxdb.yml", injectionModel));
-        this.mckoi = new Vendor(new VendorYaml("mckoi.yml", injectionModel));
-        this.memSQL = new Vendor(new VendorYaml("memsql.yml", injectionModel));
-        this.mimerSQL = new Vendor(new VendorYaml("mimersql.yml", injectionModel));
-        this.monetDB = new Vendor(new VendorYaml("monetdb.yml", injectionModel));
         this.mySQL = new Vendor(new VendorYaml("mysql.yml", injectionModel));
         this.neo4j = new Vendor(new VendorYaml("neo4j.yml", injectionModel));
-        this.netezza = new Vendor(new VendorYaml("netezza.yml", injectionModel));
-        this.nuoDB = new Vendor(new VendorYaml("nuodb.yml", injectionModel));
         this.oracle = new Vendor(new VendorYaml("oracle.yml", injectionModel));
         this.postgreSQL = new Vendor(new VendorYaml("postgresql.yml", injectionModel));
-        this.presto = new Vendor(new VendorYaml("presto.yml", injectionModel));
         this.sqlite = new Vendor(new VendorYaml("sqlite.yml", injectionModel)) {
-             
+
             @Override
             public String transformSqlite(String resultToParse) {
-                
+
                 var resultSqlite = new StringBuilder();
-                
+
                 String resultTmp = resultToParse
                     .replaceFirst("[^(]+\\(", StringUtils.EMPTY)
                     .trim()
                     .replaceAll("\\)$", StringUtils.EMPTY);
-                
+
                 resultTmp = resultTmp.replaceAll("\\([^)]+\\)", StringUtils.EMPTY);
-                
+
                 for (String columnNameAndType: resultTmp.split(",")) {
-                    
+
                     if (columnNameAndType.trim().startsWith("primary key")) {
                         continue;
                     }
-                    
+
                     // Some recent SQLite use tabulation character as a separator => split() by any white space \s
                     String columnName = columnNameAndType.trim().split("\\s")[0];
-                    
+
                     // Some recent SQLite enclose names with ` => strip those `
                     columnName = StringUtils.strip(columnName, "`");
-                    
+
                     if (
                         !"CONSTRAINT".equals(columnName)
                         && !"UNIQUE".equals(columnName)
                     ) {
-                        
+
                         // Generate pattern \4\5\4\6 for injection parsing
-                        resultSqlite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
+                        resultSqlite.append((char) 4).append(columnName).append((char) 5).append("0").append((char) 4).append((char) 6);
                     }
                 }
-         
+
                 return resultSqlite.toString();
             }
         };
         this.sqlServer = new Vendor(new VendorYaml("sqlserver.yml", injectionModel));
-        this.sybase = new Vendor(new VendorYaml("sybase.yml", injectionModel));
-        this.teradata = new Vendor(new VendorYaml("teradata.yml", injectionModel));
-        this.vertica = new Vendor(new VendorYaml("vertica.yml", injectionModel));
-        
+
         this.vendors = Arrays.asList(
             this.auto,
-            this.access,
-            this.altibase,
-            this.ctreeACE,
-            this.cockroachDB,
+            access,
+            altibase,
+            ctreeACE,
+            cockroachDB,
             this.cubrid,
             this.db2,
             this.derby,
-            this.exasol,
-            this.firebird,
-            this.frontbase,
+            exasol,
+            firebird,
+            frontbase,
             this.h2,
-            this.hana,
+            hana,
             this.hsqldb,
-            this.informix,
-            this.ingres,
-            this.iris,
-            this.maxDB,
-            this.mckoi,
-            this.memSQL,
-            this.mimerSQL,
-            this.monetDB,
+            informix,
+            ingres,
+            iris,
+            maxDB,
+            mckoi,
+            memSQL,
+            mimerSQL,
+            monetDB,
             this.mySQL,
             this.neo4j,
-            this.netezza,
-            this.nuoDB,
+            netezza,
+            nuoDB,
             this.oracle,
             this.postgreSQL,
-            this.presto,
+            presto,
             this.sqlite,
             this.sqlServer,
-            this.sybase,
-            this.teradata,
-            this.vertica
+            sybase,
+            teradata,
+            vertica
         );
         
         this.setVendor(this.mySQL);

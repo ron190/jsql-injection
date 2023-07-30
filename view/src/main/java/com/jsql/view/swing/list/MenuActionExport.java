@@ -39,7 +39,7 @@ public class MenuActionExport implements ActionListener {
     /**
      * List to export.
      */
-    private DnDList myList;
+    private final DnDList myList;
     
     /**
      * Create action to export a list.
@@ -53,7 +53,6 @@ public class MenuActionExport implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent arg0) {
         
-        @SuppressWarnings("serial")
         final JFileChooser importFileDialog = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()) {
             
             @Override

@@ -8,7 +8,6 @@ import java.awt.Graphics2D;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
-@SuppressWarnings("serial")
 public class GhostGlassPane extends JComponent {
     
     private DnDTabbedPane tabbedPane;

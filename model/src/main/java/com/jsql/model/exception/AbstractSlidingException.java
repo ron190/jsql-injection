@@ -2,7 +2,6 @@ package com.jsql.model.exception;
 
 import org.apache.commons.lang3.StringUtils;
 
-@SuppressWarnings("serial")
 public abstract class AbstractSlidingException extends JSqlException {
     
     private final String slidingWindowAllRows;

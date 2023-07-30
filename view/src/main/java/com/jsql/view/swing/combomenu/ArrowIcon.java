@@ -21,11 +21,11 @@ public class ArrowIcon implements Icon, SwingConstants {
     
     private static final int DEFAULT_SIZE = 9;
 
-    private int size;
-    private int iconSize;
-    private int direction;
-    private boolean isEnabled;
-    private BasicArrowButton iconRenderer;
+    private final int size;
+    private final int iconSize;
+    private final int direction;
+    private final boolean isEnabled;
+    private final BasicArrowButton iconRenderer;
 
     public ArrowIcon(int direction, boolean isPressedView) {
         

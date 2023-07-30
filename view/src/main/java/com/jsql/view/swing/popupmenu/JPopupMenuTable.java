@@ -12,6 +12,7 @@ package com.jsql.view.swing.popupmenu;
 
 import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -30,13 +31,12 @@ import com.jsql.view.swing.util.I18nViewUtil;
 /**
  * Default popup menu and shortcuts for a table.
  */
-@SuppressWarnings("serial")
 public class JPopupMenuTable extends JPopupMenu {
     
     /**
      * Table with new menu and shortcut.
      */
-    private JTable table;
+    private final JTable table;
 
     /**
      * Create popup menu for this table component.
@@ -52,7 +52,7 @@ public class JPopupMenuTable extends JPopupMenu {
         copyItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_COPY"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
         copyItem.setMnemonic('C');
-        copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
         
         this.add(copyItem);
 
@@ -62,7 +62,7 @@ public class JPopupMenuTable extends JPopupMenu {
         selectAllItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
         selectAllItem.setMnemonic('A');
-        selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
         
         this.add(selectAllItem);
 
@@ -101,7 +101,7 @@ public class JPopupMenuTable extends JPopupMenu {
         search.setAction(actionShowSearchTable);
         search.setText("Search...");
         search.setMnemonic('S');
-        search.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+        search.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK));
         
         this.add(search);
     }

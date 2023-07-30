@@ -83,9 +83,9 @@ public class VendorYaml implements AbstractVendor {
     private static final String TABLE_HEX = "${table.hex}";
     private static final String DATABASE_HEX = "${database.hex}";
     
-    private ModelYaml modelYaml;
+    private final ModelYaml modelYaml;
     
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
     public VendorYaml(String fileYaml, InjectionModel injectionModel) {
         

@@ -95,7 +95,7 @@ public abstract class AbstractTestSuite {
         throw new InjectionFailureException();
     }
 
-    public void requestJdbc() throws SQLException {
+    public void requestJdbc() {
         
         try (
             Connection conn = DriverManager.getConnection(this.jdbcURL, this.jdbcUser, this.jdbcPass);
@@ -283,7 +283,7 @@ public abstract class AbstractTestSuite {
         Set<String> valuesFromJdbc = new TreeSet<>();
 
         try {
-            String[][] rows = this.injectionModel.getDataAccess().listValues(Arrays.asList(
+            String[][] rows = this.injectionModel.getDataAccess().listValues(List.of(
                 new Column(AbstractTestSuite.this.jsqlColumnName,
                     new Table(AbstractTestSuite.this.jsqlTableName, "0",
                         new Database(AbstractTestSuite.this.jsqlDatabaseName, "0")

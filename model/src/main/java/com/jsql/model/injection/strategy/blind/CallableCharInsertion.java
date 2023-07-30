@@ -17,11 +17,11 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
     // List of differences found between the TRUE page, and the present page
     private LinkedList<Diff> opcodes = new LinkedList<>();
     
-    private DiffMatchPatch diffMatchPatch = new DiffMatchPatch();
+    private final DiffMatchPatch diffMatchPatch = new DiffMatchPatch();
 
-    private InjectionCharInsertion injectionCharInsertion;
+    private final InjectionCharInsertion injectionCharInsertion;
     
-    private String metadataInjectionProcess;
+    private final String metadataInjectionProcess;
     
     /**
      * Constructor for preparation and blind confirmation.
@@ -63,7 +63,7 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
      * @return Functional Blind Callable
      */
     @Override
-    public CallableCharInsertion call() throws Exception {
+    public CallableCharInsertion call() {
         
         String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
         

@@ -10,7 +10,6 @@ import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.util.MediatorHelper;
 
-@SuppressWarnings("serial")
 public class ActionCloseTabResult extends AbstractAction {
     
     @Override

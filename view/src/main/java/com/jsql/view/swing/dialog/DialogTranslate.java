@@ -55,7 +55,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * A dialog displaying current locale translation percentage.
  */
-@SuppressWarnings("serial")
 public class DialogTranslate extends JDialog {
     
     /**
@@ -66,16 +65,16 @@ public class DialogTranslate extends JDialog {
     /**
      * Button receiving focus.
      */
-    private JButton buttonSend = new JButton("Send");
+    private final JButton buttonSend = new JButton("Send");
     
     private Language language;
     
-    private JLabel labelTranslation = new JLabel();
+    private final JLabel labelTranslation = new JLabel();
     
     // Contact info, use HTML text
-    private JTextArea textToTranslate = new JPopupTextArea(new JTextAreaPlaceholder("Text to translate")).getProxy();
+    private final JTextArea textToTranslate = new JPopupTextArea(new JTextAreaPlaceholder("Text to translate")).getProxy();
     
-    private JProgressBar progressBarTranslation = new JProgressBar();
+    private final JProgressBar progressBarTranslation = new JProgressBar();
 
     private String textBeforeChange = StringUtils.EMPTY;
 

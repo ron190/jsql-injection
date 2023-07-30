@@ -55,7 +55,6 @@ import com.jsql.view.swing.util.UiUtil;
  * @see ShadowPopup
  * @see ShadowPopupFactory
  */
-@SuppressWarnings("serial")
 public final class ShadowPopupBorder extends AbstractBorder {
     
     /**
@@ -71,12 +70,12 @@ public final class ShadowPopupBorder extends AbstractBorder {
     /**
      * The singleton instance used to draw all borders.
      */
-    private static ShadowPopupBorder instance = new ShadowPopupBorder();
+    private static final ShadowPopupBorder instance = new ShadowPopupBorder();
 
     /**
      * The drop shadow is created from a PNG image with 8 bit alpha channel.
      */
-    private static Image shadow = UiUtil.IMG_SHADOW;
+    private static final Image shadow = UiUtil.IMG_SHADOW;
 
 
     // Instance Creation *****************************************************

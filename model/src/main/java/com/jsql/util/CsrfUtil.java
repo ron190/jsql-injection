@@ -25,7 +25,7 @@ public class CsrfUtil {
     private static final String INPUT_ATTR_VALUE = "value";
     private static final String MSG_ENABLE_CSRF = "Try with option CSRF processing enabled in preferences";
 
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
     public CsrfUtil(InjectionModel injectionModel) {
         

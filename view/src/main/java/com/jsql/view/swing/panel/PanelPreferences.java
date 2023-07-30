@@ -31,18 +31,17 @@ import com.jsql.view.swing.panel.preferences.PanelUserAgent;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.UiUtil;
 
-@SuppressWarnings("serial")
 public class PanelPreferences extends JPanel {
     
-    private transient ActionListener actionListenerSave = new ActionListenerSave(this);
+    private final transient ActionListener actionListenerSave = new ActionListenerSave(this);
     
-    private PanelTampering panelTamperingPreferences = new PanelTampering(this);
-    private PanelInjection panelInjectionPreferences = new PanelInjection(this);
-    private PanelProxy panelProxyPreferences = new PanelProxy(this);
-    private PanelAuth panelAuthPreferences = new PanelAuth(this);
-    private PanelGeneral panelGeneralPreferences = new PanelGeneral(this);
-    private PanelUserAgent panelUserAgentPreferences = new PanelUserAgent();
-    private PanelConnection panelConnectionPreferences = new PanelConnection(this);
+    private final PanelTampering panelTamperingPreferences = new PanelTampering(this);
+    private final PanelInjection panelInjectionPreferences = new PanelInjection(this);
+    private final PanelProxy panelProxyPreferences = new PanelProxy(this);
+    private final PanelAuth panelAuthPreferences = new PanelAuth(this);
+    private final PanelGeneral panelGeneralPreferences = new PanelGeneral(this);
+    private final PanelUserAgent panelUserAgentPreferences = new PanelUserAgent();
+    private final PanelConnection panelConnectionPreferences = new PanelConnection(this);
 
     private static final JPanel panelInjection = new JPanel(new BorderLayout());
     private static final JPanel panelAuth = new JPanel(new BorderLayout());
@@ -52,7 +51,7 @@ public class PanelPreferences extends JPanel {
     private static final JPanel panelTampering = new JPanel(new BorderLayout());
     private static final JPanel panelConnection = new JPanel(new BorderLayout());
     
-    private transient Border panelBorder = BorderFactory.createEmptyBorder(10, 15, 0, 15);
+    private final transient Border panelBorder = BorderFactory.createEmptyBorder(10, 15, 0, 15);
     
     private enum CategoryPreference {
         

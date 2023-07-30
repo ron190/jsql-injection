@@ -25,7 +25,6 @@ import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
 import com.jsql.view.swing.util.I18nViewUtil;
 
-@SuppressWarnings("serial")
 public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     
     /**
@@ -33,12 +32,12 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private JTextArea textAreaNetworkTabUrl = new JPopupTextArea("Request URL").getProxy();
-    private JTextArea textAreaNetworkTabResponse = new JPopupTextArea("Response headers").getProxy();
-    private JTextArea textAreaNetworkTabSource = new JPopupTextArea("Page source").getProxy();
-    private JTextPane textAreaNetworkTabPreview = new JTextPanePlaceholder("Page rendering");
-    private JTextArea textAreaNetworkTabHeader = new JPopupTextArea("Request headers").getProxy();
-    private JTextArea textAreaNetworkTabParams = new JPopupTextArea("Request body").getProxy();
+    private final JTextArea textAreaNetworkTabUrl = new JPopupTextArea("Request URL").getProxy();
+    private final JTextArea textAreaNetworkTabResponse = new JPopupTextArea("Response headers").getProxy();
+    private final JTextArea textAreaNetworkTabSource = new JPopupTextArea("Page source").getProxy();
+    private final JTextPane textAreaNetworkTabPreview = new JTextPanePlaceholder("Page rendering");
+    private final JTextArea textAreaNetworkTabHeader = new JPopupTextArea("Request headers").getProxy();
+    private final JTextArea textAreaNetworkTabParams = new JPopupTextArea("Request body").getProxy();
     
     public TabbedPaneNetworkTab() {
 

@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-@SuppressWarnings("serial")
 public class CenterRendererWithColor extends CenterRenderer {
     
     @Override

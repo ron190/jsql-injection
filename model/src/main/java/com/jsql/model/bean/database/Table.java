@@ -28,7 +28,7 @@ public class Table extends AbstractElementDatabase {
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     // The database that contains the current column.
-    private Database parentDatabase;
+    private final Database parentDatabase;
     
     // The number of rows in the table.
     // TODO to int and move to abstract class

@@ -29,7 +29,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Panel displayed as a header for tabs.
  */
-@SuppressWarnings("serial")
 public class TabHeader extends JPanel implements MouseListener {
     
     private transient Cleanable cleanableTab;
@@ -38,7 +37,7 @@ public class TabHeader extends JPanel implements MouseListener {
         void clean();
     }
     
-    private JLabel tabTitleLabel = new JLabel() {
+    private final JLabel tabTitleLabel = new JLabel() {
         
         @Override
         public void setText(String text) {

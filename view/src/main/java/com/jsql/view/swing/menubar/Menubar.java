@@ -14,13 +14,7 @@ import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -83,7 +77,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Application main menubar.
  */
-@SuppressWarnings("serial")
 public class Menubar extends JMenuBar {
     
     /**
@@ -331,15 +324,15 @@ public class Menubar extends JMenuBar {
         menuWindows.add(menuPanel);
         menuWindows.add(new JSeparator());
 
-        database.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.CTRL_MASK));
-        adminPage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.CTRL_MASK));
-        file.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.CTRL_MASK));
-        webshell.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, ActionEvent.CTRL_MASK));
-        sqlshell.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_5, ActionEvent.CTRL_MASK));
-        upload.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_6, ActionEvent.CTRL_MASK));
-        bruteforce.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_7, ActionEvent.CTRL_MASK));
-        coder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_8, ActionEvent.CTRL_MASK));
-        scanList.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_9, ActionEvent.CTRL_MASK));
+        database.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, InputEvent.CTRL_DOWN_MASK));
+        adminPage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.CTRL_DOWN_MASK));
+        file.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.CTRL_DOWN_MASK));
+        webshell.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, InputEvent.CTRL_DOWN_MASK));
+        sqlshell.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_5, InputEvent.CTRL_DOWN_MASK));
+        upload.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_6, InputEvent.CTRL_DOWN_MASK));
+        bruteforce.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_7, InputEvent.CTRL_DOWN_MASK));
+        coder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_8, InputEvent.CTRL_DOWN_MASK));
+        scanList.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_9, InputEvent.CTRL_DOWN_MASK));
 
         for (var position = 0 ; position < this.menuView.getItemCount() ; position++) {
             
@@ -716,7 +709,7 @@ public class Menubar extends JMenuBar {
         
         class ActionTranslate implements ActionListener {
             
-            private Language language;
+            private final Language language;
             
             ActionTranslate(Language language) {
                 
@@ -939,7 +932,7 @@ public class Menubar extends JMenuBar {
 
         JMenuItem itemCopy = new JMenuItemWithMargin(I18nUtil.valueByKey("CONTEXT_MENU_COPY"), 'C');
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
-        itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
         itemCopy.addActionListener(actionEvent -> {
             
             if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {
@@ -954,7 +947,7 @@ public class Menubar extends JMenuBar {
 
         JMenuItem itemSelectAll = new JMenuItemWithMargin(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"), 'A');
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
-        itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
         itemSelectAll.addActionListener(actionEvent -> {
             
             if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {

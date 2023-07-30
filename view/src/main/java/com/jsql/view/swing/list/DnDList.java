@@ -44,7 +44,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * A list supporting drag and drop.
  */
-@SuppressWarnings("serial")
 public class DnDList extends JList<ItemList> {
     
     /**
@@ -55,12 +54,12 @@ public class DnDList extends JList<ItemList> {
     /**
      * Model for the JList.
      */
-    protected DefaultListModel<ItemList> listModel;
+    protected final DefaultListModel<ItemList> listModel;
     
     /**
      * List of default items.
      */
-    private transient List<ItemList> defaultList;
+    private final transient List<ItemList> defaultList;
     
     /**
      * Create a JList decorated with drag/drop features.

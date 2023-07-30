@@ -24,7 +24,6 @@ import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.ui.BasicColoredSpinnerUI;
 import com.jsql.view.swing.util.MediatorHelper;
 
-@SuppressWarnings("serial")
 public class PanelConnection extends JPanel {
 
     private final JCheckBox checkboxIsFollowingRedirection = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection());

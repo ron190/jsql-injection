@@ -18,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.jsql.util.LogLevelUtil;
 
-@SuppressWarnings("serial")
 public class BorderRoundBlu extends AbstractBorder {
     
     /**

@@ -22,7 +22,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * A JTextPane which displays colored strings.
  */
-@SuppressWarnings("serial")
 public abstract class AbstractColoredConsole extends JPopupTextPane {
     
     /**
@@ -33,7 +32,7 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
     /**
      * Text name of tab.
      */
-    private String tabName;
+    private final String tabName;
 
     /**
      * Create a JTextPane which displays colored strings.

@@ -15,7 +15,7 @@ public class ActionHideShowConsole implements ActionListener {
     /**
      * Ersatz panel to display in place of tabbedpane.
      */
-    private JPanel panel;
+    private final JPanel panel;
     
     /**
      * Create the hide/show bottom panel action.

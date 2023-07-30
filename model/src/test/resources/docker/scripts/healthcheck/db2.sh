@@ -28,4 +28,4 @@ do
 done
   
 >&2 echo "Db2 is up - executing command"
-exec $cmd
+exec "$cmd"

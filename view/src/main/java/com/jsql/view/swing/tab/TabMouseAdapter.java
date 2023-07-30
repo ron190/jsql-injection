@@ -29,7 +29,7 @@ public class TabMouseAdapter extends MouseAdapter {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private TabbedPaneWheeled tabbedPaneWheeled;
+    private final TabbedPaneWheeled tabbedPaneWheeled;
     
     public TabMouseAdapter(TabbedPaneWheeled tabbedPaneWheeled) {
         this.tabbedPaneWheeled = tabbedPaneWheeled;

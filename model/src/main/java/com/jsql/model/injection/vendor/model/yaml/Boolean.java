@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.StringUtils;
 
-@SuppressWarnings("serial")
 public class Boolean implements Serializable {
 
     private Test test = new Test();

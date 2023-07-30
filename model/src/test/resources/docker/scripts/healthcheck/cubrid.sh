@@ -16,4 +16,4 @@ until docker exec -i jsql-cubrid csql demodb -c "select 'jsqlValue' as jsqlColum
 done
   
 >&2 echo "Cubrid is up - executing command"
-exec $cmd
+exec "$cmd"

@@ -32,7 +32,7 @@ class TokenStyles {
      * A hash table containing the text styles. Simple attribute sets are hashed
      * by name (String)
      */
-    private static HashMap<String, SimpleAttributeSet> styles = new HashMap<>();
+    private static final HashMap<String, SimpleAttributeSet> styles = new HashMap<>();
     
     private TokenStyles() { } // disable constructor
 

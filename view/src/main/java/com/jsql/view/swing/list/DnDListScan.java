@@ -15,7 +15,6 @@ import java.util.List;
 /**
  * A list supporting drag and drop with copy/paste object functionality.
  */
-@SuppressWarnings("serial")
 public class DnDListScan extends DnDList {
     
     public DnDListScan(List<ItemList> newList) {

@@ -7,7 +7,6 @@ import javax.swing.JComponent;
 
 import com.jsql.view.swing.util.UiUtil;
 
-@SuppressWarnings("serial")
 public class LightScrollPaneShell extends LightScrollPane {
     
     public LightScrollPaneShell(JComponent component) {

@@ -6,7 +6,6 @@ import javax.swing.JMenuItem;
 import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.SystemUtils;
 
-@SuppressWarnings("serial")
 public class JMenuItemWithMargin extends JMenuItem {
 
     public JMenuItemWithMargin() {

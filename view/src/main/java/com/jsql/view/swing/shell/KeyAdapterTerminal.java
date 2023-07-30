@@ -39,12 +39,12 @@ public class KeyAdapterTerminal extends KeyAdapter {
     /**
      * Terminal where keys are processed.
      */
-    private AbstractShell terminal;
+    private final AbstractShell terminal;
 
     /**
      * Past commands entered by user.
      */
-    private List<String> cmds = new ArrayList<>();
+    private final List<String> cmds = new ArrayList<>();
 
     /**
      * Current position in array of past commands.
@@ -238,7 +238,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
         new SwingWorker<>() {
             
             @Override
-            protected Object doInBackground() throws Exception {
+            protected Object doInBackground() {
                 
                 Thread.currentThread().setName("SwingWorkerKeyAdapterTerminal");
                 

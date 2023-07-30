@@ -382,7 +382,6 @@ public final class OrderedProperties {
      * Custom {@link Properties} that delegates reading, writing, and enumerating properties to the
      * backing {@link OrderedProperties} instance's properties.
      */
-    @SuppressWarnings("serial")
     private static final class CustomProperties extends Properties {
 
         private final Map<String, String> targetProperties;

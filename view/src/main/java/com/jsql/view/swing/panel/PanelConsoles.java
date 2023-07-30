@@ -64,7 +64,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * A panel with different consoles displayed on the bottom.
  */
-@SuppressWarnings("serial")
 public class PanelConsoles extends JPanel {
     
     /**
@@ -75,7 +74,7 @@ public class PanelConsoles extends JPanel {
     /**
      * Console for java exception messages.
      */
-    private JavaConsoleAdapter javaTextPane = new JavaConsoleAdapter("Java", "Java unhandled exception");
+    private final JavaConsoleAdapter javaTextPane = new JavaConsoleAdapter("Java", "Java unhandled exception");
     
     /**
      * Console for raw SQL results.
@@ -92,11 +91,11 @@ public class PanelConsoles extends JPanel {
      */
     private JTextArea binaryTextArea;
 
-    private TabConsoles tabConsoles = new TabConsoles();
+    private final TabConsoles tabConsoles = new TabConsoles();
     private TabbedPaneNetworkTab tabbedPaneNetworkTab;
     private NetworkTable networkTable;
     
-    private BasicArrowButton buttonShowNorth = new BasicArrowButton(SwingConstants.NORTH);
+    private final BasicArrowButton buttonShowNorth = new BasicArrowButton(SwingConstants.NORTH);
     private int location = 0;
     
     /**

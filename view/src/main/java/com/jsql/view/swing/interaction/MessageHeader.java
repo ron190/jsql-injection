@@ -37,15 +37,15 @@ public class MessageHeader implements InteractionCommand {
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     // The text to append to the tab
-    private String url;
-    private String post;
-    private Map<String, String> header;
-    private Map<String, String> response;
-    private String source;
-    private String size;
-    private String metadataProcess;
-    private String metadataStrategy;
-    private AbstractCallableBoolean<?> metadataBoolean;
+    private final String url;
+    private final String post;
+    private final Map<String, String> header;
+    private final Map<String, String> response;
+    private final String source;
+    private final String size;
+    private final String metadataProcess;
+    private final String metadataStrategy;
+    private final AbstractCallableBoolean<?> metadataBoolean;
 
     /**
      * @param interactionParams Text to append

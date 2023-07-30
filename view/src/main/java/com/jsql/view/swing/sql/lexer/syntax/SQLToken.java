@@ -98,12 +98,12 @@ public class SQLToken extends Token {
      */
     public static final int ERROR_BAD_BIT_STRING = 0xF05;
 
-    private int id;
-    private String contents;
-    private int lineNumber;
-    private int charBegin;
-    private int charEnd;
-    private int state;
+    private final int id;
+    private final String contents;
+    private final int lineNumber;
+    private final int charBegin;
+    private final int charEnd;
+    private final int state;
 
     /**
      * Create a new token. The constructor is typically called by the lexer

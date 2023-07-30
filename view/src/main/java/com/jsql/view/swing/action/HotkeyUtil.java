@@ -95,8 +95,7 @@ public final class HotkeyUtil {
     /**
      * Add action to global root (ctrl-tab, ctrl-shift-tab, ctrl-W).
      */
-    @SuppressWarnings("serial")
-    public static void addShortcut(JRootPane rootPane, final JTabbedPane valuesTabbedPane) {
+        public static void addShortcut(JRootPane rootPane, final JTabbedPane valuesTabbedPane) {
         
         Action closeTab = new ActionCloseTabResult();
         

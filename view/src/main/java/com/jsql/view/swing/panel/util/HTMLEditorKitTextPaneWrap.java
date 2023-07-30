@@ -8,7 +8,6 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.InlineView;
 import javax.swing.text.html.ParagraphView;
 
-@SuppressWarnings("serial")
 public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
 
     @Override

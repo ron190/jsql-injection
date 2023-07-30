@@ -21,7 +21,7 @@ public class PreferencesUtil {
     // True if bugs are sent to Github.
     private boolean isReportingBugs = true;
     
-    private boolean is4K = true;
+    private boolean is4K = false;
     
     // True if HTTP 302 redirection are followed to the new URL.
     private boolean isFollowingRedirection = false;

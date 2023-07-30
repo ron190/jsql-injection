@@ -31,7 +31,6 @@ import com.jsql.view.swing.text.action.SilentDeleteTextAction;
  * A swing JTextComponent with Undo/Redo functionality.
  * @param <T> Component like JTextField or JTextArea to decorate
  */
-@SuppressWarnings("serial")
 public class JPopupTextComponent<T extends JTextComponent> extends JPopupComponent<T> implements DecoratorJComponent<T> {
     
     /**

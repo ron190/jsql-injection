@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -56,7 +57,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * A dialog displaying information on jSQL.
  */
-@SuppressWarnings("serial")
 public class DialogAbout extends JDialog {
     
     /**
@@ -72,7 +72,7 @@ public class DialogAbout extends JDialog {
     /**
      * Dialog scroller.
      */
-    private LightScrollPane scrollPane;
+    private final LightScrollPane scrollPane;
 
     /**
      * Create a dialog for general information on project jsql.
@@ -100,7 +100,7 @@ public class DialogAbout extends JDialog {
 
         JPanel lastLine = this.initializeLastLine(escapeListener);
 
-        var iconJsql = new JLabel(new ImageIcon(UiUtil.URL_ICON_96));
+        var iconJsql = new JLabel(new ImageIcon(Objects.requireNonNull(UiUtil.URL_ICON_96)));
         dialogPane.add(iconJsql, BorderLayout.WEST);
         dialogPane.add(lastLine, BorderLayout.SOUTH);
 
@@ -186,8 +186,9 @@ public class DialogAbout extends JDialog {
             var result = new StringBuilder();
             
             try (
-                InputStream in = DialogAbout.class.getClassLoader().getResourceAsStream("swing/about.htm");
-                var reader = new BufferedReader(new InputStreamReader(in))
+                InputStream inputStream = DialogAbout.class.getClassLoader().getResourceAsStream("swing/about.htm");
+                var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream));
+                var reader = new BufferedReader(inputStreamReader)
             ) {
                 String line;
                 while ((line = reader.readLine()) != null) {

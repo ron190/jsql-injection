@@ -48,7 +48,6 @@ import com.jsql.view.swing.util.MediatorHelper;
 /**
  * Manager to display webpages frequently used as backoffice administration.
  */
-@SuppressWarnings("serial")
 public class ManagerAdminPage extends AbstractManagerList {
     
     /**

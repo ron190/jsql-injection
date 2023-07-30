@@ -22,7 +22,7 @@ public class StartProgress implements InteractionCommand {
     /**
      * The element in the database tree for which the progress starts.
      */
-    private AbstractElementDatabase dataElementDatabase;
+    private final AbstractElementDatabase dataElementDatabase;
 
     /**
      * @param interactionParams Element in the database tree to update

@@ -27,7 +27,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * A JTextField with globe icon displayed on the left.
  */
-@SuppressWarnings("serial")
 public class JTextFieldWithIcon extends JTextFieldPlaceholder {
     
     /**

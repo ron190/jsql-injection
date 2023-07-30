@@ -43,7 +43,6 @@ public interface Lexer {
      * @param yyline The line number of the first token.
      * @param yychar The position (relative to the start of the stream) of the first token.
      * @param yycolumn The position (relative to the line) of the first token.
-     * @throws IOException if an IOExecption occurs while switching readers.
      */
-    void reset(java.io.Reader reader, int yyline, int yychar, int yycolumn) throws IOException;
+    void reset(java.io.Reader reader, int yyline, int yychar, int yycolumn);
 }

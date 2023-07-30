@@ -21,17 +21,17 @@ public class CreateFileTab extends CreateTabHelper implements InteractionCommand
     /**
      * Name of the file.
      */
-    private String name;
+    private final String name;
 
     /**
      * Content of the file.
      */
-    private String content;
+    private final String content;
 
     /**
      * Full path of the file.
      */
-    private String path;
+    private final String path;
 
     /**
      * @param interactionParams Name, content and path of the file

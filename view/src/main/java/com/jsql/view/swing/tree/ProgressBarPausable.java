@@ -27,7 +27,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * A progress bar with a Pause icon over it.
  */
-@SuppressWarnings("serial")
 public class ProgressBarPausable extends JProgressBar {
     
     /**

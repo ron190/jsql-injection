@@ -61,7 +61,6 @@ import com.jsql.view.swing.util.UiStringUtil;
  * Display a table for database values. Add keyboard shortcut, mouse icon, text
  * and header formatting.
  */
-@SuppressWarnings("serial")
 public class PanelTable extends JPanel {
     
     /**
@@ -72,7 +71,7 @@ public class PanelTable extends JPanel {
     /**
      * Table to display in the panel.
      */
-    private JTable tableValues;
+    private final JTable tableValues;
 
     /**
      * Create a panel containing a table to display injection values.

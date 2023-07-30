@@ -41,29 +41,28 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * A tree Node composed of an icon, a GIF loader, a progress bar, a label.
  */
-@SuppressWarnings("serial")
 public class PanelNode extends JPanel {
     
     /**
      * Default icon of the node (database or table).
      */
-    private JLabel icon = new JLabel();
+    private final JLabel icon = new JLabel();
 
     /**
      * A GIF loader, displayed if progress track is unknown (like columns).
      */
-    private JLabel loader = new JLabel();
+    private final JLabel loader = new JLabel();
 
     /**
      * Progress bar displayed during injection, with pause icon displayed if user paused the process.
      */
-    private ProgressBarPausable progressBar = new ProgressBarPausable();
+    private final ProgressBarPausable progressBar = new ProgressBarPausable();
 
     /**
      * Text of the node.
      */
-    private JLabel label = new JLabel();
-    private JTextField textFieldEditable = new JTextField(15);
+    private final JLabel label = new JLabel();
+    private final JTextField textFieldEditable = new JTextField(15);
     
     /**
      * Create Panel for tree nodes.

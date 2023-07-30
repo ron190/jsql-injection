@@ -25,23 +25,22 @@ import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
-@SuppressWarnings("serial")
 public class PanelTampering extends JPanel implements Cleanable {
     
-    private JCheckBox checkboxIsTamperingBase64 = new JCheckBox();
-    private JCheckBox checkboxIsTamperingVersionComment = new JCheckBox();
-    private JCheckBox checkboxIsTamperingFunctionComment = new JCheckBox();
-    private JCheckBox checkboxIsTamperingEqualToLike = new JCheckBox();
-    private JCheckBox checkboxIsTamperingRandomCase = new JCheckBox();
-    private JCheckBox checkboxIsTamperingEval = new JCheckBox();
-    private JCheckBox checkboxIsTamperingHexToChar = new JCheckBox();
-    private JCheckBox checkboxIsTamperingStringToChar = new JCheckBox();
-    private JCheckBox checkboxIsTamperingQuoteToUtf8 = new JCheckBox();
-    private JRadioButton radioIsTamperingSpaceToMultilineComment = new JRadioButton();
-    private JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton();
-    private JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton();
+    private final JCheckBox checkboxIsTamperingBase64 = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingVersionComment = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingFunctionComment = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingEqualToLike = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingRandomCase = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingEval = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingHexToChar = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingStringToChar = new JCheckBox();
+    private final JCheckBox checkboxIsTamperingQuoteToUtf8 = new JCheckBox();
+    private final JRadioButton radioIsTamperingSpaceToMultilineComment = new JRadioButton();
+    private final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton();
+    private final JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton();
     
-    private JTextPane textPaneEval;
+    private final JTextPane textPaneEval;
 
     public PanelTampering(PanelPreferences panelPreferences) {
         

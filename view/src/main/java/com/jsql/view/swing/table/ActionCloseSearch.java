@@ -6,12 +6,11 @@ import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-@SuppressWarnings("serial")
 public class ActionCloseSearch extends AbstractAction {
     
-    private JTextField textFilter;
-    private JPanel panelSearch;
-    private PanelTable panelTable;
+    private final JTextField textFilter;
+    private final JPanel panelSearch;
+    private final PanelTable panelTable;
     
     public ActionCloseSearch(JTextField textFilter, JPanel panelSearch, PanelTable panelTable) {
         

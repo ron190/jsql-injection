@@ -44,16 +44,15 @@ import java.util.stream.Stream;
  * - at the center: tree on the left, table on the right,<br>
  * - at the bottom: information labels.
  */
-@SuppressWarnings("serial")
 public class JFrameView extends JFrame {
 
     // Main center panel
     private SplitHorizontalTopBottom splitHorizontalTopBottom;
 
     // List of terminal by unique identifier
-    private Map<UUID, AbstractShell> mapShells = new HashMap<>();
+    private final Map<UUID, AbstractShell> mapShells = new HashMap<>();
     
-    private transient SubscriberInteraction subscriber = new SubscriberInteraction("com.jsql.view.swing.interaction");
+    private final transient SubscriberInteraction subscriber = new SubscriberInteraction("com.jsql.view.swing.interaction");
     
     // Build the GUI: add app icon, tree icons, the 3 main panels
     public JFrameView() {

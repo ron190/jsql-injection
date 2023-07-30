@@ -13,6 +13,7 @@ package com.jsql.view.swing.popupmenu;
 import java.awt.ComponentOrientation;
 import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -38,7 +39,6 @@ import com.jsql.view.swing.util.I18nViewUtil;
 /**
  * Popup menu for editable text component.
  */
-@SuppressWarnings("serial")
 public class JPopupMenuComponent extends JPopupMenu {
     
     /**
@@ -46,7 +46,7 @@ public class JPopupMenuComponent extends JPopupMenu {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private JComponent component;
+    private final JComponent component;
     
     /**
      * Create a popup menu for editable component.
@@ -57,13 +57,13 @@ public class JPopupMenuComponent extends JPopupMenu {
         this.component = component;
         
         JMenuItem copyItem = new JMenuItemWithMargin(component.getActionMap().get(DefaultEditorKit.copyAction));
-        copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
         copyItem.setMnemonic('C');
         copyItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_COPY"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
 
         JMenuItem selectAllItem = new JMenuItemWithMargin(component.getActionMap().get(DefaultEditorKit.selectAllAction));
-        selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
         selectAllItem.setMnemonic('A');
         selectAllItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_SELECT_ALL"));
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
@@ -91,7 +91,7 @@ public class JPopupMenuComponent extends JPopupMenu {
             
             clearItem.setText(I18nUtil.valueByKey("CONTEXT_MENU_CLEAR"));
             I18nViewUtil.addComponentForKey("CONTEXT_MENU_CLEAR", clearItem);
-            clearItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+            clearItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_DOWN_MASK));
             clearItem.setMnemonic('E');
             
             this.addSeparator();

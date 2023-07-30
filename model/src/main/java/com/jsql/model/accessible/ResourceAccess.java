@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -107,7 +106,7 @@ public class ResourceAccess {
      */
     private List<CallableFile> callablesReadFile = new ArrayList<>();
     
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
 
     public ResourceAccess(InjectionModel injectionModel) {
         
@@ -373,9 +372,8 @@ public class ResourceAccess {
      * 
      * @param urlCommand
      * @return
-     * @throws IOException
      */
-    public String runCommandShell(String urlCommand) throws IOException {
+    public String runCommandShell(String urlCommand) {
         
         String pageSource;
         try {
@@ -413,41 +411,19 @@ public class ResourceAccess {
      */
     public void runWebShell(String command, UUID uuidShell, String urlShell) {
         
-        String result = StringUtils.EMPTY;
-        
-        try {
-            result = this.runCommandShell(
-                urlShell + "?c="+ URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1)
-            );
-            
-            if (StringUtils.isBlank(result)) {
-                result = "No result.\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
-            }
-            
-        } catch (UnsupportedEncodingException e) {
-            
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_ERROR,
-                String.format("Encoding command to ISO-8859-1 failed: %s", e.getMessage()),
-                e
-            );
-            
-        } catch (IOException e) {
-            
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_ERROR,
-                String.format("Shell execution error: %s", e.getMessage()),
-                e
-            );
-            
-        } finally {
-            
-            // Unfroze interface
-            var request = new Request();
-            request.setMessage(Interaction.GET_WEB_SHELL_RESULT);
-            request.setParameters(uuidShell, result);
-            this.injectionModel.sendToViews(request);
+        String result = this.runCommandShell(
+            urlShell + "?c="+ URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1)
+        );
+
+        if (StringUtils.isBlank(result)) {
+            result = "No result.\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
         }
+
+        // Unfroze interface
+        var request = new Request();
+        request.setMessage(Interaction.GET_WEB_SHELL_RESULT);
+        request.setParameters(uuidShell, result);
+        this.injectionModel.sendToViews(request);
     }
 
     /**
@@ -657,65 +633,42 @@ public class ResourceAccess {
      */
     public void runSqlShell(String command, UUID uuidShell, String urlShell, String username, String password) {
         
-        String result = StringUtils.EMPTY;
-        
-        try {
-            result = this.runCommandShell(
-                String
-                .format(
-                     "%s?q=%s&u=%s&p=%s",
-                     urlShell,
-                     URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1),
-                     username,
-                     password
-                )
-            );
+        String result = this.runCommandShell(
+            String.format(
+                 "%s?q=%s&u=%s&p=%s",
+                 urlShell,
+                 URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1),
+                 username,
+                 password
+            )
+        );
             
-            if (result.contains("<SQLr>")) {
-                
-                List<List<String>> listRows = this.parse(result);
+        if (result.contains("<SQLr>")) {
 
-                if (listRows.isEmpty()) {
-                    return;
-                }
-                
-                List<Integer> listFieldsLength = this.parseColumnLength(listRows);
+            List<List<String>> listRows = this.parse(result);
 
-                result = this.convert(listRows, listFieldsLength);
-                
-            } else if (result.contains("<SQLm>")) {
-                
-                result = result.replace("<SQLm>", StringUtils.EMPTY) + "\n";
-                
-            } else if (result.contains("<SQLe>")) {
-                
-                result = result.replace("<SQLe>", StringUtils.EMPTY) + "\n";
+            if (listRows.isEmpty()) {
+                return;
             }
-            
-        } catch (UnsupportedEncodingException e) {
-            
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_ERROR,
-                String.format("Encoding command to ISO-8859-1 failed: %s", e.getMessage()),
-                e
-            );
-            
-        } catch (IOException e) {
-            
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_ERROR,
-                String.format("Shell execution error: %s", e.getMessage()),
-                e
-            );
-            
-        } finally {
-            
-            // Unfroze interface
-            var request = new Request();
-            request.setMessage(Interaction.GET_SQL_SHELL_RESULT);
-            request.setParameters(uuidShell, result, command);
-            this.injectionModel.sendToViews(request);
+
+            List<Integer> listFieldsLength = this.parseColumnLength(listRows);
+
+            result = this.convert(listRows, listFieldsLength);
+
+        } else if (result.contains("<SQLm>")) {
+
+            result = result.replace("<SQLm>", StringUtils.EMPTY) + "\n";
+
+        } else if (result.contains("<SQLe>")) {
+
+            result = result.replace("<SQLe>", StringUtils.EMPTY) + "\n";
         }
+
+        // Unfroze interface
+        var request = new Request();
+        request.setMessage(Interaction.GET_SQL_SHELL_RESULT);
+        request.setParameters(uuidShell, result, command);
+        this.injectionModel.sendToViews(request);
     }
 
     private String convert(List<List<String>> listRows, List<Integer> listFieldsLength) {
@@ -724,7 +677,7 @@ public class ResourceAccess {
         
         for (Integer fieldLength: listFieldsLength) {
             
-            tableText.append("-"+ StringUtils.repeat("-", fieldLength) +"-+");
+            tableText.append("-").append(StringUtils.repeat("-", fieldLength)).append("-+");
         }
         
         tableText.append("\n");
@@ -736,12 +689,10 @@ public class ResourceAccess {
             
             for (String field: listFields) {
                 
-                tableText.append(
-                    StringUtils.SPACE
-                    + field
-                    + StringUtils.repeat(StringUtils.SPACE, listFieldsLength.get(cursorPosition) - field.length())
-                    + " |"
-                );
+                tableText.append(StringUtils.SPACE)
+                    .append(field)
+                    .append(StringUtils.repeat(StringUtils.SPACE, listFieldsLength.get(cursorPosition) - field.length()))
+                    .append(" |");
                 cursorPosition++;
             }
             
@@ -752,7 +703,7 @@ public class ResourceAccess {
         
         for (Integer fieldLength: listFieldsLength) {
             
-            tableText.append("-"+ StringUtils.repeat("-", fieldLength) +"-+");
+            tableText.append("-").append(StringUtils.repeat("-", fieldLength)).append("-+");
         }
         
         tableText.append("\n");

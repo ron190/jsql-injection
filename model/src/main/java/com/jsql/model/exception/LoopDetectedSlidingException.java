@@ -15,7 +15,6 @@ package com.jsql.model.exception;
  * concerns every steps when user interact with
  * database elements (database, table, column).
  */
-@SuppressWarnings("serial")
 public class LoopDetectedSlidingException extends AbstractSlidingException {
 
     public LoopDetectedSlidingException(String slidingWindowAllRows, String slidingWindowCurrentRows) {

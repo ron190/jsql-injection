@@ -26,7 +26,7 @@ public enum ActionCoder {
     MD4("Md4") {
         
         @Override
-        public String run(String value) throws NoSuchAlgorithmException {
+        public String run(String value) {
             
             return HashUtil.toMd4(value);
         }
@@ -89,7 +89,7 @@ public enum ActionCoder {
     ADLER32("Adler32") {
         
         @Override
-        public String run(String value) throws NoSuchAlgorithmException {
+        public String run(String value) {
             
             return HashUtil.toAdler32(value);
         }
@@ -98,7 +98,7 @@ public enum ActionCoder {
     CRC16("Crc16") {
         
         @Override
-        public String run(String value) throws NoSuchAlgorithmException {
+        public String run(String value) {
             
             return HashUtil.toCrc16(value);
         }
@@ -107,7 +107,7 @@ public enum ActionCoder {
     CRC32("Crc32") {
         
         @Override
-        public String run(String value) throws NoSuchAlgorithmException {
+        public String run(String value) {
             
             return HashUtil.toCrc32(value);
         }
@@ -116,7 +116,7 @@ public enum ActionCoder {
     CRC64("Crc64") {
         
         @Override
-        public String run(String value) throws NoSuchAlgorithmException {
+        public String run(String value) {
             
             return HashUtil.toCrc64(value);
         }
@@ -125,7 +125,7 @@ public enum ActionCoder {
     ENCODE_TO_HEX("Encode to Hex") {
         
         @Override
-        public String run(String value) throws UnsupportedEncodingException {
+        public String run(String value) {
             
             return StringUtil.toHex(value);
         }
@@ -206,7 +206,7 @@ public enum ActionCoder {
     ENCODE_TO_URL("Encode to Url") {
         
         @Override
-        public String run(String value) throws UnsupportedEncodingException {
+        public String run(String value) {
             
             return StringUtil.toUrl(value);
         }
@@ -224,7 +224,7 @@ public enum ActionCoder {
     DECODE_FROM_HEX("Decode from Hex") {
         
         @Override
-        public String run(String value) throws UnsupportedEncodingException, DecoderException {
+        public String run(String value) throws DecoderException {
             
             return StringUtil.fromHex(value);
         }
@@ -305,7 +305,7 @@ public enum ActionCoder {
     DECODE_FROM_URL("Decode from Url") {
         
         @Override
-        public String run(String value) throws UnsupportedEncodingException {
+        public String run(String value) {
             
             return
                 StringUtils

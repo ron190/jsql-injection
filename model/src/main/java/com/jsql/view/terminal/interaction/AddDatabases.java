@@ -29,7 +29,7 @@ public class AddDatabases implements InteractionCommand {
     /**
      * Databases retrieved by the view.
      */
-    private List<Database> databases;
+    private final List<Database> databases;
 
     /**
      * @param interactionParams List of databases retrieved by the Model

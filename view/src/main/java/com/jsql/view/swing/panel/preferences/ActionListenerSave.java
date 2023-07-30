@@ -11,7 +11,7 @@ import com.jsql.view.swing.util.MediatorHelper;
 
 public class ActionListenerSave implements ActionListener {
     
-    private PanelPreferences panelPreferences;
+    private final PanelPreferences panelPreferences;
 
     public ActionListenerSave(PanelPreferences panelPreferences) {
         

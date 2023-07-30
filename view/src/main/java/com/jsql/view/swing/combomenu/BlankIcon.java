@@ -8,9 +8,9 @@ import javax.swing.Icon;
 
 public class BlankIcon implements Icon {
     
-    private Color fillColor;
+    private final Color fillColor;
     
-    private int size;
+    private final int size;
 
     public BlankIcon() {
         

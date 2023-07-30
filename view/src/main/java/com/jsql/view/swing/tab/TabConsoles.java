@@ -20,7 +20,6 @@ import com.jsql.util.LogLevelUtil;
 /**
  * Adapt MouseTabbedPane to another class in order to ease Mediator registering.
  */
-@SuppressWarnings("serial")
 public class TabConsoles extends TabbedPaneWheeled {
     
     /**

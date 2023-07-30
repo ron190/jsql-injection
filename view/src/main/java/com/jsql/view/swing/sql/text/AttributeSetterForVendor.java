@@ -14,7 +14,7 @@ public class AttributeSetterForVendor {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private Object attributeVendor;
+    private final Object attributeVendor;
     private Method method;
 
     public AttributeSetterForVendor(Object attributeVendor, String nameSetter) {

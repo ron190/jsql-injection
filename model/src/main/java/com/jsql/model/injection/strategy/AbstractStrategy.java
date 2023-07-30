@@ -35,7 +35,7 @@ public abstract class AbstractStrategy {
      */
     protected boolean isApplicable = false;
 
-    protected InjectionModel injectionModel;
+    protected final InjectionModel injectionModel;
     
     protected AbstractStrategy(InjectionModel injectionModel) {
         

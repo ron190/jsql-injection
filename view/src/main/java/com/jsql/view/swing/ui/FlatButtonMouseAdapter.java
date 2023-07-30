@@ -14,7 +14,7 @@ import com.jsql.view.swing.util.UiUtil;
  */
 public class FlatButtonMouseAdapter extends MouseAdapter {
     
-    private JButton buttonFlat;
+    private final JButton buttonFlat;
     private boolean isVisible = false;
 
     public FlatButtonMouseAdapter(JButton buttonFlat) {

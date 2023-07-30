@@ -23,7 +23,6 @@ import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.ui.BasicColoredSpinnerUI;
 import com.jsql.view.swing.util.MediatorHelper;
 
-@SuppressWarnings("serial")
 public class PanelInjection extends JPanel {
 
     private final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata());

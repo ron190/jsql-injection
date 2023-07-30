@@ -25,7 +25,7 @@ public class MessageBinary implements InteractionCommand {
     /**
      * Text to append to the Binary log area.
      */
-    private String text;
+    private final String text;
 
     /**
      * @param interactionParams Text to append

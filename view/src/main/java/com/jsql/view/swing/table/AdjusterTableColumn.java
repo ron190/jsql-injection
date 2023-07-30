@@ -36,13 +36,13 @@ import javax.swing.table.TableModel;
  */
 public class AdjusterTableColumn implements PropertyChangeListener, TableModelListener {
     
-    private JTable tableAdjust;
-    private int spacing;
+    private final JTable tableAdjust;
+    private final int spacing;
     private boolean isColumnHeaderIncluded;
     private boolean isColumnDataIncluded;
     private boolean isOnlyAdjustLarger;
     private boolean isDynamicAdjustment;
-    private Map<TableColumn, Integer> columnSizes = new HashMap<>();
+    private final Map<TableColumn, Integer> columnSizes = new HashMap<>();
 
     /**
      *  Specify the table and use default spacing
@@ -374,11 +374,10 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
     /**
      *  Action to adjust or restore the width of a single column or all columns
      */
-    @SuppressWarnings("serial")
-    class ColumnAction extends AbstractAction {
+        class ColumnAction extends AbstractAction {
         
-        private boolean isSelectedColumn;
-        private boolean isAdjust;
+        private final boolean isSelectedColumn;
+        private final boolean isAdjust;
 
         public ColumnAction(boolean isSelectedColumn, boolean isAdjust) {
             
@@ -423,11 +422,10 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
      *  Toggle properties of the TableColumnAdjuster so the user can
      *  customize the functionality to their preferences
      */
-    @SuppressWarnings("serial")
-    class ToggleAction extends AbstractAction {
+        class ToggleAction extends AbstractAction {
         
-        private boolean isToggleDynamic;
-        private boolean isToggleLarger;
+        private final boolean isToggleDynamic;
+        private final boolean isToggleLarger;
 
         public ToggleAction(boolean isToggleDynamic, boolean isToggleLarger) {
             

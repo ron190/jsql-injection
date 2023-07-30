@@ -17,7 +17,7 @@ import org.json.JSONObject;
  */
 public class ItemListScan extends ItemList {
     
-    private BeanInjection beanInjection;
+    private final BeanInjection beanInjection;
 
     public ItemListScan(BeanInjection newString) {
         

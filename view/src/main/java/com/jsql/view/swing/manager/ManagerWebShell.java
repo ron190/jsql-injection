@@ -16,7 +16,6 @@ import com.jsql.view.swing.util.MediatorHelper;
 /**
  * Manager for uploading PHP webshell to the host and send system commands.
  */
-@SuppressWarnings("serial")
 public class ManagerWebShell extends AbstractManagerShell {
     
     public ManagerWebShell() {

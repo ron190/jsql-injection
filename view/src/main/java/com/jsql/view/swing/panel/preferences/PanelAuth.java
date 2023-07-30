@@ -21,7 +21,6 @@ import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
 
-@SuppressWarnings("serial")
 public class PanelAuth extends JPanel {
 
     private final JCheckBox checkboxUseDigestAuthentication = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isAuthentEnabled());

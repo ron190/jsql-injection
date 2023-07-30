@@ -62,7 +62,7 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
     /**
      * 512 bits work buffer = 16 x 32-bit words
      */
-    private int[] X = new int[16];
+    private final int[] X = new int[16];
 
 
     // Constructors
@@ -93,8 +93,9 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      * Returns a copy of this MD object.
      */
     @Override
-    public Object clone() {
-        
+    public Object clone() throws CloneNotSupportedException {
+
+        Object clone = super.clone();
         return new DigestMD4(this);
     }
 

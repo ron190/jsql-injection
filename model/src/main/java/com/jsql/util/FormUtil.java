@@ -26,7 +26,7 @@ public class FormUtil {
     private static final String INPUT_ATTR_VALUE = "value";
     private static final String FORM_ATTR_VALUE = "method";
     
-    private InjectionModel injectionModel;
+    private final InjectionModel injectionModel;
     
     public FormUtil(InjectionModel injectionModel) {
         

@@ -64,7 +64,6 @@ import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
 /**
  * Build default component appearance, keyboard shortcuts and icons.
  */
-@SuppressWarnings("serial")
 public class UiUtil {
     
     /**

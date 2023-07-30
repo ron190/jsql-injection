@@ -36,7 +36,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * SplitPane composed of tree and tabs on top, and info tabs on bottom.
  */
-@SuppressWarnings("serial")
 public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
     
     /**
@@ -56,7 +55,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
     /**
      * SplitPane containing Manager panels on the left and result tabs on the right.
      */
-    private JSplitPaneWithZeroSizeDivider splitVerticalLeftRight;
+    private final JSplitPaneWithZeroSizeDivider splitVerticalLeftRight;
 
     private static final JPanel PANEL_HIDDEN_CONSOLES = new JPanel();
     

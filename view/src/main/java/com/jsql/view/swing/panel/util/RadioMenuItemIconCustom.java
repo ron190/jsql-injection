@@ -12,7 +12,6 @@ import javax.swing.JMenu;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-@SuppressWarnings("serial")
 public class RadioMenuItemIconCustom implements Icon, UIResource, Serializable {
     
     public void paintOceanIcon(Component c, Graphics g, int x, int y) {

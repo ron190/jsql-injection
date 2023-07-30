@@ -10,7 +10,7 @@ import com.jsql.view.swing.util.MediatorHelper;
 
 public class BeanInjection {
     
-    private String url;
+    private final String url;
     private String request = StringUtils.EMPTY;
     private String header = StringUtils.EMPTY;
     private String requestType;

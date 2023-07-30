@@ -694,7 +694,7 @@ public class JavaScriptLexer implements Lexer {
   /* user code: */
     int lastToken;
 
-    private int nextState=YYINITIAL;
+    private final int nextState=YYINITIAL;
     
     /**
      * next Token method that allows you to control if whitespace and comments are
@@ -720,10 +720,9 @@ public class JavaScriptLexer implements Lexer {
      * @param yyline The line number of the first token.
      * @param yychar The position (relative to the start of the stream) of the first token.
      * @param yycolumn The position (relative to the line) of the first token.
-     * @throws IOException if an IOExecption occurs while switching readers.
      */
     @Override
-    public void reset(java.io.Reader reader, int yyline, int yychar, int yycolumn) throws IOException{
+    public void reset(java.io.Reader reader, int yyline, int yychar, int yycolumn) {
         this.yyreset(reader);
         this.yyline = yyline;
         this.yychar = yychar;

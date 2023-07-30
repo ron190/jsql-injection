@@ -20,7 +20,6 @@ import javax.swing.JTextPane;
 /**
  * A JTextArea decorated with popup menu and border.
  */
-@SuppressWarnings("serial")
 public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements DecoratorJComponent<JTextPane> {
     
     /**

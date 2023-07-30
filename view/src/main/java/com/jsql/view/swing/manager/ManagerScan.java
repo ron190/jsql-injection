@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -53,7 +54,6 @@ import com.jsql.view.swing.util.UiUtil;
 /**
  * Manager to display webpages frequently used as backoffice administration.
  */
-@SuppressWarnings("serial")
 public class ManagerScan extends AbstractManagerList {
     
     /**
@@ -156,7 +156,7 @@ public class ManagerScan extends AbstractManagerList {
         
         try (
             var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.INPUT_STREAM_PAGES_SCAN);
-            var inputStreamReader = new InputStreamReader(inputStream);
+            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream));
             var reader = new BufferedReader(inputStreamReader)
         ) {
             

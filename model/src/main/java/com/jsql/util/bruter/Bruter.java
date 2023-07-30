@@ -15,7 +15,7 @@ public class Bruter {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    protected List<String> characters = new ArrayList<>();
+    protected final List<String> characters = new ArrayList<>();
      
     protected boolean found = false;
      

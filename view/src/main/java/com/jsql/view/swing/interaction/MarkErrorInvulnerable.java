@@ -21,7 +21,7 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkErrorInvulnerable implements InteractionCommand {
     
-    private int indexMethodError;
+    private final int indexMethodError;
     
     /**
      * @param interactionParams
