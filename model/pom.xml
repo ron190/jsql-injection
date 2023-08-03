@@ -63,7 +63,7 @@
         <!-- Fails to find UTs on later version > 3.0.0-M4 -->
         <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
         <!-- Fails to find ITs on later version > 3.0.0-M4 -->
-        <maven-failsafe-plugin.version>3.0.0-M4</maven-failsafe-plugin.version>
+        <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
         <!-- Spring startup PKIX error on later version -->
         <mssql-jdbc.version>9.4.1.jre8</mssql-jdbc.version>
         <mysql-connector-j.version>8.1.0</mysql-connector-j.version>
