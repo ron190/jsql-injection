@@ -77,13 +77,11 @@ public class Database extends AbstractElementDatabase {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect number of tables for [{}].", this);
         }
         
-        return
-            String
-            .format(
-                "%s (%s table%s)",
-                this.elementValue,
-                this.tableCount,
-                sPlural
-            );
+        return String.format(
+            "%s (%s table%s)",
+            this.elementValue,
+            this.tableCount,
+            sPlural
+        );
     }
 }

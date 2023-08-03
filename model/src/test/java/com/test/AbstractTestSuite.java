@@ -22,11 +22,11 @@ import spring.SpringTargetApplication;
 
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Assertions;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
@@ -91,7 +91,7 @@ public abstract class AbstractTestSuite {
 
     public void initialize() throws Exception {
         
-        LOGGER.warn("AbstractTestSuite and ConcreteTestSuite are for initialization purpose. Run test suite or unit test instead.");
+        LOGGER.warn("For initialization only, run concrete test suite instead.");
         throw new InjectionFailureException();
     }
 
@@ -150,9 +150,7 @@ public abstract class AbstractTestSuite {
         Set<String> valuesFromJdbc = new HashSet<>();
         
         try {
-            List<String> databases =
-                this.injectionModel
-                .getDataAccess()
+            List<String> databases = this.injectionModel.getDataAccess()
                 .listDatabases()
                 .stream()
                 .map(Database::toString)
@@ -163,7 +161,7 @@ public abstract class AbstractTestSuite {
 
             LOGGER.info("ListDatabases: found {} to find {}", valuesFromInjection, valuesFromJdbc);
 
-            assertTrue(
+            Assertions.assertTrue(
                 !valuesFromInjection.isEmpty()
                 && !valuesFromJdbc.isEmpty()
                 && valuesFromInjection.containsAll(valuesFromJdbc)
@@ -171,13 +169,11 @@ public abstract class AbstractTestSuite {
             
         } catch (AssertionError e) {
             
-            Set<String> tablesUnkown =
-                Stream
-                .concat(
-                    valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
-                    valuesFromJdbc.stream().filter(value -> !valuesFromInjection.contains(value))
-                )
-                .collect(Collectors.toCollection(TreeSet::new));
+            Set<String> tablesUnkown = Stream.concat(
+                valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
+                valuesFromJdbc.stream().filter(value -> !valuesFromInjection.contains(value))
+            )
+            .collect(Collectors.toCollection(TreeSet::new));
             
             throw new AssertionError(String.format("Unknown databases: %s\n%s", tablesUnkown, e));
         }
@@ -190,9 +186,7 @@ public abstract class AbstractTestSuite {
         Set<String> valuesFromJdbc = new HashSet<>();
 
         try {
-            List<String> tables =
-                this.injectionModel
-                .getDataAccess()
+            List<String> tables = this.injectionModel.getDataAccess()
                 .listTables(new Database(AbstractTestSuite.this.jsqlDatabaseName, "0"))
                 .stream()
                 .map(Table::toString)
@@ -202,7 +196,7 @@ public abstract class AbstractTestSuite {
             valuesFromJdbc.addAll(AbstractTestSuite.this.tablesFromJdbc);
 
             LOGGER.info("Tables: found {} to find {}", valuesFromInjection, valuesFromJdbc);
-            assertTrue(
+            Assertions.assertTrue(
                 !valuesFromInjection.isEmpty()
                 && !valuesFromJdbc.isEmpty()
                 && valuesFromInjection.equals(valuesFromJdbc)
@@ -210,13 +204,11 @@ public abstract class AbstractTestSuite {
             
         } catch (AssertionError e) {
             
-            Set<String> tablesUnkown =
-                Stream
-                .concat(
-                    valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
-                    valuesFromJdbc.stream().filter(value -> !valuesFromInjection.contains(value))
-                )
-                .collect(Collectors.toCollection(TreeSet::new));
+            Set<String> tablesUnkown = Stream.concat(
+                valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
+                valuesFromJdbc.stream().filter(value -> !valuesFromInjection.contains(value))
+            )
+            .collect(Collectors.toCollection(TreeSet::new));
             
             throw new AssertionError(String.format("Unknown tables: %s\n%s", tablesUnkown, e));
         }
@@ -229,9 +221,7 @@ public abstract class AbstractTestSuite {
         Set<String> valuesFromJdbc = new HashSet<>();
 
         try {
-            List<String> columns =
-                this.injectionModel
-                .getDataAccess()
+            List<String> columns = this.injectionModel.getDataAccess()
                 .listColumns(
                     new Table(AbstractTestSuite.this.jsqlTableName, "0",
                         new Database(AbstractTestSuite.this.jsqlDatabaseName, "0")
@@ -245,7 +235,7 @@ public abstract class AbstractTestSuite {
             valuesFromJdbc.addAll(this.parse(AbstractTestSuite.this.columnsFromJdbc));
 
             LOGGER.info("listColumns: found {} to find {}", valuesFromInjection, valuesFromJdbc);
-            assertTrue(
+            Assertions.assertTrue(
                 !valuesFromInjection.isEmpty()
                 && !valuesFromJdbc.isEmpty()
                 && valuesFromInjection.equals(valuesFromJdbc)
@@ -253,13 +243,11 @@ public abstract class AbstractTestSuite {
             
         } catch (AssertionError e) {
             
-            Set<String> columnsUnkown =
-                Stream
-                .concat(
-                    valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
-                    valuesFromJdbc.stream().filter(value -> !valuesFromInjection.contains(value))
-                )
-                .collect(Collectors.toCollection(TreeSet::new));
+            Set<String> columnsUnkown = Stream.concat(
+                valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
+                valuesFromJdbc.stream().filter(value -> !valuesFromInjection.contains(value))
+            )
+            .collect(Collectors.toCollection(TreeSet::new));
             
             throw new AssertionError(String.format("Unknown columns: %s\n%s", columnsUnkown, e));
         }
@@ -291,9 +279,7 @@ public abstract class AbstractTestSuite {
                 )
             ));
             
-            List<String> valuesFound =
-                Arrays
-                .stream(rows)
+            List<String> valuesFound = Arrays.stream(rows)
                 // => row number, occurrence, value1, value2...
                 .map(row -> row[2].replaceAll("\r\n", "\n"))
                 .collect(Collectors.toList());
@@ -310,8 +296,8 @@ public abstract class AbstractTestSuite {
                 .replaceAll("\r", "[r]");
             
             LOGGER.info("Values: found {} to find {}", logValuesFromInjection, logValuesFromJdbc);
-            
-            assertTrue(
+
+            Assertions.assertTrue(
                 !valuesFromInjection.isEmpty()
                 && !valuesFromJdbc.isEmpty()
                 // TODO update and delete injection prevent exact matching => create a specific table
@@ -320,15 +306,24 @@ public abstract class AbstractTestSuite {
             
         } catch (AssertionError e) {
             
-            Set<String> valuesUnknown =
-                Stream
-                .concat(
-                    valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
-                    valuesFromJdbc.stream().filter(value -> !valuesFromInjection.contains(value))
-                )
-                .collect(Collectors.toCollection(TreeSet::new));
+            Set<String> valuesUnknown = Stream.concat(
+                valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
+                valuesFromJdbc.stream().filter(value -> !valuesFromInjection.contains(value))
+            )
+            .collect(Collectors.toCollection(TreeSet::new));
             
             throw new AssertionError(String.format("Unknown values: %s\n%s", valuesUnknown, e));
         }
+    }
+
+    @Ignore("Enabled on inheritance")
+    public void readFile() throws JSqlException, ExecutionException, InterruptedException {
+
+        List<String> contents = this.injectionModel.getResourceAccess()
+            .readFile(Collections.singletonList("/var/lib/mysql-files/file-injection.txt"));
+
+        LOGGER.info("ReadFile: found {} to find {}", String.join(",", contents), "inside");
+
+        Assertions.assertEquals("inside", String.join(",", contents).trim());
     }
 }

@@ -42,8 +42,7 @@ public class ReplaceFileChooser extends JFileChooser {
                 
                 int result = JOptionPane.showConfirmDialog(
                     this,
-                    String
-                    .format(
+                    String.format(
                         "%s %s",
                         this.getSelectedFile().getName(),
                         I18nUtil.valueByKey("SAVE_TAB_CONFIRM_LABEL")

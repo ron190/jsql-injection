@@ -192,26 +192,23 @@ public class SuspendableGetRows extends AbstractSuspendable {
     private void appendRowFixed(StringBuilder slidingWindowAllRows, StringBuilder slidingWindowCurrentRow) {
         
         // Check either if there is more than 1 row and if there is less than 1 complete row
-        var regexAtLeastOneRow = Pattern
-            .compile(
-                String
-                .format(
-                    "%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]%s%s%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$",
-                    MODE,
-                    ENCLOSE_VALUE_RGX,
-                    SEPARATOR_CELL_RGX,
-                    ENCLOSE_VALUE_RGX
-                )
+        var regexAtLeastOneRow = Pattern.compile(
+            String.format(
+                "%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]%s%s%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$",
+                MODE,
+                ENCLOSE_VALUE_RGX,
+                SEPARATOR_CELL_RGX,
+                ENCLOSE_VALUE_RGX
             )
-            .matcher(slidingWindowCurrentRow);
+        )
+        .matcher(slidingWindowCurrentRow);
         
-        var regexRowIncomplete = Pattern
-            .compile(
-                MODE
-                + ENCLOSE_VALUE_RGX
-                + "[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
-            )
-            .matcher(slidingWindowCurrentRow);
+        var regexRowIncomplete = Pattern.compile(
+            MODE
+            + ENCLOSE_VALUE_RGX
+            + "[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
+        )
+        .matcher(slidingWindowCurrentRow);
 
         // If there is more than 1 row, delete the last incomplete one in order to restart properly from it at the next loop,
         // else if there is 1 row but incomplete, mark it as cut with the letter c

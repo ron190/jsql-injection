@@ -293,14 +293,13 @@ public class ConnectionUtil {
      * Call an URL and return the source page.
      * @param url to call
      * @return the source page of the URL
-     * @throws IOException when the reading of source page fails
      */
-    public String getSourceLineFeed(String url) throws IOException {
+    public String getSourceLineFeed(String url) {
         
         return this.getSource(url, true);
     }
     
-    public String getSource(String url) throws IOException {
+    public String getSource(String url) {
         
         return this.getSource(url, false);
     }

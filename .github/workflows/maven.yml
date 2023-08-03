@@ -1,5 +1,3 @@
-name: DevOps
-
 on:
   push:
     branches: [ master ]

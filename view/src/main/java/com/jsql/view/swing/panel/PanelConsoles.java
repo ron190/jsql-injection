@@ -426,11 +426,7 @@ public class PanelConsoles extends JPanel {
         
         try {
             this.binaryTextArea.append(
-                String
-                .format(
-                    "\t%s",
-                    text
-                )
+                String.format("\t%s", text)
             );
             this.binaryTextArea.setCaretPosition(this.binaryTextArea.getDocument().getLength());
         

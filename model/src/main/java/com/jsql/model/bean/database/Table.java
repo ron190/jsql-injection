@@ -90,13 +90,11 @@ public class Table extends AbstractElementDatabase {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect number of rows.");
         }
         
-        return
-            String
-            .format(
-                 "%s (%s row%s)",
-                 this.elementValue,
-                 nbRow,
-                 sPlural
-            );
+        return String.format(
+             "%s (%s row%s)",
+             this.elementValue,
+             nbRow,
+             sPlural
+        );
     }
 }

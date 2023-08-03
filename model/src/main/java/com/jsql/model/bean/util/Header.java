@@ -1,7 +1,6 @@
 package com.jsql.model.bean.util;
 
 public enum Header {
-    
     URL,
     POST,
     HEADER,
@@ -14,5 +13,4 @@ public enum Header {
     METADATA_PROCESS,
     METADATA_STRATEGY,
     METADATA_BOOLEAN
-    
 }

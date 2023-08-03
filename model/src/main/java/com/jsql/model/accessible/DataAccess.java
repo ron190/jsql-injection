@@ -194,14 +194,13 @@ public class DataAccess {
             String nameDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[1];
             String username = resultToParse.split(ENCLOSE_VALUE_RGX)[2];
             
-            var infos = String
-                .format(
-                    "Database [%s] on %s [%s] for user [%s]",
-                    nameDatabase,
-                    this.injectionModel.getMediatorVendor().getVendor(),
-                    versionDatabase,
-                    username
-                );
+            var infos = String.format(
+                "Database [%s] on %s [%s] for user [%s]",
+                nameDatabase,
+                this.injectionModel.getMediatorVendor().getVendor(),
+                versionDatabase,
+                username
+            );
             
             LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, infos);
             

@@ -15,7 +15,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
@@ -25,19 +24,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.regex.Pattern;
 
+import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -117,6 +108,82 @@ public class ResourceAccess {
         this.filenameUpload = "." + this.injectionModel.getVersionJsql() + ".ju.php";
     }
 
+    /**
+     * Check if every page in the list responds 200 Success.
+     *
+     * @param urlInjection
+     * @param pageNames    List of admin pages to test
+     * @return
+     * @throws InterruptedException
+     */
+    public int createAdminPages(String urlInjection, List<String> pageNames) throws InterruptedException {
+
+        var matcher = Pattern.compile("^((https?://)?[^/]*)(.*)").matcher(urlInjection);
+        matcher.find();
+        String urlProtocol = matcher.group(1);
+        String urlWithoutProtocol = matcher.group(3);
+
+        List<String> folderSplits = new ArrayList<>();
+
+        // Hostname only
+        if (urlWithoutProtocol.isEmpty() || !Pattern.matches("^/.*", urlWithoutProtocol)) {
+            urlWithoutProtocol = "/dummy";
+        }
+
+        String[] splits = urlWithoutProtocol.split("/", -1);
+        String[] folderNames = Arrays.copyOf(splits, splits.length - 1);
+        for (String folderName: folderNames) {
+
+            folderSplits.add(folderName +"/");
+        }
+
+        ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableGetAdminPage"));
+        CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
+
+        var urlPart = new StringBuilder();
+
+        for (String segment: folderSplits) {
+
+            urlPart.append(segment);
+
+            for (String pageName: pageNames) {
+
+                taskCompletionService.submit(
+                    new CallableHttpHead(
+                        urlProtocol + urlPart + pageName,
+                        this.injectionModel,
+                        "check:page"
+                    )
+                );
+            }
+        }
+
+        var nbAdminPagesFound = 0;
+        int submittedTasks = folderSplits.size() * pageNames.size();
+        int tasksHandled;
+
+        for (
+            tasksHandled = 0
+            ; tasksHandled < submittedTasks && !this.isSearchAdminStopped()
+            ; tasksHandled++
+        ) {
+            nbAdminPagesFound = this.callAdminPage(taskCompletionService, nbAdminPagesFound);
+        }
+
+        taskExecutor.shutdown();
+        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
+
+        this.setSearchAdminStopped(false);
+
+        this.logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);
+
+        var request = new Request();
+        request.setMessage(Interaction.END_ADMIN_SEARCH);
+        this.injectionModel.sendToViews(request);
+
+        return nbAdminPagesFound;
+    }
+
     public int callAdminPage(CompletionService<CallableHttpHead> taskCompletionService, int nbAdminPagesFound) {
         
         int nbAdminPagesFoundFixed = nbAdminPagesFound;
@@ -150,15 +217,14 @@ public class ResourceAccess {
 
     public void logSearchAdminPage(int nbAdminPagesFound, int submittedTasks, int tasksHandled) {
         
-        var result = String
-            .format(
-                "Found %s admin page%s%s on %s page%s",
-                nbAdminPagesFound,
-                nbAdminPagesFound > 1 ? 's' : StringUtils.EMPTY,
-                tasksHandled != submittedTasks ? " of "+ tasksHandled +" processed" : StringUtils.EMPTY,
-                submittedTasks,
-                submittedTasks > 1 ? 's' : StringUtils.EMPTY
-            );
+        var result = String.format(
+            "Found %s admin page%s%s on %s page%s",
+            nbAdminPagesFound,
+            nbAdminPagesFound > 1 ? 's' : StringUtils.EMPTY,
+            tasksHandled != submittedTasks ? " of "+ tasksHandled +" processed" : StringUtils.EMPTY,
+            submittedTasks,
+            submittedTasks > 1 ? 's' : StringUtils.EMPTY
+        );
         
         if (nbAdminPagesFound > 0) {
             
@@ -764,7 +830,6 @@ public class ResourceAccess {
      * @throws JSqlException
      * @throws IOException
      * @throws InterruptedException
-     * @throws URISyntaxException
      */
     public void uploadFile(String pathFile, String urlFile, File file) throws JSqlException, IOException, InterruptedException {
         
@@ -998,6 +1063,113 @@ public class ResourceAccess {
         }
         
         return this.readingIsAllowed;
+    }
+
+    /**
+     * Attempt to read files in parallel by their path from the website using injection.
+     * Reading file needs a FILE right on the server.
+     * The user can interrupt the process at any time.
+     * @param pathsFiles List of file paths to read
+     * @throws JSqlException when an error occurs during injection
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ExecutionException if the computation threw an exception
+     */
+    public List<String> readFile(List<String> pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
+
+        if (!this.isReadingAllowed()) {
+
+            return Collections.emptyList();
+        }
+
+        var countFileFound = 0;
+        var results = new ArrayList<String>();
+
+        ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableReadFile"));
+        CompletionService<CallableFile> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
+
+        for (String pathFile: pathsFiles) {
+
+            var callableFile = new CallableFile(pathFile, this.injectionModel);
+            taskCompletionService.submit(callableFile);
+
+            this.getCallablesReadFile().add(callableFile);
+        }
+
+        List<String> duplicate = new ArrayList<>();
+        int submittedTasks = pathsFiles.size();
+        int tasksHandled;
+
+        for (
+            tasksHandled = 0
+            ; tasksHandled < submittedTasks && !this.isSearchFileStopped()
+            ; tasksHandled++
+        ) {
+
+            var currentCallable = taskCompletionService.take().get();
+
+            if (StringUtils.isNotEmpty(currentCallable.getSourceFile())) {
+
+                var name = currentCallable.getPathFile()
+                    .substring(currentCallable.getPathFile().lastIndexOf('/') + 1);
+                String content = currentCallable.getSourceFile();
+                String path = currentCallable.getPathFile();
+
+                var request = new Request();
+                request.setMessage(Interaction.CREATE_FILE_TAB);
+                request.setParameters(name, content, path);
+                this.injectionModel.sendToViews(request);
+
+                if (!duplicate.contains(path.replace(name, StringUtils.EMPTY))) {
+
+                    LOGGER.log(
+                        LogLevelUtil.CONSOLE_INFORM,
+                        "Shell might be possible in folder {}",
+                        () -> path.replace(name, StringUtils.EMPTY)
+                    );
+                }
+
+                duplicate.add(path.replace(name, StringUtils.EMPTY));
+                results.add(content);
+
+                countFileFound++;
+            }
+        }
+
+        // Force ongoing suspendables to stop immediately
+        for (CallableFile callableReadFile: this.getCallablesReadFile()) {
+
+            callableReadFile.getSuspendableReadFile().stop();
+        }
+
+        this.getCallablesReadFile().clear();
+
+        taskExecutor.shutdown();
+        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
+
+        this.setSearchFileStopped(false);
+
+        var result = String.format(
+            "Found %s file%s%s on %s files checked",
+            countFileFound,
+            countFileFound > 1 ? 's' : StringUtils.EMPTY,
+            tasksHandled != submittedTasks ? " of "+ tasksHandled +" processed " : StringUtils.EMPTY,
+            submittedTasks
+        );
+
+        if (countFileFound > 0) {
+
+            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, result);
+
+        } else {
+
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, result);
+        }
+
+        var request = new Request();
+        request.setMessage(Interaction.END_FILE_SEARCH);
+        this.injectionModel.sendToViews(request);
+
+        return results;
     }
     
     /**

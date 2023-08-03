@@ -1,11 +1,11 @@
 package com.jsql.model.injection.strategy.blind;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Define a call HTTP to the server, require the associated url, character
@@ -44,9 +44,9 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
     @Override
     public boolean isTrue() {
 
-        // noinspection ForLoopReplaceableByForEach: prevent ConcurrentModificationException #95387
-        for (Iterator<Diff> iterator = this.injectionCharInsertion.getConstantTrueMark().iterator(); iterator.hasNext(); ) {
-            Diff trueDiff = iterator.next();
+        // Fix #95422: ConcurrentModificationException on iterator.next()
+        List<Diff> copyTrueMarks = new CopyOnWriteArrayList<>(this.injectionCharInsertion.getConstantTrueMark());
+        for (Diff trueDiff: copyTrueMarks) {
 
             if (!this.opcodes.contains(trueDiff)) {
 

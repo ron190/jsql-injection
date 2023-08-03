@@ -616,8 +616,7 @@ public class Menubar extends JMenuBar {
         this.itemPortuguese.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("pt")));
         
         this.itemChinese = new JRadioButtonMenuItem(
-            String
-            .format(
+            String.format(
                 patternAsianDisplay,
                 UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("zh").getDisplayLanguage(new Locale("zh"))
@@ -656,8 +655,7 @@ public class Menubar extends JMenuBar {
         this.itemFinnish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("fi")));
         
         this.itemKorean = new JRadioButtonMenuItem(
-            String
-            .format(
+            String.format(
                 patternAsianDisplay,
                 UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("ko").getDisplayLanguage(new Locale("ko"))
@@ -736,8 +734,7 @@ public class Menubar extends JMenuBar {
         var formatMenuItemUTF8 = "<html><span style=\"font-family:'%s'\">%s</span>...</html>";
         
         this.itemIntoHindi = new JMenuItem(
-            String
-            .format(
+            String.format(
                 formatMenuItemUTF8,
                 UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("hi").getDisplayLanguage(new Locale("hi"))
@@ -745,17 +742,16 @@ public class Menubar extends JMenuBar {
             UiUtil.ICON_FLAG_HI
         );
         this.itemIntoArabic = new JMenuItem(
-            String
-            .format(
+            String.format(
                 formatMenuItemUTF8,
                 UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("ar").getDisplayLanguage(new Locale("ar"))
-            ), UiUtil.ICON_FLAG_AR
+            ),
+            UiUtil.ICON_FLAG_AR
         );
         this.itemIntoRussia = new JMenuItem(new Locale("ru").getDisplayLanguage(new Locale("ru")) +"...", UiUtil.ICON_FLAG_RU);
         this.itemIntoChina = new JMenuItem(
-            String
-            .format(
+            String.format(
                 formatMenuItemUTF8,
                 UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("zh").getDisplayLanguage(new Locale("zh"))
@@ -775,8 +771,7 @@ public class Menubar extends JMenuBar {
         this.itemIntoRomanian = new JMenuItem(new Locale("ro").getDisplayLanguage(new Locale("ro")) +"...", UiUtil.ICON_FLAG_RO);
         this.itemIntoTamil = new JMenuItem(new Locale("ta").getDisplayLanguage(new Locale("ta")) +"...", UiUtil.ICON_FLAG_LK);
         this.itemIntoJapanese = new JMenuItem(
-            String
-            .format(
+            String.format(
                 formatMenuItemUTF8,
                 UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("ja").getDisplayLanguage(new Locale("ja"))
@@ -784,8 +779,7 @@ public class Menubar extends JMenuBar {
             UiUtil.ICON_FLAG_JA
         );
         this.itemIntoKorean = new JMenuItem(
-            String
-            .format(
+            String.format(
                 formatMenuItemUTF8,
                 UiUtil.FONT_NAME_MONO_ASIAN,
                 new Locale("ko").getDisplayLanguage(new Locale("ko"))

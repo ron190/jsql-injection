@@ -1,9 +1,6 @@
 package com.jsql.model.suspendable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
@@ -13,6 +10,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.jsql.model.bean.util.Header;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -45,7 +43,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private static final String labelPrefix = "prefix";
+    private static final String LABEL_PREFIX = "prefix";
 
     public SuspendableGetCharInsertion(InjectionModel injectionModel) {
         super(injectionModel);
@@ -89,7 +87,10 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
                     LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using [{}]", mediatorVendor.getVendor());
                     var requestSetVendor = new Request();
                     requestSetVendor.setMessage(Interaction.SET_VENDOR);
-                    requestSetVendor.setParameters(mediatorVendor.getVendor());
+                    Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+                    msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
+                    msgHeader.put(Header.VENDOR, mediatorVendor.getVendor());
+                    requestSetVendor.setParameters(msgHeader);
                     this.injectionModel.sendToViews(requestSetVendor);
                     
                     // Char insertion
@@ -224,10 +225,10 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             );
         
         List<String> prefixQuotes = Arrays.asList(
-            labelPrefix,
-            labelPrefix +"'",
-            labelPrefix +"\"",
-            labelPrefix +"%bf'"
+            LABEL_PREFIX,
+            LABEL_PREFIX +"'",
+            LABEL_PREFIX +"\"",
+            LABEL_PREFIX +"%bf'"
 //                "prefix`",
 //                "'prefix'"
 //                "`prefix`",
@@ -275,7 +276,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         String prefixParenthesis
     ) throws StoppedByUserSlidingException {
 
-        String characterInsertion = prefixQuote.replace(labelPrefix, prefixValue) + prefixParenthesis;
+        String characterInsertion = prefixQuote.replace(LABEL_PREFIX, prefixValue) + prefixParenthesis;
         charactersInsertion.add(characterInsertion);
         
         // Skipping Boolean match when already found

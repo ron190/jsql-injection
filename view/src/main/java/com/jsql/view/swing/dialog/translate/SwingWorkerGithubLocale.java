@@ -180,20 +180,18 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
                 LogLevelUtil.CONSOLE_INFORM,
                 "{} {}",
                 () -> I18nUtil.valueByKey("LOG_I18N_TEXT_LOADED"),
-                () -> this.dialogTranslate.getLanguage()
+                this.dialogTranslate::getLanguage
             );
             
         } catch (IOException e) {
             
-            var uri = ClassLoader
-                .getSystemResource(
-                    String
-                    .format(
-                        "i18n/jsql_%s.properties",
-                        this.dialogTranslate.getLanguage().getLabelLocale()
-                    )
+            var uri = ClassLoader.getSystemResource(
+                String.format(
+                    "i18n/jsql_%s.properties",
+                    this.dialogTranslate.getLanguage().getLabelLocale()
                 )
-                .toURI();
+            )
+            .toURI();
             
             var path = Paths.get(uri);
             byte[] root = Files.readAllBytes(path);

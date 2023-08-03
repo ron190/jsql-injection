@@ -543,8 +543,7 @@ public class VendorYaml implements AbstractVendor {
         return this.injectionModel
             .getIndexesInUrl()
             .replaceAll(
-                String
-                .format(
+                String.format(
                     "1337(%s)7331",
                     String.join("|", indexes)
                 ),
@@ -579,11 +578,7 @@ public class VendorYaml implements AbstractVendor {
             .getIndices()
             .replace(
                 INDICES,
-                String
-                .join(
-                    ",",
-                    fields.toArray(new String[0])
-                )
+                String.join(",", fields.toArray(new String[0]))
             )
             .replace(INDICE_UNIQUE, replaceTag)
             .replace(

@@ -1349,7 +1349,7 @@ document
 document_library
 documentation
 documents
-Documents and Settings
+Documents%20and%20Settings
 doinfo
 doit
 dokuwiki
@@ -3295,7 +3295,7 @@ profiling
 proftpd
 prog
 program
-Program Files
+Program%20Files
 programming
 programs
 progress
@@ -3511,7 +3511,7 @@ repo
 report
 reporting
 reports
-reports list
+reports%20list
 repository
 repost
 reprints

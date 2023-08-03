@@ -90,55 +90,52 @@ public class GitUtil {
      */
     public void sendUnhandledException(String threadName, Throwable throwable) {
         
-        var osMetadata = String
-            .join(
-                "\n",
-                String.format(
-                    "jSQL: v%s",
-                    this.injectionModel.getVersionJsql()
-                ),
-                String.format(
-                    "Java: v%s-%s-%s on %s",
-                    SystemUtils.JAVA_VERSION,
-                    SystemUtils.OS_ARCH,
-                    SystemUtils.USER_LANGUAGE,
-                    SystemUtils.JAVA_RUNTIME_NAME
-                ),
-                String.format(
-                    "OS: %s (v%s)",
-                    SystemUtils.OS_NAME, SystemUtils.OS_VERSION
-                ),
-                String.format(
-                    "Desktop: %s",
-                    System.getProperty("sun.desktop") != null
-                    ? System.getProperty("sun.desktop")
-                    : "undefined"
-                ),
-                String.format(
-                    "Strategy: %s",
-                    this.injectionModel.getMediatorStrategy().getStrategy() != null
-                    ? this.injectionModel.getMediatorStrategy().getStrategy().getName()
-                    : "undefined"
-                ),
-                String.format(
-                    "Db engine: %s",
-                    this.injectionModel.getMediatorVendor().getVendor().toString()
-                )
-            );
+        var osMetadata = String.join(
+            "\n",
+            String.format(
+                "jSQL: v%s",
+                this.injectionModel.getVersionJsql()
+            ),
+            String.format(
+                "Java: v%s-%s-%s on %s",
+                SystemUtils.JAVA_VERSION,
+                SystemUtils.OS_ARCH,
+                SystemUtils.USER_LANGUAGE,
+                SystemUtils.JAVA_RUNTIME_NAME
+            ),
+            String.format(
+                "OS: %s (v%s)",
+                SystemUtils.OS_NAME, SystemUtils.OS_VERSION
+            ),
+            String.format(
+                "Desktop: %s",
+                System.getProperty("sun.desktop") != null
+                ? System.getProperty("sun.desktop")
+                : "undefined"
+            ),
+            String.format(
+                "Strategy: %s",
+                this.injectionModel.getMediatorStrategy().getStrategy() != null
+                ? this.injectionModel.getMediatorStrategy().getStrategy().getName()
+                : "undefined"
+            ),
+            String.format(
+                "Db engine: %s",
+                this.injectionModel.getMediatorVendor().getVendor().toString()
+            )
+        );
         
-        var exceptionText = String
-            .format(
-                "Exception on %s%n%s%n",
-                threadName,
-                ExceptionUtils.getStackTrace(throwable).trim()
-            );
+        var exceptionText = String.format(
+            "Exception on %s%n%s%n",
+            threadName,
+            ExceptionUtils.getStackTrace(throwable).trim()
+        );
         
-        var clientDescription = String
-            .format(
-                "```yaml%n%s%n```%n```java%n%s```",
-                osMetadata,
-                exceptionText
-            );
+        var clientDescription = String.format(
+            "```yaml%n%s%n```%n```java%n%s```",
+            osMetadata,
+            exceptionText
+        );
         
         clientDescription = clientDescription.replaceAll("(https?://[.a-zA-Z_0-9]*)+", org.apache.commons.lang3.StringUtils.EMPTY);
           

@@ -162,11 +162,10 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     
     public void highlight(String url, String strategy) {
         
-        var itemLabel = String
-            .format(
-                " [%s]",
-                strategy
-            );
+        var itemLabel = String.format(
+            " [%s]",
+            strategy
+        );
         
         ListModel<ItemList> listModel = this.listPaths.getModel();
         

@@ -99,8 +99,7 @@ public class CoderListener implements ActionListener {
         }
         
         this.coderManager.getResult().setText(
-            String
-            .format(
+            String.format(
                 "<html><span style=\"font-family:'%s'\">%s</span></html>",
                 UiUtil.FONT_NAME_MONO_NON_ASIAN,
                 result

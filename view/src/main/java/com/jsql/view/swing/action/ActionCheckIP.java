@@ -35,23 +35,13 @@ public class ActionCheckIP implements ActionListener, Runnable {
             return;
         }
 
-        try {
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_CHECK"));
-            String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource("http://checkip.amazonaws.com");
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_INFORM,
-                "{} {}",
-                () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_IS"),
-                () -> addressIp
-            );
-            
-        } catch (IOException e) {
-            
-            LOGGER.log(
-                LogLevelUtil.CONSOLE_ERROR,
-                String.format("Error during IP address test: %s", e.getMessage()),
-                e
-            );
-        }
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_CHECK"));
+        String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource("http://checkip.amazonaws.com");
+        LOGGER.log(
+            LogLevelUtil.CONSOLE_INFORM,
+            "{} {}",
+            () -> I18nUtil.valueByKey("LOG_IP_ADDRESS_IS"),
+            () -> addressIp
+        );
     }
 }

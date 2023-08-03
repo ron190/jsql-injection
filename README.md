@@ -42,30 +42,36 @@ This software is developed using open source libraries like [Spring](https://spr
 Non regression tests are run against dockerized and in memory databases and GUI is tested on VNC screen on the CI platform, then quality checks are stored on code quality platform.
 ```mermaid
 ---
-title: Architecture diagram
+title: Architecture
 ---
-graph TB
-id022(JUnit Tests)
-subgraph jSQL
-    id01(Injection Model)
-    id02(GUI)
+graph
+junit-test(JUnit Tests)
+subgraph "💉 jSQL"
+    inject-model(Injection Model)
+    gui(GUI)
 end
-id0(Spring APIs)
-subgraph Docker
-    direction TB
-    id1[(MySQL)]   
-    id2[(Postgres)]   
-    id3[(...)]      
+subgraph Spring
+    spring-apis(APIs)
+    admin-page(Admin page)
 end
 subgraph Memory
-    direction TB
-    id5[(H2)]    
-    id8[(SQLite)]
-    id6[(...)]      
+    memory-other[(SQLite\nH2\n...)]   
 end
-id0 --> Docker & Memory
-id01 --> id0
-id022 --> id01 & id02   
+subgraph Docker
+    direction TB
+    subgraph System
+        direction TB
+        mysql[(MySQL)]
+        file.txt(["file.txt"])   
+    end   
+    docker-other[(SQL Server\nPostgres\n...)]   
+end
+gui -. open .-> admin-page
+spring-apis --> Docker
+spring-apis --> Memory
+mysql -. read .-> file.txt
+inject-model --> spring-apis
+junit-test --> inject-model & gui
 ```
 
 ## [[Test-bed scripts for Spring](https://github.com/ron190/jsql-injection/tree/master/model/src/test/java/spring/rest)]

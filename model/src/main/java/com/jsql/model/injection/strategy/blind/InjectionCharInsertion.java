@@ -69,8 +69,7 @@ public class InjectionCharInsertion {
         
         // Call the SQL request which must be FALSE (usually ?id=-123456879)
         this.blankFalseMark = this.callUrl(
-            String
-            .join(
+            String.join(
                 "+",
                 falseCharInsertion,
                 this.injectionModel.getMediatorVendor().getVendor().instance().endingComment(),
@@ -89,8 +88,7 @@ public class InjectionCharInsertion {
             
             listCallableTagTrue.add(
                 new CallableCharInsertion(
-                    String
-                    .join(
+                    String.join(
                         "+",
                         prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "345")),
                         this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
@@ -150,8 +148,7 @@ public class InjectionCharInsertion {
             
             listCallableTagFalse.add(
                 new CallableCharInsertion(
-                    String
-                    .join(
+                    String.join(
                         "+",
                         this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "345")),
                         this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
@@ -204,8 +201,7 @@ public class InjectionCharInsertion {
         }
         
         var blindTest = new CallableCharInsertion(
-            String
-            .join(
+            String.join(
                 "+",
                 this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "678")),
                 this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),

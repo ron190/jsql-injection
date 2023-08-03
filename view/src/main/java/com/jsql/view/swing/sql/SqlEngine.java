@@ -219,6 +219,16 @@ public class SqlEngine extends JPanel implements Cleanable {
         LENGTH_TEST(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getBoolean().getTest().setLength(v),
             () -> modelYaml.getStrategy().getBoolean().getTest().getLength()
+        )),
+
+        // File
+        FILE_PRIVILEGE(new JTextPaneLexer(
+            v -> modelYaml.getResource().getFile().setPrivilege(v),
+            () -> modelYaml.getResource().getFile().getPrivilege()
+        )),
+        FILE_READ(new JTextPaneLexer(
+            v -> modelYaml.getResource().getFile().setRead(v),
+            () -> modelYaml.getResource().getFile().getRead()
         ))
         ;
         
@@ -271,15 +281,16 @@ public class SqlEngine extends JPanel implements Cleanable {
         .forEach(textPane -> textPane.getText().setBorder(SqlEngine.borderRight));
         
         JPanel panelStructure = this.getPanelStructure();
+        JPanel panelFile = this.getPanelFile();
         JPanel panelStrategy = this.getPanelStrategy();
         JPanel panelConfiguration = this.getPanelConfiguration();
         JPanel panelFingerprinting = this.getPanelFingerprinting();
 
         JTabbedPane tabsBottom = new TabbedPaneWheeled(SwingConstants.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
         
-        Stream
-        .of(
+        Stream.of(
             new SimpleEntry<>("SQLENGINE_STRUCTURE", panelStructure),
+            new SimpleEntry<>("SQLENGINE_FILE", panelFile),
             new SimpleEntry<>("SQLENGINE_STRATEGY", panelStrategy),
             new SimpleEntry<>("SQLENGINE_CONFIGURATION", panelConfiguration),
             new SimpleEntry<>("SQLENGINE_FINGERPRINTING", panelFingerprinting)
@@ -311,7 +322,7 @@ public class SqlEngine extends JPanel implements Cleanable {
     }
 
     private JPanel getPanelStructure() {
-        
+
         final var keyDatabases = "SQLENGINE_DATABASES";
         final var keyTables = "SQLENGINE_TABLES";
         final var keyColumns = "SQLENGINE_COLUMNS";
@@ -423,6 +434,20 @@ public class SqlEngine extends JPanel implements Cleanable {
         panelStructure.setBorder(BorderFactory.createEmptyBorder());
         
         return panelStructure;
+    }
+
+    private JPanel getPanelFile() {
+
+        JTabbedPane tabs = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+
+        tabs.addTab("Privilege", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FILE_PRIVILEGE.getText()));
+        tabs.addTab("Read", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FILE_READ.getText()));
+
+        var panel = new JPanel(new BorderLayout());
+        panel.add(tabs, BorderLayout.CENTER);
+        panel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
+
+        return panel;
     }
 
     private JPanel getPanelStrategy() {

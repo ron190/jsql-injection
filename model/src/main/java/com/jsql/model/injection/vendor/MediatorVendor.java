@@ -231,7 +231,10 @@ public class MediatorVendor {
         
         var requestSetVendor = new Request();
         requestSetVendor.setMessage(Interaction.SET_VENDOR);
-        requestSetVendor.setParameters(vendorFound);
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
+        msgHeader.put(Header.VENDOR, vendorFound);
+        requestSetVendor.setParameters(msgHeader);
         this.injectionModel.sendToViews(requestSetVendor);
         
         return vendorFound;

@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.swing.interaction;
+package com.jsql.view.scan.interaction;
 
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.vendor.model.Vendor;
@@ -22,6 +22,7 @@ import java.util.Map;
  */
 public class SetVendor implements InteractionCommand {
 
+    private final String url;
     private final Vendor vendor;
     
     /**
@@ -30,12 +31,13 @@ public class SetVendor implements InteractionCommand {
     public SetVendor(Object[] interactionParams) {
 
         Map<Header, Object> params = (Map<Header, Object>) interactionParams[0];
+        this.url = (String) params.get(Header.URL);
         this.vendor = (Vendor) params.get(Header.VENDOR);
     }
 
     @Override
     public void execute() {
-        
-        MediatorHelper.panelAddressBar().getAddressMenuBar().setVendor(this.vendor);
+
+        MediatorHelper.managerScan().highlight(this.url, this.vendor.toString());
     }
 }

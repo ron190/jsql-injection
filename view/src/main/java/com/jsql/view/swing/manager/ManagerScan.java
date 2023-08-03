@@ -19,6 +19,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -26,6 +27,7 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 
+import com.jsql.model.injection.vendor.model.Vendor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
@@ -295,7 +297,13 @@ public class ManagerScan extends AbstractManagerList {
             }
             
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Scanning {}", urlItemListScan.getBeanInjection().getUrl());
-            
+
+            Optional<Vendor> vendor = MediatorHelper.model().getMediatorVendor().getVendors()
+                .stream()
+                .filter(v -> v.toString().equalsIgnoreCase(urlItemListScan.getBeanInjection().getVendor()))
+                .findAny();
+            MediatorHelper.model().getMediatorVendor().setVendorByUser(vendor.orElse(MediatorHelper.model().getMediatorVendor().getAuto()));
+
             MediatorHelper.model().getMediatorUtils().getParameterUtil().controlInput(
                 urlItemListScan.getBeanInjection().getUrl(),
                 urlItemListScan.getBeanInjection().getRequest(),

@@ -134,8 +134,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
             this.textAreaNetworkTabPreview.setText(
                 Jsoup
                 .clean(
-                    String
-                    .format(
+                    String.format(
                         "<html>%s</html>",
                         StringUtil.detectUtf8(networkData.getSource())
                     )
@@ -155,10 +154,9 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
                         "<input[^>]*>",
                         "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"
                     ),
-                    Safelist
-                    .relaxed()
-                    .addTags("center", "div", "span")
-                    .addAttributes(":all", "style")
+                    Safelist.relaxed()
+                        .addTags("center", "div", "span")
+                        .addAttributes(":all", "style")
                 )
             );
             

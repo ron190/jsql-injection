@@ -81,8 +81,10 @@ public class DigestUtil {
                     "Digest username=\"%s\",realm=\"%s\",nonce=\"%s\",uri=\"%s\",cnonce=\"%s\",nc=%s,response=\"%s\",qop=\"%s\"",
                     username, realm, nonce, path, cnonce, nc, response, qop
                 );
+
             } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
+
+                LOGGER.error("Incorrect URL", e);
             }
         }
     }

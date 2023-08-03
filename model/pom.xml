@@ -60,13 +60,13 @@
         <jsoup.version>1.16.1</jsoup.version>
         <junit-pioneer.version>2.0.0</junit-pioneer.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
-        <!-- Fails to find Spock UTs on later version -->
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <!-- Fails to find ITs on later version -->
+        <!-- Fails to find UTs on later version > 3.0.0-M4 -->
+        <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
+        <!-- Fails to find ITs on later version > 3.0.0-M4 -->
         <maven-failsafe-plugin.version>3.0.0-M4</maven-failsafe-plugin.version>
         <!-- Spring startup PKIX error on later version -->
         <mssql-jdbc.version>9.4.1.jre8</mssql-jdbc.version>
-        <mysql-connector-j.version>8.0.33</mysql-connector-j.version>
+        <mysql-connector-j.version>8.1.0</mysql-connector-j.version>
         <nashorn-core.version>15.4</nashorn-core.version>
         <!-- Java 11 unsupported on later version -->
         <neo4j-java-driver.version>5.11.0</neo4j-java-driver.version>
@@ -346,12 +346,6 @@
 
         <!-- Spock -->
         <dependency>
-            <groupId>org.apache.groovy</groupId>
-            <artifactId>groovy-test-junit5</artifactId>
-            <version>${groovy-test-junit5.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
             <version>${spock-core.version}</version>
@@ -372,6 +366,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web-services</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

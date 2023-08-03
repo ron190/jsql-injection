@@ -1,13 +1,13 @@
 package com.jsql.model.injection.strategy.blind;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Define a call HTTP to the server, require the associated url, character
@@ -76,9 +76,9 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     @Override
     public boolean isTrue() {
 
-        // noinspection ForLoopReplaceableByForEach: prevent ConcurrentModificationException #95397
-        for (Iterator<Diff> iterator = this.injectionBlind.getConstantFalseMark().iterator(); iterator.hasNext(); ) {
-            Diff falseDiff = iterator.next();
+        // Fix #95426: ConcurrentModificationException on iterator.next()
+        List<Diff> copyFalseMarks = new CopyOnWriteArrayList<>(this.injectionBlind.getConstantFalseMark());
+        for (Diff falseDiff: copyFalseMarks) {
 
             // Fix #4386: NullPointerException on contains()
             // opcodes is initialized to an empty new LinkedList<>()

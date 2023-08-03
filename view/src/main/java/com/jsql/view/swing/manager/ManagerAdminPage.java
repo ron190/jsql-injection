@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -146,9 +147,9 @@ public class ManagerAdminPage extends AbstractManagerList {
                 ManagerAdminPage.this.loader.setVisible(true);
                 
                 try {
-                    this.createAdminPages(
+                    MediatorHelper.model().getResourceAccess().createAdminPages(
                         urlAddressBar,
-                        this.listFile.getSelectedValuesList()
+                        this.listFile.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList())
                     );
                     
                 } catch (InterruptedException e) {
@@ -164,79 +165,5 @@ public class ManagerAdminPage extends AbstractManagerList {
             ManagerAdminPage.this.run.setEnabled(false);
             ManagerAdminPage.this.run.setState(StateButton.STOPPING);
         }
-    }
-    
-    /**
-     * Check if every page in the list responds 200 Success.
-     * @param urlInjection
-     * @param pageNames List of admin pages to test
-     * @throws InterruptedException
-     */
-    public void createAdminPages(String urlInjection, List<ItemList> pageNames) throws InterruptedException {
-         
-        var matcher = Pattern.compile("^((https?://)?[^/]*)(.*)").matcher(urlInjection);
-        matcher.find();
-        String urlProtocol = matcher.group(1);
-        String urlWithoutProtocol = matcher.group(3);
-        
-        List<String> folderSplits = new ArrayList<>();
-        
-        // Hostname only
-        if (urlWithoutProtocol.isEmpty() || !Pattern.matches("^/.*", urlWithoutProtocol)) {
-            urlWithoutProtocol = "/dummy";
-        }
-        
-        String[] splits = urlWithoutProtocol.split("/", -1);
-        String[] folderNames = Arrays.copyOf(splits, splits.length - 1);
-        for (String folderName: folderNames) {
-            
-            folderSplits.add(folderName +"/");
-        }
-        
-        ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableGetAdminPage"));
-        CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
-        
-        var urlPart = new StringBuilder();
-        
-        for (String segment: folderSplits) {
-            
-            urlPart.append(segment);
-            
-            for (ItemList pageName: pageNames) {
-                
-                taskCompletionService.submit(
-                    new CallableHttpHead(
-                        urlProtocol + urlPart + pageName.toString(),
-                        MediatorHelper.model(),
-                        "check:page"
-                    )
-                );
-            }
-        }
-
-        var resourceAccess = MediatorHelper.model().getResourceAccess();
-        
-        var nbAdminPagesFound = 0;
-        int submittedTasks = folderSplits.size() * pageNames.size();
-        int tasksHandled;
-        
-        for (
-            tasksHandled = 0
-            ; tasksHandled < submittedTasks && !resourceAccess.isSearchAdminStopped()
-            ; tasksHandled++
-        ) {
-            nbAdminPagesFound = resourceAccess.callAdminPage(taskCompletionService, nbAdminPagesFound);
-        }
-
-        taskExecutor.shutdown();
-        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
-
-        resourceAccess.setSearchAdminStopped(false);
-
-        resourceAccess.logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);
-
-        var request = new Request();
-        request.setMessage(Interaction.END_ADMIN_SEARCH);
-        MediatorHelper.model().sendToViews(request);
     }
 }

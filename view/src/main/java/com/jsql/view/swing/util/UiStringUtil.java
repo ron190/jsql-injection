@@ -48,13 +48,12 @@ public class UiStringUtil {
         // Confirm UTF8
         if (encoding != null) {
             
-            result = String
-                .format(
-                    "<html><span style=\"font-family:'%s';%s\">%s</span></html>",
-                    UiUtil.FONT_NAME_MONO_ASIAN,
-                    nowrap ? "white-space:nowrap;" : StringUtils.EMPTY,
-                    text
-                );
+            result = String.format(
+                "<html><span style=\"font-family:'%s';%s\">%s</span></html>",
+                UiUtil.FONT_NAME_MONO_ASIAN,
+                nowrap ? "white-space:nowrap;" : StringUtils.EMPTY,
+                text
+            );
         }
         
         return result;

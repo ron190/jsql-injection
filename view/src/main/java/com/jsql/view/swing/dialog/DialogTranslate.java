@@ -125,8 +125,7 @@ public class DialogTranslate extends JDialog {
         DialogTranslate.this.language = language;
         
         this.labelTranslation.setText(
-            String
-            .join(
+            String.join(
                 "",
                 "<html>",
                 "<b>Contribute and translate parts of jSQL Injection into ",
@@ -174,8 +173,7 @@ public class DialogTranslate extends JDialog {
         this.buttonSend.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         this.buttonSend.setBackground(new Color(200, 221, 242));
         this.buttonSend.setToolTipText(
-            String
-            .join(
+            String.join(
                 "",
                 "<html>",
                 "<b>Send your translation to the developer</b><br>",

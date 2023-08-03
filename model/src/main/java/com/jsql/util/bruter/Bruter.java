@@ -130,15 +130,13 @@ public class Bruter {
         days = hours / 24;
         hours = hours % 24;
         
-        return
-            String
-            .format(
-                "Time elapsed: %sdays %sh %smin %ss",
-                days,
-                hours,
-                minutes,
-                seconds
-            );
+        return String.format(
+            "Time elapsed: %sdays %sh %smin %ss",
+            days,
+            hours,
+            minutes,
+            seconds
+        );
     }
 
     private long calculateTimeDifference() {
