@@ -46,13 +46,13 @@ title: Architecture
 ---
 graph
 junit-test(JUnit Tests)
-subgraph "💉 jSQL"
-    inject-model(Injection Model)
+subgraph "jSQL"
+    inject-model("💉Model")
     gui(GUI)
 end
 subgraph Spring
     spring-apis(APIs)
-    admin-page(Admin page)
+    admin-page(Admin\npage)
 end
 subgraph Memory
     memory-other[(SQLite\nH2\n...)]   
@@ -66,7 +66,7 @@ subgraph Docker
     end   
     docker-other[(SQL Server\nPostgres\n...)]   
 end
-gui -. open .-> admin-page
+inject-model -. "call" .-> admin-page
 spring-apis --> Docker
 spring-apis --> Memory
 mysql -. read .-> file.txt
