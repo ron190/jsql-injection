@@ -61,7 +61,7 @@
         <junit-pioneer.version>2.0.0</junit-pioneer.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <!-- Fails to find UTs on later version > 3.0.0-M4 -->
-        <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
         <!-- Fails to find ITs on later version > 3.0.0-M4 -->
         <maven-failsafe-plugin.version>3.0.0-M4</maven-failsafe-plugin.version>
         <!-- Spring startup PKIX error on later version -->
