@@ -247,9 +247,12 @@ public class ApplicationUiTest {
         
         var request = new Request();
         request.setMessage(Interaction.SET_VENDOR);
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader.put(Header.VENDOR, MediatorHelper.model().getMediatorVendor().getMySQL());
+        request.setParameters(msgHeader);
         MediatorHelper.model().sendToViews(request);
 
-        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, "");
         msgHeader.put(Header.INDEX_ERROR_STRATEGY, 0);
         msgHeader.put(Header.INJECTION_MODEL, MediatorHelper.model());
