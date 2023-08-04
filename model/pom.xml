@@ -54,7 +54,7 @@
         <javafaker.version>1.0.2</javafaker.version>
         <jaxb-api.version>2.1</jaxb-api.version>
         <jcabi-log.version>0.23.0</jcabi-log.version>
-        <jna.version>5.12.1</jna.version>
+        <jna.version>5.13.0</jna.version>
         <jquery.version>3.6.4</jquery.version>
         <json.version>20230618</json.version>
         <jsoup.version>1.16.1</jsoup.version>
