@@ -43,7 +43,7 @@
         <sonar.exclusions>**/blind/patch/*, **/DigestMD4.java</sonar.exclusions>
 
         <awaitility.version>4.2.0</awaitility.version>
-        <bootstrap.version>5.2.3</bootstrap.version>
+        <bootstrap.version>5.3.1</bootstrap.version>
         <dnsjava.version>3.5.2</dnsjava.version>
         <gmavenplus-plugin.version>3.0.0</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
