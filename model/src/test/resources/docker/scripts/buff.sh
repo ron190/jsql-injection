@@ -21,9 +21,3 @@ sudo docker exec -i jsql-sqlserver /opt/mssql-tools/bin/sqlcmd \
   -U SA \
   -P "yourStrong(!)Password" \
   -Q "select @@version"
-
-# Add file to read
-cat <<EOF | sudo docker exec -i jsql-mysql /bin/bash
-  echo inside > /var/lib/mysql-files/file-injection.txt
-EOF
-

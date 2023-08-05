@@ -143,7 +143,7 @@ public abstract class AbstractTestSuite {
         }
     }
 
-    @Ignore("Enabled on inheritance")
+    @Ignore("Enabled on inherit")
     public void listDatabases() throws JSqlException {
         
         Set<String> valuesFromInjection = new HashSet<>();
@@ -179,7 +179,7 @@ public abstract class AbstractTestSuite {
         }
     }
 
-    @Ignore("Enabled on inheritance")
+    @Ignore("Enabled on inherit")
     public void listTables() throws JSqlException {
         
         Set<String> valuesFromInjection = new HashSet<>();
@@ -214,7 +214,7 @@ public abstract class AbstractTestSuite {
         }
     }
 
-    @Ignore("Enabled on inheritance")
+    @Ignore("Enabled on inherit")
     public void listColumns() throws JSqlException {
         
         Set<String> valuesFromInjection = new HashSet<>();
@@ -264,7 +264,7 @@ public abstract class AbstractTestSuite {
         return columns;
     }
 
-    @Ignore("Enabled on inheritance")
+    @Ignore("Enabled on inherit")
     public void listValues() throws JSqlException {
         
         Set<String> valuesFromInjection = new TreeSet<>();
@@ -316,7 +316,7 @@ public abstract class AbstractTestSuite {
         }
     }
 
-    @Ignore("Enabled on inheritance")
+    @Ignore("Enabled on inherit")
     public void readFile() throws JSqlException, ExecutionException, InterruptedException {
 
         List<String> contents = this.injectionModel.getResourceAccess()
@@ -325,5 +325,16 @@ public abstract class AbstractTestSuite {
         LOGGER.info("ReadFile: found {} to find {}", String.join(",", contents), "inside");
 
         Assertions.assertEquals("inside", String.join(",", contents).trim());
+    }
+
+    @Ignore("Enabled on inherit")
+    public void webshell() throws JSqlException, InterruptedException {
+
+        this.injectionModel.getResourceAccess().createWebShell("/var/www/html/", "");
+        String resultCommand = this.injectionModel.getResourceAccess().runWebShell("uname", UUID.randomUUID(), "http://127.0.0.1:8081/.0.90.jw.php");
+
+        LOGGER.info("Webshell: found {} to find {}", resultCommand.trim(), "Linux");
+
+        Assertions.assertEquals("Linux", resultCommand.trim());
     }
 }

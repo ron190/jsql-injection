@@ -475,7 +475,7 @@ public class ResourceAccess {
      * @param uuidShell An unique identifier for terminal
      * @param urlShell Web path of the shell
      */
-    public void runWebShell(String command, UUID uuidShell, String urlShell) {
+    public String runWebShell(String command, UUID uuidShell, String urlShell) {
         
         String result = this.runCommandShell(
             urlShell + "?c="+ URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1)
@@ -490,6 +490,8 @@ public class ResourceAccess {
         request.setMessage(Interaction.GET_WEB_SHELL_RESULT);
         request.setParameters(uuidShell, result);
         this.injectionModel.sendToViews(request);
+
+        return result;
     }
 
     /**

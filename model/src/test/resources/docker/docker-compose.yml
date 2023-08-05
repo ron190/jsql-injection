@@ -9,6 +9,8 @@ services:
       dockerfile: Dockerfile.mysql
     environment:
       MYSQL_ROOT_PASSWORD: my-secret-pw
+    volumes:
+      - ./lamp/mysql/:/etc/mysql/conf.d
     container_name: jsql-mysql
     networks:
       - jsql-network
@@ -85,6 +87,19 @@ services:
       DB2INST1_PASSWORD: test
       DBNAME: testdb
     container_name: jsql-db2
+    networks:
+      - jsql-network
+
+  lamp:
+    container_name: jsql-lamp
+    build:
+      context: .
+      dockerfile: Dockerfile.lamp
+    ports:
+      - "8081:80"
+    volumes:
+      - ./lamp/php:/var/www/html/
+      - ./lamp/mysql:/etc/mysql/conf.d
     networks:
       - jsql-network
       
