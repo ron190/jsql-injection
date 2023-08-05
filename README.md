@@ -10,7 +10,7 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 [![JUnit](https://img.shields.io/badge/junit-5-50940f "Tests")](http://junit.org)
 [![Maven](https://img.shields.io/badge/maven-3.6-a2265a "Build")](https://maven.apache.org/)
 [![License](https://img.shields.io/github/license/ron190/jsql-injection "License")](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
-[![GitHub](https://img.shields.io/github/actions/workflow/status/ron190/jsql-injection/maven.yml?logo=github "Github Actions status")](https://github.com/ron190/jsql-injection/actions)
+[![GitHub](https://img.shields.io/badge/build-blue?logo=github "Github Actions status")](https://github.com/ron190/jsql-injection/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/ron190/jsql-injection?label=coverage&logo=codecov "Codecov test coverage")](https://codecov.io/gh/ron190/jsql-injection)
 [![Codacy](https://img.shields.io/codacy/grade/e7ccb247f9b74d489a1fa9f9483c978f?label=quality&logo=codacy "Codacy code quality")](https://app.codacy.com/gh/ron190/jsql-injection/dashboard)
 [![Snyk](https://img.shields.io/badge/build-monitored-8A2BE2?logo=snyk&label=security "Snyk code vulnerability")](#)<br>
