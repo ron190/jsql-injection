@@ -94,7 +94,7 @@ services:
       context: .
       dockerfile: Dockerfile.lamp
     ports:
-      - "8081:80"
+      - "8079:80"
     volumes:
       - ./lamp/php:/var/www/html/
       - ./lamp/mysql:/etc/mysql/conf.d
