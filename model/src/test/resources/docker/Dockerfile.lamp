@@ -1,6 +1,8 @@
 FROM ubuntu:18.04
 ENV MYSQL_ROOT_PASSWORD password
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y php php-mysql libapache2-mod-php mysql-server
+RUN echo "[mysqld]" > /etc/my.cnf
+RUN echo "port=3308" >> /etc/my.cnf
 EXPOSE 80
 COPY ./lamp/start-script.sh /root/
 RUN chmod +x /root/start-script.sh
