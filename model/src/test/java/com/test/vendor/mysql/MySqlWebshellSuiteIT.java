@@ -15,7 +15,7 @@ public class MySqlWebshellSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8079/get.php?id=");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://jsql-lamp:8079/get.php?id=");
 
         model
         .getMediatorUtils()

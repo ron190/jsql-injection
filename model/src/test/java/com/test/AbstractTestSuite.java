@@ -334,7 +334,7 @@ public abstract class AbstractTestSuite {
         String resultCommand = this.injectionModel.getResourceAccess().runWebShell(
             "uname",
             UUID.randomUUID(),
-            "http://localhost:8079/."+ this.injectionModel.getVersionJsql() +".jw.php"
+            "http://jsql-lamp:8079/."+ this.injectionModel.getVersionJsql() +".jw.php"
         );
 
         LOGGER.info("Webshell: found {} to find {}", resultCommand.trim(), "Linux");
