@@ -108,8 +108,9 @@ jobs:
         curl http://localhost:8079/get.php?id=1
         cat <<EOF | sudo docker exec -i jsql-lamp /bin/bash
           mysql -uroot -ppassword --port=3308 -e '
-            GRANT FILE ON *.* TO 'root'@'%';
+            SELECT * FROM mysql.user;
             GRANT FILE ON *.* TO 'root'@'localhost';
+            GRANT FILE ON *.* TO 'root'@'jsql-lamp';
             SHOW GRANTS;
             SHOW VARIABLES;
             SHOW DATABASES;
