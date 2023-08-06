@@ -11,4 +11,5 @@ COPY ./lamp/php/get.php /var/www/html/
 COPY ./lamp/php/get2.php /var/www/html/
 COPY ./lamp/php/phpinfo.php /var/www/html/
 RUN chmod +x /root/start-script.sh
+RUN chmod 777 /var/www/html/
 ENTRYPOINT ["/root/start-script.sh"]
