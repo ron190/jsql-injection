@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -300,7 +301,7 @@ public class ResourceAccess {
             
         } catch (JSqlException e) {
 
-            System.out.println("injected payload does not match source");
+            System.out.println("injected payload does not match source " + ExceptionUtils.getStackTrace(e));
             throw new JSqlException("injected payload does not match source", e);
         }
         
