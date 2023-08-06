@@ -1,9 +1,9 @@
 FROM ubuntu:18.04
 ENV MYSQL_ROOT_PASSWORD password
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y php php-mysql libapache2-mod-php mysql-server
-#RUN echo "[mysqld]" > /etc/my.cnf
-#RUN echo "port=3308" >> /etc/my.cnf
-#RUN echo 'secure_file_priv=""' >> /etc/my.cnf
+RUN echo "[mysqld]" > /etc/my.cnf
+RUN echo "port=3308" >> /etc/my.cnf
+RUN echo "secure_file_priv=''" >> /etc/my.cnf
 #RUN echo "Listen 8079" >> /etc/apache2/ports.conf
 EXPOSE 80 3308 8079
 COPY ./lamp/start-script.sh /root/
