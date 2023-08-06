@@ -1,3 +1,4 @@
-[mysqld]
+[mysql]
 secure-file-priv=""
+[mysqld]
 port=3308

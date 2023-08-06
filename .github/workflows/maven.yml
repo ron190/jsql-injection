@@ -107,7 +107,6 @@ jobs:
       run: |
         curl http://localhost:8079/get.php?id=1
         cat <<EOF | sudo docker exec -i jsql-lamp /bin/bash
-          curl http://localhost:8079/get.php?id=1 || curl http://jsql-lamp:8079/get.php?id=1
           mysql -uroot -ppassword --port=3308 -e '
             SHOW GRANTS;
             SHOW VARIABLES;
