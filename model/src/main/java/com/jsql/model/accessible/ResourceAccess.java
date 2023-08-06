@@ -258,7 +258,7 @@ public class ResourceAccess {
         )
         .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
         .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
-        System.out.println(sourceShellToInject);
+        System.out.println("sourceShellToInject "+sourceShellToInject);
 
         String pathShellFixed = pathShell;
         if (!pathShellFixed.matches(".*/$")) {
@@ -266,7 +266,7 @@ public class ResourceAccess {
             pathShellFixed += "/";
         }
 
-        System.out.println(this.injectionModel
+        System.out.println("sqlTextIntoFile "+ this.injectionModel
                 .getMediatorVendor()
                 .getVendor()
                 .instance()
@@ -291,15 +291,16 @@ public class ResourceAccess {
                 null,
                 "webshell"
             );
-            System.out.println(resultInjection);
+            System.out.println("resultInjection "+resultInjection);
 
             if (StringUtils.isEmpty(resultInjection)) {
-                
+                System.out.println("StringUtils.isEmpty(resultInjection)");
                 throw new JSqlException("payload integrity verification: Empty payload");
             }
             
         } catch (JSqlException e) {
-            
+
+            System.out.println("injected payload does not match source");
             throw new JSqlException("injected payload does not match source", e);
         }
         
