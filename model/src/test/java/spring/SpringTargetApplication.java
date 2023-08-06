@@ -93,7 +93,7 @@ public class SpringTargetApplication {
         ArrayList<Properties> properties = new ArrayList<>(
             Arrays.asList(
                 SpringTargetApplication.propsH2,
-//                SpringTargetApplication.propsMysql,
+                SpringTargetApplication.propsMysql,
 //                SpringTargetApplication.propsMysqlError,
 //                SpringTargetApplication.propsPostgres,
 //                SpringTargetApplication.propsSqlServer,
