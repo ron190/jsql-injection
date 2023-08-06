@@ -122,8 +122,8 @@ jobs:
       # Profile usage for skipITs/skipTests (env var MAVEN_OPS not working)
       # Note: 'mvn sonar:sonar' not working, modules reports not found, use 'mvn verify sonar:sonar' for reliability
       # Note: gh actions sonarsource/sonarqube-scan-action not working properly => analysis not reliable
-      run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'curl http://localhost:8079/get.php?id=1 || curl http://jsql-lamp:8079/get.php?id=1'
-#      run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'mvn clean install sonar:sonar -P tests'
+#      run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'curl http://localhost:8079/get.php?id=1 || curl http://jsql-lamp:8079/get.php?id=1'
+      run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'mvn clean install sonar:sonar -P tests'
 
 #    - name: Databases statistics
 #      run: $DOCKER_RESOURCES/scripts/verify.sh
