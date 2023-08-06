@@ -1,7 +1,6 @@
 package com.test.special;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
 import org.junit.jupiter.api.Assertions;
@@ -22,9 +21,8 @@ public class AdminPageSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
     }
     
-    @Override
     @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
+    public void listAdminPages() {
         Assertions.assertEquals(1, pagesFound);
     }
 }
