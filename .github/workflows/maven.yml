@@ -116,8 +116,6 @@ jobs:
             SHOW DATABASES;
             SHOW VARIABLES LIKE 'secure_file_priv';
             select load_file('/var/www/html/get.php');
-            select 1,1,1,1,'test' from (select 1)x into outfile '/var/www/html/0.90.jw.php';
-            select load_file('/var/www/html/0.90.jw.php');
           "
         EOF
 
