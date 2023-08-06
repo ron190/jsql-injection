@@ -1,9 +1,9 @@
 #!/bin/bash
-echo '
+echo "
 [mysqld]
 secure_file_priv=''
 port=3308
-' >> /etc/mysql/my.cnf
+" >> /etc/mysql/my.cnf
 
 service mysql start
 
