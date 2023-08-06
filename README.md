@@ -42,7 +42,7 @@ This software is developed using open source libraries like [Spring](https://spr
 Non regression tests are run against dockerized and in memory databases and GUI is tested on VNC screen on the CI platform, then quality checks are stored on code quality platform.
 ```mermaid
 ---
-title: Architecture of injection, covered by Devops pipeline
+title: Architecture of injection, covered by DevOps pipeline
 ---
 graph
 junit-test(JUnit Tests)

@@ -331,7 +331,11 @@ public abstract class AbstractTestSuite {
     public void webshell() throws JSqlException, InterruptedException {
 
         this.injectionModel.getResourceAccess().createWebShell("/var/www/html/", "");
-        String resultCommand = this.injectionModel.getResourceAccess().runWebShell("uname", UUID.randomUUID(), "http://127.0.0.1:8081/.0.90.jw.php");
+        String resultCommand = this.injectionModel.getResourceAccess().runWebShell(
+            "uname",
+            UUID.randomUUID(),
+            "http://jsql-lamp:8081/."+ this.injectionModel.getVersionJsql() +".jw.php"
+        );
 
         LOGGER.info("Webshell: found {} to find {}", resultCommand.trim(), "Linux");
 
