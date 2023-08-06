@@ -6,10 +6,10 @@
             </Pattern>
         </encoder>
     </appender>
-    <root level="DEBUG" additivity="false">
+    <root level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
     </root>
     <!-- Disable massive SQL error logging during injection -->
-    <!-- Detailed Exception must also be try/catch -->
+    <!-- Detailed Exception must also be in try/catch -->
     <logger name="org.hibernate" level="OFF" additivity="false" />
 </configuration>
