@@ -7,7 +7,7 @@ port=3308
 
 service mysql start
 
-mysql --host=jsql-lamp --port=3308 -uroot -ppassword -e "
+mysql -uroot -ppassword --port=3308 -e "
   ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
   GRANT FILE ON *.* TO 'root'@'%';
   GRANT FILE ON *.* TO 'root'@'localhost';
