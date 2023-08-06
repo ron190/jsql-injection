@@ -1,15 +1,16 @@
 #!/bin/bash
 echo '
 [mysqld]
-secure-file-priv=""
+secure_file_priv=""
 port=3308
 ' >> /etc/mysql/my.cnf
 
 service mysql start
 
-mysql -uroot -ppassword -e "
+mysql --host=jsql-lamp --port=3308 -uroot -ppassword -e "
   ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
   GRANT FILE ON *.* TO 'root'@'%';
+  GRANT FILE ON *.* TO 'root'@'localhost';
   SHOW GRANTS;
   SHOW VARIABLES;
   SHOW DATABASES;
