@@ -28,12 +28,10 @@ public class MessageHeader implements InteractionCommand {
 
     // The text to append to the tab
     private final String url;
-    
     private final String post;
-    
     private final Map<String, String> header;
-    
     private final Map<String, String> response;
+    private final String source;
 
     /**
      * @param interactionParams Text to append
@@ -46,18 +44,20 @@ public class MessageHeader implements InteractionCommand {
         this.post = (String) params.get(Header.POST);
         this.header = (Map<String, String>) params.get(Header.HEADER);
         this.response = (Map<String, String>) params.get(Header.RESPONSE);
+        this.source = (String) params.get(Header.SOURCE);
     }
 
     @Override
     public void execute() {
         
-        LOGGER.debug(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
+        LOGGER.info(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
         
-        LOGGER.debug("Method: {}", () -> this.response.get("Method"));
-        LOGGER.debug("Url: {}", this.url);
-        LOGGER.debug("Post: {}", this.post);
-        LOGGER.debug("Header: {}", this.header);
-        LOGGER.debug("Content-Length: {}", () -> this.response.get("Content-Length"));
-        LOGGER.debug("Content-Type: {}", () -> this.response.get("Content-Type"));
+        LOGGER.info("Method: {}", () -> this.response.get("Method"));
+        LOGGER.info("Url: {}", this.url);
+        LOGGER.info("Post: {}", this.post);
+        LOGGER.info("Header: {}", this.header);
+        LOGGER.info("Content-Length: {}", () -> this.response.get("Content-Length"));
+        LOGGER.info("Content-Type: {}", () -> this.response.get("Content-Type"));
+        LOGGER.info("Source: {}", () -> this.source);
     }
 }
