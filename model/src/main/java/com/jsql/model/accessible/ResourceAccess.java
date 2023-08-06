@@ -285,7 +285,7 @@ public class ResourceAccess {
         var sourcePage = new String[]{ StringUtils.EMPTY };
         try {
             resultInjection = new SuspendableGetRows(this.injectionModel).run(
-                URLEncoder.encode(this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(pathShellFixed + this.filenameWebshell), StandardCharsets.UTF_8),
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(URLEncoder.encode(pathShellFixed + this.filenameWebshell, StandardCharsets.UTF_8)),
                 sourcePage,
                 false,
                 1,
