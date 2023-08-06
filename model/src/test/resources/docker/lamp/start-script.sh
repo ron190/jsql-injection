@@ -1,7 +1,7 @@
 #!/bin/bash
 echo '
 [mysqld]
-secure_file_priv=""
+secure_file_priv="/var/www/html/"
 port=3308
 ' >> /etc/mysql/my.cnf
 
