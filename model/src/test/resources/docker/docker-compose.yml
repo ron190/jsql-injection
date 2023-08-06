@@ -9,8 +9,6 @@ services:
       dockerfile: Dockerfile.mysql
     environment:
       MYSQL_ROOT_PASSWORD: my-secret-pw
-    volumes:
-      - ./lamp/mysql/:/etc/mysql/conf.d
     container_name: jsql-mysql
     networks:
       - jsql-network

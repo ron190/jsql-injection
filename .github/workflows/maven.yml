@@ -92,13 +92,16 @@ jobs:
         docker-compose -f $DOCKER_RESOURCES/docker-compose.yml build --parallel
         docker-compose -f $DOCKER_RESOURCES/docker-compose.yml up -d
 
+    - name: List images and containers
+      run: |
+        docker images
+        docker container ls
+
     - name: Database health checks and configuration
       run: |
         $DOCKER_RESOURCES/scripts/healthcheck/healthcheck.sh
         $DOCKER_RESOURCES/scripts/buff.sh
         $DOCKER_RESOURCES/scripts/verify.sh
-        docker images
-        docker container ls
 
     - name: Build project container
       run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
