@@ -103,6 +103,10 @@ jobs:
         $DOCKER_RESOURCES/scripts/buff.sh
         $DOCKER_RESOURCES/scripts/verify.sh
 
+    - name: Call LAMP
+      run: |
+        curl http://jsql-lamp:8079/get.php?id=1 || curl http://localhost:8079/get.php?id=1
+
     - name: Build project container
       run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
 

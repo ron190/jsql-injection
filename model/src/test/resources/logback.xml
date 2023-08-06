@@ -6,13 +6,10 @@
             </Pattern>
         </encoder>
     </appender>
-    <root level="INFO" additivity="false">
+    <root level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
     </root>
     <!-- Disable massive SQL error logging during injection -->
-    <!-- Detailed Exception must also be try/caught -->
+    <!-- Detailed Exception must also be try/catch -->
     <logger name="org.hibernate" level="OFF" additivity="false" />
-<!--    <logger name="org.springframework.security" level="DEBUG" additivity="false">-->
-<!--        <appender-ref ref="STDOUT"/>-->
-<!--    </logger>-->
 </configuration>
