@@ -87,19 +87,19 @@ public class SpringTargetApplication {
         
         initializeHsqldb();
         initializeH2();
-//        initializeNeo4j();
+        initializeNeo4j();
         initializeDerby();
         
         ArrayList<Properties> properties = new ArrayList<>(
             Arrays.asList(
                 SpringTargetApplication.propsH2,
                 SpringTargetApplication.propsMysql,
-//                SpringTargetApplication.propsMysqlError,
-//                SpringTargetApplication.propsPostgres,
-//                SpringTargetApplication.propsSqlServer,
-//                SpringTargetApplication.propsCubrid,
-//                SpringTargetApplication.propsSqlite,
-//                SpringTargetApplication.propsDb2,
+                SpringTargetApplication.propsMysqlError,
+                SpringTargetApplication.propsPostgres,
+                SpringTargetApplication.propsSqlServer,
+                SpringTargetApplication.propsCubrid,
+                SpringTargetApplication.propsSqlite,
+                SpringTargetApplication.propsDb2,
                 SpringTargetApplication.propsHsqldb,
                 SpringTargetApplication.propsDerby
             )

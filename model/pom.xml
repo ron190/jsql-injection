@@ -148,9 +148,7 @@
                     <!-- Set number of retry, allows 1st test to run Spring then run other tests -->
                     <rerunFailingTestsCount>3</rerunFailingTestsCount>
                     <includes>
-<!--                        <include>**/*SuiteIT.java</include>-->
-                        <include>**/MySqlWebshellSuiteIT.java</include>
-<!--                        <include>**/MySqlReadFileLampSuiteIT.java</include>-->
+                        <include>**/*SuiteIT.java</include>
                     </includes>
                     <!-- Display each method time metrics on a test class -->
                     <reportFormat>plain</reportFormat>

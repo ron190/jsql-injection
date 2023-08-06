@@ -98,25 +98,8 @@ jobs:
     - name: Database health checks and configuration
       run: |
         $DOCKER_RESOURCES/scripts/healthcheck/healthcheck.sh
-#        $DOCKER_RESOURCES/scripts/buff.sh
-#        $DOCKER_RESOURCES/scripts/verify.sh
-
-    - name: Call LAMP
-      run: |
-        curl http://localhost:8079/get.php?id=1
-        cat <<EOF | sudo docker exec -i jsql-lamp /bin/bash
-          ls /var/www/html/
-          cat /var/www/html/get.php
-          mysql -uroot -ppassword --port=3308 -e "
-            SELECT * FROM mysql.user;
-            SHOW GRANTS;
-            SHOW VARIABLES;
-            SHOW DATABASES;
-            SHOW VARIABLES LIKE 'secure_file_priv';
-            select load_file('/var/www/html/get.php');
-            select 1,1,1,1,'test' into outfile '/var/www/html/0.90.jw.php';
-          "
-        EOF
+        $DOCKER_RESOURCES/scripts/buff.sh
+        $DOCKER_RESOURCES/scripts/verify.sh
 
     - name: Build project container
       run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
@@ -127,22 +110,22 @@ jobs:
       # Note: gh actions sonarsource/sonarqube-scan-action not working properly => analysis not reliable
       run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'mvn clean install sonar:sonar -P tests'
 
-#    - name: Databases statistics
-#      run: $DOCKER_RESOURCES/scripts/verify.sh
-#
-#    - name: Copy files and coverage reports from container
-#      # Sonar scans unmerged reports, Codacy/Codecov requires scanning each files (or reports merged)
-#      run: |
-#        mkdir -p shared-resources/model shared-resources/view
-#        docker cp docker_jsql-container:view/. shared-resources/view
-#        docker cp docker_jsql-container:model/. shared-resources/model
-#        docker cp docker_jsql-container:pom.xml shared-resources
-#
-#    - name: Codecov scan
-#      run: cd shared-resources && bash <(curl -s https://codecov.io/bash) || true
-#
-#    - name: Codacy scan
-#      run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
+    - name: Databases statistics
+      run: $DOCKER_RESOURCES/scripts/verify.sh
+
+    - name: Copy files and coverage reports from container
+      # Sonar scans unmerged reports, Codacy/Codecov requires scanning each files (or reports merged)
+      run: |
+        mkdir -p shared-resources/model shared-resources/view
+        docker cp docker_jsql-container:view/. shared-resources/view
+        docker cp docker_jsql-container:model/. shared-resources/model
+        docker cp docker_jsql-container:pom.xml shared-resources
+
+    - name: Codecov scan
+      run: cd shared-resources && bash <(curl -s https://codecov.io/bash) || true
+
+    - name: Codacy scan
+      run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
 
 #  codeql:
 #    Workflow not jdk compatible
@@ -155,8 +138,8 @@ jobs:
 #    uses: ./.github/workflows/run-codeready.yml
 #    secrets: inherit
 
-#  release:
-#    needs: [build-jdk11, build]
-#    name: Publish
-#    uses: ./.github/workflows/release.yml
-#    secrets: inherit
+  release:
+    needs: [build-jdk11, build]
+    name: Publish
+    uses: ./.github/workflows/release.yml
+    secrets: inherit
