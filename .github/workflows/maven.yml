@@ -87,7 +87,7 @@ jobs:
     - name: Install Maven dependencies
       run: mvn clean install -DskipTests dependency:tree
         
-    - name: Build and start databases
+    - name: Build and start databases and LAMP
       run: |
         docker-compose -f $DOCKER_RESOURCES/docker-compose.yml build --parallel
         docker-compose -f $DOCKER_RESOURCES/docker-compose.yml up -d
@@ -97,9 +97,9 @@ jobs:
         docker images
         docker container ls
 
-#    - name: Database health checks and configuration
-#      run: |
-#        $DOCKER_RESOURCES/scripts/healthcheck/healthcheck.sh
+    - name: Database health checks and configuration
+      run: |
+        $DOCKER_RESOURCES/scripts/healthcheck/healthcheck.sh
 #        $DOCKER_RESOURCES/scripts/buff.sh
 #        $DOCKER_RESOURCES/scripts/verify.sh
 
