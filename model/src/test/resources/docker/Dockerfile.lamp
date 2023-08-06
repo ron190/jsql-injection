@@ -8,6 +8,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y php php-
 EXPOSE 80 3308 8079
 COPY ./lamp/start-script.sh /root/
 COPY ./lamp/php/get.php /var/www/html/
+COPY ./lamp/php/get2.php /var/www/html/
 COPY ./lamp/php/phpinfo.php /var/www/html/
 RUN chmod +x /root/start-script.sh
 ENTRYPOINT ["/root/start-script.sh"]
