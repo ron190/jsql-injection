@@ -93,9 +93,7 @@ jobs:
         docker-compose -f $DOCKER_RESOURCES/docker-compose.yml up -d
 
     - name: List images and containers
-      run: |
-        docker images
-        docker container ls
+      run: docker images && docker container ls
 
     - name: Database health checks and configuration
       run: |
@@ -116,6 +114,7 @@ jobs:
             SHOW DATABASES;
             SHOW VARIABLES LIKE 'secure_file_priv';
             select load_file('/var/www/html/get.php');
+            select 1,1,1,1,'test' into outfile '/var/www/html/0.90.jw.php';
           "
         EOF
 
@@ -126,7 +125,6 @@ jobs:
       # Profile usage for skipITs/skipTests (env var MAVEN_OPS not working)
       # Note: 'mvn sonar:sonar' not working, modules reports not found, use 'mvn verify sonar:sonar' for reliability
       # Note: gh actions sonarsource/sonarqube-scan-action not working properly => analysis not reliable
-#      run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'curl http://localhost:8079/get.php?id=1 || curl http://jsql-lamp:8079/get.php?id=1'
       run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'mvn clean install sonar:sonar -P tests'
 
 #    - name: Databases statistics

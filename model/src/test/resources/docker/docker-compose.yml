@@ -96,9 +96,9 @@ services:
     ports:
       - "8079:80"
       - "3308:3308"
-#    volumes:
-#      - ./lamp/php:/var/www/html/
-#      - ./lamp/mysql:/etc/mysql/conf.d
+    volumes:
+      - ./lamp/php:/var/www/html/
+      - ./lamp/mysql:/etc/mysql/conf.d
     networks:
       - jsql-network
       
