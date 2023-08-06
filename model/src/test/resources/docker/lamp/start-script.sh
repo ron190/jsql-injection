@@ -1,7 +1,8 @@
 #!/bin/bash
 echo "
 [mysqld]
-secure-file-priv = ""
+secure-file-priv = ''
+port = 3308
 " >> /etc/mysql/my.cnf
 
 service mysql start
@@ -11,6 +12,7 @@ mysql -uroot -ppassword -e "
   GRANT FILE ON *.* TO 'root'@'%';
 "
 mysql -u root -ppassword -e "
+  SHOW VARIABLES LIKE 'secure_file_priv';
   SHOW DATABASES;
 "
 
