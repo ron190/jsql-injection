@@ -9,11 +9,8 @@ service mysql start
 
 mysql -uroot -ppassword --port=3308 -e "
   ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
-  GRANT FILE ON *.* TO 'root'@'%';
-  GRANT FILE ON *.* TO 'root'@'localhost';
-  SHOW GRANTS;
-  SHOW VARIABLES;
-  SHOW DATABASES;
 "
+
+echo "Listen 8079" >> /etc/apache2/ports.conf
 
 apache2ctl -D FOREGROUND
