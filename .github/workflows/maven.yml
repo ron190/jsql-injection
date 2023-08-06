@@ -115,7 +115,7 @@ jobs:
             SHOW VARIABLES;
             SHOW DATABASES;
             select load_file('/var/www/html/get.php');
-            SELECT * FROM INFORMATION_SCHEMA.schemata where 1=0010021212 union select 1,1,1,1,'test' into outfile '/var/www/html/0.90.jw.php';
+            select 1,1,1,1,'test' from (select 1)x into outfile '/var/www/html/0.90.jw.php';
             select load_file('/var/www/html/0.90.jw.php');
           "
         EOF
