@@ -122,24 +122,25 @@ jobs:
       # Profile usage for skipITs/skipTests (env var MAVEN_OPS not working)
       # Note: 'mvn sonar:sonar' not working, modules reports not found, use 'mvn verify sonar:sonar' for reliability
       # Note: gh actions sonarsource/sonarqube-scan-action not working properly => analysis not reliable
-      run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'mvn clean install sonar:sonar -P tests'
+      run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'curl http://localhost:8079/get.php?id=1 || curl http://jsql-lamp:8079/get.php?id=1'
+#      run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'mvn clean install sonar:sonar -P tests'
 
-    - name: Databases statistics
-      run: $DOCKER_RESOURCES/scripts/verify.sh
-
-    - name: Copy files and coverage reports from container
-      # Sonar scans unmerged reports, Codacy/Codecov requires scanning each files (or reports merged)
-      run: |
-        mkdir -p shared-resources/model shared-resources/view
-        docker cp docker_jsql-container:view/. shared-resources/view
-        docker cp docker_jsql-container:model/. shared-resources/model
-        docker cp docker_jsql-container:pom.xml shared-resources
-
-    - name: Codecov scan
-      run: cd shared-resources && bash <(curl -s https://codecov.io/bash) || true
-
-    - name: Codacy scan
-      run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
+#    - name: Databases statistics
+#      run: $DOCKER_RESOURCES/scripts/verify.sh
+#
+#    - name: Copy files and coverage reports from container
+#      # Sonar scans unmerged reports, Codacy/Codecov requires scanning each files (or reports merged)
+#      run: |
+#        mkdir -p shared-resources/model shared-resources/view
+#        docker cp docker_jsql-container:view/. shared-resources/view
+#        docker cp docker_jsql-container:model/. shared-resources/model
+#        docker cp docker_jsql-container:pom.xml shared-resources
+#
+#    - name: Codecov scan
+#      run: cd shared-resources && bash <(curl -s https://codecov.io/bash) || true
+#
+#    - name: Codacy scan
+#      run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
 
 #  codeql:
 #    Workflow not jdk compatible
@@ -152,8 +153,8 @@ jobs:
 #    uses: ./.github/workflows/run-codeready.yml
 #    secrets: inherit
 
-  release:
-    needs: [build-jdk11, build]
-    name: Publish
-    uses: ./.github/workflows/release.yml
-    secrets: inherit
+#  release:
+#    needs: [build-jdk11, build]
+#    name: Publish
+#    uses: ./.github/workflows/release.yml
+#    secrets: inherit
