@@ -234,7 +234,7 @@ resource:
   read: cast(concat(load_file(0x${filepath.hex}), ${trail_hex}) as char)
   create:
    content: (select 0x${content.hex})
-   query: into outfile "${filepath}"
+   query: into outfile '${filepath}'
 
 strategy:
  configuration:

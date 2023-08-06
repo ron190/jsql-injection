@@ -110,13 +110,13 @@ jobs:
           ls /var/www/html/
           cat /var/www/html/get.php
           mysql -uroot -ppassword --port=3308 -e "
-            select load_file('/var/www/html/get.php');
-            SELECT * FROM INFORMATION_SCHEMA.schemata where 1=0010021212 union select 1,1,1,1,'test' into outfile '/var/www/html/0.90.jw.php';
-            select load_file('/var/www/html/0.90.jw.php');
             SELECT * FROM mysql.user;
             SHOW GRANTS;
             SHOW VARIABLES;
             SHOW DATABASES;
+            select load_file('/var/www/html/get.php');
+            SELECT * FROM INFORMATION_SCHEMA.schemata where 1=0010021212 union select 1,1,1,1,'test' into outfile '/var/www/html/0.90.jw.php';
+            select load_file('/var/www/html/0.90.jw.php');
           "
         EOF
 
