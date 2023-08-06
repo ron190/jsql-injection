@@ -87,7 +87,7 @@ jobs:
     - name: Install Maven dependencies
       run: mvn clean install -DskipTests dependency:tree
         
-    - name: Build and start databases and LAMP
+    - name: Start databases and LAMP
       run: |
         docker-compose -f $DOCKER_RESOURCES/docker-compose.yml build --parallel
         docker-compose -f $DOCKER_RESOURCES/docker-compose.yml up -d
