@@ -74,14 +74,12 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
         }
         
         try {
-            var builderHttpRequest = HttpRequest
-                .newBuilder()
+            var builderHttpRequest = HttpRequest.newBuilder()
                 .uri(URI.create(this.urlAdminPage))
                 .method("HEAD", BodyPublishers.noBody())
                 .timeout(Duration.ofSeconds(4));
             
-            Stream
-            .of(
+            Stream.of(
                 this.injectionModel.getMediatorUtils().getParameterUtil().getHeaderFromEntries()
                 .split("\\\\r\\\\n")
             )

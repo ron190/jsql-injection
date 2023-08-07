@@ -698,7 +698,7 @@ public class ResourceAccess {
      * @param username User name [optional]
      * @param password USEr password [optional]
      */
-    public void runSqlShell(String command, UUID uuidShell, String urlShell, String username, String password) {
+    public String runSqlShell(String command, UUID uuidShell, String urlShell, String username, String password) {
         
         String result = this.runCommandShell(
             String.format(
@@ -715,7 +715,7 @@ public class ResourceAccess {
             List<List<String>> listRows = this.parse(result);
 
             if (listRows.isEmpty()) {
-                return;
+                return StringUtils.EMPTY;
             }
 
             List<Integer> listFieldsLength = this.parseColumnLength(listRows);
@@ -736,6 +736,8 @@ public class ResourceAccess {
         request.setMessage(Interaction.GET_SQL_SHELL_RESULT);
         request.setParameters(uuidShell, result, command);
         this.injectionModel.sendToViews(request);
+
+        return result;
     }
 
     private String convert(List<List<String>> listRows, List<Integer> listFieldsLength) {
