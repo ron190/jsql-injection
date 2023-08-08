@@ -43,7 +43,7 @@
         <sonar.exclusions>**/blind/patch/*, **/DigestMD4.java</sonar.exclusions>
 
         <awaitility.version>4.2.0</awaitility.version>
-        <bootstrap.version>5.2.3</bootstrap.version>
+        <bootstrap.version>5.3.1</bootstrap.version>
         <dnsjava.version>3.5.2</dnsjava.version>
         <gmavenplus-plugin.version>3.0.0</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
@@ -54,16 +54,14 @@
         <javafaker.version>1.0.2</javafaker.version>
         <jaxb-api.version>2.1</jaxb-api.version>
         <jcabi-log.version>0.23.0</jcabi-log.version>
-        <jna.version>5.12.1</jna.version>
+        <jna.version>5.13.0</jna.version>
         <jquery.version>3.6.4</jquery.version>
         <json.version>20230618</json.version>
         <jsoup.version>1.16.1</jsoup.version>
         <junit-pioneer.version>2.0.0</junit-pioneer.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
-        <!-- Fails to find UTs on later version > 3.0.0-M4 -->
-        <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
-        <!-- Fails to find ITs on later version > 3.0.0-M4 -->
-        <maven-failsafe-plugin.version>3.0.0-M4</maven-failsafe-plugin.version>
+        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
         <!-- Spring startup PKIX error on later version -->
         <mssql-jdbc.version>9.4.1.jre8</mssql-jdbc.version>
         <mysql-connector-j.version>8.1.0</mysql-connector-j.version>
@@ -127,6 +125,14 @@
                     <!-- Display each method time metrics on a test class -->
                     <reportFormat>plain</reportFormat>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <!-- Required to detect tests on version > 3.0.0-M4 without running JUnit4Provider -->
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit-platform</artifactId>
+                        <version>${maven-surefire-plugin.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <!-- Runs ITs -->
@@ -153,6 +159,14 @@
                     <!-- Display each method time metrics on a test class -->
                     <reportFormat>plain</reportFormat>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <!-- Required to detect tests on version > 3.0.0-M4 without running JUnit4Provider -->
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit-platform</artifactId>
+                        <version>${maven-failsafe-plugin.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>

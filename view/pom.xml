@@ -15,24 +15,12 @@
         <assertj-swing-junit.version>3.17.1</assertj-swing-junit.version>
         <awaitility.version>4.2.0</awaitility.version>
         <commons-io.version>2.13.0</commons-io.version>
-        <junit-bom.version>5.9.3</junit-bom.version>
-        <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
+        <junit-jupiter-engine.version>5.9.2</junit-jupiter-engine.version>
+        <maven-shade-plugin.version>3.5.0</maven-shade-plugin.version>
         <maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
         <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
         <mockito-inline.version>5.2.0</mockito-inline.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.junit</groupId>
-                <artifactId>junit-bom</artifactId>
-                <version>${junit-bom.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -50,6 +38,12 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-swing-junit</artifactId>
             <version>${assertj-swing-junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter-engine.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

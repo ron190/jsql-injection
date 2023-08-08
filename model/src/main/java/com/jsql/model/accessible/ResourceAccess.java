@@ -289,7 +289,7 @@ public class ResourceAccess {
 
             if (StringUtils.isEmpty(resultInjection)) {
 
-                throw new JSqlException("payload integrity verification: Empty payload");
+                throw new JSqlException("payload integrity check: empty payload");
             }
             
         } catch (JSqlException e) {
@@ -381,7 +381,7 @@ public class ResourceAccess {
             
         } else {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "HTTP connection to Web payload not found");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Payload not found");
         }
     }
 
@@ -400,23 +400,11 @@ public class ResourceAccess {
                 if (currentCallable.isHttpResponseOk()) {
                     
                     urlSuccess = currentCallable.getUrl();
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Payload found: {}", urlSuccess);
 
-                    if (
-                        !urlShellFixed.isEmpty()
-                        && urlSuccess.replace(this.filenameWebshell, StringUtils.EMPTY).equals(urlShellFixed)
-                        || urlSuccess.replace(this.filenameWebshell, StringUtils.EMPTY).equals(urlProtocol + urlWithoutFileName)
-                    ) {
-                        
-                        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection to payload found at expected location '{}'", urlSuccess);
-                        
-                    } else {
-                        
-                        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection to payload found at unexpected location '{}'", urlSuccess);
-                    }
-                    
                 } else {
                     
-                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Connection to payload not found at '{}'", currentCallable.getUrl());
+                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Payload not found: {}", currentCallable.getUrl());
                 }
                 
             } catch (InterruptedException e) {
@@ -481,6 +469,7 @@ public class ResourceAccess {
         );
 
         if (StringUtils.isBlank(result)) {
+            // TODO Payload should redirect directly error to normal output
             result = "No result.\nTry '"+ command.trim() +" 2>&1' to get a system error message.\n";
         }
 
@@ -547,7 +536,7 @@ public class ResourceAccess {
 
             if (StringUtils.isEmpty(resultInjection)) {
                 
-                throw new JSqlException("payload integrity verification: Empty payload");
+                throw new JSqlException("payload integrity check: empty payload");
             }
             
         } catch (JSqlException e) {
@@ -639,25 +628,13 @@ public class ResourceAccess {
                 
                 if (!currentCallable.isHttpResponseOk()) {
                     
-                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Connection to payload not found at '{}'", currentCallable.getUrl());
+                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Payload not found at '{}'", currentCallable.getUrl());
                     continue;
                 }
                     
                 urlSuccess = currentCallable.getUrl();
+                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Payload found: '{}'", urlSuccess);
 
-                if (
-                    !urlShellFixed.isEmpty()
-                    && urlSuccess.replace(this.filenameSqlshell, StringUtils.EMPTY).equals(urlShellFixed)
-                    || urlSuccess.replace(this.filenameSqlshell, StringUtils.EMPTY).equals(urlProtocol + urlWithoutFileName)
-                ) {
-                    
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection to payload found at expected location '{}'", urlSuccess);
-                    
-                } else {
-                    
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection to payload found at unexpected location '{}'", urlSuccess);
-                }
-                
             } catch (InterruptedException e) {
                 
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
@@ -686,7 +663,7 @@ public class ResourceAccess {
             
         } else {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "HTTP connection to SQL payload not found");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "SQL payload not found");
         }
     }
 
@@ -858,8 +835,7 @@ public class ResourceAccess {
         }
         
         this.injectionModel.injectWithoutIndex(
-            this.injectionModel
-            .getMediatorVendor()
+            this.injectionModel.getMediatorVendor()
             .getVendor()
             .instance()
             .sqlTextIntoFile(
@@ -884,7 +860,7 @@ public class ResourceAccess {
             
             if (StringUtils.isEmpty(sourceShellInjected)) {
                 
-                throw new JSqlException("Bad payload integrity: Empty payload");
+                throw new JSqlException("payload integrity check: empty payload");
             }
             
         } catch (JSqlException e) {
@@ -895,8 +871,7 @@ public class ResourceAccess {
         String urlFileFixed = urlFile;
         if (StringUtils.isEmpty(urlFileFixed)) {
             
-            urlFileFixed = this.injectionModel
-                .getMediatorUtils()
+            urlFileFixed = this.injectionModel.getMediatorUtils()
                 .getConnectionUtil()
                 .getUrlBase()
                 .substring(
@@ -956,8 +931,7 @@ public class ResourceAccess {
         String headerFile = StringUtils.EMPTY;
         headerFile += crLf +"--"+ boundary +"--"+ crLf;
 
-        var httpRequest = HttpRequest
-            .newBuilder()
+        var httpRequest = HttpRequest.newBuilder()
             .uri(URI.create(string))
             .timeout(Duration.ofSeconds(15))
             .POST(
@@ -1193,7 +1167,7 @@ public class ResourceAccess {
     
     private JSqlException getIntegrityError(String[] sourcePage) {
         
-        return new JSqlException("Wrong payload integrity: "+ sourcePage[0].trim().replace("\\n", "\\\\\\n"));
+        return new JSqlException("Payload integrity check failure: "+ sourcePage[0].trim().replace("\\n", "\\\\\\n"));
     }
     
     

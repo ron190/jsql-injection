@@ -90,6 +90,7 @@ public final class ThreadUtil {
     public void reset() {
         
         // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()
+        // TODO Use CopyOnWriteArrayList to prevent ConcurrentModificationException
         try {
             this.suspendables.values().forEach(AbstractSuspendable::stop);
             this.suspendables.clear();

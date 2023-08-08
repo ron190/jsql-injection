@@ -52,7 +52,7 @@ subgraph "jSQL"
 end
 subgraph Spring
     admin-page([/admin-page])
-    spring-apis(/api)
+    spring-apis([/api])
 end
 subgraph Memory
     memory-other[(SQLite\nH2\nHSQLDB\nDerby)]   
@@ -63,7 +63,7 @@ subgraph Docker
         direction TB
         mysql[(MySQL)]
         file.txt(["file.txt"])   
-        webshell(["webshell"])   
+        shell(["shell.php"])
     end   
     docker-other[(SQL Server\nPostgreSQL\nCubrid\nNeo4j\nDb2)]   
 end
@@ -73,7 +73,7 @@ inject-model -- inject --> spring-apis
 spring-apis --> Docker
 spring-apis --> Memory
 mysql -. read .-> file.txt
-mysql -. create .-> webshell
+mysql -. create .-> shell
 ```
 
 ## [[Test-bed scripts for Spring](https://github.com/ron190/jsql-injection/tree/master/model/src/test/java/spring/rest)]

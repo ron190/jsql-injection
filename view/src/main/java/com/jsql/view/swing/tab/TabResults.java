@@ -107,9 +107,8 @@ public class TabResults extends DnDTabbedPane {
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
                 String.format(
-                    "<html><b>URL</b><br>%s%s<br><b>Path</b><br>%s%s</html>",
+                    "<html><b>URL</b><br>%s<br><b>Path</b><br>%s%s</html>",
                     url,
-                    MediatorHelper.model().getResourceAccess().filenameWebshell,
                     path,
                     MediatorHelper.model().getResourceAccess().filenameWebshell
                 )
@@ -148,9 +147,8 @@ public class TabResults extends DnDTabbedPane {
             this.setToolTipTextAt(
                 this.indexOfComponent(scroller),
                 String.format(
-                    "<html><b>URL</b><br>%s%s<br><b>Path</b><br>%s%s</html>",
+                    "<html><b>URL</b><br>%s<br><b>Path</b><br>%s%s</html>",
                     url,
-                    MediatorHelper.model().getResourceAccess().filenameSqlshell,
                     path,
                     MediatorHelper.model().getResourceAccess().filenameSqlshell
                 )

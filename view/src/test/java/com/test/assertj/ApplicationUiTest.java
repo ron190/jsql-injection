@@ -1,16 +1,15 @@
 package com.test.assertj;
 
-import java.awt.AWTException;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
-
+import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.database.Column;
+import com.jsql.model.bean.database.Database;
+import com.jsql.model.bean.database.Table;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
+import com.jsql.model.bean.util.Request;
+import com.jsql.util.bruter.ActionCoder;
+import com.jsql.view.swing.JFrameView;
+import com.jsql.view.swing.util.MediatorHelper;
 import org.apache.commons.codec.DecoderException;
 import org.apache.logging.log4j.util.Strings;
 import org.assertj.swing.core.matcher.JButtonMatcher;
@@ -24,23 +23,23 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Safelist;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.database.Column;
-import com.jsql.model.bean.database.Database;
-import com.jsql.model.bean.database.Table;
-import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
-import com.jsql.util.bruter.ActionCoder;
-import com.jsql.view.swing.JFrameView;
-import com.jsql.view.swing.util.MediatorHelper;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.*;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class ApplicationUiTest {
     
@@ -49,7 +48,7 @@ public class ApplicationUiTest {
     private static final Connection connection = Mockito.mock(Connection.class);
     private static final Document document = Mockito.mock(Document.class);
     
-    @BeforeClass
+    @BeforeAll
     public static void setUpOnce() {
         
         FailOnThreadViolationRepaintManager.install();
@@ -76,14 +75,14 @@ public class ApplicationUiTest {
 
         window.tabbedPane("tabManagers").selectTab("Admin page");
         
-        Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(0));
-        Assert.assertNotEquals("admin", window.list("listManagerAdminPage").valueAt(1));
+        Assertions.assertEquals("admin", window.list("listManagerAdminPage").valueAt(0));
+        Assertions.assertNotEquals("admin", window.list("listManagerAdminPage").valueAt(1));
         
         window.list("listManagerAdminPage").drag(0);
         window.list("listManagerAdminPage").drop(1);
         
-        Assert.assertNotEquals("admin", window.list("listManagerAdminPage").valueAt(0));
-        Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(1));
+        Assertions.assertNotEquals("admin", window.list("listManagerAdminPage").valueAt(0));
+        Assertions.assertEquals("admin", window.list("listManagerAdminPage").valueAt(1));
         
         window.list("listManagerAdminPage").selectItem(0).pressKey(KeyEvent.VK_DELETE);
         window.list("listManagerAdminPage").selectItem(0);
@@ -93,8 +92,8 @@ public class ApplicationUiTest {
         window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
         window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
         
-        Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(0));
-        Assert.assertEquals("admin", window.list("listManagerAdminPage").valueAt(1));
+        Assertions.assertEquals("admin", window.list("listManagerAdminPage").valueAt(0));
+        Assertions.assertEquals("admin", window.list("listManagerAdminPage").valueAt(1));
         
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection stringSelection = new StringSelection("paste-from-clipboard");
@@ -102,7 +101,7 @@ public class ApplicationUiTest {
         window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
         window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
         
-        Assert.assertEquals("paste-from-clipboard", window.list("listManagerAdminPage").valueAt(1));
+        Assertions.assertEquals("paste-from-clipboard", window.list("listManagerAdminPage").valueAt(1));
         
         window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_X);
         window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_X);
@@ -110,20 +109,20 @@ public class ApplicationUiTest {
         window.list("listManagerAdminPage").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
         window.list("listManagerAdminPage").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
         
-        Assert.assertNotEquals("paste-from-clipboard", window.list("listManagerAdminPage").valueAt(1));
-        Assert.assertEquals("paste-from-clipboard", window.list("listManagerAdminPage").valueAt(3));
+        Assertions.assertNotEquals("paste-from-clipboard", window.list("listManagerAdminPage").valueAt(1));
+        Assertions.assertEquals("paste-from-clipboard", window.list("listManagerAdminPage").valueAt(3));
     }
     
     @Test
     public void shouldDnDScanList() {
         
         window.tabbedPane("tabManagers").selectTab("Batch scan");
-        Assert.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(0));
-        Assert.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(1));
+        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(0));
+        Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(1));
         window.list("listManagerScan").drag(0);
         window.list("listManagerScan").drop(1);
-        Assert.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(0));
-        Assert.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(1));
+        Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(0));
+        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(1));
         
         window.list("listManagerScan").selectItem(0).pressKey(KeyEvent.VK_DELETE);
         window.list("listManagerScan").selectItem(0);
@@ -133,8 +132,8 @@ public class ApplicationUiTest {
         window.list("listManagerScan").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
         window.list("listManagerScan").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
         
-        Assert.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(0));
-        Assert.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(1));
+        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(0));
+        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(1));
         
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection stringSelection = new StringSelection("paste-from-clipboard");
@@ -142,7 +141,7 @@ public class ApplicationUiTest {
         window.list("listManagerScan").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
         window.list("listManagerScan").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
         
-        Assert.assertEquals("paste-from-clipboard", window.list("listManagerScan").valueAt(1));
+        Assertions.assertEquals("paste-from-clipboard", window.list("listManagerScan").valueAt(1));
     }
     
     @Test
@@ -179,7 +178,7 @@ public class ApplicationUiTest {
             window.tabbedPane("tabResults").requireTitle("dragfile ", Index.atIndex(1));
             window.tabbedPane("tabResults").requireTitle("dropfile ", Index.atIndex(2));
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
         
         GuiActionRunner.execute(() -> {
@@ -201,7 +200,7 @@ public class ApplicationUiTest {
         try {
             window.tabbedPane("tabResults").selectTab("file ").requireVisible();
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
         
         GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
@@ -218,7 +217,7 @@ public class ApplicationUiTest {
         try {
             window.tabbedPane("tabResults").selectTab("Web shell ").requireVisible();
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
         
         window.textBox("webShell").pressAndReleaseKeys(
@@ -266,7 +265,7 @@ public class ApplicationUiTest {
         window.menuItem("itemRadioStrategyError").requireEnabled(Timeout.timeout(1000));
         
         window.robot().moveMouse(window.menuItem("menuVendor").target());
-        Assert.assertEquals("Vendor should be MySQL", "MySQL", window.menuItem("menuVendor").target().getText());
+        Assertions.assertEquals("MySQL", window.menuItem("menuVendor").target().getText(), "Vendor should be MySQL");
         
         window.robot().moveMouse(window.menuItem("menuStrategy").target());
         window.menuItem("itemRadioVendorMySQL").requireVisible();
@@ -276,7 +275,7 @@ public class ApplicationUiTest {
         try {
             window.menuItem("itemRadioVendorUnsigned:or").requireVisible();
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
         
         window.robot().showPopupMenu(window.menuItem("itemRadioStrategyError").target());
@@ -306,7 +305,7 @@ public class ApplicationUiTest {
         try {
             window.label("CONSOLE_NETWORK_LABEL").click().requireVisible();
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
 
         window.table("networkTable").selectRows(0).requireContents(new String[][] { { "url", "1", "meta strategy", "meta process" } });
@@ -336,7 +335,7 @@ public class ApplicationUiTest {
         try {
             window.tabbedPane("tabResults").selectTab("SQL shell ").requireVisible();
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
         
         GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
@@ -369,7 +368,7 @@ public class ApplicationUiTest {
         try {
             window.robot().moveMouse(window.menuItem("Hash").target());
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
         
         Stream
@@ -384,7 +383,7 @@ public class ApplicationUiTest {
                     .run("a");
                 
             } catch (NoSuchAlgorithmException | NoSuchElementException | DecoderException | IOException e) {
-                Assert.fail();
+                Assertions.fail();
             }
             
             window.robot().moveMouse(window.menuItem("hashTo"+ hash).target());
@@ -406,7 +405,7 @@ public class ApplicationUiTest {
         try {
             window.tabbedPane("tabResults").selectTab("adminpage ").requireVisible();
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
 
         ApplicationUiTest.verifyMockAdminPage();
@@ -427,7 +426,7 @@ public class ApplicationUiTest {
         requestDatabase.setParameters(List.of(database));
         MediatorHelper.model().sendToViews(requestDatabase);
         
-        Assert.assertEquals(nameDatabase +" (1 table)", window.tree("treeDatabases").valueAt(0));
+        Assertions.assertEquals(nameDatabase +" (1 table)", window.tree("treeDatabases").valueAt(0));
         
         
         var nameTable = "table";
@@ -438,7 +437,7 @@ public class ApplicationUiTest {
         requestTable.setParameters(List.of(table));
         MediatorHelper.model().sendToViews(requestTable);
         
-        Assert.assertEquals(nameTable +" (2 rows)", window.tree("treeDatabases").valueAt(1));
+        Assertions.assertEquals(nameTable +" (2 rows)", window.tree("treeDatabases").valueAt(1));
         
         
         var nameColumn0 = "column 0";
@@ -451,8 +450,8 @@ public class ApplicationUiTest {
         request.setParameters(Arrays.asList(column1, column2));
         MediatorHelper.model().sendToViews(request);
         
-        Assert.assertEquals(nameColumn0, window.tree("treeDatabases").valueAt(2));
-        Assert.assertEquals(nameColumn1, window.tree("treeDatabases").valueAt(3));
+        Assertions.assertEquals(nameColumn0, window.tree("treeDatabases").valueAt(2));
+        Assertions.assertEquals(nameColumn1, window.tree("treeDatabases").valueAt(3));
         
         
         var arrayColumns = new String[] { Strings.EMPTY, Strings.EMPTY, nameColumn0, nameColumn1 };
@@ -485,7 +484,7 @@ public class ApplicationUiTest {
         try {
             window.button("buttonInUrl").click();
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
     }
 
@@ -499,7 +498,7 @@ public class ApplicationUiTest {
         try {
             window.button("buttonShowSouth").click();
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
     }
     
@@ -512,27 +511,25 @@ public class ApplicationUiTest {
         
         window.list("listCategoriesPreference").selectItem(Pattern.compile(".*Connection.*"));
         
-        Assert.assertArrayEquals(
-            new boolean[] {
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
+        });
         
         window.checkBox("checkboxIsFollowingRedirection").check();
         window.checkBox("checkboxIsUnicodeDecodeDisabled").check();
@@ -543,27 +540,25 @@ public class ApplicationUiTest {
         window.checkBox("checkboxIsLimitingThreads").check();
         window.checkBox("checkboxIsConnectionTimeout").check();
         
-        Assert.assertArrayEquals(
-            new boolean[] {
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
+        });
         
         window.button("labelIsFollowingRedirection").click();
         window.button("labelIsUnicodeDecodeDisabled").click();
@@ -574,27 +569,25 @@ public class ApplicationUiTest {
         window.button("labelIsLimitingThreads").click();
         window.button("labelIsConnectionTimeout").click();
         
-        Assert.assertArrayEquals(
-            new boolean[] {
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
+        });
 
         window.button("labelIsFollowingRedirection").click();
         window.button("labelIsUnicodeDecodeDisabled").click();
@@ -605,27 +598,25 @@ public class ApplicationUiTest {
         window.button("labelIsLimitingThreads").click();
         window.button("labelIsConnectionTimeout").click();
         
-        Assert.assertArrayEquals(
-            new boolean[] {
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
+        });
         
         window.button("advancedButton").click();
 
@@ -639,33 +630,31 @@ public class ApplicationUiTest {
         window.menuItem("menuWindows").click();
         window.menuItem("itemPreferences").click();
         
-        Assert.assertArrayEquals(
-            new boolean[] {
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
+        });
         
         window.checkBox("checkboxIsParsingForm").check();
         window.checkBox("checkboxIsNotInjectingMetadata").check();
@@ -679,33 +668,31 @@ public class ApplicationUiTest {
         window.checkBox("checkboxIsPerfIndexDisabled").check();
         window.checkBox("checkboxIsUrlEncodingDisabled").check();
         
-        Assert.assertArrayEquals(
-            new boolean[] {
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
+        });
         
         window.button("labelIsParsingForm").click();
         window.button("labelIsNotInjectingMetadata").click();
@@ -719,33 +706,31 @@ public class ApplicationUiTest {
         window.button("labelIsPerfIndexDisabled").click();
         window.button("labelIsUrlEncodingDisabled").click();
         
-        Assert.assertArrayEquals(
-            new boolean[] {
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
+        });
         
         window.button("labelIsParsingForm").click();
         window.button("labelIsNotInjectingMetadata").click();
@@ -759,111 +744,97 @@ public class ApplicationUiTest {
         window.button("labelIsPerfIndexDisabled").click();
         window.button("labelIsUrlEncodingDisabled").click();
         
-        Assert.assertArrayEquals(
-            new boolean[] {
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-                true,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
+        });
         
         window.radioButton("radioIsZipStrategy").check();
-        Assert.assertArrayEquals(
-            new boolean[] {
-                true,
-                false,
-                false,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            true,
+            false,
+            false,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+        });
         
         window.radioButton("radioIsDefaultStrategy").check();
-        Assert.assertArrayEquals(
-            new boolean[] {
-                false,
-                true,
-                false,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            false,
+            true,
+            false,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+        });
         
         window.radioButton("radioIsDiosStrategy").check();
-        Assert.assertArrayEquals(
-            new boolean[] {
-                false,
-                false,
-                true,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            false,
+            false,
+            true,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+        });
         
         window.button("labelIsZipStrategy").click();
-        Assert.assertArrayEquals(
-            new boolean[] {
-                true,
-                false,
-                false,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            true,
+            false,
+            false,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+        });
         
         window.button("labelIsDefaultStrategy").click();
-        Assert.assertArrayEquals(
-            new boolean[] {
-                false,
-                true,
-                false,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            false,
+            true,
+            false,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+        });
         
         window.button("labelIsDiosStrategy").click();
-        Assert.assertArrayEquals(
-            new boolean[] {
-                false,
-                false,
-                true,
-            }, new boolean[] {
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-                MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
-            }
-        );
+        Assertions.assertArrayEquals(new boolean[] {
+            false,
+            false,
+            true,
+        }, new boolean[] {
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+            MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+        });
         
         window.button("advancedButton").click();
 
@@ -880,7 +851,7 @@ public class ApplicationUiTest {
         try {
             window.button("advancedButton").click();
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
         
         GuiActionRunner.execute(() -> window.tabbedPane("tabResults").target().removeTabAt(0));
@@ -901,7 +872,7 @@ public class ApplicationUiTest {
         try {
             window.button("advancedButton").click();
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
     }
     
@@ -918,7 +889,7 @@ public class ApplicationUiTest {
         try {
             window.button("advancedButton").click();
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
     }
     
@@ -936,7 +907,7 @@ public class ApplicationUiTest {
         try {
             window.button("advancedButton").click();
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
     }
     
@@ -953,7 +924,7 @@ public class ApplicationUiTest {
         try {
             window.button("advancedButton").click();
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
     }
 
