@@ -1,9 +1,9 @@
 package com.jsql.view.swing.panel.address;
 
-import java.awt.event.ActionEvent;
-
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.panel.PanelAddressBar;
+
+import java.awt.event.ActionEvent;
 
 public class ActionEnterAddressBar extends ActionStart {
     

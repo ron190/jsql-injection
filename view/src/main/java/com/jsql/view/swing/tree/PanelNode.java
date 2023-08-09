@@ -10,33 +10,19 @@
  ******************************************************************************/
 package com.jsql.view.swing.tree;
 
-import java.awt.Color;
-import java.awt.ComponentOrientation;
-import java.awt.Dimension;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-import java.util.stream.Stream;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JTree;
-import javax.swing.plaf.basic.BasicProgressBarUI;
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.util.UiStringUtil;
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicProgressBarUI;
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.*;
+import java.awt.event.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * A tree Node composed of an icon, a GIF loader, a progress bar, a label.

@@ -10,44 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.menubar;
 
-import java.awt.BorderLayout;
-import java.awt.ComponentOrientation;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.*;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
-import java.util.stream.Stream;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
-import javax.swing.MenuSelectionManager;
-import javax.swing.UIManager;
-import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumnModel;
-import javax.swing.text.JTextComponent;
-import javax.swing.text.StyleConstants;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.I18nUtil;
@@ -73,6 +35,24 @@ import com.jsql.view.swing.tree.model.NodeModelEmpty;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.StyleConstants;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
+import java.util.stream.Stream;
 
 /**
  * Application main menubar.

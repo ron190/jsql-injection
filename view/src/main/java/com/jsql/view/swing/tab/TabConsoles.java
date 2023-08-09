@@ -10,12 +10,11 @@
  *******************************************************************************/
 package com.jsql.view.swing.tab;
 
-import java.awt.Font;
-
+import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevelUtil;
+import java.awt.*;
 
 /**
  * Adapt MouseTabbedPane to another class in order to ease Mediator registering.

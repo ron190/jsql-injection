@@ -1,6 +1,6 @@
 package com.jsql.view.swing.panel.util;
 
-import javax.swing.SizeRequirements;
+import javax.swing.*;
 import javax.swing.text.Element;
 import javax.swing.text.View;
 import javax.swing.text.ViewFactory;

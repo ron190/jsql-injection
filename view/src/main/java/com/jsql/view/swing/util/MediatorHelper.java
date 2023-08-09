@@ -2,13 +2,7 @@ package com.jsql.view.swing.util;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.JFrameView;
-import com.jsql.view.swing.manager.ManagerAdminPage;
-import com.jsql.view.swing.manager.ManagerBruteForce;
-import com.jsql.view.swing.manager.ManagerFile;
-import com.jsql.view.swing.manager.ManagerScan;
-import com.jsql.view.swing.manager.ManagerSqlShell;
-import com.jsql.view.swing.manager.ManagerUpload;
-import com.jsql.view.swing.manager.ManagerWebShell;
+import com.jsql.view.swing.manager.*;
 import com.jsql.view.swing.menubar.Menubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.PanelConsoles;

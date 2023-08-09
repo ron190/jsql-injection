@@ -18,9 +18,9 @@
 
 package com.jsql.util.bruter;
 
-import java.util.Base64;
-
 import org.apache.commons.codec.binary.Base32;
+
+import java.util.Base64;
 
 /**
  * Provides Base16 encoding and decoding.

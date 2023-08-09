@@ -10,22 +10,19 @@
  *******************************************************************************/
 package com.jsql.view.swing.text;
 
-import java.awt.event.ActionEvent;
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.popupmenu.JPopupMenuText;
+import com.jsql.view.swing.text.action.SilentDeleteTextAction;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import javax.swing.AbstractAction;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.popupmenu.JPopupMenuText;
-import com.jsql.view.swing.text.action.SilentDeleteTextAction;
+import java.awt.event.ActionEvent;
 
 /**
  * A swing JTextComponent with Undo/Redo functionality.

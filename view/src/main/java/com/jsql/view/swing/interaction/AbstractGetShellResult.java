@@ -10,11 +10,11 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import java.util.UUID;
-
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.shell.AbstractShell;
 import com.jsql.view.swing.util.MediatorHelper;
+
+import java.util.UUID;
 
 /**
  * Append the result of a command in the terminal.

@@ -1,12 +1,11 @@
 package com.jsql.view.swing.text.action;
 
-import java.awt.event.ActionEvent;
-import java.util.Objects;
-
-import javax.swing.Action;
+import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.TextAction;
+import java.awt.event.ActionEvent;
+import java.util.Objects;
 
 /**
  * Action to cancel Beep sound when deleting last character.

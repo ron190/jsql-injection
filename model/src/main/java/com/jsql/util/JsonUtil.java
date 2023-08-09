@@ -1,11 +1,8 @@
 package com.jsql.util;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.regex.Pattern;
-
+import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.JSqlException;
+import com.jsql.model.injection.method.AbstractMethodInjection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,9 +10,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.jsql.model.InjectionModel;
-import com.jsql.model.exception.JSqlException;
-import com.jsql.model.injection.method.AbstractMethodInjection;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class JsonUtil {
     

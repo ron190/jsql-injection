@@ -1,17 +1,15 @@
 package com.jsql.view.swing.text;
 
-import java.awt.Graphics;
-import java.util.ConcurrentModificationException;
-
-import javax.swing.JTextPane;
-
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 
-import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.util.UiUtil;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ConcurrentModificationException;
 
 /**
  * Textfield with information text displayed when empty.

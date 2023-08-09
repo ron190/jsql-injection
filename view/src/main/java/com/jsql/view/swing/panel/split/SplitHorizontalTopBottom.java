@@ -10,20 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.panel.split;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.util.prefs.Preferences;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.SwingConstants;
-import javax.swing.plaf.basic.BasicArrowButton;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.panel.PanelConsoles;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
@@ -32,6 +18,11 @@ import com.jsql.view.swing.tab.TabResults;
 import com.jsql.view.swing.tab.TabbedPaneMouseWheelListener;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import java.awt.*;
+import java.util.prefs.Preferences;
 
 /**
  * SplitPane composed of tree and tabs on top, and info tabs on bottom.

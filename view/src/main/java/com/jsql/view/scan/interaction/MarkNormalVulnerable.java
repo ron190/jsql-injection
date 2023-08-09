@@ -10,12 +10,12 @@
  ******************************************************************************/
 package com.jsql.view.scan.interaction;
 
-import java.util.Map;
-
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
+
+import java.util.Map;
 
 /**
  * Mark the injection as vulnerable to a basic injection.

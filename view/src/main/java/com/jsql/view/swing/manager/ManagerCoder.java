@@ -10,21 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.manager;
 
-import java.awt.BorderLayout;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Stream;
-
-import javax.swing.BorderFactory;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import com.jsql.view.swing.manager.util.CoderListener;
 import com.jsql.view.swing.manager.util.MenuBarCoder;
 import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
@@ -34,6 +19,14 @@ import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JPopupTextPane;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Manager to code/decode string in various methods.

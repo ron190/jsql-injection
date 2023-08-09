@@ -1,24 +1,5 @@
 package com.jsql.model.suspendable;
 
-import static com.jsql.model.accessible.DataAccess.ENCLOSE_VALUE_RGX;
-import static com.jsql.model.accessible.DataAccess.LEAD;
-import static com.jsql.model.accessible.DataAccess.MODE;
-import static com.jsql.model.accessible.DataAccess.SEPARATOR_CELL_RGX;
-import static com.jsql.model.accessible.DataAccess.SEPARATOR_QTE_RGX;
-import static com.jsql.model.accessible.DataAccess.TRAIL_RGX;
-import static com.jsql.model.injection.vendor.model.VendorYaml.LIMIT;
-
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringEscapeUtils;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Table;
@@ -30,6 +11,19 @@ import com.jsql.model.exception.LoopDetectedSlidingException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import static com.jsql.model.accessible.DataAccess.*;
+import static com.jsql.model.injection.vendor.model.VendorYaml.LIMIT;
 
 /**
  * Get data as chunks by performance query from SQL request.

@@ -10,11 +10,10 @@
  ******************************************************************************/
 package com.jsql.view.swing.tab;
 
-import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
-
 import com.jsql.view.swing.action.HotkeyUtil;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
+
+import javax.swing.*;
 
 /**
  * Tabs with mousewheel and right click action.

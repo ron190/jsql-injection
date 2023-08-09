@@ -30,19 +30,14 @@ package com.jsql.view.swing.shadow;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Insets;
-
-import javax.swing.JComponent;
-import javax.swing.border.AbstractBorder;
-
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.util.UiUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.util.UiUtil;
+import javax.swing.*;
+import javax.swing.border.AbstractBorder;
+import java.awt.*;
 
 /**
  * A border with a drop shadow intended to be used as the outer border

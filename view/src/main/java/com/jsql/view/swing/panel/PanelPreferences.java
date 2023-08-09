@@ -1,35 +1,15 @@
 package com.jsql.view.swing.panel;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.ListSelectionModel;
-import javax.swing.border.Border;
-
-import org.apache.commons.text.WordUtils;
-
 import com.jsql.view.swing.action.ActionCheckIP;
-import com.jsql.view.swing.panel.preferences.ActionListenerSave;
-import com.jsql.view.swing.panel.preferences.PanelAuth;
-import com.jsql.view.swing.panel.preferences.PanelConnection;
-import com.jsql.view.swing.panel.preferences.PanelGeneral;
-import com.jsql.view.swing.panel.preferences.PanelInjection;
-import com.jsql.view.swing.panel.preferences.PanelProxy;
-import com.jsql.view.swing.panel.preferences.PanelTampering;
-import com.jsql.view.swing.panel.preferences.PanelUserAgent;
+import com.jsql.view.swing.panel.preferences.*;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.text.WordUtils;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class PanelPreferences extends JPanel {
     

@@ -10,11 +10,11 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import java.util.List;
-
 import com.jsql.model.bean.database.Table;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
+
+import java.util.List;
 
 /**
  * Add the tables to the corresponding database.

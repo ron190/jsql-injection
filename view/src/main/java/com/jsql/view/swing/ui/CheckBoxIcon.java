@@ -1,14 +1,10 @@
 package com.jsql.view.swing.ui;
 
-import java.awt.Component;
-import java.awt.Graphics;
-import java.io.Serializable;
-
-import javax.swing.ButtonModel;
-import javax.swing.Icon;
-import javax.swing.JCheckBoxMenuItem;
+import javax.swing.*;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.awt.*;
+import java.io.Serializable;
 
 public class CheckBoxIcon implements Icon, UIResource, Serializable {
 

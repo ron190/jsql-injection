@@ -1,11 +1,10 @@
 package com.jsql.view.swing.panel.split;
 
+import com.jsql.view.swing.util.MediatorHelper;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JPanel;
-
-import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * MouseAdapter to show/hide bottom panel.

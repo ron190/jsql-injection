@@ -10,9 +10,9 @@
  *******************************************************************************/
 package com.jsql.view.swing.text;
 
-import javax.swing.JTextField;
-
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
 
 /**
  * A JTextField displaying an icon and buttons.

@@ -10,19 +10,27 @@
  ******************************************************************************/
 package com.jsql.view.swing.util;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.sql.lexer.HighlightedDocument;
+import com.jsql.view.swing.text.action.DeleteNextCharAction;
+import com.jsql.view.swing.text.action.DeletePrevCharAction;
+import com.jsql.view.swing.ui.BorderRoundBlu;
+import com.jsql.view.swing.ui.CheckBoxIcon;
+import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.text.DefaultCaret;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.JTextComponent;
+import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
@@ -33,33 +41,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JTextPane;
-import javax.swing.ToolTipManager;
-import javax.swing.UIManager;
-import javax.swing.border.AbstractBorder;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.text.DefaultCaret;
-import javax.swing.text.DefaultEditorKit;
-import javax.swing.text.JTextComponent;
-
-import org.apache.commons.lang3.SystemUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.sql.lexer.HighlightedDocument;
-import com.jsql.view.swing.text.action.DeleteNextCharAction;
-import com.jsql.view.swing.text.action.DeletePrevCharAction;
-import com.jsql.view.swing.ui.BorderRoundBlu;
-import com.jsql.view.swing.ui.CheckBoxIcon;
-import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
 
 /**
  * Build default component appearance, keyboard shortcuts and icons.

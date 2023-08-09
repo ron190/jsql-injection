@@ -1,10 +1,10 @@
 package com.jsql.model.injection.strategy.blind;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Define a call HTTP to the server, require the associated url, character position and bit.

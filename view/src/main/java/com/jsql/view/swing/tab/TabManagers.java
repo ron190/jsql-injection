@@ -10,22 +10,17 @@
  *******************************************************************************/
 package com.jsql.view.swing.tab;
 
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.Icon;
-import javax.swing.JLabel;
-import javax.swing.JToolTip;
-import javax.swing.SwingConstants;
-
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Panel on the left with functionalities like webshell, file reading and admin page finder.

@@ -1,9 +1,9 @@
 package com.jsql.view.swing.util;
 
-import java.nio.charset.StandardCharsets;
-
 import org.apache.commons.lang3.StringUtils;
 import org.mozilla.universalchardet.UniversalDetector;
+
+import java.nio.charset.StandardCharsets;
 
 public class UiStringUtil {
 

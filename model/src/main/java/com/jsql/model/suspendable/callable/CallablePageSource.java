@@ -1,10 +1,9 @@
 package com.jsql.model.suspendable.callable;
 
-import java.util.concurrent.Callable;
-
+import com.jsql.model.InjectionModel;
 import org.apache.commons.lang3.StringUtils;
 
-import com.jsql.model.InjectionModel;
+import java.util.concurrent.Callable;
 
 /**
  * Callable for concurrent HTTP tasks

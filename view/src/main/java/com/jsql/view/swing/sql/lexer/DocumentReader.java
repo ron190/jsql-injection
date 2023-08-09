@@ -17,15 +17,13 @@
  */
 package com.jsql.view.swing.sql.lexer;
 
-import java.io.Reader;
-
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.BadLocationException;
-
+import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevelUtil;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.BadLocationException;
+import java.io.Reader;
 
 /**
  * A reader interface for an abstract document.  Since

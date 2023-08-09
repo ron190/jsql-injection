@@ -10,14 +10,13 @@
  ******************************************************************************/
 package com.jsql.view.terminal.interaction;
 
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.model.bean.util.Header;
 import com.jsql.util.AnsiColorUtil;
 import com.jsql.view.interaction.InteractionCommand;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Map;
 
 /**
  * Append a text to the tab Header.

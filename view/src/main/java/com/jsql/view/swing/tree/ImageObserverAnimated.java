@@ -10,14 +10,12 @@
  ******************************************************************************/
 package com.jsql.view.swing.tree;
 
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.image.ImageObserver;
-
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+import java.awt.*;
+import java.awt.image.ImageObserver;
 
 /**
  * Observer to update tree node composed by the animated GIF.

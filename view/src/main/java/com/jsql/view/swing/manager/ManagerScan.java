@@ -10,41 +10,14 @@
  ******************************************************************************/
 package com.jsql.view.swing.manager;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.JPanel;
-
-import com.jsql.model.injection.vendor.model.Vendor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.method.AbstractMethodInjection;
+import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.scan.ScanListTerminal;
-import com.jsql.view.swing.list.BeanInjection;
-import com.jsql.view.swing.list.DnDList;
-import com.jsql.view.swing.list.DnDListScan;
-import com.jsql.view.swing.list.ItemList;
-import com.jsql.view.swing.list.ItemListScan;
-import com.jsql.view.swing.list.ListTransfertHandlerScan;
+import com.jsql.view.swing.list.*;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -52,6 +25,20 @@ import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Manager to display webpages frequently used as backoffice administration.

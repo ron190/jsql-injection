@@ -10,10 +10,9 @@
  ******************************************************************************/
 package com.jsql.view.swing.dialog;
 
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
 import com.jsql.util.I18nUtil;
+
+import javax.swing.*;
 
 /**
  * File chooser for supporting 'file already exists'.

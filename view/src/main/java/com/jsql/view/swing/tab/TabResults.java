@@ -10,19 +10,6 @@
  *******************************************************************************/
 package com.jsql.view.swing.tab;
 
-import java.awt.ComponentOrientation;
-import java.awt.Font;
-import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.UUID;
-
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
@@ -39,6 +26,15 @@ import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiStringUtil;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.*;
+import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.UUID;
 
 /**
  * TabbedPane containing result injection panels.

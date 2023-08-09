@@ -1,19 +1,17 @@
 package com.jsql.util;
 
+import com.jsql.model.InjectionModel;
+import com.jsql.util.bruter.HashUtil;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
-
-import javax.swing.SwingUtilities;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.model.InjectionModel;
-import com.jsql.util.bruter.HashUtil;
 
 /**
  * Utility class managing an exception reporting mechanism.

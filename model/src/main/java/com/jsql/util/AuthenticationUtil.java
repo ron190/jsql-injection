@@ -1,15 +1,14 @@
 package com.jsql.util;
 
-import java.io.File;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.util.prefs.Preferences;
-
+import com.jsql.model.InjectionModel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.model.InjectionModel;
+import java.io.File;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.util.prefs.Preferences;
 
 /**
  * Manage authentication protocols Basic, Digest, NTLM and Kerberos.

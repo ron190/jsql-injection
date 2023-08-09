@@ -1,19 +1,5 @@
 package com.jsql.view.swing.panel.consoles;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.stream.Stream;
-
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import javax.swing.text.DefaultCaret;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Safelist;
-
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
@@ -24,6 +10,16 @@ import com.jsql.view.swing.tab.TabbedPaneWheeled;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
 import com.jsql.view.swing.util.I18nViewUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
+
+import javax.swing.*;
+import javax.swing.text.DefaultCaret;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.stream.Stream;
 
 public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
     

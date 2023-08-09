@@ -10,6 +10,22 @@
  ******************************************************************************/
 package com.jsql.model.accessible;
 
+import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
+import com.jsql.model.bean.util.Request;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.JSqlException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.suspendable.SuspendableGetRows;
+import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
+import com.jsql.util.ConnectionUtil;
+import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,24 +43,6 @@ import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.Pattern;
-
-import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.Header;
-import com.jsql.model.bean.util.Interaction;
-import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.JSqlException;
-import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.suspendable.SuspendableGetRows;
-import com.jsql.util.ConnectionUtil;
-import com.jsql.util.LogLevelUtil;
-import com.jsql.util.StringUtil;
 
 /**
  * Resource access object.

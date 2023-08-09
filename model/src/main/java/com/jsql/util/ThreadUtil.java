@@ -10,19 +10,18 @@
  ******************************************************************************/
 package com.jsql.util;
 
+import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.database.AbstractElementDatabase;
+import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.database.AbstractElementDatabase;
-import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
  * Utility class managing running threads on which the user can act.

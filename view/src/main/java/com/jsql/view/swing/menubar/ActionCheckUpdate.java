@@ -1,10 +1,10 @@
 package com.jsql.view.swing.menubar;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.view.swing.util.MediatorHelper;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ActionCheckUpdate implements ActionListener, Runnable {
 

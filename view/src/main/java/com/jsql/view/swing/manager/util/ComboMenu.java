@@ -1,13 +1,10 @@
 package com.jsql.view.swing.manager.util;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-
-import javax.swing.JMenu;
-import javax.swing.SwingConstants;
-
 import com.jsql.view.swing.combomenu.ArrowIcon;
 import com.jsql.view.swing.combomenu.BlankIcon;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class ComboMenu extends JMenu {
     

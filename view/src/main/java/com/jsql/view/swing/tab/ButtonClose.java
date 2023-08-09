@@ -1,10 +1,9 @@
 package com.jsql.view.swing.tab;
 
-import java.awt.Dimension;
-
-import javax.swing.JButton;
-
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class ButtonClose extends JButton {
     

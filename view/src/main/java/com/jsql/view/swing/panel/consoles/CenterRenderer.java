@@ -1,6 +1,6 @@
 package com.jsql.view.swing.panel.consoles;
 
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class CenterRenderer extends DefaultTableCellRenderer {

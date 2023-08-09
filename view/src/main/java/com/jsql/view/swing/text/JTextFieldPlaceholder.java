@@ -1,14 +1,12 @@
 package com.jsql.view.swing.text;
 
-import java.awt.Graphics;
-
-import javax.swing.JTextField;
-
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.util.UiUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.util.UiUtil;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Textfield with information text displayed when empty.

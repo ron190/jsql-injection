@@ -10,19 +10,16 @@
  ******************************************************************************/
 package com.jsql.view.swing.tree;
 
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
+import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevelUtil;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Objects;
 
 /**
  * An icon composed of a main icon and another one displayed in the bottom right corner.

@@ -1,14 +1,13 @@
 package com.jsql.view.swing.tree;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JCheckBox;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.util.MediatorHelper;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Check and unckeck column as checkbox.

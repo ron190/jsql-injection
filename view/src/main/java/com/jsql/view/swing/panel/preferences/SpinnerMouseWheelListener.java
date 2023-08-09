@@ -1,10 +1,8 @@
 package com.jsql.view.swing.panel.preferences;
 
+import javax.swing.*;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 
 public class SpinnerMouseWheelListener implements MouseWheelListener {
     

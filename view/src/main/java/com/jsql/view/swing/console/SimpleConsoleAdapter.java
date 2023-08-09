@@ -1,9 +1,8 @@
 package com.jsql.view.swing.console;
 
-import java.awt.Color;
-
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+import java.awt.*;
 
 /**
  * A textpane with color.

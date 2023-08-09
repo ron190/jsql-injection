@@ -10,21 +10,19 @@
  *******************************************************************************/
 package com.jsql.view.swing.shell;
 
+import com.jsql.util.LogLevelUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.SwingWorker;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Element;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.util.LogLevelUtil;
 
 /**
  * Keyboard key processing for terminal.

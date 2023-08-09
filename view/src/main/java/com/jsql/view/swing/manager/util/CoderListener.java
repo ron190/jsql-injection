@@ -10,23 +10,22 @@
  *******************************************************************************/
 package com.jsql.view.swing.manager.util;
 
+import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
+import com.jsql.util.bruter.ActionCoder;
+import com.jsql.view.swing.manager.ManagerCoder;
+import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
-
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.util.LogLevelUtil;
-import com.jsql.util.StringUtil;
-import com.jsql.util.bruter.ActionCoder;
-import com.jsql.view.swing.manager.ManagerCoder;
-import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Action run when this.coderManager.encoding.

@@ -1,11 +1,8 @@
 package com.jsql.view.swing.table;
 
-import java.awt.Color;
-import java.awt.Component;
-
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
 
 public class RowHeaderRenderer extends DefaultTableCellRenderer {
     

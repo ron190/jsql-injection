@@ -10,18 +10,14 @@
  ******************************************************************************/
 package com.jsql.view.swing.shell;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import com.jsql.util.LogLevelUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.JTextComponent;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.util.LogLevelUtil;
+import java.awt.*;
 
 /**
  * A caret in a block shape.

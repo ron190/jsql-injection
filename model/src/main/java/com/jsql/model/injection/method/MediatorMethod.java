@@ -1,10 +1,10 @@
 package com.jsql.model.injection.method;
 
+import com.jsql.model.InjectionModel;
+
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.List;
-
-import com.jsql.model.InjectionModel;
 
 public class MediatorMethod {
 

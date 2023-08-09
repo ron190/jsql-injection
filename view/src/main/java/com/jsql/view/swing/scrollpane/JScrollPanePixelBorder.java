@@ -10,12 +10,10 @@
  ******************************************************************************/
 package com.jsql.view.swing.scrollpane;
 
-import java.awt.Component;
-
-import javax.swing.BorderFactory;
-import javax.swing.JScrollPane;
-
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Scroller with border.

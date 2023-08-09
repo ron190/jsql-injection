@@ -1,8 +1,11 @@
 package com.jsql.view.swing.tab.dnd;
 
-import java.awt.Component;
-import java.awt.Point;
-import java.awt.Rectangle;
+import com.jsql.view.swing.action.ActionCloseTabResult;
+import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
+import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -10,17 +13,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
 import java.util.Optional;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
-import javax.swing.TransferHandler;
-
-import com.jsql.view.swing.action.ActionCloseTabResult;
-import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
-import com.jsql.view.swing.util.UiUtil;
 
 public class DnDTabbedPane extends JTabbedPane {
     

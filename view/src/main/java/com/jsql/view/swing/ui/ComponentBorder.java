@@ -1,16 +1,11 @@
 package com.jsql.view.swing.ui;
 
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Insets;
+import com.jsql.util.I18nUtil;
 
-import javax.swing.JComponent;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
-
-import com.jsql.util.I18nUtil;
+import java.awt.*;
 
 /**
  * The ComponentBorder class allows you to place a real component in

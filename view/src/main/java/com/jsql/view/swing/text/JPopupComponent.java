@@ -10,13 +10,11 @@
  *******************************************************************************/
 package com.jsql.view.swing.text;
 
+import com.jsql.view.swing.popupmenu.JPopupMenuComponent;
+
+import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-
-import com.jsql.view.swing.popupmenu.JPopupMenuComponent;
 
 /**
  * Add a popup menu to Decorated component.

@@ -1,14 +1,12 @@
 package com.jsql.view.swing.action;
 
-import java.awt.ComponentOrientation;
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.JSplitPane;
-
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.util.MediatorHelper;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class ActionCloseTabResult extends AbstractAction {
     

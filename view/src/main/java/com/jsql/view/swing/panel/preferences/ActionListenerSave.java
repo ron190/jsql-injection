@@ -1,13 +1,12 @@
 package com.jsql.view.swing.panel.preferences;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JOptionPane;
-
 import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.util.MediatorHelper;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ActionListenerSave implements ActionListener {
     

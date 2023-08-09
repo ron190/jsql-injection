@@ -17,23 +17,16 @@
  */
 package com.jsql.view.swing.sql.lexer;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import javax.swing.text.AttributeSet;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.sql.lexer.syntax.Lexer;
 import com.jsql.view.swing.sql.lexer.syntax.Token;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.text.AttributeSet;
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.*;
 
 /**
  * Run the Syntax Highlighting as a separate thread. Things that need to be

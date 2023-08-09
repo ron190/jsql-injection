@@ -10,20 +10,11 @@
  ******************************************************************************/
 package com.jsql.view.swing.list;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-import javax.swing.border.AbstractBorder;
-
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import javax.swing.border.AbstractBorder;
+import java.awt.*;
 
 /**
  * Item renderer for JList.

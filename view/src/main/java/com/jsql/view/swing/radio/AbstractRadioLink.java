@@ -1,14 +1,13 @@
 package com.jsql.view.swing.radio;
 
-import java.awt.Cursor;
+import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JLabel;
-
-import com.jsql.view.swing.util.UiUtil;
 
 /**
  * A label to mimic a radiobox contained in a group.

@@ -10,12 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.panel;
 
-import java.awt.Dimension;
-import java.util.stream.Stream;
-
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicArrowButton;
-
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.panel.address.ActionEnterAddressBar;
@@ -28,6 +22,11 @@ import com.jsql.view.swing.ui.ComponentBorder;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import java.awt.*;
+import java.util.stream.Stream;
 
 /**
  * Create panel at the top of the window.

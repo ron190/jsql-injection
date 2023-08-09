@@ -1,13 +1,12 @@
 package com.jsql.view.swing.tree.model;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import com.jsql.view.swing.util.MediatorHelper;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-
-import com.jsql.view.swing.util.MediatorHelper;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Listener to check or uncheck every children menu items.

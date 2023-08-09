@@ -10,21 +10,18 @@
  *******************************************************************************/
 package com.jsql.view.swing.list;
 
+import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Action to export a JList.

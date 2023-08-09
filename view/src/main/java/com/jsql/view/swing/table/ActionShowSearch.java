@@ -1,10 +1,7 @@
 package com.jsql.view.swing.table;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 public class ActionShowSearch extends AbstractAction{
     

@@ -1,25 +1,16 @@
 package com.jsql.view.swing.panel.preferences;
 
-import java.awt.Dimension;
-import java.util.stream.Stream;
-
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.event.DocumentListener;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.swing.*;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.util.stream.Stream;
 
 public class PanelProxy extends JPanel {
 

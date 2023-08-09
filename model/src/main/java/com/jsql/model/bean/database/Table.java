@@ -10,11 +10,10 @@
  ******************************************************************************/
 package com.jsql.model.bean.database;
 
+import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.jsql.util.LogLevelUtil;
 
 /**
  * Define a Table, e.g is sent to the view by the model after injection.

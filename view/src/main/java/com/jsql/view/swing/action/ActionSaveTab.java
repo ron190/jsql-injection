@@ -10,29 +10,22 @@
  ******************************************************************************/
 package com.jsql.view.swing.action;
 
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.dialog.ReplaceFileChooser;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
+import com.jsql.view.swing.table.PanelTable;
+import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JTable;
-import javax.swing.KeyStroke;
-import javax.swing.text.JTextComponent;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.dialog.ReplaceFileChooser;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.table.PanelTable;
-import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Save the content of tab in a file.

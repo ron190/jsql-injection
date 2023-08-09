@@ -10,27 +10,15 @@
  *******************************************************************************/
 package com.jsql.view.swing.tab;
 
-import java.awt.Component;
-import java.awt.Dimension;
-
-import javax.swing.Icon;
-import javax.swing.JTabbedPane;
-import javax.swing.plaf.metal.MetalTabbedPaneUI;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.manager.ManagerAdminPage;
-import com.jsql.view.swing.manager.ManagerBruteForce;
-import com.jsql.view.swing.manager.ManagerCoder;
-import com.jsql.view.swing.manager.ManagerDatabase;
-import com.jsql.view.swing.manager.ManagerFile;
-import com.jsql.view.swing.manager.ManagerScan;
-import com.jsql.view.swing.manager.ManagerSqlShell;
-import com.jsql.view.swing.manager.ManagerUpload;
-import com.jsql.view.swing.manager.ManagerWebShell;
+import com.jsql.view.swing.manager.*;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.swing.*;
+import javax.swing.plaf.metal.MetalTabbedPaneUI;
+import java.awt.*;
 
 /**
  * Panel on the left with functionalities like webshell, file reading and admin page finder.

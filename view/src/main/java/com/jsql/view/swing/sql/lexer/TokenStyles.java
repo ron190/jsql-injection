@@ -17,14 +17,13 @@
  */
 package com.jsql.view.swing.sql.lexer;
 
-import java.awt.Color;
-import java.util.HashMap;
+import com.jsql.view.swing.util.UiUtil;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-
-import com.jsql.view.swing.util.UiUtil;
+import java.awt.*;
+import java.util.HashMap;
 
 class TokenStyles {
     

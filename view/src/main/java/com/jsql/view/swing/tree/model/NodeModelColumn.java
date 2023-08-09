@@ -10,18 +10,13 @@
  ******************************************************************************/
 package com.jsql.view.swing.tree.model;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-
-import javax.swing.BorderFactory;
-import javax.swing.JCheckBox;
-import javax.swing.JTree;
-
 import com.jsql.model.bean.database.Column;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.util.UiStringUtil;
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Column model creating a checkbox.

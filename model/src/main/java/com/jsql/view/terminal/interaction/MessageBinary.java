@@ -10,10 +10,9 @@
  ******************************************************************************/
 package com.jsql.view.terminal.interaction;
 
+import com.jsql.view.interaction.InteractionCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.jsql.view.interaction.InteractionCommand;
 
 /**
  * Append text to the tab Binary.

@@ -10,22 +10,20 @@
  *******************************************************************************/
 package com.jsql.view.swing.manager.util;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Locale;
-
-import javax.swing.JTextPane;
-import javax.swing.text.BadLocationException;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.bruter.HashBruter;
 import com.jsql.view.swing.manager.ManagerBruteForce;
 import com.jsql.view.swing.util.I18nViewUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Locale;
 
 /**
  * Run a brute force attack.

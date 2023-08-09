@@ -1,20 +1,19 @@
 package com.jsql.model.injection.method;
 
-import java.io.Serializable;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.json.JSONException;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.util.JsonUtil;
 import com.jsql.util.LogLevelUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.JSONException;
+
+import java.io.Serializable;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public abstract class AbstractMethodInjection implements Serializable {
     

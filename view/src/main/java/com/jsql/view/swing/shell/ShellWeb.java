@@ -10,10 +10,10 @@
  ******************************************************************************/
 package com.jsql.view.swing.shell;
 
+import com.jsql.view.swing.util.MediatorHelper;
+
 import java.net.MalformedURLException;
 import java.util.UUID;
-
-import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * A terminal for web shell injection.

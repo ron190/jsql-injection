@@ -10,12 +10,12 @@
  *******************************************************************************/
 package com.jsql.view.swing.tree;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.util.MediatorHelper;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Action to pause and unpause injection process.

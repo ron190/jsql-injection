@@ -1,16 +1,10 @@
 package com.jsql.view.swing.panel.util;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.io.Serializable;
-
-import javax.swing.AbstractButton;
-import javax.swing.ButtonModel;
-import javax.swing.Icon;
-import javax.swing.JMenu;
+import javax.swing.*;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.awt.*;
+import java.io.Serializable;
 
 public class RadioMenuItemIconCustom implements Icon, UIResource, Serializable {
     

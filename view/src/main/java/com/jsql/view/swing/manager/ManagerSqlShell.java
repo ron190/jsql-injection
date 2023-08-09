@@ -10,19 +10,14 @@
  ******************************************************************************/
 package com.jsql.view.swing.manager;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 import com.jsql.model.exception.JSqlException;
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Manager for uploading PHP SQL shell to the host and send queries.

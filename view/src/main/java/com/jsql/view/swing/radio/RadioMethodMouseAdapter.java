@@ -1,17 +1,14 @@
 package com.jsql.view.swing.radio;
 
-import java.awt.Cursor;
-import java.awt.Font;
+import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
-
-import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Mouse adapter for radio link effect (hover and click).

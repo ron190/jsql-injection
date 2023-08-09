@@ -1,11 +1,9 @@
 package com.jsql.view.swing.scrollpane;
 
-import java.awt.Color;
-
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class LightScrollPaneShell extends LightScrollPane {
     

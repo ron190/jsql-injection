@@ -1,12 +1,7 @@
 package com.jsql.view.swing.tab.dnd;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
 
 public class GhostGlassPane extends JComponent {
     

@@ -1,20 +1,8 @@
 package com.jsql.view.swing.console;
 
-import java.awt.Color;
-import java.nio.charset.StandardCharsets;
-import java.util.AbstractMap;
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import javax.swing.SwingUtilities;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-
-import org.apache.logging.log4j.core.Appender;
-import org.apache.logging.log4j.core.Core;
-import org.apache.logging.log4j.core.Filter;
-import org.apache.logging.log4j.core.Layout;
-import org.apache.logging.log4j.core.LogEvent;
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.util.UiUtil;
+import org.apache.logging.log4j.core.*;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
 import org.apache.logging.log4j.core.config.Property;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
@@ -23,8 +11,14 @@ import org.apache.logging.log4j.core.config.plugins.PluginElement;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 
-import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.util.UiUtil;
+import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import java.awt.*;
+import java.nio.charset.StandardCharsets;
+import java.util.AbstractMap;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Log4j2

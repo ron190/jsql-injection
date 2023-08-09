@@ -10,10 +10,9 @@
  *******************************************************************************/
 package com.jsql.view.swing.text;
 
-import javax.swing.BorderFactory;
-import javax.swing.JTextField;
-
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
 
 /**
  * A JTextField decorated with popup menu and border.

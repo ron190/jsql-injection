@@ -32,10 +32,8 @@ package com.jsql.view.swing.shadow;
 
 import org.apache.commons.lang3.SystemUtils;
 
-import java.awt.Component;
-
-import javax.swing.Popup;
-import javax.swing.PopupFactory;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * The JGoodies Looks implementation of {@code PopupFactory}.

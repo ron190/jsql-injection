@@ -1,12 +1,11 @@
 package com.jsql.view.swing.list;
 
-import java.util.NoSuchElementException;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.NoSuchElementException;
 
 public class BeanInjection {
     

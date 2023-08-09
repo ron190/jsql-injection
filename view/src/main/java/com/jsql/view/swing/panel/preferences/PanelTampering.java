@@ -1,19 +1,5 @@
 package com.jsql.view.swing.panel.preferences;
 
-import java.awt.Dimension;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.stream.Stream;
-
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextPane;
-import javax.swing.SwingConstants;
-
 import com.jsql.util.tampering.TamperingType;
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -24,6 +10,11 @@ import com.jsql.view.swing.text.JTextPanePlaceholder;
 import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.stream.Stream;
 
 public class PanelTampering extends JPanel implements Cleanable {
     

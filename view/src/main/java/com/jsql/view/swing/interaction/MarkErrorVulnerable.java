@@ -10,11 +10,11 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import java.util.Map;
-
 import com.jsql.model.bean.util.Header;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
+
+import java.util.Map;
 
 /**
  * Mark the injection as vulnerable to a error-based injection.

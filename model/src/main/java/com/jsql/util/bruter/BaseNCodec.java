@@ -18,14 +18,14 @@
 
 package com.jsql.util.bruter;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 import org.apache.commons.codec.BinaryDecoder;
 import org.apache.commons.codec.BinaryEncoder;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.binary.StringUtils;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Abstract superclass for Base-N encoders and decoders.

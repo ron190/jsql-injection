@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.jsql.view.swing.text;
 
-import javax.swing.JComponent;
+import javax.swing.*;
 
 /**
  * Decorate a swing component.

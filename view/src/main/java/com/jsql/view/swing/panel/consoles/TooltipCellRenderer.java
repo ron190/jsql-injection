@@ -1,12 +1,10 @@
 package com.jsql.view.swing.panel.consoles;
 
-import java.awt.Component;
-
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
 
 public class TooltipCellRenderer extends DefaultTableCellRenderer {
     

@@ -1,6 +1,7 @@
 package spring;
 
 import com.jsql.util.LogLevelUtil;
+import jakarta.annotation.PreDestroy;
 import org.apache.derby.drda.NetworkServerControl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +22,6 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.core.io.ClassPathResource;
 import spring.rest.Student;
 
-import jakarta.annotation.PreDestroy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;

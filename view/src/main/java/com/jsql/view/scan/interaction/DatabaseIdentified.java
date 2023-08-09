@@ -10,12 +10,12 @@
  ******************************************************************************/
 package com.jsql.view.scan.interaction;
 
-import java.util.Map;
-
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.util.MediatorHelper;
+
+import java.util.Map;
 
 /**
  * End the refreshing of administration page search button.

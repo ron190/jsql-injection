@@ -1,17 +1,15 @@
 package com.jsql.util;
 
-import java.util.regex.Pattern;
+import com.jsql.util.tampering.TamperingType;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.util.tampering.TamperingType;
+import java.util.regex.Pattern;
 
 public class TamperingUtil {
 

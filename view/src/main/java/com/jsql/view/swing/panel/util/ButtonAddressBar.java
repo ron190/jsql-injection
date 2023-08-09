@@ -10,12 +10,11 @@
  *******************************************************************************/
 package com.jsql.view.swing.panel.util;
 
-import java.awt.Dimension;
-
-import javax.swing.JButton;
-
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * A button displayed in address.

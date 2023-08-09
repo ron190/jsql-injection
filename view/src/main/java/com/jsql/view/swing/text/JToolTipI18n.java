@@ -1,6 +1,6 @@
 package com.jsql.view.swing.text;
 
-import javax.swing.JToolTip;
+import javax.swing.*;
 
 /**
  * Tooltip which text can be changed using setText() when switching i18n language.

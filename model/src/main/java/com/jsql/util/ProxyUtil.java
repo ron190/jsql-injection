@@ -1,15 +1,14 @@
 package com.jsql.util;
 
-import java.net.Socket;
-import java.util.Optional;
-import java.util.prefs.Preferences;
-
+import com.jsql.model.InjectionModel;
+import com.jsql.util.GitUtil.ShowOnConsole;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.model.InjectionModel;
-import com.jsql.util.GitUtil.ShowOnConsole;
+import java.net.Socket;
+import java.util.Optional;
+import java.util.prefs.Preferences;
 
 /**
  * Utility class managing proxy settings.

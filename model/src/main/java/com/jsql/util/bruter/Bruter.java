@@ -1,12 +1,11 @@
 package com.jsql.util.bruter;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevelUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Bruter {
     

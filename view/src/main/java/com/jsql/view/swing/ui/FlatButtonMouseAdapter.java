@@ -1,12 +1,10 @@
 package com.jsql.view.swing.ui;
 
+import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-
-import com.jsql.view.swing.util.UiUtil;
 
 /**
  * Define behavior to set on button.

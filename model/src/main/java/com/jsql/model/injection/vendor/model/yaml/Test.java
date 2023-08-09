@@ -1,12 +1,12 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class Test implements Serializable {
 

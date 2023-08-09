@@ -10,14 +10,10 @@
  *******************************************************************************/
 package com.jsql.view.swing.ui;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.geom.GeneralPath;
-
 import com.jsql.view.swing.util.UiUtil;
+
+import java.awt.*;
+import java.awt.geom.GeneralPath;
 
 /**
  * Tab UI to remove inner borders on empty tabbedpane and force header height on

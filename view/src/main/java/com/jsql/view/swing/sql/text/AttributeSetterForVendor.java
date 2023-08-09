@@ -1,11 +1,10 @@
 package com.jsql.view.swing.sql.text;
 
-import java.lang.reflect.Method;
-
+import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevelUtil;
+import java.lang.reflect.Method;
 
 public class AttributeSetterForVendor {
     

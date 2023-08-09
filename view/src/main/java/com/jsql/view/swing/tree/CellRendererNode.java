@@ -10,13 +10,12 @@
  ******************************************************************************/
 package com.jsql.view.swing.tree;
 
-import java.awt.Component;
+import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-
-import com.jsql.view.swing.tree.model.AbstractNodeModel;
+import java.awt.*;
 
 /**
  * Render a tree node based on node model.

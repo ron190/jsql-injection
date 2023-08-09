@@ -1,8 +1,13 @@
 package com.jsql.view.swing.panel.consoles;
 
-import java.awt.AWTKeyStroke;
-import java.awt.Color;
-import java.awt.KeyboardFocusManager;
+import com.jsql.model.bean.util.HttpHeader;
+import com.jsql.util.I18nUtil;
+import com.jsql.view.swing.popupmenu.JPopupMenuTable;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -11,21 +16,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListSelectionModel;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-
-import com.jsql.model.bean.util.HttpHeader;
-import com.jsql.util.I18nUtil;
-import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 
 public class NetworkTable extends JTable {
     

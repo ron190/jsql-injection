@@ -1,11 +1,10 @@
 package com.jsql.view.swing.interaction;
 
-import java.awt.ComponentOrientation;
-
-import javax.swing.JSplitPane;
-
 import com.jsql.util.I18nUtil;
 import com.jsql.view.swing.util.MediatorHelper;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Set result tab panel orientation according to locale when first

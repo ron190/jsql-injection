@@ -10,23 +10,14 @@
  ******************************************************************************/
 package com.jsql.view.swing.action;
 
-import java.awt.AWTKeyStroke;
-import java.awt.KeyboardFocusManager;
+import com.jsql.view.swing.menubar.Menubar;
+import com.jsql.view.swing.util.MediatorHelper;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JComponent;
-import javax.swing.JRootPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-
-import com.jsql.view.swing.menubar.Menubar;
-import com.jsql.view.swing.util.MediatorHelper;
 
 /**
  * Keyword shortcut definition. <br>

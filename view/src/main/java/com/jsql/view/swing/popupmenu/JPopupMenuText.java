@@ -10,15 +10,13 @@
  ******************************************************************************/
 package com.jsql.view.swing.popupmenu;
 
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
-
-import com.jsql.view.swing.menubar.JMenuItemWithMargin;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 /**
  * Default popup menu for textfield and texteditor.

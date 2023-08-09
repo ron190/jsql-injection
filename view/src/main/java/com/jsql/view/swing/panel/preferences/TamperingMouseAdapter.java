@@ -1,11 +1,10 @@
 package com.jsql.view.swing.panel.preferences;
 
+import com.jsql.util.tampering.TamperingType;
+
+import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.JTextPane;
-
-import com.jsql.util.tampering.TamperingType;
 
 public class TamperingMouseAdapter extends MouseAdapter {
     

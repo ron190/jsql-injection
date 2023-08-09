@@ -1,17 +1,5 @@
 package com.jsql.view.swing.tree;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
@@ -22,6 +10,16 @@ import com.jsql.view.swing.tree.model.NodeModelColumn;
 import com.jsql.view.swing.tree.model.NodeModelDatabase;
 import com.jsql.view.swing.tree.model.NodeModelTable;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TreeDatabase extends JTree {
     

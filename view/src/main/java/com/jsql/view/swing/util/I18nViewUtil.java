@@ -1,13 +1,8 @@
 package com.jsql.view.swing.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
 import com.jsql.util.I18nUtil;
+
+import java.util.*;
 
 public class I18nViewUtil {
 

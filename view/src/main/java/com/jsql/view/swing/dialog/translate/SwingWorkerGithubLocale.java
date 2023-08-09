@@ -1,5 +1,15 @@
 package com.jsql.view.swing.dialog.translate;
 
+import com.jsql.util.ConnectionUtil;
+import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
+import com.jsql.util.PropertiesUtil;
+import com.jsql.view.swing.dialog.DialogTranslate;
+import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URISyntaxException;
@@ -8,18 +18,6 @@ import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.swing.SwingWorker;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.util.ConnectionUtil;
-import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevelUtil;
-import com.jsql.util.PropertiesUtil;
-import com.jsql.view.swing.dialog.DialogTranslate;
-import com.jsql.view.swing.util.MediatorHelper;
 
 public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
     

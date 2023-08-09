@@ -1,18 +1,11 @@
 package com.jsql.view.swing.panel.preferences;
 
-import java.util.stream.Stream;
-
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.swing.*;
+import java.util.stream.Stream;
 
 public class PanelGeneral extends JPanel {
 

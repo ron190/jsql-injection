@@ -1,12 +1,11 @@
 package com.jsql.util.bruter;
 
-import java.security.NoSuchAlgorithmException;
-
+import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevelUtil;
+import java.security.NoSuchAlgorithmException;
 
 public class HashBruter extends Bruter {
     

@@ -1,18 +1,17 @@
 package com.jsql;
 
-import java.awt.*;
-import java.net.URISyntaxException;
-
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.JFrameView;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.awt.*;
+import java.net.URISyntaxException;
 
 /**
  * Main class of the application and called from the .jar.

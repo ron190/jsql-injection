@@ -1,12 +1,11 @@
 package com.jsql.view.swing.radio;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JLabel;
-
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.view.swing.util.MediatorHelper;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Radio label for HTTP method (GET, POST, etc).

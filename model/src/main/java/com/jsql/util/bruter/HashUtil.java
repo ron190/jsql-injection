@@ -1,11 +1,11 @@
 package com.jsql.util.bruter;
 
+import com.jsql.util.StringUtil;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
-
-import com.jsql.util.StringUtil;
 
 public class HashUtil {
     

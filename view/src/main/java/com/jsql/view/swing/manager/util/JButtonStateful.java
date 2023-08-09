@@ -1,8 +1,8 @@
 package com.jsql.view.swing.manager.util;
 
-import javax.swing.JButton;
-
 import com.jsql.view.swing.util.I18nViewUtil;
+
+import javax.swing.*;
 
 public class JButtonStateful extends JButton {
 

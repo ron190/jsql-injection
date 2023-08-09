@@ -10,28 +10,23 @@
  ******************************************************************************/
 package com.jsql.view.swing.shell;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.MouseMotionListener;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.UUID;
-
-import javax.swing.BorderFactory;
-import javax.swing.JTextPane;
-import javax.swing.UIManager;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
+import com.jsql.view.swing.util.UiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.util.UiUtil;
+import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import java.awt.*;
+import java.awt.event.MouseMotionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.UUID;
 
 /**
  * A Terminal completely built from swing text pane.

@@ -1,9 +1,6 @@
 package com.jsql.view.swing.tree.model;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 
 public class JPopupMenuCustomExtract extends JPopupMenu {
     

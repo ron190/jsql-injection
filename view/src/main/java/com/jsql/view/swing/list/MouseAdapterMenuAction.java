@@ -10,31 +10,20 @@
  ******************************************************************************/
 package com.jsql.view.swing.list;
 
-import java.awt.ComponentOrientation;
-import java.awt.IllegalComponentStateException;
-import java.awt.event.*;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-import java.util.stream.Stream;
-
-import javax.swing.Action;
-import javax.swing.JFileChooser;
-import javax.swing.JList;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JSeparator;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.TransferHandler;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.menubar.JMenuItemWithMargin;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * A Mouse action to display a popupmenu on a JList.

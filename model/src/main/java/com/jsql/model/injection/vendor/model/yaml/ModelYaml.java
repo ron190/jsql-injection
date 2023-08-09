@@ -1,9 +1,9 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-import java.io.Serializable;
-
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
 
 public class ModelYaml implements Serializable {
 

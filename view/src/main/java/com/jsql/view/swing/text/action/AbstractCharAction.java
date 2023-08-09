@@ -1,16 +1,14 @@
 package com.jsql.view.swing.text.action;
 
-import java.awt.event.ActionEvent;
+import com.jsql.util.LogLevelUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.TextAction;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.jsql.util.LogLevelUtil;
+import java.awt.event.ActionEvent;
 
 /**
  * Action to cancel Beep sound when deleting last character.

@@ -1,22 +1,17 @@
 package com.jsql.view.swing.tab;
 
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
-
+import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.util.MediatorHelper;
 import org.apache.commons.lang3.SerializationException;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.jsql.util.I18nUtil;
-import com.jsql.util.LogLevelUtil;
-import com.jsql.view.swing.util.MediatorHelper;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Display popupmenu on right click.

@@ -1,16 +1,15 @@
 package com.jsql.util;
 
-import java.net.http.HttpRequest.Builder;
-import java.util.*;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.stream.Stream;
-
+import com.jsql.model.InjectionModel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 
-import com.jsql.model.InjectionModel;
+import java.net.http.HttpRequest.Builder;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class CsrfUtil {
     

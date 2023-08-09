@@ -1,12 +1,11 @@
 package com.jsql.view.swing.action;
 
-import java.awt.KeyEventDispatcher;
+import com.jsql.view.swing.util.MediatorHelper;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-
-import javax.swing.MenuSelectionManager;
-
-import com.jsql.view.swing.util.MediatorHelper;
 
 public class AltKeyEventDispatcher implements KeyEventDispatcher {
 

@@ -10,14 +10,12 @@
  *******************************************************************************/
 package com.jsql.view.swing.text;
 
-import java.awt.Cursor;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-
-import javax.swing.BorderFactory;
-import javax.swing.JTextArea;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * A JTextArea decorated with popup menu and border.

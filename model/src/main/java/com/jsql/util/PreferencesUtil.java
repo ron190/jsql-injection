@@ -1,9 +1,9 @@
 package com.jsql.util;
 
-import java.util.prefs.Preferences;
-
 import com.jsql.model.InjectionModel;
 import org.apache.commons.lang3.SystemUtils;
+
+import java.util.prefs.Preferences;
 
 /**
  * Utility class to manage JVM preferences previously saved into the system.

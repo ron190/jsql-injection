@@ -1,12 +1,10 @@
 package com.jsql.view.swing.ui;
 
-import java.awt.Component;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.plaf.basic.BasicSpinnerUI;
-
 import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicSpinnerUI;
+import java.awt.*;
 
 public class BasicColoredSpinnerUI extends BasicSpinnerUI {
 
