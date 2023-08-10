@@ -43,7 +43,7 @@ public class CheckAllGetSuiteIT extends ConcreteMySqlSuiteIT {
     }
     
     @Override
-    @RetryingTest(3)
+    @RetryingTest(maxAttempts = 3, suspendForMs = 1000)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }

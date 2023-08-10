@@ -1,23 +1,21 @@
 package com.jsql.model.injection.strategy;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.injection.vendor.model.yaml.Configuration;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Injection strategy using error attack.
@@ -107,20 +105,16 @@ public class StrategyInjectionError extends AbstractStrategy {
             + VendorYaml.replaceTags(
                 errorMethod
                 .getQuery()
-                .replace("${window}", configurationYaml.getSlidingWindow())
-                .replace("${injection}", configurationYaml.getFailsafe().replace("${indice}","0"))
-                .replace("${window.char}", "1")
-                .replace("${capacity}", Integer.toString(errorMethod.getCapacity()))
+                .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())
+                .replace(VendorYaml.INJECTION, configurationYaml.getFailsafe().replace("${indice}","0"))
+                .replace(VendorYaml.WINDOW_CHAR, "1")
+                .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))
             ),
             "error#confirm"
         );
    
-        if (performanceSourcePage.matches(
-            VendorYaml.replaceTags(
-                // TODO Set static value in DataAccess
-                "(?s).*133707331.*"
-            )
-        )) {
+        // TODO Set static value in DataAccess
+        if (performanceSourcePage.matches("(?s).*133707331.*")) {
             methodIsApplicable = true;
             this.isApplicable = true;
         }
@@ -134,10 +128,10 @@ public class StrategyInjectionError extends AbstractStrategy {
             StringUtils.SPACE
             + VendorYaml.replaceTags(
                 errorMethod.getQuery()
-                .replace("${window}", configurationYaml.getSlidingWindow())
-                .replace("${injection}", configurationYaml.getCalibrator())
-                .replace("${window.char}", "1")
-                .replace("${capacity}", Integer.toString(errorMethod.getCapacity()))
+                .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())
+                .replace(VendorYaml.INJECTION, configurationYaml.getCalibrator())
+                .replace(VendorYaml.WINDOW_CHAR, "1")
+                .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))
             ),
             "error#size"
         );

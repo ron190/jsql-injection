@@ -1,25 +1,23 @@
 package com.jsql.model.injection.strategy;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.SuspendableGetIndexes;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Injection strategy using normal attack.
@@ -50,8 +48,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
             this.visibleIndex = this.getVisibleIndex(this.sourceIndexesFound);
         }
         
-        this.isApplicable =
-            StringUtils.isNotEmpty(this.injectionModel.getIndexesInUrl())
+        this.isApplicable = StringUtils.isNotEmpty(this.injectionModel.getIndexesInUrl())
             && Integer.parseInt(this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength()) > 0
             && StringUtils.isNotBlank(this.visibleIndex);
         

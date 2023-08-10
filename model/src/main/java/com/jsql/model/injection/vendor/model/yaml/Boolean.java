@@ -1,9 +1,9 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-import java.io.Serializable;
-
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
 
 public class Boolean implements Serializable {
 
@@ -12,6 +12,7 @@ public class Boolean implements Serializable {
     private String time = StringUtils.EMPTY;
     private String modeAnd = "and";
     private String modeOr = "or";
+    private String modeStacked = ";";
 
     public Test getTest() {
         return this.test;
@@ -51,5 +52,13 @@ public class Boolean implements Serializable {
 
     public void setModeOr(String modeOr) {
         this.modeOr = modeOr;
+    }
+
+    public String getModeStacked() {
+        return this.modeStacked;
+    }
+
+    public void setModeStacked(String modeStacked) {
+        this.modeStacked = modeStacked;
     }
 }

@@ -33,6 +33,9 @@ public class MySqlWebshellSuiteIT extends ConcreteMySqlSuiteIT {
     public void webshell() throws JSqlException, InterruptedException {
 
         this.injectionModel.getResourceAccess().createWebShell("/var/www/html/", "");
+        // For coverage
+        this.injectionModel.getResourceAccess().createWebShell("/var/www/html", "http://jsql-lamp:8079/fake");
+
         String resultCommand = this.injectionModel.getResourceAccess().runWebShell(
             "uname",
             UUID.randomUUID(),

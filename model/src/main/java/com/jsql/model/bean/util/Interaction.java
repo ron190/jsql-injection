@@ -43,7 +43,10 @@ public enum Interaction {
     MARK_TIME_INVULNERABLE("MarkTimeInvulnerable"),
     MARK_TIME_STRATEGY("MarkTimeStrategy"),
     MARK_TIME_VULNERABLE("MarkTimeVulnerable"),
-    
+    MARK_STACKED_INVULNERABLE("MarkStackedInvulnerable"),
+    MARK_STACKED_STRATEGY("MarkStackedStrategy"),
+    MARK_STACKED_VULNERABLE("MarkStackedVulnerable"),
+
     MESSAGE_BINARY("MessageBinary"),
     MESSAGE_CHUNK("MessageChunk"),
     MESSAGE_HEADER("MessageHeader"),

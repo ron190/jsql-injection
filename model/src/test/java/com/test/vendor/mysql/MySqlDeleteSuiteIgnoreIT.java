@@ -5,9 +5,6 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import org.junitpioneer.jupiter.RetryingTest;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-
 public class MySqlDeleteSuiteIgnoreIT extends ConcreteMySqlErrorSuiteIT {
     // TODO Test removes rows, should be used on a dedicated table
 
@@ -19,12 +16,8 @@ public class MySqlDeleteSuiteIgnoreIT extends ConcreteMySqlErrorSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/delete");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "")
-        ));
-        
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/delete?tenant=mysql-error&name=");
+
         model.setIsScanning(true);
         
         model

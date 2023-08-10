@@ -25,7 +25,8 @@ public class MediatorStrategy {
     private final AbstractStrategy blind;
     private final StrategyInjectionError error;
     private final AbstractStrategy normal;
-    
+    private final AbstractStrategy stacked;
+
     private final List<AbstractStrategy> strategies;
     
     /**
@@ -43,8 +44,9 @@ public class MediatorStrategy {
         this.blind = new StrategyInjectionBlind(this.injectionModel);
         this.error = new StrategyInjectionError(this.injectionModel);
         this.normal = new StrategyInjectionNormal(this.injectionModel);
-        
-        this.strategies = Arrays.asList(this.time, this.blind, this.error, this.normal);
+        this.stacked = new StrategyInjectionStacked(this.injectionModel);
+
+        this.strategies = Arrays.asList(this.time, this.blind, this.error, this.stacked, this.normal);
     }
     
     public String getMeta() {
@@ -86,21 +88,19 @@ public class MediatorStrategy {
                 
             } else {
                 
-                result =
-                    urlBase
-                    .replace(
-                        InjectionModel.STAR,
-                        this.extracted(
-                            this.injectionModel.getIndexesInUrl().replaceAll(
-                                "1337" + this.normal.getVisibleIndex() + "7331",
-                                /**
-                                 * Oracle column often contains $, which is reserved for regex.
-                                 * => need to be escape with quoteReplacement()
-                                 */
-                                Matcher.quoteReplacement(sqlTrail)
-                            )
+                result = urlBase.replace(
+                    InjectionModel.STAR,
+                    this.extracted(
+                        this.injectionModel.getIndexesInUrl().replaceAll(
+                            "1337" + this.normal.getVisibleIndex() + "7331",
+                            /**
+                             * Oracle column often contains $, which is reserved for regex.
+                             * => need to be escape with quoteReplacement()
+                             */
+                            Matcher.quoteReplacement(sqlTrail)
                         )
-                    );
+                    )
+                );
             }
         }
         
@@ -109,8 +109,7 @@ public class MediatorStrategy {
 
     private String extracted(String sqlTrail) {
         
-        return
-            StringUtil.clean(sqlTrail)
+        return StringUtil.clean(sqlTrail)
             .replace("\"", "%22")
             .replace("'", "%27")
             .replace("(", "%28")
@@ -180,6 +179,7 @@ public class MediatorStrategy {
         this.time.checkApplicability();
         this.blind.checkApplicability();
         this.error.checkApplicability();
+        this.stacked.checkApplicability();
         this.normal.checkApplicability();
 
         // Choose the most efficient strategy: normal > error > blind > time
@@ -187,18 +187,22 @@ public class MediatorStrategy {
             
             this.normal.activateStrategy();
             
+        } else if (this.stacked.isApplicable()) {
+
+            this.stacked.activateStrategy();
+
         } else if (this.error.isApplicable()) {
-            
+
             this.error.activateStrategy();
-            
+
         } else if (this.blind.isApplicable()) {
-            
+
             this.blind.activateStrategy();
-            
+
         } else if (this.time.isApplicable()) {
-            
+
             this.time.activateStrategy();
-            
+
         } else {
             
             // Restore initial parameter value on injection failure
@@ -232,6 +236,10 @@ public class MediatorStrategy {
 
     public AbstractStrategy getTime() {
         return this.time;
+    }
+
+    public AbstractStrategy getStacked() {
+        return this.stacked;
     }
 
     public List<AbstractStrategy> getStrategies() {

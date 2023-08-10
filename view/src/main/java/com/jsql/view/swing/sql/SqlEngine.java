@@ -1,32 +1,5 @@
 package com.jsql.view.swing.sql;
 
-import java.awt.*;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.MenuSelectionManager;
-import javax.swing.OverlayLayout;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
@@ -42,6 +15,18 @@ import com.jsql.view.swing.text.listener.DocumentListenerEditing;
 import com.jsql.view.swing.util.I18nViewUtil;
 import com.jsql.view.swing.util.MediatorHelper;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
+import java.awt.*;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SqlEngine extends JPanel implements Cleanable {
 
@@ -194,7 +179,12 @@ public class SqlEngine extends JPanel implements Cleanable {
             v -> modelYaml.getStrategy().getNormal().setOrderBy(v),
             () -> modelYaml.getStrategy().getNormal().getOrderBy()
         )),
-        
+
+        STACKED(new JTextPaneLexer(
+            v -> modelYaml.getStrategy().setStacked(v),
+            () -> modelYaml.getStrategy().getStacked()
+        )),
+
         // Boolean
         MODE_AND(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getBoolean().setModeAnd(v),
@@ -203,6 +193,10 @@ public class SqlEngine extends JPanel implements Cleanable {
         MODE_OR(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getBoolean().setModeOr(v),
             () -> modelYaml.getStrategy().getBoolean().getModeOr()
+        )),
+        MODE_STACKED(new JTextPaneLexer(
+            v -> modelYaml.getStrategy().getBoolean().setModeStacked(v),
+            () -> modelYaml.getStrategy().getBoolean().getModeStacked()
         )),
         BLIND(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getBoolean().setBlind(v),
@@ -247,8 +241,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         SqlEngine.initializeTextComponents();
         
-        Stream
-        .of(
+        Stream.of(
             TextareaWithColor.DATABASE_DEFAULT,
             TextareaWithColor.TABLE_DEFAULT,
             TextareaWithColor.COLUMN_DEFAULT,
@@ -334,8 +327,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         JTabbedPane tabsSchema = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         
-        Stream
-        .of(
+        Stream.of(
             new SimpleEntry<>(keyDatabases, TextareaWithColor.DATABASE_DEFAULT.getText()),
             new SimpleEntry<>(keyTables, TextareaWithColor.TABLE_DEFAULT.getText()),
             new SimpleEntry<>(keyColumns, TextareaWithColor.COLUMN_DEFAULT.getText()),
@@ -361,8 +353,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         JTabbedPane tabsZip = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         
-        Stream
-        .of(
+        Stream.of(
             new SimpleEntry<>(keyDatabases, TextareaWithColor.DATABASE_ZIP.getText()),
             new SimpleEntry<>(keyTables, TextareaWithColor.TABLE_ZIP.getText()),
             new SimpleEntry<>(keyColumns, TextareaWithColor.COLUMN_ZIP.getText()),
@@ -387,8 +378,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         JTabbedPane tabsDios = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         
-        Stream
-        .of(
+        Stream.of(
             new SimpleEntry<>(keyDatabases, TextareaWithColor.DATABASE_DIOS.getText()),
             new SimpleEntry<>(keyTables, TextareaWithColor.TABLE_DIOS.getText()),
             new SimpleEntry<>(keyColumns, TextareaWithColor.COLUMN_DIOS.getText()),
@@ -411,8 +401,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             I18nViewUtil.addComponentForKey(entry.getKey(), label);
         });
         
-        Stream
-        .of(
+        Stream.of(
             new SimpleEntry<>("SQLENGINE_STANDARD", tabsSchema),
             new SimpleEntry<>("SQLENGINE_ZIP", tabsZip),
             new SimpleEntry<>("SQLENGINE_DIOS", tabsDios)
@@ -468,14 +457,14 @@ public class SqlEngine extends JPanel implements Cleanable {
         /* Boolean */
         JTabbedPane tabsBoolean = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
         
-        Stream
-        .of(
+        Stream.of(
             new SimpleEntry<>("AND mode", TextareaWithColor.MODE_AND.getText()),
             new SimpleEntry<>("OR mode", TextareaWithColor.MODE_OR.getText()),
+            new SimpleEntry<>("Stacked mode", TextareaWithColor.MODE_STACKED.getText()),
             new SimpleEntry<>("Blind", TextareaWithColor.BLIND.getText()),
             new SimpleEntry<>("Time", TextareaWithColor.TIME.getText()),
-            new SimpleEntry<>("Bit Test", TextareaWithColor.BIT_TEST.getText()),
-            new SimpleEntry<>("Length Test", TextareaWithColor.LENGTH_TEST.getText())
+            new SimpleEntry<>("Bit test", TextareaWithColor.BIT_TEST.getText()),
+            new SimpleEntry<>("Length test", TextareaWithColor.LENGTH_TEST.getText())
         )
         .forEach(entry ->
             tabsBoolean.addTab(
@@ -488,10 +477,11 @@ public class SqlEngine extends JPanel implements Cleanable {
         panelBoolean.add(tabsBoolean, BorderLayout.CENTER);
         
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_BOOLEAN"), panelBoolean);
-        
+
+        tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_STACKED"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.STACKED.getText()));
+
         /* Strategy */
-        Stream
-        .of(
+        Stream.of(
             "SQLENGINE_NORMAL",
             "SQLENGINE_ERROR",
             "SQLENGINE_BOOLEAN"
@@ -523,8 +513,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_TRAPCANCELLER"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FAILSAFE.getText()));
         tabsConfiguration.addTab("End comment", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.ENDING_COMMENT.getText()));
         
-        Stream
-        .of(
+        Stream.of(
             "SQLENGINE_CHARACTERS_SLIDINGWINDOW",
             "SQLENGINE_ROWS_SLIDINGWINDOW",
             "SQLENGINE_CAPACITY",
@@ -559,8 +548,7 @@ public class SqlEngine extends JPanel implements Cleanable {
         tabs.addTab("Truthy", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.TRUTHY.getText()));
         tabs.addTab("Falsy", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FALSY.getText()));
         
-        Stream
-        .of("SQLENGINE_ORDER_BY")
+        Stream.of("SQLENGINE_ORDER_BY")
         .forEach(keyI18n -> {
             
             var label = new JLabel(I18nUtil.valueByKey(keyI18n));
@@ -650,14 +638,10 @@ public class SqlEngine extends JPanel implements Cleanable {
         SqlEngine.getTextPanes().forEach(JTextPaneObjectMethod::switchSetterToVendor);
         SqlEngine.getTextPanes().forEach(textPaneLexer -> textPaneLexer.setText(StringUtils.EMPTY));
         
-        Stream
-        .of(TextareaWithColor.values())
-        .forEach(entry ->
-            entry
-            .getText()
+        Stream.of(TextareaWithColor.values())
+        .forEach(entry -> entry.getText()
             .setText(
-                entry
-                .getText()
+                entry.getText()
                 .getSupplierGetter()
                 .get()
                 .trim()
@@ -757,14 +741,11 @@ public class SqlEngine extends JPanel implements Cleanable {
      */
     private static List<JTextPaneLexer> getTextPanes() {
         
-        return
-            Stream
-            .concat(
-                SqlEngine.textPanesError.stream(),
-                Stream
-                .of(TextareaWithColor.values())
-                .map(TextareaWithColor::getText)
-            )
-            .collect(Collectors.toList());
+        return Stream.concat(
+            SqlEngine.textPanesError.stream(),
+            Stream.of(TextareaWithColor.values())
+            .map(TextareaWithColor::getText)
+        )
+        .collect(Collectors.toList());
     }
 }

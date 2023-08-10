@@ -5,9 +5,6 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import org.junitpioneer.jupiter.RetryingTest;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-
 public class MySqlInsertSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
     @Override
@@ -18,12 +15,8 @@ public class MySqlInsertSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/insert");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "")
-        ));
-        
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/insert?tenant=mysql-error&name=");
+
         model.setIsScanning(true);
         
         model

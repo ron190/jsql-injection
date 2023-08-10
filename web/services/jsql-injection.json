@@ -1,9 +1,12 @@
 {
     "version": "0.90",
     "news": [
-        "[v0.87] Auto inject multipart and cookie params, optimize connection test",
-        "[Also in v0.87] Restore issue tracking, translation submit and bug report",
-        "[Ongoing] Optimize algorithm, reduce number of queries",
-        "[Roadmap] Speed up CI pipeline, DNS/HTTP Out of band, WAF fingerprint"
+        "[Vote!] Choose features you want added to jSQL: https://github.com/ron190/jsql-injection/discussions/95385",
+        "[Code!] Implement APIs with PHP, .NET, Python and Node for CI/CD pipeline on Kubernetes/Docker",
+        "[Contribute!] Translate jSQL: display advanced settings with top right button, open menu Community, choose 'I help translate jSQL' in your language and translate any words then click on Send, your contribution will be available on Github for review.",
+        "[Share!] Report any shells or injection techniques you know to Github project page",
+        "[v0.90] Digest authentication client, improved stability and error handling",
+        "[Ongoing feature] Stacked query strategy, optimize algorithms",
+        "[Next feature] Multi-bits blind strategy, disable any strategy, Kerberos on CI/CD"
     ]
 }

@@ -1,17 +1,18 @@
 package com.jsql.model.injection.vendor.model;
 
-import static com.jsql.model.accessible.DataAccess.CALIBRATOR_HEX;
-import static com.jsql.model.accessible.DataAccess.CALIBRATOR_SQL;
-import static com.jsql.model.accessible.DataAccess.ENCLOSE_VALUE_HEX;
-import static com.jsql.model.accessible.DataAccess.ENCLOSE_VALUE_SQL;
-import static com.jsql.model.accessible.DataAccess.LEAD;
-import static com.jsql.model.accessible.DataAccess.LEAD_HEX;
-import static com.jsql.model.accessible.DataAccess.SEPARATOR_CELL_HEX;
-import static com.jsql.model.accessible.DataAccess.SEPARATOR_CELL_SQL;
-import static com.jsql.model.accessible.DataAccess.SEPARATOR_QTE_HEX;
-import static com.jsql.model.accessible.DataAccess.SEPARATOR_QTE_SQL;
-import static com.jsql.model.accessible.DataAccess.TRAIL_HEX;
-import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
+import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.database.Database;
+import com.jsql.model.bean.database.Table;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
+import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
+import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.yaml.snakeyaml.Yaml;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -20,20 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.yaml.snakeyaml.Yaml;
-
-import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.database.Database;
-import com.jsql.model.bean.database.Table;
-import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
-import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
-import com.jsql.util.LogLevelUtil;
-import com.jsql.util.StringUtil;
+import static com.jsql.model.accessible.DataAccess.*;
 
 public class VendorYaml implements AbstractVendor {
     
@@ -55,17 +43,17 @@ public class VendorYaml implements AbstractVendor {
 
     private static final String INDICES = "${indices}";
     private static final String INDICE = "${indice}";
-    private static final String WINDOW_CHAR = "${window.char}";
+    public static final String WINDOW_CHAR = "${window.char}";
 
-    private static final String WINDOW = "${window}";
+    public static final String WINDOW = "${window}";
 
-    private static final String CAPACITY = "${capacity}";
+    public static final String CAPACITY = "${capacity}";
 
     private static final String SLEEP_TIME = "${sleep_time}";
 
     private static final String BIT = "${bit}";
 
-    private static final String INJECTION = "${injection}";
+    public static final String INJECTION = "${injection}";
 
     private static final String TEST = "${test}";
 
@@ -352,7 +340,9 @@ public class VendorYaml implements AbstractVendor {
                 BOOLEAN_MODE,
                 blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
-                : this.modelYaml.getStrategy().getBoolean().getModeOr()
+                : blindMode == BooleanMode.OR
+                ? this.modelYaml.getStrategy().getBoolean().getModeOr()
+                : this.modelYaml.getStrategy().getBoolean().getModeStacked()
             )
             .replace(TEST, check);
     }
@@ -366,7 +356,9 @@ public class VendorYaml implements AbstractVendor {
                 BOOLEAN_MODE,
                 blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
-                : this.modelYaml.getStrategy().getBoolean().getModeOr()
+                : blindMode == BooleanMode.OR
+                ? this.modelYaml.getStrategy().getBoolean().getModeOr()
+                : this.modelYaml.getStrategy().getBoolean().getModeStacked()
             )
             .replace(
                 TEST,
@@ -386,7 +378,9 @@ public class VendorYaml implements AbstractVendor {
                 BOOLEAN_MODE,
                 blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
-                : this.modelYaml.getStrategy().getBoolean().getModeOr()
+                : blindMode == BooleanMode.OR
+                ? this.modelYaml.getStrategy().getBoolean().getModeOr()
+                : this.modelYaml.getStrategy().getBoolean().getModeStacked()
             )
             .replace(
                 TEST,
@@ -406,7 +400,9 @@ public class VendorYaml implements AbstractVendor {
                 BOOLEAN_MODE,
                 blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
-                : this.modelYaml.getStrategy().getBoolean().getModeOr()
+                : blindMode == BooleanMode.OR
+                ? this.modelYaml.getStrategy().getBoolean().getModeOr()
+                : this.modelYaml.getStrategy().getBoolean().getModeStacked()
             )
             .replace(TEST, check)
             .replace(SLEEP_TIME, Long.toString(this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()));
@@ -420,7 +416,9 @@ public class VendorYaml implements AbstractVendor {
             .replace(BOOLEAN_MODE,
                 blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
-                : this.modelYaml.getStrategy().getBoolean().getModeOr()
+                : blindMode == BooleanMode.OR
+                ? this.modelYaml.getStrategy().getBoolean().getModeOr()
+                : this.modelYaml.getStrategy().getBoolean().getModeStacked()
             )
             .replace(
                 TEST,
@@ -444,7 +442,9 @@ public class VendorYaml implements AbstractVendor {
             .replace(BOOLEAN_MODE,
                 blindMode == BooleanMode.AND
                 ? this.modelYaml.getStrategy().getBoolean().getModeAnd()
-                : this.modelYaml.getStrategy().getBoolean().getModeOr()
+                : blindMode == BooleanMode.OR
+                ? this.modelYaml.getStrategy().getBoolean().getModeOr()
+                : this.modelYaml.getStrategy().getBoolean().getModeStacked()
             )
             .replace(
                 TEST,
@@ -534,6 +534,18 @@ public class VendorYaml implements AbstractVendor {
             .replace(INJECTION, sqlQuery)
             .replace(WINDOW_CHAR, startPosition)
             .replace(CAPACITY, this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength())
+        );
+    }
+
+    @Override
+    public String sqlStacked(String sqlQuery, String startPosition) {
+
+        return VendorYaml.replaceTags(
+            this.modelYaml.getStrategy().getConfiguration()
+            .getSlidingWindow()
+            .replace(INJECTION, sqlQuery)
+            .replace(WINDOW_CHAR, startPosition)
+            .replace(CAPACITY, "65565")
         );
     }
 

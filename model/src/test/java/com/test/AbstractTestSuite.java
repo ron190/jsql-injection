@@ -10,8 +10,8 @@ import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.awaitility.Awaitility;
-import org.awaitility.Durations;
 import org.junit.Ignore;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -21,12 +21,11 @@ import org.springframework.boot.SpringApplication;
 import spring.SpringTargetApplication;
 
 import java.sql.*;
+import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.Assertions;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
@@ -58,7 +57,7 @@ public abstract class AbstractTestSuite {
     
     private static final AtomicBoolean isSetupStarted = new AtomicBoolean(false);
     
-    private static final AtomicBoolean isSetupDone = new AtomicBoolean(false);
+    protected static final AtomicBoolean isSetupDone = new AtomicBoolean(false);
     
     protected InjectionModel injectionModel;
 
@@ -76,12 +75,9 @@ public abstract class AbstractTestSuite {
             AbstractTestSuite.isSetupDone.set(true);
         }
             
-        while (!AbstractTestSuite.isSetupDone.get()) {
-            
-            Awaitility.await().pollDelay(Durations.TEN_SECONDS).until(() -> true);
-            LOGGER.info("@BeforeClass: backend is setting up...");
-        }
-            
+        LOGGER.info("@BeforeClass: backend is setting up...");
+        Awaitility.await().atMost(Duration.ofMinutes(2)).until(AbstractTestSuite.isSetupDone::get);
+
         if (this.injectionModel == null) {
             
             this.requestJdbc();

@@ -1,17 +1,5 @@
 package com.jsql.model.injection.strategy.blind;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
@@ -19,6 +7,13 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.LogLevelUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean<T>> {
     
@@ -36,7 +31,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     protected final List<String> trueTest;
     
     public enum BooleanMode {
-        AND, OR
+        AND, OR, STACKED
     }
     
     protected final InjectionModel injectionModel;

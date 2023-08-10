@@ -1,12 +1,14 @@
 package spring.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.internal.SessionImpl;
 import org.hibernate.query.Query;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +39,7 @@ public class HibernateRestController {
     private SessionFactory sessionFactory;
 
     private Greeting getResponse(String name, String sqlQuery, boolean isError, boolean isUpdate, boolean isVisible) {
-        return getResponse(name, sqlQuery, isError, isUpdate, isVisible, false, false);
+        return getResponse(name, sqlQuery, isError, isUpdate, isVisible, false, false, false);
     }
     
     private Greeting getResponse(
@@ -45,7 +49,8 @@ public class HibernateRestController {
         boolean isUpdate,
         boolean isVisible,
         boolean isOracle,
-        boolean isBoolean
+        boolean isBoolean,
+        boolean isStacked
     ) {
         if (name == null) {
             // Empty when scanning
@@ -60,13 +65,35 @@ public class HibernateRestController {
             if (isUpdate) {
                 query.executeUpdate();
             } else {
-                List<Object[]> results = query.getResultList();
-                if (isVisible) {
-                    return new Greeting(
-                        isBoolean
-                        ? results.isEmpty() ? "true" : "false"
-                        : template + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
-                    );
+                if (isStacked) {
+                    try (Connection connection = ((SessionImpl) session).getJdbcConnectionAccess().obtainConnection()) {
+                        Statement stmt = connection.createStatement();
+                        boolean hasMoreResultSets = stmt.execute(String.format(sqlQuery, inject));
+                        StringBuilder results = new StringBuilder();
+                        while (hasMoreResultSets) {
+                            ResultSet rs = stmt.getResultSet();
+                            ResultSetMetaData metaData = rs.getMetaData();
+                            int columnCount = metaData.getColumnCount();
+                            while (rs.next()) {
+                                for (int columnNumber = 1; columnNumber <= columnCount; columnNumber++) {
+                                    results.append(rs.getString(columnNumber));
+                                }
+                            }
+                            hasMoreResultSets = stmt.getMoreResults();
+                        }
+                        return new Greeting(
+                            template + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+                        );
+                    }
+                } else {
+                    List<Object[]> results = query.getResultList();
+                    if (isVisible) {
+                        return new Greeting(
+                            isBoolean
+                            ? results.isEmpty() ? "true" : "false"
+                            : template + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+                        );
+                    }
                 }
             }
         } catch (Exception e) {
@@ -89,15 +116,20 @@ public class HibernateRestController {
     // Visible injection
 
     @RequestMapping("/normal")
-    public Greeting endpoint(@RequestParam(value="name", defaultValue="World") String name, @RequestHeader Map<String, String> headers) {
+    public Greeting endpointNormal(@RequestParam(value="name", defaultValue="World") String name, @RequestHeader Map<String, String> headers) {
         return getResponse(name, "select First_Name from Student where '1' = '%s'", false, false, true);
+    }
+
+    @RequestMapping("/stacked")
+    public Greeting endpointStacked(@RequestParam(value="name", defaultValue="World") String name, @RequestHeader Map<String, String> headers) {
+        return getResponse(name, "select First_Name from Student where '1' = '%s'", false, false, true, false, false, true);
     }
 
     // Boolean based injection
 
     @RequestMapping("/blind")
     public Greeting endpointBlind(@RequestParam(value="name", defaultValue="World") String name) {
-        return getResponse(name, "select First_Name from Student where '1' = '%s'", false, false, true, false, true);
+        return getResponse(name, "select First_Name from Student where '1' = '%s'", false, false, true, false, true, false);
     }
 
     @RequestMapping("/time")
@@ -171,7 +203,7 @@ public class HibernateRestController {
         inject = new JSONObject(inject).getJSONObject("b").getJSONArray("b").getJSONObject(3).getJSONObject("a").getString("a");
         inject = inject.replaceAll(":", "\\\\:");
         inject = inject.replace(":", "\\:");
-        return getResponse(inject, "select First_Name from Student where '1' = '%s'", true, false, true, true, false);
+        return getResponse(inject, "select First_Name from Student where '1' = '%s'", true, false, true, true, false, false);
     }
 
     // Special API endpoint

@@ -6,8 +6,6 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -22,12 +20,8 @@ public class MySqlReadFileSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
-            new SimpleEntry<>("name", "")
-        ));
-        
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal?tenant=mysql&name=");
+
         model
         .getMediatorUtils()
         .getConnectionUtil()

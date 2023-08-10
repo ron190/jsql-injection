@@ -1,11 +1,11 @@
 package com.jsql.model.injection.vendor.model;
 
-import java.util.List;
-
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
+
+import java.util.List;
 
 public interface AbstractVendor {
     
@@ -23,7 +23,8 @@ public interface AbstractVendor {
     String sqlError(String sqlQuery, String startPosition);
     String sqlBlind(String sqlQuery, String startPosition);
     String sqlTime(String sqlQuery, String startPosition);
-    
+    String sqlStacked(String sqlQuery, String startPosition);
+
     String sqlCapacity(String[] indexes);
     String sqlIndices(Integer nbFields);
     String sqlOrderBy();

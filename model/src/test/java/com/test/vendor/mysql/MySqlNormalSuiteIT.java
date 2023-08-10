@@ -5,9 +5,6 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import org.junitpioneer.jupiter.RetryingTest;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-
 public class MySqlNormalSuiteIT extends ConcreteMySqlSuiteIT {
     
     @Override
@@ -18,18 +15,15 @@ public class MySqlNormalSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
-            new SimpleEntry<>("name", "")
-        ));
-        
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal?tenant=mysql&name=");
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
+
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     }
     
