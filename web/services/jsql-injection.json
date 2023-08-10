@@ -1,10 +1,10 @@
 {
     "version": "0.90",
     "news": [
-        "[Vote!] Choose features you want added to jSQL: https://github.com/ron190/jsql-injection/discussions/95385",
-        "[Code!] Implement APIs with PHP, .NET, Python and Node for CI/CD pipeline on Kubernetes/Docker",
+        "[Vote!] Choose your most wanted feature: https://github.com/ron190/jsql-injection/discussions/95385",
+        "[Discuss!] Share about any shells or any injection techniques you know with the community and open a Github discussion: https://github.com/ron190/jsql-injection/discussions",
         "[Contribute!] Translate jSQL: display advanced settings with top right button, open menu Community, choose 'I help translate jSQL' in your language and translate any words then click on Send, your contribution will be available on Github for review.",
-        "[Share!] Report any shells or injection techniques you know to Github project page",
+        "[Code!] Implement CI/CD APIs with PHP, .NET, Python and Node for Kubernetes/Docker pipelines",
         "[v0.90] Digest authentication client, improved stability and error handling",
         "[Ongoing feature] Stacked query strategy, optimize algorithms",
         "[Next feature] Multi-bits blind strategy, disable any strategy, Kerberos on CI/CD"
