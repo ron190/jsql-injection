@@ -95,7 +95,9 @@ public class ResourceAccess {
      * List of ongoing jobs.
      */
     private List<CallableFile> callablesReadFile = new ArrayList<>();
-    
+
+    private static String MSG_EMPTY_PAYLOAD = "payload integrity check: empty payload";
+
     private final InjectionModel injectionModel;
 
     public ResourceAccess(InjectionModel injectionModel) {
@@ -287,7 +289,7 @@ public class ResourceAccess {
 
             if (StringUtils.isEmpty(resultInjection)) {
 
-                throw new JSqlException("payload integrity check: empty payload");
+                throw new JSqlException(MSG_EMPTY_PAYLOAD);
             }
             
         } catch (JSqlException e) {
@@ -534,7 +536,7 @@ public class ResourceAccess {
 
             if (StringUtils.isEmpty(resultInjection)) {
                 
-                throw new JSqlException("payload integrity check: empty payload");
+                throw new JSqlException(MSG_EMPTY_PAYLOAD);
             }
             
         } catch (JSqlException e) {
@@ -858,7 +860,7 @@ public class ResourceAccess {
             
             if (StringUtils.isEmpty(sourceShellInjected)) {
                 
-                throw new JSqlException("payload integrity check: empty payload");
+                throw new JSqlException(MSG_EMPTY_PAYLOAD);
             }
             
         } catch (JSqlException e) {

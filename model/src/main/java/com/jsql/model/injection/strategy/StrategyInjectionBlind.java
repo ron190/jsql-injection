@@ -32,6 +32,8 @@ public class StrategyInjectionBlind extends AbstractStrategy {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
+    private static String KEY_LOG_CHECKING_STRATEGY = "LOG_CHECKING_STRATEGY";
+    private static String KEY_LOG_VULNERABLE = "LOG_VULNERABLE";
 
     /**
      * Blind injection object.
@@ -52,36 +54,36 @@ public class StrategyInjectionBlind extends AbstractStrategy {
             
         } else {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with STACKED...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with STACKED...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
 
             this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.STACKED);
             this.isApplicable = this.injectionBlind.isInjectable();
 
             if (!this.isApplicable) {
 
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with OR...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with OR...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
 
                 this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.OR);
                 this.isApplicable = this.injectionBlind.isInjectable();
 
                 if (!this.isApplicable) {
 
-                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with AND...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with AND...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
 
                     this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.AND);
                     this.isApplicable = this.injectionBlind.isInjectable();
 
                     if (this.isApplicable) {
 
-                        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with AND", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
+                        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with AND", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
                     }
                 } else {
 
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with OR", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with OR", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
                 }
             } else {
 
-                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with STACKED", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
+                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with STACKED", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
             }
             
             if (this.isApplicable) {

@@ -15,8 +15,6 @@ import com.jsql.view.interaction.InteractionCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.UUID;
-
 /**
  * Append the result of a command in the terminal.
  */
@@ -25,23 +23,10 @@ public class AbstractGetShellResult implements InteractionCommand {
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**
-     * Unique identifier for the terminal. Used to output results of
-     * commands in the right shell tab (in case of multiple shell opened).
-     */
-    private final UUID terminalID;
-
-    /**
-     * The result of a command executed in shell.
-     */
-    private final String result;
-
-    /**
      * @param interactionParams The unique identifier of the terminal and the command's result to display
      */
     public AbstractGetShellResult(Object[] interactionParams) {
-        
-        this.terminalID = (UUID) interactionParams[0];
-        this.result = (String) interactionParams[1];
+        // nothing
     }
 
     @Override

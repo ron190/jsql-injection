@@ -81,7 +81,7 @@ public class PanelTampering extends JPanel implements Cleanable {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        var tooltipIsTamperingEval = "Custom tamper in JavaScript, e.g sql.replace(/\\+/gm,'/**/')";
+        var tooltipIsTamperingEval = "Custom tamper in JavaScript and Java, e.g sql.replace(/\\+/gm,'/**/')";
         this.checkboxIsTamperingEval.setToolTipText(tooltipIsTamperingEval);
         this.checkboxIsTamperingEval.setFocusable(false);
         

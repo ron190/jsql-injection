@@ -12,6 +12,7 @@ package com.jsql.view.swing.list;
 
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.manager.ManagerScan;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.util.I18nViewUtil;
@@ -106,7 +107,7 @@ public class MenuActionNewValue implements ActionListener {
 
         int firstIndex = lastIndex;
         
-        if ("scan".equals(this.myList.getName())) {
+        if (ManagerScan.NAME.equals(this.myList.getName())) {
             
             lastIndex = this.addToScanList(textarea, lastIndex);
             

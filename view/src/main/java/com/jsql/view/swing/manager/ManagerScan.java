@@ -50,6 +50,8 @@ public class ManagerScan extends AbstractManagerList {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
+    public static final String NAME = "listManagerScan";
+
     /**
      * Create admin page finder.
      */
@@ -61,12 +63,11 @@ public class ManagerScan extends AbstractManagerList {
         
         final DnDList dndListScan = new DnDListScan(itemsList);
         
-        dndListScan.setName("scan");
         dndListScan.setTransferHandler(null);
         dndListScan.setTransferHandler(new ListTransfertHandlerScan());
         
         this.listPaths = dndListScan;
-        this.listPaths.setName("listManagerScan");
+        this.listPaths.setName(ManagerScan.NAME);
         
         this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
         this.add(new LightScrollPane(0, 0, 0, 0, dndListScan), BorderLayout.CENTER);

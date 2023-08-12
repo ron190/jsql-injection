@@ -32,6 +32,8 @@ public class StrategyInjectionTime extends AbstractStrategy {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
+    private static String KEY_LOG_CHECKING_STRATEGY = "LOG_CHECKING_STRATEGY";
+    private static String KEY_LOG_VULNERABLE = "LOG_VULNERABLE";
 
     /**
      * Injection method using time attack.
@@ -52,36 +54,36 @@ public class StrategyInjectionTime extends AbstractStrategy {
             
         } else {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with STACKED...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with STACKED...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
 
             this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.STACKED);
             this.isApplicable = this.injectionTime.isInjectable();
 
             if (!this.isApplicable) {
 
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with OR...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with OR...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
 
                 this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.OR);
                 this.isApplicable = this.injectionTime.isInjectable();
 
                 if (!this.isApplicable) {
 
-                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with AND...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with AND...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
 
                     this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.AND);
                     this.isApplicable = this.injectionTime.isInjectable();
 
                     if (this.isApplicable) {
 
-                        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with AND", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
+                        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with AND", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
                     }
                 } else {
 
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with OR", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with OR", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
                 }
             } else {
 
-                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with STACKED", () -> I18nUtil.valueByKey("LOG_VULNERABLE"));
+                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with STACKED", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
             }
             
             if (this.isApplicable) {

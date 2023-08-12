@@ -18,11 +18,12 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 
 ## Features
 - Automatic injection of 33 database engines: Access, Altibase, C-treeACE, CockroachDB, CUBRID, DB2, Derby, Exasol, Firebird, FrontBase, H2, Hana, HSQLDB, Informix, Ingres, InterSystems-IRIS, MaxDB, Mckoi, MemSQL, MimerSQL, MonetDB, MySQL, Neo4j, Netezza, NuoDB, Oracle, PostgreSQL, Presto, SQLite, SQL Server, Sybase, Teradata and Vertica
-- Multiple injection strategies: Normal, Error, Blind and Time
+- Multiple injection strategies: Normal, Stacked, Error, Blind and Time
+- Parallel bitwise Boolean Blind and Time strategies
 - Various injection processes: Default, Zip, Dios
 - Database fingerprint: Basic error, Order By error, Boolean single query
 - Script sandboxes for SQL and tampering
-- List to inject multiple targets
+- Inject multiple targets
 - Read and write files using injection
 - Create and display Web shell and SQL shell
 - Bruteforce password hash

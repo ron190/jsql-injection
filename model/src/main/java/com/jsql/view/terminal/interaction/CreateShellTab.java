@@ -23,22 +23,10 @@ public class CreateShellTab implements InteractionCommand {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
-     * Full path of the shell file on remote host.
-     */
-    private final String path;
-
-    /**
-     * Url of the shell webpage on remote host.
-     */
-    private final String url;
-
-    /**
      * @param interactionParams The local path and url for the shell
      */
     public CreateShellTab(Object[] interactionParams) {
-        
-        this.path = (String) interactionParams[0];
-        this.url = (String) interactionParams[1];
+        // nothing
     }
 
     @Override

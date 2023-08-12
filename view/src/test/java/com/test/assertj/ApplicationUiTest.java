@@ -9,6 +9,7 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.util.bruter.ActionCoder;
 import com.jsql.view.swing.JFrameView;
+import com.jsql.view.swing.manager.ManagerScan;
 import com.jsql.view.swing.util.MediatorHelper;
 import org.apache.commons.codec.DecoderException;
 import org.apache.logging.log4j.util.Strings;
@@ -41,7 +42,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class ApplicationUiTest {
+class ApplicationUiTest {
     
     private static FrameFixture window;
 
@@ -49,7 +50,7 @@ public class ApplicationUiTest {
     private static final Document document = Mockito.mock(Document.class);
     
     @BeforeAll
-    public static void setUpOnce() {
+    static void setUpOnce() {
         
         FailOnThreadViolationRepaintManager.install();
         
@@ -71,7 +72,7 @@ public class ApplicationUiTest {
     }
 
     @Test
-    public void shouldDnDList() {
+    void shouldDnDList() {
 
         window.tabbedPane("tabManagers").selectTab("Admin page");
         
@@ -114,38 +115,38 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldDnDScanList() {
+    void shouldDnDScanList() {
         
         window.tabbedPane("tabManagers").selectTab("Batch scan");
-        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(0));
-        Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(1));
-        window.list("listManagerScan").drag(0);
-        window.list("listManagerScan").drop(1);
-        Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(0));
-        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(1));
+        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(0));
+        Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(1));
+        window.list(ManagerScan.NAME).drag(0);
+        window.list(ManagerScan.NAME).drop(1);
+        Assertions.assertNotEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(0));
+        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(1));
         
-        window.list("listManagerScan").selectItem(0).pressKey(KeyEvent.VK_DELETE);
-        window.list("listManagerScan").selectItem(0);
-        window.list("listManagerScan").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_C);
-        window.list("listManagerScan").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_C);
-        window.list("listManagerScan").selectItem(1);
-        window.list("listManagerScan").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
-        window.list("listManagerScan").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        window.list(ManagerScan.NAME).selectItem(0).pressKey(KeyEvent.VK_DELETE);
+        window.list(ManagerScan.NAME).selectItem(0);
+        window.list(ManagerScan.NAME).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_C);
+        window.list(ManagerScan.NAME).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_C);
+        window.list(ManagerScan.NAME).selectItem(1);
+        window.list(ManagerScan.NAME).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        window.list(ManagerScan.NAME).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
         
-        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(0));
-        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list("listManagerScan").valueAt(1));
+        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(0));
+        Assertions.assertEquals("http://testphp.vulnweb.com/artists.php?artist=", window.list(ManagerScan.NAME).valueAt(1));
         
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection stringSelection = new StringSelection("paste-from-clipboard");
         clipboard.setContents(stringSelection, null);
-        window.list("listManagerScan").pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
-        window.list("listManagerScan").releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
+        window.list(ManagerScan.NAME).pressKey(KeyEvent.VK_CONTROL).pressKey(KeyEvent.VK_V);
+        window.list(ManagerScan.NAME).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
         
-        Assertions.assertEquals("paste-from-clipboard", window.list("listManagerScan").valueAt(1));
+        Assertions.assertEquals("paste-from-clipboard", window.list(ManagerScan.NAME).valueAt(1));
     }
     
     @Test
-    public void shouldDnDTabs() {
+    void shouldDnDTabs() {
         
         var request = new Request();
         request.setMessage(Interaction.CREATE_FILE_TAB);
@@ -190,7 +191,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindFile() {
+    void shouldFindFile() {
         
         var request = new Request();
         request.setMessage(Interaction.CREATE_FILE_TAB);
@@ -207,7 +208,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindWebshell() {
+    void shouldFindWebshell() {
         
         var request = new Request();
         request.setMessage(Interaction.CREATE_SHELL_TAB);
@@ -239,7 +240,7 @@ public class ApplicationUiTest {
     }
 
     @Test
-    public void shouldFindVendorAndErrorMethods() {
+    void shouldFindVendorAndErrorMethods() {
         
         window.menuItem("menuStrategy").click();
         window.menuItem("itemRadioStrategyError").requireDisabled();
@@ -285,7 +286,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindNetworkHeader() {
+    void shouldFindNetworkHeader() {
         
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, "url");
@@ -325,7 +326,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindSqlshell() {
+    void shouldFindSqlshell() {
         
         var request = new Request();
         request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);
@@ -342,7 +343,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldRunCoder() {
+    void shouldRunCoder() {
 
         window.tabbedPane("tabManagers").selectTab("Encoding");
         window.menuItem("menuMethodManagerCoder").click();
@@ -392,7 +393,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindAdminpage() throws IOException {
+    void shouldFindAdminpage() throws IOException {
 
         window.tabbedPane("tabManagers").selectTab("Admin page");
         window.list("listManagerAdminPage").item(0).select().rightClick();
@@ -414,7 +415,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindDatabase() {
+    void shouldFindDatabase() {
 
         window.tabbedPane("tabManagers").selectTab("Database");
         
@@ -479,7 +480,7 @@ public class ApplicationUiTest {
     }
 
     @Test
-    public void shouldFindOkButton() {
+    void shouldFindOkButton() {
         
         try {
             window.button("buttonInUrl").click();
@@ -489,7 +490,7 @@ public class ApplicationUiTest {
     }
 
     @Test
-    public void shouldFindConsoleButton() {
+    void shouldFindConsoleButton() {
         
         window.button("buttonShowSouth").click();
         window.button("buttonShowConsolesHidden").click();
@@ -503,7 +504,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindConnectionPreferences() {
+    void shouldFindConnectionPreferences() {
         
         window.button("advancedButton").click();
         window.menuItem("menuWindows").click();
@@ -624,7 +625,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindInjectionPreferences() {
+    void shouldFindInjectionPreferences() {
         
         window.button("advancedButton").click();
         window.menuItem("menuWindows").click();
@@ -842,7 +843,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindSqlEngine() {
+    void shouldFindSqlEngine() {
         
         window.button("advancedButton").click();
         window.menuItem("menuWindows").click();
@@ -858,7 +859,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindLanguage() {
+    void shouldFindLanguage() {
         
         window.button("advancedButton").click();
         window.menuItem("menuWindows").click();
@@ -877,7 +878,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindReportIssue() {
+    void shouldFindReportIssue() {
         
         window.button("advancedButton").click();
         window.menuItem("menuCommunity").click();
@@ -894,7 +895,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindIHelpTranslate() {
+    void shouldFindIHelpTranslate() {
         
         window.button("advancedButton").click();
         window.menuItem("menuCommunity").click();
@@ -912,7 +913,7 @@ public class ApplicationUiTest {
     }
     
     @Test
-    public void shouldFindAbout() {
+    void shouldFindAbout() {
         
         window.button("advancedButton").click();
         window.menuItem("menuHelp").click();
