@@ -21,12 +21,15 @@ public abstract class AbstractCallableBoolean<T extends AbstractCallableBoolean<
      * Bit searched.
      */
     protected int currentBit;
+    int idPage = -1;
+    int block = -1;
 
     /**
      * Default call used for bit test.
      */
     protected boolean isTestingLength = false;
-    
+    protected boolean isMultibit = false;
+
     protected String charText;
     
     /**
@@ -49,5 +52,9 @@ public abstract class AbstractCallableBoolean<T extends AbstractCallableBoolean<
 
     public String getCharText() {
         return charText;
+    }
+
+    public boolean isMultibit() {
+        return isMultibit;
     }
 }

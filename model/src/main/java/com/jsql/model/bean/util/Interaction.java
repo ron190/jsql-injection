@@ -30,7 +30,10 @@ public enum Interaction {
     GET_WEB_SHELL_RESULT("GetWebShellResult"),
     GET_SQL_SHELL_RESULT("GetSQLShellResult"),
     INTERACTION_COMMAND("InteractionCommand"),
-    
+
+    MARK_MULTI_INVULNERABLE("MarkMultiInvulnerable"),
+    MARK_MULTI_STRATEGY("MarkMultiStrategy"),
+    MARK_MULTI_VULNERABLE("MarkMultiVulnerable"),
     MARK_BLIND_INVULNERABLE("MarkBlindInvulnerable"),
     MARK_BLIND_STRATEGY("MarkBlindStrategy"),
     MARK_BLIND_VULNERABLE("MarkBlindVulnerable"),

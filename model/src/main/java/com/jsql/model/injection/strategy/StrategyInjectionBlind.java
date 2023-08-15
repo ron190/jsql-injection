@@ -132,7 +132,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
         } else {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using AND statement");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using "+ this.injectionBlind.getBooleanMode().name() +" statement");
         }
         
         LOGGER.log(

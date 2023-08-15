@@ -28,42 +28,42 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     
     /**
      * Constructor for preparation and blind confirmation.
-     * @param inj
+     * @param sqlQuery
      * @param injectionBlind
      */
-    public CallableBlind(String inj, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
+    public CallableBlind(String sqlQuery, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
         
         this.injectionModel = injectionModel;
         this.injectionBlind = injectionBlind;
         this.metadataInjectionProcess = metadataInjectionProcess;
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(inj, blindMode);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(sqlQuery, blindMode);
     }
     
     /**
      * Constructor for bit test.
-     * @param inj
+     * @param sqlQuery
      * @param indexCharacter
      * @param bit
      * @param injectionModel
      */
-    public CallableBlind(String inj, int indexCharacter, int bit, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
+    public CallableBlind(String sqlQuery, int indexCharacter, int bit, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
         
-        this(inj, injectionModel, injectionBlind, blindMode, metadataInjectionProcess);
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestBlind(inj, indexCharacter, bit, blindMode);
+        this(sqlQuery, injectionModel, injectionBlind, blindMode, metadataInjectionProcess);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestBlind(sqlQuery, indexCharacter, bit, blindMode);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
     }
     
     /**
      * Constructor for length test.
-     * @param inj
+     * @param sqlQuery
      * @param indexCharacter
      * @param injectionModel
      */
-    public CallableBlind(String inj, int indexCharacter, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
+    public CallableBlind(String sqlQuery, int indexCharacter, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
         
-        this(inj, injectionModel, injectionBlind, blindMode, metadataInjectionProcess);
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestBlind(inj, indexCharacter, blindMode);
+        this(sqlQuery, injectionModel, injectionBlind, blindMode, metadataInjectionProcess);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestBlind(sqlQuery, indexCharacter, blindMode);
         this.isTestingLength = true;
     }
 

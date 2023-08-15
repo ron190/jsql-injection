@@ -34,35 +34,35 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     
     /**
      * Constructor for preparation and blind confirmation.
-     * @param inj
+     * @param sqlQuery
      * @param injectionModel
      */
-    public CallableTime(String inj, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
+    public CallableTime(String sqlQuery, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
         
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
         this.metadataInjectionProcess = metadataInjectionProcess;
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(inj, blindMode);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(sqlQuery, blindMode);
     }
     
     /**
      * Constructor for bit test.
-     * @param inj
+     * @param sqlQuery
      * @param indexCharacter
      * @param bit
      */
-    public CallableTime(String inj, int indexCharacter, int bit, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
+    public CallableTime(String sqlQuery, int indexCharacter, int bit, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
         
-        this(inj, injectionModel, injectionTime, blindMode, metadataInjectionProcess);
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestTime(inj, indexCharacter, bit, blindMode);
+        this(sqlQuery, injectionModel, injectionTime, blindMode, metadataInjectionProcess);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestTime(sqlQuery, indexCharacter, bit, blindMode);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
     }
 
-    public CallableTime(String inj, int indexCharacter, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
+    public CallableTime(String sqlQuery, int indexCharacter, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
         
-        this(inj, injectionModel, injectionTime, blindMode, metadataInjectionProcess);
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestTime(inj, indexCharacter, blindMode);
+        this(sqlQuery, injectionModel, injectionTime, blindMode, metadataInjectionProcess);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestTime(sqlQuery, indexCharacter, blindMode);
         this.isTestingLength = true;
     }
     

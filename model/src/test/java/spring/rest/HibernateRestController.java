@@ -176,6 +176,11 @@ public class HibernateRestController {
         return getResponse(name, "select First_Name from Student where 1 = %s", true, false, true);
     }
 
+    @RequestMapping("/multibit")
+    public Greeting endpointMultibit(@RequestParam(value="name", defaultValue="World") String name) {
+        return getResponse(name, "select %s", false, false, true);
+    }
+
     @RequestMapping("/multiple-index")
     public Greeting endpointMultipleIndex(@RequestParam(value="name", defaultValue="World") String name) {
         // Postgres union int on ()::text fails: PSQLException: ERROR: UNION types integer and text cannot be matched

@@ -79,16 +79,18 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
                 
                 taskExecutor.shutdownNow();
             }
-            
-            this.constantFalseMark = listTagFalse.get(0).get().getOpcodes();
-            
+
             for (Future<CallableBlind> falseMark: listTagFalse) {
-                
+
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
-                
-                this.constantFalseMark.retainAll(falseMark.get().getOpcodes());
+
+                if (this.constantFalseMark.isEmpty()) {
+                    this.constantFalseMark = falseMark.get().getOpcodes();
+                } else {
+                    this.constantFalseMark.retainAll(falseMark.get().getOpcodes());
+                }
             }
         } catch (ExecutionException e) {
             
@@ -152,15 +154,20 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
     }
 
     @Override
-    public CallableBlind getCallableSizeTest(String string, int indexCharacter) {
+    public CallableBlind getCallableSizeTest(String sqlQuery, int indexCharacter) {
         
-        return new CallableBlind(string, indexCharacter, this.injectionModel, this, this.booleanMode, "size:" + indexCharacter);
+        return new CallableBlind(sqlQuery, indexCharacter, this.injectionModel, this, this.booleanMode, "size:" + indexCharacter);
     }
 
     @Override
-    public CallableBlind getCallableBitTest(String string, int indexCharacter, int bit) {
-        
-        return new CallableBlind(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "bit#" + indexCharacter + "~" + bit);
+    public CallableBlind getCallableMultibitTest(String sqlQuery, int indexCharacter, int bit) {
+        return null;
+    }
+
+    @Override
+    public CallableBlind getCallableBitTest(String sqlQuery, int indexCharacter, int bit) {
+
+        return new CallableBlind(sqlQuery, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "bit#" + indexCharacter + "~" + bit);
     }
 
     @Override

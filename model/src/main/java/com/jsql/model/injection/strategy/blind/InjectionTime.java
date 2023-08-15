@@ -151,15 +151,20 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
     }
 
     @Override
-    public CallableTime getCallableSizeTest(String string, int indexCharacter) {
+    public CallableTime getCallableSizeTest(String sqlQuery, int indexCharacter) {
         
-        return new CallableTime(string, indexCharacter, this.injectionModel, this, this.booleanMode, "size:" + indexCharacter);
+        return new CallableTime(sqlQuery, indexCharacter, this.injectionModel, this, this.booleanMode, "size:" + indexCharacter);
     }
 
     @Override
-    public CallableTime getCallableBitTest(String string, int indexCharacter, int bit) {
-        
-        return new CallableTime(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "bit#" + indexCharacter + "~" + bit);
+    public CallableTime getCallableMultibitTest(String sqlQuery, int indexCharacter, int bit) {
+        return null;
+    }
+
+    @Override
+    public CallableTime getCallableBitTest(String sqlQuery, int indexCharacter, int bit) {
+
+        return new CallableTime(sqlQuery, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "bit#" + indexCharacter + "~" + bit);
     }
 
     @Override

@@ -10,27 +10,23 @@ import java.util.stream.Collectors;
 
 public class Test implements Serializable {
 
-    private List<String> falses =
-        Arrays
-        .asList(
-            "true = false",
-            "true %21= true",
-            "false %21= false",
-            "1 = 2",
-            "1 %21= 1",
-            "2 %21= 2"
-        );
+    private List<String> falses = Arrays.asList(
+        "true = false",
+        "true %21= true",
+        "false %21= false",
+        "1 = 2",
+        "1 %21= 1",
+        "2 %21= 2"
+    );
             
-    private List<String> trues =
-        Arrays
-        .asList(
-            "true = true",
-            "false = false",
-            "true %21= false",
-            "1 = 1",
-            "2 = 2",
-            "1 %21= 2"
-        );
+    private List<String> trues = Arrays.asList(
+        "true = true",
+        "false = false",
+        "true %21= false",
+        "1 = 1",
+        "2 = 2",
+        "1 %21= 2"
+    );
 
     private String initialization = "0%2b1 = 1";
     private String bit = StringUtils.EMPTY;
@@ -77,9 +73,7 @@ public class Test implements Serializable {
     }
 
     public String getTruthyAsString() {
-        return
-            this.trues
-            .stream()
+        return this.trues.stream()
             .collect(
                 Collectors.joining(System.lineSeparator())
             );
@@ -90,9 +84,7 @@ public class Test implements Serializable {
     }
     
     public String getFalsyAsString() {
-        return
-            this.falses
-            .stream()
+        return this.falses.stream()
             .collect(
                 Collectors.joining(System.lineSeparator())
             );

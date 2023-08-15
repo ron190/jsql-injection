@@ -112,15 +112,17 @@ public class InjectionCharInsertion {
                 taskExecutor.shutdownNow();
             }
             
-            this.constantTrueMark = listTagTrue.get(0).get().getOpcodes();
-            
             for (var i = 1 ; i < listTagTrue.size() ; i++) {
                 
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
-                
-                this.constantTrueMark.retainAll(listTagTrue.get(i).get().getOpcodes());
+
+                if (this.constantTrueMark.isEmpty()) {
+                    this.constantTrueMark = listTagTrue.get(i).get().getOpcodes();
+                } else {
+                    this.constantTrueMark.retainAll(listTagTrue.get(i).get().getOpcodes());
+                }
             }
         } catch (ExecutionException e) {
             

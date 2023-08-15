@@ -23,6 +23,7 @@ public class MediatorStrategy {
     
     private final AbstractStrategy time;
     private final AbstractStrategy blind;
+    private final AbstractStrategy multibit;
     private final StrategyInjectionError error;
     private final AbstractStrategy normal;
     private final AbstractStrategy stacked;
@@ -42,11 +43,12 @@ public class MediatorStrategy {
         
         this.time = new StrategyInjectionTime(this.injectionModel);
         this.blind = new StrategyInjectionBlind(this.injectionModel);
+        this.multibit = new StrategyInjectionMultibit(this.injectionModel);
         this.error = new StrategyInjectionError(this.injectionModel);
         this.normal = new StrategyInjectionNormal(this.injectionModel);
         this.stacked = new StrategyInjectionStacked(this.injectionModel);
 
-        this.strategies = Arrays.asList(this.time, this.blind, this.error, this.stacked, this.normal);
+        this.strategies = Arrays.asList(this.time, this.blind, this.multibit, this.error, this.stacked, this.normal);
     }
     
     public String getMeta() {
@@ -178,6 +180,7 @@ public class MediatorStrategy {
         // Choose the most efficient strategy: normal > error > blind > time
         this.time.checkApplicability();
         this.blind.checkApplicability();
+        this.multibit.checkApplicability();
         this.error.checkApplicability();
         this.stacked.checkApplicability();
         this.normal.checkApplicability();
@@ -194,6 +197,10 @@ public class MediatorStrategy {
         } else if (this.error.isApplicable()) {
 
             this.error.activateStrategy();
+
+        } else if (this.multibit.isApplicable()) {
+
+            this.multibit.activateStrategy();
 
         } else if (this.blind.isApplicable()) {
 
@@ -232,6 +239,10 @@ public class MediatorStrategy {
 
     public AbstractStrategy getBlind() {
         return this.blind;
+    }
+
+    public AbstractStrategy getMultibit() {
+        return this.multibit;
     }
 
     public AbstractStrategy getTime() {

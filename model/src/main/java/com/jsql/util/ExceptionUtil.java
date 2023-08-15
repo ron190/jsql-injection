@@ -3,6 +3,7 @@ package com.jsql.util;
 import com.jsql.model.InjectionModel;
 import com.jsql.util.bruter.HashUtil;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,9 +40,14 @@ public class ExceptionUtil {
         @Override
         public void uncaughtException(Thread thread, Throwable throwable) {
             
-            // for other uncaught exceptions
             LOGGER.log(
                 LogLevelUtil.CONSOLE_JAVA,
+                () -> String.format("Unhandled Exception on %s", thread.getName()),
+                throwable
+            );
+            // Display to stdout
+            LOGGER.log(
+                Level.ERROR,
                 () -> String.format("Unhandled Exception on %s", thread.getName()),
                 throwable
             );

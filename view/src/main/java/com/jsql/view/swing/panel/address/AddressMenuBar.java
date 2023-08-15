@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class AddressMenuBar extends JMenuBar {
@@ -326,7 +327,10 @@ public class AddressMenuBar extends JMenuBar {
 
     private JMenu getMenuError() {
         
-        return (JMenu) this.menuStrategy.getMenuComponent(2);
+        return (JMenu) Arrays.stream(this.menuStrategy.getMenuComponents())
+                .filter(c -> ((JMenuItem) c).getText().equalsIgnoreCase(MediatorHelper.model().getMediatorStrategy().getError().getName()))
+                .findFirst().orElse(null);
+//        return (JMenu) this.menuStrategy.getMenuComponent(2);
     }
     
     public void markErrorVulnerable(int indexMethodError) {

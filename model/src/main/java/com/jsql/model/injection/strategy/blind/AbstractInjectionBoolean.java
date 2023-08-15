@@ -7,6 +7,7 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,14 +48,15 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         this.trueTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
     }
     
-    public abstract T getCallableSizeTest(String string, int indexCharacter);
+    public abstract T getCallableSizeTest(String sqlQuery, int indexCharacter);
     
-    public abstract T getCallableBitTest(String string, int indexCharacter, int bit);
-    
+    public abstract T getCallableBitTest(String sqlQuery, int indexCharacter, int bit);
+
+    public abstract T getCallableMultibitTest(String sqlQuery, int indexCharacter, int block);
+
     /**
      * Start one test to verify if boolean works.
      * @return true if boolean method is confirmed
-     * @throws InjectionFailureException
      */
     public abstract boolean isInjectable() throws StoppedByUserSlidingException;
     
@@ -69,7 +71,6 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
      * @param sqlQuery SQL query
      * @param suspendable Action a user can stop
      * @return Final string: SQLiABCDEF...
-     * @throws StoppedByUserSlidingException
      */
     public String inject(String sqlQuery, AbstractSuspendable suspendable) throws StoppedByUserSlidingException {
 
@@ -114,11 +115,15 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 // Then add a new length verification, and all 8 bits
                 // requests for that new character.
                 if (currentCallable.isTestingLength()) {
-                    
-                    this.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted, currentCallable);
+
+                    if (currentCallable.isMultibit()) {
+                        this.initializeNextMultibitCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted, currentCallable);
+                    } else {
+                        this.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted, currentCallable);
+                    }
                     
                 } else {
-                    
+
                     this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
                 }
                 
@@ -186,6 +191,45 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         }
     }
 
+    private void initializeNextMultibitCharacters(
+        String sqlQuery,
+        List<char[]> bytes,
+        AtomicInteger indexCharacter,
+        CompletionService<T> taskCompletionService,
+        AtomicInteger countTasksSubmitted,
+        T lengthCallable
+    ) {
+        // End of row
+        if (!lengthCallable.isTrue()) {
+            return;
+        }
+
+        indexCharacter.incrementAndGet();
+
+        // New undefined bits of the next character
+        // Chars all have the last bit set to 0 in Ascii table
+        bytes.add(new char[]{'0', 'x', 'x', 'x', 'x', 'x', 'x', 'x'});
+
+        // Test if it's the end of the line
+        taskCompletionService.submit(this.getCallableSizeTest(sqlQuery, indexCharacter.get()));
+
+        // Test the 8 bits for the next character, save its position and current bit for later
+        // Ignore last bit 128 and only check for first seven bits
+        for (int block: new int[]{1, 2, 3}) {
+
+            taskCompletionService.submit(
+                this.getCallableMultibitTest(
+                    sqlQuery,
+                    indexCharacter.get(),
+                    block
+                )
+            );
+        }
+
+        // Add 9 new tasks
+        countTasksSubmitted.addAndGet(3);
+    }
+
     private void initializeNextCharacters(
         String sqlQuery,
         List<char[]> bytes,
@@ -194,7 +238,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         AtomicInteger countTasksSubmitted,
         T lengthCallable
     ) {
-        
+
         // End of row
         if (!lengthCallable.isTrue()) {
             return;
@@ -227,19 +271,73 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     }
 
     private char[] initializeBinaryMask(List<char[]> bytes, T currentCallable) {
-        
-        // Bits for current url
-        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
-        
-        int positionInMask = (int) (
-            8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit()))
-            / Math.log(2)
-        );
-        
-        // Set current bit
-        asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';
-        
-        return asciiCodeMask;
+
+        if (currentCallable.isMultibit()) {
+
+            // Bits for current url
+            char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
+
+            extracted(currentCallable, asciiCodeMask);
+
+            return asciiCodeMask;
+
+        } else {
+
+            // Bits for current url
+            char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
+
+            int positionInMask = (int) (
+                8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit()))
+                / Math.log(2)
+            );
+
+            // Set current bit
+            asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';
+
+            return asciiCodeMask;
+        }
+    }
+
+    private void extracted(T currentCallable, char[] asciiCodeMask) {
+        int a = currentCallable.block;
+        int b = 3*a-2 - 1;
+        int d = b+1;
+        int e = b+2;
+        if (currentCallable.block == 1) {
+            if (currentCallable.idPage == 0) {
+                asciiCodeMask[b] = '0';
+                asciiCodeMask[d] = '0';
+                asciiCodeMask[e] = '0';
+            } else if (currentCallable.idPage == 1) {
+                asciiCodeMask[b] = '0';
+                asciiCodeMask[d] = '0';
+                asciiCodeMask[e] = '1';
+            } else if (currentCallable.idPage == 2) {
+                asciiCodeMask[b] = '0';
+                asciiCodeMask[d] = '1';
+                asciiCodeMask[e] = '0';
+            } else if (currentCallable.idPage == 3) {
+                asciiCodeMask[b] = '0';
+                asciiCodeMask[d] = '1';
+                asciiCodeMask[e] = '1';
+            } else if (currentCallable.idPage == 4) {
+                asciiCodeMask[b] = '1';
+                asciiCodeMask[d] = '0';
+                asciiCodeMask[e] = '0';
+            } else if (currentCallable.idPage == 5) {
+                asciiCodeMask[b] = '1';
+                asciiCodeMask[d] = '0';
+                asciiCodeMask[e] = '1';
+            } else if (currentCallable.idPage == 6) {
+                asciiCodeMask[b] = '1';
+                asciiCodeMask[d] = '1';
+                asciiCodeMask[e] = '0';
+            } else if (currentCallable.idPage == 7) {
+                asciiCodeMask[b] = '1';
+                asciiCodeMask[d] = '1';
+                asciiCodeMask[e] = '1';
+            }
+        }
     }
 
     private String stop(List<char[]> bytes, ExecutorService taskExecutor) {
