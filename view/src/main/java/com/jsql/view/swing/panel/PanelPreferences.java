@@ -22,6 +22,7 @@ public class PanelPreferences extends JPanel {
     private final PanelGeneral panelGeneralPreferences = new PanelGeneral(this);
     private final PanelUserAgent panelUserAgentPreferences = new PanelUserAgent();
     private final PanelConnection panelConnectionPreferences = new PanelConnection(this);
+    private final PanelStrategies panelStrategiesPreferences = new PanelStrategies(this);
 
     private static final JPanel panelInjection = new JPanel(new BorderLayout());
     private static final JPanel panelAuth = new JPanel(new BorderLayout());
@@ -30,7 +31,8 @@ public class PanelPreferences extends JPanel {
     private static final JPanel panelUserAgent = new JPanel(new BorderLayout());
     private static final JPanel panelTampering = new JPanel(new BorderLayout());
     private static final JPanel panelConnection = new JPanel(new BorderLayout());
-    
+    private static final JPanel panelStrategies = new JPanel(new BorderLayout());
+
     private final transient Border panelBorder = BorderFactory.createEmptyBorder(10, 15, 0, 15);
     
     private enum CategoryPreference {
@@ -38,6 +40,7 @@ public class PanelPreferences extends JPanel {
         INJECTION(panelInjection),
         TAMPERING(panelTampering),
         CONNECTION(panelConnection),
+        STRATEGIES(panelStrategies),
         AUTH(panelAuth),
         USER_AGENT(panelUserAgent),
         PROXY(panelProxy),
@@ -81,6 +84,10 @@ public class PanelPreferences extends JPanel {
         panelConnection.add(new JLabel("<html><b>Connection</b> / Network and threads</html>"), BorderLayout.NORTH);
         panelConnection.add(this.panelConnectionPreferences, BorderLayout.CENTER);
         
+        panelStrategies.setBorder(this.panelBorder);
+        panelStrategies.add(new JLabel("<html><b>Strategies</b> / Reduce processing load</html>"), BorderLayout.NORTH);
+        panelStrategies.add(this.panelStrategiesPreferences, BorderLayout.CENTER);
+
         panelAuth.setBorder(this.panelBorder);
         panelAuth.add(new JLabel("<html><b>Authentication</b> / Basic, Digest, NTLM or Kerberos connection</html>"), BorderLayout.NORTH);
         panelAuth.add(this.panelAuthPreferences, BorderLayout.CENTER);
@@ -210,6 +217,10 @@ public class PanelPreferences extends JPanel {
     
     public PanelConnection getPanelConnection() {
         return this.panelConnectionPreferences;
+    }
+
+    public PanelStrategies getPanelStrategies() {
+        return this.panelStrategiesPreferences;
     }
 
     public ActionListener getActionListenerSave() {

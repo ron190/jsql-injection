@@ -42,10 +42,9 @@ public interface AbstractVendor {
     String sqlTestBooleanInitialization();
     String sqlTestBlind(String check, BooleanMode blindMode);
     String sqlBitTestBlind(String inj, int indexCharacter, int bit, BooleanMode blindMode);
-    String sqlLengthTestBlind(String inj, int indexCharacter, BooleanMode blindMode);
     String sqlTimeTest(String check, BooleanMode blindMode);
     String sqlBitTestTime(String inj, int indexCharacter, int bit, BooleanMode blindMode);
-    String sqlLengthTestTime(String inj, int indexCharacter, BooleanMode blindMode);
+    String sqlMultibit(String inj, int indexCharacter, int block);
 
     String sqlBooleanBlind();
 

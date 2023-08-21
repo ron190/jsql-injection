@@ -263,7 +263,7 @@ public class ManagerScan extends AbstractManagerList {
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
 
@@ -306,7 +306,7 @@ public class ManagerScan extends AbstractManagerList {
                 
             } catch (InterruptedException e) {
                 
-                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.IGNORE, e, e);
                 Thread.currentThread().interrupt();
             }
         }

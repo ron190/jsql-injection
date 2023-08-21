@@ -62,12 +62,19 @@ public class PreferencesUtil {
     private String csrfUserTag = "";
     private String csrfUserTagOutput = "";
     private boolean isCsrfUserTag = false;
-    private boolean isLimitingThreads = false;
-    private int countLimitingThreads = 10;
+    private boolean isLimitingThreads = true;
+    private int countLimitingThreads = 5;
     private boolean isConnectionTimeout = false;
     private int countConnectionTimeout = 15;
     private boolean isUnicodeDecodeDisabled = false;
     private boolean isUrlDecodeDisabled = false;
+
+    private boolean isStrategyTimeDisabled = false;
+    private boolean isStrategyBlindDisabled = false;
+    private boolean isStrategyMultibitDisabled = false;
+    private boolean isStrategyStackedDisabled = false;
+    private boolean isStrategyErrorDisabled = false;
+    private boolean isStrategyNormalDisabled = false;
 
     private boolean isLimitingNormalIndex = false;
     private int countNormalIndex = 50;
@@ -126,8 +133,8 @@ public class PreferencesUtil {
         this.isCsrfUserTag = prefs.getBoolean("isCsrfUserTag", false);
         this.csrfUserTag = prefs.get("csrfUserTag", "");
         this.csrfUserTagOutput = prefs.get("csrfUserTagOutput", "");
-        this.isLimitingThreads = prefs.getBoolean("isLimitingThreads", false);
-        this.countLimitingThreads = prefs.getInt("countLimitingThreads", 10);
+        this.isLimitingThreads = prefs.getBoolean("isLimitingThreads", true);
+        this.countLimitingThreads = prefs.getInt("countLimitingThreads", 5);
         this.isConnectionTimeout = prefs.getBoolean("isConnectionTimeout", false);
         this.countConnectionTimeout = prefs.getInt("countConnectionTimeout", 15);
         this.isUnicodeDecodeDisabled = prefs.getBoolean("isUnicodeDecodeDisabled", false);
@@ -136,6 +143,13 @@ public class PreferencesUtil {
         this.isLimitingNormalIndex = prefs.getBoolean("isLimitingNormalIndex", false);
         this.countSleepTimeStrategy = prefs.getInt("countSleepTimeStrategy", 5);
         this.isLimitingSleepTimeStrategy = prefs.getBoolean("isLimitingSleepTimeStrategy", false);
+
+        this.isStrategyTimeDisabled = prefs.getBoolean("isStrategyTimeDisabled", false);
+        this.isStrategyBlindDisabled = prefs.getBoolean("isStrategyBlindDisabled", false);
+        this.isStrategyMultibitDisabled = prefs.getBoolean("isStrategyMultibitDisabled", false);
+        this.isStrategyStackedDisabled = prefs.getBoolean("isStrategyStackedDisabled", false);
+        this.isStrategyErrorDisabled = prefs.getBoolean("isStrategyErrorDisabled", false);
+        this.isStrategyNormalDisabled = prefs.getBoolean("isStrategyNormalDisabled", false);
     }
     
     /**
@@ -195,6 +209,13 @@ public class PreferencesUtil {
         preferences.putBoolean("isTamperingSpaceToDashComment", this.isTamperingSpaceToDashComment);
         preferences.putBoolean("isTamperingSpaceToMultilineComment", this.isTamperingSpaceToMultilineComment);
         preferences.putBoolean("isTamperingSpaceToSharpComment", this.isTamperingSpaceToSharpComment);
+        
+        preferences.putBoolean("isStrategyTimeDisabled", this.isStrategyTimeDisabled);
+        preferences.putBoolean("isStrategyBlindDisabled", this.isStrategyBlindDisabled);
+        preferences.putBoolean("isStrategyMultibitDisabled", this.isStrategyMultibitDisabled);
+        preferences.putBoolean("isStrategyStackedDisabled", this.isStrategyStackedDisabled);
+        preferences.putBoolean("isStrategyErrorDisabled", this.isStrategyErrorDisabled);
+        preferences.putBoolean("isStrategyNormalDisabled", this.isStrategyNormalDisabled);
     }
     
     /**
@@ -396,7 +417,31 @@ public class PreferencesUtil {
         return this.isUrlEncodingDisabled;
     }
     
-    
+    public boolean isStrategyTimeDisabled() {
+        return this.isStrategyTimeDisabled;
+    }
+
+    public boolean isStrategyBlindDisabled() {
+        return this.isStrategyBlindDisabled;
+    }
+
+    public boolean isStrategyMultibitDisabled() {
+        return this.isStrategyMultibitDisabled;
+    }
+
+    public boolean isStrategyStackedDisabled() {
+        return this.isStrategyStackedDisabled;
+    }
+
+    public boolean isStrategyErrorDisabled() {
+        return this.isStrategyErrorDisabled;
+    }
+
+    public boolean isStrategyNormalDisabled() {
+        return this.isStrategyNormalDisabled;
+    }
+
+
     // Builder true
 
     public PreferencesUtil withDiosStrategy() {
@@ -694,6 +739,36 @@ public class PreferencesUtil {
 
     public PreferencesUtil withCountNormalIndex(int countNormalIndex) {
         this.countNormalIndex = countNormalIndex;
+        return this;
+    }
+
+    public PreferencesUtil withIsStrategyTimeDisabled(boolean isStrategyTimeDisabled) {
+        this.isStrategyTimeDisabled = isStrategyTimeDisabled;
+        return this;
+    }
+
+    public PreferencesUtil withIsStrategyBlindDisabled(boolean isStrategyBlindDisabled) {
+        this.isStrategyBlindDisabled = isStrategyBlindDisabled;
+        return this;
+    }
+
+    public PreferencesUtil withIsStrategyMultibitDisabled(boolean isStrategyMultibitDisabled) {
+        this.isStrategyMultibitDisabled = isStrategyMultibitDisabled;
+        return this;
+    }
+
+    public PreferencesUtil withIsStrategyStackedDisabled(boolean isStrategyStackedDisabled) {
+        this.isStrategyStackedDisabled = isStrategyStackedDisabled;
+        return this;
+    }
+
+    public PreferencesUtil withIsStrategyErrorDisabled(boolean isStrategyErrorDisabled) {
+        this.isStrategyErrorDisabled = isStrategyErrorDisabled;
+        return this;
+    }
+
+    public PreferencesUtil withIsStrategyNormalDisabled(boolean isStrategyNormalDisabled) {
+        this.isStrategyNormalDisabled = isStrategyNormalDisabled;
         return this;
     }
 }

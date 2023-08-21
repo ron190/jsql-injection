@@ -370,23 +370,25 @@ public class ParameterUtil {
     
     public String getQueryStringFromEntries() {
         
-        return this.listQueryString
-            .stream()
+        return this.listQueryString.stream()
             .filter(Objects::nonNull)
-            .map(entry ->
-                String.format(
-                    "%s=%s",
-                    entry.getKey(),
-                    entry.getValue()
-                )
-            )
+            .map(entry -> {
+                if (
+                    this.injectionModel.getMediatorStrategy().getStrategy() == this.injectionModel.getMediatorStrategy().getMultibit()
+                    && entry.getValue() != null
+                    && entry.getValue().contains(InjectionModel.STAR)
+                ) {
+                    return String.format("%s=%s", entry.getKey(), InjectionModel.STAR);
+                } else {
+                    return String.format("%s=%s", entry.getKey(), entry.getValue());
+                }
+            })
             .collect(Collectors.joining("&"));
     }
 
     public String getRequestFromEntries() {
 
-        return this.listRequest
-            .stream()
+        return this.listRequest.stream()
             .filter(Objects::nonNull)
             .map(entry ->
                 String.format(

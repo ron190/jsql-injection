@@ -392,6 +392,41 @@
             <artifactId>wsdl4j</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- JSP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>springloaded</artifactId>
+            <version>1.2.8.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+<!--        <dependency>-->
+<!--            &lt;!&ndash; Not usable, table rows not created:&ndash;&gt;-->
+<!--            &lt;!&ndash; org.hibernate.property.access.spi.PropertyAccessException: Error accessing field [private java.lang.Integer spring.rest.Student.studentId] by reflection &ndash;&gt;-->
+<!--            &lt;!&ndash; for persistent property [spring.rest.Student#studentId] : spring.rest.Student@4fa700f1 &ndash;&gt;-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-devtools</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
 
         <!-- Hibernate -->
         <dependency>

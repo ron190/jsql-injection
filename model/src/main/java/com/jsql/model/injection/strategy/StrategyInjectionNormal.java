@@ -38,7 +38,13 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     @Override
     public void checkApplicability() throws JSqlException {
-        
+
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyNormalDisabled()) {
+
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Disabled strategy Normal skipped");
+            return;
+        }
+
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Normal...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
         this.injectionModel.setIndexesInUrl(new SuspendableGetIndexes(this.injectionModel).run());
 

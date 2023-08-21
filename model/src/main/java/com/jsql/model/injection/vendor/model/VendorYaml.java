@@ -44,6 +44,7 @@ public class VendorYaml implements AbstractVendor {
     private static final String INDICES = "${indices}";
     private static final String INDICE = "${indice}";
     public static final String WINDOW_CHAR = "${window.char}";
+    public static final String BLOCK_MULTIBIT = "${multibit.block}";
 
     public static final String WINDOW = "${window}";
 
@@ -370,20 +371,12 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlLengthTestBlind(String inj, int indexCharacter, BooleanMode blindMode) {
+    public String sqlMultibit(String inj, int indexCharacter, int block){
 
-        String replacement = getMode(blindMode);
-
-        return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean()
-            .getBlind()
-            .replace(BOOLEAN_MODE, replacement)
-            .replace(
-                TEST,
-                this.modelYaml.getStrategy().getBoolean().getTest()
-                .getLength()
-                .replace(INJECTION, inj)
-                .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
-            );
+        return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean().getMultibit()
+            .replace(INJECTION, inj)
+            .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
+            .replace(BLOCK_MULTIBIT, Integer.toString(block));
     }
 
     @Override
@@ -413,30 +406,6 @@ public class VendorYaml implements AbstractVendor {
                 .replace(INJECTION, inj)
                 .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
                 .replace(BIT, Integer.toString(bit))
-            )
-            .replace(
-                SLEEP_TIME,
-                Long.toString(this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy())
-            );
-    }
-
-    @Override
-    public String sqlLengthTestTime(String inj, int indexCharacter, BooleanMode blindMode) {
-
-        String replacement = getMode(blindMode);
-
-        return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean()
-            .getTime()
-            .replace(BOOLEAN_MODE, replacement)
-            .replace(
-                TEST,
-                this.modelYaml
-                .getStrategy()
-                .getBoolean()
-                .getTest()
-                .getLength()
-                .replace(INJECTION, inj)
-                .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
             )
             .replace(
                 SLEEP_TIME,

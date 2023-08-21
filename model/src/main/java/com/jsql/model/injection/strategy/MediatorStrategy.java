@@ -180,7 +180,19 @@ public class MediatorStrategy {
         // Choose the most efficient strategy: normal > error > blind > time
         this.time.checkApplicability();
         this.blind.checkApplicability();
-        this.multibit.checkApplicability();
+
+        if (parameterToInject != null) {
+
+            var backupCharacterInsertion = parameterToInject.getValue();
+            parameterToInject.setValue(InjectionModel.STAR);
+            this.multibit.checkApplicability();
+            parameterToInject.setValue(backupCharacterInsertion);
+
+        } else {
+
+            this.multibit.checkApplicability();
+        }
+
         this.error.checkApplicability();
         this.stacked.checkApplicability();
         this.normal.checkApplicability();

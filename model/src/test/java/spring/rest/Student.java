@@ -13,7 +13,7 @@ public class Student {
     @Id
     @Column(name = "Student_Id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int studentId;
+    private Integer studentId;
     @Column(name = "First_Name")
     private String firstName;
     @Column(name = "Last_Name")
@@ -22,14 +22,14 @@ public class Student {
     private String className;
     @Column(name = "Roll_No")
     private String rollNo;
-    private int age;
+    private Integer age;
  
     //getter and setter methods
-    public int getStudentId() {
+    public Integer getStudentId() {
         return this.studentId;
     }
  
-    public void setStudentId(int studentId) {
+    public void setStudentId(Integer studentId) {
         this.studentId = studentId;
     }
  
@@ -65,11 +65,11 @@ public class Student {
         this.rollNo = rollNo;
     }
  
-    public int getAge() {
+    public Integer getAge() {
         return this.age;
     }
  
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 }

@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Utility class managing running threads on which the user can act.
@@ -115,5 +116,20 @@ public final class ThreadUtil {
         }
         
         return taskExecutor;
+    }
+
+    public void shutdown(ExecutorService taskExecutor) {
+
+        try {
+            taskExecutor.shutdown();
+            if (!taskExecutor.awaitTermination(0, TimeUnit.SECONDS)) {
+                taskExecutor.shutdownNow();
+            }
+
+        } catch (InterruptedException e) {
+
+            LOGGER.log(LogLevelUtil.IGNORE, e, e);
+            Thread.currentThread().interrupt();
+        }
     }
 }

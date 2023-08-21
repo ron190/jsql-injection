@@ -93,8 +93,8 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             
         } catch (InterruptedException e) {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+
+            LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
         
@@ -144,16 +144,10 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             
         } catch (InterruptedException e) {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+
+            LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
-    }
-
-    @Override
-    public CallableTime getCallableSizeTest(String sqlQuery, int indexCharacter) {
-        
-        return new CallableTime(sqlQuery, indexCharacter, this.injectionModel, this, this.booleanMode, "size:" + indexCharacter);
     }
 
     @Override
@@ -197,6 +191,6 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
     @Override
     public String getInfoMessage() {
         
-        return "Time strategy: request is true if delay does not exceed 5 seconds.";
+        return "- Strategy Time: 5 seconds delay means query is True\n\n";
     }
 }

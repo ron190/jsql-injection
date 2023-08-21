@@ -15,7 +15,7 @@ public class MySqlBlindSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
         
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/blind?tenant=mysql&name=1'*");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/blind?tenant=mysql&name=");
 
         model.setIsScanning(true);
         

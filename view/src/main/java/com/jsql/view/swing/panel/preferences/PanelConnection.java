@@ -156,7 +156,7 @@ public class PanelConnection extends JPanel {
         var panelThreadCount = new JPanel(new BorderLayout());
         panelThreadCount.add(labelIsLimitingThreads, BorderLayout.WEST);
         panelThreadCount.add(this.spinnerLimitingThreads, BorderLayout.CENTER);
-        panelThreadCount.add(new JLabel(" thread(s) ; default 10 threads"), BorderLayout.EAST);
+        panelThreadCount.add(new JLabel(" thread(s) ; default 5 threads"), BorderLayout.EAST);
         panelThreadCount.setMaximumSize(new Dimension(125, this.spinnerLimitingThreads.getPreferredSize().height));
         this.spinnerLimitingThreads.addChangeListener(e -> panelPreferences.getActionListenerSave().actionPerformed(null));
         

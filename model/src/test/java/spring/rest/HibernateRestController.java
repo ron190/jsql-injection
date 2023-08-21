@@ -178,7 +178,7 @@ public class HibernateRestController {
 
     @RequestMapping("/multibit")
     public Greeting endpointMultibit(@RequestParam(value="name", defaultValue="World") String name) {
-        return getResponse(name, "select %s", false, false, true);
+        return getResponse(name, "select %s from (select 1)x where true or 1=", false, false, true);
     }
 
     @RequestMapping("/multiple-index")

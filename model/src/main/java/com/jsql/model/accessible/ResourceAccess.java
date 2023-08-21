@@ -205,7 +205,7 @@ public class ResourceAccess {
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
             
         } catch (ExecutionException e) {
@@ -409,7 +409,7 @@ public class ResourceAccess {
                 
             } catch (InterruptedException e) {
                 
-                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.IGNORE, e, e);
                 Thread.currentThread().interrupt();
                 
             } catch (ExecutionException e) {
@@ -637,7 +637,7 @@ public class ResourceAccess {
 
             } catch (InterruptedException e) {
                 
-                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.IGNORE, e, e);
                 Thread.currentThread().interrupt();
                 
             } catch (ExecutionException e) {

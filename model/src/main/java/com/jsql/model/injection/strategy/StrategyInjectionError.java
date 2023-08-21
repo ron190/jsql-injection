@@ -43,9 +43,14 @@ public class StrategyInjectionError extends AbstractStrategy {
         this.isApplicable = false;
         
         var strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
-        
-        if (strategyYaml.getError().getMethod().isEmpty()) {
-            
+
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled()) {
+
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Disabled strategy Error skipped");
+            return;
+
+        } else if (strategyYaml.getError().getMethod().isEmpty()) {
+
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "No Error strategy for {}", this.injectionModel.getMediatorVendor().getVendor());
             return;
         }

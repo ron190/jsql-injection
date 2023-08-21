@@ -230,7 +230,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
             
         } catch (Exception e) {  // Catch all exceptions like interrupt, URL format and JSqlException
@@ -390,7 +390,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
 

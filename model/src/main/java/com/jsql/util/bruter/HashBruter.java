@@ -40,7 +40,7 @@ public class HashBruter extends Bruter {
                     
                 } catch (InterruptedException e) {
                     
-                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+                    LOGGER.log(LogLevelUtil.IGNORE, e, e);
                     Thread.currentThread().interrupt();
                 }
             }
@@ -54,7 +54,7 @@ public class HashBruter extends Bruter {
                 
             } catch (InterruptedException e) {
                 
-                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.IGNORE, e, e);
                 Thread.currentThread().interrupt();
             }
         }

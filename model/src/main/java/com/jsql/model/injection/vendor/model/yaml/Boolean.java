@@ -10,6 +10,7 @@ public class Boolean implements Serializable {
     private Test test = new Test();
     private String blind = StringUtils.EMPTY;
     private String time = StringUtils.EMPTY;
+    private String multibit = StringUtils.EMPTY;
     private String modeAnd = "and";
     private String modeOr = "or";
     private String modeStacked = ";";
@@ -60,5 +61,13 @@ public class Boolean implements Serializable {
 
     public void setModeStacked(String modeStacked) {
         this.modeStacked = modeStacked;
+    }
+
+    public String getMultibit() {
+        return multibit;
+    }
+
+    public void setMultibit(String multibit) {
+        this.multibit = multibit;
     }
 }

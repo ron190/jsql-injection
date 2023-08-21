@@ -163,7 +163,6 @@ strategy:
         ),
         ${bit}
     )
-   length: length(${injection}) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}

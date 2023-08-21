@@ -34,8 +34,6 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     
     /**
      * Constructor for preparation and blind confirmation.
-     * @param sqlQuery
-     * @param injectionModel
      */
     public CallableTime(String sqlQuery, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
         
@@ -47,9 +45,6 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     
     /**
      * Constructor for bit test.
-     * @param sqlQuery
-     * @param indexCharacter
-     * @param bit
      */
     public CallableTime(String sqlQuery, int indexCharacter, int bit, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
         
@@ -57,13 +52,6 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestTime(sqlQuery, indexCharacter, bit, blindMode);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
-    }
-
-    public CallableTime(String sqlQuery, int indexCharacter, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
-        
-        this(sqlQuery, injectionModel, injectionTime, blindMode, metadataInjectionProcess);
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestTime(sqlQuery, indexCharacter, blindMode);
-        this.isTestingLength = true;
     }
     
     @Override

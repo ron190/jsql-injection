@@ -126,11 +126,11 @@ public class SpringTargetApplication {
                 student.setClassName("className");
                 student.setLastName("lastName");
                 student.setRollNo("rollNo");
-                session.save(student);
+                session.persist(student);
                 transaction.commit();
                 
             } catch (Exception e) {
-                // Ignore
+                LOGGER.error(e);
             }
         });
     }

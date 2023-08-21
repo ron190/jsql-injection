@@ -46,35 +46,46 @@ Non regression tests are run against dockerized and in memory databases and GUI 
 title: Architecture, covered by DevOps pipeline
 ---
 graph
-junit-test(JUnit Tests)
-subgraph "jSQL"
+junit(JUnit Tests)
+subgraph "jSQL Injection"
     gui(GUI)
-    inject-model("💉Model")
+    model("💉Model")
 end
 subgraph Spring
-    admin-page([/admin-page])
-    spring-apis([/api])
+    apis([/api])
+    admin([/admin-page])
 end
 subgraph Memory
-    memory-other[(SQLite\nH2\nHSQLDB\nDerby)]   
+    memory-other[("`
+        SQLite H2
+        HSQLDB
+        Derby
+    `")]   
 end
 subgraph Docker
-    direction TB
-    subgraph System
-        direction TB
+    subgraph Apache + PHP
+        direction LR
+        shell(["/shell.php"])
+        file.txt(["/etc/passwd"])   
         mysql[(MySQL)]
-        file.txt(["file.txt"])   
-        shell(["shell.php"])
     end   
-    docker-other[(SQL Server\nPostgreSQL\nCubrid\nNeo4j\nDb2)]   
 end
-junit-test --> inject-model & gui
-inject-model -. "call" .-> admin-page
-inject-model -- inject --> spring-apis
-spring-apis --> Docker
-spring-apis --> Memory
+subgraph Docker2 [Docker]
+    docker-other[("`
+        SQL Server
+        PostgreSQL 
+        Neo4j Db2
+        Cubrid
+    `")]   
+end
 mysql -. read .-> file.txt
 mysql -. create .-> shell
+gui -. "call" .-> shell
+junit -.-> gui
+junit --> model
+model --> apis
+model -.-> admin
+apis --> Docker & Docker2 & Memory
 ```
 
 ## [[Test-bed scripts for Spring](https://github.com/ron190/jsql-injection/tree/master/model/src/test/java/spring/rest)]

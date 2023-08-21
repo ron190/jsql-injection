@@ -1,6 +1,9 @@
 package spring.ssl;
 
+import org.apache.catalina.Context;
+import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Connector;
+import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
@@ -36,7 +39,16 @@ public class HttpServer {
         Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
         connector.setPort(httpPort);
 
-        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory(){
+            protected void postProcessContext(Context context) {
+                ((StandardJarScanner)context.getJarScanner()).setScanManifest(false);
+                context.setAddWebinfClassesResources(true);
+                context.setReloadable(true);
+                Wrapper jsp = (Wrapper) context.findChild("jsp");
+                jsp.addInitParameter("modificationTestInterval", "0");
+                jsp.addInitParameter("development","true");
+            }
+        };
         tomcat.addAdditionalTomcatConnectors(connector);
         
         return tomcat;

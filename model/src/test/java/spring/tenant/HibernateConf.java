@@ -59,7 +59,7 @@ public class HibernateConf {
         
         Properties hibernateProperties = new Properties();
         
-        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         hibernateProperties.setProperty("hibernate.multi_tenant_connection_provider", "spring.tenant.MultiTenantConnectionProviderImpl");
         hibernateProperties.setProperty("hibernate.tenant_identifier_resolver", "spring.tenant.CurrentTenantIdentifierResolverImpl");
         hibernateProperties.setProperty("hibernate.multiTenancy", "DATABASE");

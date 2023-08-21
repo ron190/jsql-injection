@@ -87,8 +87,10 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
                 }
 
                 if (this.constantFalseMark.isEmpty()) {
+                    // Init opcodes
                     this.constantFalseMark = falseMark.get().getOpcodes();
                 } else {
+                    // Clean unmatching opcodes
                     this.constantFalseMark.retainAll(falseMark.get().getOpcodes());
                 }
             }
@@ -98,7 +100,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
 
@@ -148,15 +150,9 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             
         } catch (InterruptedException e) {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
-    }
-
-    @Override
-    public CallableBlind getCallableSizeTest(String sqlQuery, int indexCharacter) {
-        
-        return new CallableBlind(sqlQuery, indexCharacter, this.injectionModel, this, this.booleanMode, "size:" + indexCharacter);
     }
 
     @Override
@@ -197,12 +193,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
     @Override
     public String getInfoMessage() {
         
-        return
-            "Blind strategy: a request is true if the diff between"
-            + " a correct page (e.g existing id) and current page"
-            + " is not as the following: "
-            + this.constantFalseMark
-        ;
+        return "- Strategy Blind: page matching following Diffs means request is True => " + this.constantFalseMark + "\n\n";
     }
     
     

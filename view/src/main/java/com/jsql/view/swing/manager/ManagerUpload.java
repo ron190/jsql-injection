@@ -196,12 +196,8 @@ public class ManagerUpload extends AbstractManagerList {
                         );
                         
                     } catch (InterruptedException e) {
-                        
-                        LOGGER.log(
-                            LogLevelUtil.CONSOLE_ERROR,
-                            String.format("Posting file failed: %s", e.getMessage()),
-                            e
-                        );
+
+                        LOGGER.log(LogLevelUtil.IGNORE, e, e);
                         Thread.currentThread().interrupt();
                     }
                 },

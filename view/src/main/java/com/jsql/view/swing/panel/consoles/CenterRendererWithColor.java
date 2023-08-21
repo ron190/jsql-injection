@@ -35,21 +35,23 @@ public class CenterRendererWithColor extends CenterRenderer {
         if (column == 3 && objectCallableBoolean != null) {
             
             AbstractCallableBoolean<?> callableBoolean = (AbstractCallableBoolean<?>) objectCallableBoolean;
-            
-            if (callableBoolean.isTrue()) {
-                
-                if (isSelected) {
-                    component.setBackground(new Color(128, 255, 128));
+
+            if (!callableBoolean.isMultibit()) {
+                if (callableBoolean.isTrue()) {
+
+                    if (isSelected) {
+                        component.setBackground(new Color(215, 255, 215));
+                    } else {
+                        component.setBackground(new Color(235, 255, 235));
+                    }
+
                 } else {
-                    component.setBackground(new Color(192, 255, 192));
-                }
-                
-            } else {
-                
-                if (isSelected) {
-                    component.setBackground(new Color(255, 128, 128));
-                } else {
-                    component.setBackground(new Color(255, 192, 192));
+
+                    if (isSelected) {
+                        component.setBackground(new Color(255, 215, 215));
+                    } else {
+                        component.setBackground(new Color(255, 235, 235));
+                    }
                 }
             }
         }

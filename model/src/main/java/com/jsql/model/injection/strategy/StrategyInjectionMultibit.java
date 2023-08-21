@@ -46,34 +46,33 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
 
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-        
-//        if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanBlind())) {
-//
-//            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "No Blind strategy known for {}", this.injectionModel.getMediatorVendor().getVendor());
-//
-//        } else {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Multibit...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled()) {
 
-            this.injectionMultibit = new InjectionMultibit(this.injectionModel, BooleanMode.STACKED);
-            this.isApplicable = this.injectionMultibit.isInjectable();
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Disabled strategy Multibit skipped");
+            return;
+        }
 
-            if (this.isApplicable) {
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Multibit...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
 
-                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Multibit injection", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
+        this.injectionMultibit = new InjectionMultibit(this.injectionModel, BooleanMode.STACKED);
+        this.isApplicable = this.injectionMultibit.isInjectable();
 
-                this.allow();
-                
-                var requestMessageBinary = new Request();
-                requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
-                requestMessageBinary.setParameters(this.injectionMultibit.getInfoMessage());
-                this.injectionModel.sendToViews(requestMessageBinary);
-                
-            } else {
-                
-                this.unallow();
-            }
-//        }
+        if (this.isApplicable) {
+
+            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Multibit injection", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
+
+            this.allow();
+
+            var requestMessageBinary = new Request();
+            requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
+            requestMessageBinary.setParameters(this.injectionMultibit.getInfoMessage());
+            this.injectionModel.sendToViews(requestMessageBinary);
+
+        } else {
+
+            this.unallow();
+        }
     }
 
     @Override

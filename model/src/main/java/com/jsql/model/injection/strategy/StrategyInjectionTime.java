@@ -47,58 +47,63 @@ public class StrategyInjectionTime extends AbstractStrategy {
 
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-        
-        if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanTime())) {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "No Time strategy known for {}", this.injectionModel.getMediatorVendor().getVendor());
-            
-        } else {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with STACKED...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
 
-            this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.STACKED);
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyTimeDisabled()) {
+
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Disabled strategy Time skipped");
+            return;
+
+        } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanTime())) {
+
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "No Time strategy known for {}", this.injectionModel.getMediatorVendor().getVendor());
+            return;
+
+        }
+
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with STACKED...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
+
+        this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.STACKED);
+        this.isApplicable = this.injectionTime.isInjectable();
+
+        if (!this.isApplicable) {
+
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with OR...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
+
+            this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.OR);
             this.isApplicable = this.injectionTime.isInjectable();
 
             if (!this.isApplicable) {
 
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with OR...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with AND...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
 
-                this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.OR);
+                this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.AND);
                 this.isApplicable = this.injectionTime.isInjectable();
 
-                if (!this.isApplicable) {
+                if (this.isApplicable) {
 
-                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Time with AND...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
-
-                    this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.AND);
-                    this.isApplicable = this.injectionTime.isInjectable();
-
-                    if (this.isApplicable) {
-
-                        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with AND", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
-                    }
-                } else {
-
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with OR", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with AND", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
                 }
             } else {
 
-                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with STACKED", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
+                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with OR", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
             }
-            
-            if (this.isApplicable) {
-                
-                this.allow();
-                
-                var requestMessageBinary = new Request();
-                requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
-                requestMessageBinary.setParameters(this.injectionTime.getInfoMessage());
-                this.injectionModel.sendToViews(requestMessageBinary);
-                
-            } else {
-                
-                this.unallow();
-            }
+        } else {
+
+            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Time injection with STACKED", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
+        }
+
+        if (this.isApplicable) {
+
+            this.allow();
+
+            var requestMessageBinary = new Request();
+            requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
+            requestMessageBinary.setParameters(this.injectionTime.getInfoMessage());
+            this.injectionModel.sendToViews(requestMessageBinary);
+
+        } else {
+
+            this.unallow();
         }
     }
     

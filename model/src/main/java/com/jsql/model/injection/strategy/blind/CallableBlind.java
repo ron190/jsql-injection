@@ -11,12 +11,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Define a call HTTP to the server, require the associated url, character
- * position and bit. Opcodes represents the differences between
+ * position and bit. Opcodes represent the differences between
  * the TRUE page, and the resulting page.
  */
 public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     
-    // List of differences found between the TRUE page, and the present page
+    // List of differences found between the TRUE page, and the current page
     private LinkedList<Diff> opcodes = new LinkedList<>();
     
     private static final DiffMatchPatch DIFFMATCHPATCH = new DiffMatchPatch();
@@ -28,8 +28,6 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     
     /**
      * Constructor for preparation and blind confirmation.
-     * @param sqlQuery
-     * @param injectionBlind
      */
     public CallableBlind(String sqlQuery, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
         
@@ -41,10 +39,6 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     
     /**
      * Constructor for bit test.
-     * @param sqlQuery
-     * @param indexCharacter
-     * @param bit
-     * @param injectionModel
      */
     public CallableBlind(String sqlQuery, int indexCharacter, int bit, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
         
@@ -52,19 +46,6 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestBlind(sqlQuery, indexCharacter, bit, blindMode);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
-    }
-    
-    /**
-     * Constructor for length test.
-     * @param sqlQuery
-     * @param indexCharacter
-     * @param injectionModel
-     */
-    public CallableBlind(String sqlQuery, int indexCharacter, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
-        
-        this(sqlQuery, injectionModel, injectionBlind, blindMode, metadataInjectionProcess);
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestBlind(sqlQuery, indexCharacter, blindMode);
-        this.isTestingLength = true;
     }
 
     /**

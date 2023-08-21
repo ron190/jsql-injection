@@ -10,9 +10,12 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.LoopDetectedSlidingException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.AbstractStrategy;
+import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -38,7 +41,12 @@ import static com.jsql.model.injection.vendor.model.VendorYaml.LIMIT;
  * The process can be interrupted by the user (stop/pause).
  */
 public class SuspendableGetRows extends AbstractSuspendable {
-    
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = LogManager.getRootLogger();
+
     public SuspendableGetRows(InjectionModel injectionModel) {
         super(injectionModel);
     }
@@ -220,9 +228,11 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 .matcher(allLine)
                 .replaceAll(StringUtils.EMPTY)
             );
-            
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Chunk unreliable, row part reloading...");
+
         } else if (regexRowIncomplete.find()) {
             slidingWindowAllRows.append(StringUtil.hexstr("05")).append("1").append(StringUtil.hexstr("0804"));
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Chunk unreliable, keeping row parts only");
         }
     }
 
@@ -281,7 +291,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         }
         
         if (searchName instanceof Table && searchName.getChildCount() > 0) {
-            messageError.append(", check Network tab for error logs");
+            messageError.append(", check Network tab for logs");
         }
         
         throw new InjectionFailureException(messageError.toString(), e);

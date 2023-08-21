@@ -35,16 +35,22 @@ public class StrategyInjectionStacked extends AbstractStrategy {
 
     @Override
     public void checkApplicability() {
-        
+
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyStackedDisabled()) {
+
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Disabled strategy Stacked skipped");
+            return;
+        }
+
         // Reset applicability of new Vendor
         this.isApplicable = false;
-        
+
         var strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
-        
+
         var configurationYaml = strategyYaml.getConfiguration();
-        
+
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Stacked...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
-        
+
         boolean methodIsApplicable = this.isApplicable(configurationYaml, strategyYaml.getStacked());
 
         if (methodIsApplicable) {

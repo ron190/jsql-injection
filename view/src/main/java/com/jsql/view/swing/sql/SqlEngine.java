@@ -206,13 +206,13 @@ public class SqlEngine extends JPanel implements Cleanable {
             v -> modelYaml.getStrategy().getBoolean().setTime(v),
             () -> modelYaml.getStrategy().getBoolean().getTime()
         )),
+        MULTIBIT(new JTextPaneLexer(
+            v -> modelYaml.getStrategy().getBoolean().setMultibit(v),
+            () -> modelYaml.getStrategy().getBoolean().getMultibit()
+        )),
         BIT_TEST(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getBoolean().getTest().setBit(v),
             () -> modelYaml.getStrategy().getBoolean().getTest().getBit()
-        )),
-        LENGTH_TEST(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getBoolean().getTest().setLength(v),
-            () -> modelYaml.getStrategy().getBoolean().getTest().getLength()
         )),
 
         // File
@@ -266,10 +266,11 @@ public class SqlEngine extends JPanel implements Cleanable {
             
             TextareaWithColor.MODE_AND,
             TextareaWithColor.MODE_OR,
+            TextareaWithColor.MODE_STACKED,
             TextareaWithColor.BLIND,
             TextareaWithColor.TIME,
-            TextareaWithColor.BIT_TEST,
-            TextareaWithColor.LENGTH_TEST
+            TextareaWithColor.MULTIBIT,
+            TextareaWithColor.BIT_TEST
         )
         .forEach(textPane -> textPane.getText().setBorder(SqlEngine.borderRight));
         
@@ -283,10 +284,10 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         Stream.of(
             new SimpleEntry<>("SQLENGINE_STRUCTURE", panelStructure),
-            new SimpleEntry<>("SQLENGINE_FILE", panelFile),
             new SimpleEntry<>("SQLENGINE_STRATEGY", panelStrategy),
             new SimpleEntry<>("SQLENGINE_CONFIGURATION", panelConfiguration),
-            new SimpleEntry<>("SQLENGINE_FINGERPRINTING", panelFingerprinting)
+            new SimpleEntry<>("SQLENGINE_FINGERPRINTING", panelFingerprinting),
+            new SimpleEntry<>("SQLENGINE_FILE", panelFile)
         )
         .forEach(entry -> {
             
@@ -447,7 +448,9 @@ public class SqlEngine extends JPanel implements Cleanable {
         var panelStrategy = new JPanel(new BorderLayout());
         panelStrategy.add(tabsStrategy, BorderLayout.CENTER);
         panelStrategy.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
-        
+
+        tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_STACKED"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.STACKED.getText()));
+
         /* Error */
         var panelError = new JPanel(new BorderLayout());
         panelError.add(SqlEngine.tabbedPaneError, BorderLayout.CENTER);
@@ -463,8 +466,8 @@ public class SqlEngine extends JPanel implements Cleanable {
             new SimpleEntry<>("Stacked mode", TextareaWithColor.MODE_STACKED.getText()),
             new SimpleEntry<>("Blind", TextareaWithColor.BLIND.getText()),
             new SimpleEntry<>("Time", TextareaWithColor.TIME.getText()),
-            new SimpleEntry<>("Bit test", TextareaWithColor.BIT_TEST.getText()),
-            new SimpleEntry<>("Length test", TextareaWithColor.LENGTH_TEST.getText())
+            new SimpleEntry<>("Multibit", TextareaWithColor.MULTIBIT.getText()),
+            new SimpleEntry<>("Bit test", TextareaWithColor.BIT_TEST.getText())
         )
         .forEach(entry ->
             tabsBoolean.addTab(
@@ -478,11 +481,10 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_BOOLEAN"), panelBoolean);
 
-        tabsStrategy.addTab(I18nUtil.valueByKey("SQLENGINE_STACKED"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.STACKED.getText()));
-
         /* Strategy */
         Stream.of(
             "SQLENGINE_NORMAL",
+            "SQLENGINE_STACKED",
             "SQLENGINE_ERROR",
             "SQLENGINE_BOOLEAN"
         )

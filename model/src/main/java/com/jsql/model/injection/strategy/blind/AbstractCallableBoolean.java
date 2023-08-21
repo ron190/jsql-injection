@@ -27,7 +27,6 @@ public abstract class AbstractCallableBoolean<T extends AbstractCallableBoolean<
     /**
      * Default call used for bit test.
      */
-    protected boolean isTestingLength = false;
     protected boolean isMultibit = false;
 
     protected String charText;
@@ -37,10 +36,6 @@ public abstract class AbstractCallableBoolean<T extends AbstractCallableBoolean<
      * @return true if the current SQL test is confirmed
      */
     public abstract boolean isTrue();
-    
-    public boolean isTestingLength() {
-        return this.isTestingLength;
-    }
     
     public int getCurrentIndex() {
         return this.currentIndex;

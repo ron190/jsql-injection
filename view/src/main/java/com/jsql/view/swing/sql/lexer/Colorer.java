@@ -223,7 +223,7 @@ class Colorer extends Thread {
                 
             } catch(InterruptedException e) {
                 
-                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+                LOGGER.log(LogLevelUtil.IGNORE, e, e);
                 Thread.currentThread().interrupt();
             }
         }

