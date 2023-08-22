@@ -56,35 +56,35 @@ subgraph Spring
     admin([/admin-page])
 end
 subgraph Memory
-    memory-other[("`
+    memory-other[("
         SQLite H2
         HSQLDB
         Derby
-    `")]   
+    ")]   
 end
 subgraph Docker
     subgraph Apache + PHP
         direction LR
-        shell(["/shell.php"])
-        file.txt(["/etc/passwd"])   
         mysql[(MySQL)]
+        shell(["/shell.php"])
+        passwd(["/etc/passwd"])   
     end   
 end
 subgraph Docker2 [Docker]
-    docker-other[("`
+    docker-other[("
         SQL Server
         PostgreSQL 
         Neo4j Db2
         Cubrid
-    `")]   
+    ")]   
 end
-mysql -. read .-> file.txt
-mysql -. create .-> shell
 gui -. "call" .-> shell
+mysql -. create .-> shell
+mysql -. read .-> passwd
 junit -.-> gui
 junit --> model
-model --> apis
 model -.-> admin
+model --> apis
 apis --> Docker & Docker2 & Memory
 ```
 
