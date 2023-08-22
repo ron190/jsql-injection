@@ -250,8 +250,7 @@ public class PanelConnection extends JPanel {
         var groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
         
-        Stream
-        .of(
+        Stream.of(
             this.checkboxIsFollowingRedirection,
             this.checkboxIsHttp2Disabled,
             this.checkboxIsUnicodeDecodeDisabled,
@@ -288,8 +287,7 @@ public class PanelConnection extends JPanel {
         labelIsLimitingThreads.setName("labelIsLimitingThreads");
         labelIsConnectionTimeout.setName("labelIsConnectionTimeout");
         
-        Stream
-        .of(
+        Stream.of(
             labelIsFollowingRedirection,
             labelIsHttp2Disabled,
             labelIsUnicodeDecodeDisabled,

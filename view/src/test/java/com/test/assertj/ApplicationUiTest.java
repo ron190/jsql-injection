@@ -519,7 +519,7 @@ class ApplicationUiTest {
             false,
             false,
             false,
-            false,
+            true,
             false,
         }, new boolean[] {
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
@@ -532,14 +532,14 @@ class ApplicationUiTest {
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
         });
         
-        window.checkBox("checkboxIsFollowingRedirection").check();
-        window.checkBox("checkboxIsUnicodeDecodeDisabled").check();
-        window.checkBox("checkboxIsNotTestingConnection").check();
-        window.checkBox("checkboxIsProcessingCsrf").check();
-        window.checkBox("checkboxIsCsrfUserTag").check();
-        window.checkBox("checkboxIsNotProcessingCookies").check();
-        window.checkBox("checkboxIsLimitingThreads").check();
-        window.checkBox("checkboxIsConnectionTimeout").check();
+        window.checkBox("checkboxIsFollowingRedirection").click();
+        window.checkBox("checkboxIsUnicodeDecodeDisabled").click();
+        window.checkBox("checkboxIsNotTestingConnection").click();
+        window.checkBox("checkboxIsProcessingCsrf").click();
+        window.checkBox("checkboxIsCsrfUserTag").click();
+        window.checkBox("checkboxIsNotProcessingCookies").click();
+        window.checkBox("checkboxIsLimitingThreads").click();
+        window.checkBox("checkboxIsConnectionTimeout").click();
         
         Assertions.assertArrayEquals(new boolean[] {
             true,
@@ -548,7 +548,7 @@ class ApplicationUiTest {
             true,
             true,
             true,
-            true,
+            false,
             true,
         }, new boolean[] {
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
@@ -577,7 +577,7 @@ class ApplicationUiTest {
             false,
             false,
             false,
-            false,
+            true,
             false,
         }, new boolean[] {
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
@@ -606,7 +606,7 @@ class ApplicationUiTest {
             true,
             true,
             true,
-            true,
+            false,
             true,
         }, new boolean[] {
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
@@ -657,17 +657,17 @@ class ApplicationUiTest {
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
         });
         
-        window.checkBox("checkboxIsParsingForm").check();
-        window.checkBox("checkboxIsNotInjectingMetadata").check();
-        window.checkBox("checkboxIsLimitingNormalIndex").check();
-        window.checkBox("checkboxIsLimitingSleepTimeStrategy").check();
-        window.checkBox("checkboxIsCheckingAllURLParam").check();
-        window.checkBox("checkboxIsCheckingAllRequestParam").check();
-        window.checkBox("checkboxIsCheckingAllHeaderParam").check();
-        window.checkBox("checkboxIsCheckingAllJSONParam").check();
-        window.checkBox("checkboxIsCheckingAllSOAPParam").check();
-        window.checkBox("checkboxIsPerfIndexDisabled").check();
-        window.checkBox("checkboxIsUrlEncodingDisabled").check();
+        window.checkBox("checkboxIsParsingForm").click();
+        window.checkBox("checkboxIsNotInjectingMetadata").click();
+        window.checkBox("checkboxIsLimitingNormalIndex").click();
+        window.checkBox("checkboxIsLimitingSleepTimeStrategy").click();
+        window.checkBox("checkboxIsCheckingAllURLParam").click();
+        window.checkBox("checkboxIsCheckingAllRequestParam").click();
+        window.checkBox("checkboxIsCheckingAllHeaderParam").click();
+        window.checkBox("checkboxIsCheckingAllJSONParam").click();
+        window.checkBox("checkboxIsCheckingAllSOAPParam").click();
+        window.checkBox("checkboxIsPerfIndexDisabled").click();
+        window.checkBox("checkboxIsUrlEncodingDisabled").click();
         
         Assertions.assertArrayEquals(new boolean[] {
             true,
