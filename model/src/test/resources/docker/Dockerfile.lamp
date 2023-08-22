@@ -6,7 +6,6 @@ COPY ./lamp/start-script.sh /root/
 COPY ./lamp/php/get.php /var/www/html/
 COPY ./lamp/php/get2.php /var/www/html/
 COPY ./lamp/php/phpinfo.php /var/www/html/
-RUN chmod 0777 /var/www/html/
-RUN chmod 0444 /etc/mysql/conf.d/config-file.cnf
+RUN chmod 777 /var/www/html/
 RUN chmod +x /root/start-script.sh
 ENTRYPOINT ["/root/start-script.sh"]
