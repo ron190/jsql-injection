@@ -5,7 +5,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Assertions;
-import org.junitpioneer.jupiter.RetryingTest;
+import org.junit.jupiter.api.RepeatedTest;
 
 import java.time.Duration;
 import java.util.List;
@@ -24,7 +24,7 @@ public class AdminPageSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
     }
     
-    @RetryingTest(maxAttempts = 3, suspendForMs = 1000)
+    @RepeatedTest(3)
     public void listAdminPages() {
         Assertions.assertEquals(1, pagesFound);
     }

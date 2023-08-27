@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * A blind attack class using concurrent threads.
  */
-public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
+public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
     
     /**
      * Log4j logger sent to view.
@@ -27,20 +27,20 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     // Source code of the TRUE web page (usually ?id=1)
-    private String blankTrueMark;
+    private String sourceReferencePage;
 
     /**
      * List of string differences found in all the FALSE queries, compared
-     * to the TRUE page (aka opcodes). Each FALSE pages should contain
+     * to the reference page. Each FALSE pages should contain
      * at least one same string, which shouldn't be present in all
      * the TRUE queries.
      */
-    private List<Diff> constantFalseMark = new ArrayList<>();
+    private List<Diff> falseDiffs = new ArrayList<>();
 
     /**
      * Create blind attack initialization.
-     * If every false test are not in true mark and every true test are in
-     * true test, then blind attack is confirmed.
+     * If every false diffs are not in true diffs and every true diffs are in
+     * true diffs, then Blind attack is confirmed.
      * @param blindMode
      */
     public InjectionBlind(InjectionModel injectionModel, BooleanMode blindMode) {
@@ -48,30 +48,30 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         super(injectionModel, blindMode);
         
         // No blind
-        if (this.falseTest.isEmpty() || this.injectionModel.isStoppedByUser()) {
+        if (this.falseTests.isEmpty() || this.injectionModel.isStoppedByUser()) {
             
             return;
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-        this.blankTrueMark = this.callUrl(StringUtils.EMPTY, "blind#ref");
+        this.sourceReferencePage = this.callUrl(StringUtils.EMPTY, "blind#ref");
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagFalse");
         
-        Collection<CallableBlind> listCallableTagFalse = new ArrayList<>();
+        Collection<CallableBlind> callablesFalseTest = new ArrayList<>();
         
-        for (String urlTest: this.falseTest) {
+        for (String falseTest: this.falseTests) {
             
-            listCallableTagFalse.add(new CallableBlind(urlTest, injectionModel, this, blindMode, "blind#falsy"));
+            callablesFalseTest.add(new CallableBlind(falseTest, injectionModel, this, blindMode, "blind#falsy"));
         }
         
         // Delete junk from the results of FALSE statements,
-        // keep only opcodes found in each and every FALSE pages.
+        // keep only diffs found in each and every FALSE pages.
         // Allow the user to stop the loop
         try {
-            List<Future<CallableBlind>> listTagFalse = taskExecutor.invokeAll(listCallableTagFalse);
+            List<Future<CallableBlind>> futuresFalseTest = taskExecutor.invokeAll(callablesFalseTest);
             
             taskExecutor.shutdown();
             
@@ -80,18 +80,18 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
                 taskExecutor.shutdownNow();
             }
 
-            for (Future<CallableBlind> falseMark: listTagFalse) {
+            for (Future<CallableBlind> futureFalseTest: futuresFalseTest) {
 
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
 
-                if (this.constantFalseMark.isEmpty()) {
-                    // Init opcodes
-                    this.constantFalseMark = falseMark.get().getOpcodes();
+                if (this.falseDiffs.isEmpty()) {
+                    // Init diffs
+                    this.falseDiffs = futureFalseTest.get().getDiffsWithReference();
                 } else {
-                    // Clean unmatching opcodes
-                    this.constantFalseMark.retainAll(falseMark.get().getOpcodes());
+                    // Clean unmatching diffs
+                    this.falseDiffs.retainAll(futureFalseTest.get().getDiffsWithReference());
                 }
             }
         } catch (ExecutionException e) {
@@ -108,27 +108,27 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             return;
         }
         
-        this.initializeTrueMarks(injectionModel, blindMode);
+        this.cleanTrueDiffs(injectionModel, blindMode);
     }
 
-    private void initializeTrueMarks(InjectionModel injectionModel, BooleanMode blindMode) {
+    private void cleanTrueDiffs(InjectionModel injectionModel, BooleanMode blindMode) {
         
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
 
-        Collection<CallableBlind> listCallableTagTrue = new ArrayList<>();
+        Collection<CallableBlind> callablesTrueTest = new ArrayList<>();
         
-        for (String urlTest: this.trueTest) {
+        for (String trueTest: this.trueTests) {
             
-            listCallableTagTrue.add(new CallableBlind(urlTest, injectionModel, this, blindMode, "blind#truthy"));
+            callablesTrueTest.add(new CallableBlind(trueTest, injectionModel, this, blindMode, "blind#truthy"));
         }
         
-        // Remove TRUE opcodes in the FALSE opcodes, because
-        // a significant FALSE statement shouldn't contain any TRUE opcode.
+        // Remove TRUE diffs in the FALSE diffs, because
+        // a significant FALSE statement shouldn't contain any TRUE diff.
         // Allow the user to stop the loop.
         try {
-            List<Future<CallableBlind>> listTagTrue = taskExecutor.invokeAll(listCallableTagTrue);
+            List<Future<CallableBlind>> futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);
             
             taskExecutor.shutdown();
             if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
@@ -136,12 +136,12 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
                 taskExecutor.shutdownNow();
             }
         
-            for (Future<CallableBlind> trueTag: listTagTrue) {
+            for (Future<CallableBlind> futureTrueTest: futuresTrueTest) {
                 
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
-                this.constantFalseMark.removeAll(trueTag.get().getOpcodes());
+                this.falseDiffs.removeAll(futureTrueTest.get().getDiffsWithReference());
             }
             
         } catch (ExecutionException e) {
@@ -153,11 +153,6 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
-    }
-
-    @Override
-    public CallableBlind getCallableMultibitTest(String sqlQuery, int indexCharacter, int bit) {
-        return null;
     }
 
     @Override
@@ -187,23 +182,23 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
-        return blindTest.isTrue() && !this.constantFalseMark.isEmpty();
+        return blindTest.isTrue() && !this.falseDiffs.isEmpty();
     }
 
     @Override
     public String getInfoMessage() {
         
-        return "- Strategy Blind: page matching following Diffs means request is True => " + this.constantFalseMark + "\n\n";
+        return "- Strategy Blind: query True when Diffs are matching " + this.falseDiffs + "\n\n";
     }
     
     
     // Getter and setter
 
-    public String getBlankTrueMark() {
-        return this.blankTrueMark;
+    public String getSourceReferencePage() {
+        return this.sourceReferencePage;
     }
     
-    public List<Diff> getConstantFalseMark() {
-        return this.constantFalseMark;
+    public List<Diff> getFalseDiffs() {
+        return this.falseDiffs;
     }
 }

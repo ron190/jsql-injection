@@ -8,10 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit> {
 
@@ -20,10 +18,10 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    private String sourceRef;
+    private String sourceReference;
 
-    private List<Diff> diffsRefWithMultibitIds = new ArrayList<>();
-    private final List<List<Diff>> multibitIds = new ArrayList<>();
+    private List<Diff> diffsCommonWithAllIds = new ArrayList<>();
+    private final List<List<Diff>> diffsById = new ArrayList<>();
 
     public InjectionMultibit(InjectionModel injectionModel, BooleanMode blindMode) {
         
@@ -34,18 +32,17 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
             return;
         }
 
-        this.sourceRef = this.callUrl("8", "multibit#ref");
+        this.sourceReference = this.callUrl("8", "multibit#ref");
 
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetMultibitIds");
 
-        Collection<CallableMultibit> listCallableMultibitIds = new ArrayList<>();
+        Collection<CallableMultibit> callablesId = new ArrayList<>();
 
         for (int i = 0; i < 8 ; i++) {
 
-            listCallableMultibitIds.add(
+            callablesId.add(
                 new CallableMultibit(
                     ""+i,
-                    this.injectionModel,
                     this,
                     "multibit#ref~" + i
                 )
@@ -53,7 +50,7 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
         }
 
         try {
-            List<Future<CallableMultibit>> multibitIdRefs = taskExecutor.invokeAll(listCallableMultibitIds);
+            List<Future<CallableMultibit>> futuresId = taskExecutor.invokeAll(callablesId);
 
             taskExecutor.shutdown();
 
@@ -62,20 +59,20 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
                 taskExecutor.shutdownNow();
             }
 
-            for (Future<CallableMultibit> multibitIdRef: multibitIdRefs) {
+            for (Future<CallableMultibit> futureId: futuresId) {
 
-                List<Diff> opcodes = multibitIdRef.get().getOpcodes();
-                if (this.diffsRefWithMultibitIds.isEmpty()) {
-                    this.diffsRefWithMultibitIds = new ArrayList<>(opcodes);
+                List<Diff> diffsWithReference = futureId.get().getDiffsWithReference();
+                if (this.diffsCommonWithAllIds.isEmpty()) {
+                    this.diffsCommonWithAllIds = new ArrayList<>(diffsWithReference);
                 } else {
-                    this.diffsRefWithMultibitIds.retainAll(opcodes);
+                    this.diffsCommonWithAllIds.retainAll(diffsWithReference);
                 }
-                multibitIds.add(opcodes);
+                diffsById.add(diffsWithReference);
             }
 
-            for (List<Diff> multibitId : multibitIds) {
+            for (List<Diff> diffById : diffsById) {
 
-                multibitId.removeAll(this.diffsRefWithMultibitIds);
+                diffById.removeAll(this.diffsCommonWithAllIds);
             }
 
         } catch (ExecutionException e) {
@@ -84,13 +81,12 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
 
         } catch (InterruptedException e) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
     }
 
-    @Override
-    public CallableMultibit getCallableMultibitTest(String sqlQuery, int indexCharacter, int block) {
+    public CallableMultibit getCallableTest(String sqlQuery, int indexCharacter, int block) {
         return new CallableMultibit(
             sqlQuery,
             indexCharacter,
@@ -99,12 +95,6 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
             this,
             "multi#" + indexCharacter + "." + block
         );
-    }
-
-    @Override
-    public CallableMultibit getCallableBitTest(String sqlQuery, int indexCharacter, int bit) {
-
-        return null;
     }
 
     @Override
@@ -127,22 +117,111 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
 
     @Override
     public String getInfoMessage() {
-        
-        return "- Strategy Multibit: page matching following Diffs converts to related 3 bits => " + this.multibitIds + "\n\n";
+
+        return "- Strategy Multibit: query 3 bits when Diffs match index in " + this.diffsById + "\n\n";
     }
-    
+
+    @Override
+    public void initializeNextCharacters(
+        String sqlQuery,
+        List<char[]> bytes,
+        AtomicInteger indexCharacter,
+        CompletionService<CallableMultibit> taskCompletionService,
+        AtomicInteger countTasksSubmitted
+    ) {
+        indexCharacter.incrementAndGet();
+
+        bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
+
+        for (int block: new int[]{ 1, 2, 3 }) {
+
+            taskCompletionService.submit(
+                this.getCallableTest(
+                    sqlQuery,
+                    indexCharacter.get(),
+                    block
+                )
+            );
+            countTasksSubmitted.addAndGet(1);
+        }
+    }
+
+    @Override
+    public char[] initializeBinaryMask(List<char[]> bytes, CallableMultibit currentCallable) {
+
+        // Bits for current url
+        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
+
+        extractBitsFromBlock(currentCallable, asciiCodeMask);
+
+        return asciiCodeMask;
+    }
+
+    /**
+     * Extract 3 bits from callable for specific block
+     */
+    private void extractBitsFromBlock(CallableMultibit currentCallable, char[] bits) {
+
+        if (currentCallable.block == 1) {
+            convertIdPageToBits(currentCallable, bits, 0, 1, 2);
+        } else if (currentCallable.block == 2) {
+            convertIdPageToBits(currentCallable, bits, 3, 4, 5);
+        } else if (currentCallable.block == 3) {
+            convertIdPageToBits(currentCallable, bits, -1, 6,7);
+        }
+    }
+
+    /**
+     * Set bits by page id
+     */
+    private void convertIdPageToBits(CallableMultibit callable, char[] bits, int i1, int i2, int i3) {
+
+        if (callable.idPage == 0) {
+            if (i1 > -1) bits[i1] = '0';
+            bits[i2] = '0';
+            bits[i3] = '0';
+        } else if (callable.idPage == 1) {
+            if (i1 > -1) bits[i1] = '0';
+            bits[i2] = '0';
+            bits[i3] = '1';
+        } else if (callable.idPage == 2) {
+            if (i1 > -1) bits[i1] = '0';
+            bits[i2] = '1';
+            bits[i3] = '0';
+        } else if (callable.idPage == 3) {
+            if (i1 > -1) bits[i1] = '0';
+            bits[i2] = '1';
+            bits[i3] = '1';
+        } else if (callable.idPage == 4) {
+            if (i1 > -1) bits[i1] = '1';
+            bits[i2] = '0';
+            bits[i3] = '0';
+        } else if (callable.idPage == 5) {
+            if (i1 > -1) bits[i1] = '1';
+            bits[i2] = '0';
+            bits[i3] = '1';
+        } else if (callable.idPage == 6) {
+            if (i1 > -1) bits[i1] = '1';
+            bits[i2] = '1';
+            bits[i3] = '0';
+        } else if (callable.idPage == 7) {
+            if (i1 > -1) bits[i1] = '1';
+            bits[i2] = '1';
+            bits[i3] = '1';
+        }
+    }
     
     // Getter and setter
 
-    public String getSourceRef() {
-        return this.sourceRef;
+    public String getSourceReference() {
+        return this.sourceReference;
     }
 
-    public List<Diff> getDiffsRefWithMultibitIds() {
-        return this.diffsRefWithMultibitIds;
+    public List<Diff> getDiffsCommonWithAllIds() {
+        return this.diffsCommonWithAllIds;
     }
 
-    public List<List<Diff>> getMultibitIds() {
-        return multibitIds;
+    public List<List<Diff>> getDiffsById() {
+        return diffsById;
     }
 }

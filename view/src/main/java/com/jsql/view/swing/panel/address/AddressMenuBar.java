@@ -328,9 +328,9 @@ public class AddressMenuBar extends JMenuBar {
     private JMenu getMenuError() {
         
         return (JMenu) Arrays.stream(this.menuStrategy.getMenuComponents())
-                .filter(c -> ((JMenuItem) c).getText().equalsIgnoreCase(MediatorHelper.model().getMediatorStrategy().getError().getName()))
-                .findFirst().orElse(null);
-//        return (JMenu) this.menuStrategy.getMenuComponent(2);
+            .filter(c -> ((JMenuItem) c).getText().equalsIgnoreCase(MediatorHelper.model().getMediatorStrategy().getError().getName()))
+            .findFirst()
+            .orElse(new JMenuItem("Mock"));
     }
     
     public void markErrorVulnerable(int indexMethodError) {

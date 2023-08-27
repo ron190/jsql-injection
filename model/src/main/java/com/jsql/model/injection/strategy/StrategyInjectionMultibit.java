@@ -22,21 +22,13 @@ import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * Injection strategy using blind attack.
- */
 public class StrategyInjectionMultibit extends AbstractStrategy {
 
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
-    private static String KEY_LOG_CHECKING_STRATEGY = "LOG_CHECKING_STRATEGY";
-    private static String KEY_LOG_VULNERABLE = "LOG_VULNERABLE";
 
-    /**
-     * Blind injection object.
-     */
     private InjectionMultibit injectionMultibit;
 
     public StrategyInjectionMultibit(InjectionModel injectionModel) {
@@ -49,7 +41,7 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled()) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Disabled strategy Multibit skipped");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Skipping strategy Multibit disabled");
             return;
         }
 

@@ -16,9 +16,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Injection strategy using error attack.
- */
 public class StrategyInjectionStacked extends AbstractStrategy {
 
     /**
@@ -38,7 +35,7 @@ public class StrategyInjectionStacked extends AbstractStrategy {
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyStackedDisabled()) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Disabled strategy Stacked skipped");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Skipping strategy Stacked disabled");
             return;
         }
 

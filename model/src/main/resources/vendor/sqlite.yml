@@ -133,19 +133,7 @@ strategy:
   limit: limit 65536 offset ${limit.value}
   failsafe: 1337${indice}7330%2b1
   calibrator: |
-   replace(
-       substr(
-           quote(
-               zeroblob(
-                   (65536%2B1) / 2
-               )
-           ),
-           3,
-           65536
-       ),
-       '0',
-       '${calibrator_sql}'
-   )
+   printf('%25.*c', 65536, '${calibrator_sql}')
   limitBoundary: 0
   endingComment: --+-
   fingerprint:

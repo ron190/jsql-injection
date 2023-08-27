@@ -19,9 +19,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-/**
- * Injection strategy using normal attack.
- */
 public class StrategyInjectionNormal extends AbstractStrategy {
     
     /**
@@ -41,7 +38,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyNormalDisabled()) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Disabled strategy Normal skipped");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Skipping strategy Normal disabled");
             return;
         }
 

@@ -209,7 +209,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 
                 if (this.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
                     
-                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using Zip strategy for minimal query size");
+                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using Zip mode for reduced query size");
                     
                 } else if (this.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
                     

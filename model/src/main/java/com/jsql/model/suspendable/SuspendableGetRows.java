@@ -115,8 +115,12 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 }
                 
                 if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled()) {
-                    
-                    currentChunk = URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text
+
+                    try {
+                        currentChunk = URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text
+                    } catch (IllegalArgumentException e) {
+                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "URL decoding result failing, ignoring", e);
+                    }
                 }
                 
                 countInfiniteLoop = this.checkInfinite(countInfiniteLoop, previousChunk, currentChunk, slidingWindowCurrentRow, slidingWindowAllRows);
@@ -228,7 +232,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 .matcher(allLine)
                 .replaceAll(StringUtils.EMPTY)
             );
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Chunk unreliable, row part reloading...");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Chunk unreliable, reloading row part...");
 
         } else if (regexRowIncomplete.find()) {
             slidingWindowAllRows.append(StringUtil.hexstr("05")).append("1").append(StringUtil.hexstr("0804"));
@@ -344,19 +348,19 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private Matcher parseTrailOnlyFound(String sourcePage) {
-        
+
+        String sourcePageUnicodeDecoded = sourcePage;
+        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()) {
+
+            sourcePageUnicodeDecoded = StringEscapeUtils.unescapeJava(sourcePageUnicodeDecoded);  // Transform \u0000 entities to text
+        }
+
         // TODO: prevent to find the last line directly: MODE + LEAD + .* + TRAIL_RGX
         // It creates extra query which can be endless if not nullified
-        return
-            Pattern
-            .compile(
-                String.format(
-                    "(?s)%s(?i)%s",
-                    LEAD,
-                    TRAIL_RGX
-                )
-            )
-            .matcher(sourcePage);
+        return Pattern.compile(
+            String.format("(?s)%s(?i)%s", LEAD, TRAIL_RGX)
+        )
+        .matcher(sourcePageUnicodeDecoded);
     }
 
     /**
@@ -370,16 +374,10 @@ public class SuspendableGetRows extends AbstractSuspendable {
         Matcher regexAtLeastOneRow;
         
         try {
-            regexAtLeastOneRow =
-                Pattern
-                .compile(
-                    String.format(
-                        "(?s)%s(?i)(.{1,%s})",
-                        LEAD,
-                        performanceLength
-                    )
-                )
-                .matcher(sourcePage);
+            regexAtLeastOneRow = Pattern.compile(
+                String.format("(?s)%s(?i)(.{1,%s})", LEAD, performanceLength)
+            )
+            .matcher(sourcePage);
             
         } catch (PatternSyntaxException e) {
             

@@ -10,33 +10,32 @@ import java.util.List;
 
 public class CallableMultibit extends AbstractCallableBoolean<CallableMultibit> {
 
-    private LinkedList<Diff> opcodes = new LinkedList<>();
+    private LinkedList<Diff> diffsWithReference = new LinkedList<>();
 
     private static final DiffMatchPatch DIFFMATCHPATCH = new DiffMatchPatch();
 
     private final InjectionMultibit injectionMultibit;
 
-    private final InjectionModel injectionModel;
     private final String metadataInjectionProcess;
-    protected boolean isMultibit = true;
 
-    public CallableMultibit(String sqlQuery, InjectionModel injectionModel, InjectionMultibit injectionMultibit, String metadataInjectionProcess) {
+    public CallableMultibit(String sqlQuery, InjectionMultibit injectionMultibit, String metadataInjectionProcess) {
 
-        this.injectionModel = injectionModel;
         this.injectionMultibit = injectionMultibit;
         this.metadataInjectionProcess = metadataInjectionProcess;
         this.booleanUrl = sqlQuery;
+        this.isMultibit = true;
     }
 
     public CallableMultibit(String sqlQuery, int indexCharacter, int block, InjectionModel injectionModel, InjectionMultibit injectionMultibit, String metadataInjectionProcess) {
 
-        this.injectionModel = injectionModel;
-        this.injectionMultibit = injectionMultibit;
-        this.metadataInjectionProcess = metadataInjectionProcess;
-        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(
-            sqlQuery,
-            indexCharacter,
-            3 * block - 2
+        this(
+            injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(
+                sqlQuery,
+                indexCharacter,
+                3 * block - 2
+            ),
+            injectionMultibit,
+            metadataInjectionProcess
         );
         this.block = block;
         this.currentIndex = indexCharacter;
@@ -45,16 +44,16 @@ public class CallableMultibit extends AbstractCallableBoolean<CallableMultibit> 
     @Override
     public CallableMultibit call() {
 
-        String ctnt = this.injectionMultibit.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
+        String result = this.injectionMultibit.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
 
-        this.opcodes = DIFFMATCHPATCH.diffMain(this.injectionMultibit.getSourceRef(), ctnt, true);
+        this.diffsWithReference = DIFFMATCHPATCH.diffMain(this.injectionMultibit.getSourceReference(), result, true);
 
-        DIFFMATCHPATCH.diffCleanupEfficiency(this.opcodes);
+        DIFFMATCHPATCH.diffCleanupEfficiency(this.diffsWithReference);
 
-        this.opcodes.removeAll(this.injectionMultibit.getDiffsRefWithMultibitIds());
+        this.diffsWithReference.removeAll(this.injectionMultibit.getDiffsCommonWithAllIds());
 
-        for (int i = 0; i < this.injectionMultibit.getMultibitIds().size() ; i++) {
-            if (new HashSet<>(this.injectionMultibit.getMultibitIds().get(i)).containsAll(this.opcodes)) {
+        for (int i = 0; i < this.injectionMultibit.getDiffsById().size() ; i++) {
+            if (new HashSet<>(this.injectionMultibit.getDiffsById().get(i)).containsAll(this.diffsWithReference)) {
                 this.idPage = i;
             }
         }
@@ -68,13 +67,10 @@ public class CallableMultibit extends AbstractCallableBoolean<CallableMultibit> 
         return false;
     }
 
-    public List<Diff> getOpcodes() {
-        return this.opcodes;
+    public List<Diff> getDiffsWithReference() {
+        return this.diffsWithReference;
     }
     public int getIdPage() {
         return this.idPage;
-    }
-    public boolean isMultibit() {
-        return isMultibit;
     }
 }

@@ -68,25 +68,22 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             // Previous test for 2xx Success and 3xx Redirection was Header only,
             // now get the HTML content.
             // Proxy is used by jsoup
-            htmlSource = Jsoup
-                .clean(
-                    Jsoup
-                        .connect(this.url)
-                        // Prevent exception on UnsupportedMimeTypeException: Unhandled content type. Must be text/*, application/xml, or application/*+xml
-                        .ignoreContentType(true)
-                        // Prevent exception on HTTP errors
-                        .ignoreHttpErrors(true)
-                        .get()
-                        .html()
-                        .replaceAll("<img[^>]*>", StringUtils.EMPTY)
-                        .replaceAll("<input[^>]*type=\"?hidden\"?[^>]*>", StringUtils.EMPTY)
-                        .replaceAll("<input[^>]*type=\"?(submit|button)\"?[^>]*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
-                        .replaceAll("<input[^>]*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
-                    Safelist
-                        .relaxed()
-                        .addTags("center", "div", "span")
-                        .addAttributes(":all", "style")
-                );
+            htmlSource = Jsoup.clean(
+                Jsoup.connect(this.url)
+                    // Prevent exception on UnsupportedMimeTypeException: Unhandled content type. Must be text/*, application/xml, or application/*+xml
+                    .ignoreContentType(true)
+                    // Prevent exception on HTTP errors
+                    .ignoreHttpErrors(true)
+                    .get()
+                    .html()
+                    .replaceAll("<img[^>]*>", StringUtils.EMPTY)
+                    .replaceAll("<input[^>]*type=\"?hidden\"?[^>]*>", StringUtils.EMPTY)
+                    .replaceAll("<input[^>]*type=\"?(submit|button)\"?[^>]*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
+                    .replaceAll("<input[^>]*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
+                Safelist.relaxed()
+                    .addTags("center", "div", "span")
+                    .addAttributes(":all", "style")
+            );
             
         } catch (IOException e) {
             
@@ -210,10 +207,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
 
         MediatorHelper.tabResults().setToolTipTextAt(
             MediatorHelper.tabResults().indexOfComponent(scroller),
-            String.format(
-                "<html>%s</html>",
-                this.url
-            )
+            String.format("<html>%s</html>", this.url)
         );
 
         // Apply the custom header to the tab

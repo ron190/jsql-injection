@@ -25,11 +25,11 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     
     // Every FALSE SQL statements will be checked,
     // more statements means a more robust application
-    protected final List<String> falseTest;
+    protected final List<String> falseTests;
     
     // Every TRUE SQL statements will be checked,
     // more statements means a more robust application
-    protected final List<String> trueTest;
+    protected final List<String> trueTests;
     
     public enum BooleanMode {
         AND, OR, STACKED
@@ -43,21 +43,26 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         
         this.injectionModel = injectionModel;
         this.booleanMode = booleanMode;
-
-        this.falseTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListFalseTest();
-        this.trueTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
+        this.falseTests = this.injectionModel.getMediatorVendor().getVendor().instance().getListFalseTest();
+        this.trueTests = this.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
     }
-    
-    public abstract T getCallableBitTest(String sqlQuery, int indexCharacter, int bit);
-
-    public abstract T getCallableMultibitTest(String sqlQuery, int indexCharacter, int block);
 
     /**
      * Start one test to verify if boolean works.
      * @return true if boolean method is confirmed
      */
     public abstract boolean isInjectable() throws StoppedByUserSlidingException;
-    
+
+    public abstract void initializeNextCharacters(
+        String sqlQuery,
+        List<char[]> bytes,
+        AtomicInteger indexCharacter,
+        CompletionService<T> taskCompletionService,
+        AtomicInteger countTasksSubmitted
+    );
+
+    public abstract char[] initializeBinaryMask(List<char[]> bytes, T currentCallable);
+
     /**
      * Display a message to explain how is blind/time working.
      * @return
@@ -87,11 +92,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         var countTasksSubmitted = new AtomicInteger(0);
         var countBadAsciiCode = new AtomicInteger(0);
 
-        if (this instanceof InjectionMultibit) {
-            this.initializeNextMultibitCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
-        } else {
-            this.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
-        }
+        this.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
 
         // Process the job until there is no more active task,
         // in other word until all HTTP requests are done
@@ -114,11 +115,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 // and define a new array of 8 undefined bit.
                 // Then add 8 bits requests for that new character.
                 this.injectCharacter(bytes, countTasksSubmitted, countBadAsciiCode, currentCallable);
-                if (currentCallable.isMultibit()) {
-                    this.initializeNextMultibitCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
-                } else {
-                    this.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
-                }
+                this.initializeNextCharacters(sqlQuery, bytes, indexCharacter, taskCompletionService, countTasksSubmitted);
 
                 String result = convert(bytes);
                 if (result.matches("(?s).*"+ DataAccess.TRAIL_RGX +".*")) {
@@ -186,7 +183,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                     && countBadAsciiCode.get() > 9
                     && (countBadAsciiCode.get() * 100 / countTasksSubmitted.get()) > 50
                 ) {
-                    throw new InjectionFailureException("Boolean false positives spotted, stopping...");
+                    throw new InjectionFailureException("Boolean false positive, stopping...");
                 }
                 
                 countBadAsciiCode.incrementAndGet();
@@ -206,143 +203,6 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 .replace("\\t", "\\\\\\t")
             );
             this.injectionModel.sendToViews(interaction);
-        }
-    }
-
-    private void initializeNextMultibitCharacters(
-        String sqlQuery,
-        List<char[]> bytes,
-        AtomicInteger indexCharacter,
-        CompletionService<T> taskCompletionService,
-        AtomicInteger countTasksSubmitted
-    ) {
-        indexCharacter.incrementAndGet();
-
-        bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
-
-        for (int block: new int[]{ 1, 2, 3 }) {
-
-            taskCompletionService.submit(
-                this.getCallableMultibitTest(
-                    sqlQuery,
-                    indexCharacter.get(),
-                    block
-                )
-            );
-        }
-
-        // Add 9 new tasks
-        countTasksSubmitted.addAndGet(3);
-    }
-
-    private void initializeNextCharacters(
-        String sqlQuery,
-        List<char[]> bytes,
-        AtomicInteger indexCharacter,
-        CompletionService<T> taskCompletionService,
-        AtomicInteger countTasksSubmitted
-    ) {
-        indexCharacter.incrementAndGet();
-        
-        // New undefined bits of the next character
-        // Chars all have the last bit set to 0 in Ascii table
-        bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });
-        
-        // Test the 8 bits for the next character, save its position and current bit for later
-        // Ignore last bit 128 and only check for first seven bits
-        for (int bit: new int[]{ 1, 2, 4, 8, 16, 32, 64 }) {
-            
-            taskCompletionService.submit(
-                this.getCallableBitTest(
-                    sqlQuery,
-                    indexCharacter.get(),
-                    bit
-                )
-            );
-        }
-        
-        countTasksSubmitted.addAndGet(7);
-    }
-
-    private char[] initializeBinaryMask(List<char[]> bytes, T currentCallable) {
-
-        if (currentCallable.isMultibit()) {
-
-            // Bits for current url
-            char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
-
-            extractBitsFromBlock(currentCallable, asciiCodeMask);
-
-            return asciiCodeMask;
-
-        } else {
-
-            // Bits for current url
-            char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
-
-            int positionInMask = (int) (
-                8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit()))
-                / Math.log(2)
-            );
-
-            // Set current bit
-            asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';
-
-            return asciiCodeMask;
-        }
-    }
-
-    /**
-     * Extract 3 bits from callable for specific block
-     */
-    private void extractBitsFromBlock(T currentCallable, char[] bits) {
-
-        if (currentCallable.block == 1) {
-            convertIdPageToBits(currentCallable, bits, 0, 1, 2);
-        } else if (currentCallable.block == 2) {
-            convertIdPageToBits(currentCallable, bits, 3, 4, 5);
-        } else if (currentCallable.block == 3) {
-            convertIdPageToBits(currentCallable, bits, -1, 6,7);
-        }
-    }
-
-    /**
-     * Set bits corresponding to page id
-     */
-    private void convertIdPageToBits(T callable, char[] bits, int i1, int i2, int i3) {
-
-        if (callable.idPage == 0) {
-            if (i1 > -1) bits[i1] = '0';
-            bits[i2] = '0';
-            bits[i3] = '0';
-        } else if (callable.idPage == 1) {
-            if (i1 > -1) bits[i1] = '0';
-            bits[i2] = '0';
-            bits[i3] = '1';
-        } else if (callable.idPage == 2) {
-            if (i1 > -1) bits[i1] = '0';
-            bits[i2] = '1';
-            bits[i3] = '0';
-        } else if (callable.idPage == 3) {
-            if (i1 > -1) bits[i1] = '0';
-            bits[i2] = '1';
-            bits[i3] = '1';
-        } else if (callable.idPage == 4) {
-            if (i1 > -1) bits[i1] = '1';
-            bits[i2] = '0';
-            bits[i3] = '0';
-        } else if (callable.idPage == 5) {
-            if (i1 > -1) bits[i1] = '1';
-            bits[i2] = '0';
-            bits[i3] = '1';
-        } else if (callable.idPage == 6) {
-            if (i1 > -1) bits[i1] = '1';
-            bits[i2] = '1';
-            bits[i3] = '0';
-        } else if (callable.idPage == 7) {
-            if (i1 > -1) bits[i1] = '1';
-            bits[i2] = '1';
-            bits[i3] = '1';
         }
     }
 

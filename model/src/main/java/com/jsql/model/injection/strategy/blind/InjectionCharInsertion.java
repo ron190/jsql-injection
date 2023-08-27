@@ -31,7 +31,7 @@ public class InjectionCharInsertion {
 
     /**
      * List of string differences found in all the FALSE queries, compared
-     * to the TRUE page (aka opcodes). Each FALSE pages should contain
+     * to the reference page (aka opcodes). Each FALSE pages should contain
      * at least one same string, which shouldn't be present in all
      * the TRUE queries.
      */

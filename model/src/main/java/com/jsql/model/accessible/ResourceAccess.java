@@ -96,7 +96,7 @@ public class ResourceAccess {
      */
     private List<CallableFile> callablesReadFile = new ArrayList<>();
 
-    private static String MSG_EMPTY_PAYLOAD = "payload integrity check: empty payload";
+    private static final String MSG_EMPTY_PAYLOAD = "payload integrity check: empty payload";
 
     private final InjectionModel injectionModel;
 

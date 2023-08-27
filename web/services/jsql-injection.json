@@ -2,11 +2,11 @@
     "version": "0.91",
     "news": [
         "[Vote!] Choose your most wanted feature => https://github.com/ron190/jsql-injection/discussions/95385",
-        "[Discuss!] Share your knowledge on shells and injection techniques with the community and open a Github discussion => https://github.com/ron190/jsql-injection/discussions",
-        "[Contribute!] Translate jSQL: display settings with top right button, open menu Community and choose 'I help translate jSQL' in your language and translate any word. Click on Send, your contribution is available on Github for review.",
+        "[Discuss!] Share with the community your knowledge about shells and injection techniques and open a Github discussion => https://github.com/ron190/jsql-injection/discussions",
+        "[Contribute!] Translate jSQL: display settings with top right button and open menu Community, choose 'I help translate jSQL' in your language and translate any word. Click on Send then your contribution is available on Github to review.",
         "[Code!] Implement CI/CD APIs with PHP, .NET, Python and Node on Kubernetes/Docker pipelines for test coverage",
-        "[v0.90] Digest authentication client, improved stability and error handling",
-        "[Ongoing features] Stacked query strategy, optimize algorithms",
-        "[Next features] Multi-bits blind strategy, disable any strategy, Kerberos on CI/CD"
+        "[v0.91] Add Stacked strategy",
+        "[Done] Multi-bits blind strategy, disable any strategy",
+        "[Ongoing features] Position and Duality strategies, Kerberos on CI/CD"
     ]
 }

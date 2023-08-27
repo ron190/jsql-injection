@@ -17,9 +17,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Injection strategy using error attack.
- */
 public class StrategyInjectionError extends AbstractStrategy {
     
     /**
@@ -46,7 +43,7 @@ public class StrategyInjectionError extends AbstractStrategy {
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled()) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Disabled strategy Error skipped");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Skipping strategy Error disabled");
             return;
 
         } else if (strategyYaml.getError().getMethod().isEmpty()) {

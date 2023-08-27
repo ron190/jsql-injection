@@ -23,21 +23,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * Injection strategy using time attack.
- */
 public class StrategyInjectionTime extends AbstractStrategy {
     
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
-    private static String KEY_LOG_CHECKING_STRATEGY = "LOG_CHECKING_STRATEGY";
-    private static String KEY_LOG_VULNERABLE = "LOG_VULNERABLE";
 
-    /**
-     * Injection method using time attack.
-     */
     private InjectionTime injectionTime;
     
     public StrategyInjectionTime(InjectionModel injectionModel) {
@@ -50,7 +42,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyTimeDisabled()) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Disabled strategy Time skipped");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Skipping strategy Time disabled");
             return;
 
         } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanTime())) {

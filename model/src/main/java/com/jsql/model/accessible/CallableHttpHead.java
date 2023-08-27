@@ -100,8 +100,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
             
             var httpRequest = builderHttpRequest.build();
             
-            var httpClient = HttpClient
-                .newBuilder()
+            var httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(4))
                 .build();
             

@@ -15,25 +15,20 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A time attack class using parallel threads.
+ * Time attack using parallel threads.
+ * Waiting time in seconds, response time exceeded means query is false.
+ * Noting that sleep() functions will add up for each line from request.
+ * A sleep time of 5 will be executed only if the SELECT returns exactly one line.
  */
-public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
-    
+public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
+
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
-     * Waiting time in seconds, if response time is above
-     * then the SQL query is false.
-     * Noting that sleep() functions will add up for each line from request.
-     * A sleep time of 5 will be executed only if the SELECT returns exactly one line.
-     */
-
-    /**
-     *  Time based works by default, many tests will
-     *  change it to false if it isn't confirmed.
+     *  Time based works by default, many tests will change it to false if it isn't confirmed.
      */
     private boolean isTimeInjectable = true;
 
@@ -47,7 +42,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         super(injectionModel, booleanMode);
         
         // No blind
-        if (this.falseTest.isEmpty() || this.injectionModel.isStoppedByUser()) {
+        if (this.falseTests.isEmpty() || this.injectionModel.isStoppedByUser()) {
             
             return;
         }
@@ -56,18 +51,18 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagFalse");
 
-        Collection<CallableTime> listCallableTagFalse = new ArrayList<>();
+        Collection<CallableTime> callablesFalseTest = new ArrayList<>();
         
-        for (String urlTest: this.falseTest) {
+        for (String falseTest: this.falseTests) {
             
-            listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this, booleanMode, "time#falsy"));
+            callablesFalseTest.add(new CallableTime(falseTest, injectionModel, this, booleanMode, "time#falsy"));
         }
         
         // If one FALSE query makes less than X seconds,
         // then the test is a failure => exit
         // Allow the user to stop the loop
         try {
-            List<Future<CallableTime>> listTagFalse = taskExecutor.invokeAll(listCallableTagFalse);
+            List<Future<CallableTime>> futuresFalseTest = taskExecutor.invokeAll(callablesFalseTest);
             
             taskExecutor.shutdown();
             
@@ -76,13 +71,13 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
                 taskExecutor.shutdownNow();
             }
         
-            for (Future<CallableTime> tagFalse: listTagFalse) {
+            for (Future<CallableTime> futureFalseTest: futuresFalseTest) {
                 
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
                 
-                if (tagFalse.get().isTrue()) {
+                if (futureFalseTest.get().isTrue()) {
                     
                     this.isTimeInjectable = false;
                     return;
@@ -98,27 +93,27 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             Thread.currentThread().interrupt();
         }
         
-        this.initializeTrueMarks(booleanMode);
+        this.checkTrueTests(booleanMode);
     }
 
-    private void initializeTrueMarks(BooleanMode booleanMode) {
+    private void checkTrueTests(BooleanMode booleanMode) {
         
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagTrue");
 
-        Collection<CallableTime> listCallableTagTrue = new ArrayList<>();
+        Collection<CallableTime> callablesTrueTest = new ArrayList<>();
         
-        for (String urlTest: this.trueTest) {
+        for (String trueTest: this.trueTests) {
             
-            listCallableTagTrue.add(new CallableTime(urlTest, this.injectionModel, this, booleanMode, "time#truthy"));
+            callablesTrueTest.add(new CallableTime(trueTest, this.injectionModel, this, booleanMode, "time#truthy"));
         }
 
         // If one TRUE query makes more than X seconds,
         // then the test is a failure => exit.
         // Allow the user to stop the loop
         try {
-            List<Future<CallableTime>> listTagTrue = taskExecutor.invokeAll(listCallableTagTrue);
+            List<Future<CallableTime>> futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);
             
             taskExecutor.shutdown();
             if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
@@ -126,13 +121,13 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
                 taskExecutor.shutdownNow();
             }
         
-            for (Future<CallableTime> trueMark: listTagTrue) {
+            for (Future<CallableTime> futureTrueTest: futuresTrueTest) {
                 
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
                 
-                if (!trueMark.get().isTrue()) {
+                if (!futureTrueTest.get().isTrue()) {
                     
                     this.isTimeInjectable = false;
                     return;
@@ -148,11 +143,6 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
         }
-    }
-
-    @Override
-    public CallableTime getCallableMultibitTest(String sqlQuery, int indexCharacter, int bit) {
-        return null;
     }
 
     @Override
@@ -191,6 +181,6 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
     @Override
     public String getInfoMessage() {
         
-        return "- Strategy Time: 5 seconds delay means query is True\n\n";
+        return "- Strategy Time: query True when delaying for 5s\n\n";
     }
 }

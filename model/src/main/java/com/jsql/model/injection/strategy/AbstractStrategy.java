@@ -17,7 +17,10 @@ import java.util.Map;
  * Define a strategy to inject SQL with methods like Error and Time.
  */
 public abstract class AbstractStrategy {
-    
+
+    protected static final String KEY_LOG_CHECKING_STRATEGY = "LOG_CHECKING_STRATEGY";
+    protected static final String KEY_LOG_VULNERABLE = "LOG_VULNERABLE";
+
     /**
      * i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body.
      */

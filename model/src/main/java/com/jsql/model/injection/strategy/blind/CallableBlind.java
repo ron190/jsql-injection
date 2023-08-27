@@ -11,13 +11,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Define a call HTTP to the server, require the associated url, character
- * position and bit. Opcodes represent the differences between
- * the TRUE page, and the resulting page.
+ * position and bit. Diffs represent the differences between
+ * the reference page, and the current page.
  */
 public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     
-    // List of differences found between the TRUE page, and the current page
-    private LinkedList<Diff> opcodes = new LinkedList<>();
+    // List of differences found between the reference page, and the current page
+    private LinkedList<Diff> diffsWithReference = new LinkedList<>();
     
     private static final DiffMatchPatch DIFFMATCHPATCH = new DiffMatchPatch();
 
@@ -58,12 +58,12 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     public boolean isTrue() {
 
         // Fix #95426: ConcurrentModificationException on iterator.next()
-        List<Diff> copyFalseMarks = new CopyOnWriteArrayList<>(this.injectionBlind.getConstantFalseMark());
-        for (Diff falseDiff: copyFalseMarks) {
+        List<Diff> falseDiffs = new CopyOnWriteArrayList<>(this.injectionBlind.getFalseDiffs());
+        for (Diff falseDiff: falseDiffs) {
 
             // Fix #4386: NullPointerException on contains()
-            // opcodes is initialized to an empty new LinkedList<>()
-            if (this.opcodes.contains(falseDiff)) {
+            // diffsWithReference is initialized to an empty new LinkedList<>()
+            if (this.diffsWithReference.contains(falseDiff)) {
 
                 return false;
             }
@@ -80,16 +80,16 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     @Override
     public CallableBlind call() {
         
-        String ctnt = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
+        String result = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
         
-        this.opcodes = DIFFMATCHPATCH.diffMain(this.injectionBlind.getBlankTrueMark(), ctnt, true);
+        this.diffsWithReference = DIFFMATCHPATCH.diffMain(this.injectionBlind.getSourceReferencePage(), result, true);
         
-        DIFFMATCHPATCH.diffCleanupEfficiency(this.opcodes);
+        DIFFMATCHPATCH.diffCleanupEfficiency(this.diffsWithReference);
         
         return this;
     }
     
-    public List<Diff> getOpcodes() {
-        return this.opcodes;
+    public List<Diff> getDiffsWithReference() {
+        return this.diffsWithReference;
     }
 }

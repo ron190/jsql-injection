@@ -9,12 +9,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Define a call HTTP to the server, require the associated url, character
- * position and bit. Opcodes represents the differences between
- * the TRUE page, and the resulting page.
+ * position and bit. Opcodes represent the differences between
+ * the reference page, and the resulting page.
  */
 public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharInsertion> {
     
-    // List of differences found between the TRUE page, and the present page
+    // List of differences found between the reference page, and the present page
     private LinkedList<Diff> opcodes = new LinkedList<>();
     
     private final DiffMatchPatch diffMatchPatch = new DiffMatchPatch();

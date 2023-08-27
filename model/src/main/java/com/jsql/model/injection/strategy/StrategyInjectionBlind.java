@@ -23,21 +23,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * Injection strategy using blind attack.
- */
 public class StrategyInjectionBlind extends AbstractStrategy {
     
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
-    private static String KEY_LOG_CHECKING_STRATEGY = "LOG_CHECKING_STRATEGY";
-    private static String KEY_LOG_VULNERABLE = "LOG_VULNERABLE";
 
-    /**
-     * Blind injection object.
-     */
     private InjectionBlind injectionBlind;
     
     public StrategyInjectionBlind(InjectionModel injectionModel) {
@@ -50,7 +42,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyBlindDisabled()) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Disabled strategy Blind skipped");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Skipping strategy Blind disabled");
             return;
 
         } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanBlind())) {
