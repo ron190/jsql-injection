@@ -33,6 +33,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -115,7 +116,7 @@ public class TabResults extends DnDTabbedPane {
     
             terminal.requestFocusInWindow();
             
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException | URISyntaxException e) {
             
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect shell Url", e);
         }
@@ -155,7 +156,7 @@ public class TabResults extends DnDTabbedPane {
     
             terminal.requestFocusInWindow();
             
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException | URISyntaxException e) {
             
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect shell Url", e);
         }

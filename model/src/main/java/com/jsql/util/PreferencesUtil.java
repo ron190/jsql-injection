@@ -15,7 +15,6 @@ public class PreferencesUtil {
     // File path saved in preference.
     private String pathFile;
 
-    // True if updates are checked on startup.
     private boolean isCheckingUpdate = true;
 
     // True if bugs are sent to Github.
@@ -23,7 +22,6 @@ public class PreferencesUtil {
     
     private boolean is4K = false;
     
-    // True if HTTP 302 redirection are followed to the new URL.
     private boolean isFollowingRedirection = false;
     private boolean isHttp2Disabled = false;
     

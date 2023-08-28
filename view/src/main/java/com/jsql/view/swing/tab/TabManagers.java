@@ -89,8 +89,13 @@ public class TabManagers extends TabbedPaneWheeled {
                 super.mousePressed(e);
             }
         });
-        
-        this.addTab(I18nUtil.valueByKey(keyLabel), icon, labelTab);
+
+        // Required for i18n to work
+        this.addTab(I18nUtil.valueByKey(keyLabel), icon, null);
+        this.setTabComponentAt(
+            this.indexOfTab(I18nUtil.valueByKey(keyLabel)),
+            labelTab
+        );
 
         I18nViewUtil.addComponentForKey(keyLabel, labelTab);
         I18nViewUtil.addComponentForKey(keyTooltip, refTooltip[0]);

@@ -75,9 +75,9 @@ public class I18nUtil {
     
     public static boolean isAsian(Locale newLocale) {
         return
-            new Locale("zh").getLanguage().equals(newLocale.getLanguage())
-            || new Locale("ko").getLanguage().equals(newLocale.getLanguage())
-            || new Locale("ja").getLanguage().equals(newLocale.getLanguage());
+            Locale.forLanguageTag("zh").getLanguage().equals(newLocale.getLanguage())
+            || Locale.forLanguageTag("ko").getLanguage().equals(newLocale.getLanguage())
+            || Locale.forLanguageTag("ja").getLanguage().equals(newLocale.getLanguage());
     }
     
     

@@ -10,7 +10,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -104,7 +105,7 @@ public class ParameterUtil {
                 .start();
             }
             
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException | URISyntaxException e) {
             
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect Url: {}", e.getMessage());
             
@@ -261,10 +262,10 @@ public class ParameterUtil {
         return characterInsertionByUser;
     }
 
-    public void initializeQueryString(String urlQuery) throws MalformedURLException {
+    public void initializeQueryString(String urlQuery) throws MalformedURLException, URISyntaxException {
 
         // Format and get rid of anchor fragment using native URL
-        var url = new URL(urlQuery);
+        var url = new URI(urlQuery).toURL();
         
         if (
             StringUtils.isEmpty(urlQuery)

@@ -29,10 +29,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLDecoder;
+import java.net.*;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpRequest.Builder;
@@ -292,9 +289,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         // TODO Keep only a single check
         try {
-            urlObject = new URL(urlInjection);
+            urlObject = new URI(urlInjection).toURL();
             
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException | URISyntaxException e) {
             
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
@@ -436,9 +433,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         
         // TODO Keep single check
         try {
-            urlObjectFixed = new URL(urlInjectionFixed);
+            urlObjectFixed = new URI(urlInjectionFixed).toURL();
             
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException | URISyntaxException e) {
             
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,

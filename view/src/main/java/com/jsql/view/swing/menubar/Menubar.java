@@ -498,13 +498,13 @@ public class Menubar extends JMenuBar {
         Object[] languages =
             Stream
             .of("ru zh es fr tr ko se ar cs it pt pl in nl ro de".split(StringUtils.SPACE))
-            .map(flag -> new Locale(flag).getLanguage())
+            .map(flag -> Locale.forLanguageTag(flag).getLanguage())
             .toArray();
         
         boolean isEnglish = !ArrayUtils.contains(languages, Locale.getDefault().getLanguage());
     
         this.itemEnglish = new JRadioButtonMenuItem(
-            new Locale("en").getDisplayLanguage(new Locale("en")),
+            Locale.forLanguageTag("en").getDisplayLanguage(Locale.forLanguageTag("en")),
             UiUtil.ICON_FLAG_EN,
             isEnglish
         );
@@ -516,134 +516,134 @@ public class Menubar extends JMenuBar {
             String.format(
                 patternAsianDisplay,
                 UiUtil.FONT_NAME_MONO_ASIAN,
-                new Locale("ar").getDisplayLanguage(new Locale("ar"))
+                Locale.forLanguageTag("ar").getDisplayLanguage(Locale.forLanguageTag("ar"))
             ),
             UiUtil.ICON_FLAG_AR,
-            new Locale("ar").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("ar").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemArabic.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ar")));
+        this.itemArabic.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("ar")));
         this.itemArabic.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         
         this.itemRussian = new JRadioButtonMenuItem(
-            new Locale("ru").getDisplayLanguage(new Locale("ru")),
+            Locale.forLanguageTag("ru").getDisplayLanguage(Locale.forLanguageTag("ru")),
             UiUtil.ICON_FLAG_RU,
-            new Locale("ru").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("ru").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemRussian.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ru")));
+        this.itemRussian.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("ru")));
         this.itemRussian.setName("itemRussian");
         
         this.itemCzech = new JRadioButtonMenuItem(
-            new Locale("cs").getDisplayLanguage(new Locale("cs")),
+            Locale.forLanguageTag("cs").getDisplayLanguage(Locale.forLanguageTag("cs")),
             UiUtil.ICON_FLAG_CS,
-            new Locale("cs").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("cs").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemCzech.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("cs")));
+        this.itemCzech.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("cs")));
         
         this.itemItalian = new JRadioButtonMenuItem(
-            new Locale("it").getDisplayLanguage(new Locale("it")),
+            Locale.forLanguageTag("it").getDisplayLanguage(Locale.forLanguageTag("it")),
             UiUtil.ICON_FLAG_IT,
-            new Locale("it").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("it").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemItalian.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("it")));
+        this.itemItalian.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("it")));
         
         this.itemIndonesian = new JRadioButtonMenuItem(
-            new Locale("in", "ID").getDisplayLanguage(new Locale("in", "ID")),
+            Locale.forLanguageTag("in-ID").getDisplayLanguage(Locale.forLanguageTag("in-ID")),
             UiUtil.ICON_FLAG_IN_ID,
-            new Locale("in", "ID").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("in-ID").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemIndonesian.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("in", "ID")));
+        this.itemIndonesian.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("in-ID")));
         
         this.itemDutch = new JRadioButtonMenuItem(
-            new Locale("nl").getDisplayLanguage(new Locale("nl")),
+            Locale.forLanguageTag("nl").getDisplayLanguage(Locale.forLanguageTag("nl")),
             UiUtil.ICON_FLAG_NL,
-            new Locale("nl").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("nl").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemDutch.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("nl")));
+        this.itemDutch.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("nl")));
         
         this.itemGerman = new JRadioButtonMenuItem(
-            new Locale("de").getDisplayLanguage(new Locale("de")),
+            Locale.forLanguageTag("de").getDisplayLanguage(Locale.forLanguageTag("de")),
             UiUtil.ICON_FLAG_DE,
-            new Locale("de").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("de").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemGerman.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("de")));
+        this.itemGerman.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("de")));
         
         this.itemTurkish = new JRadioButtonMenuItem(
-            new Locale("tr").getDisplayLanguage(new Locale("tr")),
+            Locale.forLanguageTag("tr").getDisplayLanguage(Locale.forLanguageTag("tr")),
             UiUtil.ICON_FLAG_TR,
-            new Locale("tr").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("tr").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemTurkish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("tr")));
+        this.itemTurkish.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("tr")));
         
         this.itemFrench = new JRadioButtonMenuItem(
-            new Locale("fr").getDisplayLanguage(new Locale("fr")),
+            Locale.forLanguageTag("fr").getDisplayLanguage(Locale.forLanguageTag("fr")),
             UiUtil.ICON_FLAG_FR,
-            new Locale("fr").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("fr").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemFrench.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("fr")));
+        this.itemFrench.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("fr")));
         
         this.itemSpanish = new JRadioButtonMenuItem(
-            new Locale("es").getDisplayLanguage(new Locale("es")),
+            Locale.forLanguageTag("es").getDisplayLanguage(Locale.forLanguageTag("es")),
             UiUtil.ICON_FLAG_ES,
-            new Locale("es").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("es").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemSpanish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("es")));
+        this.itemSpanish.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("es")));
         
         this.itemPortuguese = new JRadioButtonMenuItem(
-            new Locale("pt").getDisplayLanguage(new Locale("pt")),
+            Locale.forLanguageTag("pt").getDisplayLanguage(Locale.forLanguageTag("pt")),
             UiUtil.ICON_FLAG_PT,
-            new Locale("pt").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("pt").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemPortuguese.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("pt")));
+        this.itemPortuguese.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("pt")));
         
         this.itemChinese = new JRadioButtonMenuItem(
             String.format(
                 patternAsianDisplay,
                 UiUtil.FONT_NAME_MONO_ASIAN,
-                new Locale("zh").getDisplayLanguage(new Locale("zh"))
+                Locale.forLanguageTag("zh").getDisplayLanguage(Locale.forLanguageTag("zh"))
             ),
             UiUtil.ICON_FLAG_ZH,
-            new Locale("zh").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("zh").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemChinese.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("zh")));
+        this.itemChinese.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("zh")));
         
         this.itemPolish = new JRadioButtonMenuItem(
-            new Locale("pl").getDisplayLanguage(new Locale("pl")),
+            Locale.forLanguageTag("pl").getDisplayLanguage(Locale.forLanguageTag("pl")),
             UiUtil.ICON_FLAG_PL,
-            new Locale("pl").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("pl").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemPolish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("pl")));
+        this.itemPolish.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("pl")));
         
         this.itemRomanian = new JRadioButtonMenuItem(
-            new Locale("ro").getDisplayLanguage(new Locale("ro")),
+            Locale.forLanguageTag("ro").getDisplayLanguage(Locale.forLanguageTag("ro")),
             UiUtil.ICON_FLAG_RO,
-            new Locale("ro").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("ro").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemRomanian.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ro")));
+        this.itemRomanian.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("ro")));
         
         this.itemSwedish = new JRadioButtonMenuItem(
-            new Locale("se").getDisplayLanguage(new Locale("se")),
+            Locale.forLanguageTag("se").getDisplayLanguage(Locale.forLanguageTag("se")),
             UiUtil.ICON_FLAG_SE,
-            new Locale("se").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("se").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemSwedish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("se")));
+        this.itemSwedish.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("se")));
         
         this.itemFinnish = new JRadioButtonMenuItem(
-            new Locale("fi").getDisplayLanguage(new Locale("fi")),
+            Locale.forLanguageTag("fi").getDisplayLanguage(Locale.forLanguageTag("fi")),
             UiUtil.ICON_FLAG_FI,
-            new Locale("fi").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("fi").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemFinnish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("fi")));
+        this.itemFinnish.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("fi")));
         
         this.itemKorean = new JRadioButtonMenuItem(
             String.format(
                 patternAsianDisplay,
                 UiUtil.FONT_NAME_MONO_ASIAN,
-                new Locale("ko").getDisplayLanguage(new Locale("ko"))
+                Locale.forLanguageTag("ko").getDisplayLanguage(Locale.forLanguageTag("ko"))
             ),
             UiUtil.ICON_FLAG_KO,
-            new Locale("ko").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag("ko").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemKorean.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ko")));
+        this.itemKorean.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("ko")));
         
         var groupRadioLanguage = new ButtonGroup();
         
@@ -717,7 +717,7 @@ public class Menubar extends JMenuBar {
             String.format(
                 formatMenuItemUTF8,
                 UiUtil.FONT_NAME_MONO_ASIAN,
-                new Locale("hi").getDisplayLanguage(new Locale("hi"))
+                Locale.forLanguageTag("hi").getDisplayLanguage(Locale.forLanguageTag("hi"))
             ),
             UiUtil.ICON_FLAG_HI
         );
@@ -725,36 +725,36 @@ public class Menubar extends JMenuBar {
             String.format(
                 formatMenuItemUTF8,
                 UiUtil.FONT_NAME_MONO_ASIAN,
-                new Locale("ar").getDisplayLanguage(new Locale("ar"))
+                Locale.forLanguageTag("ar").getDisplayLanguage(Locale.forLanguageTag("ar"))
             ),
             UiUtil.ICON_FLAG_AR
         );
-        this.itemIntoRussia = new JMenuItem(new Locale("ru").getDisplayLanguage(new Locale("ru")) +"...", UiUtil.ICON_FLAG_RU);
+        this.itemIntoRussia = new JMenuItem(Locale.forLanguageTag("ru").getDisplayLanguage(Locale.forLanguageTag("ru")) +"...", UiUtil.ICON_FLAG_RU);
         this.itemIntoChina = new JMenuItem(
             String.format(
                 formatMenuItemUTF8,
                 UiUtil.FONT_NAME_MONO_ASIAN,
-                new Locale("zh").getDisplayLanguage(new Locale("zh"))
+                Locale.forLanguageTag("zh").getDisplayLanguage(Locale.forLanguageTag("zh"))
             ),
             UiUtil.ICON_FLAG_ZH
         );
-        this.itemIntoFrench = new JMenuItem(new Locale("fr").getDisplayLanguage(new Locale("fr")) +"...", UiUtil.ICON_FLAG_FR);
-        this.itemIntoTurkish = new JMenuItem(new Locale("tr").getDisplayLanguage(new Locale("tr")) +"...", UiUtil.ICON_FLAG_TR);
-        this.itemIntoCzech = new JMenuItem(new Locale("cs").getDisplayLanguage(new Locale("cs")) +"...", UiUtil.ICON_FLAG_CS);
-        this.itemIntoDutch = new JMenuItem(new Locale("nl").getDisplayLanguage(new Locale("nl")) +"...", UiUtil.ICON_FLAG_NL);
-        this.itemIntoGerman = new JMenuItem(new Locale("de").getDisplayLanguage(new Locale("de")) +"...", UiUtil.ICON_FLAG_DE);
-        this.itemIntoIndonesian = new JMenuItem(new Locale("in", "ID").getDisplayLanguage(new Locale("in", "ID")) +"...", UiUtil.ICON_FLAG_IN_ID);
-        this.itemIntoItalian = new JMenuItem(new Locale("it").getDisplayLanguage(new Locale("it")) +"...", UiUtil.ICON_FLAG_IT);
-        this.itemIntoSpanish = new JMenuItem(new Locale("es").getDisplayLanguage(new Locale("es")) +"...", UiUtil.ICON_FLAG_ES);
-        this.itemIntoPortuguese = new JMenuItem(new Locale("pt").getDisplayLanguage(new Locale("pt")) +"...", UiUtil.ICON_FLAG_PT);
-        this.itemIntoPolish = new JMenuItem(new Locale("pl").getDisplayLanguage(new Locale("pl")) +"...", UiUtil.ICON_FLAG_PL);
-        this.itemIntoRomanian = new JMenuItem(new Locale("ro").getDisplayLanguage(new Locale("ro")) +"...", UiUtil.ICON_FLAG_RO);
-        this.itemIntoTamil = new JMenuItem(new Locale("ta").getDisplayLanguage(new Locale("ta")) +"...", UiUtil.ICON_FLAG_LK);
+        this.itemIntoFrench = new JMenuItem(Locale.forLanguageTag("fr").getDisplayLanguage(Locale.forLanguageTag("fr")) +"...", UiUtil.ICON_FLAG_FR);
+        this.itemIntoTurkish = new JMenuItem(Locale.forLanguageTag("tr").getDisplayLanguage(Locale.forLanguageTag("tr")) +"...", UiUtil.ICON_FLAG_TR);
+        this.itemIntoCzech = new JMenuItem(Locale.forLanguageTag("cs").getDisplayLanguage(Locale.forLanguageTag("cs")) +"...", UiUtil.ICON_FLAG_CS);
+        this.itemIntoDutch = new JMenuItem(Locale.forLanguageTag("nl").getDisplayLanguage(Locale.forLanguageTag("nl")) +"...", UiUtil.ICON_FLAG_NL);
+        this.itemIntoGerman = new JMenuItem(Locale.forLanguageTag("de").getDisplayLanguage(Locale.forLanguageTag("de")) +"...", UiUtil.ICON_FLAG_DE);
+        this.itemIntoIndonesian = new JMenuItem(Locale.forLanguageTag("in-ID").getDisplayLanguage(Locale.forLanguageTag("in-ID")) +"...", UiUtil.ICON_FLAG_IN_ID);
+        this.itemIntoItalian = new JMenuItem(Locale.forLanguageTag("it").getDisplayLanguage(Locale.forLanguageTag("it")) +"...", UiUtil.ICON_FLAG_IT);
+        this.itemIntoSpanish = new JMenuItem(Locale.forLanguageTag("es").getDisplayLanguage(Locale.forLanguageTag("es")) +"...", UiUtil.ICON_FLAG_ES);
+        this.itemIntoPortuguese = new JMenuItem(Locale.forLanguageTag("pt").getDisplayLanguage(Locale.forLanguageTag("pt")) +"...", UiUtil.ICON_FLAG_PT);
+        this.itemIntoPolish = new JMenuItem(Locale.forLanguageTag("pl").getDisplayLanguage(Locale.forLanguageTag("pl")) +"...", UiUtil.ICON_FLAG_PL);
+        this.itemIntoRomanian = new JMenuItem(Locale.forLanguageTag("ro").getDisplayLanguage(Locale.forLanguageTag("ro")) +"...", UiUtil.ICON_FLAG_RO);
+        this.itemIntoTamil = new JMenuItem(Locale.forLanguageTag("ta").getDisplayLanguage(Locale.forLanguageTag("ta")) +"...", UiUtil.ICON_FLAG_LK);
         this.itemIntoJapanese = new JMenuItem(
             String.format(
                 formatMenuItemUTF8,
                 UiUtil.FONT_NAME_MONO_ASIAN,
-                new Locale("ja").getDisplayLanguage(new Locale("ja"))
+                Locale.forLanguageTag("ja").getDisplayLanguage(Locale.forLanguageTag("ja"))
             ),
             UiUtil.ICON_FLAG_JA
         );
@@ -762,12 +762,12 @@ public class Menubar extends JMenuBar {
             String.format(
                 formatMenuItemUTF8,
                 UiUtil.FONT_NAME_MONO_ASIAN,
-                new Locale("ko").getDisplayLanguage(new Locale("ko"))
+                Locale.forLanguageTag("ko").getDisplayLanguage(Locale.forLanguageTag("ko"))
             ),
             UiUtil.ICON_FLAG_KO
         );
-        this.itemIntoSwedish = new JMenuItem(new Locale("se").getDisplayLanguage(new Locale("se")) +"...", UiUtil.ICON_FLAG_SE);
-        this.itemIntoFinnish = new JMenuItem(new Locale("fi").getDisplayLanguage(new Locale("fi")) +"...", UiUtil.ICON_FLAG_FI);
+        this.itemIntoSwedish = new JMenuItem(Locale.forLanguageTag("se").getDisplayLanguage(Locale.forLanguageTag("se")) +"...", UiUtil.ICON_FLAG_SE);
+        this.itemIntoFinnish = new JMenuItem(Locale.forLanguageTag("fi").getDisplayLanguage(Locale.forLanguageTag("fi")) +"...", UiUtil.ICON_FLAG_FI);
         var itemIntoOther = new JMenuItem(I18nUtil.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
         I18nViewUtil.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", itemIntoOther);
         

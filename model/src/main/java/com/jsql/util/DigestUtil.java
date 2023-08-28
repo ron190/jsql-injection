@@ -7,6 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.http.HttpRequest.Builder;
 import java.util.AbstractMap.SimpleEntry;
@@ -64,7 +66,7 @@ public class DigestUtil {
                 String nc = "00000001";
                 String cnonce = "2ecb0e39da79fcb5aa6ffb1bd45cb3bb";
 
-                URL url = new URL(this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
+                URL url = new URI(this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()).toURL();
                 String path = url.getFile();
 
                 String ha1 = DigestUtils.md5Hex(
@@ -82,7 +84,7 @@ public class DigestUtil {
                     username, realm, nonce, path, cnonce, nc, response, qop
                 );
 
-            } catch (MalformedURLException e) {
+            } catch (MalformedURLException | URISyntaxException e) {
 
                 LOGGER.error("Incorrect URL", e);
             }

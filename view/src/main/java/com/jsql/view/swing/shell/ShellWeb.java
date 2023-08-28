@@ -13,6 +13,7 @@ package com.jsql.view.swing.shell;
 import com.jsql.view.swing.util.MediatorHelper;
 
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 /**
@@ -26,7 +27,7 @@ public class ShellWeb extends AbstractShell {
      * @param urlShell URL of current shell
      * @throws MalformedURLException
      */
-    public ShellWeb(UUID terminalID, String urlShell) throws MalformedURLException {
+    public ShellWeb(UUID terminalID, String urlShell) throws MalformedURLException, URISyntaxException {
         
         super(terminalID, urlShell, "system");
         

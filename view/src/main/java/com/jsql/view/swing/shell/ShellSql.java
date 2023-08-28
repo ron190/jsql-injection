@@ -13,6 +13,7 @@ package com.jsql.view.swing.shell;
 import com.jsql.view.swing.util.MediatorHelper;
 
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 /**
@@ -27,7 +28,7 @@ public class ShellSql extends AbstractShell {
      * @param args User and password
      * @throws MalformedURLException
      */
-    public ShellSql(UUID terminalID, String urlShell, String... args) throws MalformedURLException {
+    public ShellSql(UUID terminalID, String urlShell, String... args) throws MalformedURLException, URISyntaxException {
         
         super(terminalID, urlShell, "sql");
         this.loginPassword = args;

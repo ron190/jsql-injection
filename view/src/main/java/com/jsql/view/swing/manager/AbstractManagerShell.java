@@ -32,8 +32,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -177,9 +177,9 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             if (StringUtils.isNotEmpty(refUrlShell)) {
                 
                 try {
-                    new URL(refUrlShell);
+                    new URI(refUrlShell);
                     
-                } catch (MalformedURLException e) {
+                } catch (URISyntaxException e) {
                     
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_ERROR,

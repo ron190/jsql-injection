@@ -25,7 +25,8 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.MouseMotionListener;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 /**
@@ -84,13 +85,13 @@ public abstract class AbstractShell extends JTextPane {
      * @param labelShell Type of shell to display on prompt
      * @throws MalformedURLException
      */
-    protected AbstractShell(UUID uuidShell, String urlShell, String labelShell) throws MalformedURLException {
+    protected AbstractShell(UUID uuidShell, String urlShell, String labelShell) throws MalformedURLException, URISyntaxException {
         
         this.uuidShell = uuidShell;
         this.urlShell = urlShell;
         this.labelShell = labelShell;
 
-        var url = new URL(urlShell);
+        var url = new URI(urlShell).toURL();
         this.host = url.getHost();
 
         this.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));

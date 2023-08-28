@@ -164,9 +164,10 @@ public class StrategyInjectionStacked extends AbstractStrategy {
         request.setMessage(Interaction.MARK_STACKED_STRATEGY);
         this.injectionModel.sendToViews(request);
     }
-    
+
+    @Override
     public String getPerformanceLength() {
-        return VendorYaml.DEFAULT_CAPACITY;
+        return this.performanceLength;
     }
 
     @Override
