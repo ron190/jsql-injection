@@ -36,6 +36,6 @@ public class MessageBinary implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.info(this.text.trim());
+        LOGGER.info(this.text::trim);
     }
 }

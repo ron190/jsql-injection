@@ -62,7 +62,7 @@ public class HeaderUtil {
                     ? "\"\""
                     // TODO Url encode: new cookie RFC restricts chars to non ()<>@,;:\"/[]?={} => server must url decode the request
                     // No url encode may work on legacy RFC
-                    : "\"" + URLEncoder.encode(arrayEntry[1].trim().replaceAll("^\\s*\"|\"\\s*$", "").replace("+", "%2B"), StandardCharsets.UTF_8) + "\""
+                    : "\"" + URLEncoder.encode(arrayEntry[1].trim().replaceAll("(^\\s*\")|(\"\\s*$)", "").replace("+", "%2B"), StandardCharsets.UTF_8) + "\""
                 ))
                 .collect(Collectors.toList());
             valueHeader = String.join("; ", cookies);

@@ -75,7 +75,7 @@ public abstract class AbstractTestSuite {
             AbstractTestSuite.isSetupDone.set(true);
         }
             
-        LOGGER.info("@BeforeClass: backend is setting up...");
+        LOGGER.info("@BeforeAll: backend is setting up...");
         Awaitility.await().atMost(Duration.ofMinutes(2)).until(AbstractTestSuite.isSetupDone::get);
 
         if (this.injectionModel == null) {

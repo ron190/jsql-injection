@@ -527,12 +527,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                     )
                     // Invalid XML characters in recent Spring version
                     // TODO Server needs to urldecode, or stop using out of range chars
-                    .replaceAll("\\x01", "&#01;")
-                    .replaceAll("\\x03", "&#03;")
-                    .replaceAll("\\x04", "&#04;")
-                    .replaceAll("\\x05", "&#05;")
-                    .replaceAll("\\x06", "&#06;")
-                    .replaceAll("\\x07", "&#07;")
+                    .replace("\u0001", "&#01;")
+                    .replace("\u0003", "&#03;")
+                    .replace("\u0004", "&#04;")
+                    .replace("\u0005", "&#05;")
+                    .replace("\u0006", "&#06;")
+                    .replace("\u0007", "&#07;")
                     .replace("+", "%2B")  // Prevent replace '+' into 'space' on server side urldecode
                 );
                 

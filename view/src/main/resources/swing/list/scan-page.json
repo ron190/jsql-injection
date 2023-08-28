@@ -29,6 +29,7 @@
         "requestType": "POST",
         "method": "REQUEST"
     },
+    {"url": "http://academy.hackthebox.com.1.2.3.4:12345/search.php?port_code="},
     {
         "url": "http://2018shell2.picoctf.com:28120/answer2.php",
         "request": "debug=0&answer=",

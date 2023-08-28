@@ -47,7 +47,7 @@ public class CookiesUtil {
 
             String headerCookieWithStar = rawHeader.replace(
                 cookie.getKey() + "=" + cookie.getValue(),
-                cookie.getKey() + "=\"" + cookie.getValue().replaceAll("^\\s*\"|\"\\s*$", "").replaceAll("(.+)\"(.+)", "$1\\\"$2") + InjectionModel.STAR + "\""
+                cookie.getKey() + "=\"" + cookie.getValue().replaceAll("(^\\s*\")|(\"\\s*$)", "").replaceAll("(.+)\"(.+)", "$1\\\"$2") + InjectionModel.STAR + "\""
             );
 
             this.injectionModel.getMediatorUtils().getParameterUtil().initializeHeader(headerCookieWithStar);

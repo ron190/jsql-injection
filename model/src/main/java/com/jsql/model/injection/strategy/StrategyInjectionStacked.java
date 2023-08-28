@@ -97,7 +97,7 @@ public class StrategyInjectionStacked extends AbstractStrategy {
                 .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())
                 .replace(VendorYaml.INJECTION, configurationYaml.getFailsafe().replace("${indice}","0"))
                 .replace(VendorYaml.WINDOW_CHAR, "1")
-                .replace(VendorYaml.CAPACITY, "65565")
+                .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)
             ),
             "stacked#confirm"
         );
@@ -120,7 +120,7 @@ public class StrategyInjectionStacked extends AbstractStrategy {
                 .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())
                 .replace(VendorYaml.INJECTION, configurationYaml.getCalibrator())
                 .replace(VendorYaml.WINDOW_CHAR, "1")
-                .replace(VendorYaml.CAPACITY, "65565")
+                .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)
             ),
             "stacked#size"
         );
@@ -166,7 +166,7 @@ public class StrategyInjectionStacked extends AbstractStrategy {
     }
     
     public String getPerformanceLength() {
-        return "65565";
+        return VendorYaml.DEFAULT_CAPACITY;
     }
 
     @Override
