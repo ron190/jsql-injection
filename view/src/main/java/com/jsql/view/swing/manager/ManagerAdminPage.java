@@ -117,7 +117,7 @@ public class ManagerAdminPage extends AbstractManagerList {
             
             if (StringUtils.isEmpty(urlAddressBar)) {
                 
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "URL in the address bar is missing");
+                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing URL in address bar");
                 
             } else {
                 

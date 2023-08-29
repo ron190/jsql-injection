@@ -71,8 +71,12 @@ public class ParameterUtil {
             String urlQueryFixed = urlQuery;
                
             // Keep single check
-            if (!urlQueryFixed.isEmpty() && !urlQueryFixed.matches("(?i)^https?://.*")) {
-                
+            if (urlQueryFixed.isEmpty()) {
+
+                throw new MalformedURLException("empty URL");
+
+            } else if (!urlQueryFixed.matches("(?i)^https?://.*")) {
+
                 if (!urlQueryFixed.matches("(?i)^\\w+://.*")) {
                     
                     LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Undefined URL protocol, forcing to [http://]");
@@ -105,7 +109,7 @@ public class ParameterUtil {
                 .start();
             }
             
-        } catch (MalformedURLException | URISyntaxException e) {
+        } catch (IllegalArgumentException | MalformedURLException | URISyntaxException e) {
             
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect Url: {}", e.getMessage());
             

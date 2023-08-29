@@ -174,15 +174,9 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         if (asciiCodeBinary.matches("^[01]{8}$")) {
             
             var asciiCode = Integer.parseInt(asciiCodeBinary, 2);
-            
-            // Stop if many 11111111, 01111111 or 00000000
-            if (asciiCode == 255 || asciiCode == 127 || asciiCode == 0) {
+            if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000
                 
-                if (
-                    countTasksSubmitted.get() != 0
-                    && countBadAsciiCode.get() > 9
-                    && (countBadAsciiCode.get() * 100 / countTasksSubmitted.get()) > 50
-                ) {
+                if (countTasksSubmitted.get() != 0 && countBadAsciiCode.get() > 15) {
                     throw new InjectionFailureException("Boolean false positive, stopping...");
                 }
                 
