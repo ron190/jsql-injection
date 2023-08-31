@@ -101,18 +101,18 @@ public final class ThreadUtil {
         }
     }
     
-    public ExecutorService getExecutor(String a) {
+    public ExecutorService getExecutor(String nameThread) {
 
         ExecutorService taskExecutor;
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {
             
             int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();
-            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable(a));
+            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable(nameThread));
             
         } else {
             
-            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable(a));
+            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable(nameThread));
         }
         
         return taskExecutor;

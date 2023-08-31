@@ -38,8 +38,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
         String initialQuery = StringUtils.EMPTY;
         int nbIndex;
         
-        int countNormalIndex =
-            this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex()
+        int countNormalIndex = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex()
             ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countNormalIndex()
             : 50;
 
@@ -85,10 +84,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_INFORM,
                         "Normal strategy triggered with query [{}]",
-                        () -> currentCallable
-                            .getQuery()
-                            .trim()
-                            .replaceAll("1337(\\d*)7330%2b1", "$1")
+                        () -> currentCallable.getQuery().trim().replaceAll("1337(\\d*)7330%2b1", "$1")
                     );
                     
                     break;

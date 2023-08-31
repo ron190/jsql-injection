@@ -12,6 +12,7 @@ build.xml
 jsql-sqlite-its.db
 derby.log
 .idea/
+*.iml
 .run/
 .flattened-pom.xml
 pom.xml.versionsBackup
