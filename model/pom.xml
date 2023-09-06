@@ -49,7 +49,7 @@
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
         <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
-        <h2.version>2.2.220</h2.version>
+        <h2.version>2.2.222</h2.version>
         <hsqldb.version>2.7.2</hsqldb.version>
         <javafaker.version>1.0.2</javafaker.version>
         <jaxb-api.version>2.1</jaxb-api.version>
@@ -62,12 +62,10 @@
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
-        <!-- Spring startup PKIX error on later version -->
-        <mssql-jdbc.version>9.4.1.jre8</mssql-jdbc.version>
+        <mssql-jdbc.version>12.4.1.jre8</mssql-jdbc.version>
         <mysql-connector-j.version>8.1.0</mysql-connector-j.version>
         <nashorn-core.version>15.4</nashorn-core.version>
-        <!-- Java 11 unsupported on later version -->
-        <neo4j-java-driver.version>5.11.0</neo4j-java-driver.version>
+        <neo4j-java-driver.version>5.12.0</neo4j-java-driver.version>
         <neo4j-jdbc-driver.version>4.0.9</neo4j-jdbc-driver.version>
         <ojdbc8.version>23.2.0.0</ojdbc8.version>
         <postgresql.version>42.6.0</postgresql.version>

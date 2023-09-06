@@ -202,7 +202,7 @@ public final class ShadowPopup extends Popup {
         JComponent parent = (JComponent) this.contents.getParent();
         this.popup.hide();
         
-        if ((parent != null) && SHADOW_BORDER.equals(parent.getBorder())) {
+        if (parent != null && SHADOW_BORDER.equals(parent.getBorder())) {
             
             parent.setBorder(this.oldBorder);
             parent.setOpaque(this.oldOpaque);
@@ -235,8 +235,13 @@ public final class ShadowPopup extends Popup {
             
             this.snapshot();
         }
-        
-        this.popup.show();
+
+        // Fix #95477: IllegalArgumentException on show()
+        try {
+            this.popup.show();
+        } catch (IllegalArgumentException e) {
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
+        }
     }
 
     /**
@@ -332,7 +337,7 @@ public final class ShadowPopup extends Popup {
 
             // Avoid unnecessary and illegal screen captures
             // for degenerated popups.
-            if ((width <= 0) || (height <= SHADOW_SIZE)) {
+            if (width <= 0 || height <= SHADOW_SIZE) {
                 
                 return;
             }
@@ -342,8 +347,7 @@ public final class ShadowPopup extends Popup {
             RECT.setBounds(this.x, this.y + height - SHADOW_SIZE, width, SHADOW_SIZE);
             BufferedImage hShadowBg = robot.createScreenCapture(RECT);
 
-            RECT.setBounds(this.x + width - SHADOW_SIZE, this.y, SHADOW_SIZE,
-                    height - SHADOW_SIZE);
+            RECT.setBounds(this.x + width - SHADOW_SIZE, this.y, SHADOW_SIZE, height - SHADOW_SIZE);
             BufferedImage vShadowBg = robot.createScreenCapture(RECT);
 
             JComponent parent = (JComponent) this.contents.getParent();
@@ -455,8 +459,7 @@ public final class ShadowPopup extends Popup {
         
         if (this.owner != null) {
             
-            parent =
-                this.owner instanceof Container
+            parent = this.owner instanceof Container
                 ? (Container) this.owner
                 : this.owner.getParent();
         }
