@@ -66,6 +66,36 @@
         "method": "REQUEST",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE;security=medium;"
     },
+    {"url": "http://test.shack2.org/mysql.jsp?id=1"},
+    {"url": "http://test.shack2.org/mysqlString.jsp?type=1"},
+    {"url": "http://test.shack2.org/orderby/userlist.jsp?order=id"},
+    {
+        "url": "http://test.shack2.org/admin/logincheck.jsp",
+        "request": "key=",
+        "requestType": "POST",
+        "method": "HEADER",
+        "header": "Referer:"
+    },
+    {
+        "url": "http://test.shack2.org/search.jsp?id=1",
+        "request": "key=",
+        "requestType": "POST",
+        "method": "REQUEST"
+    },
+    {
+        "url": "http://test.shack2.org/insert/insert.jsp",
+        "request": "titile=&content=",
+        "requestType": "POST",
+        "method": "REQUEST"
+    },
+    {"url": "http://127.0.0.1/sqli-labs/Less-1/?id="},
+    {"url": "http://127.0.0.1/sqli-labs/Less-2/?id="},
+    {"url": "http://127.0.0.1/sqli-labs/Less-3/?id="},
+    {"url": "http://127.0.0.1/sqli-labs/Less-4/?id="},
+    {"url": "http://127.0.0.1/sqli-labs/Less-5/?id="},
+    {"url": "http://127.0.0.1/sqli-labs/Less-6/?id="},
+    {"url": "http://127.0.0.1/sqli-labs/Less-7/?id="},
+    {"url": "http://127.0.0.1/sqli-labs/Less-8/?id="},
     {
         "url": "http://localhost/bWAPP/sqli_1.php?action=search&title=",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE; security_level=0;",
