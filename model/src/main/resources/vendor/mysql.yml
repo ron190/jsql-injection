@@ -261,7 +261,7 @@ strategy:
     %26 ${bit}
   modeAnd: and
   modeOr: or
-  modeStacked: ; select 'stacked' where
+  modeStacked: ; select 1 where
   blind: ${boolean.mode} ${test}
   time: |
    ${boolean.mode} if(

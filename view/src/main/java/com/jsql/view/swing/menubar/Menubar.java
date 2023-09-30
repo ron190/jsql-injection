@@ -114,6 +114,7 @@ public class Menubar extends JMenuBar {
     
     private static final String KEY_MENU_SQL_ENGINE = "MENUBAR_SQL_ENGINE";
     private static final String KEY_MENU_PREFERENCES = "MENUBAR_PREFERENCES";
+    private static final String LANGUAGE_IN_ID = "in-ID";
 
     /**
      * Create a menubar on main frame.
@@ -547,11 +548,11 @@ public class Menubar extends JMenuBar {
         this.itemItalian.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("it")));
         
         this.itemIndonesian = new JRadioButtonMenuItem(
-            Locale.forLanguageTag("in-ID").getDisplayLanguage(Locale.forLanguageTag("in-ID")),
+            Locale.forLanguageTag(LANGUAGE_IN_ID).getDisplayLanguage(Locale.forLanguageTag(LANGUAGE_IN_ID)),
             UiUtil.ICON_FLAG_IN_ID,
-            Locale.forLanguageTag("in-ID").getLanguage().equals(Locale.getDefault().getLanguage())
+            Locale.forLanguageTag(LANGUAGE_IN_ID).getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        this.itemIndonesian.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag("in-ID")));
+        this.itemIndonesian.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.forLanguageTag(LANGUAGE_IN_ID)));
         
         this.itemDutch = new JRadioButtonMenuItem(
             Locale.forLanguageTag("nl").getDisplayLanguage(Locale.forLanguageTag("nl")),
@@ -743,7 +744,7 @@ public class Menubar extends JMenuBar {
         this.itemIntoCzech = new JMenuItem(Locale.forLanguageTag("cs").getDisplayLanguage(Locale.forLanguageTag("cs")) +"...", UiUtil.ICON_FLAG_CS);
         this.itemIntoDutch = new JMenuItem(Locale.forLanguageTag("nl").getDisplayLanguage(Locale.forLanguageTag("nl")) +"...", UiUtil.ICON_FLAG_NL);
         this.itemIntoGerman = new JMenuItem(Locale.forLanguageTag("de").getDisplayLanguage(Locale.forLanguageTag("de")) +"...", UiUtil.ICON_FLAG_DE);
-        this.itemIntoIndonesian = new JMenuItem(Locale.forLanguageTag("in-ID").getDisplayLanguage(Locale.forLanguageTag("in-ID")) +"...", UiUtil.ICON_FLAG_IN_ID);
+        this.itemIntoIndonesian = new JMenuItem(Locale.forLanguageTag(LANGUAGE_IN_ID).getDisplayLanguage(Locale.forLanguageTag(LANGUAGE_IN_ID)) +"...", UiUtil.ICON_FLAG_IN_ID);
         this.itemIntoItalian = new JMenuItem(Locale.forLanguageTag("it").getDisplayLanguage(Locale.forLanguageTag("it")) +"...", UiUtil.ICON_FLAG_IT);
         this.itemIntoSpanish = new JMenuItem(Locale.forLanguageTag("es").getDisplayLanguage(Locale.forLanguageTag("es")) +"...", UiUtil.ICON_FLAG_ES);
         this.itemIntoPortuguese = new JMenuItem(Locale.forLanguageTag("pt").getDisplayLanguage(Locale.forLanguageTag("pt")) +"...", UiUtil.ICON_FLAG_PT);

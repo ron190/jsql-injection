@@ -32,7 +32,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     protected final List<String> trueTests;
     
     public enum BooleanMode {
-        AND, OR, STACKED
+        AND, OR, STACKED, NO_MODE
     }
     
     protected final InjectionModel injectionModel;

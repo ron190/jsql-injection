@@ -34,7 +34,8 @@ public class PanelInjection extends JPanel {
     private final JRadioButton radioIsDefaultStrategy = new JRadioButton(StringUtils.EMPTY, true);
     private final JRadioButton radioIsDiosStrategy = new JRadioButton(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy());
     private final JCheckBox checkboxIsUrlEncodingDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled());
-    
+    private final JCheckBox checkboxIsUrlRandomSuffixDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlRandomSuffixDisabled());
+
     public PanelInjection(PanelPreferences panelPreferences) {
         
         this.checkboxIsNotInjectingMetadata.setName("checkboxIsNotInjectingMetadata");
@@ -51,6 +52,7 @@ public class PanelInjection extends JPanel {
         this.radioIsDefaultStrategy.setName("radioIsDefaultStrategy");
         this.radioIsDiosStrategy.setName("radioIsDiosStrategy");
         this.checkboxIsUrlEncodingDisabled.setName("checkboxIsUrlEncodingDisabled");
+        this.checkboxIsUrlRandomSuffixDisabled.setName("checkboxIsUrlRandomSuffixDisabled");
         this.checkboxIsLimitingNormalIndex.setName("checkboxIsLimitingNormalIndex");
         this.checkboxIsLimitingSleepTimeStrategy.setName("checkboxIsLimitingSleepTimeStrategy");
         
@@ -169,6 +171,7 @@ public class PanelInjection extends JPanel {
             + "<br>Downside is metadata like table or row count is not fetched.</html>"
         );
         var labelIsUrlEncodingDisabled = new JButton("Disable URL encoding (smaller URL)");
+        var labelIsUrlRandomSuffixDisabled = new JButton("Disable URL random suffix (strategy Time special use case)");
         var labelIsPerfIndexDisabled = new JButton("Disable calibration (smaller SQL query during Normal index selection only)");
         
         var emptyLabelGeneralInjection = new JLabel();
@@ -271,7 +274,12 @@ public class PanelInjection extends JPanel {
             this.checkboxIsUrlEncodingDisabled.setSelected(!this.checkboxIsUrlEncodingDisabled.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
-        
+        labelIsUrlRandomSuffixDisabled.addActionListener(actionEvent -> {
+
+            this.checkboxIsUrlRandomSuffixDisabled.setSelected(!this.checkboxIsUrlRandomSuffixDisabled.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+
         this.checkboxIsCheckingAllParam.addActionListener(actionListenerCheckingAllParam);
         
         Stream
@@ -290,6 +298,7 @@ public class PanelInjection extends JPanel {
             this.radioIsDiosStrategy,
             this.radioIsDefaultStrategy,
             this.checkboxIsUrlEncodingDisabled,
+            this.checkboxIsUrlRandomSuffixDisabled,
             this.checkboxIsLimitingNormalIndex,
             this.checkboxIsLimitingSleepTimeStrategy
         )
@@ -312,6 +321,7 @@ public class PanelInjection extends JPanel {
             labelIsDiosStrategy,
             labelIsDefaultStrategy,
             labelIsUrlEncodingDisabled,
+            labelIsUrlRandomSuffixDisabled,
             labelIsLimitingNormalIndex,
             labelIsLimitingSleepTimeStrategy
         )
@@ -336,6 +346,7 @@ public class PanelInjection extends JPanel {
         labelIsDefaultStrategy.setName("labelIsDefaultStrategy");
         labelIsDiosStrategy.setName("labelIsDiosStrategy");
         labelIsUrlEncodingDisabled.setName("labelIsUrlEncodingDisabled");
+        labelIsUrlRandomSuffixDisabled.setName("labelIsUrlRandomSuffixDisabled");
         labelIsLimitingNormalIndex.setName("labelIsLimitingNormalIndex");
         labelIsLimitingSleepTimeStrategy.setName("labelIsLimitingSleepTimeStrategy");
         
@@ -378,6 +389,7 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.radioIsZipStrategy)
                 .addComponent(this.checkboxIsPerfIndexDisabled)
                 .addComponent(this.checkboxIsUrlEncodingDisabled)
+                .addComponent(this.checkboxIsUrlRandomSuffixDisabled)
             )
             .addGroup(
                 groupLayout
@@ -406,6 +418,7 @@ public class PanelInjection extends JPanel {
                 .addComponent(labelIsZipStrategy)
                 .addComponent(labelIsPerfIndexDisabled)
                 .addComponent(labelIsUrlEncodingDisabled)
+                .addComponent(labelIsUrlRandomSuffixDisabled)
             )
         );
         
@@ -542,6 +555,12 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsUrlEncodingDisabled)
                 .addComponent(labelIsUrlEncodingDisabled)
             )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsUrlRandomSuffixDisabled)
+                .addComponent(labelIsUrlRandomSuffixDisabled)
+            )
         );
     }
 
@@ -608,6 +627,10 @@ public class PanelInjection extends JPanel {
         return this.checkboxIsUrlEncodingDisabled;
     }
     
+    public JCheckBox getCheckboxIsUrlRandomSuffixDisabled() {
+        return this.checkboxIsUrlRandomSuffixDisabled;
+    }
+
     public JCheckBox getCheckboxIsLimitingNormalIndex() {
         return this.checkboxIsLimitingNormalIndex;
     }

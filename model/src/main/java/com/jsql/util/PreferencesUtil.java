@@ -41,7 +41,8 @@ public class PreferencesUtil {
     private boolean isZipStrategy = false;
     private boolean isDiosStrategy = false;
     private boolean isUrlEncodingDisabled = false;
-    
+    private boolean isUrlRandomSuffixDisabled = false;
+
     private boolean isParsingForm = false;
     private boolean isNotTestingConnection = false;
     private boolean isNotProcessingCookies = false;
@@ -111,7 +112,8 @@ public class PreferencesUtil {
         this.isZipStrategy = prefs.getBoolean("isZipStrategy", false);
         this.isDiosStrategy = prefs.getBoolean("isDiosStrategy", false);
         this.isUrlEncodingDisabled = prefs.getBoolean("isUrlEncodingDisabled", false);
-        
+        this.isUrlRandomSuffixDisabled = prefs.getBoolean("isUrlRandomSuffixDisabled", false);
+
         this.isParsingForm = prefs.getBoolean("isParsingForm", false);
         this.isNotTestingConnection = prefs.getBoolean("isNotTestingConnection", false);
         this.isNotProcessingCookies = prefs.getBoolean("isNotProcessingCookies", false);
@@ -197,7 +199,8 @@ public class PreferencesUtil {
         preferences.putBoolean("isZipStrategy", this.isZipStrategy);
         preferences.putBoolean("isDiosStrategy", this.isDiosStrategy);
         preferences.putBoolean("isUrlEncodingDisabled", this.isUrlEncodingDisabled);
-        
+        preferences.putBoolean("isUrlRandomSuffixDisabled", this.isUrlRandomSuffixDisabled);
+
         preferences.putBoolean("isTamperingBase64", this.isTamperingBase64);
         preferences.putBoolean("isTamperingEqualToLike", this.isTamperingEqualToLike);
         preferences.putBoolean("isTamperingVersionComment", this.isTamperingVersionComment);
@@ -415,6 +418,10 @@ public class PreferencesUtil {
         return this.isUrlEncodingDisabled;
     }
     
+    public boolean isUrlRandomSuffixDisabled() {
+        return this.isUrlRandomSuffixDisabled;
+    }
+
     public boolean isStrategyTimeDisabled() {
         return this.isStrategyTimeDisabled;
     }
@@ -727,6 +734,11 @@ public class PreferencesUtil {
     
     public PreferencesUtil withIsUrlEncodingDisabled(boolean isUrlEncodingDisabled) {
         this.isUrlEncodingDisabled = isUrlEncodingDisabled;
+        return this;
+    }
+
+    public PreferencesUtil withIsUrlRandomSuffixDisabled(boolean isUrlRandomSuffixDisabled) {
+        this.isUrlRandomSuffixDisabled = isUrlRandomSuffixDisabled;
         return this;
     }
 

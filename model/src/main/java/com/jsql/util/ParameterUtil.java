@@ -22,12 +22,12 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ParameterUtil {
-    
+
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
-    
+
     /**
      * Query string built from the URL submitted by user.
      */
@@ -42,10 +42,11 @@ public class ParameterUtil {
      * Header submitted by user.
      */
     private List<SimpleEntry<String, String>> listHeader = new ArrayList<>();
-    
+
     private String rawRequest = StringUtils.EMPTY;
     private String rawHeader = StringUtils.EMPTY;
     private boolean isMultipartRequest = false;
+    private static final String FORMAT_KEY_VALUE = "%s=%s";
 
     private final InjectionModel injectionModel;
     
@@ -383,9 +384,9 @@ public class ParameterUtil {
                     && entry.getValue() != null
                     && entry.getValue().contains(InjectionModel.STAR)
                 ) {
-                    return String.format("%s=%s", entry.getKey(), InjectionModel.STAR);
+                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), InjectionModel.STAR);
                 } else {
-                    return String.format("%s=%s", entry.getKey(), entry.getValue());
+                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), entry.getValue());
                 }
             })
             .collect(Collectors.joining("&"));
@@ -397,7 +398,7 @@ public class ParameterUtil {
             .filter(Objects::nonNull)
             .map(entry ->
                 String.format(
-                    "%s=%s",
+                    FORMAT_KEY_VALUE,
                     entry.getKey(),
                     StringUtils.isEmpty(entry.getValue()) ? "" : entry.getValue()
                 )

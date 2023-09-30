@@ -20,10 +20,7 @@ public class JTextPaneLexer extends JTextPane implements JTextPaneObjectMethod {
     }
 
     public void setAttribute() {
-        
-        if (StringUtils.isNotEmpty(this.getText())) {
-            this.consumerSetter.accept(this.getText());
-        }
+        this.consumerSetter.accept(this.getText());
     }
 
     public Supplier<String> getSupplierGetter() {

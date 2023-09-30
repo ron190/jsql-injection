@@ -59,25 +59,36 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
         if (!this.isApplicable) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with OR...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with no mode...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
 
-            this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.OR);
+            this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.NO_MODE);
             this.isApplicable = this.injectionBlind.isInjectable();
 
             if (!this.isApplicable) {
 
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with AND...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
+                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with OR...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
 
-                this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.AND);
+                this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.OR);
                 this.isApplicable = this.injectionBlind.isInjectable();
 
-                if (this.isApplicable) {
+                if (!this.isApplicable) {
 
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with AND", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
+                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with AND...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
+
+                    this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.AND);
+                    this.isApplicable = this.injectionBlind.isInjectable();
+
+                    if (this.isApplicable) {
+
+                        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with AND", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
+                    }
+                } else {
+
+                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with OR", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
                 }
             } else {
 
-                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with OR", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
+                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with no mode", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
             }
         } else {
 
@@ -123,15 +134,8 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         
-        if (this.injectionBlind.getBooleanMode() == BooleanMode.OR) {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using OR statement, database short-circuit may cause failure");
+        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using {} statement", this.injectionBlind.getBooleanMode().name());
 
-        } else {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using {} statement", this.injectionBlind.getBooleanMode().name());
-        }
-        
         LOGGER.log(
             LogLevelUtil.CONSOLE_INFORM,
             "{} [{}]",

@@ -143,12 +143,17 @@ public class HibernateRestController {
     public Greeting endpointError(@RequestParam(value="name", defaultValue="World") String name) {
         return getResponse(name, "select First_Name from Student where '1' = '%s'", true, false, false);
     }
-    
+
     @RequestMapping("/inside")
     public Greeting endpointInside(@RequestParam(value="name", defaultValue="World") String name) {
-        return getResponse(name, "select  '%s'", true, false, false);
+        return getResponse(name, "select '%s'", true, false, false);
     }
-    
+
+    @RequestMapping("/select")
+    public Greeting endpointSelect(@RequestParam(value="name", defaultValue="World") String name) {
+        return getResponse(name, "select %s", false, false, false);
+    }
+
     @RequestMapping("/delete")
     public Greeting endpointDelete(@RequestParam(value="name", defaultValue="World") String name) {
         return getResponse(name, "delete from Student where 'not_found' = '%s'", true, true, false);

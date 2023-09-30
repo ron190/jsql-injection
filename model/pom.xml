@@ -45,7 +45,7 @@
         <awaitility.version>4.2.0</awaitility.version>
         <bootstrap.version>5.3.2</bootstrap.version>
         <dnsjava.version>3.5.2</dnsjava.version>
-        <gmavenplus-plugin.version>3.0.0</gmavenplus-plugin.version>
+        <gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
         <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>

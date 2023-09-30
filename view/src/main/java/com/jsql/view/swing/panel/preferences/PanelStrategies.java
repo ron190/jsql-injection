@@ -53,17 +53,6 @@ public class PanelStrategies extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
 
-        String tooltipIsStrategyStackedDisabled = "Skip Stacked strategy processing";
-        this.checkboxIsStrategyStackedDisabled.setToolTipText(tooltipIsStrategyStackedDisabled);
-        this.checkboxIsStrategyStackedDisabled.setFocusable(false);
-        var labelIsStrategyStackedDisabled = new JButton("Disable Stacked");
-        labelIsStrategyStackedDisabled.setToolTipText(tooltipIsStrategyStackedDisabled);
-        labelIsStrategyStackedDisabled.addActionListener(actionEvent -> {
-
-            this.checkboxIsStrategyStackedDisabled.setSelected(!this.checkboxIsStrategyStackedDisabled.isSelected());
-            panelPreferences.getActionListenerSave().actionPerformed(null);
-        });
-
         String tooltipIsStrategyErrorDisabled = "Skip Error strategy processing";
         this.checkboxIsStrategyErrorDisabled.setToolTipText(tooltipIsStrategyErrorDisabled);
         this.checkboxIsStrategyErrorDisabled.setFocusable(false);
@@ -72,6 +61,17 @@ public class PanelStrategies extends JPanel {
         labelIsStrategyErrorDisabled.addActionListener(actionEvent -> {
 
             this.checkboxIsStrategyErrorDisabled.setSelected(!this.checkboxIsStrategyErrorDisabled.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+
+        String tooltipIsStrategyStackedDisabled = "Skip Stacked strategy processing";
+        this.checkboxIsStrategyStackedDisabled.setToolTipText(tooltipIsStrategyStackedDisabled);
+        this.checkboxIsStrategyStackedDisabled.setFocusable(false);
+        var labelIsStrategyStackedDisabled = new JButton("Disable Stacked");
+        labelIsStrategyStackedDisabled.setToolTipText(tooltipIsStrategyStackedDisabled);
+        labelIsStrategyStackedDisabled.addActionListener(actionEvent -> {
+
+            this.checkboxIsStrategyStackedDisabled.setSelected(!this.checkboxIsStrategyStackedDisabled.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
 
@@ -113,9 +113,9 @@ public class PanelStrategies extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                 .addComponent(this.checkboxIsStrategyTimeDisabled)
                 .addComponent(this.checkboxIsStrategyBlindDisabled)
-                .addComponent(this.checkboxIsStrategyStackedDisabled)
                 .addComponent(this.checkboxIsStrategyMultibitDisabled)
                 .addComponent(this.checkboxIsStrategyErrorDisabled)
+                .addComponent(this.checkboxIsStrategyStackedDisabled)
                 .addComponent(this.checkboxIsStrategyNormalDisabled)
             )
             .addGroup(

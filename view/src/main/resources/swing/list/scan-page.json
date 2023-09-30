@@ -55,6 +55,27 @@
         "method": "REQUEST"
     },
     {
+        "url": "http://natas14.natas.labs.overthewire.org/index.php",
+        "request": "username=&password=",
+        "requestType": "POST",
+        "method": "REQUEST",
+        "header": "Authorization: Basic GET_BASE64_PASSWORD_FROM_NATAS13"
+    },
+    {
+        "url": "http://natas15.natas.labs.overthewire.org/index.php",
+        "request": "username=",
+        "requestType": "POST",
+        "method": "REQUEST",
+        "header": "Authorization: Basic GET_BASE64_PASSWORD_FROM_NATAS15"
+    },
+    {
+        "url": "http://natas17.natas.labs.overthewire.org/index.php",
+        "request": "username=",
+        "requestType": "POST",
+        "method": "REQUEST",
+        "header": "Authorization: Basic GET_BASE64_PASSWORD_FROM_NATAS16"
+    },
+    {
         "url": "http://localhost/DVWA-2.0.1/vulnerabilities/sqli/?id=&Submit=Submit",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE;security=low;",
         "vendor": "MYSQL"
@@ -66,6 +87,7 @@
         "method": "REQUEST",
         "header": "Cookie: PHPSESSID=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE;security=medium;"
     },
+    {"url": "https://web.ctflearn.com/web8/?id=1"},
     {"url": "http://test.shack2.org/mysql.jsp?id=1"},
     {"url": "http://test.shack2.org/mysqlString.jsp?type=1"},
     {"url": "http://test.shack2.org/orderby/userlist.jsp?order=id"},

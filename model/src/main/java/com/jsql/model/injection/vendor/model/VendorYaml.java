@@ -350,6 +350,7 @@ public class VendorYaml implements AbstractVendor {
             case AND: replacement = this.modelYaml.getStrategy().getBoolean().getModeAnd(); break;
             case OR: replacement = this.modelYaml.getStrategy().getBoolean().getModeOr(); break;
             case STACKED: replacement = this.modelYaml.getStrategy().getBoolean().getModeStacked(); break;
+            case NO_MODE: replacement = ""; break;
         }
         return replacement;
     }
@@ -644,10 +645,17 @@ public class VendorYaml implements AbstractVendor {
     
     @Override
     public String endingComment() {
-        return
-            this.modelYaml.getStrategy().getConfiguration().getEndingComment()
-            // Allows Boolean match fingerprinting on host errors
-            + RandomStringUtils.randomAlphanumeric(4);
+
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlRandomSuffixDisabled()) {
+
+            return this.modelYaml.getStrategy().getConfiguration().getEndingComment();
+
+        } else {
+
+            return this.modelYaml.getStrategy().getConfiguration().getEndingComment()
+                // Allows Boolean match fingerprinting on host errors
+                + RandomStringUtils.randomAlphanumeric(4);
+        }
     }
 
     @Override
