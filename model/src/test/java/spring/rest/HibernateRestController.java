@@ -122,6 +122,9 @@ public class HibernateRestController {
 
     @RequestMapping("/stacked")
     public Greeting endpointStacked(@RequestParam(value="name", defaultValue="World") String name, @RequestHeader Map<String, String> headers) {
+        if (name.toLowerCase().contains("union")) {
+            return null;
+        }
         return getResponse(name, "select First_Name from Student where '1' = '%s'", false, false, true, false, false, true);
     }
 

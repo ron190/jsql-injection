@@ -493,12 +493,15 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlStacked(String sqlQuery, String startPosition) {
 
-        return VendorYaml.replaceTags(
-            this.modelYaml.getStrategy().getConfiguration()
-            .getSlidingWindow()
-            .replace(INJECTION, sqlQuery)
-            .replace(WINDOW_CHAR, startPosition)
-            .replace(CAPACITY, DEFAULT_CAPACITY)
+        return this.modelYaml.getStrategy().getStacked().replace(
+            WINDOW,
+            VendorYaml.replaceTags(
+                this.modelYaml.getStrategy().getConfiguration()
+                .getSlidingWindow()
+                .replace(INJECTION, sqlQuery)
+                .replace(WINDOW_CHAR, startPosition)
+                .replace(CAPACITY, DEFAULT_CAPACITY)
+            )
         );
     }
 

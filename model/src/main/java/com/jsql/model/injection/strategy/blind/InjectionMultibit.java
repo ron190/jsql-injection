@@ -4,6 +4,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.util.LogLevelUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -176,41 +177,14 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
      */
     private void convertIdPageToBits(CallableMultibit callable, char[] bits, int i1, int i2, int i3) {
 
-        if (callable.idPage == 0) {
-            if (i1 > -1) bits[i1] = '0';
-            bits[i2] = '0';
-            bits[i3] = '0';
-        } else if (callable.idPage == 1) {
-            if (i1 > -1) bits[i1] = '0';
-            bits[i2] = '0';
-            bits[i3] = '1';
-        } else if (callable.idPage == 2) {
-            if (i1 > -1) bits[i1] = '0';
-            bits[i2] = '1';
-            bits[i3] = '0';
-        } else if (callable.idPage == 3) {
-            if (i1 > -1) bits[i1] = '0';
-            bits[i2] = '1';
-            bits[i3] = '1';
-        } else if (callable.idPage == 4) {
-            if (i1 > -1) bits[i1] = '1';
-            bits[i2] = '0';
-            bits[i3] = '0';
-        } else if (callable.idPage == 5) {
-            if (i1 > -1) bits[i1] = '1';
-            bits[i2] = '0';
-            bits[i3] = '1';
-        } else if (callable.idPage == 6) {
-            if (i1 > -1) bits[i1] = '1';
-            bits[i2] = '1';
-            bits[i3] = '0';
-        } else if (callable.idPage == 7) {
-            if (i1 > -1) bits[i1] = '1';
-            bits[i2] = '1';
-            bits[i3] = '1';
-        }
+        String idPageBinary = Integer.toBinaryString(callable.idPage);
+        String idPageBinaryPadded = StringUtils.leftPad(idPageBinary, 3, "0");
+
+        if (i1 > -1) bits[i1] = idPageBinaryPadded.charAt(0);
+        bits[i2] = idPageBinaryPadded.charAt(1);
+        bits[i3] = idPageBinaryPadded.charAt(2);
     }
-    
+
     // Getter and setter
 
     public String getSourceReference() {

@@ -6,17 +6,17 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class MySqlInsertSuiteIT extends ConcreteMySqlErrorSuiteIT {
+public class MySqlMultibitSuiteIT extends ConcreteMySqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
-        
+
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/insert?tenant=mysql-error&name=");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/multibit?tenant=mysql&name=");
 
         model.setIsScanning(true);
         
@@ -29,13 +29,12 @@ public class MySqlInsertSuiteIT extends ConcreteMySqlErrorSuiteIT {
         model.beginInjection();
     }
     
-    // Insert API add row to the table: listValues() not usable
     @Override
     @RetryingTest(3)
-    public void listDatabases() throws JSqlException {
-        super.listDatabases();
+    public void listValues() throws JSqlException {
+        super.listValues();
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getError(),
+            this.injectionModel.getMediatorStrategy().getMultibit(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

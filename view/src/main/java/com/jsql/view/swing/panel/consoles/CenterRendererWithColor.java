@@ -26,36 +26,37 @@ public class CenterRendererWithColor extends CenterRenderer {
         }
         
         Component component = super.getTableCellRendererComponent(table, text, isSelected, hasFocus, row, column);
-        if (isSelected) {
-            component.setBackground(UiUtil.COLOR_FOCUS_GAINED);
-        } else {
-            component.setBackground(Color.WHITE);
-        }
-        
+        component.setBackground(isSelected ? UiUtil.COLOR_FOCUS_GAINED : Color.WHITE);
+
         if (column == 3 && objectCallableBoolean != null) {
             
             AbstractCallableBoolean<?> callableBoolean = (AbstractCallableBoolean<?>) objectCallableBoolean;
 
             if (!callableBoolean.isMultibit()) {
-                if (callableBoolean.isTrue()) {
-
-                    if (isSelected) {
-                        component.setBackground(new Color(215, 255, 215));
-                    } else {
-                        component.setBackground(new Color(235, 255, 235));
-                    }
-
-                } else {
-
-                    if (isSelected) {
-                        component.setBackground(new Color(255, 215, 215));
-                    } else {
-                        component.setBackground(new Color(255, 235, 235));
-                    }
-                }
+                setColor(isSelected, callableBoolean, component);
             }
         }
         
         return component;
+    }
+
+    private static void setColor(boolean isSelected, AbstractCallableBoolean<?> callableBoolean, Component component) {
+
+        if (callableBoolean.isTrue()) {
+
+            if (isSelected) {
+                component.setBackground(new Color(215, 255, 215));
+            } else {
+                component.setBackground(new Color(235, 255, 235));
+            }
+
+        } else {
+
+            if (isSelected) {
+                component.setBackground(new Color(255, 215, 215));
+            } else {
+                component.setBackground(new Color(255, 235, 235));
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.test.vendor.mysql;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
 public class MySqlOrderBySuiteIT extends ConcreteMySqlErrorSuiteIT {
@@ -25,7 +26,6 @@ public class MySqlOrderBySuiteIT extends ConcreteMySqlErrorSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
         model.beginInjection();
     }
     
@@ -33,5 +33,9 @@ public class MySqlOrderBySuiteIT extends ConcreteMySqlErrorSuiteIT {
     @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getError(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

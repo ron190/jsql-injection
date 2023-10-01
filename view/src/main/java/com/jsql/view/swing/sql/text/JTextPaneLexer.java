@@ -1,7 +1,5 @@
 package com.jsql.view.swing.sql.text;
 
-import org.apache.commons.lang3.StringUtils;
-
 import javax.swing.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;

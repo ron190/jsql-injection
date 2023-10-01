@@ -52,48 +52,10 @@ public class StrategyInjectionBlind extends AbstractStrategy {
             return;
         }
 
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with STACKED...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
-
-        this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.STACKED);
-        this.isApplicable = this.injectionBlind.isInjectable();
-
-        if (!this.isApplicable) {
-
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with no mode...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
-
-            this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.NO_MODE);
-            this.isApplicable = this.injectionBlind.isInjectable();
-
-            if (!this.isApplicable) {
-
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with OR...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
-
-                this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.OR);
-                this.isApplicable = this.injectionBlind.isInjectable();
-
-                if (!this.isApplicable) {
-
-                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Blind with AND...", () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));
-
-                    this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.AND);
-                    this.isApplicable = this.injectionBlind.isInjectable();
-
-                    if (this.isApplicable) {
-
-                        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with AND", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
-                    }
-                } else {
-
-                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with OR", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
-                }
-            } else {
-
-                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with no mode", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
-            }
-        } else {
-
-            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} Blind injection with STACKED", () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE));
-        }
+        checkInjection(BooleanMode.STACKED);
+        checkInjection(BooleanMode.NO_MODE);
+        checkInjection(BooleanMode.OR);
+        checkInjection(BooleanMode.AND);
 
         if (this.isApplicable) {
 
@@ -107,6 +69,31 @@ public class StrategyInjectionBlind extends AbstractStrategy {
         } else {
 
             this.unallow();
+        }
+    }
+
+    private void checkInjection(BooleanMode booleanMode) throws StoppedByUserSlidingException {
+
+        if (this.isApplicable) {
+            return;
+        }
+
+        LOGGER.log(
+            LogLevelUtil.CONSOLE_DEFAULT,
+            "{} Blind with {}...",
+            () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY),
+            () -> booleanMode
+        );
+        this.injectionBlind = new InjectionBlind(this.injectionModel, booleanMode);
+        this.isApplicable = this.injectionBlind.isInjectable();
+
+        if (this.isApplicable) {
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_SUCCESS,
+                "{} Blind injection with {}",
+                () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE),
+                () -> booleanMode
+            );
         }
     }
 
