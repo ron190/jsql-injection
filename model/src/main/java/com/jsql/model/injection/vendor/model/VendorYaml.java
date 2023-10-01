@@ -385,18 +385,24 @@ public class VendorYaml implements AbstractVendor {
     public String sqlTimeTest(String check, BooleanMode blindMode) {
 
         String replacement = getMode(blindMode);
+        int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
+            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
+            : 5;
 
         return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean()
             .getTime()
             .replace(BOOLEAN_MODE, replacement)
             .replace(TEST, check)
-            .replace(SLEEP_TIME, Long.toString(this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()));
+            .replace(SLEEP_TIME, Long.toString(countSleepTimeStrategy));
     }
 
     @Override
     public String sqlBitTestTime(String inj, int indexCharacter, int bit, BooleanMode blindMode) {
 
         String replacement = getMode(blindMode);
+        int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
+            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
+            : 5;
 
         return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean()
             .getTime()
@@ -411,7 +417,7 @@ public class VendorYaml implements AbstractVendor {
             )
             .replace(
                 SLEEP_TIME,
-                Long.toString(this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy())
+                Long.toString(countSleepTimeStrategy)
             );
     }
 

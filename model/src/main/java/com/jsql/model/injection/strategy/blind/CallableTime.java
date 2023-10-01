@@ -56,8 +56,12 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     
     @Override
     public boolean isTrue() {
+
+        int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()
+            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
+            : 5;
         
-        return this.diffSeconds < this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy();
+        return this.diffSeconds < countSleepTimeStrategy;
     }
 
     /**

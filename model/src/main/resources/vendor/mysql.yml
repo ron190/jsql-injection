@@ -258,7 +258,7 @@ strategy:
             1
         )
     )
-    %26 ${bit}
+    %26${bit}
   modeAnd: and
   modeOr: or
   modeStacked: ; select 1 where

@@ -122,13 +122,12 @@ public class StrategyInjectionTime extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         
-        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using AND statement");
-
         LOGGER.log(
             LogLevelUtil.CONSOLE_INFORM,
-            "{} [{}]",
+            "{} [{}] with [{}]",
             () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
-            this::getName
+            this::getName,
+            () -> this.injectionTime.getBooleanMode().name()
         );
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getTime());
         

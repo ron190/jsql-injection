@@ -728,9 +728,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                     queryFixed = queryFixed.replace("?", "%3f");
                     queryFixed = queryFixed.replace("_", "%5f");
                     queryFixed = queryFixed.replace(",", "%2c");
-                    queryFixed = queryFixed.replace(StringUtils.SPACE, "+");
                 }
-                
+                queryFixed = queryFixed.replace(StringUtils.SPACE, "+");  // HTTP forbids space
+
                 queryFixed = queryFixed.replace("|", "%7c");
                 queryFixed = queryFixed.replace("\\", "%5c");
                 

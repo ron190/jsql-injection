@@ -121,13 +121,12 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         
-        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using {} statement", this.injectionBlind.getBooleanMode().name());
-
         LOGGER.log(
             LogLevelUtil.CONSOLE_INFORM,
-            "{} [{}]",
+            "{} [{}] with [{}]",
             () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
-            this::getName
+            this::getName,
+            () -> this.injectionBlind.getBooleanMode().name()
         );
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getBlind());
         

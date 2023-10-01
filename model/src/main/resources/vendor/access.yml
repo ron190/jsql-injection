@@ -86,7 +86,7 @@ resource:
     ) a
    fields:
     field: ${field.value}
-    concat: "%26 '%7f' %26"
+    concat: "%26'%7f'%26"
 
 strategy:
  configuration:
@@ -100,7 +100,7 @@ strategy:
        ) r
    from (${injection})x
   limit: having count(*) between ${limit.value} and ${limit.value}
-  failsafe: select '' %26 (1337${indice}7330%2b1) r from dual
+  failsafe: select '' %26(1337${indice}7330%2b1) r from dual
   calibrator: string(65536, '${calibrator_sql}')
   limitBoundary: 1
   endingComment: --+-
@@ -112,5 +112,5 @@ strategy:
 
  normal:
   indices: union select ${result_range} from (${indice_unique})
-  capacity: (select '${lead}${indice}' %26 ${calibrator} from dual)
+  capacity: (select '${lead}${indice}' %26${calibrator} from dual)
   orderBy: order by 1337

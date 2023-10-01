@@ -12,6 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
@@ -198,7 +200,7 @@ public class MediatorVendor {
             
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database...");
         
-            var insertionCharacter = "'\"#-)'\"*";
+            var insertionCharacter = URLEncoder.encode("'\"#-)'\"*", StandardCharsets.UTF_8);
             String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, "test#vendor");
                 
             var mediatorVendor = this.injectionModel.getMediatorVendor();

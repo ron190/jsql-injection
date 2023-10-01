@@ -33,7 +33,7 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
             return;
         }
 
-        this.sourceReference = this.callUrl("8", "multibit#ref");
+        this.sourceReference = this.callUrl("8", "multi#ref");
 
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetMultibitIds");
 
@@ -45,7 +45,7 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
                 new CallableMultibit(
                     ""+i,
                     this,
-                    "multibit#ref~" + i
+                    "multi#ref~" + i
                 )
             );
         }
