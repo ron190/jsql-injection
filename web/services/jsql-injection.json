@@ -1,5 +1,5 @@
 {
-    "version": "0.93",
+    "version": "0.94",
     "news": [
         "[Contribute!] Improve jSQL, implement CI/CD APIs with PHP, .NET, Python and Node on Kubernetes/Docker pipelines for test coverage",
         "[Vote!] Choose your most wanted feature => https://github.com/ron190/jsql-injection/discussions/95385",
