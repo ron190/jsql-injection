@@ -53,7 +53,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         var charFromBooleanMatch = new String[1];
-        List<String> charactersInsertion = this.initializeCallables(taskCompletionService, characterInsertionByUser, charFromBooleanMatch);
+        List<String> charactersInsertion = this.initializeCallables(taskCompletionService, charFromBooleanMatch);
         
         var mediatorVendor = this.injectionModel.getMediatorVendor();
 
@@ -208,26 +208,18 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             .collect(Collectors.toList());
     }
 
-    private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService, String characterInsertionByUser, String[] charFromBooleanMatch) throws JSqlException {
+    private List<String> initializeCallables(CompletionService<CallablePageSource> taskCompletionService, String[] charFromBooleanMatch) throws JSqlException {
         
-        List<String> prefixValues = Arrays
-            .asList(
-                RandomStringUtils.random(10, "012"),
-//                "-1",
-                "1"
-//                characterInsertionByUser.replace(InjectionModel.STAR, StringUtils.EMPTY),
-//                StringUtils.EMPTY
-            );
+        List<String> prefixValues = Arrays.asList(
+            RandomStringUtils.random(10, "012"),  // use case for probable failure
+            "1"  // use case for eventual success
+        );
         
         List<String> prefixQuotes = Arrays.asList(
             LABEL_PREFIX,
             LABEL_PREFIX +"'",
             LABEL_PREFIX +"\"",
-            LABEL_PREFIX +"%bf'"
-//                "prefix`",
-//                "'prefix'"
-//                "`prefix`",
-//                "\"prefix\"",
+            LABEL_PREFIX +"%bf'"  // GBK slash encoding use case
         );
         
         List<String> prefixParentheses = Arrays.asList(StringUtils.EMPTY, ")", "))");

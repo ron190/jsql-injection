@@ -1,12 +1,10 @@
 {
     "version": "0.93",
     "news": [
+        "[Contribute!] Improve jSQL, implement CI/CD APIs with PHP, .NET, Python and Node on Kubernetes/Docker pipelines for test coverage",
         "[Vote!] Choose your most wanted feature => https://github.com/ron190/jsql-injection/discussions/95385",
-        "[Discuss!] Share with the community your knowledge about shells and injection techniques and open a Github discussion => https://github.com/ron190/jsql-injection/discussions",
-        "[Contribute!] Translate jSQL: display settings with top right button and open menu Community, choose 'I help translate jSQL' in your language and translate any word. Click on Send then your contribution is available on Github to review.",
-        "[Code!] Implement CI/CD APIs with PHP, .NET, Python and Node on Kubernetes/Docker pipelines for test coverage",
-        "[v0.91] Add Stacked strategy",
-        "[Done] Multi-bits blind strategy, disable any strategy",
+        "[Feedback!] Thanks to @santicsls, @mastercho, @TannicArcher, @konn-neko => https://github.com/ron190/jsql-injection",
+        "[v0.93] Add Multibit blind strategy, disable any strategy",
         "[Ongoing features] Position and Duality strategies, Kerberos on CI/CD"
     ]
 }

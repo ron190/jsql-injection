@@ -594,7 +594,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             query = this.mediatorUtils.getTamperingUtil().tamper(query);
         }
         
-        query = this.applyRfcEncoding(methodInjection, query);
+        query = this.applyEncoding(methodInjection, query);
         
         return query;
     }
@@ -703,7 +703,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         return queryFixed;
     }
 
-    private String applyRfcEncoding(AbstractMethodInjection methodInjection, String query) {
+    private String applyEncoding(AbstractMethodInjection methodInjection, String query) {
         
         String queryFixed = query;
         
@@ -713,14 +713,12 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 
                 // URL encode each character because no query parameter context
                 if (!this.mediatorUtils.getPreferencesUtil().isUrlEncodingDisabled()) {
-                    
-                    queryFixed = queryFixed.replace("\"", "%22");
+
                     queryFixed = queryFixed.replace("'", "%27");
                     queryFixed = queryFixed.replace("(", "%28");
                     queryFixed = queryFixed.replace(")", "%29");
                     queryFixed = queryFixed.replace("{", "%7b");
                     queryFixed = queryFixed.replace("[", "%5b");
-                    queryFixed = queryFixed.replace("`", "%60");
                     queryFixed = queryFixed.replace("]", "%5d");
                     queryFixed = queryFixed.replace("}", "%7d");
                     queryFixed = queryFixed.replace(">", "%3e");
@@ -729,8 +727,11 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                     queryFixed = queryFixed.replace("_", "%5f");
                     queryFixed = queryFixed.replace(",", "%2c");
                 }
-                queryFixed = queryFixed.replace(StringUtils.SPACE, "+");  // HTTP forbids space
 
+                // HTTP forbidden characters
+                queryFixed = queryFixed.replace(StringUtils.SPACE, "+");
+                queryFixed = queryFixed.replace("`", "%60");  // from `${database}`.`${table}`
+                queryFixed = queryFixed.replace("\"", "%22");
                 queryFixed = queryFixed.replace("|", "%7c");
                 queryFixed = queryFixed.replace("\\", "%5c");
                 

@@ -164,23 +164,25 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
     private void extractBitsFromBlock(CallableMultibit currentCallable, char[] bits) {
 
         if (currentCallable.block == 1) {
-            convertIdPageToBits(currentCallable, bits, 0, 1, 2);
+            convertIdPageToBits(currentCallable.idPage, bits, 0, 1, 2);
         } else if (currentCallable.block == 2) {
-            convertIdPageToBits(currentCallable, bits, 3, 4, 5);
+            convertIdPageToBits(currentCallable.idPage, bits, 3, 4, 5);
         } else if (currentCallable.block == 3) {
-            convertIdPageToBits(currentCallable, bits, -1, 6,7);
+            convertIdPageToBits(currentCallable.idPage, bits, -1, 6,7);
         }
     }
 
     /**
      * Set bits by page id
      */
-    private void convertIdPageToBits(CallableMultibit callable, char[] bits, int i1, int i2, int i3) {
+    private void convertIdPageToBits(int idPage, char[] bits, int i1, int i2, int i3) {
 
-        String idPageBinary = Integer.toBinaryString(callable.idPage);
+        String idPageBinary = Integer.toBinaryString(idPage);
         String idPageBinaryPadded = StringUtils.leftPad(idPageBinary, 3, "0");
 
-        if (i1 > -1) bits[i1] = idPageBinaryPadded.charAt(0);
+        if (i1 > -1) {
+            bits[i1] = idPageBinaryPadded.charAt(0);
+        }
         bits[i2] = idPageBinaryPadded.charAt(1);
         bits[i3] = idPageBinaryPadded.charAt(2);
     }

@@ -86,13 +86,13 @@ public class MediatorStrategy {
             
             if (!isUsingIndex) {
                 
-                result = urlBase.replace(InjectionModel.STAR, this.extracted(sqlTrail));
+                result = urlBase.replace(InjectionModel.STAR, this.applyEncoding(sqlTrail));
                 
             } else {
                 
                 result = urlBase.replace(
                     InjectionModel.STAR,
-                    this.extracted(
+                    this.applyEncoding(
                         this.injectionModel.getIndexesInUrl().replaceAll(
                             "1337" + this.normal.getVisibleIndex() + "7331",
                             /**
@@ -109,29 +109,36 @@ public class MediatorStrategy {
         return result;
     }
 
-    private String extracted(String sqlTrail) {
-        
-        return StringUtil.clean(sqlTrail)
-            .replace("\"", "%22")
-            .replace("'", "%27")
-            .replace("(", "%28")
-            .replace(")", "%29")
-            .replace("{", "%7B")
-            .replace("[", "%5B")
-            .replace("|", "%7C")
+    private String applyEncoding(String sqlTrail) {
+
+        String sqlTrailEncoded = StringUtil.clean(sqlTrail);
+
+        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()) {
+
+            sqlTrailEncoded = sqlTrailEncoded
+                .replace("\"", "%22")
+                .replace("'", "%27")
+                .replace("(", "%28")
+                .replace(")", "%29")
+                .replace("{", "%7b")
+                .replace("[", "%5b")
+                .replace("]", "%5d")
+                .replace("}", "%7d")
+                .replace(">", "%3e")
+                .replace("<", "%3c")
+                .replace("?", "%3f")
+                .replace("_", "%5f")
+                .replace("\\", "%5c")
+                .replace(",", "%2c");
+        }
+
+        // URL forbidden characters
+        return sqlTrailEncoded
+            .replace("|", "%7c")
             .replace("`", "%60")
-            .replace("]", "%5D")
-            .replace("}", "%7D")
-            .replace(">", "%3E")
-            .replace("<", "%3C")
-            .replace("?", "%3F")
-            .replace("_", "%5F")
-            .replace("\\", "%5C")
-            .replace(",", "%2C")
             .replace(StringUtils.SPACE, "%20")
             .replace("+", "%20")
-            + this.injectionModel.getMediatorVendor().getVendor().instance().endingComment().replace("+", "%20")
-            ;
+            + this.injectionModel.getMediatorVendor().getVendor().instance().endingComment().replace("+", "%20");
     }
     
     /**
@@ -172,7 +179,7 @@ public class MediatorStrategy {
             } else {
                 
                 // When injecting last parameter
-                parameterToInject.setValue(characterInsertion +"+"+ InjectionModel.STAR);
+                parameterToInject.setValue(characterInsertion +"+"+ InjectionModel.STAR);  // TODO Avoid useless space in '+and, )+and
             }
         }
 
