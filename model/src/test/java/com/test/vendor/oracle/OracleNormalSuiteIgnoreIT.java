@@ -3,10 +3,9 @@ package com.test.vendor.oracle;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
-
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
 
 public class OracleNormalSuiteIgnoreIT extends ConcreteOracleSuiteIT {
     
@@ -18,11 +17,9 @@ public class OracleNormalSuiteIgnoreIT extends ConcreteOracleSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "oracle"),
-            new SimpleEntry<>("name", "")
-        ));
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/normal?tenant=oracle&name="
+        );
         
         model
         .getMediatorUtils()
@@ -56,5 +53,13 @@ public class OracleNormalSuiteIgnoreIT extends ConcreteOracleSuiteIT {
     @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

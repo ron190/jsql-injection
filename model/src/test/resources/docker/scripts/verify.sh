@@ -6,10 +6,10 @@ cat <<EOF | sudo docker exec -i jsql-mysql /bin/bash
    ';
 EOF
 
-# Check Postgres status
-cat <<EOF | sudo docker exec -i jsql-postgres /bin/bash
+# Check PostgreSQL status
+cat <<EOF | sudo docker exec -i jsql-postgresql /bin/bash
     export PGPASSWORD=my-secret-pw;
-    psql -U postgres -h 127.0.0.1 -d "" -e -a -c ' 
+    psql -U postgresql -h 127.0.0.1 -d "" -e -a -c '
         show max_connections; 
     '
 EOF

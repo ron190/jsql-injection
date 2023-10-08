@@ -12,7 +12,7 @@ echo 4/7 ======================================
 echo 5/7 ======================================
 ./model/src/test/resources/docker/scripts/healthcheck/neo4j.sh
 echo 6/7 ======================================
-./model/src/test/resources/docker/scripts/healthcheck/postgres.sh
+./model/src/test/resources/docker/scripts/healthcheck/postgresql.sh
 echo 7/7 ======================================
 ./model/src/test/resources/docker/scripts/healthcheck/sqlserver.sh
 echo End ======================================

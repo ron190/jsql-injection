@@ -6,6 +6,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorSuiteIT;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
 import org.junitpioneer.jupiter.RetryingTest;
@@ -34,7 +35,9 @@ public class DigestSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/digest?mysql-error&name=");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/digest?tenant=mysql-error&name="
+        );
 
         model.setIsScanning(true);
 
@@ -63,6 +66,14 @@ public class DigestSuiteIT extends ConcreteMySqlErrorSuiteIT {
     @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getError(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 
     @AfterAll

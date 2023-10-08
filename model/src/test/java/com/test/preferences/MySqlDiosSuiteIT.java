@@ -4,6 +4,8 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorSuiteIT;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
 public class MySqlDiosSuiteIT extends ConcreteMySqlErrorSuiteIT {
@@ -16,7 +18,9 @@ public class MySqlDiosSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal?tenant=mysql-error&name=");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/normal?tenant=mysql-error&name="
+        );
 
         model
         .getMediatorUtils()
@@ -54,5 +58,13 @@ public class MySqlDiosSuiteIT extends ConcreteMySqlErrorSuiteIT {
     @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

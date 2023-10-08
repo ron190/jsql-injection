@@ -3,6 +3,7 @@ package com.test.vendor.mysql;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
@@ -16,7 +17,9 @@ public class MySqlNormalSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal?tenant=mysql&name=");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/normal?tenant=mysql&name="
+        );
 
         model
         .getMediatorUtils()
@@ -31,36 +34,28 @@ public class MySqlNormalSuiteIT extends ConcreteMySqlSuiteIT {
     @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
-        Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
-            this.injectionModel.getMediatorStrategy().getStrategy()
-        );
     }
     
     @Override
     @RetryingTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
-        Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
-            this.injectionModel.getMediatorStrategy().getStrategy()
-        );
     }
     
     @Override
     @RetryingTest(3)
     public void listColumns() throws JSqlException {
         super.listColumns();
-        Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getNormal(),
-            this.injectionModel.getMediatorStrategy().getStrategy()
-        );
     }
     
     @Override
     @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
+    }
+
+    @AfterEach
+    public void afterEach() {
         Assertions.assertEquals(
             this.injectionModel.getMediatorStrategy().getNormal(),
             this.injectionModel.getMediatorStrategy().getStrategy()

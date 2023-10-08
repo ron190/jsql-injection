@@ -1,4 +1,4 @@
-package com.test.vendor.mysql;
+package com.test.vendor.postgresql;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MySqlReadFileSuiteIT extends ConcreteMySqlSuiteIT {
+public class PostgreSqlReadFileSuiteIT extends ConcretePostgreSqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -21,7 +21,7 @@ public class MySqlReadFileSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/normal?tenant=mysql&name="
+            "http://localhost:8080/normal?tenant=postgresql&name="
         );
 
         model
@@ -29,7 +29,17 @@ public class MySqlReadFileSuiteIT extends ConcreteMySqlSuiteIT {
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true)
+        .withIsStrategyStackedDisabled(true)
+        .withIsStrategyMultibitDisabled(true)
+        .withIsStrategyErrorDisabled(true);
+
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPostgreSQL());
         model.beginInjection();
     }
     
@@ -37,10 +47,10 @@ public class MySqlReadFileSuiteIT extends ConcreteMySqlSuiteIT {
     public void readFile() throws JSqlException, ExecutionException, InterruptedException {
 
         List<String> contents = this.injectionModel.getResourceAccess()
-                .readFile(Collections.singletonList("/var/lib/mysql-files/file-injection.txt"));
+                .readFile(Collections.singletonList("PG_VERSION"));
 
-        LOGGER.info("ReadFile: found {} to find {}", String.join(",", contents).trim(), "inside");
+        LOGGER.info("ReadFile: found {} to find {}", String.join(",", contents).trim(), "9.6");
 
-        Assertions.assertEquals("inside", String.join(",", contents).trim());
+        Assertions.assertEquals("9.6", String.join(",", contents).trim());
     }
 }

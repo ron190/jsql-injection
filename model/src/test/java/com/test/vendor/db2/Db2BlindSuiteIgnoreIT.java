@@ -3,10 +3,9 @@ package com.test.vendor.db2;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
-
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
 
 public class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIT {
     // Unstable
@@ -19,11 +18,9 @@ public class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/blind");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "db2"),
-            new SimpleEntry<>("name", "1'*")
-        ));
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/blind?tenant=db2&name=1'*"
+        );
         
         model.setIsScanning(true);
         
@@ -47,5 +44,13 @@ public class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIT {
     @RetryingTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getBlind(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

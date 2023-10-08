@@ -7,7 +7,7 @@ retry=0
 until docker exec -i jsql-sqlserver /opt/mssql-tools/bin/sqlcmd \
 -S "tcp:127.0.0.1,1434" \
 -U SA \
--P "yourStrong(!)Password" \
+-P 'yourStrong(!)Password' \
 -Q "select 'jsqlValue' as jsqlColumn"; do
 
   retry=$((retry+1))

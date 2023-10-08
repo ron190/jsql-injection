@@ -8,9 +8,6 @@ import org.junit.jupiter.api.*;
 import org.junitpioneer.jupiter.RetryingTest;
 import spring.security.BasicSecurityConfig;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BasicSuiteIT extends ConcreteMySqlErrorSuiteIT {
     
@@ -22,11 +19,9 @@ public class BasicSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/basic");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "")
-        ));
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/basic?tenant=mysql-error&name="
+        );
 
         model
         .getMediatorUtils()
@@ -51,6 +46,14 @@ public class BasicSuiteIT extends ConcreteMySqlErrorSuiteIT {
     @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getError(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 
     @AfterAll

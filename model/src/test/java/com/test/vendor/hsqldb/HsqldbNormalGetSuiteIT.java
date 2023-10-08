@@ -3,10 +3,9 @@ package com.test.vendor.hsqldb;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
-
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
 
 public class HsqldbNormalGetSuiteIT extends ConcreteHsqldbSuiteIT {
     
@@ -18,11 +17,9 @@ public class HsqldbNormalGetSuiteIT extends ConcreteHsqldbSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "hsqldb"),
-            new SimpleEntry<>("name", "")
-        ));
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/normal?tenant=hsqldb&name="
+        );
         
         model
         .getMediatorUtils()
@@ -56,5 +53,13 @@ public class HsqldbNormalGetSuiteIT extends ConcreteHsqldbSuiteIT {
     @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

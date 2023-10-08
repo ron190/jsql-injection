@@ -319,6 +319,10 @@ public class MediatorVendor {
         return this.vendor;
     }
 
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
     public Vendor getVendorByUser() {
         return this.vendorByUser;
     }
@@ -329,10 +333,6 @@ public class MediatorVendor {
 
     public List<Vendor> getVendors() {
         return this.vendors;
-    }
-
-    public void setVendor(Vendor vendor) {
-        this.vendor = vendor;
     }
 
     public Vendor getDb2() {

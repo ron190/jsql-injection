@@ -4,10 +4,9 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
-
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
 
 public class CheckAllGetSuiteIT extends ConcreteMySqlSuiteIT {
     
@@ -19,12 +18,9 @@ public class CheckAllGetSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/normal");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
-            new SimpleEntry<>("name", ""),
-            new SimpleEntry<>("fake", "empty")
-        ));
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/normal?tenant=mysql&name=&fake=empty"
+        );
         
         model.setIsScanning(true);
         
@@ -46,5 +42,13 @@ public class CheckAllGetSuiteIT extends ConcreteMySqlSuiteIT {
     @RetryingTest(maxAttempts = 3, suspendForMs = 1000)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

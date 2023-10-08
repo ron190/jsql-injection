@@ -3,10 +3,9 @@ package com.test.vendor.sqlserver;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
-
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
 
 //TODO Time not working
 public class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIT {
@@ -19,11 +18,9 @@ public class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/time");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "sqlserver"),
-            new SimpleEntry<>("name", "1'")
-        ));
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/time?tenant=sqlserver&name=1'"
+        );
         
         model.setIsScanning(true);
         
@@ -41,5 +38,13 @@ public class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIT {
     @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getTime(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

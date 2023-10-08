@@ -1,14 +1,11 @@
-package com.test.vendor.postgres;
+package com.test.vendor.postgresql;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import org.junitpioneer.jupiter.RetryingTest;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-
-public class PostgresTimeGetSuiteIT extends ConcretePostgresSuiteIT {
+public class PostgreSqlTimeGetSuiteIT extends ConcretePostgreSqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -18,11 +15,9 @@ public class PostgresTimeGetSuiteIT extends ConcretePostgresSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/time");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "postgres"),
-            new SimpleEntry<>("name", "1'")
-        ));
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/time?tenant=postgresql&name=1'"
+        );
         
         model.setIsScanning(true);
         

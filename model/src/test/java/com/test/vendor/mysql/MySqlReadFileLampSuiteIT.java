@@ -20,7 +20,9 @@ public class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://jsql-lamp:8079/get.php?id=");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://jsql-lamp:8079/get.php?id="
+        );
 
         model
         .getMediatorUtils()
@@ -37,7 +39,7 @@ public class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
         List<String> contents = this.injectionModel.getResourceAccess()
                 .readFile(Collections.singletonList("/var/www/html/get.php"));
 
-        LOGGER.info("ReadFile: found {} to find {}", String.join(",", contents), "<?php");
+        LOGGER.info("ReadFile: found {} to find {}", String.join(",", contents).trim(), "<?php");
 
         Assertions.assertTrue(String.join(",", contents).trim().contains("<?php"));
     }

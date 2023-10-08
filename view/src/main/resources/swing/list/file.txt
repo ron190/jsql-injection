@@ -72,6 +72,12 @@
 /opt/apache/conf/httpd.conf
 /home/apache/httpd.conf
 /home/apache/conf/httpd.conf
+postgresql.conf
+postgresql.auto.conf
+pg_hba.conf
+PG_VERSION
+postmaster.opts
+postmaster.pid
 C:/Windows/System32/drivers/etc/hosts
 C:/Windows/system.ini
 C:/autoexec.bat

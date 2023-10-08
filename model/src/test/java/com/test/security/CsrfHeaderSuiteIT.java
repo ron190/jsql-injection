@@ -5,13 +5,11 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorSuiteIT;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
 import org.junitpioneer.jupiter.RetryingTest;
 import spring.security.CsrfWebSecurity;
-
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
 
 public class CsrfHeaderSuiteIT extends ConcreteMySqlErrorSuiteIT {
     
@@ -23,11 +21,9 @@ public class CsrfHeaderSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/csrf");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "")
-        ));
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/csrf?tenant=mysql&name="
+        );
         
         model.setIsScanning(true);
 
@@ -49,6 +45,14 @@ public class CsrfHeaderSuiteIT extends ConcreteMySqlErrorSuiteIT {
     @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 
     @AfterAll

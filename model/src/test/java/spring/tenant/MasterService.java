@@ -23,7 +23,7 @@ public class MasterService {
                 SpringTargetApplication.propsH2,
                 SpringTargetApplication.propsMysql,
                 SpringTargetApplication.propsMysqlError,
-                SpringTargetApplication.propsPostgres,
+                SpringTargetApplication.propsPostgreSql,
                 SpringTargetApplication.propsSqlServer,
                 SpringTargetApplication.propsCubrid,
                 SpringTargetApplication.propsSqlite,
@@ -36,18 +36,18 @@ public class MasterService {
         properties
         .forEach(props -> {
             
-            DatasourceConnectionProviderImpl connectionProviderPostgres = new DatasourceConnectionProviderImpl();
+            DatasourceConnectionProviderImpl connectionProvider = new DatasourceConnectionProviderImpl();
             
             DriverManagerDataSource dataSource = new DriverManagerDataSource();
             dataSource.setUrl(props.getProperty("hibernate.connection.url"));
             dataSource.setUsername(props.getProperty("hibernate.connection.username"));
             dataSource.setPassword(props.getProperty("hibernate.connection.password"));
             
-            connectionProviderPostgres.configure(Map.of(
+            connectionProvider.configure(Map.of(
                 Environment.DATASOURCE, dataSource
             ));
 
-            this.hashMap.put(props.getProperty("jsql.tenant"), connectionProviderPostgres);
+            this.hashMap.put(props.getProperty("jsql.tenant"), connectionProvider);
         });
     }
     

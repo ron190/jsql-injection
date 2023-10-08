@@ -1,14 +1,13 @@
-package com.test.vendor.postgres;
+package com.test.vendor.postgresql;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-
-public class PostgresBlindGetSuiteIT extends ConcretePostgresSuiteIT {
+public class PostgreSqlBlindGetSuiteIT extends ConcretePostgreSqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -18,11 +17,9 @@ public class PostgresBlindGetSuiteIT extends ConcretePostgresSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/blind");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "postgres"),
-            new SimpleEntry<>("name", "1'*")
-        ));
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/blind?tenant=postgresql&name=1'*"
+        );
         
         model.setIsScanning(true);
         
@@ -40,5 +37,13 @@ public class PostgresBlindGetSuiteIT extends ConcretePostgresSuiteIT {
     @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getBlind(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

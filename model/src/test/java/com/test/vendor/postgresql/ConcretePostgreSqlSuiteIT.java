@@ -1,12 +1,12 @@
-package com.test.vendor.postgres;
+package com.test.vendor.postgresql;
 
 import com.test.AbstractTestSuite;
 
-public abstract class ConcretePostgresSuiteIT extends AbstractTestSuite {
+public abstract class ConcretePostgreSqlSuiteIT extends AbstractTestSuite {
 
-    public ConcretePostgresSuiteIT() {
+    public ConcretePostgreSqlSuiteIT() {
 
-        this.jdbcURL = "jdbc:postgresql://jsql-postgres:5432/";
+        this.jdbcURL = "jdbc:postgresql://jsql-postgresql:5432/";
         this.jdbcUser = "postgres";
         this.jdbcPass = "my-secret-pw";
         this.jsqlDatabaseName = "public";

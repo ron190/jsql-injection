@@ -41,12 +41,14 @@ public class CertificateUtil {
                     
                     return new X509Certificate[0];
                 }
-                
+
+                @SuppressWarnings("java:S4830")
                 @Override
                 public void checkClientTrusted(X509Certificate[] certs, String authType) {
                     // nothing
                 }
 
+                @SuppressWarnings("java:S4830")
                 @Override
                 public void checkServerTrusted(X509Certificate[] certs, String authType) {
                     // nothing

@@ -45,7 +45,7 @@ public class SpringTargetApplication {
     public static final Properties propsH2 = new Properties();
     public static final Properties propsMysql = new Properties();
     public static final Properties propsMysqlError = new Properties();
-    public static final Properties propsPostgres = new Properties();
+    public static final Properties propsPostgreSql = new Properties();
     public static final Properties propsSqlServer = new Properties();
     public static final Properties propsSqlite = new Properties();
     public static final Properties propsCubrid = new Properties();
@@ -62,7 +62,7 @@ public class SpringTargetApplication {
             new SimpleEntry<>(propsH2, "hibernate/hibernate.h2.properties"),
             new SimpleEntry<>(propsMysql, "hibernate/hibernate.mysql.properties"),
             new SimpleEntry<>(propsMysqlError, "hibernate/hibernate.mysql-5-5-40.properties"),
-            new SimpleEntry<>(propsPostgres, "hibernate/hibernate.postgres.properties"),
+            new SimpleEntry<>(propsPostgreSql, "hibernate/hibernate.postgresql.properties"),
             new SimpleEntry<>(propsSqlServer, "hibernate/hibernate.sqlserver.properties"),
             new SimpleEntry<>(propsCubrid, "hibernate/hibernate.cubrid.properties"),
             new SimpleEntry<>(propsSqlite, "hibernate/hibernate.sqlite.properties"),
@@ -95,7 +95,7 @@ public class SpringTargetApplication {
                 SpringTargetApplication.propsH2,
                 SpringTargetApplication.propsMysql,
                 SpringTargetApplication.propsMysqlError,
-                SpringTargetApplication.propsPostgres,
+                SpringTargetApplication.propsPostgreSql,
                 SpringTargetApplication.propsSqlServer,
                 SpringTargetApplication.propsCubrid,
                 SpringTargetApplication.propsSqlite,

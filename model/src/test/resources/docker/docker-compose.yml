@@ -25,15 +25,15 @@ services:
     networks:
       - jsql-network
 
-  postgres:
+  postgresql:
     ports:
       - "5432:5432"
     build:
       context: .
-      dockerfile: Dockerfile.postgres
+      dockerfile: Dockerfile.postgresql
     environment:
       POSTGRES_PASSWORD: my-secret-pw
-    container_name: jsql-postgres
+    container_name: jsql-postgresql
     networks:
       - jsql-network
 

@@ -112,6 +112,9 @@ resource:
     field: trim(coalesce(${field.value}::text, ''))
     concat: "|| '%7f' ||"
 
+ file:
+  read: pg_read_file('${filepath}')
+
 strategy:
  configuration:
   slidingWindow: |
@@ -206,6 +209,14 @@ strategy:
    - name: Cast:order by
      query: |
       1, cast((
+          ${window}
+          )::text as numeric
+      )
+     capacity: 255
+
+   - name: Cast:stacked
+     query: |
+      ; select cast((
           ${window}
           )::text as numeric
       )

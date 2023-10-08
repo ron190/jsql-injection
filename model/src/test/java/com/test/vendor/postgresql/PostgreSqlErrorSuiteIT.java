@@ -1,4 +1,4 @@
-package com.test.vendor.mysql;
+package com.test.vendor.postgresql;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class MySqlSelectSuiteIT extends ConcreteMySqlSuiteIT {
+public class PostgreSqlErrorSuiteIT extends ConcretePostgreSqlSuiteIT {
 
     @Override
     public void setupInjection() throws Exception {
@@ -18,25 +18,35 @@ public class MySqlSelectSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/select?tenant=mysql&name="
+            "http://localhost:8080/errors?tenant=postgresql&name="
         );
-
-        model.setIsScanning(true);
-
-        model.getMediatorVendor().getMySQL().instance().getModelYaml().getStrategy().getConfiguration().setEndingComment("");
-
-        model
-        .getMediatorUtils()
-        .getPreferencesUtil()
-        .withIsUrlRandomSuffixDisabled(false);
-
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
         model.beginInjection();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listDatabases() throws JSqlException {
+        super.listDatabases();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listTables() throws JSqlException {
+        super.listTables();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
     }
     
     @Override
@@ -48,7 +58,7 @@ public class MySqlSelectSuiteIT extends ConcreteMySqlSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getTime(),
+            this.injectionModel.getMediatorStrategy().getError(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }
