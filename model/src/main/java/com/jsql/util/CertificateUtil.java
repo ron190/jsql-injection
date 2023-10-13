@@ -64,7 +64,7 @@ public class CertificateUtil {
             
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
-                String.format("Error ignoring untrusted SSL: %s", e.getMessage()),
+                "Error ignoring untrusted SSL",
                 e
             );
         }

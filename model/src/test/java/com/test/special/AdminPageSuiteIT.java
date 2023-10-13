@@ -11,7 +11,7 @@ import java.util.List;
 class AdminPageSuiteIT extends ConcreteMySqlSuiteIT {
 
     @Override
-    public void setupInjection() throws Exception {
+    public void setupInjection() {
 
         this.injectionModel = new InjectionModel();
 

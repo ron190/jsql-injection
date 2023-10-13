@@ -4,12 +4,11 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-
-public class PathParamSuiteIT extends ConcreteMySqlSuiteIT {
+public class PathParamIntegerSuiteIT extends ConcreteMySqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -20,12 +19,11 @@ public class PathParamSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         // TODO Test all PathParam URL segments
-        // Analyze last required query param
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/path/1'*/suffix");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
-            new SimpleEntry<>("fake", "")
-        ));
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            // Can work on Error:crud 'or <Error> or'
+            // Must also work on Normal
+            "http://localhost:8080/path-integer/*/suffix?tenant=mysql&fake="
+        );
         
         model.setIsScanning(true);
         
@@ -46,5 +44,13 @@ public class PathParamSuiteIT extends ConcreteMySqlSuiteIT {
     @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

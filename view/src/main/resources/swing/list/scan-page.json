@@ -25,13 +25,13 @@
         "url": "http://challenges.ringzer0team.com:10001",
         "request": "password=&username=",
         "requestType": "POST",
-        "method": "REQUEST",
+        "method": "REQUEST"
     },
     {
         "url": "http://challenges.ringzer0team.com:10002",
         "request": "username=",
         "requestType": "POST",
-        "method": "REQUEST",
+        "method": "REQUEST"
     },
     {"url": "http://www.webscantest.com/datastore/search_get_by_id.php?id="},
     {"url": "http://www.webscantest.com/datastore/search_get_by_name.php?name="},

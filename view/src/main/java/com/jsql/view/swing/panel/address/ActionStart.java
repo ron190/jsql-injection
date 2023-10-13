@@ -61,7 +61,7 @@ public class ActionStart implements ActionListener {
                     JOptionPane.OK_CANCEL_OPTION
                 );
                 
-            } catch (IllegalArgumentException| ClassCastException e) {
+            } catch (IllegalArgumentException | ClassCastException e) {
                 
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }

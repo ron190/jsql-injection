@@ -49,8 +49,7 @@ public class JTextPaneAppender extends AbstractAppender {
     public static final SimpleAttributeSet ATTRIBUTE_ALL = new SimpleAttributeSet();
     
     static {
-        Stream
-        .of(
+        Stream.of(
             new AbstractMap.SimpleEntry<>(ATTRIBUTE_WARN, Color.RED),
             new AbstractMap.SimpleEntry<>(ATTRIBUTE_INFORM, Color.BLUE),
             new AbstractMap.SimpleEntry<>(ATTRIBUTE_SUCCESS, UiUtil.COLOR_GREEN),

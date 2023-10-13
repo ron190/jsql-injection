@@ -109,7 +109,11 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
                 if (MediatorHelper.tabConsoles().getSelectedIndex() != tabIndex) {
                     
                     tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
-                    tabHeader.setForeground(foregroundColor);
+
+                    if (foregroundColor != Color.BLACK) {  // keep tab colored until user clicks
+
+                        tabHeader.setForeground(foregroundColor);
+                    }
                 }
             }
             

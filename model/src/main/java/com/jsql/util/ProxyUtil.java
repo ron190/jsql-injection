@@ -222,8 +222,7 @@ public class ProxyUtil {
                     address,
                     port,
                     message.replace(e.getClass().getName() +": ", StringUtils.EMPTY)
-                ),
-                e
+                )
             );
         }
     }

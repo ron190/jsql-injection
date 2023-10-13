@@ -22,6 +22,6 @@ public abstract class ConcreteHsqldbSuiteIT extends AbstractTestSuite {
         this.jdbcQueryForDatabaseNames = "select distinct schema_name from INFORMATION_SCHEMA.tables t right join INFORMATION_SCHEMA.schemata s on t.TABLE_SCHEMA = s.schema_name";
         this.jdbcQueryForTableNames =    "select TABLE_NAME from information_schema.tables where TABLE_SCHEMA = '"+ this.jsqlDatabaseName +"'";
         this.jdbcQueryForColumnNames =   "select COLUMN_NAME from information_schema.columns where TABLE_SCHEMA='"+ this.jsqlDatabaseName +"' and TABLE_NAME='"+ this.jsqlTableName +"'";
-        this.jdbcQueryForValues =    "select "+ this.jsqlColumnName +" from "+ this.jsqlDatabaseName +"."+ this.jsqlTableName +"";
+        this.jdbcQueryForValues =    "select "+ this.jsqlColumnName +" from "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;
     }
 }

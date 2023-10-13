@@ -22,6 +22,11 @@ public class SqlServerBlindGetSuiteIT extends ConcreteSqlServerSuiteIT {
         );
         
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withNotInjectingMetadata();
         
         model
         .getMediatorUtils()

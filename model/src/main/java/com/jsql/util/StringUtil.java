@@ -363,6 +363,7 @@ public final class StringUtil {
             // Remove SQL comments except tamper /**/ /*!...*/
             // Negative lookahead: don't match tamper empty comment /**/ or version comment /*!...*/
             // JavaScript: (?!\/\*!.*\*\/|\/\*\*\/)\/\*.*\*\/
+            // TODO Duplicated in another method
             .replaceAll("(?s)(?!/\\*\\*/|/\\*!.*\\*/)/\\*.*?\\*/", org.apache.commons.lang3.StringUtils.EMPTY)
             // Remove spaces after a word
             .replaceAll("(?s)([^\\s\\w])(\\s+)", "$1")

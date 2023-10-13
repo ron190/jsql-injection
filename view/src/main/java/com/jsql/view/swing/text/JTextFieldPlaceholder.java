@@ -54,7 +54,7 @@ public class JTextFieldPlaceholder extends JTextField {
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
-        if (this.getText().length() == 0) {
+        if (this.getText().isEmpty()) {
             
             int h = this.getHeight();
             var fm = g.getFontMetrics();

@@ -338,8 +338,6 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             );
         }
         
-        // Encoded space required for integer insertion
-        // Fail on neo4j when plain space ' '
-        return characterInsertionDetectedFixed.replace(InjectionModel.STAR, "+" + InjectionModel.STAR);
+        return characterInsertionDetectedFixed;
     }
 }

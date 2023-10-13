@@ -116,7 +116,6 @@ public class MediatorStrategy {
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()) {
 
             sqlTrailEncoded = sqlTrailEncoded
-                .replace("\"", "%22")
                 .replace("'", "%27")
                 .replace("(", "%28")
                 .replace(")", "%29")
@@ -134,6 +133,7 @@ public class MediatorStrategy {
 
         // URL forbidden characters
         return sqlTrailEncoded
+            .replace("\"", "%22")
             .replace("|", "%7c")
             .replace("`", "%60")
             .replace(StringUtils.SPACE, "%20")
@@ -179,8 +179,17 @@ public class MediatorStrategy {
             } else {
                 
                 // When injecting last parameter
-                parameterToInject.setValue(characterInsertion +"+"+ InjectionModel.STAR);  // TODO Avoid useless space in '+and, )+and
+                parameterToInject.setValue(characterInsertion.replaceAll("(\\w)$", "$1+") + InjectionModel.STAR);
             }
+
+        } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)) {
+
+            String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run("");
+            String urlBase = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
+            this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(
+                // Space %20 for URL, do not use +
+                urlBase.replace(InjectionModel.STAR, characterInsertion.replaceAll("(\\w)$", "$1%20") + InjectionModel.STAR)
+            );
         }
 
         // Test each injection strategies: time < blind < error < normal
@@ -190,6 +199,7 @@ public class MediatorStrategy {
 
         if (parameterToInject != null) {
 
+            // Multibit requires '0'  TODO char insertion 0' should also work on "where x='$param'"
             var backupCharacterInsertion = parameterToInject.getValue();
             parameterToInject.setValue(InjectionModel.STAR);
             this.multibit.checkApplicability();

@@ -69,7 +69,7 @@ public class PanelInjection extends JPanel {
             + "It makes easy adding such params to requests.</html>";
         this.checkboxIsParsingForm.setToolTipText(tooltipParseForm);
         this.checkboxIsParsingForm.setFocusable(false);
-        var labelIsParsingForm = new JButton("Add <input> params to Query string and Request");
+        var labelIsParsingForm = new JButton("Get HTML tags <input/> and add parameters to URL and Request");
         labelIsParsingForm.setToolTipText(tooltipParseForm);
         labelIsParsingForm.addActionListener(actionEvent -> {
             
@@ -77,10 +77,10 @@ public class PanelInjection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        var tooltipIsNotInjectingMetadata = "Not injecting optional data saves time, particularly with Blind and Time strategies";
+        var tooltipIsNotInjectingMetadata = "Not injecting optional data saves time, particularly for Blind and Time strategies";
         this.checkboxIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
         this.checkboxIsNotInjectingMetadata.setFocusable(false);
-        var labelIsNotInjectingMetadata = new JButton("Disable database's metadata injection");
+        var labelIsNotInjectingMetadata = new JButton("Disable metadata injection (default database name, version and user)");
         labelIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
         labelIsNotInjectingMetadata.addActionListener(actionEvent -> {
             
@@ -150,12 +150,12 @@ public class PanelInjection extends JPanel {
         this.spinnerNormalIndexCount.setUI(new BasicColoredSpinnerUI());
         this.spinnerNormalIndexCount.addMouseWheelListener(new SpinnerMouseWheelListener());
         
-        var labelIsCheckingAllParam = new JButton("Inject each parameter and ignore user's method");
-        var labelIsCheckingAllURLParam = new JButton("Inject each URL parameter if method is GET");
-        var labelIsCheckingAllRequestParam = new JButton("Inject each Request parameter if method is Request");
-        var labelIsCheckingAllHeaderParam = new JButton("Inject each Header parameter if method is Header");
-        var labelIsCheckingAllCookieParam = new JButton("Inject each Cookie parameter");
-        var labelIsCheckingAllJSONParam = new JButton("Inject JSON parameters");
+        var labelIsCheckingAllParam = new JButton("Inject every parameters (ignore user's selection)");
+        var labelIsCheckingAllURLParam = new JButton("Inject every URL parameters when URL method is selected");
+        var labelIsCheckingAllRequestParam = new JButton("Inject every Request parameters when Request method is selected");
+        var labelIsCheckingAllHeaderParam = new JButton("Inject every Header parameters when Header method is selected");
+        var labelIsCheckingAllCookieParam = new JButton("Inject every cookie parameters");
+        var labelIsCheckingAllJSONParam = new JButton("Inject every JSON parameters");
         var labelIsCheckingAllBase64Param = new JButton("Inject Base64 parameters");
         var labelIsCheckingAllSOAPParam = new JButton("Inject SOAP parameters in Request body");
         

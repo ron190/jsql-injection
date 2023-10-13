@@ -52,7 +52,7 @@ public class GitUtil {
     }
 
     /**
-     * Verify if application is up to date against the version on Github.
+     * Verify if application is up-to-date against the version on GitHub.
      * @param displayUpdateMessage YES for manual update verification, hidden otherwise
      */
     public void checkUpdate(ShowOnConsole displayUpdateMessage) {
@@ -74,9 +74,9 @@ public class GitUtil {
                 LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, () -> I18nUtil.valueByKey("UPDATE_UPTODATE"));
             }
             
-        } catch (NumberFormatException | IOException | JSONException e) {
+        } catch (NumberFormatException | JSONException e) {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, I18nUtil.valueByKey("UPDATE_EXCEPTION"), e);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, I18nUtil.valueByKey("UPDATE_EXCEPTION"));
         }
     }
     
@@ -188,8 +188,7 @@ public class GitUtil {
                 
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
-                    String.format("Error during Github report connection: %s", e.getMessage()),
-                    e
+                    String.format("Error during Github report connection: %s", e.getMessage())
                 );
             }
             
@@ -234,18 +233,17 @@ public class GitUtil {
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, news.get(index));
             }
             
-        } catch (IOException | JSONException e) {
+        } catch (JSONException e) {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Connection to the Github API failed", e);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Connection to the Github API failed");
         }
     }
     
     /**
      * Instantiate the jsonObject from json data if not already set.
      * @return jsonObject describing json data
-     * @throws IOException if connection to json data fails
      */
-    public JSONObject getJSONObject() throws IOException {
+    public JSONObject getJSONObject() {
         
         if (this.jsonObject == null) {
             
@@ -262,12 +260,15 @@ public class GitUtil {
                 try {
                     this.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
                     
-                } catch (JSONException e1) {
+                } catch (JSONException eInner) {
 
-                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Fetching default JSON failed", e);
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Fetching default JSON failed", eInner);
                 }
                 
-                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Fetching configuration from Github failed. Wait for service to be available, check your connection or update jsql", e);
+                LOGGER.log(
+                    LogLevelUtil.CONSOLE_ERROR,
+                    "Fetching configuration from Github failed. Wait for service to be available, check your connection or update jsql"
+                );
             }
         }
         

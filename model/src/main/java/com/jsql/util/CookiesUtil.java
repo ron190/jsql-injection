@@ -25,7 +25,13 @@ public class CookiesUtil {
         this.injectionModel = injectionModel;
     }
 
-    public boolean testParameters() {
+    public boolean testParameters(boolean hasFoundInjection) {
+
+        if (!hasFoundInjection) {
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking cookies params...");
+        } else {
+            return true;
+        }
 
         String rawHeader = this.injectionModel.getMediatorUtils().getParameterUtil().getRawHeader();
 

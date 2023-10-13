@@ -23,10 +23,14 @@ public class MultipartUtil {
         this.injectionModel = injectionModel;
     }
 
-    public boolean testParameters() {
-        
-        var hasFoundInjection = false;
+    public boolean testParameters(boolean hasFoundInjection) {
 
+        if (!hasFoundInjection) {
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking multipart params...");
+        } else {
+            return true;
+        }
+        
         String rawHeader = this.injectionModel.getMediatorUtils().getParameterUtil().getRawHeader();
         String rawRequest = this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest();
 
@@ -48,7 +52,7 @@ public class MultipartUtil {
             }
         }
 
-        return hasFoundInjection;
+        return false;
     }
 
     private boolean isBoundaryInjectable(String rawRequest, String boundary, Matcher matcherFormDataParameters) {

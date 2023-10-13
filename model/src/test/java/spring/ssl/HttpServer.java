@@ -53,10 +53,4 @@ public class HttpServer {
         
         return tomcat;
     }
-    
-//    @Bean
-//    public WebServerFactoryCustomizer<TomcatServletWebServerFactory> cookieProcessorCustomizer() {
-//
-//        return tomcatServletWebServerFactory -> tomcatServletWebServerFactory.addContextCustomizers(context -> context.setCookieProcessor(new LegacyCookieProcessor()));
-//    }
 }

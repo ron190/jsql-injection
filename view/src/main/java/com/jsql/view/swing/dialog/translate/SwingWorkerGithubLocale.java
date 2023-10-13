@@ -123,11 +123,11 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
 
     private void logFileNotFound(IOException eGithub) throws IOException {
         
-        if (this.propertiesLanguageToTranslate.size() == 0) {
+        if (this.propertiesLanguageToTranslate.isEmpty()) {
             
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Language file not found, text to translate loaded from local", eGithub);
             
-        } else if (this.propertiesRoot.size() == 0) {
+        } else if (this.propertiesRoot.isEmpty()) {
             
             throw new IOException("Reference language not found");
         }

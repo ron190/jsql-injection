@@ -24,7 +24,7 @@ public abstract class AbstractStrategy {
     /**
      * i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body.
      */
-    protected String visibleIndex;
+    protected String visibleIndex;  // TODO Should be in Normal
     
     /**
      * HTML body of page successfully responding to

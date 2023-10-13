@@ -182,7 +182,12 @@ public class ParameterUtil {
         }
         
         // Injection Point
-        if (nbStarInParameter >= 2) {
+        if (
+            nbStarInParameter > 1
+            || StringUtils.countMatches(this.getQueryStringFromEntries(), "*") > 1
+            || StringUtils.countMatches(this.getRequestFromEntries(), "*") > 1
+            || StringUtils.countMatches(this.getHeaderFromEntries(), "*") > 1
+        ) {
             
             throw new InjectionFailureException("Character insertion [*] must be used once in Query String, Request or Header parameters");
         }

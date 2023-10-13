@@ -22,6 +22,11 @@ public class SqliteBlindSuiteIT extends ConcreteSqliteSuiteIT {
         );
         
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withNotInjectingMetadata();
         
         model
         .getMediatorUtils()

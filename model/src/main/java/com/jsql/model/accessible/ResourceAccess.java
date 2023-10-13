@@ -447,7 +447,7 @@ public class ResourceAccess {
             
             // Fix return null from regex
             result = StringUtils.EMPTY;
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect response from Web shell", e);
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect response from Web shell");
         }
         
         return result;

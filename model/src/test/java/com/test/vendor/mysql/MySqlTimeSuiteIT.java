@@ -22,6 +22,11 @@ public class MySqlTimeSuiteIT extends ConcreteMySqlSuiteIT {
         );
 
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withNotInjectingMetadata();
         
         model
         .getMediatorUtils()

@@ -26,6 +26,6 @@ public abstract class ConcreteDerbySuiteIT extends AbstractTestSuite {
                 + " and columndatatype || '' not like 'INTEGER%'"
                 + " and columndatatype || '' not like 'DECIMAL%'"
                 + " and columndatatype || '' not like 'BLOB%'";
-        this.jdbcQueryForValues =    "select "+ this.jsqlColumnName +" from "+ this.jsqlDatabaseName +"."+ this.jsqlTableName +"";
+        this.jdbcQueryForValues =    "select "+ this.jsqlColumnName +" from "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;
     }
 }

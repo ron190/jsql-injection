@@ -74,7 +74,7 @@ public class Base58 {
 
     public static byte[] decode(String input) {
         
-        if (input.length() == 0) {
+        if (input.isEmpty()) {
             
             // paying with the same coin
             return new byte[0];

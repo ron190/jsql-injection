@@ -183,8 +183,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                     
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_ERROR,
-                        String.format("Incorrect URL: %s", e.getMessage()),
-                        e
+                        String.format("Incorrect URL: %s", e.getMessage())
                     );
                     return;
                 }

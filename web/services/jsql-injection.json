@@ -1,8 +1,8 @@
 {
     "version": "0.94",
     "news": [
-        "[Discuss!] Ask question and open a Github discussion => https://github.com/ron190/jsql-injection/discussions",
-        "[Feedback] Thanks to @santicsls, @mastercho, @TannicArcher, @konn-neko => https://github.com/ron190/jsql-injection",
+        "[Discuss!] Ask question and open a GitHub discussion => https://github.com/ron190/jsql-injection/discussions",
+        "[Feedbacks] Thanks to @santicsls, @mastercho, @TannicArcher, @konn-neko => https://github.com/ron190/jsql-injection",
         "[Vote!] Choose your most wanted feature => https://github.com/ron190/jsql-injection/discussions/95385",
         "[Contribute!] Improve jSQL, create APIs with PHP, .NET, Python and Node on Kubernetes/Docker for test coverage",
         "[v0.93] Add Multibit blind strategy, disable any strategy",

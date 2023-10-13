@@ -276,7 +276,6 @@ public class VendorYaml implements AbstractVendor {
         for (var i = 0 ; i < namesColumns.length ; i++) {
             
             namesColumnUtf8[i] = StringUtil.detectUtf8(namesColumns[i]);
-            
             namesColumnUtf8[i] = URLEncoder.encode(namesColumnUtf8[i], StandardCharsets.UTF_8);
         }
         
@@ -315,10 +314,7 @@ public class VendorYaml implements AbstractVendor {
         return this.injectionModel.getIndexesInUrl()
             .replaceAll(
                 "1337" + this.injectionModel.getMediatorStrategy().getNormal().getVisibleIndex() + "7331",
-                this.modelYaml
-                .getResource()
-                .getFile()
-                .getCreate()
+                this.modelYaml.getResource().getFile().getCreate()
                 .getContent()
                 .replace(
                     CONTENT_HEX,
@@ -337,9 +333,7 @@ public class VendorYaml implements AbstractVendor {
 
         String replacement = getMode(blindMode);
 
-        return StringUtils.SPACE + this.modelYaml
-            .getStrategy()
-            .getBoolean()
+        return this.modelYaml.getStrategy().getBoolean()
             .getBlind()
             .replace(BOOLEAN_MODE, replacement)
             .replace(TEST, check);
@@ -361,7 +355,7 @@ public class VendorYaml implements AbstractVendor {
 
         String replacement = getMode(blindMode);
 
-        return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean()
+        return this.modelYaml.getStrategy().getBoolean()
             .getBlind()
             .replace(BOOLEAN_MODE, replacement)
             .replace(
@@ -376,7 +370,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlMultibit(String inj, int indexCharacter, int block){
 
-        return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean().getMultibit()
+        return this.modelYaml.getStrategy().getBoolean().getMultibit()
             .replace(INJECTION, inj)
             .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
             .replace(BLOCK_MULTIBIT, Integer.toString(block));
@@ -390,7 +384,7 @@ public class VendorYaml implements AbstractVendor {
             ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
             : 5;
 
-        return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean()
+        return this.modelYaml.getStrategy().getBoolean()
             .getTime()
             .replace(BOOLEAN_MODE, replacement)
             .replace(TEST, check)
@@ -405,7 +399,7 @@ public class VendorYaml implements AbstractVendor {
             ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()
             : 5;
 
-        return StringUtils.SPACE + this.modelYaml.getStrategy().getBoolean()
+        return this.modelYaml.getStrategy().getBoolean()
             .getTime()
             .replace(BOOLEAN_MODE, replacement)
             .replace(
@@ -449,9 +443,7 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String sqlTestError() {
         
-        return StringUtils.SPACE + this.modelYaml
-            .getStrategy()
-            .getError()
+        return this.modelYaml.getStrategy().getError()
             .getMethod()
             .get(this.injectionModel.getMediatorStrategy().getError().getIndexErrorStrategy())
             .getQuery()
@@ -465,7 +457,7 @@ public class VendorYaml implements AbstractVendor {
         
         int indexMethodError = this.injectionModel.getMediatorStrategy().getError().getIndexErrorStrategy();
         
-        return StringUtils.SPACE + VendorYaml.replaceTags(
+        return VendorYaml.replaceTags(
             this.modelYaml.getStrategy().getError().getMethod().get(indexMethodError)
             .getQuery()
             .replace(WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
@@ -474,9 +466,7 @@ public class VendorYaml implements AbstractVendor {
             .replace(
                 CAPACITY,
                 Integer.toString(
-                    this.modelYaml
-                    .getStrategy()
-                    .getError()
+                    this.modelYaml.getStrategy().getError()
                     .getMethod()
                     .get(indexMethodError)
                     .getCapacity()
@@ -547,7 +537,7 @@ public class VendorYaml implements AbstractVendor {
         
         indice--;
         
-        return StringUtils.SPACE + this.modelYaml.getStrategy().getNormal()
+        return this.modelYaml.getStrategy().getNormal()
             .getIndices()
             .replace(
                 INDICES,
@@ -573,8 +563,7 @@ public class VendorYaml implements AbstractVendor {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect Limit start index, force to 0");
         }
         
-        return
-            this.modelYaml.getStrategy().getConfiguration()
+        return this.modelYaml.getStrategy().getConfiguration()
             .getLimit()
             .replace(LIMIT_VALUE, Integer.toString(limitSQLResult + limitBoundary));
     }
@@ -582,15 +571,14 @@ public class VendorYaml implements AbstractVendor {
     @Override
     public String fingerprintErrorsAsRegex() {
         
-        return StringUtils
-            .join(
-                this.modelYaml.getStrategy().getConfiguration().getFingerprint()
-                .getErrorMessage()
-                .stream()
-                .map(m -> ".*"+ m +".*")
-                .toArray(),
-                "|"
-            );
+        return StringUtils.join(
+            this.modelYaml.getStrategy().getConfiguration().getFingerprint()
+            .getErrorMessage()
+            .stream()
+            .map(m -> ".*"+ m +".*")
+            .toArray(),
+            "|"
+        );
     }
     
     public static String replaceTags(String sqlRequest) {

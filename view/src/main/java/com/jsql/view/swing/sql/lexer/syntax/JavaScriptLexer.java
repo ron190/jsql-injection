@@ -1312,7 +1312,7 @@ public Token getNextToken() throws IOException {
     Float f;
     try {
         f = Float.valueOf(this.yytext());
-        if (f.isInfinite() || f.compareTo(new Float(0f)) == 0) {
+        if (f.isInfinite() || f.compareTo(0f) == 0) {
             this.lastToken = JavaScriptToken.ERROR_FLOAT_SIZE;
         } else {
             this.lastToken = JavaScriptToken.LITERAL_FLOATING_POINT;
@@ -1343,7 +1343,7 @@ public Token getNextToken() throws IOException {
             { Double d;
     try {
         d = Double.valueOf(this.yytext());
-        if (d.isInfinite() || d.compareTo(new Double(0d)) == 0) {
+        if (d.isInfinite() || d.compareTo(0d) == 0) {
             this.lastToken = JavaScriptToken.ERROR_DOUBLE_SIZE;
         } else {
             this.lastToken = JavaScriptToken.LITERAL_DOUBLE;

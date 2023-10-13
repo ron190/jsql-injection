@@ -22,6 +22,11 @@ public class OracleBlindGetSuiteIgnoreIT extends ConcreteOracleSuiteIT {
         );
         
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withNotInjectingMetadata();
         
         model
         .getMediatorUtils()

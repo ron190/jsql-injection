@@ -8,7 +8,7 @@ import org.junitpioneer.jupiter.RetryingTest;
 
 import java.util.UUID;
 
-public class MySqlWebshellSuiteIT extends ConcreteMySqlSuiteIT {
+public class MySqlWebshellLampSuiteIT extends ConcreteMySqlSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {

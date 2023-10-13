@@ -47,7 +47,7 @@ public abstract class AbstractShell extends JTextPane {
     /**
      * Server name or IP to display on prompt.
      */
-    private String host;
+    private final String host;
 
     /**
      * User and password for database.

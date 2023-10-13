@@ -126,7 +126,7 @@ public class FormUtil {
         
         if (statusCode != 200) {
             
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "WAF can detect missing form parameters, you may enable 'Add <input/> parameters' in Preferences and retry");
             
         }
     }

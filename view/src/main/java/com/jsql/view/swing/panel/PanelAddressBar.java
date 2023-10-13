@@ -103,7 +103,7 @@ public class PanelAddressBar extends JPanel {
         I18nViewUtil.addComponentForKey(KEY_TOOLTIP_HEADER, tooltipHeader[0]);
         
         Stream.of(
-            new RadioModel("Url", true, MediatorHelper.model().getMediatorMethod().getQuery(), "METHOD_QUERYSTRING_TOOLTIP", this.radioQueryString),
+            new RadioModel("URL", true, MediatorHelper.model().getMediatorMethod().getQuery(), "METHOD_QUERYSTRING_TOOLTIP", this.radioQueryString),
             new RadioModel("GET", false, MediatorHelper.model().getMediatorMethod().getRequest(), "METHOD_REQUEST_TOOLTIP", this.radioRequest),
             new RadioModel("Header", false, MediatorHelper.model().getMediatorMethod().getHeader(), "METHOD_HEADER_TOOLTIP", this.radioHeader)
         )

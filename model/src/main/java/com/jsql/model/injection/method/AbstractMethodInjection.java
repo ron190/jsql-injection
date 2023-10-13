@@ -34,6 +34,17 @@ public abstract class AbstractMethodInjection implements Serializable {
     public abstract List<SimpleEntry<String, String>> getParams();
     public abstract String name();
     
+    public boolean testParameters(boolean hasFoundInjection) throws JSqlException {
+
+        if (!hasFoundInjection) {
+
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking {} params...", name().toLowerCase());
+            return this.testParameters();
+        }
+
+        return true;
+    }
+
     /**
      * Verify if injection works for specific Method using 3 modes: standard (last param), injection point
      * and full params injection. Special injections like JSON and SOAP are checked.
@@ -41,7 +52,7 @@ public abstract class AbstractMethodInjection implements Serializable {
      * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
      */
     public boolean testParameters() throws JSqlException {
-        
+
         var hasFoundInjection = false;
         
         // Injects URL, Request or Header params only if user tests every params
@@ -78,9 +89,12 @@ public abstract class AbstractMethodInjection implements Serializable {
 
     private boolean checkParamWithStar() throws JSqlException {
         
-        // Will keep param value as is,
-        // Does not test for insertion character (param is null)
-        return this.injectionModel.getMediatorStrategy().testStrategies(null);
+        SimpleEntry<String, String> parameterToInject = this.getParams().stream()
+            .filter(entry -> entry.getValue().contains("*"))
+            .findFirst()
+            .orElse(null);
+
+        return this.injectionModel.getMediatorStrategy().testStrategies(parameterToInject);
     }
 
     /**
@@ -91,7 +105,9 @@ public abstract class AbstractMethodInjection implements Serializable {
         // Will check param value by user.
         // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
         // for JSON injection of last param
-        SimpleEntry<String, String> parameterToInject = this.getParams().stream().reduce((a, b) -> b).orElseThrow(NullPointerException::new);
+        SimpleEntry<String, String> parameterToInject = this.getParams().stream()
+            .reduce((a, b) -> b)
+            .orElseThrow(NullPointerException::new);
 
         return this.injectionModel.getMediatorStrategy().testStrategies(parameterToInject);
     }

@@ -36,10 +36,14 @@ public class SoapUtil {
         this.injectionModel = injectionModel;
     }
 
-    public boolean testParameters() {
-        
-        var hasFoundInjection = false;
-        
+    public boolean testParameters(boolean hasFoundInjection) {
+
+        if (!hasFoundInjection) {
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking SOAP params...");
+        } else {
+            return true;
+        }
+
         if (
             this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam()
             && this.injectionModel.getMediatorUtils().getParameterUtil().isRequestSoap()

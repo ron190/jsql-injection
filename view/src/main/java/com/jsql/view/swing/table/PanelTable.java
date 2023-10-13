@@ -229,7 +229,7 @@ public class PanelTable extends JPanel {
                 
                 String text = textFilter.getText();
 
-                if (text.trim().length() == 0) {
+                if (text.trim().isEmpty()) {
                     
                     rowSorter.setRowFilter(null);
                     

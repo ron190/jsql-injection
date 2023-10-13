@@ -15,6 +15,7 @@ import com.jsql.model.accessible.ResourceAccess;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.method.MediatorMethod;
 import com.jsql.model.injection.strategy.MediatorStrategy;
@@ -169,39 +170,13 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             this.mediatorUtils.getConnectionUtil().testConnection();
 
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking query params...");
-            boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters();
+            boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters(false);
+            hasFoundInjection = this.mediatorUtils.getMultipartUtil().testParameters(hasFoundInjection);
+            hasFoundInjection = this.mediatorUtils.getSoapUtil().testParameters(hasFoundInjection);
+            hasFoundInjection = this.mediatorMethod.getRequest().testParameters(hasFoundInjection);
+            hasFoundInjection = this.mediatorMethod.getHeader().testParameters(hasFoundInjection);
+            hasFoundInjection = this.mediatorUtils.getCookiesUtil().testParameters(hasFoundInjection);
 
-            if (!hasFoundInjection) {
-
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking multipart params...");
-                hasFoundInjection = this.mediatorUtils.getMultipartUtil().testParameters();
-            }
-
-            if (!hasFoundInjection) {
-
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking SOAP params...");
-                hasFoundInjection = this.mediatorUtils.getSoapUtil().testParameters();
-            }
-
-            if (!hasFoundInjection) {
-
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking request params...");
-                hasFoundInjection = this.mediatorMethod.getRequest().testParameters();
-            }
-
-            if (!hasFoundInjection) {
-
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking header params...");
-                hasFoundInjection = this.mediatorMethod.getHeader().testParameters();
-            }
-
-            if (!hasFoundInjection) {
-
-                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking cookies params...");
-                hasFoundInjection = this.mediatorUtils.getCookiesUtil().testParameters();
-            }
-            
             if (hasFoundInjection && !this.isScanning) {
                 
                 if (this.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
@@ -230,7 +205,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
             
-        } catch (Exception e) {  // Catch all exceptions like interrupt, URL format and JSqlException
+        } catch (JSqlException | IOException e) {  // Catch expected exceptions only
 
             if (e.getMessage() == null) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Unexpected: {}", getImplicitReason(e));
@@ -239,7 +214,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             }
 
             if (e.toString().contains("HTTP/1.1")) {
-                
+
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Something went wrong with HTTP/2, try to switch manually to HTTP/1.1 in preferences");
             }
             
@@ -270,17 +245,15 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     
     /**
      * Run a HTTP connection to the web server.
-     * @param newDataInjection SQL query
+     * @param dataInjection SQL query
      * @return source code of current page
      */
     @Override
-    public String inject(String newDataInjection, boolean isUsingIndex, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
+    public String inject(String dataInjection, boolean isUsingIndex, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
         
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
         String urlInjection = this.mediatorUtils.getConnectionUtil().getUrlBase();
-        
-        String dataInjection = StringUtils.SPACE + newDataInjection;
-        
+
         urlInjection = this.mediatorStrategy.buildURL(urlInjection, isUsingIndex, dataInjection);
         
         urlInjection = StringUtil.clean(urlInjection.trim());

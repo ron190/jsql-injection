@@ -297,9 +297,14 @@ public class HibernateRestController {
 
         return getResponse(name, "select First_Name from Student where '1' = '%s'", true, false, true);
     }
-    
-    @GetMapping("/path/{name}/suffix")
-    public Greeting endpointPathParam(@PathVariable("name") String name) {
+
+    @GetMapping("/path-quote/{name}/suffix")
+    public Greeting endpointPathParamQuote(@PathVariable("name") String name) {
         return getResponse(name, "select First_Name from Student where '1' = '%s'", true, false, true);
+    }
+
+    @GetMapping("/path-integer/{name}/suffix")
+    public Greeting endpointPathParamInteger(@PathVariable("name") String name) {
+        return getResponse(name, "select First_Name from Student where '1' = %s", true, false, true);
     }
 }

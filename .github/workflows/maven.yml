@@ -60,8 +60,6 @@ jobs:
           nashorn: ""
         - jdk: 3.9.3-eclipse-temurin-20
           nashorn: ""
-        - jdk: 3.9.4-amazoncorretto-21
-          nashorn: ""
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
       MAVEN_NASHORN: ${{ matrix.nashorn }}

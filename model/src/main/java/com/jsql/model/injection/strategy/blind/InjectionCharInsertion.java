@@ -67,15 +67,7 @@ public class InjectionCharInsertion {
         }
         
         // Call the SQL request which must be FALSE (usually ?id=-123456879)
-        this.blankFalseMark = this.callUrl(
-            String.join(
-                "+",
-                falseCharInsertion,
-                this.injectionModel.getMediatorVendor().getVendor().instance().endingComment(),
-                "fals+"
-            ),
-            "prefix#ref"
-        );
+        this.blankFalseMark = this.callUrl(falseCharInsertion, "prefix#ref");
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model

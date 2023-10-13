@@ -27,7 +27,8 @@ public class Db2BlindSuiteIgnoreIT extends ConcreteDb2SuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withCountLimitingThreads(3);
+        .withCountLimitingThreads(3)
+        .withNotInjectingMetadata();
         
         model
         .getMediatorUtils()

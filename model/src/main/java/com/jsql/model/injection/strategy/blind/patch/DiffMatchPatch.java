@@ -189,7 +189,7 @@ public class DiffMatchPatch {
         LinkedList<Diff> diffs;
         if (text1.equals(text2)) {
             diffs = new LinkedList<>();
-            if (text1.length() != 0) {
+            if (!text1.isEmpty()) {
                 diffs.add(new Diff(Operation.EQUAL, text1));
             }
             return diffs;
@@ -211,10 +211,10 @@ public class DiffMatchPatch {
         diffs = this.diffCompute(text1, text2, checklines, deadline);
 
         // Restore the prefix and suffix.
-        if (commonprefix.length() != 0) {
+        if (!commonprefix.isEmpty()) {
             diffs.addFirst(new Diff(Operation.EQUAL, commonprefix));
         }
-        if (commonsuffix.length() != 0) {
+        if (!commonsuffix.isEmpty()) {
             diffs.addLast(new Diff(Operation.EQUAL, commonsuffix));
         }
 
@@ -236,13 +236,13 @@ public class DiffMatchPatch {
     private LinkedList<Diff> diffCompute(String text1, String text2, boolean checklines, long deadline) {
         LinkedList<Diff> diffs = new LinkedList<>();
 
-        if (text1.length() == 0) {
+        if (text1.isEmpty()) {
             // Just add some text (speedup).
             diffs.add(new Diff(Operation.INSERT, text2));
             return diffs;
         }
 
-        if (text2.length() == 0) {
+        if (text2.isEmpty()) {
             // Just delete some text (speedup).
             diffs.add(new Diff(Operation.DELETE, text1));
             return diffs;
@@ -952,7 +952,7 @@ public class DiffMatchPatch {
                 bestEquality2 = equality2.toString();
                 bestScore = this.diffCleanupSemanticScore(equality1.toString(), edit)
                         + this.diffCleanupSemanticScore(edit, equality2.toString());
-                while (edit.length() != 0 && equality2.length() != 0
+                while (!edit.isEmpty() && equality2.length() != 0
                         && edit.charAt(0) == equality2.charAt(0)) {
                     equality1.append(Character.toString(edit.charAt(0)));
                     edit = edit.substring(1) + equality2.charAt(0);
@@ -972,7 +972,7 @@ public class DiffMatchPatch {
 
                 if (!prevDiff.getText().equals(bestEquality1)) {
                     // We have an improvement, save it back to the diff.
-                    if (bestEquality1.length() != 0) {
+                    if (!bestEquality1.isEmpty()) {
                         prevDiff.setText(bestEquality1);
                     } else {
                         pointer.previous(); // Walk past nextDiff.
@@ -983,7 +983,7 @@ public class DiffMatchPatch {
                         pointer.next(); // Walk past nextDiff.
                     }
                     thisDiff.setText(bestEdit);
-                    if (bestEquality2.length() != 0) {
+                    if (!bestEquality2.isEmpty()) {
                         nextDiff.setText(bestEquality2);
                     } else {
                         pointer.remove(); // Delete nextDiff.
@@ -1007,7 +1007,7 @@ public class DiffMatchPatch {
      * @return The score.
      */
     private int diffCleanupSemanticScore(String one, String two) {
-        if (one.length() == 0 || two.length() == 0) {
+        if (one.isEmpty() || two.isEmpty()) {
             // Edges are the best.
             return 6;
         }
@@ -1261,7 +1261,7 @@ public class DiffMatchPatch {
             }
             thisDiff = pointer.hasNext() ? pointer.next() : null;
         }
-        if (diffs.getLast().getText().length() == 0) {
+        if (diffs.getLast().getText().isEmpty()) {
             diffs.removeLast();  // Remove the dummy entry at the end.
         }
 
@@ -1468,7 +1468,7 @@ public class DiffMatchPatch {
             }
         }
         String delta = text.toString();
-        if (delta.length() != 0) {
+        if (!delta.isEmpty()) {
             // Strip off trailing tab character.
             delta = delta.substring(0, delta.length() - 1);
             delta = Patch.unescapeForEncodeUriCompatability(delta);
@@ -1488,7 +1488,7 @@ public class DiffMatchPatch {
         int pointer = 0;  // Cursor in text1
         String[] tokens = delta.split("\t");
         for (String token : tokens) {
-            if (token.length() == 0) {
+            if (token.isEmpty()) {
                 // Blank tokens are ok (from a trailing \t).
                 continue;
             }
@@ -1574,7 +1574,7 @@ public class DiffMatchPatch {
         if (text.equals(pattern)) {
             // Shortcut (potentially not guaranteed by the algorithm)
             return 0;
-        } else if (text.length() == 0) {
+        } else if (text.isEmpty()) {
             // Nothing to match.
             return -1;
         } else if (loc + pattern.length() <= text.length()
@@ -1732,7 +1732,7 @@ public class DiffMatchPatch {
      * @param text Source text.
      */
     protected void patchAddContext(Patch patch, String text) {
-        if (text.length() == 0) {
+        if (text.isEmpty()) {
             return;
         }
         String pattern = text.substring(patch.getStart2(), patch.getStart2() + patch.getLength1());
@@ -1752,13 +1752,13 @@ public class DiffMatchPatch {
         // Add the prefix.
         String prefix = text.substring(Math.max(0, patch.getStart2() - padding),
                 patch.getStart2());
-        if (prefix.length() != 0) {
+        if (!prefix.isEmpty()) {
             patch.getDiffs().addFirst(new Diff(Operation.EQUAL, prefix));
         }
         // Add the suffix.
         String suffix = text.substring(patch.getStart2() + patch.getLength1(),
                 Math.min(text.length(), patch.getStart2() + patch.getLength1() + padding));
-        if (suffix.length() != 0) {
+        if (!suffix.isEmpty()) {
             patch.getDiffs().addLast(new Diff(Operation.EQUAL, suffix));
         }
 
@@ -2123,7 +2123,7 @@ public class DiffMatchPatch {
                 empty = true;
                 patch.setStart1(start1 - precontext.length());
                 patch.setStart2(start2 - precontext.length());
-                if (precontext.length() != 0) {
+                if (!precontext.isEmpty()) {
                     patch.setLength1(patch.setLength2(precontext.length()));
                     patch.getDiffs().add(new Diff(Operation.EQUAL, precontext));
                 }
@@ -2177,7 +2177,7 @@ public class DiffMatchPatch {
                 } else {
                     postcontext = this.diffText1(bigpatch.getDiffs());
                 }
-                if (postcontext.length() != 0) {
+                if (!postcontext.isEmpty()) {
                     patch.setLength1(patch.getLength1() + postcontext.length());
                     patch.setLength2(patch.getLength2() + postcontext.length());
                     if (!patch.getDiffs().isEmpty()
@@ -2216,7 +2216,7 @@ public class DiffMatchPatch {
      */
     public List<Patch> patchFromText(String textline) {
         List<Patch> patches = new LinkedList<>();
-        if (textline.length() == 0) {
+        if (textline.isEmpty()) {
             return patches;
         }
         List<String> textList = Arrays.asList(textline.split("\n"));
@@ -2235,7 +2235,7 @@ public class DiffMatchPatch {
             patch = new Patch();
             patches.add(patch);
             patch.setStart1(Integer.parseInt(m.group(1)));
-            if (m.group(2).length() == 0) {
+            if (m.group(2).isEmpty()) {
                 patch.setStart1(patch.getStart1() - 1);
                 patch.setLength1(1);
             } else if ("0".equals(m.group(2))) {
@@ -2246,7 +2246,7 @@ public class DiffMatchPatch {
             }
 
             patch.setStart2(Integer.parseInt(m.group(3)));
-            if (m.group(4).length() == 0) {
+            if (m.group(4).isEmpty()) {
                 patch.setStart2(patch.getStart2() - 1);
                 patch.setLength2(1);
             } else if ("0".equals(m.group(4))) {
