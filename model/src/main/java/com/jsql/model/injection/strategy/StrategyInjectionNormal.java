@@ -94,19 +94,22 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     }
 
     @Override
-    public void activateStrategy() {
-        
-        LOGGER.log(
-            LogLevelUtil.CONSOLE_INFORM,
-            "{} [{}]",
-            () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
-            this::getName
-        );
-        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getNormal());
-        
-        var request = new Request();
-        request.setMessage(Interaction.MARK_NORMAL_STRATEGY);
-        this.injectionModel.sendToViews(request);
+    public void activateWhenApplicable() {
+
+        if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
+
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_INFORM,
+                "{} [{}]",
+                () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
+                this::getName
+            );
+            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getNormal());
+
+            var request = new Request();
+            request.setMessage(Interaction.MARK_NORMAL_STRATEGY);
+            this.injectionModel.sendToViews(request);
+        }
     }
     
     /**

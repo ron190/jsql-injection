@@ -357,7 +357,7 @@ public final class StringUtil {
         return URLDecoder.decode(text, StandardCharsets.UTF_8);
     }
     
-    public static String clean(String query) {
+    public static String cleanSql(String query) {
         
         return query
             // Remove SQL comments except tamper /**/ /*!...*/

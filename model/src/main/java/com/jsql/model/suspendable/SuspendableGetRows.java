@@ -119,7 +119,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                     try {
                         currentChunk = URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text
                     } catch (IllegalArgumentException e) {
-                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Decoding result fails on UT8, keeping raw chunk");
+                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Decoding fails on UT8, keeping raw result");
                     }
                 }
                 

@@ -120,20 +120,23 @@ public class StrategyInjectionTime extends AbstractStrategy {
     }
 
     @Override
-    public void activateStrategy() {
-        
-        LOGGER.log(
-            LogLevelUtil.CONSOLE_INFORM,
-            "{} [{}] with [{}]",
-            () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
-            this::getName,
-            () -> this.injectionTime.getBooleanMode().name()
-        );
-        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getTime());
-        
-        var requestMarkTimeStrategy = new Request();
-        requestMarkTimeStrategy.setMessage(Interaction.MARK_TIME_STRATEGY);
-        this.injectionModel.sendToViews(requestMarkTimeStrategy);
+    public void activateWhenApplicable() {
+
+        if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
+
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_INFORM,
+                "{} [{}] with [{}]",
+                () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
+                this::getName,
+                () -> this.injectionTime.getBooleanMode().name()
+            );
+            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getTime());
+
+            var requestMarkTimeStrategy = new Request();
+            requestMarkTimeStrategy.setMessage(Interaction.MARK_TIME_STRATEGY);
+            this.injectionModel.sendToViews(requestMarkTimeStrategy);
+        }
     }
     
     @Override

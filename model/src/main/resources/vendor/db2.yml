@@ -141,7 +141,7 @@ strategy:
     - 'Warning: db2_execute()'
     - 'Warning: db2_fetch_array()'
    orderByErrorMessage:
-    - 'DB2 SQL Error: SQLCODE=.*, SQLSTATE=.*, SQLERRMC=.*, DRIVER=.*'
+    - 'DB2 SQL Error: SQLCODE=.*, SQLSTATE=.*, SQLERRMC=null, DRIVER=.*'
 
  normal:
   indices: union select ${indices} from sysibm.sysdummy1

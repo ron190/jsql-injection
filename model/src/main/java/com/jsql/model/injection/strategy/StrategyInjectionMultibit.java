@@ -90,19 +90,22 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
     }
 
     @Override
-    public void activateStrategy() {
-        
-        LOGGER.log(
-            LogLevelUtil.CONSOLE_INFORM,
-            "{} [{}]",
-            () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
-            this::getName
-        );
-        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getMultibit());
-        
-        var requestMarkBlindStrategy = new Request();
-        requestMarkBlindStrategy.setMessage(Interaction.MARK_MULTI_STRATEGY);
-        this.injectionModel.sendToViews(requestMarkBlindStrategy);
+    public void activateWhenApplicable() {
+
+        if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
+
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_INFORM,
+                "{} [{}]",
+                () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
+                this::getName
+            );
+            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getMultibit());
+
+            var requestMarkBlindStrategy = new Request();
+            requestMarkBlindStrategy.setMessage(Interaction.MARK_MULTI_STRATEGY);
+            this.injectionModel.sendToViews(requestMarkBlindStrategy);
+        }
     }
     
     @Override

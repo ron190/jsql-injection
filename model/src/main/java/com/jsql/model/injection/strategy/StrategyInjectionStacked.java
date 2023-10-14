@@ -150,19 +150,22 @@ public class StrategyInjectionStacked extends AbstractStrategy {
     }
 
     @Override
-    public void activateStrategy() {
+    public void activateWhenApplicable() {
 
-        LOGGER.log(
-            LogLevelUtil.CONSOLE_INFORM,
-            "{} [{}]",
-            () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
-            this::getName
-        );
-        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getStacked());
+        if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
 
-        var request = new Request();
-        request.setMessage(Interaction.MARK_STACKED_STRATEGY);
-        this.injectionModel.sendToViews(request);
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_INFORM,
+                "{} [{}]",
+                () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
+                this::getName
+            );
+            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getStacked());
+
+            var request = new Request();
+            request.setMessage(Interaction.MARK_STACKED_STRATEGY);
+            this.injectionModel.sendToViews(request);
+        }
     }
 
     @Override

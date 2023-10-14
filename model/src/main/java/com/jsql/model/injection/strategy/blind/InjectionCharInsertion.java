@@ -5,6 +5,7 @@ import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -67,7 +68,10 @@ public class InjectionCharInsertion {
         }
         
         // Call the SQL request which must be FALSE (usually ?id=-123456879)
-        this.blankFalseMark = this.callUrl(falseCharInsertion, "prefix#ref");
+        this.blankFalseMark = this.callUrl(
+            falseCharInsertion,
+            "prefix:" + prefixSuffix.replace(PREFIX, StringUtils.EMPTY)
+        );
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
@@ -80,7 +84,7 @@ public class InjectionCharInsertion {
             listCallableTagTrue.add(
                 new CallableCharInsertion(
                     String.join(
-                        "+",
+                        StringUtils.SPACE,
                         prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "345")),
                         this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
                         urlTest
@@ -142,7 +146,7 @@ public class InjectionCharInsertion {
             listCallableTagFalse.add(
                 new CallableCharInsertion(
                     String.join(
-                        "+",
+                        StringUtils.SPACE,
                         this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "345")),
                         this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
                         urlTest
@@ -195,7 +199,7 @@ public class InjectionCharInsertion {
         
         var blindTest = new CallableCharInsertion(
             String.join(
-                "+",
+                StringUtils.SPACE,
                 this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "678")),
                 this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization()

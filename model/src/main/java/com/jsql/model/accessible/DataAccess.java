@@ -207,8 +207,7 @@ public class DataAccess {
 
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
-                String.format("%s: %s", I18nUtil.valueByKey("LOG_DB_METADATA_INCORRECT"), resultToParse),
-                e
+                String.format("%s: %s", I18nUtil.valueByKey("LOG_DB_METADATA_INCORRECT"), resultToParse)
             );
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, I18nUtil.valueByKey("LOG_DB_METADATA_WARN"));
         }

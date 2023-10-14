@@ -192,29 +192,29 @@ public class StrategyInjectionError extends AbstractStrategy {
     }
 
     @Override
-    public void activateStrategy() {
-        
-        LOGGER.log(
-            LogLevelUtil.CONSOLE_INFORM,
-            "{} [{} {}]",
-            () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
-            this::getName,
-            () -> this.injectionModel
-                .getMediatorVendor()
-                .getVendor()
-                .instance()
-                .getModelYaml()
-                .getStrategy()
-                .getError()
-                .getMethod()
-                .get(this.indexErrorStrategy)
-                .getName()
-        );
-        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());
-        
-        var request = new Request();
-        request.setMessage(Interaction.MARK_ERROR_STRATEGY);
-        this.injectionModel.sendToViews(request);
+    public void activateWhenApplicable() {
+
+        if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
+
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_INFORM,
+                "{} [{} {}]",
+                () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
+                this::getName,
+                () -> this.injectionModel.getMediatorVendor().getVendor().instance()
+                    .getModelYaml()
+                    .getStrategy()
+                    .getError()
+                    .getMethod()
+                    .get(this.indexErrorStrategy)
+                    .getName()
+            );
+            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());
+
+            var request = new Request();
+            request.setMessage(Interaction.MARK_ERROR_STRATEGY);
+            this.injectionModel.sendToViews(request);
+        }
     }
     
     @Override

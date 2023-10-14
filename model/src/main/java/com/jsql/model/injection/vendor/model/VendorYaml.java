@@ -336,18 +336,8 @@ public class VendorYaml implements AbstractVendor {
         return this.modelYaml.getStrategy().getBoolean()
             .getBlind()
             .replace(BOOLEAN_MODE, replacement)
-            .replace(TEST, check);
-    }
-
-    private String getMode(BooleanMode blindMode) {
-        String replacement = StringUtils.EMPTY;
-        switch (blindMode) {
-            case AND: replacement = this.modelYaml.getStrategy().getBoolean().getModeAnd(); break;
-            case OR: replacement = this.modelYaml.getStrategy().getBoolean().getModeOr(); break;
-            case STACKED: replacement = this.modelYaml.getStrategy().getBoolean().getModeStacked(); break;
-            case NO_MODE: replacement = ""; break;
-        }
-        return replacement;
+            .replace(TEST, check)
+            .trim();  // trim spaces in '${boolean.mode} ${test}' when no mode, not covered by cleanSql()
     }
 
     @Override
@@ -364,16 +354,8 @@ public class VendorYaml implements AbstractVendor {
                 .replace(INJECTION, inj)
                 .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
                 .replace(BIT, Integer.toString(bit))
-            );
-    }
-
-    @Override
-    public String sqlMultibit(String inj, int indexCharacter, int block){
-
-        return this.modelYaml.getStrategy().getBoolean().getMultibit()
-            .replace(INJECTION, inj)
-            .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
-            .replace(BLOCK_MULTIBIT, Integer.toString(block));
+            )
+            .trim();  // trim spaces in '${boolean.mode} ${test}' when no mode, not covered by cleanSql()
     }
 
     @Override
@@ -388,7 +370,8 @@ public class VendorYaml implements AbstractVendor {
             .getTime()
             .replace(BOOLEAN_MODE, replacement)
             .replace(TEST, check)
-            .replace(SLEEP_TIME, Long.toString(countSleepTimeStrategy));
+            .replace(SLEEP_TIME, Long.toString(countSleepTimeStrategy))
+            .trim();  // trim spaces in '${boolean.mode} ${test}' when no mode, not covered by cleanSql()
     }
 
     @Override
@@ -413,7 +396,20 @@ public class VendorYaml implements AbstractVendor {
             .replace(
                 SLEEP_TIME,
                 Long.toString(countSleepTimeStrategy)
-            );
+            )
+            .trim();  // trim spaces in '${boolean.mode} ${test}' when no mode, not covered by cleanSql()
+    }
+
+    private String getMode(BooleanMode blindMode) {
+        String replacement;
+        switch (blindMode) {
+            case AND: replacement = this.modelYaml.getStrategy().getBoolean().getModeAnd(); break;
+            case OR: replacement = this.modelYaml.getStrategy().getBoolean().getModeOr(); break;
+            case STACKED: replacement = this.modelYaml.getStrategy().getBoolean().getModeStacked(); break;
+            case NO_MODE:
+            default: replacement = StringUtils.EMPTY; break;
+        }
+        return replacement;
     }
 
     @Override
@@ -438,6 +434,15 @@ public class VendorYaml implements AbstractVendor {
             .replace(WINDOW_CHAR, startPosition)
             .replace(CAPACITY, DEFAULT_CAPACITY)
         );
+    }
+
+    @Override
+    public String sqlMultibit(String inj, int indexCharacter, int block){
+
+        return this.modelYaml.getStrategy().getBoolean().getMultibit()
+            .replace(INJECTION, inj)
+            .replace(WINDOW_CHAR, Integer.toString(indexCharacter))
+            .replace(BLOCK_MULTIBIT, Integer.toString(block));
     }
 
     @Override

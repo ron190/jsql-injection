@@ -78,7 +78,7 @@ public class MediatorStrategy {
      * @param sqlTrail SQL statement
      * @return Final data
      */
-    public String buildURL(String urlBase, boolean isUsingIndex, String sqlTrail) {
+    public String buildPath(String urlBase, boolean isUsingIndex, String sqlTrail) {
         
         String result = urlBase;
         
@@ -86,20 +86,16 @@ public class MediatorStrategy {
             
             if (!isUsingIndex) {
                 
-                result = urlBase.replace(InjectionModel.STAR, this.applyEncoding(sqlTrail));
+                result = urlBase.replace(InjectionModel.STAR, this.encodePath(sqlTrail));
                 
             } else {
                 
                 result = urlBase.replace(
                     InjectionModel.STAR,
-                    this.applyEncoding(
+                    this.encodePath(
                         this.injectionModel.getIndexesInUrl().replaceAll(
                             "1337" + this.normal.getVisibleIndex() + "7331",
-                            /**
-                             * Oracle column often contains $, which is reserved for regex.
-                             * => need to be escape with quoteReplacement()
-                             */
-                            Matcher.quoteReplacement(sqlTrail)
+                            Matcher.quoteReplacement(sqlTrail)  // Oracle column can contain regex char $ => quoteReplacement()
                         )
                     )
                 );
@@ -109,9 +105,9 @@ public class MediatorStrategy {
         return result;
     }
 
-    private String applyEncoding(String sqlTrail) {
+    private String encodePath(String sqlTrail) {
 
-        String sqlTrailEncoded = StringUtil.clean(sqlTrail);
+        String sqlTrailEncoded = StringUtil.cleanSql(sqlTrail);
 
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled()) {
 
@@ -214,32 +210,15 @@ public class MediatorStrategy {
         this.stacked.checkApplicability();
         this.normal.checkApplicability();
 
-        // Choose the most efficient strategy: normal > error > blind > time
-        if (this.normal.isApplicable()) {
-            
-            this.normal.activateStrategy();
-            
-        } else if (this.stacked.isApplicable()) {
+        // Set most efficient strategy
+        this.normal.activateWhenApplicable();
+        this.stacked.activateWhenApplicable();
+        this.error.activateWhenApplicable();
+        this.multibit.activateWhenApplicable();
+        this.blind.activateWhenApplicable();
+        this.time.activateWhenApplicable();
 
-            this.stacked.activateStrategy();
-
-        } else if (this.error.isApplicable()) {
-
-            this.error.activateStrategy();
-
-        } else if (this.multibit.isApplicable()) {
-
-            this.multibit.activateStrategy();
-
-        } else if (this.blind.isApplicable()) {
-
-            this.blind.activateStrategy();
-
-        } else if (this.time.isApplicable()) {
-
-            this.time.activateStrategy();
-
-        } else {
+        if (this.injectionModel.getMediatorStrategy().getStrategy() == null) {  // no strategy found
             
             // Restore initial parameter value on injection failure
             // Only when not true STAR injection

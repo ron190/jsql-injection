@@ -119,20 +119,23 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     }
 
     @Override
-    public void activateStrategy() {
-        
-        LOGGER.log(
-            LogLevelUtil.CONSOLE_INFORM,
-            "{} [{}] with [{}]",
-            () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
-            this::getName,
-            () -> this.injectionBlind.getBooleanMode().name()
-        );
-        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getBlind());
-        
-        var requestMarkBlindStrategy = new Request();
-        requestMarkBlindStrategy.setMessage(Interaction.MARK_BLIND_STRATEGY);
-        this.injectionModel.sendToViews(requestMarkBlindStrategy);
+    public void activateWhenApplicable() {
+
+        if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
+
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_INFORM,
+                "{} [{}] with [{}]",
+                () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
+                this::getName,
+                () -> this.injectionBlind.getBooleanMode().name()
+            );
+            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getBlind());
+
+            var requestMarkBlindStrategy = new Request();
+            requestMarkBlindStrategy.setMessage(Interaction.MARK_BLIND_STRATEGY);
+            this.injectionModel.sendToViews(requestMarkBlindStrategy);
+        }
     }
     
     @Override

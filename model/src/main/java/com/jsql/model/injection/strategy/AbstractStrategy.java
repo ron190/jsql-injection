@@ -69,9 +69,10 @@ public abstract class AbstractStrategy {
     public abstract String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException;
     
     /**
-     * Change the strategy of the model to current strategy.
+     * Change model strategy to current applicable strategy only when not already set.
+     * Normal > Stacked > Error > Multibit > Blind > Time
      */
-    public abstract void activateStrategy();
+    public abstract void activateWhenApplicable();
     
     /**
      * Get number of characters you can obtain from the strategy.

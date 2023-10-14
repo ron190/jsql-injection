@@ -307,4 +307,9 @@ public class HibernateRestController {
     public Greeting endpointPathParamInteger(@PathVariable("name") String name) {
         return getResponse(name, "select First_Name from Student where '1' = %s", true, false, true);
     }
+
+    @GetMapping("/path-select/{name}/suffix")  // for manual tests
+    public Greeting endpointPathParamSelect(@PathVariable("name") String name) {
+        return getResponse(name, "select %s", false, false, false);
+    }
 }

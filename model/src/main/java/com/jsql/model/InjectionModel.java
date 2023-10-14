@@ -254,9 +254,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
         String urlInjection = this.mediatorUtils.getConnectionUtil().getUrlBase();
 
-        urlInjection = this.mediatorStrategy.buildURL(urlInjection, isUsingIndex, dataInjection);
+        urlInjection = this.mediatorStrategy.buildPath(urlInjection, isUsingIndex, dataInjection);
         
-        urlInjection = StringUtil.clean(urlInjection.trim());
+        urlInjection = StringUtil.cleanSql(urlInjection.trim());
 
         URL urlObject;
         
@@ -559,7 +559,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         }
         
         // Remove comments except empty /**/
-        query = this.clean(methodInjection, query);
+        query = this.cleanQuery(methodInjection, query);
         
         // Add empty comments with space=>/**/
         if (this.mediatorUtils.getConnectionUtil().getMethodInjection() == methodInjection) {
@@ -640,7 +640,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * @param query
      * @return
      */
-    private String clean(AbstractMethodInjection methodInjection, String query) {
+    private String cleanQuery(AbstractMethodInjection methodInjection, String query) {
         
         String queryFixed = query;
         
@@ -670,7 +670,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
         } else {
             
-            queryFixed = StringUtil.clean(queryFixed);
+            queryFixed = StringUtil.cleanSql(queryFixed);
         }
         
         return queryFixed;
@@ -711,7 +711,6 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             } else if (methodInjection != this.mediatorMethod.getRequest()) {
                 
                 // For cookies in Spring (confirmed, covered by integration tests)
-                // Replace spaces
                 queryFixed = queryFixed.replace("+", "%20");
                 queryFixed = queryFixed.replace(",", "%2c");
                 queryFixed = URLDecoder.decode(queryFixed, StandardCharsets.UTF_8);

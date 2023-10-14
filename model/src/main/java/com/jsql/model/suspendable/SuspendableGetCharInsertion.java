@@ -296,15 +296,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         
         if (characterInsertionDetectedFixed == null) {
             
-            if (StringUtils.isEmpty(characterInsertionByUser) || InjectionModel.STAR.equals(characterInsertionByUser)) {
-                
-                characterInsertionDetectedFixed = "1";
-                
-            } else {
-                
-                characterInsertionDetectedFixed = characterInsertionByUser;
-            }
-            
+            characterInsertionDetectedFixed = characterInsertionByUser;
+
             String logCharacterInsertion = characterInsertionDetectedFixed;
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
