@@ -359,18 +359,23 @@ public final class StringUtil {
     
     public static String cleanSql(String query) {
         
-        return query
-            // Remove SQL comments except tamper /**/ /*!...*/
-            // Negative lookahead: don't match tamper empty comment /**/ or version comment /*!...*/
-            // JavaScript: (?!\/\*!.*\*\/|\/\*\*\/)\/\*.*\*\/
-            // TODO Duplicated in another method
-            .replaceAll("(?s)(?!/\\*\\*/|/\\*!.*\\*/)/\\*.*?\\*/", org.apache.commons.lang3.StringUtils.EMPTY)
-            // Remove spaces after a word
-            .replaceAll("(?s)([^\\s\\w])(\\s+)", "$1")
-            // Remove spaces before a word
-            .replaceAll("(?s)(\\s+)([^\\s\\w])", "$2")
-            // Replace spaces
-            .replaceAll("(?s)\\s+", " ")
-        ;
+        return removeSqlComment(query)
+            .replaceAll("(?s)([^\\s\\w])(\\s+)", "$1")  // Remove spaces after a word
+            .replaceAll("(?s)(\\s+)([^\\s\\w])", "$2")  // Remove spaces before a word
+            .replaceAll("(?s)\\s+", " ")  // Replace spaces
+            .trim();
+    }
+
+    /**
+     * Remove SQL comments except tamper /**\/ /*!...*\/
+     * Negative lookahead: don't match tamper empty comment /**\/ or version comment /*!...*\/
+     * JavaScript: (?!\/\*!.*\*\/|\/\*\*\/)\/\*.*\*\/
+     */
+    public static String removeSqlComment(String query) {
+
+        return query.replaceAll(
+            "(?s)(?!/\\*\\*/|/\\*!.*\\*/)/\\*.*?\\*/",
+            org.apache.commons.lang3.StringUtils.EMPTY
+        );
     }
 }

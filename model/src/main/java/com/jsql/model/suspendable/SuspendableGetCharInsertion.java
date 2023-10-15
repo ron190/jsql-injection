@@ -243,7 +243,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             taskCompletionService.submit(
                 new CallablePageSource(
                     characterInsertion
-                    + StringUtils.SPACE
+                    + StringUtils.SPACE  // covered by cleaning
                     + this.injectionModel.getMediatorVendor().getVendor().instance().sqlOrderBy(),
                     characterInsertion,
                     this.injectionModel,

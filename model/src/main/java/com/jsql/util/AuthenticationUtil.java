@@ -82,7 +82,6 @@ public class AuthenticationUtil {
 
     public void initializeSimpleAuthorization(boolean isAuthentication, String usernameAuthentication, String passwordAuthentication) {
         
-        // TODO Move to Preferences
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         
         preferences.putBoolean("isAuthentication", isAuthentication);

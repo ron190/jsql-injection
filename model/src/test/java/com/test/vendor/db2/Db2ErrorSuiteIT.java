@@ -20,9 +20,18 @@ public class Db2ErrorSuiteIT extends ConcreteDb2SuiteIT {
 
         // Slow fingerprinting => star
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/errors?tenant=db2&name=0'*"
+            "http://localhost:8080/errors?tenant=db2&name='*"
         );
-        
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsNotSearchingCharInsertion(true)
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true)
+        .withIsStrategyStackedDisabled(true)
+        .withIsStrategyMultibitDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()

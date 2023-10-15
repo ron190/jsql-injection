@@ -23,7 +23,13 @@ class StringUtilSpock extends Specification {
             StringUtil.base32Decode('YOU4HJ6DUA======') == 'יחא'
             StringUtil.base58Encode('יחא') == '2gSCm18Kq'
             StringUtil.base58Decode('2gSCm18Kq') == 'יחא'
-            StringUtil.cleanSql('/**//*!*/  a  a  /*a*/-  b  b  -  c  c  d') == '/**//*!*/a a-b b-c c d'
+            StringUtil.cleanSql('''
+                /**//*!*/  a  a  /*
+                a
+                */-  b  
+                b  -  c
+                c  d
+            ''') == '/**//*!*/a a-b b-c c d'
 
             StringUtil.compress(null) == null
             StringUtil.decompress(null) == null

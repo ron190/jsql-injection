@@ -43,23 +43,11 @@ public class DataAccess {
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**
-     * SQL characters marking the end of the result of an injection.
-     * Process stops when this schema is encountered:
-     * <pre>SQLix01x03x03x07
-     */
-    public static final String LEAD_HEX = "0x53714c69";
-    public static final String TRAIL_SQL = "%01%03%03%07";
-    public static final String TRAIL_HEX = "0x01030307";
-    
-    /**
      * Regex characters marking the end of the result of an injection.
      * Process stops when this schema is encountered:
      * <pre>SQLix01x03x03x07
      */
     public static final String TRAIL_RGX = "\\x01\\x03\\x03\\x07";
-    
-    public static final String SEPARATOR_FIELD_HEX = "0x7f";
-    public static final String SEPARATOR_FIELD_SQL = "%7f";
     
     /**
      * Regex character used between each table cells.
@@ -70,29 +58,12 @@ public class DataAccess {
     public static final String SEPARATOR_CELL_RGX = "\\x06";
     
     /**
-     * SQL character used between each table cells.
-     * Expected schema of multiple table cells :
-     * <pre>
-     * %04[table cell]%05[number of occurrences]%04%06%04[table cell]%05[number of occurrences]%04
-     */
-    public static final String SEPARATOR_CELL_SQL = "%06";
-    public static final String SEPARATOR_CELL_HEX = "0x06";
-    
-    /**
-     * SQL character used between the table cell and the number of occurrence of the cell text.
-     * Expected schema of a table cell data is
-     * <pre>%04[table cell]%05[number of occurrences]%04
-     */
-    public static final String SEPARATOR_QTE_SQL = "%05";
-    
-    /**
      * Regex character used between the table cell and the number of occurrence of the cell text.
      * Expected schema of a table cell data is
      * <pre>x04[table cell]x05[number of occurrences]x04
      */
     public static final String SEPARATOR_QTE_RGX = "\\x05";
-    public static final String SEPARATOR_QTE_HEX = "0x05";
-    
+
     /**
      * Regex character enclosing a table cell returned by injection.
      * It allows to detect the correct end of a table cell data during parsing.
@@ -100,18 +71,6 @@ public class DataAccess {
      * <pre>x04[table cell]x05[number of occurrences]x04
      */
     public static final String ENCLOSE_VALUE_RGX = "\\x04";
-    public static final String ENCLOSE_VALUE_HEX = "0x04";
-    
-    /**
-     * SQL character enclosing a table cell returned by injection.
-     * It allows to detect the correct end of a table cell data during parsing.
-     * Expected schema of a table cell data is
-     * <pre>%04[table cell]%05[number of occurrences]%04
-     */
-    public static final String ENCLOSE_VALUE_SQL = "%04";
-    
-    public static final String CALIBRATOR_SQL = "%23";
-    public static final String CALIBRATOR_HEX = "0x23";
     
     public static final String LEAD = "SqLi";
     public static final String SHELL_LEAD = "${shell.lead}";
@@ -163,23 +122,11 @@ public class DataAccess {
             );
         
         } catch (AbstractSlidingException e) {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());
-            
-            // Get pieces of data already retrieved instead of losing them
-            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
-                
-                resultToParse = e.getSlidingWindowAllRows();
-                
-            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
-                
-                resultToParse = e.getSlidingWindowCurrentRows();
-            }
-            
-        } catch (Exception e) {
-            
-            // TODO Check if useful
-            // Catch every other exception (timeout?)
+
+            resultToParse = getPartialResultAndLog(e, resultToParse);
+
+        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
+
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
 
@@ -242,29 +189,16 @@ public class DataAccess {
             );
             
         } catch (AbstractSlidingException e) {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());
-            
-            // Get pieces of data already retrieved instead of losing them
-            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
-                
-                resultToParse = e.getSlidingWindowAllRows();
-                
-            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
-                
-                resultToParse = e.getSlidingWindowCurrentRows();
-            }
-            
-        } catch (Exception e) {
-            
-            // TODO Check if useful
-            // Catch every other exception (timeout?)
+
+            resultToParse = getPartialResultAndLog(e, resultToParse);
+
+        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
+
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
 
         // Parse all data we have retrieved
-        var regexSearch = Pattern
-            .compile(
+        var regexSearch = Pattern.compile(
                 MODE
                 + ENCLOSE_VALUE_RGX
                 + CELL_TABLE
@@ -335,29 +269,16 @@ public class DataAccess {
             );
             
         } catch (AbstractSlidingException e) {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());
-            
-            // Get pieces of data already retrieved instead of losing them
-            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
-                
-                resultToParse = e.getSlidingWindowAllRows();
-                
-            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
-                
-                resultToParse = e.getSlidingWindowCurrentRows();
-            }
-            
-        } catch (Exception e) {
-            
-            // TODO Check if useful
-            // Catch every other exception (timeout?)
+
+            resultToParse = getPartialResultAndLog(e, resultToParse);
+
+        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
+
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
 
         // Parse all the data we have retrieved
-        var regexSearch = Pattern
-            .compile(
+        var regexSearch = Pattern.compile(
                 MODE
                 + ENCLOSE_VALUE_RGX
                 + CELL_TABLE
@@ -431,23 +352,11 @@ public class DataAccess {
             );
             
         } catch (AbstractSlidingException e) {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());
-            
-            // Get pieces of data already retrieved instead of losing them
-            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
-                
-                resultToParse = e.getSlidingWindowAllRows();
-                
-            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
-                
-                resultToParse = e.getSlidingWindowCurrentRows();
-            }
-            
-        } catch (Exception e) {
-            
-            // TODO Check if useful
-            // Catch every other exception (timeout?)
+
+            resultToParse = getPartialResultAndLog(e, resultToParse);
+
+        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
+
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
 
@@ -458,8 +367,7 @@ public class DataAccess {
         }
         
         // Parse all the data we have retrieved
-        var regexSearch = Pattern
-            .compile(
+        var regexSearch = Pattern.compile(
                 MODE
                 + ENCLOSE_VALUE_RGX
                 + CELL_TABLE
@@ -502,45 +410,45 @@ public class DataAccess {
      * => hh[value 1]jj[count]hhgghh[value 2]jj[count]hhggh...hi<br>
      * Data window can be cut before the end of the request but the process helps to obtain
      * the rest of the unreachable data. The process can be interrupted by the user (stop/pause).
-     * @param columns choice by the user
+     * @param columnsBean choice by the user
      * @return a 2x2 table containing values by columns
      * @throws JSqlException when injection failure or stopped by user
      */
-    public String[][] listValues(List<Column> columns) throws JSqlException {
+    public String[][] listValues(List<Column> columnsBean) throws JSqlException {
         
-        var database = (Database) columns.get(0).getParent().getParent();
-        var table = (Table) columns.get(0).getParent();
-        int rowCount = columns.get(0).getParent().getChildCount();
+        var databaseBean = (Database) columnsBean.get(0).getParent().getParent();
+        var tableBean = (Table) columnsBean.get(0).getParent();
+        int rowCount = columnsBean.get(0).getParent().getChildCount();
 
         // Inform the view that table has just been used
         var request = new Request();
         request.setMessage(Interaction.START_PROGRESS);
-        request.setParameters(table);
+        request.setParameters(tableBean);
         this.injectionModel.sendToViews(request);
 
         // Build an array of column names
         List<String> columnsName = new ArrayList<>();
-        for (AbstractElementDatabase e: columns) {
-            columnsName.add(e.toString());
+        for (AbstractElementDatabase columnBean: columnsBean) {
+            columnsName.add(columnBean.toString());
         }
 
         // From that array, build the SQL fields nicely
         // => col1{%}col2...
         // ==> trim(ifnull(`col1`,0x00)),0x7f,trim(ifnull(`Col2`,0x00))...
-        String[] arrayColumns = columnsName.toArray(new String[0]);
+        String[] columns = columnsName.toArray(new String[0]);
 
-        List<List<String>> listValues = this.getRows(database, table, rowCount, arrayColumns);
+        List<List<String>> listValues = this.getRows(databaseBean, tableBean, rowCount, columns);
 
         // Add the default title to the columns: row number, occurrence
         columnsName.add(0, StringUtils.EMPTY);
         columnsName.add(0, StringUtils.EMPTY);
 
-        String[][] tableDatas = this.build2D(columnsName, listValues);
+        String[][] table = this.getTable(columnsName, listValues);
 
-        arrayColumns = columnsName.toArray(new String[0]);
+        columns = columnsName.toArray(new String[0]);
         
         // Group the columns names, values and Table object in one array
-        var objectData = new Object[]{ arrayColumns, tableDatas, table };
+        var objectData = new Object[]{ columns, table, tableBean };
 
         var requestCreateValuesTab = new Request();
         requestCreateValuesTab.setMessage(Interaction.CREATE_VALUES_TAB);
@@ -549,10 +457,10 @@ public class DataAccess {
 
         var requestEndProgress = new Request();
         requestEndProgress.setMessage(Interaction.END_PROGRESS);
-        requestEndProgress.setParameters(table);
+        requestEndProgress.setParameters(tableBean);
         this.injectionModel.sendToViews(requestEndProgress);
         
-        return tableDatas;
+        return table;
     }
 
     private List<List<String>> getRows(Database database, Table table, int rowCount, String[] columns) throws InjectionFailureException {
@@ -571,20 +479,10 @@ public class DataAccess {
                 "rows"
             );
             
-        } catch (AbstractSlidingException e) {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());
-            
-            // Get pieces of data already retrieved instead of losing them
-            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
-                
-                resultToParse = e.getSlidingWindowAllRows();
-                
-            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
-                
-                resultToParse = e.getSlidingWindowCurrentRows();
-            }
-            
+        } catch (AbstractSlidingException e) {  // Catch all exceptions but prevent detecting bug
+
+            resultToParse = getPartialResultAndLog(e, resultToParse);
+
         } catch (Exception e) {
             
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
@@ -593,19 +491,36 @@ public class DataAccess {
         return SuspendableGetRows.parse(resultToParse);
     }
 
-    private String[][] build2D(List<String> columnsName, List<List<String>> listValues) {
+    private static String getPartialResultAndLog(AbstractSlidingException e, String resultToParse) {
+
+        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());
+
+        // Get pieces of data already retrieved instead of losing them
+        if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
+
+            resultToParse = e.getSlidingWindowAllRows();
+
+        } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
+
+            resultToParse = e.getSlidingWindowCurrentRows();
+        }
+
+        return resultToParse;
+    }
+
+    private String[][] getTable(List<String> columnsName, List<List<String>> values) {
         
         // Build a proper 2D array from the data
-        var tableDatas = new String[listValues.size()][columnsName.size()];
+        var table = new String[values.size()][columnsName.size()];
         
-        for (var indexRow = 0 ; indexRow < listValues.size() ; indexRow++) {
+        for (var indexRow = 0 ; indexRow < values.size() ; indexRow++) {
             
             var isIncomplete = false;
             
             for (var indexColumn = 0 ; indexColumn < columnsName.size() ; indexColumn++) {
                 
                 try {
-                    tableDatas[indexRow][indexColumn] = listValues.get(indexRow).get(indexColumn);
+                    table[indexRow][indexColumn] = values.get(indexRow).get(indexColumn);
                     
                 } catch (IndexOutOfBoundsException e) {
                     
@@ -630,12 +545,12 @@ public class DataAccess {
                     LogLevelUtil.CONSOLE_ERROR,
                     () -> String.join(
                         ", ",
-                        listValues.get(logIndexRow).toArray(new String[0])
+                        values.get(logIndexRow).toArray(new String[0])
                     )
                 );
             }
         }
         
-        return tableDatas;
+        return table;
     }
 }

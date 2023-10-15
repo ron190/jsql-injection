@@ -4,6 +4,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
+import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
@@ -29,9 +30,50 @@ public class VendorYaml implements AbstractVendor {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
+
+    /**
+     * SQL characters marking the end of the result of an injection.
+     * Process stops when this schema is encountered:
+     * <pre>SQLix01x03x03x07
+     */
+    public static final String LEAD_HEX = "0x53714c69";
+    public static final String TRAIL_SQL = "%01%03%03%07";
+    public static final String TRAIL_HEX = "0x01030307";
+
+    /**
+     * SQL character used between each table cells.
+     * Expected schema of multiple table cells :
+     * <pre>
+     * %04[table cell]%05[number of occurrences]%04%06%04[table cell]%05[number of occurrences]%04
+     */
+    public static final String SEPARATOR_CELL_SQL = "%06";
+    public static final String SEPARATOR_CELL_HEX = "0x06";
+
+    public static final String ENCLOSE_VALUE_HEX = "0x04";
+
+    /**
+     * SQL character used between the table cell and the number of occurrence of the cell text.
+     * Expected schema of a table cell data is
+     * <pre>%04[table cell]%05[number of occurrences]%04
+     */
+    public static final String SEPARATOR_QTE_SQL = "%05";
+    public static final String SEPARATOR_QTE_HEX = "0x05";
+
+    /**
+     * SQL character enclosing a table cell returned by injection.
+     * It allows to detect the correct end of a table cell data during parsing.
+     * Expected schema of a table cell data is
+     * <pre>%04[table cell]%05[number of occurrences]%04
+     */
+    public static final String ENCLOSE_VALUE_SQL = "%04";
+
+    public static final String CALIBRATOR_SQL = "%23";
+    public static final String CALIBRATOR_HEX = "0x23";
     
+    public static final String FORMAT_INDEX = "1337%s7331";
+
     private static final String BOOLEAN_MODE = "${boolean.mode}";
-    
+
     public static final String LIMIT = "${limit}";
     private static final String LIMIT_VALUE = "${limit.value}";
 
@@ -42,7 +84,7 @@ public class VendorYaml implements AbstractVendor {
     private static final String CALIBRATOR = "${calibrator}";
 
     private static final String INDICES = "${indices}";
-    private static final String INDICE = "${indice}";
+    public static final String INDICE = "${indice}";
     public static final String WINDOW_CHAR = "${window.char}";
     public static final String BLOCK_MULTIBIT = "${multibit.block}";
 
@@ -62,7 +104,7 @@ public class VendorYaml implements AbstractVendor {
     private static final String FILEPATH = "${filepath}";
     private static final String FILEPATH_HEX = "${filepath.hex}";
 
-    private static final String CONTENT_HEX = "${content.hex}";
+    private static final String BODY_HEX = "${body.hex}";
 
     private static final String FIELDS = "${fields}";
     private static final String FIELD = "${field.value}";
@@ -82,7 +124,10 @@ public class VendorYaml implements AbstractVendor {
         this.injectionModel = injectionModel;
         
         var yaml = new Yaml();
-        this.modelYaml = yaml.loadAs(VendorYaml.class.getClassLoader().getResourceAsStream("vendor/"+ fileYaml), ModelYaml.class);
+        this.modelYaml = yaml.loadAs(
+            VendorYaml.class.getClassLoader().getResourceAsStream("vendor/"+ fileYaml),
+            ModelYaml.class
+        );
     }
 
     @Override
@@ -164,10 +209,7 @@ public class VendorYaml implements AbstractVendor {
         
         return sqlQuery
             .replace(DATABASE_HEX, databaseUtf8)
-            .replace(DATABASE, database.toString())
-            // TODO Breaks Oracle <%2Fa>
-            // .replace("%", "%25") // Encode % in name
-            ;
+            .replace(DATABASE, database.toString());
     }
 
     @Override
@@ -213,10 +255,7 @@ public class VendorYaml implements AbstractVendor {
             .replace(DATABASE_HEX, databaseUtf8)
             .replace(TABLE_HEX, tableUtf8)
             .replace(DATABASE, table.getParent().toString())
-            .replace(TABLE, table.toString())
-            // TODO Breaks Oracle <%2Fa>
-            // .replace("%", "%25") // Encode % in name
-            ;
+            .replace(TABLE, table.toString());
     }
 
     @Override
@@ -309,23 +348,27 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTextIntoFile(String content, String filePath) {
-        
+    public String sqlTextIntoFile(String body, String path) {
+
+        String visibleIndex = String.format(
+            VendorYaml.FORMAT_INDEX,
+            this.injectionModel.getMediatorStrategy().getNormal().getVisibleIndex()
+        );
+
         return this.injectionModel.getIndexesInUrl()
             .replaceAll(
-                "1337" + this.injectionModel.getMediatorStrategy().getNormal().getVisibleIndex() + "7331",
-                this.modelYaml.getResource().getFile().getCreate()
-                .getContent()
+                visibleIndex,
+                this.modelYaml.getResource().getFile().getWrite()
+                .getBody()
                 .replace(
-                    CONTENT_HEX,
-                    Hex.encodeHexString(content.getBytes())
+                    BODY_HEX,
+                    Hex.encodeHexString(body.getBytes())
                 )
             )
-            .replaceAll("--++", StringUtils.EMPTY)
             + StringUtils.SPACE
-            + this.modelYaml.getResource().getFile().getCreate()
-            .getQuery()
-            .replace(FILEPATH, filePath);
+            + this.modelYaml.getResource().getFile().getWrite()
+            .getPath()
+            .replace(FILEPATH, path);
     }
 
     @Override
@@ -446,15 +489,29 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTestError() {
-        
-        return this.modelYaml.getStrategy().getError()
-            .getMethod()
-            .get(this.injectionModel.getMediatorStrategy().getError().getIndexErrorStrategy())
-            .getQuery()
-            .replace(WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
-            .replace(INJECTION, this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(INDICE, "0"))
-            .replace(WINDOW_CHAR, "1");
+    public String sqlErrorCalibrator(Method errorMethod) {
+
+        return VendorYaml.replaceTags(
+            errorMethod.getQuery()
+            .replace(VendorYaml.WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
+            .replace(VendorYaml.INJECTION, this.modelYaml.getStrategy().getConfiguration().getCalibrator())
+            .replace(VendorYaml.WINDOW_CHAR, "1")
+            .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))
+        );
+    }
+
+    @Override
+    public String sqlErrorIndice(Method errorMethod) {
+
+        var indexZeroToFind = "0";
+
+        return VendorYaml.replaceTags(
+            errorMethod.getQuery()
+            .replace(VendorYaml.WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
+            .replace(VendorYaml.INJECTION, this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(INDICE, indexZeroToFind))
+            .replace(VendorYaml.WINDOW_CHAR, "1")
+            .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))
+        );
     }
 
     @Override
@@ -509,14 +566,14 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlCapacity(String[] indexes) {
-        
+
+        String regexIndexes = String.join("|", indexes);
+        String regexVisibleIndexesToFind = String.format(VendorYaml.FORMAT_INDEX, "(%s)");
+
         return this.injectionModel
             .getIndexesInUrl()
             .replaceAll(
-                String.format(
-                    "1337(%s)7331",
-                    String.join("|", indexes)
-                ),
+                String.format(regexVisibleIndexesToFind, regexIndexes),
                 VendorYaml.replaceTags(
                     this.modelYaml.getStrategy().getNormal().getCapacity()
                     .replace(CALIBRATOR, this.modelYaml.getStrategy().getConfiguration().getCalibrator())

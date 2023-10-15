@@ -26,7 +26,8 @@ public class PreferencesUtil {
     private boolean isHttp2Disabled = false;
     
     private boolean isNotInjectingMetadata = false;
-    
+    private boolean isNotSearchingCharInsertion = false;
+
     private boolean isCheckingAllParam = false;
     private boolean isCheckingAllURLParam = false;
     private boolean isCheckingAllRequestParam = false;
@@ -97,7 +98,8 @@ public class PreferencesUtil {
         this.isFollowingRedirection = prefs.getBoolean("isFollowingRedirection", false);
         this.isHttp2Disabled = prefs.getBoolean("isHttp2Disabled", false);
         this.isNotInjectingMetadata = prefs.getBoolean("isNotInjectingMetadata", false);
-        
+        this.isNotSearchingCharInsertion = prefs.getBoolean("isNotSearchingCharInsertion", false);
+
         this.isCheckingAllParam = prefs.getBoolean("isCheckingAllParam", false);
         this.isCheckingAllURLParam = prefs.getBoolean("isCheckingAllURLParam", false);
         this.isCheckingAllRequestParam = prefs.getBoolean("isCheckingAllRequestParam", false);
@@ -180,6 +182,7 @@ public class PreferencesUtil {
         preferences.putBoolean("isFollowingRedirection", this.isFollowingRedirection);
         preferences.putBoolean("isHttp2Disabled", this.isHttp2Disabled);
         preferences.putBoolean("isNotInjectingMetadata", this.isNotInjectingMetadata);
+        preferences.putBoolean("isNotSearchingCharInsertion", this.isNotSearchingCharInsertion);
         preferences.putBoolean("isCheckingAllParam", this.isCheckingAllParam);
         preferences.putBoolean("isCheckingAllURLParam", this.isCheckingAllURLParam);
         preferences.putBoolean("isCheckingAllRequestParam", this.isCheckingAllRequestParam);
@@ -256,6 +259,10 @@ public class PreferencesUtil {
 
     public boolean isNotInjectingMetadata() {
         return this.isNotInjectingMetadata;
+    }
+
+    public boolean isNotSearchingCharInsertion() {
+        return this.isNotSearchingCharInsertion;
     }
 
     public boolean isCheckingAllURLParam() {
@@ -474,6 +481,11 @@ public class PreferencesUtil {
         return this;
     }
     
+    public PreferencesUtil withNotSearchingCharInsertion() {
+        this.isNotSearchingCharInsertion = true;
+        return this;
+    }
+
     public PreferencesUtil withCheckingAllHeaderParam() {
         this.isCheckingAllHeaderParam = true;
         return this;
@@ -559,6 +571,11 @@ public class PreferencesUtil {
 
     public PreferencesUtil withIsNotInjectingMetadata(boolean isNotInjectingMetadata) {
         this.isNotInjectingMetadata = isNotInjectingMetadata;
+        return this;
+    }
+
+    public PreferencesUtil withIsNotSearchingCharInsertion(boolean isNotSearchingCharInsertion) {
+        this.isNotSearchingCharInsertion = isNotSearchingCharInsertion;
         return this;
     }
 

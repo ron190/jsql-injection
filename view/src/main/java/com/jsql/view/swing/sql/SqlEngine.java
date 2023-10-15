@@ -223,6 +223,14 @@ public class SqlEngine extends JPanel implements Cleanable {
         FILE_READ(new JTextPaneLexer(
             v -> modelYaml.getResource().getFile().setRead(v),
             () -> modelYaml.getResource().getFile().getRead()
+        )),
+        FILE_WRITE_BODY(new JTextPaneLexer(
+            v -> modelYaml.getResource().getFile().getWrite().setBody(v),
+            () -> modelYaml.getResource().getFile().getWrite().getBody()
+        )),
+        FILE_WRITE_PATH(new JTextPaneLexer(
+            v -> modelYaml.getResource().getFile().getWrite().setPath(v),
+            () -> modelYaml.getResource().getFile().getWrite().getPath()
         ))
         ;
         
@@ -306,7 +314,6 @@ public class SqlEngine extends JPanel implements Cleanable {
 
         JPanel panelCombo = SqlEngine.initializeMenuVendor();
         this.add(panelCombo);
-        
         this.add(tabsBottom);
         
         tabsBottom.setAlignmentX(FlowLayout.LEADING);
@@ -432,6 +439,8 @@ public class SqlEngine extends JPanel implements Cleanable {
 
         tabs.addTab("Privilege", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FILE_PRIVILEGE.getText()));
         tabs.addTab("Read", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FILE_READ.getText()));
+        tabs.addTab("Write body", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FILE_WRITE_BODY.getText()));
+        tabs.addTab("Write path", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FILE_WRITE_PATH.getText()));
 
         var panel = new JPanel(new BorderLayout());
         panel.add(tabs, BorderLayout.CENTER);
@@ -505,39 +514,39 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private JPanel getPanelConfiguration() {
         
-        JTabbedPane tabsConfiguration = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+        JTabbedPane tabs = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 
-        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.SLIDING_WINDOW.getText()));
-        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.LIMIT.getText()));
-        tabsConfiguration.addTab("Limit start index", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.LIMIT_BOUNDARY.getText()));
-        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CAPACITY"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.CAPACITY.getText()));
-        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_CALIBRATOR"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.CALIBRATOR.getText()));
-        tabsConfiguration.addTab(I18nUtil.valueByKey("SQLENGINE_TRAPCANCELLER"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FAILSAFE.getText()));
-        tabsConfiguration.addTab("End comment", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.ENDING_COMMENT.getText()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.SLIDING_WINDOW.getText()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.LIMIT.getText()));
+        tabs.addTab("Limit start index", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.LIMIT_BOUNDARY.getText()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_CAPACITY"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.CAPACITY.getText()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_CALIBRATOR"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.CALIBRATOR.getText()));
+        tabs.addTab(I18nUtil.valueByKey("SQLENGINE_FAILSAFE"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FAILSAFE.getText()));
+        tabs.addTab("End comment", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.ENDING_COMMENT.getText()));
         
         Stream.of(
             "SQLENGINE_CHARACTERS_SLIDINGWINDOW",
             "SQLENGINE_ROWS_SLIDINGWINDOW",
             "SQLENGINE_CAPACITY",
             "SQLENGINE_CALIBRATOR",
-            "SQLENGINE_TRAPCANCELLER"
+            "SQLENGINE_FAILSAFE"
         )
         .forEach(keyI18n -> {
             
             var label = new JLabel(I18nUtil.valueByKey(keyI18n));
-            tabsConfiguration.setTabComponentAt(
-                tabsConfiguration.indexOfTab(I18nUtil.valueByKey(keyI18n)),
+            tabs.setTabComponentAt(
+                tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)),
                 label
             );
             
             I18nViewUtil.addComponentForKey(keyI18n, label);
         });
         
-        var panelConfiguration = new JPanel(new BorderLayout());
-        panelConfiguration.add(tabsConfiguration, BorderLayout.CENTER);
-        panelConfiguration.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
+        var panel = new JPanel(new BorderLayout());
+        panel.add(tabs, BorderLayout.CENTER);
+        panel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER));
         
-        return panelConfiguration;
+        return panel;
     }
     
     private JPanel getPanelFingerprinting() {
@@ -571,14 +580,14 @@ public class SqlEngine extends JPanel implements Cleanable {
 
     private static JPanel initializeMenuVendor() {
         
-        var panelCombo = new JPanel();
-        panelCombo.setLayout(new BorderLayout());
-        panelCombo.setOpaque(false);
+        var panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.setOpaque(false);
 
         // Disable overlap with zerosizesplitter
-        panelCombo.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
-        panelCombo.setPreferredSize(new Dimension(Integer.MAX_VALUE, 25));
-        panelCombo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
+        panel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
+        panel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 25));
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
 
         var menuBarVendor = new JMenuBar();
         menuBarVendor.setOpaque(false);
@@ -622,13 +631,13 @@ public class SqlEngine extends JPanel implements Cleanable {
             groupVendor.add(itemRadioVendor);
         }
         
-        panelCombo.add(menuBarVendor, BorderLayout.LINE_END);
+        panel.add(menuBarVendor, BorderLayout.LINE_END);
 
         // Do Overlay
-        panelCombo.setAlignmentX(FlowLayout.TRAILING);
-        panelCombo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+        panel.setAlignmentX(FlowLayout.TRAILING);
+        panel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         
-        return panelCombo;
+        return panel;
     }
     
     /**
@@ -641,8 +650,8 @@ public class SqlEngine extends JPanel implements Cleanable {
         SqlEngine.getTextPanes().forEach(textPaneLexer -> textPaneLexer.setText(StringUtils.EMPTY));
         
         Stream.of(TextareaWithColor.values())
-        .forEach(entry -> entry.getText()
-            .setText(
+        .forEach(entry ->
+            entry.getText().setText(
                 entry.getText()
                 .getSupplierGetter()
                 .get()

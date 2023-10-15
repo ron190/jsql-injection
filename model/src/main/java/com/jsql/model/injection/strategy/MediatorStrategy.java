@@ -2,6 +2,7 @@ package com.jsql.model.injection.strategy;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
+import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
@@ -94,7 +95,7 @@ public class MediatorStrategy {
                     InjectionModel.STAR,
                     this.encodePath(
                         this.injectionModel.getIndexesInUrl().replaceAll(
-                            "1337" + this.normal.getVisibleIndex() + "7331",
+                            String.format(VendorYaml.FORMAT_INDEX, this.normal.getVisibleIndex()),
                             Matcher.quoteReplacement(sqlTrail)  // Oracle column can contain regex char $ => quoteReplacement()
                         )
                     )
@@ -128,13 +129,12 @@ public class MediatorStrategy {
         }
 
         // URL forbidden characters
-        return sqlTrailEncoded
+        return (sqlTrailEncoded + this.injectionModel.getMediatorVendor().getVendor().instance().endingComment())
             .replace("\"", "%22")
             .replace("|", "%7c")
             .replace("`", "%60")
             .replace(StringUtils.SPACE, "%20")
-            .replace("+", "%20")
-            + this.injectionModel.getMediatorVendor().getVendor().instance().endingComment().replace("+", "%20");
+            .replace("+", "%20");
     }
     
     /**
@@ -165,7 +165,9 @@ public class MediatorStrategy {
             // Test for params integrity
             String characterInsertionByUser = this.injectionModel.getMediatorUtils().getParameterUtil().initializeStar(parameterToInject);
             
-            String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run(characterInsertionByUser);
+            String characterInsertion = this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotSearchingCharInsertion()
+                ? characterInsertionByUser
+                : new SuspendableGetCharInsertion(this.injectionModel).run(characterInsertionByUser);
             
             if (characterInsertion.contains(InjectionModel.STAR)) {
                 

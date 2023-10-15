@@ -62,14 +62,14 @@ public class SubscriberInteraction implements Subscriber<Request> {
             try {
                 Class<?> cl = Class.forName(this.packageInteraction +"."+ request.getMessage());
                 var types = new Class[]{ Object[].class };
-                Constructor<?> ct = cl.getConstructor(types);
+                Constructor<?> constructor = cl.getConstructor(types);
     
-                InteractionCommand o2 = (InteractionCommand) ct.newInstance(
+                InteractionCommand interactionCommand = (InteractionCommand) constructor.newInstance(
                     new Object[] {
                         request.getParameters()
                     }
                 );
-                o2.execute();
+                interactionCommand.execute();
                 
             } catch (ClassNotFoundException e) {
                 

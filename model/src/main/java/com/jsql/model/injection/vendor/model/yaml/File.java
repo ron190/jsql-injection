@@ -9,7 +9,7 @@ public class File implements Serializable {
 
     private String privilege = StringUtils.EMPTY;
     private String read = StringUtils.EMPTY;
-    private Create create = new Create();
+    private Write write = new Write();
 
     public String getPrivilege() {
         return this.privilege;
@@ -27,11 +27,11 @@ public class File implements Serializable {
         this.read = read;
     }
 
-    public Create getCreate() {
-        return this.create;
+    public Write getWrite() {
+        return this.write;
     }
 
-    public void setCreate(Create create) {
-        this.create = create;
+    public void setWrite(Write write) {
+        this.write = write;
     }
 }

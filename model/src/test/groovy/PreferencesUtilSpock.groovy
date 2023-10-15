@@ -21,7 +21,8 @@ class PreferencesUtilSpock extends Specification {
             .withIsReportingBugs(isReportingBugs)
             .withIsFollowingRedirection(isFollowingRedirection)
             .withIsNotInjectingMetadata(isNotInjectingMetadata)
-            
+            .withIsNotSearchingCharInsertion(isNotSearchingCharInsertion)
+
             .withIsCheckingAllParam(isCheckingAllParam)
             .withIsCheckingAllURLParam(isCheckingAllURLParam)
             .withIsCheckingAllRequestParam(isCheckingAllRequestParam)
@@ -62,6 +63,7 @@ class PreferencesUtilSpock extends Specification {
 
             preferencesUtil.isFollowingRedirection
             preferencesUtil.isNotInjectingMetadata
+            preferencesUtil.isNotSearchingCharInsertion
 
             preferencesUtil.isCheckingAllParam
             preferencesUtil.isCheckingAllURLParam
@@ -103,6 +105,7 @@ class PreferencesUtilSpock extends Specification {
 
             anotherPreferencesUtil.isFollowingRedirection
             anotherPreferencesUtil.isNotInjectingMetadata
+            anotherPreferencesUtil.isNotSearchingCharInsertion
 
             anotherPreferencesUtil.isCheckingAllParam
             anotherPreferencesUtil.isCheckingAllURLParam
@@ -142,7 +145,8 @@ class PreferencesUtilSpock extends Specification {
             
             isFollowingRedirection = true
             isNotInjectingMetadata = true
-            
+            isNotSearchingCharInsertion = true
+
             isCheckingAllParam = true
             isCheckingAllURLParam = true
             isCheckingAllRequestParam = true

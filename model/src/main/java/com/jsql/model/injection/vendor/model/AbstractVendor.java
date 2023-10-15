@@ -3,6 +3,7 @@ package com.jsql.model.injection.vendor.model;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
+import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
 
 import java.util.List;
@@ -11,8 +12,6 @@ public interface AbstractVendor {
     
     ModelYaml getModelYaml();
     
-    String sqlTestError();
-    
     String sqlInfos();
     String sqlDatabases();
     String sqlTables(Database database);
@@ -20,6 +19,8 @@ public interface AbstractVendor {
     String sqlRows(String[] arrayColumns, Database database, Table table);
 
     String sqlNormal(String sqlQuery, String startPosition);
+    String sqlErrorIndice(Method errorMethod);
+    String sqlErrorCalibrator(Method errorMethod);
     String sqlError(String sqlQuery, String startPosition);
     String sqlBlind(String sqlQuery, String startPosition);
     String sqlTime(String sqlQuery, String startPosition);
@@ -33,8 +34,8 @@ public interface AbstractVendor {
     String fingerprintErrorsAsRegex();
     
     String sqlPrivilegeTest();
-    String sqlFileRead(String filePath);
-    String sqlTextIntoFile(String content, String filePath);
+    String sqlFileRead(String path);
+    String sqlTextIntoFile(String body, String path);
 
     List<String> getListFalseTest();
     List<String> getListTrueTest();

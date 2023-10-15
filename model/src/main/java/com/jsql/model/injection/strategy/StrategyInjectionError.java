@@ -5,12 +5,10 @@ import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.vendor.model.VendorYaml;
-import com.jsql.model.injection.vendor.model.yaml.Configuration;
 import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,9 +49,7 @@ public class StrategyInjectionError extends AbstractStrategy {
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "No Error strategy for {}", this.injectionModel.getMediatorVendor().getVendor());
             return;
         }
-        
-        var configurationYaml = strategyYaml.getConfiguration();
-        
+
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Error...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
         
         this.tabCapacityMethod = new String[strategyYaml.getError().getMethod().size()];
@@ -62,11 +58,11 @@ public class StrategyInjectionError extends AbstractStrategy {
         
         for (Method errorMethod: strategyYaml.getError().getMethod()) {
             
-            boolean methodIsApplicable = this.isApplicable(configurationYaml, errorMethod);
+            boolean methodIsApplicable = this.isApplicable(errorMethod);
             
             if (methodIsApplicable) {
                 
-                Matcher regexSearch = this.getPerformance(configurationYaml, errorMethod);
+                Matcher regexSearch = this.getPerformance(errorMethod);
                 
                 if (regexSearch.find()) {
                     
@@ -98,25 +94,18 @@ public class StrategyInjectionError extends AbstractStrategy {
         }
     }
 
-    private boolean isApplicable(Configuration configurationYaml, Method errorMethod) {
+    private boolean isApplicable(Method errorMethod) {
         
         var methodIsApplicable = false;
-      
+
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(
-            StringUtils.SPACE
-            + VendorYaml.replaceTags(
-                errorMethod
-                .getQuery()
-                .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())
-                .replace(VendorYaml.INJECTION, configurationYaml.getFailsafe().replace("${indice}","0"))
-                .replace(VendorYaml.WINDOW_CHAR, "1")
-                .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))
-            ),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorIndice(errorMethod),
             "error#confirm"
         );
-   
-        // TODO Set static value in DataAccess
-        if (performanceSourcePage.matches("(?s).*133707331.*")) {
+
+        var indexZeroToFind = "0";
+        String regexIndexZero = String.format(VendorYaml.FORMAT_INDEX, indexZeroToFind);
+        if (performanceSourcePage.matches("(?s).*"+ regexIndexZero +".*")) {
             methodIsApplicable = true;
             this.isApplicable = true;
         }
@@ -124,17 +113,10 @@ public class StrategyInjectionError extends AbstractStrategy {
         return methodIsApplicable;
     }
 
-    private Matcher getPerformance(Configuration configurationYaml, Method errorMethod) {
+    private Matcher getPerformance(Method errorMethod) {
         
         String performanceErrorSourcePage = this.injectionModel.injectWithoutIndex(
-            StringUtils.SPACE
-            + VendorYaml.replaceTags(
-                errorMethod.getQuery()
-                .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())
-                .replace(VendorYaml.INJECTION, configurationYaml.getCalibrator())
-                .replace(VendorYaml.WINDOW_CHAR, "1")
-                .replace(VendorYaml.CAPACITY, Integer.toString(errorMethod.getCapacity()))
-            ),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlErrorCalibrator(errorMethod),
             "error#size"
         );
         

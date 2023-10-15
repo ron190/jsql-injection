@@ -96,7 +96,6 @@ public class ConnectionUtil {
         
         if (this.injectionModel.getMediatorUtils().getAuthenticationUtil().isAuthentEnabled()) {
             
-            // TODO Make it work for basic, digest, ntlm
             httpClientBuilder.authenticator(new Authenticator() {
               
               @Override

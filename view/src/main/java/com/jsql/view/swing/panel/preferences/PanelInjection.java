@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 public class PanelInjection extends JPanel {
 
+    private final JCheckBox checkboxIsNotSearchingCharInsertion = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotSearchingCharInsertion());
     private final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata());
     private final JCheckBox checkboxIsParsingForm = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm());
     
@@ -39,6 +40,7 @@ public class PanelInjection extends JPanel {
     public PanelInjection(PanelPreferences panelPreferences) {
         
         this.checkboxIsNotInjectingMetadata.setName("checkboxIsNotInjectingMetadata");
+        this.checkboxIsNotSearchingCharInsertion.setName("checkboxIsNotSearchingCharInsertion");
         this.checkboxIsParsingForm.setName("checkboxIsParsingForm");
         this.checkboxIsCheckingAllURLParam.setName("checkboxIsCheckingAllURLParam");
         this.checkboxIsCheckingAllRequestParam.setName("checkboxIsCheckingAllRequestParam");
@@ -77,10 +79,10 @@ public class PanelInjection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        var tooltipIsNotInjectingMetadata = "Not injecting optional data saves time, particularly for Blind and Time strategies";
+        var tooltipIsNotInjectingMetadata = "Not injecting metadata saves time, particularly for Blind and Time strategies";
         this.checkboxIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
         this.checkboxIsNotInjectingMetadata.setFocusable(false);
-        var labelIsNotInjectingMetadata = new JButton("Disable metadata injection (default database name, version and user)");
+        var labelIsNotInjectingMetadata = new JButton("Disable search of database name, version and user metadata");
         labelIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
         labelIsNotInjectingMetadata.addActionListener(actionEvent -> {
             
@@ -88,6 +90,20 @@ public class PanelInjection extends JPanel {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
+        var tooltipIsNotSearchingCharInsertion = "<html>Injection query starts usually with prefix like <b>quote</b> or <b>parenthesis</b>:<br>" +
+            "- ...&injectMe=' union select...<br>" +
+            "- ...&injectMe=) union select...<br>" +
+            "Default is searching for the prefix but can be disabled to save time when prefix is already set by the user.</html>";
+        this.checkboxIsNotSearchingCharInsertion.setToolTipText(tooltipIsNotSearchingCharInsertion);
+        this.checkboxIsNotSearchingCharInsertion.setFocusable(false);
+        var labelIsNotSearchingCharInsertion = new JButton("Disable search for injection prefix");
+        labelIsNotSearchingCharInsertion.setToolTipText(tooltipIsNotSearchingCharInsertion);
+        labelIsNotSearchingCharInsertion.addActionListener(actionEvent -> {
+
+            this.checkboxIsNotSearchingCharInsertion.setSelected(!this.checkboxIsNotSearchingCharInsertion.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+
         var tooltipIsSleepTimeStrategy = "<html>Time strategy waits an arbitrary number of seconds for a page to respond.<br>Amount of seconds can be lowered on a stable environment like local tests in order to save time.</html>";
         this.checkboxIsLimitingSleepTimeStrategy.setToolTipText(tooltipIsSleepTimeStrategy);
         this.checkboxIsLimitingSleepTimeStrategy.setFocusable(false);
@@ -175,13 +191,13 @@ public class PanelInjection extends JPanel {
         var labelIsPerfIndexDisabled = new JButton("Disable calibration (smaller SQL query during Normal index selection only)");
         
         var emptyLabelGeneralInjection = new JLabel();
-        var labelGeneralInjection = new JLabel("<html><b>Content processing</b></html>");
+        var labelGeneralInjection = new JLabel("<html><b>Processing</b></html>");
         var emptyLabelParamsInjection = new JLabel();
         var labelParamsInjection = new JLabel("<html><br /><b>URL parameters</b></html>");
         var emptyLabelSpecial = new JLabel();
         var labelSpecial = new JLabel("<html><br /><b>Special parameters</b></html>");
         var emptyLabelQuerySize = new JLabel();
-        var labelQuerySize = new JLabel("<html><br /><b>Reduce processing and URL size (advanced)</b></html>");
+        var labelQuerySize = new JLabel("<html><br /><b>Reduce URL size (advanced)</b></html>");
         
         ActionListener actionListenerCheckingAllParam = actionEvent -> {
             
@@ -285,6 +301,7 @@ public class PanelInjection extends JPanel {
         Stream
         .of(
             this.checkboxIsNotInjectingMetadata,
+            this.checkboxIsNotSearchingCharInsertion,
             this.checkboxIsParsingForm,
             this.checkboxIsCheckingAllURLParam,
             this.checkboxIsCheckingAllRequestParam,
@@ -308,6 +325,7 @@ public class PanelInjection extends JPanel {
         .of(
             labelIsParsingForm,
             labelIsNotInjectingMetadata,
+            labelIsNotSearchingCharInsertion,
             labelIsCheckingAllParam,
             labelIsCheckingAllURLParam,
             labelIsCheckingAllRequestParam,
@@ -368,6 +386,7 @@ public class PanelInjection extends JPanel {
                 .addComponent(emptyLabelGeneralInjection)
                 .addComponent(this.checkboxIsParsingForm)
                 .addComponent(this.checkboxIsNotInjectingMetadata)
+                .addComponent(this.checkboxIsNotSearchingCharInsertion)
                 .addComponent(this.checkboxIsLimitingNormalIndex)
                 .addComponent(this.checkboxIsLimitingSleepTimeStrategy)
                 
@@ -397,6 +416,7 @@ public class PanelInjection extends JPanel {
                 .addComponent(labelGeneralInjection)
                 .addComponent(labelIsParsingForm)
                 .addComponent(labelIsNotInjectingMetadata)
+                .addComponent(labelIsNotSearchingCharInsertion)
                 .addComponent(panelIsLimitingNormalIndex)
                 .addComponent(panelSleepTimeStrategy)
                 
@@ -443,6 +463,12 @@ public class PanelInjection extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsNotInjectingMetadata)
                 .addComponent(labelIsNotInjectingMetadata)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsNotSearchingCharInsertion)
+                .addComponent(labelIsNotSearchingCharInsertion)
             )
             .addGroup(
                 groupLayout
@@ -571,6 +597,10 @@ public class PanelInjection extends JPanel {
         return this.checkboxIsNotInjectingMetadata;
     }
     
+    public JCheckBox getCheckboxIsNotSearchingCharInsertion() {
+        return this.checkboxIsNotSearchingCharInsertion;
+    }
+
     public JCheckBox getCheckboxIsCheckingAllParam() {
         return this.checkboxIsCheckingAllParam;
     }

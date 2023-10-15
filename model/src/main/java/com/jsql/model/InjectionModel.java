@@ -21,6 +21,7 @@ import com.jsql.model.injection.method.MediatorMethod;
 import com.jsql.model.injection.strategy.MediatorStrategy;
 import com.jsql.model.injection.strategy.blind.AbstractCallableBoolean;
 import com.jsql.model.injection.vendor.MediatorVendor;
+import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.*;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import org.apache.commons.lang3.StringUtils;
@@ -170,6 +171,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             
             this.mediatorUtils.getConnectionUtil().testConnection();
 
+            // TODO Check all path params
             boolean hasFoundInjection = this.mediatorMethod.getQuery().testParameters(false);
             hasFoundInjection = this.mediatorUtils.getMultipartUtil().testParameters(hasFoundInjection);
             hasFoundInjection = this.mediatorUtils.getSoapUtil().testParameters(hasFoundInjection);
@@ -496,7 +498,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                         dataInjection
                     )
                     // Invalid XML characters in recent Spring version
-                    // TODO Server needs to urldecode, or stop using out of range chars
+                    // Server needs to urldecode, or stop using out of range chars
                     .replace("\u0001", "&#01;")
                     .replace("\u0003", "&#03;")
                     .replace("\u0004", "&#04;")
@@ -588,7 +590,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             // Concat indexes found for Normal strategy to params
             // and use visible Index for injection
             query = paramLead + this.indexesInUrl.replaceAll(
-                "1337" + this.mediatorStrategy.getNormal().getVisibleIndex() + "7331",
+                String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getNormal().getVisibleIndex()),
                 // Oracle column often contains $, which is reserved for regex.
                 // => need to be escape with quoteReplacement()
                 Matcher.quoteReplacement(sqlTrail)
@@ -623,7 +625,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             query = paramLead.replace(
                 InjectionModel.STAR,
                 this.indexesInUrl.replace(
-                    "1337" + this.mediatorStrategy.getNormal().getVisibleIndex() + "7331",
+                    String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getNormal().getVisibleIndex()),
                     sqlTrail
                 )
                 + this.mediatorVendor.getVendor().instance().endingComment()
@@ -652,16 +654,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             )
         ) {
             
-            queryFixed = queryFixed
-                // Remove SQL comments except tamper /**/ /*!...*/
-                // Negative lookahead: don't match tamper empty comment /**/ or version comment /*!...*/
-                // JavaScript: (?!\/\*!.*\*\/|\/\*\*\/)\/\*.*\*\/
-                .replaceAll("(?s)(?!/\\*\\*/|/\\*!.*\\*/)/\\*.*?\\*/", StringUtils.EMPTY)
+            queryFixed = StringUtil.removeSqlComment(queryFixed)
                 .replace("+", " ")
-                // Trap canceller
-                .replace("%2b", "+")
-                // End comment
-                .replace("%23", "#");
+                .replace("%2b", "+")  // Failsafe
+                .replace("%23", "#");  // End comment
 
             if (this.mediatorUtils.getParameterUtil().isMultipartRequest()) {
                 // restore linefeed from textfield

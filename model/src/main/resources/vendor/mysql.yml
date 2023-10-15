@@ -196,9 +196,9 @@ resource:
        and PRIVILEGE_TYPE = 0x46494c45
    ) as char)
   read: cast(load_file(0x${filepath.hex}) as char)
-  create:
-   content: (select 0x${content.hex})
-   query: into outfile '${filepath}'
+  write:
+   body: (select 0x${body.hex})
+   path: into outfile '${filepath}'
 
 strategy:
  configuration:

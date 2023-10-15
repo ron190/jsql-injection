@@ -3,6 +3,7 @@ package com.jsql.model.suspendable;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -70,14 +71,16 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                 nbIndex++;
 
                 // Found a correct mark 1337[index]7331 in the source
-                if (Pattern.compile("(?s).*1337\\d+7331.*").matcher(currentCallable.getContent()).matches()) {
+                String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, "\\d+");
+                if (Pattern.compile("(?s).*"+ regexAllIndexes +".*").matcher(currentCallable.getContent()).matches()) {
                     
                     this.injectionModel.getMediatorStrategy().getNormal().setSourceIndexesFound(currentCallable.getContent());
                     initialQuery = currentCallable.getQuery().replace("0%2b1", "1");
                     
                     if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {
-                        
-                        initialQuery = initialQuery.replaceAll("1337(?!17331)\\d+7331", "1");
+
+                        String regexIndexesExceptFirst = String.format(VendorYaml.FORMAT_INDEX, "(?!17331)\\d+");
+                        initialQuery = initialQuery.replaceAll(regexIndexesExceptFirst, "1");
                         LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Calibrating indexes disabled, forcing to index [1]");
                     }
                     

@@ -257,8 +257,7 @@ public class ParameterUtil {
     public String initializeStar(SimpleEntry<String, String> parameterToInject) {
         
         String characterInsertionByUser;
-        
-        // TODO path param injection
+
         if (parameterToInject == null) {
             
             characterInsertionByUser = InjectionModel.STAR;

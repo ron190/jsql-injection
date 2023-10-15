@@ -89,21 +89,21 @@ public class StrategyInjectionStacked extends AbstractStrategy {
     private boolean isApplicable(Configuration configurationYaml, String stacked) {
         
         var methodIsApplicable = false;
+        var indexZeroToFind = "0";
       
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(
-            StringUtils.SPACE
-            + VendorYaml.replaceTags(
+            VendorYaml.replaceTags(
                 stacked
                 .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())
-                .replace(VendorYaml.INJECTION, configurationYaml.getFailsafe().replace("${indice}","0"))
+                .replace(VendorYaml.INJECTION, configurationYaml.getFailsafe().replace(VendorYaml.INDICE,indexZeroToFind))
                 .replace(VendorYaml.WINDOW_CHAR, "1")
                 .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)
             ),
             "stacked#confirm"
         );
    
-        // TODO Set static value in DataAccess
-        if (performanceSourcePage.matches("(?s).*133707331.*")) {
+        String regexIndexZero = String.format(VendorYaml.FORMAT_INDEX, indexZeroToFind);
+        if (performanceSourcePage.matches("(?s).*"+ regexIndexZero +".*")) {
             methodIsApplicable = true;
             this.isApplicable = true;
         }
@@ -114,8 +114,7 @@ public class StrategyInjectionStacked extends AbstractStrategy {
     private Matcher getPerformance(Configuration configurationYaml, String stacked) {
         
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(
-            StringUtils.SPACE
-            + VendorYaml.replaceTags(
+            VendorYaml.replaceTags(
                 stacked
                 .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())
                 .replace(VendorYaml.INJECTION, configurationYaml.getCalibrator())

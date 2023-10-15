@@ -38,7 +38,7 @@ public abstract class AbstractMethodInjection implements Serializable {
 
         if (!hasFoundInjection) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking {} params...", name().toLowerCase());
+            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking {} params...", () -> name().toLowerCase());
             return this.testParameters();
         }
 
@@ -229,7 +229,11 @@ public abstract class AbstractMethodInjection implements Serializable {
             if (!hasFoundInjection) {
                 
                 // Erase * at the end of each params
-                this.getParams().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY)));
+                this.getParams().forEach(e ->
+                    e.setValue(
+                        e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY)
+                    )
+                );
                 
                 // TODO It erases STAR from value => * can't be used in parameter
                 paramStar.setValue(paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));

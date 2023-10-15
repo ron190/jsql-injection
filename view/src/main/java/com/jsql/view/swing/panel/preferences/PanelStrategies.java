@@ -11,9 +11,9 @@ public class PanelStrategies extends JPanel {
 
     private final JCheckBox checkboxIsStrategyTimeDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyTimeDisabled());
     private final JCheckBox checkboxIsStrategyBlindDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyBlindDisabled());
-    private final JCheckBox checkboxIsStrategyStackedDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyStackedDisabled());
     private final JCheckBox checkboxIsStrategyMultibitDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled());
     private final JCheckBox checkboxIsStrategyErrorDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled());
+    private final JCheckBox checkboxIsStrategyStackedDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyStackedDisabled());
     private final JCheckBox checkboxIsStrategyNormalDisabled = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isStrategyNormalDisabled());
 
     public PanelStrategies(PanelPreferences panelPreferences) {
@@ -123,9 +123,9 @@ public class PanelStrategies extends JPanel {
                 .createParallelGroup()
                 .addComponent(labelIsStrategyTimeDisabled)
                 .addComponent(labelIsStrategyBlindDisabled)
-                .addComponent(labelIsStrategyStackedDisabled)
                 .addComponent(labelIsStrategyMultibitDisabled)
                 .addComponent(labelIsStrategyErrorDisabled)
+                .addComponent(labelIsStrategyStackedDisabled)
                 .addComponent(labelIsStrategyNormalDisabled)
             )
         );
@@ -149,12 +149,6 @@ public class PanelStrategies extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(this.checkboxIsStrategyStackedDisabled)
-                .addComponent(labelIsStrategyStackedDisabled)
-            )
-            .addGroup(
-                groupLayout
-                .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsStrategyMultibitDisabled)
                 .addComponent(labelIsStrategyMultibitDisabled)
             )
@@ -167,18 +161,23 @@ public class PanelStrategies extends JPanel {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsStrategyStackedDisabled)
+                .addComponent(labelIsStrategyStackedDisabled)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsStrategyNormalDisabled)
                 .addComponent(labelIsStrategyNormalDisabled)
             )
         );
         
-        Stream
-        .of(
+        Stream.of(
             this.checkboxIsStrategyTimeDisabled,
             this.checkboxIsStrategyBlindDisabled,
-            this.checkboxIsStrategyStackedDisabled,
             this.checkboxIsStrategyMultibitDisabled,
             this.checkboxIsStrategyErrorDisabled,
+            this.checkboxIsStrategyStackedDisabled,
             this.checkboxIsStrategyNormalDisabled
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
