@@ -56,7 +56,7 @@
         <jcabi-log.version>0.23.0</jcabi-log.version>
         <jna.version>5.13.0</jna.version>
         <jquery.version>3.7.1</jquery.version>
-        <json.version>20230618</json.version>
+        <json.version>20231013</json.version>
         <jsoup.version>1.16.1</jsoup.version>
         <junit-pioneer.version>2.1.0</junit-pioneer.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
