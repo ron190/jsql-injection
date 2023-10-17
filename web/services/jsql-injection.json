@@ -2,10 +2,7 @@
     "version": "0.95",
     "news": [
         "[v0.95] Improve SQL query and star param *",
-        "[Feedbacks] Thanks to @winezer0: https://github.com/ron190/jsql-injection",
-        "[Contribute!] Improve jSQL, create APIs with PHP, .NET, Python and Node on Kubernetes/Docker for test coverage",
-        "[Discuss!] Ask question and open a GitHub discussion: https://github.com/ron190/jsql-injection/discussions",
-        "[Vote!] Choose your most wanted feature: https://github.com/ron190/jsql-injection/discussions/95385",
+        "[Discuss] Open a GitHub discussion: https://github.com/ron190/jsql-injection/discussions",
         "[Ongoing features] Shell on PostgreSQL, JSP shell, Strategies Position and Duality, Kerberos on CI/CD"
     ]
 }

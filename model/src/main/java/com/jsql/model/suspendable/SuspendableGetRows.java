@@ -108,27 +108,13 @@ public class SuspendableGetRows extends AbstractSuspendable {
             // Fix #95382: IllegalArgumentException on URLDecoder.decode()
             try {
                 String currentChunk = regexLeadFound.group(1);
-                
-                if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()) {
-                    
-                    currentChunk = StringEscapeUtils.unescapeJava(currentChunk);  // Transform \u0000 entities to text
-                }
-                
-                if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled()) {
+                currentChunk = decodeUnicode(currentChunk);
+                currentChunk = decodeUrl(currentChunk);
 
-                    try {
-                        currentChunk = URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text
-                    } catch (IllegalArgumentException e) {
-                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Decoding fails on UT8, keeping raw result");
-                    }
-                }
-                
                 countInfiniteLoop = this.checkInfinite(countInfiniteLoop, previousChunk, currentChunk, slidingWindowCurrentRow, slidingWindowAllRows);
                 
                 previousChunk = currentChunk;
-                
                 slidingWindowCurrentRow.append(currentChunk);
-
                 this.sendChunk(currentChunk);
                 
             } catch (IllegalArgumentException | IllegalStateException | OutOfMemoryError e) {
@@ -174,7 +160,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                     queryGetRows = this.getQuery(initialSqlQuery, countAllRows);
 
                     slidingWindowCurrentRow.setLength(0);
-                    
+
                 } else {
                     
                     this.sendProgress(countRowsToFind, countRowsToFind, elementDatabase);
@@ -188,6 +174,28 @@ public class SuspendableGetRows extends AbstractSuspendable {
         this.injectionModel.getMediatorUtils().getThreadUtil().remove(elementDatabase);
 
         return slidingWindowAllRows.toString();
+    }
+
+    private String decodeUrl(String currentChunk) {
+        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled()) {
+
+            try {
+                currentChunk = URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text
+            } catch (IllegalArgumentException e) {
+                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Decoding fails on UT8, keeping raw result");
+            }
+        }
+        return currentChunk;
+    }
+
+    private String decodeUnicode(String currentChunk) {
+
+        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()) {
+
+            currentChunk = StringEscapeUtils.unescapeJava(currentChunk);  // Transform \u0000 entities to text
+        }
+
+        return currentChunk;
     }
 
     private String getQuery(String initialSqlQuery, int countAllRows) {
@@ -223,8 +231,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
             var allLine = slidingWindowAllRows.toString();
             slidingWindowAllRows.setLength(0);
             slidingWindowAllRows.append(
-                Pattern
-                .compile(
+                Pattern.compile(
                     MODE
                     + ENCLOSE_VALUE_RGX
                     + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
@@ -247,8 +254,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         var currentRow = slidingWindowCurrentRow.toString();
         slidingWindowCurrentRow.setLength(0);
         slidingWindowCurrentRow.append(
-            Pattern
-            .compile(MODE + TRAIL_RGX +".*")
+            Pattern.compile(MODE + TRAIL_RGX +".*")
             .matcher(currentRow)
             .replaceAll(StringUtils.EMPTY)
         );
@@ -256,17 +262,16 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
     private int getCountRows(StringBuilder slidingWindowCurrentRow) {
         
-        var regexAtLeastOneRow = Pattern
-            .compile(
-                String.format(
-                    "%s(%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?%s)",
-                    MODE,
-                    ENCLOSE_VALUE_RGX,
-                    SEPARATOR_QTE_RGX,
-                    ENCLOSE_VALUE_RGX
-                )
+        var regexAtLeastOneRow = Pattern.compile(
+            String.format(
+                "%s(%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?%s[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?%s)",
+                MODE,
+                ENCLOSE_VALUE_RGX,
+                SEPARATOR_QTE_RGX,
+                ENCLOSE_VALUE_RGX
             )
-            .matcher(slidingWindowCurrentRow);
+        )
+        .matcher(slidingWindowCurrentRow);
         
         var nbCompleteLine = 0;
         while (regexAtLeastOneRow.find()) {
@@ -306,8 +311,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         var request = new Request();
         request.setMessage(Interaction.MESSAGE_CHUNK);
         request.setParameters(
-            Pattern
-            .compile(MODE + TRAIL_RGX +".*")
+            Pattern.compile(MODE + TRAIL_RGX +".*")
             .matcher(currentChunk)
             .replaceAll(StringUtils.EMPTY)
             .replace("\\n", "\\\\\\n")
@@ -349,11 +353,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
     private Matcher parseTrailOnlyFound(String sourcePage) {
 
-        String sourcePageUnicodeDecoded = sourcePage;
-        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()) {
-
-            sourcePageUnicodeDecoded = StringEscapeUtils.unescapeJava(sourcePageUnicodeDecoded);  // Transform \u0000 entities to text
-        }
+        String sourcePageUnicodeDecoded = decodeUnicode(sourcePage);
 
         // TODO: prevent to find the last line directly: MODE + LEAD + .* + TRAIL_RGX
         // It creates extra query which can be endless if not nullified
@@ -417,8 +417,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         var allRowsLimit = slidingWindowAllRows.toString();
         slidingWindowAllRows.setLength(0);
         slidingWindowAllRows.append(
-            Pattern
-            .compile(
+            Pattern.compile(
                 String.format(
                     "%s(%s%s|%s\\d*)$",
                     MODE,
@@ -446,17 +445,16 @@ public class SuspendableGetRows extends AbstractSuspendable {
     public static List<List<String>> parse(String rows) throws InjectionFailureException {
         
         // Parse all the data we have retrieved
-        var regexSearch = Pattern
-            .compile(
-                String.format(
-                    "%s%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?%s",
-                    MODE,
-                    ENCLOSE_VALUE_RGX,
-                    SEPARATOR_QTE_RGX,
-                    ENCLOSE_VALUE_RGX
-                )
+        var regexSearch = Pattern.compile(
+            String.format(
+                "%s%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?%s",
+                MODE,
+                ENCLOSE_VALUE_RGX,
+                SEPARATOR_QTE_RGX,
+                ENCLOSE_VALUE_RGX
             )
-            .matcher(rows);
+        )
+        .matcher(rows);
 
         if (!regexSearch.find()) {
             throw new InjectionFailureException();
