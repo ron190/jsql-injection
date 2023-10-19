@@ -56,7 +56,7 @@ resource:
            tables.table_name r,
            '0' q
        from information_schema.tables
-       where tables.TABLE_SCHEMA = '${database}'
+       where tables.table_schema = '${database}'
        order by 1
        ${limit}
    ) x
@@ -77,8 +77,8 @@ resource:
            columns.column_name r,
            '0' q
        from information_schema.columns
-       where columns.TABLE_SCHEMA = '${database}'
-       and columns.TABLE_name = '${table}'
+       where columns.table_schema = '${database}'
+       and columns.table_name = '${table}'
        order by 1
        ${limit}
    )x
@@ -164,8 +164,8 @@ strategy:
      query: |
       /* Require FALSE statement, then OR */
       and 1 = 0
-      or 1 = CAST(
+      or 1 = cast(
           (${window})::text
-          AS NUMERIC
+          as numeric
       )
      capacity: 255

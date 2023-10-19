@@ -16,7 +16,7 @@ resource:
   select
       version
       || '${enclose_value_sql}'
-      || SYS.DATABASE_NAME
+      || sys.database_name
       || '${enclose_value_sql}'
       || user
       || '${trail_sql}'

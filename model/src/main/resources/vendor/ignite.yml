@@ -17,8 +17,7 @@ resource:
   database: |
    select
        group_concat(
-           r 
-           separator
+           r separator
            '${separator_cell_sql}'
        )
        || '${trail_sql}'
@@ -30,7 +29,7 @@ resource:
            || 0
            || '${enclose_value_sql}'
            r
-       from SYS.schemas
+       from sys.schemas
        order by r
        ${limit}
    ) x
@@ -50,7 +49,7 @@ resource:
            || 0
            || '${enclose_value_sql}'
            r
-       from SYS.tables t
+       from sys.tables t
        where t.schema_name = '${database}'
        order by r
        ${limit}
@@ -71,7 +70,7 @@ resource:
            || 0
            || '${enclose_value_sql}'
            r
-       from SYS.TABLE_COLUMNS t
+       from sys.table_columns t
        where t.schema_name = '${database}'
        and t.table_name = '${table}'
        order by r
@@ -82,8 +81,7 @@ resource:
    query: |
     select
         group_concat(
-            r
-            separator
+            r separator
             '${separator_cell_sql}'
         )
         || '${trail_sql}'

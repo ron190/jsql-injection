@@ -33,7 +33,7 @@ resource:
        select distinct
            table_schema r,
            '0' q
-       from INFORMATION_SCHEMA.COLUMNS
+       from information_schema.columns
        ${limit}
    ) x
 
@@ -53,8 +53,8 @@ resource:
        select distinct
            table_name r,
            '0' q
-       from INFORMATION_SCHEMA.COLUMNS
-       where TABLE_SCHEMA = '${database}'
+       from information_schema.columns
+       where table_schema = '${database}'
        ${limit}
    ) x   
 
@@ -75,9 +75,9 @@ resource:
        select distinct
            column_name r,
            '0' q
-       from INFORMATION_SCHEMA.COLUMNS
-       where TABLE_SCHEMA = '${database}'
-       and TABLE_NAME = '${table}'
+       from information_schema.columns
+       where table_schema = '${database}'
+       and table_name = '${table}'
        ${limit}
    ) x   
 

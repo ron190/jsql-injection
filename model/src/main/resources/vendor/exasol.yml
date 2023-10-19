@@ -29,9 +29,9 @@ resource:
        '${trail_sql}'
    ) from (
        select distinct
-           COLUMN_SCHEMA r,
+           column_schema r,
            '0' q
-       from EXA_SYS_COLUMNS
+       from exa_sys_columns
        order by r
        ${limit}
    ) x
@@ -52,10 +52,10 @@ resource:
        '${trail_sql}'
    ) from (
        select distinct
-           COLUMN_TABLE r,
+           column_table r,
            '0' q
-       from EXA_SYS_COLUMNS
-       where COLUMN_SCHEMA = '${database}'
+       from exa_sys_columns
+       where column_schema = '${database}'
        order by r
        ${limit}
    ) x
@@ -76,11 +76,11 @@ resource:
        '${trail_sql}'
    ) from (
        select distinct
-           COLUMN_NAME r,
+           column_name r,
            '0' q
-       from EXA_SYS_COLUMNS
-       where COLUMN_SCHEMA = '${database}'
-       and COLUMN_TABLE = '${table}'
+       from exa_sys_columns
+       where column_schema = '${database}'
+       and column_table = '${table}'
        order by r
        ${limit}
    ) x
@@ -168,5 +168,5 @@ strategy:
    ${boolean.mode} if(
        ${test},
        1,
-       SLEEP(${sleep_time})
+       sleep(${sleep_time})
    )

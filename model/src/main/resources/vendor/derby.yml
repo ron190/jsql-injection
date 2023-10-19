@@ -10,7 +10,7 @@ resource:
       || '${enclose_value_sql}'
       || current_user
       || '${trail_sql}'
-  from SYSIBM.SYSDUMMY1
+  from sysibm.sysdummy1
 
  schema:
   database: |
@@ -23,7 +23,7 @@ resource:
        '${enclose_value_sql}'
        || schemaname
        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
-   FROM SYS.SYSSCHEMAS
+   FROM sys.sysschemas
    ${limit}
 
   table: |
@@ -84,7 +84,7 @@ strategy:
            ),
            '${trail_sql}'
        )
-   from SYSIBM.SYSDUMMY1
+   from sysibm.sysdummy1
   limit: offset ${limit.value} rows fetch next 1 rows only
   failsafe: |
    trim(
@@ -103,6 +103,6 @@ strategy:
     - Column position '1337' is out of range for the query expression
 
  normal:
-  indices: union select ${indices} from SYSIBM.SYSDUMMY1
-  capacity: (select '${lead}${indice}' || ${calibrator} from SYSIBM.SYSDUMMY1)
+  indices: union select ${indices} from sysibm.sysdummy1
+  capacity: (select '${lead}${indice}' || ${calibrator} from sysibm.sysdummy1)
   orderBy: order by 1337

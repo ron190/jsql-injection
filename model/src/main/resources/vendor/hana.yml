@@ -10,7 +10,7 @@ resource:
       || '${enclose_value_sql}'
       || database_name
       || '${enclose_value_sql}'
-      || CURRENT_USER
+      || current_user
       || '${trail_sql}'
   from sys.m_database
 

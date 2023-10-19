@@ -35,10 +35,10 @@ resource:
        )
    from (
        select
-           "SCHEMA_NAME" r,
-           count("TABLE_NAME") q
-       from INFORMATION_SCHEMA.tables t
-       right join INFORMATION_SCHEMA.schemata s
+           "schema_name" r,
+           count("table_name") q
+       from information_schema.tables t
+       right join information_schema.schemata s
        on t."schema_pk" = s."schema_pk"
        group by r
        ${limit}
@@ -58,12 +58,12 @@ resource:
        )
    from (
        select
-           "TABLE_NAME" r,
+           "table_name" r,
            '0' q
-       from INFORMATION_SCHEMA.tables t
-       right join INFORMATION_SCHEMA.schemata s
+       from information_schema.tables t
+       right join information_schema.schemata s
        on t."schema_pk" = s."schema_pk"
-       where s."SCHEMA_NAME" = '${database}'
+       where s."schema_name" = '${database}'
    ) x
    ${limit}
 
@@ -81,13 +81,13 @@ resource:
        )
    from (
        select
-           "COLUMN_NAME" r,
+           "column_name" r,
            '0' q
-       from INFORMATION_SCHEMA.COLUMNS as "c"
-       inner join INFORMATION_SCHEMA.tables as "t" using("table_pk")
-       inner join INFORMATION_SCHEMA.schemata as "s" using("schema_pk")
-       where s."SCHEMA_NAME" = '${database}'
-       and t."TABLE_NAME" = '${table}'
+       from information_schema.columns as "c"
+       inner join information_schema.tables as "t" using("table_pk")
+       inner join information_schema.schemata as "s" using("schema_pk")
+       where s."schema_name" = '${database}'
+       and t."table_name" = '${table}'
    ) x
    ${limit}
 
@@ -123,7 +123,7 @@ strategy:
            '${lead}'
            ||
            (${injection})
-       from INFORMATION_SCHEMA.SCHEMATA
+       from information_schema.schemata
    )
   limit: limit ${limit.value}, 1
   failsafe: trim(cast(1337${indice}7330%2b1 as char(100)))
@@ -141,7 +141,7 @@ strategy:
     - Illegal sort specification in ORDER BY
 
  normal:
-  indices: union select top 1 ${indices} from INFORMATION_SCHEMA.SCHEMATA
+  indices: union select top 1 ${indices} from information_schema.schemata
   capacity: |
    '${lead}'
    || '${indice}'

@@ -158,18 +158,6 @@ public abstract class AbstractMethodInjection implements Serializable {
         // Define a tree of JSON attributes with path as the key: root.a => value of a
         List<SimpleEntry<String, String>> attributesJson = JsonUtil.createEntries(jsonEntity, "root", null);
         
-//        String paramBase64 = paramStar.getValue().replace("*", "");
-//        if (Base64.isBase64(paramBase64) && StringUtil.isUtf8(StringUtil.base64Decode(paramBase64))) {
-//
-//            LOGGER.info(
-//                String.format(
-//                    "Param %s=%s appears to be Base64",
-//                    paramStar.getKey(),
-//                    paramStar.getValue()
-//                )
-//            );
-//        }
-        
         // When option 'Inject JSON' is selected and there's a JSON entity to inject
         // then loop through each paths to add * at the end of value and test each strategies.
         // Marks * are erased between each tests.

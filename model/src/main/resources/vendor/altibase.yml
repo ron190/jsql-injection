@@ -9,14 +9,14 @@ resource:
    || '${enclose_value_sql}'
    || 'altibase_database'
    || '${enclose_value_sql}'
-   || USER_NAME()
+   || user_name()
    || '${trail_sql}'
 
  schema:
   database: |
    select
        '${enclose_value_sql}'
-       || 'SYSTEM_'
+       || 'system_'
        || '${separator_qte_sql}'
        || 0
        || '${enclose_value_sql}'
@@ -33,12 +33,12 @@ resource:
    from (
        select
            '${enclose_value_sql}'
-           || TABLE_NAME
+           || table_name
            || '${separator_qte_sql}'
            || 0
            || '${enclose_value_sql}'
            r
-       from SYSTEM_.SYS_TABLES_
+       from system_.sys_tables_
        order by r
        ${limit}
    ) x
@@ -53,15 +53,15 @@ resource:
    from (
        select
            '${enclose_value_sql}'
-           || COLUMN_NAME
+           || column_name
            || '${separator_qte_sql}'
            || 0
            || '${enclose_value_sql}'
            n
-       from SYSTEM_.SYS_COLUMNS_ c
-       inner join SYSTEM_.SYS_TABLES_ t
+       from system_.sys_columns_ c
+       inner join system_.sys_tables_ t
        on c.table_id = t.table_id
-       where TABLE_NAME = '${table}'
+       where table_name = '${table}'
        order by n
        ${limit}
    ) x
@@ -94,15 +94,14 @@ strategy:
  configuration:
   slidingWindow: |
    (
-       select
-           concat(
-               '${lead}',
-               substr(
-                   (${injection}),
-                   ${window.char},
-                   ${capacity}
-               )
+       select concat(
+           '${lead}',
+           substr(
+               (${injection}),
+               ${window.char},
+               ${capacity}
            )
+       )
    )
   limit: limit ${limit.value}, 65536
   failsafe: "''||1337${indice}7330%2b1"

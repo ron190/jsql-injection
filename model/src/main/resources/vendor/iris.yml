@@ -29,7 +29,7 @@ resource:
        ||'${trail_sql}'
    from (
        select
-           cast(t.SCHEMA_NAME as varchar) r,
+           cast(t.schema_name as varchar) r,
            '0' q
        from
           (select distinct schema_name from information_schema.schemata) t,
@@ -52,7 +52,7 @@ resource:
        )
    from (
        select
-           cast(t.TABLE_NAME as varchar) r,
+           cast(t.table_name as varchar) r,
            '0' q
        from
           (select distinct table_name from information_schema.tables where table_schema = '${database}') t,
@@ -74,7 +74,7 @@ resource:
            '${trail_sql}'
        )
    from (
-       select cast(t.COLUMN_NAME as varchar) n
+       select cast(t.column_name as varchar) n
        from
           (select distinct column_name from information_schema.columns where table_schema = '${database}' and table_name = '${table}') t,
           (select distinct column_name from information_schema.columns where table_schema = '${database}' and table_name = '${table}') t1

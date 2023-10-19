@@ -104,15 +104,14 @@ strategy:
  configuration:
   slidingWindow: |
    (
-       select
-           concat(
-               '${lead}',
-               substr(
-                   (${injection}),
-                   ${window.char},
-                   ${capacity}
-               )
+       select concat(
+           '${lead}',
+           substr(
+               (${injection}),
+               ${window.char},
+               ${capacity}
            )
+       )
    )
   limit: limit ${limit.value}, 65536
   failsafe: "'' || 1337${indice}7330%2b1"

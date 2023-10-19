@@ -192,7 +192,7 @@ strategy:
            )
            %2b'${trail_sql}'
    )
-  limit: and rnum BETWEEN ${limit.value} and 65536
+  limit: and rnum between ${limit.value} and 65536
   failsafe: convert(varchar, (1337${indice}7330%2b1))
   calibrator: replicate(${calibrator_hex}, 1024)
   limitBoundary: 1

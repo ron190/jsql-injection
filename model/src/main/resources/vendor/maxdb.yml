@@ -13,7 +13,7 @@ resource:
       || user()
       || '${trail_sql}'
       r
-  from sysinfo.VERSION
+  from sysinfo.version
 
  schema:
   database: |
@@ -28,8 +28,8 @@ resource:
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-           (select distinct schemaname from SCHEMAS) t,
-           (select distinct schemaname from SCHEMAS) t1
+           (select distinct schemaname from schemas) t,
+           (select distinct schemaname from schemas) t1
        where t.schemaname >= t1.schemaname
        group by t.schemaname
        ${limit}
@@ -47,8 +47,8 @@ resource:
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-           (select distinct tablename from TABLES where SCHEMANAME = '${database}') t,
-           (select distinct tablename from TABLES where SCHEMANAME = '${database}') t1
+           (select distinct tablename from tables where schemaname = '${database}') t,
+           (select distinct tablename from tables where schemaname = '${database}') t1
        where t.tablename >= t1.tablename
        group by t.tablename
        ${limit}
@@ -62,13 +62,13 @@ resource:
    from (
        select
            '${enclose_value_sql}'
-           || trim(t.COLUMNNAME)
+           || trim(t.columnname)
            || '${separator_qte_sql}0${enclose_value_sql}'rr
        from
-           (select distinct COLUMNNAME from COLUMNS where SCHEMANAME = '${database}'and TABLENAME = '${table}') t,
-           (select distinct COLUMNNAME from COLUMNS where SCHEMANAME = '${database}'and TABLENAME = '${table}') t1
-       where t.COLUMNNAME >= t1.COLUMNNAME
-       group by t.COLUMNNAME
+           (select distinct columnname from columns where schemaname = '${database}'and tablename = '${table}') t,
+           (select distinct columnname from columns where schemaname = '${database}'and tablename = '${table}') t1
+       where t.columnname >= t1.columnname
+       group by t.columnname
        ${limit}
    ) a
 

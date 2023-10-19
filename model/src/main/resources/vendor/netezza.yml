@@ -28,11 +28,11 @@ resource:
        ||'${trail_sql}'
    from (
        select
-           SCHEMA_NAME r,
-           count(TABLE_NAME) q
-       from INFORMATION_SCHEMA.tables
-       right join INFORMATION_SCHEMA.schemata
-       on SCHEMA_NAME = table_schema
+           schema_name r,
+           count(table_name) q
+       from information_schema.tables
+       right join information_schema.schemata
+       on schema_name = table_schema
        group by r
        ${limit}
    ) x
@@ -52,10 +52,10 @@ resource:
        ||'${trail_sql}'
    from (
        select
-           TABLE_NAME r,
+           table_name r,
            '0' q
        from information_schema.tables
-       where TABLE_SCHEMA = '${database}'
+       where table_schema = '${database}'
        order by r
        ${limit}
    ) x
@@ -74,10 +74,10 @@ resource:
        )
        ||'${trail_sql}'
    from (
-       select COLUMN_NAME r
+       select column_name r
        from information_schema.columns
-       where TABLE_SCHEMA = '${database}'
-       and TABLE_NAME = '${table}'
+       where table_schema = '${database}'
+       and table_name = '${table}'
        order by r
        ${limit}
    ) x

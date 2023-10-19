@@ -218,7 +218,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
 
         // Get back to the top
         SwingUtilities.invokeLater(() ->
-            scroller.scrollPane.getViewport().setViewPosition(new java.awt.Point(0, 0))
+            scroller.scrollPane.getViewport().setViewPosition(new Point(0, 0))
         );
     }
 }

@@ -9,7 +9,7 @@ resource:
    || '${enclose_value_sql}'
    || 'c-treeACE_database'
    || '${enclose_value_sql}'
-   || USER_NAME()
+   || user_name()
    || '${trail_sql}'
 
  schema:
@@ -87,15 +87,14 @@ strategy:
  configuration:
   slidingWindow: |
    (
-       select
-           concat(
-               '${lead}',
-               substr(
-                   (${injection}),
-                   ${window.char},
-                   ${capacity}
-               )
+       select concat(
+           '${lead}',
+           substr(
+               (${injection}),
+               ${window.char},
+               ${capacity}
            )
+       )
    )
   limit: top 1 skip ${limit.value}
   failsafe: 1337${indice}7330%2b1

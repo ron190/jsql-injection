@@ -30,11 +30,11 @@ resource:
        '${trail_sql}'
    ) from (
        select
-           cast(SCHEMA_NAME as char) r,
-           cast(count(TABLE_NAME) as char) q
-       from INFORMATION_SCHEMA.tables t
-       right join INFORMATION_SCHEMA.schemata s
-       on s.SCHEMA_NAME = t.table_schema
+           cast(schema_name as char) r,
+           cast(count(table_name) as char) q
+       from information_schema.tables t
+       right join information_schema.schemata s
+       on s.schema_name = t.table_schema
        group by r
        ${limit}
    ) x
@@ -52,10 +52,10 @@ resource:
        '${trail_sql}'
    ) from (
        select
-           cast(TABLE_NAME as char) r,
+           cast(table_name as char) r,
            cast(ifnull(table_rows, '0') as char) q
        from information_schema.tables
-       where TABLE_SCHEMA = '${database}'
+       where table_schema = '${database}'
        order by r
        ${limit}
    ) x
@@ -72,10 +72,10 @@ resource:
        ),
        '${trail_sql}'
    ) from (
-       select cast(COLUMN_NAME as char) n
+       select cast(column_name as char) n
        from information_schema.columns
-       where TABLE_SCHEMA = '${database}'
-       and TABLE_NAME = '${table}'
+       where table_schema = '${database}'
+       and table_name = '${table}'
        order by n
        ${limit}
    ) x

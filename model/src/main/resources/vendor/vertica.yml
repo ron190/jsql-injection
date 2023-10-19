@@ -46,7 +46,7 @@ resource:
            || '${enclose_value_sql}'
            rr
        from v_catalog.tables
-       where TABLE_SCHEMA = '${database}'
+       where table_schema = '${database}'
        order by rr
        ${limit}
    )x
@@ -65,8 +65,8 @@ resource:
            || '${enclose_value_sql}'
            rr
        from v_catalog.columns
-       where columns.TABLE_SCHEMA = '${database}'
-       and columns.TABLE_name = '${table}'
+       where columns.table_schema = '${database}'
+       and columns.table_name = '${table}'
        order by rr
        ${limit}
    )x
