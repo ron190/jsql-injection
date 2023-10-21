@@ -87,19 +87,19 @@ jobs:
     - name: Install Maven dependencies
       run: mvn clean install -DskipTests dependency:tree
         
-#    - name: Run databases and LAMP
-#      run: |
-#        docker-compose -f $DOCKER_RESOURCES/docker-compose.yml build --parallel
-#        docker-compose -f $DOCKER_RESOURCES/docker-compose.yml up -d
-#
-#    - name: List images and containers
-#      run: docker images && docker container ls
-#
-#    - name: Database health checks and configuration
-#      run: |
-#        $DOCKER_RESOURCES/scripts/healthcheck/healthcheck.sh
-#        $DOCKER_RESOURCES/scripts/buff.sh
-#        $DOCKER_RESOURCES/scripts/verify.sh
+    - name: Run databases and LAMP
+      run: |
+        docker-compose -f $DOCKER_RESOURCES/docker-compose.yml build --parallel
+        docker-compose -f $DOCKER_RESOURCES/docker-compose.yml up -d
+
+    - name: List images and containers
+      run: docker images && docker container ls
+
+    - name: Database health checks and configuration
+      run: |
+        $DOCKER_RESOURCES/scripts/healthcheck/healthcheck.sh
+        $DOCKER_RESOURCES/scripts/buff.sh
+        $DOCKER_RESOURCES/scripts/verify.sh
 
     - name: Build project container
       run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
@@ -108,10 +108,10 @@ jobs:
       # Profile usage for skipITs/skipTests (env var MAVEN_OPS not working)
       # Note: 'mvn sonar:sonar' not working, modules reports not found, use 'mvn verify sonar:sonar' for reliability
       # Note: gh actions sonarsource/sonarqube-scan-action not working properly => analysis not reliable
-      run: $DOCKER_RESOURCES/scripts/run-on-docker-no-network.sh 'mvn clean install -P tests -DskipITs org.pitest:pitest-maven:mutationCoverage'
+      run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'mvn clean install sonar:sonar -P tests org.pitest:pitest-maven:mutationCoverage'
 
-#    - name: Databases statistics
-#      run: $DOCKER_RESOURCES/scripts/verify.sh
+    - name: Databases statistics
+      run: $DOCKER_RESOURCES/scripts/verify.sh
 
     - name: Copy files and coverage reports from container
       # Sonar scans unmerged reports, Codacy/Codecov requires scanning each files (or reports merged)
@@ -121,11 +121,11 @@ jobs:
         docker cp docker_jsql-container:model/. shared-resources/model
         docker cp docker_jsql-container:pom.xml shared-resources
 
-#    - name: Codecov scan
-#      run: cd shared-resources && bash <(curl -s https://codecov.io/bash) || true
-#
-#    - name: Codacy scan
-#      run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
+    - name: Codecov scan
+      run: cd shared-resources && bash <(curl -s https://codecov.io/bash) || true
+
+    - name: Codacy scan
+      run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
 
     - name: Publish coverage
       run: |
@@ -147,13 +147,8 @@ jobs:
     name: CodeQL
     uses: ./.github/workflows/run-codeql.yml
 
-  crda:
-    name: CodeReady
-    uses: ./.github/workflows/run-codeready.yml
-    secrets: inherit
-
   release:
-    needs: [build-jdk11, build, codeql, crda]
+    needs: [build-jdk11, build, codeql]
     name: Publish
     uses: ./.github/workflows/release.yml
     secrets: inherit
