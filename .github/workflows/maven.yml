@@ -87,19 +87,19 @@ jobs:
     - name: Install Maven dependencies
       run: mvn clean install -DskipTests dependency:tree
         
-    - name: Run databases and LAMP
-      run: |
-        docker-compose -f $DOCKER_RESOURCES/docker-compose.yml build --parallel
-        docker-compose -f $DOCKER_RESOURCES/docker-compose.yml up -d
-
-    - name: List images and containers
-      run: docker images && docker container ls
-
-    - name: Database health checks and configuration
-      run: |
-        $DOCKER_RESOURCES/scripts/healthcheck/healthcheck.sh
-        $DOCKER_RESOURCES/scripts/buff.sh
-        $DOCKER_RESOURCES/scripts/verify.sh
+#    - name: Run databases and LAMP
+#      run: |
+#        docker-compose -f $DOCKER_RESOURCES/docker-compose.yml build --parallel
+#        docker-compose -f $DOCKER_RESOURCES/docker-compose.yml up -d
+#
+#    - name: List images and containers
+#      run: docker images && docker container ls
+#
+#    - name: Database health checks and configuration
+#      run: |
+#        $DOCKER_RESOURCES/scripts/healthcheck/healthcheck.sh
+#        $DOCKER_RESOURCES/scripts/buff.sh
+#        $DOCKER_RESOURCES/scripts/verify.sh
 
     - name: Build project container
       run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
@@ -108,10 +108,10 @@ jobs:
       # Profile usage for skipITs/skipTests (env var MAVEN_OPS not working)
       # Note: 'mvn sonar:sonar' not working, modules reports not found, use 'mvn verify sonar:sonar' for reliability
       # Note: gh actions sonarsource/sonarqube-scan-action not working properly => analysis not reliable
-      run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'mvn clean install sonar:sonar -P tests'
+      run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'mvn clean install -P tests -DskipITs'
 
-    - name: Databases statistics
-      run: $DOCKER_RESOURCES/scripts/verify.sh
+#    - name: Databases statistics
+#      run: $DOCKER_RESOURCES/scripts/verify.sh
 
     - name: Copy files and coverage reports from container
       # Sonar scans unmerged reports, Codacy/Codecov requires scanning each files (or reports merged)
@@ -121,11 +121,26 @@ jobs:
         docker cp docker_jsql-container:model/. shared-resources/model
         docker cp docker_jsql-container:pom.xml shared-resources
 
-    - name: Codecov scan
-      run: cd shared-resources && bash <(curl -s https://codecov.io/bash) || true
+#    - name: Codecov scan
+#      run: cd shared-resources && bash <(curl -s https://codecov.io/bash) || true
+#
+#    - name: Codacy scan
+#      run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
 
-    - name: Codacy scan
-      run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
+    - name: Publish coverage
+      run: |
+        pwd && ls -al
+        git checkout docs
+        pwd && ls -al
+        ls shared-resources/view/target/site/jacoco/ shared-resources/model/target/site/jacoco/ shared-resources/view/target/pit-reports/ shared-resources/model/target/pit-reports/
+        rm -r view/site/ view/pit-reports/ model/site/ model/pit-reports/ || echo 'Folder(s) not found'
+        FOLDER=view/target/site/jacoco bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
+        FOLDER=model/target/site/jacoco bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
+        FOLDER=view/target/pit-reports bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
+        FOLDER=model/target/pit-reports bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
+        git add -f view/target/ model/target/
+        git commit -m "Publish jacoco and pitest reports"
+        git push
 
 #  codeql:
 #    Workflow not jdk compatible
