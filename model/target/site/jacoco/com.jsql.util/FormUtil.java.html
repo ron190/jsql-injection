@@ -30,10 +30,10 @@ public class FormUtil {
 
     public void parseForms(int statusCode, String pageSource) {
         
-<span class="nc" id="L33">        var elementsForm = Jsoup.parse(pageSource).select(&quot;form&quot;);</span>
+<span class="fc" id="L33">        var elementsForm = Jsoup.parse(pageSource).select(&quot;form&quot;);</span>
         
-<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (elementsForm.isEmpty()) {</span>
-<span class="nc" id="L36">            return;</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if (elementsForm.isEmpty()) {</span>
+<span class="fc" id="L36">            return;</span>
         }
         
 <span class="nc" id="L39">        var result = new StringBuilder();</span>

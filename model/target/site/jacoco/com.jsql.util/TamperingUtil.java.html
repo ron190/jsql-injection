@@ -85,7 +85,7 @@ import java.util.regex.Pattern;
         // p=1'+[sql]
 <span class="fc" id="L86">        var matcherSql = Pattern.compile(&quot;(?s)(.*&lt;tampering&gt;)(.*)(&lt;/tampering&gt;.*)&quot;).matcher(sqlQueryDefault);</span>
 
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (matcherSql.find()) {</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        if (matcherSql.find()) {</span>
 
 <span class="fc" id="L90">            lead = matcherSql.group(1);</span>
 <span class="fc" id="L91">            sqlQuery = matcherSql.group(2);</span>
@@ -93,7 +93,7 @@ import java.util.regex.Pattern;
 
         } else {
 
-<span class="nc" id="L96">            return sqlQueryDefault;</span>
+<span class="fc" id="L96">            return sqlQueryDefault;</span>
         }
 
 <span class="fc bfc" id="L99" title="All 2 branches covered.">        if (this.isEval) {</span>

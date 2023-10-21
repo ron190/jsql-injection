@@ -67,7 +67,7 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
 <span class="fc" id="L67">            JScrollPane scrollPane = (JScrollPane) this.getProxy().getParent().getParent();</span>
 <span class="fc" id="L68">            JScrollBar scrollBar = scrollPane.getVerticalScrollBar();</span>
 <span class="fc" id="L69">            int extent = scrollBar.getModel().getExtent();</span>
-<span class="fc bfc" id="L70" title="All 2 branches covered.">            boolean isScrollBarAtEnd = scrollBar.getValue() &gt;= scrollBar.getMaximum() - extent;</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">            boolean isScrollBarAtEnd = scrollBar.getValue() &gt;= scrollBar.getMaximum() - extent;</span>
             
 <span class="fc" id="L72">            var logMessage = message.substring(15);</span>
 <span class="fc" id="L73">            var logTimestamp = message.substring(0, 15);</span>

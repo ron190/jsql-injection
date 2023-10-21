@@ -15,12 +15,12 @@ public class CallableTime extends AbstractCallableBoolean&lt;CallableTime&gt; {
     /**
      * Time before the url call.
      */
-<span class="nc" id="L18">    private final Calendar calendar1 = Calendar.getInstance();</span>
+<span class="fc" id="L18">    private final Calendar calendar1 = Calendar.getInstance();</span>
     
     /**
      * Time at the end of the url call.
      */
-<span class="nc" id="L23">    private final Calendar calendar2 = Calendar.getInstance();</span>
+<span class="fc" id="L23">    private final Calendar calendar2 = Calendar.getInstance();</span>
     
     /**
      * Current page loading time.
@@ -35,33 +35,33 @@ public class CallableTime extends AbstractCallableBoolean&lt;CallableTime&gt; {
     /**
      * Constructor for preparation and blind confirmation.
      */
-<span class="nc" id="L38">    public CallableTime(String sqlQuery, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {</span>
+<span class="fc" id="L38">    public CallableTime(String sqlQuery, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {</span>
         
-<span class="nc" id="L40">        this.injectionModel = injectionModel;</span>
-<span class="nc" id="L41">        this.injectionTime = injectionTime;</span>
-<span class="nc" id="L42">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
-<span class="nc" id="L43">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(sqlQuery, blindMode);</span>
-<span class="nc" id="L44">    }</span>
+<span class="fc" id="L40">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L41">        this.injectionTime = injectionTime;</span>
+<span class="fc" id="L42">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
+<span class="fc" id="L43">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(sqlQuery, blindMode);</span>
+<span class="fc" id="L44">    }</span>
     
     /**
      * Constructor for bit test.
      */
     public CallableTime(String sqlQuery, int indexCharacter, int bit, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
         
-<span class="nc" id="L51">        this(sqlQuery, injectionModel, injectionTime, blindMode, metadataInjectionProcess);</span>
-<span class="nc" id="L52">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestTime(sqlQuery, indexCharacter, bit, blindMode);</span>
-<span class="nc" id="L53">        this.currentIndex = indexCharacter;</span>
-<span class="nc" id="L54">        this.currentBit = bit;</span>
-<span class="nc" id="L55">    }</span>
+<span class="fc" id="L51">        this(sqlQuery, injectionModel, injectionTime, blindMode, metadataInjectionProcess);</span>
+<span class="fc" id="L52">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestTime(sqlQuery, indexCharacter, bit, blindMode);</span>
+<span class="fc" id="L53">        this.currentIndex = indexCharacter;</span>
+<span class="fc" id="L54">        this.currentBit = bit;</span>
+<span class="fc" id="L55">    }</span>
     
     @Override
     public boolean isTrue() {
 
-<span class="nc bnc" id="L60" title="All 2 branches missed.">        int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">        int countSleepTimeStrategy = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy()</span>
 <span class="nc" id="L61">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy()</span>
-<span class="nc" id="L62">            : 5;</span>
+<span class="fc" id="L62">            : 5;</span>
         
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        return this.diffSeconds &lt; countSleepTimeStrategy;</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        return this.diffSeconds &lt; countSleepTimeStrategy;</span>
     }
 
     /**
@@ -72,18 +72,18 @@ public class CallableTime extends AbstractCallableBoolean&lt;CallableTime&gt; {
     @Override
     public CallableTime call() {
         
-<span class="nc" id="L75">        this.calendar1.setTime(new Date());</span>
-<span class="nc" id="L76">        this.injectionTime.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
-<span class="nc" id="L77">        this.calendar2.setTime(new Date());</span>
+<span class="fc" id="L75">        this.calendar1.setTime(new Date());</span>
+<span class="fc" id="L76">        this.injectionTime.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
+<span class="fc" id="L77">        this.calendar2.setTime(new Date());</span>
         
-<span class="nc" id="L79">        long milliseconds1 = this.calendar1.getTimeInMillis();</span>
-<span class="nc" id="L80">        long milliseconds2 = this.calendar2.getTimeInMillis();</span>
+<span class="fc" id="L79">        long milliseconds1 = this.calendar1.getTimeInMillis();</span>
+<span class="fc" id="L80">        long milliseconds2 = this.calendar2.getTimeInMillis();</span>
         
-<span class="nc" id="L82">        long diff = milliseconds2 - milliseconds1;</span>
+<span class="fc" id="L82">        long diff = milliseconds2 - milliseconds1;</span>
         
-<span class="nc" id="L84">        this.diffSeconds = diff / 1000;</span>
+<span class="fc" id="L84">        this.diffSeconds = diff / 1000;</span>
         
-<span class="nc" id="L86">        return this;</span>
+<span class="fc" id="L86">        return this;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

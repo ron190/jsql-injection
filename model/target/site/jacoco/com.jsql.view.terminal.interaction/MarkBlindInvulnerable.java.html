@@ -20,19 +20,19 @@ import org.apache.logging.log4j.Logger;
  */
 public class MarkBlindInvulnerable implements InteractionCommand {
     
-<span class="nc" id="L23">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L23">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * @param interactionParams
      */
-<span class="nc" id="L28">    public MarkBlindInvulnerable(Object[] interactionParams) {</span>
+<span class="fc" id="L28">    public MarkBlindInvulnerable(Object[] interactionParams) {</span>
         // Do nothing
-<span class="nc" id="L30">    }</span>
+<span class="fc" id="L30">    }</span>
 
     @Override
     public void execute() {
         
-<span class="nc" id="L35">        LOGGER.debug(() -&gt; AnsiColorUtil.addRedColor(this.getClass().getSimpleName()));</span>
-<span class="nc" id="L36">    }</span>
+<span class="pc" id="L35">        LOGGER.debug(() -&gt; AnsiColorUtil.addRedColor(this.getClass().getSimpleName()));</span>
+<span class="fc" id="L36">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

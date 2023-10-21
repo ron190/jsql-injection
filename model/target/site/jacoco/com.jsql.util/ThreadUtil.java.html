@@ -58,8 +58,8 @@ public final class ThreadUtil {
      */
     public void put(AbstractElementDatabase elementDatabase, AbstractSuspendable suspendable) {
         
-<span class="nc" id="L61">        this.suspendables.put(elementDatabase, suspendable);</span>
-<span class="nc" id="L62">    }</span>
+<span class="fc" id="L61">        this.suspendables.put(elementDatabase, suspendable);</span>
+<span class="fc" id="L62">    }</span>
     
     /**
      * Get the task associated to the database component.
@@ -80,8 +80,8 @@ public final class ThreadUtil {
      */
     public void remove(AbstractElementDatabase elementDatabase) {
         
-<span class="nc" id="L83">        this.suspendables.remove(elementDatabase);</span>
-<span class="nc" id="L84">    }</span>
+<span class="fc" id="L83">        this.suspendables.remove(elementDatabase);</span>
+<span class="fc" id="L84">    }</span>
     
     /**
      * Force to stop every threads still running and empty the list where
@@ -92,30 +92,30 @@ public final class ThreadUtil {
         // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()
         // TODO Use CopyOnWriteArrayList to prevent ConcurrentModificationException
         try {
-<span class="nc" id="L95">            this.suspendables.values().forEach(AbstractSuspendable::stop);</span>
-<span class="nc" id="L96">            this.suspendables.clear();</span>
+<span class="fc" id="L95">            this.suspendables.values().forEach(AbstractSuspendable::stop);</span>
+<span class="fc" id="L96">            this.suspendables.clear();</span>
             
 <span class="nc" id="L98">        } catch (ConcurrentModificationException e) {</span>
             
 <span class="nc" id="L100">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L101">        }</span>
-<span class="nc" id="L102">    }</span>
+<span class="fc" id="L101">        }</span>
+<span class="fc" id="L102">    }</span>
     
     public ExecutorService getExecutor(String nameThread) {
 
         ExecutorService taskExecutor;
         
-<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingThreads()) {</span>
             
-<span class="nc" id="L110">            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();</span>
-<span class="nc" id="L111">            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable(nameThread));</span>
+<span class="fc" id="L110">            int countThreads = this.injectionModel.getMediatorUtils().getPreferencesUtil().countLimitingThreads();</span>
+<span class="fc" id="L111">            taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable(nameThread));</span>
             
-<span class="nc" id="L113">        } else {</span>
+<span class="fc" id="L113">        } else {</span>
             
 <span class="nc" id="L115">            taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable(nameThread));</span>
         }
         
-<span class="nc" id="L118">        return taskExecutor;</span>
+<span class="fc" id="L118">        return taskExecutor;</span>
     }
 
     public void shutdown(ExecutorService taskExecutor) {

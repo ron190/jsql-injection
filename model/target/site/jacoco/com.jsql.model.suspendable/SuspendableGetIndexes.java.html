@@ -22,81 +22,81 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
     /**
      * Log4j logger sent to view.
      */
-<span class="nc" id="L25">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L25">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     public SuspendableGetIndexes(InjectionModel injectionModel) {
-<span class="nc" id="L28">        super(injectionModel);</span>
-<span class="nc" id="L29">    }</span>
+<span class="fc" id="L28">        super(injectionModel);</span>
+<span class="fc" id="L29">    }</span>
 
     @Override
     public String run(Object... args) throws JSqlException {
         
         // Concurrent search
-<span class="nc" id="L35">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetIndexes&quot;);</span>
+<span class="fc" id="L35">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetIndexes&quot;);</span>
         
-<span class="nc" id="L37">        CompletionService&lt;CallablePageSource&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
+<span class="fc" id="L37">        CompletionService&lt;CallablePageSource&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
 
-<span class="nc" id="L39">        String initialQuery = StringUtils.EMPTY;</span>
+<span class="fc" id="L39">        String initialQuery = StringUtils.EMPTY;</span>
         int nbIndex;
         
-<span class="nc bnc" id="L42" title="All 2 branches missed.">        int countNormalIndex = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex()</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        int countNormalIndex = this.injectionModel.getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex()</span>
 <span class="nc" id="L43">            ? this.injectionModel.getMediatorUtils().getPreferencesUtil().countNormalIndex()</span>
-<span class="nc" id="L44">            : 50;</span>
+<span class="fc" id="L44">            : 50;</span>
 
         // SQL fields are built like 1337[index]7330+1
         // 7330+1 allows to exclude false positive when page contains injection URL
         // Search if the source contains 1337[index]7331
-<span class="nc bnc" id="L49" title="All 2 branches missed.">        for (nbIndex = 1 ; nbIndex &lt;= countNormalIndex ; nbIndex++) {</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (nbIndex = 1 ; nbIndex &lt;= countNormalIndex ; nbIndex++) {</span>
             
-<span class="nc" id="L51">            taskCompletionService.submit(</span>
+<span class="fc" id="L51">            taskCompletionService.submit(</span>
                 new CallablePageSource(
-<span class="nc" id="L53">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),</span>
+<span class="fc" id="L53">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),</span>
                     this.injectionModel,
                     &quot;normal#&quot; + nbIndex
                 )
             );
         }
         
-<span class="nc" id="L60">        nbIndex = 1;</span>
+<span class="fc" id="L60">        nbIndex = 1;</span>
 
         try {
             // Start from 10 to 100 requests
-<span class="nc bnc" id="L64" title="All 2 branches missed.">            while (nbIndex &lt;= countNormalIndex) {</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">            while (nbIndex &lt;= countNormalIndex) {</span>
 
-<span class="nc bnc" id="L66" title="All 2 branches missed.">                if (this.isSuspended()) {</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">                if (this.isSuspended()) {</span>
 <span class="nc" id="L67">                    throw new StoppedByUserSlidingException();</span>
                 }
 
-<span class="nc" id="L70">                CallablePageSource currentCallable = taskCompletionService.take().get();</span>
-<span class="nc" id="L71">                nbIndex++;</span>
+<span class="fc" id="L70">                CallablePageSource currentCallable = taskCompletionService.take().get();</span>
+<span class="fc" id="L71">                nbIndex++;</span>
 
                 // Found a correct mark 1337[index]7331 in the source
-<span class="nc" id="L74">                String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, &quot;\\d+&quot;);</span>
-<span class="nc bnc" id="L75" title="All 2 branches missed.">                if (Pattern.compile(&quot;(?s).*&quot;+ regexAllIndexes +&quot;.*&quot;).matcher(currentCallable.getContent()).matches()) {</span>
+<span class="fc" id="L74">                String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, &quot;\\d+&quot;);</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">                if (Pattern.compile(&quot;(?s).*&quot;+ regexAllIndexes +&quot;.*&quot;).matcher(currentCallable.getContent()).matches()) {</span>
                     
-<span class="nc" id="L77">                    this.injectionModel.getMediatorStrategy().getNormal().setSourceIndexesFound(currentCallable.getContent());</span>
-<span class="nc" id="L78">                    initialQuery = currentCallable.getQuery().replace(&quot;0%2b1&quot;, &quot;1&quot;);</span>
+<span class="fc" id="L77">                    this.injectionModel.getMediatorStrategy().getNormal().setSourceIndexesFound(currentCallable.getContent());</span>
+<span class="fc" id="L78">                    initialQuery = currentCallable.getQuery().replace(&quot;0%2b1&quot;, &quot;1&quot;);</span>
                     
-<span class="nc bnc" id="L80" title="All 2 branches missed.">                    if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">                    if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {</span>
 
 <span class="nc" id="L82">                        String regexIndexesExceptFirst = String.format(VendorYaml.FORMAT_INDEX, &quot;(?!17331)\\d+&quot;);</span>
 <span class="nc" id="L83">                        initialQuery = initialQuery.replaceAll(regexIndexesExceptFirst, &quot;1&quot;);</span>
 <span class="nc" id="L84">                        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Calibrating indexes disabled, forcing to index [1]&quot;);</span>
                     }
                     
-<span class="nc" id="L87">                    LOGGER.log(</span>
+<span class="fc" id="L87">                    LOGGER.log(</span>
                         LogLevelUtil.CONSOLE_INFORM,
                         &quot;Normal strategy triggered with query [{}]&quot;,
-<span class="nc" id="L90">                        () -&gt; currentCallable.getQuery().trim().replaceAll(&quot;1337(\\d*)7330%2b1&quot;, &quot;$1&quot;)</span>
+<span class="fc" id="L90">                        () -&gt; currentCallable.getQuery().trim().replaceAll(&quot;1337(\\d*)7330%2b1&quot;, &quot;$1&quot;)</span>
                     );
                     
-<span class="nc" id="L93">                    break;</span>
+<span class="fc" id="L93">                    break;</span>
                 }
-<span class="nc" id="L95">            }</span>
+<span class="fc" id="L95">            }</span>
             
             // End the job
-<span class="nc" id="L98">            taskExecutor.shutdown();</span>
-<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {</span>
+<span class="fc" id="L98">            taskExecutor.shutdown();</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {</span>
 <span class="nc" id="L100">                taskExecutor.shutdownNow();</span>
             }
             
@@ -108,9 +108,9 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
 <span class="nc" id="L108">        } catch (ExecutionException e) {</span>
             
 <span class="nc" id="L110">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L111">        }</span>
+<span class="pc" id="L111">        }</span>
 
-<span class="nc" id="L113">        return initialQuery;</span>
+<span class="fc" id="L113">        return initialQuery;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
