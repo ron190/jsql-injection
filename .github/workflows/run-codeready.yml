@@ -3,23 +3,24 @@ on:
 
 jobs:
   scan:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
 
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Install CRDA
-        uses: redhat-actions/openshift-tools-installer@v1
-        with:
-          source: github
-          crda: latest
 
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 18
+
+      - name: Install CRDA
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          source: github
+          github_pat: ${{ github.token }}
+          crda: latest
 
       - name: CRDA Scan
         id: crda_scan
