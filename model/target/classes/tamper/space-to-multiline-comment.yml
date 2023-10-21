@@ -1,0 +1,11 @@
+tooltip: Obfuscate space character
+description: Space ' ' to multiline comment '/**/'
+group: 
+javascript: |
+ var tampering = function(sql) {
+    
+     return sql
+        // Space required on end comment, switch to dash
+        .replace(/--\+-/gm,'%23')
+        .replace(/[+\s]+/gm,'/**/')
+ }

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthenticationUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util</a> &gt; <span class="el_source">AuthenticationUtil.java</span></div><h1>AuthenticationUtil.java</h1><pre class="source lang-java linenums">package com.jsql.util;
+
+import com.jsql.model.InjectionModel;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.util.prefs.Preferences;
+
+/**
+ * Manage authentication protocols Basic, Digest, NTLM and Kerberos.
+ * Java class Authenticator processes Basic, Digest and NTLM, library spnego
+ * processes kerberos.
+ */
+<span class="fc" id="L18">public class AuthenticationUtil {</span>
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L23">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+    
+    /**
+     * True if standard authentication Basic, Digest, NTLM is activated.
+     */
+<span class="fc" id="L28">    private boolean isAuthentication = false;</span>
+
+    /**
+     * Login for standard authentication.
+     */
+    private String usernameAuthentication;
+
+    /**
+     * Pass for standard authentication.
+     */
+    private String passwordAuthentication;
+    
+    /**
+     * True if kerberos authentication is activated.
+     */
+<span class="fc" id="L43">    private boolean isKerberos = false;</span>
+
+    /**
+     * Path to the kerberos file login.
+     */
+    private String pathKerberosLogin;
+
+    /**
+     * Path to the kerberos file krb5.
+     */
+    private String pathKerberosKrb5;
+
+    /**
+     * Get new authentication settings from the view, update the utility class,
+     * persist settings to the JVM and apply changes to the system.
+     * @param isAuthentication true if non-kerberos authentication is activated
+     * @param usernameAuthentication login for standard authentication
+     * @param passwordAuthentication pass for standard authentication
+     * @param isKerberos true if krb authentication is activated
+     * @param kerberosKrb5Conf path to the file krb5
+     * @param kerberosLoginConf path to the file login
+     */
+    public boolean set(
+        boolean isAuthentication,
+        String usernameAuthentication,
+        String passwordAuthentication,
+        boolean isKerberos,
+        String kerberosKrb5Conf,
+        String kerberosLoginConf
+    ) {
+
+<span class="nc" id="L74">        boolean isRestartRequired = this.initializeKerberos(isKerberos, kerberosKrb5Conf, kerberosLoginConf);</span>
+        
+<span class="nc" id="L76">        this.initializeSimpleAuthorization(isAuthentication, usernameAuthentication, passwordAuthentication);</span>
+        
+<span class="nc" id="L78">        this.setAuthentication();</span>
+        
+<span class="nc" id="L80">        return isRestartRequired;</span>
+    }
+
+    public void initializeSimpleAuthorization(boolean isAuthentication, String usernameAuthentication, String passwordAuthentication) {
+        
+<span class="nc" id="L85">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+        
+<span class="nc" id="L87">        preferences.putBoolean(&quot;isAuthentication&quot;, isAuthentication);</span>
+<span class="nc" id="L88">        preferences.put(&quot;usernameAuthentication&quot;, usernameAuthentication);</span>
+<span class="nc" id="L89">        preferences.put(&quot;passwordAuthentication&quot;, passwordAuthentication);</span>
+        
+        // Define proxy settings
+<span class="nc" id="L92">        this.isAuthentication = isAuthentication;</span>
+<span class="nc" id="L93">        this.usernameAuthentication = usernameAuthentication;</span>
+<span class="nc" id="L94">        this.passwordAuthentication = passwordAuthentication;</span>
+<span class="nc" id="L95">    }</span>
+
+    private boolean initializeKerberos(boolean isKerberos, String kerberosKrb5Conf, String kerberosLoginConf) {
+        
+        // Persist to JVM
+<span class="nc" id="L100">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+        
+<span class="nc" id="L102">        this.isKerberos = isKerberos;</span>
+<span class="nc" id="L103">        this.pathKerberosKrb5 = kerberosKrb5Conf;</span>
+<span class="nc" id="L104">        this.pathKerberosLogin = kerberosLoginConf;</span>
+        
+        // Check if krb file has change
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        boolean isRestartRequired = this.isKerberos</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">            &amp;&amp; !new File(this.pathKerberosKrb5).exists()</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            &amp;&amp; !kerberosKrb5Conf.equals(this.pathKerberosKrb5);</span>
+        
+<span class="nc" id="L111">        preferences.putBoolean(&quot;enableKerberos&quot;, this.isKerberos);</span>
+<span class="nc" id="L112">        preferences.put(&quot;kerberosKrb5Conf&quot;, this.pathKerberosKrb5);</span>
+<span class="nc" id="L113">        preferences.put(&quot;kerberosLoginConf&quot;, this.pathKerberosLogin);</span>
+        
+        // Check krb integrity
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (this.isKerberos) {</span>
+            
+            // Fix #23877: NoClassDefFoundError on java/nio/file/Paths
+<span class="nc bnc" id="L119" title="All 2 branches missed.">            if (!new File(this.pathKerberosKrb5).exists()) {</span>
+                
+<span class="nc" id="L121">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Krb5 file not found: {}&quot;, this.pathKerberosKrb5);</span>
+            }
+            
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            if (!new File(this.pathKerberosLogin).exists()) {</span>
+                
+<span class="nc" id="L126">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Login file not found: {}&quot;, this.pathKerberosLogin);</span>
+            }
+        }
+        
+<span class="nc" id="L130">        return isRestartRequired;</span>
+    }
+    
+    /**
+     * Initialize the utility class with preferences from the JVM
+     * and apply environment settings.
+     */
+    public void setKerberosCifs() {
+        
+        // Use Preferences API to persist proxy configuration
+<span class="nc" id="L140">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+
+        // Default proxy disabled
+<span class="nc" id="L143">        this.isAuthentication = preferences.getBoolean(&quot;isAuthentication&quot;, false);</span>
+
+        // Default TOR config
+<span class="nc" id="L146">        this.usernameAuthentication = preferences.get(&quot;usernameAuthentication&quot;, StringUtils.EMPTY);</span>
+<span class="nc" id="L147">        this.passwordAuthentication = preferences.get(&quot;passwordAuthentication&quot;, StringUtils.EMPTY);</span>
+        
+<span class="nc" id="L149">        this.isKerberos = preferences.getBoolean(&quot;enableKerberos&quot;, false);</span>
+<span class="nc" id="L150">        this.pathKerberosKrb5 = preferences.get(&quot;kerberosKrb5Conf&quot;, StringUtils.EMPTY);</span>
+<span class="nc" id="L151">        this.pathKerberosLogin = preferences.get(&quot;kerberosLoginConf&quot;, StringUtils.EMPTY);</span>
+        
+<span class="nc" id="L153">        this.setAuthentication();</span>
+<span class="nc" id="L154">    }</span>
+    
+    /**
+     * Apply kerberos authentication to the JVM.
+     */
+    public void setAuthentication() {
+        
+<span class="nc" id="L161">        Authenticator.setDefault(null);</span>
+
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (this.isAuthentication) {</span>
+            
+<span class="nc" id="L165">            Authenticator.setDefault(new Authenticator() {</span>
+                
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    
+<span class="nc" id="L170">                    return new PasswordAuthentication (</span>
+                        AuthenticationUtil.this.usernameAuthentication,
+<span class="nc" id="L172">                        AuthenticationUtil.this.passwordAuthentication.toCharArray()</span>
+                    );
+                }
+            });
+            
+        } else {
+            
+<span class="nc" id="L179">            Authenticator.setDefault(null);</span>
+        }
+        
+<span class="nc bnc" id="L182" title="All 2 branches missed.">        if (this.isKerberos) {</span>
+            
+<span class="nc" id="L184">            System.setProperty(&quot;java.security.krb5.conf&quot;, this.pathKerberosKrb5);</span>
+<span class="nc" id="L185">            System.setProperty(&quot;java.security.auth.login.config&quot;, this.pathKerberosLogin);</span>
+<span class="nc" id="L186">            System.setProperty(&quot;spnego.krb5.conf&quot;, this.pathKerberosKrb5);</span>
+<span class="nc" id="L187">            System.setProperty(&quot;spnego.login.conf&quot;, this.pathKerberosLogin);</span>
+            
+        } else {
+            
+<span class="nc" id="L191">            System.setProperty(&quot;java.security.krb5.conf&quot;, StringUtils.EMPTY);</span>
+<span class="nc" id="L192">            System.setProperty(&quot;java.security.auth.login.config&quot;, StringUtils.EMPTY);</span>
+<span class="nc" id="L193">            System.setProperty(&quot;spnego.krb5.conf&quot;, StringUtils.EMPTY);</span>
+<span class="nc" id="L194">            System.setProperty(&quot;spnego.login.conf&quot;, StringUtils.EMPTY);</span>
+        }
+<span class="nc" id="L196">    }</span>
+    
+    
+    // Getters and setters
+
+    public boolean isAuthentEnabled() {
+<span class="nc" id="L202">        return this.isAuthentication;</span>
+    }
+
+    public String getPathKerberosLogin() {
+<span class="nc" id="L206">        return this.pathKerberosLogin;</span>
+    }
+
+    public String getPathKerberosKrb5() {
+<span class="nc" id="L210">        return this.pathKerberosKrb5;</span>
+    }
+
+    public boolean isKerberos() {
+<span class="nc" id="L214">        return this.isKerberos;</span>
+    }
+
+    public String getUsernameAuthentication() {
+<span class="nc" id="L218">        return this.usernameAuthentication;</span>
+    }
+
+    public String getPasswordAuthentication() {
+<span class="nc" id="L222">        return this.passwordAuthentication;</span>
+    }
+    
+    
+    // Builder
+    
+    public AuthenticationUtil withAuthentEnabled() {
+<span class="nc" id="L229">        this.isAuthentication = true;</span>
+<span class="nc" id="L230">        return this;</span>
+    }
+    
+    public AuthenticationUtil withUsernameAuthentication(String usernameAuthentication) {
+<span class="nc" id="L234">        this.usernameAuthentication = usernameAuthentication;</span>
+<span class="nc" id="L235">        return this;</span>
+    }
+    
+    public AuthenticationUtil withPasswordAuthentication(String passwordAuthentication) {
+<span class="nc" id="L239">        this.passwordAuthentication = passwordAuthentication;</span>
+<span class="nc" id="L240">        return this;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

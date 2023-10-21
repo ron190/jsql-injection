@@ -1,0 +1,3 @@
+FROM mysql
+RUN echo inside > /var/lib/mysql-files/file-injection.txt
+EXPOSE 3306

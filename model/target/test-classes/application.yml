@@ -1,0 +1,18 @@
+# TODO remove useless embedded database: url='jdbc:h2:mem:to_be_removed;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false'
+spring.datasource.name: to_be_removed
+
+# Display green on Spring logo
+spring.output.ansi.enabled: always
+
+server:
+    port: 8443
+    http.port: 8080
+    ssl:
+        key-store-type: PKCS12
+        key-store: classpath:keystore/jsql-injection.p12
+        key-store-password: testtest
+        key-alias: jsql-injection
+
+# Prevent BasicWebSecurity error: Requested bean is currently in creation: Is there an unresolvable circular reference?
+spring.main.allow-circular-references: true
+# logging.level.org.springframework.security.web.FilterChainProxy: DEBUG

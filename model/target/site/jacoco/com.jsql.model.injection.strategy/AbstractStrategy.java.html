@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractStrategy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.injection.strategy</a> &gt; <span class="el_source">AbstractStrategy.java</span></div><h1>AbstractStrategy.java</h1><pre class="source lang-java linenums">package com.jsql.model.injection.strategy;
+
+import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
+import com.jsql.model.bean.util.Request;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.JSqlException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.suspendable.AbstractSuspendable;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.EnumMap;
+import java.util.Map;
+
+/**
+ * Define a strategy to inject SQL with methods like Error and Time.
+ */
+public abstract class AbstractStrategy {
+
+    protected static final String KEY_LOG_CHECKING_STRATEGY = &quot;LOG_CHECKING_STRATEGY&quot;;
+    protected static final String KEY_LOG_VULNERABLE = &quot;LOG_VULNERABLE&quot;;
+
+    /**
+     * i.e, 2 in &quot;[..]union select 1,2,[..]&quot;, if 2 is found in HTML body.
+     */
+    protected String visibleIndex;  // TODO Should be in Normal
+    
+    /**
+     * HTML body of page successfully responding to
+     * multiple fields selection (select 1,2,3,..).
+     */
+<span class="fc" id="L33">    protected String sourceIndexesFound = StringUtils.EMPTY;</span>
+    
+    /**
+     * True if injection can be used, false otherwise.
+     */
+<span class="fc" id="L38">    protected boolean isApplicable = false;</span>
+
+    protected final InjectionModel injectionModel;
+    
+<span class="fc" id="L42">    protected AbstractStrategy(InjectionModel injectionModel) {</span>
+        
+<span class="fc" id="L44">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L45">    }</span>
+
+    /**
+     * Test if this strategy can be used to inject SQL.
+     * @return
+     * @throws InjectionFailureException
+     * @throws StoppedByUserSlidingException
+     */
+    public abstract void checkApplicability() throws JSqlException;
+    
+    /**
+     * Inform the view that this strategy can be used.
+     */
+    protected abstract void allow(int... i);
+    
+    /**
+     * Inform the view that this strategy can't be used.
+     */
+    protected abstract void unallow(int... i);
+    
+    /**
+     * Start the strategy work.
+     * @return Source code
+     */
+    public abstract String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException;
+    
+    /**
+     * Change model strategy to current applicable strategy only when not already set.
+     * Normal &gt; Stacked &gt; Error &gt; Multibit &gt; Blind &gt; Time
+     */
+    public abstract void activateWhenApplicable();
+    
+    /**
+     * Get number of characters you can obtain from the strategy.
+     */
+    public abstract String getPerformanceLength();
+    
+    /**
+     * Get the injection strategy name.
+     */
+    public abstract String getName();
+    
+    public void markVulnerability(Interaction message, int... indexErrorStrategy) {
+        
+<span class="nc" id="L89">        var request = new Request();</span>
+<span class="nc" id="L90">        request.setMessage(message);</span>
+        
+<span class="nc" id="L92">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="nc" id="L93">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
+        
+        // Ellipse default to non null array
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        if (indexErrorStrategy.length &gt; 0) {</span>
+            
+<span class="nc" id="L98">            msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);</span>
+<span class="nc" id="L99">            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);</span>
+        }
+
+<span class="nc" id="L102">        request.setParameters(msgHeader);</span>
+<span class="nc" id="L103">        this.injectionModel.sendToViews(request);</span>
+<span class="nc" id="L104">    }</span>
+    
+    @Override
+    public String toString() {
+<span class="nc" id="L108">        return this.getName();</span>
+    }
+
+    // Getter and setter
+    
+    public boolean isApplicable() {
+<span class="nc" id="L114">        return this.isApplicable;</span>
+    }
+    
+    public void setApplicable(boolean isApplicable) {
+<span class="nc" id="L118">        this.isApplicable = isApplicable;</span>
+<span class="nc" id="L119">    }</span>
+    
+    public String getVisibleIndex() {
+<span class="nc" id="L122">        return this.visibleIndex;</span>
+    }
+
+    public void setVisibleIndex(String visibleIndex) {
+<span class="nc" id="L126">        this.visibleIndex = visibleIndex;</span>
+<span class="nc" id="L127">    }</span>
+
+    public String getSourceIndexesFound() {
+<span class="nc" id="L130">        return this.sourceIndexesFound;</span>
+    }
+
+    public void setSourceIndexesFound(String sourceIndexesFound) {
+<span class="nc" id="L134">        this.sourceIndexesFound = sourceIndexesFound;</span>
+<span class="nc" id="L135">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,11 @@
+tooltip: Obfuscate keyword 'like'
+description: Equal sign '=' to 'like'
+group: 
+javascript: |
+ var tampering = function(sql) {
+    
+     return sql
+     
+         // Require space encoding
+         .replace(/=/g, '+like+')
+ }

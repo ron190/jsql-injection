@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractShell.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.shell</a> &gt; <span class="el_source">AbstractShell.java</span></div><h1>AbstractShell.java</h1><pre class="source lang-java linenums">/*******************************************************************************
+ * Copyhacked (H) 2012-2020.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss about it
+ * every time possible with every body.
+ * 
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ ******************************************************************************/
+package com.jsql.view.swing.shell;
+
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
+import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import java.awt.*;
+import java.awt.event.MouseMotionListener;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.UUID;
+
+/**
+ * A Terminal completely built from swing text pane.
+ */
+public abstract class AbstractShell extends JTextPane {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L40">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
+    /**
+     * True if terminal is processing command.
+     */
+<span class="fc" id="L45">    private final boolean[] isEdited = {false};</span>
+
+    /**
+     * Server name or IP to display on prompt.
+     */
+    private final String host;
+
+    /**
+     * User and password for database.
+     */
+<span class="fc" id="L55">    protected String[] loginPassword = null;</span>
+
+    private final UUID uuidShell;
+    
+    private final String urlShell;
+
+    /**
+     * Document used to append colored text.
+     */
+<span class="fc" id="L64">    private final transient StyledDocument styledDocument = this.getStyledDocument();</span>
+
+    /**
+     * Style used for coloring text.
+     */
+<span class="fc" id="L69">    private final transient Style style = this.addStyle(&quot;Necrophagist's next album is 2014.&quot;, null);</span>
+
+    /**
+     * Length of prompt.
+     */
+<span class="fc" id="L74">    private String prompt = StringUtils.EMPTY;</span>
+
+    /**
+     * Text to display next caret.
+     */
+    private final String labelShell;
+    
+    /**
+     * Build a shell instance.
+     * @param uuidShell Unique identifier to discriminate beyond multiple opened terminals
+     * @param urlShell URL of current shell
+     * @param labelShell Type of shell to display on prompt
+     * @throws MalformedURLException
+     */
+<span class="fc" id="L88">    protected AbstractShell(UUID uuidShell, String urlShell, String labelShell) throws MalformedURLException, URISyntaxException {</span>
+        
+<span class="fc" id="L90">        this.uuidShell = uuidShell;</span>
+<span class="fc" id="L91">        this.urlShell = urlShell;</span>
+<span class="fc" id="L92">        this.labelShell = labelShell;</span>
+
+<span class="fc" id="L94">        var url = new URI(urlShell).toURL();</span>
+<span class="fc" id="L95">        this.host = url.getHost();</span>
+
+<span class="fc" id="L97">        this.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, ((Font) UIManager.get(&quot;TextPane.font&quot;)).getSize()));</span>
+<span class="fc" id="L98">        this.setCaret(new BlockCaret());</span>
+<span class="fc" id="L99">        this.setBackground(Color.BLACK);</span>
+<span class="fc" id="L100">        this.setForeground(Color.LIGHT_GRAY);</span>
+<span class="fc" id="L101">        this.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));</span>
+
+<span class="fc" id="L103">        this.displayPrompt(true);</span>
+
+<span class="fc" id="L105">        this.setCursor(null);</span>
+<span class="fc" id="L106">        this.setTransferHandler(null);</span>
+<span class="fc" id="L107">        this.setHighlighter(null);</span>
+
+<span class="fc" id="L109">        this.addMouseListener(new EmptyFocus(this));</span>
+<span class="fc" id="L110">        this.addKeyListener(new KeyAdapterTerminal(this));</span>
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * Run when cmd is validated.
+     * @param cmd Command to execute
+     * @param terminalID Unique ID for terminal instance
+     * @param wbhPath URL of shell
+     * @param arg Additional parameters (User and password for SQLShell)
+     */
+    public abstract void action(String cmd, UUID terminalID, String wbhPath, String... arg);
+    
+    /**
+     * Update terminal and use default behavior.
+     */
+    public void reset() {
+        
+<span class="nc" id="L127">        this.isEdited[0] = false;</span>
+<span class="nc" id="L128">        this.setEditable(true);</span>
+<span class="nc" id="L129">        this.displayPrompt(false);</span>
+<span class="nc" id="L130">        this.setCaretPosition(this.getDocument().getLength());</span>
+<span class="nc" id="L131">        this.setCursor(null);</span>
+<span class="nc" id="L132">    }</span>
+
+    /**
+     * Add a text at the end of textpane.
+     * @param string Text to add
+     */
+    public void append(String string) {
+        
+        try {
+<span class="fc" id="L141">            var doc = this.getDocument();</span>
+<span class="nc" id="L142">            doc.insertString(doc.getLength(), string, null);</span>
+            
+<span class="nc" id="L144">        } catch (BadLocationException e) {</span>
+            
+<span class="nc" id="L146">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L147">        }</span>
+<span class="nc" id="L148">    }</span>
+    
+    /**
+     * Append prompt to textpane, measure prompt the first time is used.
+     * @param isAddingPrompt Should we measure prompt length?
+     */
+    public void displayPrompt(boolean isAddingPrompt) {
+        
+<span class="fc" id="L156">        StyleConstants.setUnderline(this.style, true);</span>
+<span class="fc" id="L157">        this.appendPrompt(&quot;jsql&quot;, Color.LIGHT_GRAY, isAddingPrompt);</span>
+<span class="fc" id="L158">        StyleConstants.setUnderline(this.style, false);</span>
+
+<span class="fc" id="L160">        this.appendPrompt(StringUtils.SPACE + this.labelShell, Color.LIGHT_GRAY, isAddingPrompt);</span>
+<span class="fc" id="L161">        this.appendPrompt(&quot;[&quot;, new Color(50, 191, 50), isAddingPrompt);</span>
+<span class="fc" id="L162">        this.appendPrompt(this.host, new Color(191, 191, 25), isAddingPrompt);</span>
+<span class="fc" id="L163">        this.appendPrompt(&quot;]&quot;, new Color(50, 191, 50), isAddingPrompt);</span>
+<span class="fc" id="L164">        this.appendPrompt(&quot; &gt;&quot;, new Color(191, 100, 100), isAddingPrompt);</span>
+<span class="fc" id="L165">        this.appendPrompt(StringUtils.SPACE, Color.LIGHT_GRAY, isAddingPrompt);</span>
+<span class="fc" id="L166">    }</span>
+
+    /**
+     * Add a colored string to the textpane, measure prompt at the same time.
+     * @param string Text to append
+     * @param color Color of text
+     * @param isAddingPrompt Should we measure prompt length?
+     */
+    private void appendPrompt(String string, Color color, boolean isAddingPrompt) {
+        
+        try {
+<span class="fc" id="L177">            StyleConstants.setForeground(this.style, color);</span>
+<span class="fc" id="L178">            this.styledDocument.insertString(this.styledDocument.getLength(), string, this.style);</span>
+            
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">            if (isAddingPrompt) {</span>
+                
+<span class="fc" id="L182">                this.prompt += string;</span>
+            }
+            
+<span class="nc" id="L185">        } catch (BadLocationException e) {</span>
+            
+<span class="nc" id="L187">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L188">        }</span>
+<span class="fc" id="L189">    }</span>
+
+    /**
+     * NoWrap.
+     */
+    @Override
+    public boolean getScrollableTracksViewportWidth() {
+        
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">        return this.getUI().getPreferredSize(this).width &lt;= this.getParent().getSize().width;</span>
+    }
+
+    /**
+     * Cancel every mouse movement processing like drag/drop.
+     */
+    @Override
+    public synchronized void addMouseMotionListener(MouseMotionListener l) {
+        // Do nothing
+<span class="fc" id="L206">    }</span>
+
+    /**
+     * Get index of line for current offset (generally cursor position).
+     * @param offset Position on the line
+     * @return Index of the line
+     * @throws BadLocationException
+     */
+    public int getLineOfOffset(int offset) throws BadLocationException {
+        
+<span class="fc" id="L216">        var errorMsg = &quot;Can't translate offset to line&quot;;</span>
+<span class="fc" id="L217">        var doc = this.getDocument();</span>
+        
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        if (offset &lt; 0) {</span>
+            
+<span class="nc" id="L221">            throw new BadLocationException(errorMsg, -1);</span>
+            
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">        } else if (offset &gt; doc.getLength()) {</span>
+            
+<span class="nc" id="L225">            throw new BadLocationException(errorMsg, doc.getLength() + 1);</span>
+            
+        } else {
+            
+<span class="fc" id="L229">            var map = doc.getDefaultRootElement();</span>
+            
+<span class="fc" id="L231">            return map.getElementIndex(offset);</span>
+        }
+    }
+
+    /**
+     * Get position of the beginning of the line.
+     * @param line Index of the line
+     * @return Offset of line
+     * @throws BadLocationException
+     */
+    public int getLineStartOffset(int line) throws BadLocationException {
+        
+<span class="fc" id="L243">        var map = this.getDocument().getDefaultRootElement();</span>
+        
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">        if (line &lt; 0) {</span>
+            
+<span class="nc" id="L247">            throw new BadLocationException(&quot;Negative line&quot;, -1);</span>
+            
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">        } else if (line &gt;= map.getElementCount()) {</span>
+            
+<span class="nc" id="L251">            throw new BadLocationException(&quot;No such line&quot;, this.getDocument().getLength() + 1);</span>
+            
+        } else {
+            
+<span class="fc" id="L255">            var lineElem = map.getElement(line);</span>
+            
+<span class="fc" id="L257">            return lineElem.getStartOffset();</span>
+        }
+    }
+
+    
+    // Getter and setter
+    
+    public boolean[] getIsEdited() {
+<span class="fc" id="L265">        return this.isEdited;</span>
+    }
+
+    public UUID getUuidShell() {
+<span class="nc" id="L269">        return this.uuidShell;</span>
+    }
+
+    public String getUrlShell() {
+<span class="nc" id="L273">        return this.urlShell;</span>
+    }
+
+    public String getPrompt() {
+<span class="fc" id="L277">        return this.prompt;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

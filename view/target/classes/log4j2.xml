@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration packages="com.jsql.view.swing.console">
+    <Appenders>
+        <Console name="jsql-stdout" target="SYSTEM_OUT">
+            <PatternLayout>
+                <pattern>%d %-5p [%t] %C{2} (%F:%L) - %m%n</pattern>
+            </PatternLayout>
+        </Console>
+        <JTextPaneAppender name="jsql-textpane">
+            <PatternLayout>
+                <pattern>[%d{HH:mm:ss,SSS}] %m</pattern>
+                <charset>UTF-8</charset>
+            </PatternLayout>
+        </JTextPaneAppender>
+    </Appenders>
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="jsql-stdout" level="error" />
+            <AppenderRef ref="jsql-textpane" />
+        </Root>
+    </Loggers>
+</Configuration>

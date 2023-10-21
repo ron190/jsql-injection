@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+
+  memsql:
+  exasol:
+  monetdb:
+  iris:
+  presto:
+  mimersql:
+  altibase:
+  nuodb:
+  
+# missing cockroachdb: docker fails
+# missing hana: docker fails 13.9GB image
+# missing informix: services but no connection
+# missing ingress: missing services
+# missing maxdb: broken installation
+# mckoi: no error on wrong order column
+# sybase

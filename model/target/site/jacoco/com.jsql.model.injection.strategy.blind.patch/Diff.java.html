@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Diff.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.injection.strategy.blind.patch</a> &gt; <span class="el_source">Diff.java</span></div><h1>Diff.java</h1><pre class="source lang-java linenums">package com.jsql.model.injection.strategy.blind.patch;
+
+import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch.Operation;
+
+/**
+ * Class representing one diff operation.
+ */
+public class Diff implements Comparable&lt;Diff&gt; {
+    
+    /**
+     * One of: INSERT, DELETE or EQUAL.
+     */
+    private Operation operation;
+    
+    /**
+     * The text associated with this diff operation.
+     */
+    private String text;
+
+    /**
+     * Constructor.  Initializes the diff with the provided values.
+     * @param operation One of INSERT, DELETE or EQUAL.
+     * @param text The text being applied.
+     */
+<span class="nc" id="L25">    public Diff(Operation operation, String text) {</span>
+        // Construct a diff with the specified operation and text.
+<span class="nc" id="L27">        this.operation = operation;</span>
+<span class="nc" id="L28">        this.text = text;</span>
+<span class="nc" id="L29">    }</span>
+
+    /**
+     * Display a human-readable version of this Diff.
+     * @return text version.
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L37">        String prettyText = this.text.replace('\n', '\u00b6');</span>
+<span class="nc" id="L38">        return &quot;Diff(&quot; + this.operation + &quot;,\&quot;&quot; + prettyText + &quot;\&quot;)&quot;;</span>
+    }
+
+    /**
+     * Create a numeric hash value for a Diff.
+     * This function is not used by DMP.
+     * @return Hash value.
+     */
+    @Override
+    public int hashCode() {
+<span class="nc" id="L48">        final int prime = 31;</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        int result = this.operation == null ? 0 : this.operation.hashCode();</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        result += prime * (this.text == null ? 0 : this.text.hashCode());</span>
+<span class="nc" id="L51">        return result;</span>
+    }
+
+    /**
+     * Is this Diff equivalent to another Diff?
+     * @param obj Another Diff to compare against.
+     * @return true or false.
+     */
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L62">            return true;</span>
+        }
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L65">            return false;</span>
+        }
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (this.getClass() != obj.getClass()) {</span>
+<span class="nc" id="L68">            return false;</span>
+        }
+<span class="nc" id="L70">        Diff other = (Diff) obj;</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (this.operation != other.operation) {</span>
+<span class="nc" id="L72">            return false;</span>
+        }
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (this.text == null) {</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">            if (other.text != null) {</span>
+<span class="nc" id="L76">                return false;</span>
+            }
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        } else if (!this.text.equals(other.text)) {</span>
+<span class="nc" id="L79">            return false;</span>
+        }
+<span class="nc" id="L81">        return true;</span>
+    }
+
+    @Override
+    public int compareTo(Diff arg0) {
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        return this.toString().equals(arg0.toString()) ? 0 : 1;</span>
+    }
+    
+    // Getter and setter
+
+    public Operation getOperation() {
+<span class="nc" id="L92">        return this.operation;</span>
+    }
+
+    public void setOperation(Operation operation) {
+<span class="nc" id="L96">        this.operation = operation;</span>
+<span class="nc" id="L97">    }</span>
+
+    public String getText() {
+<span class="nc" id="L100">        return this.text;</span>
+    }
+
+    public void setText(String text) {
+<span class="nc" id="L104">        this.text = text;</span>
+<span class="nc" id="L105">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,32 @@
+tooltip: <html>Obfuscate all method's calls.<br>This technique can't apply to some methods.</html>
+description: Method signature with comment, e.g concat/**/()
+group: 
+javascript: |
+ var tampering = function(sql) {
+    
+     return sql
+     
+         // Exclude incompatible keywords
+         .replace(/group_concat\(/gi, 'jSqLlOcK1(')
+         .replace(/mid\(/gi, 'jSqLlOcK2(')
+         .replace(/cast\(/gi, 'jSqLlOcK3(')
+         .replace(/count\(/gi, 'jSqLlOcK4(')
+         .replace(/trim\(/gi, 'jSqLlOcK5(')
+         .replace(/substring\(/gi, 'jSqLlOcK6(')
+         
+         // Negative lookahead to exclude keywords
+         // Ignore comments already there
+         .replace(
+             /(?!jSqLlOcK\d+\()([a-zA-Z_]+)\(/gi,
+             '$1/**/('
+         )
+         
+         // Unlock keywords
+         .replace(/jSqLlOcK1\(/g, 'group_concat(')
+         .replace(/jSqLlOcK2\(/g, 'mid(')
+         .replace(/jSqLlOcK3\(/g, 'cast(')
+         .replace(/jSqLlOcK4\(/g, 'count(')
+         .replace(/jSqLlOcK5\(/g, 'trim(')
+         .replace(/jSqLlOcK6\(/g, 'substring(')
+     ;
+ }

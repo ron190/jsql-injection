@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PanelTable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.table</a> &gt; <span class="el_source">PanelTable.java</span></div><h1>PanelTable.java</h1><pre class="source lang-java linenums">/*******************************************************************************
+ * Copyhacked (H) 2012-2020.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss about it
+ * every time possible with every body.
+ * 
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ ******************************************************************************/
+package com.jsql.view.swing.table;
+
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.popupmenu.JPopupMenuTable;
+import com.jsql.view.swing.scrollpane.JScrollIndicator;
+import com.jsql.view.swing.tab.ButtonClose;
+import com.jsql.view.swing.text.JTextFieldPlaceholder;
+import com.jsql.view.swing.util.UiStringUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+/**
+ * Display a table for database values. Add keyboard shortcut, mouse icon, text
+ * and header formatting.
+ */
+public class PanelTable extends JPanel {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L46">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+    
+    /**
+     * Table to display in the panel.
+     */
+    private final JTable tableValues;
+
+    /**
+     * Create a panel containing a table to display injection values.
+     * 
+     * @param data Array 2D with injection table data
+     * @param columnNames Names of columns from database
+     */
+    public PanelTable(String[][] data, String[] columnNames) {
+        
+<span class="fc" id="L61">        super(new BorderLayout());</span>
+
+<span class="fc" id="L63">        this.tableValues = new JTable(data, columnNames) {</span>
+            
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                
+<span class="nc" id="L68">                return false;</span>
+            }
+        };
+
+<span class="fc" id="L72">        this.tableValues.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);</span>
+<span class="fc" id="L73">        this.tableValues.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);</span>
+<span class="fc" id="L74">        this.tableValues.setColumnSelectionAllowed(true);</span>
+<span class="fc" id="L75">        this.tableValues.setRowHeight(20);</span>
+<span class="fc" id="L76">        this.tableValues.setRowSelectionAllowed(true);</span>
+<span class="fc" id="L77">        this.tableValues.setCellSelectionEnabled(true);</span>
+<span class="fc" id="L78">        this.tableValues.setGridColor(Color.LIGHT_GRAY);</span>
+
+<span class="fc" id="L80">        this.initializeRenderer();</span>
+
+<span class="fc" id="L82">        this.tableValues.getTableHeader().setReorderingAllowed(false);</span>
+
+<span class="fc" id="L84">        this.initializeMouseEvent();</span>
+<span class="fc" id="L85">        this.initializeTabShortcut();</span>
+
+<span class="fc" id="L87">        var columnAdjuster = new AdjusterTableColumn(this.tableValues);</span>
+<span class="fc" id="L88">        columnAdjuster.adjustColumns();</span>
+
+<span class="fc" id="L90">        final TableRowSorter&lt;TableModel&gt; rowSorter = new TableRowSorter&lt;&gt;(this.tableValues.getModel());</span>
+<span class="fc" id="L91">        this.tableValues.setRowSorter(rowSorter);</span>
+        
+<span class="fc" id="L93">        this.initializeTableScroller();</span>
+<span class="fc" id="L94">        this.initializePanelSearch(rowSorter);</span>
+
+<span class="fc" id="L96">        Comparator&lt;Object&gt; comparatorNumeric = new ComparatorColumn&lt;&gt;();</span>
+        
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        for (var i = 0 ; i &lt; this.tableValues.getColumnCount() ; i++) {</span>
+            
+<span class="fc" id="L100">            rowSorter.setComparator(i, comparatorNumeric);</span>
+        }
+<span class="fc" id="L102">    }</span>
+
+    private void initializeMouseEvent() {
+        
+<span class="fc" id="L106">        this.tableValues.setDragEnabled(true);</span>
+
+<span class="fc" id="L108">        this.tableValues.addMouseListener(new MouseAdapter() {</span>
+            
+            @Override
+            public void mousePressed(MouseEvent e) {
+                
+<span class="nc" id="L113">                PanelTable.this.tableValues.requestFocusInWindow();</span>
+
+<span class="nc bnc" id="L115" title="All 2 branches missed.">                if (SwingUtilities.isRightMouseButton(e)) {</span>
+                    
+                    // Keep selection when multiple cells are selected,
+                    // move focus only
+<span class="nc" id="L119">                    var p = e.getPoint();</span>
+
+<span class="nc" id="L121">                    var rowNumber = PanelTable.this.tableValues.rowAtPoint(p);</span>
+<span class="nc" id="L122">                    var colNumber = PanelTable.this.tableValues.columnAtPoint(p);</span>
+
+<span class="nc" id="L124">                    DefaultListSelectionModel modelRow = (DefaultListSelectionModel) PanelTable.this.tableValues.getSelectionModel();</span>
+<span class="nc" id="L125">                    DefaultListSelectionModel modelColumn = (DefaultListSelectionModel) PanelTable.this.tableValues.getColumnModel().getSelectionModel();</span>
+
+<span class="nc" id="L127">                    modelRow.moveLeadSelectionIndex(rowNumber);</span>
+<span class="nc" id="L128">                    modelColumn.moveLeadSelectionIndex(colNumber);</span>
+                }
+<span class="nc" id="L130">            }</span>
+        });
+<span class="fc" id="L132">    }</span>
+
+    private void initializeRenderer() {
+        
+<span class="fc" id="L136">        final TableCellRenderer cellRendererHeader = this.tableValues.getTableHeader().getDefaultRenderer();</span>
+<span class="fc" id="L137">        final var cellRendererDefault = new DefaultTableCellRenderer();</span>
+        
+<span class="fc" id="L139">        this.tableValues.getTableHeader().setDefaultRenderer(</span>
+            (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -&gt; {
+                
+<span class="fc" id="L142">                JLabel label = (JLabel) cellRendererHeader.getTableCellRendererComponent(</span>
+                    table,
+<span class="fc" id="L144">                    UiStringUtil.detectUtf8HtmlNoWrap(StringUtils.SPACE + value + StringUtils.SPACE),</span>
+                    isSelected,
+                    hasFocus,
+                    row,
+                    column
+                );
+                
+<span class="fc" id="L151">                label.setBorder(</span>
+<span class="fc" id="L152">                    BorderFactory.createCompoundBorder(</span>
+<span class="fc" id="L153">                        BorderFactory.createMatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY),</span>
+<span class="fc" id="L154">                        BorderFactory.createEmptyBorder(0, 5, 0, 5)</span>
+                    )
+                );
+                
+<span class="fc" id="L158">                return label;</span>
+            }
+        );
+        
+<span class="fc" id="L162">        this.tableValues.setDefaultRenderer(</span>
+<span class="fc" id="L163">            this.tableValues.getColumnClass(2),</span>
+            (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -&gt; {
+                
+                // Prepare cell value to be utf8 inspected
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">                String cellValue = value != null ? value.toString() : StringUtils.EMPTY;</span>
+                
+                // Fix #90481: NullPointerException on getTableCellRendererComponent()
+                try {
+<span class="fc" id="L171">                    return cellRendererDefault.getTableCellRendererComponent(</span>
+<span class="fc" id="L172">                        table, UiStringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column</span>
+                    );
+                    
+<span class="nc" id="L175">                } catch (NullPointerException e) {</span>
+                    
+<span class="nc" id="L177">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L178">                    return null;</span>
+                }
+            }
+        );
+<span class="fc" id="L182">    }</span>
+
+    private void initializeTableScroller() {
+        
+<span class="fc" id="L186">        var scroller = new JScrollIndicator(this.tableValues);</span>
+<span class="fc" id="L187">        scroller.getScrollPane().setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));</span>
+<span class="fc" id="L188">        scroller.getScrollPane().setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));</span>
+        
+<span class="fc" id="L190">        AdjustmentListener singleItemScroll = adjustmentEvent -&gt; {</span>
+            
+            // The user scrolled the List (using the bar, mouse wheel or something else):
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">            if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK) {</span>
+                
+<span class="fc" id="L195">                adjustmentEvent.getAdjustable().setBlockIncrement(100);</span>
+<span class="fc" id="L196">                adjustmentEvent.getAdjustable().setUnitIncrement(100);</span>
+            }
+<span class="fc" id="L198">        };</span>
+
+<span class="fc" id="L200">        scroller.getScrollPane().getVerticalScrollBar().addAdjustmentListener(singleItemScroll);</span>
+<span class="fc" id="L201">        scroller.getScrollPane().getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);</span>
+
+<span class="fc" id="L203">        var tableFixedColumn = new FixedColumnTable();</span>
+<span class="fc" id="L204">        tableFixedColumn.fixColumnSize(2, scroller.getScrollPane());</span>
+        
+<span class="fc" id="L206">        this.add(scroller, BorderLayout.CENTER);</span>
+<span class="fc" id="L207">    }</span>
+
+    private void initializePanelSearch(final TableRowSorter&lt;TableModel&gt; rowSorter) {
+        
+<span class="fc" id="L211">        final var panelSearch = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L212">        panelSearch.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
+        
+<span class="fc" id="L214">        final JTextField textFilter = new JTextFieldPlaceholder(&quot;Find in table&quot;);</span>
+<span class="fc" id="L215">        panelSearch.add(textFilter, BorderLayout.CENTER);</span>
+
+<span class="fc" id="L217">        Action actionShowSearchTable = new ActionShowSearch(panelSearch, textFilter);</span>
+<span class="fc" id="L218">        this.tableValues.getActionMap().put(&quot;search&quot;, actionShowSearchTable);</span>
+<span class="fc" id="L219">        this.tableValues.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK), &quot;search&quot;);</span>
+
+<span class="fc" id="L221">        Action actionCloseSearch = new ActionCloseSearch(textFilter, panelSearch, this);</span>
+<span class="fc" id="L222">        textFilter.getActionMap().put(&quot;close&quot;, actionCloseSearch);</span>
+<span class="fc" id="L223">        textFilter.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), &quot;close&quot;);</span>
+
+        // Fix #43974: PatternSyntaxException on regexFilter() =&gt; Pattern.quote()
+<span class="fc" id="L226">        textFilter.getDocument().addDocumentListener(new DocumentListener() {</span>
+            
+            private void insertUpdateFixed() {
+                
+<span class="nc" id="L230">                String text = textFilter.getText();</span>
+
+<span class="nc bnc" id="L232" title="All 2 branches missed.">                if (text.trim().isEmpty()) {</span>
+                    
+<span class="nc" id="L234">                    rowSorter.setRowFilter(null);</span>
+                    
+                } else {
+                    
+<span class="nc" id="L238">                    rowSorter.setRowFilter(RowFilter.regexFilter(&quot;(?i)&quot; + Pattern.quote(text)));</span>
+                }
+<span class="nc" id="L240">            }</span>
+            
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                
+<span class="nc" id="L245">                this.insertUpdateFixed();</span>
+<span class="nc" id="L246">            }</span>
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                
+<span class="nc" id="L251">                this.insertUpdateFixed();</span>
+<span class="nc" id="L252">            }</span>
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                
+<span class="nc" id="L257">                throw new UnsupportedOperationException(&quot;Not supported yet.&quot;);</span>
+            }
+        });
+
+<span class="fc" id="L261">        this.tableValues.setComponentPopupMenu(new JPopupMenuTable(this.tableValues, actionShowSearchTable));</span>
+        
+<span class="fc" id="L263">        JButton buttonCloseSearch = new ButtonClose();</span>
+<span class="fc" id="L264">        buttonCloseSearch.addActionListener(actionCloseSearch);</span>
+<span class="fc" id="L265">        panelSearch.add(buttonCloseSearch, BorderLayout.EAST);</span>
+        
+<span class="fc" id="L267">        this.add(panelSearch, BorderLayout.SOUTH);</span>
+        
+<span class="fc" id="L269">        panelSearch.setVisible(false);</span>
+<span class="fc" id="L270">    }</span>
+
+    private void initializeTabShortcut() {
+        
+<span class="fc" id="L274">        this.tableValues.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(</span>
+<span class="fc" id="L275">            KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0),</span>
+            null
+        );
+<span class="fc" id="L278">        this.tableValues.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(</span>
+<span class="fc" id="L279">            KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK),</span>
+            null
+        );
+
+<span class="fc" id="L283">        Set&lt;AWTKeyStroke&gt; forward = new HashSet&lt;&gt;(</span>
+<span class="fc" id="L284">            this.tableValues.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS)</span>
+        );
+<span class="fc" id="L286">        forward.add(KeyStroke.getKeyStroke(&quot;TAB&quot;));</span>
+<span class="fc" id="L287">        this.tableValues.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forward);</span>
+        
+<span class="fc" id="L289">        Set&lt;AWTKeyStroke&gt; backward = new HashSet&lt;&gt;(</span>
+<span class="fc" id="L290">            this.tableValues.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS)</span>
+        );
+<span class="fc" id="L292">        backward.add(KeyStroke.getKeyStroke(&quot;shift TAB&quot;));</span>
+<span class="fc" id="L293">        this.tableValues.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backward);</span>
+<span class="fc" id="L294">    }</span>
+
+    /**
+     * Select every cells.
+     */
+    public void selectTable() {
+        
+<span class="nc" id="L301">        this.tableValues.selectAll();</span>
+<span class="nc" id="L302">    }</span>
+
+    /**
+     * Perform copy event on current table.
+     */
+    public void copyTable() {
+        
+<span class="nc" id="L309">        var nev = new ActionEvent(this.tableValues, ActionEvent.ACTION_PERFORMED, &quot;copy&quot;);</span>
+<span class="nc" id="L310">        this.tableValues.getActionMap().get(nev.getActionCommand()).actionPerformed(nev);</span>
+<span class="nc" id="L311">    }</span>
+
+    
+    // Getter and setter
+    
+    public JTable getTableValues() {
+<span class="nc" id="L317">        return this.tableValues;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

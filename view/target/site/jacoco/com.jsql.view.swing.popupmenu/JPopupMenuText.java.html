@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JPopupMenuText.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.popupmenu</a> &gt; <span class="el_source">JPopupMenuText.java</span></div><h1>JPopupMenuText.java</h1><pre class="source lang-java linenums">/*******************************************************************************
+ * Copyhacked (H) 2012-2020.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss about it
+ * every time possible with every body.
+ * 
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ ******************************************************************************/
+package com.jsql.view.swing.popupmenu;
+
+import com.jsql.view.swing.menubar.JMenuItemWithMargin;
+
+import javax.swing.*;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.JTextComponent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
+/**
+ * Default popup menu for textfield and texteditor.
+ */
+public class JPopupMenuText extends JPopupMenuComponent {
+    
+    /**
+     * Create popup menu for this component.
+     * @param component The component receiving the menu
+     */
+    public JPopupMenuText(JTextComponent component) {
+        
+<span class="fc" id="L32">        super(component);</span>
+
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (component.isEditable()) {</span>
+            
+<span class="fc" id="L36">            JMenuItem cutItem = new JMenuItemWithMargin();</span>
+<span class="fc" id="L37">            cutItem.setAction(component.getActionMap().get(DefaultEditorKit.cutAction));</span>
+<span class="fc" id="L38">            cutItem.setText(&quot;Cut&quot;);</span>
+<span class="fc" id="L39">            cutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L40">            cutItem.setMnemonic('t');</span>
+
+<span class="fc" id="L42">            JMenuItem pasteItem = new JMenuItemWithMargin();</span>
+<span class="fc" id="L43">            pasteItem.setAction(component.getActionMap().get(DefaultEditorKit.pasteAction));</span>
+<span class="fc" id="L44">            pasteItem.setText(&quot;Paste&quot;);</span>
+<span class="fc" id="L45">            pasteItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L46">            pasteItem.setMnemonic('P');</span>
+
+            // Before Copy menu
+<span class="fc" id="L49">            this.add(cutItem, 0);</span>
+            
+            // After Copy menu
+<span class="fc" id="L52">            this.add(pasteItem, 2);</span>
+        }
+<span class="fc" id="L54">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,8 @@
+tooltip: Obfuscate space character
+description: Space ' ' to sharp comment '#\n'
+group: 
+javascript: |
+ var tampering = function(sql) {
+    
+     return sql.replace(/[+\s]+/gm,'%23%0A')
+ }

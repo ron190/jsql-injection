@@ -1,0 +1,27 @@
+ARG JSQL_DOCKERFILE=${JSQL_DOCKERFILE}
+ARG MAVEN_NASHORN=${MAVEN_NASHORN}
+
+FROM maven:${JSQL_DOCKERFILE}
+
+COPY ./ ./
+
+ENV DEBUG_COLORS "true"
+ENV TERM xterm-256color
+ENV COLORTERM truecolor
+ENV MAVEN_NASHORN ${MAVEN_NASHORN}
+ENV CODACY_PROJECT_TOKEN ${CODACY_PROJECT_TOKEN}
+ENV CODECOV_TOKEN ${CODECOV_TOKEN}
+ENV FROM_ITS true
+
+# Define user for VNC
+ENV USER vnc-user-jsql
+
+# Ignore repositories errors
+RUN apt-get update -y || true
+
+# Install VNC support, shell and network tools
+RUN apt-get install tightvncserver xfonts-base dos2unix iproute2 net-tools iputils-ping git -y
+
+RUN dos2unix /model/src/test/resources/vnc/execute-on-vnc.sh
+
+CMD ["/bin/bash"]

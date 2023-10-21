@@ -1,0 +1,10 @@
+FROM lighthopper/cubrid
+
+EXPOSE 33000
+
+CMD cubrid service start
+
+# Remove db if exists before create
+CMD cubrid deletedb demodb || true
+
+ENTRYPOINT ./create-start-demodb.sh

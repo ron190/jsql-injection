@@ -1,0 +1,10 @@
+tooltip: <html>Obfuscate soon to be escaped quote with UTF8 prepared character.<br>Works only with chinese collations.</html> 
+description: Quote ' to utf8 character %ef%bc%87 (Big5 and GBK only)
+group: 
+javascript: |
+ var tampering = function(sql) {
+    
+     return sql
+     
+         .replace("'",'%ef%bc%87');
+ }

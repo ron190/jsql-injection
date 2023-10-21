@@ -1,0 +1,8 @@
+tooltip: Obfuscate space character
+description: Space ' ' to dash comment '--\n'
+group: 
+javascript: |
+ var tampering = function(sql) {
+    
+     return sql.replace(/[+\s]+/gm,'--%0A')
+ }

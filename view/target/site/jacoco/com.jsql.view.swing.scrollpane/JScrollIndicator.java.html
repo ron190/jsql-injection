@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JScrollIndicator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.scrollpane</a> &gt; <span class="el_source">JScrollIndicator.java</span></div><h1>JScrollIndicator.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.scrollpane;
+
+import com.jsql.util.LogLevelUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import javax.swing.plaf.ScrollBarUI;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+/**
+ * A scrollpane like component, where the scroll bars are floating over the
+ * scrollable view to indicate the current scroll positions.
+ * The scroll indicators appear smoothly during scroll events and disappear
+ * smoothly afterwards.
+ * &lt;p&gt;
+ * The scrollbars can be dragged just as normal.&lt;/p&gt;
+ * &lt;p&gt;
+ * The usage is similar to a classic scrollpane.&lt;/p&gt;
+ *
+ * @author Jolly Littlebottom
+ */
+public class JScrollIndicator extends JLayeredPane {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L33">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
+    private static final int SCROLL_BAR_ALPHA_ROLLOVER = 100;
+    private static final int SCROLL_BAR_ALPHA = 25;
+
+<span class="fc" id="L38">    private static final Color THUMB_COLOR = Color.DARK_GRAY;</span>
+    private static final int THUMB_THICKNESS = 15;
+    private static final int THUMB_MIN_SIZE = 48;
+    private static final int THUMB_MARGIN = 0;
+
+    private final JScrollPane scrollPane;
+    private final ControlPanel controlPanel;
+
+    /**
+     * Creates a &lt;code&gt;JScrollIndicator&lt;/code&gt; that displays the contents of the
+     * specified component, where both horizontal and vertical scrollbars appear
+     * whenever the component's contents are larger than the view and scrolling
+     * in underway or the mouse is over the scrollbar position.
+     *
+     * @see #setViewportView
+     * @param view the component to display in the scrollpane's viewport
+     */
+    public JScrollIndicator(final JComponent view) {
+        
+<span class="fc" id="L57">        this(view, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);</span>
+<span class="fc" id="L58">    }</span>
+    
+    public JScrollIndicator(final JComponent view, int scrollPaneConstants) {
+        
+<span class="fc" id="L62">        this(view, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, scrollPaneConstants);</span>
+<span class="fc" id="L63">    }</span>
+
+    /**
+     * Creates a &lt;code&gt;JScrollIndicator&lt;/code&gt; that displays the view component
+     * in a viewport whose view position can be controlled with a pair of
+     * scrollbars.
+     * The scrollbar policies specify when the scrollbars are displayed,
+     * For example, if &lt;code&gt;vsbPolicy&lt;/code&gt; is
+     * &lt;code&gt;JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED&lt;/code&gt;
+     * then the vertical scrollbar only appears if the view doesn't fit
+     * vertically. The available policy settings are listed at
+     * {@link #JScrollPane.setVerticalScrollBarPolicy} and
+     * {@link #JScrollPane.setHorizontalScrollBarPolicy}.
+     *
+     * @param view the component to display in the scrollpanes viewport
+     * @param vsbPolicy an integer that specifies the vertical scrollbar policy
+     * @param hsbPolicy an integer that specifies the horizontal scrollbar policy
+     */
+<span class="fc" id="L81">    public JScrollIndicator(final JComponent view, int vsbPolicy, int hsbPolicy) {</span>
+        
+<span class="fc" id="L83">        this.scrollPane = new JScrollPane(view, vsbPolicy, hsbPolicy);</span>
+<span class="fc" id="L84">        this.scrollPane.setBorder(BorderFactory.createEmptyBorder());</span>
+<span class="fc" id="L85">        this.add(this.scrollPane, JLayeredPane.DEFAULT_LAYER);</span>
+
+<span class="fc" id="L87">        this.controlPanel = new ControlPanel(this.scrollPane);</span>
+<span class="fc" id="L88">        this.add(this.controlPanel, JLayeredPane.PALETTE_LAYER);</span>
+
+<span class="fc" id="L90">        this.addComponentListener(</span>
+<span class="fc" id="L91">            new ComponentAdapter() {</span>
+                
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    
+                    // listen to changes of JLayeredPane size
+<span class="fc" id="L97">                    JScrollIndicator.this.scrollPane.setSize(JScrollIndicator.this.getSize());</span>
+<span class="fc" id="L98">                    JScrollIndicator.this.scrollPane.getViewport().revalidate();</span>
+<span class="fc" id="L99">                    JScrollIndicator.this.controlPanel.setSize(JScrollIndicator.this.getSize());</span>
+<span class="fc" id="L100">                    JScrollIndicator.this.controlPanel.revalidate();</span>
+<span class="fc" id="L101">                }</span>
+            }
+        );
+<span class="fc" id="L104">    }</span>
+
+    /**
+     * Returns the scroll pane used by this scroll indicator.
+     * Use carefully (e.g. to set unit increments) because not all changes have an
+     * effect. You have to write listeners in this cases (e.g. for changing the
+     * scrollbar policy)
+     * 
+     * @return
+     */
+    public JScrollPane getScrollPane() {
+<span class="fc" id="L115">        return this.scrollPane;</span>
+    }
+
+    private class ControlPanel extends JPanel {
+
+<span class="fc" id="L120">        private ControlPanel(JScrollPane scrollPane) {</span>
+            
+<span class="fc" id="L122">            this.setLayout(new BorderLayout());</span>
+<span class="fc" id="L123">            this.setOpaque(false);</span>
+
+<span class="fc" id="L125">            JMyScrollBar vScrollBar = new JMyScrollBar(Adjustable.VERTICAL);</span>
+<span class="fc" id="L126">            scrollPane.setVerticalScrollBar(vScrollBar);</span>
+<span class="fc" id="L127">            scrollPane.remove(vScrollBar);</span>
+            
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">            if (scrollPane.getVerticalScrollBarPolicy() != ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER) {</span>
+                
+<span class="fc" id="L131">                this.add(vScrollBar, BorderLayout.EAST);</span>
+            }
+
+<span class="fc" id="L134">            JMyScrollBar hScrollBar = new JMyScrollBar(Adjustable.HORIZONTAL);</span>
+<span class="fc" id="L135">            scrollPane.setHorizontalScrollBar(hScrollBar);</span>
+<span class="fc" id="L136">            scrollPane.remove(hScrollBar);</span>
+            
+<span class="fc bfc" id="L138" title="All 2 branches covered.">            if (scrollPane.getHorizontalScrollBarPolicy() != ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER) {</span>
+                
+<span class="fc" id="L140">                this.add(hScrollBar, BorderLayout.SOUTH);</span>
+            }
+<span class="fc" id="L142">        }</span>
+    }
+
+    private class JMyScrollBar extends JScrollBar {
+
+        protected final transient MyScrollBarUI scrollUI;
+
+<span class="fc" id="L149">        public JMyScrollBar(int direction) {</span>
+            
+<span class="fc" id="L151">            super(direction);</span>
+
+<span class="fc" id="L153">            this.scrollUI = new MyScrollBarUI(this);</span>
+<span class="fc" id="L154">            super.setUI(this.scrollUI);</span>
+<span class="fc" id="L155">            this.setUnitIncrement(64);</span>
+<span class="fc" id="L156">            int size = THUMB_THICKNESS + THUMB_MARGIN;</span>
+<span class="fc" id="L157">            this.setPreferredSize(new Dimension(size, size));</span>
+<span class="fc" id="L158">            this.scrollUI.setVisible();</span>
+            
+<span class="fc" id="L160">            this.addMouseListener(new MouseAdapter() {</span>
+                
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    
+<span class="nc" id="L165">                    JMyScrollBar.this.scrollUI.setVisible();</span>
+<span class="nc" id="L166">                }</span>
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    
+<span class="nc" id="L171">                    JMyScrollBar.this.scrollUI.setVisible();</span>
+<span class="nc" id="L172">                }</span>
+            });
+
+<span class="fc" id="L175">            this.addAdjustmentListener(adjustmentEvent -&gt; this.scrollUI.setVisible());</span>
+<span class="fc" id="L176">        }</span>
+
+        @Override
+        public void setUI(ScrollBarUI ui) {
+            // Nothing
+<span class="nc" id="L181">        }</span>
+
+        @Override
+        public void updateUI() {
+            // Nothing
+<span class="fc" id="L186">        }</span>
+
+        @Override
+        public void paint(Graphics g) {
+<span class="fc" id="L190">            this.scrollUI.paintThumb(g); // just the thumb</span>
+<span class="fc" id="L191">        }</span>
+
+        @Override
+        public void repaint(Rectangle r) {
+            
+<span class="fc" id="L196">            JScrollIndicator scrollIndicator = JScrollIndicator.this;</span>
+            
+            // Fix #15956: NullPointerException on convertRectangle()
+            try {
+<span class="fc" id="L200">                var rect = SwingUtilities.convertRectangle(this, r, scrollIndicator);</span>
+<span class="fc" id="L201">                rect.grow(1, 1);</span>
+                // ensure for a translucent thumb, that the view is first painted
+<span class="fc" id="L203">                scrollIndicator.repaint(rect);</span>
+                
+<span class="nc" id="L205">            } catch (NullPointerException e) {</span>
+                
+<span class="nc" id="L207">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L208">            }</span>
+<span class="fc" id="L209">        }</span>
+    }
+
+    public class MyScrollBarUI extends BasicScrollBarUI {
+        
+        private final JMyScrollBar myScrollBar;
+<span class="fc" id="L215">        private int alpha = 0;</span>
+
+<span class="fc" id="L217">        private MyScrollBarUI(JMyScrollBar scrollBar) {</span>
+            
+<span class="fc" id="L219">            this.myScrollBar = scrollBar;</span>
+<span class="fc" id="L220">        }</span>
+
+        @Override
+        protected void installComponents() {
+            
+<span class="fc" id="L225">            this.incrButton = new JButton();</span>
+<span class="fc" id="L226">            this.decrButton = new JButton();</span>
+            
+<span class="fc bfc" id="L228" title="All 2 branches covered.">            if (this.myScrollBar.getOrientation() == Adjustable.HORIZONTAL) {</span>
+                
+<span class="fc" id="L230">                int size = THUMB_THICKNESS + THUMB_MARGIN; // let lower right corner empty</span>
+<span class="fc" id="L231">                this.incrButton.setPreferredSize(new Dimension(size, size));</span>
+                
+<span class="fc" id="L233">            } else {</span>
+                
+<span class="fc" id="L235">                this.incrButton.setPreferredSize(new Dimension(THUMB_MARGIN, THUMB_MARGIN));</span>
+            }
+            
+<span class="fc" id="L238">            this.decrButton.setPreferredSize(new Dimension(THUMB_MARGIN, THUMB_MARGIN));</span>
+<span class="fc" id="L239">        }</span>
+
+        @Override
+        protected void installDefaults() {
+            
+<span class="fc" id="L244">            super.installDefaults();</span>
+
+            // ensure the minimum size of the thumb
+<span class="fc" id="L247">            int w = this.minimumThumbSize.width;</span>
+<span class="fc" id="L248">            int h = this.minimumThumbSize.height;</span>
+            
+<span class="fc bfc" id="L250" title="All 2 branches covered.">            if (this.myScrollBar.getOrientation() == Adjustable.VERTICAL) {</span>
+                
+<span class="fc" id="L252">                h = Math.max(h, Math.min(this.maximumThumbSize.height, THUMB_MIN_SIZE));</span>
+                
+            } else {
+                
+<span class="fc" id="L256">                w = Math.max(w, Math.min(this.maximumThumbSize.width, THUMB_MIN_SIZE));</span>
+            }
+            
+<span class="fc" id="L259">            this.minimumThumbSize = new Dimension(w, h);</span>
+<span class="fc" id="L260">        }</span>
+
+        private void paintThumb(Graphics g) {
+            
+            int alphaThumb =
+<span class="pc bpc" id="L265" title="1 of 2 branches missed.">                this.isThumbRollover()</span>
+<span class="nc" id="L266">                ? SCROLL_BAR_ALPHA_ROLLOVER</span>
+<span class="fc" id="L267">                : SCROLL_BAR_ALPHA;</span>
+
+<span class="fc" id="L269">            g.setColor(</span>
+                new Color(
+<span class="fc" id="L271">                    this.getAlphaColor().getRed(),</span>
+<span class="fc" id="L272">                    this.getAlphaColor().getGreen(),</span>
+<span class="fc" id="L273">                    this.getAlphaColor().getBlue(),</span>
+                    alphaThumb
+                )
+            );
+            
+<span class="fc" id="L278">            Rectangle thumbBounds = this.getThumbBounds();</span>
+
+<span class="fc" id="L280">            int x = thumbBounds.x;</span>
+<span class="fc" id="L281">            int y = thumbBounds.y;</span>
+<span class="fc" id="L282">            int w = thumbBounds.width;</span>
+<span class="fc" id="L283">            int h = thumbBounds.height;</span>
+
+<span class="fc bfc" id="L285" title="All 2 branches covered.">            if (this.myScrollBar.getOrientation() == Adjustable.VERTICAL) {</span>
+                
+<span class="fc" id="L287">                w -= THUMB_MARGIN;</span>
+                
+            } else {
+                
+<span class="fc" id="L291">                h -= THUMB_MARGIN;</span>
+            }
+
+<span class="fc" id="L294">            g.fillRect(x, y, w, h);</span>
+<span class="fc" id="L295">        }</span>
+
+        private Color getAlphaColor() {
+            
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">            if (this.alpha == 100) {</span>
+                
+<span class="nc" id="L301">                return JScrollIndicator.THUMB_COLOR;</span>
+            }
+            
+<span class="fc" id="L304">            int rgb = JScrollIndicator.THUMB_COLOR.getRGB() &amp; 0xFFFFFF; // color without alpha values</span>
+<span class="fc" id="L305">            rgb |= (this.alpha / 100 * 255) &lt;&lt; 24; // add alpha value</span>
+            
+<span class="fc" id="L307">            return new Color(rgb, true);</span>
+        }
+
+        public void setAlpha(int alpha) {
+            
+<span class="nc" id="L312">            this.alpha = alpha;</span>
+<span class="nc" id="L313">            this.myScrollBar.repaint(this.getThumbBounds());</span>
+<span class="nc" id="L314">        }</span>
+
+        public void setVisible() {
+            
+<span class="fc" id="L318">            this.myScrollBar.repaint(this.getThumbBounds());</span>
+<span class="fc" id="L319">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

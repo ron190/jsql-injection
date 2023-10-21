@@ -1,0 +1,3 @@
+[mysqld]
+port=3308
+secure_file_priv=''

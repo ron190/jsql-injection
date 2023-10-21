@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CallablePageSource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.suspendable.callable</a> &gt; <span class="el_source">CallablePageSource.java</span></div><h1>CallablePageSource.java</h1><pre class="source lang-java linenums">package com.jsql.model.suspendable.callable;
+
+import com.jsql.model.InjectionModel;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.concurrent.Callable;
+
+/**
+ * Callable for concurrent HTTP tasks
+ * url: SQL query
+ * content: source code of the web page
+ * tag: store user information (ex. current index)
+ */
+public class CallablePageSource implements Callable&lt;CallablePageSource&gt; {
+    
+    /**
+     * URL to load.
+     */
+    private final String query;
+    private final String metadataInjectionProcess;
+
+    /**
+     * Source code for current page.
+     */
+<span class="nc" id="L25">    private String content = StringUtils.EMPTY;</span>
+
+    /**
+     * Character used for current page.
+     */
+    private String characterInsertion;
+    
+    private final InjectionModel injectionModel;
+    
+    /**
+     * Create a callable to get initial query or insertion character.
+     * @param query
+     * @param injectionModel
+     */
+<span class="nc" id="L39">    public CallablePageSource(String query, InjectionModel injectionModel, String metadataInjectionProcess) {</span>
+        
+<span class="nc" id="L41">        this.query = query;</span>
+<span class="nc" id="L42">        this.injectionModel = injectionModel;</span>
+<span class="nc" id="L43">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
+<span class="nc" id="L44">    }</span>
+
+    /**
+     * Create callable for current insertion character test.
+     * @param query
+     * @param characterInsertion
+     */
+    public CallablePageSource(
+        String query,
+        String characterInsertion,
+        InjectionModel injectionModel,
+        String metadataInjectionProcess
+    ) {
+        
+<span class="nc" id="L58">        this(query, injectionModel, metadataInjectionProcess);</span>
+        
+<span class="nc" id="L60">        this.characterInsertion = characterInsertion;</span>
+<span class="nc" id="L61">    }</span>
+    
+    @Override
+    public CallablePageSource call() {
+        
+<span class="nc" id="L66">        this.content = this.injectionModel.injectWithoutIndex(this.query, this.metadataInjectionProcess);</span>
+        
+<span class="nc" id="L68">        return this;</span>
+    }
+
+    
+    // Getters and setters
+
+    public String getQuery() {
+<span class="nc" id="L75">        return this.query;</span>
+    }
+    
+    public String getContent() {
+<span class="nc" id="L79">        return this.content;</span>
+    }
+    
+    public String getCharacterInsertion() {
+<span class="nc" id="L83">        return this.characterInsertion;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,14 @@
+tooltip: Convert parameter's value to Base64
+description: SQL to Base64
+group: 
+javascript: |
+ var tampering = function(sql) {
+    
+     return new java.lang.String(
+        
+         java.util.Base64.getEncoder().encode(
+            
+             new java.lang.String(sql).getBytes()
+         )
+     )
+ }
