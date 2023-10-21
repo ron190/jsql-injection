@@ -27,7 +27,7 @@ public class MarkErrorInvulnerable implements InteractionCommand {
     /**
      * Log4j logger sent to view.
      */
-<span class="nc" id="L30">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L30">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     private final int indexMethodError;
     private final InjectionModel injectionModel;
@@ -36,17 +36,17 @@ public class MarkErrorInvulnerable implements InteractionCommand {
      * @param interactionParams
      */
     @SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L39">    public MarkErrorInvulnerable(Object[] interactionParams) {</span>
+<span class="fc" id="L39">    public MarkErrorInvulnerable(Object[] interactionParams) {</span>
         
-<span class="nc" id="L41">        Map&lt;Header, Object&gt; mapHeader = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
-<span class="nc" id="L42">        this.indexMethodError = (int) mapHeader.get(Header.INDEX_ERROR_STRATEGY);</span>
-<span class="nc" id="L43">        this.injectionModel = (InjectionModel) mapHeader.get(Header.INJECTION_MODEL);</span>
-<span class="nc" id="L44">    }</span>
+<span class="fc" id="L41">        Map&lt;Header, Object&gt; mapHeader = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
+<span class="fc" id="L42">        this.indexMethodError = (int) mapHeader.get(Header.INDEX_ERROR_STRATEGY);</span>
+<span class="fc" id="L43">        this.injectionModel = (InjectionModel) mapHeader.get(Header.INJECTION_MODEL);</span>
+<span class="fc" id="L44">    }</span>
 
     @Override
     public void execute() {
         
-<span class="nc" id="L49">        LOGGER.debug(</span>
+<span class="fc" id="L49">        LOGGER.debug(</span>
 <span class="nc" id="L50">            () -&gt; AnsiColorUtil.addRedColor(</span>
                 this.injectionModel
 <span class="nc" id="L52">                .getMediatorVendor()</span>
@@ -60,6 +60,6 @@ public class MarkErrorInvulnerable implements InteractionCommand {
 <span class="nc" id="L60">                .getName()</span>
             )
         );
-<span class="nc" id="L63">    }</span>
+<span class="fc" id="L63">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

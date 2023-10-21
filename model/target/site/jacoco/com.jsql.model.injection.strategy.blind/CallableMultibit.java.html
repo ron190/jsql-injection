@@ -10,26 +10,26 @@ import java.util.List;
 
 public class CallableMultibit extends AbstractCallableBoolean&lt;CallableMultibit&gt; {
 
-<span class="nc" id="L13">    private LinkedList&lt;Diff&gt; diffsWithReference = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L13">    private LinkedList&lt;Diff&gt; diffsWithReference = new LinkedList&lt;&gt;();</span>
 
-<span class="nc" id="L15">    private static final DiffMatchPatch DIFFMATCHPATCH = new DiffMatchPatch();</span>
+<span class="fc" id="L15">    private static final DiffMatchPatch DIFFMATCHPATCH = new DiffMatchPatch();</span>
 
     private final InjectionMultibit injectionMultibit;
 
     private final String metadataInjectionProcess;
 
-<span class="nc" id="L21">    public CallableMultibit(String sqlQuery, InjectionMultibit injectionMultibit, String metadataInjectionProcess) {</span>
+<span class="fc" id="L21">    public CallableMultibit(String sqlQuery, InjectionMultibit injectionMultibit, String metadataInjectionProcess) {</span>
 
-<span class="nc" id="L23">        this.injectionMultibit = injectionMultibit;</span>
-<span class="nc" id="L24">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
-<span class="nc" id="L25">        this.booleanUrl = sqlQuery;</span>
-<span class="nc" id="L26">        this.isMultibit = true;</span>
-<span class="nc" id="L27">    }</span>
+<span class="fc" id="L23">        this.injectionMultibit = injectionMultibit;</span>
+<span class="fc" id="L24">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
+<span class="fc" id="L25">        this.booleanUrl = sqlQuery;</span>
+<span class="fc" id="L26">        this.isMultibit = true;</span>
+<span class="fc" id="L27">    }</span>
 
     public CallableMultibit(String sqlQuery, int indexCharacter, int block, InjectionModel injectionModel, InjectionMultibit injectionMultibit, String metadataInjectionProcess) {
 
-<span class="nc" id="L31">        this(</span>
-<span class="nc" id="L32">            injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(</span>
+<span class="fc" id="L31">        this(</span>
+<span class="fc" id="L32">            injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(</span>
                 sqlQuery,
                 indexCharacter,
                 3 * block - 2
@@ -37,28 +37,28 @@ public class CallableMultibit extends AbstractCallableBoolean&lt;CallableMultibi
             injectionMultibit,
             metadataInjectionProcess
         );
-<span class="nc" id="L40">        this.block = block;</span>
-<span class="nc" id="L41">        this.currentIndex = indexCharacter;</span>
-<span class="nc" id="L42">    }</span>
+<span class="fc" id="L40">        this.block = block;</span>
+<span class="fc" id="L41">        this.currentIndex = indexCharacter;</span>
+<span class="fc" id="L42">    }</span>
 
     @Override
     public CallableMultibit call() {
 
-<span class="nc" id="L47">        String result = this.injectionMultibit.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
+<span class="fc" id="L47">        String result = this.injectionMultibit.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
 
-<span class="nc" id="L49">        this.diffsWithReference = DIFFMATCHPATCH.diffMain(this.injectionMultibit.getSourceReference(), result, true);</span>
+<span class="fc" id="L49">        this.diffsWithReference = DIFFMATCHPATCH.diffMain(this.injectionMultibit.getSourceReference(), result, true);</span>
 
-<span class="nc" id="L51">        DIFFMATCHPATCH.diffCleanupEfficiency(this.diffsWithReference);</span>
+<span class="fc" id="L51">        DIFFMATCHPATCH.diffCleanupEfficiency(this.diffsWithReference);</span>
 
-<span class="nc" id="L53">        this.diffsWithReference.removeAll(this.injectionMultibit.getDiffsCommonWithAllIds());</span>
+<span class="fc" id="L53">        this.diffsWithReference.removeAll(this.injectionMultibit.getDiffsCommonWithAllIds());</span>
 
-<span class="nc bnc" id="L55" title="All 2 branches missed.">        for (int i = 0; i &lt; this.injectionMultibit.getDiffsById().size() ; i++) {</span>
-<span class="nc bnc" id="L56" title="All 2 branches missed.">            if (new HashSet&lt;&gt;(this.injectionMultibit.getDiffsById().get(i)).containsAll(this.diffsWithReference)) {</span>
-<span class="nc" id="L57">                this.idPage = i;</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        for (int i = 0; i &lt; this.injectionMultibit.getDiffsById().size() ; i++) {</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            if (new HashSet&lt;&gt;(this.injectionMultibit.getDiffsById().get(i)).containsAll(this.diffsWithReference)) {</span>
+<span class="fc" id="L57">                this.idPage = i;</span>
             }
         }
 
-<span class="nc" id="L61">        return this;</span>
+<span class="fc" id="L61">        return this;</span>
     }
 
     @Override
@@ -68,10 +68,10 @@ public class CallableMultibit extends AbstractCallableBoolean&lt;CallableMultibi
     }
 
     public List&lt;Diff&gt; getDiffsWithReference() {
-<span class="nc" id="L71">        return this.diffsWithReference;</span>
+<span class="fc" id="L71">        return this.diffsWithReference;</span>
     }
     public int getIdPage() {
-<span class="nc" id="L74">        return this.idPage;</span>
+<span class="fc" id="L74">        return this.idPage;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

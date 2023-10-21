@@ -46,17 +46,17 @@ import java.util.concurrent.SubmissionPublisher;
      */
     public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess) {
         
-<span class="nc" id="L49">        return this.inject(dataInjection, false, metadataInjectionProcess, null);</span>
+<span class="fc" id="L49">        return this.inject(dataInjection, false, metadataInjectionProcess, null);</span>
     }
 
     public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBoolean&lt;?&gt; callableBoolean) {
         
-<span class="nc" id="L54">        return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean);</span>
+<span class="fc" id="L54">        return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean);</span>
     }
 
     public String injectWithIndexes(String dataInjection, String metadataInjectionProcess) {
         
-<span class="nc" id="L59">        return this.inject(dataInjection, true, metadataInjectionProcess, null);</span>
+<span class="fc" id="L59">        return this.inject(dataInjection, true, metadataInjectionProcess, null);</span>
     }
 
     /**
@@ -65,18 +65,18 @@ import java.util.concurrent.SubmissionPublisher;
      */
     public void sendToViews(final Request request) {
         
-<span class="nc" id="L68">        AbstractModelObservable.this.submit(request);</span>
-<span class="nc" id="L69">    }</span>
+<span class="fc" id="L68">        AbstractModelObservable.this.submit(request);</span>
+<span class="fc" id="L69">    }</span>
 
     
     // Getters and setters
     
     public boolean isStoppedByUser() {
-<span class="nc" id="L75">        return this.isStoppedByUser;</span>
+<span class="fc" id="L75">        return this.isStoppedByUser;</span>
     }
 
     public void setIsStoppedByUser(boolean processStopped) {
-<span class="nc" id="L79">        this.isStoppedByUser = processStopped;</span>
-<span class="nc" id="L80">    }</span>
+<span class="fc" id="L79">        this.isStoppedByUser = processStopped;</span>
+<span class="fc" id="L80">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

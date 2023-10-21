@@ -10,8 +10,8 @@ public abstract class AbstractInjectionMonobit&lt;T extends AbstractCallableBool
 
     protected AbstractInjectionMonobit(InjectionModel injectionModel, BooleanMode booleanMode) {
 
-<span class="nc" id="L13">        super(injectionModel, booleanMode);</span>
-<span class="nc" id="L14">    }</span>
+<span class="fc" id="L13">        super(injectionModel, booleanMode);</span>
+<span class="fc" id="L14">    }</span>
     
     abstract T getCallableBitTest(String sqlQuery, int indexCharacter, int bit);
 
@@ -22,41 +22,41 @@ public abstract class AbstractInjectionMonobit&lt;T extends AbstractCallableBool
         CompletionService&lt;T&gt; taskCompletionService,
         AtomicInteger countTasksSubmitted
     ) {
-<span class="nc" id="L25">        indexCharacter.incrementAndGet();</span>
+<span class="fc" id="L25">        indexCharacter.incrementAndGet();</span>
         
         // New undefined bits of the next character
         // Chars all have the last bit set to 0 in Ascii table
-<span class="nc" id="L29">        bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });</span>
+<span class="fc" id="L29">        bytes.add(new char[]{ '0', 'x', 'x', 'x', 'x', 'x', 'x', 'x' });</span>
         
         // Test the 8 bits for the next character, save its position and current bit for later
         // Ignore last bit 128 and only check for first seven bits
-<span class="nc bnc" id="L33" title="All 2 branches missed.">        for (int bit: new int[]{ 1, 2, 4, 8, 16, 32, 64 }) {</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        for (int bit: new int[]{ 1, 2, 4, 8, 16, 32, 64 }) {</span>
             
-<span class="nc" id="L35">            taskCompletionService.submit(</span>
-<span class="nc" id="L36">                this.getCallableBitTest(</span>
+<span class="fc" id="L35">            taskCompletionService.submit(</span>
+<span class="fc" id="L36">                this.getCallableBitTest(</span>
                     sqlQuery,
-<span class="nc" id="L38">                    indexCharacter.get(),</span>
+<span class="fc" id="L38">                    indexCharacter.get(),</span>
                     bit
                 )
             );
-<span class="nc" id="L42">            countTasksSubmitted.addAndGet(1);</span>
+<span class="fc" id="L42">            countTasksSubmitted.addAndGet(1);</span>
         }
-<span class="nc" id="L44">    }</span>
+<span class="fc" id="L44">    }</span>
 
     public char[] initializeBinaryMask(List&lt;char[]&gt; bytes, T currentCallable) {
 
         // Bits for current url
-<span class="nc" id="L49">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);</span>
+<span class="fc" id="L49">        char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);</span>
 
-<span class="nc" id="L51">        int positionInMask = (int) (</span>
-<span class="nc" id="L52">            8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit()))</span>
-<span class="nc" id="L53">            / Math.log(2)</span>
+<span class="fc" id="L51">        int positionInMask = (int) (</span>
+<span class="fc" id="L52">            8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit()))</span>
+<span class="fc" id="L53">            / Math.log(2)</span>
         );
 
         // Set current bit
-<span class="nc bnc" id="L57" title="All 2 branches missed.">        asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        asciiCodeMask[positionInMask] = currentCallable.isTrue() ? '1' : '0';</span>
 
-<span class="nc" id="L59">        return asciiCodeMask;</span>
+<span class="fc" id="L59">        return asciiCodeMask;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

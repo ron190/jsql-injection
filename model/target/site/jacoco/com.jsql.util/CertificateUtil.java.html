@@ -39,7 +39,7 @@ public class CertificateUtil {
                 @Override
                 public X509Certificate[] getAcceptedIssuers() {
                     
-<span class="nc" id="L42">                    return new X509Certificate[0];</span>
+<span class="fc" id="L42">                    return new X509Certificate[0];</span>
                 }
 
                 @SuppressWarnings(&quot;java:S4830&quot;)
@@ -52,7 +52,7 @@ public class CertificateUtil {
                 @Override
                 public void checkServerTrusted(X509Certificate[] certs, String authType) {
                     // nothing
-<span class="nc" id="L55">                }</span>
+<span class="fc" id="L55">                }</span>
             }
         };
         
@@ -72,7 +72,7 @@ public class CertificateUtil {
     
     public SSLContext getSslContext() {
         
-<span class="nc" id="L75">        return this.sslContext;</span>
+<span class="fc" id="L75">        return this.sslContext;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

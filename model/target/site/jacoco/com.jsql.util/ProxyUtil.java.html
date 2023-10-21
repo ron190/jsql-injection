@@ -153,25 +153,25 @@ public class ProxyUtil {
      */
     public boolean isLive(ShowOnConsole showOnConsole) {
         
-<span class="nc" id="L156">        var isLive = true;</span>
+<span class="fc" id="L156">        var isLive = true;</span>
         
-<span class="nc" id="L158">        if (</span>
-<span class="nc bnc" id="L159" title="All 2 branches missed.">            this.isUsingProxyHttp()</span>
+<span class="fc" id="L158">        if (</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">            this.isUsingProxyHttp()</span>
 <span class="nc bnc" id="L160" title="All 2 branches missed.">            &amp;&amp; StringUtils.isNotEmpty(this.getProxyAddressHttp())</span>
 <span class="nc bnc" id="L161" title="All 2 branches missed.">            &amp;&amp; StringUtils.isNotEmpty(this.getProxyPortHttp())</span>
         ) {
 <span class="nc" id="L163">            isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttp(), this.getProxyPortHttp(), &quot;HTTP&quot;);</span>
         }
 
-<span class="nc" id="L166">        if (</span>
-<span class="nc bnc" id="L167" title="All 2 branches missed.">            this.isUsingProxyHttps()</span>
+<span class="fc" id="L166">        if (</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">            this.isUsingProxyHttps()</span>
 <span class="nc bnc" id="L168" title="All 2 branches missed.">            &amp;&amp; StringUtils.isNotEmpty(this.getProxyAddressHttps())</span>
 <span class="nc bnc" id="L169" title="All 2 branches missed.">            &amp;&amp; StringUtils.isNotEmpty(this.getProxyPortHttps())</span>
         ) {
 <span class="nc" id="L171">            isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttps(), this.getProxyPortHttps(), &quot;HTTPS&quot;);</span>
         }
         
-<span class="nc" id="L174">        return isLive;</span>
+<span class="fc" id="L174">        return isLive;</span>
     }
     
     private boolean isSocketOn(ShowOnConsole showOnConsole, String address, String port, String protocol) {
@@ -246,7 +246,7 @@ public class ProxyUtil {
 <span class="nc" id="L246">    }</span>
 
     public boolean isUsingProxyHttp() {
-<span class="nc" id="L249">        return this.isUsingProxyHttp;</span>
+<span class="fc" id="L249">        return this.isUsingProxyHttp;</span>
     }
 
     public void setUsingProxyHttp(boolean isUsingProxyHttp) {
@@ -270,7 +270,7 @@ public class ProxyUtil {
 <span class="nc" id="L270">    }</span>
 
     public boolean isUsingProxyHttps() {
-<span class="nc" id="L273">        return this.isUsingProxyHttps;</span>
+<span class="fc" id="L273">        return this.isUsingProxyHttps;</span>
     }
 
     public void setUsingProxyHttps(boolean isUsingProxyHttps) {

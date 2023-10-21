@@ -15,9 +15,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class CallableCharInsertion extends AbstractCallableBoolean&lt;CallableCharInsertion&gt; {
     
     // List of differences found between the reference page, and the present page
-<span class="nc" id="L18">    private LinkedList&lt;Diff&gt; opcodes = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L18">    private LinkedList&lt;Diff&gt; opcodes = new LinkedList&lt;&gt;();</span>
     
-<span class="nc" id="L20">    private final DiffMatchPatch diffMatchPatch = new DiffMatchPatch();</span>
+<span class="fc" id="L20">    private final DiffMatchPatch diffMatchPatch = new DiffMatchPatch();</span>
 
     private final InjectionCharInsertion injectionCharInsertion;
     
@@ -28,12 +28,12 @@ public class CallableCharInsertion extends AbstractCallableBoolean&lt;CallableCh
      * @param inj
      * @param injectionCharInsertion
      */
-<span class="nc" id="L31">    public CallableCharInsertion(String inj, InjectionCharInsertion injectionCharInsertion, String metadataInjectionProcess) {</span>
+<span class="fc" id="L31">    public CallableCharInsertion(String inj, InjectionCharInsertion injectionCharInsertion, String metadataInjectionProcess) {</span>
         
-<span class="nc" id="L33">        this.injectionCharInsertion = injectionCharInsertion;</span>
-<span class="nc" id="L34">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
-<span class="nc" id="L35">        this.booleanUrl = inj;</span>
-<span class="nc" id="L36">    }</span>
+<span class="fc" id="L33">        this.injectionCharInsertion = injectionCharInsertion;</span>
+<span class="fc" id="L34">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
+<span class="fc" id="L35">        this.booleanUrl = inj;</span>
+<span class="fc" id="L36">    }</span>
 
     /**
      * Check if a result page means the SQL query is true,
@@ -45,16 +45,16 @@ public class CallableCharInsertion extends AbstractCallableBoolean&lt;CallableCh
     public boolean isTrue() {
 
         // Fix #95422: ConcurrentModificationException on iterator.next()
-<span class="nc" id="L48">        List&lt;Diff&gt; copyTrueMarks = new CopyOnWriteArrayList&lt;&gt;(this.injectionCharInsertion.getConstantTrueMark());</span>
-<span class="nc bnc" id="L49" title="All 2 branches missed.">        for (Diff trueDiff: copyTrueMarks) {</span>
+<span class="fc" id="L48">        List&lt;Diff&gt; copyTrueMarks = new CopyOnWriteArrayList&lt;&gt;(this.injectionCharInsertion.getConstantTrueMark());</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (Diff trueDiff: copyTrueMarks) {</span>
 
-<span class="nc bnc" id="L51" title="All 2 branches missed.">            if (!this.opcodes.contains(trueDiff)) {</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">            if (!this.opcodes.contains(trueDiff)) {</span>
 
-<span class="nc" id="L53">                return false;</span>
+<span class="fc" id="L53">                return false;</span>
             }
-<span class="nc" id="L55">        }</span>
+<span class="fc" id="L55">        }</span>
 
-<span class="nc" id="L57">        return true;</span>
+<span class="fc" id="L57">        return true;</span>
     }
 
     /**
@@ -65,17 +65,17 @@ public class CallableCharInsertion extends AbstractCallableBoolean&lt;CallableCh
     @Override
     public CallableCharInsertion call() {
         
-<span class="nc" id="L68">        String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
+<span class="fc" id="L68">        String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
         
-<span class="nc" id="L70">        this.opcodes = this.diffMatchPatch.diffMain(this.injectionCharInsertion.getBlankFalseMark(), source, false);</span>
+<span class="fc" id="L70">        this.opcodes = this.diffMatchPatch.diffMain(this.injectionCharInsertion.getBlankFalseMark(), source, false);</span>
         
-<span class="nc" id="L72">        this.diffMatchPatch.diffCleanupEfficiency(this.opcodes);</span>
+<span class="fc" id="L72">        this.diffMatchPatch.diffCleanupEfficiency(this.opcodes);</span>
         
-<span class="nc" id="L74">        return this;</span>
+<span class="fc" id="L74">        return this;</span>
     }
     
     public List&lt;Diff&gt; getOpcodes() {
-<span class="nc" id="L78">        return this.opcodes;</span>
+<span class="fc" id="L78">        return this.opcodes;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

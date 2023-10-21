@@ -75,73 +75,73 @@ public class ConnectionUtil {
     public HttpClient getHttpClient() {
         
         var httpClientBuilder = HttpClient
-<span class="nc" id="L78">            .newBuilder()</span>
-<span class="nc" id="L79">            .connectTimeout(Duration.ofSeconds(this.getTimeout()))</span>
-<span class="nc" id="L80">            .sslContext(this.injectionModel.getMediatorUtils().getCertificateUtil().getSslContext())</span>
-<span class="nc" id="L81">            .followRedirects(</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">                this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()</span>
+<span class="fc" id="L78">            .newBuilder()</span>
+<span class="fc" id="L79">            .connectTimeout(Duration.ofSeconds(this.getTimeout()))</span>
+<span class="fc" id="L80">            .sslContext(this.injectionModel.getMediatorUtils().getCertificateUtil().getSslContext())</span>
+<span class="fc" id="L81">            .followRedirects(</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">                this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()</span>
 <span class="nc" id="L83">                ? HttpClient.Redirect.ALWAYS</span>
-<span class="nc" id="L84">                : HttpClient.Redirect.NEVER</span>
+<span class="fc" id="L84">                : HttpClient.Redirect.NEVER</span>
             );
         
-<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isHttp2Disabled()) {</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isHttp2Disabled()) {</span>
             
 <span class="nc" id="L89">            httpClientBuilder.version(Version.HTTP_1_1);</span>
         }
         
-<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()) {</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()) {</span>
             
-<span class="nc" id="L94">            httpClientBuilder.cookieHandler(this.cookieManager);</span>
+<span class="fc" id="L94">            httpClientBuilder.cookieHandler(this.cookieManager);</span>
         }
         
-<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getAuthenticationUtil().isAuthentEnabled()) {</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getAuthenticationUtil().isAuthentEnabled()) {</span>
             
-<span class="nc" id="L99">            httpClientBuilder.authenticator(new Authenticator() {</span>
+<span class="fc" id="L99">            httpClientBuilder.authenticator(new Authenticator() {</span>
               
               @Override
               protected PasswordAuthentication getPasswordAuthentication() {
                   
-<span class="nc" id="L104">                  return new PasswordAuthentication(</span>
-<span class="nc" id="L105">                      ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication(),</span>
-<span class="nc" id="L106">                      ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication().toCharArray()</span>
+<span class="fc" id="L104">                  return new PasswordAuthentication(</span>
+<span class="fc" id="L105">                      ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication(),</span>
+<span class="fc" id="L106">                      ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication().toCharArray()</span>
                   );
               }
           });
       }
                 
-<span class="nc" id="L112">        return httpClientBuilder.build();</span>
+<span class="fc" id="L112">        return httpClientBuilder.build();</span>
     }
 
 
     public static &lt;T&gt; Map&lt;String, String&gt; getHeadersMap(HttpResponse&lt;T&gt; httpResponse) {
         
-<span class="nc" id="L118">        Map&lt;String, String&gt; sortedMap = getHeadersMap(httpResponse.headers());</span>
+<span class="fc" id="L118">        Map&lt;String, String&gt; sortedMap = getHeadersMap(httpResponse.headers());</span>
         
-<span class="nc" id="L120">        String responseCodeHttp = &quot;&quot;+ httpResponse.statusCode();</span>
-<span class="nc" id="L121">        sortedMap.put(&quot;:status&quot;, responseCodeHttp);</span>
+<span class="fc" id="L120">        String responseCodeHttp = &quot;&quot;+ httpResponse.statusCode();</span>
+<span class="fc" id="L121">        sortedMap.put(&quot;:status&quot;, responseCodeHttp);</span>
         
-<span class="nc" id="L123">        return sortedMap;</span>
+<span class="fc" id="L123">        return sortedMap;</span>
     }
     
     public static Map&lt;String, String&gt; getHeadersMap(HttpHeaders httpHeaders) {
         
-<span class="nc" id="L128">        Map&lt;String, String&gt; unsortedMap = httpHeaders</span>
-<span class="nc" id="L129">            .map()</span>
-<span class="nc" id="L130">            .entrySet()</span>
-<span class="nc" id="L131">            .stream()</span>
-<span class="nc" id="L132">            .sorted(Entry.comparingByKey())</span>
-<span class="nc" id="L133">            .map(entrySet -&gt;</span>
-<span class="nc" id="L134">                new AbstractMap.SimpleEntry&lt;&gt;(</span>
-<span class="nc" id="L135">                    entrySet.getKey(),</span>
-<span class="nc" id="L136">                    String.join(&quot;, &quot;, entrySet.getValue())</span>
+<span class="fc" id="L128">        Map&lt;String, String&gt; unsortedMap = httpHeaders</span>
+<span class="fc" id="L129">            .map()</span>
+<span class="fc" id="L130">            .entrySet()</span>
+<span class="fc" id="L131">            .stream()</span>
+<span class="fc" id="L132">            .sorted(Entry.comparingByKey())</span>
+<span class="fc" id="L133">            .map(entrySet -&gt;</span>
+<span class="fc" id="L134">                new AbstractMap.SimpleEntry&lt;&gt;(</span>
+<span class="fc" id="L135">                    entrySet.getKey(),</span>
+<span class="fc" id="L136">                    String.join(&quot;, &quot;, entrySet.getValue())</span>
                 )
             )
-<span class="nc" id="L139">            .collect(Collectors.toMap(</span>
+<span class="fc" id="L139">            .collect(Collectors.toMap(</span>
                 AbstractMap.SimpleEntry::getKey,
                 AbstractMap.SimpleEntry::getValue
             ));
         
-<span class="nc" id="L144">        return new TreeMap&lt;&gt;(unsortedMap);</span>
+<span class="fc" id="L144">        return new TreeMap&lt;&gt;(unsortedMap);</span>
     }
 
     /**
@@ -154,102 +154,102 @@ public class ConnectionUtil {
      */
     public HttpResponse&lt;String&gt; checkConnectionResponse() throws IOException, InterruptedException {
 
-<span class="nc" id="L157">        var queryString = this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();</span>
-<span class="nc" id="L158">        var testUrl = this.getUrlBase().replaceAll(&quot;\\?$&quot;, &quot;&quot;);</span>
+<span class="fc" id="L157">        var queryString = this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();</span>
+<span class="fc" id="L158">        var testUrl = this.getUrlBase().replaceAll(&quot;\\?$&quot;, &quot;&quot;);</span>
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">        if (StringUtils.isNotEmpty(queryString)) {</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(queryString)) {</span>
         
-<span class="nc" id="L162">            testUrl += &quot;?&quot;+ queryString;</span>
+<span class="fc" id="L162">            testUrl += &quot;?&quot;+ queryString;</span>
         }
 
-<span class="nc" id="L165">        String contentTypeRequest = &quot;text/plain&quot;;</span>
+<span class="fc" id="L165">        String contentTypeRequest = &quot;text/plain&quot;;</span>
 
-<span class="nc" id="L167">        var body = this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest();</span>
+<span class="fc" id="L167">        var body = this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest();</span>
 
-<span class="nc bnc" id="L169" title="All 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getParameterUtil().isMultipartRequest()) {</span>
-<span class="nc" id="L170">            body = body.replaceAll(&quot;(?s)\\\\n&quot;, &quot;\r\n&quot;);</span>
-<span class="nc bnc" id="L171" title="All 2 branches missed.">        } else if (this.injectionModel.getMediatorUtils().getParameterUtil().isRequestSoap()) {</span>
-<span class="nc" id="L172">            contentTypeRequest = &quot;text/xml&quot;;</span>
-<span class="nc bnc" id="L173" title="All 2 branches missed.">        } else if (!this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().isEmpty()) {</span>
-<span class="nc" id="L174">            contentTypeRequest = &quot;application/x-www-form-urlencoded&quot;;</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getParameterUtil().isMultipartRequest()) {</span>
+<span class="fc" id="L170">            body = body.replaceAll(&quot;(?s)\\\\n&quot;, &quot;\r\n&quot;);</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">        } else if (this.injectionModel.getMediatorUtils().getParameterUtil().isRequestSoap()) {</span>
+<span class="fc" id="L172">            contentTypeRequest = &quot;text/xml&quot;;</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        } else if (!this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().isEmpty()) {</span>
+<span class="fc" id="L174">            contentTypeRequest = &quot;application/x-www-form-urlencoded&quot;;</span>
         }
 
         // Test the HTTP connection
-<span class="nc" id="L178">        Builder httpRequest = HttpRequest.newBuilder()</span>
-<span class="nc" id="L179">            .uri(</span>
-<span class="nc" id="L180">                URI.create(</span>
+<span class="fc" id="L178">        Builder httpRequest = HttpRequest.newBuilder()</span>
+<span class="fc" id="L179">            .uri(</span>
+<span class="fc" id="L180">                URI.create(</span>
                     // Get encoded params without fragment
                     testUrl
                     // Ignore injection point during the test
-<span class="nc" id="L184">                    .replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+<span class="fc" id="L184">                    .replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                 )
             )
-<span class="nc" id="L187">            .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, contentTypeRequest)</span>
-<span class="nc" id="L188">            .timeout(Duration.ofSeconds(this.getTimeout()));</span>
+<span class="fc" id="L187">            .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, contentTypeRequest)</span>
+<span class="fc" id="L188">            .timeout(Duration.ofSeconds(this.getTimeout()));</span>
         
-<span class="nc" id="L190">        this.injectionModel.getMediatorUtils().getCsrfUtil().addHeaderToken(httpRequest);</span>
-<span class="nc" id="L191">        this.injectionModel.getMediatorUtils().getDigestUtil().addHeaderToken(httpRequest);</span>
+<span class="fc" id="L190">        this.injectionModel.getMediatorUtils().getCsrfUtil().addHeaderToken(httpRequest);</span>
+<span class="fc" id="L191">        this.injectionModel.getMediatorUtils().getDigestUtil().addHeaderToken(httpRequest);</span>
 
-<span class="nc" id="L193">        httpRequest.method(</span>
-<span class="nc" id="L194">            this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(),</span>
-<span class="nc" id="L195">            BodyPublishers.ofString(body)</span>
+<span class="fc" id="L193">        httpRequest.method(</span>
+<span class="fc" id="L194">            this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(),</span>
+<span class="fc" id="L195">            BodyPublishers.ofString(body)</span>
         );
 
         // Add headers if exists (Authorization:Basic, etc)
-<span class="nc bnc" id="L199" title="All 2 branches missed.">        for (SimpleEntry&lt;String, String&gt; header: this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()) {</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        for (SimpleEntry&lt;String, String&gt; header: this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()) {</span>
             
-<span class="nc" id="L201">            HeaderUtil.sanitizeHeaders(httpRequest, header);</span>
-<span class="nc" id="L202">        }</span>
+<span class="fc" id="L201">            HeaderUtil.sanitizeHeaders(httpRequest, header);</span>
+<span class="fc" id="L202">        }</span>
 
-<span class="nc" id="L204">        return this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(httpRequest, body);</span>
+<span class="fc" id="L204">        return this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(httpRequest, body);</span>
     }
 
     public void testConnection() throws IOException, InterruptedException, InjectionFailureException {
 
         // Check connection is working: define Cookie management, check HTTP status, parse &lt;form&gt; parameters, process CSRF
-<span class="nc" id="L210">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;LOG_CONNECTION_TEST&quot;));</span>
-<span class="nc" id="L211">        this.getCookieManager().getCookieStore().removeAll();</span>
-<span class="nc" id="L212">        HttpResponse&lt;String&gt; httpResponse = this.checkConnectionResponse();</span>
+<span class="fc" id="L210">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;LOG_CONNECTION_TEST&quot;));</span>
+<span class="fc" id="L211">        this.getCookieManager().getCookieStore().removeAll();</span>
+<span class="fc" id="L212">        HttpResponse&lt;String&gt; httpResponse = this.checkConnectionResponse();</span>
 
-<span class="nc" id="L214">        if (</span>
-<span class="nc bnc" id="L215" title="All 4 branches missed.">            (httpResponse.statusCode() == 401 || httpResponse.statusCode() == 403)</span>
-<span class="nc bnc" id="L216" title="All 2 branches missed.">            &amp;&amp; !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()</span>
+<span class="fc" id="L214">        if (</span>
+<span class="fc bfc" id="L215" title="All 4 branches covered.">            (httpResponse.statusCode() == 401 || httpResponse.statusCode() == 403)</span>
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">            &amp;&amp; !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()</span>
             &amp;&amp; (
-<span class="nc bnc" id="L218" title="All 2 branches missed.">                this.injectionModel.getMediatorUtils().getCsrfUtil().isCsrf()</span>
-<span class="nc bnc" id="L219" title="All 2 branches missed.">                || this.injectionModel.getMediatorUtils().getDigestUtil().isDigest()</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">                this.injectionModel.getMediatorUtils().getCsrfUtil().isCsrf()</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">                || this.injectionModel.getMediatorUtils().getDigestUtil().isDigest()</span>
             )
         ) {
-<span class="nc bnc" id="L222" title="All 2 branches missed.">            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()) {</span>
-<span class="nc" id="L223">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; &quot;Testing CSRF handshake from previous connection...&quot;);</span>
-<span class="nc bnc" id="L224" title="All 2 branches missed.">            } else if (StringUtils.isNotEmpty(this.injectionModel.getMediatorUtils().getDigestUtil().getTokenDigest())) {</span>
-<span class="nc" id="L225">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; &quot;Testing Digest handshake from previous connection...&quot;);</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()) {</span>
+<span class="fc" id="L223">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; &quot;Testing CSRF handshake from previous connection...&quot;);</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">            } else if (StringUtils.isNotEmpty(this.injectionModel.getMediatorUtils().getDigestUtil().getTokenDigest())) {</span>
+<span class="fc" id="L225">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; &quot;Testing Digest handshake from previous connection...&quot;);</span>
             }
-<span class="nc" id="L227">            httpResponse = this.checkConnectionResponse();</span>
+<span class="fc" id="L227">            httpResponse = this.checkConnectionResponse();</span>
         }
 
-<span class="nc bnc" id="L230" title="All 4 branches missed.">        if (httpResponse.statusCode() &gt;= 400 &amp;&amp; !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {</span>
+<span class="pc bpc" id="L230" title="1 of 4 branches missed.">        if (httpResponse.statusCode() &gt;= 400 &amp;&amp; !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {</span>
 
 <span class="nc" id="L232">            throw new InjectionFailureException(String.format(&quot;Connection failed: problem when calling %s&quot;, httpResponse.uri().toURL()));</span>
         }
-<span class="nc" id="L234">    }</span>
+<span class="fc" id="L234">    }</span>
 
     public String getSource(String url, boolean lineFeed) {
         
-<span class="nc" id="L238">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="nc" id="L239">        msgHeader.put(Header.URL, url);</span>
+<span class="fc" id="L238">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L239">        msgHeader.put(Header.URL, url);</span>
         
-<span class="nc" id="L241">        String pageSource = StringUtils.EMPTY;</span>
+<span class="fc" id="L241">        String pageSource = StringUtils.EMPTY;</span>
         
         try {
             var httpRequest = HttpRequest
-<span class="nc" id="L245">                .newBuilder()</span>
-<span class="nc" id="L246">                .uri(URI.create(url))</span>
-<span class="nc" id="L247">                .timeout(Duration.ofSeconds(this.getTimeout()))</span>
-<span class="nc" id="L248">                .build();</span>
+<span class="fc" id="L245">                .newBuilder()</span>
+<span class="fc" id="L246">                .uri(URI.create(url))</span>
+<span class="fc" id="L247">                .timeout(Duration.ofSeconds(this.getTimeout()))</span>
+<span class="fc" id="L248">                .build();</span>
             
             HttpHeaders httpHeaders;
                 
-<span class="nc bnc" id="L252" title="All 2 branches missed.">            if (lineFeed) {</span>
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">            if (lineFeed) {</span>
                 
 <span class="nc" id="L254">                HttpResponse&lt;Stream&lt;String&gt;&gt; response = this.getHttpClient().send(httpRequest, BodyHandlers.ofLines());</span>
 <span class="nc" id="L255">                pageSource = response.body().collect(Collectors.joining(&quot;\n&quot;));</span>
@@ -257,13 +257,13 @@ public class ConnectionUtil {
                 
 <span class="nc" id="L258">            } else {</span>
                 
-<span class="nc" id="L260">                HttpResponse&lt;String&gt; response = this.getHttpClient().send(httpRequest, BodyHandlers.ofString());</span>
-<span class="nc" id="L261">                pageSource = response.body();</span>
-<span class="nc" id="L262">                httpHeaders = response.headers();</span>
+<span class="fc" id="L260">                HttpResponse&lt;String&gt; response = this.getHttpClient().send(httpRequest, BodyHandlers.ofString());</span>
+<span class="fc" id="L261">                pageSource = response.body();</span>
+<span class="fc" id="L262">                httpHeaders = response.headers();</span>
             }
             
-<span class="nc" id="L265">            msgHeader.put(Header.RESPONSE, ConnectionUtil.getHeadersMap(httpHeaders));</span>
-<span class="nc" id="L266">            msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));</span>
+<span class="fc" id="L265">            msgHeader.put(Header.RESPONSE, ConnectionUtil.getHeadersMap(httpHeaders));</span>
+<span class="fc" id="L266">            msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));</span>
             
 <span class="nc" id="L268">        } catch (IOException e) {</span>
 
@@ -276,16 +276,16 @@ public class ConnectionUtil {
             
         } finally {
             
-<span class="nc" id="L279">            msgHeader.put(Header.SOURCE, pageSource);</span>
+<span class="fc" id="L279">            msgHeader.put(Header.SOURCE, pageSource);</span>
             
             // Inform the view about the log infos
-<span class="nc" id="L282">            var request = new Request();</span>
-<span class="nc" id="L283">            request.setMessage(Interaction.MESSAGE_HEADER);</span>
-<span class="nc" id="L284">            request.setParameters(msgHeader);</span>
-<span class="nc" id="L285">            this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L282">            var request = new Request();</span>
+<span class="fc" id="L283">            request.setMessage(Interaction.MESSAGE_HEADER);</span>
+<span class="fc" id="L284">            request.setParameters(msgHeader);</span>
+<span class="fc" id="L285">            this.injectionModel.sendToViews(request);</span>
         }
         
-<span class="nc" id="L288">        return pageSource.trim();</span>
+<span class="fc" id="L288">        return pageSource.trim();</span>
     }
     
     /**
@@ -300,42 +300,42 @@ public class ConnectionUtil {
     
     public String getSource(String url) {
         
-<span class="nc" id="L303">        return this.getSource(url, false);</span>
+<span class="fc" id="L303">        return this.getSource(url, false);</span>
     }
 
     public void setCustomUserAgent(Builder httpRequest) {
         
-<span class="nc bnc" id="L308" title="All 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getUserAgentUtil().isCustomUserAgent()) {</span>
+<span class="fc bfc" id="L308" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getUserAgentUtil().isCustomUserAgent()) {</span>
             
-<span class="nc" id="L310">            String agents = this.injectionModel.getMediatorUtils().getUserAgentUtil().getCustomUserAgent();</span>
-<span class="nc" id="L311">            List&lt;String&gt; listAgents = Stream.of(agents.split(&quot;[\\r\\n]+&quot;))</span>
-<span class="nc bnc" id="L312" title="All 2 branches missed.">                .filter(q -&gt; !q.matches(&quot;^#.*&quot;))</span>
-<span class="nc" id="L313">                .collect(Collectors.toList());</span>
+<span class="fc" id="L310">            String agents = this.injectionModel.getMediatorUtils().getUserAgentUtil().getCustomUserAgent();</span>
+<span class="fc" id="L311">            List&lt;String&gt; listAgents = Stream.of(agents.split(&quot;[\\r\\n]+&quot;))</span>
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">                .filter(q -&gt; !q.matches(&quot;^#.*&quot;))</span>
+<span class="fc" id="L313">                .collect(Collectors.toList());</span>
             
-<span class="nc" id="L315">            String randomElement = listAgents.get(this.randomForUserAgent.nextInt(listAgents.size()));</span>
+<span class="fc" id="L315">            String randomElement = listAgents.get(this.randomForUserAgent.nextInt(listAgents.size()));</span>
             
-<span class="nc" id="L317">            httpRequest.setHeader(&quot;User-Agent&quot;, randomElement);</span>
+<span class="fc" id="L317">            httpRequest.setHeader(&quot;User-Agent&quot;, randomElement);</span>
         }
-<span class="nc" id="L319">    }</span>
+<span class="fc" id="L319">    }</span>
     
     
     // Builder
 
     public ConnectionUtil withMethodInjection(AbstractMethodInjection methodInjection) {
-<span class="nc" id="L325">        this.methodInjection = methodInjection;</span>
-<span class="nc" id="L326">        return this;</span>
+<span class="fc" id="L325">        this.methodInjection = methodInjection;</span>
+<span class="fc" id="L326">        return this;</span>
     }
     
     public ConnectionUtil withTypeRequest(String typeRequest) {
-<span class="nc" id="L330">        this.typeRequest = typeRequest;</span>
-<span class="nc" id="L331">        return this;</span>
+<span class="fc" id="L330">        this.typeRequest = typeRequest;</span>
+<span class="fc" id="L331">        return this;</span>
     }
     
     
     // Getters and setters
     
     public String getUrlByUser() {
-<span class="nc" id="L338">        return this.urlByUser;</span>
+<span class="fc" id="L338">        return this.urlByUser;</span>
     }
 
     public void setUrlByUser(String urlByUser) {
@@ -359,7 +359,7 @@ public class ConnectionUtil {
 <span class="fc" id="L359">    }</span>
     
     public String getTypeRequest() {
-<span class="nc" id="L362">        return this.typeRequest;</span>
+<span class="fc" id="L362">        return this.typeRequest;</span>
     }
 
     public void setTypeRequest(String typeRequest) {
@@ -370,11 +370,11 @@ public class ConnectionUtil {
      * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.
      */
     public Integer getTimeout() {
-<span class="nc" id="L373">        return this.injectionModel.getMediatorUtils().getPreferencesUtil().countConnectionTimeout();</span>
+<span class="fc" id="L373">        return this.injectionModel.getMediatorUtils().getPreferencesUtil().countConnectionTimeout();</span>
     }
 
     public CookieManager getCookieManager() {
-<span class="nc" id="L377">        return cookieManager;</span>
+<span class="fc" id="L377">        return cookieManager;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

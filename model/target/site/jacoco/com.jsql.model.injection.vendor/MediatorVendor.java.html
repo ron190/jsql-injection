@@ -100,38 +100,38 @@ public class MediatorVendor {
             @Override
             public String transformSqlite(String resultToParse) {
 
-<span class="nc" id="L103">                var resultSqlite = new StringBuilder();</span>
+<span class="fc" id="L103">                var resultSqlite = new StringBuilder();</span>
 
-<span class="nc" id="L105">                String resultTmp = resultToParse</span>
-<span class="nc" id="L106">                    .replaceFirst(&quot;[^(]+\\(&quot;, StringUtils.EMPTY)</span>
-<span class="nc" id="L107">                    .trim()</span>
-<span class="nc" id="L108">                    .replaceAll(&quot;\\)$&quot;, StringUtils.EMPTY);</span>
+<span class="fc" id="L105">                String resultTmp = resultToParse</span>
+<span class="fc" id="L106">                    .replaceFirst(&quot;[^(]+\\(&quot;, StringUtils.EMPTY)</span>
+<span class="fc" id="L107">                    .trim()</span>
+<span class="fc" id="L108">                    .replaceAll(&quot;\\)$&quot;, StringUtils.EMPTY);</span>
 
-<span class="nc" id="L110">                resultTmp = resultTmp.replaceAll(&quot;\\([^)]+\\)&quot;, StringUtils.EMPTY);</span>
+<span class="fc" id="L110">                resultTmp = resultTmp.replaceAll(&quot;\\([^)]+\\)&quot;, StringUtils.EMPTY);</span>
 
-<span class="nc bnc" id="L112" title="All 2 branches missed.">                for (String columnNameAndType: resultTmp.split(&quot;,&quot;)) {</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">                for (String columnNameAndType: resultTmp.split(&quot;,&quot;)) {</span>
 
-<span class="nc bnc" id="L114" title="All 2 branches missed.">                    if (columnNameAndType.trim().startsWith(&quot;primary key&quot;)) {</span>
-<span class="nc" id="L115">                        continue;</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">                    if (columnNameAndType.trim().startsWith(&quot;primary key&quot;)) {</span>
+<span class="fc" id="L115">                        continue;</span>
                     }
 
                     // Some recent SQLite use tabulation character as a separator =&gt; split() by any white space \s
-<span class="nc" id="L119">                    String columnName = columnNameAndType.trim().split(&quot;\\s&quot;)[0];</span>
+<span class="fc" id="L119">                    String columnName = columnNameAndType.trim().split(&quot;\\s&quot;)[0];</span>
 
                     // Some recent SQLite enclose names with ` =&gt; strip those `
-<span class="nc" id="L122">                    columnName = StringUtils.strip(columnName, &quot;`&quot;);</span>
+<span class="fc" id="L122">                    columnName = StringUtils.strip(columnName, &quot;`&quot;);</span>
 
-<span class="nc" id="L124">                    if (</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">                        !&quot;CONSTRAINT&quot;.equals(columnName)</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">                        &amp;&amp; !&quot;UNIQUE&quot;.equals(columnName)</span>
+<span class="fc" id="L124">                    if (</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">                        !&quot;CONSTRAINT&quot;.equals(columnName)</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">                        &amp;&amp; !&quot;UNIQUE&quot;.equals(columnName)</span>
                     ) {
 
                         // Generate pattern \4\5\4\6 for injection parsing
-<span class="nc" id="L130">                        resultSqlite.append((char) 4).append(columnName).append((char) 5).append(&quot;0&quot;).append((char) 4).append((char) 6);</span>
+<span class="fc" id="L130">                        resultSqlite.append((char) 4).append(columnName).append((char) 5).append(&quot;0&quot;).append((char) 4).append((char) 6);</span>
                     }
                 }
 
-<span class="nc" id="L134">                return resultSqlite.toString();</span>
+<span class="fc" id="L134">                return resultSqlite.toString();</span>
             }
         };
 <span class="fc" id="L137">        this.sqlServer = new Vendor(new VendorYaml(&quot;sqlserver.yml&quot;, injectionModel));</span>
@@ -179,112 +179,112 @@ public class MediatorVendor {
     
     public boolean isSqlite() {
         
-<span class="nc bnc" id="L182" title="All 2 branches missed.">        return this.getVendor() == this.getSqlite();</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        return this.getVendor() == this.getSqlite();</span>
     }
     
     public Vendor fingerprintVendor() {
         
-<span class="nc" id="L187">        Vendor vendorFound = null;</span>
+<span class="fc" id="L187">        Vendor vendorFound = null;</span>
         
-<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAuto()) {</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAuto()) {</span>
             
-<span class="nc" id="L191">            vendorFound = this.injectionModel.getMediatorVendor().getVendorByUser();</span>
-<span class="nc" id="L192">            LOGGER.log(</span>
+<span class="fc" id="L191">            vendorFound = this.injectionModel.getMediatorVendor().getVendorByUser();</span>
+<span class="fc" id="L192">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
-<span class="nc" id="L195">                () -&gt; I18nUtil.valueByKey(&quot;LOG_DATABASE_TYPE_FORCED_BY_USER&quot;),</span>
-<span class="nc" id="L196">                () -&gt; this.injectionModel.getMediatorVendor().getVendorByUser()</span>
+<span class="fc" id="L195">                () -&gt; I18nUtil.valueByKey(&quot;LOG_DATABASE_TYPE_FORCED_BY_USER&quot;),</span>
+<span class="fc" id="L196">                () -&gt; this.injectionModel.getMediatorVendor().getVendorByUser()</span>
             );
             
         } else {
             
-<span class="nc" id="L201">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting database...&quot;);</span>
+<span class="fc" id="L201">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting database...&quot;);</span>
         
-<span class="nc" id="L203">            var insertionCharacter = URLEncoder.encode(&quot;'\&quot;#-)'\&quot;*&quot;, StandardCharsets.UTF_8);</span>
-<span class="nc" id="L204">            String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, &quot;test#vendor&quot;);</span>
+<span class="fc" id="L203">            var insertionCharacter = URLEncoder.encode(&quot;'\&quot;#-)'\&quot;*&quot;, StandardCharsets.UTF_8);</span>
+<span class="fc" id="L204">            String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, &quot;test#vendor&quot;);</span>
                 
-<span class="nc" id="L206">            var mediatorVendor = this.injectionModel.getMediatorVendor();</span>
-<span class="nc" id="L207">            Vendor[] vendorsWithoutAuto =</span>
+<span class="fc" id="L206">            var mediatorVendor = this.injectionModel.getMediatorVendor();</span>
+<span class="fc" id="L207">            Vendor[] vendorsWithoutAuto =</span>
                 mediatorVendor
-<span class="nc" id="L209">                .getVendors()</span>
-<span class="nc" id="L210">                .stream()</span>
-<span class="nc bnc" id="L211" title="All 2 branches missed.">                .filter(v -&gt; v != mediatorVendor.getAuto())</span>
-<span class="nc" id="L212">                .toArray(Vendor[]::new);</span>
+<span class="fc" id="L209">                .getVendors()</span>
+<span class="fc" id="L210">                .stream()</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">                .filter(v -&gt; v != mediatorVendor.getAuto())</span>
+<span class="fc" id="L212">                .toArray(Vendor[]::new);</span>
             
             // Test each vendor
-<span class="nc bnc" id="L215" title="All 2 branches missed.">            for (Vendor vendorTest: vendorsWithoutAuto) {</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">            for (Vendor vendorTest: vendorsWithoutAuto) {</span>
                 
-<span class="nc bnc" id="L217" title="All 2 branches missed.">                if (pageSource.matches(&quot;(?si)&quot;+ vendorTest.instance().fingerprintErrorsAsRegex())) {</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">                if (pageSource.matches(&quot;(?si)&quot;+ vendorTest.instance().fingerprintErrorsAsRegex())) {</span>
                     
-<span class="nc" id="L219">                    vendorFound = vendorTest;</span>
-<span class="nc" id="L220">                    LOGGER.log(</span>
+<span class="fc" id="L219">                    vendorFound = vendorTest;</span>
+<span class="fc" id="L220">                    LOGGER.log(</span>
                         LogLevelUtil.CONSOLE_SUCCESS,
                         MediatorVendor.LOG_VENDOR,
-<span class="nc" id="L223">                        () -&gt; &quot;Basic fingerprint matching vendor&quot;,</span>
-<span class="nc" id="L224">                        () -&gt; vendorTest</span>
+<span class="fc" id="L223">                        () -&gt; &quot;Basic fingerprint matching vendor&quot;,</span>
+<span class="fc" id="L224">                        () -&gt; vendorTest</span>
                     );
-<span class="nc" id="L226">                    break;</span>
+<span class="fc" id="L226">                    break;</span>
                 }
             }
             
-<span class="nc" id="L230">            vendorFound = this.initializeVendor(vendorFound);</span>
+<span class="fc" id="L230">            vendorFound = this.initializeVendor(vendorFound);</span>
         }
         
-<span class="nc" id="L233">        var requestSetVendor = new Request();</span>
-<span class="nc" id="L234">        requestSetVendor.setMessage(Interaction.SET_VENDOR);</span>
-<span class="nc" id="L235">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="nc" id="L236">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
-<span class="nc" id="L237">        msgHeader.put(Header.VENDOR, vendorFound);</span>
-<span class="nc" id="L238">        requestSetVendor.setParameters(msgHeader);</span>
-<span class="nc" id="L239">        this.injectionModel.sendToViews(requestSetVendor);</span>
+<span class="fc" id="L233">        var requestSetVendor = new Request();</span>
+<span class="fc" id="L234">        requestSetVendor.setMessage(Interaction.SET_VENDOR);</span>
+<span class="fc" id="L235">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L236">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
+<span class="fc" id="L237">        msgHeader.put(Header.VENDOR, vendorFound);</span>
+<span class="fc" id="L238">        requestSetVendor.setParameters(msgHeader);</span>
+<span class="fc" id="L239">        this.injectionModel.sendToViews(requestSetVendor);</span>
         
-<span class="nc" id="L241">        return vendorFound;</span>
+<span class="fc" id="L241">        return vendorFound;</span>
     }
 
     public Vendor initializeVendor(Vendor vendor) {
         
-<span class="nc" id="L246">        var vendorFixed = vendor;</span>
+<span class="fc" id="L246">        var vendorFixed = vendor;</span>
         
-<span class="nc bnc" id="L248" title="All 2 branches missed.">        if (vendorFixed == null) {</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">        if (vendorFixed == null) {</span>
             
-<span class="nc" id="L250">            vendorFixed = this.injectionModel.getMediatorVendor().getMySQL();</span>
-<span class="nc" id="L251">            LOGGER.log(</span>
+<span class="fc" id="L250">            vendorFixed = this.injectionModel.getMediatorVendor().getMySQL();</span>
+<span class="fc" id="L251">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
-<span class="nc" id="L254">                () -&gt; I18nUtil.valueByKey(&quot;LOG_DATABASE_TYPE_NOT_FOUND&quot;),</span>
-<span class="nc" id="L255">                () -&gt; this.injectionModel.getMediatorVendor().getMySQL()</span>
+<span class="fc" id="L254">                () -&gt; I18nUtil.valueByKey(&quot;LOG_DATABASE_TYPE_NOT_FOUND&quot;),</span>
+<span class="fc" id="L255">                () -&gt; this.injectionModel.getMediatorVendor().getMySQL()</span>
             );
             
         } else {
             
-<span class="nc" id="L260">            LOGGER.log(</span>
+<span class="fc" id="L260">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
-<span class="nc" id="L263">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_DATABASE_TYPE&quot;),</span>
-<span class="nc" id="L264">                () -&gt; vendor</span>
+<span class="fc" id="L263">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_DATABASE_TYPE&quot;),</span>
+<span class="fc" id="L264">                () -&gt; vendor</span>
             );
             
-<span class="nc" id="L267">            Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="nc" id="L268">            msgHeader.put(</span>
+<span class="fc" id="L267">            Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L268">            msgHeader.put(</span>
                 Header.URL,
-<span class="nc" id="L270">                this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()</span>
+<span class="fc" id="L270">                this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()</span>
             );
-<span class="nc" id="L272">            msgHeader.put(Header.VENDOR, vendorFixed);</span>
+<span class="fc" id="L272">            msgHeader.put(Header.VENDOR, vendorFixed);</span>
             
-<span class="nc" id="L274">            var requestDatabaseIdentified = new Request();</span>
-<span class="nc" id="L275">            requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);</span>
-<span class="nc" id="L276">            requestDatabaseIdentified.setParameters(msgHeader);</span>
-<span class="nc" id="L277">            this.injectionModel.sendToViews(requestDatabaseIdentified);</span>
+<span class="fc" id="L274">            var requestDatabaseIdentified = new Request();</span>
+<span class="fc" id="L275">            requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);</span>
+<span class="fc" id="L276">            requestDatabaseIdentified.setParameters(msgHeader);</span>
+<span class="fc" id="L277">            this.injectionModel.sendToViews(requestDatabaseIdentified);</span>
         }
         
-<span class="nc" id="L280">        return vendorFixed;</span>
+<span class="fc" id="L280">        return vendorFixed;</span>
     }
     
     
     // Getter and setter
     
     public Vendor getAuto() {
-<span class="nc" id="L287">        return this.auto;</span>
+<span class="fc" id="L287">        return this.auto;</span>
     }
 
     public Vendor getCubrid() {
@@ -292,31 +292,31 @@ public class MediatorVendor {
     }
 
     public Vendor getH2() {
-<span class="nc" id="L295">        return this.h2;</span>
+<span class="fc" id="L295">        return this.h2;</span>
     }
 
     public Vendor getPostgreSQL() {
-<span class="nc" id="L299">        return this.postgreSQL;</span>
+<span class="fc" id="L299">        return this.postgreSQL;</span>
     }
 
     public Vendor getMySQL() {
-<span class="nc" id="L303">        return this.mySQL;</span>
+<span class="fc" id="L303">        return this.mySQL;</span>
     }
 
     public Vendor getSqlite() {
-<span class="nc" id="L307">        return this.sqlite;</span>
+<span class="fc" id="L307">        return this.sqlite;</span>
     }
 
     public Vendor getSqlServer() {
-<span class="nc" id="L311">        return this.sqlServer;</span>
+<span class="fc" id="L311">        return this.sqlServer;</span>
     }
 
     public Vendor getNeo4j() {
-<span class="nc" id="L315">        return this.neo4j;</span>
+<span class="fc" id="L315">        return this.neo4j;</span>
     }
     
     public Vendor getVendor() {
-<span class="nc" id="L319">        return this.vendor;</span>
+<span class="fc" id="L319">        return this.vendor;</span>
     }
 
     public void setVendor(Vendor vendor) {
@@ -324,27 +324,27 @@ public class MediatorVendor {
 <span class="fc" id="L324">    }</span>
 
     public Vendor getVendorByUser() {
-<span class="nc" id="L327">        return this.vendorByUser;</span>
+<span class="fc" id="L327">        return this.vendorByUser;</span>
     }
 
     public void setVendorByUser(Vendor vendorByUser) {
-<span class="nc" id="L331">        this.vendorByUser = vendorByUser;</span>
-<span class="nc" id="L332">    }</span>
+<span class="fc" id="L331">        this.vendorByUser = vendorByUser;</span>
+<span class="fc" id="L332">    }</span>
 
     public List&lt;Vendor&gt; getVendors() {
-<span class="nc" id="L335">        return this.vendors;</span>
+<span class="fc" id="L335">        return this.vendors;</span>
     }
 
     public Vendor getDb2() {
-<span class="nc" id="L339">        return this.db2;</span>
+<span class="fc" id="L339">        return this.db2;</span>
     }
 
     public Vendor getHsqldb() {
-<span class="nc" id="L343">        return this.hsqldb;</span>
+<span class="fc" id="L343">        return this.hsqldb;</span>
     }
 
     public Vendor getDerby() {
-<span class="nc" id="L347">        return this.derby;</span>
+<span class="fc" id="L347">        return this.derby;</span>
     }
 
     public Vendor getOracle() {

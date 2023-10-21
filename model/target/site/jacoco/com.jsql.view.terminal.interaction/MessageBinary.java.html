@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class MessageBinary implements InteractionCommand {
     
-<span class="nc" id="L22">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L22">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * Text to append to the Binary log area.
@@ -29,14 +29,14 @@ public class MessageBinary implements InteractionCommand {
     /**
      * @param interactionParams Text to append
      */
-<span class="nc" id="L32">    public MessageBinary(Object[] interactionParams) {</span>
+<span class="fc" id="L32">    public MessageBinary(Object[] interactionParams) {</span>
         
-<span class="nc" id="L34">        this.text = (String) interactionParams[0];</span>
-<span class="nc" id="L35">    }</span>
+<span class="fc" id="L34">        this.text = (String) interactionParams[0];</span>
+<span class="fc" id="L35">    }</span>
 
     @Override
     public void execute() {
-<span class="nc" id="L39">        LOGGER.info(this.text::trim);</span>
-<span class="nc" id="L40">    }</span>
+<span class="fc" id="L39">        LOGGER.info(this.text::trim);</span>
+<span class="fc" id="L40">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

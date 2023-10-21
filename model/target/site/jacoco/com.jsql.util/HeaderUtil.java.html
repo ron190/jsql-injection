@@ -50,31 +50,31 @@ public class HeaderUtil {
      */
     public static void sanitizeHeaders(Builder httpRequest, SimpleEntry&lt;String, String&gt; header) {
         
-<span class="nc" id="L53">        String keyHeader = header.getKey().trim();</span>
-<span class="nc" id="L54">        String valueHeader = header.getValue().trim();</span>
+<span class="fc" id="L53">        String keyHeader = header.getKey().trim();</span>
+<span class="fc" id="L54">        String valueHeader = header.getValue().trim();</span>
 
-<span class="nc bnc" id="L56" title="All 4 branches missed.">        if (&quot;cookie&quot;.equalsIgnoreCase(keyHeader) &amp;&amp; Pattern.compile(&quot;.+=.*&quot;).matcher(valueHeader).find()) {</span>
+<span class="fc bfc" id="L56" title="All 4 branches covered.">        if (&quot;cookie&quot;.equalsIgnoreCase(keyHeader) &amp;&amp; Pattern.compile(&quot;.+=.*&quot;).matcher(valueHeader).find()) {</span>
             // Encode cookies to double quotes: Cookie: key=&quot;&lt;value&gt;&quot;
-<span class="nc" id="L58">            List&lt;String&gt; cookies = Stream.of(valueHeader.split(&quot;;&quot;))</span>
-<span class="nc bnc" id="L59" title="All 4 branches missed.">                .filter(value -&gt; value != null &amp;&amp; value.contains(&quot;=&quot;))</span>
-<span class="nc" id="L60">                .map(cookie -&gt; cookie.split(&quot;=&quot;, 2))</span>
-<span class="nc bnc" id="L61" title="All 2 branches missed.">                .map(arrayEntry -&gt; arrayEntry[0].trim() + &quot;=&quot; + (arrayEntry[1] == null</span>
+<span class="fc" id="L58">            List&lt;String&gt; cookies = Stream.of(valueHeader.split(&quot;;&quot;))</span>
+<span class="pc bpc" id="L59" title="1 of 4 branches missed.">                .filter(value -&gt; value != null &amp;&amp; value.contains(&quot;=&quot;))</span>
+<span class="fc" id="L60">                .map(cookie -&gt; cookie.split(&quot;=&quot;, 2))</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">                .map(arrayEntry -&gt; arrayEntry[0].trim() + &quot;=&quot; + (arrayEntry[1] == null</span>
 <span class="nc" id="L62">                    ? &quot;\&quot;\&quot;&quot;</span>
                     // Url encode: new cookie RFC restricts chars to non ()&lt;&gt;@,;:\&quot;/[]?={} =&gt; server must url decode the request
-<span class="nc" id="L64">                    : &quot;\&quot;&quot; + URLEncoder.encode(</span>
-<span class="nc" id="L65">                        arrayEntry[1].trim().replaceAll(&quot;(^\\s*\&quot;)|(\&quot;\\s*$)&quot;, &quot;&quot;).replace(&quot;+&quot;, &quot;%2B&quot;),</span>
+<span class="fc" id="L64">                    : &quot;\&quot;&quot; + URLEncoder.encode(</span>
+<span class="fc" id="L65">                        arrayEntry[1].trim().replaceAll(&quot;(^\\s*\&quot;)|(\&quot;\\s*$)&quot;, &quot;&quot;).replace(&quot;+&quot;, &quot;%2B&quot;),</span>
                         StandardCharsets.UTF_8
-<span class="nc" id="L67">                    ) + &quot;\&quot;&quot;</span>
+<span class="fc" id="L67">                    ) + &quot;\&quot;&quot;</span>
                 ))
-<span class="nc" id="L69">                .collect(Collectors.toList());</span>
-<span class="nc" id="L70">            valueHeader = String.join(&quot;; &quot;, cookies);</span>
+<span class="fc" id="L69">                .collect(Collectors.toList());</span>
+<span class="fc" id="L70">            valueHeader = String.join(&quot;; &quot;, cookies);</span>
         }
 
-<span class="nc" id="L73">        httpRequest.setHeader(</span>
+<span class="fc" id="L73">        httpRequest.setHeader(</span>
             keyHeader,
-<span class="nc" id="L75">            valueHeader.replaceAll(&quot;[^\\p{ASCII}]&quot;, &quot;&quot;)</span>
+<span class="fc" id="L75">            valueHeader.replaceAll(&quot;[^\\p{ASCII}]&quot;, &quot;&quot;)</span>
         );
-<span class="nc" id="L77">    }</span>
+<span class="fc" id="L77">    }</span>
 
     /**
      * Verify the headers received after a request, detect authentication response and
@@ -86,79 +86,79 @@ public class HeaderUtil {
      */
     public HttpResponse&lt;String&gt; checkResponseHeader(Builder httpRequestBuilder, String body) throws IOException, InterruptedException {
         
-<span class="nc" id="L89">        var httpRequest = httpRequestBuilder.build();</span>
-<span class="nc" id="L90">        HttpResponse&lt;String&gt; httpResponse = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(</span>
+<span class="fc" id="L89">        var httpRequest = httpRequestBuilder.build();</span>
+<span class="fc" id="L90">        HttpResponse&lt;String&gt; httpResponse = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(</span>
             httpRequest,
-<span class="nc" id="L92">            BodyHandlers.ofString()</span>
+<span class="fc" id="L92">            BodyHandlers.ofString()</span>
         );
-<span class="nc" id="L94">        String pageSource = httpResponse.body();</span>
+<span class="fc" id="L94">        String pageSource = httpResponse.body();</span>
         
-<span class="nc" id="L96">        Map&lt;String, String&gt; mapResponseHeaders = ConnectionUtil.getHeadersMap(httpResponse);</span>
+<span class="fc" id="L96">        Map&lt;String, String&gt; mapResponseHeaders = ConnectionUtil.getHeadersMap(httpResponse);</span>
         
-<span class="nc" id="L98">        var responseCode = Integer.toString(httpResponse.statusCode());</span>
+<span class="fc" id="L98">        var responseCode = Integer.toString(httpResponse.statusCode());</span>
 
-<span class="nc" id="L100">        List&lt;HttpCookie&gt; cookies = this.injectionModel.getMediatorUtils().getConnectionUtil().getCookieManager().getCookieStore().getCookies();</span>
-<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (!cookies.isEmpty()) {</span>
-<span class="nc" id="L102">            LOGGER.info(&quot;Cookies set by host: {}&quot;, cookies);</span>
+<span class="fc" id="L100">        List&lt;HttpCookie&gt; cookies = this.injectionModel.getMediatorUtils().getConnectionUtil().getCookieManager().getCookieStore().getCookies();</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (!cookies.isEmpty()) {</span>
+<span class="fc" id="L102">            LOGGER.info(&quot;Cookies set by host: {}&quot;, cookies);</span>
         }
 
-<span class="nc" id="L105">        this.checkResponse(responseCode, mapResponseHeaders);</span>
+<span class="fc" id="L105">        this.checkResponse(responseCode, mapResponseHeaders);</span>
         
-<span class="nc" id="L107">        this.checkStatus(httpResponse);</span>
+<span class="fc" id="L107">        this.checkStatus(httpResponse);</span>
         
-<span class="nc" id="L109">        this.injectionModel.getMediatorUtils().getFormUtil().parseForms(httpResponse.statusCode(), pageSource);</span>
+<span class="fc" id="L109">        this.injectionModel.getMediatorUtils().getFormUtil().parseForms(httpResponse.statusCode(), pageSource);</span>
 
-<span class="nc" id="L111">        this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(pageSource, mapResponseHeaders);</span>
+<span class="fc" id="L111">        this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(pageSource, mapResponseHeaders);</span>
 
-<span class="nc" id="L113">        this.injectionModel.getMediatorUtils().getDigestUtil().parseWwwAuthenticate(mapResponseHeaders);</span>
+<span class="fc" id="L113">        this.injectionModel.getMediatorUtils().getDigestUtil().parseWwwAuthenticate(mapResponseHeaders);</span>
 
-<span class="nc" id="L115">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L115">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
         
-<span class="nc" id="L117">        int sizeHeaders = mapResponseHeaders.keySet()</span>
-<span class="nc" id="L118">            .stream()</span>
-<span class="nc" id="L119">            .map(key -&gt; mapResponseHeaders.get(key).length() + key.length())</span>
-<span class="nc" id="L120">            .mapToInt(Integer::intValue)</span>
-<span class="nc" id="L121">            .sum();</span>
+<span class="fc" id="L117">        int sizeHeaders = mapResponseHeaders.keySet()</span>
+<span class="fc" id="L118">            .stream()</span>
+<span class="fc" id="L119">            .map(key -&gt; mapResponseHeaders.get(key).length() + key.length())</span>
+<span class="fc" id="L120">            .mapToInt(Integer::intValue)</span>
+<span class="fc" id="L121">            .sum();</span>
         
-<span class="nc" id="L123">        float size = (float) (pageSource.length() + sizeHeaders) / 1024;</span>
-<span class="nc" id="L124">        var decimalFormat = new DecimalFormat(&quot;0.000&quot;);</span>
-<span class="nc" id="L125">        msgHeader.put(Header.PAGE_SIZE, decimalFormat.format(size));</span>
+<span class="fc" id="L123">        float size = (float) (pageSource.length() + sizeHeaders) / 1024;</span>
+<span class="fc" id="L124">        var decimalFormat = new DecimalFormat(&quot;0.000&quot;);</span>
+<span class="fc" id="L125">        msgHeader.put(Header.PAGE_SIZE, decimalFormat.format(size));</span>
 
-<span class="nc" id="L127">        msgHeader.put(Header.URL, httpRequest.uri().toURL().toString());</span>
-<span class="nc" id="L128">        msgHeader.put(Header.POST, body);</span>
-<span class="nc" id="L129">        msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));</span>
-<span class="nc" id="L130">        msgHeader.put(Header.RESPONSE, mapResponseHeaders);</span>
-<span class="nc" id="L131">        msgHeader.put(Header.SOURCE, pageSource);</span>
-<span class="nc" id="L132">        msgHeader.put(Header.METADATA_STRATEGY, &quot;#none&quot;);</span>
-<span class="nc" id="L133">        msgHeader.put(Header.METADATA_PROCESS, &quot;test#conn&quot;);</span>
+<span class="fc" id="L127">        msgHeader.put(Header.URL, httpRequest.uri().toURL().toString());</span>
+<span class="fc" id="L128">        msgHeader.put(Header.POST, body);</span>
+<span class="fc" id="L129">        msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));</span>
+<span class="fc" id="L130">        msgHeader.put(Header.RESPONSE, mapResponseHeaders);</span>
+<span class="fc" id="L131">        msgHeader.put(Header.SOURCE, pageSource);</span>
+<span class="fc" id="L132">        msgHeader.put(Header.METADATA_STRATEGY, &quot;#none&quot;);</span>
+<span class="fc" id="L133">        msgHeader.put(Header.METADATA_PROCESS, &quot;test#conn&quot;);</span>
         
         // Inform the view about the log info
-<span class="nc" id="L136">        var request = new Request();</span>
-<span class="nc" id="L137">        request.setMessage(Interaction.MESSAGE_HEADER);</span>
-<span class="nc" id="L138">        request.setParameters(msgHeader);</span>
-<span class="nc" id="L139">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L136">        var request = new Request();</span>
+<span class="fc" id="L137">        request.setMessage(Interaction.MESSAGE_HEADER);</span>
+<span class="fc" id="L138">        request.setParameters(msgHeader);</span>
+<span class="fc" id="L139">        this.injectionModel.sendToViews(request);</span>
         
-<span class="nc" id="L141">        return httpResponse;</span>
+<span class="fc" id="L141">        return httpResponse;</span>
     }
 
     private void checkStatus(HttpResponse&lt;String&gt; response) {
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">        if (response.statusCode() &gt;= 400) {</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (response.statusCode() &gt;= 400) {</span>
 
-<span class="nc bnc" id="L148" title="All 2 branches missed.">            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">            if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {</span>
 
-<span class="nc" id="L150">                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Connection test disabled, skipping error {}...&quot;, response.statusCode());</span>
+<span class="fc" id="L150">                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Connection test disabled, skipping error {}...&quot;, response.statusCode());</span>
 
             } else {
 
-<span class="nc" id="L154">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Try with option 'Disable connection test' to skip HTTP error {}&quot;, response.statusCode());</span>
+<span class="fc" id="L154">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Try with option 'Disable connection test' to skip HTTP error {}&quot;, response.statusCode());</span>
             }
         }
-<span class="nc" id="L157">    }</span>
+<span class="fc" id="L157">    }</span>
 
     private void checkResponse(String responseCode, Map&lt;String, String&gt; mapResponse) {
         
-<span class="nc bnc" id="L161" title="All 2 branches missed.">        if (this.isBasicAuth(responseCode, mapResponse)) {</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">        if (this.isBasicAuth(responseCode, mapResponse)) {</span>
             
 <span class="nc" id="L163">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
@@ -168,7 +168,7 @@ public class HeaderUtil {
                 + &quot;'osUserName:osPassword' encoded in Base64 (use the Coder in jSQL to encode the string).&quot;
             );
         
-<span class="nc bnc" id="L171" title="All 2 branches missed.">        } else if (this.isNtlm(responseCode, mapResponse)) {</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        } else if (this.isNtlm(responseCode, mapResponse)) {</span>
             
 <span class="nc" id="L173">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
@@ -177,14 +177,14 @@ public class HeaderUtil {
                 + &quot;or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]&quot;
             );
         
-<span class="nc bnc" id="L180" title="All 2 branches missed.">        } else if (this.isDigest(responseCode, mapResponse)) {</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        } else if (this.isDigest(responseCode, mapResponse)) {</span>
             
-<span class="nc" id="L182">            LOGGER.log(</span>
+<span class="fc" id="L182">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
                 &quot;Digest Authentication detected: set authentication in preferences.&quot;
             );
         
-<span class="nc bnc" id="L187" title="All 2 branches missed.">        } else if (this.isNegotiate(responseCode, mapResponse)) {</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">        } else if (this.isNegotiate(responseCode, mapResponse)) {</span>
             
 <span class="nc" id="L189">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
@@ -192,15 +192,15 @@ public class HeaderUtil {
                 + &quot;add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]&quot;
             );
             
-<span class="nc bnc" id="L195" title="All 2 branches missed.">        } else if (Pattern.matches(&quot;1\\d\\d&quot;, responseCode)) {</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        } else if (Pattern.matches(&quot;1\\d\\d&quot;, responseCode)) {</span>
             
 <span class="nc" id="L197">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} {} Informational&quot;, FOUND_STATUS_HTTP, responseCode);</span>
             
-<span class="nc bnc" id="L199" title="All 2 branches missed.">        } else if (Pattern.matches(&quot;2\\d\\d&quot;, responseCode)) {</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        } else if (Pattern.matches(&quot;2\\d\\d&quot;, responseCode)) {</span>
             
-<span class="nc" id="L201">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;{} {} Success&quot;, FOUND_STATUS_HTTP, responseCode);</span>
+<span class="fc" id="L201">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;{} {} Success&quot;, FOUND_STATUS_HTTP, responseCode);</span>
             
-<span class="nc bnc" id="L203" title="All 2 branches missed.">        } else if (Pattern.matches(&quot;3\\d\\d&quot;, responseCode)) {</span>
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">        } else if (Pattern.matches(&quot;3\\d\\d&quot;, responseCode)) {</span>
             
 <span class="nc" id="L205">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{} {} Redirection&quot;, FOUND_STATUS_HTTP, responseCode);</span>
             
@@ -213,52 +213,52 @@ public class HeaderUtil {
 <span class="nc" id="L213">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Redirecting to the next page...&quot;);</span>
             }
             
-<span class="nc bnc" id="L216" title="All 2 branches missed.">        } else if (Pattern.matches(REGEX_HTTP_STATUS, responseCode)) {</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        } else if (Pattern.matches(REGEX_HTTP_STATUS, responseCode)) {</span>
             
-<span class="nc" id="L218">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{} {} Client Error&quot;, FOUND_STATUS_HTTP, responseCode);</span>
+<span class="fc" id="L218">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{} {} Client Error&quot;, FOUND_STATUS_HTTP, responseCode);</span>
             
-<span class="nc bnc" id="L220" title="All 2 branches missed.">        } else if (Pattern.matches(&quot;5\\d\\d&quot;, responseCode)) {</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        } else if (Pattern.matches(&quot;5\\d\\d&quot;, responseCode)) {</span>
             
-<span class="nc" id="L222">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{} {} Server Error&quot;, FOUND_STATUS_HTTP, responseCode);</span>
+<span class="fc" id="L222">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{} {} Server Error&quot;, FOUND_STATUS_HTTP, responseCode);</span>
             
         } else {
             
 <span class="nc" id="L226">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} {} Unknown&quot;, FOUND_STATUS_HTTP, responseCode);</span>
         }
-<span class="nc" id="L228">    }</span>
+<span class="fc" id="L228">    }</span>
     
     private boolean isNegotiate(String responseCode, Map&lt;String, String&gt; mapResponse) {
         
-<span class="nc" id="L232">        return</span>
-<span class="nc bnc" id="L233" title="All 2 branches missed.">            Pattern.matches(REGEX_HTTP_STATUS, responseCode)</span>
-<span class="nc bnc" id="L234" title="All 2 branches missed.">            &amp;&amp; mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)</span>
-<span class="nc bnc" id="L235" title="All 2 branches missed.">            &amp;&amp; &quot;Negotiate&quot;.equals(mapResponse.get(WWW_AUTHENTICATE_RESPONSE));</span>
+<span class="fc" id="L232">        return</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">            Pattern.matches(REGEX_HTTP_STATUS, responseCode)</span>
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">            &amp;&amp; mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)</span>
+<span class="pc bnc" id="L235" title="All 2 branches missed.">            &amp;&amp; &quot;Negotiate&quot;.equals(mapResponse.get(WWW_AUTHENTICATE_RESPONSE));</span>
     }
 
     private boolean isDigest(String responseCode, Map&lt;String, String&gt; mapResponse) {
         
-<span class="nc" id="L240">        return</span>
-<span class="nc bnc" id="L241" title="All 2 branches missed.">            Pattern.matches(REGEX_HTTP_STATUS, responseCode)</span>
-<span class="nc bnc" id="L242" title="All 2 branches missed.">            &amp;&amp; mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)</span>
-<span class="nc bnc" id="L243" title="All 2 branches missed.">            &amp;&amp; mapResponse.get(WWW_AUTHENTICATE_RESPONSE) != null</span>
-<span class="nc bnc" id="L244" title="All 2 branches missed.">            &amp;&amp; mapResponse.get(WWW_AUTHENTICATE_RESPONSE).startsWith(&quot;Digest &quot;);</span>
+<span class="fc" id="L240">        return</span>
+<span class="fc bfc" id="L241" title="All 2 branches covered.">            Pattern.matches(REGEX_HTTP_STATUS, responseCode)</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">            &amp;&amp; mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">            &amp;&amp; mapResponse.get(WWW_AUTHENTICATE_RESPONSE) != null</span>
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">            &amp;&amp; mapResponse.get(WWW_AUTHENTICATE_RESPONSE).startsWith(&quot;Digest &quot;);</span>
     }
 
     private boolean isNtlm(String responseCode, Map&lt;String, String&gt; mapResponse) {
         
-<span class="nc" id="L249">        return</span>
-<span class="nc bnc" id="L250" title="All 2 branches missed.">            Pattern.matches(REGEX_HTTP_STATUS, responseCode)</span>
-<span class="nc bnc" id="L251" title="All 2 branches missed.">            &amp;&amp; mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)</span>
-<span class="nc bnc" id="L252" title="All 2 branches missed.">            &amp;&amp; &quot;NTLM&quot;.equals(mapResponse.get(WWW_AUTHENTICATE_RESPONSE));</span>
+<span class="fc" id="L249">        return</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">            Pattern.matches(REGEX_HTTP_STATUS, responseCode)</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">            &amp;&amp; mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)</span>
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">            &amp;&amp; &quot;NTLM&quot;.equals(mapResponse.get(WWW_AUTHENTICATE_RESPONSE));</span>
     }
 
     private boolean isBasicAuth(String responseCode, Map&lt;String, String&gt; mapResponse) {
         
-<span class="nc" id="L257">        return</span>
-<span class="nc bnc" id="L258" title="All 2 branches missed.">            Pattern.matches(REGEX_HTTP_STATUS, responseCode)</span>
-<span class="nc bnc" id="L259" title="All 2 branches missed.">            &amp;&amp; mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)</span>
-<span class="nc bnc" id="L260" title="All 2 branches missed.">            &amp;&amp; mapResponse.get(WWW_AUTHENTICATE_RESPONSE) != null</span>
-<span class="nc bnc" id="L261" title="All 2 branches missed.">            &amp;&amp; mapResponse.get(WWW_AUTHENTICATE_RESPONSE).startsWith(&quot;Basic &quot;);</span>
+<span class="fc" id="L257">        return</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">            Pattern.matches(REGEX_HTTP_STATUS, responseCode)</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">            &amp;&amp; mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)</span>
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">            &amp;&amp; mapResponse.get(WWW_AUTHENTICATE_RESPONSE) != null</span>
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">            &amp;&amp; mapResponse.get(WWW_AUTHENTICATE_RESPONSE).startsWith(&quot;Basic &quot;);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

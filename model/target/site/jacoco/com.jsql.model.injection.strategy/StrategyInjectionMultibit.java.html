@@ -40,51 +40,51 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
 
-<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled()) {</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled()) {</span>
 
-<span class="nc" id="L45">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Skipping strategy Multibit disabled&quot;);</span>
-<span class="nc" id="L46">            return;</span>
+<span class="fc" id="L45">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Skipping strategy Multibit disabled&quot;);</span>
+<span class="fc" id="L46">            return;</span>
         }
 
-<span class="nc" id="L49">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} Multibit...&quot;, () -&gt; I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));</span>
+<span class="fc" id="L49">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} Multibit...&quot;, () -&gt; I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY));</span>
 
-<span class="nc" id="L51">        this.injectionMultibit = new InjectionMultibit(this.injectionModel, BooleanMode.STACKED);</span>
-<span class="nc" id="L52">        this.isApplicable = this.injectionMultibit.isInjectable();</span>
+<span class="fc" id="L51">        this.injectionMultibit = new InjectionMultibit(this.injectionModel, BooleanMode.STACKED);</span>
+<span class="fc" id="L52">        this.isApplicable = this.injectionMultibit.isInjectable();</span>
 
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (this.isApplicable) {</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (this.isApplicable) {</span>
 
-<span class="nc" id="L56">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;{} Multibit injection&quot;, () -&gt; I18nUtil.valueByKey(KEY_LOG_VULNERABLE));</span>
+<span class="fc" id="L56">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;{} Multibit injection&quot;, () -&gt; I18nUtil.valueByKey(KEY_LOG_VULNERABLE));</span>
 
-<span class="nc" id="L58">            this.allow();</span>
+<span class="fc" id="L58">            this.allow();</span>
 
-<span class="nc" id="L60">            var requestMessageBinary = new Request();</span>
-<span class="nc" id="L61">            requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);</span>
-<span class="nc" id="L62">            requestMessageBinary.setParameters(this.injectionMultibit.getInfoMessage());</span>
-<span class="nc" id="L63">            this.injectionModel.sendToViews(requestMessageBinary);</span>
+<span class="fc" id="L60">            var requestMessageBinary = new Request();</span>
+<span class="fc" id="L61">            requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);</span>
+<span class="fc" id="L62">            requestMessageBinary.setParameters(this.injectionMultibit.getInfoMessage());</span>
+<span class="fc" id="L63">            this.injectionModel.sendToViews(requestMessageBinary);</span>
 
-<span class="nc" id="L65">        } else {</span>
+<span class="fc" id="L65">        } else {</span>
 
-<span class="nc" id="L67">            this.unallow();</span>
+<span class="fc" id="L67">            this.unallow();</span>
         }
-<span class="nc" id="L69">    }</span>
+<span class="fc" id="L69">    }</span>
 
     @Override
     public void allow(int... i) {
         
-<span class="nc" id="L74">        this.markVulnerability(Interaction.MARK_MULTI_VULNERABLE);</span>
-<span class="nc" id="L75">    }</span>
+<span class="fc" id="L74">        this.markVulnerability(Interaction.MARK_MULTI_VULNERABLE);</span>
+<span class="fc" id="L75">    }</span>
 
     @Override
     public void unallow(int... i) {
         
-<span class="nc" id="L80">        this.markVulnerability(Interaction.MARK_MULTI_INVULNERABLE);</span>
-<span class="nc" id="L81">    }</span>
+<span class="fc" id="L80">        this.markVulnerability(Interaction.MARK_MULTI_INVULNERABLE);</span>
+<span class="fc" id="L81">    }</span>
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
         
-<span class="nc" id="L86">        return this.injectionMultibit.inject(</span>
-<span class="nc" id="L87">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition),</span>
+<span class="fc" id="L86">        return this.injectionMultibit.inject(</span>
+<span class="fc" id="L87">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition),</span>
             stoppable
         );
     }
@@ -92,30 +92,30 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
     @Override
     public void activateWhenApplicable() {
 
-<span class="nc bnc" id="L95" title="All 4 branches missed.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
+<span class="fc bfc" id="L95" title="All 4 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
 
-<span class="nc" id="L97">            LOGGER.log(</span>
+<span class="fc" id="L97">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 &quot;{} [{}]&quot;,
-<span class="nc" id="L100">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
+<span class="fc" id="L100">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
                 this::getName
             );
-<span class="nc" id="L103">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getMultibit());</span>
+<span class="fc" id="L103">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getMultibit());</span>
 
-<span class="nc" id="L105">            var requestMarkBlindStrategy = new Request();</span>
-<span class="nc" id="L106">            requestMarkBlindStrategy.setMessage(Interaction.MARK_MULTI_STRATEGY);</span>
-<span class="nc" id="L107">            this.injectionModel.sendToViews(requestMarkBlindStrategy);</span>
+<span class="fc" id="L105">            var requestMarkBlindStrategy = new Request();</span>
+<span class="fc" id="L106">            requestMarkBlindStrategy.setMessage(Interaction.MARK_MULTI_STRATEGY);</span>
+<span class="fc" id="L107">            this.injectionModel.sendToViews(requestMarkBlindStrategy);</span>
         }
-<span class="nc" id="L109">    }</span>
+<span class="fc" id="L109">    }</span>
     
     @Override
     public String getPerformanceLength() {
-<span class="nc" id="L113">        return VendorYaml.DEFAULT_CAPACITY;</span>
+<span class="fc" id="L113">        return VendorYaml.DEFAULT_CAPACITY;</span>
     }
     
     @Override
     public String getName() {
-<span class="nc" id="L118">        return &quot;Multibit&quot;;</span>
+<span class="fc" id="L118">        return &quot;Multibit&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

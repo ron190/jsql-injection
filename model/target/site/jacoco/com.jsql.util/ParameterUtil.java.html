@@ -129,38 +129,38 @@ public class ParameterUtil {
         
 <span class="fc" id="L130">        this.checkOneOrLessStar();</span>
 <span class="fc" id="L131">        this.checkStarMatchMethod();</span>
-<span class="nc" id="L132">        this.checkMethodNotEmpty();</span>
-<span class="nc" id="L133">        this.checkMultipart();</span>
-<span class="nc" id="L134">    }</span>
+<span class="fc" id="L132">        this.checkMethodNotEmpty();</span>
+<span class="fc" id="L133">        this.checkMultipart();</span>
+<span class="fc" id="L134">    }</span>
 
     private void checkMultipart() throws InjectionFailureException {
 
-<span class="nc" id="L138">        isMultipartRequest = false;</span>
+<span class="fc" id="L138">        isMultipartRequest = false;</span>
 
-<span class="nc" id="L140">        if (</span>
-<span class="nc" id="L141">            this.getListHeader()</span>
-<span class="nc" id="L142">            .stream()</span>
-<span class="nc" id="L143">            .filter(entry -&gt; &quot;Content-Type&quot;.equals(entry.getKey()))</span>
-<span class="nc bnc" id="L144" title="All 2 branches missed.">            .anyMatch(entry -&gt;</span>
-<span class="nc bnc" id="L145" title="All 2 branches missed.">                entry.getValue() != null</span>
-<span class="nc bnc" id="L146" title="All 2 branches missed.">                &amp;&amp; entry.getValue().contains(&quot;multipart/form-data&quot;)</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">                &amp;&amp; entry.getValue().contains(&quot;boundary=&quot;)</span>
+<span class="fc" id="L140">        if (</span>
+<span class="fc" id="L141">            this.getListHeader()</span>
+<span class="fc" id="L142">            .stream()</span>
+<span class="fc" id="L143">            .filter(entry -&gt; &quot;Content-Type&quot;.equals(entry.getKey()))</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">            .anyMatch(entry -&gt;</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">                entry.getValue() != null</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">                &amp;&amp; entry.getValue().contains(&quot;multipart/form-data&quot;)</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">                &amp;&amp; entry.getValue().contains(&quot;boundary=&quot;)</span>
             )
         ) {
-<span class="nc" id="L150">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Multipart boundary found in header&quot;);</span>
-<span class="nc" id="L151">            Matcher matcherBoundary = Pattern.compile(&quot;boundary=([^;]*)&quot;).matcher(this.getHeaderFromEntries());</span>
-<span class="nc bnc" id="L152" title="All 2 branches missed.">            if (matcherBoundary.find()) {</span>
-<span class="nc" id="L153">                String boundary = matcherBoundary.group(1);</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">                if (!this.rawRequest.contains(boundary)) {</span>
+<span class="fc" id="L150">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Multipart boundary found in header&quot;);</span>
+<span class="fc" id="L151">            Matcher matcherBoundary = Pattern.compile(&quot;boundary=([^;]*)&quot;).matcher(this.getHeaderFromEntries());</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">            if (matcherBoundary.find()) {</span>
+<span class="fc" id="L153">                String boundary = matcherBoundary.group(1);</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">                if (!this.rawRequest.contains(boundary)) {</span>
 <span class="nc" id="L155">                    throw new InjectionFailureException(</span>
 <span class="nc" id="L156">                        String.format(&quot;Incorrect multipart data, boundary not found in body: %s&quot;, boundary)</span>
                     );
                 } else {
-<span class="nc" id="L159">                    isMultipartRequest = true;</span>
+<span class="fc" id="L159">                    isMultipartRequest = true;</span>
                 }
             }
         }
-<span class="nc" id="L163">    }</span>
+<span class="fc" id="L163">    }</span>
 
     private void checkOneOrLessStar() throws InjectionFailureException {
         
@@ -200,7 +200,7 @@ public class ParameterUtil {
 
 <span class="fc" id="L201">        if (</span>
 <span class="fc bfc" id="L202" title="All 2 branches covered.">            this.getQueryStringFromEntries().contains(InjectionModel.STAR)</span>
-<span class="pc bpc" id="L203" title="2 of 4 branches missed.">            &amp;&amp; methodInjection != this.injectionModel.getMediatorMethod().getQuery()</span>
+<span class="pc bpc" id="L203" title="1 of 4 branches missed.">            &amp;&amp; methodInjection != this.injectionModel.getMediatorMethod().getQuery()</span>
             &amp;&amp; !isCheckingAllParam
         ) {
             
@@ -208,7 +208,7 @@ public class ParameterUtil {
             
 <span class="fc" id="L209">        } else if (</span>
 <span class="fc bfc" id="L210" title="All 2 branches covered.">            this.getRequestFromEntries().contains(InjectionModel.STAR)</span>
-<span class="pc bpc" id="L211" title="2 of 4 branches missed.">            &amp;&amp; methodInjection != this.injectionModel.getMediatorMethod().getRequest()</span>
+<span class="pc bpc" id="L211" title="1 of 4 branches missed.">            &amp;&amp; methodInjection != this.injectionModel.getMediatorMethod().getRequest()</span>
             &amp;&amp; !isCheckingAllParam
         ) {
             
@@ -216,7 +216,7 @@ public class ParameterUtil {
             
 <span class="fc" id="L217">        } else if (</span>
 <span class="fc bfc" id="L218" title="All 2 branches covered.">            this.getHeaderFromEntries().contains(InjectionModel.STAR)</span>
-<span class="pc bpc" id="L219" title="2 of 4 branches missed.">            &amp;&amp; methodInjection != this.injectionModel.getMediatorMethod().getHeader()</span>
+<span class="pc bpc" id="L219" title="1 of 4 branches missed.">            &amp;&amp; methodInjection != this.injectionModel.getMediatorMethod().getHeader()</span>
             &amp;&amp; !isCheckingAllParam
         ) {
             
@@ -232,7 +232,7 @@ public class ParameterUtil {
 <span class="fc" id="L232">        if (</span>
 <span class="pc bpc" id="L233" title="1 of 4 branches missed.">            methodInjection == this.injectionModel.getMediatorMethod().getQuery()</span>
             &amp;&amp; !isCheckingAllParam
-<span class="pc bpc" id="L235" title="1 of 2 branches missed.">            &amp;&amp; this.getListQueryString().isEmpty()</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">            &amp;&amp; this.getListQueryString().isEmpty()</span>
 <span class="pc bpc" id="L236" title="1 of 2 branches missed.">            &amp;&amp; !this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)</span>
         ) {
             
@@ -240,35 +240,35 @@ public class ParameterUtil {
         
 <span class="fc" id="L241">        } else if (</span>
 <span class="fc bfc" id="L242" title="All 2 branches covered.">            methodInjection == this.injectionModel.getMediatorMethod().getRequest()</span>
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">            &amp;&amp; this.getListRequest().isEmpty()</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">            &amp;&amp; this.getListRequest().isEmpty()</span>
         ) {
             
 <span class="fc" id="L246">            throw new InjectionFailureException(&quot;Incorrect Request format&quot;);</span>
             
 <span class="fc" id="L248">        } else if (</span>
-<span class="pc bpc" id="L249" title="1 of 2 branches missed.">            methodInjection == this.injectionModel.getMediatorMethod().getHeader()</span>
-<span class="pc bpc" id="L250" title="1 of 2 branches missed.">            &amp;&amp; this.getListHeader().isEmpty()</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">            methodInjection == this.injectionModel.getMediatorMethod().getHeader()</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">            &amp;&amp; this.getListHeader().isEmpty()</span>
         ) {
             
 <span class="fc" id="L253">            throw new InjectionFailureException(&quot;Incorrect Header format&quot;);</span>
         }
-<span class="nc" id="L255">    }</span>
+<span class="fc" id="L255">    }</span>
     
     public String initializeStar(SimpleEntry&lt;String, String&gt; parameterToInject) {
         
         String characterInsertionByUser;
 
-<span class="nc bnc" id="L261" title="All 2 branches missed.">        if (parameterToInject == null) {</span>
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">        if (parameterToInject == null) {</span>
             
 <span class="nc" id="L263">            characterInsertionByUser = InjectionModel.STAR;</span>
             
         } else {
             
-<span class="nc" id="L267">            characterInsertionByUser = parameterToInject.getValue();</span>
-<span class="nc" id="L268">            parameterToInject.setValue(InjectionModel.STAR);</span>
+<span class="fc" id="L267">            characterInsertionByUser = parameterToInject.getValue();</span>
+<span class="fc" id="L268">            parameterToInject.setValue(InjectionModel.STAR);</span>
         }
         
-<span class="nc" id="L271">        return characterInsertionByUser;</span>
+<span class="fc" id="L271">        return characterInsertionByUser;</span>
     }
 
     public void initializeQueryString(String urlQuery) throws MalformedURLException, URISyntaxException {
@@ -307,8 +307,8 @@ public class ParameterUtil {
 <span class="fc" id="L307">                .map(o -&gt; </span>
 <span class="fc" id="L308">                    new SimpleEntry&lt;&gt;(</span>
                         o[0],
-<span class="pc bpc" id="L310" title="1 of 2 branches missed.">                        o[1] == null</span>
-<span class="nc" id="L311">                        ? StringUtils.EMPTY</span>
+<span class="fc bfc" id="L310" title="All 2 branches covered.">                        o[1] == null</span>
+<span class="fc" id="L311">                        ? StringUtils.EMPTY</span>
 <span class="fc" id="L312">                        : o[1]</span>
                     )
                 )
@@ -323,10 +323,10 @@ public class ParameterUtil {
 
 <span class="fc bfc" id="L324" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(rawRequest)) {</span>
 
-<span class="pc bpc" id="L326" title="1 of 2 branches missed.">            if (isMultipartRequest()) {</span>
+<span class="fc bfc" id="L326" title="All 2 branches covered.">            if (isMultipartRequest()) {</span>
                 // Pass request containing star * param without any parsing
-<span class="nc" id="L328">                this.listRequest = new ArrayList&lt;&gt;(</span>
-<span class="nc" id="L329">                    List.of(new SimpleEntry&lt;&gt;(</span>
+<span class="fc" id="L328">                this.listRequest = new ArrayList&lt;&gt;(</span>
+<span class="fc" id="L329">                    List.of(new SimpleEntry&lt;&gt;(</span>
                         rawRequest,
                         &quot;&quot;
                     ))
@@ -339,8 +339,8 @@ public class ParameterUtil {
 <span class="fc" id="L339">                    .map(o -&gt;</span>
 <span class="fc" id="L340">                        new SimpleEntry&lt;&gt;(</span>
                             o[0],
-<span class="pc bpc" id="L342" title="1 of 2 branches missed.">                            o[1] == null</span>
-<span class="nc" id="L343">                            ? StringUtils.EMPTY</span>
+<span class="fc bfc" id="L342" title="All 2 branches covered.">                            o[1] == null</span>
+<span class="fc" id="L343">                            ? StringUtils.EMPTY</span>
 <span class="fc" id="L344">                            : o[1]</span>
                         )
                     )
@@ -384,11 +384,11 @@ public class ParameterUtil {
 <span class="fc" id="L384">            .filter(Objects::nonNull)</span>
 <span class="fc" id="L385">            .map(entry -&gt; {</span>
 <span class="fc" id="L386">                if (</span>
-<span class="pc bpc" id="L387" title="1 of 2 branches missed.">                    this.injectionModel.getMediatorStrategy().getStrategy() == this.injectionModel.getMediatorStrategy().getMultibit()</span>
-<span class="nc bnc" id="L388" title="All 2 branches missed.">                    &amp;&amp; entry.getValue() != null</span>
-<span class="nc bnc" id="L389" title="All 2 branches missed.">                    &amp;&amp; entry.getValue().contains(InjectionModel.STAR)</span>
+<span class="fc bfc" id="L387" title="All 2 branches covered.">                    this.injectionModel.getMediatorStrategy().getStrategy() == this.injectionModel.getMediatorStrategy().getMultibit()</span>
+<span class="pc bpc" id="L388" title="1 of 2 branches missed.">                    &amp;&amp; entry.getValue() != null</span>
+<span class="fc bfc" id="L389" title="All 2 branches covered.">                    &amp;&amp; entry.getValue().contains(InjectionModel.STAR)</span>
                 ) {
-<span class="nc" id="L391">                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), InjectionModel.STAR);</span>
+<span class="fc" id="L391">                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), InjectionModel.STAR);</span>
                 } else {
 <span class="fc" id="L393">                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), entry.getValue());</span>
                 }
@@ -404,7 +404,7 @@ public class ParameterUtil {
 <span class="fc" id="L404">                String.format(</span>
                     FORMAT_KEY_VALUE,
 <span class="fc" id="L406">                    entry.getKey(),</span>
-<span class="pc bpc" id="L407" title="1 of 2 branches missed.">                    StringUtils.isEmpty(entry.getValue()) ? &quot;&quot; : entry.getValue()</span>
+<span class="fc bfc" id="L407" title="All 2 branches covered.">                    StringUtils.isEmpty(entry.getValue()) ? &quot;&quot; : entry.getValue()</span>
                 )
             )
 <span class="fc" id="L410">            .collect(Collectors.joining(&quot;&amp;&quot;));</span>
@@ -427,20 +427,20 @@ public class ParameterUtil {
 
     public boolean isRequestSoap() {
         
-<span class="nc" id="L430">        return this.rawRequest</span>
-<span class="nc" id="L431">            .trim()</span>
-<span class="nc" id="L432">            .matches(&quot;^(&lt;soapenv:|&lt;\\?xml).*&quot;);</span>
+<span class="fc" id="L430">        return this.rawRequest</span>
+<span class="fc" id="L431">            .trim()</span>
+<span class="fc" id="L432">            .matches(&quot;^(&lt;soapenv:|&lt;\\?xml).*&quot;);</span>
     }
 
     
     // Getters / setters
     
     public String getRawRequest() {
-<span class="nc" id="L439">        return this.rawRequest;</span>
+<span class="fc" id="L439">        return this.rawRequest;</span>
     }
 
     public String getRawHeader() {
-<span class="nc" id="L443">        return this.rawHeader;</span>
+<span class="fc" id="L443">        return this.rawHeader;</span>
     }
 
     public List&lt;SimpleEntry&lt;String, String&gt;&gt; getListRequest() {
@@ -456,16 +456,16 @@ public class ParameterUtil {
     }
 
     public void setListHeader(List&lt;SimpleEntry&lt;String, String&gt;&gt; listHeader) {
-<span class="nc" id="L459">        this.listHeader = listHeader;</span>
-<span class="nc" id="L460">    }</span>
+<span class="fc" id="L459">        this.listHeader = listHeader;</span>
+<span class="fc" id="L460">    }</span>
     
     public List&lt;SimpleEntry&lt;String, String&gt;&gt; getListQueryString() {
 <span class="fc" id="L463">        return this.listQueryString;</span>
     }
     
     public void setListQueryString(List&lt;SimpleEntry&lt;String, String&gt;&gt; listQueryString) {
-<span class="nc" id="L467">        this.listQueryString = listQueryString;</span>
-<span class="nc" id="L468">    }</span>
+<span class="fc" id="L467">        this.listQueryString = listQueryString;</span>
+<span class="fc" id="L468">    }</span>
 
     public boolean isMultipartRequest() {
 <span class="fc" id="L471">        return isMultipartRequest;</span>

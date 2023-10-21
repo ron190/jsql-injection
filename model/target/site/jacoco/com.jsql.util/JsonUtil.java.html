@@ -87,7 +87,7 @@ public class JsonUtil {
             
 <span class="fc" id="L88">            JsonUtil.scanJsonObject(jsonEntity, parentName, parentXPath, attributesXPath);</span>
             
-<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        } else if (jsonEntity instanceof JSONArray) {</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        } else if (jsonEntity instanceof JSONArray) {</span>
             
 <span class="fc" id="L92">            JsonUtil.scanJsonArray(jsonEntity, parentName, parentXPath, attributesXPath);</span>
         }
@@ -162,41 +162,41 @@ public class JsonUtil {
     
     public boolean testJsonParam(AbstractMethodInjection methodInjection, SimpleEntry&lt;String, String&gt; paramStar) {
         
-<span class="nc" id="L165">        var hasFoundInjection = false;</span>
+<span class="fc" id="L165">        var hasFoundInjection = false;</span>
         
         // Remove STAR at the end of parameter, STAR will be added inside json data instead
-<span class="nc" id="L168">        paramStar.setValue(paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));</span>
+<span class="fc" id="L168">        paramStar.setValue(paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));</span>
         
         // Will test if current value is a JSON entity
-<span class="nc" id="L171">        Object jsonEntity = JsonUtil.getJson(paramStar.getValue());</span>
+<span class="fc" id="L171">        Object jsonEntity = JsonUtil.getJson(paramStar.getValue());</span>
         
         // Define a tree of JSON attributes with path as the key: root.a =&gt; value of a
-<span class="nc" id="L174">        List&lt;SimpleEntry&lt;String, String&gt;&gt; attributesJson = JsonUtil.createEntries(jsonEntity, &quot;root&quot;, null);</span>
+<span class="fc" id="L174">        List&lt;SimpleEntry&lt;String, String&gt;&gt; attributesJson = JsonUtil.createEntries(jsonEntity, &quot;root&quot;, null);</span>
         
         // Loop through each JSON values
-<span class="nc bnc" id="L177" title="All 2 branches missed.">        for (SimpleEntry&lt;String, String&gt; parentXPath: attributesJson) {</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">        for (SimpleEntry&lt;String, String&gt; parentXPath: attributesJson) {</span>
             
             // Erase previously defined *
-<span class="nc" id="L180">            JsonUtil.createEntries(jsonEntity, &quot;root&quot;, null);</span>
+<span class="fc" id="L180">            JsonUtil.createEntries(jsonEntity, &quot;root&quot;, null);</span>
             
             // Add * to current parameter's value
-<span class="nc" id="L183">            JsonUtil.createEntries(jsonEntity, &quot;root&quot;, parentXPath);</span>
+<span class="fc" id="L183">            JsonUtil.createEntries(jsonEntity, &quot;root&quot;, parentXPath);</span>
             
             // Replace param value by marked one.
-<span class="nc" id="L186">            paramStar.setValue(jsonEntity.toString());</span>
+<span class="fc" id="L186">            paramStar.setValue(jsonEntity.toString());</span>
             
             try {
-<span class="nc" id="L189">                LOGGER.log(</span>
+<span class="fc" id="L189">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_INFORM,
                     &quot;Checking JSON {} parameter {}={}&quot;,
-<span class="nc" id="L192">                    methodInjection::name,</span>
-<span class="nc" id="L193">                    parentXPath::getKey,</span>
-<span class="nc" id="L194">                    () -&gt; parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+<span class="fc" id="L192">                    methodInjection::name,</span>
+<span class="fc" id="L193">                    parentXPath::getKey,</span>
+<span class="fc" id="L194">                    () -&gt; parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                 );
                 
                 // Test current JSON value marked with * for injection
                 // Keep original param
-<span class="nc" id="L199">                hasFoundInjection = this.injectionModel.getMediatorStrategy().testStrategies(paramStar);</span>
+<span class="fc" id="L199">                hasFoundInjection = this.injectionModel.getMediatorStrategy().testStrategies(paramStar);</span>
                 
                 // Injection successful
                 break;
@@ -221,19 +221,19 @@ public class JsonUtil {
                 
                 // Erase * at the end of each params
                 // TODO useless
-<span class="nc" id="L224">                methodInjection</span>
-<span class="nc" id="L225">                .getParams()</span>
-<span class="nc" id="L226">                .forEach(e -&gt;</span>
-<span class="nc" id="L227">                    e.setValue(</span>
-<span class="nc" id="L228">                        e.getValue().replaceAll(</span>
-<span class="nc" id="L229">                            Pattern.quote(InjectionModel.STAR) +&quot;$&quot;,</span>
+<span class="fc" id="L224">                methodInjection</span>
+<span class="fc" id="L225">                .getParams()</span>
+<span class="fc" id="L226">                .forEach(e -&gt;</span>
+<span class="fc" id="L227">                    e.setValue(</span>
+<span class="fc" id="L228">                        e.getValue().replaceAll(</span>
+<span class="fc" id="L229">                            Pattern.quote(InjectionModel.STAR) +&quot;$&quot;,</span>
                             StringUtils.EMPTY
                         )
                     )
                 );
                 
                 // Erase * from JSON if failure
-<span class="nc bnc" id="L236" title="All 2 branches missed.">                if (!hasFoundInjection) {</span>
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">                if (!hasFoundInjection) {</span>
                     
 <span class="nc" id="L238">                    paramStar.setValue(</span>
 <span class="nc" id="L239">                        paramStar.getValue().replace(</span>
@@ -245,7 +245,7 @@ public class JsonUtil {
             }
 <span class="nc" id="L246">        }</span>
         
-<span class="nc" id="L248">        return hasFoundInjection;</span>
+<span class="fc" id="L248">        return hasFoundInjection;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -105,18 +105,18 @@ public class DataAccess {
      */
     public void getDatabaseInfos() {
         
-<span class="nc" id="L108">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;LOG_FETCHING_INFORMATIONS&quot;));</span>
+<span class="fc" id="L108">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;LOG_FETCHING_INFORMATIONS&quot;));</span>
         
-<span class="nc" id="L110">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
+<span class="fc" id="L110">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
 
-<span class="nc" id="L112">        var resultToParse = &quot;&quot;;</span>
+<span class="fc" id="L112">        var resultToParse = &quot;&quot;;</span>
         
         try {
-<span class="nc" id="L115">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="nc" id="L116">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlInfos(),</span>
+<span class="fc" id="L115">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="fc" id="L116">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlInfos(),</span>
                 sourcePage,
-<span class="nc" id="L118">                false,</span>
-<span class="nc" id="L119">                0,</span>
+<span class="fc" id="L118">                false,</span>
+<span class="fc" id="L119">                0,</span>
                 null,
                 &quot;metadata&quot;
             );
@@ -128,27 +128,27 @@ public class DataAccess {
 <span class="nc" id="L128">        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug</span>
 
 <span class="nc" id="L130">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
-<span class="nc" id="L131">        }</span>
+<span class="pc" id="L131">        }</span>
 
-<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (StringUtils.isEmpty(resultToParse)) {</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(resultToParse)) {</span>
             
 <span class="nc" id="L135">            this.injectionModel.sendResponseFromSite(&quot;Incorrect metadata&quot;, sourcePage[0].trim());</span>
         }
         
         try {
-<span class="nc" id="L139">            String versionDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[0].replaceAll(&quot;\\s+&quot;, StringUtils.SPACE);</span>
-<span class="nc" id="L140">            String nameDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[1];</span>
-<span class="nc" id="L141">            String username = resultToParse.split(ENCLOSE_VALUE_RGX)[2];</span>
+<span class="fc" id="L139">            String versionDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[0].replaceAll(&quot;\\s+&quot;, StringUtils.SPACE);</span>
+<span class="fc" id="L140">            String nameDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[1];</span>
+<span class="fc" id="L141">            String username = resultToParse.split(ENCLOSE_VALUE_RGX)[2];</span>
             
-<span class="nc" id="L143">            var infos = String.format(</span>
+<span class="fc" id="L143">            var infos = String.format(</span>
                 &quot;Database [%s] on %s [%s] for user [%s]&quot;,
                 nameDatabase,
-<span class="nc" id="L146">                this.injectionModel.getMediatorVendor().getVendor(),</span>
+<span class="fc" id="L146">                this.injectionModel.getMediatorVendor().getVendor(),</span>
                 versionDatabase,
                 username
             );
             
-<span class="nc" id="L151">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, infos);</span>
+<span class="fc" id="L151">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, infos);</span>
             
 <span class="nc" id="L153">        } catch (ArrayIndexOutOfBoundsException e) {</span>
 
@@ -157,8 +157,8 @@ public class DataAccess {
 <span class="nc" id="L157">                String.format(&quot;%s: %s&quot;, I18nUtil.valueByKey(&quot;LOG_DB_METADATA_INCORRECT&quot;), resultToParse)</span>
             );
 <span class="nc" id="L159">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, I18nUtil.valueByKey(&quot;LOG_DB_METADATA_WARN&quot;));</span>
-<span class="nc" id="L160">        }</span>
-<span class="nc" id="L161">    }</span>
+<span class="fc" id="L160">        }</span>
+<span class="fc" id="L161">    }</span>
     
     /**
      * Get database names and table counts and send them to the view.&lt;br&gt;
@@ -171,19 +171,19 @@ public class DataAccess {
      */
     public List&lt;Database&gt; listDatabases() throws JSqlException {
         
-<span class="nc" id="L174">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;LOG_FETCHING_DATABASES&quot;));</span>
+<span class="fc" id="L174">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;LOG_FETCHING_DATABASES&quot;));</span>
         
-<span class="nc" id="L176">        List&lt;Database&gt; databases = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L176">        List&lt;Database&gt; databases = new ArrayList&lt;&gt;();</span>
         
-<span class="nc" id="L178">        String resultToParse = StringUtils.EMPTY;</span>
+<span class="fc" id="L178">        String resultToParse = StringUtils.EMPTY;</span>
         
         try {
-<span class="nc" id="L181">            var sourcePage = new String[]{ StringUtils.EMPTY };</span>
-<span class="nc" id="L182">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="nc" id="L183">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlDatabases(),</span>
+<span class="fc" id="L181">            var sourcePage = new String[]{ StringUtils.EMPTY };</span>
+<span class="fc" id="L182">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="fc" id="L183">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlDatabases(),</span>
                 sourcePage,
-<span class="nc" id="L185">                true,</span>
-<span class="nc" id="L186">                0,</span>
+<span class="fc" id="L185">                true,</span>
+<span class="fc" id="L186">                0,</span>
                 null,
                 &quot;databases&quot;
             );
@@ -195,40 +195,40 @@ public class DataAccess {
 <span class="nc" id="L195">        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug</span>
 
 <span class="nc" id="L197">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
-<span class="nc" id="L198">        }</span>
+<span class="pc" id="L198">        }</span>
 
         // Parse all data we have retrieved
-<span class="nc" id="L201">        var regexSearch = Pattern.compile(</span>
+<span class="fc" id="L201">        var regexSearch = Pattern.compile(</span>
                 MODE
                 + ENCLOSE_VALUE_RGX
                 + CELL_TABLE
                 + ENCLOSE_VALUE_RGX
             )
-<span class="nc" id="L207">            .matcher(resultToParse);</span>
+<span class="fc" id="L207">            .matcher(resultToParse);</span>
 
-<span class="nc bnc" id="L209" title="All 2 branches missed.">        if (!regexSearch.find()) {</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">        if (!regexSearch.find()) {</span>
             
 <span class="nc" id="L211">            throw new InjectionFailureException(&quot;No match while injecting databases&quot;);</span>
         }
         
-<span class="nc" id="L214">        regexSearch.reset();</span>
+<span class="fc" id="L214">        regexSearch.reset();</span>
 
         // Build an array of Database objects from the data we have parsed
-<span class="nc bnc" id="L217" title="All 2 branches missed.">        while (regexSearch.find()) {</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">        while (regexSearch.find()) {</span>
             
-<span class="nc" id="L219">            String databaseName = regexSearch.group(1);</span>
-<span class="nc" id="L220">            String tableCount = regexSearch.group(2);</span>
+<span class="fc" id="L219">            String databaseName = regexSearch.group(1);</span>
+<span class="fc" id="L220">            String tableCount = regexSearch.group(2);</span>
 
-<span class="nc" id="L222">            var newDatabase = new Database(databaseName, tableCount);</span>
-<span class="nc" id="L223">            databases.add(newDatabase);</span>
-<span class="nc" id="L224">        }</span>
+<span class="fc" id="L222">            var newDatabase = new Database(databaseName, tableCount);</span>
+<span class="fc" id="L223">            databases.add(newDatabase);</span>
+<span class="fc" id="L224">        }</span>
 
-<span class="nc" id="L226">        var request = new Request();</span>
-<span class="nc" id="L227">        request.setMessage(Interaction.ADD_DATABASES);</span>
-<span class="nc" id="L228">        request.setParameters(databases);</span>
-<span class="nc" id="L229">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L226">        var request = new Request();</span>
+<span class="fc" id="L227">        request.setMessage(Interaction.ADD_DATABASES);</span>
+<span class="fc" id="L228">        request.setParameters(databases);</span>
+<span class="fc" id="L229">        this.injectionModel.sendToViews(request);</span>
         
-<span class="nc" id="L231">        return databases;</span>
+<span class="fc" id="L231">        return databases;</span>
     }
 
     /**
@@ -245,25 +245,25 @@ public class DataAccess {
         
         // Reset stoppedByUser if list of Databases is partial
         // and some Tables are still reachable
-<span class="nc" id="L248">        this.injectionModel.setIsStoppedByUser(false);</span>
+<span class="fc" id="L248">        this.injectionModel.setIsStoppedByUser(false);</span>
         
         // Inform the view that database has just been used
-<span class="nc" id="L251">        var requestStartProgress = new Request();</span>
-<span class="nc" id="L252">        requestStartProgress.setMessage(Interaction.START_PROGRESS);</span>
-<span class="nc" id="L253">        requestStartProgress.setParameters(database);</span>
-<span class="nc" id="L254">        this.injectionModel.sendToViews(requestStartProgress);</span>
+<span class="fc" id="L251">        var requestStartProgress = new Request();</span>
+<span class="fc" id="L252">        requestStartProgress.setMessage(Interaction.START_PROGRESS);</span>
+<span class="fc" id="L253">        requestStartProgress.setParameters(database);</span>
+<span class="fc" id="L254">        this.injectionModel.sendToViews(requestStartProgress);</span>
 
-<span class="nc" id="L256">        var tableCount = Integer.toString(database.getChildCount());</span>
+<span class="fc" id="L256">        var tableCount = Integer.toString(database.getChildCount());</span>
         
-<span class="nc" id="L258">        String resultToParse = StringUtils.EMPTY;</span>
+<span class="fc" id="L258">        String resultToParse = StringUtils.EMPTY;</span>
         
         try {
-<span class="nc" id="L261">            var pageSource = new String[]{ StringUtils.EMPTY };</span>
-<span class="nc" id="L262">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="nc" id="L263">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTables(database),</span>
+<span class="fc" id="L261">            var pageSource = new String[]{ StringUtils.EMPTY };</span>
+<span class="fc" id="L262">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="fc" id="L263">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTables(database),</span>
                 pageSource,
-<span class="nc" id="L265">                true,</span>
-<span class="nc" id="L266">                Integer.parseInt(tableCount),</span>
+<span class="fc" id="L265">                true,</span>
+<span class="fc" id="L266">                Integer.parseInt(tableCount),</span>
                 database,
                 &quot;tables&quot;
             );
@@ -275,47 +275,47 @@ public class DataAccess {
 <span class="nc" id="L275">        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug</span>
 
 <span class="nc" id="L277">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
-<span class="nc" id="L278">        }</span>
+<span class="pc" id="L278">        }</span>
 
         // Parse all the data we have retrieved
-<span class="nc" id="L281">        var regexSearch = Pattern.compile(</span>
+<span class="fc" id="L281">        var regexSearch = Pattern.compile(</span>
                 MODE
                 + ENCLOSE_VALUE_RGX
                 + CELL_TABLE
                 + ENCLOSE_VALUE_RGX
             )
-<span class="nc" id="L287">            .matcher(resultToParse);</span>
+<span class="fc" id="L287">            .matcher(resultToParse);</span>
         
-<span class="nc" id="L289">        var requestEndProgress = new Request();</span>
-<span class="nc" id="L290">        requestEndProgress.setMessage(Interaction.END_PROGRESS);</span>
-<span class="nc" id="L291">        requestEndProgress.setParameters(database);</span>
-<span class="nc" id="L292">        this.injectionModel.sendToViews(requestEndProgress);</span>
+<span class="fc" id="L289">        var requestEndProgress = new Request();</span>
+<span class="fc" id="L290">        requestEndProgress.setMessage(Interaction.END_PROGRESS);</span>
+<span class="fc" id="L291">        requestEndProgress.setParameters(database);</span>
+<span class="fc" id="L292">        this.injectionModel.sendToViews(requestEndProgress);</span>
         
-<span class="nc bnc" id="L294" title="All 2 branches missed.">        if (!regexSearch.find()) {</span>
+<span class="pc bpc" id="L294" title="1 of 2 branches missed.">        if (!regexSearch.find()) {</span>
             
 <span class="nc" id="L296">            throw new InjectionFailureException(&quot;No match while injecting tables&quot;);</span>
         }
         
-<span class="nc" id="L299">        regexSearch.reset();</span>
+<span class="fc" id="L299">        regexSearch.reset();</span>
         
-<span class="nc" id="L301">        List&lt;Table&gt; tables = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L301">        List&lt;Table&gt; tables = new ArrayList&lt;&gt;();</span>
         
         // Build an array of Table objects from the data we have parsed
-<span class="nc bnc" id="L304" title="All 2 branches missed.">        while (regexSearch.find()) {</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">        while (regexSearch.find()) {</span>
             
-<span class="nc" id="L306">            String tableName = regexSearch.group(1);</span>
-<span class="nc" id="L307">            String rowCount = regexSearch.group(2);</span>
+<span class="fc" id="L306">            String tableName = regexSearch.group(1);</span>
+<span class="fc" id="L307">            String rowCount = regexSearch.group(2);</span>
             
-<span class="nc" id="L309">            var newTable = new Table(tableName, rowCount, database);</span>
-<span class="nc" id="L310">            tables.add(newTable);</span>
-<span class="nc" id="L311">        }</span>
+<span class="fc" id="L309">            var newTable = new Table(tableName, rowCount, database);</span>
+<span class="fc" id="L310">            tables.add(newTable);</span>
+<span class="fc" id="L311">        }</span>
         
-<span class="nc" id="L313">        var requestAddTables = new Request();</span>
-<span class="nc" id="L314">        requestAddTables.setMessage(Interaction.ADD_TABLES);</span>
-<span class="nc" id="L315">        requestAddTables.setParameters(tables);</span>
-<span class="nc" id="L316">        this.injectionModel.sendToViews(requestAddTables);</span>
+<span class="fc" id="L313">        var requestAddTables = new Request();</span>
+<span class="fc" id="L314">        requestAddTables.setMessage(Interaction.ADD_TABLES);</span>
+<span class="fc" id="L315">        requestAddTables.setParameters(tables);</span>
+<span class="fc" id="L316">        this.injectionModel.sendToViews(requestAddTables);</span>
         
-<span class="nc" id="L318">        return tables;</span>
+<span class="fc" id="L318">        return tables;</span>
     }
 
     /**
@@ -330,23 +330,23 @@ public class DataAccess {
      */
     public List&lt;Column&gt; listColumns(Table table) throws JSqlException {
         
-<span class="nc" id="L333">        List&lt;Column&gt; columns = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L333">        List&lt;Column&gt; columns = new ArrayList&lt;&gt;();</span>
         
         // Inform the view that table has just been used
-<span class="nc" id="L336">        var requestStartProgress = new Request();</span>
-<span class="nc" id="L337">        requestStartProgress.setMessage(Interaction.START_INDETERMINATE_PROGRESS);</span>
-<span class="nc" id="L338">        requestStartProgress.setParameters(table);</span>
-<span class="nc" id="L339">        this.injectionModel.sendToViews(requestStartProgress);</span>
+<span class="fc" id="L336">        var requestStartProgress = new Request();</span>
+<span class="fc" id="L337">        requestStartProgress.setMessage(Interaction.START_INDETERMINATE_PROGRESS);</span>
+<span class="fc" id="L338">        requestStartProgress.setParameters(table);</span>
+<span class="fc" id="L339">        this.injectionModel.sendToViews(requestStartProgress);</span>
 
-<span class="nc" id="L341">        String resultToParse = StringUtils.EMPTY;</span>
+<span class="fc" id="L341">        String resultToParse = StringUtils.EMPTY;</span>
         
         try {
-<span class="nc" id="L344">            var pageSource = new String[]{ StringUtils.EMPTY };</span>
-<span class="nc" id="L345">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="nc" id="L346">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlColumns(table),</span>
+<span class="fc" id="L344">            var pageSource = new String[]{ StringUtils.EMPTY };</span>
+<span class="fc" id="L345">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="fc" id="L346">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlColumns(table),</span>
                 pageSource,
-<span class="nc" id="L348">                true,</span>
-<span class="nc" id="L349">                0,</span>
+<span class="fc" id="L348">                true,</span>
+<span class="fc" id="L349">                0,</span>
                 table,
                 &quot;columns&quot;
             );
@@ -358,50 +358,50 @@ public class DataAccess {
 <span class="nc" id="L358">        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug</span>
 
 <span class="nc" id="L360">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
-<span class="nc" id="L361">        }</span>
+<span class="pc" id="L361">        }</span>
 
         // Build SQLite columns
-<span class="nc bnc" id="L364" title="All 2 branches missed.">        if (this.injectionModel.getMediatorVendor().isSqlite()) {</span>
+<span class="fc bfc" id="L364" title="All 2 branches covered.">        if (this.injectionModel.getMediatorVendor().isSqlite()) {</span>
             
-<span class="nc" id="L366">            resultToParse = this.injectionModel.getMediatorVendor().getSqlite().transformSqlite(resultToParse);</span>
+<span class="fc" id="L366">            resultToParse = this.injectionModel.getMediatorVendor().getSqlite().transformSqlite(resultToParse);</span>
         }
         
         // Parse all the data we have retrieved
-<span class="nc" id="L370">        var regexSearch = Pattern.compile(</span>
+<span class="fc" id="L370">        var regexSearch = Pattern.compile(</span>
                 MODE
                 + ENCLOSE_VALUE_RGX
                 + CELL_TABLE
                 + ENCLOSE_VALUE_RGX
             )
-<span class="nc" id="L376">            .matcher(resultToParse);</span>
+<span class="fc" id="L376">            .matcher(resultToParse);</span>
 
-<span class="nc" id="L378">        var requestEndProgress = new Request();</span>
-<span class="nc" id="L379">        requestEndProgress.setMessage(Interaction.END_INDETERMINATE_PROGRESS);</span>
-<span class="nc" id="L380">        requestEndProgress.setParameters(table);</span>
-<span class="nc" id="L381">        this.injectionModel.sendToViews(requestEndProgress);</span>
+<span class="fc" id="L378">        var requestEndProgress = new Request();</span>
+<span class="fc" id="L379">        requestEndProgress.setMessage(Interaction.END_INDETERMINATE_PROGRESS);</span>
+<span class="fc" id="L380">        requestEndProgress.setParameters(table);</span>
+<span class="fc" id="L381">        this.injectionModel.sendToViews(requestEndProgress);</span>
 
-<span class="nc bnc" id="L383" title="All 2 branches missed.">        if (!regexSearch.find()) {</span>
+<span class="pc bpc" id="L383" title="1 of 2 branches missed.">        if (!regexSearch.find()) {</span>
             
 <span class="nc" id="L385">            throw new InjectionFailureException(&quot;No match while injecting columns&quot;);</span>
         }
 
-<span class="nc" id="L388">        regexSearch.reset();</span>
+<span class="fc" id="L388">        regexSearch.reset();</span>
 
         // Build an array of Column objects from the data we have parsed
-<span class="nc bnc" id="L391" title="All 2 branches missed.">        while (regexSearch.find()) {</span>
+<span class="fc bfc" id="L391" title="All 2 branches covered.">        while (regexSearch.find()) {</span>
             
-<span class="nc" id="L393">            String nameColumn = regexSearch.group(1);</span>
+<span class="fc" id="L393">            String nameColumn = regexSearch.group(1);</span>
 
-<span class="nc" id="L395">            var column = new Column(nameColumn, table);</span>
-<span class="nc" id="L396">            columns.add(column);</span>
-<span class="nc" id="L397">        }</span>
+<span class="fc" id="L395">            var column = new Column(nameColumn, table);</span>
+<span class="fc" id="L396">            columns.add(column);</span>
+<span class="fc" id="L397">        }</span>
 
-<span class="nc" id="L399">        var requestAddColumns = new Request();</span>
-<span class="nc" id="L400">        requestAddColumns.setMessage(Interaction.ADD_COLUMNS);</span>
-<span class="nc" id="L401">        requestAddColumns.setParameters(columns);</span>
-<span class="nc" id="L402">        this.injectionModel.sendToViews(requestAddColumns);</span>
+<span class="fc" id="L399">        var requestAddColumns = new Request();</span>
+<span class="fc" id="L400">        requestAddColumns.setMessage(Interaction.ADD_COLUMNS);</span>
+<span class="fc" id="L401">        requestAddColumns.setParameters(columns);</span>
+<span class="fc" id="L402">        this.injectionModel.sendToViews(requestAddColumns);</span>
         
-<span class="nc" id="L404">        return columns;</span>
+<span class="fc" id="L404">        return columns;</span>
     }
 
     /**
@@ -416,65 +416,65 @@ public class DataAccess {
      */
     public String[][] listValues(List&lt;Column&gt; columnsBean) throws JSqlException {
         
-<span class="nc" id="L419">        var databaseBean = (Database) columnsBean.get(0).getParent().getParent();</span>
-<span class="nc" id="L420">        var tableBean = (Table) columnsBean.get(0).getParent();</span>
-<span class="nc" id="L421">        int rowCount = columnsBean.get(0).getParent().getChildCount();</span>
+<span class="fc" id="L419">        var databaseBean = (Database) columnsBean.get(0).getParent().getParent();</span>
+<span class="fc" id="L420">        var tableBean = (Table) columnsBean.get(0).getParent();</span>
+<span class="fc" id="L421">        int rowCount = columnsBean.get(0).getParent().getChildCount();</span>
 
         // Inform the view that table has just been used
-<span class="nc" id="L424">        var request = new Request();</span>
-<span class="nc" id="L425">        request.setMessage(Interaction.START_PROGRESS);</span>
-<span class="nc" id="L426">        request.setParameters(tableBean);</span>
-<span class="nc" id="L427">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L424">        var request = new Request();</span>
+<span class="fc" id="L425">        request.setMessage(Interaction.START_PROGRESS);</span>
+<span class="fc" id="L426">        request.setParameters(tableBean);</span>
+<span class="fc" id="L427">        this.injectionModel.sendToViews(request);</span>
 
         // Build an array of column names
-<span class="nc" id="L430">        List&lt;String&gt; columnsName = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L431" title="All 2 branches missed.">        for (AbstractElementDatabase columnBean: columnsBean) {</span>
-<span class="nc" id="L432">            columnsName.add(columnBean.toString());</span>
-<span class="nc" id="L433">        }</span>
+<span class="fc" id="L430">        List&lt;String&gt; columnsName = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L431" title="All 2 branches covered.">        for (AbstractElementDatabase columnBean: columnsBean) {</span>
+<span class="fc" id="L432">            columnsName.add(columnBean.toString());</span>
+<span class="fc" id="L433">        }</span>
 
         // From that array, build the SQL fields nicely
         // =&gt; col1{%}col2...
         // ==&gt; trim(ifnull(`col1`,0x00)),0x7f,trim(ifnull(`Col2`,0x00))...
-<span class="nc" id="L438">        String[] columns = columnsName.toArray(new String[0]);</span>
+<span class="fc" id="L438">        String[] columns = columnsName.toArray(new String[0]);</span>
 
-<span class="nc" id="L440">        List&lt;List&lt;String&gt;&gt; listValues = this.getRows(databaseBean, tableBean, rowCount, columns);</span>
+<span class="fc" id="L440">        List&lt;List&lt;String&gt;&gt; listValues = this.getRows(databaseBean, tableBean, rowCount, columns);</span>
 
         // Add the default title to the columns: row number, occurrence
-<span class="nc" id="L443">        columnsName.add(0, StringUtils.EMPTY);</span>
-<span class="nc" id="L444">        columnsName.add(0, StringUtils.EMPTY);</span>
+<span class="fc" id="L443">        columnsName.add(0, StringUtils.EMPTY);</span>
+<span class="fc" id="L444">        columnsName.add(0, StringUtils.EMPTY);</span>
 
-<span class="nc" id="L446">        String[][] table = this.getTable(columnsName, listValues);</span>
+<span class="fc" id="L446">        String[][] table = this.getTable(columnsName, listValues);</span>
 
-<span class="nc" id="L448">        columns = columnsName.toArray(new String[0]);</span>
+<span class="fc" id="L448">        columns = columnsName.toArray(new String[0]);</span>
         
         // Group the columns names, values and Table object in one array
-<span class="nc" id="L451">        var objectData = new Object[]{ columns, table, tableBean };</span>
+<span class="fc" id="L451">        var objectData = new Object[]{ columns, table, tableBean };</span>
 
-<span class="nc" id="L453">        var requestCreateValuesTab = new Request();</span>
-<span class="nc" id="L454">        requestCreateValuesTab.setMessage(Interaction.CREATE_VALUES_TAB);</span>
-<span class="nc" id="L455">        requestCreateValuesTab.setParameters(objectData);</span>
-<span class="nc" id="L456">        this.injectionModel.sendToViews(requestCreateValuesTab);</span>
+<span class="fc" id="L453">        var requestCreateValuesTab = new Request();</span>
+<span class="fc" id="L454">        requestCreateValuesTab.setMessage(Interaction.CREATE_VALUES_TAB);</span>
+<span class="fc" id="L455">        requestCreateValuesTab.setParameters(objectData);</span>
+<span class="fc" id="L456">        this.injectionModel.sendToViews(requestCreateValuesTab);</span>
 
-<span class="nc" id="L458">        var requestEndProgress = new Request();</span>
-<span class="nc" id="L459">        requestEndProgress.setMessage(Interaction.END_PROGRESS);</span>
-<span class="nc" id="L460">        requestEndProgress.setParameters(tableBean);</span>
-<span class="nc" id="L461">        this.injectionModel.sendToViews(requestEndProgress);</span>
+<span class="fc" id="L458">        var requestEndProgress = new Request();</span>
+<span class="fc" id="L459">        requestEndProgress.setMessage(Interaction.END_PROGRESS);</span>
+<span class="fc" id="L460">        requestEndProgress.setParameters(tableBean);</span>
+<span class="fc" id="L461">        this.injectionModel.sendToViews(requestEndProgress);</span>
         
-<span class="nc" id="L463">        return table;</span>
+<span class="fc" id="L463">        return table;</span>
     }
 
     private List&lt;List&lt;String&gt;&gt; getRows(Database database, Table table, int rowCount, String[] columns) throws InjectionFailureException {
         
-<span class="nc" id="L468">        String resultToParse = StringUtils.EMPTY;</span>
+<span class="fc" id="L468">        String resultToParse = StringUtils.EMPTY;</span>
         
         try {
-<span class="nc" id="L471">            var pageSource = new String[]{ StringUtils.EMPTY };</span>
+<span class="fc" id="L471">            var pageSource = new String[]{ StringUtils.EMPTY };</span>
             
-<span class="nc" id="L473">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="nc" id="L474">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlRows(columns, database, table),</span>
+<span class="fc" id="L473">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="fc" id="L474">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlRows(columns, database, table),</span>
                 pageSource,
-<span class="nc" id="L476">                true,</span>
-<span class="nc" id="L477">                rowCount,</span>
+<span class="fc" id="L476">                true,</span>
+<span class="fc" id="L477">                rowCount,</span>
                 table,
                 &quot;rows&quot;
             );
@@ -486,9 +486,9 @@ public class DataAccess {
 <span class="nc" id="L486">        } catch (Exception e) {</span>
             
 <span class="nc" id="L488">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
-<span class="nc" id="L489">        }</span>
+<span class="pc" id="L489">        }</span>
 
-<span class="nc" id="L491">        return SuspendableGetRows.parse(resultToParse);</span>
+<span class="fc" id="L491">        return SuspendableGetRows.parse(resultToParse);</span>
     }
 
     private static String getPartialResultAndLog(AbstractSlidingException e, String resultToParse) {
@@ -511,16 +511,16 @@ public class DataAccess {
     private String[][] getTable(List&lt;String&gt; columnsName, List&lt;List&lt;String&gt;&gt; values) {
         
         // Build a proper 2D array from the data
-<span class="nc" id="L514">        var table = new String[values.size()][columnsName.size()];</span>
+<span class="fc" id="L514">        var table = new String[values.size()][columnsName.size()];</span>
         
-<span class="nc bnc" id="L516" title="All 2 branches missed.">        for (var indexRow = 0 ; indexRow &lt; values.size() ; indexRow++) {</span>
+<span class="fc bfc" id="L516" title="All 2 branches covered.">        for (var indexRow = 0 ; indexRow &lt; values.size() ; indexRow++) {</span>
             
-<span class="nc" id="L518">            var isIncomplete = false;</span>
+<span class="fc" id="L518">            var isIncomplete = false;</span>
             
-<span class="nc bnc" id="L520" title="All 2 branches missed.">            for (var indexColumn = 0 ; indexColumn &lt; columnsName.size() ; indexColumn++) {</span>
+<span class="fc bfc" id="L520" title="All 2 branches covered.">            for (var indexColumn = 0 ; indexColumn &lt; columnsName.size() ; indexColumn++) {</span>
                 
                 try {
-<span class="nc" id="L523">                    table[indexRow][indexColumn] = values.get(indexRow).get(indexColumn);</span>
+<span class="fc" id="L523">                    table[indexRow][indexColumn] = values.get(indexRow).get(indexColumn);</span>
                     
 <span class="nc" id="L525">                } catch (IndexOutOfBoundsException e) {</span>
                     
@@ -529,10 +529,10 @@ public class DataAccess {
 <span class="nc" id="L529">                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey(&quot;LOG_LIST_VALUES_INCOMPLETE&quot;));</span>
                     
 <span class="nc" id="L531">                    LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="nc" id="L532">                }</span>
+<span class="fc" id="L532">                }</span>
             }
             
-<span class="nc bnc" id="L535" title="All 2 branches missed.">            if (isIncomplete) {</span>
+<span class="pc bpc" id="L535" title="1 of 2 branches missed.">            if (isIncomplete) {</span>
                 
 <span class="nc" id="L537">                int logIndexRow = indexRow;</span>
 <span class="nc" id="L538">                LOGGER.log(</span>
@@ -551,7 +551,7 @@ public class DataAccess {
             }
         }
         
-<span class="nc" id="L554">        return table;</span>
+<span class="fc" id="L554">        return table;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

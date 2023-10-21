@@ -6,15 +6,15 @@ public class ThreadFactoryCallable implements ThreadFactory {
     
     private final String nameThread;
     
-<span class="nc" id="L9">    public ThreadFactoryCallable(String nameThread) {</span>
+<span class="fc" id="L9">    public ThreadFactoryCallable(String nameThread) {</span>
         
-<span class="nc" id="L11">        this.nameThread = nameThread;</span>
-<span class="nc" id="L12">    }</span>
+<span class="fc" id="L11">        this.nameThread = nameThread;</span>
+<span class="fc" id="L12">    }</span>
     
     @Override
     public Thread newThread(Runnable runnable) {
         
-<span class="nc" id="L17">        return new Thread(runnable, this.nameThread);</span>
+<span class="fc" id="L17">        return new Thread(runnable, this.nameThread);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

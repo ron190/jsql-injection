@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class AddTables implements InteractionCommand {
     
-<span class="nc" id="L26">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L26">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * Tables retrieved by the view.
@@ -34,22 +34,22 @@ public class AddTables implements InteractionCommand {
      * @param interactionParams List of tables retrieved by the Model
      */
     @SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L37">    public AddTables(Object[] interactionParams) {</span>
+<span class="fc" id="L37">    public AddTables(Object[] interactionParams) {</span>
         
         // Get list of tables from the model
-<span class="nc" id="L40">        this.tables = (List&lt;Table&gt;) interactionParams[0];</span>
-<span class="nc" id="L41">    }</span>
+<span class="fc" id="L40">        this.tables = (List&lt;Table&gt;) interactionParams[0];</span>
+<span class="fc" id="L41">    }</span>
 
     @Override
     public void execute() {
         
-<span class="nc" id="L46">        LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
+<span class="fc" id="L46">        LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
         
         // Loop into the list of tables
-<span class="nc bnc" id="L49" title="All 2 branches missed.">        for (Table table: this.tables) {</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (Table table: this.tables) {</span>
             
-<span class="nc" id="L51">            LOGGER.debug(table);</span>
-<span class="nc" id="L52">        }</span>
-<span class="nc" id="L53">    }</span>
+<span class="fc" id="L51">            LOGGER.debug(table);</span>
+<span class="fc" id="L52">        }</span>
+<span class="fc" id="L53">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

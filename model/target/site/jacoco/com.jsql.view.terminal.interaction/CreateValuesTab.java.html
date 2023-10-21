@@ -22,7 +22,7 @@ import java.util.Arrays;
  */
 public class CreateValuesTab implements InteractionCommand {
     
-<span class="nc" id="L25">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L25">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * 2D array of values.
@@ -32,17 +32,17 @@ public class CreateValuesTab implements InteractionCommand {
     /**
      * @param interactionParams Names of columns, table's values and corresponding table
      */
-<span class="nc" id="L35">    public CreateValuesTab(Object[] interactionParams) {</span>
+<span class="fc" id="L35">    public CreateValuesTab(Object[] interactionParams) {</span>
         
         // 2D array of values
-<span class="nc" id="L38">        this.data = (String[][]) interactionParams[1];</span>
-<span class="nc" id="L39">    }</span>
+<span class="fc" id="L38">        this.data = (String[][]) interactionParams[1];</span>
+<span class="fc" id="L39">    }</span>
 
     @Override
     public void execute() {
         
-<span class="nc" id="L44">        LOGGER.debug(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
-<span class="nc" id="L45">        LOGGER.debug(() -&gt; Arrays.deepToString(this.data));</span>
-<span class="nc" id="L46">    }</span>
+<span class="pc" id="L44">        LOGGER.debug(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
+<span class="pc" id="L45">        LOGGER.debug(() -&gt; Arrays.deepToString(this.data));</span>
+<span class="fc" id="L46">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
