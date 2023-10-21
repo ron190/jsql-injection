@@ -133,15 +133,16 @@ jobs:
         git checkout docs
         pwd && ls -al
         ls shared-resources/view/target/site/jacoco/ shared-resources/model/target/site/jacoco/ shared-resources/view/target/pit-reports/ shared-resources/model/target/pit-reports/
-        rm -r view/site/ view/pit-reports/ model/site/ model/pit-reports/ || echo 'Folder(s) not found'
+        rm -r view/target/site/ view/target/pit-reports/ model/target/site/ model/target/pit-reports/ || echo 'Folder(s) not found'
         FOLDER=view/target/site/jacoco bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
         FOLDER=model/target/site/jacoco bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
         FOLDER=view/target/pit-reports bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
         FOLDER=model/target/pit-reports bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
         git pull  # Integrate the remote changes
         git config user.name "Github Actions"
-        git config user.email no-response@github.com        
-        git add -f view/target/ model/target/
+        git config user.email no-response@github.com    
+        # folders view/target model/target contain other build files from 'Install Maven dependencies'
+        git add -f view/target/site/jacoco model/target/site/jacoco view/target/pit-reports model/target/pit-reports
         git commit -m "Publish jacoco and pitest reports"
         git push
 
