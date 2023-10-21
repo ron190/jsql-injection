@@ -42,8 +42,8 @@ function __createAsset {
 
 function __gitPush {
   git pull  # Integrate the remote changes
-  git config --global user.name "Github Actions"
-  git config --global user.email no-response@github.com
+  git config user.name "Github Actions"
+  git config user.email no-response@github.com
   echo "diff:" && git diff --name-only
   git add pom.xml $CONFIG_FILE $WEB_SERVICE_FILE
   echo "diff --staged:" && git diff --staged --name-only
