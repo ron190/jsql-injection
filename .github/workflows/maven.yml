@@ -138,9 +138,9 @@ jobs:
         FOLDER=model/target/site/jacoco bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
         FOLDER=view/target/pit-reports bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
         FOLDER=model/target/pit-reports bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
-        git pull -s ours  # ignore remote changes
         git config user.name "Github Actions"
         git config user.email no-response@github.com    
+        git pull -s ours  # ignore remote changes
         # folders view/target model/target contain other build files from 'Install Maven dependencies'
         git add -f view/target/site/jacoco model/target/site/jacoco view/target/pit-reports model/target/pit-reports
         git commit -m "Publish jacoco and pitest reports"
