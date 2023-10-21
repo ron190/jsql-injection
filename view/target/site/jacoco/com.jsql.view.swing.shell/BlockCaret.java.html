@@ -85,8 +85,8 @@ public class BlockCaret extends DefaultCaret {
         try {
 <span class="fc" id="L86">            r = comp.modelToView(dot);</span>
             
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">            if (r == null) {</span>
-<span class="nc" id="L89">                return;</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">            if (r == null) {</span>
+<span class="fc" id="L89">                return;</span>
             }
             
 <span class="fc" id="L92">            dotChar = comp.getText(dot, 1).charAt(0);</span>
@@ -102,7 +102,7 @@ public class BlockCaret extends DefaultCaret {
 <span class="fc" id="L102">            dotChar = '_';</span>
         }
 
-<span class="pc bpc" id="L105" title="1 of 4 branches missed.">        if (this.x != r.x || this.y != r.y) {</span>
+<span class="fc bfc" id="L105" title="All 4 branches covered.">        if (this.x != r.x || this.y != r.y) {</span>
             
             // paint() has been called directly, without a previous call to
             // damage(), so do some cleanup. (This happens, for example, when
