@@ -124,12 +124,12 @@ public abstract class AbstractShell extends JTextPane {
      */
     public void reset() {
         
-<span class="fc" id="L127">        this.isEdited[0] = false;</span>
-<span class="fc" id="L128">        this.setEditable(true);</span>
-<span class="fc" id="L129">        this.displayPrompt(false);</span>
-<span class="fc" id="L130">        this.setCaretPosition(this.getDocument().getLength());</span>
-<span class="fc" id="L131">        this.setCursor(null);</span>
-<span class="fc" id="L132">    }</span>
+<span class="nc" id="L127">        this.isEdited[0] = false;</span>
+<span class="nc" id="L128">        this.setEditable(true);</span>
+<span class="nc" id="L129">        this.displayPrompt(false);</span>
+<span class="nc" id="L130">        this.setCaretPosition(this.getDocument().getLength());</span>
+<span class="nc" id="L131">        this.setCursor(null);</span>
+<span class="nc" id="L132">    }</span>
 
     /**
      * Add a text at the end of textpane.
@@ -139,13 +139,13 @@ public abstract class AbstractShell extends JTextPane {
         
         try {
 <span class="fc" id="L141">            var doc = this.getDocument();</span>
-<span class="fc" id="L142">            doc.insertString(doc.getLength(), string, null);</span>
+<span class="nc" id="L142">            doc.insertString(doc.getLength(), string, null);</span>
             
 <span class="nc" id="L144">        } catch (BadLocationException e) {</span>
             
 <span class="nc" id="L146">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L147">        }</span>
-<span class="fc" id="L148">    }</span>
+<span class="nc" id="L147">        }</span>
+<span class="nc" id="L148">    }</span>
     
     /**
      * Append prompt to textpane, measure prompt the first time is used.
@@ -177,7 +177,7 @@ public abstract class AbstractShell extends JTextPane {
 <span class="fc" id="L177">            StyleConstants.setForeground(this.style, color);</span>
 <span class="fc" id="L178">            this.styledDocument.insertString(this.styledDocument.getLength(), string, this.style);</span>
             
-<span class="fc bfc" id="L180" title="All 2 branches covered.">            if (isAddingPrompt) {</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">            if (isAddingPrompt) {</span>
                 
 <span class="fc" id="L182">                this.prompt += string;</span>
             }
@@ -266,11 +266,11 @@ public abstract class AbstractShell extends JTextPane {
     }
 
     public UUID getUuidShell() {
-<span class="fc" id="L269">        return this.uuidShell;</span>
+<span class="nc" id="L269">        return this.uuidShell;</span>
     }
 
     public String getUrlShell() {
-<span class="fc" id="L273">        return this.urlShell;</span>
+<span class="nc" id="L273">        return this.urlShell;</span>
     }
 
     public String getPrompt() {
