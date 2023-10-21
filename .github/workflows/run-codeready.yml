@@ -18,8 +18,7 @@ jobs:
       - name: Install CRDA
         uses: redhat-actions/openshift-tools-installer@v1
         with:
-          source: github
-          github_pat: ${{ github.token }}
+          source: mirror
           crda: latest
 
       - name: CRDA Scan
