@@ -68,10 +68,10 @@ public class KeyAdapterTerminal extends KeyAdapter {
 <span class="fc" id="L68">            int lineNumber = this.terminal.getLineOfOffset(caretPosition);</span>
     
             // Cancel every user keyboard input if another command has just been sent
-<span class="fc bfc" id="L71" title="All 2 branches covered.">            if (this.terminal.getIsEdited()[0]) {</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">            if (this.terminal.getIsEdited()[0]) {</span>
                 
-<span class="fc" id="L73">                keyEvent.consume();</span>
-<span class="fc" id="L74">                return;</span>
+<span class="nc" id="L73">                keyEvent.consume();</span>
+<span class="nc" id="L74">                return;</span>
             }
     
             // Get user input
@@ -226,10 +226,10 @@ public class KeyAdapterTerminal extends KeyAdapter {
 <span class="fc" id="L226">        this.terminal.setEditable(false);</span>
    
         // Populate cmd list for key up/down
-<span class="pc bpc" id="L229" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(command[0].trim())) {</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(command[0].trim())) {</span>
             
-<span class="nc" id="L231">            this.cmds.add(command[0].trim());</span>
-<span class="nc" id="L232">            this.cmdsIndex = this.cmds.size();</span>
+<span class="fc" id="L231">            this.cmds.add(command[0].trim());</span>
+<span class="fc" id="L232">            this.cmdsIndex = this.cmds.size();</span>
         }
    
         // Thread to give back control of the GUI to the user (SwingUtilities does not)
@@ -243,25 +243,25 @@ public class KeyAdapterTerminal extends KeyAdapter {
 <span class="fc" id="L243">                AbstractShell terminalCommand = KeyAdapterTerminal.this.terminal;</span>
                 
                 // Inside Swing thread to avoid flickering
-<span class="nc" id="L246">                terminalCommand.append(&quot;\n&quot;);</span>
+<span class="fc" id="L246">                terminalCommand.append(&quot;\n&quot;);</span>
                 
-<span class="nc bnc" id="L248" title="All 2 branches missed.">                if (StringUtils.isNotEmpty(command[0].trim())) {</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">                if (StringUtils.isNotEmpty(command[0].trim())) {</span>
                     
-<span class="nc" id="L250">                    terminalCommand.setCaretPosition(terminalCommand.getDocument().getLength());</span>
+<span class="fc" id="L250">                    terminalCommand.setCaretPosition(terminalCommand.getDocument().getLength());</span>
                     
-<span class="nc" id="L252">                    terminalCommand.action(</span>
+<span class="fc" id="L252">                    terminalCommand.action(</span>
                         command[0],
-<span class="nc" id="L254">                        terminalCommand.getUuidShell(),</span>
-<span class="nc" id="L255">                        terminalCommand.getUrlShell(),</span>
+<span class="fc" id="L254">                        terminalCommand.getUuidShell(),</span>
+<span class="fc" id="L255">                        terminalCommand.getUrlShell(),</span>
                         terminalCommand.loginPassword
                     );
                     
                 } else {
                     
-<span class="nc" id="L261">                    terminalCommand.reset();</span>
+<span class="fc" id="L261">                    terminalCommand.reset();</span>
                 }
                 
-<span class="nc" id="L264">                return null;</span>
+<span class="fc" id="L264">                return null;</span>
             }
 <span class="fc" id="L266">        }.execute();</span>
 <span class="fc" id="L267">    }</span>
