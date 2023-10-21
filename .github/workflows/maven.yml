@@ -108,7 +108,7 @@ jobs:
       # Profile usage for skipITs/skipTests (env var MAVEN_OPS not working)
       # Note: 'mvn sonar:sonar' not working, modules reports not found, use 'mvn verify sonar:sonar' for reliability
       # Note: gh actions sonarsource/sonarqube-scan-action not working properly => analysis not reliable
-      run: $DOCKER_RESOURCES/scripts/run-on-docker-no-network.sh 'mvn clean install -P tests -DskipITs'
+      run: $DOCKER_RESOURCES/scripts/run-on-docker-no-network.sh 'mvn clean install -P tests -DskipITs org.pitest:pitest-maven:mutationCoverage'
 
 #    - name: Databases statistics
 #      run: $DOCKER_RESOURCES/scripts/verify.sh
