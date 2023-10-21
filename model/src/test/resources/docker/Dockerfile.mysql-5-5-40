@@ -1,6 +1,0 @@
-FROM mysql:5.5.40
-
-RUN echo "[mysqld]" > /etc/my.cnf
-RUN echo "port=3307" >> /etc/my.cnf
-
-EXPOSE 3307

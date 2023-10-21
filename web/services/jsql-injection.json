@@ -1,8 +1,0 @@
-{
-    "version": "0.95",
-    "news": [
-        "[v0.95] Improve SQL query and star param *",
-        "[Discuss] Open a GitHub discussion: https://github.com/ron190/jsql-injection/discussions",
-        "[Ongoing features] Shell on PostgreSQL, JSP shell, Strategies Position and Duality, Kerberos on CI/CD"
-    ]
-}
