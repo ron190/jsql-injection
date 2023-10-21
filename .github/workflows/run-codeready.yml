@@ -15,6 +15,12 @@ jobs:
           source: github
           crda: latest
 
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 18
+
       - name: CRDA Scan
         id: crda_scan
         uses: redhat-actions/crda@v1
