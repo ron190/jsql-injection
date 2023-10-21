@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DataAccess.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.accessible</a> &gt; <span class="el_source">DataAccess.java</span></div><h1>DataAccess.java</h1><pre class="source lang-java linenums">/*******************************************************************************
+ * Copyhacked (H) 2012-2020.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss about it
+ * every time possible with every body.
+ * 
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ ******************************************************************************/
+package com.jsql.model.accessible;
+
+import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.database.AbstractElementDatabase;
+import com.jsql.model.bean.database.Column;
+import com.jsql.model.bean.database.Database;
+import com.jsql.model.bean.database.Table;
+import com.jsql.model.bean.util.Interaction;
+import com.jsql.model.bean.util.Request;
+import com.jsql.model.exception.AbstractSlidingException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.JSqlException;
+import com.jsql.model.suspendable.SuspendableGetRows;
+import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
+/**
+ * Database resource object to read name of databases, tables, columns and values
+ * using most suited injection strategy.
+ */
+public class DataAccess {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L43">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+    
+    /**
+     * Regex characters marking the end of the result of an injection.
+     * Process stops when this schema is encountered:
+     * &lt;pre&gt;SQLix01x03x03x07
+     */
+    public static final String TRAIL_RGX = &quot;\\x01\\x03\\x03\\x07&quot;;
+    
+    /**
+     * Regex character used between each table cells.
+     * Expected schema of multiple table cells :
+     * &lt;pre&gt;
+     * x04[table cell]x05[number of occurrences]x04x06x04[table cell]x05[number of occurrences]x04
+     */
+    public static final String SEPARATOR_CELL_RGX = &quot;\\x06&quot;;
+    
+    /**
+     * Regex character used between the table cell and the number of occurrence of the cell text.
+     * Expected schema of a table cell data is
+     * &lt;pre&gt;x04[table cell]x05[number of occurrences]x04
+     */
+    public static final String SEPARATOR_QTE_RGX = &quot;\\x05&quot;;
+
+    /**
+     * Regex character enclosing a table cell returned by injection.
+     * It allows to detect the correct end of a table cell data during parsing.
+     * Expected schema of a table cell data is
+     * &lt;pre&gt;x04[table cell]x05[number of occurrences]x04
+     */
+    public static final String ENCLOSE_VALUE_RGX = &quot;\\x04&quot;;
+    
+    public static final String LEAD = &quot;SqLi&quot;;
+    public static final String SHELL_LEAD = &quot;${shell.lead}&quot;;
+    public static final String TRAIL = &quot;iLQS&quot;;
+    public static final String SHELL_TRAIL = &quot;${shell.trail}&quot;;
+    
+    /**
+     * Regex keywords corresponding to multiline and case insensitive match.
+     */
+    public static final String MODE = &quot;(?si)&quot;;
+    
+    /**
+     * Regex schema describing a table cell with firstly the cell content and secondly the number of occurrences
+     * of the cell text, separated by the reserved character x05 in hexadecimal.
+     * The range of characters from x01 to x1F are not printable ASCII characters used to parse the data and exclude
+     * printable characters during parsing.
+     * Expected schema of a table cell data is
+     * &lt;pre&gt;x04[table cell]x05[number of occurrences]x04
+     */
+    public static final String CELL_TABLE = &quot;([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)&quot;+ SEPARATOR_QTE_RGX +&quot;([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?&quot;;
+    
+    private final InjectionModel injectionModel;
+    
+<span class="fc" id="L97">    public DataAccess(InjectionModel injectionModel) {</span>
+        
+<span class="fc" id="L99">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L100">    }</span>
+    
+    /**
+     * Get general database informations.&lt;br&gt;
+     * =&gt; version{%}database{%}user{%}CURRENT_USER
+     */
+    public void getDatabaseInfos() {
+        
+<span class="nc" id="L108">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;LOG_FETCHING_INFORMATIONS&quot;));</span>
+        
+<span class="nc" id="L110">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
+
+<span class="nc" id="L112">        var resultToParse = &quot;&quot;;</span>
+        
+        try {
+<span class="nc" id="L115">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="nc" id="L116">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlInfos(),</span>
+                sourcePage,
+<span class="nc" id="L118">                false,</span>
+<span class="nc" id="L119">                0,</span>
+                null,
+                &quot;metadata&quot;
+            );
+        
+<span class="nc" id="L124">        } catch (AbstractSlidingException e) {</span>
+
+<span class="nc" id="L126">            resultToParse = getPartialResultAndLog(e, resultToParse);</span>
+
+<span class="nc" id="L128">        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug</span>
+
+<span class="nc" id="L130">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
+<span class="nc" id="L131">        }</span>
+
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (StringUtils.isEmpty(resultToParse)) {</span>
+            
+<span class="nc" id="L135">            this.injectionModel.sendResponseFromSite(&quot;Incorrect metadata&quot;, sourcePage[0].trim());</span>
+        }
+        
+        try {
+<span class="nc" id="L139">            String versionDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[0].replaceAll(&quot;\\s+&quot;, StringUtils.SPACE);</span>
+<span class="nc" id="L140">            String nameDatabase = resultToParse.split(ENCLOSE_VALUE_RGX)[1];</span>
+<span class="nc" id="L141">            String username = resultToParse.split(ENCLOSE_VALUE_RGX)[2];</span>
+            
+<span class="nc" id="L143">            var infos = String.format(</span>
+                &quot;Database [%s] on %s [%s] for user [%s]&quot;,
+                nameDatabase,
+<span class="nc" id="L146">                this.injectionModel.getMediatorVendor().getVendor(),</span>
+                versionDatabase,
+                username
+            );
+            
+<span class="nc" id="L151">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, infos);</span>
+            
+<span class="nc" id="L153">        } catch (ArrayIndexOutOfBoundsException e) {</span>
+
+<span class="nc" id="L155">            LOGGER.log(</span>
+                LogLevelUtil.CONSOLE_ERROR,
+<span class="nc" id="L157">                String.format(&quot;%s: %s&quot;, I18nUtil.valueByKey(&quot;LOG_DB_METADATA_INCORRECT&quot;), resultToParse)</span>
+            );
+<span class="nc" id="L159">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, I18nUtil.valueByKey(&quot;LOG_DB_METADATA_WARN&quot;));</span>
+<span class="nc" id="L160">        }</span>
+<span class="nc" id="L161">    }</span>
+    
+    /**
+     * Get database names and table counts and send them to the view.&lt;br&gt;
+     * Use readable text (not hexa) and parse this pattern:&lt;br&gt;
+     * =&gt; hh[database name 1]jj[table count]hhgghh[database name 2]jj[table count]hhggh...hi&lt;br&gt;
+     * Data window can be cut before the end of the request but the process helps to obtain
+     * the rest of the unreachable data. The process can be interrupted by the user (stop/pause).
+     * @return list of databases found
+     * @throws JSqlException when injection failure or stopped by user
+     */
+    public List&lt;Database&gt; listDatabases() throws JSqlException {
+        
+<span class="nc" id="L174">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;LOG_FETCHING_DATABASES&quot;));</span>
+        
+<span class="nc" id="L176">        List&lt;Database&gt; databases = new ArrayList&lt;&gt;();</span>
+        
+<span class="nc" id="L178">        String resultToParse = StringUtils.EMPTY;</span>
+        
+        try {
+<span class="nc" id="L181">            var sourcePage = new String[]{ StringUtils.EMPTY };</span>
+<span class="nc" id="L182">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="nc" id="L183">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlDatabases(),</span>
+                sourcePage,
+<span class="nc" id="L185">                true,</span>
+<span class="nc" id="L186">                0,</span>
+                null,
+                &quot;databases&quot;
+            );
+            
+<span class="nc" id="L191">        } catch (AbstractSlidingException e) {</span>
+
+<span class="nc" id="L193">            resultToParse = getPartialResultAndLog(e, resultToParse);</span>
+
+<span class="nc" id="L195">        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug</span>
+
+<span class="nc" id="L197">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
+<span class="nc" id="L198">        }</span>
+
+        // Parse all data we have retrieved
+<span class="nc" id="L201">        var regexSearch = Pattern.compile(</span>
+                MODE
+                + ENCLOSE_VALUE_RGX
+                + CELL_TABLE
+                + ENCLOSE_VALUE_RGX
+            )
+<span class="nc" id="L207">            .matcher(resultToParse);</span>
+
+<span class="nc bnc" id="L209" title="All 2 branches missed.">        if (!regexSearch.find()) {</span>
+            
+<span class="nc" id="L211">            throw new InjectionFailureException(&quot;No match while injecting databases&quot;);</span>
+        }
+        
+<span class="nc" id="L214">        regexSearch.reset();</span>
+
+        // Build an array of Database objects from the data we have parsed
+<span class="nc bnc" id="L217" title="All 2 branches missed.">        while (regexSearch.find()) {</span>
+            
+<span class="nc" id="L219">            String databaseName = regexSearch.group(1);</span>
+<span class="nc" id="L220">            String tableCount = regexSearch.group(2);</span>
+
+<span class="nc" id="L222">            var newDatabase = new Database(databaseName, tableCount);</span>
+<span class="nc" id="L223">            databases.add(newDatabase);</span>
+<span class="nc" id="L224">        }</span>
+
+<span class="nc" id="L226">        var request = new Request();</span>
+<span class="nc" id="L227">        request.setMessage(Interaction.ADD_DATABASES);</span>
+<span class="nc" id="L228">        request.setParameters(databases);</span>
+<span class="nc" id="L229">        this.injectionModel.sendToViews(request);</span>
+        
+<span class="nc" id="L231">        return databases;</span>
+    }
+
+    /**
+     * Get tables name and row count and send them to the view.&lt;br&gt;
+     * Use readable text (not hexa) and parse this pattern:&lt;br&gt;
+     * =&gt; hh[table name 1]jj[rows count]hhgghh[table name 2]jj[rows count]hhggh...hi&lt;br&gt;
+     * Data window can be cut before the end of the request but the process helps to obtain
+     * the rest of the unreachable data. The process can be interrupted by the user (stop/pause).
+     * @param database which contains tables to find
+     * @return list of tables found
+     * @throws JSqlException when injection failure or stopped by user
+     */
+    public List&lt;Table&gt; listTables(Database database) throws JSqlException {
+        
+        // Reset stoppedByUser if list of Databases is partial
+        // and some Tables are still reachable
+<span class="nc" id="L248">        this.injectionModel.setIsStoppedByUser(false);</span>
+        
+        // Inform the view that database has just been used
+<span class="nc" id="L251">        var requestStartProgress = new Request();</span>
+<span class="nc" id="L252">        requestStartProgress.setMessage(Interaction.START_PROGRESS);</span>
+<span class="nc" id="L253">        requestStartProgress.setParameters(database);</span>
+<span class="nc" id="L254">        this.injectionModel.sendToViews(requestStartProgress);</span>
+
+<span class="nc" id="L256">        var tableCount = Integer.toString(database.getChildCount());</span>
+        
+<span class="nc" id="L258">        String resultToParse = StringUtils.EMPTY;</span>
+        
+        try {
+<span class="nc" id="L261">            var pageSource = new String[]{ StringUtils.EMPTY };</span>
+<span class="nc" id="L262">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="nc" id="L263">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTables(database),</span>
+                pageSource,
+<span class="nc" id="L265">                true,</span>
+<span class="nc" id="L266">                Integer.parseInt(tableCount),</span>
+                database,
+                &quot;tables&quot;
+            );
+            
+<span class="nc" id="L271">        } catch (AbstractSlidingException e) {</span>
+
+<span class="nc" id="L273">            resultToParse = getPartialResultAndLog(e, resultToParse);</span>
+
+<span class="nc" id="L275">        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug</span>
+
+<span class="nc" id="L277">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
+<span class="nc" id="L278">        }</span>
+
+        // Parse all the data we have retrieved
+<span class="nc" id="L281">        var regexSearch = Pattern.compile(</span>
+                MODE
+                + ENCLOSE_VALUE_RGX
+                + CELL_TABLE
+                + ENCLOSE_VALUE_RGX
+            )
+<span class="nc" id="L287">            .matcher(resultToParse);</span>
+        
+<span class="nc" id="L289">        var requestEndProgress = new Request();</span>
+<span class="nc" id="L290">        requestEndProgress.setMessage(Interaction.END_PROGRESS);</span>
+<span class="nc" id="L291">        requestEndProgress.setParameters(database);</span>
+<span class="nc" id="L292">        this.injectionModel.sendToViews(requestEndProgress);</span>
+        
+<span class="nc bnc" id="L294" title="All 2 branches missed.">        if (!regexSearch.find()) {</span>
+            
+<span class="nc" id="L296">            throw new InjectionFailureException(&quot;No match while injecting tables&quot;);</span>
+        }
+        
+<span class="nc" id="L299">        regexSearch.reset();</span>
+        
+<span class="nc" id="L301">        List&lt;Table&gt; tables = new ArrayList&lt;&gt;();</span>
+        
+        // Build an array of Table objects from the data we have parsed
+<span class="nc bnc" id="L304" title="All 2 branches missed.">        while (regexSearch.find()) {</span>
+            
+<span class="nc" id="L306">            String tableName = regexSearch.group(1);</span>
+<span class="nc" id="L307">            String rowCount = regexSearch.group(2);</span>
+            
+<span class="nc" id="L309">            var newTable = new Table(tableName, rowCount, database);</span>
+<span class="nc" id="L310">            tables.add(newTable);</span>
+<span class="nc" id="L311">        }</span>
+        
+<span class="nc" id="L313">        var requestAddTables = new Request();</span>
+<span class="nc" id="L314">        requestAddTables.setMessage(Interaction.ADD_TABLES);</span>
+<span class="nc" id="L315">        requestAddTables.setParameters(tables);</span>
+<span class="nc" id="L316">        this.injectionModel.sendToViews(requestAddTables);</span>
+        
+<span class="nc" id="L318">        return tables;</span>
+    }
+
+    /**
+     * Get column names and send them to the view.&lt;br&gt;
+     * Use readable text (not hexa) and parse this pattern with 2nd member forced to 31 (1 in ascii):&lt;br&gt;
+     * =&gt; hh[column name 1]jj[31]hhgghh[column name 2]jj[31]hhggh...hi&lt;br&gt;
+     * Data window can be cut before the end of the request but the process helps to obtain
+     * the rest of the unreachable data. The process can be interrupted by the user (stop/pause).
+     * @param table which contains columns to find
+     * @return list of columns found
+     * @throws JSqlException when injection failure or stopped by user
+     */
+    public List&lt;Column&gt; listColumns(Table table) throws JSqlException {
+        
+<span class="nc" id="L333">        List&lt;Column&gt; columns = new ArrayList&lt;&gt;();</span>
+        
+        // Inform the view that table has just been used
+<span class="nc" id="L336">        var requestStartProgress = new Request();</span>
+<span class="nc" id="L337">        requestStartProgress.setMessage(Interaction.START_INDETERMINATE_PROGRESS);</span>
+<span class="nc" id="L338">        requestStartProgress.setParameters(table);</span>
+<span class="nc" id="L339">        this.injectionModel.sendToViews(requestStartProgress);</span>
+
+<span class="nc" id="L341">        String resultToParse = StringUtils.EMPTY;</span>
+        
+        try {
+<span class="nc" id="L344">            var pageSource = new String[]{ StringUtils.EMPTY };</span>
+<span class="nc" id="L345">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="nc" id="L346">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlColumns(table),</span>
+                pageSource,
+<span class="nc" id="L348">                true,</span>
+<span class="nc" id="L349">                0,</span>
+                table,
+                &quot;columns&quot;
+            );
+            
+<span class="nc" id="L354">        } catch (AbstractSlidingException e) {</span>
+
+<span class="nc" id="L356">            resultToParse = getPartialResultAndLog(e, resultToParse);</span>
+
+<span class="nc" id="L358">        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug</span>
+
+<span class="nc" id="L360">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
+<span class="nc" id="L361">        }</span>
+
+        // Build SQLite columns
+<span class="nc bnc" id="L364" title="All 2 branches missed.">        if (this.injectionModel.getMediatorVendor().isSqlite()) {</span>
+            
+<span class="nc" id="L366">            resultToParse = this.injectionModel.getMediatorVendor().getSqlite().transformSqlite(resultToParse);</span>
+        }
+        
+        // Parse all the data we have retrieved
+<span class="nc" id="L370">        var regexSearch = Pattern.compile(</span>
+                MODE
+                + ENCLOSE_VALUE_RGX
+                + CELL_TABLE
+                + ENCLOSE_VALUE_RGX
+            )
+<span class="nc" id="L376">            .matcher(resultToParse);</span>
+
+<span class="nc" id="L378">        var requestEndProgress = new Request();</span>
+<span class="nc" id="L379">        requestEndProgress.setMessage(Interaction.END_INDETERMINATE_PROGRESS);</span>
+<span class="nc" id="L380">        requestEndProgress.setParameters(table);</span>
+<span class="nc" id="L381">        this.injectionModel.sendToViews(requestEndProgress);</span>
+
+<span class="nc bnc" id="L383" title="All 2 branches missed.">        if (!regexSearch.find()) {</span>
+            
+<span class="nc" id="L385">            throw new InjectionFailureException(&quot;No match while injecting columns&quot;);</span>
+        }
+
+<span class="nc" id="L388">        regexSearch.reset();</span>
+
+        // Build an array of Column objects from the data we have parsed
+<span class="nc bnc" id="L391" title="All 2 branches missed.">        while (regexSearch.find()) {</span>
+            
+<span class="nc" id="L393">            String nameColumn = regexSearch.group(1);</span>
+
+<span class="nc" id="L395">            var column = new Column(nameColumn, table);</span>
+<span class="nc" id="L396">            columns.add(column);</span>
+<span class="nc" id="L397">        }</span>
+
+<span class="nc" id="L399">        var requestAddColumns = new Request();</span>
+<span class="nc" id="L400">        requestAddColumns.setMessage(Interaction.ADD_COLUMNS);</span>
+<span class="nc" id="L401">        requestAddColumns.setParameters(columns);</span>
+<span class="nc" id="L402">        this.injectionModel.sendToViews(requestAddColumns);</span>
+        
+<span class="nc" id="L404">        return columns;</span>
+    }
+
+    /**
+     * Get table values and count each occurrences and send them to the view.&lt;br&gt;
+     * Values are on clear text (not hexa) and follows this window pattern&lt;br&gt;
+     * =&gt; hh[value 1]jj[count]hhgghh[value 2]jj[count]hhggh...hi&lt;br&gt;
+     * Data window can be cut before the end of the request but the process helps to obtain
+     * the rest of the unreachable data. The process can be interrupted by the user (stop/pause).
+     * @param columnsBean choice by the user
+     * @return a 2x2 table containing values by columns
+     * @throws JSqlException when injection failure or stopped by user
+     */
+    public String[][] listValues(List&lt;Column&gt; columnsBean) throws JSqlException {
+        
+<span class="nc" id="L419">        var databaseBean = (Database) columnsBean.get(0).getParent().getParent();</span>
+<span class="nc" id="L420">        var tableBean = (Table) columnsBean.get(0).getParent();</span>
+<span class="nc" id="L421">        int rowCount = columnsBean.get(0).getParent().getChildCount();</span>
+
+        // Inform the view that table has just been used
+<span class="nc" id="L424">        var request = new Request();</span>
+<span class="nc" id="L425">        request.setMessage(Interaction.START_PROGRESS);</span>
+<span class="nc" id="L426">        request.setParameters(tableBean);</span>
+<span class="nc" id="L427">        this.injectionModel.sendToViews(request);</span>
+
+        // Build an array of column names
+<span class="nc" id="L430">        List&lt;String&gt; columnsName = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L431" title="All 2 branches missed.">        for (AbstractElementDatabase columnBean: columnsBean) {</span>
+<span class="nc" id="L432">            columnsName.add(columnBean.toString());</span>
+<span class="nc" id="L433">        }</span>
+
+        // From that array, build the SQL fields nicely
+        // =&gt; col1{%}col2...
+        // ==&gt; trim(ifnull(`col1`,0x00)),0x7f,trim(ifnull(`Col2`,0x00))...
+<span class="nc" id="L438">        String[] columns = columnsName.toArray(new String[0]);</span>
+
+<span class="nc" id="L440">        List&lt;List&lt;String&gt;&gt; listValues = this.getRows(databaseBean, tableBean, rowCount, columns);</span>
+
+        // Add the default title to the columns: row number, occurrence
+<span class="nc" id="L443">        columnsName.add(0, StringUtils.EMPTY);</span>
+<span class="nc" id="L444">        columnsName.add(0, StringUtils.EMPTY);</span>
+
+<span class="nc" id="L446">        String[][] table = this.getTable(columnsName, listValues);</span>
+
+<span class="nc" id="L448">        columns = columnsName.toArray(new String[0]);</span>
+        
+        // Group the columns names, values and Table object in one array
+<span class="nc" id="L451">        var objectData = new Object[]{ columns, table, tableBean };</span>
+
+<span class="nc" id="L453">        var requestCreateValuesTab = new Request();</span>
+<span class="nc" id="L454">        requestCreateValuesTab.setMessage(Interaction.CREATE_VALUES_TAB);</span>
+<span class="nc" id="L455">        requestCreateValuesTab.setParameters(objectData);</span>
+<span class="nc" id="L456">        this.injectionModel.sendToViews(requestCreateValuesTab);</span>
+
+<span class="nc" id="L458">        var requestEndProgress = new Request();</span>
+<span class="nc" id="L459">        requestEndProgress.setMessage(Interaction.END_PROGRESS);</span>
+<span class="nc" id="L460">        requestEndProgress.setParameters(tableBean);</span>
+<span class="nc" id="L461">        this.injectionModel.sendToViews(requestEndProgress);</span>
+        
+<span class="nc" id="L463">        return table;</span>
+    }
+
+    private List&lt;List&lt;String&gt;&gt; getRows(Database database, Table table, int rowCount, String[] columns) throws InjectionFailureException {
+        
+<span class="nc" id="L468">        String resultToParse = StringUtils.EMPTY;</span>
+        
+        try {
+<span class="nc" id="L471">            var pageSource = new String[]{ StringUtils.EMPTY };</span>
+            
+<span class="nc" id="L473">            resultToParse = new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="nc" id="L474">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlRows(columns, database, table),</span>
+                pageSource,
+<span class="nc" id="L476">                true,</span>
+<span class="nc" id="L477">                rowCount,</span>
+                table,
+                &quot;rows&quot;
+            );
+            
+<span class="nc" id="L482">        } catch (AbstractSlidingException e) {  // Catch all exceptions but prevent detecting bug</span>
+
+<span class="nc" id="L484">            resultToParse = getPartialResultAndLog(e, resultToParse);</span>
+
+<span class="nc" id="L486">        } catch (Exception e) {</span>
+            
+<span class="nc" id="L488">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
+<span class="nc" id="L489">        }</span>
+
+<span class="nc" id="L491">        return SuspendableGetRows.parse(resultToParse);</span>
+    }
+
+    private static String getPartialResultAndLog(AbstractSlidingException e, String resultToParse) {
+
+<span class="nc" id="L496">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());</span>
+
+        // Get pieces of data already retrieved instead of losing them
+<span class="nc bnc" id="L499" title="All 2 branches missed.">        if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {</span>
+
+<span class="nc" id="L501">            resultToParse = e.getSlidingWindowAllRows();</span>
+
+<span class="nc bnc" id="L503" title="All 2 branches missed.">        } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
+
+<span class="nc" id="L505">            resultToParse = e.getSlidingWindowCurrentRows();</span>
+        }
+
+<span class="nc" id="L508">        return resultToParse;</span>
+    }
+
+    private String[][] getTable(List&lt;String&gt; columnsName, List&lt;List&lt;String&gt;&gt; values) {
+        
+        // Build a proper 2D array from the data
+<span class="nc" id="L514">        var table = new String[values.size()][columnsName.size()];</span>
+        
+<span class="nc bnc" id="L516" title="All 2 branches missed.">        for (var indexRow = 0 ; indexRow &lt; values.size() ; indexRow++) {</span>
+            
+<span class="nc" id="L518">            var isIncomplete = false;</span>
+            
+<span class="nc bnc" id="L520" title="All 2 branches missed.">            for (var indexColumn = 0 ; indexColumn &lt; columnsName.size() ; indexColumn++) {</span>
+                
+                try {
+<span class="nc" id="L523">                    table[indexRow][indexColumn] = values.get(indexRow).get(indexColumn);</span>
+                    
+<span class="nc" id="L525">                } catch (IndexOutOfBoundsException e) {</span>
+                    
+<span class="nc" id="L527">                    isIncomplete = true;</span>
+                    
+<span class="nc" id="L529">                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey(&quot;LOG_LIST_VALUES_INCOMPLETE&quot;));</span>
+                    
+<span class="nc" id="L531">                    LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="nc" id="L532">                }</span>
+            }
+            
+<span class="nc bnc" id="L535" title="All 2 branches missed.">            if (isIncomplete) {</span>
+                
+<span class="nc" id="L537">                int logIndexRow = indexRow;</span>
+<span class="nc" id="L538">                LOGGER.log(</span>
+                    LogLevelUtil.CONSOLE_ERROR,
+                    &quot;{}{}: &quot;,
+<span class="nc" id="L541">                    () -&gt; I18nUtil.valueByKey(&quot;LOG_LIST_VALUES_TOO_LONG&quot;),</span>
+<span class="nc" id="L542">                    () -&gt; logIndexRow + 1</span>
+                );
+<span class="nc" id="L544">                LOGGER.log(</span>
+                    LogLevelUtil.CONSOLE_ERROR,
+<span class="nc" id="L546">                    () -&gt; String.join(</span>
+                        &quot;, &quot;,
+<span class="nc" id="L548">                        values.get(logIndexRow).toArray(new String[0])</span>
+                    )
+                );
+            }
+        }
+        
+<span class="nc" id="L554">        return table;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

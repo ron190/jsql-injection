@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TamperingUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util</a> &gt; <span class="el_source">TamperingUtil.java</span></div><h1>TamperingUtil.java</h1><pre class="source lang-java linenums">package com.jsql.util;
+
+import com.jsql.util.tampering.TamperingType;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import java.util.regex.Pattern;
+
+<span class="fc" id="L14">public class TamperingUtil {</span>
+
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L19">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
+<span class="fc" id="L21">    private boolean isBase64 = false;</span>
+<span class="fc" id="L22">    private boolean isVersionComment = false;</span>
+<span class="fc" id="L23">    private boolean isFunctionComment = false;</span>
+<span class="fc" id="L24">    private boolean isEqualToLike = false;</span>
+<span class="fc" id="L25">    private boolean isRandomCase = false;</span>
+<span class="fc" id="L26">    private boolean isHexToChar = false;</span>
+<span class="fc" id="L27">    private boolean isStringToChar = false;</span>
+<span class="fc" id="L28">    private boolean isQuoteToUtf8 = false;</span>
+<span class="fc" id="L29">    private boolean isEval = false;</span>
+<span class="fc" id="L30">    private boolean isSpaceToMultilineComment = false;</span>
+<span class="fc" id="L31">    private boolean isSpaceToDashComment = false;</span>
+<span class="fc" id="L32">    private boolean isSpaceToSharpComment = false;</span>
+
+<span class="fc" id="L34">    private String customTamper = null;</span>
+
+<span class="fc" id="L36">    private static final ScriptEngineManager SCRIPT_ENGINE_MANAGER = new ScriptEngineManager();</span>
+
+    private static String eval(String sqlQuery, String jsTampering) {
+        
+
+        Object resultSqlTampered;
+
+        try {
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">            if (StringUtils.isEmpty(jsTampering)) {</span>
+
+<span class="nc" id="L46">                throw new ScriptException(&quot;Tampering context is empty&quot;);</span>
+            }
+
+<span class="fc" id="L49">            ScriptEngine nashornEngine = SCRIPT_ENGINE_MANAGER.getEngineByName(&quot;nashorn&quot;);</span>
+<span class="fc" id="L50">            nashornEngine.eval(jsTampering);</span>
+
+<span class="fc" id="L52">            var nashornInvocable = (Invocable) nashornEngine;</span>
+<span class="fc" id="L53">            resultSqlTampered = nashornInvocable.invokeFunction(&quot;tampering&quot;, sqlQuery);</span>
+
+<span class="nc" id="L55">        } catch (ScriptException e) {</span>
+
+<span class="nc" id="L57">            LOGGER.log(</span>
+                LogLevelUtil.CONSOLE_ERROR,
+<span class="nc" id="L59">                String.format(&quot;Tampering context contains errors: %s&quot;, e.getMessage()),</span>
+                e
+            );
+<span class="nc" id="L62">            resultSqlTampered = sqlQuery;</span>
+
+<span class="nc" id="L64">        } catch (NoSuchMethodException e) {</span>
+
+<span class="nc" id="L66">            LOGGER.log(</span>
+                LogLevelUtil.CONSOLE_ERROR,
+<span class="nc" id="L68">                String.format(&quot;Tampering context is not properly defined: %s&quot;, e.getMessage()),</span>
+                e
+            );
+<span class="nc" id="L71">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Minimal tampering context is: var tampering = function(sql) {return sql}&quot;);</span>
+<span class="nc" id="L72">            resultSqlTampered = sqlQuery;</span>
+<span class="pc" id="L73">        }</span>
+
+<span class="fc" id="L75">        return resultSqlTampered.toString();</span>
+    }
+
+    public String tamper(String sqlQueryDefault) {
+
+        String lead;
+        String sqlQuery;
+        String trail;
+
+        // Transform only SQL query without HTTP parameters and syntax changed, like
+        // p=1'+[sql]
+<span class="fc" id="L86">        var matcherSql = Pattern.compile(&quot;(?s)(.*&lt;tampering&gt;)(.*)(&lt;/tampering&gt;.*)&quot;).matcher(sqlQueryDefault);</span>
+
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (matcherSql.find()) {</span>
+
+<span class="fc" id="L90">            lead = matcherSql.group(1);</span>
+<span class="fc" id="L91">            sqlQuery = matcherSql.group(2);</span>
+<span class="fc" id="L92">            trail = matcherSql.group(3);</span>
+
+        } else {
+
+<span class="nc" id="L96">            return sqlQueryDefault;</span>
+        }
+
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (this.isEval) {</span>
+
+<span class="fc" id="L101">            sqlQuery = eval(sqlQuery, this.customTamper);</span>
+        }
+
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (this.isHexToChar) {</span>
+
+<span class="fc" id="L106">            sqlQuery = eval(sqlQuery, TamperingType.HEX_TO_CHAR.instance().getJavascript());</span>
+        }
+
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (this.isStringToChar) {</span>
+
+<span class="fc" id="L111">            sqlQuery = eval(sqlQuery, TamperingType.STRING_TO_CHAR.instance().getJavascript());</span>
+        }
+
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (this.isFunctionComment) {</span>
+
+<span class="fc" id="L116">            sqlQuery = eval(sqlQuery, TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getJavascript());</span>
+        }
+
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (this.isVersionComment) {</span>
+
+<span class="fc" id="L121">            sqlQuery = eval(sqlQuery, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getJavascript());</span>
+        }
+
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (this.isRandomCase) {</span>
+
+<span class="fc" id="L126">            sqlQuery = eval(sqlQuery, TamperingType.RANDOM_CASE.instance().getJavascript());</span>
+        }
+
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if (this.isEqualToLike) {</span>
+
+<span class="fc" id="L131">            sqlQuery = eval(sqlQuery, TamperingType.EQUAL_TO_LIKE.instance().getJavascript());</span>
+        }
+
+<span class="fc" id="L134">        sqlQuery = lead + sqlQuery + trail;</span>
+
+<span class="fc" id="L136">        sqlQuery = sqlQuery.replaceAll(&quot;(?i)&lt;tampering&gt;&quot;, StringUtils.EMPTY);</span>
+<span class="fc" id="L137">        sqlQuery = sqlQuery.replaceAll(&quot;(?i)&lt;/tampering&gt;&quot;, StringUtils.EMPTY);</span>
+
+        // Empty when checking character insertion
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(sqlQuery)) {</span>
+
+<span class="nc" id="L142">            return StringUtils.EMPTY;</span>
+        }
+
+        // Transform all query, SQL and HTTP
+
+        // Dependency to: EQUAL_TO_LIKE
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (this.isSpaceToDashComment) {</span>
+
+<span class="fc" id="L150">            sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_DASH_COMMENT.instance().getJavascript());</span>
+
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        } else if (this.isSpaceToMultilineComment) {</span>
+
+<span class="fc" id="L154">            sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getJavascript());</span>
+
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        } else if (this.isSpaceToSharpComment) {</span>
+
+<span class="fc" id="L158">            sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_SHARP_COMMENT.instance().getJavascript());</span>
+        }
+
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (this.isBase64) {</span>
+
+<span class="fc" id="L163">            sqlQuery = eval(sqlQuery, TamperingType.BASE64.instance().getJavascript());</span>
+        }
+
+        // Include character insertion at the beginning of query
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        if (this.isQuoteToUtf8) {</span>
+
+<span class="fc" id="L169">            sqlQuery = eval(sqlQuery, TamperingType.QUOTE_TO_UTF8.instance().getJavascript());</span>
+        }
+
+<span class="fc" id="L172">        return sqlQuery;</span>
+    }
+
+    
+    // Builder
+
+    public TamperingUtil withBase64() {
+<span class="fc" id="L179">        this.isBase64 = true;</span>
+<span class="fc" id="L180">        return this;</span>
+    }
+
+    public TamperingUtil withVersionComment() {
+<span class="fc" id="L184">        this.isVersionComment = true;</span>
+<span class="fc" id="L185">        return this;</span>
+    }
+
+    public TamperingUtil withFunctionComment() {
+<span class="fc" id="L189">        this.isFunctionComment = true;</span>
+<span class="fc" id="L190">        return this;</span>
+    }
+
+    public TamperingUtil withEqualToLike() {
+<span class="fc" id="L194">        this.isEqualToLike = true;</span>
+<span class="fc" id="L195">        return this;</span>
+    }
+
+    public TamperingUtil withRandomCase() {
+<span class="fc" id="L199">        this.isRandomCase = true;</span>
+<span class="fc" id="L200">        return this;</span>
+    }
+
+    public TamperingUtil withHexToChar() {
+<span class="fc" id="L204">        this.isHexToChar = true;</span>
+<span class="fc" id="L205">        return this;</span>
+    }
+
+    public TamperingUtil withStringToChar() {
+<span class="fc" id="L209">        this.isStringToChar = true;</span>
+<span class="fc" id="L210">        return this;</span>
+    }
+
+    public TamperingUtil withQuoteToUtf8() {
+<span class="fc" id="L214">        this.isQuoteToUtf8 = true;</span>
+<span class="fc" id="L215">        return this;</span>
+    }
+
+    public TamperingUtil withEval() {
+<span class="fc" id="L219">        this.isEval = true;</span>
+<span class="fc" id="L220">        return this;</span>
+    }
+
+    public TamperingUtil withSpaceToMultilineComment() {
+<span class="fc" id="L224">        this.isSpaceToMultilineComment = true;</span>
+<span class="fc" id="L225">        return this;</span>
+    }
+
+    public TamperingUtil withSpaceToDashComment() {
+<span class="fc" id="L229">        this.isSpaceToDashComment = true;</span>
+<span class="fc" id="L230">        return this;</span>
+    }
+
+    public TamperingUtil withSpaceToSharpComment() {
+<span class="fc" id="L234">        this.isSpaceToSharpComment = true;</span>
+<span class="fc" id="L235">        return this;</span>
+    }
+
+    
+    // Getter and setter
+
+    public String getCustomTamper() {
+<span class="nc" id="L242">        return this.customTamper;</span>
+    }
+
+    public void setCustomTamper(String customTamper) {
+<span class="fc" id="L246">        this.customTamper = customTamper;</span>
+<span class="fc" id="L247">    }</span>
+
+    public TamperingUtil withBase64(boolean selected) {
+<span class="nc" id="L250">        this.isBase64 = selected;</span>
+<span class="nc" id="L251">        return this;</span>
+    }
+
+    public TamperingUtil withEqualToLike(boolean selected) {
+<span class="nc" id="L255">        this.isEqualToLike = selected;</span>
+<span class="nc" id="L256">        return this;</span>
+    }
+
+    public TamperingUtil withEval(boolean selected) {
+<span class="nc" id="L260">        this.isEval = selected;</span>
+<span class="nc" id="L261">        return this;</span>
+    }
+
+    public TamperingUtil withFunctionComment(boolean selected) {
+<span class="nc" id="L265">        this.isFunctionComment = selected;</span>
+<span class="nc" id="L266">        return this;</span>
+    }
+
+    public TamperingUtil withHexToChar(boolean selected) {
+<span class="nc" id="L270">        this.isHexToChar = selected;</span>
+<span class="nc" id="L271">        return this;</span>
+    }
+
+    public TamperingUtil withQuoteToUtf8(boolean selected) {
+<span class="nc" id="L275">        this.isQuoteToUtf8 = selected;</span>
+<span class="nc" id="L276">        return this;</span>
+    }
+
+    public TamperingUtil withRandomCase(boolean selected) {
+<span class="nc" id="L280">        this.isRandomCase = selected;</span>
+<span class="nc" id="L281">        return this;</span>
+    }
+
+    public TamperingUtil withSpaceToDashComment(boolean selected) {
+<span class="nc" id="L285">        this.isSpaceToDashComment = selected;</span>
+<span class="nc" id="L286">        return this;</span>
+    }
+
+    public TamperingUtil withSpaceToMultilineComment(boolean selected) {
+<span class="nc" id="L290">        this.isSpaceToMultilineComment = selected;</span>
+<span class="nc" id="L291">        return this;</span>
+    }
+
+    public TamperingUtil withSpaceToSharpComment(boolean selected) {
+<span class="nc" id="L295">        this.isSpaceToSharpComment = selected;</span>
+<span class="nc" id="L296">        return this;</span>
+    }
+
+    public TamperingUtil withStringToChar(boolean selected) {
+<span class="nc" id="L300">        this.isStringToChar = selected;</span>
+<span class="nc" id="L301">        return this;</span>
+    }
+
+    public TamperingUtil withVersionComment(boolean selected) {
+<span class="nc" id="L305">        this.isVersionComment = selected;</span>
+<span class="nc" id="L306">        return this;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

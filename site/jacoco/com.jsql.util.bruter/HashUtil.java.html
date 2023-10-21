@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HashUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util.bruter</a> &gt; <span class="el_source">HashUtil.java</span></div><h1>HashUtil.java</h1><pre class="source lang-java linenums">package com.jsql.util.bruter;
+
+import com.jsql.util.StringUtil;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.zip.CRC32;
+import java.util.zip.Checksum;
+
+public class HashUtil {
+    
+    private HashUtil() {
+        // Nothing
+    }
+    
+    public static String toAdler32(String text) {
+
+<span class="fc" id="L18">        byte[] bytes = text.getBytes();</span>
+<span class="fc" id="L19">        Checksum checksum = new java.util.zip.Adler32();</span>
+<span class="fc" id="L20">        checksum.update(bytes,0,bytes.length);</span>
+        
+<span class="fc" id="L22">        return String.valueOf(checksum.getValue());</span>
+    }
+    
+    public static String toCrc16(String text) {
+        
+<span class="fc" id="L27">        return Crc16Helper.generateCRC16(text);</span>
+    }
+    
+    public static String toCrc64(String text) {
+        
+<span class="fc" id="L32">        return Crc64Helper.generateCRC64(text.getBytes());</span>
+    }
+    
+    public static String toMySql(String textInput) throws NoSuchAlgorithmException {
+        
+<span class="fc" id="L37">        var md = MessageDigest.getInstance(&quot;sha-1&quot;);</span>
+        
+<span class="fc" id="L39">        var password = String.valueOf(textInput.toCharArray());</span>
+        
+<span class="fc" id="L41">        byte[] passwordBytes = password.getBytes();</span>
+<span class="fc" id="L42">        md.update(passwordBytes, 0, passwordBytes.length);</span>
+        
+<span class="fc" id="L44">        byte[] hashSHA1 = md.digest();</span>
+<span class="fc" id="L45">        var stringSHA1 = HashUtil.digestToHexString(hashSHA1);</span>
+        
+<span class="fc" id="L47">        var passwordSHA1 = String.valueOf(StringUtil.hexstr(stringSHA1).toCharArray());</span>
+<span class="fc" id="L48">        byte[] passwordSHA1Bytes = passwordSHA1.getBytes();</span>
+        
+<span class="fc" id="L50">        md.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);</span>
+<span class="fc" id="L51">        byte[] hashSHA1SH1 = md.digest();</span>
+        
+<span class="fc" id="L53">        return HashUtil.digestToHexString(hashSHA1SH1);</span>
+    }
+
+    public static String toCrc32(String textInput) {
+        
+<span class="fc" id="L58">        byte[] bytes = textInput.getBytes();</span>
+        
+<span class="fc" id="L60">        Checksum checksum = new CRC32();</span>
+<span class="fc" id="L61">        checksum.update(bytes, 0, bytes.length);</span>
+        
+<span class="fc" id="L63">        long lngChecksum = checksum.getValue();</span>
+        
+<span class="fc" id="L65">        return Long.toString(lngChecksum);</span>
+    }
+
+    public static String toMd4(String textInput) {
+        
+<span class="fc" id="L70">        MessageDigest md = new DigestMD4();</span>
+
+<span class="fc" id="L72">        var passwordString = String.valueOf(textInput.toCharArray());</span>
+<span class="fc" id="L73">        byte[] passwordByte = passwordString.getBytes();</span>
+        
+<span class="fc" id="L75">        md.update(passwordByte, 0, passwordByte.length);</span>
+<span class="fc" id="L76">        byte[] encodedPassword = md.digest();</span>
+        
+<span class="fc" id="L78">        return HashUtil.digestToHexString(encodedPassword);</span>
+    }
+
+    public static String toHash(String nameMethod, String textInput) throws NoSuchAlgorithmException {
+        
+<span class="fc" id="L83">        var md = MessageDigest.getInstance(nameMethod);</span>
+        
+<span class="fc" id="L85">        var passwordString = String.valueOf(textInput.toCharArray());</span>
+<span class="fc" id="L86">        byte[] passwordByte = passwordString.getBytes();</span>
+        
+<span class="fc" id="L88">        md.update(passwordByte, 0, passwordByte.length);</span>
+<span class="fc" id="L89">        byte[] encodedPassword = md.digest();</span>
+        
+<span class="fc" id="L91">        return HashUtil.digestToHexString(encodedPassword);</span>
+    }
+    
+    /**
+     * Convert a digest hash to a string representation.
+     * @param block Digest array
+     * @return Hash as a string
+     */
+    public static String digestToHexString(byte[] block) {
+        
+<span class="fc" id="L101">        var buf = new StringBuilder();</span>
+
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        for (byte b : block) {</span>
+
+<span class="fc" id="L105">            HashUtil.byte2hex(b, buf);</span>
+        }
+        
+<span class="fc" id="L108">        return buf.toString();</span>
+    }
+    
+    /**
+     * Convert byte character to hexadecimal StringBuffer character.
+     * @param b Byte character to convert
+     * @param buf Hexadecimal converted character
+     */
+    private static void byte2hex(byte b, StringBuilder buf) {
+        
+<span class="fc" id="L118">        var hexChars = new char[]{ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };</span>
+<span class="fc" id="L119">        int high = (b &amp; 0xf0) &gt;&gt; 4;</span>
+<span class="fc" id="L120">        int low = b &amp; 0x0f;</span>
+<span class="fc" id="L121">        buf.append(hexChars[high]);</span>
+<span class="fc" id="L122">        buf.append(hexChars[low]);</span>
+<span class="fc" id="L123">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
