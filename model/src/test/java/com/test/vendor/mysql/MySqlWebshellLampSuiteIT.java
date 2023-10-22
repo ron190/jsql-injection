@@ -18,14 +18,23 @@ public class MySqlWebshellLampSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://jsql-lamp:8079/get2.php?id=");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://jsql-lamp:8079/php/get2.php?id=");
 
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true)
+        .withIsStrategyStackedDisabled(true)
+        .withIsStrategyMultibitDisabled(true)
+        .withIsStrategyErrorDisabled(true);
+
         model.beginInjection();
     }
     

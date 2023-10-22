@@ -1,8 +1,17 @@
 #!/bin/sh
+set -x
+
+# my.cnf mandatory, custom .cnf not working
+{
+  echo [mysqld]
+  echo port=3308
+  echo secure_file_priv=''
+} >> /etc/mysql/my.cnf
 
 service mysql start
 
 mysql -uroot -ppassword --port=3308 -e "
+  SHOW VARIABLES like 'secure_file_priv';
   ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
 "
 

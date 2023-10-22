@@ -29,6 +29,15 @@ public class MySqlReadFileSuiteIT extends ConcreteMySqlSuiteIT {
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true)
+        .withIsStrategyStackedDisabled(true)
+        .withIsStrategyMultibitDisabled(true)
+        .withIsStrategyErrorDisabled(true);
         
         model.beginInjection();
     }

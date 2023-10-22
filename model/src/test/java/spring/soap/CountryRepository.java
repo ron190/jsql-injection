@@ -30,7 +30,6 @@ public class CountryRepository {
     private static final String template = "Hello, s!";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @SuppressWarnings("unchecked")
     @Transactional
 	public Country findCountry(String name) throws JsonProcessingException {
 	    
@@ -39,15 +38,21 @@ public class CountryRepository {
         Session session = this.sessionFactory.getCurrentSession();
 
         // TODO Decode XML invalid chars
-        name = URLDecoder.decode(name, StandardCharsets.UTF_8);
+        String nameUrlDecoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
 
         try {
-            NativeQuery<Object[]> query = session.createNativeQuery("select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '" + name + "'");
+            NativeQuery<Object> query = session.createNativeQuery(
+                "select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '" + nameUrlDecoded + "'",
+                Object.class
+            );
             
-            List<Object[]> results = query.getResultList();
+            List<Object> results = query.getResultList();
 
             // TODO Encode XML invalid chars
-            country.setName(URLEncoder.encode(template + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results)), StandardCharsets.UTF_8));
+            country.setName(URLEncoder.encode(
+                template + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results)),
+                StandardCharsets.UTF_8
+            ));
             
         } catch (Exception e) {
             

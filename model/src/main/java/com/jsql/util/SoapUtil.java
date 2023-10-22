@@ -52,7 +52,7 @@ public class SoapUtil {
                 var doc = SoapUtil.convertToDocument(this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest());
                 LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Parsing SOAP from Request...");
                 
-                hasFoundInjection = this.isTextNodeInjectable(doc, doc.getDocumentElement());
+                return this.isTextNodeInjectable(doc, doc.getDocumentElement());
                 
             } catch (Exception e) {
                 
@@ -60,7 +60,7 @@ public class SoapUtil {
             }
         }
         
-        return hasFoundInjection;
+        return false;
     }
     
     public static Document convertToDocument(String xmlStr) throws ParserConfigurationException, SAXException, IOException {

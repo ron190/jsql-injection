@@ -61,7 +61,7 @@ public class HibernateRestController {
 
         try {
             Session session = this.sessionFactory.getCurrentSession();
-            Query<Object[]> query = session.createNativeQuery(String.format(sqlQuery, inject));
+            Query<Object> query = session.createNativeQuery(String.format(sqlQuery, inject), Object.class);
             if (isUpdate) {
                 query.executeUpdate();
             } else {
@@ -86,7 +86,7 @@ public class HibernateRestController {
                         );
                     }
                 } else {
-                    List<Object[]> results = query.getResultList();
+                    List<Object> results = query.getResultList();
                     if (isVisible) {
                         return new Greeting(
                             isBoolean
@@ -254,8 +254,8 @@ public class HibernateRestController {
     @GetMapping("/cookie")
     public Greeting endpointCookie(HttpServletRequest request, @CookieValue(name = "name", required = false, defaultValue = "") String name) {
         // TODO Recent cookie RFC prevents ()<>@,;:\"/[]?={}
-        name = URLDecoder.decode(name, StandardCharsets.UTF_8);
-        return getResponse(name, "select 1,2,3,4,First_Name,5,6 from Student where '1' = '%s'", true, false, true);
+        String nameUrlDecoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
+        return getResponse(nameUrlDecoded, "select 1,2,3,4,First_Name,5,6 from Student where '1' = '%s'", true, false, true);
     }
 
     @RequestMapping("/header")

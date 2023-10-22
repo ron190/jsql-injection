@@ -21,7 +21,7 @@ public class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://jsql-lamp:8079/get.php?id="
+            "http://jsql-lamp:8079/php/get.php?id="
         );
 
         model
@@ -30,14 +30,24 @@ public class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
 
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true)
+        .withIsStrategyStackedDisabled(true)
+        .withIsStrategyMultibitDisabled(true)
+        .withIsStrategyErrorDisabled(true);
+
         model.beginInjection();
     }
 
     @RetryingTest(3)
     public void readFile() throws JSqlException, ExecutionException, InterruptedException {
 
-        List<String> contents = this.injectionModel.getResourceAccess()
-                .readFile(Collections.singletonList("/var/www/html/get.php"));
+        List<String> contents = this.injectionModel.getResourceAccess().readFile(
+            Collections.singletonList("/var/www/html/php/get.php")
+        );
 
         LOGGER.info("ReadFile: found {} to find {}", String.join(",", contents).trim(), "<?php");
 
