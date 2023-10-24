@@ -236,10 +236,6 @@ public class ResourceAccess {
         }
     }
 
-    /**
-     * Create a webshell in the server.
-     * @param pathShell Remote path of the file
-     */
     public void createWebShell(String pathShell, String urlShell) throws JSqlException, InterruptedException {
 
         BiFunction<String, String, Request> biFunctionGetRequest = (String pathShellFixed, String urlSuccess) -> {
@@ -255,13 +251,6 @@ public class ResourceAccess {
         createShell(pathShell, urlShell, "shell.web", this.filenameWebshell, biFunctionGetRequest);
     }
 
-    /**
-     * Create SQL shell on the server. Override username and password eventually.
-     * @param pathShell Script to create on the server
-     * @param urlShell URL for the script (used for url rewriting)
-     * @param username User name for current database
-     * @param password User password for current database
-     */
     public void createSqlShell(String pathShell, String urlShell, String username, String password) throws JSqlException, InterruptedException {
 
         BiFunction<String, String, Request> biFunctionGetRequest = (String pathShellFixed, String urlSuccess) -> {
@@ -279,6 +268,11 @@ public class ResourceAccess {
         createShell(pathShell, urlShell, "shell.sql", this.filenameSqlshell, biFunctionGetRequest);
     }
 
+    /**
+     * Create shell on remote server
+     * @param pathShell Script to create on the server
+     * @param urlShell URL for the script (used for url rewriting)
+     */
     public void createShell(
         String pathShell,
         String urlShell,
@@ -381,6 +375,21 @@ public class ResourceAccess {
             directoryNames.add(directoryName +"/");
         }
 
+        String urlSuccess = getShellUrl(filename, directoryNames, urlProtocol);
+
+        if (urlSuccess != null) {
+
+            var request = biFunctionGetRequest.apply(filename, urlSuccess);
+            this.injectionModel.sendToViews(request);
+
+        } else {
+
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Payload not found");
+        }
+    }
+
+    private String getShellUrl(String filename, List<String> directoryNames, String urlProtocol) throws InterruptedException {
+
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableCreateShell");
 
         CompletionService<CallableHttpHead> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
@@ -391,11 +400,11 @@ public class ResourceAccess {
 
             urlPart.append(segment);
             taskCompletionService.submit(
-                    new CallableHttpHead(
-                            urlProtocol + urlPart + filename,
-                            this.injectionModel,
-                            "shell#confirm"
-                    )
+                new CallableHttpHead(
+                    urlProtocol + urlPart + filename,
+                    this.injectionModel,
+                    "shell#confirm"
+                )
             );
         }
 
@@ -431,17 +440,9 @@ public class ResourceAccess {
         taskExecutor.shutdown();
         taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
 
-        if (urlSuccess != null) {
-
-            var request = biFunctionGetRequest.apply(filename, urlSuccess);
-            this.injectionModel.sendToViews(request);
-
-        } else {
-
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Payload not found");
-        }
+        return urlSuccess;
     }
-    
+
     /**
      * 
      * @param urlCommand
