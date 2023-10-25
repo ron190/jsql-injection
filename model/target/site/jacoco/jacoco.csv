@@ -36,7 +36,7 @@ model,com.jsql.view.terminal,SystemOutTerminal,0,4,0,0,0,2,0,1,0,1
 model,com.jsql.view.interaction,SubscriberInteraction,17,78,1,1,7,23,3,5,2,5
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionMonobit,0,137,0,4,0,16,0,5,0,3
 model,com.jsql.model.injection.strategy.blind,InjectionTime,49,215,8,22,18,45,8,13,0,6
-model,com.jsql.model.injection.strategy.blind,AbstractInjectionBoolean,46,282,6,16,14,70,6,14,0,9
+model,com.jsql.model.injection.strategy.blind,AbstractInjectionBoolean,56,272,9,13,16,68,7,13,0,9
 model,com.jsql.model.injection.strategy.blind,CallableCharInsertion,0,78,0,4,0,18,0,6,0,4
 model,com.jsql.model.injection.strategy.blind,InjectionBlind,50,246,9,21,19,47,9,14,0,8
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionBoolean.BooleanMode,0,27,0,0,0,2,0,1,0,1
