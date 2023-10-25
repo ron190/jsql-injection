@@ -74,8 +74,8 @@ model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},11,0,0,0,2,0,2,0,
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},11,0,0,0,2,0,2,0,2,0
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},11,0,0,0,2,0,2,0,2,0
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},11,0,0,0,2,0,2,0,2,0
-model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},9,0,0,0,2,0,2,0,2,0
 model,com.jsql.util.bruter,CodecPolicy,0,15,0,0,0,3,0,1,0,1
+model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},9,0,0,0,2,0,2,0,2,0
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},11,0,0,0,2,0,2,0,2,0
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},46,0,0,0,4,0,2,0,2,0
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},9,0,0,0,2,0,2,0,2,0
@@ -110,8 +110,8 @@ model,com.jsql.util.bruter,Crc64Helper,0,78,0,8,0,14,0,6,0,2
 model,com.jsql.util.bruter,HashUtil,0,246,0,2,0,44,0,10,0,9
 model,com.jsql.util.bruter,Bruter,32,389,0,12,13,56,7,23,7,17
 model,com.jsql.util.bruter,BaseNCodec,295,205,56,12,57,43,51,11,17,11
-model,com.jsql.util.bruter,ActionCoder,254,0,0,0,41,0,4,0,4,0
 model,com.jsql.util.bruter,Base16,107,1042,20,20,18,52,18,11,2,7
+model,com.jsql.util.bruter,ActionCoder,254,0,0,0,41,0,4,0,4,0
 model,com.jsql.model.suspendable,SuspendableGetRows,145,596,21,33,37,146,17,28,1,17
 model,com.jsql.model.suspendable,SuspendableGetIndexes,43,137,3,11,10,30,3,8,0,4
 model,com.jsql.model.suspendable,AbstractSuspendable,21,42,3,3,8,16,5,6,2,6
