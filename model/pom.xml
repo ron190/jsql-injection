@@ -68,6 +68,8 @@
         <neo4j-java-driver.version>5.13.0</neo4j-java-driver.version>
         <neo4j-jdbc-driver.version>4.0.9</neo4j-jdbc-driver.version>
         <ojdbc8.version>23.3.0.23.09</ojdbc8.version>
+        <pitest-junit5-plugin.version>1.2.0</pitest-junit5-plugin.version>
+        <pitest-maven.version>1.15.2</pitest-maven.version>
         <postgresql.version>42.6.0</postgresql.version>
         <snakeyaml.version>2.2</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
@@ -83,12 +85,12 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>1.15.1</version>
+                <version>${pitest-maven.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-junit5-plugin</artifactId>
-                        <version>1.2.0</version>
+                        <version>${pitest-junit5-plugin.version}</version>
                     </dependency>
                 </dependencies>
                 <configuration>
