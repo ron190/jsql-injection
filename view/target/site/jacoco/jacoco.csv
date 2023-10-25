@@ -33,8 +33,8 @@ view,com.jsql.view.swing.table,PanelTable.new JTable() {...},2,8,0,0,1,1,1,1,1,1
 view,com.jsql.view.swing.table,PanelTable.new MouseAdapter() {...},43,6,2,0,10,1,2,1,1,1
 view,com.jsql.view.swing.menubar,Menubar.new MouseAdapter() {...},8,9,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.menubar,Menubar.new BasicCheckBoxMenuItemUI() {...},5,6,0,0,2,1,1,1,1,1
-view,com.jsql.view.swing.menubar,JMenuItemWithMargin,0,30,1,1,0,15,1,5,0,5
 view,com.jsql.view.swing.menubar,Menubar,319,2676,32,30,61,430,47,44,26,34
+view,com.jsql.view.swing.menubar,JMenuItemWithMargin,0,30,1,1,0,15,1,5,0,5
 view,com.jsql.view.swing.menubar,Menubar.new ActionListener() {...},0,42,1,1,0,10,1,2,0,2
 view,com.jsql.view.swing.menubar,ActionCheckUpdate,13,3,0,0,4,1,2,1,2,1
 view,com.jsql.view.swing.action,HotkeyUtil,0,219,1,7,0,54,1,11,0,8
@@ -156,8 +156,8 @@ view,com.jsql.view.swing.panel.preferences,PanelAuth.new DocumentListenerEditing
 view,com.jsql.view.swing.panel.preferences,PanelAuth,46,434,8,0,10,118,6,10,2,10
 view,com.jsql.view.swing.panel.preferences,ActionListenerSave,11,484,3,1,3,87,2,2,0,2
 view,com.jsql.view.swing.panel.preferences,PanelUserAgent.new DocumentListenerEditing() {...},9,6,0,0,3,1,1,1,1,1
-view,com.jsql.view.swing.panel.preferences,PanelUserAgent,24,185,2,2,6,55,2,4,1,3
 view,com.jsql.view.swing.panel.preferences,PanelGeneral,45,228,6,0,9,64,6,6,3,6
+view,com.jsql.view.swing.panel.preferences,PanelUserAgent,24,185,2,2,6,55,2,4,1,3
 view,com.jsql.view.swing.list,ListTransfertHandlerScan,85,264,5,15,21,62,4,14,0,8
 view,com.jsql.view.swing.list,DnDList.new FocusListener() {...},0,14,0,0,0,5,0,3,0,3
 view,com.jsql.view.swing.list,DnDList.new KeyAdapter() {...},0,14,0,2,0,4,0,3,0,2
@@ -203,8 +203,8 @@ view,com.jsql.view.swing.panel,PanelConsoles.new CustomMetalTabbedPaneUI() {...}
 view,com.jsql.view.swing.panel,PanelConsoles.new MouseAdapter() {...},6,20,0,0,2,5,0,2,0,2
 view,com.jsql.view.swing.panel,PanelPreferences.CategoryPreference,0,78,0,0,0,14,0,4,0,4
 view,com.jsql.view.swing.panel,PanelPreferences.new DefaultListCellRenderer() {...},0,41,0,4,0,12,0,4,0,2
-view,com.jsql.view.swing.panel,PanelAddressBar,5,651,0,4,1,136,1,17,1,15
 view,com.jsql.view.swing.panel,PanelPreferences,3,430,0,0,1,92,1,13,1,13
+view,com.jsql.view.swing.panel,PanelAddressBar,5,651,0,4,1,136,1,17,1,15
 view,com.jsql.view.swing.panel,PanelConsoles,78,624,9,9,20,134,12,20,3,20
 view,com.jsql.view.swing.panel,PanelAddressBar.RadioModel,0,18,0,0,0,7,0,1,0,1
 view,com.jsql.view.swing.sql.lexer,DocumentReader,141,103,12,8,33,22,16,7,8,5
@@ -277,7 +277,7 @@ view,com.jsql.view.swing.scrollpane,LightScrollPaneShell,0,21,0,0,0,6,0,1,0,1
 view,com.jsql.view.swing.scrollpane,LightScrollPane,0,185,0,4,0,44,0,8,0,6
 view,com.jsql.view.swing.scrollpane,JScrollIndicator.ControlPanel,0,54,1,3,0,14,1,2,0,1
 view,com.jsql.view.swing.console,AbstractColoredConsole.new FocusAdapter() {...},15,6,0,0,3,1,1,1,1,1
-view,com.jsql.view.swing.console,AbstractColoredConsole,6,160,8,14,1,36,7,7,0,3
+view,com.jsql.view.swing.console,AbstractColoredConsole,5,161,7,15,1,36,6,8,0,3
 view,com.jsql.view.swing.console,JavaConsoleAdapter,3,14,0,0,1,4,1,1,1,1
 view,com.jsql.view.swing.console,JTextPaneAppender,12,173,5,11,4,37,5,11,0,8
 view,com.jsql.view.swing.console,SimpleConsoleAdapter,0,22,0,0,0,5,0,2,0,2
