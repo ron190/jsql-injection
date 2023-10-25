@@ -15,9 +15,10 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 [![Codacy](https://img.shields.io/codacy/grade/e7ccb247f9b74d489a1fa9f9483c978f?label=quality&logo=codacy "Codacy code quality")](https://app.codacy.com/gh/ron190/jsql-injection/dashboard)
 [![Snyk](https://img.shields.io/badge/build-monitored-8A2BE2?logo=snyk&label=security "Snyk code vulnerability")](#)<br>
 [![Sonar](https://img.shields.io/sonar/violations/ron190:jsql-injection?format=long&label=issues&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io "Sonar code issues")](https://sonarcloud.io/dashboard?id=ron190%3Ajsql-injection)
+
 ___
 Read about jSQL Injection [features](https://github.com/ron190/jsql-injection/wiki#features), how to [install](https://github.com/ron190/jsql-injection/wiki/Installation), insights on [implementation](https://github.com/ron190/jsql-injection/wiki/Programming-jSQL) and more in the [wiki](https://github.com/ron190/jsql-injection/wiki).
-___
+
 ## Screenshots
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
 [![SQL Engine](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/sqlengine-mini.png "SQL Engine")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/sqlengine.png)
@@ -30,7 +31,7 @@ ___
 [![Upload](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/upload-mini.png "Upload")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/upload.png)
 [![Bruteforce](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter-mini.png "Bruteforce")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter.png)
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
-
-## Disclaimer
+___
+### Disclaimer
 Attacking web-server is illegal without prior mutual consent. The end user is responsible and obeys all applicable laws.
 Developers assume no liability and are not responsible for any misuse or damage caused by this program.
