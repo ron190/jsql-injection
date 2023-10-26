@@ -14,7 +14,7 @@
 
         <assertj-swing-junit.version>3.17.1</assertj-swing-junit.version>
         <awaitility.version>4.2.0</awaitility.version>
-        <commons-io.version>2.14.0</commons-io.version>
+        <commons-io.version>2.15.0</commons-io.version>
         <junit-jupiter-engine.version>5.10.0</junit-jupiter-engine.version>
         <maven-shade-plugin.version>3.5.1</maven-shade-plugin.version>
         <maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
