@@ -110,17 +110,17 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
                     
 <span class="fc" id="L111">                    tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));</span>
 
-<span class="fc bfc" id="L113" title="All 2 branches covered.">                    if (foregroundColor != Color.BLACK) {  // keep tab colored until user clicks</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">                    if (foregroundColor != Color.BLACK) {  // keep tab colored until user clicks</span>
 
-<span class="fc" id="L115">                        tabHeader.setForeground(foregroundColor);</span>
+<span class="nc" id="L115">                        tabHeader.setForeground(foregroundColor);</span>
                     }
                 }
             }
             
-<span class="fc" id="L120">        } catch (Exception e) {</span>
+<span class="nc" id="L120">        } catch (Exception e) {</span>
             
             // Report #863: exception during report of exception
-<span class="fc" id="L123">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, message, e);</span>
+<span class="nc" id="L123">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, message, e);</span>
 <span class="fc" id="L124">        }</span>
 <span class="fc" id="L125">    }</span>
 }

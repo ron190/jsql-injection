@@ -113,7 +113,7 @@ model,com.jsql.util.bruter,BaseNCodec,295,205,56,12,57,43,51,11,17,11
 model,com.jsql.util.bruter,ActionCoder,254,0,0,0,41,0,4,0,4,0
 model,com.jsql.util.bruter,Base16,107,1042,20,20,18,52,18,11,2,7
 model,com.jsql.model.suspendable,SuspendableGetRows,145,596,21,33,37,146,17,28,1,17
-model,com.jsql.model.suspendable,SuspendableGetIndexes,46,134,4,10,11,29,4,7,0,4
+model,com.jsql.model.suspendable,SuspendableGetIndexes,43,137,3,11,10,30,3,8,0,4
 model,com.jsql.model.suspendable,AbstractSuspendable,21,42,3,3,8,16,5,6,2,6
 model,com.jsql.model.suspendable,SuspendableGetCharInsertion,64,527,7,37,15,126,9,33,2,18
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
