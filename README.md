@@ -17,8 +17,9 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 [![Sonar](https://img.shields.io/sonar/violations/ron190:jsql-injection?format=long&label=issues&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io "Sonar code issues")](https://sonarcloud.io/dashboard?id=ron190%3Ajsql-injection)
 
 ___
+## Wiki
 Read about jSQL Injection [features](https://github.com/ron190/jsql-injection/wiki#features), how to [install](https://github.com/ron190/jsql-injection/wiki/Installation), programming [insights](https://github.com/ron190/jsql-injection/wiki/Programming-jSQL) and more in the [wiki](https://github.com/ron190/jsql-injection/wiki).
-
+___
 ## Screenshots
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
 [![SQL Engine](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/sqlengine-mini.png "SQL Engine")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.82/sqlengine.png)
