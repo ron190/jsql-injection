@@ -18,7 +18,7 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 
 ___
 ## Wiki
-Read about jSQL Injection [features](https://github.com/ron190/jsql-injection/wiki#features), how to [install](https://github.com/ron190/jsql-injection/wiki/Installation), programming [insights](https://github.com/ron190/jsql-injection/wiki/Programming-jSQL) and more in the [wiki](https://github.com/ron190/jsql-injection/wiki).
+Read about jSQL [features](https://github.com/ron190/jsql-injection/wiki#features), how to [install](https://github.com/ron190/jsql-injection/wiki/Installation) and more in the [wiki](https://github.com/ron190/jsql-injection/wiki).
 ___
 ## Screenshots
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
@@ -33,6 +33,7 @@ ___
 [![Bruteforce](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter-mini.png "Bruteforce")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter.png)
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 ___
-### Disclaimer
-Attacking web-server is illegal without prior mutual consent. The end user is responsible and obeys all applicable laws.
-Developers assume no liability and are not responsible for any misuse or damage caused by this program.
+## Disclaimer
+> [!NOTE]
+> Attacking web-server is illegal without prior mutual consent. The end user is responsible and obeys all applicable laws.
+> Developers assume no liability and are not responsible for any misuse or damage caused by this program.
