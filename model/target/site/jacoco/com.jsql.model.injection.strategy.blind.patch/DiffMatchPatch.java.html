@@ -666,10 +666,10 @@ import java.util.regex.Pattern;
 <span class="fc" id="L666">                return best;</span>
             }
 <span class="fc" id="L668">            length += found;</span>
-<span class="pc bpc" id="L669" title="1 of 4 branches missed.">            if (found == 0 || text1.substring(textLength - length).equals(</span>
+<span class="pc bpc" id="L669" title="2 of 4 branches missed.">            if (found == 0 || text1.substring(textLength - length).equals(</span>
 <span class="fc" id="L670">                    text2.substring(0, length))) {</span>
-<span class="fc" id="L671">                best = length;</span>
-<span class="fc" id="L672">                length++;</span>
+<span class="nc" id="L671">                best = length;</span>
+<span class="nc" id="L672">                length++;</span>
             }
 <span class="fc" id="L674">        }</span>
     }
@@ -867,7 +867,7 @@ import java.util.regex.Pattern;
 <span class="fc" id="L867">                String insertion = thisDiff.getText();</span>
 <span class="fc" id="L868">                int overlapLength1 = this.diffCommonOverlap(deletion, insertion);</span>
 <span class="fc" id="L869">                int overlapLength2 = this.diffCommonOverlap(insertion, deletion);</span>
-<span class="fc bfc" id="L870" title="All 2 branches covered.">                if (overlapLength1 &gt;= overlapLength2) {</span>
+<span class="pc bpc" id="L870" title="1 of 2 branches missed.">                if (overlapLength1 &gt;= overlapLength2) {</span>
 <span class="pc bpc" id="L871" title="1 of 2 branches missed.">                    if (overlapLength1 &gt;= deletion.length() / 2.0 ||</span>
 <span class="pc bpc" id="L872" title="1 of 2 branches missed.">                            overlapLength1 &gt;= insertion.length() / 2.0) {</span>
                         // Overlap found.  Insert an equality and trim the surrounding edits.
@@ -880,8 +880,8 @@ import java.util.regex.Pattern;
                         // no need to step past the new element.
                     }
                 } else {
-<span class="pc bpc" id="L883" title="1 of 2 branches missed.">                    if (overlapLength2 &gt;= deletion.length() / 2.0 ||</span>
-<span class="pc bpc" id="L884" title="1 of 2 branches missed.">                            overlapLength2 &gt;= insertion.length() / 2.0) {</span>
+<span class="nc bnc" id="L883" title="All 2 branches missed.">                    if (overlapLength2 &gt;= deletion.length() / 2.0 ||</span>
+<span class="nc bnc" id="L884" title="All 2 branches missed.">                            overlapLength2 &gt;= insertion.length() / 2.0) {</span>
                         // Reverse overlap found.
                         // Insert an equality and swap and trim the surrounding edits.
 <span class="nc" id="L887">                        pointer.previous();</span>

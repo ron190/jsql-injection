@@ -106,9 +106,9 @@ public class JTextPaneAppender extends AbstractAppender {
             
 <span class="fc" id="L107">            String message = messageLogEvent[0];</span>
             
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">            if (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">            if (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {</span>
                 
-<span class="nc" id="L111">                javaTextPane.append(message, ATTRIBUTE_WARN);</span>
+<span class="fc" id="L111">                javaTextPane.append(message, ATTRIBUTE_WARN);</span>
                 
 <span class="fc bfc" id="L113" title="All 2 branches covered.">            } else if (level == LogLevelUtil.CONSOLE_ERROR.intLevel()) {</span>
                 
