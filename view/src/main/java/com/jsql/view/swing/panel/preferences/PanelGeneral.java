@@ -50,16 +50,14 @@ public class PanelGeneral extends JPanel {
         var groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
         
-        Stream
-        .of(
+        Stream.of(
             this.checkboxIsCheckingUpdate,
             this.checkboxIsReportingBugs,
             this.checkboxIs4K
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
-        Stream
-        .of(
+        Stream.of(
             labelIsCheckingUpdate,
             labelIsReportingBugs,
             labelIs4K

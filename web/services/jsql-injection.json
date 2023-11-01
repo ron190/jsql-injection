@@ -2,11 +2,10 @@
     "version": "0.95",
     "news": [
         "[v0.95] Improve SQL query and param star *",
+        "[Thanks to @komomon, @gamblingmaster2020, @galihap76, @Xem44XMe] You can also add a Star to GitHub at https://github.com/ron190/jsql-injection",
         "[Wiki] Learn jSQL insights from the wiki at https://github.com/ron190/jsql-injection/wiki",
-        "[Contribute] Clone the wiki and open a pull request to improve documentation",
-        "[Thanks to @Mimat1989, @willnaoosmith] Support and give feedbacks at https://github.com/ron190/jsql-injection",
-        "[Thanks to @winezer0, @TheFury4, @tu-yucheng, @RzCodez] You can also add a Star to GitHub at https://github.com/ron190/jsql-injection",
         "[Discuss] Open a GitHub discussion: https://github.com/ron190/jsql-injection/discussions",
+        "[Contribute] Clone the wiki and open a pull request to improve documentation",
         "[Ongoing features] Shell on PostgreSQL, JSP shell, Strategies Position and Duality, Kerberos on CI/CD"
     ]
 }

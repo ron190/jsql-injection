@@ -180,8 +180,7 @@ public class ManagerCoder extends JPanel implements Manager {
         mapMenus.put("Hash", new JMenu("Hash"));
         mapMenus.get("Hash").setName("Hash");
         
-        Stream
-        .of("Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql")
+        Stream.of("Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql")
         .forEach(hash -> {
             
             var menuEncode = new JMenuItem("Hash to "+ hash);

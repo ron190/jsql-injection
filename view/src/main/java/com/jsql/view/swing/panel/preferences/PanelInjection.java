@@ -298,8 +298,7 @@ public class PanelInjection extends JPanel {
 
         this.checkboxIsCheckingAllParam.addActionListener(actionListenerCheckingAllParam);
         
-        Stream
-        .of(
+        Stream.of(
             this.checkboxIsNotInjectingMetadata,
             this.checkboxIsNotSearchingCharInsertion,
             this.checkboxIsParsingForm,
@@ -321,8 +320,7 @@ public class PanelInjection extends JPanel {
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
-        Stream
-        .of(
+        Stream.of(
             labelIsParsingForm,
             labelIsNotInjectingMetadata,
             labelIsNotSearchingCharInsertion,

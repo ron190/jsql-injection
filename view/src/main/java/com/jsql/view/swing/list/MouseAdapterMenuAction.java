@@ -103,8 +103,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         JMenuItem mnRestoreDefault = new JMenuItemWithMargin();
         JMenuItem mnSelectAll = new JMenuItemWithMargin();
         
-        Stream
-        .of(
+        Stream.of(
             new SimpleEntry<>(mnImport, "LIST_IMPORT_CONFIRM_TITLE"),
             new SimpleEntry<>(mnExport, "LIST_EXPORT_TITLE"),
             new SimpleEntry<>(mnCut, "LIST_CUT"),

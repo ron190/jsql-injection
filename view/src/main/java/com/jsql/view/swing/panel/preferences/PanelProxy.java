@@ -67,8 +67,7 @@ public class PanelProxy extends JPanel {
         this.getTextProxyAddressHttps().setFont(UiUtil.FONT_NON_MONO_BIG);
         this.getTextProxyPortHttps().setFont(UiUtil.FONT_NON_MONO_BIG);
         
-        Stream
-        .of(
+        Stream.of(
             this.getCheckboxIsUsingProxy()
         )
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
@@ -82,8 +81,7 @@ public class PanelProxy extends JPanel {
             }
         };
 
-        Stream
-        .of(
+        Stream.of(
             this.getTextProxyAddress(),
             this.getTextProxyPort(),
             this.getTextProxyAddressHttps(),
@@ -91,8 +89,7 @@ public class PanelProxy extends JPanel {
         )
         .forEach(textField -> textField.getDocument().addDocumentListener(documentListenerSave));
 
-        Stream
-        .of(
+        Stream.of(
             buttonIsUsingProxy,
             buttonIsUsingProxyHttps
         )

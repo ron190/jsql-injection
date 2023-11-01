@@ -121,19 +121,16 @@ public class CsrfUtil {
             
             String[] cookieValues = StringUtils.split(mapResponse.get(SET_COOKIE_RESPONSE), ";");
             
-            optionalCookieCsrf =
-                Stream
-                .of(cookieValues)
+            optionalCookieCsrf = Stream.of(cookieValues)
                 .filter(cookie -> cookie.trim().toLowerCase().startsWith("xsrf-token"))
                 .map(cookie -> {
                     
                     String[] cookieEntry = StringUtils.split(cookie, "=");
 
-                    return
-                        new SimpleEntry<>(
-                            cookieEntry[0].trim(),
-                            cookieEntry[1].trim()
-                        );
+                    return new SimpleEntry<>(
+                        cookieEntry[0].trim(),
+                        cookieEntry[1].trim()
+                    );
                 })
                 .findFirst();
         }

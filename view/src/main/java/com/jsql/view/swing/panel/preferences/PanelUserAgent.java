@@ -83,8 +83,7 @@ public class PanelUserAgent extends JPanel {
         
         var emptyLabelSessionManagement = new JLabel();
         
-        Stream
-        .of(labelIsCheckingUpdate)
+        Stream.of(labelIsCheckingUpdate)
         .forEach(label -> {
             
             label.setHorizontalAlignment(SwingConstants.LEFT);

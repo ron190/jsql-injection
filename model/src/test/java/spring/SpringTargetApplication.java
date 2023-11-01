@@ -57,8 +57,7 @@ public class SpringTargetApplication {
         
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
-        Stream
-        .of(
+        Stream.of(
             new SimpleEntry<>(propsH2, "hibernate/hibernate.h2.properties"),
             new SimpleEntry<>(propsMysql, "hibernate/hibernate.mysql.properties"),
             new SimpleEntry<>(propsMysqlError, "hibernate/hibernate.mysql-5-5-40.properties"),

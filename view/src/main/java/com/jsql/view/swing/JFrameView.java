@@ -214,8 +214,7 @@ public class JFrameView extends JFrame {
             }
         }
         
-        Stream
-        .of(
+        Stream.of(
             MediatorHelper.managerUpload(),
             MediatorHelper.managerFile(),
             MediatorHelper.managerWebshell(),

@@ -81,8 +81,7 @@ public class PanelNode extends JPanel {
         this.setBackground(Color.WHITE);
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         
-        Stream
-        .of(
+        Stream.of(
             this.icon,
             this.loader,
             this.progressBar,

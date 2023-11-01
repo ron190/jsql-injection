@@ -547,9 +547,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             query = paramLeadFixed;
             
         } else if (
-            // If method is selected by user and URL does not contains injection point
+            // If method is selected by user and URL does not contain injection point
             // but parameters contain an injection point
-            // then replace injection point by SQL expression in those parameter
+            // then replace injection point by SQL expression in this parameter
             paramLeadFixed.contains(InjectionModel.STAR)
         ) {
             

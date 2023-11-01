@@ -39,8 +39,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
 
         this.setName("tabNetwork");
         
-        Stream
-        .of(
+        Stream.of(
             new SimpleEntry<>("NETWORK_TAB_URL_LABEL", this.textAreaNetworkTabUrl),
             new SimpleEntry<>("NETWORK_TAB_HEADERS_LABEL", this.textAreaNetworkTabHeader),
             new SimpleEntry<>("NETWORK_TAB_PARAMS_LABEL", this.textAreaNetworkTabParams),

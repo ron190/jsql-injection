@@ -496,9 +496,7 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("MENUBAR_LANGUAGE", menuTranslation);
         menuTranslation.setName("menuTranslation");
         
-        Object[] languages =
-            Stream
-            .of("ru zh es fr tr ko se ar cs it pt pl in nl ro de".split(StringUtils.SPACE))
+        Object[] languages = Stream.of("ru zh es fr tr ko se ar cs it pt pl in nl ro de".split(StringUtils.SPACE))
             .map(flag -> Locale.forLanguageTag(flag).getLanguage())
             .toArray();
         
@@ -648,8 +646,7 @@ public class Menubar extends JMenuBar {
         
         var groupRadioLanguage = new ButtonGroup();
         
-        Stream
-        .of(
+        Stream.of(
             this.itemEnglish,
             this.itemRussian,
             this.itemChinese,
@@ -776,8 +773,7 @@ public class Menubar extends JMenuBar {
         
         this.itemIntoFrench.setName("itemIntoFrench");
         
-        Stream
-        .of(
+        Stream.of(
             this.itemIntoFrench,
             this.itemIntoSpanish,
             this.itemIntoSwedish,
@@ -803,8 +799,7 @@ public class Menubar extends JMenuBar {
         )
         .forEach(menuI18nContribution::add);
         
-        Stream
-        .of(
+        Stream.of(
             new SimpleEntry<>(this.itemIntoHindi, Language.HI),
             new SimpleEntry<>(this.itemIntoArabic, Language.AR),
             new SimpleEntry<>(this.itemIntoRussia, Language.RU),
@@ -1078,12 +1073,13 @@ public class Menubar extends JMenuBar {
 
     private void switchMenuItems() {
         
-        Stream
-        .of(this.itemArabic, this.itemIntoArabic)
+        Stream.of(
+            this.itemArabic,
+            this.itemIntoArabic
+        )
         .forEach(menuItem -> menuItem.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
         
-        Stream
-        .of(
+        Stream.of(
             this.itemEnglish,
             this.itemChinese,
             this.itemRussian,
@@ -1132,8 +1128,7 @@ public class Menubar extends JMenuBar {
         
         if (I18nUtil.isAsian(newLocale)) {
             
-            Stream
-            .of(
+            Stream.of(
                 JTextPaneAppender.ATTRIBUTE_WARN,
                 JTextPaneAppender.ATTRIBUTE_INFORM,
                 JTextPaneAppender.ATTRIBUTE_SUCCESS,
@@ -1152,8 +1147,7 @@ public class Menubar extends JMenuBar {
             
         } else {
             
-            Stream
-            .of(
+            Stream.of(
                 JTextPaneAppender.ATTRIBUTE_WARN,
                 JTextPaneAppender.ATTRIBUTE_INFORM,
                 JTextPaneAppender.ATTRIBUTE_SUCCESS,

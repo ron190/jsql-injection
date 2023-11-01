@@ -304,14 +304,12 @@ public class ParameterUtil {
             this.listQueryString = Pattern.compile("&")
                 .splitAsStream(url.getQuery())
                 .map(s -> Arrays.copyOf(s.split("="), 2))
-                .map(o -> 
-                    new SimpleEntry<>(
-                        o[0],
-                        o[1] == null
-                        ? StringUtils.EMPTY
-                        : o[1]
-                    )
-                )
+                .map(o -> new SimpleEntry<>(
+                    o[0],
+                    o[1] == null
+                    ? StringUtils.EMPTY
+                    : o[1]
+                ))
                 .collect(Collectors.toList());
         }
     }
@@ -336,14 +334,12 @@ public class ParameterUtil {
                     .compile("&")
                     .splitAsStream(rawRequest)
                     .map(s -> Arrays.copyOf(s.split("="), 2))
-                    .map(o ->
-                        new SimpleEntry<>(
-                            o[0],
-                            o[1] == null
-                            ? StringUtils.EMPTY
-                            : o[1]
-                        )
-                    )
+                    .map(o -> new SimpleEntry<>(
+                        o[0],
+                        o[1] == null
+                        ? StringUtils.EMPTY
+                        : o[1]
+                    ))
                     .collect(Collectors.toList());
             }
         }

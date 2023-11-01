@@ -123,8 +123,7 @@ public class PanelAuth extends JPanel {
         this.getTextDigestAuthenticationUsername().setFont(UiUtil.FONT_NON_MONO_BIG);
         this.getTextDigestAuthenticationPassword().setFont(UiUtil.FONT_NON_MONO_BIG);
         
-        Stream
-        .of(
+        Stream.of(
             this.getCheckboxUseDigestAuthentication(),
             this.getCheckboxUseKerberos()
         )
@@ -139,8 +138,7 @@ public class PanelAuth extends JPanel {
             }
         };
 
-        Stream
-        .of(
+        Stream.of(
             this.getTextDigestAuthenticationPassword(),
             this.getTextDigestAuthenticationUsername(),
             this.getTextKerberosKrb5Conf(),
@@ -148,8 +146,7 @@ public class PanelAuth extends JPanel {
         )
         .forEach(textField -> textField.getDocument().addDocumentListener(documentListenerSave));
 
-        Stream
-        .of(
+        Stream.of(
             labelUseDigestAuthentication,
             labelUseKerberos
         )
