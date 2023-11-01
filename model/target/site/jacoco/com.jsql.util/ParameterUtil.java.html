@@ -304,171 +304,167 @@ public class ParameterUtil {
 <span class="fc" id="L304">            this.listQueryString = Pattern.compile(&quot;&amp;&quot;)</span>
 <span class="fc" id="L305">                .splitAsStream(url.getQuery())</span>
 <span class="fc" id="L306">                .map(s -&gt; Arrays.copyOf(s.split(&quot;=&quot;), 2))</span>
-<span class="fc" id="L307">                .map(o -&gt; </span>
-<span class="fc" id="L308">                    new SimpleEntry&lt;&gt;(</span>
-                        o[0],
-<span class="fc bfc" id="L310" title="All 2 branches covered.">                        o[1] == null</span>
-<span class="fc" id="L311">                        ? StringUtils.EMPTY</span>
-<span class="fc" id="L312">                        : o[1]</span>
-                    )
-                )
-<span class="fc" id="L315">                .collect(Collectors.toList());</span>
+<span class="fc" id="L307">                .map(o -&gt; new SimpleEntry&lt;&gt;(</span>
+                    o[0],
+<span class="fc bfc" id="L309" title="All 2 branches covered.">                    o[1] == null</span>
+<span class="fc" id="L310">                    ? StringUtils.EMPTY</span>
+<span class="fc" id="L311">                    : o[1]</span>
+                ))
+<span class="fc" id="L313">                .collect(Collectors.toList());</span>
         }
-<span class="fc" id="L317">    }</span>
+<span class="fc" id="L315">    }</span>
 
     public void initializeRequest(String rawRequest) {
 
-<span class="fc" id="L321">        this.rawRequest = rawRequest;</span>
-<span class="fc" id="L322">        this.listRequest.clear();</span>
+<span class="fc" id="L319">        this.rawRequest = rawRequest;</span>
+<span class="fc" id="L320">        this.listRequest.clear();</span>
 
-<span class="fc bfc" id="L324" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(rawRequest)) {</span>
+<span class="fc bfc" id="L322" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(rawRequest)) {</span>
 
-<span class="fc bfc" id="L326" title="All 2 branches covered.">            if (isMultipartRequest()) {</span>
+<span class="fc bfc" id="L324" title="All 2 branches covered.">            if (isMultipartRequest()) {</span>
                 // Pass request containing star * param without any parsing
-<span class="fc" id="L328">                this.listRequest = new ArrayList&lt;&gt;(</span>
-<span class="fc" id="L329">                    List.of(new SimpleEntry&lt;&gt;(</span>
+<span class="fc" id="L326">                this.listRequest = new ArrayList&lt;&gt;(</span>
+<span class="fc" id="L327">                    List.of(new SimpleEntry&lt;&gt;(</span>
                         rawRequest,
                         &quot;&quot;
                     ))
                 );
             } else {
-<span class="fc" id="L335">                this.listRequest = Pattern</span>
-<span class="fc" id="L336">                    .compile(&quot;&amp;&quot;)</span>
-<span class="fc" id="L337">                    .splitAsStream(rawRequest)</span>
-<span class="fc" id="L338">                    .map(s -&gt; Arrays.copyOf(s.split(&quot;=&quot;), 2))</span>
-<span class="fc" id="L339">                    .map(o -&gt;</span>
-<span class="fc" id="L340">                        new SimpleEntry&lt;&gt;(</span>
-                            o[0],
-<span class="fc bfc" id="L342" title="All 2 branches covered.">                            o[1] == null</span>
-<span class="fc" id="L343">                            ? StringUtils.EMPTY</span>
-<span class="fc" id="L344">                            : o[1]</span>
-                        )
-                    )
-<span class="fc" id="L347">                    .collect(Collectors.toList());</span>
+<span class="fc" id="L333">                this.listRequest = Pattern</span>
+<span class="fc" id="L334">                    .compile(&quot;&amp;&quot;)</span>
+<span class="fc" id="L335">                    .splitAsStream(rawRequest)</span>
+<span class="fc" id="L336">                    .map(s -&gt; Arrays.copyOf(s.split(&quot;=&quot;), 2))</span>
+<span class="fc" id="L337">                    .map(o -&gt; new SimpleEntry&lt;&gt;(</span>
+                        o[0],
+<span class="fc bfc" id="L339" title="All 2 branches covered.">                        o[1] == null</span>
+<span class="fc" id="L340">                        ? StringUtils.EMPTY</span>
+<span class="fc" id="L341">                        : o[1]</span>
+                    ))
+<span class="fc" id="L343">                    .collect(Collectors.toList());</span>
             }
         }
-<span class="fc" id="L350">    }</span>
+<span class="fc" id="L346">    }</span>
 
     public void initializeHeader(String rawHeader) {
         
-<span class="fc" id="L354">        this.rawHeader = rawHeader;</span>
-<span class="fc" id="L355">        this.listHeader.clear();</span>
+<span class="fc" id="L350">        this.rawHeader = rawHeader;</span>
+<span class="fc" id="L351">        this.listHeader.clear();</span>
 
-<span class="fc bfc" id="L357" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(rawHeader)) {</span>
+<span class="fc bfc" id="L353" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(rawHeader)) {</span>
             
-<span class="fc" id="L359">            this.listHeader =</span>
+<span class="fc" id="L355">            this.listHeader =</span>
                 Pattern
-<span class="fc" id="L361">                .compile(&quot;\\\\r\\\\n&quot;)</span>
-<span class="fc" id="L362">                .splitAsStream(rawHeader)</span>
-<span class="fc" id="L363">                .map(commaEntry -&gt;</span>
-<span class="fc" id="L364">                    Arrays.copyOf(</span>
-<span class="fc" id="L365">                        commaEntry.split(&quot;:&quot;),</span>
+<span class="fc" id="L357">                .compile(&quot;\\\\r\\\\n&quot;)</span>
+<span class="fc" id="L358">                .splitAsStream(rawHeader)</span>
+<span class="fc" id="L359">                .map(commaEntry -&gt;</span>
+<span class="fc" id="L360">                    Arrays.copyOf(</span>
+<span class="fc" id="L361">                        commaEntry.split(&quot;:&quot;),</span>
                         2
                     )
                 )
-<span class="fc" id="L369">                .map(arrayEntry -&gt;</span>
-<span class="fc" id="L370">                    new SimpleEntry&lt;&gt;(</span>
+<span class="fc" id="L365">                .map(arrayEntry -&gt;</span>
+<span class="fc" id="L366">                    new SimpleEntry&lt;&gt;(</span>
                         arrayEntry[0],
-<span class="pc bpc" id="L372" title="1 of 2 branches missed.">                        arrayEntry[1] == null</span>
-<span class="nc" id="L373">                        ? StringUtils.EMPTY</span>
-<span class="fc" id="L374">                        : arrayEntry[1]</span>
+<span class="pc bpc" id="L368" title="1 of 2 branches missed.">                        arrayEntry[1] == null</span>
+<span class="nc" id="L369">                        ? StringUtils.EMPTY</span>
+<span class="fc" id="L370">                        : arrayEntry[1]</span>
                     )
                 )
-<span class="fc" id="L377">                .collect(Collectors.toList());</span>
+<span class="fc" id="L373">                .collect(Collectors.toList());</span>
         }
-<span class="fc" id="L379">    }</span>
+<span class="fc" id="L375">    }</span>
     
     public String getQueryStringFromEntries() {
         
-<span class="fc" id="L383">        return this.listQueryString.stream()</span>
-<span class="fc" id="L384">            .filter(Objects::nonNull)</span>
-<span class="fc" id="L385">            .map(entry -&gt; {</span>
-<span class="fc" id="L386">                if (</span>
-<span class="fc bfc" id="L387" title="All 2 branches covered.">                    this.injectionModel.getMediatorStrategy().getStrategy() == this.injectionModel.getMediatorStrategy().getMultibit()</span>
-<span class="pc bpc" id="L388" title="1 of 2 branches missed.">                    &amp;&amp; entry.getValue() != null</span>
-<span class="fc bfc" id="L389" title="All 2 branches covered.">                    &amp;&amp; entry.getValue().contains(InjectionModel.STAR)</span>
+<span class="fc" id="L379">        return this.listQueryString.stream()</span>
+<span class="fc" id="L380">            .filter(Objects::nonNull)</span>
+<span class="fc" id="L381">            .map(entry -&gt; {</span>
+<span class="fc" id="L382">                if (</span>
+<span class="fc bfc" id="L383" title="All 2 branches covered.">                    this.injectionModel.getMediatorStrategy().getStrategy() == this.injectionModel.getMediatorStrategy().getMultibit()</span>
+<span class="pc bpc" id="L384" title="1 of 2 branches missed.">                    &amp;&amp; entry.getValue() != null</span>
+<span class="fc bfc" id="L385" title="All 2 branches covered.">                    &amp;&amp; entry.getValue().contains(InjectionModel.STAR)</span>
                 ) {
-<span class="fc" id="L391">                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), InjectionModel.STAR);</span>
+<span class="fc" id="L387">                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), InjectionModel.STAR);</span>
                 } else {
-<span class="fc" id="L393">                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), entry.getValue());</span>
+<span class="fc" id="L389">                    return String.format(FORMAT_KEY_VALUE, entry.getKey(), entry.getValue());</span>
                 }
             })
-<span class="fc" id="L396">            .collect(Collectors.joining(&quot;&amp;&quot;));</span>
+<span class="fc" id="L392">            .collect(Collectors.joining(&quot;&amp;&quot;));</span>
     }
 
     public String getRequestFromEntries() {
 
-<span class="fc" id="L401">        return this.listRequest.stream()</span>
-<span class="fc" id="L402">            .filter(Objects::nonNull)</span>
-<span class="fc" id="L403">            .map(entry -&gt;</span>
-<span class="fc" id="L404">                String.format(</span>
+<span class="fc" id="L397">        return this.listRequest.stream()</span>
+<span class="fc" id="L398">            .filter(Objects::nonNull)</span>
+<span class="fc" id="L399">            .map(entry -&gt;</span>
+<span class="fc" id="L400">                String.format(</span>
                     FORMAT_KEY_VALUE,
-<span class="fc" id="L406">                    entry.getKey(),</span>
-<span class="fc bfc" id="L407" title="All 2 branches covered.">                    StringUtils.isEmpty(entry.getValue()) ? &quot;&quot; : entry.getValue()</span>
+<span class="fc" id="L402">                    entry.getKey(),</span>
+<span class="fc bfc" id="L403" title="All 2 branches covered.">                    StringUtils.isEmpty(entry.getValue()) ? &quot;&quot; : entry.getValue()</span>
                 )
             )
-<span class="fc" id="L410">            .collect(Collectors.joining(&quot;&amp;&quot;));</span>
+<span class="fc" id="L406">            .collect(Collectors.joining(&quot;&amp;&quot;));</span>
     }
     
     public String getHeaderFromEntries() {
         
-<span class="fc" id="L415">        return this.listHeader</span>
-<span class="fc" id="L416">            .stream()</span>
-<span class="fc" id="L417">            .filter(Objects::nonNull)</span>
-<span class="fc" id="L418">            .map(entry -&gt;</span>
-<span class="fc" id="L419">                String.format(</span>
+<span class="fc" id="L411">        return this.listHeader</span>
+<span class="fc" id="L412">            .stream()</span>
+<span class="fc" id="L413">            .filter(Objects::nonNull)</span>
+<span class="fc" id="L414">            .map(entry -&gt;</span>
+<span class="fc" id="L415">                String.format(</span>
                     &quot;%s:%s&quot;,
-<span class="fc" id="L421">                    entry.getKey(),</span>
-<span class="fc" id="L422">                    entry.getValue()</span>
+<span class="fc" id="L417">                    entry.getKey(),</span>
+<span class="fc" id="L418">                    entry.getValue()</span>
                 )
             )
-<span class="fc" id="L425">            .collect(Collectors.joining(&quot;\\r\\n&quot;));</span>
+<span class="fc" id="L421">            .collect(Collectors.joining(&quot;\\r\\n&quot;));</span>
     }
 
     public boolean isRequestSoap() {
         
-<span class="fc" id="L430">        return this.rawRequest</span>
-<span class="fc" id="L431">            .trim()</span>
-<span class="fc" id="L432">            .matches(&quot;^(&lt;soapenv:|&lt;\\?xml).*&quot;);</span>
+<span class="fc" id="L426">        return this.rawRequest</span>
+<span class="fc" id="L427">            .trim()</span>
+<span class="fc" id="L428">            .matches(&quot;^(&lt;soapenv:|&lt;\\?xml).*&quot;);</span>
     }
 
     
     // Getters / setters
     
     public String getRawRequest() {
-<span class="fc" id="L439">        return this.rawRequest;</span>
+<span class="fc" id="L435">        return this.rawRequest;</span>
     }
 
     public String getRawHeader() {
-<span class="fc" id="L443">        return this.rawHeader;</span>
+<span class="fc" id="L439">        return this.rawHeader;</span>
     }
 
     public List&lt;SimpleEntry&lt;String, String&gt;&gt; getListRequest() {
-<span class="fc" id="L447">        return this.listRequest;</span>
+<span class="fc" id="L443">        return this.listRequest;</span>
     }
 
     public void setListRequest(List&lt;SimpleEntry&lt;String, String&gt;&gt; listRequest) {
-<span class="nc" id="L451">        this.listRequest = listRequest;</span>
-<span class="nc" id="L452">    }</span>
+<span class="nc" id="L447">        this.listRequest = listRequest;</span>
+<span class="nc" id="L448">    }</span>
 
     public List&lt;SimpleEntry&lt;String, String&gt;&gt; getListHeader() {
-<span class="fc" id="L455">        return this.listHeader;</span>
+<span class="fc" id="L451">        return this.listHeader;</span>
     }
 
     public void setListHeader(List&lt;SimpleEntry&lt;String, String&gt;&gt; listHeader) {
-<span class="fc" id="L459">        this.listHeader = listHeader;</span>
-<span class="fc" id="L460">    }</span>
+<span class="fc" id="L455">        this.listHeader = listHeader;</span>
+<span class="fc" id="L456">    }</span>
     
     public List&lt;SimpleEntry&lt;String, String&gt;&gt; getListQueryString() {
-<span class="fc" id="L463">        return this.listQueryString;</span>
+<span class="fc" id="L459">        return this.listQueryString;</span>
     }
     
     public void setListQueryString(List&lt;SimpleEntry&lt;String, String&gt;&gt; listQueryString) {
-<span class="fc" id="L467">        this.listQueryString = listQueryString;</span>
-<span class="fc" id="L468">    }</span>
+<span class="fc" id="L463">        this.listQueryString = listQueryString;</span>
+<span class="fc" id="L464">    }</span>
 
     public boolean isMultipartRequest() {
-<span class="fc" id="L471">        return isMultipartRequest;</span>
+<span class="fc" id="L467">        return isMultipartRequest;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -125,17 +125,17 @@ public class CallableHttpHead implements Callable&lt;CallableHttpHead&gt; {
 <span class="nc" id="L125">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
 <span class="nc" id="L126">            Thread.currentThread().interrupt();</span>
             
-<span class="nc" id="L128">        } catch (Exception e) {</span>
+<span class="fc" id="L128">        } catch (Exception e) {</span>
             
-<span class="nc" id="L130">            var eMessageImplicit = String.format(</span>
+<span class="fc" id="L130">            var eMessageImplicit = String.format(</span>
                 &quot;Problem connecting to %s (implicit reason): %s&quot;, 
                 this.urlAdminPage,
-<span class="nc" id="L133">                InjectionModel.getImplicitReason(e)</span>
+<span class="fc" id="L133">                InjectionModel.getImplicitReason(e)</span>
             );
             
-<span class="nc" id="L136">            String eMessage = Optional.ofNullable(e.getMessage()).orElse(eMessageImplicit);</span>
+<span class="fc" id="L136">            String eMessage = Optional.ofNullable(e.getMessage()).orElse(eMessageImplicit);</span>
             
-<span class="nc" id="L138">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, eMessage);</span>
+<span class="fc" id="L138">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, eMessage);</span>
 <span class="pc" id="L139">        }</span>
         
 <span class="fc" id="L141">        return this;</span>

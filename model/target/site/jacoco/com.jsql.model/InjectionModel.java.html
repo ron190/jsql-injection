@@ -230,19 +230,19 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     
     public static String getImplicitReason(Throwable e) {
         
-<span class="nc" id="L233">        String eMessage = e.getClass().getSimpleName();</span>
+<span class="fc" id="L233">        String eMessage = e.getClass().getSimpleName();</span>
         
-<span class="nc bnc" id="L235" title="All 2 branches missed.">        if (e.getMessage() != null) {</span>
+<span class="pc bpc" id="L235" title="1 of 2 branches missed.">        if (e.getMessage() != null) {</span>
             
-<span class="nc" id="L237">            eMessage += &quot;: &quot;+ e.getMessage();</span>
+<span class="fc" id="L237">            eMessage += &quot;: &quot;+ e.getMessage();</span>
         }
         
-<span class="nc bnc" id="L240" title="All 4 branches missed.">        if (e.getCause() != null &amp;&amp; !e.equals(e.getCause())) {</span>
+<span class="pc bpc" id="L240" title="3 of 4 branches missed.">        if (e.getCause() != null &amp;&amp; !e.equals(e.getCause())) {</span>
             
 <span class="nc" id="L242">            eMessage += &quot; &gt; &quot;+ getImplicitReason(e.getCause());</span>
         }
         
-<span class="nc" id="L245">        return eMessage;</span>
+<span class="fc" id="L245">        return eMessage;</span>
     }
     
     /**
@@ -547,9 +547,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L547">            query = paramLeadFixed;</span>
             
 <span class="fc" id="L549">        } else if (</span>
-            // If method is selected by user and URL does not contains injection point
+            // If method is selected by user and URL does not contain injection point
             // but parameters contain an injection point
-            // then replace injection point by SQL expression in those parameter
+            // then replace injection point by SQL expression in this parameter
 <span class="fc bfc" id="L553" title="All 2 branches covered.">            paramLeadFixed.contains(InjectionModel.STAR)</span>
         ) {
             

@@ -332,38 +332,36 @@ public final class StringUtil {
     
     public static String toHtml(String text) {
         
-<span class="fc" id="L335">        return StringEscapeUtils</span>
-<span class="fc" id="L336">            .escapeHtml4(text)</span>
-<span class="fc" id="L337">            .replace(&quot;&lt;&quot;, &quot;&amp;lt;&quot;)</span>
-<span class="fc" id="L338">            .replace(&quot;&gt;&quot;, &quot;&amp;gt;&quot;)</span>
-<span class="fc" id="L339">            .replace(&quot;&amp;&quot;, &quot;&amp;amp;&quot;);</span>
+<span class="fc" id="L335">        return StringEscapeUtils.escapeHtml4(text)</span>
+<span class="fc" id="L336">            .replace(&quot;&lt;&quot;, &quot;&amp;lt;&quot;)</span>
+<span class="fc" id="L337">            .replace(&quot;&gt;&quot;, &quot;&amp;gt;&quot;)</span>
+<span class="fc" id="L338">            .replace(&quot;&amp;&quot;, &quot;&amp;amp;&quot;);</span>
     }
     
     public static String fromHtml(String text) {
         
-<span class="fc" id="L344">        return StringEscapeUtils</span>
-<span class="fc" id="L345">            .unescapeHtml4(text)</span>
-<span class="fc" id="L346">            .replace(&quot;&lt;&quot;, &quot;&amp;lt;&quot;)</span>
-<span class="fc" id="L347">            .replace(&quot;&gt;&quot;, &quot;&amp;gt;&quot;);</span>
+<span class="fc" id="L343">        return StringEscapeUtils.unescapeHtml4(text)</span>
+<span class="fc" id="L344">            .replace(&quot;&lt;&quot;, &quot;&amp;lt;&quot;)</span>
+<span class="fc" id="L345">            .replace(&quot;&gt;&quot;, &quot;&amp;gt;&quot;);</span>
     }
     
     public static String toUrl(String text) {
         
-<span class="fc" id="L352">        return URLEncoder.encode(text, StandardCharsets.UTF_8);</span>
+<span class="fc" id="L350">        return URLEncoder.encode(text, StandardCharsets.UTF_8);</span>
     }
     
     public static String fromUrl(String text) {
         
-<span class="fc" id="L357">        return URLDecoder.decode(text, StandardCharsets.UTF_8);</span>
+<span class="fc" id="L355">        return URLDecoder.decode(text, StandardCharsets.UTF_8);</span>
     }
     
     public static String cleanSql(String query) {
         
-<span class="fc" id="L362">        return removeSqlComment(query)</span>
-<span class="fc" id="L363">            .replaceAll(&quot;(?s)([^\\s\\w])(\\s+)&quot;, &quot;$1&quot;)  // Remove spaces after a word</span>
-<span class="fc" id="L364">            .replaceAll(&quot;(?s)(\\s+)([^\\s\\w])&quot;, &quot;$2&quot;)  // Remove spaces before a word</span>
-<span class="fc" id="L365">            .replaceAll(&quot;(?s)\\s+&quot;, &quot; &quot;)  // Replace spaces</span>
-<span class="fc" id="L366">            .trim();</span>
+<span class="fc" id="L360">        return removeSqlComment(query)</span>
+<span class="fc" id="L361">            .replaceAll(&quot;(?s)([^\\s\\w])(\\s+)&quot;, &quot;$1&quot;)  // Remove spaces after a word</span>
+<span class="fc" id="L362">            .replaceAll(&quot;(?s)(\\s+)([^\\s\\w])&quot;, &quot;$2&quot;)  // Remove spaces before a word</span>
+<span class="fc" id="L363">            .replaceAll(&quot;(?s)\\s+&quot;, &quot; &quot;)  // Replace spaces</span>
+<span class="fc" id="L364">            .trim();</span>
     }
 
     /**
@@ -373,7 +371,7 @@ public final class StringUtil {
      */
     public static String removeSqlComment(String query) {
 
-<span class="fc" id="L376">        return query.replaceAll(</span>
+<span class="fc" id="L374">        return query.replaceAll(</span>
             &quot;(?s)(?!/\\*\\*/|/\\*!.*\\*/)/\\*.*?\\*/&quot;,
             org.apache.commons.lang3.StringUtils.EMPTY
         );

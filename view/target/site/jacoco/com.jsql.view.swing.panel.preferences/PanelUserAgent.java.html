@@ -83,53 +83,52 @@ public class PanelUserAgent extends JPanel {
         
 <span class="fc" id="L84">        var emptyLabelSessionManagement = new JLabel();</span>
         
-<span class="fc" id="L86">        Stream</span>
-<span class="fc" id="L87">        .of(labelIsCheckingUpdate)</span>
-<span class="fc" id="L88">        .forEach(label -&gt; {</span>
+<span class="fc" id="L86">        Stream.of(labelIsCheckingUpdate)</span>
+<span class="fc" id="L87">        .forEach(label -&gt; {</span>
             
-<span class="fc" id="L90">            label.setHorizontalAlignment(SwingConstants.LEFT);</span>
-<span class="fc" id="L91">            label.setBorderPainted(false);</span>
-<span class="fc" id="L92">            label.setContentAreaFilled(false);</span>
-<span class="fc" id="L93">        });</span>
+<span class="fc" id="L89">            label.setHorizontalAlignment(SwingConstants.LEFT);</span>
+<span class="fc" id="L90">            label.setBorderPainted(false);</span>
+<span class="fc" id="L91">            label.setContentAreaFilled(false);</span>
+<span class="fc" id="L92">        });</span>
         
-<span class="fc" id="L95">        var groupLayout = new GroupLayout(this);</span>
-<span class="fc" id="L96">        this.setLayout(groupLayout);</span>
+<span class="fc" id="L94">        var groupLayout = new GroupLayout(this);</span>
+<span class="fc" id="L95">        this.setLayout(groupLayout);</span>
         
-<span class="fc" id="L98">        groupLayout</span>
-<span class="fc" id="L99">        .setHorizontalGroup(</span>
+<span class="fc" id="L97">        groupLayout</span>
+<span class="fc" id="L98">        .setHorizontalGroup(</span>
             groupLayout
-<span class="fc" id="L101">            .createSequentialGroup()</span>
-<span class="fc" id="L102">            .addGroup(</span>
+<span class="fc" id="L100">            .createSequentialGroup()</span>
+<span class="fc" id="L101">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L104">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
-<span class="fc" id="L105">                .addComponent(this.checkboxIsCustomUserAgent)</span>
-<span class="fc" id="L106">                .addComponent(emptyLabelSessionManagement)</span>
+<span class="fc" id="L103">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
+<span class="fc" id="L104">                .addComponent(this.checkboxIsCustomUserAgent)</span>
+<span class="fc" id="L105">                .addComponent(emptyLabelSessionManagement)</span>
             )
-<span class="fc" id="L108">            .addGroup(</span>
+<span class="fc" id="L107">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L110">                .createParallelGroup()</span>
-<span class="fc" id="L111">                .addComponent(labelIsCheckingUpdate)</span>
-<span class="fc" id="L112">                .addComponent(textAreaIsTamperingEval)</span>
+<span class="fc" id="L109">                .createParallelGroup()</span>
+<span class="fc" id="L110">                .addComponent(labelIsCheckingUpdate)</span>
+<span class="fc" id="L111">                .addComponent(textAreaIsTamperingEval)</span>
             )
         );
 
-<span class="fc" id="L116">        groupLayout</span>
-<span class="fc" id="L117">        .setVerticalGroup(</span>
+<span class="fc" id="L115">        groupLayout</span>
+<span class="fc" id="L116">        .setVerticalGroup(</span>
             groupLayout
-<span class="fc" id="L119">            .createSequentialGroup()</span>
-<span class="fc" id="L120">            .addGroup(</span>
+<span class="fc" id="L118">            .createSequentialGroup()</span>
+<span class="fc" id="L119">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L122">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L123">                .addComponent(this.checkboxIsCustomUserAgent)</span>
-<span class="fc" id="L124">                .addComponent(labelIsCheckingUpdate)</span>
+<span class="fc" id="L121">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L122">                .addComponent(this.checkboxIsCustomUserAgent)</span>
+<span class="fc" id="L123">                .addComponent(labelIsCheckingUpdate)</span>
             )
-<span class="fc" id="L126">            .addGroup(</span>
+<span class="fc" id="L125">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L128">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L129">                .addComponent(emptyLabelSessionManagement)</span>
-<span class="fc" id="L130">                .addComponent(textAreaIsTamperingEval)</span>
+<span class="fc" id="L127">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L128">                .addComponent(emptyLabelSessionManagement)</span>
+<span class="fc" id="L129">                .addComponent(textAreaIsTamperingEval)</span>
             )
         );
-<span class="fc" id="L133">    }</span>
+<span class="fc" id="L132">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

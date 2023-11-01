@@ -103,8 +103,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 <span class="fc" id="L103">        JMenuItem mnRestoreDefault = new JMenuItemWithMargin();</span>
 <span class="fc" id="L104">        JMenuItem mnSelectAll = new JMenuItemWithMargin();</span>
         
-<span class="fc" id="L106">        Stream</span>
-<span class="fc" id="L107">        .of(</span>
+<span class="fc" id="L106">        Stream.of(</span>
             new SimpleEntry&lt;&gt;(mnImport, &quot;LIST_IMPORT_CONFIRM_TITLE&quot;),
             new SimpleEntry&lt;&gt;(mnExport, &quot;LIST_EXPORT_TITLE&quot;),
             new SimpleEntry&lt;&gt;(mnCut, &quot;LIST_CUT&quot;),
@@ -115,152 +114,152 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             new SimpleEntry&lt;&gt;(mnRestoreDefault, &quot;LIST_RESTORE_DEFAULT&quot;),
             new SimpleEntry&lt;&gt;(mnSelectAll, &quot;CONTEXT_MENU_SELECT_ALL&quot;)
         )
-<span class="fc" id="L118">        .forEach(entry -&gt; {</span>
+<span class="fc" id="L117">        .forEach(entry -&gt; {</span>
             
-<span class="fc" id="L120">            entry.getKey().setText(</span>
-<span class="pc bpc" id="L121" title="1 of 2 branches missed.">                isAsian</span>
-<span class="nc" id="L122">                ? I18nViewUtil.valueByKey(entry.getValue())</span>
-<span class="fc" id="L123">                : I18nUtil.valueByKey(entry.getValue())</span>
+<span class="fc" id="L119">            entry.getKey().setText(</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">                isAsian</span>
+<span class="nc" id="L121">                ? I18nViewUtil.valueByKey(entry.getValue())</span>
+<span class="fc" id="L122">                : I18nUtil.valueByKey(entry.getValue())</span>
             );
-<span class="fc" id="L125">            entry.getKey().setName(entry.getValue());</span>
+<span class="fc" id="L124">            entry.getKey().setName(entry.getValue());</span>
             
-<span class="fc" id="L127">            I18nViewUtil.addComponentForKey(entry.getValue(), entry.getKey());</span>
-<span class="fc" id="L128">        });</span>
+<span class="fc" id="L126">            I18nViewUtil.addComponentForKey(entry.getValue(), entry.getKey());</span>
+<span class="fc" id="L127">        });</span>
 
-<span class="fc" id="L130">        mnCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));</span>
-<span class="fc" id="L131">        mnCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));</span>
-<span class="fc" id="L132">        mnPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));</span>
-<span class="fc" id="L133">        mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L129">        mnCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L130">        mnCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L131">        mnPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L132">        mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));</span>
         
         //Create a file chooser
-<span class="fc" id="L136">        final var importFileDialog = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());</span>
-<span class="fc" id="L137">        importFileDialog.setDialogTitle(I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_TITLE&quot;));</span>
-<span class="fc" id="L138">        importFileDialog.setMultiSelectionEnabled(true);</span>
+<span class="fc" id="L135">        final var importFileDialog = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());</span>
+<span class="fc" id="L136">        importFileDialog.setDialogTitle(I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_TITLE&quot;));</span>
+<span class="fc" id="L137">        importFileDialog.setMultiSelectionEnabled(true);</span>
 
-<span class="fc" id="L140">        mnNew.addActionListener(new MenuActionNewValue(this.dndList));</span>
+<span class="fc" id="L139">        mnNew.addActionListener(new MenuActionNewValue(this.dndList));</span>
 
-<span class="fc" id="L142">        mnImport.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L141">        mnImport.addActionListener(actionEvent -&gt; {</span>
             
-<span class="nc" id="L144">            var choice = 0;</span>
+<span class="nc" id="L143">            var choice = 0;</span>
             
             // Fix #1896: NullPointerException on showOpenDialog()
             // Fix #42831: ClassCastException on showOpenDialog()
             try {
-<span class="nc" id="L149">                choice = importFileDialog.showOpenDialog(this.dndList.getTopLevelAncestor());</span>
+<span class="nc" id="L148">                choice = importFileDialog.showOpenDialog(this.dndList.getTopLevelAncestor());</span>
                 
-<span class="nc" id="L151">            } catch (ClassCastException | NullPointerException e) {</span>
+<span class="nc" id="L150">            } catch (ClassCastException | NullPointerException e) {</span>
                 
-<span class="nc" id="L153">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L154">            }</span>
+<span class="nc" id="L152">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L153">            }</span>
             
-<span class="nc bnc" id="L156" title="All 2 branches missed.">            if (choice == JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">            if (choice == JFileChooser.APPROVE_OPTION) {</span>
                 
-<span class="nc" id="L158">                this.dndList.dropPasteFile(</span>
-<span class="nc" id="L159">                    Arrays.asList(importFileDialog.getSelectedFiles()),</span>
-<span class="nc" id="L160">                    this.dndList.locationToIndex(mouseEvent.getPoint())</span>
+<span class="nc" id="L157">                this.dndList.dropPasteFile(</span>
+<span class="nc" id="L158">                    Arrays.asList(importFileDialog.getSelectedFiles()),</span>
+<span class="nc" id="L159">                    this.dndList.locationToIndex(mouseEvent.getPoint())</span>
                 );
             }
-<span class="nc" id="L163">        });</span>
+<span class="nc" id="L162">        });</span>
 
-<span class="fc" id="L165">        mnCopy.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L164">        mnCopy.addActionListener(actionEvent -&gt; {</span>
             
-<span class="nc" id="L167">            var action = this.dndList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));</span>
+<span class="nc" id="L166">            var action = this.dndList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));</span>
             
-<span class="nc bnc" id="L169" title="All 2 branches missed.">            if (action != null) {</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">            if (action != null) {</span>
                 
-<span class="nc" id="L171">                action.actionPerformed(</span>
+<span class="nc" id="L170">                action.actionPerformed(</span>
                     new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
                 );
             }
-<span class="nc" id="L175">        });</span>
+<span class="nc" id="L174">        });</span>
 
-<span class="fc" id="L177">        mnCut.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L176">        mnCut.addActionListener(actionEvent -&gt; {</span>
             
-<span class="nc" id="L179">            var action = this.dndList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));</span>
+<span class="nc" id="L178">            var action = this.dndList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));</span>
             
-<span class="nc bnc" id="L181" title="All 2 branches missed.">            if (action != null) {</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">            if (action != null) {</span>
                 
-<span class="nc" id="L183">                action.actionPerformed(</span>
+<span class="nc" id="L182">                action.actionPerformed(</span>
                     new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
                 );
             }
-<span class="nc" id="L187">        });</span>
+<span class="nc" id="L186">        });</span>
 
-<span class="fc" id="L189">        mnPaste.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L188">        mnPaste.addActionListener(actionEvent -&gt; {</span>
             
-<span class="nc" id="L191">            var action = this.dndList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));</span>
+<span class="nc" id="L190">            var action = this.dndList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));</span>
             
-<span class="nc bnc" id="L193" title="All 2 branches missed.">            if (action != null) {</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">            if (action != null) {</span>
                 
-<span class="nc" id="L195">                action.actionPerformed(</span>
+<span class="nc" id="L194">                action.actionPerformed(</span>
                     new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
                 );
             }
-<span class="nc" id="L199">        });</span>
+<span class="nc" id="L198">        });</span>
 
-<span class="pc" id="L201">        mnDelete.addActionListener(actionEvent -&gt; this.dndList.removeSelectedItem());</span>
+<span class="pc" id="L200">        mnDelete.addActionListener(actionEvent -&gt; this.dndList.removeSelectedItem());</span>
 
-<span class="fc" id="L203">        mnExport.addActionListener(new MenuActionExport(this.dndList));</span>
+<span class="fc" id="L202">        mnExport.addActionListener(new MenuActionExport(this.dndList));</span>
 
-<span class="pc" id="L205">        mnRestoreDefault.addActionListener(actionEvent -&gt; this.dndList.restore());</span>
+<span class="pc" id="L204">        mnRestoreDefault.addActionListener(actionEvent -&gt; this.dndList.restore());</span>
 
-<span class="fc" id="L207">        mnSelectAll.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L206">        mnSelectAll.addActionListener(actionEvent -&gt; {</span>
             
-<span class="nc" id="L209">            var start = 0;</span>
-<span class="nc" id="L210">            int end = this.dndList.getModel().getSize() - 1;</span>
+<span class="nc" id="L208">            var start = 0;</span>
+<span class="nc" id="L209">            int end = this.dndList.getModel().getSize() - 1;</span>
             
-<span class="nc bnc" id="L212" title="All 2 branches missed.">            if (end &gt;= 0) {</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">            if (end &gt;= 0) {</span>
                 
-<span class="nc" id="L214">                this.dndList.setSelectionInterval(start, end);</span>
+<span class="nc" id="L213">                this.dndList.setSelectionInterval(start, end);</span>
             }
-<span class="nc" id="L216">        });</span>
+<span class="nc" id="L215">        });</span>
 
-<span class="fc" id="L218">        popupMenuList.add(mnNew);</span>
-<span class="fc" id="L219">        popupMenuList.add(new JSeparator());</span>
-<span class="fc" id="L220">        popupMenuList.add(mnCut);</span>
-<span class="fc" id="L221">        popupMenuList.add(mnCopy);</span>
-<span class="fc" id="L222">        popupMenuList.add(mnPaste);</span>
-<span class="fc" id="L223">        popupMenuList.add(mnDelete);</span>
-<span class="fc" id="L224">        popupMenuList.add(new JSeparator());</span>
-<span class="fc" id="L225">        popupMenuList.add(mnSelectAll);</span>
-<span class="fc" id="L226">        popupMenuList.add(new JSeparator());</span>
-<span class="fc" id="L227">        popupMenuList.add(mnImport);</span>
-<span class="fc" id="L228">        popupMenuList.add(mnExport);</span>
-<span class="fc" id="L229">        popupMenuList.add(new JSeparator());</span>
-<span class="fc" id="L230">        popupMenuList.add(mnRestoreDefault);</span>
+<span class="fc" id="L217">        popupMenuList.add(mnNew);</span>
+<span class="fc" id="L218">        popupMenuList.add(new JSeparator());</span>
+<span class="fc" id="L219">        popupMenuList.add(mnCut);</span>
+<span class="fc" id="L220">        popupMenuList.add(mnCopy);</span>
+<span class="fc" id="L221">        popupMenuList.add(mnPaste);</span>
+<span class="fc" id="L222">        popupMenuList.add(mnDelete);</span>
+<span class="fc" id="L223">        popupMenuList.add(new JSeparator());</span>
+<span class="fc" id="L224">        popupMenuList.add(mnSelectAll);</span>
+<span class="fc" id="L225">        popupMenuList.add(new JSeparator());</span>
+<span class="fc" id="L226">        popupMenuList.add(mnImport);</span>
+<span class="fc" id="L227">        popupMenuList.add(mnExport);</span>
+<span class="fc" id="L228">        popupMenuList.add(new JSeparator());</span>
+<span class="fc" id="L229">        popupMenuList.add(mnRestoreDefault);</span>
         
-<span class="fc" id="L232">        return popupMenuList;</span>
+<span class="fc" id="L231">        return popupMenuList;</span>
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         
-<span class="fc bfc" id="L238" title="All 2 branches covered.">        if (SwingUtilities.isRightMouseButton(e)) {</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">        if (SwingUtilities.isRightMouseButton(e)) {</span>
             
-<span class="fc" id="L240">            int clickIndex = this.dndList.locationToIndex(e.getPoint());</span>
-<span class="fc" id="L241">            var containsIndex = false;</span>
+<span class="fc" id="L239">            int clickIndex = this.dndList.locationToIndex(e.getPoint());</span>
+<span class="fc" id="L240">            var containsIndex = false;</span>
             
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">            for (int currentIndex: this.dndList.getSelectedIndices()) {</span>
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">            for (int currentIndex: this.dndList.getSelectedIndices()) {</span>
                 
-<span class="pc bpc" id="L245" title="1 of 2 branches missed.">                if (currentIndex == clickIndex) {</span>
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">                if (currentIndex == clickIndex) {</span>
                     
-<span class="fc" id="L247">                    containsIndex = true;</span>
-<span class="fc" id="L248">                    break;</span>
+<span class="fc" id="L246">                    containsIndex = true;</span>
+<span class="fc" id="L247">                    break;</span>
                 }
             }
             
-<span class="pc bpc" id="L252" title="1 of 2 branches missed.">            if (!containsIndex) {</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">            if (!containsIndex) {</span>
                 
-<span class="nc" id="L254">                this.dndList.setSelectedIndex(clickIndex);</span>
+<span class="nc" id="L253">                this.dndList.setSelectedIndex(clickIndex);</span>
             }
         }
         
-<span class="fc" id="L258">        this.showPopup(e);</span>
-<span class="fc" id="L259">    }</span>
+<span class="fc" id="L257">        this.showPopup(e);</span>
+<span class="fc" id="L258">    }</span>
 
     @Override
     public void mouseReleased(MouseEvent e) {
-<span class="fc" id="L263">        this.showPopup(e);</span>
-<span class="fc" id="L264">    }</span>
+<span class="fc" id="L262">        this.showPopup(e);</span>
+<span class="fc" id="L263">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
