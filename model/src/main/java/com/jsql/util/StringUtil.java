@@ -332,8 +332,7 @@ public final class StringUtil {
     
     public static String toHtml(String text) {
         
-        return StringEscapeUtils
-            .escapeHtml4(text)
+        return StringEscapeUtils.escapeHtml4(text)
             .replace("<", "&lt;")
             .replace(">", "&gt;")
             .replace("&", "&amp;");
@@ -341,8 +340,7 @@ public final class StringUtil {
     
     public static String fromHtml(String text) {
         
-        return StringEscapeUtils
-            .unescapeHtml4(text)
+        return StringEscapeUtils.unescapeHtml4(text)
             .replace("<", "&lt;")
             .replace(">", "&gt;");
     }

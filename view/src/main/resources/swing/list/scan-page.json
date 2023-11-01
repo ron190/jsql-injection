@@ -1,28 +1,4 @@
 [
-    {
-        "url": "http://openvpn_address/run#level1_tryhackme_com/room/sqlinjectionlm",
-        "request": "level=1&sql=select+1+from+article+where+id+%3D+1+*",
-        "requestType": "POST",
-        "method": "REQUEST",
-    },
-    {
-        "url": "http://openvpn_address/run#level2_tryhackme_com/room/sqlinjectionlm",
-        "request": "level=2&sql=select+1+from+users+where+username%3D1+",
-        "requestType": "POST",
-        "method": "REQUEST",
-    },
-    {
-        "url": "http://openvpn_address/run#level3_tryhackme_com/room/sqlinjectionlm",
-        "request": "level=3&sql=select+1+from+users+where+username+%3D+1+",
-        "requestType": "POST",
-        "method": "REQUEST",
-    },
-    {
-        "url": "http://openvpn_address/run#level4_tryhackme_com/room/sqlinjectionlm",
-        "request": "level=4&sql= select+1+from+analytics_referrers+where+domain%3D1+",
-        "requestType": "POST",
-        "method": "REQUEST",
-    },
     {"url": "http://testphp.vulnweb.com/artists.php?artist="},
     {"url": "http://testphp.vulnweb.com/listproducts.php?cat=1"},
     {
@@ -36,6 +12,30 @@
         "requestType": "POST",
         "method": "REQUEST",
         "vendor": "SQLSERVER"
+    },
+    {
+        "url": "http://openvpn_address/run#level1_tryhackme_com/room/sqlinjectionlm",
+        "request": "level=1&sql=select+1+from+article+where+id+%3D+1+*",
+        "requestType": "POST",
+        "method": "REQUEST"
+    },
+    {
+        "url": "http://openvpn_address/run#level2_tryhackme_com/room/sqlinjectionlm",
+        "request": "level=2&sql=select+1+from+users+where+username%3D1+",
+        "requestType": "POST",
+        "method": "REQUEST"
+    },
+    {
+        "url": "http://openvpn_address/run#level3_tryhackme_com/room/sqlinjectionlm",
+        "request": "level=3&sql=select+1+from+users+where+username+%3D+1+",
+        "requestType": "POST",
+        "method": "REQUEST"
+    },
+    {
+        "url": "http://openvpn_address/run#level4_tryhackme_com/room/sqlinjectionlm",
+        "request": "level=4&sql= select+1+from+analytics_referrers+where+domain%3D1+",
+        "requestType": "POST",
+        "method": "REQUEST"
     },
     {
         "url": "https://juice-shop.herokuapp.com/rest/products/search?q=",
