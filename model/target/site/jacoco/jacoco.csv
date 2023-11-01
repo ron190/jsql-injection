@@ -112,7 +112,7 @@ model,com.jsql.util.bruter,Bruter,32,389,0,12,13,56,7,23,7,17
 model,com.jsql.util.bruter,BaseNCodec,295,205,56,12,57,43,51,11,17,11
 model,com.jsql.util.bruter,ActionCoder,254,0,0,0,41,0,4,0,4,0
 model,com.jsql.util.bruter,Base16,107,1042,20,20,18,52,18,11,2,7
-model,com.jsql.model.suspendable,SuspendableGetRows,145,596,21,33,37,146,17,28,1,17
+model,com.jsql.model.suspendable,SuspendableGetRows,145,599,21,33,37,147,17,28,1,17
 model,com.jsql.model.suspendable,SuspendableGetIndexes,43,137,3,11,10,30,3,8,0,4
 model,com.jsql.model.suspendable,AbstractSuspendable,21,42,3,3,8,16,5,6,2,6
 model,com.jsql.model.suspendable,SuspendableGetCharInsertion,64,527,7,37,15,126,9,33,2,18
@@ -143,7 +143,7 @@ model,com.jsql.model.injection.vendor.model.yaml,Error,0,15,0,0,0,5,0,3,0,3
 model,com.jsql.model.injection.vendor.model.yaml,Method,0,34,0,0,0,13,0,7,0,7
 model,com.jsql.model.injection.vendor.model.yaml,Fields,0,23,0,0,0,9,0,5,0,5
 model,com.jsql.util,AnsiColorUtil,3,3,0,0,1,1,1,1,1,1
-model,com.jsql.util,CsrfUtil,143,315,11,19,28,77,10,19,1,13
+model,com.jsql.util,CsrfUtil,143,315,11,19,28,76,10,19,1,13
 model,com.jsql.util,StringUtil.CharEncoder,0,26,0,0,0,10,0,2,0,2
 model,com.jsql.util,I18nUtil,65,41,4,6,10,8,7,6,5,3
 model,com.jsql.util,ExceptionUtil,25,14,0,0,8,5,2,2,2,2
@@ -168,9 +168,9 @@ model,com.jsql.util,CookiesUtil,26,154,2,6,6,32,2,10,0,8
 model,com.jsql.util,MultipartUtil,23,112,2,6,6,27,2,8,0,6
 model,com.jsql.util,UserAgentUtil,8,23,0,0,4,8,2,4,2,4
 model,com.jsql.util,DigestUtil,6,243,2,6,2,44,2,10,0,8
-model,com.jsql.util,StringUtil,6,389,0,22,2,95,0,40,0,29
+model,com.jsql.util,StringUtil,6,389,0,22,2,93,0,40,0,29
 model,com.jsql.util,ProxyUtil,348,60,22,2,81,17,31,5,19,5
 model,com.jsql.util,HeaderUtil,64,430,18,46,10,91,16,30,0,14
-model,com.jsql.util,ParameterUtil,116,641,27,71,32,171,25,60,2,34
+model,com.jsql.util,ParameterUtil,116,641,27,71,32,169,25,60,2,34
 model,com.jsql.model.suspendable.callable,CallablePageSource,0,44,0,0,0,14,0,6,0,6
 model,com.jsql.model.suspendable.callable,ThreadFactoryCallable,0,13,0,0,0,4,0,2,0,2

@@ -214,19 +214,18 @@ public class JFrameView extends JFrame {
             }
         }
         
-<span class="fc" id="L217">        Stream</span>
-<span class="fc" id="L218">        .of(</span>
-<span class="fc" id="L219">            MediatorHelper.managerUpload(),</span>
-<span class="fc" id="L220">            MediatorHelper.managerFile(),</span>
-<span class="fc" id="L221">            MediatorHelper.managerWebshell(),</span>
-<span class="fc" id="L222">            MediatorHelper.managerSqlshell()</span>
+<span class="fc" id="L217">        Stream.of(</span>
+<span class="fc" id="L218">            MediatorHelper.managerUpload(),</span>
+<span class="fc" id="L219">            MediatorHelper.managerFile(),</span>
+<span class="fc" id="L220">            MediatorHelper.managerWebshell(),</span>
+<span class="fc" id="L221">            MediatorHelper.managerSqlshell()</span>
         )
-<span class="fc" id="L224">        .forEach(managerList -&gt; {</span>
+<span class="fc" id="L223">        .forEach(managerList -&gt; {</span>
             
-<span class="fc" id="L226">            managerList.setButtonEnable(false);</span>
-<span class="fc" id="L227">            managerList.changePrivilegeIcon(UiUtil.ICON_SQUARE_GREY);</span>
-<span class="fc" id="L228">        });</span>
-<span class="fc" id="L229">    }</span>
+<span class="fc" id="L225">            managerList.setButtonEnable(false);</span>
+<span class="fc" id="L226">            managerList.changePrivilegeIcon(UiUtil.ICON_SQUARE_GREY);</span>
+<span class="fc" id="L227">        });</span>
+<span class="fc" id="L228">    }</span>
     
     
     // Getters and setters
@@ -236,15 +235,15 @@ public class JFrameView extends JFrame {
      * @return Map of key/value UUID =&gt; Terminal
      */
     public final Map&lt;UUID, AbstractShell&gt; getConsoles() {
-<span class="fc" id="L239">        return this.mapShells;</span>
+<span class="fc" id="L238">        return this.mapShells;</span>
     }
 
     public SubscriberInteraction getSubscriber() {
-<span class="fc" id="L243">        return this.subscriber;</span>
+<span class="fc" id="L242">        return this.subscriber;</span>
     }
 
     public SplitHorizontalTopBottom getSplitHorizontalTopBottom() {
-<span class="fc" id="L247">        return this.splitHorizontalTopBottom;</span>
+<span class="fc" id="L246">        return this.splitHorizontalTopBottom;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

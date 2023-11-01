@@ -180,47 +180,46 @@ public class ManagerCoder extends JPanel implements Manager {
 <span class="fc" id="L180">        mapMenus.put(&quot;Hash&quot;, new JMenu(&quot;Hash&quot;));</span>
 <span class="fc" id="L181">        mapMenus.get(&quot;Hash&quot;).setName(&quot;Hash&quot;);</span>
         
-<span class="fc" id="L183">        Stream</span>
-<span class="fc" id="L184">        .of(&quot;Adler32&quot;, &quot;Crc16&quot;, &quot;Crc32&quot;, &quot;Crc64&quot;, &quot;Md2&quot;, &quot;Md4&quot;, &quot;Md5&quot;, &quot;Sha-1&quot;, &quot;Sha-256&quot;, &quot;Sha-384&quot;, &quot;Sha-512&quot;, &quot;Mysql&quot;)</span>
-<span class="fc" id="L185">        .forEach(hash -&gt; {</span>
+<span class="fc" id="L183">        Stream.of(&quot;Adler32&quot;, &quot;Crc16&quot;, &quot;Crc32&quot;, &quot;Crc64&quot;, &quot;Md2&quot;, &quot;Md4&quot;, &quot;Md5&quot;, &quot;Sha-1&quot;, &quot;Sha-256&quot;, &quot;Sha-384&quot;, &quot;Sha-512&quot;, &quot;Mysql&quot;)</span>
+<span class="fc" id="L184">        .forEach(hash -&gt; {</span>
             
-<span class="fc" id="L187">            var menuEncode = new JMenuItem(&quot;Hash to &quot;+ hash);</span>
-<span class="fc" id="L188">            menuEncode.addActionListener(this.actionCoder);</span>
-<span class="fc" id="L189">            menuEncode.addChangeListener(new ChangeMenuListener(&quot;Hash to &quot;+ hash));</span>
-<span class="fc" id="L190">            menuEncode.setName(&quot;hashTo&quot;+ hash);</span>
+<span class="fc" id="L186">            var menuEncode = new JMenuItem(&quot;Hash to &quot;+ hash);</span>
+<span class="fc" id="L187">            menuEncode.addActionListener(this.actionCoder);</span>
+<span class="fc" id="L188">            menuEncode.addChangeListener(new ChangeMenuListener(&quot;Hash to &quot;+ hash));</span>
+<span class="fc" id="L189">            menuEncode.setName(&quot;hashTo&quot;+ hash);</span>
             
-<span class="fc" id="L192">            mapMenus.get(&quot;Hash&quot;).add(menuEncode);</span>
-<span class="fc" id="L193">        });</span>
+<span class="fc" id="L191">            mapMenus.get(&quot;Hash&quot;).add(menuEncode);</span>
+<span class="fc" id="L192">        });</span>
 
-<span class="fc" id="L195">        JMenu comboMenu = MenuBarCoder.createMenu(&quot;Choose method...&quot;);</span>
-<span class="fc" id="L196">        this.menuMethod = comboMenu;</span>
-<span class="fc" id="L197">        this.menuMethod.setName(&quot;menuMethodManagerCoder&quot;);</span>
+<span class="fc" id="L194">        JMenu comboMenu = MenuBarCoder.createMenu(&quot;Choose method...&quot;);</span>
+<span class="fc" id="L195">        this.menuMethod = comboMenu;</span>
+<span class="fc" id="L196">        this.menuMethod.setName(&quot;menuMethodManagerCoder&quot;);</span>
         
-<span class="fc bfc" id="L199" title="All 2 branches covered.">        for (JMenu menu: mapMenus.values()) {</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        for (JMenu menu: mapMenus.values()) {</span>
             
-<span class="fc" id="L201">            comboMenu.add(menu);</span>
-<span class="fc" id="L202">        }</span>
+<span class="fc" id="L200">            comboMenu.add(menu);</span>
+<span class="fc" id="L201">        }</span>
 
-<span class="fc" id="L204">        var comboMenubar = new MenuBarCoder(comboMenu);</span>
-<span class="fc" id="L205">        comboMenubar.setOpaque(false);</span>
-<span class="fc" id="L206">        comboMenubar.setBorder(null);</span>
+<span class="fc" id="L203">        var comboMenubar = new MenuBarCoder(comboMenu);</span>
+<span class="fc" id="L204">        comboMenubar.setOpaque(false);</span>
+<span class="fc" id="L205">        comboMenubar.setBorder(null);</span>
         
-<span class="fc" id="L208">        return comboMenubar;</span>
+<span class="fc" id="L207">        return comboMenubar;</span>
     }
     
     
     // Getter and setter
 
     public JTextArea getTextInput() {
-<span class="fc" id="L215">        return this.textInput;</span>
+<span class="fc" id="L214">        return this.textInput;</span>
     }
 
     public JMenuItem getMenuMethod() {
-<span class="fc" id="L219">        return this.menuMethod;</span>
+<span class="fc" id="L218">        return this.menuMethod;</span>
     }
 
     public JTextPane getResult() {
-<span class="fc" id="L223">        return this.result;</span>
+<span class="fc" id="L222">        return this.result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
