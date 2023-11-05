@@ -393,14 +393,14 @@ class Colorer extends Thread {
                     // equal to the current position
 <span class="fc bfc" id="L394" title="All 4 branches covered.">                    while (dp != null &amp;&amp; dp.getPosition() &lt;= t.getCharEnd()) {</span>
                         
-<span class="pc bpc" id="L396" title="1 of 4 branches missed.">                        if (dp.getPosition() == t.getCharEnd() &amp;&amp; dp.getPosition() &gt;= endRequest.getPosition()) {</span>
+<span class="pc bpc" id="L396" title="2 of 4 branches missed.">                        if (dp.getPosition() == t.getCharEnd() &amp;&amp; dp.getPosition() &gt;= endRequest.getPosition()) {</span>
                             
                             // we have found a state that is the
                             // same
 <span class="fc" id="L400">                            done = true;</span>
 <span class="fc" id="L401">                            dp = null;</span>
                             
-<span class="pc bpc" id="L403" title="1 of 2 branches missed.">                        } else if (workingIt.hasNext()) {</span>
+<span class="nc bnc" id="L403" title="All 2 branches missed.">                        } else if (workingIt.hasNext()) {</span>
                             
                             // didn't find it, try again.
 <span class="nc" id="L406">                            dp = workingIt.next();</span>
@@ -412,7 +412,7 @@ class Colorer extends Thread {
                             // time. This means that we will just
                             // continue
                             // until the end of the document.
-<span class="fc" id="L415">                            dp = null;</span>
+<span class="nc" id="L415">                            dp = null;</span>
                         }
                     }
                     
@@ -434,10 +434,10 @@ class Colorer extends Thread {
             // the last
             // bit of text we touched.
 <span class="fc" id="L436">            workingIt = this.iniPositions.subSet(dpStart, dpEnd).iterator();</span>
-<span class="fc bfc" id="L437" title="All 2 branches covered.">            while (workingIt.hasNext()) {</span>
+<span class="pc bpc" id="L437" title="1 of 2 branches missed.">            while (workingIt.hasNext()) {</span>
                 
-<span class="fc" id="L439">                workingIt.next();</span>
-<span class="fc" id="L440">                workingIt.remove();</span>
+<span class="nc" id="L439">                workingIt.next();</span>
+<span class="nc" id="L440">                workingIt.remove();</span>
             }
 
             // Remove all the positions that are after the end of

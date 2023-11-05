@@ -191,7 +191,7 @@ public class ResourceAccess {
         try {
 <span class="fc" id="L192">            CallableHttpHead currentCallable = taskCompletionService.take().get();</span>
             
-<span class="fc bfc" id="L194" title="All 2 branches covered.">            if (currentCallable.isHttpResponseOk()) {</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">            if (currentCallable.isHttpResponseOk()) {</span>
                 
 <span class="fc" id="L196">                var request = new Request();</span>
 <span class="fc" id="L197">                request.setMessage(Interaction.CREATE_ADMIN_PAGE_TAB);</span>
@@ -226,13 +226,13 @@ public class ResourceAccess {
 <span class="pc bpc" id="L226" title="1 of 2 branches missed.">            submittedTasks &gt; 1 ? 's' : StringUtils.EMPTY</span>
         );
         
-<span class="fc bfc" id="L229" title="All 2 branches covered.">        if (nbAdminPagesFound &gt; 0) {</span>
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">        if (nbAdminPagesFound &gt; 0) {</span>
             
 <span class="fc" id="L231">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, result);</span>
             
         } else {
             
-<span class="fc" id="L235">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, result);</span>
+<span class="nc" id="L235">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, result);</span>
         }
 <span class="fc" id="L237">    }</span>
 
