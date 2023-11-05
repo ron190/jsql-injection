@@ -35,21 +35,21 @@ public class AbstractGetShellResult implements InteractionCommand {
     /**
      * @param interactionParams The unique identifier of the terminal and the command's result to display
      */
-<span class="fc" id="L38">    public AbstractGetShellResult(Object[] interactionParams) {</span>
+<span class="nc" id="L38">    public AbstractGetShellResult(Object[] interactionParams) {</span>
         
-<span class="fc" id="L40">        this.terminalID = (UUID) interactionParams[0];</span>
-<span class="fc" id="L41">        this.result = (String) interactionParams[1];</span>
-<span class="fc" id="L42">    }</span>
+<span class="nc" id="L40">        this.terminalID = (UUID) interactionParams[0];</span>
+<span class="nc" id="L41">        this.result = (String) interactionParams[1];</span>
+<span class="nc" id="L42">    }</span>
 
     @Override
     public void execute() {
         
-<span class="fc" id="L47">        AbstractShell terminal = MediatorHelper.frame().getConsoles().get(this.terminalID);</span>
+<span class="nc" id="L47">        AbstractShell terminal = MediatorHelper.frame().getConsoles().get(this.terminalID);</span>
         
-<span class="fc" id="L49">        terminal.append(this.result);</span>
+<span class="nc" id="L49">        terminal.append(this.result);</span>
         
-<span class="fc" id="L51">        terminal.append(&quot;\n&quot;);</span>
-<span class="fc" id="L52">        terminal.reset();</span>
-<span class="fc" id="L53">    }</span>
+<span class="nc" id="L51">        terminal.append(&quot;\n&quot;);</span>
+<span class="nc" id="L52">        terminal.reset();</span>
+<span class="nc" id="L53">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
