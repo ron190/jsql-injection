@@ -456,8 +456,8 @@ public class SuspendableGetRows extends AbstractSuspendable {
         )
 <span class="fc" id="L457">        .matcher(rows);</span>
 
-<span class="fc bfc" id="L459" title="All 2 branches covered.">        if (!regexSearch.find()) {</span>
-<span class="fc" id="L460">            throw new InjectionFailureException();</span>
+<span class="pc bpc" id="L459" title="1 of 2 branches missed.">        if (!regexSearch.find()) {</span>
+<span class="nc" id="L460">            throw new InjectionFailureException();</span>
         }
         
 <span class="fc" id="L463">        regexSearch.reset();</span>
