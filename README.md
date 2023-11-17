@@ -18,7 +18,7 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 
 ___
 ## Wiki
-Read about jSQL [features](https://github.com/ron190/jsql-injection/wiki#features), how to [install](https://github.com/ron190/jsql-injection/wiki/Installation) and more in the [wiki](https://github.com/ron190/jsql-injection/wiki).
+Read about jSQL [features](https://github.com/ron190/jsql-injection/wiki#features), how to [install](https://github.com/ron190/jsql-injection/wiki/Install) and more in the [wiki](https://github.com/ron190/jsql-injection/wiki).
 ___
 ## Screenshots
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
