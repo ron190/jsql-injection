@@ -13,8 +13,8 @@ package com.jsql.view.swing.table;
 import java.util.Comparator;
 
 /**
- * Comparator for table column values ; column with only int data is sorted like 3 < 20 < 100,
- * column with string will sort like 100 < 20 < 3 < a.
+ * Comparator for table column values ; column with only int data is sorted like 3 lt 20 lt 100,
+ * column with string will sort like 100 gt 20 gt 3 gt a.
  */
 public class ComparatorColumn<T> implements Comparator<T> {
     

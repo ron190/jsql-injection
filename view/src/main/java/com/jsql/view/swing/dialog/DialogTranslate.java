@@ -149,7 +149,7 @@ public class DialogTranslate extends JDialog {
         
         this.buttonSend.setContentAreaFilled(false);
         this.buttonSend.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        this.buttonSend.setBackground(new Color(200, 221, 242));
+        this.buttonSend.setBackground(UiUtil.COLOR_FOCUS_GAINED);
         this.buttonSend.setToolTipText(
             String.join(
                 "",

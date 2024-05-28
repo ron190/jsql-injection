@@ -218,6 +218,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         List<String> prefixQuotes = Arrays.asList(
             LABEL_PREFIX,
             LABEL_PREFIX +"'",
+            LABEL_PREFIX +"`",  // TODO add ITs
             LABEL_PREFIX +"\"",
             LABEL_PREFIX +"%bf'"  // GBK slash encoding use case
         );

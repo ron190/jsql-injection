@@ -118,7 +118,7 @@ public class DialogAbout extends JDialog {
         
         this.buttonClose.setContentAreaFilled(false);
         this.buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        this.buttonClose.setBackground(new Color(200, 221, 242));
+        this.buttonClose.setBackground(UiUtil.COLOR_FOCUS_GAINED);
         
         this.buttonClose.addMouseListener(new FlatButtonMouseAdapter(this.buttonClose));
     }
@@ -145,7 +145,7 @@ public class DialogAbout extends JDialog {
         
         buttonWebpage.setContentAreaFilled(false);
         buttonWebpage.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        buttonWebpage.setBackground(new Color(200, 221, 242));
+        buttonWebpage.setBackground(UiUtil.COLOR_FOCUS_GAINED);
         
         buttonWebpage.addMouseListener(new FlatButtonMouseAdapter(buttonWebpage));
         

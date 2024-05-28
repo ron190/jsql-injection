@@ -40,8 +40,8 @@ import java.awt.*;
  * Adds a drop shadow border to all popups except ComboBox popups.
  * It is installed by the JGoodies Plastic L&amp;F, as well as by
  * the JGoodies Windows L&amp;F during the Look&amp;Feel initialization,
- * see {@link com.jgoodies.looks.plastic.PlasticLookAndFeel#initialize} and
- * {@link com.jgoodies.looks.windows.WindowsLookAndFeel#initialize}.<p>
+ * see {link com.jgoodies.looks.plastic.PlasticLookAndFeel#initialize} and
+ * {link com.jgoodies.looks.windows.WindowsLookAndFeel#initialize}.<p>
  *
  * This factory shall not be used on platforms that provide native drop shadows,
  * such as the Mac OS X. Therefore the invocation of the {@link #install()}
@@ -71,7 +71,7 @@ public final class ShadowPopupFactory extends PopupFactory {
      * shadow effect. The two following constants define the names of
      * these client properties.
      *
-     * @see com.jgoodies.looks.common.ShadowPopupBorder
+     * see com.jgoodies.looks.common.ShadowPopupBorder
      */
     public static final String PROP_HORIZONTAL_BACKGROUND = "jgoodies.hShadowBg";
     public static final String PROP_VERTICAL_BACKGROUND   = "jgoodies.vShadowBg";

@@ -58,13 +58,14 @@ public class HeaderUtil {
             List<String> cookies = Stream.of(valueHeader.split(";"))
                 .filter(value -> value != null && value.contains("="))
                 .map(cookie -> cookie.split("=", 2))
-                .map(arrayEntry -> arrayEntry[0].trim() + "=" + (arrayEntry[1] == null
-                    ? "\"\""
+                .map(arrayEntry -> arrayEntry[0].trim() + "=" + (
+                    arrayEntry[1] == null
+                    ? ""
                     // Url encode: new cookie RFC restricts chars to non ()<>@,;:\"/[]?={} => server must url decode the request
-                    : "\"" + URLEncoder.encode(
-                        arrayEntry[1].trim().replaceAll("(^\\s*\")|(\"\\s*$)", "").replace("+", "%2B"),
+                    : URLEncoder.encode(
+                        arrayEntry[1].trim().replace("+", "%2B"),
                         StandardCharsets.UTF_8
-                    ) + "\""
+                    )
                 ))
                 .collect(Collectors.toList());
             valueHeader = String.join("; ", cookies);

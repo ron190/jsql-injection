@@ -183,15 +183,14 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 countBadAsciiCode.incrementAndGet();
             }
 
-            var charText = Character.toString((char) asciiCode);
-            currentCallable.charText = charText;
+            currentCallable.charText = Character.toString((char) asciiCode);
             
             var interaction = new Request();
             interaction.setMessage(Interaction.MESSAGE_BINARY);
             interaction.setParameters(
                 asciiCodeBinary
                 + "="
-                + charText
+                + currentCallable.charText
                 .replace("\\n", "\\\\\\n")
                 .replace("\\r", "\\\\\\r")
                 .replace("\\t", "\\\\\\t")

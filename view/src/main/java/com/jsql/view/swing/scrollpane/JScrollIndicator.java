@@ -49,7 +49,7 @@ public class JScrollIndicator extends JLayeredPane {
      * whenever the component's contents are larger than the view and scrolling
      * in underway or the mouse is over the scrollbar position.
      *
-     * @see #setViewportView
+     * see #setViewportView
      * @param view the component to display in the scrollpane's viewport
      */
     public JScrollIndicator(final JComponent view) {
@@ -71,8 +71,8 @@ public class JScrollIndicator extends JLayeredPane {
      * <code>JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED</code>
      * then the vertical scrollbar only appears if the view doesn't fit
      * vertically. The available policy settings are listed at
-     * {@link #JScrollPane.setVerticalScrollBarPolicy} and
-     * {@link #JScrollPane.setHorizontalScrollBarPolicy}.
+     * {link #JScrollPane.setVerticalScrollBarPolicy} and
+     * {link #JScrollPane.setHorizontalScrollBarPolicy}.
      *
      * @param view the component to display in the scrollpanes viewport
      * @param vsbPolicy an integer that specifies the vertical scrollbar policy

@@ -14,8 +14,6 @@ jobs:
   build-jdk11:
     name: Test view on Docker (jdk-11)
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
     env:
       JSQL_DOCKERFILE: 3.8.1-jdk-11-slim
       MAVEN_NASHORN: -Dnashorn.args=--no-deprecation-warning
@@ -108,7 +106,15 @@ jobs:
       # Profile usage for skipITs/skipTests (env var MAVEN_OPS not working)
       # Note: 'mvn sonar:sonar' not working, modules reports not found, use 'mvn verify sonar:sonar' for reliability
       # Note: gh actions sonarsource/sonarqube-scan-action not working properly => analysis not reliable
-      run: $DOCKER_RESOURCES/scripts/run-on-docker.sh 'mvn clean install sonar:sonar -P tests org.pitest:pitest-maven:mutationCoverage'
+      run: |
+        $DOCKER_RESOURCES/scripts/run-on-docker.sh '
+          mvn clean install \
+            sonar:sonar \
+            -P tests org.pitest:pitest-maven:mutationCoverage \
+            surefire-report:report \
+            javadoc:javadoc \
+            versions:dependency-updates-report
+        '
 
     - name: Databases statistics
       run: $DOCKER_RESOURCES/scripts/verify.sh

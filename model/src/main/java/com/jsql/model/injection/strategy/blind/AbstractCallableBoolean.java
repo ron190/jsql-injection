@@ -29,6 +29,9 @@ public abstract class AbstractCallableBoolean<T extends AbstractCallableBoolean<
      */
     protected boolean isMultibit = false;
 
+    /**
+     * Character representation of Boolean bits
+     */
     protected String charText;
     
     /**

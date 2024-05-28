@@ -1,8 +1,7 @@
 {
     "version": "0.95",
     "news": [
-        "[Contribution] jSQL works fine when column type is string but can fail when types do not match in UNION statement. To illustrate: WebGoat on HSQLDB requires a Normal strategy with 2 integers to work. Contact me on GitHub if you are interested to work on this.",
-        "[Thanks to @komomon, @gamblingmaster2020, @galihap76, @Xem44XMe] You can also add a Star to GitHub at https://github.com/ron190/jsql-injection",
+        "[Thanks to @DelvinBa, @racocvr for bug report] Anyone can contribute, please add a Star to GitHub at https://github.com/ron190/jsql-injection",
         "[Contribution] Clone the wiki and open a pull request to improve documentation at https://github.com/ron190/jsql-injection/wiki"
     ]
 }

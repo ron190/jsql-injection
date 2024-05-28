@@ -46,9 +46,6 @@ public abstract class AbstractStrategy {
 
     /**
      * Test if this strategy can be used to inject SQL.
-     * @return
-     * @throws InjectionFailureException
-     * @throws StoppedByUserSlidingException
      */
     public abstract void checkApplicability() throws JSqlException;
     

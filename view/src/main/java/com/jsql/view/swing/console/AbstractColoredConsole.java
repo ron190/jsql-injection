@@ -120,7 +120,7 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
         } catch (Exception e) {
             
             // Report #863: exception during report of exception
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, message, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, message, e);
         }
     }
 }

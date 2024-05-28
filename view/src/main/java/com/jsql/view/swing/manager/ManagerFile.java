@@ -72,7 +72,7 @@ public class ManagerFile extends AbstractManagerList {
         this.run.setEnabled(false);
         this.run.setContentAreaFilled(false);
         this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        this.run.setBackground(new Color(200, 221, 242));
+        this.run.setBackground(UiUtil.COLOR_FOCUS_GAINED);
         
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
         
