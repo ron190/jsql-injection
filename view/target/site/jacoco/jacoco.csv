@@ -58,20 +58,20 @@ view,com.jsql.view.swing.manager,ManagerSqlShell,12,122,0,0,2,36,1,1,1,1
 view,com.jsql.view.swing.manager,ManagerDatabase.new KeyAdapter() {...},38,6,10,0,9,1,6,1,1,1
 view,com.jsql.view.swing.manager,ManagerDatabase.new MouseAdapter() {...},24,32,4,2,6,5,3,2,0,2
 view,com.jsql.view.swing.manager,ManagerDatabase.new FocusListener() {...},56,6,12,0,14,1,8,1,2,1
-view,com.jsql.view.swing.manager,ManagerFile,84,136,4,0,24,26,4,3,2,3
+view,com.jsql.view.swing.manager,ManagerFile,84,131,4,0,24,26,4,3,2,3
 view,com.jsql.view.swing.manager,ManagerCoder.new DocumentListenerEditing() {...},0,11,0,0,0,3,0,2,0,2
 view,com.jsql.view.swing.manager,AbstractManagerList,134,182,8,8,27,38,8,11,4,7
-view,com.jsql.view.swing.manager,ManagerUpload,128,259,6,2,34,53,7,4,4,3
+view,com.jsql.view.swing.manager,ManagerUpload,128,254,6,2,34,53,7,4,4,3
 view,com.jsql.view.swing.manager,ManagerWebShell,6,7,0,0,2,3,1,1,1,1
 view,com.jsql.view.swing.manager,ManagerDatabase.TreeModelGifListener,3,31,2,2,2,9,3,4,1,4
 view,com.jsql.view.swing.manager,AbstractManagerShell.ActionCreationShell,121,6,10,0,33,1,8,1,3,1
 view,com.jsql.view.swing.manager,ManagerDatabase,3,124,0,0,1,26,1,6,1,6
 view,com.jsql.view.swing.manager,ManagerCoder.ChangeMenuListener,0,30,2,4,0,8,2,3,0,2
-view,com.jsql.view.swing.manager,ManagerScan,254,320,16,10,72,74,14,9,4,6
-view,com.jsql.view.swing.manager,AbstractManagerShell,6,266,0,2,2,53,0,4,0,3
-view,com.jsql.view.swing.manager,ManagerBruteForce,33,617,0,0,11,103,11,7,11,7
+view,com.jsql.view.swing.manager,ManagerScan,254,315,16,10,72,74,14,9,4,6
+view,com.jsql.view.swing.manager,AbstractManagerShell,6,261,0,2,2,53,0,4,0,3
+view,com.jsql.view.swing.manager,ManagerBruteForce,33,612,0,0,11,103,11,7,11,7
 view,com.jsql.view.swing.manager,ManagerCoder,0,485,0,2,0,86,0,9,0,8
-view,com.jsql.view.swing.manager,ManagerAdminPage,134,133,14,0,31,27,13,3,6,3
+view,com.jsql.view.swing.manager,ManagerAdminPage,134,128,14,0,31,27,13,3,6,3
 view,com.jsql.view.swing.panel.consoles,CenterRenderer,0,6,0,0,0,3,0,1,0,1
 view,com.jsql.view.swing.panel.consoles,NetworkTable,0,224,1,3,0,47,1,7,0,6
 view,com.jsql.view.swing.panel.consoles,CenterRendererWithColor,72,38,15,5,15,8,10,3,1,2
@@ -116,8 +116,8 @@ view,com.jsql.view.swing.tab,TabManagers,0,163,0,0,0,29,0,3,0,3
 view,com.jsql.view.swing.tab,TabMouseAdapter,72,13,5,1,19,6,4,3,1,3
 view,com.jsql.view.swing.tab,TabManagers.new MouseAdapter() {...},0,22,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.tab,TabManagers.new CustomMetalTabbedPaneUI() {...},0,14,0,0,0,2,0,2,0,2
-view,com.jsql.view.swing.tab,TabManagers.new JLabel() {...},14,15,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.tab,TabResults,12,280,0,0,4,61,0,6,0,6
+view,com.jsql.view.swing.tab,TabManagers.new JLabel() {...},14,15,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.tab,TabHeader.new JLabel() {...},0,11,0,0,0,3,0,2,0,2
 view,com.jsql.view.swing.tab,TabManagersProxy.new MetalTabbedPaneUI() {...},0,8,0,0,0,2,0,2,0,2
 view,com.jsql.view.swing.tab,TabbedPaneWheeled,0,29,0,0,0,9,0,3,0,3
@@ -163,8 +163,8 @@ view,com.jsql.view.swing.list,DnDList.new FocusListener() {...},0,14,0,0,0,5,0,3
 view,com.jsql.view.swing.list,DnDList.new KeyAdapter() {...},0,14,0,2,0,4,0,3,0,2
 view,com.jsql.view.swing.list,DnDList.new AbstractAction() {...},14,76,4,6,3,14,3,4,0,2
 view,com.jsql.view.swing.list,ListTransfertHandler,59,169,8,12,11,37,7,10,1,6
-view,com.jsql.view.swing.list,MouseAdapterMenuAction,143,378,16,10,33,79,18,9,7,7
 view,com.jsql.view.swing.list,MenuActionNewValue.new MouseAdapter() {...},17,0,0,0,4,0,2,0,2,0
+view,com.jsql.view.swing.list,MouseAdapterMenuAction,143,378,16,10,33,79,18,9,7,7
 view,com.jsql.view.swing.list,DnDListScan,15,4,0,0,2,2,1,1,1,1
 view,com.jsql.view.swing.list,MenuActionExport,62,9,4,0,14,4,3,2,1,2
 view,com.jsql.view.swing.list,RendererComplexCell.BorderList,33,0,0,0,5,0,1,0,1,0
@@ -178,9 +178,9 @@ view,com.jsql.view.swing.list,ItemListScan,0,18,0,0,0,5,0,3,0,3
 view,com.jsql.view.swing.list,BeanInjection,12,108,0,2,4,38,0,12,0,11
 view,com.jsql.view.swing.dialog,DialogAbout.new FocusAdapter() {...},11,9,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.dialog,DialogAbout.new MouseAdapter() {...},8,9,0,0,3,1,1,1,1,1
-view,com.jsql.view.swing.dialog,DialogTranslate,55,380,2,0,16,69,7,10,6,10
+view,com.jsql.view.swing.dialog,DialogTranslate,55,375,2,0,16,69,7,10,6,10
 view,com.jsql.view.swing.dialog,ReplaceFileChooser,44,4,8,0,17,2,6,1,1,1
-view,com.jsql.view.swing.dialog,DialogAbout,44,331,2,2,13,72,3,10,2,9
+view,com.jsql.view.swing.dialog,DialogAbout,44,321,2,2,13,72,3,10,2,9
 view,com.jsql.view.swing.dialog,DialogTranslate.new MouseAdapter() {...},9,6,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.dialog,DialogTranslate.new FocusAdapter() {...},0,19,0,0,0,4,0,2,0,2
 view,com.jsql.view.swing.tree.model,NodeModelDatabase,46,20,7,3,12,8,5,6,1,5
@@ -203,8 +203,8 @@ view,com.jsql.view.swing.panel,PanelConsoles.new CustomMetalTabbedPaneUI() {...}
 view,com.jsql.view.swing.panel,PanelConsoles.new MouseAdapter() {...},6,20,0,0,2,5,0,2,0,2
 view,com.jsql.view.swing.panel,PanelPreferences.CategoryPreference,0,78,0,0,0,14,0,4,0,4
 view,com.jsql.view.swing.panel,PanelPreferences.new DefaultListCellRenderer() {...},0,41,0,4,0,12,0,4,0,2
-view,com.jsql.view.swing.panel,PanelPreferences,3,430,0,0,1,92,1,13,1,13
 view,com.jsql.view.swing.panel,PanelAddressBar,5,651,0,4,1,136,1,17,1,15
+view,com.jsql.view.swing.panel,PanelPreferences,3,430,0,0,1,92,1,13,1,13
 view,com.jsql.view.swing.panel,PanelConsoles,78,624,9,9,20,134,12,20,3,20
 view,com.jsql.view.swing.panel,PanelAddressBar.RadioModel,0,18,0,0,0,7,0,1,0,1
 view,com.jsql.view.swing.sql.lexer,DocumentReader,141,103,12,8,33,22,16,7,8,5
@@ -218,8 +218,8 @@ view,com.jsql.view.swing.tab.dnd,TabTransferHandler,78,254,24,18,13,59,22,8,1,8
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.Handler,6,166,9,15,1,38,9,9,0,6
 view,com.jsql.view.swing.tab.dnd,TabDropTargetAdapter,39,0,2,0,14,0,6,0,5,0
 view,com.jsql.view.swing.tab.dnd,DnDTabData,0,6,0,0,0,3,0,1,0,1
-view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.DnDDropLocation,0,20,0,0,0,8,0,4,0,4
 view,com.jsql.view.swing.tab.dnd,GhostGlassPane,0,45,0,0,0,15,0,4,0,4
+view,com.jsql.view.swing.tab.dnd,DnDTabbedPane.DnDDropLocation,0,20,0,0,0,8,0,4,0,4
 view,com.jsql.view.swing.tab.dnd,DnDTabbedPane,207,305,30,18,40,68,23,13,2,10
 view,com.jsql.view.swing.tab.dnd,TabTransferHandler.new Transferable() {...},5,32,1,1,1,5,1,4,0,4
 view,com.jsql.view.scan,ScanListTerminal,4,0,0,0,2,0,1,0,1,0
@@ -351,7 +351,7 @@ view,com.jsql.view.swing.manager.util,MenuBarCoder.MenuItemListener,15,6,0,0,4,1
 view,com.jsql.view.swing.shell,ShellSql,14,9,0,0,2,3,1,1,1,1
 view,com.jsql.view.swing.shell,KeyAdapterTerminal.new SwingWorker() {...},0,48,0,2,0,11,0,3,0,2
 view,com.jsql.view.swing.shell,KeyAdapterTerminal,145,268,21,37,26,62,16,23,1,9
-view,com.jsql.view.swing.shell,BlockCaret,9,112,2,14,5,33,2,10,0,4
+view,com.jsql.view.swing.shell,BlockCaret,10,111,3,13,6,32,3,9,0,4
 view,com.jsql.view.swing.shell,AbstractShell,44,284,5,7,8,67,5,15,0,14
 view,com.jsql.view.swing.shell,ShellWeb,0,17,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.shell,EmptyFocus,23,9,0,0,10,5,4,2,4,2

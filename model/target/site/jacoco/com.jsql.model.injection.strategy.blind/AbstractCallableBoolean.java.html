@@ -29,6 +29,9 @@ import java.util.concurrent.Callable;
      */
 <span class="fc" id="L30">    protected boolean isMultibit = false;</span>
 
+    /**
+     * Character representation of Boolean bits
+     */
     protected String charText;
     
     /**
@@ -38,19 +41,19 @@ import java.util.concurrent.Callable;
     public abstract boolean isTrue();
     
     public int getCurrentIndex() {
-<span class="fc" id="L41">        return this.currentIndex;</span>
+<span class="fc" id="L44">        return this.currentIndex;</span>
     }
     
     public int getCurrentBit() {
-<span class="fc" id="L45">        return this.currentBit;</span>
+<span class="fc" id="L48">        return this.currentBit;</span>
     }
 
     public String getCharText() {
-<span class="nc" id="L49">        return charText;</span>
+<span class="nc" id="L52">        return charText;</span>
     }
 
     public boolean isMultibit() {
-<span class="nc" id="L53">        return isMultibit;</span>
+<span class="nc" id="L56">        return isMultibit;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

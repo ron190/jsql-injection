@@ -17,8 +17,8 @@ model,com.jsql.model.injection.strategy,AbstractStrategy,3,84,0,2,1,24,1,9,1,8
 model,com.jsql.model.injection.strategy,MediatorStrategy,3,445,2,24,1,99,3,25,1,14
 model,com.jsql.model.injection.strategy,StrategyInjectionMultibit,0,166,0,8,0,35,0,16,0,12
 model,com.jsql.model.injection.strategy,StrategyInjectionError,27,356,1,21,6,77,3,28,2,18
-model,com.jsql.model.injection.strategy,StrategyInjectionNormal,5,392,3,21,2,66,3,25,0,16
 model,com.jsql.model.injection.strategy,StrategyInjectionBlind,0,227,0,14,0,51,0,23,0,16
+model,com.jsql.model.injection.strategy,StrategyInjectionNormal,5,392,3,21,2,66,3,25,0,16
 model,com.jsql.model.injection.strategy,StrategyInjectionStacked,22,256,1,13,4,59,3,21,2,15
 model,com.jsql.model,AbstractModelObservable,0,39,0,0,0,10,0,7,0,7
 model,com.jsql.model,InjectionModel,154,1177,16,58,35,269,18,54,7,28
@@ -36,7 +36,7 @@ model,com.jsql.view.terminal,SystemOutTerminal,0,4,0,0,0,2,0,1,0,1
 model,com.jsql.view.interaction,SubscriberInteraction,17,78,1,1,7,23,3,5,2,5
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionMonobit,0,137,0,4,0,16,0,5,0,3
 model,com.jsql.model.injection.strategy.blind,InjectionTime,49,215,8,22,18,45,8,13,0,6
-model,com.jsql.model.injection.strategy.blind,AbstractInjectionBoolean,56,272,9,13,16,68,7,13,0,9
+model,com.jsql.model.injection.strategy.blind,AbstractInjectionBoolean,56,271,9,13,16,67,7,13,0,9
 model,com.jsql.model.injection.strategy.blind,CallableCharInsertion,0,78,0,4,0,18,0,6,0,4
 model,com.jsql.model.injection.strategy.blind,InjectionBlind,50,246,9,21,19,47,9,14,0,8
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionBoolean.BooleanMode,0,27,0,0,0,2,0,1,0,1
@@ -74,8 +74,8 @@ model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},11,0,0,0,2,0,2,0,
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},11,0,0,0,2,0,2,0,2,0
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},11,0,0,0,2,0,2,0,2,0
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},11,0,0,0,2,0,2,0,2,0
-model,com.jsql.util.bruter,CodecPolicy,0,15,0,0,0,3,0,1,0,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},9,0,0,0,2,0,2,0,2,0
+model,com.jsql.util.bruter,CodecPolicy,0,15,0,0,0,3,0,1,0,1
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},11,0,0,0,2,0,2,0,2,0
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},46,0,0,0,4,0,2,0,2,0
 model,com.jsql.util.bruter,ActionCoder.new ActionCoder() {...},9,0,0,0,2,0,2,0,2,0
@@ -115,7 +115,7 @@ model,com.jsql.util.bruter,ActionCoder,254,0,0,0,41,0,4,0,4,0
 model,com.jsql.model.suspendable,SuspendableGetRows,145,599,21,33,37,147,17,28,1,17
 model,com.jsql.model.suspendable,SuspendableGetIndexes,46,134,4,10,11,29,4,7,0,4
 model,com.jsql.model.suspendable,AbstractSuspendable,21,42,3,3,8,16,5,6,2,6
-model,com.jsql.model.suspendable,SuspendableGetCharInsertion,64,527,7,37,15,126,9,33,2,18
+model,com.jsql.model.suspendable,SuspendableGetCharInsertion,64,531,7,37,15,126,9,33,2,18
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
@@ -170,7 +170,7 @@ model,com.jsql.util,UserAgentUtil,8,23,0,0,4,8,2,4,2,4
 model,com.jsql.util,DigestUtil,6,243,2,6,2,44,2,10,0,8
 model,com.jsql.util,StringUtil,6,389,0,22,2,93,0,40,0,29
 model,com.jsql.util,ProxyUtil,348,60,22,2,81,17,31,5,19,5
-model,com.jsql.util,HeaderUtil,64,430,18,46,10,91,16,30,0,14
+model,com.jsql.util,HeaderUtil,64,426,18,46,10,91,16,30,0,14
 model,com.jsql.util,ParameterUtil,116,641,27,71,32,169,25,60,2,34
 model,com.jsql.model.suspendable.callable,CallablePageSource,0,44,0,0,0,14,0,6,0,6
 model,com.jsql.model.suspendable.callable,ThreadFactoryCallable,0,13,0,0,0,4,0,2,0,2
