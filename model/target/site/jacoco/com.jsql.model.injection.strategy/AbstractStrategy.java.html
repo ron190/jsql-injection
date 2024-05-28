@@ -46,9 +46,6 @@ public abstract class AbstractStrategy {
 
     /**
      * Test if this strategy can be used to inject SQL.
-     * @return
-     * @throws InjectionFailureException
-     * @throws StoppedByUserSlidingException
      */
     public abstract void checkApplicability() throws JSqlException;
     
@@ -86,52 +83,52 @@ public abstract class AbstractStrategy {
     
     public void markVulnerability(Interaction message, int... indexErrorStrategy) {
         
-<span class="fc" id="L89">        var request = new Request();</span>
-<span class="fc" id="L90">        request.setMessage(message);</span>
+<span class="fc" id="L86">        var request = new Request();</span>
+<span class="fc" id="L87">        request.setMessage(message);</span>
         
-<span class="fc" id="L92">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="fc" id="L93">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
+<span class="fc" id="L89">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L90">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
         
         // Ellipse default to non null array
-<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (indexErrorStrategy.length &gt; 0) {</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (indexErrorStrategy.length &gt; 0) {</span>
             
-<span class="fc" id="L98">            msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);</span>
-<span class="fc" id="L99">            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);</span>
+<span class="fc" id="L95">            msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);</span>
+<span class="fc" id="L96">            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);</span>
         }
 
-<span class="fc" id="L102">        request.setParameters(msgHeader);</span>
-<span class="fc" id="L103">        this.injectionModel.sendToViews(request);</span>
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L99">        request.setParameters(msgHeader);</span>
+<span class="fc" id="L100">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L101">    }</span>
     
     @Override
     public String toString() {
-<span class="fc" id="L108">        return this.getName();</span>
+<span class="fc" id="L105">        return this.getName();</span>
     }
 
     // Getter and setter
     
     public boolean isApplicable() {
-<span class="fc" id="L114">        return this.isApplicable;</span>
+<span class="fc" id="L111">        return this.isApplicable;</span>
     }
     
     public void setApplicable(boolean isApplicable) {
-<span class="fc" id="L118">        this.isApplicable = isApplicable;</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L115">        this.isApplicable = isApplicable;</span>
+<span class="fc" id="L116">    }</span>
     
     public String getVisibleIndex() {
-<span class="fc" id="L122">        return this.visibleIndex;</span>
+<span class="fc" id="L119">        return this.visibleIndex;</span>
     }
 
     public void setVisibleIndex(String visibleIndex) {
-<span class="fc" id="L126">        this.visibleIndex = visibleIndex;</span>
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L123">        this.visibleIndex = visibleIndex;</span>
+<span class="fc" id="L124">    }</span>
 
     public String getSourceIndexesFound() {
-<span class="nc" id="L130">        return this.sourceIndexesFound;</span>
+<span class="nc" id="L127">        return this.sourceIndexesFound;</span>
     }
 
     public void setSourceIndexesFound(String sourceIndexesFound) {
-<span class="fc" id="L134">        this.sourceIndexesFound = sourceIndexesFound;</span>
-<span class="fc" id="L135">    }</span>
+<span class="fc" id="L131">        this.sourceIndexesFound = sourceIndexesFound;</span>
+<span class="fc" id="L132">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

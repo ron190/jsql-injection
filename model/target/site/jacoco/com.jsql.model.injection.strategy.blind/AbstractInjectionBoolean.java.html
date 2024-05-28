@@ -174,70 +174,69 @@ public abstract class AbstractInjectionBoolean&lt;T extends AbstractCallableBool
 <span class="fc bfc" id="L174" title="All 2 branches covered.">        if (asciiCodeBinary.matches(&quot;^[01]{8}$&quot;)) {</span>
             
 <span class="fc" id="L176">            var asciiCode = Integer.parseInt(asciiCodeBinary, 2);</span>
-<span class="pc bpc" id="L177" title="2 of 4 branches missed.">            if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000</span>
+<span class="pc bpc" id="L177" title="1 of 4 branches missed.">            if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000</span>
                 
-<span class="nc bnc" id="L179" title="All 4 branches missed.">                if (countTasksSubmitted.get() != 0 &amp;&amp; countBadAsciiCode.get() &gt; 15) {</span>
+<span class="pc bpc" id="L179" title="2 of 4 branches missed.">                if (countTasksSubmitted.get() != 0 &amp;&amp; countBadAsciiCode.get() &gt; 15) {</span>
 <span class="nc" id="L180">                    throw new InjectionFailureException(&quot;Boolean false positive, stopping...&quot;);</span>
                 }
                 
-<span class="nc" id="L183">                countBadAsciiCode.incrementAndGet();</span>
+<span class="fc" id="L183">                countBadAsciiCode.incrementAndGet();</span>
             }
 
-<span class="fc" id="L186">            var charText = Character.toString((char) asciiCode);</span>
-<span class="fc" id="L187">            currentCallable.charText = charText;</span>
+<span class="fc" id="L186">            currentCallable.charText = Character.toString((char) asciiCode);</span>
             
-<span class="fc" id="L189">            var interaction = new Request();</span>
-<span class="fc" id="L190">            interaction.setMessage(Interaction.MESSAGE_BINARY);</span>
-<span class="fc" id="L191">            interaction.setParameters(</span>
+<span class="fc" id="L188">            var interaction = new Request();</span>
+<span class="fc" id="L189">            interaction.setMessage(Interaction.MESSAGE_BINARY);</span>
+<span class="fc" id="L190">            interaction.setParameters(</span>
                 asciiCodeBinary
                 + &quot;=&quot;
-                + charText
-<span class="fc" id="L195">                .replace(&quot;\\n&quot;, &quot;\\\\\\n&quot;)</span>
-<span class="fc" id="L196">                .replace(&quot;\\r&quot;, &quot;\\\\\\r&quot;)</span>
-<span class="fc" id="L197">                .replace(&quot;\\t&quot;, &quot;\\\\\\t&quot;)</span>
+                + currentCallable.charText
+<span class="fc" id="L194">                .replace(&quot;\\n&quot;, &quot;\\\\\\n&quot;)</span>
+<span class="fc" id="L195">                .replace(&quot;\\r&quot;, &quot;\\\\\\r&quot;)</span>
+<span class="fc" id="L196">                .replace(&quot;\\t&quot;, &quot;\\\\\\t&quot;)</span>
             );
-<span class="fc" id="L199">            this.injectionModel.sendToViews(interaction);</span>
+<span class="fc" id="L198">            this.injectionModel.sendToViews(interaction);</span>
         }
-<span class="fc" id="L201">    }</span>
+<span class="fc" id="L200">    }</span>
 
     private String stop(List&lt;char[]&gt; bytes, ExecutorService taskExecutor) {
         
         // Await for termination
-<span class="fc" id="L206">        var isTerminated = false;</span>
+<span class="fc" id="L205">        var isTerminated = false;</span>
         
         try {
-<span class="fc" id="L209">            taskExecutor.shutdown();</span>
-<span class="fc" id="L210">            isTerminated = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);</span>
+<span class="fc" id="L208">            taskExecutor.shutdown();</span>
+<span class="fc" id="L209">            isTerminated = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);</span>
             
-<span class="nc" id="L212">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L211">        } catch (InterruptedException e) {</span>
             
-<span class="nc" id="L214">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L215">            Thread.currentThread().interrupt();</span>
-<span class="fc" id="L216">        }</span>
+<span class="nc" id="L213">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L214">            Thread.currentThread().interrupt();</span>
+<span class="fc" id="L215">        }</span>
         
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">        if (!isTerminated) {</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">        if (!isTerminated) {</span>
             
             // awaitTermination timed out, interrupt everything
-<span class="fc" id="L221">            taskExecutor.shutdownNow();</span>
+<span class="fc" id="L220">            taskExecutor.shutdownNow();</span>
         }
 
         // Get current progress and display
-<span class="fc" id="L225">        var result = new StringBuilder();</span>
+<span class="fc" id="L224">        var result = new StringBuilder();</span>
         
-<span class="fc bfc" id="L227" title="All 2 branches covered.">        for (char[] c: bytes) {</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">        for (char[] c: bytes) {</span>
             
             try {
-<span class="fc" id="L230">                var charCode = Integer.parseInt(new String(c), 2);</span>
-<span class="fc" id="L231">                var str = Character.toString((char) charCode);</span>
-<span class="fc" id="L232">                result.append(str);</span>
+<span class="fc" id="L229">                var charCode = Integer.parseInt(new String(c), 2);</span>
+<span class="fc" id="L230">                var str = Character.toString((char) charCode);</span>
+<span class="fc" id="L231">                result.append(str);</span>
                 
-<span class="fc" id="L234">            } catch (NumberFormatException err) {</span>
+<span class="fc" id="L233">            } catch (NumberFormatException err) {</span>
                 // Byte string not fully constructed : 0x1x010x
                 // Ignore
-<span class="fc" id="L237">            }</span>
-<span class="fc" id="L238">        }</span>
+<span class="fc" id="L236">            }</span>
+<span class="fc" id="L237">        }</span>
         
-<span class="fc" id="L240">        return result.toString();</span>
+<span class="fc" id="L239">        return result.toString();</span>
     }
 
     /**
@@ -246,15 +245,15 @@ public abstract class AbstractInjectionBoolean&lt;T extends AbstractCallableBool
      * @return Source code
      */
     public String callUrl(String urlString, String metadataInjectionProcess) {
-<span class="fc" id="L249">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);</span>
+<span class="fc" id="L248">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);</span>
     }
 
     public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBoolean&lt;?&gt; callableBoolean) {
-<span class="fc" id="L253">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);</span>
+<span class="fc" id="L252">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);</span>
     }
 
     public BooleanMode getBooleanMode() {
-<span class="fc" id="L257">        return this.booleanMode;</span>
+<span class="fc" id="L256">        return this.booleanMode;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
