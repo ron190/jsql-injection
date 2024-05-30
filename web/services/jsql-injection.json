@@ -1,5 +1,5 @@
 {
-    "version": "0.96",
+    "version": "0.97",
     "news": [
         "[Thanks to @DelvinBa, @racocvr for bug report] Anyone can contribute, please add a Star to GitHub at https://github.com/ron190/jsql-injection",
         "[Contribution] Clone the wiki and open a pull request to improve documentation at https://github.com/ron190/jsql-injection/wiki"
