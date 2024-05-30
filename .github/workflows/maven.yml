@@ -136,17 +136,19 @@ jobs:
     - name: Publish coverage
       run: |
         git checkout docs
-        rm -r view/target/site/ view/target/pit-reports/ model/target/site/ model/target/pit-reports/ || echo 'Folder(s) not found'
-        FOLDER=view/target/site/jacoco bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
-        FOLDER=model/target/site/jacoco bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
-        FOLDER=view/target/pit-reports bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
-        FOLDER=model/target/pit-reports bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
         git config user.name "Github Actions"
         git config user.email no-response@github.com    
         git pull -s ours  # ignore remote changes when updated by parallel jobs
-        # folders view/target model/target contain other build files from 'Install Maven dependencies'
-        git add -f view/target/site/jacoco model/target/site/jacoco view/target/pit-reports model/target/pit-reports
-        git commit -m "Publish jacoco and pitest reports"
+        
+        for i in view model; do
+          rm -r $i/target/site/ $i/target/pit-reports/ || echo 'Folder(s) not found'
+          FOLDER=$i/target/site bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
+          FOLDER=$i/target/pit-reports bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
+          # folders view/target model/target contain other build files from 'Install Maven dependencies'
+          git add -f $i/target/site $i/target/pit-reports
+        done;
+        
+        git commit -m "Publish jacoco, javadoc, surefire, dependencies and pitest reports"
         git push
 
   codeql:
