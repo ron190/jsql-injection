@@ -16,9 +16,18 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 [![Snyk](https://img.shields.io/badge/build-monitored-8A2BE2?logo=snyk&label=security "Snyk code vulnerability")](#)<br>
 [![Sonar](https://img.shields.io/sonar/violations/ron190:jsql-injection?format=long&label=issues&logo=sonarqube&server=https%3A%2F%2Fsonarcloud.io "Sonar code issues")](https://sonarcloud.io/dashboard?id=ron190%3Ajsql-injection)
 
-___
 ## Wiki
-Read about jSQL [features](https://github.com/ron190/jsql-injection/wiki/Features), how to [install](https://github.com/ron190/jsql-injection/wiki/Install) and more in the [wiki](https://github.com/ron190/jsql-injection/wiki).
+Read about jSQL [features](https://github.com/ron190/jsql-injection/wiki/Features) and more in the [wiki](https://github.com/ron190/jsql-injection/wiki).
+
+## Install
+First, install :coffee: [Java](http://java.com) 11 or up to version 20, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.97.jar` to run the software.
+
+You can also type `java -jar jsql-injection-v0.97.jar` in your terminal to start the program.
+
+If you are using Kali Linux then get the latest version using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
+
+> [!NOTE]
+> Download the latest version from GitHub: [jsql-injection-v0.97.jar](https://github.com/ron190/jsql-injection/releases/download/v0.97/jsql-injection-v0.97.jar)
 ___
 ## Screenshots
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
