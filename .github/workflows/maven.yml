@@ -110,11 +110,8 @@ jobs:
         $DOCKER_RESOURCES/scripts/run-on-docker.sh '
           mvn clean install -P tests \
             sonar:sonar \
-            org.pitest:pitest-maven:mutationCoverage
-        '
-        $DOCKER_RESOURCES/scripts/run-on-docker.sh '
-          mvn \
-            surefire-report:report-only \
+            org.pitest:pitest-maven:mutationCoverage\
+            surefire-report:report \
             surefire-report:failsafe-report-only \
             javadoc:javadoc \
             versions:dependency-updates-report
