@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GitUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util</a> &gt; <span class="el_source">GitUtil.java</span></div><h1>GitUtil.java</h1><pre class="source lang-java linenums">package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -27,7 +25,7 @@ public class GitUtil {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L30">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L28">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     /**
      * Application useful informations as json object from Github repository.
@@ -39,17 +37,17 @@ public class GitUtil {
      * Define explicit labels to declare method parameters.
      * Used for code readability only.
      */
-<span class="fc" id="L42">    public enum ShowOnConsole {</span>
-<span class="fc" id="L43">        YES,</span>
-<span class="fc" id="L44">        NO</span>
+<span class="fc" id="L40">    public enum ShowOnConsole {</span>
+<span class="fc" id="L41">        YES,</span>
+<span class="fc" id="L42">        NO</span>
     }
 
     private final InjectionModel injectionModel;
     
-<span class="fc" id="L49">    public GitUtil(InjectionModel injectionModel) {</span>
+<span class="fc" id="L47">    public GitUtil(InjectionModel injectionModel) {</span>
         
-<span class="fc" id="L51">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L49">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L50">    }</span>
 
     /**
      * Verify if application is up-to-date against the version on GitHub.
@@ -57,28 +55,28 @@ public class GitUtil {
      */
     public void checkUpdate(ShowOnConsole displayUpdateMessage) {
         
-<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (displayUpdateMessage == ShowOnConsole.YES) {</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (displayUpdateMessage == ShowOnConsole.YES) {</span>
             
-<span class="nc" id="L62">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;UPDATE_LOADING&quot;));</span>
+<span class="nc" id="L60">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(&quot;UPDATE_LOADING&quot;));</span>
         }
         
         try {
-<span class="nc" id="L66">            var versionGit = Float.parseFloat(this.getJSONObject().getString(&quot;version&quot;));</span>
+<span class="nc" id="L64">            var versionGit = Float.parseFloat(this.getJSONObject().getString(&quot;version&quot;));</span>
             
-<span class="nc bnc" id="L68" title="All 2 branches missed.">            if (versionGit &gt; Float.parseFloat(this.injectionModel.getVersionJsql())) {</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            if (versionGit &gt; Float.parseFloat(this.injectionModel.getVersionJsql())) {</span>
                 
-<span class="nc" id="L70">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -&gt; I18nUtil.valueByKey(&quot;UPDATE_NEW_VERSION&quot;));</span>
+<span class="nc" id="L68">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -&gt; I18nUtil.valueByKey(&quot;UPDATE_NEW_VERSION&quot;));</span>
                 
-<span class="nc bnc" id="L72" title="All 2 branches missed.">            } else if (displayUpdateMessage == ShowOnConsole.YES) {</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            } else if (displayUpdateMessage == ShowOnConsole.YES) {</span>
                 
-<span class="nc" id="L74">                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, () -&gt; I18nUtil.valueByKey(&quot;UPDATE_UPTODATE&quot;));</span>
+<span class="nc" id="L72">                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, () -&gt; I18nUtil.valueByKey(&quot;UPDATE_UPTODATE&quot;));</span>
             }
             
-<span class="nc" id="L77">        } catch (NumberFormatException | JSONException e) {</span>
+<span class="nc" id="L75">        } catch (NumberFormatException | JSONException e) {</span>
             
-<span class="nc" id="L79">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, I18nUtil.valueByKey(&quot;UPDATE_EXCEPTION&quot;));</span>
-<span class="nc" id="L80">        }</span>
-<span class="nc" id="L81">    }</span>
+<span class="nc" id="L77">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, I18nUtil.valueByKey(&quot;UPDATE_EXCEPTION&quot;));</span>
+<span class="nc" id="L78">        }</span>
+<span class="nc" id="L79">    }</span>
     
     /**
      * Define the body of an issue to send to Github for an unhandled exception.
@@ -89,57 +87,57 @@ public class GitUtil {
      */
     public void sendUnhandledException(String threadName, Throwable throwable) {
         
-<span class="nc" id="L92">        var osMetadata = String.join(</span>
+<span class="nc" id="L90">        var osMetadata = String.join(</span>
             &quot;\n&quot;,
-<span class="nc" id="L94">            String.format(</span>
+<span class="nc" id="L92">            String.format(</span>
                 &quot;jSQL: v%s&quot;,
-<span class="nc" id="L96">                this.injectionModel.getVersionJsql()</span>
+<span class="nc" id="L94">                this.injectionModel.getVersionJsql()</span>
             ),
-<span class="nc" id="L98">            String.format(</span>
+<span class="nc" id="L96">            String.format(</span>
                 &quot;Java: v%s-%s-%s on %s&quot;,
                 SystemUtils.JAVA_VERSION,
                 SystemUtils.OS_ARCH,
                 SystemUtils.USER_LANGUAGE,
                 SystemUtils.JAVA_RUNTIME_NAME
             ),
-<span class="nc" id="L105">            String.format(</span>
+<span class="nc" id="L103">            String.format(</span>
                 &quot;OS: %s (v%s)&quot;,
                 SystemUtils.OS_NAME, SystemUtils.OS_VERSION
             ),
-<span class="nc" id="L109">            String.format(</span>
+<span class="nc" id="L107">            String.format(</span>
                 &quot;Desktop: %s&quot;,
-<span class="nc bnc" id="L111" title="All 2 branches missed.">                System.getProperty(&quot;sun.desktop&quot;) != null</span>
-<span class="nc" id="L112">                ? System.getProperty(&quot;sun.desktop&quot;)</span>
-<span class="nc" id="L113">                : &quot;undefined&quot;</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                System.getProperty(&quot;sun.desktop&quot;) != null</span>
+<span class="nc" id="L110">                ? System.getProperty(&quot;sun.desktop&quot;)</span>
+<span class="nc" id="L111">                : &quot;undefined&quot;</span>
             ),
-<span class="nc" id="L115">            String.format(</span>
+<span class="nc" id="L113">            String.format(</span>
                 &quot;Strategy: %s&quot;,
-<span class="nc bnc" id="L117" title="All 2 branches missed.">                this.injectionModel.getMediatorStrategy().getStrategy() != null</span>
-<span class="nc" id="L118">                ? this.injectionModel.getMediatorStrategy().getStrategy().getName()</span>
-<span class="nc" id="L119">                : &quot;undefined&quot;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">                this.injectionModel.getMediatorStrategy().getStrategy() != null</span>
+<span class="nc" id="L116">                ? this.injectionModel.getMediatorStrategy().getStrategy().getName()</span>
+<span class="nc" id="L117">                : &quot;undefined&quot;</span>
             ),
-<span class="nc" id="L121">            String.format(</span>
+<span class="nc" id="L119">            String.format(</span>
                 &quot;Db engine: %s&quot;,
-<span class="nc" id="L123">                this.injectionModel.getMediatorVendor().getVendor().toString()</span>
+<span class="nc" id="L121">                this.injectionModel.getMediatorVendor().getVendor().toString()</span>
             )
         );
         
-<span class="nc" id="L127">        var exceptionText = String.format(</span>
+<span class="nc" id="L125">        var exceptionText = String.format(</span>
             &quot;Exception on %s%n%s%n&quot;,
             threadName,
-<span class="nc" id="L130">            ExceptionUtils.getStackTrace(throwable).trim()</span>
+<span class="nc" id="L128">            ExceptionUtils.getStackTrace(throwable).trim()</span>
         );
         
-<span class="nc" id="L133">        var clientDescription = String.format(</span>
+<span class="nc" id="L131">        var clientDescription = String.format(</span>
             &quot;```yaml%n%s%n```%n```java%n%s```&quot;,
             osMetadata,
             exceptionText
         );
         
-<span class="nc" id="L139">        clientDescription = clientDescription.replaceAll(&quot;(https?://[.a-zA-Z_0-9]*)+&quot;, org.apache.commons.lang3.StringUtils.EMPTY);</span>
+<span class="nc" id="L137">        clientDescription = clientDescription.replaceAll(&quot;(https?://[.a-zA-Z_0-9]*)+&quot;, org.apache.commons.lang3.StringUtils.EMPTY);</span>
           
-<span class="nc" id="L141">        this.sendReport(clientDescription, ShowOnConsole.NO, &quot;Unhandled &quot;+ throwable.getClass().getSimpleName());</span>
-<span class="nc" id="L142">    }</span>
+<span class="nc" id="L139">        this.sendReport(clientDescription, ShowOnConsole.NO, &quot;Unhandled &quot;+ throwable.getClass().getSimpleName());</span>
+<span class="nc" id="L140">    }</span>
     
     /**
      * Connect to Github webservices and create an Issue on the repository.
@@ -151,72 +149,70 @@ public class GitUtil {
     public void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
         
         // Check proxy
-<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().getProxyUtil().isLive(showOnConsole)) {</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (!this.injectionModel.getMediatorUtils().getProxyUtil().isLive(showOnConsole)) {</span>
             
-<span class="nc" id="L156">            return;</span>
+<span class="nc" id="L154">            return;</span>
         }
 
         var httpRequest = HttpRequest
-<span class="nc" id="L160">            .newBuilder()</span>
-<span class="nc" id="L161">            .uri(URI.create(this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;github.issues.url&quot;)))</span>
-<span class="nc" id="L162">            .setHeader(</span>
+<span class="nc" id="L158">            .newBuilder()</span>
+<span class="nc" id="L159">            .uri(URI.create(this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;github.issues.url&quot;)))</span>
+<span class="nc" id="L160">            .setHeader(</span>
                 &quot;Authorization&quot;,
                 &quot;token &quot;
-<span class="nc" id="L165">                + StringUtils.newStringUtf8(</span>
-<span class="nc" id="L166">                    Base64.decodeBase64(</span>
-<span class="nc" id="L167">                        this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;github.token&quot;)</span>
-                    )
+<span class="nc" id="L163">                + StringUtil.base64Decode(</span>
+<span class="nc" id="L164">                    this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;github.token&quot;)</span>
                 )
             )
-<span class="nc" id="L171">            .POST(BodyPublishers.ofString(</span>
+<span class="nc" id="L167">            .POST(BodyPublishers.ofString(</span>
                 new JSONObject()
-<span class="nc" id="L173">                .put(&quot;title&quot;, reportTitle)</span>
-<span class="nc" id="L174">                .put(&quot;body&quot;, reportBody)</span>
-<span class="nc" id="L175">                .toString()</span>
+<span class="nc" id="L169">                .put(&quot;title&quot;, reportTitle)</span>
+<span class="nc" id="L170">                .put(&quot;body&quot;, reportBody)</span>
+<span class="nc" id="L171">                .toString()</span>
             ))
-<span class="nc" id="L177">            .timeout(Duration.ofSeconds(15))</span>
-<span class="nc" id="L178">            .build();</span>
+<span class="nc" id="L173">            .timeout(Duration.ofSeconds(15))</span>
+<span class="nc" id="L174">            .build();</span>
             
         try {
-<span class="nc" id="L181">            HttpResponse&lt;String&gt; response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(httpRequest, BodyHandlers.ofString());</span>
+<span class="nc" id="L177">            HttpResponse&lt;String&gt; response = this.injectionModel.getMediatorUtils().getConnectionUtil().getHttpClient().send(httpRequest, BodyHandlers.ofString());</span>
                         
-<span class="nc" id="L183">            this.readGithubResponse(response, showOnConsole);</span>
+<span class="nc" id="L179">            this.readGithubResponse(response, showOnConsole);</span>
             
-<span class="nc" id="L185">        } catch (InterruptedException | IOException e) {</span>
+<span class="nc" id="L181">        } catch (InterruptedException | IOException e) {</span>
             
-<span class="nc bnc" id="L187" title="All 2 branches missed.">            if (showOnConsole == ShowOnConsole.YES) {</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">            if (showOnConsole == ShowOnConsole.YES) {</span>
                 
-<span class="nc" id="L189">                LOGGER.log(</span>
+<span class="nc" id="L185">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L191">                    String.format(&quot;Error during Github report connection: %s&quot;, e.getMessage())</span>
+<span class="nc" id="L187">                    String.format(&quot;Error during Github report connection: %s&quot;, e.getMessage())</span>
                 );
             }
             
-<span class="nc bnc" id="L195" title="All 2 branches missed.">            if (e instanceof InterruptedException) {</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">            if (e instanceof InterruptedException) {</span>
                 
-<span class="nc" id="L197">                Thread.currentThread().interrupt();</span>
+<span class="nc" id="L193">                Thread.currentThread().interrupt();</span>
             }
-<span class="nc" id="L199">        }</span>
-<span class="nc" id="L200">    }</span>
+<span class="nc" id="L195">        }</span>
+<span class="nc" id="L196">    }</span>
     
     private void readGithubResponse(HttpResponse&lt;String&gt; response, ShowOnConsole showOnConsole) throws IOException {
         
         try {
             // Read the response
-<span class="nc" id="L206">            String sourcePage = response.body();</span>
+<span class="nc" id="L202">            String sourcePage = response.body();</span>
 
-<span class="nc bnc" id="L208" title="All 2 branches missed.">            if (showOnConsole == ShowOnConsole.YES) {</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">            if (showOnConsole == ShowOnConsole.YES) {</span>
                 
-<span class="nc" id="L210">                var jsonObjectResponse = new JSONObject(sourcePage);</span>
-<span class="nc" id="L211">                var urlIssue = jsonObjectResponse.getString(&quot;html_url&quot;);</span>
-<span class="nc" id="L212">                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Sent to Github: {}&quot;, urlIssue);</span>
+<span class="nc" id="L206">                var jsonObjectResponse = new JSONObject(sourcePage);</span>
+<span class="nc" id="L207">                var urlIssue = jsonObjectResponse.getString(&quot;html_url&quot;);</span>
+<span class="nc" id="L208">                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, &quot;Sent to Github: {}&quot;, urlIssue);</span>
             }
             
-<span class="nc" id="L215">        } catch (Exception e) {</span>
+<span class="nc" id="L211">        } catch (Exception e) {</span>
             
-<span class="nc" id="L217">            throw new IOException(&quot;Connection to the Github API failed, check your connection or update jsql&quot;);</span>
-<span class="nc" id="L218">        }</span>
-<span class="nc" id="L219">    }</span>
+<span class="nc" id="L213">            throw new IOException(&quot;Connection to the Github API failed, check your connection or update jsql&quot;);</span>
+<span class="nc" id="L214">        }</span>
+<span class="nc" id="L215">    }</span>
     
     /**
      * Displays news informations on the console from Github web service.
@@ -226,18 +222,18 @@ public class GitUtil {
     public void showNews() {
         
         try {
-<span class="nc" id="L229">            var news = this.getJSONObject().getJSONArray(&quot;news&quot;);</span>
+<span class="nc" id="L225">            var news = this.getJSONObject().getJSONArray(&quot;news&quot;);</span>
             
-<span class="nc bnc" id="L231" title="All 2 branches missed.">            for (var index = 0 ; index &lt; news.length() ; index++) {</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">            for (var index = 0 ; index &lt; news.length() ; index++) {</span>
                 
-<span class="nc" id="L233">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, news.get(index));</span>
+<span class="nc" id="L229">                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, news.get(index));</span>
             }
             
-<span class="nc" id="L236">        } catch (JSONException e) {</span>
+<span class="nc" id="L232">        } catch (JSONException e) {</span>
             
-<span class="nc" id="L238">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Connection to the Github API failed&quot;);</span>
-<span class="nc" id="L239">        }</span>
-<span class="nc" id="L240">    }</span>
+<span class="nc" id="L234">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Connection to the Github API failed&quot;);</span>
+<span class="nc" id="L235">        }</span>
+<span class="nc" id="L236">    }</span>
     
     /**
      * Instantiate the jsonObject from json data if not already set.
@@ -245,34 +241,34 @@ public class GitUtil {
      */
     public JSONObject getJSONObject() {
         
-<span class="nc bnc" id="L248" title="All 2 branches missed.">        if (this.jsonObject == null) {</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">        if (this.jsonObject == null) {</span>
             
-<span class="nc" id="L250">            String json = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(</span>
-<span class="nc" id="L251">                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;github.webservice.url&quot;)</span>
+<span class="nc" id="L246">            String json = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(</span>
+<span class="nc" id="L247">                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty(&quot;github.webservice.url&quot;)</span>
             );
             
             // Fix #45349: JSONException on new JSONObject(json)
             try {
-<span class="nc" id="L256">                this.jsonObject = new JSONObject(json);</span>
+<span class="nc" id="L252">                this.jsonObject = new JSONObject(json);</span>
                 
-<span class="nc" id="L258">            } catch (JSONException e) {</span>
+<span class="nc" id="L254">            } catch (JSONException e) {</span>
                 
                 try {
-<span class="nc" id="L261">                    this.jsonObject = new JSONObject(&quot;{\&quot;version\&quot;: \&quot;0\&quot;, \&quot;news\&quot;: []}&quot;);</span>
+<span class="nc" id="L257">                    this.jsonObject = new JSONObject(&quot;{\&quot;version\&quot;: \&quot;0\&quot;, \&quot;news\&quot;: []}&quot;);</span>
                     
-<span class="nc" id="L263">                } catch (JSONException eInner) {</span>
+<span class="nc" id="L259">                } catch (JSONException eInner) {</span>
 
-<span class="nc" id="L265">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Fetching default JSON failed&quot;, eInner);</span>
-<span class="nc" id="L266">                }</span>
+<span class="nc" id="L261">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Fetching default JSON failed&quot;, eInner);</span>
+<span class="nc" id="L262">                }</span>
                 
-<span class="nc" id="L268">                LOGGER.log(</span>
+<span class="nc" id="L264">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_ERROR,
                     &quot;Fetching configuration from Github failed. Wait for service to be available, check your connection or update jsql&quot;
                 );
-<span class="nc" id="L272">            }</span>
+<span class="nc" id="L268">            }</span>
         }
         
-<span class="nc" id="L275">        return this.jsonObject;</span>
+<span class="nc" id="L271">        return this.jsonObject;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
