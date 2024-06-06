@@ -50,7 +50,6 @@ public class MainApplication {
     /**
      * Application starting point.
      * @param args CLI parameters (not used)
-     * @throws URISyntaxException
      */
     public static void main(String[] args) {
         

@@ -2,6 +2,7 @@ package com.jsql.view.swing.console;
 
 import com.jsql.util.LogLevelUtil;
 import com.jsql.view.swing.util.UiUtil;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.*;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
 import org.apache.logging.log4j.core.config.Property;
@@ -122,7 +123,7 @@ public class JTextPaneAppender extends AbstractAppender {
                 
                 consoleTextPane.append(message, ATTRIBUTE_SUCCESS);
                 
-            } else if (level != LogLevelUtil.IGNORE.intLevel()) {
+            } else if (level != LogLevelUtil.IGNORE.intLevel() && level != Level.ERROR.intLevel()) {  // ignore & stdout when unhandled exception
                 
                 consoleTextPane.append(message, ATTRIBUTE_ALL);
             }

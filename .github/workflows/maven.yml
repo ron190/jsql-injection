@@ -108,10 +108,14 @@ jobs:
       # Note: gh actions sonarsource/sonarqube-scan-action not working properly => analysis not reliable
       run: |
         $DOCKER_RESOURCES/scripts/run-on-docker.sh '
-          mvn clean install \
+          mvn clean install -P tests \
             sonar:sonar \
-            -P tests org.pitest:pitest-maven:mutationCoverage \
-            surefire-report:report \
+            org.pitest:pitest-maven:mutationCoverage
+        '
+        $DOCKER_RESOURCES/scripts/run-on-docker.sh '
+          mvn \
+            surefire-report:report-only \
+            surefire-report:failsafe-report-only \
             javadoc:javadoc \
             versions:dependency-updates-report
         '

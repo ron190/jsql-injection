@@ -163,8 +163,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             .stream()
             .filter(vendor -> vendor != mediatorVendor.getAuto())
             .filter(vendor ->
-                StringUtils
-                .isNotEmpty(
+                StringUtils.isNotEmpty(
                     vendor
                     .instance()
                     .getModelYaml()
@@ -176,24 +175,23 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
             )
             .filter(vendor -> {
                 
-                Optional<String> optionalOrderByErrorMatch =
-                    Stream.of(
-                        vendor
-                        .instance()
-                        .getModelYaml()
-                        .getStrategy()
-                        .getConfiguration()
-                        .getFingerprint()
-                        .getOrderByErrorMessage()
-                        .split("[\\r\\n]+")
-                    )
-                    .filter(errorMessage ->
-                        Pattern
-                        .compile(".*" + errorMessage + ".*", Pattern.DOTALL)
-                        .matcher(pageSource)
-                        .matches()
-                    )
-                    .findAny();
+                Optional<String> optionalOrderByErrorMatch = Stream.of(
+                    vendor
+                    .instance()
+                    .getModelYaml()
+                    .getStrategy()
+                    .getConfiguration()
+                    .getFingerprint()
+                    .getOrderByErrorMessage()
+                    .split("[\\r\\n]+")
+                )
+                .filter(errorMessage ->
+                    Pattern
+                    .compile(".*" + errorMessage + ".*", Pattern.DOTALL)
+                    .matcher(pageSource)
+                    .matches()
+                )
+                .findAny();
                 
                 if (optionalOrderByErrorMatch.isPresent()) {
                     

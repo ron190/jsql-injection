@@ -204,8 +204,7 @@ public class MediatorVendor {
             String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, "test#vendor");
                 
             var mediatorVendor = this.injectionModel.getMediatorVendor();
-            Vendor[] vendorsWithoutAuto =
-                mediatorVendor
+            Vendor[] vendorsWithoutAuto = mediatorVendor
                 .getVendors()
                 .stream()
                 .filter(v -> v != mediatorVendor.getAuto())

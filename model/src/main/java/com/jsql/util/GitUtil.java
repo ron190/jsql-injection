@@ -1,8 +1,6 @@
 package com.jsql.util;
 
 import com.jsql.model.InjectionModel;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -162,10 +160,8 @@ public class GitUtil {
             .setHeader(
                 "Authorization",
                 "token "
-                + StringUtils.newStringUtf8(
-                    Base64.decodeBase64(
-                        this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.token")
-                    )
+                + StringUtil.base64Decode(
+                    this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.token")
                 )
             )
             .POST(BodyPublishers.ofString(
