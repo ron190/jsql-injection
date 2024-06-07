@@ -59,7 +59,7 @@ public class CsrfUtil {
             
             tags.add(
                 String.format(
-                    "[name=%s]",
+                    "[name='%s']",
                     this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTag()
                 )
             );

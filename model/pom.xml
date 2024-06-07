@@ -43,7 +43,7 @@
         <sonar.exclusions>**/blind/patch/*, **/DigestMD4.java</sonar.exclusions>
 
         <awaitility.version>4.2.0</awaitility.version>
-        <bootstrap.version>5.3.2</bootstrap.version>
+        <bootstrap.version>5.3.3</bootstrap.version>
         <!-- required since commons-text:1.11.0 not working -->
         <commons-lang3.version>3.13.0</commons-lang3.version>
         <dnsjava.version>3.5.3</dnsjava.version>
@@ -56,11 +56,11 @@
         <javafaker.version>1.0.2</javafaker.version>
         <jaxb-api.version>2.1</jaxb-api.version>
         <jcabi-log.version>0.23.0</jcabi-log.version>
-        <jna.version>5.13.0</jna.version>
+        <jna.version>5.14.0</jna.version>
         <jquery.version>3.7.1</jquery.version>
         <json.version>20231013</json.version>
         <jsoup.version>1.17.2</jsoup.version>
-        <junit-pioneer.version>2.1.0</junit-pioneer.version>
+        <junit-pioneer.version>2.2.0</junit-pioneer.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
         <mssql-jdbc.version>12.4.2.jre8</mssql-jdbc.version>
@@ -71,7 +71,7 @@
         <ojdbc8.version>23.3.0.23.09</ojdbc8.version>
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
         <pitest-maven.version>1.16.1</pitest-maven.version>
-        <postgresql.version>42.6.1</postgresql.version>
+        <postgresql.version>42.7.3</postgresql.version>
         <snakeyaml.version>2.2</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
         <spock-core.version>2.4-M1-groovy-4.0</spock-core.version>
