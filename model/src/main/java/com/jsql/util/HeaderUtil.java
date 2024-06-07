@@ -4,6 +4,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.exception.JSqlException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,7 +49,7 @@ public class HeaderUtil {
      * @param httpRequest where decoded value will be set
      * @param header string to decode
      */
-    public static void sanitizeHeaders(Builder httpRequest, SimpleEntry<String, String> header) {
+    public static void sanitizeHeaders(Builder httpRequest, SimpleEntry<String, String> header) throws JSqlException {
         
         String keyHeader = header.getKey().trim();
         String valueHeader = header.getValue().trim();
@@ -71,10 +72,14 @@ public class HeaderUtil {
             valueHeader = String.join("; ", cookies);
         }
 
-        httpRequest.setHeader(
-            keyHeader,
-            valueHeader.replaceAll("[^\\p{ASCII}]", "")
-        );
+        try {
+            httpRequest.setHeader(
+                keyHeader,
+                valueHeader.replaceAll("[^\\p{ASCII}]", "")
+            );
+        } catch (IllegalArgumentException e) {
+            throw new JSqlException(e);
+        }
     }
 
     /**

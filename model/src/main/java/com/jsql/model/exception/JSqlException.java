@@ -11,4 +11,9 @@ public class JSqlException extends Exception {
         
         super(message, e);
     }
+
+    public JSqlException(Throwable e) {
+
+        super(null, e);  // get only original implicit reason
+    }
 }

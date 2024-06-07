@@ -5,6 +5,7 @@ import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -152,7 +153,7 @@ public class ConnectionUtil {
      * @throws IOException
      * @throws InterruptedException
      */
-    public HttpResponse<String> checkConnectionResponse() throws IOException, InterruptedException {
+    public HttpResponse<String> checkConnectionResponse() throws IOException, InterruptedException, JSqlException {
 
         var queryString = this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();
         var testUrl = this.getUrlBase().replaceAll("\\?$", "");
@@ -204,7 +205,7 @@ public class ConnectionUtil {
         return this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(httpRequest, body);
     }
 
-    public void testConnection() throws IOException, InterruptedException, InjectionFailureException {
+    public void testConnection() throws IOException, InterruptedException, JSqlException {
 
         // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_CONNECTION_TEST"));

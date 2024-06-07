@@ -440,17 +440,21 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 )
                 .split("\\\\r\\\\n")
             )
-            .forEach(e -> {
+            .forEach(header -> {
                 
-                if (e.split(":").length == 2) {
-                    
-                    HeaderUtil.sanitizeHeaders(
-                        httpRequest,
-                        new SimpleEntry<>(
-                            e.split(":")[0],
-                            e.split(":")[1]
-                        )
-                    );
+                if (header.split(":").length == 2) {
+
+                    try {
+                        HeaderUtil.sanitizeHeaders(
+                            httpRequest,
+                            new SimpleEntry<>(
+                                header.split(":")[0],
+                                header.split(":")[1]
+                            )
+                        );
+                    } catch (JSqlException e) {
+                        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Headers sanitizing issue caught already during connection, ignoring", e);
+                    }
                 }
             });
         }
