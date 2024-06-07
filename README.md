@@ -20,14 +20,14 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 Read about jSQL [features](https://github.com/ron190/jsql-injection/wiki/Features) and more in the [wiki](https://github.com/ron190/jsql-injection/wiki).
 
 ## Install
-First, install :coffee: [Java](http://java.com) 11 or up to version 20, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.97.jar` to run the software.
+First, install :coffee: [Java](http://java.com) 11 or up to version 20, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.98.jar` to run the software.
 
-You can also type `java -jar jsql-injection-v0.97.jar` in your terminal to start the program.
+You can also type `java -jar jsql-injection-v0.98.jar` in your terminal to start the program.
 
 If you are using Kali Linux then get the latest version using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 > [!NOTE]
-> Download the latest version from GitHub: [jsql-injection-v0.97.jar](https://github.com/ron190/jsql-injection/releases/download/v0.97/jsql-injection-v0.97.jar)
+> Download the latest version from GitHub: [jsql-injection-v0.98.jar](https://github.com/ron190/jsql-injection/releases/download/v0.98/jsql-injection-v0.98.jar)
 ___
 ## Screenshots
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
