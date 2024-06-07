@@ -11,5 +11,10 @@ public class JSqlException extends Exception {
         
 <span class="nc" id="L12">        super(message, e);</span>
 <span class="nc" id="L13">    }</span>
+
+    public JSqlException(Throwable e) {
+
+<span class="nc" id="L17">        super(null, e);  // get only original implicit reason</span>
+<span class="nc" id="L18">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

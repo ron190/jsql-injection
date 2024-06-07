@@ -21,7 +21,7 @@ model,com.jsql.model.injection.strategy,StrategyInjectionBlind,0,227,0,14,0,51,0
 model,com.jsql.model.injection.strategy,StrategyInjectionNormal,5,392,3,21,2,66,3,25,0,16
 model,com.jsql.model.injection.strategy,StrategyInjectionStacked,22,256,1,13,4,59,3,21,2,15
 model,com.jsql.model,AbstractModelObservable,0,39,0,0,0,10,0,7,0,7
-model,com.jsql.model,InjectionModel,154,1177,16,58,35,269,18,54,7,28
+model,com.jsql.model,InjectionModel,160,1178,16,58,37,270,18,54,7,28
 model,com.jsql.model,MediatorUtils,6,137,0,0,2,59,2,39,2,39
 model,com.jsql.model.injection.vendor,MediatorVendor.new Vendor() {...},0,85,2,6,0,17,2,4,0,2
 model,com.jsql.model.injection.vendor,MediatorVendor,6,801,0,12,2,108,2,36,2,30
@@ -31,7 +31,7 @@ model,com.jsql.model.exception,LoopDetectedSlidingException,6,0,0,0,2,0,1,0,1,0
 model,com.jsql.model.exception,AbstractSlidingException,52,10,6,0,23,4,8,1,5,1
 model,com.jsql.model.exception,InjectionFailureException,9,4,0,0,4,2,2,1,2,1
 model,com.jsql.model.exception,StoppedByUserSlidingException,15,0,0,0,6,0,3,0,3,0
-model,com.jsql.model.exception,JSqlException,5,4,0,0,2,2,1,1,1,1
+model,com.jsql.model.exception,JSqlException,10,4,0,0,4,2,2,1,2,1
 model,com.jsql.view.terminal,SystemOutTerminal,0,4,0,0,0,2,0,1,0,1
 model,com.jsql.view.interaction,SubscriberInteraction,17,78,1,1,7,23,3,5,2,5
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionMonobit,0,137,0,4,0,16,0,5,0,3
@@ -170,7 +170,7 @@ model,com.jsql.util,UserAgentUtil,8,23,0,0,4,8,2,4,2,4
 model,com.jsql.util,DigestUtil,6,243,2,6,2,44,2,10,0,8
 model,com.jsql.util,StringUtil,6,389,0,22,2,93,0,40,0,29
 model,com.jsql.util,ProxyUtil,348,60,22,2,81,17,31,5,19,5
-model,com.jsql.util,HeaderUtil,64,426,18,46,10,91,16,30,0,14
+model,com.jsql.util,HeaderUtil,70,427,18,46,12,92,16,30,0,14
 model,com.jsql.util,ParameterUtil,116,641,27,71,32,169,25,60,2,34
 model,com.jsql.model.suspendable.callable,CallablePageSource,0,44,0,0,0,14,0,6,0,6
 model,com.jsql.model.suspendable.callable,ThreadFactoryCallable,0,13,0,0,0,4,0,2,0,2
