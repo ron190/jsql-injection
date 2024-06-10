@@ -379,10 +379,10 @@ public class SuspendableGetRows extends AbstractSuspendable {
             )
 <span class="fc" id="L380">            .matcher(sourcePage);</span>
             
-<span class="nc" id="L382">        } catch (PatternSyntaxException e) {</span>
+<span class="fc" id="L382">        } catch (PatternSyntaxException e) {</span>
             
             // Fix #35382 : PatternSyntaxException null on SQLi(.{1,null})
-<span class="nc" id="L385">            throw new InjectionFailureException(&quot;Row parsing failed using capacity&quot;, e);</span>
+<span class="fc" id="L385">            throw new InjectionFailureException(&quot;Row parsing failed using capacity&quot;, e);</span>
 <span class="fc" id="L386">        }</span>
         
 <span class="fc" id="L388">        return regexAtLeastOneRow;</span>
