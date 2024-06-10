@@ -103,15 +103,13 @@ jobs:
       run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
 
     - name: Unit and integration tests with Sonar scan
-      # Profile usage for skipITs/skipTests (env var MAVEN_OPS not working)
-      # Note: 'mvn sonar:sonar' not working, modules reports not found, use 'mvn verify sonar:sonar' for reliability
-      # Note: gh actions sonarsource/sonarqube-scan-action not working properly => analysis not reliable
+      # profile to skipITs/skipTests (env var MAVEN_OPS not working)
+      # mvn goal site last to apply skin to generated reports
       run: |
         $DOCKER_RESOURCES/scripts/run-on-docker.sh '
           mvn clean install -P tests \
             sonar:sonar \
             org.pitest:pitest-maven:mutationCoverage \
-            site \
             jxr:jxr \
             javadoc:javadoc \
             surefire-report:report \
@@ -119,7 +117,8 @@ jobs:
             dependency:analyze-report \
             pmd:pmd \
             spotbugs:check \
-            versions:dependency-updates-report
+            versions:dependency-updates-report \
+            site
         '
 
     - name: Databases statistics
@@ -128,9 +127,10 @@ jobs:
     - name: Copy files and coverage reports from container
       # Sonar scans unmerged reports, Codacy/Codecov requires scanning each files (or reports merged)
       run: |
-        mkdir -p shared-resources/model shared-resources/view
+        mkdir -p shared-resources/site shared-resources/model shared-resources/view
         docker cp docker_jsql-container:view/. shared-resources/view
         docker cp docker_jsql-container:model/. shared-resources/model
+        docker cp docker_jsql-container:target/site/. shared-resources/site
         docker cp docker_jsql-container:pom.xml shared-resources
 
     - name: Codecov scan
@@ -146,13 +146,13 @@ jobs:
         git config user.email no-response@github.com    
         git pull -s ours  # ignore remote changes when updated by parallel jobs
         
+        rm -r site/ || echo 'Folder(s) not found'
         for i in view model; do
-          rm -r $i/target/site/ $i/target/pit-reports/ || echo 'Folder(s) not found'
-          FOLDER=$i/target/site bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
-          FOLDER=$i/target/pit-reports bash -c 'mkdir -p $FOLDER/ && cp -r shared-resources/$FOLDER/. $FOLDER/'
-          # folders view/target model/target contain other build files from 'Install Maven dependencies'
-          git add -f $i/target/site $i/target/pit-reports
+          mkdir -p "site/$i/" && cp -r "shared-resources/$i/target/site/." "site/$i/"
+          mkdir -p "site/$i/pit-reports/" && cp -r "shared-resources/$i/target/pit-reports/." "site/$i/pit-reports/"
         done;
+        
+        git add -f site/
         
         git commit -m "Publish reports"
         git push
