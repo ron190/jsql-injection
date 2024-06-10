@@ -55,7 +55,7 @@
         <hsqldb.version>2.7.2</hsqldb.version>
         <javafaker.version>1.0.2</javafaker.version>
         <jaxb-api.version>2.1</jaxb-api.version>
-        <jcabi-log.version>0.23.0</jcabi-log.version>
+        <jcabi-log.version>0.24.1</jcabi-log.version>
         <jna.version>5.14.0</jna.version>
         <jquery.version>3.7.1</jquery.version>
         <json.version>20231013</json.version>
