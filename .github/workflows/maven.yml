@@ -110,10 +110,15 @@ jobs:
         $DOCKER_RESOURCES/scripts/run-on-docker.sh '
           mvn clean install -P tests \
             sonar:sonar \
-            org.pitest:pitest-maven:mutationCoverage\
+            org.pitest:pitest-maven:mutationCoverage \
+            site \
+            jxr:jxr \
+            javadoc:javadoc \
             surefire-report:report \
             surefire-report:failsafe-report-only \
-            javadoc:javadoc \
+            dependency:analyze-report \
+            pmd:pmd \
+            spotbugs:check \
             versions:dependency-updates-report
         '
 
@@ -149,7 +154,7 @@ jobs:
           git add -f $i/target/site $i/target/pit-reports
         done;
         
-        git commit -m "Publish jacoco, javadoc, surefire, dependencies and pitest reports"
+        git commit -m "Publish reports"
         git push
 
   codeql:

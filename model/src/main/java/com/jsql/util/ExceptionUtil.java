@@ -57,6 +57,7 @@ public class ExceptionUtil {
                 ExceptionUtil.this.injectionModel.getMediatorUtils().getPreferencesUtil().isReportingBugs()
                 && ExceptionUtils.getStackTrace(throwable).contains("com.jsql")
                 && !(throwable instanceof OutOfMemoryError)
+                && !ExceptionUtils.getStackTrace(throwable).contains("OutOfMemoryError")  // when implicit
             ) {
 
                 if (ExceptionUtils.getStackTrace(throwable).contains("Could not initialize class java.awt.Toolkit")) {

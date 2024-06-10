@@ -176,16 +176,20 @@ public class ConnectionUtil {
         }
 
         // Test the HTTP connection
-        Builder httpRequest = HttpRequest.newBuilder()
-            .uri(
+        Builder httpRequest = HttpRequest.newBuilder();
+        try {
+            httpRequest.uri(
                 URI.create(
                     // Get encoded params without fragment
                     testUrl
                     // Ignore injection point during the test
                     .replace(InjectionModel.STAR, StringUtils.EMPTY)
                 )
-            )
-            .setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, contentTypeRequest)
+            );
+        } catch (IllegalArgumentException e) {
+            throw new JSqlException(e);
+        }
+        httpRequest.setHeader(HeaderUtil.CONTENT_TYPE_REQUEST, contentTypeRequest)
             .timeout(Duration.ofSeconds(this.getTimeout()));
         
         this.injectionModel.getMediatorUtils().getCsrfUtil().addHeaderToken(httpRequest);
