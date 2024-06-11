@@ -159,8 +159,6 @@ class ApplicationUiTest {
         window.list(ManagerScan.NAME).releaseKey(KeyEvent.VK_CONTROL).releaseKey(KeyEvent.VK_V);
 
         Assertions.assertEquals("paste-from-clipboard", window.list(ManagerScan.NAME).valueAt(1));
-
-        throw new RuntimeException("blah");
     }
 
     @Test

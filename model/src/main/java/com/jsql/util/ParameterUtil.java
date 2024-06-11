@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -31,17 +32,17 @@ public class ParameterUtil {
     /**
      * Query string built from the URL submitted by user.
      */
-    private List<SimpleEntry<String, String>> listQueryString = new ArrayList<>();
+    private List<SimpleEntry<String, String>> listQueryString = new CopyOnWriteArrayList<>();
 
     /**
      * Request submitted by user.
      */
-    private List<SimpleEntry<String, String>> listRequest = new ArrayList<>();
+    private List<SimpleEntry<String, String>> listRequest = new CopyOnWriteArrayList<>();
 
     /**
      * Header submitted by user.
      */
-    private List<SimpleEntry<String, String>> listHeader = new ArrayList<>();
+    private List<SimpleEntry<String, String>> listHeader = new CopyOnWriteArrayList<>();
 
     private String rawRequest = StringUtils.EMPTY;
     private String rawHeader = StringUtils.EMPTY;
