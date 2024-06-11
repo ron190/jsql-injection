@@ -133,7 +133,7 @@
                     <failIfNoTests>true</failIfNoTests>
                     <!-- ignore warn during UTs: 'module java.base does not "opens java.util" to unnamed module' -->
                     <argLine>@{argLine} --add-opens=java.base/java.util=ALL-UNNAMED</argLine>
-                    <rerunFailingTestsCount>2</rerunFailingTestsCount>
+<!--                    <rerunFailingTestsCount>2</rerunFailingTestsCount>-->
                     <includes>
                         <include>**/*UiTest</include>
                     </includes>
