@@ -351,7 +351,7 @@ view,com.jsql.view.swing.manager.util,MenuBarCoder.MenuItemListener,15,6,0,0,4,1
 view,com.jsql.view.swing.shell,ShellSql,14,9,0,0,2,3,1,1,1,1
 view,com.jsql.view.swing.shell,KeyAdapterTerminal.new SwingWorker() {...},0,48,0,2,0,11,0,3,0,2
 view,com.jsql.view.swing.shell,KeyAdapterTerminal,145,268,21,37,26,62,16,23,1,9
-view,com.jsql.view.swing.shell,BlockCaret,10,111,3,13,6,32,3,9,0,4
+view,com.jsql.view.swing.shell,BlockCaret,9,112,2,14,5,33,2,10,0,4
 view,com.jsql.view.swing.shell,AbstractShell,44,284,5,7,8,67,5,15,0,14
 view,com.jsql.view.swing.shell,ShellWeb,0,17,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.shell,EmptyFocus,23,9,0,0,10,5,4,2,4,2

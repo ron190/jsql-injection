@@ -96,8 +96,8 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
             
             // End the job
 <span class="fc" id="L98">            taskExecutor.shutdown();</span>
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {</span>
-<span class="nc" id="L100">                taskExecutor.shutdownNow();</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {</span>
+<span class="fc" id="L100">                taskExecutor.shutdownNow();</span>
             }
             
 <span class="nc" id="L103">        } catch (InterruptedException e) {</span>
