@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Crc64Helper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util.bruter</a> &gt; <span class="el_source">Crc64Helper.java</span></div><h1>Crc64Helper.java</h1><pre class="source lang-java linenums">package com.jsql.util.bruter;
+
+/*******************************************************************************
+ * Copyright (c) 2009, 2012 Mountainminds GmbH &amp; Co. KG and Contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Marc R. Hoffmann - initial API and implementation
+ * 
+ *******************************************************************************/
+
+/**
+ * CRC64 checksum calculator based on the polynom specified in ISO 3309. The
+ * implementation is based on the following publications:
+ * 
+ * &lt;ul&gt;
+ * &lt;li&gt;http://en.wikipedia.org/wiki/Cyclic_redundancy_check&lt;/li&gt;
+ * &lt;li&gt;http://www.geocities.com/SiliconValley/Pines/8659/crc.htm&lt;/li&gt;
+ * &lt;/ul&gt;
+ */
+public class Crc64Helper {
+    
+    private static final long POLY64REV = 0xd800000000000000L;
+    
+    private static final long[] LOOKUPTABLE;
+    
+    private Crc64Helper() {
+        
+    }
+
+    static {
+        
+<span class="fc" id="L36">        LOOKUPTABLE = new long[0x100];</span>
+        
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (int i = 0; i &lt; 0x100; i++) {</span>
+            
+<span class="fc" id="L40">            long v = i;</span>
+            
+<span class="fc bfc" id="L42" title="All 2 branches covered.">            for (int j = 0; j &lt; 8; j++) {</span>
+                
+<span class="fc bfc" id="L44" title="All 2 branches covered.">                if ((v &amp; 1) == 1) {</span>
+                    
+<span class="fc" id="L46">                    v = (v &gt;&gt;&gt; 1) ^ POLY64REV;</span>
+                    
+                } else {
+                    
+<span class="fc" id="L50">                    v = v &gt;&gt;&gt; 1;</span>
+                }
+            }
+            
+<span class="fc" id="L54">            LOOKUPTABLE[i] = v;</span>
+        }
+<span class="fc" id="L56">    }</span>
+
+    /**
+     * Calculates the CRC64 checksum for the given data array.
+     * 
+     * @param data
+     *            data to calculate checksum for
+     * @return checksum value
+     */
+    public static String generateCRC64(final byte[] data) {
+        
+<span class="fc" id="L67">        long sum = 0;</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        for (byte element : data) {</span>
+            
+<span class="fc" id="L70">            final int lookupidx = ((int) sum ^ element) &amp; 0xff;</span>
+<span class="fc" id="L71">            sum = (sum &gt;&gt;&gt; 8) ^ LOOKUPTABLE[lookupidx];</span>
+        }
+        
+<span class="fc" id="L74">        return String.valueOf(sum);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

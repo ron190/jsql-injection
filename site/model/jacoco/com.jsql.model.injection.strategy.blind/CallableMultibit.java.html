@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CallableMultibit.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.injection.strategy.blind</a> &gt; <span class="el_source">CallableMultibit.java</span></div><h1>CallableMultibit.java</h1><pre class="source lang-java linenums">package com.jsql.model.injection.strategy.blind;
+
+import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.strategy.blind.patch.Diff;
+import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
+
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+
+public class CallableMultibit extends AbstractCallableBoolean&lt;CallableMultibit&gt; {
+
+<span class="fc" id="L13">    private LinkedList&lt;Diff&gt; diffsWithReference = new LinkedList&lt;&gt;();</span>
+
+<span class="fc" id="L15">    private static final DiffMatchPatch DIFFMATCHPATCH = new DiffMatchPatch();</span>
+
+    private final InjectionMultibit injectionMultibit;
+
+    private final String metadataInjectionProcess;
+
+<span class="fc" id="L21">    public CallableMultibit(String sqlQuery, InjectionMultibit injectionMultibit, String metadataInjectionProcess) {</span>
+
+<span class="fc" id="L23">        this.injectionMultibit = injectionMultibit;</span>
+<span class="fc" id="L24">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
+<span class="fc" id="L25">        this.booleanUrl = sqlQuery;</span>
+<span class="fc" id="L26">        this.isMultibit = true;</span>
+<span class="fc" id="L27">    }</span>
+
+    public CallableMultibit(String sqlQuery, int indexCharacter, int block, InjectionModel injectionModel, InjectionMultibit injectionMultibit, String metadataInjectionProcess) {
+
+<span class="fc" id="L31">        this(</span>
+<span class="fc" id="L32">            injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(</span>
+                sqlQuery,
+                indexCharacter,
+                3 * block - 2
+            ),
+            injectionMultibit,
+            metadataInjectionProcess
+        );
+<span class="fc" id="L40">        this.block = block;</span>
+<span class="fc" id="L41">        this.currentIndex = indexCharacter;</span>
+<span class="fc" id="L42">    }</span>
+
+    @Override
+    public CallableMultibit call() {
+
+<span class="fc" id="L47">        String result = this.injectionMultibit.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
+
+<span class="fc" id="L49">        this.diffsWithReference = DIFFMATCHPATCH.diffMain(this.injectionMultibit.getSourceReference(), result, true);</span>
+
+<span class="fc" id="L51">        DIFFMATCHPATCH.diffCleanupEfficiency(this.diffsWithReference);</span>
+
+<span class="fc" id="L53">        this.diffsWithReference.removeAll(this.injectionMultibit.getDiffsCommonWithAllIds());</span>
+
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        for (int i = 0; i &lt; this.injectionMultibit.getDiffsById().size() ; i++) {</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            if (new HashSet&lt;&gt;(this.injectionMultibit.getDiffsById().get(i)).containsAll(this.diffsWithReference)) {</span>
+<span class="fc" id="L57">                this.idPage = i;</span>
+            }
+        }
+
+<span class="fc" id="L61">        return this;</span>
+    }
+
+    @Override
+    public boolean isTrue() {
+        // ignored
+<span class="nc" id="L67">        return false;</span>
+    }
+
+    public List&lt;Diff&gt; getDiffsWithReference() {
+<span class="fc" id="L71">        return this.diffsWithReference;</span>
+    }
+    public int getIdPage() {
+<span class="fc" id="L74">        return this.idPage;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

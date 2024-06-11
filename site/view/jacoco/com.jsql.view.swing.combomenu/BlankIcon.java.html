@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BlankIcon.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.combomenu</a> &gt; <span class="el_source">BlankIcon.java</span></div><h1>BlankIcon.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.combomenu;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class BlankIcon implements Icon {
+    
+    private final Color fillColor;
+    
+    private final int size;
+
+    public BlankIcon() {
+        
+<span class="nc" id="L14">        this(null, 11);</span>
+<span class="nc" id="L15">    }</span>
+
+<span class="fc" id="L17">    public BlankIcon(Color color, int size) {</span>
+
+<span class="fc" id="L19">        this.fillColor = color;</span>
+<span class="fc" id="L20">        this.size = size;</span>
+<span class="fc" id="L21">    }</span>
+
+    @Override
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        if (this.fillColor != null) {</span>
+            
+<span class="nc" id="L28">            g.setColor(this.fillColor);</span>
+<span class="nc" id="L29">            g.drawRect(x, y, this.size-1, this.size-1);</span>
+        }
+<span class="fc" id="L31">    }</span>
+
+    @Override
+    public int getIconWidth() {
+<span class="fc" id="L35">        return this.size;</span>
+    }
+
+    @Override
+    public int getIconHeight() {
+<span class="fc" id="L40">        return this.size;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckBoxIcon.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.ui</a> &gt; <span class="el_source">CheckBoxIcon.java</span></div><h1>CheckBoxIcon.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.ui;
+
+import javax.swing.*;
+import javax.swing.plaf.UIResource;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.awt.*;
+import java.io.Serializable;
+
+<span class="fc" id="L9">public class CheckBoxIcon implements Icon, UIResource, Serializable {</span>
+
+    private static final int CONTROL_SIZE = 12;
+
+    private void paintOceanIcon(Component c, Graphics g, int x, int y) {
+        
+<span class="nc" id="L15">        ButtonModel model = ((JCheckBoxMenuItem) c).getModel();</span>
+
+<span class="nc" id="L17">        g.translate(x, y);</span>
+        
+<span class="nc" id="L19">        int w = this.getIconWidth();</span>
+<span class="nc" id="L20">        int h = this.getIconHeight();</span>
+        
+<span class="nc bnc" id="L22" title="All 2 branches missed.">        if (model.isEnabled()) {</span>
+            
+<span class="nc bnc" id="L24" title="All 4 branches missed.">            if (model.isPressed() &amp;&amp; model.isArmed()) {</span>
+                
+<span class="nc" id="L26">                g.setColor(MetalLookAndFeel.getControlShadow());</span>
+<span class="nc" id="L27">                g.fillRect(0, 0, w, h);</span>
+<span class="nc" id="L28">                g.setColor(MetalLookAndFeel.getControlDarkShadow());</span>
+<span class="nc" id="L29">                g.fillRect(0, 0, w, 2);</span>
+<span class="nc" id="L30">                g.fillRect(0, 2, 2, h - 2);</span>
+<span class="nc" id="L31">                g.fillRect(w - 1, 1, 1, h - 1);</span>
+<span class="nc" id="L32">                g.fillRect(1, h - 1, w - 2, 1);</span>
+                
+<span class="nc bnc" id="L34" title="All 2 branches missed.">            } else if (model.isRollover()) {</span>
+                
+<span class="nc" id="L36">                g.setColor(MetalLookAndFeel.getControlDarkShadow());</span>
+<span class="nc" id="L37">                g.drawRect(0, 0, w - 1, h - 1);</span>
+<span class="nc" id="L38">                g.setColor(MetalLookAndFeel.getPrimaryControl());</span>
+<span class="nc" id="L39">                g.drawRect(1, 1, w - 3, h - 3);</span>
+<span class="nc" id="L40">                g.drawRect(2, 2, w - 5, h - 5);</span>
+                
+            } else {
+                
+<span class="nc" id="L44">                g.setColor(MetalLookAndFeel.getControlDarkShadow());</span>
+<span class="nc" id="L45">                g.drawRect(0, 0, w - 1, h - 1);</span>
+            }
+            
+<span class="nc" id="L48">            g.setColor( MetalLookAndFeel.getControlInfo() );</span>
+            
+        } else {
+            
+<span class="nc" id="L52">            g.setColor(MetalLookAndFeel.getControlDarkShadow());</span>
+<span class="nc" id="L53">            g.drawRect(0, 0, w - 1, h - 1);</span>
+        }
+        
+<span class="nc" id="L56">        g.translate(-x, -y);</span>
+        
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (model.isSelected()) {</span>
+            
+<span class="nc" id="L60">            this.drawCheck(g, x, y);</span>
+        }
+<span class="nc" id="L62">    }</span>
+    
+    protected void drawCheck(Graphics g, int x, int y) {
+        
+<span class="nc" id="L66">        g.fillRect(x + 3, y + 5, 2, CheckBoxIcon.CONTROL_SIZE - 8);</span>
+<span class="nc" id="L67">        g.drawLine(x + CheckBoxIcon.CONTROL_SIZE - 4, y + 3, x + 5, y + CheckBoxIcon.CONTROL_SIZE - 6);</span>
+<span class="nc" id="L68">        g.drawLine(x + CheckBoxIcon.CONTROL_SIZE - 4, y + 4, x + 5, y + CheckBoxIcon.CONTROL_SIZE - 5);</span>
+<span class="nc" id="L69">    }</span>
+
+    @Override
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+<span class="nc" id="L73">        this.paintOceanIcon(c, g, x, y);</span>
+<span class="nc" id="L74">    }</span>
+
+    @Override
+    public int getIconWidth() {
+<span class="nc" id="L78">        return CheckBoxIcon.CONTROL_SIZE;</span>
+    }
+
+    @Override
+    public int getIconHeight() {
+<span class="nc" id="L83">        return CheckBoxIcon.CONTROL_SIZE;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

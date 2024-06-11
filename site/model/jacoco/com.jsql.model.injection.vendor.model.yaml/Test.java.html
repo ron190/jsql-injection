@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Test.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.injection.vendor.model.yaml</a> &gt; <span class="el_source">Test.java</span></div><h1>Test.java</h1><pre class="source lang-java linenums">
+package com.jsql.model.injection.vendor.model.yaml;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+<span class="fc" id="L11">public class Test implements Serializable {</span>
+
+<span class="fc" id="L13">    private List&lt;String&gt; falses = Arrays.asList(</span>
+        &quot;true = false&quot;,
+        &quot;true %21= true&quot;,
+        &quot;false %21= false&quot;,
+        &quot;1 = 2&quot;,
+        &quot;1 %21= 1&quot;,
+        &quot;2 %21= 2&quot;
+    );
+            
+<span class="fc" id="L22">    private List&lt;String&gt; trues = Arrays.asList(</span>
+        &quot;true = true&quot;,
+        &quot;false = false&quot;,
+        &quot;true %21= false&quot;,
+        &quot;1 = 1&quot;,
+        &quot;2 = 2&quot;,
+        &quot;1 %21= 2&quot;
+    );
+
+<span class="fc" id="L31">    private String initialization = &quot;0%2b1 = 1&quot;;</span>
+<span class="fc" id="L32">    private String bit = StringUtils.EMPTY;</span>
+<span class="fc" id="L33">    private String length = StringUtils.EMPTY;</span>
+
+    public List&lt;String&gt; getTrues() {
+<span class="fc" id="L36">        return this.trues;</span>
+    }
+
+    public void setTrues(List&lt;String&gt; trues) {
+<span class="fc" id="L40">        this.trues = trues;</span>
+<span class="fc" id="L41">    }</span>
+
+    public List&lt;String&gt; getFalses() {
+<span class="fc" id="L44">        return this.falses;</span>
+    }
+
+    public void setFalses(List&lt;String&gt; falses) {
+<span class="fc" id="L48">        this.falses = falses;</span>
+<span class="fc" id="L49">    }</span>
+
+    public String getInitialization() {
+<span class="fc" id="L52">        return this.initialization;</span>
+    }
+
+    public void setInitialization(String initialization) {
+<span class="fc" id="L56">        this.initialization = initialization;</span>
+<span class="fc" id="L57">    }</span>
+
+    public String getBit() {
+<span class="fc" id="L60">        return this.bit;</span>
+    }
+
+    public void setBit(String bit) {
+<span class="fc" id="L64">        this.bit = bit;</span>
+<span class="fc" id="L65">    }</span>
+
+    public String getLength() {
+<span class="nc" id="L68">        return this.length;</span>
+    }
+
+    public void setLength(String length) {
+<span class="nc" id="L72">        this.length = length;</span>
+<span class="nc" id="L73">    }</span>
+
+    public String getTruthyAsString() {
+<span class="nc" id="L76">        return this.trues.stream()</span>
+<span class="nc" id="L77">            .collect(</span>
+<span class="nc" id="L78">                Collectors.joining(System.lineSeparator())</span>
+            );
+    }
+    
+    public void setTruthy(String truthy) {
+<span class="nc" id="L83">        this.trues = Arrays.asList(truthy.split(&quot;[\r\n]+&quot;));</span>
+<span class="nc" id="L84">    }</span>
+    
+    public String getFalsyAsString() {
+<span class="nc" id="L87">        return this.falses.stream()</span>
+<span class="nc" id="L88">            .collect(</span>
+<span class="nc" id="L89">                Collectors.joining(System.lineSeparator())</span>
+            );
+    }
+    
+    public void setFalsy(String falsy) {
+<span class="nc" id="L94">        this.falses = Arrays.asList(falsy.split(&quot;[\r\n]+&quot;));</span>
+<span class="nc" id="L95">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionCoder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util.bruter</a> &gt; <span class="el_source">ActionCoder.java</span></div><h1>ActionCoder.java</h1><pre class="source lang-java linenums">package com.jsql.util.bruter;
+
+import com.jsql.util.StringUtil;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
+
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Optional;
+
+<span class="nc" id="L13">public enum ActionCoder {</span>
+
+<span class="nc" id="L15">    MD2(&quot;Md2&quot;) {</span>
+        
+        @Override
+        public String run(String value) throws NoSuchAlgorithmException {
+            
+<span class="nc" id="L20">            return HashUtil.toHash(this.name, value);</span>
+        }
+    },
+    
+<span class="nc" id="L24">    MD4(&quot;Md4&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L29">            return HashUtil.toMd4(value);</span>
+        }
+    },
+    
+<span class="nc" id="L33">    MD5(&quot;Md5&quot;) {</span>
+        
+        @Override
+        public String run(String value) throws NoSuchAlgorithmException {
+            
+<span class="nc" id="L38">            return HashUtil.toHash(this.name, value);</span>
+        }
+    },
+    
+<span class="nc" id="L42">    SHA_1(&quot;Sha-1&quot;) {</span>
+        
+        @Override
+        public String run(String value) throws NoSuchAlgorithmException {
+            
+<span class="nc" id="L47">            return HashUtil.toHash(this.name, value);</span>
+        }
+    },
+    
+<span class="nc" id="L51">    SHA_256(&quot;Sha-256&quot;) {</span>
+        
+        @Override
+        public String run(String value) throws NoSuchAlgorithmException {
+            
+<span class="nc" id="L56">            return HashUtil.toHash(this.name, value);</span>
+        }
+    },
+    
+<span class="nc" id="L60">    SHA_384(&quot;Sha-384&quot;) {</span>
+        
+        @Override
+        public String run(String value) throws NoSuchAlgorithmException {
+            
+<span class="nc" id="L65">            return HashUtil.toHash(this.name, value);</span>
+        }
+    },
+    
+<span class="nc" id="L69">    SHA_512(&quot;Sha-512&quot;) {</span>
+        
+        @Override
+        public String run(String value) throws NoSuchAlgorithmException {
+            
+<span class="nc" id="L74">            return HashUtil.toHash(this.name, value);</span>
+        }
+    },
+    
+<span class="nc" id="L78">    MYSQL(&quot;Mysql&quot;) {</span>
+        
+        @Override
+        public String run(String value) throws NoSuchAlgorithmException {
+            
+<span class="nc" id="L83">            return HashUtil.toMySql(value);</span>
+        }
+    },
+    
+<span class="nc" id="L87">    ADLER32(&quot;Adler32&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L92">            return HashUtil.toAdler32(value);</span>
+        }
+    },
+    
+<span class="nc" id="L96">    CRC16(&quot;Crc16&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L101">            return HashUtil.toCrc16(value);</span>
+        }
+    },
+    
+<span class="nc" id="L105">    CRC32(&quot;Crc32&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L110">            return HashUtil.toCrc32(value);</span>
+        }
+    },
+    
+<span class="nc" id="L114">    CRC64(&quot;Crc64&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L119">            return HashUtil.toCrc64(value);</span>
+        }
+    },
+    
+<span class="nc" id="L123">    ENCODE_TO_HEX(&quot;Encode to Hex&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L128">            return StringUtil.toHex(value);</span>
+        }
+    },
+    
+<span class="nc" id="L132">    ENCODE_TO_HEX_ZIPPED(&quot;Encode to Hex(zipped)&quot;) {</span>
+        
+        @Override
+        public String run(String value) throws IOException {
+            
+<span class="nc" id="L137">            return StringUtil.toHexZip(value);</span>
+        }
+    },
+    
+<span class="nc" id="L141">    ENCODE_TO_BASE64_ZIPPED(&quot;Encode to Base64(zipped)&quot;) {</span>
+        
+        @Override
+        public String run(String value) throws IOException {
+            
+<span class="nc" id="L146">            return StringUtil.toBase64Zip(value);</span>
+        }
+    },
+    
+<span class="nc" id="L150">    ENCODE_TO_BASE64(&quot;Encode to Base64&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L155">            return StringUtil.base64Encode(value);</span>
+        }
+    },
+    
+<span class="nc" id="L159">    ENCODE_TO_BASE32(&quot;Encode to Base32&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L164">            return StringUtil.base32Encode(value);</span>
+        }
+    },
+    
+<span class="nc" id="L168">    ENCODE_TO_BASE58(&quot;Encode to Base58&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L173">            return StringUtil.base58Encode(value);</span>
+        }
+    },
+    
+<span class="nc" id="L177">    ENCODE_TO_BASE16(&quot;Encode to Base16&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L182">            return StringUtil.base16Encode(value);</span>
+        }
+    },
+    
+<span class="nc" id="L186">    ENCODE_TO_HTML(&quot;Encode to Html&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L191">            return StringUtil.toHtml(value);</span>
+        }
+    },
+    
+<span class="nc" id="L195">    ENCODE_TO_HTML_DECIMAL(&quot;Encode to Html (decimal)&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L200">            return StringUtil.decimalHtmlEncode(value, true);</span>
+        }
+    },
+    
+<span class="nc" id="L204">    ENCODE_TO_URL(&quot;Encode to Url&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L209">            return StringUtil.toUrl(value);</span>
+        }
+    },
+    
+<span class="nc" id="L213">    ENCODE_TO_UNICODE(&quot;Encode to Unicode&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L218">            return StringEscapeUtils.escapeJava(value);</span>
+        }
+    },
+
+<span class="nc" id="L222">    DECODE_FROM_HEX(&quot;Decode from Hex&quot;) {</span>
+        
+        @Override
+        public String run(String value) throws DecoderException {
+            
+<span class="nc" id="L227">            return StringUtil.fromHex(value);</span>
+        }
+    },
+    
+<span class="nc" id="L231">    DECODE_FROM_HEX_ZIPPED(&quot;Decode from Hex(zipped)&quot;) {</span>
+        
+        @Override
+        public String run(String value) throws IOException, DecoderException {
+            
+<span class="nc" id="L236">            return StringUtil.fromHexZip(value);</span>
+        }
+    },
+    
+<span class="nc" id="L240">    DECODE_FROM_BASE64_ZIPPED(&quot;Decode from Base64(zipped)&quot;) {</span>
+        
+        @Override
+        public String run(String value) throws IOException {
+            
+<span class="nc" id="L245">            return StringUtil.fromBase64Zip(value);</span>
+        }
+    },
+    
+<span class="nc" id="L249">    DECODE_FROM_BASE64(&quot;Decode from Base64&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L254">            return StringUtil.base64Decode(value);</span>
+        }
+    },
+    
+<span class="nc" id="L258">    DECODE_FROM_BASE32(&quot;Decode from Base32&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L263">            return StringUtil.base32Decode(value);</span>
+        }
+    },
+    
+<span class="nc" id="L267">    DECODE_FROM_BASE58(&quot;Decode from Base58&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L272">            return StringUtil.base58Decode(value);</span>
+        }
+    },
+    
+<span class="nc" id="L276">    DECODE_FROM_BASE16(&quot;Decode from Base16&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L281">            return StringUtil.base16Decode(value);</span>
+        }
+    },
+    
+<span class="nc" id="L285">    DECODE_FROM_HTML(&quot;Decode from Html&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L290">            return StringUtil.fromHtml(value);</span>
+        }
+    },
+    
+<span class="nc" id="L294">    DECODE_FROM_UNICODE(&quot;Decode from Unicode&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L299">            return StringEscapeUtils.unescapeJava(value);</span>
+        }
+    },
+    
+<span class="nc" id="L303">    DECODE_FROM_URL(&quot;Decode from Url&quot;) {</span>
+        
+        @Override
+        public String run(String value) {
+            
+<span class="nc" id="L308">            return</span>
+                StringUtils
+<span class="nc" id="L310">                .replaceEach(</span>
+<span class="nc" id="L311">                    StringUtil.fromUrl(value),</span>
+                    new String[] { &quot;&amp;&quot;, &quot;\&quot;&quot;, &quot;&lt;&quot;, &quot;&gt;&quot; },
+                    new String[] { &quot;&amp;amp;&quot;, &quot;&amp;quot;&quot;, &quot;&amp;lt;&quot;, &quot;&amp;gt;&quot; }
+                );
+        }
+    };
+
+    protected final String name;
+
+<span class="nc" id="L320">    ActionCoder(String name) {</span>
+<span class="nc" id="L321">        this.name = name;</span>
+<span class="nc" id="L322">    }</span>
+
+    public static Optional&lt;ActionCoder&gt; forName(String name) {
+        
+<span class="nc" id="L326">        return</span>
+            Arrays
+<span class="nc" id="L328">            .stream(ActionCoder.values())</span>
+<span class="nc" id="L329">            .filter(action -&gt; name.equals(action.name))</span>
+<span class="nc" id="L330">            .findFirst();</span>
+    }
+
+    public abstract String run(String value) throws DecoderException, IOException, NoSuchAlgorithmException;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

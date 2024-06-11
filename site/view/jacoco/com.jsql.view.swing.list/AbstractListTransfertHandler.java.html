@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractListTransfertHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.list</a> &gt; <span class="el_source">AbstractListTransfertHandler.java</span></div><h1>AbstractListTransfertHandler.java</h1><pre class="source lang-java linenums">/*******************************************************************************
+ * Copyhacked (H) 2012-2020.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss about it
+ * every time possible with every body.
+ * 
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ ******************************************************************************/
+package com.jsql.view.swing.list;
+
+import com.jsql.util.LogLevelUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+/**
+ * Handler for processing cut/copy/paste/drag/drop action on a JList items.
+ */
+<span class="fc" id="L30">public abstract class AbstractListTransfertHandler extends TransferHandler {</span>
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L35">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
+    /**
+     * List of cut/copy/paste/drag/drop items.
+     */
+<span class="fc" id="L40">    protected transient List&lt;ItemList&gt; dragPaths = null;</span>
+    
+    protected abstract String initializeTransferable();
+    
+    protected abstract void parseStringDrop(TransferSupport support, DnDList list, DefaultListModel&lt;ItemList&gt; listModel);
+    
+    protected abstract List&lt;Integer&gt; initializeStringPaste(String clipboardText, int selectedIndex, DefaultListModel&lt;ItemList&gt; listModel);
+    
+    @Override
+    public int getSourceActions(JComponent c) {
+        
+<span class="fc" id="L51">        return TransferHandler.COPY_OR_MOVE;</span>
+    }
+    
+    @Override
+    protected Transferable createTransferable(JComponent c) {
+        
+<span class="fc" id="L57">        DnDList list = (DnDList) c;</span>
+        
+<span class="fc" id="L59">        this.dragPaths = list.getSelectedValuesList();</span>
+        
+<span class="fc" id="L61">        var stringTransferable = this.initializeTransferable();</span>
+
+<span class="fc" id="L63">        return new StringSelection(stringTransferable.trim());</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    @Override
+    protected void exportDone(JComponent c, Transferable data, int action) {
+        
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (action == TransferHandler.MOVE) {</span>
+            
+<span class="fc" id="L72">            JList&lt;ItemList&gt; list = (JList&lt;ItemList&gt;) c;</span>
+<span class="fc" id="L73">            DefaultListModel&lt;ItemList&gt; model = (DefaultListModel&lt;ItemList&gt;) list.getModel();</span>
+            
+<span class="fc bfc" id="L75" title="All 2 branches covered.">            for (ItemList itemPath: this.dragPaths) {</span>
+                
+                // Unhandled ArrayIndexOutOfBoundsException #56115 on remove()
+                try {
+<span class="fc" id="L79">                    model.remove(model.indexOf(itemPath));</span>
+                    
+<span class="nc" id="L81">                } catch (ArrayIndexOutOfBoundsException e) {</span>
+                    
+<span class="nc" id="L83">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="fc" id="L84">                }</span>
+<span class="fc" id="L85">            }</span>
+            
+<span class="fc" id="L87">            this.dragPaths = null;</span>
+        }
+<span class="fc" id="L89">    }</span>
+
+    @Override
+    public boolean canImport(TransferSupport support) {
+        
+<span class="fc" id="L94">        return</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">            support.isDataFlavorSupported(DataFlavor.stringFlavor)</span>
+<span class="pc bnc" id="L96" title="All 2 branches missed.">            || support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);</span>
+    }
+
+    @Override
+    public boolean importData(TransferSupport support) {
+        
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if (!this.canImport(support)) {</span>
+<span class="nc" id="L103">            return false;</span>
+        }
+
+<span class="fc" id="L106">        DnDList list = (DnDList) support.getComponent();</span>
+<span class="fc" id="L107">        DefaultListModel&lt;ItemList&gt; listModel = (DefaultListModel&lt;ItemList&gt;) list.getModel();</span>
+        
+        //This is a drop
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (support.isDrop()) {</span>
+            
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">            if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {</span>
+                
+<span class="fc" id="L114">                this.parseStringDrop(support, list, listModel);</span>
+                
+<span class="nc bnc" id="L116" title="All 2 branches missed.">            } else if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {</span>
+                
+<span class="nc" id="L118">                this.parseFileDrop(support, list);</span>
+            }
+            
+        } else {
+            
+            //This is a paste
+<span class="fc" id="L124">            var transferableFromClipboard = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);</span>
+            
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">            if (transferableFromClipboard != null) {</span>
+
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">                if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.stringFlavor)) {</span>
+                    
+<span class="fc" id="L130">                    this.parseStringPaste(list, listModel, transferableFromClipboard);</span>
+                    
+<span class="nc bnc" id="L132" title="All 2 branches missed.">                } else if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {</span>
+                    
+<span class="nc" id="L134">                    this.parseFilePaste(list, transferableFromClipboard);</span>
+                }
+            }
+        }
+
+<span class="fc" id="L139">        return true;</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private void parseFileDrop(TransferSupport support, DnDList list) {
+        
+<span class="nc" id="L145">        JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();</span>
+<span class="nc" id="L146">        int childIndex = dl.getIndex();</span>
+
+        try {
+<span class="nc" id="L149">            list.dropPasteFile(</span>
+<span class="nc" id="L150">                (List&lt;File&gt;) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor),</span>
+                childIndex
+            );
+            
+<span class="nc" id="L154">        } catch (UnsupportedFlavorException | IOException e) {</span>
+            
+<span class="nc" id="L156">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L157">        }</span>
+<span class="nc" id="L158">    }</span>
+
+    private void parseStringPaste(DnDList list, DefaultListModel&lt;ItemList&gt; listModel, Transferable transferableFromClipboard) {
+        
+        try {
+<span class="fc" id="L163">            String clipboardText = (String) transferableFromClipboard.getTransferData(DataFlavor.stringFlavor);</span>
+
+<span class="fc" id="L165">            var selectedIndexPaste = Math.max(list.getSelectedIndex(), 0);</span>
+            
+<span class="fc" id="L167">            list.clearSelection();</span>
+
+<span class="fc" id="L169">            List&lt;Integer&gt; selectedIndexes = this.initializeStringPaste(clipboardText, selectedIndexPaste, listModel);</span>
+
+<span class="fc" id="L171">            var selectedIndexesPasted = new int[selectedIndexes.size()];</span>
+            
+<span class="fc" id="L173">            var i = 0;</span>
+            
+<span class="fc bfc" id="L175" title="All 2 branches covered.">            for (Integer selectedIndex: selectedIndexes) {</span>
+                
+<span class="fc" id="L177">                selectedIndexesPasted[i] = selectedIndex;</span>
+<span class="fc" id="L178">                i++;</span>
+<span class="fc" id="L179">            }</span>
+            
+<span class="fc" id="L181">            list.setSelectedIndices(selectedIndexesPasted);</span>
+<span class="fc" id="L182">            list.scrollRectToVisible(</span>
+<span class="fc" id="L183">                list.getCellBounds(</span>
+<span class="fc" id="L184">                    list.getMinSelectionIndex(),</span>
+<span class="fc" id="L185">                    list.getMaxSelectionIndex()</span>
+                )
+            );
+            
+<span class="nc" id="L189">        } catch (NullPointerException | UnsupportedFlavorException | IOException e) {</span>
+            
+            // Fix #8831: Multiple Exception on scrollRectToVisible()
+<span class="nc" id="L192">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L193">        }</span>
+<span class="fc" id="L194">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private void parseFilePaste(DnDList list, Transferable transferableFromClipboard) {
+        
+        try {
+<span class="nc" id="L200">            var selectedIndex = Math.max(list.getSelectedIndex(), 0);</span>
+<span class="nc" id="L201">            list.clearSelection();</span>
+<span class="nc" id="L202">            list.dropPasteFile(</span>
+<span class="nc" id="L203">                (List&lt;File&gt;) transferableFromClipboard.getTransferData(DataFlavor.javaFileListFlavor),</span>
+                selectedIndex
+            );
+<span class="nc" id="L206">        } catch (UnsupportedFlavorException | IOException e) {</span>
+            
+<span class="nc" id="L208">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L209">        }</span>
+<span class="nc" id="L210">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

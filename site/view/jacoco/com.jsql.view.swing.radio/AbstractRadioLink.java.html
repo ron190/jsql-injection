@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractRadioLink.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.radio</a> &gt; <span class="el_source">AbstractRadioLink.java</span></div><h1>AbstractRadioLink.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.radio;
+
+import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.font.TextAttribute;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * A label to mimic a radiobox contained in a group.
+ * Display as underlined if label is selected.
+ */
+public abstract class AbstractRadioLink extends JLabel {
+    
+    /**
+     * Build a radio label.
+     * @param string Text for label
+     * @param isSelected Is the radio selected by default?
+     */
+    protected AbstractRadioLink(String string, boolean isSelected) {
+        
+<span class="fc" id="L25">        this(string);</span>
+        
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (isSelected) {</span>
+            
+<span class="fc" id="L29">            this.setUnderlined();</span>
+        }
+<span class="fc" id="L31">    }</span>
+
+    /**
+     * Build a radio label.
+     * @param string Text for label
+     */
+    protected AbstractRadioLink(String string) {
+<span class="fc" id="L38">        super(string);</span>
+<span class="fc" id="L39">    }</span>
+
+    /**
+     * An action run when radio is checked by user.
+     */
+    public abstract void action();
+    
+    /**
+     * Group of radio components, either the radio for HTTP method or the one for injection strategy.
+     * @return
+     */
+    public abstract List&lt;JLabel&gt; getGroup();
+
+    /**
+     * Radio is selectable/hoverable if it is not already selected (bold).
+     * @return True if radio is not already selected
+     */
+    protected boolean isActivable() {
+        
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        return !AbstractRadioLink.this.getFont().getAttributes().containsValue(TextAttribute.WEIGHT_BOLD);</span>
+    }
+
+    /**
+     * Change font of radio label to underline.
+     */
+    public final void setUnderlined() {
+        
+<span class="fc" id="L66">        var font = this.getFont();</span>
+        
+<span class="fc" id="L68">        Map&lt;TextAttribute, Object&gt; attributes = new HashMap&lt;&gt;(font.getAttributes());</span>
+<span class="fc" id="L69">        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);</span>
+<span class="fc" id="L70">        attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);</span>
+        
+<span class="fc" id="L72">        this.setFont(font.deriveFont(attributes));</span>
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Change font of radio label to default.
+     */
+    public void removeFont() {
+        
+<span class="nc" id="L80">        var font = this.getFont();</span>
+<span class="nc" id="L81">        Map&lt;TextAttribute, Object&gt; attributes = new HashMap&lt;&gt;(font.getAttributes());</span>
+<span class="nc" id="L82">        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);</span>
+        
+<span class="nc" id="L84">        this.setFont(font.deriveFont(attributes));</span>
+<span class="nc" id="L85">    }</span>
+    
+    public void setSelected() {
+        
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        for (JLabel label: this.getGroup()) {</span>
+            
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            if (this != label) {</span>
+                
+<span class="fc" id="L93">                label.setFont(UiUtil.FONT_NON_MONO);</span>
+                
+            } else {
+                
+<span class="fc" id="L97">                this.action();</span>
+            }
+<span class="fc" id="L99">        }</span>
+
+<span class="fc" id="L101">        this.setUnderlined();</span>
+
+<span class="fc" id="L103">        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));</span>
+<span class="fc" id="L104">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

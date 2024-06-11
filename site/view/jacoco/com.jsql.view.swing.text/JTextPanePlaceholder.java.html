@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JTextPanePlaceholder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.text</a> &gt; <span class="el_source">JTextPanePlaceholder.java</span></div><h1>JTextPanePlaceholder.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.text;
+
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.util.UiUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ConcurrentModificationException;
+
+/**
+ * Textfield with information text displayed when empty.
+ */
+public class JTextPanePlaceholder extends JTextPane {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L22">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+    
+    /**
+     * Text to display when empty.
+     */
+    private final String placeholderText;
+    
+    /**
+     * Create a textfield with hint and default value.
+     * @param placeholder Text displayed when empty
+     * @param value Default value
+     */
+    public JTextPanePlaceholder(String placeholder, String value) {
+        
+<span class="nc" id="L36">        this(placeholder);</span>
+<span class="nc" id="L37">        this.setText(value);</span>
+<span class="nc" id="L38">    }</span>
+    
+    /**
+     * Create a textfield with hint.
+     * @param placeholder Text displayed when empty
+     */
+<span class="fc" id="L44">    public JTextPanePlaceholder(String placeholder) {</span>
+        
+<span class="fc" id="L46">        this.placeholderText = placeholder;</span>
+        
+<span class="fc" id="L48">        UiUtil.initialize(this);</span>
+<span class="fc" id="L49">    }</span>
+
+    @Override
+    public void paint(Graphics g) {
+        
+        // Fix #4012: ArrayIndexOutOfBoundsException on paint()
+        // Fix #38546: ConcurrentModificationException on getText()
+        // Fix #37872: IndexOutOfBoundsException on getText()
+        // Fix #48915: ClassCastException on paint()
+        // Unhandled IllegalArgumentException #91471 on paint()
+        try {
+<span class="fc" id="L60">            super.paint(g);</span>
+            
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">            if (StringUtils.isEmpty(Jsoup.parse(this.getText()).text().trim())) {</span>
+                
+<span class="nc" id="L64">                UiUtil.drawPlaceholder(this, g, this.placeholderText);</span>
+            }
+<span class="nc" id="L66">        } catch (IllegalArgumentException | ConcurrentModificationException | IndexOutOfBoundsException | ClassCastException e) {</span>
+            
+<span class="nc" id="L68">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L69">        }</span>
+<span class="fc" id="L70">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

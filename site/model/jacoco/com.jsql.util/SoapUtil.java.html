@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SoapUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util</a> &gt; <span class="el_source">SoapUtil.java</span></div><h1>SoapUtil.java</h1><pre class="source lang-java linenums">package com.jsql.util;
+
+import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.JSqlException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.regex.Pattern;
+
+public class SoapUtil {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L30">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
+    private final InjectionModel injectionModel;
+    
+<span class="fc" id="L34">    public SoapUtil(InjectionModel injectionModel) {</span>
+        
+<span class="fc" id="L36">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L37">    }</span>
+
+    public boolean testParameters(boolean hasFoundInjection) {
+
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (!hasFoundInjection) {</span>
+<span class="fc" id="L42">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Checking SOAP params...&quot;);</span>
+        } else {
+<span class="fc" id="L44">            return true;</span>
+        }
+
+<span class="fc" id="L47">        if (</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">            this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam()</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">            &amp;&amp; this.injectionModel.getMediatorUtils().getParameterUtil().isRequestSoap()</span>
+        ) {
+            try {
+<span class="fc" id="L52">                var doc = SoapUtil.convertToDocument(this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest());</span>
+<span class="fc" id="L53">                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Parsing SOAP from Request...&quot;);</span>
+                
+<span class="fc" id="L55">                return this.isTextNodeInjectable(doc, doc.getDocumentElement());</span>
+                
+<span class="nc" id="L57">            } catch (Exception e) {</span>
+                
+<span class="nc" id="L59">                LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;SOAP not detected&quot;);</span>
+            }
+        }
+        
+<span class="fc" id="L63">        return false;</span>
+    }
+    
+    public static Document convertToDocument(String xmlStr) throws ParserConfigurationException, SAXException, IOException {
+        
+<span class="fc" id="L68">        var factory = DocumentBuilderFactory.newInstance();</span>
+        
+<span class="fc" id="L70">        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, StringUtils.EMPTY);</span>
+<span class="fc" id="L71">        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, StringUtils.EMPTY);</span>
+<span class="fc" id="L72">        factory.setAttribute(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);</span>
+<span class="fc" id="L73">        factory.setExpandEntityReferences(false);</span>
+
+<span class="fc" id="L75">        var builder = factory.newDocumentBuilder();</span>
+        
+<span class="fc" id="L77">        return builder.parse(new InputSource(new StringReader(xmlStr)));</span>
+    }
+
+    public boolean isTextNodeInjectable(Document doc, Node node) {
+        
+<span class="fc" id="L82">        var nodeList = node.getChildNodes();</span>
+
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        for (var i = 0; i &lt; nodeList.getLength(); i++) {</span>
+            
+<span class="fc" id="L86">            var currentNode = nodeList.item(i);</span>
+            
+<span class="fc bfc" id="L88" title="All 2 branches covered.">            if (currentNode.getNodeType() == Node.ELEMENT_NODE) {</span>
+                
+                //calls this method for all the children which is Element
+<span class="fc bfc" id="L91" title="All 2 branches covered.">                if (this.isTextNodeInjectable(doc, currentNode)) {</span>
+<span class="fc" id="L92">                    return true;</span>
+                }
+                
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">            } else if (currentNode.getNodeType() == Node.TEXT_NODE) {</span>
+                
+<span class="fc" id="L97">                SoapUtil.removeInjectionPoint(doc, doc.getDocumentElement());</span>
+                
+<span class="fc" id="L99">                currentNode.setTextContent(currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY) + InjectionModel.STAR);</span>
+                
+<span class="fc" id="L101">                this.injectionModel.getMediatorUtils().getParameterUtil().initializeRequest(SoapUtil.convertDocumentToString(doc));</span>
+                
+                try {
+<span class="fc" id="L104">                    LOGGER.log(</span>
+                        LogLevelUtil.CONSOLE_INFORM,
+                        &quot;Checking SOAP Request injection for {}={}&quot;,
+<span class="fc" id="L107">                        () -&gt; currentNode.getParentNode().getNodeName(),</span>
+<span class="fc" id="L108">                        () -&gt; currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+                    );
+                    
+<span class="fc bfc" id="L111" title="All 2 branches covered.">                    if (this.injectionModel.getMediatorMethod().getRequest().testParameters()) {</span>
+<span class="fc" id="L112">                        return true;</span>
+                    }
+
+<span class="nc" id="L115">                } catch (JSqlException e) {</span>
+                    
+                    // Injection failure
+<span class="nc" id="L118">                    LOGGER.log(</span>
+                        LogLevelUtil.CONSOLE_ERROR,
+<span class="nc" id="L120">                        String.format(</span>
+                            &quot;No SOAP Request injection for %s=%s&quot;,
+<span class="nc" id="L122">                            currentNode.getParentNode().getNodeName(),</span>
+<span class="nc" id="L123">                            currentNode.getTextContent().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+                        )
+                    );
+<span class="fc" id="L126">                }</span>
+            }
+        }
+        
+<span class="fc" id="L130">        return false;</span>
+    }
+
+    public static void removeInjectionPoint(Document doc, Node node) {
+        
+<span class="fc" id="L135">        var nodeList = node.getChildNodes();</span>
+        
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        for (var i = 0; i &lt; nodeList.getLength(); i++) {</span>
+            
+<span class="fc" id="L139">            var currentNode = nodeList.item(i);</span>
+            
+<span class="fc bfc" id="L141" title="All 2 branches covered.">            if (currentNode.getNodeType() == Node.ELEMENT_NODE) {</span>
+                
+                //calls this method for all the children which is Element
+<span class="fc" id="L144">                SoapUtil.removeInjectionPoint(doc, currentNode);</span>
+                
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">            } else if (currentNode.getNodeType() == Node.TEXT_NODE) {</span>
+                
+<span class="fc" id="L148">                currentNode.setTextContent(</span>
+                    currentNode
+<span class="fc" id="L150">                    .getTextContent()</span>
+<span class="fc" id="L151">                    .replaceAll(Pattern.quote(InjectionModel.STAR) + &quot;*$&quot;, StringUtils.EMPTY)</span>
+                );
+            }
+        }
+<span class="fc" id="L155">    }</span>
+    
+    private static String convertDocumentToString(Document doc) {
+        
+<span class="fc" id="L159">        var transformerFactory = TransformerFactory.newInstance();</span>
+<span class="fc" id="L160">        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, StringUtils.EMPTY);</span>
+<span class="fc" id="L161">        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, StringUtils.EMPTY);</span>
+        
+<span class="fc" id="L163">        String output = null;</span>
+        
+        try {
+<span class="fc" id="L166">            var transformer = transformerFactory.newTransformer();</span>
+<span class="fc" id="L167">            var writer = new StringWriter();</span>
+<span class="fc" id="L168">            transformer.transform(new DOMSource(doc), new StreamResult(writer));</span>
+<span class="fc" id="L169">            output = writer.getBuffer().toString();</span>
+            
+<span class="nc" id="L171">        } catch (TransformerException e) {</span>
+            // ignore
+<span class="fc" id="L173">        }</span>
+        
+<span class="fc" id="L175">        return output;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

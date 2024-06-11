@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageChunk.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.interaction</a> &gt; <span class="el_source">MessageChunk.java</span></div><h1>MessageChunk.java</h1><pre class="source lang-java linenums">/*******************************************************************************
+ * Copyhacked (H) 2012-2020.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss about it
+ * every time possible with every body.
+ * 
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ ******************************************************************************/
+package com.jsql.view.swing.interaction;
+
+import com.jsql.view.interaction.InteractionCommand;
+import com.jsql.view.swing.util.MediatorHelper;
+
+/**
+ * Append text to the tab Chunk.
+ */
+public class MessageChunk implements InteractionCommand {
+    
+    /**
+     * Text to append to the Chunk log area.
+     */
+    private final String text;
+
+    /**
+     * @param interactionParams Text to append
+     */
+<span class="nc" id="L29">    public MessageChunk(Object[] interactionParams) {</span>
+        
+<span class="nc" id="L31">        this.text = (String) interactionParams[0];</span>
+<span class="nc" id="L32">    }</span>
+
+    @Override
+    public void execute() {
+        
+<span class="nc" id="L37">        MediatorHelper.panelConsoles().messageChunk(this.text);</span>
+        
+<span class="nc" id="L39">        MediatorHelper.tabConsoles().highlightTab(&quot;Chunk&quot;);</span>
+<span class="nc" id="L40">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MediatorUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model</a> &gt; <span class="el_source">MediatorUtils.java</span></div><h1>MediatorUtils.java</h1><pre class="source lang-java linenums">package com.jsql.model;
+
+import com.jsql.util.*;
+
+<span class="fc" id="L5">public class MediatorUtils {</span>
+    
+    private PropertiesUtil propertiesUtil;
+    private ConnectionUtil connectionUtil;
+    private AuthenticationUtil authenticationUtil;
+    private GitUtil gitUtil;
+    private HeaderUtil headerUtil;
+    private ParameterUtil parameterUtil;
+    private ExceptionUtil exceptionUtil;
+    private SoapUtil soapUtil;
+    private MultipartUtil multipartUtil;
+    private CookiesUtil cookiesUtil;
+    private JsonUtil jsonUtil;
+    private PreferencesUtil preferencesUtil;
+    private ProxyUtil proxyUtil;
+    private ThreadUtil threadUtil;
+    private TamperingUtil tamperingUtil;
+    private UserAgentUtil userAgentUtil;
+    private CsrfUtil csrfUtil;
+    private DigestUtil digestUtil;
+    private FormUtil formUtil;
+    private CertificateUtil certificateUtil;
+
+    public CookiesUtil getCookiesUtil() {
+<span class="fc" id="L29">        return cookiesUtil;</span>
+    }
+
+    public void setCookiesUtil(CookiesUtil cookiesUtil) {
+<span class="fc" id="L33">        this.cookiesUtil = cookiesUtil;</span>
+<span class="fc" id="L34">    }</span>
+
+    public MultipartUtil getMultipartUtil() {
+<span class="fc" id="L37">        return multipartUtil;</span>
+    }
+
+    public void setMultipartUtil(MultipartUtil multipartUtil) {
+<span class="fc" id="L41">        this.multipartUtil = multipartUtil;</span>
+<span class="fc" id="L42">    }</span>
+
+    public PropertiesUtil getPropertiesUtil() {
+<span class="fc" id="L45">        return this.propertiesUtil;</span>
+    }
+
+    public ConnectionUtil getConnectionUtil() {
+<span class="fc" id="L49">        return this.connectionUtil;</span>
+    }
+
+    public AuthenticationUtil getAuthenticationUtil() {
+<span class="fc" id="L53">        return this.authenticationUtil;</span>
+    }
+
+    public GitUtil getGitUtil() {
+<span class="nc" id="L57">        return this.gitUtil;</span>
+    }
+
+    public HeaderUtil getHeaderUtil() {
+<span class="fc" id="L61">        return this.headerUtil;</span>
+    }
+
+    public ParameterUtil getParameterUtil() {
+<span class="fc" id="L65">        return this.parameterUtil;</span>
+    }
+
+    public ExceptionUtil getExceptionUtil() {
+<span class="nc" id="L69">        return this.exceptionUtil;</span>
+    }
+
+    public SoapUtil getSoapUtil() {
+<span class="fc" id="L73">        return this.soapUtil;</span>
+    }
+
+    public JsonUtil getJsonUtil() {
+<span class="fc" id="L77">        return this.jsonUtil;</span>
+    }
+
+    public PreferencesUtil getPreferencesUtil() {
+<span class="fc" id="L81">        return this.preferencesUtil;</span>
+    }
+
+    public ProxyUtil getProxyUtil() {
+<span class="fc" id="L85">        return this.proxyUtil;</span>
+    }
+
+    public ThreadUtil getThreadUtil() {
+<span class="fc" id="L89">        return this.threadUtil;</span>
+    }
+
+    public UserAgentUtil getUserAgentUtil() {
+<span class="fc" id="L93">        return this.userAgentUtil;</span>
+    }
+    
+    public TamperingUtil getTamperingUtil() {
+<span class="fc" id="L97">        return this.tamperingUtil;</span>
+    }
+    
+
+    public void setPropertiesUtil(PropertiesUtil propertiesUtil) {
+<span class="fc" id="L102">        this.propertiesUtil = propertiesUtil;</span>
+<span class="fc" id="L103">    }</span>
+
+    public void setConnectionUtil(ConnectionUtil connectionUtil) {
+<span class="fc" id="L106">        this.connectionUtil = connectionUtil;</span>
+<span class="fc" id="L107">    }</span>
+
+    public void setAuthenticationUtil(AuthenticationUtil authenticationUtil) {
+<span class="fc" id="L110">        this.authenticationUtil = authenticationUtil;</span>
+<span class="fc" id="L111">    }</span>
+
+    public void setGitUtil(GitUtil gitUtil) {
+<span class="fc" id="L114">        this.gitUtil = gitUtil;</span>
+<span class="fc" id="L115">    }</span>
+
+    public void setHeaderUtil(HeaderUtil headerUtil) {
+<span class="fc" id="L118">        this.headerUtil = headerUtil;</span>
+<span class="fc" id="L119">    }</span>
+
+    public void setParameterUtil(ParameterUtil parameterUtil) {
+<span class="fc" id="L122">        this.parameterUtil = parameterUtil;</span>
+<span class="fc" id="L123">    }</span>
+
+    public void setExceptionUtil(ExceptionUtil exceptionUtil) {
+<span class="fc" id="L126">        this.exceptionUtil = exceptionUtil;</span>
+<span class="fc" id="L127">    }</span>
+
+    public void setSoapUtil(SoapUtil soapUtil) {
+<span class="fc" id="L130">        this.soapUtil = soapUtil;</span>
+<span class="fc" id="L131">    }</span>
+
+    public void setJsonUtil(JsonUtil jsonUtil) {
+<span class="fc" id="L134">        this.jsonUtil = jsonUtil;</span>
+<span class="fc" id="L135">    }</span>
+
+    public void setPreferencesUtil(PreferencesUtil preferencesUtil) {
+<span class="fc" id="L138">        this.preferencesUtil = preferencesUtil;</span>
+<span class="fc" id="L139">    }</span>
+
+    public void setProxyUtil(ProxyUtil proxyUtil) {
+<span class="fc" id="L142">        this.proxyUtil = proxyUtil;</span>
+<span class="fc" id="L143">    }</span>
+
+    public void setThreadUtil(ThreadUtil threadUtil) {
+<span class="fc" id="L146">        this.threadUtil = threadUtil;</span>
+<span class="fc" id="L147">    }</span>
+
+    public void setTamperingUtil(TamperingUtil tamperingUtil) {
+<span class="fc" id="L150">        this.tamperingUtil = tamperingUtil;</span>
+<span class="fc" id="L151">    }</span>
+
+    public void setUserAgentUtil(UserAgentUtil userAgentUtil) {
+<span class="fc" id="L154">        this.userAgentUtil = userAgentUtil;</span>
+<span class="fc" id="L155">    }</span>
+
+    public CsrfUtil getCsrfUtil() {
+<span class="fc" id="L158">        return this.csrfUtil;</span>
+    }
+
+    public void setCsrfUtil(CsrfUtil csrfUtil) {
+<span class="fc" id="L162">        this.csrfUtil = csrfUtil;</span>
+<span class="fc" id="L163">    }</span>
+
+    public DigestUtil getDigestUtil() {
+<span class="fc" id="L166">        return digestUtil;</span>
+    }
+
+    public void setDigestUtil(DigestUtil digestUtil) {
+<span class="fc" id="L170">        this.digestUtil = digestUtil;</span>
+<span class="fc" id="L171">    }</span>
+
+    public FormUtil getFormUtil() {
+<span class="fc" id="L174">        return this.formUtil;</span>
+    }
+
+    public void setFormUtil(FormUtil formUtil) {
+<span class="fc" id="L178">        this.formUtil = formUtil;</span>
+<span class="fc" id="L179">    }</span>
+
+    public CertificateUtil getCertificateUtil() {
+<span class="fc" id="L182">        return this.certificateUtil;</span>
+    }
+
+    public void setCertificateUtil(CertificateUtil certificateUtil) {
+<span class="fc" id="L186">        this.certificateUtil = certificateUtil;</span>
+<span class="fc" id="L187">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

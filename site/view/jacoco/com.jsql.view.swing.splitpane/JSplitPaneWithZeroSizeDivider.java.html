@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JSplitPaneWithZeroSizeDivider.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.splitpane</a> &gt; <span class="el_source">JSplitPaneWithZeroSizeDivider.java</span></div><h1>JSplitPaneWithZeroSizeDivider.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.splitpane;
+/*
+ * Copyright (c) 2011 Karl Tauber &lt;karl at jformdesigner dot com&gt;
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *  o Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.util.UiUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
+import java.awt.*;
+
+/**
+ * A JSplitPane that uses a 1 pixel thin visible divider,
+ * but a 9 pixel wide transparent drag area.
+ */
+public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L45">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+    
+    /**
+     * The size of the transparent drag area.
+     */
+<span class="fc" id="L50">    private int dividerDragSize = 9;</span>
+    
+    /**
+     * The offset of the transparent drag area relative to the visible divider line.
+     * Positive offset moves the drag area left/top to the divider line.
+     * If zero then the drag area is right/bottom of the divider line.
+     * Useful values are in the range 0 to {@link #dividerDragSize}.
+     * Default is centered.
+     */
+<span class="fc" id="L59">    private int dividerDragOffset = 0;</span>
+    
+    public JSplitPaneWithZeroSizeDivider(int orientation) {
+<span class="fc" id="L62">        super(orientation, true);</span>
+<span class="fc" id="L63">    }</span>
+    
+    public void disableDragSize() {
+<span class="fc" id="L66">        this.dividerDragSize = 0;</span>
+<span class="fc" id="L67">    }</span>
+    
+    public void enableDragSize() {
+<span class="fc" id="L70">        this.dividerDragSize = 9;</span>
+<span class="fc" id="L71">    }</span>
+
+    public int getDividerDragSize() {
+<span class="nc" id="L74">        return this.dividerDragSize;</span>
+    }
+
+    public void setDividerDragSize(int dividerDragSize) {
+        
+<span class="nc" id="L79">        this.dividerDragSize = dividerDragSize;</span>
+<span class="nc" id="L80">        this.revalidate();</span>
+<span class="nc" id="L81">    }</span>
+
+    public int getDividerDragOffset() {
+<span class="nc" id="L84">        return this.dividerDragOffset;</span>
+    }
+
+    public void setDividerDragOffset(int dividerDragOffset) {
+        
+<span class="nc" id="L89">        this.dividerDragOffset = dividerDragOffset;</span>
+<span class="nc" id="L90">        this.revalidate();</span>
+<span class="nc" id="L91">    }</span>
+
+    @Override
+    public void doLayout() {
+        
+<span class="fc" id="L96">        super.doLayout();</span>
+
+        // increase divider width or height
+<span class="fc" id="L99">        BasicSplitPaneDivider divider = ((BasicSplitPaneUI) this.getUI()).getDivider();</span>
+<span class="fc" id="L100">        Rectangle bounds = divider.getBounds();</span>
+        
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (this.orientation == HORIZONTAL_SPLIT) {</span>
+            
+<span class="fc" id="L104">            bounds.x -= this.dividerDragOffset;</span>
+<span class="fc" id="L105">            bounds.width = this.dividerDragSize;</span>
+            
+        } else {
+            
+<span class="fc" id="L109">            bounds.y -= this.dividerDragOffset;</span>
+<span class="fc" id="L110">            bounds.height = this.dividerDragSize;</span>
+        }
+        
+<span class="fc" id="L113">        divider.setBounds(bounds);</span>
+<span class="fc" id="L114">    }</span>
+
+    @Override
+    public void updateUI() {
+        
+<span class="fc" id="L119">        this.setUI(new SplitPaneWithZeroSizeDividerUI());</span>
+<span class="fc" id="L120">        this.revalidate();</span>
+<span class="fc" id="L121">    }</span>
+
+<span class="fc" id="L123">    private class SplitPaneWithZeroSizeDividerUI extends BasicSplitPaneUI {</span>
+        
+        @Override
+        public BasicSplitPaneDivider createDefaultDivider() {
+<span class="fc" id="L127">            return new ZeroSizeDivider(this);</span>
+        }
+    }
+
+    private class ZeroSizeDivider extends BasicSplitPaneDivider {
+        
+<span class="fc" id="L133">        public ZeroSizeDivider(BasicSplitPaneUI ui) {</span>
+<span class="fc" id="L134">            super(ui);</span>
+<span class="fc" id="L135">            super.setBorder(null);</span>
+<span class="fc" id="L136">            this.setBackground(UiUtil.COLOR_COMPONENT_BORDER);</span>
+<span class="fc" id="L137">        }</span>
+
+        @Override
+        public void setBorder(Border border) {
+            // ignore
+<span class="fc" id="L142">        }</span>
+
+        @Override
+        public void paint(Graphics g) {
+            
+<span class="fc" id="L147">            g.setColor(this.getBackground());</span>
+            
+<span class="fc bfc" id="L149" title="All 2 branches covered.">            if (this.orientation == HORIZONTAL_SPLIT) {</span>
+                
+                // Fix #38925: ClassCastException on drawLine()
+                try {
+<span class="fc" id="L153">                    g.drawLine(</span>
+                        JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
+                        0,
+                        JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
+<span class="fc" id="L157">                        this.getHeight() - 1</span>
+                    );
+                    
+<span class="nc" id="L160">                } catch (ClassCastException e) {</span>
+                    
+<span class="nc" id="L162">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="pc" id="L163">                }</span>
+                
+            } else {
+                
+<span class="fc" id="L167">                g.drawLine(</span>
+                    0,
+                    JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
+<span class="fc" id="L170">                    this.getWidth() - 1,</span>
+                    JSplitPaneWithZeroSizeDivider.this.dividerDragOffset
+                );
+            }
+<span class="fc" id="L174">        }</span>
+
+        @Override
+        protected void dragDividerTo(int location) {
+            
+<span class="nc" id="L179">            super.dragDividerTo(location + JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);</span>
+<span class="nc" id="L180">        }</span>
+
+        @Override
+        protected void finishDraggingTo(int location) {
+            
+<span class="nc" id="L185">            super.finishDraggingTo(location + JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);</span>
+<span class="nc" id="L186">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

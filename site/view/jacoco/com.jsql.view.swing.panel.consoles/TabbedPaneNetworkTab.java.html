@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabbedPaneNetworkTab.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.panel.consoles</a> &gt; <span class="el_source">TabbedPaneNetworkTab.java</span></div><h1>TabbedPaneNetworkTab.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.panel.consoles;
+
+import com.jsql.model.bean.util.HttpHeader;
+import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
+import com.jsql.util.StringUtil;
+import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
+import com.jsql.view.swing.tab.TabbedPaneWheeled;
+import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.text.JTextPanePlaceholder;
+import com.jsql.view.swing.util.I18nViewUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
+
+import javax.swing.*;
+import javax.swing.text.DefaultCaret;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.stream.Stream;
+
+public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L29">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
+<span class="fc" id="L31">    private final JTextArea textAreaNetworkTabUrl = new JPopupTextArea(&quot;Request URL&quot;).getProxy();</span>
+<span class="fc" id="L32">    private final JTextArea textAreaNetworkTabResponse = new JPopupTextArea(&quot;Response headers&quot;).getProxy();</span>
+<span class="fc" id="L33">    private final JTextArea textAreaNetworkTabSource = new JPopupTextArea(&quot;Page source&quot;).getProxy();</span>
+<span class="fc" id="L34">    private final JTextPane textAreaNetworkTabPreview = new JTextPanePlaceholder(&quot;Page rendering&quot;);</span>
+<span class="fc" id="L35">    private final JTextArea textAreaNetworkTabHeader = new JPopupTextArea(&quot;Request headers&quot;).getProxy();</span>
+<span class="fc" id="L36">    private final JTextArea textAreaNetworkTabParams = new JPopupTextArea(&quot;Request body&quot;).getProxy();</span>
+    
+<span class="fc" id="L38">    public TabbedPaneNetworkTab() {</span>
+
+<span class="fc" id="L40">        this.setName(&quot;tabNetwork&quot;);</span>
+        
+<span class="fc" id="L42">        Stream.of(</span>
+            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_URL_LABEL&quot;, this.textAreaNetworkTabUrl),
+            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_HEADERS_LABEL&quot;, this.textAreaNetworkTabHeader),
+            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_PARAMS_LABEL&quot;, this.textAreaNetworkTabParams),
+            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_RESPONSE_LABEL&quot;, this.textAreaNetworkTabResponse),
+            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_SOURCE_LABEL&quot;, this.textAreaNetworkTabSource),
+            new SimpleEntry&lt;&gt;(&quot;NETWORK_TAB_PREVIEW_LABEL&quot;, this.textAreaNetworkTabPreview)
+        )
+<span class="fc" id="L50">        .forEach(entry -&gt; {</span>
+            
+<span class="fc" id="L52">            this.addTab(I18nUtil.valueByKey(entry.getKey()), new LightScrollPane(1, 1, 0, 0, entry.getValue()));</span>
+<span class="fc" id="L53">            var label = new JLabel(I18nUtil.valueByKey(entry.getKey()));</span>
+<span class="fc" id="L54">            this.setTabComponentAt(</span>
+<span class="fc" id="L55">                this.indexOfTab(I18nUtil.valueByKey(entry.getKey())),</span>
+                label
+            );
+<span class="fc" id="L58">            I18nViewUtil.addComponentForKey(entry.getKey(), label);</span>
+            
+<span class="fc" id="L60">            label.setName(&quot;label&quot;+ entry.getKey());</span>
+<span class="fc" id="L61">            entry.getValue().setName(&quot;text&quot;+ entry.getKey());</span>
+            
+<span class="fc" id="L63">            DefaultCaret caret = (DefaultCaret) entry.getValue().getCaret();</span>
+<span class="fc" id="L64">            caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);</span>
+<span class="fc" id="L65">        });</span>
+        
+<span class="fc" id="L67">        this.textAreaNetworkTabHeader.setLineWrap(true);</span>
+<span class="fc" id="L68">        this.textAreaNetworkTabParams.setLineWrap(true);</span>
+<span class="fc" id="L69">        this.textAreaNetworkTabResponse.setLineWrap(true);</span>
+<span class="fc" id="L70">        this.textAreaNetworkTabUrl.setLineWrap(true);</span>
+<span class="fc" id="L71">        this.textAreaNetworkTabSource.setLineWrap(true);</span>
+        
+<span class="fc" id="L73">        this.textAreaNetworkTabPreview.setEditorKit(new HTMLEditorKitTextPaneWrap());</span>
+<span class="fc" id="L74">        this.textAreaNetworkTabPreview.setContentType(&quot;text/html&quot;);</span>
+<span class="fc" id="L75">        this.textAreaNetworkTabPreview.setEditable(false);</span>
+<span class="fc" id="L76">    }</span>
+    
+    public void changeTextNetwork(HttpHeader networkData) {
+        
+<span class="fc" id="L80">        this.textAreaNetworkTabParams.setText(networkData.getPost());</span>
+<span class="fc" id="L81">        this.textAreaNetworkTabUrl.setText(networkData.getUrl());</span>
+        
+<span class="fc" id="L83">        this.textAreaNetworkTabHeader.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L84">        this.textAreaNetworkTabResponse.setText(StringUtils.EMPTY);</span>
+        
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        if (networkData.getHeader() != null) {</span>
+            
+<span class="fc bfc" id="L88" title="All 2 branches covered.">            for (String key: networkData.getHeader().keySet()) {</span>
+                
+<span class="fc" id="L90">                this.textAreaNetworkTabHeader.append(key + &quot;: &quot; + networkData.getHeader().get(key));</span>
+<span class="fc" id="L91">                this.textAreaNetworkTabHeader.append(&quot;\n&quot;);</span>
+<span class="fc" id="L92">            }</span>
+        }
+        
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (networkData.getResponse() != null) {</span>
+            
+<span class="fc bfc" id="L97" title="All 2 branches covered.">            for (String key: networkData.getResponse().keySet()) {</span>
+                
+<span class="fc" id="L99">                this.textAreaNetworkTabResponse.append(key + &quot;: &quot; + networkData.getResponse().get(key));</span>
+<span class="fc" id="L100">                this.textAreaNetworkTabResponse.append(&quot;\n&quot;);</span>
+<span class="fc" id="L101">            }</span>
+        }
+        
+        // Fix #53736: ArrayIndexOutOfBoundsException on setText()
+        // Fix #54573: NullPointerException on setText()
+        try {
+<span class="fc" id="L107">            this.textAreaNetworkTabSource.setText(</span>
+                StringUtil
+<span class="fc" id="L109">                .detectUtf8(networkData.getSource())</span>
+<span class="fc" id="L110">                .replaceAll(&quot;#{5,}&quot;, &quot;#*&quot;)</span>
+<span class="fc" id="L111">                .trim()</span>
+            );
+            
+<span class="nc" id="L114">        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {</span>
+            
+<span class="nc" id="L116">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L117">        }</span>
+        
+        // Reset EditorKit to disable previous document effect
+<span class="fc" id="L120">        this.textAreaNetworkTabPreview.getEditorKit().createDefaultDocument();</span>
+        
+        // Proxy is used by jsoup to display &lt;img&gt; tags
+        // Previous test for 2xx Success and 3xx Redirection was Header only,
+        // now get the HTML content
+        // Fix #35352: EmptyStackException on setText()
+        // Fix #39841: RuntimeException on setText()
+        // Fix #42523: ExceptionInInitializerError on clean()
+        try {
+<span class="fc" id="L129">            this.textAreaNetworkTabPreview.setText(</span>
+                Jsoup
+<span class="fc" id="L131">                .clean(</span>
+<span class="fc" id="L132">                    String.format(</span>
+                        &quot;&lt;html&gt;%s&lt;/html&gt;&quot;,
+<span class="fc" id="L134">                        StringUtil.detectUtf8(networkData.getSource())</span>
+                    )
+<span class="fc" id="L136">                    .replaceAll(</span>
+                        &quot;&lt;img[^&gt;]*&gt;&quot;,
+                        StringUtils.EMPTY
+                    )
+<span class="fc" id="L140">                    .replaceAll(</span>
+                        &quot;&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?.*&gt;&quot;,
+                        StringUtils.EMPTY
+                    )
+<span class="fc" id="L144">                    .replaceAll(</span>
+                        &quot;&lt;input[^&gt;]*type=\&quot;?(submit|button)\&quot;?.*&gt;&quot;,
+                        &quot;&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;&quot;
+                    )
+<span class="fc" id="L148">                    .replaceAll(</span>
+                        &quot;&lt;input[^&gt;]*&gt;&quot;,
+                        &quot;&lt;div style=\&quot;text-align:center;border:1px solid black;width:100px;\&quot;&gt;input&lt;/div&gt;&quot;
+                    ),
+<span class="fc" id="L152">                    Safelist.relaxed()</span>
+<span class="fc" id="L153">                        .addTags(&quot;center&quot;, &quot;div&quot;, &quot;span&quot;)</span>
+<span class="fc" id="L154">                        .addAttributes(&quot;:all&quot;, &quot;style&quot;)</span>
+                )
+            );
+            
+<span class="nc" id="L158">        } catch (Exception | ExceptionInInitializerError e) {</span>
+            
+<span class="nc" id="L160">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L161">        }</span>
+<span class="fc" id="L162">    }</span>
+    
+    public void reset() {
+        
+<span class="fc" id="L166">        this.textAreaNetworkTabUrl.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L167">        this.textAreaNetworkTabHeader.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L168">        this.textAreaNetworkTabParams.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L169">        this.textAreaNetworkTabResponse.setText(StringUtils.EMPTY);</span>
+        
+        // Fix #54572: NullPointerException on setText()
+        try {
+<span class="fc" id="L173">            this.textAreaNetworkTabSource.setText(StringUtils.EMPTY);</span>
+            
+<span class="nc" id="L175">        } catch (NullPointerException e) {</span>
+            
+<span class="nc" id="L177">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L178">        }</span>
+        
+        // Fix #41879: ArrayIndexOutOfBoundsException on setText()
+        try {
+<span class="fc" id="L182">            this.textAreaNetworkTabPreview.setText(StringUtils.EMPTY);</span>
+            
+<span class="nc" id="L184">        } catch (ArrayIndexOutOfBoundsException e) {</span>
+            
+<span class="nc" id="L186">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L187">        }</span>
+<span class="fc" id="L188">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

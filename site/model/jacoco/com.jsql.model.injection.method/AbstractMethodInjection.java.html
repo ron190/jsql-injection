@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractMethodInjection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.injection.method</a> &gt; <span class="el_source">AbstractMethodInjection.java</span></div><h1>AbstractMethodInjection.java</h1><pre class="source lang-java linenums">package com.jsql.model.injection.method;
+
+import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.JSqlException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.util.JsonUtil;
+import com.jsql.util.LogLevelUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.JSONException;
+
+import java.io.Serializable;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.List;
+import java.util.regex.Pattern;
+
+public abstract class AbstractMethodInjection implements Serializable {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L23">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+    
+    protected final InjectionModel injectionModel;
+    
+<span class="fc" id="L27">    protected AbstractMethodInjection(InjectionModel injectionModel) {</span>
+        
+<span class="fc" id="L29">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L30">    }</span>
+    
+    public abstract boolean isCheckingAllParam();
+    public abstract String getParamsAsString();
+    public abstract List&lt;SimpleEntry&lt;String, String&gt;&gt; getParams();
+    public abstract String name();
+    
+    public boolean testParameters(boolean hasFoundInjection) throws JSqlException {
+
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (!hasFoundInjection) {</span>
+
+<span class="fc" id="L41">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Checking {} params...&quot;, () -&gt; name().toLowerCase());</span>
+<span class="fc" id="L42">            return this.testParameters();</span>
+        }
+
+<span class="fc" id="L45">        return true;</span>
+    }
+
+    /**
+     * Verify if injection works for specific Method using 3 modes: standard (last param), injection point
+     * and full params injection. Special injections like JSON and SOAP are checked.
+     * @return true if injection didn't fail
+     * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
+     */
+    public boolean testParameters() throws JSqlException {
+
+<span class="fc" id="L56">        var hasFoundInjection = false;</span>
+        
+        // Injects URL, Request or Header params only if user tests every params
+        // or method is selected by user.
+<span class="fc" id="L60">        if (</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">            !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            &amp;&amp; this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this</span>
+        ) {
+<span class="fc" id="L64">            return false;</span>
+        }
+        
+        // Force injection method of model to current running method
+<span class="fc" id="L68">        this.injectionModel.getMediatorUtils().getConnectionUtil().setMethodInjection(this);</span>
+        
+        // Injection by injection point in params or in path
+<span class="fc" id="L71">        if (</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">            this.getParamsAsString().contains(InjectionModel.STAR)</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            || this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)</span>
+        ) {
+            
+<span class="fc" id="L76">            hasFoundInjection = this.checkParamWithStar();</span>
+            
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        } else if (!this.isCheckingAllParam()) {</span>
+            
+<span class="fc" id="L80">            hasFoundInjection = this.checkLastParam();</span>
+            
+        } else {
+            
+<span class="fc" id="L84">            hasFoundInjection = this.checkAllParams();</span>
+        }
+        
+<span class="fc" id="L87">        return hasFoundInjection;</span>
+    }
+
+    private boolean checkParamWithStar() throws JSqlException {
+        
+<span class="fc" id="L92">        SimpleEntry&lt;String, String&gt; parameterToInject = this.getParams().stream()</span>
+<span class="fc" id="L93">            .filter(entry -&gt; entry.getValue().contains(&quot;*&quot;))</span>
+<span class="fc" id="L94">            .findFirst()</span>
+<span class="fc" id="L95">            .orElse(null);</span>
+
+<span class="fc" id="L97">        return this.injectionModel.getMediatorStrategy().testStrategies(parameterToInject);</span>
+    }
+
+    /**
+     *  Default injection: last param tested only
+     */
+    private boolean checkLastParam() throws JSqlException {
+        
+        // Will check param value by user.
+        // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
+        // for JSON injection of last param
+<span class="fc" id="L108">        SimpleEntry&lt;String, String&gt; parameterToInject = this.getParams().stream()</span>
+<span class="fc" id="L109">            .reduce((a, b) -&gt; b)</span>
+<span class="fc" id="L110">            .orElseThrow(NullPointerException::new);</span>
+
+<span class="fc" id="L112">        return this.injectionModel.getMediatorStrategy().testStrategies(parameterToInject);</span>
+    }
+
+    /**
+     * Injection of every params: isCheckingAllParam() == true.
+     * Params are tested one by one in two loops:
+     * - inner loop erases * from previous param
+     * - outer loop adds * to current param
+     * @throws StoppedByUserSlidingException
+     */
+    private boolean checkAllParams() throws StoppedByUserSlidingException {
+        
+        // This param will be marked by * if injection is found,
+        // inner loop will erase mark * otherwise
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        for (SimpleEntry&lt;String, String&gt; paramBase: this.getParams()) {</span>
+
+            // This param is the current tested one.
+            // For JSON value attributes are traversed one by one to test every values.
+            // For standard value mark * is simply added to the end of its value.
+<span class="fc bfc" id="L131" title="All 2 branches covered.">            for (SimpleEntry&lt;String, String&gt; paramStar: this.getParams()) {</span>
+
+<span class="fc bfc" id="L133" title="All 2 branches covered.">                if (paramStar == paramBase) {</span>
+                    
+                    try {
+<span class="fc bfc" id="L136" title="All 2 branches covered.">                        if (this.isParamInjectable(paramStar)) {</span>
+                            
+<span class="fc" id="L138">                            return true;</span>
+                        }
+<span class="nc" id="L140">                    } catch (JSONException e) {</span>
+                        
+<span class="nc" id="L142">                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L143">                    }</span>
+                }
+<span class="fc" id="L145">            }</span>
+<span class="fc" id="L146">        }</span>
+    
+<span class="nc" id="L148">        return false;</span>
+    }
+
+    private boolean isParamInjectable(SimpleEntry&lt;String, String&gt; paramStar) throws StoppedByUserSlidingException {
+        
+        boolean hasFoundInjection;
+        
+        // Will test if current value is a JSON entity
+<span class="fc" id="L156">        Object jsonEntity = JsonUtil.getJson(paramStar.getValue());</span>
+        
+        // Define a tree of JSON attributes with path as the key: root.a =&gt; value of a
+<span class="fc" id="L159">        List&lt;SimpleEntry&lt;String, String&gt;&gt; attributesJson = JsonUtil.createEntries(jsonEntity, &quot;root&quot;, null);</span>
+        
+        // When option 'Inject JSON' is selected and there's a JSON entity to inject
+        // then loop through each paths to add * at the end of value and test each strategies.
+        // Marks * are erased between each tests.
+<span class="fc bfc" id="L164" title="All 4 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam() &amp;&amp; !attributesJson.isEmpty()) {</span>
+            
+<span class="fc" id="L166">            hasFoundInjection = this.injectionModel.getMediatorUtils().getJsonUtil().testJsonParam(this, paramStar);</span>
+            
+        } else {
+            
+            // Standard non JSON injection
+<span class="fc" id="L171">            hasFoundInjection = this.testJsonlessParam(paramStar);</span>
+        }
+        
+<span class="fc" id="L174">        return hasFoundInjection;</span>
+    }
+    
+    public boolean testJsonlessParam(SimpleEntry&lt;String, String&gt; paramStar) throws StoppedByUserSlidingException {
+
+<span class="fc" id="L179">        var hasFoundInjection = false;</span>
+        
+        // Add * to end of value
+<span class="fc" id="L182">        paramStar.setValue(paramStar.getValue() + InjectionModel.STAR);</span>
+        
+        try {
+<span class="fc" id="L185">            LOGGER.log(</span>
+                LogLevelUtil.CONSOLE_INFORM,
+                &quot;Checking {} parameter {}={}&quot;,
+                this::name,
+<span class="fc" id="L189">                paramStar::getKey,</span>
+<span class="fc" id="L190">                () -&gt; paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+            );
+            
+            // Test current standard value marked with * for injection
+            // Keep original param
+<span class="fc" id="L195">            hasFoundInjection = this.injectionModel.getMediatorStrategy().testStrategies(paramStar);</span>
+            
+<span class="nc" id="L197">        } catch (StoppedByUserSlidingException e) {</span>
+            
+            // Break all params processing in upper methods
+<span class="nc" id="L200">            throw e;</span>
+            
+<span class="nc" id="L202">        } catch (JSqlException e) {</span>
+            
+            // Injection failure
+<span class="nc" id="L205">            LOGGER.log(</span>
+                LogLevelUtil.CONSOLE_ERROR,
+                &quot;No {} injection found for parameter {}={} ({})&quot;,
+<span class="nc" id="L208">                this.name(),</span>
+<span class="nc" id="L209">                paramStar.getKey(),</span>
+<span class="nc" id="L210">                paramStar.getValue().replaceAll(&quot;\\+.?$|\\&quot; + InjectionModel.STAR, StringUtils.EMPTY),</span>
+<span class="nc" id="L211">                e.getMessage()</span>
+            );
+            
+        } finally {
+            
+            // Erase * from JSON if failure
+<span class="fc bfc" id="L217" title="All 2 branches covered.">            if (!hasFoundInjection) {</span>
+                
+                // Erase * at the end of each params
+<span class="fc" id="L220">                this.getParams().forEach(e -&gt;</span>
+<span class="fc" id="L221">                    e.setValue(</span>
+<span class="fc" id="L222">                        e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +&quot;$&quot;, StringUtils.EMPTY)</span>
+                    )
+                );
+                
+                // TODO It erases STAR from value =&gt; * can't be used in parameter
+<span class="fc" id="L227">                paramStar.setValue(paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));</span>
+            }
+        }
+        
+<span class="fc" id="L231">        return hasFoundInjection;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PropertiesUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util</a> &gt; <span class="el_source">PropertiesUtil.java</span></div><h1>PropertiesUtil.java</h1><pre class="source lang-java linenums">package com.jsql.util;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+public class PropertiesUtil {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L15">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
+<span class="fc" id="L17">    private final Properties properties = new Properties();</span>
+    
+<span class="fc" id="L19">    public PropertiesUtil() {</span>
+        
+<span class="fc" id="L21">        var filename = &quot;config.properties&quot;;</span>
+
+<span class="fc" id="L23">        try (InputStream input = PropertiesUtil.class.getClassLoader().getResourceAsStream(filename)) {</span>
+            
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">            if (input == null) {</span>
+                
+<span class="nc" id="L27">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Properties file {} not found&quot;, filename);</span>
+<span class="nc" id="L28">                return;</span>
+            }
+
+            // load a properties file from class path, inside static method
+<span class="fc" id="L32">            this.getProperties().load(input);</span>
+            
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        } catch (IOException e) {</span>
+            
+<span class="nc" id="L36">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L37">        }</span>
+<span class="fc" id="L38">    }</span>
+
+    public Properties getProperties() {
+<span class="fc" id="L41">        return this.properties;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

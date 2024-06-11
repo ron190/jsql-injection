@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CallableBlind.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.injection.strategy.blind</a> &gt; <span class="el_source">CallableBlind.java</span></div><h1>CallableBlind.java</h1><pre class="source lang-java linenums">package com.jsql.model.injection.strategy.blind;
+
+import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
+import com.jsql.model.injection.strategy.blind.patch.Diff;
+import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+/**
+ * Define a call HTTP to the server, require the associated url, character
+ * position and bit. Diffs represent the differences between
+ * the reference page, and the current page.
+ */
+public class CallableBlind extends AbstractCallableBoolean&lt;CallableBlind&gt; {
+    
+    // List of differences found between the reference page, and the current page
+<span class="fc" id="L20">    private LinkedList&lt;Diff&gt; diffsWithReference = new LinkedList&lt;&gt;();</span>
+    
+<span class="fc" id="L22">    private static final DiffMatchPatch DIFFMATCHPATCH = new DiffMatchPatch();</span>
+
+    private final InjectionBlind injectionBlind;
+    
+    private final InjectionModel injectionModel;
+    private final String metadataInjectionProcess;
+    
+    /**
+     * Constructor for preparation and blind confirmation.
+     */
+<span class="fc" id="L32">    public CallableBlind(String sqlQuery, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {</span>
+        
+<span class="fc" id="L34">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L35">        this.injectionBlind = injectionBlind;</span>
+<span class="fc" id="L36">        this.metadataInjectionProcess = metadataInjectionProcess;</span>
+<span class="fc" id="L37">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(sqlQuery, blindMode);</span>
+<span class="fc" id="L38">    }</span>
+    
+    /**
+     * Constructor for bit test.
+     */
+    public CallableBlind(String sqlQuery, int indexCharacter, int bit, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
+        
+<span class="fc" id="L45">        this(sqlQuery, injectionModel, injectionBlind, blindMode, metadataInjectionProcess);</span>
+<span class="fc" id="L46">        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestBlind(sqlQuery, indexCharacter, bit, blindMode);</span>
+<span class="fc" id="L47">        this.currentIndex = indexCharacter;</span>
+<span class="fc" id="L48">        this.currentBit = bit;</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Check if a result page means the SQL query is true,
+     * confirm that nothing in the resulting page is also defined
+     * in the pages from every FALSE SQL queries.
+     * @return true if the current SQL query is true
+     */
+    @Override
+    public boolean isTrue() {
+
+        // Fix #95426: ConcurrentModificationException on iterator.next()
+<span class="fc" id="L61">        List&lt;Diff&gt; falseDiffs = new CopyOnWriteArrayList&lt;&gt;(this.injectionBlind.getFalseDiffs());</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        for (Diff falseDiff: falseDiffs) {</span>
+
+            // Fix #4386: NullPointerException on contains()
+            // diffsWithReference is initialized to an empty new LinkedList&lt;&gt;()
+<span class="fc bfc" id="L66" title="All 2 branches covered.">            if (this.diffsWithReference.contains(falseDiff)) {</span>
+
+<span class="fc" id="L68">                return false;</span>
+            }
+<span class="fc" id="L70">        }</span>
+        
+<span class="fc" id="L72">        return true;</span>
+    }
+
+    /**
+     * Process the URL HTTP call, use function inject() from the model.
+     * Build the list of differences found between TRUE and the current page.
+     * @return Functional Blind Callable
+     */
+    @Override
+    public CallableBlind call() {
+        
+<span class="fc" id="L83">        String result = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
+        
+<span class="fc" id="L85">        this.diffsWithReference = DIFFMATCHPATCH.diffMain(this.injectionBlind.getSourceReferencePage(), result, true);</span>
+        
+<span class="fc" id="L87">        DIFFMATCHPATCH.diffCleanupEfficiency(this.diffsWithReference);</span>
+        
+<span class="fc" id="L89">        return this;</span>
+    }
+    
+    public List&lt;Diff&gt; getDiffsWithReference() {
+<span class="fc" id="L93">        return this.diffsWithReference;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

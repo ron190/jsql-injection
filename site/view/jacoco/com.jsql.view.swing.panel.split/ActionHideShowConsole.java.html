@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionHideShowConsole.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.panel.split</a> &gt; <span class="el_source">ActionHideShowConsole.java</span></div><h1>ActionHideShowConsole.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.panel.split;
+
+import com.jsql.view.swing.util.MediatorHelper;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+/**
+ * MouseAdapter to show/hide bottom panel.
+ */
+public class ActionHideShowConsole implements ActionListener {
+    
+    /**
+     * Ersatz panel to display in place of tabbedpane.
+     */
+    private final JPanel panel;
+    
+    /**
+     * Create the hide/show bottom panel action.
+     */
+<span class="fc" id="L22">    public ActionHideShowConsole(JPanel panel) {</span>
+<span class="fc" id="L23">        this.panel = panel;</span>
+<span class="fc" id="L24">    }</span>
+
+    /**
+     * Hide bottom panel if both main and bottom are visible, also
+     * displays an ersatz bar replacing tabbedpane.
+     * Or else if only main panel is visible then displays bottom panel
+     * and hide ersatz panel.
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+<span class="fc" id="L35">        var splitHorizontalTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();</span>
+        
+<span class="fc" id="L37">        if (</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">            splitHorizontalTopBottom.getTopComponent().isVisible()</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">            &amp;&amp; splitHorizontalTopBottom.getBottomComponent().isVisible()</span>
+        ) {
+            
+<span class="fc" id="L42">            MediatorHelper.panelConsoles().setDividerLocation(splitHorizontalTopBottom.getDividerLocation());</span>
+<span class="fc" id="L43">            splitHorizontalTopBottom.getBottomComponent().setVisible(false);</span>
+<span class="fc" id="L44">            this.panel.setVisible(true);</span>
+<span class="fc" id="L45">            splitHorizontalTopBottom.disableDragSize();</span>
+            
+<span class="fc" id="L47">        } else if (</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">            this.panel.isVisible()</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">            || !splitHorizontalTopBottom.getTopComponent().isVisible()</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">            &amp;&amp; splitHorizontalTopBottom.getBottomComponent().isVisible()</span>
+        ) {
+            
+<span class="fc" id="L53">            splitHorizontalTopBottom.getBottomComponent().setVisible(true);</span>
+<span class="fc" id="L54">            splitHorizontalTopBottom.getTopComponent().setVisible(true);</span>
+<span class="fc" id="L55">            this.panel.setVisible(false);</span>
+<span class="fc" id="L56">            splitHorizontalTopBottom.setDividerLocation(MediatorHelper.panelConsoles().getDividerLocation());</span>
+<span class="fc" id="L57">            splitHorizontalTopBottom.enableDragSize();</span>
+<span class="fc" id="L58">            MediatorHelper.panelConsoles().getButtonShowNorth().setVisible(true);</span>
+        }
+<span class="fc" id="L60">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

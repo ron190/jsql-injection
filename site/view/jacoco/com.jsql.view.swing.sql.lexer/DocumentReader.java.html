@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DocumentReader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.sql.lexer</a> &gt; <span class="el_source">DocumentReader.java</span></div><h1>DocumentReader.java</h1><pre class="source lang-java linenums">/*
+ * This file is part of the programmer editor demo
+ * Copyright (C) 2001-2005 Stephen Ostermiller
+ * http://ostermiller.org/contact.pl?regarding=Syntax+Highlighting
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * See COPYING.TXT for details.
+ */
+package com.jsql.view.swing.sql.lexer;
+
+import com.jsql.util.LogLevelUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.BadLocationException;
+import java.io.Reader;
+
+/**
+ * A reader interface for an abstract document.  Since
+ * the syntax highlighting packages only accept Stings and
+ * Readers, this must be used.
+ * Since the close() method does nothing and a seek() method
+ * has been added, this allows us to get some performance
+ * improvements through reuse.  It can be used even after the
+ * lexer explicitly closes it by seeking to the place that
+ * we want to read next, and reseting the lexer.
+ */
+class DocumentReader extends Reader {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L43">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+    
+    /**
+     * Current position in the document. Incremented
+     * whenever a character is read.
+     */
+<span class="fc" id="L49">    private long position = 0;</span>
+    
+    /**
+     * Saved position used in the mark and reset methods.
+     */
+<span class="fc" id="L54">    private long mark = -1;</span>
+    
+    /**
+     * The document that we are working with.
+     */
+    private final AbstractDocument document;
+    
+    /**
+     * Construct a reader on the given document.
+     *
+     * @param document the document to be read.
+     */
+<span class="fc" id="L66">    public DocumentReader(AbstractDocument document) {</span>
+<span class="fc" id="L67">        this.document = document;</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * Modifying the document while the reader is working is like
+     * pulling the rug out from under the reader.  Alerting the
+     * reader with this method (in a nice thread safe way, this
+     * should not be called at the same time as a read) allows
+     * the reader to compensate.
+     */
+    public void update(int position, int adjustment) {
+        
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (position &lt; this.position) {</span>
+            
+<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (this.position &lt; position - adjustment) {</span>
+                
+<span class="nc" id="L83">                this.position = position;</span>
+                
+            } else {
+                
+<span class="nc" id="L87">                this.position += adjustment;</span>
+            }
+        }
+<span class="fc" id="L90">    }</span>
+
+    /**
+     * Has no effect.  This reader can be used even after
+     * it has been closed.
+     */
+    @Override
+    public void close() {
+        // nothing
+<span class="nc" id="L99">    }</span>
+
+    /**
+     * Save a position for reset.
+     *
+     * @param readAheadLimit ignored.
+     */
+    @Override
+    public void mark(int readAheadLimit) {
+<span class="nc" id="L108">        this.mark = this.position;</span>
+<span class="nc" id="L109">    }</span>
+
+    /**
+     * This reader support mark and reset.
+     *
+     * @return true
+     */
+    @Override
+    public boolean markSupported() {
+<span class="nc" id="L118">        return true;</span>
+    }
+
+    /**
+     * Read a single character.
+     *
+     * @return the character or -1 if the end of the document has been reached.
+     */
+    @Override
+    public int read() {
+        
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        if (this.position &lt; this.document.getLength()) {</span>
+            
+            try {
+<span class="nc" id="L132">                char c = this.document.getText((int)this.position, 1).charAt(0);</span>
+<span class="nc" id="L133">                this.position++;</span>
+                
+<span class="nc" id="L135">                return c;</span>
+                
+<span class="nc" id="L137">            } catch (BadLocationException e) {</span>
+                
+<span class="nc" id="L139">                LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="nc" id="L140">                return -1;</span>
+            }
+            
+        } else {
+            
+<span class="nc" id="L145">            return -1;</span>
+        }
+    }
+
+    /**
+     * Read and fill the buffer.
+     * This method will always fill the buffer unless the end of the document is reached.
+     *
+     * @param cbuf the buffer to fill.
+     * @return the number of characters read or -1 if no more characters are available in the document.
+     */
+    @Override
+    public int read(char[] cbuf) {
+<span class="nc" id="L158">        return this.read(cbuf, 0, cbuf.length);</span>
+    }
+
+    /**
+     * Read and fill the buffer.
+     * This method will always fill the buffer unless the end of the document is reached.
+     *
+     * @param cbuf the buffer to fill.
+     * @param off offset into the buffer to begin the fill.
+     * @param len maximum number of characters to put in the buffer.
+     * @return the number of characters read or -1 if no more characters are available in the document.
+     */
+    @Override
+    public int read(char[] cbuf, int off, int len) {
+        
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        if (this.position &lt; this.document.getLength()) {</span>
+            
+<span class="fc" id="L175">            int length = len;</span>
+            
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">            if (this.position + length &gt;= this.document.getLength()) {</span>
+<span class="fc" id="L178">                length = this.document.getLength() - (int)this.position;</span>
+            }
+            
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">            if (off + length &gt;= cbuf.length) {</span>
+<span class="nc" id="L182">                length = cbuf.length - off;</span>
+            }
+            
+            try {
+<span class="fc" id="L186">                String s = this.document.getText((int)this.position, length);</span>
+<span class="fc" id="L187">                this.position += length;</span>
+                
+<span class="fc bfc" id="L189" title="All 2 branches covered.">                for (int i=0; i&lt;length; i++) {</span>
+<span class="fc" id="L190">                    cbuf[off+i] = s.charAt(i);</span>
+                }
+                
+<span class="fc" id="L193">                return length;</span>
+                
+<span class="nc" id="L195">            } catch (BadLocationException e) {</span>
+                
+<span class="nc" id="L197">                LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="nc" id="L198">                return -1;</span>
+            }
+        } else {
+            
+<span class="fc" id="L202">            return -1;</span>
+        }
+    }
+
+    /**
+     * @return true
+     */
+    @Override
+    public boolean ready() {
+<span class="nc" id="L211">        return true;</span>
+    }
+
+    /**
+     * Reset this reader to the last mark, or the beginning of the document if a mark has not been set.
+     */
+    @Override
+    public void reset() {
+        
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        if (this.mark == -1) {</span>
+            
+<span class="nc" id="L222">            this.position = 0;</span>
+            
+        } else {
+            
+<span class="nc" id="L226">            this.position = this.mark;</span>
+        }
+        
+<span class="nc" id="L229">        this.mark = -1;</span>
+<span class="nc" id="L230">    }</span>
+
+    /**
+     * Skip characters of input.
+     * This method will always skip the maximum number of characters unless
+     * the end of the file is reached.
+     *
+     * @param n number of characters to skip.
+     * @return the actual number of characters skipped.
+     */
+    @Override
+    public long skip(long n) {
+        
+<span class="nc bnc" id="L243" title="All 2 branches missed.">        if (this.position + n &lt;= this.document.getLength()) {</span>
+            
+<span class="nc" id="L245">            this.position += n;</span>
+<span class="nc" id="L246">            return n;</span>
+            
+        } else {
+            
+<span class="nc" id="L250">            long oldPos = this.position;</span>
+<span class="nc" id="L251">            this.position = this.document.getLength();</span>
+            
+<span class="nc" id="L253">            return this.document.getLength() - oldPos;</span>
+        }
+    }
+
+    /**
+     * Seek to the given position in the document.
+     *
+     * @param n the offset to which to seek.
+     */
+    public void seek(long n) {
+        
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">        if (n &lt;= this.document.getLength()) {</span>
+            
+<span class="fc" id="L266">            this.position = n;</span>
+            
+        } else {
+            
+<span class="nc" id="L270">            this.position = this.document.getLength();</span>
+        }
+<span class="fc" id="L272">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

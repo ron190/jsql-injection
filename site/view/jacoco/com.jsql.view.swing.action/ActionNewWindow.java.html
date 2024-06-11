@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionNewWindow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.action</a> &gt; <span class="el_source">ActionNewWindow.java</span></div><h1>ActionNewWindow.java</h1><pre class="source lang-java linenums">/*******************************************************************************
+ * Copyhacked (H) 2012-2020.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss about it
+ * every time possible with every body.
+ * 
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ ******************************************************************************/
+package com.jsql.view.swing.action;
+
+import com.jsql.MainApplication;
+import com.jsql.util.I18nUtil;
+import com.jsql.util.LogLevelUtil;
+import org.apache.commons.lang3.SystemUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Open another jSQL instance in new process.
+ */
+public class ActionNewWindow extends AbstractAction {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L38">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+    
+<span class="fc" id="L40">    private static final String PATH = SystemUtils.JAVA_HOME + File.separator +&quot;bin&quot;+ File.separator +&quot;java&quot;;</span>
+    
+<span class="fc" id="L42">    private static final List&lt;String&gt; COMMANDS_DEFAULT = Arrays.asList(</span>
+        &quot;-cp&quot;,
+        SystemUtils.JAVA_CLASS_PATH,
+<span class="fc" id="L45">        MainApplication.class.getName()</span>
+    );
+    
+    private final List&lt;String&gt; commands;
+    
+    public ActionNewWindow() {
+        
+<span class="fc" id="L52">        this(I18nUtil.valueByKey(&quot;NEW_WINDOW_MENU&quot;));</span>
+        
+<span class="fc" id="L54">        this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);</span>
+<span class="fc" id="L55">        this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L56">    }</span>
+
+<span class="fc" id="L58">    public ActionNewWindow(String name, String... commands) {</span>
+        
+<span class="fc" id="L60">        this.commands = new ArrayList&lt;&gt;(List.of(PATH));</span>
+<span class="fc" id="L61">        this.commands.addAll(Arrays.asList(commands));</span>
+<span class="fc" id="L62">        this.commands.addAll(COMMANDS_DEFAULT);</span>
+        
+<span class="fc" id="L64">        this.putValue(Action.NAME, name);</span>
+<span class="fc" id="L65">    }</span>
+
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        
+<span class="nc" id="L70">        LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -&gt; I18nUtil.valueByKey(&quot;NEW_WINDOW_START&quot;));</span>
+        
+<span class="nc" id="L72">        var processBuilder = new ProcessBuilder(this.commands.toArray(new String[0]));</span>
+        
+        try {
+<span class="nc" id="L75">            processBuilder.start();</span>
+            
+<span class="nc" id="L77">        } catch (IOException e) {</span>
+            
+<span class="nc" id="L79">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L80">        }</span>
+<span class="nc" id="L81">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

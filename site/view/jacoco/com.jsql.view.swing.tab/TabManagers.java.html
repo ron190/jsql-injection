@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabManagers.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.tab</a> &gt; <span class="el_source">TabManagers.java</span></div><h1>TabManagers.java</h1><pre class="source lang-java linenums">/*******************************************************************************
+ * Copyhacked (H) 2012-2020.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss about it
+ * every time possible with every body.
+ *
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ *******************************************************************************/
+package com.jsql.view.swing.tab;
+
+import com.jsql.util.I18nUtil;
+import com.jsql.view.swing.text.JToolTipI18n;
+import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
+import com.jsql.view.swing.util.I18nViewUtil;
+import com.jsql.view.swing.util.MediatorHelper;
+import com.jsql.view.swing.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+/**
+ * Panel on the left with functionalities like webshell, file reading and admin page finder.
+ */
+public class TabManagers extends TabbedPaneWheeled {
+    
+    /**
+     * Create manager panel.
+     */
+<span class="fc" id="L33">    public TabManagers() {</span>
+        
+<span class="fc" id="L35">        this.setName(&quot;tabManagers&quot;);</span>
+        
+<span class="fc" id="L37">        this.setUI(new CustomMetalTabbedPaneUI() {</span>
+            
+            @Override
+            protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+                
+<span class="fc" id="L42">                return Math.max(75, super.calculateTabWidth(tabPlacement, tabIndex, metrics));</span>
+            }
+        });
+
+<span class="fc" id="L46">        this.addChangeListener(e -&gt; MediatorHelper.tabManagers().setSelectedIndex(TabManagers.this.getSelectedIndex()));</span>
+        
+<span class="fc" id="L48">        this.setMaximumSize(new Dimension(this.getMaximumSize().width, 25));</span>
+<span class="fc" id="L49">        this.setPreferredSize(new Dimension(this.getPreferredSize().width, 25));</span>
+        
+<span class="fc" id="L51">        this.addMouseClickMenu();</span>
+        
+<span class="fc" id="L53">        this.setMinimumSize(new Dimension(100, 0));</span>
+        
+<span class="fc" id="L55">        this.buildI18nTab(&quot;DATABASE_TAB&quot;, &quot;DATABASE_TOOLTIP&quot;, UiUtil.ICON_DATABASE_SERVER, 0);</span>
+<span class="fc" id="L56">        this.buildI18nTab(&quot;ADMINPAGE_TAB&quot;, &quot;ADMINPAGE_TOOLTIP&quot;, UiUtil.ICON_ADMIN_SERVER, 1);</span>
+<span class="fc" id="L57">        this.buildI18nTab(&quot;FILE_TAB&quot;, &quot;FILE_TOOLTIP&quot;, UiUtil.ICON_FILE_SERVER, 2);</span>
+<span class="fc" id="L58">        this.buildI18nTab(&quot;WEBSHELL_TAB&quot;, &quot;WEBSHELL_TOOLTIP&quot;, UiUtil.ICON_SHELL_SERVER, 3);</span>
+<span class="fc" id="L59">        this.buildI18nTab(&quot;SQLSHELL_TAB&quot;, &quot;SQLSHELL_TOOLTIP&quot;, UiUtil.ICON_SHELL_SERVER, 4);</span>
+<span class="fc" id="L60">        this.buildI18nTab(&quot;UPLOAD_TAB&quot;, &quot;UPLOAD_TOOLTIP&quot;, UiUtil.ICON_UPLOAD, 5);</span>
+<span class="fc" id="L61">        this.buildI18nTab(&quot;BRUTEFORCE_TAB&quot;, &quot;BRUTEFORCE_TOOLTIP&quot;, UiUtil.ICON_BRUTER, 6);</span>
+<span class="fc" id="L62">        this.buildI18nTab(&quot;CODER_TAB&quot;, &quot;CODER_TOOLTIP&quot;, UiUtil.ICON_CODER, 7);</span>
+<span class="fc" id="L63">        this.buildI18nTab(&quot;SCANLIST_TAB&quot;, &quot;SCANLIST_TOOLTIP&quot;, UiUtil.ICON_SCANLIST, 8);</span>
+<span class="fc" id="L64">    }</span>
+    
+    private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, int index) {
+        
+<span class="fc" id="L68">        final var refTooltip = new JToolTipI18n[]{ new JToolTipI18n(I18nUtil.valueByKey(keyTooltip)) };</span>
+        
+<span class="fc" id="L70">        JLabel labelTab = new JLabel(I18nUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {</span>
+            
+            @Override
+            public JToolTip createToolTip() {
+                
+<span class="nc" id="L75">                JToolTipI18n tipI18n = new JToolTipI18n(I18nUtil.valueByKey(keyTooltip));</span>
+<span class="nc" id="L76">                refTooltip[0] = tipI18n;</span>
+                
+<span class="nc" id="L78">                return tipI18n;</span>
+            }
+        };
+        
+<span class="fc" id="L82">        labelTab.addMouseListener(new MouseAdapter() {</span>
+            
+            @Override
+            public void mousePressed(MouseEvent e) {
+                
+<span class="fc" id="L87">                MediatorHelper.tabManagers().setSelectedIndex(index);</span>
+<span class="fc" id="L88">                TabManagers.this.setSelectedIndex(index);</span>
+<span class="fc" id="L89">                super.mousePressed(e);</span>
+<span class="fc" id="L90">            }</span>
+        });
+
+        // Required for i18n to work
+<span class="fc" id="L94">        this.addTab(I18nUtil.valueByKey(keyLabel), icon, null);</span>
+<span class="fc" id="L95">        this.setTabComponentAt(</span>
+<span class="fc" id="L96">            this.indexOfTab(I18nUtil.valueByKey(keyLabel)),</span>
+            labelTab
+        );
+
+<span class="fc" id="L100">        I18nViewUtil.addComponentForKey(keyLabel, labelTab);</span>
+<span class="fc" id="L101">        I18nViewUtil.addComponentForKey(keyTooltip, refTooltip[0]);</span>
+        
+<span class="fc" id="L103">        labelTab.setToolTipText(I18nUtil.valueByKey(keyTooltip));</span>
+<span class="fc" id="L104">        labelTab.addMouseListener(new TabMouseAdapter(this));</span>
+<span class="fc" id="L105">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

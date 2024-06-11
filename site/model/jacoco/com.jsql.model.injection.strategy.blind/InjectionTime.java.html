@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InjectionTime.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.injection.strategy.blind</a> &gt; <span class="el_source">InjectionTime.java</span></div><h1>InjectionTime.java</h1><pre class="source lang-java linenums">package com.jsql.model.injection.strategy.blind;
+
+import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.util.LogLevelUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Time attack using parallel threads.
+ * Waiting time in seconds, response time exceeded means query is false.
+ * Noting that sleep() functions will add up for each line from request.
+ * A sleep time of 5 will be executed only if the SELECT returns exactly one line.
+ */
+public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; {
+
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L28">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
+    /**
+     *  Time based works by default, many tests will change it to false if it isn't confirmed.
+     */
+<span class="fc" id="L33">    private boolean isTimeInjectable = true;</span>
+
+    /**
+     * Create time attack initialization.
+     * If every false requests are under 5 seconds and every true are below 5 seconds,
+     * then time attack is confirmed.
+     */
+    public InjectionTime(InjectionModel injectionModel, BooleanMode booleanMode) {
+        
+<span class="fc" id="L42">        super(injectionModel, booleanMode);</span>
+        
+        // No blind
+<span class="pc bpc" id="L45" title="2 of 4 branches missed.">        if (this.falseTests.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
+            
+<span class="nc" id="L47">            return;</span>
+        }
+
+        // Concurrent calls to the FALSE statements,
+        // it will use inject() from the model
+<span class="fc" id="L52">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetTimeTagFalse&quot;);</span>
+
+<span class="fc" id="L54">        Collection&lt;CallableTime&gt; callablesFalseTest = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        for (String falseTest: this.falseTests) {</span>
+            
+<span class="fc" id="L58">            callablesFalseTest.add(new CallableTime(falseTest, injectionModel, this, booleanMode, &quot;time#falsy&quot;));</span>
+<span class="fc" id="L59">        }</span>
+        
+        // If one FALSE query makes less than X seconds,
+        // then the test is a failure =&gt; exit
+        // Allow the user to stop the loop
+        try {
+<span class="fc" id="L65">            List&lt;Future&lt;CallableTime&gt;&gt; futuresFalseTest = taskExecutor.invokeAll(callablesFalseTest);</span>
+            
+<span class="fc" id="L67">            taskExecutor.shutdown();</span>
+            
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {</span>
+                
+<span class="nc" id="L71">                taskExecutor.shutdownNow();</span>
+            }
+        
+<span class="fc bfc" id="L74" title="All 2 branches covered.">            for (Future&lt;CallableTime&gt; futureFalseTest: futuresFalseTest) {</span>
+                
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L77">                    return;</span>
+                }
+                
+<span class="fc bfc" id="L80" title="All 2 branches covered.">                if (futureFalseTest.get().isTrue()) {</span>
+                    
+<span class="fc" id="L82">                    this.isTimeInjectable = false;</span>
+<span class="fc" id="L83">                    return;</span>
+                }
+<span class="fc" id="L85">            }</span>
+<span class="nc" id="L86">        } catch (ExecutionException e) {</span>
+            
+<span class="nc" id="L88">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+            
+<span class="nc" id="L90">        } catch (InterruptedException e) {</span>
+
+<span class="nc" id="L92">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L93">            Thread.currentThread().interrupt();</span>
+<span class="pc" id="L94">        }</span>
+        
+<span class="fc" id="L96">        this.checkTrueTests(booleanMode);</span>
+<span class="fc" id="L97">    }</span>
+
+    private void checkTrueTests(BooleanMode booleanMode) {
+        
+        // Concurrent calls to the TRUE statements,
+        // it will use inject() from the model
+<span class="fc" id="L103">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetTimeTagTrue&quot;);</span>
+
+<span class="fc" id="L105">        Collection&lt;CallableTime&gt; callablesTrueTest = new ArrayList&lt;&gt;();</span>
+        
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        for (String trueTest: this.trueTests) {</span>
+            
+<span class="fc" id="L109">            callablesTrueTest.add(new CallableTime(trueTest, this.injectionModel, this, booleanMode, &quot;time#truthy&quot;));</span>
+<span class="fc" id="L110">        }</span>
+
+        // If one TRUE query makes more than X seconds,
+        // then the test is a failure =&gt; exit.
+        // Allow the user to stop the loop
+        try {
+<span class="fc" id="L116">            List&lt;Future&lt;CallableTime&gt;&gt; futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);</span>
+            
+<span class="fc" id="L118">            taskExecutor.shutdown();</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {</span>
+                
+<span class="nc" id="L121">                taskExecutor.shutdownNow();</span>
+            }
+        
+<span class="fc bfc" id="L124" title="All 2 branches covered.">            for (Future&lt;CallableTime&gt; futureTrueTest: futuresTrueTest) {</span>
+                
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">                if (this.injectionModel.isStoppedByUser()) {</span>
+<span class="nc" id="L127">                    return;</span>
+                }
+                
+<span class="fc bfc" id="L130" title="All 2 branches covered.">                if (!futureTrueTest.get().isTrue()) {</span>
+                    
+<span class="fc" id="L132">                    this.isTimeInjectable = false;</span>
+<span class="fc" id="L133">                    return;</span>
+                }
+<span class="fc" id="L135">            }</span>
+            
+<span class="nc" id="L137">        } catch (ExecutionException e) {</span>
+            
+<span class="nc" id="L139">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+            
+<span class="nc" id="L141">        } catch (InterruptedException e) {</span>
+
+<span class="nc" id="L143">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L144">            Thread.currentThread().interrupt();</span>
+<span class="pc" id="L145">        }</span>
+<span class="fc" id="L146">    }</span>
+
+    @Override
+    public CallableTime getCallableBitTest(String sqlQuery, int indexCharacter, int bit) {
+
+<span class="fc" id="L151">        return new CallableTime(sqlQuery, indexCharacter, bit, this.injectionModel, this, this.booleanMode, &quot;bit#&quot; + indexCharacter + &quot;~&quot; + bit);</span>
+    }
+
+    @Override
+    public boolean isInjectable() throws StoppedByUserSlidingException {
+        
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">        if (this.injectionModel.isStoppedByUser()) {</span>
+            
+<span class="nc" id="L159">            throw new StoppedByUserSlidingException();</span>
+        }
+        
+<span class="fc" id="L162">        var timeTest = new CallableTime(</span>
+<span class="fc" id="L163">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(),</span>
+            this.injectionModel,
+            this,
+            this.booleanMode,
+            &quot;time#confirm&quot;
+        );
+        
+        try {
+<span class="fc" id="L171">            timeTest.call();</span>
+            
+<span class="nc" id="L173">        } catch (Exception e) {</span>
+            
+<span class="nc" id="L175">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L176">        }</span>
+
+<span class="pc bpc" id="L178" title="1 of 4 branches missed.">        return this.isTimeInjectable &amp;&amp; timeTest.isTrue();</span>
+    }
+
+    @Override
+    public String getInfoMessage() {
+        
+<span class="fc" id="L184">        return &quot;- Strategy Time: query True when delaying for 5s\n\n&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

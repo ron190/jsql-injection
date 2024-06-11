@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PanelUserAgent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">view</a> &gt; <a href="index.source.html" class="el_package">com.jsql.view.swing.panel.preferences</a> &gt; <span class="el_source">PanelUserAgent.java</span></div><h1>PanelUserAgent.java</h1><pre class="source lang-java linenums">package com.jsql.view.swing.panel.preferences;
+
+import com.jsql.util.LogLevelUtil;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
+import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.text.JTextAreaPlaceholder;
+import com.jsql.view.swing.text.listener.DocumentListenerEditing;
+import com.jsql.view.swing.util.MediatorHelper;
+import com.jsql.view.swing.util.UiUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Objects;
+import java.util.stream.Stream;
+
+public class PanelUserAgent extends JPanel {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+<span class="fc" id="L26">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+
+<span class="fc" id="L28">    private final JCheckBox checkboxIsCustomUserAgent = new JCheckBox();</span>
+<span class="fc" id="L29">    private final JTextArea textfieldCustomUserAgent = new JPopupTextArea(new JTextAreaPlaceholder(&quot;Set User Agent&quot;)).getProxy();</span>
+    
+<span class="fc" id="L31">    public PanelUserAgent() {</span>
+        
+<span class="fc" id="L33">        this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));</span>
+        
+<span class="fc" id="L35">        var jsonScan = new StringBuilder();</span>
+        
+        try (
+<span class="fc" id="L38">            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(&quot;swing/list/user-agent.txt&quot;);</span>
+<span class="fc" id="L39">            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream));</span>
+<span class="fc" id="L40">            var reader = new BufferedReader(inputStreamReader)</span>
+        ) {
+
+            String line;
+<span class="fc bfc" id="L44" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
+
+<span class="fc" id="L46">                jsonScan.append(line).append(System.lineSeparator());</span>
+            }
+
+<span class="nc" id="L49">        } catch (IOException e) {</span>
+            
+<span class="nc" id="L51">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L52">        }</span>
+        
+<span class="fc" id="L54">        this.textfieldCustomUserAgent.getCaret().setBlinkRate(500);</span>
+<span class="fc" id="L55">        this.textfieldCustomUserAgent.setText(jsonScan.toString());</span>
+<span class="fc" id="L56">        MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(jsonScan.toString());</span>
+<span class="fc" id="L57">        this.textfieldCustomUserAgent.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
+
+            @Override
+            public void process() {
+                
+<span class="nc" id="L62">                MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(</span>
+<span class="nc" id="L63">                    PanelUserAgent.this.textfieldCustomUserAgent.getText()</span>
+                );
+<span class="nc" id="L65">            }</span>
+        });
+        
+<span class="fc" id="L68">        this.checkboxIsCustomUserAgent.setFocusable(false);</span>
+<span class="fc" id="L69">        var labelIsCheckingUpdate = new JButton(&quot;Customize User Agent (randomize multiple agents)&quot;);</span>
+        
+<span class="fc" id="L71">        labelIsCheckingUpdate.addActionListener(actionEvent -&gt; {</span>
+            
+<span class="nc bnc" id="L73" title="All 2 branches missed.">            this.checkboxIsCustomUserAgent.setSelected(!this.checkboxIsCustomUserAgent.isSelected());</span>
+            
+<span class="nc" id="L75">            MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setIsCustomUserAgent(</span>
+<span class="nc" id="L76">                this.checkboxIsCustomUserAgent.isSelected()</span>
+            );
+<span class="nc" id="L78">        });</span>
+        
+<span class="fc" id="L80">        var textAreaIsTamperingEval = new LightScrollPane(this.textfieldCustomUserAgent);</span>
+<span class="fc" id="L81">        textAreaIsTamperingEval.setBorder(UiUtil.BORDER_FOCUS_LOST);</span>
+<span class="fc" id="L82">        this.textfieldCustomUserAgent.setMinimumSize(new Dimension(40000, 100));</span>
+        
+<span class="fc" id="L84">        var emptyLabelSessionManagement = new JLabel();</span>
+        
+<span class="fc" id="L86">        Stream.of(labelIsCheckingUpdate)</span>
+<span class="fc" id="L87">        .forEach(label -&gt; {</span>
+            
+<span class="fc" id="L89">            label.setHorizontalAlignment(SwingConstants.LEFT);</span>
+<span class="fc" id="L90">            label.setBorderPainted(false);</span>
+<span class="fc" id="L91">            label.setContentAreaFilled(false);</span>
+<span class="fc" id="L92">        });</span>
+        
+<span class="fc" id="L94">        var groupLayout = new GroupLayout(this);</span>
+<span class="fc" id="L95">        this.setLayout(groupLayout);</span>
+        
+<span class="fc" id="L97">        groupLayout</span>
+<span class="fc" id="L98">        .setHorizontalGroup(</span>
+            groupLayout
+<span class="fc" id="L100">            .createSequentialGroup()</span>
+<span class="fc" id="L101">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L103">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
+<span class="fc" id="L104">                .addComponent(this.checkboxIsCustomUserAgent)</span>
+<span class="fc" id="L105">                .addComponent(emptyLabelSessionManagement)</span>
+            )
+<span class="fc" id="L107">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L109">                .createParallelGroup()</span>
+<span class="fc" id="L110">                .addComponent(labelIsCheckingUpdate)</span>
+<span class="fc" id="L111">                .addComponent(textAreaIsTamperingEval)</span>
+            )
+        );
+
+<span class="fc" id="L115">        groupLayout</span>
+<span class="fc" id="L116">        .setVerticalGroup(</span>
+            groupLayout
+<span class="fc" id="L118">            .createSequentialGroup()</span>
+<span class="fc" id="L119">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L121">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L122">                .addComponent(this.checkboxIsCustomUserAgent)</span>
+<span class="fc" id="L123">                .addComponent(labelIsCheckingUpdate)</span>
+            )
+<span class="fc" id="L125">            .addGroup(</span>
+                groupLayout
+<span class="fc" id="L127">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L128">                .addComponent(emptyLabelSessionManagement)</span>
+<span class="fc" id="L129">                .addComponent(textAreaIsTamperingEval)</span>
+            )
+        );
+<span class="fc" id="L132">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

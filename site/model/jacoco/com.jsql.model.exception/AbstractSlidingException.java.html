@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractSlidingException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.exception</a> &gt; <span class="el_source">AbstractSlidingException.java</span></div><h1>AbstractSlidingException.java</h1><pre class="source lang-java linenums">package com.jsql.model.exception;
+
+import org.apache.commons.lang3.StringUtils;
+
+public abstract class AbstractSlidingException extends JSqlException {
+    
+    private final String slidingWindowAllRows;
+    
+    private final String slidingWindowCurrentRows;
+    
+    protected AbstractSlidingException(String message) {
+        
+<span class="fc" id="L13">        super(message);</span>
+        
+<span class="fc" id="L15">        this.slidingWindowAllRows = StringUtils.EMPTY;</span>
+<span class="fc" id="L16">        this.slidingWindowCurrentRows = StringUtils.EMPTY;</span>
+<span class="fc" id="L17">    }</span>
+    
+    protected AbstractSlidingException(String message, Throwable e) {
+        
+<span class="nc" id="L21">        super(message, e);</span>
+        
+<span class="nc" id="L23">        this.slidingWindowAllRows = StringUtils.EMPTY;</span>
+<span class="nc" id="L24">        this.slidingWindowCurrentRows = StringUtils.EMPTY;</span>
+<span class="nc" id="L25">    }</span>
+    
+    protected AbstractSlidingException(String string, String slidingWindowAllRows) {
+        
+<span class="nc" id="L29">        super(string);</span>
+        
+<span class="nc" id="L31">        this.slidingWindowCurrentRows = StringUtils.EMPTY;</span>
+        
+<span class="nc" id="L33">        this.slidingWindowAllRows =</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">            StringUtils.isNotEmpty(slidingWindowAllRows)</span>
+<span class="nc" id="L35">            ? slidingWindowAllRows</span>
+<span class="nc" id="L36">            : StringUtils.EMPTY;</span>
+<span class="nc" id="L37">    }</span>
+
+    protected AbstractSlidingException(String string, String slidingWindowAllRows, String slidingWindowCurrentRows) {
+        
+<span class="nc" id="L41">        super(string);</span>
+        
+<span class="nc" id="L43">        this.slidingWindowAllRows =</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            StringUtils.isNotEmpty(slidingWindowAllRows)</span>
+<span class="nc" id="L45">            ? slidingWindowAllRows</span>
+<span class="nc" id="L46">            : StringUtils.EMPTY;</span>
+        
+<span class="nc" id="L48">        this.slidingWindowCurrentRows =</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">            StringUtils.isNotEmpty(slidingWindowCurrentRows)</span>
+<span class="nc" id="L50">            ? slidingWindowCurrentRows</span>
+<span class="nc" id="L51">            : StringUtils.EMPTY;</span>
+<span class="nc" id="L52">    }</span>
+
+    public String getSlidingWindowCurrentRows() {
+<span class="nc" id="L55">        return this.slidingWindowCurrentRows;</span>
+    }
+    
+    public String getSlidingWindowAllRows() {
+<span class="nc" id="L59">        return this.slidingWindowAllRows;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
