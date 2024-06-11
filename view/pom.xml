@@ -131,7 +131,7 @@
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <failIfNoTests>true</failIfNoTests>
-                    <rerunFailingTestsCount>5</rerunFailingTestsCount>
+                    <rerunFailingTestsCount>2</rerunFailingTestsCount>
                     <includes>
                         <include>**/*UiTest</include>
                     </includes>
