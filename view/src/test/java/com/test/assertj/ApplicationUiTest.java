@@ -51,22 +51,7 @@ class ApplicationUiTest {
     private static final Connection connection = Mockito.mock(Connection.class);
     private static final Document document = Mockito.mock(Document.class);
 
-    @BeforeClass  // compatible with mvn retry on jvm
-    public static void beforeClass() throws IOException {
-        MockedStatic<Jsoup> utilities = Mockito.mockStatic(Jsoup.class);
-
-        utilities.when(() -> Jsoup.connect(ArgumentMatchers.anyString())).thenReturn(connection);
-        utilities.when(() -> Jsoup.clean(ArgumentMatchers.anyString(), ArgumentMatchers.any(Safelist.class))).thenReturn("cleaned");
-
-        Mockito.when(connection.ignoreContentType(ArgumentMatchers.anyBoolean())).thenReturn(connection);
-        Mockito.when(connection.ignoreHttpErrors(ArgumentMatchers.anyBoolean())).thenReturn(connection);
-
-        Mockito.when(connection.get()).thenReturn(document);
-        Mockito.when(document.html()).thenReturn("<html><input/>test</html>");
-
-        Mockito.when(document.text()).thenReturn("<html><input/>test</html>");
-        utilities.when(() -> Jsoup.parse(Mockito.anyString())).thenReturn(document);
-    }
+    static MockedStatic<Jsoup> utilities;
 
     @BeforeAll
     static void beforeAll() {
@@ -76,7 +61,27 @@ class ApplicationUiTest {
         InjectionModel injectionModel = new InjectionModel();
         MediatorHelper.register(injectionModel);
 
-        JFrameView frame = GuiActionRunner.execute(JFrameView::new);
+        JFrameView frame = GuiActionRunner.execute(() -> {
+
+            if (utilities != null) {
+                utilities.close();
+            }
+            utilities = Mockito.mockStatic(Jsoup.class);
+            
+            utilities.when(() -> Jsoup.connect(ArgumentMatchers.anyString())).thenReturn(connection);
+            utilities.when(() -> Jsoup.clean(ArgumentMatchers.anyString(), ArgumentMatchers.any(Safelist.class))).thenReturn("cleaned");
+
+            Mockito.when(connection.ignoreContentType(ArgumentMatchers.anyBoolean())).thenReturn(connection);
+            Mockito.when(connection.ignoreHttpErrors(ArgumentMatchers.anyBoolean())).thenReturn(connection);
+
+            Mockito.when(connection.get()).thenReturn(document);
+            Mockito.when(document.html()).thenReturn("<html><input/>test</html>");
+
+            Mockito.when(document.text()).thenReturn("<html><input/>test</html>");
+            utilities.when(() -> Jsoup.parse(Mockito.anyString())).thenReturn(document);
+
+            return new JFrameView();
+        });
         window = new FrameFixture(frame);
         
         injectionModel.subscribe(frame.getSubscriber());
@@ -339,6 +344,8 @@ class ApplicationUiTest {
         window.textBox("textNETWORK_TAB_HEADERS_LABEL").requireText(Pattern.compile(".*key1: value1.*key2: value2.*", Pattern.DOTALL));
         window.label("labelNETWORK_TAB_PARAMS_LABEL").click();
         window.textBox("textNETWORK_TAB_PARAMS_LABEL").requireText("post");
+
+        Assertions.fail();
     }
 
     @Test
