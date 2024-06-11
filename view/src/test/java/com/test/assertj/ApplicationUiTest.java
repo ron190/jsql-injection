@@ -344,8 +344,6 @@ class ApplicationUiTest {
         window.textBox("textNETWORK_TAB_HEADERS_LABEL").requireText(Pattern.compile(".*key1: value1.*key2: value2.*", Pattern.DOTALL));
         window.label("labelNETWORK_TAB_PARAMS_LABEL").click();
         window.textBox("textNETWORK_TAB_PARAMS_LABEL").requireText("post");
-
-        Assertions.fail();
     }
 
     @Test
