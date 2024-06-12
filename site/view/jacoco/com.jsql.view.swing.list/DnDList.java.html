@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class DnDList extends JList&lt;ItemList&gt; {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L38">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L39">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     /**
      * Model for the JList.
@@ -51,167 +52,167 @@ public class DnDList extends JList&lt;ItemList&gt; {
      * Create a JList decorated with drag/drop features.
      * @param newList List to decorate
      */
-<span class="fc" id="L54">    public DnDList(List&lt;ItemList&gt; newList) {</span>
+<span class="fc" id="L55">    public DnDList(List&lt;ItemList&gt; newList) {</span>
         
-<span class="fc" id="L56">        this.defaultList = newList;</span>
+<span class="fc" id="L57">        this.defaultList = newList;</span>
 
-<span class="fc" id="L58">        this.listModel = new DefaultListModel&lt;&gt;();</span>
+<span class="fc" id="L59">        this.listModel = new DefaultListModel&lt;&gt;();</span>
 
-<span class="fc bfc" id="L60" title="All 2 branches covered.">        for (ItemList path: newList) {</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        for (ItemList path: newList) {</span>
             
-<span class="fc" id="L62">            this.listModel.addElement(path);</span>
-<span class="fc" id="L63">        }</span>
+<span class="fc" id="L63">            this.listModel.addElement(path);</span>
+<span class="fc" id="L64">        }</span>
 
-<span class="fc" id="L65">        this.setModel(this.listModel);</span>
+<span class="fc" id="L66">        this.setModel(this.listModel);</span>
 
-<span class="fc" id="L67">        ListCellRenderer&lt;ItemList&gt; renderer = new RendererComplexCell();</span>
-<span class="fc" id="L68">        this.setCellRenderer(renderer);</span>
+<span class="fc" id="L68">        ListCellRenderer&lt;ItemList&gt; renderer = new RendererComplexCell();</span>
+<span class="fc" id="L69">        this.setCellRenderer(renderer);</span>
         
-<span class="fc" id="L70">        this.initializeActionMap();</span>
-<span class="fc" id="L71">        this.initializeListener();</span>
+<span class="fc" id="L71">        this.initializeActionMap();</span>
+<span class="fc" id="L72">        this.initializeListener();</span>
         
-<span class="fc" id="L73">        this.setDragEnabled(true);</span>
-<span class="fc" id="L74">        this.setDropMode(DropMode.INSERT);</span>
+<span class="fc" id="L74">        this.setDragEnabled(true);</span>
+<span class="fc" id="L75">        this.setDropMode(DropMode.INSERT);</span>
 
         // Set Drag and Drop
-<span class="fc" id="L77">        this.setTransferHandler(new ListTransfertHandler());</span>
-<span class="fc" id="L78">    }</span>
+<span class="fc" id="L78">        this.setTransferHandler(new ListTransfertHandler());</span>
+<span class="fc" id="L79">    }</span>
 
     private void initializeListener() {
         
-<span class="fc" id="L82">        this.addMouseListener(new MouseAdapterMenuAction(this));</span>
+<span class="fc" id="L83">        this.addMouseListener(new MouseAdapterMenuAction(this));</span>
 
         // Allows color change when list loses/gains focus
-<span class="fc" id="L85">        this.addFocusListener(new FocusListener() {</span>
+<span class="fc" id="L86">        this.addFocusListener(new FocusListener() {</span>
                 
             @Override
             public void focusLost(FocusEvent arg0) {
                 
-<span class="fc" id="L90">                DnDList.this.repaint();</span>
-<span class="fc" id="L91">            }</span>
+<span class="fc" id="L91">                DnDList.this.repaint();</span>
+<span class="fc" id="L92">            }</span>
             
             @Override
             public void focusGained(FocusEvent arg0) {
                 
-<span class="fc" id="L96">                DnDList.this.repaint();</span>
-<span class="fc" id="L97">            }</span>
+<span class="fc" id="L97">                DnDList.this.repaint();</span>
+<span class="fc" id="L98">            }</span>
         });
         
         // Allows deleting values
-<span class="fc" id="L101">        this.addKeyListener(new KeyAdapter() {</span>
+<span class="fc" id="L102">        this.addKeyListener(new KeyAdapter() {</span>
             
             @Override
             public void keyPressed(KeyEvent arg0) {
                 
-<span class="fc bfc" id="L106" title="All 2 branches covered.">                if (arg0.getKeyCode() == KeyEvent.VK_DELETE) {</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">                if (arg0.getKeyCode() == KeyEvent.VK_DELETE) {</span>
                     
-<span class="fc" id="L108">                    DnDList.this.removeSelectedItem();</span>
+<span class="fc" id="L109">                    DnDList.this.removeSelectedItem();</span>
                 }
-<span class="fc" id="L110">            }</span>
+<span class="fc" id="L111">            }</span>
         });
-<span class="fc" id="L112">    }</span>
+<span class="fc" id="L113">    }</span>
 
     private void initializeActionMap() {
         
         // Transform Cut, selects next value
-<span class="fc" id="L117">        var listActionMap = this.getActionMap();</span>
+<span class="fc" id="L118">        var listActionMap = this.getActionMap();</span>
         
-<span class="fc" id="L119">        listActionMap.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {</span>
+<span class="fc" id="L120">        listActionMap.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {</span>
             
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-<span class="pc bpc" id="L124" title="1 of 2 branches missed.">                if (DnDList.this.getSelectedValuesList().isEmpty()) {</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">                if (DnDList.this.getSelectedValuesList().isEmpty()) {</span>
                     
-<span class="nc" id="L126">                    return;</span>
+<span class="nc" id="L127">                    return;</span>
                 }
                 
-<span class="fc" id="L129">                List&lt;ItemList&gt; selectedValues = DnDList.this.getSelectedValuesList();</span>
-<span class="fc" id="L130">                List&lt;ItemList&gt; siblings = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L130">                List&lt;ItemList&gt; selectedValues = DnDList.this.getSelectedValuesList();</span>
+<span class="fc" id="L131">                List&lt;ItemList&gt; siblings = new ArrayList&lt;&gt;();</span>
                 
-<span class="fc bfc" id="L132" title="All 2 branches covered.">                for (ItemList value: selectedValues) {</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">                for (ItemList value: selectedValues) {</span>
                     
-<span class="fc" id="L134">                    int valueIndex = DnDList.this.listModel.indexOf(value);</span>
+<span class="fc" id="L135">                    int valueIndex = DnDList.this.listModel.indexOf(value);</span>
 
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">                    if (valueIndex &lt; DnDList.this.listModel.size() - 1) {</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">                    if (valueIndex &lt; DnDList.this.listModel.size() - 1) {</span>
                         
-<span class="fc" id="L138">                        siblings.add(DnDList.this.listModel.get(valueIndex + 1));</span>
+<span class="fc" id="L139">                        siblings.add(DnDList.this.listModel.get(valueIndex + 1));</span>
                         
-<span class="nc bnc" id="L140" title="All 2 branches missed.">                    } else if (valueIndex &gt; 0) {</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">                    } else if (valueIndex &gt; 0) {</span>
                         
-<span class="nc" id="L142">                        siblings.add(DnDList.this.listModel.get(valueIndex - 1));</span>
+<span class="nc" id="L143">                        siblings.add(DnDList.this.listModel.get(valueIndex - 1));</span>
                     }
-<span class="fc" id="L144">                }</span>
+<span class="fc" id="L145">                }</span>
 
-<span class="fc" id="L146">                TransferHandler.getCutAction().actionPerformed(e);</span>
+<span class="fc" id="L147">                TransferHandler.getCutAction().actionPerformed(e);</span>
                 
-<span class="fc bfc" id="L148" title="All 2 branches covered.">                for (ItemList sibling: siblings) {</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">                for (ItemList sibling: siblings) {</span>
                     
-<span class="fc" id="L150">                    DnDList.this.setSelectedValue(sibling, true);</span>
-<span class="fc" id="L151">                }</span>
-<span class="fc" id="L152">            }</span>
+<span class="fc" id="L151">                    DnDList.this.setSelectedValue(sibling, true);</span>
+<span class="fc" id="L152">                }</span>
+<span class="fc" id="L153">            }</span>
         });
 
-<span class="fc" id="L155">        listActionMap.put(</span>
-<span class="fc" id="L156">            TransferHandler.getCopyAction().getValue(Action.NAME),</span>
-<span class="fc" id="L157">            TransferHandler.getCopyAction()</span>
+<span class="fc" id="L156">        listActionMap.put(</span>
+<span class="fc" id="L157">            TransferHandler.getCopyAction().getValue(Action.NAME),</span>
+<span class="fc" id="L158">            TransferHandler.getCopyAction()</span>
         );
         
-<span class="fc" id="L160">        listActionMap.put(</span>
-<span class="fc" id="L161">            TransferHandler.getPasteAction().getValue(Action.NAME),</span>
-<span class="fc" id="L162">            TransferHandler.getPasteAction()</span>
+<span class="fc" id="L161">        listActionMap.put(</span>
+<span class="fc" id="L162">            TransferHandler.getPasteAction().getValue(Action.NAME),</span>
+<span class="fc" id="L163">            TransferHandler.getPasteAction()</span>
         );
-<span class="fc" id="L164">    }</span>
+<span class="fc" id="L165">    }</span>
 
     /**
      * Delete selected items from the list.
      */
     public void removeSelectedItem() {
         
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        if (this.getSelectedValuesList().isEmpty()) {</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        if (this.getSelectedValuesList().isEmpty()) {</span>
             
-<span class="nc" id="L173">            return;</span>
+<span class="nc" id="L174">            return;</span>
         }
 
-<span class="fc" id="L176">        List&lt;ItemList&gt; selectedValues = this.getSelectedValuesList();</span>
+<span class="fc" id="L177">        List&lt;ItemList&gt; selectedValues = this.getSelectedValuesList();</span>
         
-<span class="fc bfc" id="L178" title="All 2 branches covered.">        for (ItemList itemSelected: selectedValues) {</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">        for (ItemList itemSelected: selectedValues) {</span>
             
-<span class="fc" id="L180">            int indexOfItemSelected = this.listModel.indexOf(itemSelected);</span>
-<span class="fc" id="L181">            this.listModel.removeElement(itemSelected);</span>
+<span class="fc" id="L181">            int indexOfItemSelected = this.listModel.indexOf(itemSelected);</span>
+<span class="fc" id="L182">            this.listModel.removeElement(itemSelected);</span>
             
-<span class="pc bpc" id="L183" title="1 of 2 branches missed.">            if (indexOfItemSelected == this.listModel.getSize()) {</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">            if (indexOfItemSelected == this.listModel.getSize()) {</span>
                 
-<span class="nc" id="L185">                this.setSelectedIndex(indexOfItemSelected - 1);</span>
+<span class="nc" id="L186">                this.setSelectedIndex(indexOfItemSelected - 1);</span>
                 
             } else {
                 
-<span class="fc" id="L189">                this.setSelectedIndex(indexOfItemSelected);</span>
+<span class="fc" id="L190">                this.setSelectedIndex(indexOfItemSelected);</span>
             }
-<span class="fc" id="L191">        }</span>
+<span class="fc" id="L192">        }</span>
         
         try {
-<span class="fc" id="L194">            var rectangle = this.getCellBounds(</span>
-<span class="fc" id="L195">                this.getMinSelectionIndex(),</span>
-<span class="fc" id="L196">                this.getMaxSelectionIndex()</span>
+<span class="fc" id="L195">            var rectangle = this.getCellBounds(</span>
+<span class="fc" id="L196">                this.getMinSelectionIndex(),</span>
+<span class="fc" id="L197">                this.getMaxSelectionIndex()</span>
             );
             
-<span class="pc bpc" id="L199" title="1 of 2 branches missed.">            if (rectangle != null) {</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">            if (rectangle != null) {</span>
                 
-<span class="fc" id="L201">                this.scrollRectToVisible(</span>
-<span class="fc" id="L202">                    this.getCellBounds(</span>
-<span class="fc" id="L203">                        this.getMinSelectionIndex(),</span>
-<span class="fc" id="L204">                        this.getMaxSelectionIndex()</span>
+<span class="fc" id="L202">                this.scrollRectToVisible(</span>
+<span class="fc" id="L203">                    this.getCellBounds(</span>
+<span class="fc" id="L204">                        this.getMinSelectionIndex(),</span>
+<span class="fc" id="L205">                        this.getMaxSelectionIndex()</span>
                     )
                 );
             }
             
-<span class="nc" id="L209">        } catch (NullPointerException e) {</span>
+<span class="nc" id="L210">        } catch (NullPointerException e) {</span>
             
             // Report NullPointerException #1571 : manual scroll elsewhere then run action
-<span class="nc" id="L212">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L213">        }</span>
-<span class="fc" id="L214">    }</span>
+<span class="nc" id="L213">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L214">        }</span>
+<span class="fc" id="L215">    }</span>
 
     /**
      * Load a file into the list (drag/drop or copy/paste).
@@ -220,49 +221,49 @@ public class DnDList extends JList&lt;ItemList&gt; {
      */
     public void dropPasteFile(final List&lt;File&gt; filesToImport, int position) {
         
-<span class="nc bnc" id="L223" title="All 2 branches missed.">        if (filesToImport.isEmpty()) {</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">        if (filesToImport.isEmpty()) {</span>
             
-<span class="nc" id="L225">            return;</span>
+<span class="nc" id="L226">            return;</span>
         }
         
-<span class="nc bnc" id="L228" title="All 2 branches missed.">        for (File fileToImport : filesToImport) {</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">        for (File fileToImport : filesToImport) {</span>
             
             // Report NoSuchMethodError #1617
-<span class="nc" id="L231">            if (</span>
+<span class="nc" id="L232">            if (</span>
                 !FilenameUtils
-<span class="nc" id="L233">                .getExtension(fileToImport.getPath())</span>
-<span class="nc bnc" id="L234" title="All 2 branches missed.">                .matches(&quot;txt|csv|ini&quot;)</span>
+<span class="nc" id="L234">                .getExtension(fileToImport.getPath())</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">                .matches(&quot;txt|csv|ini&quot;)</span>
             ) {
                 
                 // Fix #42832: ClassCastException on showMessageDialog()
                 try {
-<span class="nc" id="L239">                    JOptionPane.showMessageDialog(</span>
-<span class="nc" id="L240">                        this.getTopLevelAncestor(),</span>
-<span class="nc" id="L241">                        I18nUtil.valueByKey(&quot;LIST_IMPORT_ERROR_LABEL&quot;),</span>
-<span class="nc" id="L242">                        I18nUtil.valueByKey(&quot;LIST_IMPORT_ERROR_TITLE&quot;),</span>
+<span class="nc" id="L240">                    JOptionPane.showMessageDialog(</span>
+<span class="nc" id="L241">                        this.getTopLevelAncestor(),</span>
+<span class="nc" id="L242">                        I18nUtil.valueByKey(&quot;LIST_IMPORT_ERROR_LABEL&quot;),</span>
+<span class="nc" id="L243">                        I18nUtil.valueByKey(&quot;LIST_IMPORT_ERROR_TITLE&quot;),</span>
                         JOptionPane.ERROR_MESSAGE,
                         UiUtil.ICON_ERROR
                     );
                     
-<span class="nc" id="L247">                } catch (ClassCastException e) {</span>
+<span class="nc" id="L248">                } catch (ClassCastException e) {</span>
                     
-<span class="nc" id="L249">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
-<span class="nc" id="L250">                }</span>
+<span class="nc" id="L250">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="nc" id="L251">                }</span>
                 
-<span class="nc" id="L252">                return;</span>
+<span class="nc" id="L253">                return;</span>
             }
-<span class="nc" id="L254">        }</span>
+<span class="nc" id="L255">        }</span>
 
-<span class="nc" id="L256">        var options = new String[] {</span>
-<span class="nc" id="L257">            I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_REPLACE&quot;),</span>
-<span class="nc" id="L258">            I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_ADD&quot;),</span>
-<span class="nc" id="L259">            I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
+<span class="nc" id="L257">        var options = new String[] {</span>
+<span class="nc" id="L258">            I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_REPLACE&quot;),</span>
+<span class="nc" id="L259">            I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_ADD&quot;),</span>
+<span class="nc" id="L260">            I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
         };
         
-<span class="nc" id="L262">        int answer = JOptionPane.showOptionDialog(</span>
-<span class="nc" id="L263">            this.getTopLevelAncestor(),</span>
-<span class="nc" id="L264">            I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_LABEL&quot;),</span>
-<span class="nc" id="L265">            I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_TITLE&quot;),</span>
+<span class="nc" id="L263">        int answer = JOptionPane.showOptionDialog(</span>
+<span class="nc" id="L264">            this.getTopLevelAncestor(),</span>
+<span class="nc" id="L265">            I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_LABEL&quot;),</span>
+<span class="nc" id="L266">            I18nUtil.valueByKey(&quot;LIST_IMPORT_CONFIRM_TITLE&quot;),</span>
             JOptionPane.YES_NO_CANCEL_OPTION,
             JOptionPane.QUESTION_MESSAGE,
             null,
@@ -270,98 +271,98 @@ public class DnDList extends JList&lt;ItemList&gt; {
             options[2]
         );
         
-<span class="nc" id="L273">        int startPosition = position;</span>
+<span class="nc" id="L274">        int startPosition = position;</span>
 
-<span class="nc bnc" id="L275" title="All 4 branches missed.">        if (answer != JOptionPane.YES_OPTION &amp;&amp; answer != JOptionPane.NO_OPTION) {</span>
+<span class="nc bnc" id="L276" title="All 4 branches missed.">        if (answer != JOptionPane.YES_OPTION &amp;&amp; answer != JOptionPane.NO_OPTION) {</span>
             
-<span class="nc" id="L277">            return;</span>
+<span class="nc" id="L278">            return;</span>
         }
         
-<span class="nc bnc" id="L280" title="All 2 branches missed.">        if (answer == JOptionPane.YES_OPTION) {</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">        if (answer == JOptionPane.YES_OPTION) {</span>
             
-<span class="nc" id="L282">            this.listModel.clear();</span>
-<span class="nc" id="L283">            startPosition = 0;</span>
+<span class="nc" id="L283">            this.listModel.clear();</span>
+<span class="nc" id="L284">            startPosition = 0;</span>
         }
         
-<span class="nc" id="L286">        int startPositionFinal = startPosition;</span>
+<span class="nc" id="L287">        int startPositionFinal = startPosition;</span>
         
-<span class="nc" id="L288">        SwingUtilities.invokeLater(() -&gt; this.addItems(filesToImport, startPositionFinal));</span>
-<span class="nc" id="L289">    }</span>
+<span class="nc" id="L289">        SwingUtilities.invokeLater(() -&gt; this.addItems(filesToImport, startPositionFinal));</span>
+<span class="nc" id="L290">    }</span>
 
     private void addItems(final List&lt;File&gt; filesToImport, int startPosition) {
         
-<span class="nc" id="L293">        int endPosition = startPosition;</span>
+<span class="nc" id="L294">        int endPosition = startPosition;</span>
         
-<span class="nc bnc" id="L295" title="All 2 branches missed.">        for (File file: filesToImport) {</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">        for (File file: filesToImport) {</span>
             
-<span class="nc" id="L297">            endPosition = this.initializeItems(endPosition, file);</span>
-<span class="nc" id="L298">        }</span>
+<span class="nc" id="L298">            endPosition = this.initializeItems(endPosition, file);</span>
+<span class="nc" id="L299">        }</span>
         
 
-<span class="nc bnc" id="L301" title="All 2 branches missed.">        if (!this.listModel.isEmpty()) {</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">        if (!this.listModel.isEmpty()) {</span>
             
-<span class="nc" id="L303">            DnDList.this.setSelectionInterval(startPosition, endPosition - 1);</span>
+<span class="nc" id="L304">            DnDList.this.setSelectionInterval(startPosition, endPosition - 1);</span>
         }
         
         try {
-<span class="nc" id="L307">            DnDList.this.scrollRectToVisible(</span>
-<span class="nc" id="L308">                DnDList.this.getCellBounds(</span>
-<span class="nc" id="L309">                    DnDList.this.getMinSelectionIndex(),</span>
-<span class="nc" id="L310">                    DnDList.this.getMaxSelectionIndex()</span>
+<span class="nc" id="L308">            DnDList.this.scrollRectToVisible(</span>
+<span class="nc" id="L309">                DnDList.this.getCellBounds(</span>
+<span class="nc" id="L310">                    DnDList.this.getMinSelectionIndex(),</span>
+<span class="nc" id="L311">                    DnDList.this.getMaxSelectionIndex()</span>
                 )
             );
             
-<span class="nc" id="L314">        } catch (NullPointerException e) {</span>
+<span class="nc" id="L315">        } catch (NullPointerException e) {</span>
             
             // Report NullPointerException #1571 : manual scroll elsewhere then run action
-<span class="nc" id="L317">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
-<span class="nc" id="L318">        }</span>
-<span class="nc" id="L319">    }</span>
+<span class="nc" id="L318">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="nc" id="L319">        }</span>
+<span class="nc" id="L320">    }</span>
 
     private int initializeItems(int startPosition, File file) {
         
-<span class="nc" id="L323">        int endPosition = startPosition;</span>
+<span class="nc" id="L324">        int endPosition = startPosition;</span>
         
         try (
-<span class="nc" id="L326">            var fileReader = new FileReader(file);</span>
-<span class="nc" id="L327">            var bufferedReader = new BufferedReader(fileReader)</span>
+<span class="nc" id="L327">            var fileReader = new FileReader(file, StandardCharsets.UTF_8);</span>
+<span class="nc" id="L328">            var bufferedReader = new BufferedReader(fileReader)</span>
         ) {
             
             String line;
-<span class="nc bnc" id="L331" title="All 2 branches missed.">            while ((line = bufferedReader.readLine()) != null) {</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">            while ((line = bufferedReader.readLine()) != null) {</span>
                 
-<span class="nc" id="L333">                if (</span>
-<span class="nc bnc" id="L334" title="All 4 branches missed.">                    StringUtils.isNotEmpty(line)</span>
+<span class="nc" id="L334">                if (</span>
+<span class="nc bnc" id="L335" title="All 4 branches missed.">                    StringUtils.isNotEmpty(line)</span>
                     // Fix Report #60
                     &amp;&amp; 0 &lt;= endPosition
-<span class="nc bnc" id="L337" title="All 2 branches missed.">                    &amp;&amp; endPosition &lt;= this.listModel.size()</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">                    &amp;&amp; endPosition &lt;= this.listModel.size()</span>
                 ) {
                     
-<span class="nc" id="L340">                    this.addItem(endPosition++, line);</span>
+<span class="nc" id="L341">                    this.addItem(endPosition++, line);</span>
                 }
             }
             
-<span class="nc" id="L344">        } catch (IOException e) {</span>
+<span class="nc" id="L345">        } catch (IOException e) {</span>
             
-<span class="nc" id="L346">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
-<span class="nc" id="L347">        }</span>
+<span class="nc" id="L347">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="nc" id="L348">        }</span>
         
-<span class="nc" id="L349">        return endPosition;</span>
+<span class="nc" id="L350">        return endPosition;</span>
     }
     
     public void restore() {
         
-<span class="nc" id="L354">        this.listModel.clear();</span>
+<span class="nc" id="L355">        this.listModel.clear();</span>
         
-<span class="nc bnc" id="L356" title="All 2 branches missed.">        for (ItemList path: this.defaultList) {</span>
+<span class="nc bnc" id="L357" title="All 2 branches missed.">        for (ItemList path: this.defaultList) {</span>
             
-<span class="nc" id="L358">            this.listModel.addElement(path);</span>
-<span class="nc" id="L359">        }</span>
-<span class="nc" id="L360">    }</span>
+<span class="nc" id="L359">            this.listModel.addElement(path);</span>
+<span class="nc" id="L360">        }</span>
+<span class="nc" id="L361">    }</span>
     
     public void addItem(int endPosition, String line) {
         
-<span class="nc" id="L364">        this.listModel.add(endPosition, new ItemList(line.replace(&quot;\\&quot;, &quot;/&quot;)));</span>
-<span class="nc" id="L365">    }</span>
+<span class="nc" id="L365">        this.listModel.add(endPosition, new ItemList(line.replace(&quot;\\&quot;, &quot;/&quot;)));</span>
+<span class="nc" id="L366">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

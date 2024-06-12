@@ -140,7 +140,7 @@ public final class StringUtil {
 <span class="fc" id="L140">            bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);</span>
         }
         
-<span class="fc" id="L143">        return new String(bytes);</span>
+<span class="fc" id="L143">        return new String(bytes, StandardCharsets.UTF_8);</span>
     }
     
     public static boolean isUtf8(String text) {
@@ -151,7 +151,7 @@ public final class StringUtil {
         }
         
 <span class="fc" id="L153">        var detector = new UniversalDetector(null);</span>
-<span class="fc" id="L154">        detector.handleData(text.getBytes(), 0, text.length() - 1);</span>
+<span class="fc" id="L154">        detector.handleData(text.getBytes(StandardCharsets.UTF_8), 0, text.length() - 1);</span>
 <span class="fc" id="L155">        detector.dataEnd();</span>
 <span class="fc" id="L156">        String encoding = detector.getDetectedCharset();</span>
         
@@ -170,7 +170,7 @@ public final class StringUtil {
         // ArrayIndexOutOfBoundsException on handleData()
         try {
 <span class="fc" id="L172">            var detector = new UniversalDetector(null);</span>
-<span class="fc" id="L173">            detector.handleData(text.getBytes(), 0, text.length() - 1);</span>
+<span class="fc" id="L173">            detector.handleData(text.getBytes(StandardCharsets.UTF_8), 0, text.length() - 1);</span>
 <span class="fc" id="L174">            detector.dataEnd();</span>
 <span class="fc" id="L175">            encoding = detector.getDetectedCharset();</span>
             
@@ -260,7 +260,7 @@ public final class StringUtil {
         
 <span class="fc" id="L261">        var out = new ByteArrayOutputStream();</span>
 <span class="fc" id="L262">        var gzip = new GZIPOutputStream(out);</span>
-<span class="fc" id="L263">        gzip.write(str.getBytes());</span>
+<span class="fc" id="L263">        gzip.write(str.getBytes(StandardCharsets.UTF_8));</span>
 <span class="fc" id="L264">        gzip.close();</span>
         
 <span class="fc" id="L266">        return out.toString(StandardCharsets.ISO_8859_1);</span>

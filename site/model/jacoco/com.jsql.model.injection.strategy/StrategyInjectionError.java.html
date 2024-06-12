@@ -64,20 +64,20 @@ public class StrategyInjectionError extends AbstractStrategy {
                 
 <span class="fc" id="L65">                Matcher regexSearch = this.getPerformance(errorMethod);</span>
                 
-<span class="fc bfc" id="L67" title="All 2 branches covered.">                if (regexSearch.find()) {</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">                if (regexSearch.find()) {</span>
                     
 <span class="fc" id="L69">                    errorCapacity = this.getCapacity(indexErrorMethod, errorCapacity, errorMethod, regexSearch);</span>
                     
                 } else {
                     
-<span class="fc" id="L73">                    LOGGER.log(</span>
+<span class="nc" id="L73">                    LOGGER.log(</span>
                         LogLevelUtil.CONSOLE_ERROR,
                         &quot;{} {} but injectable size is incorrect&quot;,
-<span class="fc" id="L76">                        () -&gt; I18nUtil.valueByKey(&quot;LOG_VULNERABLE&quot;),</span>
-<span class="fc" id="L77">                        errorMethod::getName</span>
+<span class="nc" id="L76">                        () -&gt; I18nUtil.valueByKey(&quot;LOG_VULNERABLE&quot;),</span>
+<span class="nc" id="L77">                        errorMethod::getName</span>
                     );
                     
-<span class="fc" id="L80">                    methodIsApplicable = false;</span>
+<span class="nc" id="L80">                    methodIsApplicable = false;</span>
                 }
             }
             

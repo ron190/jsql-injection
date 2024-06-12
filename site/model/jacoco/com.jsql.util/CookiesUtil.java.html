@@ -49,7 +49,7 @@ public class CookiesUtil {
             ))
 <span class="fc" id="L50">            .collect(Collectors.toList());</span>
 
-<span class="fc bfc" id="L52" title="All 2 branches covered.">        for (AbstractMap.SimpleEntry&lt;String, String&gt; cookie: cookies) {</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        for (AbstractMap.SimpleEntry&lt;String, String&gt; cookie: cookies) {</span>
 
 <span class="fc" id="L54">            String headerCookieWithStar = rawHeader.replace(</span>
 <span class="fc" id="L55">                cookie.getKey() + &quot;=&quot; + cookie.getValue(),</span>
@@ -83,7 +83,7 @@ public class CookiesUtil {
 <span class="fc" id="L83">            }</span>
 <span class="fc" id="L84">        }</span>
 
-<span class="fc" id="L86">        return false;</span>
+<span class="nc" id="L86">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

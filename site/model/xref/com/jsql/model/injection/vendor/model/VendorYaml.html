@@ -351,7 +351,7 @@
 <a class="jxr_linenumber" name="L343" href="#L343">343</a>         
 <a class="jxr_linenumber" name="L344" href="#L344">344</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.modelYaml.getResource().getFile()
 <a class="jxr_linenumber" name="L345" href="#L345">345</a>             .getRead()
-<a class="jxr_linenumber" name="L346" href="#L346">346</a>             .replace(FILEPATH_HEX, Hex.encodeHexString(filePath.getBytes()))  <em class="jxr_comment">// MySQL</em>
+<a class="jxr_linenumber" name="L346" href="#L346">346</a>             .replace(FILEPATH_HEX, Hex.encodeHexString(filePath.getBytes(StandardCharsets.UTF_8)))  <em class="jxr_comment">// MySQL</em>
 <a class="jxr_linenumber" name="L347" href="#L347">347</a>             .replace(FILEPATH, filePath);  <em class="jxr_comment">// PostgreSQL</em>
 <a class="jxr_linenumber" name="L348" href="#L348">348</a>     }
 <a class="jxr_linenumber" name="L349" href="#L349">349</a> 
@@ -370,7 +370,7 @@
 <a class="jxr_linenumber" name="L362" href="#L362">362</a>                 .getBody()
 <a class="jxr_linenumber" name="L363" href="#L363">363</a>                 .replace(
 <a class="jxr_linenumber" name="L364" href="#L364">364</a>                     BODY_HEX,
-<a class="jxr_linenumber" name="L365" href="#L365">365</a>                     Hex.encodeHexString(body.getBytes())
+<a class="jxr_linenumber" name="L365" href="#L365">365</a>                     Hex.encodeHexString(body.getBytes(StandardCharsets.UTF_8))
 <a class="jxr_linenumber" name="L366" href="#L366">366</a>                 )
 <a class="jxr_linenumber" name="L367" href="#L367">367</a>             )
 <a class="jxr_linenumber" name="L368" href="#L368">368</a>             + StringUtils.SPACE

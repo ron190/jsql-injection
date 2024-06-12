@@ -773,7 +773,7 @@ public class ResourceAccess {
 <span class="nc" id="L773">            .POST(</span>
 <span class="nc" id="L774">                BodyPublishers.ofByteArrays(</span>
 <span class="nc" id="L775">                    Arrays.asList(</span>
-<span class="nc" id="L776">                        headerForm.getBytes(),</span>
+<span class="nc" id="L776">                        headerForm.getBytes(StandardCharsets.UTF_8),</span>
 <span class="nc" id="L777">                        Files.readAllBytes(Paths.get(file.toURI())),</span>
 <span class="nc" id="L778">                        headerFile.getBytes()</span>
                     )

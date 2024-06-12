@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Action to export a JList.
@@ -31,7 +32,7 @@ public class MenuActionExport implements ActionListener {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L34">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L35">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * List to export.
@@ -42,85 +43,85 @@ public class MenuActionExport implements ActionListener {
      * Create action to export a list.
      * @param myList List to export.
      */
-<span class="fc" id="L45">    public MenuActionExport(DnDList myList) {</span>
+<span class="fc" id="L46">    public MenuActionExport(DnDList myList) {</span>
         
-<span class="fc" id="L47">        this.myList = myList;</span>
-<span class="fc" id="L48">    }</span>
+<span class="fc" id="L48">        this.myList = myList;</span>
+<span class="fc" id="L49">    }</span>
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
         
-<span class="nc" id="L53">        final JFileChooser importFileDialog = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()) {</span>
+<span class="nc" id="L54">        final JFileChooser importFileDialog = new JFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()) {</span>
             
             @Override
             public void approveSelection() {
                 
-<span class="nc" id="L58">                var file = this.getSelectedFile();</span>
+<span class="nc" id="L59">                var file = this.getSelectedFile();</span>
                 
-<span class="nc" id="L60">                if (</span>
-<span class="nc bnc" id="L61" title="All 2 branches missed.">                    file.exists()</span>
-<span class="nc bnc" id="L62" title="All 2 branches missed.">                    &amp;&amp; this.getDialogType() == JFileChooser.SAVE_DIALOG</span>
+<span class="nc" id="L61">                if (</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">                    file.exists()</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                    &amp;&amp; this.getDialogType() == JFileChooser.SAVE_DIALOG</span>
                 ) {
                     
-<span class="nc" id="L65">                    int replace = JOptionPane.showConfirmDialog(</span>
+<span class="nc" id="L66">                    int replace = JOptionPane.showConfirmDialog(</span>
                         this,
-<span class="nc" id="L67">                        String.format(</span>
+<span class="nc" id="L68">                        String.format(</span>
                             &quot;%s %s&quot;,
-<span class="nc" id="L69">                            file.getName(),</span>
-<span class="nc" id="L70">                            I18nUtil.valueByKey(&quot;LIST_EXPORT_CONFIRM_LABEL&quot;)</span>
+<span class="nc" id="L70">                            file.getName(),</span>
+<span class="nc" id="L71">                            I18nUtil.valueByKey(&quot;LIST_EXPORT_CONFIRM_LABEL&quot;)</span>
                         ),
-<span class="nc" id="L72">                        I18nUtil.valueByKey(&quot;LIST_EXPORT_CONFIRM_TITLE&quot;),</span>
+<span class="nc" id="L73">                        I18nUtil.valueByKey(&quot;LIST_EXPORT_CONFIRM_TITLE&quot;),</span>
                         JOptionPane.YES_NO_OPTION
                     );
                     
-<span class="nc bnc" id="L76" title="All 4 branches missed.">                    switch (replace) {</span>
+<span class="nc bnc" id="L77" title="All 4 branches missed.">                    switch (replace) {</span>
                     
                         case JOptionPane.YES_OPTION:
-<span class="nc" id="L79">                            super.approveSelection();</span>
-<span class="nc" id="L80">                            return;</span>
+<span class="nc" id="L80">                            super.approveSelection();</span>
+<span class="nc" id="L81">                            return;</span>
                             
                         case JOptionPane.NO_OPTION:
                         case JOptionPane.CLOSED_OPTION:
-<span class="nc" id="L84">                            return;</span>
+<span class="nc" id="L85">                            return;</span>
                             
                         case JOptionPane.CANCEL_OPTION:
-<span class="nc" id="L87">                            this.cancelSelection();</span>
-<span class="nc" id="L88">                            return;</span>
+<span class="nc" id="L88">                            this.cancelSelection();</span>
+<span class="nc" id="L89">                            return;</span>
                             
                         default:
                             break;
                     }
                     
-<span class="nc" id="L94">                } else {</span>
+<span class="nc" id="L95">                } else {</span>
                     
-<span class="nc" id="L96">                    super.approveSelection();</span>
+<span class="nc" id="L97">                    super.approveSelection();</span>
                 }
-<span class="nc" id="L98">            }</span>
+<span class="nc" id="L99">            }</span>
         };
         
-<span class="nc" id="L101">        importFileDialog.setDialogTitle(I18nUtil.valueByKey(&quot;LIST_EXPORT_TITLE&quot;));</span>
-<span class="nc" id="L102">        int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());</span>
+<span class="nc" id="L102">        importFileDialog.setDialogTitle(I18nUtil.valueByKey(&quot;LIST_EXPORT_TITLE&quot;));</span>
+<span class="nc" id="L103">        int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());</span>
         
-<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (choice != JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (choice != JFileChooser.APPROVE_OPTION) {</span>
             
-<span class="nc" id="L106">            return;</span>
+<span class="nc" id="L107">            return;</span>
         }
 
         try (
-<span class="nc" id="L110">            var file = new FileOutputStream(importFileDialog.getSelectedFile());</span>
-<span class="nc" id="L111">            var out = new PrintStream(file)</span>
+<span class="nc" id="L111">            var file = new FileOutputStream(importFileDialog.getSelectedFile());</span>
+<span class="nc" id="L112">            var out = new PrintStream(file, false, StandardCharsets.UTF_8)</span>
         ) {
-<span class="nc" id="L113">            int len = this.myList.getModel().getSize();</span>
+<span class="nc" id="L114">            int len = this.myList.getModel().getSize();</span>
             
-<span class="nc bnc" id="L115" title="All 2 branches missed.">            for (var i = 0 ; i &lt; len ; i++) {</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">            for (var i = 0 ; i &lt; len ; i++) {</span>
                 
-<span class="nc" id="L117">                out.println(this.myList.getModel().getElementAt(i).toString());</span>
+<span class="nc" id="L118">                out.println(this.myList.getModel().getElementAt(i).toString());</span>
             }
             
-<span class="nc" id="L120">        } catch (IOException e) {</span>
+<span class="nc" id="L121">        } catch (IOException e) {</span>
             
-<span class="nc" id="L122">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L123">        }</span>
-<span class="nc" id="L124">    }</span>
+<span class="nc" id="L123">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L124">        }</span>
+<span class="nc" id="L125">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

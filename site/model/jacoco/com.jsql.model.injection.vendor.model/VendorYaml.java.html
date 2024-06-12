@@ -343,7 +343,7 @@ public class VendorYaml implements AbstractVendor {
         
 <span class="fc" id="L344">        return this.modelYaml.getResource().getFile()</span>
 <span class="fc" id="L345">            .getRead()</span>
-<span class="fc" id="L346">            .replace(FILEPATH_HEX, Hex.encodeHexString(filePath.getBytes()))  // MySQL</span>
+<span class="fc" id="L346">            .replace(FILEPATH_HEX, Hex.encodeHexString(filePath.getBytes(StandardCharsets.UTF_8)))  // MySQL</span>
 <span class="fc" id="L347">            .replace(FILEPATH, filePath);  // PostgreSQL</span>
     }
 
@@ -362,7 +362,7 @@ public class VendorYaml implements AbstractVendor {
 <span class="fc" id="L362">                .getBody()</span>
 <span class="fc" id="L363">                .replace(</span>
                     BODY_HEX,
-<span class="fc" id="L365">                    Hex.encodeHexString(body.getBytes())</span>
+<span class="fc" id="L365">                    Hex.encodeHexString(body.getBytes(StandardCharsets.UTF_8))</span>
                 )
             )
             + StringUtils.SPACE

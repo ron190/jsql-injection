@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -46,178 +47,178 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L49">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L50">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
-<span class="fc" id="L51">    private final JTextField textfieldUrlShell = new JPopupTextField(I18nUtil.valueByKey(&quot;SHELL_URL_LABEL&quot;)).getProxy();</span>
+<span class="fc" id="L52">    private final JTextField textfieldUrlShell = new JPopupTextField(I18nUtil.valueByKey(&quot;SHELL_URL_LABEL&quot;)).getProxy();</span>
     
     /**
      * Build the manager panel.
      */
-<span class="fc" id="L56">    protected AbstractManagerShell() {</span>
+<span class="fc" id="L57">    protected AbstractManagerShell() {</span>
         
-<span class="fc" id="L58">        this.setLayout(new BorderLayout());</span>
+<span class="fc" id="L59">        this.setLayout(new BorderLayout());</span>
         
-<span class="fc" id="L60">        List&lt;ItemList&gt; itemsList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L61">        List&lt;ItemList&gt; itemsList = new ArrayList&lt;&gt;();</span>
         
         try (
-<span class="fc" id="L63">            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);</span>
-<span class="fc" id="L64">            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream));</span>
-<span class="fc" id="L65">            var reader = new BufferedReader(inputStreamReader)</span>
+<span class="fc" id="L64">            var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);</span>
+<span class="fc" id="L65">            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);</span>
+<span class="fc" id="L66">            var reader = new BufferedReader(inputStreamReader)</span>
         ) {
             String line;
             
-<span class="fc bfc" id="L69" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
                 
-<span class="fc" id="L71">                itemsList.add(new ItemList(line));</span>
+<span class="fc" id="L72">                itemsList.add(new ItemList(line));</span>
             }
             
-<span class="nc" id="L74">        } catch (IOException e) {</span>
+<span class="nc" id="L75">        } catch (IOException e) {</span>
             
-<span class="nc" id="L76">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L77">        }</span>
+<span class="nc" id="L77">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L78">        }</span>
 
-<span class="fc" id="L79">        this.listPaths = new DnDList(itemsList);</span>
+<span class="fc" id="L80">        this.listPaths = new DnDList(itemsList);</span>
         
-<span class="fc" id="L81">        this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));</span>
+<span class="fc" id="L82">        this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));</span>
         
-<span class="fc" id="L83">        this.add(new LightScrollPane(0, 0, 0, 0, this.getListPaths()), BorderLayout.CENTER);</span>
+<span class="fc" id="L84">        this.add(new LightScrollPane(0, 0, 0, 0, this.getListPaths()), BorderLayout.CENTER);</span>
         
-<span class="fc" id="L85">        var southPanel = new JPanel();</span>
-<span class="fc" id="L86">        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L86">        var southPanel = new JPanel();</span>
+<span class="fc" id="L87">        southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));</span>
 
-<span class="fc" id="L88">        String urlTooltip = I18nUtil.valueByKey(&quot;SHELL_URL_TOOLTIP&quot;);</span>
+<span class="fc" id="L89">        String urlTooltip = I18nUtil.valueByKey(&quot;SHELL_URL_TOOLTIP&quot;);</span>
         
-<span class="fc" id="L90">        this.textfieldUrlShell.setToolTipText(urlTooltip);</span>
-<span class="fc" id="L91">        this.textfieldUrlShell.setBorder(</span>
-<span class="fc" id="L92">            BorderFactory.createCompoundBorder(</span>
-<span class="fc" id="L93">                BorderFactory.createCompoundBorder(</span>
-<span class="fc" id="L94">                    BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),</span>
-<span class="fc" id="L95">                    BorderFactory.createMatteBorder(1, 1, 0, 1, UiUtil.COLOR_DEFAULT_BACKGROUND)</span>
+<span class="fc" id="L91">        this.textfieldUrlShell.setToolTipText(urlTooltip);</span>
+<span class="fc" id="L92">        this.textfieldUrlShell.setBorder(</span>
+<span class="fc" id="L93">            BorderFactory.createCompoundBorder(</span>
+<span class="fc" id="L94">                BorderFactory.createCompoundBorder(</span>
+<span class="fc" id="L95">                    BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),</span>
+<span class="fc" id="L96">                    BorderFactory.createMatteBorder(1, 1, 0, 1, UiUtil.COLOR_DEFAULT_BACKGROUND)</span>
                 ),
                 UiUtil.BORDER_BLU
             )
         );
 
-<span class="fc" id="L101">        JPanel lastLine = this.initializeRunButtonPanel();</span>
+<span class="fc" id="L102">        JPanel lastLine = this.initializeRunButtonPanel();</span>
 
-<span class="fc" id="L103">        southPanel.add(this.textfieldUrlShell);</span>
-<span class="fc" id="L104">        southPanel.add(lastLine);</span>
+<span class="fc" id="L104">        southPanel.add(this.textfieldUrlShell);</span>
+<span class="fc" id="L105">        southPanel.add(lastLine);</span>
         
-<span class="fc" id="L106">        this.add(southPanel, BorderLayout.SOUTH);</span>
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L107">        this.add(southPanel, BorderLayout.SOUTH);</span>
+<span class="fc" id="L108">    }</span>
     
     protected abstract void createPayload(String pathShell, String urlShell) throws JSqlException, InterruptedException;
 
     private JPanel initializeRunButtonPanel() {
 
-<span class="fc" id="L113">        this.defaultText = &quot;SHELL_RUN_BUTTON_LABEL&quot;;</span>
+<span class="fc" id="L114">        this.defaultText = &quot;SHELL_RUN_BUTTON_LABEL&quot;;</span>
         
-<span class="fc" id="L115">        var lastLine = new JPanel();</span>
-<span class="fc" id="L116">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));</span>
-<span class="fc" id="L117">        lastLine.setBorder(</span>
-<span class="fc" id="L118">            BorderFactory.createCompoundBorder(</span>
-<span class="fc" id="L119">                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),</span>
-<span class="fc" id="L120">                BorderFactory.createEmptyBorder(1, 0, 1, 1)</span>
+<span class="fc" id="L116">        var lastLine = new JPanel();</span>
+<span class="fc" id="L117">        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L118">        lastLine.setBorder(</span>
+<span class="fc" id="L119">            BorderFactory.createCompoundBorder(</span>
+<span class="fc" id="L120">                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),</span>
+<span class="fc" id="L121">                BorderFactory.createEmptyBorder(1, 0, 1, 1)</span>
             )
         );
         
-<span class="fc" id="L124">        this.run = new JButtonStateful(this.defaultText);</span>
-<span class="fc" id="L125">        I18nViewUtil.addComponentForKey(this.defaultText, this.run);</span>
-<span class="fc" id="L126">        this.run.setToolTipText(I18nUtil.valueByKey(&quot;SHELL_RUN_BUTTON_TOOLTIP&quot;));</span>
-<span class="fc" id="L127">        this.run.setEnabled(false);</span>
+<span class="fc" id="L125">        this.run = new JButtonStateful(this.defaultText);</span>
+<span class="fc" id="L126">        I18nViewUtil.addComponentForKey(this.defaultText, this.run);</span>
+<span class="fc" id="L127">        this.run.setToolTipText(I18nUtil.valueByKey(&quot;SHELL_RUN_BUTTON_TOOLTIP&quot;));</span>
+<span class="fc" id="L128">        this.run.setEnabled(false);</span>
 
-<span class="fc" id="L129">        this.run.setContentAreaFilled(false);</span>
-<span class="fc" id="L130">        this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));</span>
-<span class="fc" id="L131">        this.run.setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L130">        this.run.setContentAreaFilled(false);</span>
+<span class="fc" id="L131">        this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));</span>
+<span class="fc" id="L132">        this.run.setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
         
-<span class="fc" id="L133">        this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));</span>
+<span class="fc" id="L134">        this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));</span>
 
-<span class="fc" id="L135">        this.run.addActionListener(new ActionCreationShell());</span>
+<span class="fc" id="L136">        this.run.addActionListener(new ActionCreationShell());</span>
 
-<span class="fc" id="L137">        this.privilege = new JLabel(I18nUtil.valueByKey(&quot;PRIVILEGE_LABEL&quot;), UiUtil.ICON_SQUARE_GREY, SwingConstants.LEFT);</span>
-<span class="fc" id="L138">        I18nViewUtil.addComponentForKey(&quot;PRIVILEGE_LABEL&quot;, this.privilege);</span>
-<span class="fc" id="L139">        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));</span>
-<span class="fc" id="L140">        this.privilege.setToolTipText(I18nUtil.valueByKey(&quot;PRIVILEGE_TOOLTIP&quot;));</span>
+<span class="fc" id="L138">        this.privilege = new JLabel(I18nUtil.valueByKey(&quot;PRIVILEGE_LABEL&quot;), UiUtil.ICON_SQUARE_GREY, SwingConstants.LEFT);</span>
+<span class="fc" id="L139">        I18nViewUtil.addComponentForKey(&quot;PRIVILEGE_LABEL&quot;, this.privilege);</span>
+<span class="fc" id="L140">        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));</span>
+<span class="fc" id="L141">        this.privilege.setToolTipText(I18nUtil.valueByKey(&quot;PRIVILEGE_TOOLTIP&quot;));</span>
 
-<span class="fc" id="L142">        lastLine.add(this.privilege);</span>
-<span class="fc" id="L143">        lastLine.add(Box.createHorizontalStrut(5));</span>
-<span class="fc" id="L144">        lastLine.add(Box.createHorizontalGlue());</span>
-<span class="fc" id="L145">        lastLine.add(this.run);</span>
+<span class="fc" id="L143">        lastLine.add(this.privilege);</span>
+<span class="fc" id="L144">        lastLine.add(Box.createHorizontalStrut(5));</span>
+<span class="fc" id="L145">        lastLine.add(Box.createHorizontalGlue());</span>
+<span class="fc" id="L146">        lastLine.add(this.run);</span>
         
-<span class="fc" id="L147">        return lastLine;</span>
+<span class="fc" id="L148">        return lastLine;</span>
     }
     
-<span class="fc" id="L150">    private class ActionCreationShell implements ActionListener {</span>
+<span class="fc" id="L151">    private class ActionCreationShell implements ActionListener {</span>
         
         @Override
         public void actionPerformed(ActionEvent evt) {
             
-<span class="nc bnc" id="L155" title="All 2 branches missed.">            if (AbstractManagerShell.this.getListPaths().getSelectedValuesList().isEmpty()) {</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            if (AbstractManagerShell.this.getListPaths().getSelectedValuesList().isEmpty()) {</span>
                 
-<span class="nc" id="L157">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Select at least one directory in the list&quot;);</span>
-<span class="nc" id="L158">                return;</span>
+<span class="nc" id="L158">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Select at least one directory in the list&quot;);</span>
+<span class="nc" id="L159">                return;</span>
             }
 
-<span class="nc" id="L161">            String refUrlShell = AbstractManagerShell.this.textfieldUrlShell.getText();</span>
+<span class="nc" id="L162">            String refUrlShell = AbstractManagerShell.this.textfieldUrlShell.getText();</span>
             
-<span class="nc bnc" id="L163" title="All 4 branches missed.">            if (!refUrlShell.isEmpty() &amp;&amp; !refUrlShell.matches(&quot;(?i)^https?://.*&quot;)) {</span>
+<span class="nc bnc" id="L164" title="All 4 branches missed.">            if (!refUrlShell.isEmpty() &amp;&amp; !refUrlShell.matches(&quot;(?i)^https?://.*&quot;)) {</span>
                 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">                if (!refUrlShell.matches(&quot;(?i)^\\w+://.*&quot;)) {</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">                if (!refUrlShell.matches(&quot;(?i)^\\w+://.*&quot;)) {</span>
                     
-<span class="nc" id="L167">                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Undefined shell URL protocol, forcing to [http://]&quot;);</span>
-<span class="nc" id="L168">                    refUrlShell = &quot;http://&quot;+ refUrlShell;</span>
+<span class="nc" id="L168">                    LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Undefined shell URL protocol, forcing to [http://]&quot;);</span>
+<span class="nc" id="L169">                    refUrlShell = &quot;http://&quot;+ refUrlShell;</span>
                     
                 } else {
                     
-<span class="nc" id="L172">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Unknown URL protocol&quot;);</span>
-<span class="nc" id="L173">                    return;</span>
+<span class="nc" id="L173">                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Unknown URL protocol&quot;);</span>
+<span class="nc" id="L174">                    return;</span>
                 }
             }
             
-<span class="nc bnc" id="L177" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(refUrlShell)) {</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(refUrlShell)) {</span>
                 
                 try {
-<span class="nc" id="L180">                    new URI(refUrlShell);</span>
+<span class="nc" id="L181">                    new URI(refUrlShell);</span>
                     
-<span class="nc" id="L182">                } catch (URISyntaxException e) {</span>
+<span class="nc" id="L183">                } catch (URISyntaxException e) {</span>
                     
-<span class="nc" id="L184">                    LOGGER.log(</span>
+<span class="nc" id="L185">                    LOGGER.log(</span>
                         LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L186">                        String.format(&quot;Incorrect URL: %s&quot;, e.getMessage())</span>
+<span class="nc" id="L187">                        String.format(&quot;Incorrect URL: %s&quot;, e.getMessage())</span>
                     );
-<span class="nc" id="L188">                    return;</span>
-<span class="nc" id="L189">                }</span>
+<span class="nc" id="L189">                    return;</span>
+<span class="nc" id="L190">                }</span>
             }
             
-<span class="nc" id="L192">            String urlShellFinal = refUrlShell;</span>
+<span class="nc" id="L193">            String urlShellFinal = refUrlShell;</span>
 
-<span class="nc" id="L194">            AbstractManagerShell.this.getListPaths()</span>
-<span class="nc" id="L195">            .getSelectedValuesList()</span>
-<span class="nc" id="L196">            .forEach(pathShell -&gt; new Thread(</span>
+<span class="nc" id="L195">            AbstractManagerShell.this.getListPaths()</span>
+<span class="nc" id="L196">            .getSelectedValuesList()</span>
+<span class="nc" id="L197">            .forEach(pathShell -&gt; new Thread(</span>
                 () -&gt; {
                     
                     try {
-<span class="nc" id="L200">                        AbstractManagerShell.this.createPayload(pathShell.toString(), urlShellFinal);</span>
+<span class="nc" id="L201">                        AbstractManagerShell.this.createPayload(pathShell.toString(), urlShellFinal);</span>
                         
-<span class="nc" id="L202">                    } catch (JSqlException e) {</span>
+<span class="nc" id="L203">                    } catch (JSqlException e) {</span>
                         
-<span class="nc" id="L204">                        LOGGER.log(</span>
+<span class="nc" id="L205">                        LOGGER.log(</span>
                             LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L206">                            String.format(&quot;Payload creation error: %s&quot;, e.getMessage())</span>
+<span class="nc" id="L207">                            String.format(&quot;Payload creation error: %s&quot;, e.getMessage())</span>
                         );
                         
-<span class="nc" id="L209">                    } catch (InterruptedException e) {</span>
+<span class="nc" id="L210">                    } catch (InterruptedException e) {</span>
                         
-<span class="nc" id="L211">                        LOGGER.log(</span>
+<span class="nc" id="L212">                        LOGGER.log(</span>
                             LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L213">                            String.format(&quot;Payload creation error: %s&quot;, e.getMessage())</span>
+<span class="nc" id="L214">                            String.format(&quot;Payload creation error: %s&quot;, e.getMessage())</span>
                         );
-<span class="nc" id="L215">                        Thread.currentThread().interrupt();</span>
-<span class="nc" id="L216">                    }</span>
-<span class="nc" id="L217">                },</span>
+<span class="nc" id="L216">                        Thread.currentThread().interrupt();</span>
+<span class="nc" id="L217">                    }</span>
+<span class="nc" id="L218">                },</span>
                 &quot;ThreadGetShell&quot;
-<span class="nc" id="L219">            ).start());</span>
-<span class="nc" id="L220">        }</span>
+<span class="nc" id="L220">            ).start());</span>
+<span class="nc" id="L221">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

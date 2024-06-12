@@ -179,7 +179,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L179">            hasFoundInjection = this.mediatorMethod.getHeader().testParameters(hasFoundInjection);</span>
 <span class="fc" id="L180">            hasFoundInjection = this.mediatorUtils.getCookiesUtil().testParameters(hasFoundInjection);</span>
 
-<span class="fc bfc" id="L182" title="All 4 branches covered.">            if (hasFoundInjection &amp;&amp; !this.isScanning) {</span>
+<span class="pc bpc" id="L182" title="1 of 4 branches missed.">            if (hasFoundInjection &amp;&amp; !this.isScanning) {</span>
                 
 <span class="fc bfc" id="L184" title="All 2 branches covered.">                if (this.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {</span>
                     
@@ -207,15 +207,15 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="nc" id="L207">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
 <span class="nc" id="L208">            Thread.currentThread().interrupt();</span>
             
-<span class="fc" id="L210">        } catch (JSqlException | IOException e) {  // Catch expected exceptions only</span>
+<span class="nc" id="L210">        } catch (JSqlException | IOException e) {  // Catch expected exceptions only</span>
 
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">            if (e.getMessage() == null) {</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">            if (e.getMessage() == null) {</span>
 <span class="nc" id="L213">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Unexpected: {}&quot;, getImplicitReason(e));</span>
             } else {
-<span class="fc" id="L215">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Unexpected: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L215">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Unexpected: {}&quot;, e.getMessage());</span>
             }
 
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">            if (e.toString().contains(&quot;HTTP/1.1&quot;)) {</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">            if (e.toString().contains(&quot;HTTP/1.1&quot;)) {</span>
 
 <span class="nc" id="L220">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Something went wrong with HTTP/2, try to switch manually to HTTP/1.1 in preferences&quot;);</span>
             }
@@ -727,9 +727,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      */
     public void sendResponseFromSite(String message, String source) {
         
-<span class="fc" id="L730">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{}, response from site:&quot;, message);</span>
-<span class="fc" id="L731">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;&gt;&gt;&gt;{}&quot;, source);</span>
-<span class="fc" id="L732">    }</span>
+<span class="nc" id="L730">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;{}, response from site:&quot;, message);</span>
+<span class="nc" id="L731">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;&gt;&gt;&gt;{}&quot;, source);</span>
+<span class="nc" id="L732">    }</span>
     
     public void displayVersion() {
         
