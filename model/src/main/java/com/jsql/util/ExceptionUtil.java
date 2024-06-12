@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Set;
@@ -77,7 +78,7 @@ public class ExceptionUtil {
                     String stackTrace = ExceptionUtils.getStackTrace(throwable).trim();
                     var passwordString = String.valueOf(stackTrace.toCharArray());
 
-                    byte[] passwordByte = passwordString.getBytes();
+                    byte[] passwordByte = passwordString.getBytes(StandardCharsets.UTF_8);
                     md.update(passwordByte, 0, passwordByte.length);
 
                     byte[] encodedPassword = md.digest();

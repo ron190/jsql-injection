@@ -1,9 +1,9 @@
 {
     "version": "0.98",
     "news": [
-        "[Thanks to all GitHub contributors] Anyone can contribute and do code reviews, improve documentation and create pull request. Share you contribution and add a Star to GitHub at https://github.com/ron190/jsql-injection",
+        "[Thanks to GitHub contributors] Anyone can contribute, do code reviews, improve documentation and create pull request. Share you contribution and add a Star to GitHub at https://github.com/ron190/jsql-injection",
         "[Contribute to the wiki] Open a pull request to improve documentation at https://github.com/ron190/jsql-injection/wiki",
-        "[News] Automatic report is restored in v0.98, use it to translate menus and buttons and to open issues to GitHub directly from jSQL toolbar",
-        "[Test reports] The auto-generated reports created on commit are now published to the wiki, you can review reports at https://github.com/ron190/jsql-injection/wiki/Programming-jSQL#generated-documentation-and-metrics"
+        "[News] Automatic report is restored in v0.98, translate menus and buttons and open issues to GitHub directly from jSQL menu",
+        "[Test reports] Auto-generated reports are now published in the wiki, review reports and Maven site at https://github.com/ron190/jsql-injection/wiki/Programming-jSQL"
     ]
 }

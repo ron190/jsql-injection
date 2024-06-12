@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Action to export a JList.
@@ -108,7 +109,7 @@ public class MenuActionExport implements ActionListener {
 
         try (
             var file = new FileOutputStream(importFileDialog.getSelectedFile());
-            var out = new PrintStream(file)
+            var out = new PrintStream(file, false, StandardCharsets.UTF_8)
         ) {
             int len = this.myList.getModel().getSize();
             

@@ -1,5 +1,7 @@
 package com.jsql.util.bruter;
 
+import java.nio.charset.StandardCharsets;
+
 /*************************************************************************
  *  Compilation:  javac CRC16.java
  *  Execution:    java CRC16 s
@@ -60,7 +62,7 @@ public class Crc16Helper {
         };
 
 
-        byte[] bytes = baseString.getBytes();
+        byte[] bytes = baseString.getBytes(StandardCharsets.UTF_8);
         var crc = 0x0000;
         for (byte b : bytes) {
             crc = (crc >>> 8) ^ table[(crc ^ b) & 0xff];

@@ -2,6 +2,7 @@ package com.jsql.util.bruter;
 
 import com.jsql.util.StringUtil;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.CRC32;
@@ -15,7 +16,7 @@ public class HashUtil {
     
     public static String toAdler32(String text) {
 
-        byte[] bytes = text.getBytes();
+        byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
         Checksum checksum = new java.util.zip.Adler32();
         checksum.update(bytes,0,bytes.length);
         
@@ -29,7 +30,7 @@ public class HashUtil {
     
     public static String toCrc64(String text) {
         
-        return Crc64Helper.generateCRC64(text.getBytes());
+        return Crc64Helper.generateCRC64(text.getBytes(StandardCharsets.UTF_8));
     }
     
     public static String toMySql(String textInput) throws NoSuchAlgorithmException {
@@ -38,14 +39,14 @@ public class HashUtil {
         
         var password = String.valueOf(textInput.toCharArray());
         
-        byte[] passwordBytes = password.getBytes();
+        byte[] passwordBytes = password.getBytes(StandardCharsets.UTF_8);
         md.update(passwordBytes, 0, passwordBytes.length);
         
         byte[] hashSHA1 = md.digest();
         var stringSHA1 = HashUtil.digestToHexString(hashSHA1);
         
         var passwordSHA1 = String.valueOf(StringUtil.hexstr(stringSHA1).toCharArray());
-        byte[] passwordSHA1Bytes = passwordSHA1.getBytes();
+        byte[] passwordSHA1Bytes = passwordSHA1.getBytes(StandardCharsets.UTF_8);
         
         md.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);
         byte[] hashSHA1SH1 = md.digest();
@@ -55,7 +56,7 @@ public class HashUtil {
 
     public static String toCrc32(String textInput) {
         
-        byte[] bytes = textInput.getBytes();
+        byte[] bytes = textInput.getBytes(StandardCharsets.UTF_8);
         
         Checksum checksum = new CRC32();
         checksum.update(bytes, 0, bytes.length);
@@ -70,7 +71,7 @@ public class HashUtil {
         MessageDigest md = new DigestMD4();
 
         var passwordString = String.valueOf(textInput.toCharArray());
-        byte[] passwordByte = passwordString.getBytes();
+        byte[] passwordByte = passwordString.getBytes(StandardCharsets.UTF_8);
         
         md.update(passwordByte, 0, passwordByte.length);
         byte[] encodedPassword = md.digest();
@@ -83,7 +84,7 @@ public class HashUtil {
         var md = MessageDigest.getInstance(nameMethod);
         
         var passwordString = String.valueOf(textInput.toCharArray());
-        byte[] passwordByte = passwordString.getBytes();
+        byte[] passwordByte = passwordString.getBytes(StandardCharsets.UTF_8);
         
         md.update(passwordByte, 0, passwordByte.length);
         byte[] encodedPassword = md.digest();

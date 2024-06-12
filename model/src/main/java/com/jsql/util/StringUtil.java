@@ -140,7 +140,7 @@ public final class StringUtil {
             bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
         
-        return new String(bytes);
+        return new String(bytes, StandardCharsets.UTF_8);
     }
     
     public static boolean isUtf8(String text) {
@@ -151,7 +151,7 @@ public final class StringUtil {
         }
         
         var detector = new UniversalDetector(null);
-        detector.handleData(text.getBytes(), 0, text.length() - 1);
+        detector.handleData(text.getBytes(StandardCharsets.UTF_8), 0, text.length() - 1);
         detector.dataEnd();
         String encoding = detector.getDetectedCharset();
         
@@ -170,7 +170,7 @@ public final class StringUtil {
         // ArrayIndexOutOfBoundsException on handleData()
         try {
             var detector = new UniversalDetector(null);
-            detector.handleData(text.getBytes(), 0, text.length() - 1);
+            detector.handleData(text.getBytes(StandardCharsets.UTF_8), 0, text.length() - 1);
             detector.dataEnd();
             encoding = detector.getDetectedCharset();
             
@@ -260,7 +260,7 @@ public final class StringUtil {
         
         var out = new ByteArrayOutputStream();
         var gzip = new GZIPOutputStream(out);
-        gzip.write(str.getBytes());
+        gzip.write(str.getBytes(StandardCharsets.UTF_8));
         gzip.close();
         
         return out.toString(StandardCharsets.ISO_8859_1);

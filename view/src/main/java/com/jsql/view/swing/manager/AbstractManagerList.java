@@ -27,6 +27,7 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -83,7 +84,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
 
         try (
             var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(nameFile);
-            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream));
+            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
             var reader = new BufferedReader(inputStreamReader)
         ) {
             String line;

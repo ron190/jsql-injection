@@ -773,7 +773,7 @@ public class ResourceAccess {
             .POST(
                 BodyPublishers.ofByteArrays(
                     Arrays.asList(
-                        headerForm.getBytes(),
+                        headerForm.getBytes(StandardCharsets.UTF_8),
                         Files.readAllBytes(Paths.get(file.toURI())),
                         headerFile.getBytes()
                     )

@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -61,7 +62,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         
         try (
             var inputStream = UiUtil.class.getClassLoader().getResourceAsStream(UiUtil.PATH_WEB_FOLDERS);
-            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream));
+            var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
             var reader = new BufferedReader(inputStreamReader)
         ) {
             String line;

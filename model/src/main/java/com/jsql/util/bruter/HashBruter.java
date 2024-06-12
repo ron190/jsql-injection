@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 
 public class HashBruter extends Bruter {
@@ -77,7 +78,7 @@ public class HashBruter extends Bruter {
                     case "adler32": this.generatedHash = HashUtil.toAdler32(baseString); break;
                     case "crc16":   this.generatedHash = Crc16Helper.generateCRC16(baseString); break;
                     case "crc32":   this.generatedHash = HashUtil.toCrc32(baseString); break;
-                    case "crc64":   this.generatedHash = Crc64Helper.generateCRC64(baseString.getBytes()); break;
+                    case "crc64":   this.generatedHash = Crc64Helper.generateCRC64(baseString.getBytes(StandardCharsets.UTF_8)); break;
                     case "mysql":   this.generatedHash = HashUtil.toMySql(baseString); break;
                     case "md4":     this.generatedHash = HashUtil.toMd4(baseString); break;
                     default:        this.generatedHash = HashUtil.toHash(this.type, baseString); break;

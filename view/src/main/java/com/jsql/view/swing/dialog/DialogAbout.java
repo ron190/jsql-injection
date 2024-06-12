@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
@@ -164,7 +165,7 @@ public class DialogAbout extends JDialog {
             
             try (
                 InputStream inputStream = DialogAbout.class.getClassLoader().getResourceAsStream("swing/about.htm");
-                var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream));
+                var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8);
                 var reader = new BufferedReader(inputStreamReader)
             ) {
                 String line;

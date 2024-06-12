@@ -1,5 +1,6 @@
 package com.jsql.util.bruter;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class Base58 {
@@ -69,7 +70,7 @@ public class Base58 {
 
         byte[] output = copyOfRange(temp, j, temp.length);
         
-        return new String(output);
+        return new String(output, StandardCharsets.UTF_8);
     }
 
     public static byte[] decode(String input) {

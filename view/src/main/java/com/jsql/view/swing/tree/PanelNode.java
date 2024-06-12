@@ -129,8 +129,11 @@ public class PanelNode extends JPanel {
             this.label.setVisible(true);
             this.textFieldEditable.setVisible(false);
             tree.requestFocusInWindow();
-            
-            nodeModel.getElementDatabase().setElementValue(new String(this.textFieldEditable.getText().getBytes(StandardCharsets.UTF_8)));
+
+            nodeModel.getElementDatabase().setElementValue(new String(
+                this.textFieldEditable.getText().getBytes(StandardCharsets.UTF_8),
+                StandardCharsets.UTF_8
+            ));
             this.label.setText(UiStringUtil.detectUtf8Html(nodeModel.getElementDatabase().getLabelCount()));
             
             tree.revalidate();

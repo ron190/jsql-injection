@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -323,7 +324,7 @@ public class DnDList extends JList<ItemList> {
         int endPosition = startPosition;
         
         try (
-            var fileReader = new FileReader(file);
+            var fileReader = new FileReader(file, StandardCharsets.UTF_8);
             var bufferedReader = new BufferedReader(fileReader)
         ) {
             

@@ -26,6 +26,7 @@ import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Save the content of tab in a file.
@@ -96,7 +97,7 @@ public class ActionSaveTab extends AbstractAction {
         
         var fileSelected = this.filechooser.getSelectedFile();
         
-        try (var fileWriterExcel = new FileWriter(fileSelected)) {
+        try (var fileWriterExcel = new FileWriter(fileSelected, StandardCharsets.UTF_8)) {
             
             var tableModel = tableResults.getModel();
             
@@ -147,7 +148,7 @@ public class ActionSaveTab extends AbstractAction {
         var fileSelected = this.filechooser.getSelectedFile();
         
         try (
-            var fileWriter = new FileWriter(fileSelected);
+            var fileWriter = new FileWriter(fileSelected, StandardCharsets.UTF_8);
             var fileOut = new BufferedWriter(fileWriter)
         ) {
             textarea.write(fileOut);

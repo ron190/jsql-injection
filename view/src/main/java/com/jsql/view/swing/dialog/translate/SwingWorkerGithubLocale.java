@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -151,7 +152,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             var uri = ClassLoader.getSystemResource("i18n/jsql.properties").toURI();
             var path = Paths.get(uri);
             byte[] root = Files.readAllBytes(path);
-            var rootI18n = new String(root);
+            var rootI18n = new String(root, StandardCharsets.UTF_8);
             String rootI18nFixed = Pattern.compile(LINE_FEED).matcher(Matcher.quoteReplacement(rootI18n)).replaceAll(LINE_FEED_ESCAPE);
             
             this.propertiesRoot.load(new StringReader(rootI18nFixed));
@@ -193,7 +194,7 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
             
             var path = Paths.get(uri);
             byte[] root = Files.readAllBytes(path);
-            var localeI18n = new String(root);
+            var localeI18n = new String(root, StandardCharsets.UTF_8);
             String localeI18nFixed = Pattern.compile(LINE_FEED).matcher(localeI18n).replaceAll(LINE_FEED_ESCAPE);
             
             this.propertiesLanguageToTranslate.load(new StringReader(localeI18nFixed));
