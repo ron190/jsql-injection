@@ -5,7 +5,14 @@
         <version>1.12.0</version>
     </skin>
     <body>
+        <links>
+            <item name="Back to GitHub" href="https://github.com/ron190/jsql-injection" />
+        </links>
         <menu ref="reports" />
+        <menu name="Additional reports">
+            <item name="Code coverage" href="/jacoco/" />
+            <item name="Mutation coverage" href="/pit-reports/" />
+        </menu>
         <menu ref="parent" />
     </body>
 </project>

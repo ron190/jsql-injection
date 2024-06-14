@@ -775,7 +775,7 @@ public class ResourceAccess {
                     Arrays.asList(
                         headerForm.getBytes(StandardCharsets.UTF_8),
                         Files.readAllBytes(Paths.get(file.toURI())),
-                        headerFile.getBytes()
+                        headerFile.getBytes(StandardCharsets.UTF_8)
                     )
                 )
             )

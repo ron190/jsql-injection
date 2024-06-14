@@ -5,6 +5,9 @@
         <version>1.12.0</version>
     </skin>
     <body>
+        <links>
+            <item name="Back to GitHub" href="https://github.com/ron190/jsql-injection" />
+        </links>
         <menu ref="reports" />
         <menu ref="modules" />
     </body>

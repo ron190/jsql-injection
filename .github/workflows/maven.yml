@@ -118,6 +118,8 @@ jobs:
             pmd:pmd \
             spotbugs:check \
             versions:dependency-updates-report \
+            checkstyle:checkstyle \
+            jdepend:generate \
             site
         '
 
