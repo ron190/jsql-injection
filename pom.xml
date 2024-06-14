@@ -151,7 +151,6 @@
                     <reportSet>
                         <reports>
                             <report>report</report>
-                            <report>report-aggregate</report>
                             <report>report-integration</report>
                         </reports>
                     </reportSet>
