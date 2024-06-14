@@ -119,7 +119,6 @@ jobs:
             spotbugs:check \
             versions:dependency-updates-report \
             checkstyle:checkstyle \
-            jdepend:generate \
             site
         '
 
