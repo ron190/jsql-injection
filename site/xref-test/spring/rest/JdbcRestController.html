@@ -372,12 +372,12 @@
 <a class="jxr_linenumber" name="L364" href="#L364">364</a>         <strong class="jxr_keyword">try</strong> (org.neo4j.driver.Session session = <strong class="jxr_keyword">this</strong>.driver.session()) {
 <a class="jxr_linenumber" name="L365" href="#L365">365</a>             Result result = session.run(<span class="jxr_string">"MATCH (n:Person) where 1="</span>+ name +<span class="jxr_string">" RETURN n.name, n.from, n.title, n.hobby"</span>);
 <a class="jxr_linenumber" name="L366" href="#L366">366</a>             
-<a class="jxr_linenumber" name="L367" href="#L367">367</a>             String a = result.stream().map(record -&gt;
+<a class="jxr_linenumber" name="L367" href="#L367">367</a>             String a = result.stream().map(driverRecord -&gt;
 <a class="jxr_linenumber" name="L368" href="#L368">368</a>             
-<a class="jxr_linenumber" name="L369" href="#L369">369</a>                 record
+<a class="jxr_linenumber" name="L369" href="#L369">369</a>                 driverRecord
 <a class="jxr_linenumber" name="L370" href="#L370">370</a>                 .keys()
 <a class="jxr_linenumber" name="L371" href="#L371">371</a>                 .stream()
-<a class="jxr_linenumber" name="L372" href="#L372">372</a>                 .map(key -&gt; key + <span class="jxr_string">"="</span> + record.get(key))
+<a class="jxr_linenumber" name="L372" href="#L372">372</a>                 .map(key -&gt; key + <span class="jxr_string">"="</span> + driverRecord.get(key))
 <a class="jxr_linenumber" name="L373" href="#L373">373</a>                 .collect(Collectors.joining(<span class="jxr_string">", "</span>, <span class="jxr_string">"{"</span>, <span class="jxr_string">"}"</span>))
 <a class="jxr_linenumber" name="L374" href="#L374">374</a>                 
 <a class="jxr_linenumber" name="L375" href="#L375">375</a>             ).collect(Collectors.joining());
