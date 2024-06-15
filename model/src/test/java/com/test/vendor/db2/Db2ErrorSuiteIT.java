@@ -6,7 +6,6 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junitpioneer.jupiter.RetryingTest;
 
 public class Db2ErrorSuiteIT extends ConcreteDb2SuiteIT {
     //Unstable

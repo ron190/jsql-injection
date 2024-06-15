@@ -17,7 +17,7 @@
         <commons-io.version>2.16.1</commons-io.version>
         <junit-jupiter-engine.version>5.10.2</junit-jupiter-engine.version>
         <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
-        <maven-assembly-plugin.version>3.6.0</maven-assembly-plugin.version>
+        <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
         <mockito-inline.version>5.2.0</mockito-inline.version>
     </properties>
 
@@ -155,7 +155,7 @@
                     <failIfNoTests>true</failIfNoTests>
                     <!-- ignore warn during UTs: 'module java.base does not "opens java.util" to unnamed module' -->
                     <argLine>@{argLine} --add-opens=java.base/java.util=ALL-UNNAMED</argLine>
-<!--                    <rerunFailingTestsCount>2</rerunFailingTestsCount>-->
+                    <rerunFailingTestsCount>2</rerunFailingTestsCount>
                     <includes>
                         <include>**/*UiTest</include>
                     </includes>

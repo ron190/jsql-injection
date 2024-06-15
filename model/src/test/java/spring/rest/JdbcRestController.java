@@ -364,12 +364,12 @@ public class JdbcRestController {
         try (org.neo4j.driver.Session session = this.driver.session()) {
             Result result = session.run("MATCH (n:Person) where 1="+ name +" RETURN n.name, n.from, n.title, n.hobby");
             
-            String a = result.stream().map(record ->
+            String a = result.stream().map(driverRecord ->
             
-                record
+                driverRecord
                 .keys()
                 .stream()
-                .map(key -> key + "=" + record.get(key))
+                .map(key -> key + "=" + driverRecord.get(key))
                 .collect(Collectors.joining(", ", "{", "}"))
                 
             ).collect(Collectors.joining());

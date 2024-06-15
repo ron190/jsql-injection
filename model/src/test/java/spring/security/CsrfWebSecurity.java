@@ -32,7 +32,7 @@ public class CsrfWebSecurity {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/csrf/**")).permitAll()
             )
-            .csrf((csrf) -> csrf
+            .csrf(csrf -> csrf
                 .csrfTokenRepository(tokenRepository)
                 .csrfTokenRequestHandler(requestHandler)
                 .requireCsrfProtectionMatcher(

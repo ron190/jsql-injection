@@ -13,6 +13,8 @@ import com.jsql.view.swing.manager.ManagerScan;
 import com.jsql.view.swing.util.MediatorHelper;
 import org.apache.commons.codec.DecoderException;
 import org.apache.logging.log4j.util.Strings;
+import org.assertj.swing.core.BasicRobot;
+import org.assertj.swing.core.Robot;
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.data.Index;
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
@@ -24,6 +26,7 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Safelist;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -48,11 +51,16 @@ class ApplicationUiTest {
 
     private static final Connection connection = Mockito.mock(Connection.class);
     private static final Document document = Mockito.mock(Document.class);
+    private static MockedStatic<Jsoup> utilities;
+    private static Robot robot;
 
     @BeforeAll
     static void setUpOnce() {
 
         FailOnThreadViolationRepaintManager.install();
+        robot = BasicRobot.robotWithNewAwtHierarchy();
+        robot.settings().delayBetweenEvents(240);
+        robot.settings().eventPostingDelay(400);
 
         InjectionModel injectionModel = new InjectionModel();
         MediatorHelper.register(injectionModel);
@@ -60,15 +68,36 @@ class ApplicationUiTest {
         // Static mock on current ThreadLocal
         JFrameView frame = GuiActionRunner.execute(() -> {
 
-            // Static mock on current ThreadLocal
-            ApplicationUiTest.initMockAdminPage();
+            if (utilities != null) {
+                utilities.close();
+            }
+
+            utilities = Mockito.mockStatic(Jsoup.class);
+
+            utilities.when(() -> Jsoup.connect(ArgumentMatchers.anyString())).thenReturn(connection);
+            utilities.when(() -> Jsoup.clean(ArgumentMatchers.anyString(), ArgumentMatchers.any(Safelist.class))).thenReturn("cleaned");
+
+            Mockito.when(connection.ignoreContentType(ArgumentMatchers.anyBoolean())).thenReturn(connection);
+            Mockito.when(connection.ignoreHttpErrors(ArgumentMatchers.anyBoolean())).thenReturn(connection);
+
+            Mockito.when(connection.get()).thenReturn(document);
+            Mockito.when(document.html()).thenReturn("<html><input/>test</html>");
+
+            Mockito.when(document.text()).thenReturn("<html><input/>test</html>");
+            utilities.when(() -> Jsoup.parse(Mockito.anyString())).thenReturn(document);
 
             return new JFrameView();
         });
 
-        window = new FrameFixture(frame);
+        window = new FrameFixture(robot, frame);
 
         injectionModel.subscribe(frame.getSubscriber());
+    }
+
+    @AfterAll  // when all test methods end, keeps class active
+    static void afterAll()  {
+        window.cleanUp();  // allow mvn retry
+        robot.cleanUp();
     }
 
     @Test
@@ -926,23 +955,6 @@ class ApplicationUiTest {
         } catch (Exception e) {
             Assertions.fail();
         }
-    }
-
-    private static void initMockAdminPage() throws IOException {
-
-        MockedStatic<Jsoup> utilities = Mockito.mockStatic(Jsoup.class);
-
-        utilities.when(() -> Jsoup.connect(ArgumentMatchers.anyString())).thenReturn(connection);
-        utilities.when(() -> Jsoup.clean(ArgumentMatchers.anyString(), ArgumentMatchers.any(Safelist.class))).thenReturn("cleaned");
-
-        Mockito.when(connection.ignoreContentType(ArgumentMatchers.anyBoolean())).thenReturn(connection);
-        Mockito.when(connection.ignoreHttpErrors(ArgumentMatchers.anyBoolean())).thenReturn(connection);
-
-        Mockito.when(connection.get()).thenReturn(document);
-        Mockito.when(document.html()).thenReturn("<html><input/>test</html>");
-
-        Mockito.when(document.text()).thenReturn("<html><input/>test</html>");
-        utilities.when(() -> Jsoup.parse(Mockito.anyString())).thenReturn(document);
     }
 
     private static void verifyMockAdminPage() throws IOException {
