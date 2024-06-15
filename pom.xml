@@ -159,7 +159,7 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>LATEST</version>
+                <version>1.16.1</version>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -176,7 +176,7 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>LATEST</version>
+                <version>1.16.1</version>
             </plugin>
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
