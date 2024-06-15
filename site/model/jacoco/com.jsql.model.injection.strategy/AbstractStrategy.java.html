@@ -4,7 +4,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -30,19 +29,19 @@ public abstract class AbstractStrategy {
      * HTML body of page successfully responding to
      * multiple fields selection (select 1,2,3,..).
      */
-<span class="fc" id="L33">    protected String sourceIndexesFound = StringUtils.EMPTY;</span>
+<span class="fc" id="L32">    protected String sourceIndexesFound = StringUtils.EMPTY;</span>
     
     /**
      * True if injection can be used, false otherwise.
      */
-<span class="fc" id="L38">    protected boolean isApplicable = false;</span>
+<span class="fc" id="L37">    protected boolean isApplicable = false;</span>
 
     protected final InjectionModel injectionModel;
     
-<span class="fc" id="L42">    protected AbstractStrategy(InjectionModel injectionModel) {</span>
+<span class="fc" id="L41">    protected AbstractStrategy(InjectionModel injectionModel) {</span>
         
-<span class="fc" id="L44">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L43">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L44">    }</span>
 
     /**
      * Test if this strategy can be used to inject SQL.
@@ -83,52 +82,52 @@ public abstract class AbstractStrategy {
     
     public void markVulnerability(Interaction message, int... indexErrorStrategy) {
         
-<span class="fc" id="L86">        var request = new Request();</span>
-<span class="fc" id="L87">        request.setMessage(message);</span>
+<span class="fc" id="L85">        var request = new Request();</span>
+<span class="fc" id="L86">        request.setMessage(message);</span>
         
-<span class="fc" id="L89">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="fc" id="L90">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
+<span class="fc" id="L88">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L89">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
         
         // Ellipse default to non null array
-<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (indexErrorStrategy.length &gt; 0) {</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (indexErrorStrategy.length &gt; 0) {</span>
             
-<span class="fc" id="L95">            msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);</span>
-<span class="fc" id="L96">            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);</span>
+<span class="fc" id="L94">            msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);</span>
+<span class="fc" id="L95">            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);</span>
         }
 
-<span class="fc" id="L99">        request.setParameters(msgHeader);</span>
-<span class="fc" id="L100">        this.injectionModel.sendToViews(request);</span>
-<span class="fc" id="L101">    }</span>
+<span class="fc" id="L98">        request.setParameters(msgHeader);</span>
+<span class="fc" id="L99">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L100">    }</span>
     
     @Override
     public String toString() {
-<span class="fc" id="L105">        return this.getName();</span>
+<span class="fc" id="L104">        return this.getName();</span>
     }
 
     // Getter and setter
     
     public boolean isApplicable() {
-<span class="fc" id="L111">        return this.isApplicable;</span>
+<span class="fc" id="L110">        return this.isApplicable;</span>
     }
     
     public void setApplicable(boolean isApplicable) {
-<span class="fc" id="L115">        this.isApplicable = isApplicable;</span>
-<span class="fc" id="L116">    }</span>
+<span class="fc" id="L114">        this.isApplicable = isApplicable;</span>
+<span class="fc" id="L115">    }</span>
     
     public String getVisibleIndex() {
-<span class="fc" id="L119">        return this.visibleIndex;</span>
+<span class="fc" id="L118">        return this.visibleIndex;</span>
     }
 
     public void setVisibleIndex(String visibleIndex) {
-<span class="fc" id="L123">        this.visibleIndex = visibleIndex;</span>
-<span class="fc" id="L124">    }</span>
+<span class="fc" id="L122">        this.visibleIndex = visibleIndex;</span>
+<span class="fc" id="L123">    }</span>
 
     public String getSourceIndexesFound() {
-<span class="nc" id="L127">        return this.sourceIndexesFound;</span>
+<span class="nc" id="L126">        return this.sourceIndexesFound;</span>
     }
 
     public void setSourceIndexesFound(String sourceIndexesFound) {
-<span class="fc" id="L131">        this.sourceIndexesFound = sourceIndexesFound;</span>
-<span class="fc" id="L132">    }</span>
+<span class="fc" id="L130">        this.sourceIndexesFound = sourceIndexesFound;</span>
+<span class="fc" id="L131">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

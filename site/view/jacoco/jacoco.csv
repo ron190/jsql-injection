@@ -18,7 +18,7 @@ view,com.jsql.view.swing.util,I18nViewUtil,18,54,2,4,3,14,2,7,0,6
 view,com.jsql.view.swing.util,UiUtil,29,1281,3,3,7,219,3,17,0,17
 view,com.jsql.view.swing.table,ActionShowSearch,9,9,0,0,3,4,1,1,1,1
 view,com.jsql.view.swing.table,FixedColumnTable,52,231,4,6,8,43,5,6,2,4
-view,com.jsql.view.swing.table,PanelTable,33,393,2,4,9,88,5,11,3,10
+view,com.jsql.view.swing.table,PanelTable,33,394,2,4,9,88,5,11,3,10
 view,com.jsql.view.swing.table,ActionCloseSearch,14,12,0,0,4,5,1,1,1,1
 view,com.jsql.view.swing.table,AdjusterTableColumn.ToggleAction,28,12,8,0,5,4,5,1,1,1
 view,com.jsql.view.swing.table,ComparatorColumn,53,3,8,0,20,1,5,1,1,1
@@ -74,7 +74,7 @@ view,com.jsql.view.swing.manager,ManagerCoder,0,485,0,2,0,86,0,9,0,8
 view,com.jsql.view.swing.manager,ManagerAdminPage,134,128,14,0,31,27,13,3,6,3
 view,com.jsql.view.swing.panel.consoles,CenterRenderer,0,6,0,0,0,3,0,1,0,1
 view,com.jsql.view.swing.panel.consoles,NetworkTable,0,224,1,3,0,47,1,7,0,6
-view,com.jsql.view.swing.panel.consoles,CenterRendererWithColor,71,38,15,5,15,8,10,3,1,2
+view,com.jsql.view.swing.panel.consoles,CenterRendererWithColor,72,38,15,5,15,8,10,3,1,2
 view,com.jsql.view.swing.panel.consoles,TooltipCellRenderer,0,33,0,0,0,6,0,2,0,2
 view,com.jsql.view.swing.panel.consoles,NetworkTable.new DefaultTableModel() {...},0,44,0,0,0,7,0,3,0,3
 view,com.jsql.view.swing.panel.consoles,NetworkTable.new MouseAdapter() {...},35,14,1,1,8,4,1,2,0,2
@@ -83,7 +83,7 @@ view,com.jsql.view.swing.panel.split,ActionHideShowConsole,0,67,2,8,0,22,2,5,0,2
 view,com.jsql.view.swing.panel.split,SplitHorizontalTopBottom,5,206,0,0,2,50,2,6,2,6
 view,com.jsql.view.swing.panel.split,ActionHideShowResult,22,30,6,2,7,10,4,2,0,2
 view,com.jsql.view.swing.panel.address,ActionStart,46,83,5,3,13,23,5,4,1,4
-view,com.jsql.view.swing.panel.address,AddressMenuBar,227,512,28,20,49,108,25,19,8,12
+view,com.jsql.view.swing.panel.address,AddressMenuBar,227,514,28,20,49,108,25,19,8,12
 view,com.jsql.view.swing.panel.address,RequestPanel,33,202,2,4,10,34,4,5,3,3
 view,com.jsql.view.swing.panel.address,AddressMenuBar.new JRadioButtonMenuItem() {...},24,13,0,0,6,1,1,1,1,1
 view,com.jsql.view.swing.panel.address,ActionEnterAddressBar,10,4,2,0,3,2,2,1,1,1
@@ -178,7 +178,7 @@ view,com.jsql.view.swing.list,ItemListScan,0,18,0,0,0,5,0,3,0,3
 view,com.jsql.view.swing.list,BeanInjection,12,108,0,2,4,38,0,12,0,11
 view,com.jsql.view.swing.dialog,DialogAbout.new FocusAdapter() {...},11,9,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.dialog,DialogAbout.new MouseAdapter() {...},8,9,0,0,3,1,1,1,1,1
-view,com.jsql.view.swing.dialog,DialogTranslate,54,374,2,0,16,69,7,10,6,10
+view,com.jsql.view.swing.dialog,DialogTranslate,55,375,2,0,16,69,7,10,6,10
 view,com.jsql.view.swing.dialog,ReplaceFileChooser,44,4,8,0,17,2,6,1,1,1
 view,com.jsql.view.swing.dialog,DialogAbout,44,322,2,2,13,72,3,10,2,9
 view,com.jsql.view.swing.dialog,DialogTranslate.new MouseAdapter() {...},9,6,0,0,3,1,1,1,1,1
@@ -351,7 +351,7 @@ view,com.jsql.view.swing.manager.util,MenuBarCoder.MenuItemListener,15,6,0,0,4,1
 view,com.jsql.view.swing.shell,ShellSql,14,9,0,0,2,3,1,1,1,1
 view,com.jsql.view.swing.shell,KeyAdapterTerminal.new SwingWorker() {...},0,48,0,2,0,11,0,3,0,2
 view,com.jsql.view.swing.shell,KeyAdapterTerminal,145,268,21,37,26,62,16,23,1,9
-view,com.jsql.view.swing.shell,BlockCaret,10,111,3,13,6,32,3,9,0,4
+view,com.jsql.view.swing.shell,BlockCaret,9,112,2,14,5,33,2,10,0,4
 view,com.jsql.view.swing.shell,AbstractShell,44,284,5,7,8,67,5,15,0,14
 view,com.jsql.view.swing.shell,ShellWeb,0,17,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.shell,EmptyFocus,23,9,0,0,10,5,4,2,4,2
