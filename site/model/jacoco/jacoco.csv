@@ -10,7 +10,7 @@ model,com.jsql.model.bean.util,Interaction,0,364,0,0,0,55,0,3,0,3
 model,com.jsql.model.bean.util,HttpHeader,36,0,0,0,13,0,7,0,7,0
 model,com.jsql.model.accessible,CallableHttpHead,62,142,2,2,12,40,3,6,1,6
 model,com.jsql.model.accessible,DataAccess,186,787,9,19,45,153,11,18,4,11
-model,com.jsql.model.accessible,ResourceAccess,649,1341,48,70,151,289,54,48,17,26
+model,com.jsql.model.accessible,ResourceAccess,650,1341,48,70,151,289,54,48,17,26
 model,com.jsql.model.accessible,CallableFile,26,84,4,0,8,19,2,6,0,6
 model,com.jsql.model.injection.strategy,StrategyInjectionTime,0,227,0,14,0,51,0,23,0,16
 model,com.jsql.model.injection.strategy,AbstractStrategy,3,84,0,2,1,24,1,9,1,8
