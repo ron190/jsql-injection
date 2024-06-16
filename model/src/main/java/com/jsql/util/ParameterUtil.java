@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.net.IDN;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -89,7 +90,14 @@ public class ParameterUtil {
                     throw new MalformedURLException("unknown URL protocol");
                 }
             }
-                     
+
+            String authority = URI.create(urlQueryFixed).getAuthority();
+            String authorityPunycode = IDN.toASCII(authority);
+            if (!authority.equals(authorityPunycode)) {
+                LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Punycode domain detected, using [{}] instead of [{}]", authorityPunycode, authority);
+                urlQueryFixed = urlQueryFixed.replace(authority, authorityPunycode);
+            }
+
             this.initializeQueryString(urlQueryFixed);
             this.initializeHeader(rawHeader);
             this.initializeRequest(rawRequest);

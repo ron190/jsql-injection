@@ -58,6 +58,8 @@ class ApplicationUiTest {
     static void setUpOnce() {
 
         FailOnThreadViolationRepaintManager.install();
+
+        // fix linux instabilities
         robot = BasicRobot.robotWithNewAwtHierarchy();
         robot.settings().delayBetweenEvents(240);
         robot.settings().eventPostingDelay(400);
