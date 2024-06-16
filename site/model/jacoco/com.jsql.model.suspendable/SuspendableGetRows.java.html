@@ -96,7 +96,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 <span class="fc" id="L96">            if (</span>
 <span class="pc bpc" id="L97" title="1 of 6 branches missed.">                (!regexLeadFound.find() || regexTrailOnlyFound.find())</span>
                 &amp;&amp; isMultipleRows
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">                &amp;&amp; StringUtils.isNotEmpty(slidingWindowAllRows.toString())</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">                &amp;&amp; StringUtils.isNotEmpty(slidingWindowAllRows.toString())</span>
             ) {
                 
 <span class="fc" id="L102">                this.sendProgress(countRowsToFind, countRowsToFind, elementDatabase);</span>
@@ -117,7 +117,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 <span class="fc" id="L117">                slidingWindowCurrentRow.append(currentChunk);</span>
 <span class="fc" id="L118">                this.sendChunk(currentChunk);</span>
                 
-<span class="nc" id="L120">            } catch (IllegalArgumentException | IllegalStateException | OutOfMemoryError e) {</span>
+<span class="fc" id="L120">            } catch (IllegalArgumentException | IllegalStateException | OutOfMemoryError e) {</span>
                 
 <span class="nc" id="L122">                this.endInjection(elementDatabase, e);</span>
 <span class="fc" id="L123">            }</span>
@@ -285,7 +285,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         
         // Premature end of results
         // if it's not the root (empty tree)
-<span class="nc bnc" id="L288" title="All 2 branches missed.">        if (searchName != null) {</span>
+<span class="pc bpc" id="L288" title="1 of 2 branches missed.">        if (searchName != null) {</span>
             
 <span class="nc" id="L290">            var request = new Request();</span>
 <span class="nc" id="L291">            request.setMessage(Interaction.END_PROGRESS);</span>
@@ -293,17 +293,17 @@ public class SuspendableGetRows extends AbstractSuspendable {
 <span class="nc" id="L293">            this.injectionModel.sendToViews(request);</span>
         }
 
-<span class="nc" id="L296">        var messageError = new StringBuilder(&quot;Fetching fails: no data to parse&quot;);</span>
+<span class="fc" id="L296">        var messageError = new StringBuilder(&quot;Fetching fails: no data to parse&quot;);</span>
         
-<span class="nc bnc" id="L298" title="All 2 branches missed.">        if (searchName != null) {</span>
+<span class="pc bpc" id="L298" title="1 of 2 branches missed.">        if (searchName != null) {</span>
 <span class="nc" id="L299">            messageError.append(&quot; for &quot;).append(StringUtil.detectUtf8(searchName.toString()));</span>
         }
         
-<span class="nc bnc" id="L302" title="All 4 branches missed.">        if (searchName instanceof Table &amp;&amp; searchName.getChildCount() &gt; 0) {</span>
+<span class="pc bpc" id="L302" title="3 of 4 branches missed.">        if (searchName instanceof Table &amp;&amp; searchName.getChildCount() &gt; 0) {</span>
 <span class="nc" id="L303">            messageError.append(&quot;, check Network tab for logs&quot;);</span>
         }
         
-<span class="nc" id="L306">        throw new InjectionFailureException(messageError.toString(), e);</span>
+<span class="fc" id="L306">        throw new InjectionFailureException(messageError.toString(), e);</span>
     }
 
     private void sendChunk(String currentChunk) {
