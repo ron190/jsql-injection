@@ -174,13 +174,13 @@ public abstract class AbstractInjectionBoolean&lt;T extends AbstractCallableBool
 <span class="fc bfc" id="L174" title="All 2 branches covered.">        if (asciiCodeBinary.matches(&quot;^[01]{8}$&quot;)) {</span>
             
 <span class="fc" id="L176">            var asciiCode = Integer.parseInt(asciiCodeBinary, 2);</span>
-<span class="pc bpc" id="L177" title="1 of 4 branches missed.">            if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000</span>
+<span class="pc bpc" id="L177" title="2 of 4 branches missed.">            if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000</span>
                 
-<span class="pc bpc" id="L179" title="2 of 4 branches missed.">                if (countTasksSubmitted.get() != 0 &amp;&amp; countBadAsciiCode.get() &gt; 15) {</span>
+<span class="nc bnc" id="L179" title="All 4 branches missed.">                if (countTasksSubmitted.get() != 0 &amp;&amp; countBadAsciiCode.get() &gt; 15) {</span>
 <span class="nc" id="L180">                    throw new InjectionFailureException(&quot;Boolean false positive, stopping...&quot;);</span>
                 }
                 
-<span class="fc" id="L183">                countBadAsciiCode.incrementAndGet();</span>
+<span class="nc" id="L183">                countBadAsciiCode.incrementAndGet();</span>
             }
 
 <span class="fc" id="L186">            currentCallable.charText = Character.toString((char) asciiCode);</span>

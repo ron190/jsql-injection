@@ -2,7 +2,7 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 view,com.jsql.view.swing.radio,AbstractRadioLink,30,65,2,6,6,20,3,7,2,4
 view,com.jsql.view.swing.radio,RadioMethodMouseAdapter,102,3,10,0,27,1,8,1,3,1
 view,com.jsql.view.swing.radio,RadioLinkMethod,9,32,0,0,4,11,1,5,1,5
-view,com.jsql,MainApplication,136,0,14,0,44,0,11,0,4,0
+view,com.jsql,MainApplication,140,0,14,0,45,0,11,0,4,0
 view,com.jsql.view.swing.dialog.translate,OrderedProperties.CustomProperties,40,14,4,0,6,4,8,2,6,2
 view,com.jsql.view.swing.dialog.translate,Language,0,224,0,0,0,31,0,5,0,5
 view,com.jsql.view.swing.dialog.translate,SwingWorkerGithubLocale,196,207,10,6,45,46,9,12,2,11
@@ -351,7 +351,7 @@ view,com.jsql.view.swing.manager.util,MenuBarCoder.MenuItemListener,15,6,0,0,4,1
 view,com.jsql.view.swing.shell,ShellSql,14,9,0,0,2,3,1,1,1,1
 view,com.jsql.view.swing.shell,KeyAdapterTerminal.new SwingWorker() {...},0,48,0,2,0,11,0,3,0,2
 view,com.jsql.view.swing.shell,KeyAdapterTerminal,145,268,21,37,26,62,16,23,1,9
-view,com.jsql.view.swing.shell,BlockCaret,10,111,3,13,6,32,3,9,0,4
+view,com.jsql.view.swing.shell,BlockCaret,9,112,2,14,5,33,2,10,0,4
 view,com.jsql.view.swing.shell,AbstractShell,44,284,5,7,8,67,5,15,0,14
 view,com.jsql.view.swing.shell,ShellWeb,0,17,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.shell,EmptyFocus,23,9,0,0,10,5,4,2,4,2

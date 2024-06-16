@@ -206,9 +206,9 @@ public class DataAccess {
             )
 <span class="fc" id="L207">            .matcher(resultToParse);</span>
 
-<span class="pc bpc" id="L209" title="1 of 2 branches missed.">        if (!regexSearch.find()) {</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        if (!regexSearch.find()) {</span>
             
-<span class="nc" id="L211">            throw new InjectionFailureException(&quot;No match while injecting databases&quot;);</span>
+<span class="fc" id="L211">            throw new InjectionFailureException(&quot;No match while injecting databases&quot;);</span>
         }
         
 <span class="fc" id="L214">        regexSearch.reset();</span>

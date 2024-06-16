@@ -24,23 +24,25 @@ public class MainApplication {
     
     static {
 
-<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (GraphicsEnvironment.isHeadless()) {</span>
-<span class="nc" id="L28">            LOGGER.log(</span>
+<span class="nc" id="L27">        System.setProperty(&quot;jdk.httpclient.allowRestrictedHeaders&quot;, &quot;connection,content-length,expect,host,upgrade&quot;);</span>
+
+<span class="nc bnc" id="L29" title="All 2 branches missed.">        if (GraphicsEnvironment.isHeadless()) {</span>
+<span class="nc" id="L30">            LOGGER.log(</span>
                 Level.ERROR,
                 &quot;Headless runtime detected, please install or use default Java runtime instead of headless runtime&quot;
             );
-<span class="nc" id="L32">            System.exit(1);</span>
+<span class="nc" id="L34">            System.exit(1);</span>
         }
         
-<span class="nc" id="L35">        injectionModel = new InjectionModel();</span>
+<span class="nc" id="L37">        injectionModel = new InjectionModel();</span>
         
-<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (!&quot;true&quot;.equals(System.getenv(&quot;FROM_CI_PIPELINE&quot;))) {</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (!&quot;true&quot;.equals(System.getenv(&quot;FROM_CI_PIPELINE&quot;))) {</span>
             
-<span class="nc" id="L39">            injectionModel.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();</span>
+<span class="nc" id="L41">            injectionModel.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();</span>
         }
         
-<span class="nc" id="L42">        MainApplication.apply4K();</span>
-<span class="nc" id="L43">    }</span>
+<span class="nc" id="L44">        MainApplication.apply4K();</span>
+<span class="nc" id="L45">    }</span>
     
     private MainApplication() {
         // nothing
@@ -53,81 +55,81 @@ public class MainApplication {
     public static void main(String[] args) {
         
         // Initialize MVC
-<span class="nc" id="L56">        MediatorHelper.register(injectionModel);</span>
+<span class="nc" id="L58">        MediatorHelper.register(injectionModel);</span>
         
         // Configure global environment settings
-<span class="nc" id="L59">        injectionModel.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();</span>
-<span class="nc" id="L60">        injectionModel.getMediatorUtils().getProxyUtil().initializeProxy();</span>
-<span class="nc" id="L61">        injectionModel.getMediatorUtils().getAuthenticationUtil().setKerberosCifs();</span>
+<span class="nc" id="L61">        injectionModel.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();</span>
+<span class="nc" id="L62">        injectionModel.getMediatorUtils().getProxyUtil().initializeProxy();</span>
+<span class="nc" id="L63">        injectionModel.getMediatorUtils().getAuthenticationUtil().setKerberosCifs();</span>
         
         try {
-<span class="nc" id="L64">            var view = new JFrameView();</span>
-<span class="nc" id="L65">            MediatorHelper.register(view);</span>
+<span class="nc" id="L66">            var view = new JFrameView();</span>
+<span class="nc" id="L67">            MediatorHelper.register(view);</span>
             
-<span class="nc" id="L67">            injectionModel.subscribe(view.getSubscriber());</span>
+<span class="nc" id="L69">            injectionModel.subscribe(view.getSubscriber());</span>
             
-<span class="nc" id="L69">        } catch (HeadlessException e) {</span>
+<span class="nc" id="L71">        } catch (HeadlessException e) {</span>
             
-<span class="nc" id="L71">            LOGGER.log(</span>
+<span class="nc" id="L73">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_JAVA,
-<span class="nc" id="L73">                String.format(</span>
+<span class="nc" id="L75">                String.format(</span>
                     &quot;HeadlessException, command line execution in jSQL not supported yet: %s&quot;,
-<span class="nc" id="L75">                    e.getMessage()</span>
+<span class="nc" id="L77">                    e.getMessage()</span>
                 ),
                 e
             );
-<span class="nc" id="L79">            return;</span>
+<span class="nc" id="L81">            return;</span>
             
-<span class="nc" id="L81">        } catch (AWTError e) {</span>
+<span class="nc" id="L83">        } catch (AWTError e) {</span>
             
             // Fix #22668: Assistive Technology not found
-<span class="nc" id="L84">            LOGGER.log(</span>
+<span class="nc" id="L86">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_JAVA,
-<span class="nc" id="L86">                String.format(</span>
+<span class="nc" id="L88">                String.format(</span>
                     &quot;Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: %s&quot;,
-<span class="nc" id="L88">                    e.getMessage()</span>
+<span class="nc" id="L90">                    e.getMessage()</span>
                 ),
                 e
             );
-<span class="nc" id="L92">            return;</span>
-<span class="nc" id="L93">        }</span>
+<span class="nc" id="L94">            return;</span>
+<span class="nc" id="L95">        }</span>
         
-<span class="nc" id="L95">        injectionModel.displayVersion();</span>
+<span class="nc" id="L97">        injectionModel.displayVersion();</span>
         
         // Check application status
-<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (!injectionModel.getMediatorUtils().getProxyUtil().isLive(ShowOnConsole.YES)) {</span>
-<span class="nc" id="L99">            return;</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (!injectionModel.getMediatorUtils().getProxyUtil().isLive(ShowOnConsole.YES)) {</span>
+<span class="nc" id="L101">            return;</span>
         }
         
-<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingUpdate()) {</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingUpdate()) {</span>
             
-<span class="nc" id="L104">            injectionModel.getMediatorUtils().getGitUtil().checkUpdate(ShowOnConsole.NO);</span>
+<span class="nc" id="L106">            injectionModel.getMediatorUtils().getGitUtil().checkUpdate(ShowOnConsole.NO);</span>
         }
         
-<span class="nc" id="L107">        I18nUtil.checkCurrentLanguage();</span>
-<span class="nc" id="L108">        injectionModel.getMediatorUtils().getGitUtil().showNews();</span>
+<span class="nc" id="L109">        I18nUtil.checkCurrentLanguage();</span>
+<span class="nc" id="L110">        injectionModel.getMediatorUtils().getGitUtil().showNews();</span>
         
-<span class="nc" id="L110">        MainApplication.check4K();</span>
-<span class="nc" id="L111">    }</span>
+<span class="nc" id="L112">        MainApplication.check4K();</span>
+<span class="nc" id="L113">    }</span>
     
     private static void apply4K() {
         
-<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {</span>
             
             // jdk &gt;= 9
-<span class="nc" id="L118">            System.setProperty(&quot;sun.java2d.uiScale&quot;, &quot;2.5&quot;);</span>
+<span class="nc" id="L120">            System.setProperty(&quot;sun.java2d.uiScale&quot;, &quot;2.5&quot;);</span>
         }
-<span class="nc" id="L120">    }</span>
+<span class="nc" id="L122">    }</span>
     
     private static void check4K() {
         
-<span class="nc" id="L124">        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();</span>
-<span class="nc" id="L125">        int width = (int) screenSize.getWidth();</span>
+<span class="nc" id="L126">        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();</span>
+<span class="nc" id="L127">        int width = (int) screenSize.getWidth();</span>
         
-<span class="nc bnc" id="L127" title="All 4 branches missed.">        if (width &gt;= 3840 &amp;&amp; !injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {</span>
+<span class="nc bnc" id="L129" title="All 4 branches missed.">        if (width &gt;= 3840 &amp;&amp; !injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {</span>
             
-<span class="nc" id="L129">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Your screen seems compatible with 4K resolution, enable high-definition mode in Preferences&quot;);</span>
+<span class="nc" id="L131">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Your screen seems compatible with 4K resolution, enable high-definition mode in Preferences&quot;);</span>
         }
-<span class="nc" id="L131">    }</span>
+<span class="nc" id="L133">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
