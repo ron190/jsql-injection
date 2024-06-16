@@ -24,6 +24,8 @@ public class MainApplication {
     
     static {
 
+        System.setProperty("jdk.httpclient.allowRestrictedHeaders", "connection,content-length,expect,host,upgrade");
+
         if (GraphicsEnvironment.isHeadless()) {
             LOGGER.log(
                 Level.ERROR,

@@ -64,10 +64,10 @@ jobs:
           bytebuddy: ""
         - jdk: 3.9.7-eclipse-temurin-21
           nashorn: ""
-          bytebuddy: "-Dnet.bytebuddy.experimental=true"
+          bytebuddy: "-Dbytebuddy.experimental=true"
         - jdk: 3.9.7-eclipse-temurin-22
           nashorn: ""
-          bytebuddy: "-Dnet.bytebuddy.experimental=true"
+          bytebuddy: "-Dbytebuddy.experimental=true"
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
       MAVEN_NASHORN: ${{ matrix.nashorn }}
