@@ -64,10 +64,11 @@ jobs:
           bytebuddy: ""
         - jdk: 3.9.7-eclipse-temurin-21
           nashorn: ""
-          bytebuddy: "-Dbytebuddy.experimental=true"
-        - jdk: 3.9.7-eclipse-temurin-22
-          nashorn: ""
-          bytebuddy: "-Dbytebuddy.experimental=true"
+          bytebuddy: "-Dnet.bytebuddy.experimental=true"
+# Groovy not compatible jdk22: gmavenplus-plugin JsonUtilSpock.groovy Unsupported class file major version 66
+#        - jdk: 3.9.7-eclipse-temurin-22
+#          nashorn: ""
+#          bytebuddy: "-Dbytebuddy.experimental=true"
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
       MAVEN_NASHORN: ${{ matrix.nashorn }}
