@@ -199,11 +199,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <plugin>
-                <groupId>org.pitest</groupId>
-                <artifactId>pitest-maven</artifactId>
-                <version>1.16.1</version>
-            </plugin>
         </plugins>
     </build>
 
@@ -212,7 +207,7 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>1.16.1</version>
+                <version>${pitest-maven.version}</version>
                 <reportSets>
                     <reportSet>
                         <reports>
