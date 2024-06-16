@@ -6,7 +6,7 @@
 -source
 '11'
 -sourcepath
-'/view/src/test/java'
+'/view/src/test/java:/view/target/generated-test-sources/test-annotations'
 -author
 -bottom
 'Copyright &#169; 2024. All rights reserved.'
