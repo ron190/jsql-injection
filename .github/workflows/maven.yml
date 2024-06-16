@@ -58,6 +58,10 @@ jobs:
           nashorn: ""
         - jdk: 3.9.3-eclipse-temurin-20
           nashorn: ""
+        - jdk: 3.9.7-eclipse-temurin-21
+          nashorn: ""
+        - jdk: 3.9.7-eclipse-temurin-22
+          nashorn: ""
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
       MAVEN_NASHORN: ${{ matrix.nashorn }}
@@ -107,8 +111,8 @@ jobs:
       # mvn goal site last to apply skin to generated reports
       run: |
         $DOCKER_RESOURCES/scripts/run-on-docker.sh '
-          mvn clean install --no-transfer-progress \
-            -Dorg.slf4j.simpleLogger.showLogName=true \
+          mvn clean install \
+            --no-transfer-progress \
             -Dorg.slf4j.simpleLogger.log.org.sonarsource.scanner.maven.SonarQubeMojo=error \
             -P tests \
             sonar:sonar \
