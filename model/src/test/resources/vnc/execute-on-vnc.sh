@@ -30,6 +30,7 @@ vncserver ":${NEW_DISPLAY}" -localhost -geometry 1920x1080 -depth 24
 export DISPLAY=:${NEW_DISPLAY}
 
 echo MAVEN_NASHORN="${MAVEN_NASHORN}"
+echo MAVEN_BYTEBUDDY="${MAVEN_BYTEBUDDY}"
 
 "$@"
 JSQL_EXIT_CODE=$?

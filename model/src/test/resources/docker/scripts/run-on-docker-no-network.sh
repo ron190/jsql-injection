@@ -4,6 +4,7 @@ docker run                                          \
   -v "$HOME/.sonar/cache":/root/.sonar/cache        \
   --name docker_jsql-container                      \
   -e MAVEN_NASHORN                                  \
+  -e MAVEN_BYTEBUDDY                                \
   jsql:latest                                       \
   ./model/src/test/resources/vnc/execute-on-vnc.sh  \
   bash -c "$1"

@@ -9,6 +9,7 @@ docker run                                          \
   -e CODACY_PROJECT_TOKEN                           \
   -e CODECOV_TOKEN                                  \
   -e MAVEN_NASHORN                                  \
+  -e MAVEN_BYTEBUDDY                                \
   jsql:latest                                       \
   ./model/src/test/resources/vnc/execute-on-vnc.sh  \
   bash -c "$1"

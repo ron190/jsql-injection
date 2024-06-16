@@ -7,6 +7,7 @@ env:
   CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   MAVEN_NASHORN: ""
+  MAVEN_BYTEBUDDY: ""
   DOCKER_RESOURCES: ./model/src/test/resources/docker
 
 jobs:
@@ -17,6 +18,7 @@ jobs:
     env:
       JSQL_DOCKERFILE: 3.8.1-jdk-11-slim
       MAVEN_NASHORN: -Dnashorn.args=--no-deprecation-warning
+      MAVEN_BYTEBUDDY: ""
     steps:
 
       - name: Checkout code
@@ -56,15 +58,21 @@ jobs:
         include:
         - jdk: 3.8.6-eclipse-temurin-18
           nashorn: ""
+          bytebuddy: ""
         - jdk: 3.9.3-eclipse-temurin-20
           nashorn: ""
+          bytebuddy: ""
         - jdk: 3.9.7-eclipse-temurin-21
           nashorn: ""
+          bytebuddy: "-Dnet.bytebuddy.experimental=true"
         - jdk: 3.9.7-eclipse-temurin-22
           nashorn: ""
+          bytebuddy: "-Dnet.bytebuddy.experimental=true"
     env:
       JSQL_DOCKERFILE: ${{ matrix.jdk }}
       MAVEN_NASHORN: ${{ matrix.nashorn }}
+      # experimental enabled on jdk21 to prevent 'Mockito cannot mock this class: class org.jsoup.nodes.Document'
+      MAVEN_BYTEBUDDY: ${{ matrix.bytebuddy }}
     steps:
     
     - name: Checkout code
