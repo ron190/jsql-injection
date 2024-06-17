@@ -438,7 +438,7 @@
 <a class="jxr_linenumber" name="L430" href="#L430">430</a>     ) {
 <a class="jxr_linenumber" name="L431" href="#L431">431</a> 
 <a class="jxr_linenumber" name="L432" href="#L432">432</a>         <strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.mediatorUtils.getParameterUtil().getListHeader().isEmpty()) {
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>             
+<a class="jxr_linenumber" name="L433" href="#L433">433</a> 
 <a class="jxr_linenumber" name="L434" href="#L434">434</a>             Stream.of(
 <a class="jxr_linenumber" name="L435" href="#L435">435</a>                 <strong class="jxr_keyword">this</strong>.buildQuery(
 <a class="jxr_linenumber" name="L436" href="#L436">436</a>                     <strong class="jxr_keyword">this</strong>.mediatorMethod.getHeader(),
@@ -449,10 +449,10 @@
 <a class="jxr_linenumber" name="L441" href="#L441">441</a>                 .split(<span class="jxr_string">"&#92;&#92;&#92;&#92;r&#92;&#92;&#92;&#92;n"</span>)
 <a class="jxr_linenumber" name="L442" href="#L442">442</a>             )
 <a class="jxr_linenumber" name="L443" href="#L443">443</a>             .forEach(header -&gt; {
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>                 
+<a class="jxr_linenumber" name="L444" href="#L444">444</a> 
 <a class="jxr_linenumber" name="L445" href="#L445">445</a>                 <strong class="jxr_keyword">if</strong> (header.split(<span class="jxr_string">":"</span>).length == 2) {
 <a class="jxr_linenumber" name="L446" href="#L446">446</a> 
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>                     <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>                     <strong class="jxr_keyword">try</strong> {  <em class="jxr_comment">// TODO Should not catch, rethrow or use runtime exception</em>
 <a class="jxr_linenumber" name="L448" href="#L448">448</a>                         HeaderUtil.sanitizeHeaders(
 <a class="jxr_linenumber" name="L449" href="#L449">449</a>                             httpRequest,
 <a class="jxr_linenumber" name="L450" href="#L450">450</a>                             <strong class="jxr_keyword">new</strong> SimpleEntry&lt;&gt;(

@@ -207,8 +207,8 @@
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>         window.tabbedPane(<span class="jxr_string">"tabResults"</span>).requireTitle(<span class="jxr_string">"dropfile "</span>, Index.atIndex(2));
 <a class="jxr_linenumber" name="L200" href="#L200">200</a> 
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>         window.robot().pressMouse(
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>                 window.label(<span class="jxr_string">"dragfile"</span>).target(),
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>                 window.label(<span class="jxr_string">"dragfile"</span>).target().getLocation()
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>             window.label(<span class="jxr_string">"dragfile"</span>).target(),
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>             window.label(<span class="jxr_string">"dragfile"</span>).target().getLocation()
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>         );
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>         window.robot().moveMouse(window.label(<span class="jxr_string">"dragfile"</span>).target());  <em class="jxr_comment">// required</em>
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>         window.label(<span class="jxr_string">"dropfile"</span>).drop();
@@ -261,18 +261,18 @@
 <a class="jxr_linenumber" name="L253" href="#L253">253</a>         }
 <a class="jxr_linenumber" name="L254" href="#L254">254</a> 
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>         window.textBox(<span class="jxr_string">"webShell"</span>).pressAndReleaseKeys(
-<a class="jxr_linenumber" name="L256" href="#L256">256</a>                 KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>                 KeyEvent.VK_DELETE, KeyEvent.VK_BACK_SPACE,
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>                 KeyEvent.VK_UP, KeyEvent.VK_DOWN,
-<a class="jxr_linenumber" name="L259" href="#L259">259</a>                 KeyEvent.VK_PAGE_UP, KeyEvent.VK_PAGE_DOWN, KeyEvent.VK_TAB,
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>                 KeyEvent.VK_A, KeyEvent.VK_B,
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>                 KeyEvent.VK_HOME, KeyEvent.VK_END,
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>                 KeyEvent.VK_BACK_SPACE,
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>                 KeyEvent.VK_BACK_SPACE,
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>                 KeyEvent.VK_DELETE, KeyEvent.VK_DELETE,
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>                 KeyEvent.VK_ENTER, KeyEvent.VK_ENTER, KeyEvent.VK_ENTER,
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>                 KeyEvent.VK_A, KeyEvent.VK_B, KeyEvent.VK_ENTER,
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>                 KeyEvent.VK_PAGE_UP, KeyEvent.VK_PAGE_DOWN
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>             KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT,
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>             KeyEvent.VK_DELETE, KeyEvent.VK_BACK_SPACE,
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>             KeyEvent.VK_UP, KeyEvent.VK_DOWN,
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>             KeyEvent.VK_PAGE_UP, KeyEvent.VK_PAGE_DOWN, KeyEvent.VK_TAB,
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>             KeyEvent.VK_A, KeyEvent.VK_B,
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>             KeyEvent.VK_HOME, KeyEvent.VK_END,
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>             KeyEvent.VK_BACK_SPACE,
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>             KeyEvent.VK_BACK_SPACE,
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>             KeyEvent.VK_DELETE, KeyEvent.VK_DELETE,
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>             KeyEvent.VK_ENTER, KeyEvent.VK_ENTER, KeyEvent.VK_ENTER,
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>             KeyEvent.VK_A, KeyEvent.VK_B, KeyEvent.VK_ENTER,
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>             KeyEvent.VK_PAGE_UP, KeyEvent.VK_PAGE_DOWN
 <a class="jxr_linenumber" name="L268" href="#L268">268</a>         );
 <a class="jxr_linenumber" name="L269" href="#L269">269</a> 
 <a class="jxr_linenumber" name="L270" href="#L270">270</a>         GuiActionRunner.execute(() -&gt; window.tabbedPane(<span class="jxr_string">"tabResults"</span>).target().removeTabAt(0));
@@ -412,22 +412,22 @@
 <a class="jxr_linenumber" name="L404" href="#L404">404</a>         }
 <a class="jxr_linenumber" name="L405" href="#L405">405</a> 
 <a class="jxr_linenumber" name="L406" href="#L406">406</a>         Stream.of(<span class="jxr_string">"Adler32"</span>, <span class="jxr_string">"Crc16"</span>, <span class="jxr_string">"Crc32"</span>, <span class="jxr_string">"Crc64"</span>, <span class="jxr_string">"Md2"</span>, <span class="jxr_string">"Md4"</span>, <span class="jxr_string">"Md5"</span>, <span class="jxr_string">"Sha-1"</span>, <span class="jxr_string">"Sha-256"</span>, <span class="jxr_string">"Sha-384"</span>, <span class="jxr_string">"Sha-512"</span>, <span class="jxr_string">"Mysql"</span>)
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>                 .forEach(hash -&gt; {
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>         .forEach(hash -&gt; {
 <a class="jxr_linenumber" name="L408" href="#L408">408</a> 
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>                     String result = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>                     <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>                         result = ActionCoder
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>                                 .forName(hash)
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>                                 .orElseThrow(() -&gt; <strong class="jxr_keyword">new</strong> NoSuchElementException(<span class="jxr_string">"Unsupported encoding or decoding method"</span>))
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>                                 .run(<span class="jxr_string">"a"</span>);
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>             String result = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>             <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>                 result = ActionCoder
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>                     .forName(hash)
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>                     .orElseThrow(() -&gt; <strong class="jxr_keyword">new</strong> NoSuchElementException(<span class="jxr_string">"Unsupported encoding or decoding method"</span>))
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>                     .run(<span class="jxr_string">"a"</span>);
 <a class="jxr_linenumber" name="L415" href="#L415">415</a> 
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>                     } <strong class="jxr_keyword">catch</strong> (NoSuchAlgorithmException | NoSuchElementException | DecoderException | IOException e) {
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>                         Assertions.fail();
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>                     }
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>             } <strong class="jxr_keyword">catch</strong> (NoSuchAlgorithmException | NoSuchElementException | DecoderException | IOException e) {
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>                 Assertions.fail();
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>             }
 <a class="jxr_linenumber" name="L419" href="#L419">419</a> 
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>                     window.robot().moveMouse(window.menuItem(<span class="jxr_string">"hashTo"</span>+ hash).target());
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>                     window.textBox(<span class="jxr_string">"resultManagerCoder"</span>).requireText(Pattern.compile(<span class="jxr_string">".*&lt;span&gt;&lt;font[^&gt;]*&gt;"</span>+ result +<span class="jxr_string">"&lt;/font&gt;&lt;/span&gt;.*"</span>, Pattern.DOTALL));
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>                 });
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>             window.robot().moveMouse(window.menuItem(<span class="jxr_string">"hashTo"</span>+ hash).target());
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>             window.textBox(<span class="jxr_string">"resultManagerCoder"</span>).requireText(Pattern.compile(<span class="jxr_string">".*&lt;span&gt;&lt;font[^&gt;]*&gt;"</span>+ result +<span class="jxr_string">"&lt;/font&gt;&lt;/span&gt;.*"</span>, Pattern.DOTALL));
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>         });
 <a class="jxr_linenumber" name="L423" href="#L423">423</a>     }
 <a class="jxr_linenumber" name="L424" href="#L424">424</a> 
 <a class="jxr_linenumber" name="L425" href="#L425">425</a>     @Test
@@ -496,8 +496,8 @@
 <a class="jxr_linenumber" name="L488" href="#L488">488</a>         <strong class="jxr_keyword">var</strong> arrayColumns = <strong class="jxr_keyword">new</strong> String[] { Strings.EMPTY, Strings.EMPTY, nameColumn0, nameColumn1 };
 <a class="jxr_linenumber" name="L489" href="#L489">489</a> 
 <a class="jxr_linenumber" name="L490" href="#L490">490</a>         <strong class="jxr_keyword">var</strong> tableDatas = <strong class="jxr_keyword">new</strong> String[][] {
-<a class="jxr_linenumber" name="L491" href="#L491">491</a>                 { <span class="jxr_string">""</span>, <span class="jxr_string">""</span>, <span class="jxr_string">"[0, 0]"</span>, <span class="jxr_string">"[0, 1]"</span> },
-<a class="jxr_linenumber" name="L492" href="#L492">492</a>                 { <span class="jxr_string">""</span>, <span class="jxr_string">""</span>, <span class="jxr_string">"[1, 0]"</span>, <span class="jxr_string">"[1, 1]"</span> }
+<a class="jxr_linenumber" name="L491" href="#L491">491</a>             { <span class="jxr_string">""</span>, <span class="jxr_string">""</span>, <span class="jxr_string">"[0, 0]"</span>, <span class="jxr_string">"[0, 1]"</span> },
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>             { <span class="jxr_string">""</span>, <span class="jxr_string">""</span>, <span class="jxr_string">"[1, 0]"</span>, <span class="jxr_string">"[1, 1]"</span> }
 <a class="jxr_linenumber" name="L493" href="#L493">493</a>         };
 <a class="jxr_linenumber" name="L494" href="#L494">494</a> 
 <a class="jxr_linenumber" name="L495" href="#L495">495</a>         <strong class="jxr_keyword">var</strong> objectData = <strong class="jxr_keyword">new</strong> Object[]{ arrayColumns, tableDatas, table };
@@ -551,23 +551,23 @@
 <a class="jxr_linenumber" name="L543" href="#L543">543</a>         window.list(<span class="jxr_string">"listCategoriesPreference"</span>).selectItem(Pattern.compile(<span class="jxr_string">".*Connection.*"</span>));
 <a class="jxr_linenumber" name="L544" href="#L544">544</a> 
 <a class="jxr_linenumber" name="L545" href="#L545">545</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L546" href="#L546">546</a>                 false,
-<a class="jxr_linenumber" name="L547" href="#L547">547</a>                 false,
-<a class="jxr_linenumber" name="L548" href="#L548">548</a>                 false,
-<a class="jxr_linenumber" name="L549" href="#L549">549</a>                 false,
-<a class="jxr_linenumber" name="L550" href="#L550">550</a>                 false,
-<a class="jxr_linenumber" name="L551" href="#L551">551</a>                 false,
-<a class="jxr_linenumber" name="L552" href="#L552">552</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L553" href="#L553">553</a>                 false,
+<a class="jxr_linenumber" name="L546" href="#L546">546</a>             false,
+<a class="jxr_linenumber" name="L547" href="#L547">547</a>             false,
+<a class="jxr_linenumber" name="L548" href="#L548">548</a>             false,
+<a class="jxr_linenumber" name="L549" href="#L549">549</a>             false,
+<a class="jxr_linenumber" name="L550" href="#L550">550</a>             false,
+<a class="jxr_linenumber" name="L551" href="#L551">551</a>             false,
+<a class="jxr_linenumber" name="L552" href="#L552">552</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L553" href="#L553">553</a>             false,
 <a class="jxr_linenumber" name="L554" href="#L554">554</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L555" href="#L555">555</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
-<a class="jxr_linenumber" name="L556" href="#L556">556</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
-<a class="jxr_linenumber" name="L557" href="#L557">557</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
-<a class="jxr_linenumber" name="L558" href="#L558">558</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
-<a class="jxr_linenumber" name="L559" href="#L559">559</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
-<a class="jxr_linenumber" name="L560" href="#L560">560</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-<a class="jxr_linenumber" name="L561" href="#L561">561</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
-<a class="jxr_linenumber" name="L562" href="#L562">562</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
+<a class="jxr_linenumber" name="L555" href="#L555">555</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
+<a class="jxr_linenumber" name="L556" href="#L556">556</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
+<a class="jxr_linenumber" name="L557" href="#L557">557</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
+<a class="jxr_linenumber" name="L558" href="#L558">558</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
+<a class="jxr_linenumber" name="L559" href="#L559">559</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
+<a class="jxr_linenumber" name="L560" href="#L560">560</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
+<a class="jxr_linenumber" name="L561" href="#L561">561</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
+<a class="jxr_linenumber" name="L562" href="#L562">562</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
 <a class="jxr_linenumber" name="L563" href="#L563">563</a>         });
 <a class="jxr_linenumber" name="L564" href="#L564">564</a> 
 <a class="jxr_linenumber" name="L565" href="#L565">565</a>         window.checkBox(<span class="jxr_string">"checkboxIsFollowingRedirection"</span>).click();
@@ -580,23 +580,23 @@
 <a class="jxr_linenumber" name="L572" href="#L572">572</a>         window.checkBox(<span class="jxr_string">"checkboxIsConnectionTimeout"</span>).click();
 <a class="jxr_linenumber" name="L573" href="#L573">573</a> 
 <a class="jxr_linenumber" name="L574" href="#L574">574</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L575" href="#L575">575</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L576" href="#L576">576</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L577" href="#L577">577</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L578" href="#L578">578</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L579" href="#L579">579</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L580" href="#L580">580</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L581" href="#L581">581</a>                 false,
-<a class="jxr_linenumber" name="L582" href="#L582">582</a>                 <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L575" href="#L575">575</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L576" href="#L576">576</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L577" href="#L577">577</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L578" href="#L578">578</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L579" href="#L579">579</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L580" href="#L580">580</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L581" href="#L581">581</a>             false,
+<a class="jxr_linenumber" name="L582" href="#L582">582</a>             <strong class="jxr_keyword">true</strong>,
 <a class="jxr_linenumber" name="L583" href="#L583">583</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L584" href="#L584">584</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
-<a class="jxr_linenumber" name="L585" href="#L585">585</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
-<a class="jxr_linenumber" name="L586" href="#L586">586</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
-<a class="jxr_linenumber" name="L587" href="#L587">587</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
-<a class="jxr_linenumber" name="L588" href="#L588">588</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
-<a class="jxr_linenumber" name="L589" href="#L589">589</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-<a class="jxr_linenumber" name="L590" href="#L590">590</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
-<a class="jxr_linenumber" name="L591" href="#L591">591</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
+<a class="jxr_linenumber" name="L584" href="#L584">584</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
+<a class="jxr_linenumber" name="L585" href="#L585">585</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
+<a class="jxr_linenumber" name="L586" href="#L586">586</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
+<a class="jxr_linenumber" name="L587" href="#L587">587</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
+<a class="jxr_linenumber" name="L588" href="#L588">588</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
+<a class="jxr_linenumber" name="L589" href="#L589">589</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
+<a class="jxr_linenumber" name="L590" href="#L590">590</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
+<a class="jxr_linenumber" name="L591" href="#L591">591</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
 <a class="jxr_linenumber" name="L592" href="#L592">592</a>         });
 <a class="jxr_linenumber" name="L593" href="#L593">593</a> 
 <a class="jxr_linenumber" name="L594" href="#L594">594</a>         window.button(<span class="jxr_string">"labelIsFollowingRedirection"</span>).click();
@@ -609,23 +609,23 @@
 <a class="jxr_linenumber" name="L601" href="#L601">601</a>         window.button(<span class="jxr_string">"labelIsConnectionTimeout"</span>).click();
 <a class="jxr_linenumber" name="L602" href="#L602">602</a> 
 <a class="jxr_linenumber" name="L603" href="#L603">603</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L604" href="#L604">604</a>                 false,
-<a class="jxr_linenumber" name="L605" href="#L605">605</a>                 false,
-<a class="jxr_linenumber" name="L606" href="#L606">606</a>                 false,
-<a class="jxr_linenumber" name="L607" href="#L607">607</a>                 false,
-<a class="jxr_linenumber" name="L608" href="#L608">608</a>                 false,
-<a class="jxr_linenumber" name="L609" href="#L609">609</a>                 false,
-<a class="jxr_linenumber" name="L610" href="#L610">610</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L611" href="#L611">611</a>                 false,
+<a class="jxr_linenumber" name="L604" href="#L604">604</a>             false,
+<a class="jxr_linenumber" name="L605" href="#L605">605</a>             false,
+<a class="jxr_linenumber" name="L606" href="#L606">606</a>             false,
+<a class="jxr_linenumber" name="L607" href="#L607">607</a>             false,
+<a class="jxr_linenumber" name="L608" href="#L608">608</a>             false,
+<a class="jxr_linenumber" name="L609" href="#L609">609</a>             false,
+<a class="jxr_linenumber" name="L610" href="#L610">610</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L611" href="#L611">611</a>             false,
 <a class="jxr_linenumber" name="L612" href="#L612">612</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L613" href="#L613">613</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
-<a class="jxr_linenumber" name="L614" href="#L614">614</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
-<a class="jxr_linenumber" name="L615" href="#L615">615</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
-<a class="jxr_linenumber" name="L616" href="#L616">616</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
-<a class="jxr_linenumber" name="L617" href="#L617">617</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
-<a class="jxr_linenumber" name="L618" href="#L618">618</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-<a class="jxr_linenumber" name="L619" href="#L619">619</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
-<a class="jxr_linenumber" name="L620" href="#L620">620</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
+<a class="jxr_linenumber" name="L613" href="#L613">613</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
+<a class="jxr_linenumber" name="L614" href="#L614">614</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
+<a class="jxr_linenumber" name="L615" href="#L615">615</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
+<a class="jxr_linenumber" name="L616" href="#L616">616</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
+<a class="jxr_linenumber" name="L617" href="#L617">617</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
+<a class="jxr_linenumber" name="L618" href="#L618">618</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
+<a class="jxr_linenumber" name="L619" href="#L619">619</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
+<a class="jxr_linenumber" name="L620" href="#L620">620</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
 <a class="jxr_linenumber" name="L621" href="#L621">621</a>         });
 <a class="jxr_linenumber" name="L622" href="#L622">622</a> 
 <a class="jxr_linenumber" name="L623" href="#L623">623</a>         window.button(<span class="jxr_string">"labelIsFollowingRedirection"</span>).click();
@@ -638,23 +638,23 @@
 <a class="jxr_linenumber" name="L630" href="#L630">630</a>         window.button(<span class="jxr_string">"labelIsConnectionTimeout"</span>).click();
 <a class="jxr_linenumber" name="L631" href="#L631">631</a> 
 <a class="jxr_linenumber" name="L632" href="#L632">632</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L633" href="#L633">633</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L634" href="#L634">634</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L635" href="#L635">635</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L636" href="#L636">636</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L637" href="#L637">637</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L638" href="#L638">638</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L639" href="#L639">639</a>                 false,
-<a class="jxr_linenumber" name="L640" href="#L640">640</a>                 <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L633" href="#L633">633</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L634" href="#L634">634</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L635" href="#L635">635</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L636" href="#L636">636</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L637" href="#L637">637</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L638" href="#L638">638</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L639" href="#L639">639</a>             false,
+<a class="jxr_linenumber" name="L640" href="#L640">640</a>             <strong class="jxr_keyword">true</strong>,
 <a class="jxr_linenumber" name="L641" href="#L641">641</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L642" href="#L642">642</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
-<a class="jxr_linenumber" name="L643" href="#L643">643</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
-<a class="jxr_linenumber" name="L644" href="#L644">644</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
-<a class="jxr_linenumber" name="L645" href="#L645">645</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
-<a class="jxr_linenumber" name="L646" href="#L646">646</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
-<a class="jxr_linenumber" name="L647" href="#L647">647</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
-<a class="jxr_linenumber" name="L648" href="#L648">648</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
-<a class="jxr_linenumber" name="L649" href="#L649">649</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
+<a class="jxr_linenumber" name="L642" href="#L642">642</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isFollowingRedirection(),
+<a class="jxr_linenumber" name="L643" href="#L643">643</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled(),
+<a class="jxr_linenumber" name="L644" href="#L644">644</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotTestingConnection(),
+<a class="jxr_linenumber" name="L645" href="#L645">645</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isProcessingCsrf(),
+<a class="jxr_linenumber" name="L646" href="#L646">646</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCsrfUserTag(),
+<a class="jxr_linenumber" name="L647" href="#L647">647</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotProcessingCookies(),
+<a class="jxr_linenumber" name="L648" href="#L648">648</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingThreads(),
+<a class="jxr_linenumber" name="L649" href="#L649">649</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isConnectionTimeout(),
 <a class="jxr_linenumber" name="L650" href="#L650">650</a>         });
 <a class="jxr_linenumber" name="L651" href="#L651">651</a> 
 <a class="jxr_linenumber" name="L652" href="#L652">652</a>         window.button(<span class="jxr_string">"advancedButton"</span>).click();
@@ -670,29 +670,29 @@
 <a class="jxr_linenumber" name="L662" href="#L662">662</a>         window.menuItem(<span class="jxr_string">"itemPreferences"</span>).click();
 <a class="jxr_linenumber" name="L663" href="#L663">663</a> 
 <a class="jxr_linenumber" name="L664" href="#L664">664</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L665" href="#L665">665</a>                 false,
-<a class="jxr_linenumber" name="L666" href="#L666">666</a>                 false,
-<a class="jxr_linenumber" name="L667" href="#L667">667</a>                 false,
-<a class="jxr_linenumber" name="L668" href="#L668">668</a>                 false,
-<a class="jxr_linenumber" name="L669" href="#L669">669</a>                 false,
-<a class="jxr_linenumber" name="L670" href="#L670">670</a>                 false,
-<a class="jxr_linenumber" name="L671" href="#L671">671</a>                 false,
-<a class="jxr_linenumber" name="L672" href="#L672">672</a>                 false,
-<a class="jxr_linenumber" name="L673" href="#L673">673</a>                 false,
-<a class="jxr_linenumber" name="L674" href="#L674">674</a>                 false,
-<a class="jxr_linenumber" name="L675" href="#L675">675</a>                 false,
+<a class="jxr_linenumber" name="L665" href="#L665">665</a>             false,
+<a class="jxr_linenumber" name="L666" href="#L666">666</a>             false,
+<a class="jxr_linenumber" name="L667" href="#L667">667</a>             false,
+<a class="jxr_linenumber" name="L668" href="#L668">668</a>             false,
+<a class="jxr_linenumber" name="L669" href="#L669">669</a>             false,
+<a class="jxr_linenumber" name="L670" href="#L670">670</a>             false,
+<a class="jxr_linenumber" name="L671" href="#L671">671</a>             false,
+<a class="jxr_linenumber" name="L672" href="#L672">672</a>             false,
+<a class="jxr_linenumber" name="L673" href="#L673">673</a>             false,
+<a class="jxr_linenumber" name="L674" href="#L674">674</a>             false,
+<a class="jxr_linenumber" name="L675" href="#L675">675</a>             false,
 <a class="jxr_linenumber" name="L676" href="#L676">676</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L677" href="#L677">677</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
-<a class="jxr_linenumber" name="L678" href="#L678">678</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
-<a class="jxr_linenumber" name="L679" href="#L679">679</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
-<a class="jxr_linenumber" name="L680" href="#L680">680</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
-<a class="jxr_linenumber" name="L681" href="#L681">681</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
-<a class="jxr_linenumber" name="L682" href="#L682">682</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
-<a class="jxr_linenumber" name="L683" href="#L683">683</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
-<a class="jxr_linenumber" name="L684" href="#L684">684</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
-<a class="jxr_linenumber" name="L685" href="#L685">685</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
-<a class="jxr_linenumber" name="L686" href="#L686">686</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-<a class="jxr_linenumber" name="L687" href="#L687">687</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
+<a class="jxr_linenumber" name="L677" href="#L677">677</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
+<a class="jxr_linenumber" name="L678" href="#L678">678</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
+<a class="jxr_linenumber" name="L679" href="#L679">679</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
+<a class="jxr_linenumber" name="L680" href="#L680">680</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
+<a class="jxr_linenumber" name="L681" href="#L681">681</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
+<a class="jxr_linenumber" name="L682" href="#L682">682</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
+<a class="jxr_linenumber" name="L683" href="#L683">683</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
+<a class="jxr_linenumber" name="L684" href="#L684">684</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
+<a class="jxr_linenumber" name="L685" href="#L685">685</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
+<a class="jxr_linenumber" name="L686" href="#L686">686</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
+<a class="jxr_linenumber" name="L687" href="#L687">687</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
 <a class="jxr_linenumber" name="L688" href="#L688">688</a>         });
 <a class="jxr_linenumber" name="L689" href="#L689">689</a> 
 <a class="jxr_linenumber" name="L690" href="#L690">690</a>         window.checkBox(<span class="jxr_string">"checkboxIsParsingForm"</span>).click();
@@ -708,29 +708,29 @@
 <a class="jxr_linenumber" name="L700" href="#L700">700</a>         window.checkBox(<span class="jxr_string">"checkboxIsUrlEncodingDisabled"</span>).click();
 <a class="jxr_linenumber" name="L701" href="#L701">701</a> 
 <a class="jxr_linenumber" name="L702" href="#L702">702</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L703" href="#L703">703</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L704" href="#L704">704</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L705" href="#L705">705</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L706" href="#L706">706</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L707" href="#L707">707</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L708" href="#L708">708</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L709" href="#L709">709</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L710" href="#L710">710</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L711" href="#L711">711</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L712" href="#L712">712</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L713" href="#L713">713</a>                 <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L703" href="#L703">703</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L704" href="#L704">704</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L705" href="#L705">705</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L706" href="#L706">706</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L707" href="#L707">707</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L708" href="#L708">708</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L709" href="#L709">709</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L710" href="#L710">710</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L711" href="#L711">711</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L712" href="#L712">712</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L713" href="#L713">713</a>             <strong class="jxr_keyword">true</strong>,
 <a class="jxr_linenumber" name="L714" href="#L714">714</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L715" href="#L715">715</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
-<a class="jxr_linenumber" name="L716" href="#L716">716</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
-<a class="jxr_linenumber" name="L717" href="#L717">717</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
-<a class="jxr_linenumber" name="L718" href="#L718">718</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
-<a class="jxr_linenumber" name="L719" href="#L719">719</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
-<a class="jxr_linenumber" name="L720" href="#L720">720</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
-<a class="jxr_linenumber" name="L721" href="#L721">721</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
-<a class="jxr_linenumber" name="L722" href="#L722">722</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
-<a class="jxr_linenumber" name="L723" href="#L723">723</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
-<a class="jxr_linenumber" name="L724" href="#L724">724</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-<a class="jxr_linenumber" name="L725" href="#L725">725</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
+<a class="jxr_linenumber" name="L715" href="#L715">715</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
+<a class="jxr_linenumber" name="L716" href="#L716">716</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
+<a class="jxr_linenumber" name="L717" href="#L717">717</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
+<a class="jxr_linenumber" name="L718" href="#L718">718</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
+<a class="jxr_linenumber" name="L719" href="#L719">719</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
+<a class="jxr_linenumber" name="L720" href="#L720">720</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
+<a class="jxr_linenumber" name="L721" href="#L721">721</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
+<a class="jxr_linenumber" name="L722" href="#L722">722</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
+<a class="jxr_linenumber" name="L723" href="#L723">723</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
+<a class="jxr_linenumber" name="L724" href="#L724">724</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
+<a class="jxr_linenumber" name="L725" href="#L725">725</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
 <a class="jxr_linenumber" name="L726" href="#L726">726</a>         });
 <a class="jxr_linenumber" name="L727" href="#L727">727</a> 
 <a class="jxr_linenumber" name="L728" href="#L728">728</a>         window.button(<span class="jxr_string">"labelIsParsingForm"</span>).click();
@@ -746,29 +746,29 @@
 <a class="jxr_linenumber" name="L738" href="#L738">738</a>         window.button(<span class="jxr_string">"labelIsUrlEncodingDisabled"</span>).click();
 <a class="jxr_linenumber" name="L739" href="#L739">739</a> 
 <a class="jxr_linenumber" name="L740" href="#L740">740</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L741" href="#L741">741</a>                 false,
-<a class="jxr_linenumber" name="L742" href="#L742">742</a>                 false,
-<a class="jxr_linenumber" name="L743" href="#L743">743</a>                 false,
-<a class="jxr_linenumber" name="L744" href="#L744">744</a>                 false,
-<a class="jxr_linenumber" name="L745" href="#L745">745</a>                 false,
-<a class="jxr_linenumber" name="L746" href="#L746">746</a>                 false,
-<a class="jxr_linenumber" name="L747" href="#L747">747</a>                 false,
-<a class="jxr_linenumber" name="L748" href="#L748">748</a>                 false,
-<a class="jxr_linenumber" name="L749" href="#L749">749</a>                 false,
-<a class="jxr_linenumber" name="L750" href="#L750">750</a>                 false,
-<a class="jxr_linenumber" name="L751" href="#L751">751</a>                 false,
+<a class="jxr_linenumber" name="L741" href="#L741">741</a>             false,
+<a class="jxr_linenumber" name="L742" href="#L742">742</a>             false,
+<a class="jxr_linenumber" name="L743" href="#L743">743</a>             false,
+<a class="jxr_linenumber" name="L744" href="#L744">744</a>             false,
+<a class="jxr_linenumber" name="L745" href="#L745">745</a>             false,
+<a class="jxr_linenumber" name="L746" href="#L746">746</a>             false,
+<a class="jxr_linenumber" name="L747" href="#L747">747</a>             false,
+<a class="jxr_linenumber" name="L748" href="#L748">748</a>             false,
+<a class="jxr_linenumber" name="L749" href="#L749">749</a>             false,
+<a class="jxr_linenumber" name="L750" href="#L750">750</a>             false,
+<a class="jxr_linenumber" name="L751" href="#L751">751</a>             false,
 <a class="jxr_linenumber" name="L752" href="#L752">752</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L753" href="#L753">753</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
-<a class="jxr_linenumber" name="L754" href="#L754">754</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
-<a class="jxr_linenumber" name="L755" href="#L755">755</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
-<a class="jxr_linenumber" name="L756" href="#L756">756</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
-<a class="jxr_linenumber" name="L757" href="#L757">757</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
-<a class="jxr_linenumber" name="L758" href="#L758">758</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
-<a class="jxr_linenumber" name="L759" href="#L759">759</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
-<a class="jxr_linenumber" name="L760" href="#L760">760</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
-<a class="jxr_linenumber" name="L761" href="#L761">761</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
-<a class="jxr_linenumber" name="L762" href="#L762">762</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-<a class="jxr_linenumber" name="L763" href="#L763">763</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
+<a class="jxr_linenumber" name="L753" href="#L753">753</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
+<a class="jxr_linenumber" name="L754" href="#L754">754</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
+<a class="jxr_linenumber" name="L755" href="#L755">755</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
+<a class="jxr_linenumber" name="L756" href="#L756">756</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
+<a class="jxr_linenumber" name="L757" href="#L757">757</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
+<a class="jxr_linenumber" name="L758" href="#L758">758</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
+<a class="jxr_linenumber" name="L759" href="#L759">759</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
+<a class="jxr_linenumber" name="L760" href="#L760">760</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
+<a class="jxr_linenumber" name="L761" href="#L761">761</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
+<a class="jxr_linenumber" name="L762" href="#L762">762</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
+<a class="jxr_linenumber" name="L763" href="#L763">763</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
 <a class="jxr_linenumber" name="L764" href="#L764">764</a>         });
 <a class="jxr_linenumber" name="L765" href="#L765">765</a> 
 <a class="jxr_linenumber" name="L766" href="#L766">766</a>         window.button(<span class="jxr_string">"labelIsParsingForm"</span>).click();
@@ -784,95 +784,95 @@
 <a class="jxr_linenumber" name="L776" href="#L776">776</a>         window.button(<span class="jxr_string">"labelIsUrlEncodingDisabled"</span>).click();
 <a class="jxr_linenumber" name="L777" href="#L777">777</a> 
 <a class="jxr_linenumber" name="L778" href="#L778">778</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L779" href="#L779">779</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L780" href="#L780">780</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L781" href="#L781">781</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L782" href="#L782">782</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L783" href="#L783">783</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L784" href="#L784">784</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L785" href="#L785">785</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L786" href="#L786">786</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L787" href="#L787">787</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L788" href="#L788">788</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L789" href="#L789">789</a>                 <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L779" href="#L779">779</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L780" href="#L780">780</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L781" href="#L781">781</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L782" href="#L782">782</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L783" href="#L783">783</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L784" href="#L784">784</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L785" href="#L785">785</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L786" href="#L786">786</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L787" href="#L787">787</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L788" href="#L788">788</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L789" href="#L789">789</a>             <strong class="jxr_keyword">true</strong>,
 <a class="jxr_linenumber" name="L790" href="#L790">790</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L791" href="#L791">791</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
-<a class="jxr_linenumber" name="L792" href="#L792">792</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
-<a class="jxr_linenumber" name="L793" href="#L793">793</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
-<a class="jxr_linenumber" name="L794" href="#L794">794</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
-<a class="jxr_linenumber" name="L795" href="#L795">795</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
-<a class="jxr_linenumber" name="L796" href="#L796">796</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
-<a class="jxr_linenumber" name="L797" href="#L797">797</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
-<a class="jxr_linenumber" name="L798" href="#L798">798</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
-<a class="jxr_linenumber" name="L799" href="#L799">799</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
-<a class="jxr_linenumber" name="L800" href="#L800">800</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
-<a class="jxr_linenumber" name="L801" href="#L801">801</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
+<a class="jxr_linenumber" name="L791" href="#L791">791</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm(),
+<a class="jxr_linenumber" name="L792" href="#L792">792</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata(),
+<a class="jxr_linenumber" name="L793" href="#L793">793</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingNormalIndex(),
+<a class="jxr_linenumber" name="L794" href="#L794">794</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isLimitingSleepTimeStrategy(),
+<a class="jxr_linenumber" name="L795" href="#L795">795</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam(),
+<a class="jxr_linenumber" name="L796" href="#L796">796</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam(),
+<a class="jxr_linenumber" name="L797" href="#L797">797</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam(),
+<a class="jxr_linenumber" name="L798" href="#L798">798</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam(),
+<a class="jxr_linenumber" name="L799" href="#L799">799</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isCheckingAllSoapParam(),
+<a class="jxr_linenumber" name="L800" href="#L800">800</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled(),
+<a class="jxr_linenumber" name="L801" href="#L801">801</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isUrlEncodingDisabled(),
 <a class="jxr_linenumber" name="L802" href="#L802">802</a>         });
 <a class="jxr_linenumber" name="L803" href="#L803">803</a> 
 <a class="jxr_linenumber" name="L804" href="#L804">804</a>         window.radioButton(<span class="jxr_string">"radioIsZipStrategy"</span>).check();
 <a class="jxr_linenumber" name="L805" href="#L805">805</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L806" href="#L806">806</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L807" href="#L807">807</a>                 false,
-<a class="jxr_linenumber" name="L808" href="#L808">808</a>                 false,
+<a class="jxr_linenumber" name="L806" href="#L806">806</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L807" href="#L807">807</a>             false,
+<a class="jxr_linenumber" name="L808" href="#L808">808</a>             false,
 <a class="jxr_linenumber" name="L809" href="#L809">809</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L810" href="#L810">810</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-<a class="jxr_linenumber" name="L811" href="#L811">811</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-<a class="jxr_linenumber" name="L812" href="#L812">812</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+<a class="jxr_linenumber" name="L810" href="#L810">810</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+<a class="jxr_linenumber" name="L811" href="#L811">811</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+<a class="jxr_linenumber" name="L812" href="#L812">812</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
 <a class="jxr_linenumber" name="L813" href="#L813">813</a>         });
 <a class="jxr_linenumber" name="L814" href="#L814">814</a> 
 <a class="jxr_linenumber" name="L815" href="#L815">815</a>         window.radioButton(<span class="jxr_string">"radioIsDefaultStrategy"</span>).check();
 <a class="jxr_linenumber" name="L816" href="#L816">816</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L817" href="#L817">817</a>                 false,
-<a class="jxr_linenumber" name="L818" href="#L818">818</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L819" href="#L819">819</a>                 false,
+<a class="jxr_linenumber" name="L817" href="#L817">817</a>             false,
+<a class="jxr_linenumber" name="L818" href="#L818">818</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L819" href="#L819">819</a>             false,
 <a class="jxr_linenumber" name="L820" href="#L820">820</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L821" href="#L821">821</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-<a class="jxr_linenumber" name="L822" href="#L822">822</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-<a class="jxr_linenumber" name="L823" href="#L823">823</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+<a class="jxr_linenumber" name="L821" href="#L821">821</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+<a class="jxr_linenumber" name="L822" href="#L822">822</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+<a class="jxr_linenumber" name="L823" href="#L823">823</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
 <a class="jxr_linenumber" name="L824" href="#L824">824</a>         });
 <a class="jxr_linenumber" name="L825" href="#L825">825</a> 
 <a class="jxr_linenumber" name="L826" href="#L826">826</a>         window.radioButton(<span class="jxr_string">"radioIsDiosStrategy"</span>).check();
 <a class="jxr_linenumber" name="L827" href="#L827">827</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L828" href="#L828">828</a>                 false,
-<a class="jxr_linenumber" name="L829" href="#L829">829</a>                 false,
-<a class="jxr_linenumber" name="L830" href="#L830">830</a>                 <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L828" href="#L828">828</a>             false,
+<a class="jxr_linenumber" name="L829" href="#L829">829</a>             false,
+<a class="jxr_linenumber" name="L830" href="#L830">830</a>             <strong class="jxr_keyword">true</strong>,
 <a class="jxr_linenumber" name="L831" href="#L831">831</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L832" href="#L832">832</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-<a class="jxr_linenumber" name="L833" href="#L833">833</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-<a class="jxr_linenumber" name="L834" href="#L834">834</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+<a class="jxr_linenumber" name="L832" href="#L832">832</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+<a class="jxr_linenumber" name="L833" href="#L833">833</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+<a class="jxr_linenumber" name="L834" href="#L834">834</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
 <a class="jxr_linenumber" name="L835" href="#L835">835</a>         });
 <a class="jxr_linenumber" name="L836" href="#L836">836</a> 
 <a class="jxr_linenumber" name="L837" href="#L837">837</a>         window.button(<span class="jxr_string">"labelIsZipStrategy"</span>).click();
 <a class="jxr_linenumber" name="L838" href="#L838">838</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L839" href="#L839">839</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L840" href="#L840">840</a>                 false,
-<a class="jxr_linenumber" name="L841" href="#L841">841</a>                 false,
+<a class="jxr_linenumber" name="L839" href="#L839">839</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L840" href="#L840">840</a>             false,
+<a class="jxr_linenumber" name="L841" href="#L841">841</a>             false,
 <a class="jxr_linenumber" name="L842" href="#L842">842</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L843" href="#L843">843</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-<a class="jxr_linenumber" name="L844" href="#L844">844</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-<a class="jxr_linenumber" name="L845" href="#L845">845</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+<a class="jxr_linenumber" name="L843" href="#L843">843</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+<a class="jxr_linenumber" name="L844" href="#L844">844</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+<a class="jxr_linenumber" name="L845" href="#L845">845</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
 <a class="jxr_linenumber" name="L846" href="#L846">846</a>         });
 <a class="jxr_linenumber" name="L847" href="#L847">847</a> 
 <a class="jxr_linenumber" name="L848" href="#L848">848</a>         window.button(<span class="jxr_string">"labelIsDefaultStrategy"</span>).click();
 <a class="jxr_linenumber" name="L849" href="#L849">849</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L850" href="#L850">850</a>                 false,
-<a class="jxr_linenumber" name="L851" href="#L851">851</a>                 <strong class="jxr_keyword">true</strong>,
-<a class="jxr_linenumber" name="L852" href="#L852">852</a>                 false,
+<a class="jxr_linenumber" name="L850" href="#L850">850</a>             false,
+<a class="jxr_linenumber" name="L851" href="#L851">851</a>             <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L852" href="#L852">852</a>             false,
 <a class="jxr_linenumber" name="L853" href="#L853">853</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L854" href="#L854">854</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-<a class="jxr_linenumber" name="L855" href="#L855">855</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-<a class="jxr_linenumber" name="L856" href="#L856">856</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+<a class="jxr_linenumber" name="L854" href="#L854">854</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+<a class="jxr_linenumber" name="L855" href="#L855">855</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+<a class="jxr_linenumber" name="L856" href="#L856">856</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
 <a class="jxr_linenumber" name="L857" href="#L857">857</a>         });
 <a class="jxr_linenumber" name="L858" href="#L858">858</a> 
 <a class="jxr_linenumber" name="L859" href="#L859">859</a>         window.button(<span class="jxr_string">"labelIsDiosStrategy"</span>).click();
 <a class="jxr_linenumber" name="L860" href="#L860">860</a>         Assertions.assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L861" href="#L861">861</a>                 false,
-<a class="jxr_linenumber" name="L862" href="#L862">862</a>                 false,
-<a class="jxr_linenumber" name="L863" href="#L863">863</a>                 <strong class="jxr_keyword">true</strong>,
+<a class="jxr_linenumber" name="L861" href="#L861">861</a>             false,
+<a class="jxr_linenumber" name="L862" href="#L862">862</a>             false,
+<a class="jxr_linenumber" name="L863" href="#L863">863</a>             <strong class="jxr_keyword">true</strong>,
 <a class="jxr_linenumber" name="L864" href="#L864">864</a>         }, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {
-<a class="jxr_linenumber" name="L865" href="#L865">865</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
-<a class="jxr_linenumber" name="L866" href="#L866">866</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
-<a class="jxr_linenumber" name="L867" href="#L867">867</a>                 MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
+<a class="jxr_linenumber" name="L865" href="#L865">865</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isZipStrategy(),
+<a class="jxr_linenumber" name="L866" href="#L866">866</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDefaultStrategy(),
+<a class="jxr_linenumber" name="L867" href="#L867">867</a>             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isDiosStrategy(),
 <a class="jxr_linenumber" name="L868" href="#L868">868</a>         });
 <a class="jxr_linenumber" name="L869" href="#L869">869</a> 
 <a class="jxr_linenumber" name="L870" href="#L870">870</a>         window.button(<span class="jxr_string">"advancedButton"</span>).click();

@@ -207,15 +207,15 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="nc" id="L207">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
 <span class="nc" id="L208">            Thread.currentThread().interrupt();</span>
             
-<span class="fc" id="L210">        } catch (JSqlException | IOException e) {  // Catch expected exceptions only</span>
+<span class="nc" id="L210">        } catch (JSqlException | IOException e) {  // Catch expected exceptions only</span>
 
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">            if (e.getMessage() == null) {</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">            if (e.getMessage() == null) {</span>
 <span class="nc" id="L213">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Unexpected: {}&quot;, getImplicitReason(e));</span>
             } else {
-<span class="fc" id="L215">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Unexpected: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L215">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Unexpected: {}&quot;, e.getMessage());</span>
             }
 
-<span class="pc bpc" id="L218" title="1 of 2 branches missed.">            if (e.toString().contains(&quot;HTTP/1.1&quot;)) {</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">            if (e.toString().contains(&quot;HTTP/1.1&quot;)) {</span>
 
 <span class="nc" id="L220">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Something went wrong with HTTP/2, try to switch manually to HTTP/1.1 in preferences&quot;);</span>
             }
@@ -430,7 +430,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     ) {
 
 <span class="fc bfc" id="L432" title="All 2 branches covered.">        if (!this.mediatorUtils.getParameterUtil().getListHeader().isEmpty()) {</span>
-            
+
 <span class="fc" id="L434">            Stream.of(</span>
 <span class="fc" id="L435">                this.buildQuery(</span>
 <span class="fc" id="L436">                    this.mediatorMethod.getHeader(),</span>
@@ -441,10 +441,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L441">                .split(&quot;\\\\r\\\\n&quot;)</span>
             )
 <span class="fc" id="L443">            .forEach(header -&gt; {</span>
-                
+
 <span class="fc bfc" id="L445" title="All 2 branches covered.">                if (header.split(&quot;:&quot;).length == 2) {</span>
 
-                    try {
+                    try {  // TODO Should not catch, rethrow or use runtime exception
 <span class="fc" id="L448">                        HeaderUtil.sanitizeHeaders(</span>
                             httpRequest,
                             new SimpleEntry&lt;&gt;(
