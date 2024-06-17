@@ -430,7 +430,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
     ) {
 
         if (!this.mediatorUtils.getParameterUtil().getListHeader().isEmpty()) {
-            
+
             Stream.of(
                 this.buildQuery(
                     this.mediatorMethod.getHeader(),
@@ -441,10 +441,10 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
                 .split("\\\\r\\\\n")
             )
             .forEach(header -> {
-                
+
                 if (header.split(":").length == 2) {
 
-                    try {
+                    try {  // TODO Should not catch, rethrow or use runtime exception
                         HeaderUtil.sanitizeHeaders(
                             httpRequest,
                             new SimpleEntry<>(

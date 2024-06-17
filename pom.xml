@@ -30,11 +30,12 @@
         <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
         <maven-checkstyle-plugin.version>3.4.0</maven-checkstyle-plugin.version>
         <maven-clean-plugin.version>3.3.2</maven-clean-plugin.version>
+        <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
         <maven-dependency-plugin.version>3.7.0</maven-dependency-plugin.version>
         <maven-install-plugin.version>3.1.2</maven-install-plugin.version>
         <maven-javadoc-plugin.version>3.7.0</maven-javadoc-plugin.version>
-        <maven-jxr-plugin.version>3.3.0</maven-jxr-plugin.version>
-        <maven-pmd-plugin.version>3.22.0</maven-pmd-plugin.version>
+        <maven-jxr-plugin.version>3.4.0</maven-jxr-plugin.version>
+        <maven-pmd-plugin.version>3.23.0</maven-pmd-plugin.version>
         <maven-project-info-reports-plugin.version>3.5.0</maven-project-info-reports-plugin.version>
         <maven-site-plugin.version>4.0.0-M15</maven-site-plugin.version>
         <maven-surefire-plugin.version>3.3.0</maven-surefire-plugin.version>
@@ -79,7 +80,7 @@
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
-            <version>3.7.1</version>
+            <version>${maven-assembly-plugin.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
