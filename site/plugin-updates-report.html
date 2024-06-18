@@ -73,23 +73,23 @@
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" /></td>
 <td># of plugins using the latest version available</td>
-<td>8</td></tr>
+<td>7</td></tr>
 <tr class="a">
-<td><img src="images/icon_success_sml.gif" /></td>
-<td># of plugins where the next version available is smaller than an incremental version update</td>
-<td>0</td></tr>
-<tr class="b">
 <td><img src="images/icon_warning_sml.gif" /></td>
+<td># of plugins where the next version available is smaller than an incremental version update</td>
+<td>1</td></tr>
+<tr class="b">
+<td><img src="images/icon_success_sml.gif" /></td>
 <td># of plugins where the next version available is an incremental version update</td>
-<td>2</td></tr>
+<td>0</td></tr>
 <tr class="a">
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td># of plugins where the next version available is a minor version update</td>
-<td>4</td></tr>
+<td>5</td></tr>
 <tr class="b">
-<td><img src="images/icon_success_sml.gif" /></td>
+<td><img src="images/icon_warning_sml.gif" /></td>
 <td># of plugins where the next version available is a major version update</td>
-<td>0</td></tr>
+<td>1</td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" /></td>
 <td># of plugins where a dependencies section containes a dependency with an updated version</td>
@@ -107,44 +107,44 @@
 <th>Latest Major</th>
 <th>Dependency status</th></tr>
 <tr class="b">
-<td><img src="images/icon_success_sml.gif" /></td>
+<td><img src="images/icon_warning_sml.gif" /></td>
 <td>org.apache.maven.plugins</td>
 <td>maven-antrun-plugin</td>
+<td>1.3</td>
+<td></td>
+<td></td>
+<td><b>1.8</b></td>
 <td><b>3.1.0</b></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
 <td><img src="images/icon_success_sml.gif" /></td></tr>
 <tr class="a">
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td>org.apache.maven.plugins</td>
 <td>maven-assembly-plugin</td>
-<td>3.6.0</td>
-<td></td>
-<td></td>
+<td>2.2-beta-5</td>
+<td><b>2.2</b></td>
+<td><b>2.2.2</b></td>
+<td><b>2.6</b></td>
 <td><b>3.7.1</b></td>
-<td></td>
 <td><img src="images/icon_success_sml.gif" /></td></tr>
 <tr class="b">
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td>org.apache.maven.plugins</td>
 <td>maven-dependency-plugin</td>
-<td>3.6.1</td>
+<td>2.8</td>
 <td></td>
 <td></td>
+<td><b>2.10</b></td>
 <td><b>3.7.0</b></td>
-<td></td>
 <td><img src="images/icon_success_sml.gif" /></td></tr>
 <tr class="a">
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td>org.apache.maven.plugins</td>
 <td>maven-release-plugin</td>
-<td>3.0.1</td>
+<td>2.5.3</td>
+<td></td>
 <td></td>
 <td></td>
 <td><b>3.1.0</b></td>
-<td></td>
 <td><img src="images/icon_success_sml.gif" /></td></tr>
 <tr class="b">
 <th>Status</th>
@@ -182,11 +182,11 @@
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td>org.apache.maven.plugins</td>
 <td>maven-clean-plugin</td>
-<td>3.2.0</td>
+<td>2.5</td>
 <td></td>
 <td></td>
+<td><b>2.6.1</b></td>
 <td><b>3.3.2</b></td>
-<td></td>
 <td><img src="images/icon_success_sml.gif" /></td></tr>
 <tr class="b">
 <td><img src="images/icon_success_sml.gif" /></td>
@@ -202,21 +202,21 @@
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td>org.apache.maven.plugins</td>
 <td>maven-deploy-plugin</td>
-<td>3.1.1</td>
+<td>2.7</td>
 <td></td>
+<td></td>
+<td><b>2.8.2</b></td>
 <td><b>3.1.2</b></td>
-<td></td>
-<td></td>
 <td><img src="images/icon_success_sml.gif" /></td></tr>
 <tr class="b">
 <td><img src="images/icon_warning_sml.gif" /></td>
 <td>org.apache.maven.plugins</td>
 <td>maven-install-plugin</td>
-<td>3.1.1</td>
+<td>2.4</td>
 <td></td>
+<td></td>
+<td><b>2.5.2</b></td>
 <td><b>3.1.2</b></td>
-<td></td>
-<td></td>
 <td><img src="images/icon_success_sml.gif" /></td></tr>
 <tr class="a">
 <td><img src="images/icon_success_sml.gif" /></td>
@@ -298,7 +298,7 @@
 <table class="table table-striped">
 <tr class="a">
 <th>Status</th>
-<td style="text-align: left;"><img src="images/icon_success_sml.gif" />&#160;No newer versions available.</td></tr>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
 <tr class="b">
 <th>Group Id</th>
 <td style="text-align: left;">org.apache.maven.plugins</td></tr>
@@ -307,12 +307,15 @@
 <td style="text-align: left;">maven-antrun-plugin</td></tr>
 <tr class="b">
 <th>Current Version</th>
-<td style="text-align: left;">3.1.0</td></tr></table></section><section>
+<td style="text-align: left;">1.3</td></tr>
+<tr class="a">
+<th>Newer versions</th>
+<td style="text-align: left;">1.4<br />1.5<br />1.6<br />1.7<br /><b>1.8</b>&#160;<i>Latest Minor</i><br />3.0.0<br /><b>3.1.0</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
 <h2>Plugin org.apache.maven.plugins:maven-assembly-plugin</h2>
 <table class="table table-striped">
 <tr class="a">
 <th>Status</th>
-<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer version available.</td></tr>
 <tr class="b">
 <th>Group Id</th>
 <td style="text-align: left;">org.apache.maven.plugins</td></tr>
@@ -321,10 +324,10 @@
 <td style="text-align: left;">maven-assembly-plugin</td></tr>
 <tr class="b">
 <th>Current Version</th>
-<td style="text-align: left;">3.6.0</td></tr>
+<td style="text-align: left;">2.2-beta-5</td></tr>
 <tr class="a">
 <th>Newer versions</th>
-<td style="text-align: left;">3.7.0<br /><b>3.7.1</b>&#160;<i>Latest Minor</i></td></tr></table></section><section>
+<td style="text-align: left;"><b>2.2</b>&#160;<i>Latest Subincremental</i><br />2.2.1<br /><b>2.2.2</b>&#160;<i>Latest Incremental</i><br />2.3<br />2.4<br />2.4.1<br />2.5<br />2.5.1<br />2.5.2<br />2.5.3<br />2.5.4<br />2.5.5<br /><b>2.6</b>&#160;<i>Latest Minor</i><br />3.0.0<br />3.1.0<br />3.1.1<br />3.2.0<br />3.3.0<br />3.4.0<br />3.4.1<br />3.4.2<br />3.5.0<br />3.6.0<br />3.7.0<br /><b>3.7.1</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
 <h2>Plugin org.apache.maven.plugins:maven-clean-plugin</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -338,10 +341,10 @@
 <td style="text-align: left;">maven-clean-plugin</td></tr>
 <tr class="b">
 <th>Current Version</th>
-<td style="text-align: left;">3.2.0</td></tr>
+<td style="text-align: left;">2.5</td></tr>
 <tr class="a">
 <th>Newer versions</th>
-<td style="text-align: left;">3.3.1<br /><b>3.3.2</b>&#160;<i>Latest Minor</i></td></tr></table></section><section>
+<td style="text-align: left;">2.6<br /><b>2.6.1</b>&#160;<i>Latest Minor</i><br />3.0.0<br />3.1.0<br />3.2.0<br />3.3.1<br /><b>3.3.2</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
 <h2>Plugin org.apache.maven.plugins:maven-dependency-plugin</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -355,10 +358,10 @@
 <td style="text-align: left;">maven-dependency-plugin</td></tr>
 <tr class="b">
 <th>Current Version</th>
-<td style="text-align: left;">3.6.1</td></tr>
+<td style="text-align: left;">2.8</td></tr>
 <tr class="a">
 <th>Newer versions</th>
-<td style="text-align: left;"><b>3.7.0</b>&#160;<i>Latest Minor</i></td></tr></table></section><section>
+<td style="text-align: left;">2.9<br /><b>2.10</b>&#160;<i>Latest Minor</i><br />3.0.0<br />3.0.1<br />3.0.2<br />3.1.0<br />3.1.1<br />3.1.2<br />3.2.0<br />3.3.0<br />3.4.0<br />3.5.0<br />3.6.0<br />3.6.1<br /><b>3.7.0</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
 <h2>Plugin org.apache.maven.plugins:maven-dependency-plugin</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -377,7 +380,7 @@
 <table class="table table-striped">
 <tr class="a">
 <th>Status</th>
-<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer incremental version available. Incremental updates are typically passive.</td></tr>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
 <tr class="b">
 <th>Group Id</th>
 <td style="text-align: left;">org.apache.maven.plugins</td></tr>
@@ -386,15 +389,15 @@
 <td style="text-align: left;">maven-deploy-plugin</td></tr>
 <tr class="b">
 <th>Current Version</th>
-<td style="text-align: left;">3.1.1</td></tr>
+<td style="text-align: left;">2.7</td></tr>
 <tr class="a">
 <th>Newer versions</th>
-<td style="text-align: left;"><b>3.1.2</b>&#160;<i>Latest Incremental</i></td></tr></table></section><section>
+<td style="text-align: left;">2.8<br />2.8.1<br /><b>2.8.2</b>&#160;<i>Latest Minor</i><br />3.0.0-M1<br />3.0.0-M2<br />3.0.0<br />3.1.0<br />3.1.1<br /><b>3.1.2</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
 <h2>Plugin org.apache.maven.plugins:maven-install-plugin</h2>
 <table class="table table-striped">
 <tr class="a">
 <th>Status</th>
-<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer incremental version available. Incremental updates are typically passive.</td></tr>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
 <tr class="b">
 <th>Group Id</th>
 <td style="text-align: left;">org.apache.maven.plugins</td></tr>
@@ -403,10 +406,10 @@
 <td style="text-align: left;">maven-install-plugin</td></tr>
 <tr class="b">
 <th>Current Version</th>
-<td style="text-align: left;">3.1.1</td></tr>
+<td style="text-align: left;">2.4</td></tr>
 <tr class="a">
 <th>Newer versions</th>
-<td style="text-align: left;"><b>3.1.2</b>&#160;<i>Latest Incremental</i></td></tr></table></section><section>
+<td style="text-align: left;">2.5<br />2.5.1<br /><b>2.5.2</b>&#160;<i>Latest Minor</i><br />3.0.0-M1<br />3.0.0<br />3.0.1<br />3.1.0<br />3.1.1<br /><b>3.1.2</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
 <h2>Plugin org.apache.maven.plugins:maven-javadoc-plugin</h2>
 <table class="table table-striped">
 <tr class="a">
@@ -425,7 +428,7 @@
 <table class="table table-striped">
 <tr class="a">
 <th>Status</th>
-<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer minor version available. Minor updates are sometimes passive.</td></tr>
+<td style="text-align: left;"><img src="images/icon_warning_sml.gif" />&#160;There is at least one newer major version available. Major updates are rarely passive.</td></tr>
 <tr class="b">
 <th>Group Id</th>
 <td style="text-align: left;">org.apache.maven.plugins</td></tr>
@@ -434,10 +437,10 @@
 <td style="text-align: left;">maven-release-plugin</td></tr>
 <tr class="b">
 <th>Current Version</th>
-<td style="text-align: left;">3.0.1</td></tr>
+<td style="text-align: left;">2.5.3</td></tr>
 <tr class="a">
 <th>Newer versions</th>
-<td style="text-align: left;"><b>3.1.0</b>&#160;<i>Latest Minor</i></td></tr></table></section><section>
+<td style="text-align: left;">3.0.0-M1<br />3.0.0-M4<br />3.0.0-M5<br />3.0.0-M6<br />3.0.0-M7<br />3.0.0<br />3.0.1<br /><b>3.1.0</b>&#160;<i>Latest Major</i></td></tr></table></section><section>
 <h2>Plugin org.apache.maven.plugins:maven-site-plugin</h2>
 <table class="table table-striped">
 <tr class="a">
