@@ -118,6 +118,7 @@ jobs:
     - name: Unit and integration tests with Sonar scan
       # profile to skipITs/skipTests (env var MAVEN_OPS not working)
       # mvn goal site last to apply skin to generated reports
+      # remove goal pmd:pmd: random StackOverflowError
       run: |
         $DOCKER_RESOURCES/scripts/run-on-docker.sh '
           mvn clean install \
@@ -131,7 +132,6 @@ jobs:
             surefire-report:report \
             surefire-report:failsafe-report-only \
             dependency:analyze-report \
-            pmd:pmd \
             spotbugs:check \
             versions:dependency-updates-report \
             checkstyle:checkstyle \
