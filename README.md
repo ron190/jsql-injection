@@ -1,9 +1,9 @@
 ## Description
 **jSQL Injection** is a lightweight application used to find database information from a server.
 
-It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac and it works with Java from version 11 to 20.
+It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac and it works with Java from version 11 to 22.
 
-![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in various other distributions like [Blackbuntu](https://github.com/blackbuntu/system), [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
+![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in various other distributions like [SnoopGod](https://snoopgod.com/), [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
 
 [![Twitter](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190 "Developer Twitter account")](https://twitter.com/ron190jsql)<br>
 [![Java](https://img.shields.io/badge/java-11%20to%2020-orange?logo=java "Version range compatibility")](http://www.oracle.com/technetwork/java/javase/downloads/)
@@ -22,14 +22,14 @@ Read about jSQL [features](https://github.com/ron190/jsql-injection/wiki/Feature
 For programmers, access the generated [Maven reports](https://ron190.github.io/jsql-injection/site/) and [Sonar analysis](https://sonarcloud.io/dashboard?id=ron190%3Ajsql-injection) to analyze internal metrics, and open the [programming section](https://github.com/ron190/jsql-injection/wiki/Programming-jSQL) in the wiki for more details.
 
 ## Install
-First, install :coffee: [Java](http://java.com) 11 or up to version 20, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.98.jar` to run the software.
+First, install :coffee: [Java](http://java.com) 11 or up to version 22, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.99.jar` to run the software.
 
-You can also type `java -jar jsql-injection-v0.98.jar` in your terminal to start the program.
+You can also type `java -jar jsql-injection-v0.99.jar` in your terminal to start the program.
 
 If you are using Kali Linux then get the latest version using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 > [!NOTE]
-> Download the latest version from GitHub: [jsql-injection-v0.98.jar](https://github.com/ron190/jsql-injection/releases/download/v0.98/jsql-injection-v0.98.jar)
+> Download the latest version from GitHub: [jsql-injection-v0.99.jar](https://github.com/ron190/jsql-injection/releases/download/v0.99/jsql-injection-v0.99.jar)
 ___
 ## Screenshots
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
@@ -40,9 +40,6 @@ ___
 [![Web shell](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/webshell-mini.png "Web shell")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/webshell.png)
 [![SQL shell](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/sqlshell-mini.png "SQL shell")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/sqlshell.png)
 [![File](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/file-mini.png "File")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/file.png)
-[![Upload](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/upload-mini.png "Upload")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/upload.png)
-[![Bruteforce](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter-mini.png "Bruteforce")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter.png)
-[![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 ___
 ## Disclaimer
 > [!NOTE]
