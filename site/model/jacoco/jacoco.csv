@@ -1,7 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.LinesToCharsResult,0,12,0,0,0,5,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.patch,Patch,208,0,14,0,46,0,20,0,12,0
-model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3165,2136,397,290,647,465,244,149,23,20
+model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3157,2132,397,290,647,465,244,149,23,20
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.Operation,0,21,0,0,0,2,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.patch,Diff,27,88,9,11,7,25,9,10,2,7
 model,com.jsql.model.bean.util,Header,0,75,0,0,0,13,0,1,0,1
@@ -113,7 +113,7 @@ model,com.jsql.util.bruter,BaseNCodec,295,205,56,12,57,43,51,11,17,11
 model,com.jsql.util.bruter,Base16,107,1042,20,20,18,52,18,11,2,7
 model,com.jsql.util.bruter,ActionCoder,254,0,0,0,41,0,4,0,4,0
 model,com.jsql.model.suspendable,SuspendableGetRows,145,599,21,33,37,147,17,28,1,17
-model,com.jsql.model.suspendable,SuspendableGetIndexes,43,137,3,11,10,30,3,8,0,4
+model,com.jsql.model.suspendable,SuspendableGetIndexes,46,134,4,10,11,29,4,7,0,4
 model,com.jsql.model.suspendable,AbstractSuspendable,21,42,3,3,8,16,5,6,2,6
 model,com.jsql.model.suspendable,SuspendableGetCharInsertion,64,531,7,37,15,124,9,33,2,18
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
