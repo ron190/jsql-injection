@@ -70,21 +70,33 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
 
     @Override
     public void allow(int... i) {
-        
-<span class="fc" id="L74">        this.markVulnerability(Interaction.MARK_MULTI_VULNERABLE);</span>
-<span class="fc" id="L75">    }</span>
+
+<span class="fc" id="L74">        this.injectionModel.appendAnalysisReport(</span>
+            &quot;### Strategy: Multibit\n&quot;
+<span class="fc" id="L76">            + this.injectionModel.getReportWithoutIndex(</span>
+<span class="fc" id="L77">                injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(</span>
+<span class="fc" id="L78">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(&quot;&lt;query&gt;&quot;, &quot;0&quot;, true),</span>
+                    0,
+                    1
+                ),
+                &quot;metadataInjectionProcess&quot;,
+                null
+            )
+        );
+<span class="fc" id="L86">        this.markVulnerability(Interaction.MARK_MULTI_VULNERABLE);</span>
+<span class="fc" id="L87">    }</span>
 
     @Override
     public void unallow(int... i) {
         
-<span class="fc" id="L80">        this.markVulnerability(Interaction.MARK_MULTI_INVULNERABLE);</span>
-<span class="fc" id="L81">    }</span>
+<span class="fc" id="L92">        this.markVulnerability(Interaction.MARK_MULTI_INVULNERABLE);</span>
+<span class="fc" id="L93">    }</span>
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
         
-<span class="fc" id="L86">        return this.injectionMultibit.inject(</span>
-<span class="fc" id="L87">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition),</span>
+<span class="fc" id="L98">        return this.injectionMultibit.inject(</span>
+<span class="fc" id="L99">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition, false),</span>
             stoppable
         );
     }
@@ -92,30 +104,30 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
     @Override
     public void activateWhenApplicable() {
 
-<span class="fc bfc" id="L95" title="All 4 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
+<span class="fc bfc" id="L107" title="All 4 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
 
-<span class="fc" id="L97">            LOGGER.log(</span>
+<span class="fc" id="L109">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 &quot;{} [{}]&quot;,
-<span class="fc" id="L100">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
+<span class="fc" id="L112">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
                 this::getName
             );
-<span class="fc" id="L103">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getMultibit());</span>
+<span class="fc" id="L115">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getMultibit());</span>
 
-<span class="fc" id="L105">            var requestMarkBlindStrategy = new Request();</span>
-<span class="fc" id="L106">            requestMarkBlindStrategy.setMessage(Interaction.MARK_MULTI_STRATEGY);</span>
-<span class="fc" id="L107">            this.injectionModel.sendToViews(requestMarkBlindStrategy);</span>
+<span class="fc" id="L117">            var requestMarkBlindStrategy = new Request();</span>
+<span class="fc" id="L118">            requestMarkBlindStrategy.setMessage(Interaction.MARK_MULTI_STRATEGY);</span>
+<span class="fc" id="L119">            this.injectionModel.sendToViews(requestMarkBlindStrategy);</span>
         }
-<span class="fc" id="L109">    }</span>
+<span class="fc" id="L121">    }</span>
     
     @Override
     public String getPerformanceLength() {
-<span class="fc" id="L113">        return VendorYaml.DEFAULT_CAPACITY;</span>
+<span class="fc" id="L125">        return VendorYaml.DEFAULT_CAPACITY;</span>
     }
     
     @Override
     public String getName() {
-<span class="fc" id="L118">        return &quot;Multibit&quot;;</span>
+<span class="fc" id="L130">        return &quot;Multibit&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

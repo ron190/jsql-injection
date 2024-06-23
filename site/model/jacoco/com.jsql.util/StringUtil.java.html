@@ -182,7 +182,7 @@ public final class StringUtil {
 <span class="fc" id="L182">        String result = text;</span>
 <span class="fc bfc" id="L183" title="All 2 branches covered.">        if (encoding != null) {</span>
             
-<span class="fc" id="L185">            result = new String(text.getBytes(), StandardCharsets.UTF_8);</span>
+<span class="fc" id="L185">            result = new String(text.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);</span>
         }
         
 <span class="fc" id="L188">        return result;</span>

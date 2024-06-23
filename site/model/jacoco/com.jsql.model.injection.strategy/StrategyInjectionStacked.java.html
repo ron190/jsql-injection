@@ -128,21 +128,28 @@ public class StrategyInjectionStacked extends AbstractStrategy {
 
     @Override
     public void allow(int... i) {
-        
-<span class="fc" id="L132">        this.markVulnerability(Interaction.MARK_STACKED_VULNERABLE);</span>
-<span class="fc" id="L133">    }</span>
+
+<span class="fc" id="L132">        this.injectionModel.appendAnalysisReport(</span>
+            &quot;### Strategy: Stacked\n&quot;
+<span class="fc" id="L134">            + this.injectionModel.getReportWithoutIndex(</span>
+<span class="fc" id="L135">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked(&quot;&lt;query&gt;&quot;, &quot;0&quot;, true),</span>
+                &quot;metadataInjectionProcess&quot;
+            )
+        );
+<span class="fc" id="L139">        this.markVulnerability(Interaction.MARK_STACKED_VULNERABLE);</span>
+<span class="fc" id="L140">    }</span>
 
     @Override
     public void unallow(int... i) {
         
-<span class="fc" id="L138">        this.markVulnerability(Interaction.MARK_STACKED_INVULNERABLE);</span>
-<span class="fc" id="L139">    }</span>
+<span class="fc" id="L145">        this.markVulnerability(Interaction.MARK_STACKED_INVULNERABLE);</span>
+<span class="fc" id="L146">    }</span>
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
         
-<span class="fc" id="L144">        return this.injectionModel.injectWithoutIndex(</span>
-<span class="fc" id="L145">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked(sqlQuery, startPosition),</span>
+<span class="fc" id="L151">        return this.injectionModel.injectWithoutIndex(</span>
+<span class="fc" id="L152">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked(sqlQuery, startPosition, false),</span>
             metadataInjectionProcess
         );
     }
@@ -150,30 +157,30 @@ public class StrategyInjectionStacked extends AbstractStrategy {
     @Override
     public void activateWhenApplicable() {
 
-<span class="fc bfc" id="L153" title="All 4 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
+<span class="fc bfc" id="L160" title="All 4 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
 
-<span class="fc" id="L155">            LOGGER.log(</span>
+<span class="fc" id="L162">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 &quot;{} [{}]&quot;,
-<span class="fc" id="L158">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
+<span class="fc" id="L165">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
                 this::getName
             );
-<span class="fc" id="L161">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getStacked());</span>
+<span class="fc" id="L168">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getStacked());</span>
 
-<span class="fc" id="L163">            var request = new Request();</span>
-<span class="fc" id="L164">            request.setMessage(Interaction.MARK_STACKED_STRATEGY);</span>
-<span class="fc" id="L165">            this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L170">            var request = new Request();</span>
+<span class="fc" id="L171">            request.setMessage(Interaction.MARK_STACKED_STRATEGY);</span>
+<span class="fc" id="L172">            this.injectionModel.sendToViews(request);</span>
         }
-<span class="fc" id="L167">    }</span>
+<span class="fc" id="L174">    }</span>
 
     @Override
     public String getPerformanceLength() {
-<span class="fc" id="L171">        return this.performanceLength;</span>
+<span class="fc" id="L178">        return this.performanceLength;</span>
     }
 
     @Override
     public String getName() {
-<span class="fc" id="L176">        return &quot;Stacked&quot;;</span>
+<span class="fc" id="L183">        return &quot;Stacked&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

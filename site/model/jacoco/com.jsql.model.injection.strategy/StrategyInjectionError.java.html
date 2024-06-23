@@ -154,21 +154,34 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     @Override
     public void allow(int... indexError) {
-        
-<span class="fc" id="L158">        this.markVulnerability(Interaction.MARK_ERROR_VULNERABLE, indexError[0]);</span>
-<span class="fc" id="L159">    }</span>
+
+<span class="fc" id="L158">        this.injectionModel.appendAnalysisReport(</span>
+<span class="fc" id="L159">            &quot;### Strategy: &quot; + getName() + &quot; &quot; + this.injectionModel.getMediatorVendor().getVendor().instance()</span>
+<span class="fc" id="L160">                .getModelYaml()</span>
+<span class="fc" id="L161">                .getStrategy()</span>
+<span class="fc" id="L162">                .getError()</span>
+<span class="fc" id="L163">                .getMethod()</span>
+<span class="fc" id="L164">                .get(indexError[0])</span>
+<span class="fc" id="L165">                .getName()</span>
+<span class="fc" id="L166">            + &quot;\n&quot; + this.injectionModel.getReportWithoutIndex(</span>
+<span class="fc" id="L167">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(&quot;&lt;query&gt;&quot;, &quot;0&quot;, indexError[0], true),</span>
+                &quot;metadataInjectionProcess&quot;
+            )
+        );
+<span class="fc" id="L171">        this.markVulnerability(Interaction.MARK_ERROR_VULNERABLE, indexError[0]);</span>
+<span class="fc" id="L172">    }</span>
 
     @Override
     public void unallow(int... indexError) {
         
-<span class="fc" id="L164">        this.markVulnerability(Interaction.MARK_ERROR_INVULNERABLE, indexError[0]);</span>
-<span class="fc" id="L165">    }</span>
+<span class="fc" id="L177">        this.markVulnerability(Interaction.MARK_ERROR_INVULNERABLE, indexError[0]);</span>
+<span class="fc" id="L178">    }</span>
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
         
-<span class="fc" id="L170">        return this.injectionModel.injectWithoutIndex(</span>
-<span class="fc" id="L171">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition),</span>
+<span class="fc" id="L183">        return this.injectionModel.injectWithoutIndex(</span>
+<span class="fc" id="L184">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition, this.indexErrorStrategy, false),</span>
             metadataInjectionProcess
         );
     }
@@ -176,45 +189,45 @@ public class StrategyInjectionError extends AbstractStrategy {
     @Override
     public void activateWhenApplicable() {
 
-<span class="fc bfc" id="L179" title="All 4 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
+<span class="fc bfc" id="L192" title="All 4 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
 
-<span class="fc" id="L181">            LOGGER.log(</span>
+<span class="fc" id="L194">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 &quot;{} [{} {}]&quot;,
-<span class="fc" id="L184">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
+<span class="fc" id="L197">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
                 this::getName,
-<span class="fc" id="L186">                () -&gt; this.injectionModel.getMediatorVendor().getVendor().instance()</span>
-<span class="fc" id="L187">                    .getModelYaml()</span>
-<span class="fc" id="L188">                    .getStrategy()</span>
-<span class="fc" id="L189">                    .getError()</span>
-<span class="fc" id="L190">                    .getMethod()</span>
-<span class="fc" id="L191">                    .get(this.indexErrorStrategy)</span>
-<span class="fc" id="L192">                    .getName()</span>
+<span class="fc" id="L199">                () -&gt; this.injectionModel.getMediatorVendor().getVendor().instance()</span>
+<span class="fc" id="L200">                    .getModelYaml()</span>
+<span class="fc" id="L201">                    .getStrategy()</span>
+<span class="fc" id="L202">                    .getError()</span>
+<span class="fc" id="L203">                    .getMethod()</span>
+<span class="fc" id="L204">                    .get(this.indexErrorStrategy)</span>
+<span class="fc" id="L205">                    .getName()</span>
             );
-<span class="fc" id="L194">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());</span>
+<span class="fc" id="L207">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());</span>
 
-<span class="fc" id="L196">            var request = new Request();</span>
-<span class="fc" id="L197">            request.setMessage(Interaction.MARK_ERROR_STRATEGY);</span>
-<span class="fc" id="L198">            this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L209">            var request = new Request();</span>
+<span class="fc" id="L210">            request.setMessage(Interaction.MARK_ERROR_STRATEGY);</span>
+<span class="fc" id="L211">            this.injectionModel.sendToViews(request);</span>
         }
-<span class="fc" id="L200">    }</span>
+<span class="fc" id="L213">    }</span>
     
     @Override
     public String getPerformanceLength() {
-<span class="fc" id="L204">        return this.tabCapacityMethod[this.indexErrorStrategy];</span>
+<span class="fc" id="L217">        return this.tabCapacityMethod[this.indexErrorStrategy];</span>
     }
     
     @Override
     public String getName() {
-<span class="fc" id="L209">        return &quot;Error&quot;;</span>
+<span class="fc" id="L222">        return &quot;Error&quot;;</span>
     }
     
     public Integer getIndexErrorStrategy() {
-<span class="fc" id="L213">        return this.indexErrorStrategy;</span>
+<span class="nc" id="L226">        return this.indexErrorStrategy;</span>
     }
     
     public void setIndexErrorStrategy(int indexErrorStrategy) {
-<span class="nc" id="L217">        this.indexErrorStrategy = indexErrorStrategy;</span>
-<span class="nc" id="L218">    }</span>
+<span class="nc" id="L230">        this.indexErrorStrategy = indexErrorStrategy;</span>
+<span class="nc" id="L231">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -9,11 +9,14 @@ import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
@@ -24,7 +27,7 @@ public class MediatorVendor {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L27">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L30">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     private static final String LOG_VENDOR = &quot;{} [{}]&quot;;
 
@@ -58,85 +61,85 @@ public class MediatorVendor {
     
     private final InjectionModel injectionModel;
     
-<span class="fc" id="L61">    public MediatorVendor(InjectionModel injectionModel) {</span>
+<span class="fc" id="L64">    public MediatorVendor(InjectionModel injectionModel) {</span>
         
-<span class="fc" id="L63">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L66">        this.injectionModel = injectionModel;</span>
         
-<span class="fc" id="L65">        Vendor access = new Vendor(new VendorYaml(&quot;access.yml&quot;, injectionModel));</span>
-<span class="fc" id="L66">        Vendor altibase = new Vendor(new VendorYaml(&quot;altibase.yml&quot;, injectionModel));</span>
-<span class="fc" id="L67">        Vendor ctreeACE = new Vendor(new VendorYaml(&quot;ctreeace.yml&quot;, injectionModel));</span>
-<span class="fc" id="L68">        Vendor cockroachDB = new Vendor(new VendorYaml(&quot;cockroachdb.yml&quot;, injectionModel));</span>
-<span class="fc" id="L69">        Vendor exasol = new Vendor(new VendorYaml(&quot;exasol.yml&quot;, injectionModel));</span>
-<span class="fc" id="L70">        Vendor frontbase = new Vendor(new VendorYaml(&quot;frontbase.yml&quot;, injectionModel));</span>
-<span class="fc" id="L71">        Vendor firebird = new Vendor(new VendorYaml(&quot;firebird.yml&quot;, injectionModel));</span>
-<span class="fc" id="L72">        Vendor hana = new Vendor(new VendorYaml(&quot;hana.yml&quot;, injectionModel));</span>
-<span class="fc" id="L73">        Vendor informix = new Vendor(new VendorYaml(&quot;informix.yml&quot;, injectionModel));</span>
-<span class="fc" id="L74">        Vendor ingres = new Vendor(new VendorYaml(&quot;ingres.yml&quot;, injectionModel));</span>
-<span class="fc" id="L75">        Vendor iris = new Vendor(new VendorYaml(&quot;iris.yml&quot;, injectionModel));</span>
-<span class="fc" id="L76">        Vendor maxDB = new Vendor(new VendorYaml(&quot;maxdb.yml&quot;, injectionModel));</span>
-<span class="fc" id="L77">        Vendor mckoi = new Vendor(new VendorYaml(&quot;mckoi.yml&quot;, injectionModel));</span>
-<span class="fc" id="L78">        Vendor memSQL = new Vendor(new VendorYaml(&quot;memsql.yml&quot;, injectionModel));</span>
-<span class="fc" id="L79">        Vendor mimerSQL = new Vendor(new VendorYaml(&quot;mimersql.yml&quot;, injectionModel));</span>
-<span class="fc" id="L80">        Vendor monetDB = new Vendor(new VendorYaml(&quot;monetdb.yml&quot;, injectionModel));</span>
-<span class="fc" id="L81">        Vendor netezza = new Vendor(new VendorYaml(&quot;netezza.yml&quot;, injectionModel));</span>
-<span class="fc" id="L82">        Vendor nuoDB = new Vendor(new VendorYaml(&quot;nuodb.yml&quot;, injectionModel));</span>
-<span class="fc" id="L83">        Vendor presto = new Vendor(new VendorYaml(&quot;presto.yml&quot;, injectionModel));</span>
-<span class="fc" id="L84">        Vendor sybase = new Vendor(new VendorYaml(&quot;sybase.yml&quot;, injectionModel));</span>
-<span class="fc" id="L85">        Vendor teradata = new Vendor(new VendorYaml(&quot;teradata.yml&quot;, injectionModel));</span>
-<span class="fc" id="L86">        Vendor vertica = new Vendor(new VendorYaml(&quot;vertica.yml&quot;, injectionModel));</span>
+<span class="fc" id="L68">        Vendor access = new Vendor(new VendorYaml(&quot;access.yml&quot;, injectionModel));</span>
+<span class="fc" id="L69">        Vendor altibase = new Vendor(new VendorYaml(&quot;altibase.yml&quot;, injectionModel));</span>
+<span class="fc" id="L70">        Vendor ctreeACE = new Vendor(new VendorYaml(&quot;ctreeace.yml&quot;, injectionModel));</span>
+<span class="fc" id="L71">        Vendor cockroachDB = new Vendor(new VendorYaml(&quot;cockroachdb.yml&quot;, injectionModel));</span>
+<span class="fc" id="L72">        Vendor exasol = new Vendor(new VendorYaml(&quot;exasol.yml&quot;, injectionModel));</span>
+<span class="fc" id="L73">        Vendor frontbase = new Vendor(new VendorYaml(&quot;frontbase.yml&quot;, injectionModel));</span>
+<span class="fc" id="L74">        Vendor firebird = new Vendor(new VendorYaml(&quot;firebird.yml&quot;, injectionModel));</span>
+<span class="fc" id="L75">        Vendor hana = new Vendor(new VendorYaml(&quot;hana.yml&quot;, injectionModel));</span>
+<span class="fc" id="L76">        Vendor informix = new Vendor(new VendorYaml(&quot;informix.yml&quot;, injectionModel));</span>
+<span class="fc" id="L77">        Vendor ingres = new Vendor(new VendorYaml(&quot;ingres.yml&quot;, injectionModel));</span>
+<span class="fc" id="L78">        Vendor iris = new Vendor(new VendorYaml(&quot;iris.yml&quot;, injectionModel));</span>
+<span class="fc" id="L79">        Vendor maxDB = new Vendor(new VendorYaml(&quot;maxdb.yml&quot;, injectionModel));</span>
+<span class="fc" id="L80">        Vendor mckoi = new Vendor(new VendorYaml(&quot;mckoi.yml&quot;, injectionModel));</span>
+<span class="fc" id="L81">        Vendor memSQL = new Vendor(new VendorYaml(&quot;memsql.yml&quot;, injectionModel));</span>
+<span class="fc" id="L82">        Vendor mimerSQL = new Vendor(new VendorYaml(&quot;mimersql.yml&quot;, injectionModel));</span>
+<span class="fc" id="L83">        Vendor monetDB = new Vendor(new VendorYaml(&quot;monetdb.yml&quot;, injectionModel));</span>
+<span class="fc" id="L84">        Vendor netezza = new Vendor(new VendorYaml(&quot;netezza.yml&quot;, injectionModel));</span>
+<span class="fc" id="L85">        Vendor nuoDB = new Vendor(new VendorYaml(&quot;nuodb.yml&quot;, injectionModel));</span>
+<span class="fc" id="L86">        Vendor presto = new Vendor(new VendorYaml(&quot;presto.yml&quot;, injectionModel));</span>
+<span class="fc" id="L87">        Vendor sybase = new Vendor(new VendorYaml(&quot;sybase.yml&quot;, injectionModel));</span>
+<span class="fc" id="L88">        Vendor teradata = new Vendor(new VendorYaml(&quot;teradata.yml&quot;, injectionModel));</span>
+<span class="fc" id="L89">        Vendor vertica = new Vendor(new VendorYaml(&quot;vertica.yml&quot;, injectionModel));</span>
 
-<span class="fc" id="L88">        this.auto = new Vendor();</span>
-<span class="fc" id="L89">        this.cubrid = new Vendor(new VendorYaml(&quot;cubrid.yml&quot;, injectionModel));</span>
-<span class="fc" id="L90">        this.db2 = new Vendor(new VendorYaml(&quot;db2.yml&quot;, injectionModel));</span>
-<span class="fc" id="L91">        this.derby = new Vendor(new VendorYaml(&quot;derby.yml&quot;, injectionModel));</span>
-<span class="fc" id="L92">        this.h2 = new Vendor(new VendorYaml(&quot;h2.yml&quot;, injectionModel));</span>
-<span class="fc" id="L93">        this.hsqldb = new Vendor(new VendorYaml(&quot;hsqldb.yml&quot;, injectionModel));</span>
-<span class="fc" id="L94">        this.mySQL = new Vendor(new VendorYaml(&quot;mysql.yml&quot;, injectionModel));</span>
-<span class="fc" id="L95">        this.neo4j = new Vendor(new VendorYaml(&quot;neo4j.yml&quot;, injectionModel));</span>
-<span class="fc" id="L96">        this.oracle = new Vendor(new VendorYaml(&quot;oracle.yml&quot;, injectionModel));</span>
-<span class="fc" id="L97">        this.postgreSQL = new Vendor(new VendorYaml(&quot;postgresql.yml&quot;, injectionModel));</span>
-<span class="fc" id="L98">        this.sqlite = new Vendor(new VendorYaml(&quot;sqlite.yml&quot;, injectionModel)) {</span>
+<span class="fc" id="L91">        this.auto = new Vendor();</span>
+<span class="fc" id="L92">        this.cubrid = new Vendor(new VendorYaml(&quot;cubrid.yml&quot;, injectionModel));</span>
+<span class="fc" id="L93">        this.db2 = new Vendor(new VendorYaml(&quot;db2.yml&quot;, injectionModel));</span>
+<span class="fc" id="L94">        this.derby = new Vendor(new VendorYaml(&quot;derby.yml&quot;, injectionModel));</span>
+<span class="fc" id="L95">        this.h2 = new Vendor(new VendorYaml(&quot;h2.yml&quot;, injectionModel));</span>
+<span class="fc" id="L96">        this.hsqldb = new Vendor(new VendorYaml(&quot;hsqldb.yml&quot;, injectionModel));</span>
+<span class="fc" id="L97">        this.mySQL = new Vendor(new VendorYaml(&quot;mysql.yml&quot;, injectionModel));</span>
+<span class="fc" id="L98">        this.neo4j = new Vendor(new VendorYaml(&quot;neo4j.yml&quot;, injectionModel));</span>
+<span class="fc" id="L99">        this.oracle = new Vendor(new VendorYaml(&quot;oracle.yml&quot;, injectionModel));</span>
+<span class="fc" id="L100">        this.postgreSQL = new Vendor(new VendorYaml(&quot;postgresql.yml&quot;, injectionModel));</span>
+<span class="fc" id="L101">        this.sqlite = new Vendor(new VendorYaml(&quot;sqlite.yml&quot;, injectionModel)) {</span>
 
             @Override
             public String transformSqlite(String resultToParse) {
 
-<span class="fc" id="L103">                var resultSqlite = new StringBuilder();</span>
+<span class="fc" id="L106">                var resultSqlite = new StringBuilder();</span>
 
-<span class="fc" id="L105">                String resultTmp = resultToParse</span>
-<span class="fc" id="L106">                    .replaceFirst(&quot;[^(]+\\(&quot;, StringUtils.EMPTY)</span>
-<span class="fc" id="L107">                    .trim()</span>
-<span class="fc" id="L108">                    .replaceAll(&quot;\\)$&quot;, StringUtils.EMPTY);</span>
+<span class="fc" id="L108">                String resultTmp = resultToParse</span>
+<span class="fc" id="L109">                    .replaceFirst(&quot;[^(]+\\(&quot;, StringUtils.EMPTY)</span>
+<span class="fc" id="L110">                    .trim()</span>
+<span class="fc" id="L111">                    .replaceAll(&quot;\\)$&quot;, StringUtils.EMPTY);</span>
 
-<span class="fc" id="L110">                resultTmp = resultTmp.replaceAll(&quot;\\([^)]+\\)&quot;, StringUtils.EMPTY);</span>
+<span class="fc" id="L113">                resultTmp = resultTmp.replaceAll(&quot;\\([^)]+\\)&quot;, StringUtils.EMPTY);</span>
 
-<span class="fc bfc" id="L112" title="All 2 branches covered.">                for (String columnNameAndType: resultTmp.split(&quot;,&quot;)) {</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">                for (String columnNameAndType: resultTmp.split(&quot;,&quot;)) {</span>
 
-<span class="fc bfc" id="L114" title="All 2 branches covered.">                    if (columnNameAndType.trim().startsWith(&quot;primary key&quot;)) {</span>
-<span class="fc" id="L115">                        continue;</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">                    if (columnNameAndType.trim().startsWith(&quot;primary key&quot;)) {</span>
+<span class="fc" id="L118">                        continue;</span>
                     }
 
                     // Some recent SQLite use tabulation character as a separator =&gt; split() by any white space \s
-<span class="fc" id="L119">                    String columnName = columnNameAndType.trim().split(&quot;\\s&quot;)[0];</span>
+<span class="fc" id="L122">                    String columnName = columnNameAndType.trim().split(&quot;\\s&quot;)[0];</span>
 
                     // Some recent SQLite enclose names with ` =&gt; strip those `
-<span class="fc" id="L122">                    columnName = StringUtils.strip(columnName, &quot;`&quot;);</span>
+<span class="fc" id="L125">                    columnName = StringUtils.strip(columnName, &quot;`&quot;);</span>
 
-<span class="fc" id="L124">                    if (</span>
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">                        !&quot;CONSTRAINT&quot;.equals(columnName)</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">                        &amp;&amp; !&quot;UNIQUE&quot;.equals(columnName)</span>
+<span class="fc" id="L127">                    if (</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">                        !&quot;CONSTRAINT&quot;.equals(columnName)</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">                        &amp;&amp; !&quot;UNIQUE&quot;.equals(columnName)</span>
                     ) {
 
                         // Generate pattern \4\5\4\6 for injection parsing
-<span class="fc" id="L130">                        resultSqlite.append((char) 4).append(columnName).append((char) 5).append(&quot;0&quot;).append((char) 4).append((char) 6);</span>
+<span class="fc" id="L133">                        resultSqlite.append((char) 4).append(columnName).append((char) 5).append(&quot;0&quot;).append((char) 4).append((char) 6);</span>
                     }
                 }
 
-<span class="fc" id="L134">                return resultSqlite.toString();</span>
+<span class="fc" id="L137">                return resultSqlite.toString();</span>
             }
         };
-<span class="fc" id="L137">        this.sqlServer = new Vendor(new VendorYaml(&quot;sqlserver.yml&quot;, injectionModel));</span>
+<span class="fc" id="L140">        this.sqlServer = new Vendor(new VendorYaml(&quot;sqlserver.yml&quot;, injectionModel));</span>
 
-<span class="fc" id="L139">        this.vendors = Arrays.asList(</span>
+<span class="fc" id="L142">        this.vendors = Arrays.asList(</span>
             this.auto,
             access,
             altibase,
@@ -173,181 +176,189 @@ public class MediatorVendor {
             vertica
         );
         
-<span class="fc" id="L176">        this.setVendor(this.mySQL);</span>
-<span class="fc" id="L177">        this.vendorByUser = this.auto;</span>
-<span class="fc" id="L178">    }</span>
+<span class="fc" id="L179">        this.setVendor(this.mySQL);</span>
+<span class="fc" id="L180">        this.vendorByUser = this.auto;</span>
+<span class="fc" id="L181">    }</span>
     
     public boolean isSqlite() {
         
-<span class="fc bfc" id="L182" title="All 2 branches covered.">        return this.getVendor() == this.getSqlite();</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">        return this.getVendor() == this.getSqlite();</span>
     }
     
     public Vendor fingerprintVendor() {
         
-<span class="fc" id="L187">        Vendor vendorFound = null;</span>
+<span class="fc" id="L190">        Vendor vendorFound = null;</span>
         
-<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAuto()) {</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">        if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAuto()) {</span>
             
-<span class="fc" id="L191">            vendorFound = this.injectionModel.getMediatorVendor().getVendorByUser();</span>
-<span class="fc" id="L192">            LOGGER.log(</span>
+<span class="fc" id="L194">            vendorFound = this.injectionModel.getMediatorVendor().getVendorByUser();</span>
+<span class="fc" id="L195">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
-<span class="fc" id="L195">                () -&gt; I18nUtil.valueByKey(&quot;LOG_DATABASE_TYPE_FORCED_BY_USER&quot;),</span>
-<span class="fc" id="L196">                () -&gt; this.injectionModel.getMediatorVendor().getVendorByUser()</span>
+<span class="fc" id="L198">                () -&gt; I18nUtil.valueByKey(&quot;LOG_DATABASE_TYPE_FORCED_BY_USER&quot;),</span>
+<span class="fc" id="L199">                () -&gt; this.injectionModel.getMediatorVendor().getVendorByUser()</span>
             );
             
         } else {
             
-<span class="fc" id="L201">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting database...&quot;);</span>
+<span class="fc" id="L204">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Fingerprinting database...&quot;);</span>
         
-<span class="fc" id="L203">            var insertionCharacter = URLEncoder.encode(&quot;'\&quot;#-)'\&quot;*&quot;, StandardCharsets.UTF_8);</span>
-<span class="fc" id="L204">            String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, &quot;test#vendor&quot;);</span>
+<span class="fc" id="L206">            var insertionCharacter = URLEncoder.encode(&quot;'\&quot;#-)'\&quot;*&quot;, StandardCharsets.UTF_8);</span>
+<span class="fc" id="L207">            String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, &quot;test#vendor&quot;);</span>
                 
-<span class="fc" id="L206">            var mediatorVendor = this.injectionModel.getMediatorVendor();</span>
-<span class="fc" id="L207">            Vendor[] vendorsWithoutAuto = mediatorVendor</span>
-<span class="fc" id="L208">                .getVendors()</span>
-<span class="fc" id="L209">                .stream()</span>
-<span class="fc bfc" id="L210" title="All 2 branches covered.">                .filter(v -&gt; v != mediatorVendor.getAuto())</span>
-<span class="fc" id="L211">                .toArray(Vendor[]::new);</span>
+<span class="fc" id="L209">            var mediatorVendor = this.injectionModel.getMediatorVendor();</span>
+<span class="fc" id="L210">            Vendor[] vendorsWithoutAuto = mediatorVendor</span>
+<span class="fc" id="L211">                .getVendors()</span>
+<span class="fc" id="L212">                .stream()</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">                .filter(v -&gt; v != mediatorVendor.getAuto())</span>
+<span class="fc" id="L214">                .toArray(Vendor[]::new);</span>
             
             // Test each vendor
-<span class="fc bfc" id="L214" title="All 2 branches covered.">            for (Vendor vendorTest: vendorsWithoutAuto) {</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">            for (Vendor vendorTest: vendorsWithoutAuto) {</span>
                 
-<span class="fc bfc" id="L216" title="All 2 branches covered.">                if (pageSource.matches(&quot;(?si)&quot;+ vendorTest.instance().fingerprintErrorsAsRegex())) {</span>
+<span class="fc bfc" id="L219" title="All 2 branches covered.">                if (pageSource.matches(&quot;(?si)&quot;+ vendorTest.instance().fingerprintErrorsAsRegex())) {</span>
                     
-<span class="fc" id="L218">                    vendorFound = vendorTest;</span>
-<span class="fc" id="L219">                    LOGGER.log(</span>
+<span class="fc" id="L221">                    vendorFound = vendorTest;</span>
+<span class="fc" id="L222">                    LOGGER.log(</span>
                         LogLevelUtil.CONSOLE_SUCCESS,
                         MediatorVendor.LOG_VENDOR,
-<span class="fc" id="L222">                        () -&gt; &quot;Basic fingerprint matching vendor&quot;,</span>
-<span class="fc" id="L223">                        () -&gt; vendorTest</span>
+<span class="fc" id="L225">                        () -&gt; &quot;Basic fingerprint matching vendor&quot;,</span>
+<span class="fc" id="L226">                        () -&gt; vendorTest</span>
                     );
-<span class="fc" id="L225">                    break;</span>
+<span class="fc" id="L228">                    break;</span>
                 }
             }
             
-<span class="fc" id="L229">            vendorFound = this.initializeVendor(vendorFound);</span>
+<span class="fc" id="L232">            vendorFound = this.initializeVendor(vendorFound);</span>
         }
+
+<span class="fc" id="L235">        this.injectionModel.appendAnalysisReport(</span>
+<span class="fc" id="L236">            &quot;# Date: &quot; + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)</span>
+<span class="fc" id="L237">            + &quot;\n# Tested on: &quot; + String.format(&quot;%s (v%s)&quot;, SystemUtils.OS_NAME, SystemUtils.OS_VERSION)</span>
+<span class="fc" id="L238">            + &quot;\n# Tool: jSQL Injection v&quot; + this.injectionModel.getVersionJsql() + &quot; (&quot;+ this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().get(&quot;github.url&quot;) +&quot;)&quot;</span>
+            + &quot;\n# Database: &quot; + vendorFound
+            + &quot;\n\n## Vulnerability details&quot;
+        );
+
+<span class="fc" id="L243">        var requestSetVendor = new Request();</span>
+<span class="fc" id="L244">        requestSetVendor.setMessage(Interaction.SET_VENDOR);</span>
+<span class="fc" id="L245">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L246">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
+<span class="fc" id="L247">        msgHeader.put(Header.VENDOR, vendorFound);</span>
+<span class="fc" id="L248">        requestSetVendor.setParameters(msgHeader);</span>
+<span class="fc" id="L249">        this.injectionModel.sendToViews(requestSetVendor);</span>
         
-<span class="fc" id="L232">        var requestSetVendor = new Request();</span>
-<span class="fc" id="L233">        requestSetVendor.setMessage(Interaction.SET_VENDOR);</span>
-<span class="fc" id="L234">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="fc" id="L235">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
-<span class="fc" id="L236">        msgHeader.put(Header.VENDOR, vendorFound);</span>
-<span class="fc" id="L237">        requestSetVendor.setParameters(msgHeader);</span>
-<span class="fc" id="L238">        this.injectionModel.sendToViews(requestSetVendor);</span>
-        
-<span class="fc" id="L240">        return vendorFound;</span>
+<span class="fc" id="L251">        return vendorFound;</span>
     }
 
     public Vendor initializeVendor(Vendor vendor) {
         
-<span class="fc" id="L245">        var vendorFixed = vendor;</span>
+<span class="fc" id="L256">        var vendorFixed = vendor;</span>
         
-<span class="fc bfc" id="L247" title="All 2 branches covered.">        if (vendorFixed == null) {</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        if (vendorFixed == null) {</span>
             
-<span class="fc" id="L249">            vendorFixed = this.injectionModel.getMediatorVendor().getMySQL();</span>
-<span class="fc" id="L250">            LOGGER.log(</span>
+<span class="fc" id="L260">            vendorFixed = this.injectionModel.getMediatorVendor().getMySQL();</span>
+<span class="fc" id="L261">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
-<span class="fc" id="L253">                () -&gt; I18nUtil.valueByKey(&quot;LOG_DATABASE_TYPE_NOT_FOUND&quot;),</span>
-<span class="fc" id="L254">                () -&gt; this.injectionModel.getMediatorVendor().getMySQL()</span>
+<span class="fc" id="L264">                () -&gt; I18nUtil.valueByKey(&quot;LOG_DATABASE_TYPE_NOT_FOUND&quot;),</span>
+<span class="fc" id="L265">                () -&gt; this.injectionModel.getMediatorVendor().getMySQL()</span>
             );
             
         } else {
             
-<span class="fc" id="L259">            LOGGER.log(</span>
+<span class="fc" id="L270">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
-<span class="fc" id="L262">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_DATABASE_TYPE&quot;),</span>
-<span class="fc" id="L263">                () -&gt; vendor</span>
+<span class="fc" id="L273">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_DATABASE_TYPE&quot;),</span>
+<span class="fc" id="L274">                () -&gt; vendor</span>
             );
             
-<span class="fc" id="L266">            Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="fc" id="L267">            msgHeader.put(</span>
+<span class="fc" id="L277">            Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L278">            msgHeader.put(</span>
                 Header.URL,
-<span class="fc" id="L269">                this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()</span>
+<span class="fc" id="L280">                this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()</span>
             );
-<span class="fc" id="L271">            msgHeader.put(Header.VENDOR, vendorFixed);</span>
+<span class="fc" id="L282">            msgHeader.put(Header.VENDOR, vendorFixed);</span>
             
-<span class="fc" id="L273">            var requestDatabaseIdentified = new Request();</span>
-<span class="fc" id="L274">            requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);</span>
-<span class="fc" id="L275">            requestDatabaseIdentified.setParameters(msgHeader);</span>
-<span class="fc" id="L276">            this.injectionModel.sendToViews(requestDatabaseIdentified);</span>
+<span class="fc" id="L284">            var requestDatabaseIdentified = new Request();</span>
+<span class="fc" id="L285">            requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);</span>
+<span class="fc" id="L286">            requestDatabaseIdentified.setParameters(msgHeader);</span>
+<span class="fc" id="L287">            this.injectionModel.sendToViews(requestDatabaseIdentified);</span>
         }
         
-<span class="fc" id="L279">        return vendorFixed;</span>
+<span class="fc" id="L290">        return vendorFixed;</span>
     }
     
     
     // Getter and setter
     
     public Vendor getAuto() {
-<span class="fc" id="L286">        return this.auto;</span>
+<span class="fc" id="L297">        return this.auto;</span>
     }
 
     public Vendor getCubrid() {
-<span class="nc" id="L290">        return this.cubrid;</span>
+<span class="nc" id="L301">        return this.cubrid;</span>
     }
 
     public Vendor getH2() {
-<span class="fc" id="L294">        return this.h2;</span>
+<span class="fc" id="L305">        return this.h2;</span>
     }
 
     public Vendor getPostgreSQL() {
-<span class="fc" id="L298">        return this.postgreSQL;</span>
+<span class="fc" id="L309">        return this.postgreSQL;</span>
     }
 
     public Vendor getMySQL() {
-<span class="fc" id="L302">        return this.mySQL;</span>
+<span class="fc" id="L313">        return this.mySQL;</span>
     }
 
     public Vendor getSqlite() {
-<span class="fc" id="L306">        return this.sqlite;</span>
+<span class="fc" id="L317">        return this.sqlite;</span>
     }
 
     public Vendor getSqlServer() {
-<span class="fc" id="L310">        return this.sqlServer;</span>
+<span class="fc" id="L321">        return this.sqlServer;</span>
     }
 
     public Vendor getNeo4j() {
-<span class="fc" id="L314">        return this.neo4j;</span>
+<span class="fc" id="L325">        return this.neo4j;</span>
     }
     
     public Vendor getVendor() {
-<span class="fc" id="L318">        return this.vendor;</span>
+<span class="fc" id="L329">        return this.vendor;</span>
     }
 
     public void setVendor(Vendor vendor) {
-<span class="fc" id="L322">        this.vendor = vendor;</span>
-<span class="fc" id="L323">    }</span>
+<span class="fc" id="L333">        this.vendor = vendor;</span>
+<span class="fc" id="L334">    }</span>
 
     public Vendor getVendorByUser() {
-<span class="fc" id="L326">        return this.vendorByUser;</span>
+<span class="fc" id="L337">        return this.vendorByUser;</span>
     }
 
     public void setVendorByUser(Vendor vendorByUser) {
-<span class="fc" id="L330">        this.vendorByUser = vendorByUser;</span>
-<span class="fc" id="L331">    }</span>
+<span class="fc" id="L341">        this.vendorByUser = vendorByUser;</span>
+<span class="fc" id="L342">    }</span>
 
     public List&lt;Vendor&gt; getVendors() {
-<span class="fc" id="L334">        return this.vendors;</span>
+<span class="fc" id="L345">        return this.vendors;</span>
     }
 
     public Vendor getDb2() {
-<span class="fc" id="L338">        return this.db2;</span>
+<span class="fc" id="L349">        return this.db2;</span>
     }
 
     public Vendor getHsqldb() {
-<span class="fc" id="L342">        return this.hsqldb;</span>
+<span class="fc" id="L353">        return this.hsqldb;</span>
     }
 
     public Vendor getDerby() {
-<span class="fc" id="L346">        return this.derby;</span>
+<span class="fc" id="L357">        return this.derby;</span>
     }
 
     public Vendor getOracle() {
-<span class="nc" id="L350">        return this.oracle;</span>
+<span class="nc" id="L361">        return this.oracle;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

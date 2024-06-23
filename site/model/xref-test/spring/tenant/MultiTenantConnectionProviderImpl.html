@@ -11,7 +11,7 @@
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="MultiTenantConnectionProviderImpl" href="../../spring/tenant/MultiTenantConnectionProviderImpl.html#MultiTenantConnectionProviderImpl">MultiTenantConnectionProviderImpl</a> <strong class="jxr_keyword">extends</strong> AbstractMultiTenantConnectionProvider {
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="MultiTenantConnectionProviderImpl" href="../../spring/tenant/MultiTenantConnectionProviderImpl.html#MultiTenantConnectionProviderImpl">MultiTenantConnectionProviderImpl</a> <strong class="jxr_keyword">extends</strong> AbstractMultiTenantConnectionProvider&lt;String&gt; {
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>       <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <a name="MasterService" href="../../spring/tenant/MasterService.html#MasterService">MasterService</a> MASTER_SERVICE = <strong class="jxr_keyword">new</strong> <a name="MasterService" href="../../spring/tenant/MasterService.html#MasterService">MasterService</a>();
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>       
@@ -23,7 +23,7 @@
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>      @Override
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>      <strong class="jxr_keyword">protected</strong> ConnectionProvider selectConnectionProvider(String tenant) {
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>          
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>          <strong class="jxr_keyword">return</strong> MASTER_SERVICE.getDataSourceHashMap().getOrDefault(
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>              tenant,
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>              <em class="jxr_comment">// Provide default connection to prevent error logs when tenant is undefined</em>

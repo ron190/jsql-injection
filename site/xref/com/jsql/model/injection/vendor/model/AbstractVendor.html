@@ -26,13 +26,13 @@
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>      String sqlColumns(<a name="Table" href="../../../../../../com/jsql/model/bean/database/Table.html#Table">Table</a> table);
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>      String sqlRows(String[] arrayColumns, <a name="Database" href="../../../../../../com/jsql/model/bean/database/Database.html#Database">Database</a> database, <a name="Table" href="../../../../../../com/jsql/model/bean/database/Table.html#Table">Table</a> table);
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>      String sqlNormal(String sqlQuery, String startPosition);
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>      String sqlNormal(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport);
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>      String sqlErrorIndice(<a name="Method" href="../../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod);
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>      String sqlErrorCalibrator(<a name="Method" href="../../../../../../com/jsql/model/injection/vendor/model/yaml/Method.html#Method">Method</a> errorMethod);
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>      String sqlError(String sqlQuery, String startPosition);
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>      String sqlBlind(String sqlQuery, String startPosition);
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>      String sqlTime(String sqlQuery, String startPosition);
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>      String sqlStacked(String sqlQuery, String startPosition);
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>      String sqlError(String sqlQuery, String startPosition, <strong class="jxr_keyword">int</strong> indexMethodError, <strong class="jxr_keyword">boolean</strong> isReport);
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>      String sqlBlind(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport);
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>      String sqlTime(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport);
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>      String sqlStacked(String sqlQuery, String startPosition, <strong class="jxr_keyword">boolean</strong> isReport);
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      String sqlCapacity(String[] indexes);
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      String sqlIndices(Integer nbFields);
