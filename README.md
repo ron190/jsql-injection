@@ -6,7 +6,7 @@ It's **free**, **open source** and **cross-platform** for Windows, Linux and Mac
 ![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in various other distributions like [SnoopGod](https://snoopgod.com/), [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
 
 [![Twitter](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190 "Developer Twitter account")](https://twitter.com/ron190jsql)<br>
-[![Java](https://img.shields.io/badge/java-11%20to%2020-orange?logo=java "Version range compatibility")](http://www.oracle.com/technetwork/java/javase/downloads/)
+[![Java](https://img.shields.io/badge/java-11%20to%2022-orange?logo=java "Version range compatibility")](http://www.oracle.com/technetwork/java/javase/downloads/)
 [![JUnit](https://img.shields.io/badge/junit-5-50940f "Tests")](http://junit.org)
 [![Maven](https://img.shields.io/badge/maven-3.6-a2265a "Build")](https://maven.apache.org/)
 [![License](https://img.shields.io/github/license/ron190/jsql-injection "License")](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
@@ -22,14 +22,14 @@ Read about jSQL [features](https://github.com/ron190/jsql-injection/wiki/Feature
 For programmers, access the generated [Maven reports](https://ron190.github.io/jsql-injection/site/) and [Sonar analysis](https://sonarcloud.io/dashboard?id=ron190%3Ajsql-injection) to analyze internal metrics, and open the [programming section](https://github.com/ron190/jsql-injection/wiki/Programming-jSQL) in the wiki for more details.
 
 ## Install
-First, install :coffee: [Java](http://java.com) 11 or up to version 22, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.99.jar` to run the software.
+First, install :coffee: [Java](http://java.com) 11 or up to version 22, then download the latest jSQL [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.100.jar` to run the software.
 
-You can also type `java -jar jsql-injection-v0.99.jar` in your terminal to start the program.
+You can also type `java -jar jsql-injection-v0.100.jar` in your terminal to start the program.
 
 If you are using Kali Linux then get the latest version using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 > [!NOTE]
-> Download the latest version from GitHub: [jsql-injection-v0.99.jar](https://github.com/ron190/jsql-injection/releases/download/v0.99/jsql-injection-v0.99.jar)
+> Download the latest version from GitHub: [jsql-injection-v0.100.jar](https://github.com/ron190/jsql-injection/releases/download/v0.100/jsql-injection-v0.100.jar)
 ___
 ## Screenshots
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
