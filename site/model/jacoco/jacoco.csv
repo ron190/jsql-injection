@@ -3,14 +3,14 @@ model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.LinesToCharsR
 model,com.jsql.model.injection.strategy.blind.patch,Patch,208,0,14,0,46,0,20,0,12,0
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3165,2136,397,290,647,465,244,149,23,20
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.Operation,0,21,0,0,0,2,0,1,0,1
-model,com.jsql.model.injection.strategy.blind.patch,Diff,27,88,9,11,7,25,9,10,2,7
+model,com.jsql.model.injection.strategy.blind.patch,Diff,27,87,9,11,7,25,9,10,2,7
 model,com.jsql.model.bean.util,Header,0,75,0,0,0,13,0,1,0,1
 model,com.jsql.model.bean.util,Request,0,17,0,0,0,7,0,5,0,5
 model,com.jsql.model.bean.util,Interaction,0,371,0,0,0,56,0,3,0,3
 model,com.jsql.model.bean.util,HttpHeader,36,0,0,0,13,0,7,0,7,0
 model,com.jsql.model.accessible,CallableHttpHead,62,142,2,2,12,40,3,6,1,6
 model,com.jsql.model.accessible,DataAccess,186,787,9,19,45,153,11,18,4,11
-model,com.jsql.model.accessible,ResourceAccess,650,1341,48,70,151,289,54,48,17,26
+model,com.jsql.model.accessible,ResourceAccess,650,1339,48,70,151,289,54,48,17,26
 model,com.jsql.model.accessible,CallableFile,26,84,4,0,8,19,2,6,0,6
 model,com.jsql.model.injection.strategy,StrategyInjectionTime,0,255,0,14,0,56,0,23,0,16
 model,com.jsql.model.injection.strategy,AbstractStrategy,3,84,0,2,1,24,1,9,1,8
@@ -24,7 +24,7 @@ model,com.jsql.model,AbstractModelObservable,0,66,0,0,0,13,0,10,0,10
 model,com.jsql.model,InjectionModel,160,1290,17,67,37,292,19,60,7,30
 model,com.jsql.model,MediatorUtils,6,137,0,0,2,59,2,39,2,39
 model,com.jsql.model.injection.vendor,MediatorVendor.new Vendor() {...},0,85,2,6,0,17,2,4,0,2
-model,com.jsql.model.injection.vendor,MediatorVendor,6,833,0,12,2,112,2,36,2,30
+model,com.jsql.model.injection.vendor,MediatorVendor,6,831,0,12,2,112,2,36,2,30
 model,com.jsql.util.tampering,TamperingType,6,106,0,0,2,19,0,3,0,3
 model,com.jsql.util.tampering,ModelYamlTampering,9,22,0,0,3,10,3,6,3,6
 model,com.jsql.model.exception,LoopDetectedSlidingException,6,0,0,0,2,0,1,0,1,0
@@ -33,15 +33,15 @@ model,com.jsql.model.exception,InjectionFailureException,9,4,0,0,4,2,2,1,2,1
 model,com.jsql.model.exception,StoppedByUserSlidingException,15,0,0,0,6,0,3,0,3,0
 model,com.jsql.model.exception,JSqlException,10,4,0,0,4,2,2,1,2,1
 model,com.jsql.view.terminal,SystemOutTerminal,0,4,0,0,0,2,0,1,0,1
-model,com.jsql.view.interaction,SubscriberInteraction,17,78,1,1,7,23,3,5,2,5
+model,com.jsql.view.interaction,SubscriberInteraction,17,77,1,1,7,23,3,5,2,5
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionMonobit,0,137,0,4,0,16,0,5,0,3
 model,com.jsql.model.injection.strategy.blind,InjectionTime,49,215,8,22,18,45,8,13,0,6
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionBoolean,56,271,9,13,16,67,7,13,0,9
 model,com.jsql.model.injection.strategy.blind,CallableCharInsertion,0,78,0,4,0,18,0,6,0,4
-model,com.jsql.model.injection.strategy.blind,InjectionBlind,50,246,9,21,19,47,9,14,0,8
+model,com.jsql.model.injection.strategy.blind,InjectionBlind,50,245,9,21,19,47,9,14,0,8
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionBoolean.BooleanMode,0,27,0,0,0,2,0,1,0,1
 model,com.jsql.model.injection.strategy.blind,CallableMultibit,2,111,0,4,1,23,1,8,1,6
-model,com.jsql.model.injection.strategy.blind,InjectionMultibit,23,377,6,24,8,63,6,21,0,12
+model,com.jsql.model.injection.strategy.blind,InjectionMultibit,23,376,6,24,8,63,6,21,0,12
 model,com.jsql.model.injection.strategy.blind,InjectionCharInsertion,49,335,7,21,18,59,7,15,0,8
 model,com.jsql.model.injection.strategy.blind,CallableTime,6,112,1,3,1,24,1,5,0,4
 model,com.jsql.model.injection.strategy.blind,AbstractCallableBoolean,6,18,0,0,2,6,2,3,2,3
@@ -150,7 +150,7 @@ model,com.jsql.util,ExceptionUtil,25,14,0,0,8,5,2,2,2,2
 model,com.jsql.util,PreferencesUtil,192,1109,0,0,71,294,45,83,45,83
 model,com.jsql.util,CertificateUtil.new X509TrustManager() {...},1,10,0,0,1,3,1,3,1,3
 model,com.jsql.util,ConnectionUtil,68,503,9,33,17,121,11,38,2,26
-model,com.jsql.util,JsonUtil,48,318,5,27,11,78,4,22,0,10
+model,com.jsql.util,JsonUtil,47,317,5,27,11,78,4,22,0,10
 model,com.jsql.util,ConnectionUtil.new Authenticator() {...},0,23,0,0,0,4,0,2,0,2
 model,com.jsql.util,CertificateUtil,6,39,0,0,2,10,0,3,0,3
 model,com.jsql.util,AuthenticationUtil.new Authenticator() {...},11,6,0,0,2,1,1,1,1,1
