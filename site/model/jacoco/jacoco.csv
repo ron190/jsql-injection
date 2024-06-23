@@ -9,29 +9,29 @@ model,com.jsql.model.bean.util,Request,0,17,0,0,0,7,0,5,0,5
 model,com.jsql.model.bean.util,Interaction,0,371,0,0,0,56,0,3,0,3
 model,com.jsql.model.bean.util,HttpHeader,36,0,0,0,13,0,7,0,7,0
 model,com.jsql.model.accessible,CallableHttpHead,62,142,2,2,12,40,3,6,1,6
-model,com.jsql.model.accessible,DataAccess,124,849,5,23,31,167,8,21,3,12
+model,com.jsql.model.accessible,DataAccess,186,787,9,19,45,153,11,18,4,11
 model,com.jsql.model.accessible,ResourceAccess,650,1341,48,70,151,289,54,48,17,26
 model,com.jsql.model.accessible,CallableFile,26,84,4,0,8,19,2,6,0,6
 model,com.jsql.model.injection.strategy,StrategyInjectionTime,0,255,0,14,0,56,0,23,0,16
 model,com.jsql.model.injection.strategy,AbstractStrategy,3,84,0,2,1,24,1,9,1,8
 model,com.jsql.model.injection.strategy,MediatorStrategy,3,445,2,24,1,99,3,25,1,14
 model,com.jsql.model.injection.strategy,StrategyInjectionMultibit,0,193,0,8,0,39,0,16,0,12
-model,com.jsql.model.injection.strategy,StrategyInjectionError,8,415,0,22,3,90,2,29,2,18
+model,com.jsql.model.injection.strategy,StrategyInjectionError,31,392,1,21,7,86,4,27,3,17
 model,com.jsql.model.injection.strategy,StrategyInjectionBlind,0,257,0,14,0,57,0,23,0,16
 model,com.jsql.model.injection.strategy,StrategyInjectionNormal,5,410,3,21,2,69,3,25,0,16
 model,com.jsql.model.injection.strategy,StrategyInjectionStacked,22,274,1,13,4,62,3,21,2,15
 model,com.jsql.model,AbstractModelObservable,0,66,0,0,0,13,0,10,0,10
-model,com.jsql.model,InjectionModel,134,1316,15,69,30,299,18,61,6,31
+model,com.jsql.model,InjectionModel,160,1290,17,67,37,292,19,60,7,30
 model,com.jsql.model,MediatorUtils,6,137,0,0,2,59,2,39,2,39
 model,com.jsql.model.injection.vendor,MediatorVendor.new Vendor() {...},0,85,2,6,0,17,2,4,0,2
 model,com.jsql.model.injection.vendor,MediatorVendor,6,833,0,12,2,112,2,36,2,30
 model,com.jsql.util.tampering,TamperingType,6,106,0,0,2,19,0,3,0,3
 model,com.jsql.util.tampering,ModelYamlTampering,9,22,0,0,3,10,3,6,3,6
 model,com.jsql.model.exception,LoopDetectedSlidingException,6,0,0,0,2,0,1,0,1,0
-model,com.jsql.model.exception,AbstractSlidingException,35,27,6,0,17,10,5,4,2,4
-model,com.jsql.model.exception,InjectionFailureException,4,9,0,0,2,4,1,2,1,2
+model,com.jsql.model.exception,AbstractSlidingException,52,10,6,0,23,4,8,1,5,1
+model,com.jsql.model.exception,InjectionFailureException,9,4,0,0,4,2,2,1,2,1
 model,com.jsql.model.exception,StoppedByUserSlidingException,15,0,0,0,6,0,3,0,3,0
-model,com.jsql.model.exception,JSqlException,5,9,0,0,2,4,1,2,1,2
+model,com.jsql.model.exception,JSqlException,10,4,0,0,4,2,2,1,2,1
 model,com.jsql.view.terminal,SystemOutTerminal,0,4,0,0,0,2,0,1,0,1
 model,com.jsql.view.interaction,SubscriberInteraction,17,78,1,1,7,23,3,5,2,5
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionMonobit,0,137,0,4,0,16,0,5,0,3
@@ -112,8 +112,8 @@ model,com.jsql.util.bruter,Bruter,32,389,0,12,13,56,7,23,7,17
 model,com.jsql.util.bruter,BaseNCodec,295,205,56,12,57,43,51,11,17,11
 model,com.jsql.util.bruter,Base16,107,1042,20,20,18,52,18,11,2,7
 model,com.jsql.util.bruter,ActionCoder,254,0,0,0,41,0,4,0,4,0
-model,com.jsql.model.suspendable,SuspendableGetRows,138,606,21,33,35,149,17,28,1,17
-model,com.jsql.model.suspendable,SuspendableGetIndexes,43,137,3,11,10,30,3,8,0,4
+model,com.jsql.model.suspendable,SuspendableGetRows,145,599,21,33,37,147,17,28,1,17
+model,com.jsql.model.suspendable,SuspendableGetIndexes,46,134,4,10,11,29,4,7,0,4
 model,com.jsql.model.suspendable,AbstractSuspendable,21,42,3,3,8,16,5,6,2,6
 model,com.jsql.model.suspendable,SuspendableGetCharInsertion,64,531,7,37,15,124,9,33,2,18
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
