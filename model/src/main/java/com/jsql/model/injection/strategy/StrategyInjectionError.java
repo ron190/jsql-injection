@@ -154,7 +154,20 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     @Override
     public void allow(int... indexError) {
-        
+
+        this.injectionModel.appendAnalysisReport(
+            "### Strategy: " + getName() + " " + this.injectionModel.getMediatorVendor().getVendor().instance()
+                .getModelYaml()
+                .getStrategy()
+                .getError()
+                .getMethod()
+                .get(indexError[0])
+                .getName()
+            + "\n" + this.injectionModel.getReportWithoutIndex(
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlError("<query>", "0", indexError[0], true),
+                "metadataInjectionProcess"
+            )
+        );
         this.markVulnerability(Interaction.MARK_ERROR_VULNERABLE, indexError[0]);
     }
 
@@ -168,7 +181,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
         
         return this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition, this.indexErrorStrategy, false),
             metadataInjectionProcess
         );
     }

@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 public class PanelInjection extends JPanel {
 
+    private final JCheckBox checkboxIsNotShowingVulnReport = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotShowingVulnReport());
     private final JCheckBox checkboxIsNotSearchingCharInsertion = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotSearchingCharInsertion());
     private final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata());
     private final JCheckBox checkboxIsParsingForm = new JCheckBox(StringUtils.EMPTY, MediatorHelper.model().getMediatorUtils().getPreferencesUtil().isParsingForm());
@@ -41,6 +42,7 @@ public class PanelInjection extends JPanel {
         
         this.checkboxIsNotInjectingMetadata.setName("checkboxIsNotInjectingMetadata");
         this.checkboxIsNotSearchingCharInsertion.setName("checkboxIsNotSearchingCharInsertion");
+        this.checkboxIsNotShowingVulnReport.setName("checkboxIsNotShowingVulnReport");
         this.checkboxIsParsingForm.setName("checkboxIsParsingForm");
         this.checkboxIsCheckingAllURLParam.setName("checkboxIsCheckingAllURLParam");
         this.checkboxIsCheckingAllRequestParam.setName("checkboxIsCheckingAllRequestParam");
@@ -101,6 +103,14 @@ public class PanelInjection extends JPanel {
         labelIsNotSearchingCharInsertion.addActionListener(actionEvent -> {
 
             this.checkboxIsNotSearchingCharInsertion.setSelected(!this.checkboxIsNotSearchingCharInsertion.isSelected());
+            panelPreferences.getActionListenerSave().actionPerformed(null);
+        });
+
+        this.checkboxIsNotShowingVulnReport.setFocusable(false);
+        var labelIsNotShowingVulnReport = new JButton("Disable showing vulnerability report");
+        labelIsNotShowingVulnReport.addActionListener(actionEvent -> {
+
+            this.checkboxIsNotShowingVulnReport.setSelected(!this.checkboxIsNotShowingVulnReport.isSelected());
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
 
@@ -301,6 +311,7 @@ public class PanelInjection extends JPanel {
         Stream.of(
             this.checkboxIsNotInjectingMetadata,
             this.checkboxIsNotSearchingCharInsertion,
+            this.checkboxIsNotShowingVulnReport,
             this.checkboxIsParsingForm,
             this.checkboxIsCheckingAllURLParam,
             this.checkboxIsCheckingAllRequestParam,
@@ -324,6 +335,7 @@ public class PanelInjection extends JPanel {
             labelIsParsingForm,
             labelIsNotInjectingMetadata,
             labelIsNotSearchingCharInsertion,
+            labelIsNotShowingVulnReport,
             labelIsCheckingAllParam,
             labelIsCheckingAllURLParam,
             labelIsCheckingAllRequestParam,
@@ -385,6 +397,7 @@ public class PanelInjection extends JPanel {
                 .addComponent(this.checkboxIsParsingForm)
                 .addComponent(this.checkboxIsNotInjectingMetadata)
                 .addComponent(this.checkboxIsNotSearchingCharInsertion)
+                .addComponent(this.checkboxIsNotShowingVulnReport)
                 .addComponent(this.checkboxIsLimitingNormalIndex)
                 .addComponent(this.checkboxIsLimitingSleepTimeStrategy)
                 
@@ -415,6 +428,7 @@ public class PanelInjection extends JPanel {
                 .addComponent(labelIsParsingForm)
                 .addComponent(labelIsNotInjectingMetadata)
                 .addComponent(labelIsNotSearchingCharInsertion)
+                .addComponent(labelIsNotShowingVulnReport)
                 .addComponent(panelIsLimitingNormalIndex)
                 .addComponent(panelSleepTimeStrategy)
                 
@@ -467,6 +481,12 @@ public class PanelInjection extends JPanel {
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.checkboxIsNotSearchingCharInsertion)
                 .addComponent(labelIsNotSearchingCharInsertion)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(this.checkboxIsNotShowingVulnReport)
+                .addComponent(labelIsNotShowingVulnReport)
             )
             .addGroup(
                 groupLayout
@@ -597,6 +617,10 @@ public class PanelInjection extends JPanel {
     
     public JCheckBox getCheckboxIsNotSearchingCharInsertion() {
         return this.checkboxIsNotSearchingCharInsertion;
+    }
+
+    public JCheckBox getCheckboxIsNotShowingVulnReport() {
+        return this.checkboxIsNotShowingVulnReport;
     }
 
     public JCheckBox getCheckboxIsCheckingAllParam() {

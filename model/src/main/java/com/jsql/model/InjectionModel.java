@@ -44,6 +44,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -77,15 +78,16 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * initialUrl transformed to a correct injection url.
      */
     private String indexesInUrl = StringUtils.EMPTY;
-    
+    private String analysisReport = StringUtils.EMPTY;
+
     /**
      * Allow to directly start an injection after a failed one
      * without asking the user 'Start a new injection?'.
      */
     private boolean shouldErasePreviousInjection = false;
-    
+
     private boolean isScanning = false;
-    
+
     public InjectionModel() {
         
         this.mediatorUtils = new MediatorUtils();
@@ -129,7 +131,8 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         this.mediatorStrategy.getStacked().setApplicable(false);
 
         this.indexesInUrl = StringUtils.EMPTY;
-        
+        this.analysisReport = StringUtils.EMPTY;
+
         this.mediatorUtils.getCsrfUtil().setTokenCsrf(null);
         this.mediatorUtils.getDigestUtil().setTokenDigest(null);
 
@@ -180,7 +183,15 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             hasFoundInjection = this.mediatorUtils.getCookiesUtil().testParameters(hasFoundInjection);
 
             if (hasFoundInjection && !this.isScanning) {
-                
+
+                if (!this.getMediatorUtils().getPreferencesUtil().isNotShowingVulnReport()) {
+
+                    var requestSetVendor = new Request();
+                    requestSetVendor.setMessage(Interaction.CREATE_ANALYSIS_REPORT);
+                    requestSetVendor.setParameters(this.analysisReport);
+                    this.sendToViews(requestSetVendor);
+                }
+
                 if (this.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
                     
                     LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Using Zip mode for reduced query size");
@@ -251,7 +262,13 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      * @return source code of current page
      */
     @Override
-    public String inject(String dataInjection, boolean isUsingIndex, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
+    public String inject(
+        String dataInjection,
+        boolean isUsingIndex,
+        String metadataInjectionProcess,
+        AbstractCallableBoolean<?> callableBoolean,
+        boolean isReport
+    ) {
         
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
         String urlInjection = this.mediatorUtils.getConnectionUtil().getUrlBase();
@@ -299,11 +316,29 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             this.mediatorUtils.getDigestUtil().addHeaderToken(httpRequestBuilder);
 
             this.mediatorUtils.getConnectionUtil().setCustomUserAgent(httpRequestBuilder);
-            
-            this.initializeRequest(isUsingIndex, dataInjection, httpRequestBuilder, msgHeader);
+
+            String body = this.initializeRequest(isUsingIndex, dataInjection, httpRequestBuilder, msgHeader);
             this.initializeHeader(isUsingIndex, dataInjection, httpRequestBuilder);
             
             var httpRequest = httpRequestBuilder.build();
+
+            if (isReport) {
+                String report = "Method: " + httpRequest.method();
+                report += "\nPath: " + httpRequest.uri().getPath();
+                if (httpRequest.uri().getQuery() != null) {
+                    report += "\nQuery: " + httpRequest.uri().getQuery();
+                }
+                if (
+                    !(this.mediatorUtils.getParameterUtil().getListRequest().isEmpty()
+                    && this.mediatorUtils.getCsrfUtil().getTokenCsrf() == null)
+                ) {
+                    report += "\nBody: " + body;
+                }
+                report += "\nHeader: " + httpRequest.headers().map().entrySet().stream()
+                    .map(entry -> String.format("%s: %s", entry.getKey(), String.join("", entry.getValue())))
+                    .collect(Collectors.joining("\\r\\n"));
+                return report;
+            }
             
             HttpResponse<String> response = this.getMediatorUtils().getConnectionUtil().getHttpClient().send(
                 httpRequestBuilder.build(),
@@ -460,7 +495,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         }
     }
 
-    private void initializeRequest(
+    private String initializeRequest(
         boolean isUsingIndex,
         String dataInjection,
         Builder httpRequest,
@@ -471,7 +506,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             this.mediatorUtils.getParameterUtil().getListRequest().isEmpty()
             && this.mediatorUtils.getCsrfUtil().getTokenCsrf() == null
         ) {
-            return;
+            return dataInjection;
         }
             
         // Set connection method
@@ -533,6 +568,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
         );
         
         msgHeader.put(Header.POST, body.toString());
+        return body.toString();
     }
     
     private String buildQuery(AbstractMethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
@@ -788,5 +824,9 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 
     public MediatorStrategy getMediatorStrategy() {
         return this.mediatorStrategy;
+    }
+
+    public void appendAnalysisReport(String analysisReport) {
+        this.analysisReport += "\n\n" + analysisReport;
     }
 }

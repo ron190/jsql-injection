@@ -100,7 +100,18 @@ public class StrategyInjectionTime extends AbstractStrategy {
     
     @Override
     public void allow(int... i) {
-        
+
+        this.injectionModel.appendAnalysisReport(
+            "### Strategy: Time\n"
+            + this.injectionModel.getReportWithoutIndex(
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(
+                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime("<query>", "0", true),
+                    this.injectionTime.getBooleanMode()
+                ),
+                "metadataInjectionProcess",
+                null
+            )
+        );
         this.markVulnerability(Interaction.MARK_TIME_VULNERABLE);
     }
 
@@ -114,7 +125,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
         
         return this.injectionTime.inject(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(sqlQuery, startPosition),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(sqlQuery, startPosition, false),
             stoppable
         );
     }

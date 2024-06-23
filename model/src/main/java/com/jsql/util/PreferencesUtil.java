@@ -27,6 +27,7 @@ public class PreferencesUtil {
     
     private boolean isNotInjectingMetadata = false;
     private boolean isNotSearchingCharInsertion = false;
+    private boolean isNotShowingVulnReport = false;
 
     private boolean isCheckingAllParam = false;
     private boolean isCheckingAllURLParam = false;
@@ -99,6 +100,7 @@ public class PreferencesUtil {
         this.isHttp2Disabled = prefs.getBoolean("isHttp2Disabled", false);
         this.isNotInjectingMetadata = prefs.getBoolean("isNotInjectingMetadata", false);
         this.isNotSearchingCharInsertion = prefs.getBoolean("isNotSearchingCharInsertion", false);
+        this.isNotShowingVulnReport = prefs.getBoolean("isNotShowingVulnReport", false);
 
         this.isCheckingAllParam = prefs.getBoolean("isCheckingAllParam", false);
         this.isCheckingAllURLParam = prefs.getBoolean("isCheckingAllURLParam", false);
@@ -183,6 +185,7 @@ public class PreferencesUtil {
         preferences.putBoolean("isHttp2Disabled", this.isHttp2Disabled);
         preferences.putBoolean("isNotInjectingMetadata", this.isNotInjectingMetadata);
         preferences.putBoolean("isNotSearchingCharInsertion", this.isNotSearchingCharInsertion);
+        preferences.putBoolean("isNotShowingVulnReport", this.isNotShowingVulnReport);
         preferences.putBoolean("isCheckingAllParam", this.isCheckingAllParam);
         preferences.putBoolean("isCheckingAllURLParam", this.isCheckingAllURLParam);
         preferences.putBoolean("isCheckingAllRequestParam", this.isCheckingAllRequestParam);
@@ -263,6 +266,10 @@ public class PreferencesUtil {
 
     public boolean isNotSearchingCharInsertion() {
         return this.isNotSearchingCharInsertion;
+    }
+
+    public boolean isNotShowingVulnReport() {
+        return this.isNotShowingVulnReport;
     }
 
     public boolean isCheckingAllURLParam() {
@@ -576,6 +583,11 @@ public class PreferencesUtil {
 
     public PreferencesUtil withIsNotSearchingCharInsertion(boolean isNotSearchingCharInsertion) {
         this.isNotSearchingCharInsertion = isNotSearchingCharInsertion;
+        return this;
+    }
+
+    public PreferencesUtil withIsNotShowingVulnReport(boolean isNotShowingVulnReport) {
+        this.isNotShowingVulnReport = isNotShowingVulnReport;
         return this;
     }
 

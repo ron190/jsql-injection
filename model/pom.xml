@@ -42,7 +42,7 @@
     <properties>
         <sonar.exclusions>**/blind/patch/*, **/DigestMD4.java</sonar.exclusions>
 
-        <awaitility.version>4.2.0</awaitility.version>
+        <awaitility.version>4.2.1</awaitility.version>
         <bootstrap.version>5.3.3</bootstrap.version>
         <!-- required since commons-text:1.11.0 not working -->
         <commons-lang3.version>3.14.0</commons-lang3.version>
@@ -52,7 +52,7 @@
         <graphql-spring-boot-starter.version>5.0.2</graphql-spring-boot-starter.version>
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
         <h2.version>2.2.224</h2.version>
-        <hsqldb.version>2.7.2</hsqldb.version>
+        <hsqldb.version>2.7.3</hsqldb.version>
         <javafaker.version>1.0.2</javafaker.version>
         <jaxb-api.version>2.1</jaxb-api.version>
         <jcabi-log.version>0.24.1</jcabi-log.version>
@@ -66,7 +66,7 @@
         <mssql-jdbc.version>12.4.2.jre8</mssql-jdbc.version>
         <mysql-connector-j.version>8.4.0</mysql-connector-j.version>
         <nashorn-core.version>15.4</nashorn-core.version>
-        <neo4j-java-driver.version>5.14.0</neo4j-java-driver.version>
+        <neo4j-java-driver.version>5.21.0</neo4j-java-driver.version>
         <neo4j-jdbc-driver.version>4.0.9</neo4j-jdbc-driver.version>
         <ojdbc8.version>23.4.0.24.05</ojdbc8.version>
         <pitest-junit5-plugin.version>1.2.1</pitest-junit5-plugin.version>
@@ -75,7 +75,7 @@
         <snakeyaml.version>2.2</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
         <spock-core.version>2.4-M1-groovy-4.0</spock-core.version>
-        <spring-boot-dependencies.version>3.1.5</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>3.3.1</spring-boot-dependencies.version>
         <sqlite-jdbc.version>3.44.0.0</sqlite-jdbc.version>
         <sqlite-dialect.version>0.1.4</sqlite-dialect.version>
         <stomp-websocket.version>2.3.4</stomp-websocket.version>

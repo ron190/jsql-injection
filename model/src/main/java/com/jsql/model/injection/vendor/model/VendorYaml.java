@@ -456,11 +456,12 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlBlind(String sqlQuery, String startPosition) {
-        
+    public String sqlBlind(String sqlQuery, String startPosition, boolean isReport) {
+
         return VendorYaml.replaceTags(
-            this.modelYaml.getStrategy().getConfiguration()
-            .getSlidingWindow()
+            (isReport
+            ? "(${injection})"
+            : this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
             .replace(INJECTION, sqlQuery)
             .replace(WINDOW_CHAR, startPosition)
             .replace(CAPACITY, DEFAULT_CAPACITY)
@@ -468,11 +469,12 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTime(String sqlQuery, String startPosition) {
+    public String sqlTime(String sqlQuery, String startPosition, boolean isReport) {
         
         return VendorYaml.replaceTags(
-            this.modelYaml.getStrategy().getConfiguration()
-            .getSlidingWindow()
+            (isReport
+            ? "(${injection})"
+            : this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
             .replace(INJECTION, sqlQuery)
             .replace(WINDOW_CHAR, startPosition)
             .replace(CAPACITY, DEFAULT_CAPACITY)
@@ -515,14 +517,17 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlError(String sqlQuery, String startPosition) {
-        
-        int indexMethodError = this.injectionModel.getMediatorStrategy().getError().getIndexErrorStrategy();
+    public String sqlError(String sqlQuery, String startPosition, int indexMethodError, boolean isReport) {
         
         return VendorYaml.replaceTags(
             this.modelYaml.getStrategy().getError().getMethod().get(indexMethodError)
             .getQuery()
-            .replace(WINDOW, this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
+            .replace(
+                WINDOW,
+                (isReport
+                ? "(${injection})"
+                : this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
+            )
             .replace(INJECTION, sqlQuery)
             .replace(WINDOW_CHAR, startPosition)
             .replace(
@@ -538,11 +543,12 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlNormal(String sqlQuery, String startPosition) {
-        
+    public String sqlNormal(String sqlQuery, String startPosition, boolean isReport) {
+
         return VendorYaml.replaceTags(
-            this.modelYaml.getStrategy().getConfiguration()
-            .getSlidingWindow()
+            (isReport
+            ? "(${injection})"
+            : this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
             .replace(INJECTION, sqlQuery)
             .replace(WINDOW_CHAR, startPosition)
             .replace(CAPACITY, this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength())
@@ -550,13 +556,14 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlStacked(String sqlQuery, String startPosition) {
+    public String sqlStacked(String sqlQuery, String startPosition, boolean isReport) {
 
         return this.modelYaml.getStrategy().getStacked().replace(
             WINDOW,
             VendorYaml.replaceTags(
-                this.modelYaml.getStrategy().getConfiguration()
-                .getSlidingWindow()
+                (isReport
+                ? "(${injection})"
+                : this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
                 .replace(INJECTION, sqlQuery)
                 .replace(WINDOW_CHAR, startPosition)
                 .replace(CAPACITY, DEFAULT_CAPACITY)

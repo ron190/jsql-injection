@@ -37,7 +37,13 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
      * useVisibleIndex false if injection indexes aren't needed,
      * return source page after the HTTP call.
      */
-    public abstract String inject(String dataInjection, boolean isUsingIndex, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean);
+    public abstract String inject(
+        String dataInjection,
+        boolean isUsingIndex,
+        String metadataInjectionProcess,
+        AbstractCallableBoolean<?> callableBoolean,
+        boolean isReport
+    );
     
     /**
      * Inject without the need of index like in "select 1,2,..."<br>
@@ -46,17 +52,32 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
      */
     public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess) {
         
-        return this.inject(dataInjection, false, metadataInjectionProcess, null);
+        return this.inject(dataInjection, false, metadataInjectionProcess, null, false);
     }
 
     public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
         
-        return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean);
+        return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, false);
     }
 
     public String injectWithIndexes(String dataInjection, String metadataInjectionProcess) {
         
-        return this.inject(dataInjection, true, metadataInjectionProcess, null);
+        return this.inject(dataInjection, true, metadataInjectionProcess, null, false);
+    }
+
+    public String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess) {
+
+        return this.inject(dataInjection, false, metadataInjectionProcess, null, true);
+    }
+
+    public String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
+
+        return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, true);
+    }
+
+    public String getReportWithIndexes(String dataInjection, String metadataInjectionProcess) {
+
+        return this.inject(dataInjection, true, metadataInjectionProcess, null, true);
     }
 
     /**

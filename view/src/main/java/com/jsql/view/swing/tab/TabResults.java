@@ -59,29 +59,33 @@ public class TabResults extends DnDTabbedPane {
         // Add hotkeys to rootpane ctrl-tab, ctrl-shift-tab, ctrl-w
         HotkeyUtil.addShortcut(this);
     }
-    
-    public void createFileTab(String name, String content, String path) {
-        
+
+    public void createFileTab(String label, String content, String path) {
+
+        this.createReportTab(label, content, path);
+        MediatorHelper.tabManagers().createFileTab(path, label);
+    }
+
+    public void createReportTab(String label, String content, String path) {
+
         JTextArea fileText = new JPopupTextArea().getProxy();
         fileText.setText(content);
         fileText.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));
         var scroller = new LightScrollPane(1, 0, 0, 0, fileText);
-        
+
         fileText.setCaretPosition(0);
-        this.addTab(name + StringUtils.SPACE, scroller);
+        this.addTab(label + StringUtils.SPACE, scroller);
 
         // Focus on the new tab
         this.setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        var header = new TabHeader(name, UiUtil.ICON_FILE_SERVER);
+        var header = new TabHeader(label, UiUtil.ICON_FILE_SERVER);
 
         this.setToolTipTextAt(this.indexOfComponent(scroller), path);
 
         // Apply the custom header to the tab
         this.setTabComponentAt(this.indexOfComponent(scroller), header);
-        
-        MediatorHelper.tabManagers().createFileTab(path, name);
     }
     
     public void createShell(String url, String path) {

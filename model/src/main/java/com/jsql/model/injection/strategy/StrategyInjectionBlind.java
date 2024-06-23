@@ -99,7 +99,18 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
     @Override
     public void allow(int... i) {
-        
+
+        this.injectionModel.appendAnalysisReport(
+            "### Strategy: " + getName()
+            + "\n"+ this.injectionModel.getReportWithoutIndex(
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(
+                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind("<query>", "0", true),
+                    this.injectionBlind.getBooleanMode()
+                ),
+                "metadataInjectionProcess",
+                null
+            )
+        );
         this.markVulnerability(Interaction.MARK_BLIND_VULNERABLE);
     }
 
@@ -113,7 +124,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
         
         return this.injectionBlind.inject(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition, false),
             stoppable
         );
     }

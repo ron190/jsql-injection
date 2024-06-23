@@ -92,6 +92,9 @@ public class ParameterUtil {
             }
 
             String authority = URI.create(urlQueryFixed).getAuthority();
+            if (authority == null) {
+                throw new MalformedURLException("incorrect domain authority");
+            }
             String authorityPunycode = IDN.toASCII(authority);
             if (!authority.equals(authorityPunycode)) {
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Punycode domain detected, using [{}] instead of [{}]", authorityPunycode, authority);

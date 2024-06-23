@@ -128,7 +128,14 @@ public class StrategyInjectionStacked extends AbstractStrategy {
 
     @Override
     public void allow(int... i) {
-        
+
+        this.injectionModel.appendAnalysisReport(
+            "### Strategy: Stacked\n"
+            + this.injectionModel.getReportWithoutIndex(
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked("<query>", "0", true),
+                "metadataInjectionProcess"
+            )
+        );
         this.markVulnerability(Interaction.MARK_STACKED_VULNERABLE);
     }
 
@@ -142,7 +149,7 @@ public class StrategyInjectionStacked extends AbstractStrategy {
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
         
         return this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked(sqlQuery, startPosition),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked(sqlQuery, startPosition, false),
             metadataInjectionProcess
         );
     }

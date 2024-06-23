@@ -21,7 +21,7 @@ public class CreateFileTab extends CreateTabHelper implements InteractionCommand
     /**
      * Name of the file.
      */
-    private final String name;
+    private final String label;
 
     /**
      * Content of the file.
@@ -38,7 +38,7 @@ public class CreateFileTab extends CreateTabHelper implements InteractionCommand
      */
     public CreateFileTab(Object[] interactionParams) {
         
-        this.name = (String) interactionParams[0];
+        this.label = (String) interactionParams[0];
         this.content = (String) interactionParams[1];
         this.path = (String) interactionParams[2];
     }
@@ -46,6 +46,6 @@ public class CreateFileTab extends CreateTabHelper implements InteractionCommand
     @Override
     public void execute() {
         
-        MediatorHelper.tabResults().createFileTab(this.name, this.content, this.path);
+        MediatorHelper.tabResults().createFileTab(this.label, this.content, this.path);
     }
 }

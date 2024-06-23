@@ -60,7 +60,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
             
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
-                "{} Normal injection at index [{}] using [{}] characters",
+                "{} [Normal] at index [{}] using [{}] characters",
                 () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
                 () -> this.visibleIndex,
                 () -> this.performanceLength
@@ -75,7 +75,14 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     @Override
     public void allow(int... i) {
-        
+
+        this.injectionModel.appendAnalysisReport(
+            "### Strategy: Normal\n"
+            + this.injectionModel.getReportWithIndexes(
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal("<query>", "0", true),
+                "metadataInjectionProcess"
+            )
+        );
         this.markVulnerability(Interaction.MARK_NORMAL_VULNERABLE);
     }
 
@@ -89,7 +96,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
         
         return this.injectionModel.injectWithIndexes(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(sqlQuery, startPosition),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(sqlQuery, startPosition, false),
             metadataInjectionProcess
         );
     }

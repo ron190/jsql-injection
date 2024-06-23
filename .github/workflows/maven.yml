@@ -173,7 +173,7 @@ jobs:
         git add -f site/
         
         git commit -m "Publish reports"
-        git push
+        git push --force  # failed to push some refs
 
   codeql:
     name: CodeQL

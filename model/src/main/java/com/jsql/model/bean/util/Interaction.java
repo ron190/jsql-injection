@@ -12,6 +12,7 @@ public enum Interaction {
     CREATE_SQL_SHELL_TAB("CreateSQLShellTab"),
     CREATE_TAB("CreateTab"),
     CREATE_VALUES_TAB("CreateValuesTab"),
+    CREATE_ANALYSIS_REPORT("CreateAnalysisReport"),
     
     END_ADMIN_SEARCH("EndAdminSearch"),
     END_FILE_SEARCH("EndFileSearch"),

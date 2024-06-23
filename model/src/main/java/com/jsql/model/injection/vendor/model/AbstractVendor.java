@@ -18,13 +18,13 @@ public interface AbstractVendor {
     String sqlColumns(Table table);
     String sqlRows(String[] arrayColumns, Database database, Table table);
 
-    String sqlNormal(String sqlQuery, String startPosition);
+    String sqlNormal(String sqlQuery, String startPosition, boolean isReport);
     String sqlErrorIndice(Method errorMethod);
     String sqlErrorCalibrator(Method errorMethod);
-    String sqlError(String sqlQuery, String startPosition);
-    String sqlBlind(String sqlQuery, String startPosition);
-    String sqlTime(String sqlQuery, String startPosition);
-    String sqlStacked(String sqlQuery, String startPosition);
+    String sqlError(String sqlQuery, String startPosition, int indexMethodError, boolean isReport);
+    String sqlBlind(String sqlQuery, String startPosition, boolean isReport);
+    String sqlTime(String sqlQuery, String startPosition, boolean isReport);
+    String sqlStacked(String sqlQuery, String startPosition, boolean isReport);
 
     String sqlCapacity(String[] indexes);
     String sqlIndices(Integer nbFields);

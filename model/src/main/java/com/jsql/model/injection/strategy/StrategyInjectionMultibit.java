@@ -70,7 +70,19 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
 
     @Override
     public void allow(int... i) {
-        
+
+        this.injectionModel.appendAnalysisReport(
+            "### Strategy: Multibit\n"
+            + this.injectionModel.getReportWithoutIndex(
+                injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(
+                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind("<query>", "0", true),
+                    0,
+                    1
+                ),
+                "metadataInjectionProcess",
+                null
+            )
+        );
         this.markVulnerability(Interaction.MARK_MULTI_VULNERABLE);
     }
 
@@ -84,7 +96,7 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
         
         return this.injectionMultibit.inject(
-            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition, false),
             stoppable
         );
     }

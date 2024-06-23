@@ -9,11 +9,14 @@ import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
@@ -228,7 +231,15 @@ public class MediatorVendor {
             
             vendorFound = this.initializeVendor(vendorFound);
         }
-        
+
+        this.injectionModel.appendAnalysisReport(
+            "# Date: " + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
+            + "\n# Tested on: " + String.format("%s (v%s)", SystemUtils.OS_NAME, SystemUtils.OS_VERSION)
+            + "\n# Tool: jSQL Injection v" + this.injectionModel.getVersionJsql() + " ("+ this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().get("github.url") +")"
+            + "\n# Database: " + vendorFound
+            + "\n\n## Vulnerability details"
+        );
+
         var requestSetVendor = new Request();
         requestSetVendor.setMessage(Interaction.SET_VENDOR);
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);

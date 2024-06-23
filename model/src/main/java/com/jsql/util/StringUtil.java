@@ -182,7 +182,7 @@ public final class StringUtil {
         String result = text;
         if (encoding != null) {
             
-            result = new String(text.getBytes(), StandardCharsets.UTF_8);
+            result = new String(text.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
         }
         
         return result;
