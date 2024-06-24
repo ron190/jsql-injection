@@ -63,7 +63,7 @@
         <junit-pioneer.version>2.2.0</junit-pioneer.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <maven-failsafe-plugin.version>3.3.0</maven-failsafe-plugin.version>
-        <mssql-jdbc.version>12.4.2.jre8</mssql-jdbc.version>
+        <mssql-jdbc.version>12.7.0.jre8-preview</mssql-jdbc.version>
         <mysql-connector-j.version>8.4.0</mysql-connector-j.version>
         <nashorn-core.version>15.4</nashorn-core.version>
         <neo4j-java-driver.version>5.21.0</neo4j-java-driver.version>
