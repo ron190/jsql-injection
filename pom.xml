@@ -37,7 +37,7 @@
         <maven-jxr-plugin.version>3.4.0</maven-jxr-plugin.version>
 <!--        <maven-pmd-plugin.version>3.23.0</maven-pmd-plugin.version>-->
         <!-- Bug in 3.6.0, waiting for a fix -->
-        <maven-project-info-reports-plugin.version>3.5.0</maven-project-info-reports-plugin.version>
+        <maven-project-info-reports-plugin.version>3.6.1</maven-project-info-reports-plugin.version>
         <maven-site-plugin.version>4.0.0-M15</maven-site-plugin.version>
         <maven-surefire-plugin.version>3.3.0</maven-surefire-plugin.version>
         <spotbugs-maven-plugin.version>4.8.5.0</spotbugs-maven-plugin.version>
