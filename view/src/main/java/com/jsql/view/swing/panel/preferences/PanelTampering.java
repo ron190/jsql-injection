@@ -36,7 +36,10 @@ public class PanelTampering extends JPanel implements Cleanable {
     public PanelTampering(PanelPreferences panelPreferences) {
         
         this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        
+
+        var emptyLabelCommonConversion = new JLabel();
+        var labelCommonConversion = new JLabel("<html><b>Common conversion</b></html>");
+
         String tooltipIsTamperingBase64 = TamperingType.BASE64.instance().getTooltip();
         this.checkboxIsTamperingBase64.setToolTipText(tooltipIsTamperingBase64);
         this.checkboxIsTamperingBase64.setFocusable(false);
@@ -90,7 +93,10 @@ public class PanelTampering extends JPanel implements Cleanable {
         var textAreaIsTamperingEval = new LightScrollPane(this.textPaneEval);
         textAreaIsTamperingEval.setBorder(UiUtil.BORDER_FOCUS_LOST);
         textAreaIsTamperingEval.setMinimumSize(new Dimension(400, 100));
-        
+
+        var emptySpaceConversion = new JLabel();
+        var labelSpaceConversion = new JLabel("<html><br /><b>Space conversion (use double click to uncheck)</b></html>");
+
         var groupSpaceToComment = new ButtonGroup();
         groupSpaceToComment.add(this.radioIsTamperingSpaceToDashComment);
         groupSpaceToComment.add(this.radioIsTamperingSpaceToMultilineComment);
@@ -218,7 +224,10 @@ public class PanelTampering extends JPanel implements Cleanable {
             entry.getKey().setBorderPainted(false);
             entry.getKey().setContentAreaFilled(false);
         });
-        
+
+        var emptyLabelCustomConversion = new JLabel();
+        var labelCustomConversion = new JLabel("<html><br /><b>Custom conversion</b></html>");
+
         var document = new HighlightedDocument(HighlightedDocument.JAVASCRIPT_STYLE);
         document.setHighlightStyle(HighlightedDocument.JAVASCRIPT_STYLE);
         this.textPaneEval.setStyledDocument(document);
@@ -237,13 +246,13 @@ public class PanelTampering extends JPanel implements Cleanable {
         var groupLayout = new GroupLayout(this);
         this.setLayout(groupLayout);
         
-        groupLayout
-        .setHorizontalGroup(
+        groupLayout.setHorizontalGroup(
             groupLayout
             .createSequentialGroup()
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                .addComponent(emptyLabelCommonConversion)
                 .addComponent(this.checkboxIsTamperingBase64)
                 .addComponent(this.checkboxIsTamperingFunctionComment)
                 .addComponent(this.checkboxIsTamperingVersionComment)
@@ -252,14 +261,17 @@ public class PanelTampering extends JPanel implements Cleanable {
                 .addComponent(this.checkboxIsTamperingStringToChar)
                 .addComponent(this.checkboxIsTamperingHexToChar)
                 .addComponent(this.checkboxIsTamperingQuoteToUtf8)
+                .addComponent(emptySpaceConversion)
                 .addComponent(this.radioIsTamperingSpaceToMultilineComment)
                 .addComponent(this.radioIsTamperingSpaceToDashComment)
                 .addComponent(this.radioIsTamperingSpaceToSharpComment)
+                .addComponent(emptyLabelCustomConversion)
                 .addComponent(this.checkboxIsTamperingEval)
             )
             .addGroup(
                 groupLayout
                 .createParallelGroup()
+                .addComponent(labelCommonConversion)
                 .addComponent(labelIsTamperingBase64)
                 .addComponent(labelIsTamperingFunctionComment)
                 .addComponent(labelIsTamperingVersionComment)
@@ -268,17 +280,24 @@ public class PanelTampering extends JPanel implements Cleanable {
                 .addComponent(labelIsTamperingStringToChar)
                 .addComponent(labelIsTamperingHexToChar)
                 .addComponent(labelIsTamperingQuoteToUtf8)
+                .addComponent(labelSpaceConversion)
                 .addComponent(labelIsTamperingSpaceToMultilineComment)
                 .addComponent(labelIsTamperingSpaceToDashComment)
                 .addComponent(labelIsTamperingSpaceToSharpComment)
+                .addComponent(labelCustomConversion)
                 .addComponent(textAreaIsTamperingEval)
             )
         );
         
-        groupLayout
-        .setVerticalGroup(
+        groupLayout.setVerticalGroup(
             groupLayout
             .createSequentialGroup()
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(emptyLabelCommonConversion)
+                .addComponent(labelCommonConversion)
+            )
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -330,6 +349,12 @@ public class PanelTampering extends JPanel implements Cleanable {
             .addGroup(
                 groupLayout
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(emptySpaceConversion)
+                .addComponent(labelSpaceConversion)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.radioIsTamperingSpaceToMultilineComment)
                 .addComponent(labelIsTamperingSpaceToMultilineComment)
             )
@@ -344,6 +369,12 @@ public class PanelTampering extends JPanel implements Cleanable {
                 .createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(this.radioIsTamperingSpaceToSharpComment)
                 .addComponent(labelIsTamperingSpaceToSharpComment)
+            )
+            .addGroup(
+                groupLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(emptyLabelCustomConversion)
+                .addComponent(labelCustomConversion)
             )
             .addGroup(
                 groupLayout

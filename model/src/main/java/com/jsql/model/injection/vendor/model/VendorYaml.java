@@ -459,9 +459,7 @@ public class VendorYaml implements AbstractVendor {
     public String sqlBlind(String sqlQuery, String startPosition, boolean isReport) {
 
         return VendorYaml.replaceTags(
-            (isReport
-            ? "(${injection})"
-            : this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
+            getSlidingWindow(isReport)
             .replace(INJECTION, sqlQuery)
             .replace(WINDOW_CHAR, startPosition)
             .replace(CAPACITY, DEFAULT_CAPACITY)
@@ -472,9 +470,7 @@ public class VendorYaml implements AbstractVendor {
     public String sqlTime(String sqlQuery, String startPosition, boolean isReport) {
         
         return VendorYaml.replaceTags(
-            (isReport
-            ? "(${injection})"
-            : this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
+            getSlidingWindow(isReport)
             .replace(INJECTION, sqlQuery)
             .replace(WINDOW_CHAR, startPosition)
             .replace(CAPACITY, DEFAULT_CAPACITY)
@@ -522,12 +518,7 @@ public class VendorYaml implements AbstractVendor {
         return VendorYaml.replaceTags(
             this.modelYaml.getStrategy().getError().getMethod().get(indexMethodError)
             .getQuery()
-            .replace(
-                WINDOW,
-                (isReport
-                ? "(${injection})"
-                : this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
-            )
+            .replace(WINDOW, getSlidingWindow(isReport))
             .replace(INJECTION, sqlQuery)
             .replace(WINDOW_CHAR, startPosition)
             .replace(
@@ -546,9 +537,7 @@ public class VendorYaml implements AbstractVendor {
     public String sqlNormal(String sqlQuery, String startPosition, boolean isReport) {
 
         return VendorYaml.replaceTags(
-            (isReport
-            ? "(${injection})"
-            : this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
+            getSlidingWindow(isReport)
             .replace(INJECTION, sqlQuery)
             .replace(WINDOW_CHAR, startPosition)
             .replace(CAPACITY, this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength())
@@ -561,9 +550,7 @@ public class VendorYaml implements AbstractVendor {
         return this.modelYaml.getStrategy().getStacked().replace(
             WINDOW,
             VendorYaml.replaceTags(
-                (isReport
-                ? "(${injection})"
-                : this.modelYaml.getStrategy().getConfiguration().getSlidingWindow())
+                getSlidingWindow(isReport)
                 .replace(INJECTION, sqlQuery)
                 .replace(WINDOW_CHAR, startPosition)
                 .replace(CAPACITY, DEFAULT_CAPACITY)
@@ -665,6 +652,15 @@ public class VendorYaml implements AbstractVendor {
             .replace("${trail_hex}", TRAIL_HEX)
             .replace("${lead}", LEAD)
             .replace("${lead_hex}", LEAD_HEX);
+    }
+
+    /**
+     * Get payload with sliding window except for vulnerability report
+     */
+    private String getSlidingWindow(boolean isReport) {
+        return isReport
+            ? "(" + INJECTION + ")"
+            : this.modelYaml.getStrategy().getConfiguration().getSlidingWindow();
     }
     
     

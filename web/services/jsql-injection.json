@@ -1,7 +1,7 @@
 {
     "version": "0.100",
     "news": [
-        "[New release v0.100, contribution by @DelvinBa] A new vulnerability report opens now with the payloads description, the report can therefore be shared easily on bug bounty and CVE platforms",
+        "[New release v0.100, contribution by @DelvinBa] A vuln report opens now when the scan is done, therefore you can share easily the detected payloads on bug bounty and CVE platforms",
         "[Thanks to GitHub contributors] Anyone can contribute, do code review, improve documentation and create pull request. Share your contribution and add a Star to GitHub at https://github.com/ron190/jsql-injection",
         "[Contribute to the wiki] Open a pull request to improve documentation at https://github.com/ron190/jsql-injection/wiki",
         "[Test reports] Auto-generated reports are now published in the wiki, review Maven site and reports at https://ron190.github.io/jsql-injection/site/index.html"
