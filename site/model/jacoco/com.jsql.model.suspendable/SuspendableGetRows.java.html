@@ -93,9 +93,9 @@ public class SuspendableGetRows extends AbstractSuspendable {
 <span class="fc" id="L93">            Matcher regexTrailOnlyFound = this.parseTrailOnlyFound(sourcePage[0]);</span>
             
 <span class="fc" id="L95">            if (</span>
-<span class="fc bfc" id="L96" title="All 6 branches covered.">                (!regexLeadFound.find() || regexTrailOnlyFound.find())</span>
+<span class="pc bpc" id="L96" title="1 of 6 branches missed.">                (!regexLeadFound.find() || regexTrailOnlyFound.find())</span>
                 &amp;&amp; isMultipleRows
-<span class="pc bpc" id="L98" title="1 of 2 branches missed.">                &amp;&amp; StringUtils.isNotEmpty(slidingWindowAllRows.toString())</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">                &amp;&amp; StringUtils.isNotEmpty(slidingWindowAllRows.toString())</span>
             ) {
                 
 <span class="fc" id="L101">                this.sendProgress(countRowsToFind, countRowsToFind, elementDatabase);</span>
