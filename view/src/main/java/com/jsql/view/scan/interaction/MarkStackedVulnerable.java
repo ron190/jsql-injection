@@ -24,9 +24,6 @@ public class MarkStackedVulnerable implements InteractionCommand {
 
     private final String url;
 
-    /**
-     * @param interactionParams
-     */
     @SuppressWarnings("unchecked")
     public MarkStackedVulnerable(Object[] interactionParams) {
 
@@ -38,7 +35,6 @@ public class MarkStackedVulnerable implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getStacked();
-        
         MediatorHelper.managerScan().highlight(this.url, strategy.toString());
     }
 }

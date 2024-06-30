@@ -56,7 +56,6 @@ public class TabMouseAdapter extends MouseAdapter {
                 itemMenu.addActionListener(actionEvent -> this.tabbedPaneWheeled.setSelectedIndex(positionFinal));
                 
             } catch (SerializationException e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }

@@ -20,7 +20,6 @@ import javax.swing.*;
 public class JPopupTextField extends JPopupTextComponent<JTextField> implements DecoratorJComponent<JTextField> {
     
     public JPopupTextField(String placeholder) {
-        
         this(new JTextFieldPlaceholder(placeholder));
     }
 
@@ -29,7 +28,6 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
      * @param value Text to display
      */
     public JPopupTextField(String placeholder, String value) {
-        
         this(new JTextFieldPlaceholder(placeholder, value));
     }
 

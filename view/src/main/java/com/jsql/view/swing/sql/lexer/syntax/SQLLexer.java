@@ -1394,7 +1394,6 @@ public class SQLLexer implements Lexer {
                             break zzForAction;
                         }
                     }
-
                 }
             }
 
@@ -1605,5 +1604,4 @@ public class SQLLexer implements Lexer {
             }
         }
     }
-
 }

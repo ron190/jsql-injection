@@ -78,7 +78,7 @@ public class DataAccess {
     public static final String SHELL_TRAIL = "${shell.trail}";
     
     /**
-     * Regex keywords corresponding to multiline and case insensitive match.
+     * Regex keywords corresponding to multiline and case-insensitive match.
      */
     public static final String MODE = "(?si)";
     
@@ -91,11 +91,10 @@ public class DataAccess {
      * <pre>x04[table cell]x05[number of occurrences]x04
      */
     public static final String CELL_TABLE = "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)"+ SEPARATOR_QTE_RGX +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?";
-    
+
     private final InjectionModel injectionModel;
     
     public DataAccess(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
     
@@ -117,16 +116,12 @@ public class DataAccess {
                 sourcePage,
                 false,
                 0,
-                null,
+                AbstractElementDatabase.MOCK,
                 "metadata"
             );
-        
         } catch (AbstractSlidingException e) {
-
             resultToParse = getPartialResultAndLog(e, resultToParse);
-
         } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
-
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
 
@@ -159,7 +154,7 @@ public class DataAccess {
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, I18nUtil.valueByKey("LOG_DB_METADATA_WARN"));
         }
     }
-    
+
     /**
      * Get database names and table counts and send them to the view.<br>
      * Use readable text (not hexa) and parse this pattern:<br>
@@ -172,9 +167,7 @@ public class DataAccess {
     public List<Database> listDatabases() throws JSqlException {
         
         LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("LOG_FETCHING_DATABASES"));
-        
         List<Database> databases = new ArrayList<>();
-        
         String resultToParse = StringUtils.EMPTY;
         
         try {
@@ -184,16 +177,12 @@ public class DataAccess {
                 sourcePage,
                 true,
                 0,
-                null,
+                AbstractElementDatabase.MOCK,
                 "databases"
             );
-            
         } catch (AbstractSlidingException e) {
-
             resultToParse = getPartialResultAndLog(e, resultToParse);
-
         } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
-
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
 
@@ -207,7 +196,6 @@ public class DataAccess {
             .matcher(resultToParse);
 
         if (!regexSearch.find()) {
-            
             throw new InjectionFailureException("No match while injecting databases");
         }
         
@@ -267,13 +255,9 @@ public class DataAccess {
                 database,
                 "tables"
             );
-            
         } catch (AbstractSlidingException e) {
-
             resultToParse = getPartialResultAndLog(e, resultToParse);
-
         } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
-
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
 
@@ -292,7 +276,6 @@ public class DataAccess {
         this.injectionModel.sendToViews(requestEndProgress);
         
         if (!regexSearch.find()) {
-            
             throw new InjectionFailureException("No match while injecting tables");
         }
         
@@ -350,19 +333,14 @@ public class DataAccess {
                 table,
                 "columns"
             );
-            
         } catch (AbstractSlidingException e) {
-
             resultToParse = getPartialResultAndLog(e, resultToParse);
-
         } catch (Exception e) {  // Catch all exceptions but prevent detecting bug
-
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
 
         // Build SQLite columns
         if (this.injectionModel.getMediatorVendor().isSqlite()) {
-            
             resultToParse = this.injectionModel.getMediatorVendor().getSqlite().transformSqlite(resultToParse);
         }
         
@@ -381,7 +359,6 @@ public class DataAccess {
         this.injectionModel.sendToViews(requestEndProgress);
 
         if (!regexSearch.find()) {
-            
             throw new InjectionFailureException("No match while injecting columns");
         }
 
@@ -478,13 +455,9 @@ public class DataAccess {
                 table,
                 "rows"
             );
-            
         } catch (AbstractSlidingException e) {  // Catch all exceptions but prevent detecting bug
-
             resultToParse = getPartialResultAndLog(e, resultToParse);
-
         } catch (Exception e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);
         }
 
@@ -497,11 +470,8 @@ public class DataAccess {
 
         // Get pieces of data already retrieved instead of losing them
         if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
-
             resultToParse = e.getSlidingWindowAllRows();
-
         } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
-
             resultToParse = e.getSlidingWindowCurrentRows();
         }
 
@@ -518,16 +488,12 @@ public class DataAccess {
             var isIncomplete = false;
             
             for (var indexColumn = 0 ; indexColumn < columnsName.size() ; indexColumn++) {
-                
                 try {
                     table[indexRow][indexColumn] = values.get(indexRow).get(indexColumn);
-                    
                 } catch (IndexOutOfBoundsException e) {
                     
                     isIncomplete = true;
-                    
                     LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, I18nUtil.valueByKey("LOG_LIST_VALUES_INCOMPLETE"));
-                    
                     LOGGER.log(LogLevelUtil.IGNORE, e);
                 }
             }
@@ -541,6 +507,7 @@ public class DataAccess {
                     () -> I18nUtil.valueByKey("LOG_LIST_VALUES_TOO_LONG"),
                     () -> logIndexRow + 1
                 );
+
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
                     () -> String.join(

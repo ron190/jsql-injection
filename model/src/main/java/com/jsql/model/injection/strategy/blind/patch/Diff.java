@@ -23,6 +23,7 @@ public class Diff implements Comparable<Diff> {
      * @param text The text being applied.
      */
     public Diff(Operation operation, String text) {
+
         // Construct a diff with the specified operation and text.
         this.operation = operation;
         this.text = text;
@@ -34,6 +35,7 @@ public class Diff implements Comparable<Diff> {
      */
     @Override
     public String toString() {
+
         String prettyText = this.text.replace('\n', '\u00b6');
         return "Diff(" + this.operation + ",\"" + prettyText + "\")";
     }
@@ -45,6 +47,7 @@ public class Diff implements Comparable<Diff> {
      */
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = this.operation == null ? 0 : this.operation.hashCode();
         result += prime * (this.text == null ? 0 : this.text.hashCode());
@@ -58,6 +61,7 @@ public class Diff implements Comparable<Diff> {
      */
     @Override
     public boolean equals(Object obj) {
+
         if (this == obj) {
             return true;
         }
@@ -67,25 +71,25 @@ public class Diff implements Comparable<Diff> {
         if (this.getClass() != obj.getClass()) {
             return false;
         }
+
         Diff other = (Diff) obj;
         if (this.operation != other.operation) {
             return false;
         }
+
         if (this.text == null) {
-            if (other.text != null) {
-                return false;
-            }
-        } else if (!this.text.equals(other.text)) {
-            return false;
+            return other.text == null;
+        } else {
+            return this.text.equals(other.text);
         }
-        return true;
     }
 
     @Override
     public int compareTo(Diff arg0) {
         return this.toString().equals(arg0.toString()) ? 0 : 1;
     }
-    
+
+
     // Getter and setter
 
     public Operation getOperation() {
@@ -103,5 +107,4 @@ public class Diff implements Comparable<Diff> {
     public void setText(String text) {
         this.text = text;
     }
-    
 }

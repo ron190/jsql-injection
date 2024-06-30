@@ -23,6 +23,12 @@ public class MySqlNormalSuiteIT extends ConcreteMySqlSuiteIT {
 
         model
         .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
+
+        model
+        .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");

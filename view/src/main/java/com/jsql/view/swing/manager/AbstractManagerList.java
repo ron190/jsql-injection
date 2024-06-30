@@ -89,11 +89,9 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         ) {
             String line;
             while ((line = reader.readLine()) != null) {
-                
                 this.itemsList.add(new ItemList(line));
             }
         } catch (IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
@@ -123,9 +121,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) this.listPaths.getModel();
         
         for (var i = 0 ; i < listModel.size() ; i++) {
-            
             if (listModel.get(i).toString().equals(element)) {
-                
                 isFound = true;
             }
         }
@@ -137,33 +133,12 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         }
     }
     
-    public void addTag(String url, String tag) {
+    public void highlight(String url, String tag) {
         
+        var itemLabel = String.format(" [%s]", tag);
         ListModel<ItemList> listModel = this.listPaths.getModel();
         
         for (var i = 0 ; i < listModel.getSize() ; i++) {
-            
-            if (url.contains(listModel.getElementAt(i).getOriginalString())) {
-                
-                listModel.getElementAt(i).setIsDatabaseConfirmed(true);
-                listModel.getElementAt(i).setInternalString(listModel.getElementAt(i).getInternalString() +" ["+tag+"]");
-                
-                ((DefaultListModel<ItemList>) listModel).setElementAt(listModel.getElementAt(i), i);
-            }
-        }
-    }
-    
-    public void highlight(String url, String strategy) {
-        
-        var itemLabel = String.format(
-            " [%s]",
-            strategy
-        );
-        
-        ListModel<ItemList> listModel = this.listPaths.getModel();
-        
-        for (var i = 0 ; i < listModel.getSize() ; i++) {
-            
             if (url.contains(listModel.getElementAt(i).getOriginalString())) {
                 
                 listModel.getElementAt(i).setIsVulnerable(true);
@@ -192,7 +167,6 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * Unselect every element of the list.
      */
     public void clearSelection() {
-        
         this.listPaths.clearSelection();
     }
 
@@ -201,7 +175,6 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * @param isEnable The new state of the button
      */
     public void setButtonEnable(boolean isEnable) {
-        
         this.run.setEnabled(isEnable);
     }
 
@@ -210,7 +183,6 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * @param icon The new icon
      */
     public void changePrivilegeIcon(Icon icon) {
-        
         this.privilege.setIcon(icon);
     }
     

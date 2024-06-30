@@ -16,15 +16,14 @@ import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import javax.swing.*;
 
 /**
- * Tabs with mousewheel and right click action.
+ * Tabs with mouse-wheel and right click action.
  */
 public class TabbedPaneWheeled extends JTabbedPane {
     
     /**
-     * Create tabs with ctrl-TAB, mousewheel and new UI.
+     * Create tabs with ctrl-TAB, mouse-wheel and new UI.
      */
     public TabbedPaneWheeled() {
-        
         this(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     }
 

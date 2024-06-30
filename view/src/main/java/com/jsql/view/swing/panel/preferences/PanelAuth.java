@@ -52,8 +52,7 @@ public class PanelAuth extends JPanel {
         var labelKerberosLoginConf = new JLabel("login.conf  ");
         var labelKerberosKrb5Conf = new JLabel("krb5.conf  ");
         final var labelUseKerberos = new JButton("Enable Kerberos");
-        String tooltipUseKerberos =
-            TAG_HTML_ON
+        String tooltipUseKerberos = TAG_HTML_ON
             + "Enable Kerberos authentication, then define path to <b>login.conf</b> and <b>krb5.conf</b>.<br>"
             + "Path to <b>.keytab</b> file is defined in login.conf ; name of <b>principal</b> must be correct.<br>"
             + "<b>Realm</b> and <b>kdc</b> are defined in krb5.conf.<br>"
@@ -94,7 +93,6 @@ public class PanelAuth extends JPanel {
             
             this.getCheckboxUseKerberos().setSelected(!this.getCheckboxUseKerberos().isSelected());
             if (this.getCheckboxUseKerberos().isSelected()) {
-                
                 this.getCheckboxUseDigestAuthentication().setSelected(false);
             }
             
@@ -105,7 +103,6 @@ public class PanelAuth extends JPanel {
             
             this.getCheckboxUseDigestAuthentication().setSelected(!this.getCheckboxUseDigestAuthentication().isSelected());
             if (this.getCheckboxUseDigestAuthentication().isSelected()) {
-                
                 this.getCheckboxUseKerberos().setSelected(false);
             }
             
@@ -130,10 +127,8 @@ public class PanelAuth extends JPanel {
         .forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
         
         DocumentListener documentListenerSave = new DocumentListenerEditing() {
-            
             @Override
             public void process() {
-                
                 panelPreferences.getActionListenerSave().actionPerformed(null);
             }
         };

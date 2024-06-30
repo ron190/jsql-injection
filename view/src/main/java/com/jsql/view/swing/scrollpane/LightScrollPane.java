@@ -44,7 +44,6 @@ public class LightScrollPane extends JComponent {
     public LightScrollPane(int top, int left, int bottom, int right, JComponent c) {
         
         this(c);
-
         this.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, UiUtil.COLOR_COMPONENT_BORDER));
     }
     
@@ -79,9 +78,7 @@ public class LightScrollPane extends JComponent {
                 // Implementation by sun.swing.SwingUtilities2.getFontMetrics()
                 try {
                     this.viewport.setBounds(0, 0, LightScrollPane.this.getWidth(), LightScrollPane.this.getHeight() - 1);
-                    
                 } catch (NullPointerException e) {
-                    
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 }
                 
@@ -163,8 +160,8 @@ public class LightScrollPane extends JComponent {
     }
 
     private static class MyScrollBarButton extends JButton {
-        
         private MyScrollBarButton() {
+
             this.setOpaque(false);
             this.setFocusable(false);
             this.setFocusPainted(false);
@@ -203,33 +200,29 @@ public class LightScrollPane extends JComponent {
             int x = thumbBounds.x + THUMB_BORDER_SIZE;
             int y = thumbBounds.y + THUMB_BORDER_SIZE;
 
-            int width =
-                orientation == Adjustable.VERTICAL
+            int width = orientation == Adjustable.VERTICAL
                 ? THUMB_SIZE
-                : thumbBounds.width - THUMB_BORDER_SIZE * 2
-            ;
+                : thumbBounds.width - THUMB_BORDER_SIZE * 2;
+
             width = Math.max(width, THUMB_SIZE);
 
-            int height =
-                orientation == Adjustable.VERTICAL
+            int height = orientation == Adjustable.VERTICAL
                 ? thumbBounds.height - THUMB_BORDER_SIZE * 2
-                : THUMB_SIZE
-            ;
+                : THUMB_SIZE;
+
             height = Math.max(height, THUMB_SIZE);
 
             var graphics2D = (Graphics2D) g.create();
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             
-            // Fix Mac OS Color.DARK_GRAY and alpha incompatibility
+            // Fix macOS Color.DARK_GRAY and alpha incompatibility
             Color colorThumbAlpha;
             
             try {
                 colorThumbAlpha = new Color(LightScrollPane.this.colorThumb.getRed(), LightScrollPane.this.colorThumb.getGreen(), LightScrollPane.this.colorThumb.getBlue(), alpha);
-                
             } catch (NullPointerException e) {
                 
                 colorThumbAlpha = Color.GRAY;
-                
                 LOGGER.log(LogLevelUtil.IGNORE, e);
             }
             

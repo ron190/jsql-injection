@@ -9,7 +9,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class AbstractInjectionMonobit<T extends AbstractCallableBoolean<T>> extends AbstractInjectionBoolean<T> {
 
     protected AbstractInjectionMonobit(InjectionModel injectionModel, BooleanMode booleanMode) {
-
         super(injectionModel, booleanMode);
     }
     

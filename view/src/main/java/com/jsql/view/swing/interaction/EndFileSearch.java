@@ -18,16 +18,12 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class EndFileSearch implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
     public EndFileSearch(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        
         MediatorHelper.managerFile().endProcess();
     }
 }

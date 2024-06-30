@@ -33,7 +33,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
- * A dialog displaying information on jSQL.
+ * A dialog displaying information about jSQL.
  */
 public class DialogAbout extends JDialog {
     
@@ -53,7 +53,7 @@ public class DialogAbout extends JDialog {
     private final LightScrollPane scrollPane;
 
     /**
-     * Create a dialog for general information on project jsql.
+     * Create a dialog about project general information.
      */
     public DialogAbout() {
         
@@ -134,12 +134,9 @@ public class DialogAbout extends JDialog {
         );
         
         buttonWebpage.addActionListener(ev -> {
-            
             try {
                 Desktop.getDesktop().browse(new URI((String) MediatorHelper.model().getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")));
-                
             } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Browsing to Url failed", e);
             }
         });
@@ -170,7 +167,6 @@ public class DialogAbout extends JDialog {
             ) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    
                     result.append(line);
                 }
             }
@@ -178,7 +174,6 @@ public class DialogAbout extends JDialog {
             editorPane.setText(result.toString().replace("%JSQLVERSION%", MediatorHelper.model().getVersionJsql()));
             
         } catch (NoClassDefFoundError | IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
@@ -209,14 +204,10 @@ public class DialogAbout extends JDialog {
         editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));
 
         editorPane.addHyperlinkListener(linkEvent -> {
-            
             if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {
-                
                 try {
                     Desktop.getDesktop().browse(linkEvent.getURL().toURI());
-                    
                 } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
-                    
                     LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Browsing to Url failed", e);
                 }
             }
@@ -238,7 +229,6 @@ public class DialogAbout extends JDialog {
     }
 
     public void requestButtonFocus() {
-        
         this.buttonClose.requestFocusInWindow();
     }
 }

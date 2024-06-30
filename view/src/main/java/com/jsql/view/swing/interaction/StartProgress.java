@@ -28,13 +28,11 @@ public class StartProgress implements InteractionCommand {
      * @param interactionParams Element in the database tree to update
      */
     public StartProgress(Object[] interactionParams) {
-        
         this.dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
     }
 
     @Override
     public void execute() {
-        
-        MediatorHelper.treeDatabase().startProgess(this.dataElementDatabase);
+        MediatorHelper.treeDatabase().startProgress(this.dataElementDatabase);
     }
 }

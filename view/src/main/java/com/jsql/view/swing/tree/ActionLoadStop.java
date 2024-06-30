@@ -43,16 +43,12 @@ public class ActionLoadStop implements ActionListener {
         final List<Column> columnsToSearch = this.getSelectedColumns();
 
         if (!this.nodeModel.isRunning() && columnsToSearch.isEmpty()) {
-            
             return;
         }
 
         if (!this.nodeModel.isRunning()) {
-            
             this.startListValues(columnsToSearch);
-            
         } else {
-            
             this.stopAbstractNode();
         }
         
@@ -60,9 +56,7 @@ public class ActionLoadStop implements ActionListener {
     }
 
     private void startListValues(final List<Column> columnsToSearch) {
-        
         new SwingWorker<>() {
-            
             @Override
             protected Object doInBackground() throws Exception {
                 
@@ -105,7 +99,6 @@ public class ActionLoadStop implements ActionListener {
                 
                 AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
                 if (columnTreeNodeModel.isSelected()) {
-                    
                     columnsToSearch.add((Column) columnTreeNodeModel.getElementDatabase());
                 }
             }

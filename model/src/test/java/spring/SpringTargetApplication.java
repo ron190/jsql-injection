@@ -70,14 +70,10 @@ public class SpringTargetApplication {
             new SimpleEntry<>(propsDerby, "hibernate/hibernate.derby.properties")
         )
         .forEach(simpleEntry -> {
-            
             try (InputStream inputStream = classloader.getResourceAsStream(simpleEntry.getValue())) {
-                
                 simpleEntry.getKey().load(inputStream);
-                
             } catch (IOException e) {
-                
-                e.printStackTrace();
+                LOGGER.error(e, e);
             }
         });
     }
@@ -173,7 +169,6 @@ public class SpringTargetApplication {
             result.forEachRemaining(LOGGER::info);
             
         } catch (Exception e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         

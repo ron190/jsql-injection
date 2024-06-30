@@ -18,13 +18,11 @@ import java.util.List;
 public class DnDListScan extends DnDList {
     
     public DnDListScan(List<ItemList> newList) {
-        
         super(newList);
     }
 
     @Override
     public void addItem(int endPosition, String line) {
-        
         this.listModel.add(endPosition, new ItemListScan(new BeanInjection(line.replace("\\", "/"))));
     }
 }

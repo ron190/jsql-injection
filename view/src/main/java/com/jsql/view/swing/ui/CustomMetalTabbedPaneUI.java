@@ -63,6 +63,7 @@ public class CustomMetalTabbedPaneUI extends BorderlessTabButtonUI {
 
     @Override
     protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
+
         int tabCount = this.tabPane.getTabCount();
 
         var iconRect = new Rectangle();

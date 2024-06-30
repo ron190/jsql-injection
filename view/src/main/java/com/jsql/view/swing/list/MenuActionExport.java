@@ -91,9 +91,7 @@ public class MenuActionExport implements ActionListener {
                         default:
                             break;
                     }
-                    
                 } else {
-                    
                     super.approveSelection();
                 }
             }
@@ -103,7 +101,6 @@ public class MenuActionExport implements ActionListener {
         int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());
         
         if (choice != JFileChooser.APPROVE_OPTION) {
-            
             return;
         }
 
@@ -114,12 +111,9 @@ public class MenuActionExport implements ActionListener {
             int len = this.myList.getModel().getSize();
             
             for (var i = 0 ; i < len ; i++) {
-                
                 out.println(this.myList.getModel().getElementAt(i).toString());
             }
-            
         } catch (IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }

@@ -30,8 +30,10 @@ public class Patch {
      */
     @Override
     public String toString() {
+
         String coords1;
         String coords2;
+
         if (this.length1 == 0) {
             coords1 = this.start1 + ",0";
         } else if (this.length1 == 1) {
@@ -39,6 +41,7 @@ public class Patch {
         } else {
             coords1 = (this.start1 + 1) + "," + this.length1;
         }
+
         if (this.length2 == 0) {
             coords2 = this.start2 + ",0";
         } else if (this.length2 == 1) {
@@ -46,9 +49,11 @@ public class Patch {
         } else {
             coords2 = (this.start2 + 1) + "," + this.length2;
         }
+
         StringBuilder text = new StringBuilder();
         text.append("@@ -").append(coords1).append(" +").append(coords2)
         .append(" @@\n");
+
         // Escape the body of the patch with %xx notation.
         for (Diff aDiff : this.diffs) {
             switch (aDiff.getOperation()) {
@@ -65,6 +70,7 @@ public class Patch {
             text.append(URLEncoder.encode(aDiff.getText(), StandardCharsets.UTF_8).replace('+', ' '))
             .append("\n");
         }
+
         return unescapeForEncodeUriCompatability(text.toString());
     }
     
@@ -83,11 +89,11 @@ public class Patch {
      */
     public static String unescapeForEncodeUriCompatability(String str) {
         return str.replace("%21", "!").replace("%7E", "~")
-                .replace("%27", "'").replace("%28", "(").replace("%29", ")")
-                .replace("%3B", ";").replace("%2F", "/").replace("%3F", "?")
-                .replace("%3A", ":").replace("%40", "@").replace("%26", "&")
-                .replace("%3D", "=").replace("%2B", "+").replace("%24", "$")
-                .replace("%2C", ",").replace("%23", "#");
+            .replace("%27", "'").replace("%28", "(").replace("%29", ")")
+            .replace("%3B", ";").replace("%2F", "/").replace("%3F", "?")
+            .replace("%3A", ":").replace("%40", "@").replace("%26", "&")
+            .replace("%3D", "=").replace("%2B", "+").replace("%24", "$")
+            .replace("%2C", ",").replace("%23", "#");
     }
     
     // Getter and setter
@@ -128,5 +134,4 @@ public class Patch {
         this.length2 = length2;
         return length2;
     }
-    
 }

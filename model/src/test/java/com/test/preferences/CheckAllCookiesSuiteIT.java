@@ -17,9 +17,15 @@ public class CheckAllCookiesSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/cookie?tenant=mysql");
-        model.getMediatorUtils().getParameterUtil().initializeHeader("Cookie: fake=;name=0';fake=");
+        model.getMediatorUtils().getParameterUtil().initializeHeader("Cookie: fake=; name=0'; fake=");
         
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model
         .getMediatorUtils()

@@ -39,7 +39,6 @@ public class CreateShellTab extends CreateTabHelper implements InteractionComman
 
     @Override
     public void execute() {
-        
         MediatorHelper.tabResults().createShell(this.url, this.path);
     }
 }

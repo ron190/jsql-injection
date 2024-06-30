@@ -16,7 +16,6 @@ public class SpinnerMouseWheelListener implements MouseWheelListener {
         int max = (Integer) model.getMaximum(); //1000
         int min = (Integer) model.getMinimum(); //0
         if (min <= intValue && intValue <= max) {
-            
             source.setValue(intValue);
         }
     }

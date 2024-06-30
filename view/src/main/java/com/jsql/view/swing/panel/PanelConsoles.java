@@ -86,13 +86,11 @@ public class PanelConsoles extends JPanel {
     public PanelConsoles() {
         
         this.javaTextPane.getProxy().setEditable(false);
-
         JTextPaneAppender.register(this.javaTextPane);
         
         this.initializeSplit();
 
         MediatorHelper.register(this.tabConsoles);
-        
         this.initializeTabsConsoles();
 
         this.setLayout(new OverlayLayout(this));
@@ -172,7 +170,6 @@ public class PanelConsoles extends JPanel {
         this.tabConsoles.setUI(new CustomMetalTabbedPaneUI() {
             
             @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-                
                 return Math.max(80, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
             }
         });
@@ -190,22 +187,18 @@ public class PanelConsoles extends JPanel {
         // Order is important
         var preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         if (preferences.getBoolean(UiUtil.JAVA_VISIBLE, false)) {
-            
             this.insertJavaTab();
         }
         
         if (preferences.getBoolean(UiUtil.NETWORK_VISIBLE, true)) {
-            
             this.insertNetworkTab();
         }
         
         if (preferences.getBoolean(UiUtil.CHUNK_VISIBLE, true)) {
-            
             this.insertChunkTab();
         }
         
         if (preferences.getBoolean(UiUtil.BINARY_VISIBLE, true)) {
-            
             this.insertBooleanTab();
         }
 
@@ -228,10 +221,10 @@ public class PanelConsoles extends JPanel {
     }
 
     private JPanel initializeExpandPanel() {
-        
+
         var buttonShowSouth = new BasicArrowButton(SwingConstants.SOUTH);
         buttonShowSouth.setName("buttonShowSouth");
-        
+
         buttonShowSouth.setBorderPainted(false);
         buttonShowSouth.setPreferredSize(new Dimension(buttonShowSouth.getPreferredSize().width, buttonShowSouth.getPreferredSize().height));
         buttonShowSouth.setMaximumSize(buttonShowSouth.getPreferredSize());
@@ -264,7 +257,7 @@ public class PanelConsoles extends JPanel {
         
         return arrowDownPanel;
     }
-    
+
     public void reset() {
         
         this.networkTable.getListHttpHeader().clear();
@@ -276,9 +269,7 @@ public class PanelConsoles extends JPanel {
         // Fix #4657, Fix #1860: Multiple Exceptions on setRowCount()
         try {
             ((DefaultTableModel) this.networkTable.getModel()).setRowCount(0);
-            
         } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
@@ -291,7 +282,6 @@ public class PanelConsoles extends JPanel {
      * Add Chunk console to bottom panel.
      */
     public void insertChunkTab() {
-        
         this.buildI18nTab(
             "CONSOLE_CHUNK_LABEL",
             "CONSOLE_CHUNK_TOOLTIP",
@@ -305,7 +295,6 @@ public class PanelConsoles extends JPanel {
      * Add Binary console to bottom panel.
      */
     public void insertBooleanTab() {
-        
         this.buildI18nTab(
             "CONSOLE_BINARY_LABEL",
             "CONSOLE_BINARY_TOOLTIP",
@@ -319,7 +308,6 @@ public class PanelConsoles extends JPanel {
      * Add Network tab to bottom panel.
      */
     public void insertNetworkTab() {
-        
         this.buildI18nTab(
             "CONSOLE_NETWORK_LABEL",
             "CONSOLE_NETWORK_TOOLTIP",
@@ -333,7 +321,6 @@ public class PanelConsoles extends JPanel {
      * Add Java console to bottom panel.
      */
     public void insertJavaTab() {
-        
         this.buildI18nTab(
             "CONSOLE_JAVA_LABEL",
             "CONSOLE_JAVA_TOOLTIP",
@@ -348,7 +335,6 @@ public class PanelConsoles extends JPanel {
         final var refJToolTipI18n = new JToolTipI18n[]{ new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip)) };
         
         var labelTab = new JLabel(I18nViewUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {
-            
             @Override
             public JToolTip createToolTip() {
                 
@@ -361,7 +347,6 @@ public class PanelConsoles extends JPanel {
         
         labelTab.setName(keyLabel);
         labelTab.addMouseListener(new MouseAdapter() {
-            
             @Override
             public void mousePressed(MouseEvent event) {
                 
@@ -369,9 +354,7 @@ public class PanelConsoles extends JPanel {
                 // ArrayIndexOutOfBoundsException #92973 on setSelectedComponent()
                 try {
                     PanelConsoles.this.tabConsoles.setSelectedComponent(manager);
-                    
                 } catch (IllegalArgumentException e) {
-                    
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 }
                 
@@ -391,13 +374,11 @@ public class PanelConsoles extends JPanel {
     }
     
     public void messageChunk(String text) {
-        
         try {
             this.chunkTextArea.append(text +"\n");
             this.chunkTextArea.setCaretPosition(this.chunkTextArea.getDocument().getLength());
             
         } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
-            
             // Fix #67063: NullPointerException on chunkTab.append()
             // Fix #4770 on chunkTab.append()
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
@@ -405,7 +386,6 @@ public class PanelConsoles extends JPanel {
     }
     
     public void messageBinary(String text) {
-        
         try {
             this.binaryTextArea.append(
                 String.format("\t%s", text)
@@ -413,7 +393,6 @@ public class PanelConsoles extends JPanel {
             this.binaryTextArea.setCaretPosition(this.binaryTextArea.getDocument().getLength());
         
         } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
         }
     }

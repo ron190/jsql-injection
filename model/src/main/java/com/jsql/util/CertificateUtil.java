@@ -24,8 +24,7 @@ public class CertificateUtil {
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private SSLContext sslContext = null;
-    
-    // Utility class
+
     public CertificateUtil() {
         
         System.setProperty("jdk.internal.httpclient.disableHostnameVerification", "true");
@@ -38,7 +37,6 @@ public class CertificateUtil {
                 
                 @Override
                 public X509Certificate[] getAcceptedIssuers() {
-                    
                     return new X509Certificate[0];
                 }
 
@@ -61,7 +59,6 @@ public class CertificateUtil {
             this.sslContext.init(null, trustAllCerts, new SecureRandom());
             
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 "Error ignoring untrusted SSL",
@@ -71,7 +68,6 @@ public class CertificateUtil {
     }
     
     public SSLContext getSslContext() {
-        
         return this.sslContext;
     }
 }

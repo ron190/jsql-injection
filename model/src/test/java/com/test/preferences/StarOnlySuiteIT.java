@@ -21,6 +21,12 @@ public class StarOnlySuiteIT extends ConcreteMySqlSuiteIT {
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
             "http://localhost:8080/normal?fake=empty&name=*&tenant=mysql"
         );
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model.setIsScanning(true);
         

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Radio label for HTTP method (GET, POST, etc).
+ * Radio label for HTTP method (GET, POST, etc.).
  */
 public class RadioLinkMethod extends AbstractRadioLink {
     
@@ -18,19 +18,6 @@ public class RadioLinkMethod extends AbstractRadioLink {
     private static final List<JLabel> groupMethod = new ArrayList<>();
 
     private final AbstractMethodInjection methodInjection;
-    
-    /**
-     * A default radio label.
-     * @param string Text for radio label
-     * @param methodInjection
-     */
-    public RadioLinkMethod(String string, AbstractMethodInjection methodInjection) {
-        
-        super(string);
-        
-        this.init();
-        this.methodInjection = methodInjection;
-    }
 
     /**
      * A default radio label selected.
@@ -57,13 +44,11 @@ public class RadioLinkMethod extends AbstractRadioLink {
 
     @Override
     public void action() {
-        
         MediatorHelper.panelAddressBar().setMethodInjection(this.methodInjection);
     }
 
     @Override
     public List<JLabel> getGroup() {
-        
         return RadioLinkMethod.groupMethod;
     }
 }

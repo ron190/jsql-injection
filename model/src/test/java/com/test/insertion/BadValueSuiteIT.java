@@ -6,9 +6,6 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-
 public class BadValueSuiteIT extends ConcreteMySqlSuiteIT {
     
     @Override
@@ -19,13 +16,17 @@ public class BadValueSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/insertion-char");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
-            new SimpleEntry<>("name", "---")
-        ));
-        
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/insertion-char?tenant=mysql&name=---"
+        );
+
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model
         .getMediatorUtils()

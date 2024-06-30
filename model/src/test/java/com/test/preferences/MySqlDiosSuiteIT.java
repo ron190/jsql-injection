@@ -25,7 +25,9 @@ public class MySqlDiosSuiteIT extends ConcreteMySqlErrorSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withDiosStrategy();
+        .withDiosStrategy()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model
         .getMediatorUtils()

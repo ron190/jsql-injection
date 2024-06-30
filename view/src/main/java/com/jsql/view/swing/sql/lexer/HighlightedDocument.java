@@ -85,11 +85,8 @@ public class HighlightedDocument extends DefaultStyledDocument {
         this.documentReader = new DocumentReader(this);
         
         if (l == SQL_STYLE) {
-            
             this.syntaxLexer = new SQLLexer(this.documentReader);
-            
         } else {
-            
             this.syntaxLexer = new JavaScriptLexer(this.documentReader);
         }
     }
@@ -98,7 +95,6 @@ public class HighlightedDocument extends DefaultStyledDocument {
      * Color or recolor the entire document
      */
     public void colorAll() {
-        
         this.color(0, this.getLength());
     }
 
@@ -112,7 +108,6 @@ public class HighlightedDocument extends DefaultStyledDocument {
      *            amount of text inserted or removed at the starting point.
      */
     public void color(int position, int adjustment) {
-        
         this.colorer.color(position, adjustment);
     }
     
@@ -133,7 +128,6 @@ public class HighlightedDocument extends DefaultStyledDocument {
         }
 
         if (!(value instanceof Class)) {
-            
             value = HighlightedDocument.SQL_STYLE;
         }
         
@@ -146,7 +140,6 @@ public class HighlightedDocument extends DefaultStyledDocument {
             this.syntaxLexer = (Lexer) cons.newInstance(args);
             this.globalStyle = null;
             this.colorAll();
-            
         } catch (
             SecurityException
             | NoSuchMethodException
@@ -155,7 +148,6 @@ public class HighlightedDocument extends DefaultStyledDocument {
             | IllegalArgumentException
             | InvocationTargetException e
         ) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }

@@ -196,7 +196,7 @@ public class UiUtil {
     public static final String JAVA_VISIBLE = "java_visible";
     
     private UiUtil() {
-        //not called
+        // Utility class
     }
     
     /**
@@ -227,15 +227,14 @@ public class UiUtil {
 
     private static void loadFonts() {
         
-        var ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        var graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         
         try (InputStream fontStream = new BufferedInputStream(Objects.requireNonNull(UiUtil.class.getClassLoader().getResourceAsStream("swing/font/UbuntuMono-R-ctrlchar.ttf")))) {
             
             var ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
-            ge.registerFont(ubuntuFont);
+            graphicsEnvironment.registerFont(ubuntuFont);
             
         } catch (FontFormatException | IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Loading Font Ubuntu Mono with control characters failed", e);
         }
     }
@@ -361,9 +360,7 @@ public class UiUtil {
                         // Fix #42291: InternalError on drawRect()
                         try {
                             g2D.drawRect(x, y, w - 1, h - 1);
-                            
                         } catch (InternalError e) {
-                            
                             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                         }
                     }
@@ -429,7 +426,6 @@ public class UiUtil {
             images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_16)));
             
         } catch (NoClassDefFoundError | IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
@@ -437,7 +433,6 @@ public class UiUtil {
     }
     
     public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText) {
-        
         drawPlaceholder(textComponent, g, placeholderText, g.getFontMetrics().getAscent() + 2);
     }
     

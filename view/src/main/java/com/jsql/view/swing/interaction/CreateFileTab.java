@@ -45,7 +45,6 @@ public class CreateFileTab extends CreateTabHelper implements InteractionCommand
 
     @Override
     public void execute() {
-        
         MediatorHelper.tabResults().createFileTab(this.label, this.content, this.path);
     }
 }

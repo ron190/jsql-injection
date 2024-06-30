@@ -179,15 +179,10 @@ public abstract class AbstractNodeModel {
         String textReload;
         
         if (this instanceof NodeModelDatabase) {
-            
             textReload = I18nViewUtil.valueByKey("RELOAD_TABLES");
-            
         } else if (this instanceof NodeModelTable) {
-            
             textReload = I18nViewUtil.valueByKey("RELOAD_COLUMNS");
-            
         } else {
-            
             textReload = "?";
         }
         
@@ -220,7 +215,6 @@ public abstract class AbstractNodeModel {
         JPopupMenuCustomExtract popupMenu,
         AbstractSuspendable suspendableTask
     ) {
-        
         JMenuItem menuItemLoad = new JMenuItemWithMargin(
             this.isRunning
             ? I18nViewUtil.valueByKey("THREAD_STOP")
@@ -229,7 +223,6 @@ public abstract class AbstractNodeModel {
         );
         
         if (!this.isContainingSelection && !this.isRunning) {
-            
             menuItemLoad.setEnabled(false);
         }
         
@@ -244,7 +237,6 @@ public abstract class AbstractNodeModel {
         );
 
         if (!this.isRunning) {
-            
             menuItemPause.setEnabled(false);
         }
         menuItemPause.addActionListener(new ActionPauseUnpause(this));
@@ -269,7 +261,6 @@ public abstract class AbstractNodeModel {
         boolean isLeaf,
         boolean hasFocus
     ) {
-        
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         this.panelNode = new PanelNode(tree, currentNode);
 
@@ -324,16 +315,13 @@ public abstract class AbstractNodeModel {
         // Fix #90521: NullPointerException on setText()
         try {
             this.panelNode.getLabel().setText(UiStringUtil.detectUtf8Html(this.toString()));
-            
         } catch (NullPointerException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         this.panelNode.getLabel().setVisible(!isEdited);
 
         if (isSelected) {
-            
             if (hasFocus) {
                 
                 this.panelNode.getLabel().setBackground(UiUtil.COLOR_FOCUS_GAINED);
@@ -344,7 +332,6 @@ public abstract class AbstractNodeModel {
                 this.panelNode.getLabel().setBackground(UiUtil.COLOR_FOCUS_LOST);
                 this.panelNode.getLabel().setBorder(UiUtil.BORDER_FOCUS_LOST);
             }
-            
         } else {
             
             this.panelNode.getLabel().setBackground(Color.WHITE);
@@ -355,11 +342,8 @@ public abstract class AbstractNodeModel {
     private void initializeEditable(boolean isEdited) {
         
         if (StringUtil.isUtf8(this.getElementDatabase().toString())) {
-            
             this.panelNode.getEditable().setFont(UiUtil.FONT_MONO_ASIAN);
-            
         } else {
-            
             this.panelNode.getEditable().setFont(UiUtil.FONT_NON_MONO);
         }
         
@@ -383,14 +367,12 @@ public abstract class AbstractNodeModel {
         AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
         
         if (suspendableTask != null && suspendableTask.isPaused()) {
-            
             panelNode.getProgressBar().pause();
         }
     }
     
     @Override
     public String toString() {
-        
         return this.elementDatabase != null ? this.elementDatabase.getLabelCount() : this.textEmptyNode;
     }
     

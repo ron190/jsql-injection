@@ -18,7 +18,9 @@ public class MySqlWebshellLampSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://jsql-lamp:8079/php/get2.php?id=");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://jsql-lamp:8079/php/get2.php?id="
+        );
 
         model
         .getMediatorUtils()
@@ -39,7 +41,7 @@ public class MySqlWebshellLampSuiteIT extends ConcreteMySqlSuiteIT {
     }
     
     @RetryingTest(3)
-    public void webshell() throws JSqlException, InterruptedException {
+    public void webshell() throws JSqlException {
 
         this.injectionModel.getResourceAccess().createWebShell("/var/www/html/", "");
         // For coverage

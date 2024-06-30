@@ -25,7 +25,6 @@ public abstract class AbstractMethodInjection implements Serializable {
     protected final InjectionModel injectionModel;
     
     protected AbstractMethodInjection(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
     
@@ -72,15 +71,10 @@ public abstract class AbstractMethodInjection implements Serializable {
             this.getParamsAsString().contains(InjectionModel.STAR)
             || this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
         ) {
-            
             hasFoundInjection = this.checkParamWithStar();
-            
         } else if (!this.isCheckingAllParam()) {
-            
             hasFoundInjection = this.checkLastParam();
-            
         } else {
-            
             hasFoundInjection = this.checkAllParams();
         }
         
@@ -124,21 +118,16 @@ public abstract class AbstractMethodInjection implements Serializable {
         // This param will be marked by * if injection is found,
         // inner loop will erase mark * otherwise
         for (SimpleEntry<String, String> paramBase: this.getParams()) {
-
             // This param is the current tested one.
             // For JSON value attributes are traversed one by one to test every values.
             // For standard value mark * is simply added to the end of its value.
             for (SimpleEntry<String, String> paramStar: this.getParams()) {
-
                 if (paramStar == paramBase) {
-                    
                     try {
                         if (this.isParamInjectable(paramStar)) {
-                            
                             return true;
                         }
                     } catch (JSONException e) {
-                        
                         LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                     }
                 }
@@ -162,13 +151,9 @@ public abstract class AbstractMethodInjection implements Serializable {
         // then loop through each paths to add * at the end of value and test each strategies.
         // Marks * are erased between each tests.
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam() && !attributesJson.isEmpty()) {
-            
             hasFoundInjection = this.injectionModel.getMediatorUtils().getJsonUtil().testJsonParam(this, paramStar);
-            
         } else {
-            
-            // Standard non JSON injection
-            hasFoundInjection = this.testJsonlessParam(paramStar);
+            hasFoundInjection = this.testJsonlessParam(paramStar);  // Standard non JSON injection
         }
         
         return hasFoundInjection;
@@ -177,8 +162,7 @@ public abstract class AbstractMethodInjection implements Serializable {
     public boolean testJsonlessParam(SimpleEntry<String, String> paramStar) throws StoppedByUserSlidingException {
 
         var hasFoundInjection = false;
-        
-        // Add * to end of value
+
         paramStar.setValue(paramStar.getValue() + InjectionModel.STAR);
         
         try {
@@ -194,14 +178,9 @@ public abstract class AbstractMethodInjection implements Serializable {
             // Keep original param
             hasFoundInjection = this.injectionModel.getMediatorStrategy().testStrategies(paramStar);
             
-        } catch (StoppedByUserSlidingException e) {
-            
-            // Break all params processing in upper methods
+        } catch (StoppedByUserSlidingException e) { // Break all params processing in upper methods
             throw e;
-            
-        } catch (JSqlException e) {
-            
-            // Injection failure
+        } catch (JSqlException e) {  // Injection failure
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 "No {} injection found for parameter {}={} ({})",
@@ -210,11 +189,8 @@ public abstract class AbstractMethodInjection implements Serializable {
                 paramStar.getValue().replaceAll("\\+.?$|\\" + InjectionModel.STAR, StringUtils.EMPTY),
                 e.getMessage()
             );
-            
         } finally {
-            
-            // Erase * from JSON if failure
-            if (!hasFoundInjection) {
+            if (!hasFoundInjection) {  // Erase * from JSON if failure
                 
                 // Erase * at the end of each params
                 this.getParams().forEach(e ->

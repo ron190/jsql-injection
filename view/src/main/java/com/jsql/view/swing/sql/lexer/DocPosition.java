@@ -52,40 +52,28 @@ class DocPosition {
      * or removed before this position.
      *
      * @param adjustment amount (either positive or negative) to adjust this position.
-     * @return the DocPosition, adjusted properly.
      */
-    public DocPosition adjustPosition(int adjustment) {
-        
+    public void adjustPosition(int adjustment) {
         this.position += adjustment;
-        
-        return this;
     }
 
     @Override
     public boolean equals(Object obj) {
         
         if (this == obj) {
-            
             return true;
         }
         
         if (obj == null) {
-            
             return false;
         }
         
         if (this.getClass() != obj.getClass()) {
-            
             return false;
         }
         
         DocPosition other = (DocPosition) obj;
-        if (this.position != other.position) {
-            
-            return false;
-        }
-        
-        return true;
+        return this.position == other.position;
     }
 
     @Override

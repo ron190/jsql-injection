@@ -8,28 +8,24 @@ import javax.swing.*;
 public class JMenuItemWithMargin extends JMenuItem {
 
     public JMenuItemWithMargin() {
-        
         this.setMargin();
     }
 
     public JMenuItemWithMargin(String valueByKey, char c) {
         
         super(valueByKey, c);
-        
         this.setMargin();
     }
     
     public JMenuItemWithMargin(String valueByKey) {
         
         super(valueByKey);
-        
         this.setMargin();
     }
 
     public JMenuItemWithMargin(Action action) {
 
         super(action);
-        
         this.setMargin();
     }
 
@@ -37,7 +33,6 @@ public class JMenuItemWithMargin extends JMenuItem {
         
         // Menu item on Mac has enough margin
         if (!SystemUtils.IS_OS_MAC) {
-            
             this.setIcon(UiUtil.ICON_EMPTY);
         }
     }

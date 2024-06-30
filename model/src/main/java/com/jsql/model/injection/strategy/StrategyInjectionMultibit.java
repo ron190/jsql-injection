@@ -33,7 +33,6 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
     private InjectionMultibit injectionMultibit;
 
     public StrategyInjectionMultibit(InjectionModel injectionModel) {
-        
         super(injectionModel);
     }
 
@@ -42,7 +41,7 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyMultibitDisabled()) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Skipping strategy Multibit disabled");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());
             return;
         }
 
@@ -63,7 +62,6 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
             this.injectionModel.sendToViews(requestMessageBinary);
 
         } else {
-
             this.unallow();
         }
     }
@@ -72,10 +70,10 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
     public void allow(int... i) {
 
         this.injectionModel.appendAnalysisReport(
-            "### Strategy: Multibit\n"
+            "<span style=color:rgb(0,0,255)>### Strategy: " + getName() + "</span>"
             + this.injectionModel.getReportWithoutIndex(
                 injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(
-                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind("<query>", "0", true),
+                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind("<span style=color:rgb(0,128,0)>&lt;query&gt;</span>", "0", true),
                     0,
                     1
                 ),
@@ -88,13 +86,11 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
 
     @Override
     public void unallow(int... i) {
-        
         this.markVulnerability(Interaction.MARK_MULTI_INVULNERABLE);
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
-        
         return this.injectionMultibit.inject(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition, false),
             stoppable
@@ -103,7 +99,6 @@ public class StrategyInjectionMultibit extends AbstractStrategy {
 
     @Override
     public void activateWhenApplicable() {
-
         if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
 
             LOGGER.log(

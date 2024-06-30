@@ -20,6 +20,12 @@ public class PostgreSqlErrorSuiteIT extends ConcretePostgreSqlSuiteIT {
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
             "http://localhost:8080/errors?tenant=postgresql&name="
         );
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model
         .getMediatorUtils()

@@ -60,6 +60,7 @@ public final class OrderedProperties {
      * See {@link Properties#getProperty(String, String)}.
      */
     public String getProperty(String key, String defaultValue) {
+
         String value = this.properties.get(key);
         return value == null ? defaultValue : value;
     }
@@ -162,11 +163,8 @@ public final class OrderedProperties {
         var customProperties = new CustomProperties(this.properties);
         
         if (this.suppressDate) {
-            
             customProperties.store(new DateSuppressingPropertiesBufferedWriter(new OutputStreamWriter(stream, StandardCharsets.ISO_8859_1)), comments);
-            
         } else {
-            
             customProperties.store(stream, comments);
         }
     }
@@ -179,11 +177,8 @@ public final class OrderedProperties {
         var customProperties = new CustomProperties(this.properties);
         
         if (this.suppressDate) {
-            
             customProperties.store(new DateSuppressingPropertiesBufferedWriter(writer), comments);
-            
         } else {
-            
             customProperties.store(writer, comments);
         }
     }
@@ -234,7 +229,6 @@ public final class OrderedProperties {
         var jdkProperties = new Properties();
         
         for (Map.Entry<String, String> entry: this.entrySet()) {
-            
             jdkProperties.put(entry.getKey(), entry.getValue());
         }
         
@@ -298,7 +292,6 @@ public final class OrderedProperties {
         builder.withSuppressDateInComment(source.suppressDate);
         
         if (source.properties instanceof TreeMap) {
-            
             builder.withOrdering(((TreeMap<String, String>) source.properties).comparator());
         }
         
@@ -306,7 +299,6 @@ public final class OrderedProperties {
 
         // copy the properties from the source to the target
         for (Map.Entry<String, String> entry: source.entrySet()) {
-            
             result.setProperty(entry.getKey(), entry.getValue());
         }
         
@@ -351,8 +343,7 @@ public final class OrderedProperties {
          * @return the new instance
          */
         public OrderedProperties build() {
-            Map<String, String> properties =
-                this.comparator != null
+            Map<String, String> properties = this.comparator != null
                 ? new TreeMap<>(this.comparator)
                 : new LinkedHashMap<>();
                     
@@ -419,13 +410,11 @@ public final class OrderedProperties {
         private String previousComment;
 
         private DateSuppressingPropertiesBufferedWriter(Writer out) {
-            
             super(out);
         }
 
         @Override
         public void write(String string) throws IOException {
-            
             if (this.currentComment != null) {
                 
                 this.currentComment.append(string);
@@ -433,20 +422,15 @@ public final class OrderedProperties {
                 if (string.endsWith(System.lineSeparator())) {
                     
                     if (this.previousComment != null) {
-                        
                         super.write(this.previousComment);
                     }
 
                     this.previousComment = this.currentComment.toString();
                     this.currentComment = null;
                 }
-                
             } else if (string.startsWith("#")) {
-                
                 this.currentComment = new StringBuilder(string);
-                
             } else {
-                
                 super.write(string);
             }
         }

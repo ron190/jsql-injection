@@ -20,17 +20,16 @@ public class CreateAnalysisReport extends CreateTabHelper implements Interaction
 
     private final String content;
 
-    /**
-     * @param interactionParams
-     */
     public CreateAnalysisReport(Object[] interactionParams) {
-
         this.content = (String) interactionParams[0];
     }
 
     @Override
     public void execute() {
-
-        MediatorHelper.tabResults().createReportTab("Vulnerability report", this.content.trim(), "Analysis report with all payloads detected");
+        MediatorHelper.tabResults().createReportTab(
+            "Vulnerability report",
+            this.content.trim(),
+            "Analysis report with all payloads detected"
+        );
     }
 }

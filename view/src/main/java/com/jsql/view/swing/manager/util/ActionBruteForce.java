@@ -40,13 +40,11 @@ public class ActionBruteForce implements ActionListener, Runnable {
     private boolean isStopped = false;
     
     public ActionBruteForce(ManagerBruteForce bruteForceManager) {
-        
         this.bruteForceManager = bruteForceManager;
     }
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        
         if (this.bruteForceManager.getRun().getState() == StateButton.STOPPABLE) {
             
             this.bruteForceManager.getRun().setEnabled(false);
@@ -75,16 +73,13 @@ public class ActionBruteForce implements ActionListener, Runnable {
     }
 
     private boolean isLengthNotValid() {
-        
         return
             Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString())
             < Integer.parseInt(this.bruteForceManager.getMinimumLength().getValue().toString());
     }
 
     private boolean isRangeNotSelected() {
-        
-        return
-            !this.bruteForceManager.getSpecialCharacters().isSelected()
+        return !this.bruteForceManager.getSpecialCharacters().isSelected()
             && !this.bruteForceManager.getUpperCaseCharacters().isSelected()
             && !this.bruteForceManager.getLowerCaseCharacters().isSelected()
             && !this.bruteForceManager.getNumericCharacters().isSelected();
@@ -99,7 +94,6 @@ public class ActionBruteForce implements ActionListener, Runnable {
         this.bruteForceManager.getLoader().setVisible(true);
         this.bruteForceManager.getResult().setText(null);
 
-        // Configure the hasher
         final var hashBruter = new HashBruter();
 
         this.initializeBruter(hashBruter);
@@ -112,9 +106,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
             hashBruter.setEndtime(System.nanoTime());
 
             try {
-                // delay to update result panel
-                Thread.sleep(1000);
-                
+                Thread.sleep(1000);  // delay to update result panel
             } catch (InterruptedException e) {
                 
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -186,27 +178,22 @@ public class ActionBruteForce implements ActionListener, Runnable {
         hashBruter.setMaxLength(Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString()));
 
         if (this.bruteForceManager.getSpecialCharacters().isSelected()) {
-            
             hashBruter.addSpecialCharacters();
         }
         
         if (this.bruteForceManager.getUpperCaseCharacters().isSelected()) {
-            
             hashBruter.addUpperCaseLetters();
         }
         
         if (this.bruteForceManager.getLowerCaseCharacters().isSelected()) {
-            
             hashBruter.addLowerCaseLetters();
         }
         
         if (this.bruteForceManager.getNumericCharacters().isSelected()) {
-            
             hashBruter.addDigits();
         }
         
         if (StringUtils.isNotEmpty(this.bruteForceManager.getExclude().getText())) {
-            
             hashBruter.excludeChars(this.bruteForceManager.getExclude().getText());
         }
 
@@ -216,10 +203,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
             .getHash()
             .getText()
             .toUpperCase(Locale.ROOT)
-            .replaceAll(
-                "[^a-zA-Z0-9]",
-                StringUtils.EMPTY
-            )
+            .replaceAll("[^a-zA-Z0-9]", StringUtils.EMPTY)
             .trim()
         );
     }
@@ -228,9 +212,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         
         // Display the result
         if (this.isStopped) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("BRUTEFORCE_ABORTED"));
-            
         } else if (hashBruter.isFound()) {
             
             this.append(
@@ -250,7 +232,6 @@ public class ActionBruteForce implements ActionListener, Runnable {
                 hashBruter::getGeneratedHash,
                 hashBruter::getPassword
             );
-            
         } else if (hashBruter.isDone()) {
             
             this.append(
@@ -263,16 +244,13 @@ public class ActionBruteForce implements ActionListener, Runnable {
     }
     
     public void append(JTextPane textPane, String text) {
-        
         try {
             textPane.getDocument().insertString(
                 textPane.getDocument().getLength(),
                 (textPane.getDocument().getLength() == 0 ? StringUtils.EMPTY : "\n") + text,
                 null
             );
-            
         } catch (BadLocationException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }

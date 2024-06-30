@@ -24,9 +24,6 @@ public class MarkNormalVulnerable implements InteractionCommand {
 
     private final String url;
     
-    /**
-     * @param interactionParams
-     */
     @SuppressWarnings("unchecked")
     public MarkNormalVulnerable(Object[] interactionParams) {
 
@@ -38,7 +35,6 @@ public class MarkNormalVulnerable implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getNormal();
-        
         MediatorHelper.managerScan().highlight(this.url, strategy.toString());
     }
 }

@@ -31,14 +31,12 @@ public class AddDatabases implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public AddDatabases(Object[] interactionParams) {
-        
         // Get list of databases from the model
         this.databases = (List<Database>) interactionParams[0];
     }
 
     @Override
     public void execute() {
-        
         MediatorHelper.treeDatabase().addDatabases(this.databases);
     }
 }

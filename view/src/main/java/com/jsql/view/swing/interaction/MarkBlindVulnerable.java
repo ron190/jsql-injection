@@ -19,9 +19,6 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkBlindVulnerable implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
     public MarkBlindVulnerable(Object[] interactionParams) {
         // Do nothing
     }
@@ -30,7 +27,6 @@ public class MarkBlindVulnerable implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlind();
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategyVulnerable(strategy);
     }
 }

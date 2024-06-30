@@ -4,11 +4,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
-import org.apache.commons.lang3.StringUtils;
 import org.junitpioneer.jupiter.RetryingTest;
-
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
 
 public class EmptyIntegerNormalSuiteIT extends ConcreteMySqlSuiteIT {
     
@@ -20,13 +16,17 @@ public class EmptyIntegerNormalSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/integer-insertion-char");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
-            new SimpleEntry<>("name", StringUtils.EMPTY)
-        ));
-        
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/integer-insertion-char?tenant=mysql&name="
+        );
+
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model
         .getMediatorUtils()

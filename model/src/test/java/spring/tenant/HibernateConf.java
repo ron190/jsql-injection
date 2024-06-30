@@ -1,9 +1,13 @@
 package spring.tenant;
 
+import com.test.method.CustomMethodSuiteIT;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.Environment;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -42,9 +46,8 @@ public class HibernateConf {
 
         StrictHttpFirewall firewall = new StrictHttpFirewall();
 
-        List<String> httpMethods = Stream
-            .concat(
-                Stream.of("CUSTOM-JSQL"),
+        List<String> httpMethods = Stream.concat(
+                Stream.of(CustomMethodSuiteIT.CUSTOM_METHOD),
                 Arrays.stream(RequestMethod.values()).map(Enum::name)
             )
             .collect(Collectors.toList());
@@ -59,11 +62,11 @@ public class HibernateConf {
         
         Properties hibernateProperties = new Properties();
         
-        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        hibernateProperties.setProperty("hibernate.multi_tenant_connection_provider", "spring.tenant.MultiTenantConnectionProviderImpl");
-        hibernateProperties.setProperty("hibernate.tenant_identifier_resolver", "spring.tenant.CurrentTenantIdentifierResolverImpl");
+        hibernateProperties.setProperty(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
+        hibernateProperties.setProperty(AvailableSettings.MULTI_TENANT_CONNECTION_PROVIDER, "spring.tenant.MultiTenantConnectionProviderImpl");
+        hibernateProperties.setProperty(AvailableSettings.MULTI_TENANT_IDENTIFIER_RESOLVER, "spring.tenant.CurrentTenantIdentifierResolverImpl");
         hibernateProperties.setProperty("hibernate.multiTenancy", "DATABASE");
-        
+
         return hibernateProperties;
     }
 }

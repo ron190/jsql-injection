@@ -78,14 +78,11 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
             this.nodeModel = (AbstractNodeModel) currentNodeModel;
             
             if (componentRenderer instanceof JCheckBox) {
-                
                 ((JCheckBox) componentRenderer).addActionListener(
                     new ActionCheckUncheck(this.nodeModel, currentNode)
                 );
             }
-            
         } catch (Exception e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
@@ -98,7 +95,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
     }
     
     @Override
-    public void valueChanged(TreeSelectionEvent arg0) {
+    public void valueChanged(TreeSelectionEvent treeSelectionEvent) {
         
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) MediatorHelper.treeDatabase().getLastSelectedPathComponent();
 
@@ -111,7 +108,6 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
             
             AbstractNodeModel dataModel = (AbstractNodeModel) node.getUserObject();
             if (!dataModel.isLoaded()) {
-                
                 dataModel.runAction();
             }
         }
@@ -119,16 +115,16 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
 
     /**
      * Fix compatibility issue with right click on Linux.
-     * @param e Mouse event
+     * @param mouseEvent Mouse event
      */
-    private void showPopup(MouseEvent e) {
+    private void showPopup(MouseEvent mouseEvent) {
         
-        if (!e.isPopupTrigger()) {
+        if (!mouseEvent.isPopupTrigger()) {
             return;
         }
         
-        JTree tree = (JTree) e.getSource();
-        TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+        JTree tree = (JTree) mouseEvent.getSource();
+        TreePath path = tree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
         
         if (path == null) {
             return;
@@ -141,7 +137,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
             AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
             
             if (currentTableModel.isPopupDisplayable()) {
-                currentTableModel.showPopup(currentTableNode, path, e);
+                currentTableModel.showPopup(currentTableNode, path, mouseEvent);
             }
         }
     }

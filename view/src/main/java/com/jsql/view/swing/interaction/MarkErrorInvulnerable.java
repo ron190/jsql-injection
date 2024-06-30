@@ -23,9 +23,6 @@ public class MarkErrorInvulnerable implements InteractionCommand {
     
     private final int indexMethodError;
     
-    /**
-     * @param interactionParams
-     */
     @SuppressWarnings("unchecked")
     public MarkErrorInvulnerable(Object[] interactionParams) {
         
@@ -35,7 +32,6 @@ public class MarkErrorInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().markErrorInvulnerable(this.indexMethodError);
     }
 }

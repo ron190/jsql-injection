@@ -18,9 +18,6 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class EndPreparation implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
     public EndPreparation(Object[] interactionParams) {
         // Do nothing
     }
@@ -31,7 +28,6 @@ public class EndPreparation implements InteractionCommand {
         MediatorHelper.panelAddressBar().getAddressMenuBar().endPreparation();
 
         if (MediatorHelper.model().shouldErasePreviousInjection()) {
-            
             MediatorHelper.tabManagers().endPreparation();
         }
     }

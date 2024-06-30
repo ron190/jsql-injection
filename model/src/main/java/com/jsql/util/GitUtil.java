@@ -17,8 +17,8 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
 
 /**
- * Utility class used to connect to Github Rest webservices.
- * It uses jsql-robot profile to post data to Github.
+ * Utility class used to connect to GitHub Rest webservices.
+ * It uses jsql-robot profile to post data to GitHub.
  */
 public class GitUtil {
     
@@ -28,7 +28,7 @@ public class GitUtil {
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     /**
-     * Application useful informations as json object from Github repository.
+     * Application useful information as json object from GitHub repository.
      * Used to get current development version and community news.
      */
     private JSONObject jsonObject;
@@ -45,7 +45,6 @@ public class GitUtil {
     private final InjectionModel injectionModel;
     
     public GitUtil(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
 
@@ -56,7 +55,6 @@ public class GitUtil {
     public void checkUpdate(ShowOnConsole displayUpdateMessage) {
         
         if (displayUpdateMessage == ShowOnConsole.YES) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -> I18nUtil.valueByKey("UPDATE_LOADING"));
         }
         
@@ -64,26 +62,21 @@ public class GitUtil {
             var versionGit = Float.parseFloat(this.getJSONObject().getString("version"));
             
             if (versionGit > Float.parseFloat(this.injectionModel.getVersionJsql())) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -> I18nUtil.valueByKey("UPDATE_NEW_VERSION"));
-                
             } else if (displayUpdateMessage == ShowOnConsole.YES) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, () -> I18nUtil.valueByKey("UPDATE_UPTODATE"));
             }
-            
         } catch (NumberFormatException | JSONException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, I18nUtil.valueByKey("UPDATE_EXCEPTION"));
         }
     }
     
     /**
-     * Define the body of an issue to send to Github for an unhandled exception.
+     * Define the body of an issue to send to GitHub for an unhandled exception.
      * It adds different system data to the body and remove sensible data like
      * injection URL.
      * @param threadName name of thread where the exception occurred
-     * @param throwable unhandled exception to report to Gihub
+     * @param throwable unhandled exception to report to GitHub
      */
     public void sendUnhandledException(String threadName, Throwable throwable) {
         
@@ -140,7 +133,7 @@ public class GitUtil {
     }
     
     /**
-     * Connect to Github webservices and create an Issue on the repository.
+     * Connect to GitHub webservices and create an Issue on the repository.
      * Used by translation protocol, unhandled exception detection and manual Issue reporting.
      * @param reportBody text of the Issue
      * @param showOnConsole in case of manual Issue reporting. Hidden in case of automatic reporting of unhandled exception.
@@ -148,14 +141,11 @@ public class GitUtil {
      */
     public void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
         
-        // Check proxy
-        if (!this.injectionModel.getMediatorUtils().getProxyUtil().isLive(showOnConsole)) {
-            
+        if (this.injectionModel.getMediatorUtils().getProxyUtil().isNotLive(showOnConsole)) {
             return;
         }
 
-        var httpRequest = HttpRequest
-            .newBuilder()
+        var httpRequest = HttpRequest.newBuilder()
             .uri(URI.create(this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.issues.url")))
             .setHeader(
                 "Authorization",
@@ -181,22 +171,19 @@ public class GitUtil {
         } catch (InterruptedException | IOException e) {
             
             if (showOnConsole == ShowOnConsole.YES) {
-                
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
-                    String.format("Error during Github report connection: %s", e.getMessage())
+                    String.format("Error during GitHub report connection: %s", e.getMessage())
                 );
             }
             
             if (e instanceof InterruptedException) {
-                
                 Thread.currentThread().interrupt();
             }
         }
     }
     
     private void readGithubResponse(HttpResponse<String> response, ShowOnConsole showOnConsole) throws IOException {
-        
         try {
             // Read the response
             String sourcePage = response.body();
@@ -205,33 +192,27 @@ public class GitUtil {
                 
                 var jsonObjectResponse = new JSONObject(sourcePage);
                 var urlIssue = jsonObjectResponse.getString("html_url");
-                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Sent to Github: {}", urlIssue);
+                LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Sent to GitHub: {}", urlIssue);
             }
-            
         } catch (Exception e) {
-            
-            throw new IOException("Connection to the Github API failed, check your connection or update jsql");
+            throw new IOException("Connection to the GitHub API failed, check your connection or update jSQL");
         }
     }
     
     /**
-     * Displays news informations on the console from Github web service.
+     * Displays news information on the console from GitHub web service.
      * Infos concern the general roadmap for the application, current development status
      * and other useful statements for the community.
      */
     public void showNews() {
-        
         try {
             var news = this.getJSONObject().getJSONArray("news");
             
             for (var index = 0 ; index < news.length() ; index++) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, news.get(index));
             }
-            
         } catch (JSONException e) {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Connection to the Github API failed");
+            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Connection to the GitHub API failed");
         }
     }
     
@@ -240,7 +221,7 @@ public class GitUtil {
      * @return jsonObject describing json data
      */
     public JSONObject getJSONObject() {
-        
+
         if (this.jsonObject == null) {
             
             String json = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(
@@ -250,20 +231,17 @@ public class GitUtil {
             // Fix #45349: JSONException on new JSONObject(json)
             try {
                 this.jsonObject = new JSONObject(json);
-                
             } catch (JSONException e) {
                 
                 try {
                     this.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
-                    
                 } catch (JSONException eInner) {
-
                     LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Fetching default JSON failed", eInner);
                 }
                 
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
-                    "Fetching configuration from Github failed. Wait for service to be available, check your connection or update jsql"
+                    "Fetching configuration from GitHub failed. Wait for service to be available, check your connection or update jSQL"
                 );
             }
         }

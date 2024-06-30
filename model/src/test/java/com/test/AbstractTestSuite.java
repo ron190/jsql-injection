@@ -92,7 +92,6 @@ public abstract class AbstractTestSuite {
     }
 
     public void requestJdbc() {
-        
         try (
             Connection connection = DriverManager.getConnection(this.jdbcURL, this.jdbcUser, this.jdbcPass);
                 
@@ -132,9 +131,7 @@ public abstract class AbstractTestSuite {
                 String value = resultSetValues.getString(this.jsqlColumnName);
                 this.valuesFromJdbc.add(value);
             }
-            
         } catch (SQLException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
@@ -162,7 +159,6 @@ public abstract class AbstractTestSuite {
                 && !setValuesFromJdbc.isEmpty()
                 && setValuesFromInjection.containsAll(setValuesFromJdbc)
             );
-            
         } catch (AssertionError e) {
             
             Set<String> tablesUnkown = Stream.concat(
@@ -197,7 +193,6 @@ public abstract class AbstractTestSuite {
                 && !setValuesFromJdbc.isEmpty()
                 && setValuesFromInjection.equals(setValuesFromJdbc)
             );
-            
         } catch (AssertionError e) {
             
             Set<String> tablesUnkown = Stream.concat(
@@ -236,7 +231,6 @@ public abstract class AbstractTestSuite {
                 && !setValuesFromJdbc.isEmpty()
                 && setValuesFromInjection.equals(setValuesFromJdbc)
             );
-            
         } catch (AssertionError e) {
             
             Set<String> columnsUnkown = Stream.concat(
@@ -256,7 +250,6 @@ public abstract class AbstractTestSuite {
      * @return
      */
     protected Collection<String> parse(List<String> columns) {
-        
         return columns;
     }
 
@@ -299,7 +292,6 @@ public abstract class AbstractTestSuite {
                 // TODO update and delete injection prevent exact matching => create a specific table
                 && setValuesFromInjection.containsAll(setValuesFromJdbc)
             );
-            
         } catch (AssertionError e) {
             
             Set<String> valuesUnknown = Stream.concat(

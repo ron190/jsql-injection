@@ -20,21 +20,14 @@ import org.apache.logging.log4j.Logger;
  */
 public class MarkNormalInvulnerable implements InteractionCommand {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    /**
-     * @param interactionParams
-     */
     public MarkNormalInvulnerable(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        
         LOGGER.debug(() -> AnsiColorUtil.addRedColor(this.getClass().getSimpleName()));
     }
 }

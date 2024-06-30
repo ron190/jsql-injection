@@ -511,7 +511,6 @@ class ApplicationUiTest {
 
     @Test
     void shouldFindOkButton() {
-
         try {
             window.button("buttonInUrl").click();
         } catch (Exception e) {

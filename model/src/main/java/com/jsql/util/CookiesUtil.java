@@ -21,7 +21,6 @@ public class CookiesUtil {
     private final InjectionModel injectionModel;
 
     public CookiesUtil(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
 
@@ -42,19 +41,18 @@ public class CookiesUtil {
             .map(cookieHeader -> cookieHeader.getValue().split(";"))
             .stream()
             .flatMap(Stream::of)
+            .filter(cookie -> cookie != null && cookie.contains("="))
             .map(cookie -> cookie.split("=", 2))
             .map(arrayEntry -> new AbstractMap.SimpleEntry<>(
                 arrayEntry[0].trim(),
-                arrayEntry[1] == null ? "\"\"" : arrayEntry[1].trim()
+                arrayEntry[1] == null ? "" : arrayEntry[1].trim()
             ))
             .collect(Collectors.toList());
 
         for (AbstractMap.SimpleEntry<String, String> cookie: cookies) {
 
-            String headerCookieWithStar = rawHeader.replace(
-                cookie.getKey() + "=" + cookie.getValue(),
-                cookie.getKey() + "=\"" + cookie.getValue().replaceAll("(^\\s*\")|(\"\\s*$)", "").replaceAll("(.+)\"(.+)", "$1\\\"$2") + InjectionModel.STAR + "\""
-            );
+            String keyValue = cookie.getKey() + "=" + cookie.getValue();
+            String headerCookieWithStar = rawHeader.replace(keyValue, keyValue + InjectionModel.STAR);
 
             this.injectionModel.getMediatorUtils().getParameterUtil().initializeHeader(headerCookieWithStar);
 
@@ -69,9 +67,7 @@ public class CookiesUtil {
                 if (this.injectionModel.getMediatorMethod().getHeader().testParameters()) {
                     return true;
                 }
-
             } catch (JSqlException e) {
-
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_ERROR,
                     String.format(

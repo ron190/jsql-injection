@@ -110,9 +110,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
                 .replaceAll("#{5,}", "#*")
                 .trim()
             );
-            
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
@@ -127,8 +125,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         // Fix #42523: ExceptionInInitializerError on clean()
         try {
             this.textAreaNetworkTabPreview.setText(
-                Jsoup
-                .clean(
+                Jsoup.clean(
                     String.format(
                         "<html>%s</html>",
                         StringUtil.detectUtf8(networkData.getSource())
@@ -154,9 +151,7 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
                         .addAttributes(":all", "style")
                 )
             );
-            
         } catch (Exception | ExceptionInInitializerError e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
@@ -171,18 +166,14 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         // Fix #54572: NullPointerException on setText()
         try {
             this.textAreaNetworkTabSource.setText(StringUtils.EMPTY);
-            
         } catch (NullPointerException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         // Fix #41879: ArrayIndexOutOfBoundsException on setText()
         try {
             this.textAreaNetworkTabPreview.setText(StringUtils.EMPTY);
-            
         } catch (ArrayIndexOutOfBoundsException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }

@@ -68,7 +68,6 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
     public CallableHttpHead call() {
         
         if (this.injectionModel.getResourceAccess().isSearchAdminStopped()) {
-            
             return this;
         }
         
@@ -151,7 +150,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
     }
     
     
-    // Getters and setters
+    // Getters
     
     public String getUrl() {
         return this.urlAdminPage;

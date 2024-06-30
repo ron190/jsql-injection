@@ -61,10 +61,8 @@ public class PanelTable extends JPanel {
         super(new BorderLayout());
 
         this.tableValues = new JTable(data, columnNames) {
-            
             @Override
             public boolean isCellEditable(int row, int column) {
-                
                 return false;
             }
         };
@@ -96,7 +94,6 @@ public class PanelTable extends JPanel {
         Comparator<Object> comparatorNumeric = new ComparatorColumn<>();
         
         for (var i = 0 ; i < this.tableValues.getColumnCount() ; i++) {
-            
             rowSorter.setComparator(i, comparatorNumeric);
         }
     }
@@ -106,7 +103,6 @@ public class PanelTable extends JPanel {
         this.tableValues.setDragEnabled(true);
 
         this.tableValues.addMouseListener(new MouseAdapter() {
-            
             @Override
             public void mousePressed(MouseEvent e) {
                 
@@ -171,7 +167,6 @@ public class PanelTable extends JPanel {
                     return cellRendererDefault.getTableCellRendererComponent(
                         table, UiStringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column
                     );
-                    
                 } catch (NullPointerException e) {
                     
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
@@ -230,30 +225,24 @@ public class PanelTable extends JPanel {
                 String text = textFilter.getText();
 
                 if (text.trim().isEmpty()) {
-                    
                     rowSorter.setRowFilter(null);
-                    
                 } else {
-                    
                     rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(text)));
                 }
             }
             
             @Override
             public void insertUpdate(DocumentEvent e) {
-                
                 this.insertUpdateFixed();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                
                 this.insertUpdateFixed();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                
                 throw new UnsupportedOperationException("Not supported yet.");
             }
         });
@@ -294,10 +283,9 @@ public class PanelTable extends JPanel {
     }
 
     /**
-     * Select every cells.
+     * Select every cell.
      */
     public void selectTable() {
-        
         this.tableValues.selectAll();
     }
 

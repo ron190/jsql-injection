@@ -19,9 +19,6 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkBlindStrategy implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
     public MarkBlindStrategy(Object[] interactionParams) {
         // Do nothing
     }
@@ -30,7 +27,6 @@ public class MarkBlindStrategy implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlind();
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategy(strategy);
     }
 }

@@ -117,12 +117,10 @@ public class AuthenticationUtil {
             
             // Fix #23877: NoClassDefFoundError on java/nio/file/Paths
             if (!new File(this.pathKerberosKrb5).exists()) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Krb5 file not found: {}", this.pathKerberosKrb5);
             }
             
             if (!new File(this.pathKerberosLogin).exists()) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Login file not found: {}", this.pathKerberosLogin);
             }
         }
@@ -161,21 +159,16 @@ public class AuthenticationUtil {
         Authenticator.setDefault(null);
 
         if (this.isAuthentication) {
-            
             Authenticator.setDefault(new Authenticator() {
-                
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    
                     return new PasswordAuthentication (
                         AuthenticationUtil.this.usernameAuthentication,
                         AuthenticationUtil.this.passwordAuthentication.toCharArray()
                     );
                 }
             });
-            
         } else {
-            
             Authenticator.setDefault(null);
         }
         
@@ -225,7 +218,7 @@ public class AuthenticationUtil {
     
     // Builder
     
-    public AuthenticationUtil withAuthentEnabled() {
+    public AuthenticationUtil withAuthenticationEnabled() {
         this.isAuthentication = true;
         return this;
     }

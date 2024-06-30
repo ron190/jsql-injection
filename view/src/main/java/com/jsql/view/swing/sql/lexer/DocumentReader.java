@@ -26,12 +26,12 @@ import javax.swing.text.BadLocationException;
 import java.io.Reader;
 
 /**
- * A reader interface for an abstract document.  Since
+ * A reader interface for an abstract document. Since
  * the syntax highlighting packages only accept Stings and
  * Readers, this must be used.
  * Since the close() method does nothing and a seek() method
  * has been added, this allows us to get some performance
- * improvements through reuse.  It can be used even after the
+ * improvements through reuse. It can be used even after the
  * lexer explicitly closes it by seeking to the place that
  * we want to read next, and reseting the lexer.
  */
@@ -69,28 +69,23 @@ class DocumentReader extends Reader {
 
     /**
      * Modifying the document while the reader is working is like
-     * pulling the rug out from under the reader.  Alerting the
+     * pulling the rug out from under the reader. Alerting the
      * reader with this method (in a nice thread safe way, this
      * should not be called at the same time as a read) allows
      * the reader to compensate.
      */
     public void update(int position, int adjustment) {
-        
         if (position < this.position) {
-            
             if (this.position < position - adjustment) {
-                
                 this.position = position;
-                
             } else {
-                
                 this.position += adjustment;
             }
         }
     }
 
     /**
-     * Has no effect.  This reader can be used even after
+     * Has no effect. This reader can be used even after
      * it has been closed.
      */
     @Override
@@ -125,9 +120,7 @@ class DocumentReader extends Reader {
      */
     @Override
     public int read() {
-        
         if (this.position < this.document.getLength()) {
-            
             try {
                 char c = this.document.getText((int)this.position, 1).charAt(0);
                 this.position++;
@@ -139,9 +132,7 @@ class DocumentReader extends Reader {
                 LOGGER.log(LogLevelUtil.IGNORE, e);
                 return -1;
             }
-            
         } else {
-            
             return -1;
         }
     }
@@ -198,7 +189,6 @@ class DocumentReader extends Reader {
                 return -1;
             }
         } else {
-            
             return -1;
         }
     }
@@ -218,11 +208,8 @@ class DocumentReader extends Reader {
     public void reset() {
         
         if (this.mark == -1) {
-            
             this.position = 0;
-            
         } else {
-            
             this.position = this.mark;
         }
         
@@ -260,13 +247,9 @@ class DocumentReader extends Reader {
      * @param n the offset to which to seek.
      */
     public void seek(long n) {
-        
         if (n <= this.document.getLength()) {
-            
             this.position = n;
-            
         } else {
-            
             this.position = this.document.getLength();
         }
     }

@@ -24,7 +24,6 @@ public class FormUtil {
     private final InjectionModel injectionModel;
     
     public FormUtil(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
 
@@ -69,11 +68,8 @@ public class FormUtil {
         }
             
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isParsingForm()) {
-            
             this.logForms(statusCode, elementsForm, result);
-            
         } else {
-            
             this.addForms(elementsForm, result, mapForms);
         }
     }
@@ -88,11 +84,8 @@ public class FormUtil {
         );
         
         for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
-            
             for (Element input: form.getValue()) {
-                
                 if ("get".equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {
-                    
                     this.injectionModel.getMediatorUtils().getParameterUtil().getListQueryString().add(
                         0,
                         new SimpleEntry<>(
@@ -100,9 +93,7 @@ public class FormUtil {
                             input.attr(INPUT_ATTR_VALUE)
                         )
                     );
-                    
                 } else if ("post".equalsIgnoreCase(form.getKey().attr(FORM_ATTR_VALUE))) {
-                    
                     this.injectionModel.getMediatorUtils().getParameterUtil().getListRequest().add(
                         0,
                         new SimpleEntry<>(
@@ -125,9 +116,7 @@ public class FormUtil {
         );
         
         if (statusCode != 200) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "WAF can detect missing form parameters, you may enable 'Add <input/> parameters' in Preferences and retry");
-            
         }
     }
 }

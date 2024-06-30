@@ -5,7 +5,6 @@ import com.test.AbstractTestSuite;
 public abstract class ConcreteNeo4jSuiteIT extends AbstractTestSuite {
 
     public ConcreteNeo4jSuiteIT() {
-        
         /*
          * Error x509 => docker-machine regenerate-certs => docker-machine restart
          * docker run --publish=7474:7474 --publish=7687:7687 neo4j
@@ -29,22 +28,22 @@ public abstract class ConcreteNeo4jSuiteIT extends AbstractTestSuite {
         this.jdbcQueryForDatabaseNames = "RETURN 'neo4j' AS A";
         
         this.jdbcQueryForTableNames =
-         "CALL db.labels() "
-        +"YIELD label      "
-        +"WITH label       "
-        +"RETURN   label   ";
+             "CALL db.labels() "
+            +"YIELD label      "
+            +"WITH label       "
+            +"RETURN   label   ";
         
         this.jdbcQueryForColumnNames =
-         "MATCH (n:Movie)               "
-        +"WITH collect(keys(n)) AS attr "
-        +"UNWIND attr AS r              "
-        +"WITH DISTINCT r[0] AS d       "
-        +"ORDER BY d                    "
-        +"RETURN  d                     ";
+             "MATCH (n:Movie)               "
+            +"WITH collect(keys(n)) AS attr "
+            +"UNWIND attr AS r              "
+            +"WITH DISTINCT r[0] AS d       "
+            +"ORDER BY d                    "
+            +"RETURN  d                     ";
         
         this.jdbcQueryForValues =
-         "MATCH (n:Movie)         "
-        +"WITH DISTINCT n         "
-        +"RETURN n.title as title ";
+             "MATCH (n:Movie)         "
+            +"WITH DISTINCT n         "
+            +"RETURN n.title as title ";
     }
 }

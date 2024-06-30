@@ -39,7 +39,6 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
     private static final String LINE_FEED = "\\\\[\n\r]+";
     
     public SwingWorkerGithubLocale(DialogTranslate dialogTranslate) {
-        
         this.dialogTranslate = dialogTranslate;
     }
 
@@ -52,13 +51,9 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
         
         try {
             this.loadFromGithub();
-            
         } catch (IOException eGithub) {
-            
             this.logFileNotFound(eGithub);
-            
         } finally {
-            
             this.displayDiff();
         }
         
@@ -67,25 +62,20 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
 
     private void displayDiff() {
         
-        this.propertiesRoot
-        .entrySet()
-        .stream()
-        .filter(key ->
-        
-            this.dialogTranslate.getLanguage() == Language.OT
-            || this.propertiesLanguageToTranslate.size() == 0
-            || !this.propertiesLanguageToTranslate.containsKey(key.getKey())
-        )
-        .forEach(key ->
-        
-            this.propertiesToTranslate.append(
+        this.propertiesRoot.entrySet()
+            .stream()
+            .filter(key ->
+                this.dialogTranslate.getLanguage() == Language.OT
+                || this.propertiesLanguageToTranslate.isEmpty()
+                || !this.propertiesLanguageToTranslate.containsKey(key.getKey())
+            )
+            .forEach(key -> this.propertiesToTranslate.append(
                 String.format(
                     "%n%n%s=%s",
                     key.getKey(),
                     key.getValue().replace(LINE_FEED_ESCAPE,"\\\n")
                 )
-            )
-        );
+            ));
         
         this.dialogTranslate.setTextBeforeChange(this.propertiesToTranslate.toString().trim());
         
@@ -113,29 +103,21 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
         this.loadRootFromGithub();
         
         if (this.dialogTranslate.getLanguage() != Language.OT) {
-            
             this.loadLanguageFromGithub();
-            
         } else {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, () -> I18nUtil.valueByKey("LOG_I18N_DEFAULT_LOADED"));
         }
     }
 
     private void logFileNotFound(IOException eGithub) throws IOException {
-        
         if (this.propertiesLanguageToTranslate.isEmpty()) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Language file not found, text to translate loaded from local", eGithub);
-            
         } else if (this.propertiesRoot.isEmpty()) {
-            
             throw new IOException("Reference language not found");
         }
     }
     
     private void loadRootFromGithub() throws IOException, URISyntaxException {
-        
         try {
             String pageSourceRoot = this.connectionUtil.getSourceLineFeed(
                 this.propertiesUtil.getProperties().getProperty("github.webservice.i18n.root")
@@ -163,7 +145,6 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
     }
     
     private void loadLanguageFromGithub() throws IOException, URISyntaxException {
-        
         try {
             String pageSourceLanguage = this.connectionUtil.getSourceLineFeed(
                 String.format(
@@ -181,16 +162,13 @@ public class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
                 () -> I18nUtil.valueByKey("LOG_I18N_TEXT_LOADED"),
                 this.dialogTranslate::getLanguage
             );
-            
         } catch (IOException e) {
             
-            var uri = ClassLoader.getSystemResource(
-                String.format(
+            var uri = ClassLoader.getSystemResource(String.format(
                     "i18n/jsql_%s.properties",
                     this.dialogTranslate.getLanguage().getLabelLocale()
-                )
-            )
-            .toURI();
+                ))
+                .toURI();
             
             var path = Paths.get(uri);
             byte[] root = Files.readAllBytes(path);

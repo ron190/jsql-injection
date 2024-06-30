@@ -12,13 +12,12 @@ package com.jsql.model.exception;
 
 /**
  * Exception class thrown during normal injection process,
- * concerns every steps when user interact with
+ * concerns every step when user interact with
  * database elements (database, table, column).
  */
 public class LoopDetectedSlidingException extends AbstractSlidingException {
 
     public LoopDetectedSlidingException(String slidingWindowAllRows, String slidingWindowCurrentRows) {
-        
         super("Loop detected during injection, job stopped", slidingWindowAllRows, slidingWindowCurrentRows);
     }
 }

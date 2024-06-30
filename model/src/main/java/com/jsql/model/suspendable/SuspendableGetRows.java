@@ -68,7 +68,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
         
         // Fix #14417
         if (strategy == null) {
-            
             return StringUtils.EMPTY;
         }
         
@@ -118,7 +117,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 this.sendChunk(currentChunk);
                 
             } catch (IllegalArgumentException | IllegalStateException | OutOfMemoryError e) {
-                
                 this.endInjection(elementDatabase, e);
             }
 
@@ -177,8 +175,8 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private String decodeUrl(String currentChunk) {
-        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled()) {
 
+        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUrlDecodeDisabled()) {
             try {
                 return URLDecoder.decode(currentChunk, StandardCharsets.UTF_8);  // Transform %00 entities to text
             } catch (IllegalArgumentException e) {
@@ -189,8 +187,8 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private String decodeUnicode(String currentChunk) {
-        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()) {
 
+        if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isUnicodeDecodeDisabled()) {
             return StringEscapeUtils.unescapeJava(  // transform \u0000 entities to text
                 currentChunk.replaceAll("\\\\u.{0,3}$", "")  // remove incorrect entities
             );
@@ -199,7 +197,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private String getQuery(String initialSqlQuery, int countAllRows) {
-        
         return initialSqlQuery.replace(LIMIT, this.injectionModel.getMediatorVendor().getVendor().instance().sqlLimit(countAllRows));
     }
 
@@ -378,9 +375,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 String.format("(?s)%s(?i)(.{1,%s})", LEAD, performanceLength)
             )
             .matcher(sourcePage);
-            
         } catch (PatternSyntaxException e) {
-            
             // Fix #35382 : PatternSyntaxException null on SQLi(.{1,null})
             throw new InjectionFailureException("Row parsing failed using capacity", e);
         }
@@ -393,16 +388,12 @@ public class SuspendableGetRows extends AbstractSuspendable {
         StringBuilder slidingWindowAllRows,
         StringBuilder slidingWindowCurrentRow
     ) throws StoppedByUserSlidingException, InjectionFailureException {
-        
         if (this.isSuspended()) {
-            
             throw new StoppedByUserSlidingException(
                 slidingWindowAllRows.toString(),
                 slidingWindowCurrentRow.toString()
             );
-            
         } else if (strategy == null) {
-            
             // Fix #1905 : NullPointerException on injectionStrategy.inject()
             throw new InjectionFailureException("Undefined strategy");
         }
@@ -432,7 +423,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
     }
 
     private void sendProgress(int numberToFind, int countProgress, AbstractElementDatabase searchName) {
-        
         if (numberToFind > 0 && searchName != null) {
             
             var request = new Request();
@@ -446,15 +436,15 @@ public class SuspendableGetRows extends AbstractSuspendable {
         
         // Parse all the data we have retrieved
         var regexSearch = Pattern.compile(
-            String.format(
-                "%s%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?%s",
-                MODE,
-                ENCLOSE_VALUE_RGX,
-                SEPARATOR_QTE_RGX,
-                ENCLOSE_VALUE_RGX
+                String.format(
+                    "%s%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)%s([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?%s",
+                    MODE,
+                    ENCLOSE_VALUE_RGX,
+                    SEPARATOR_QTE_RGX,
+                    ENCLOSE_VALUE_RGX
+                )
             )
-        )
-        .matcher(rows);
+            .matcher(rows);
 
         if (!regexSearch.find()) {
             throw new InjectionFailureException();
@@ -477,7 +467,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
             listValues.get(rowsFound).add("x"+ instances);
             
             for (String cellValue: values.split("\\x7F", -1)) {
-                
                 listValues.get(rowsFound).add(cellValue);
             }
 

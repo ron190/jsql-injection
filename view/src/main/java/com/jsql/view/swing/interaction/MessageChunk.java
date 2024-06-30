@@ -27,7 +27,6 @@ public class MessageChunk implements InteractionCommand {
      * @param interactionParams Text to append
      */
     public MessageChunk(Object[] interactionParams) {
-        
         this.text = (String) interactionParams[0];
     }
 
@@ -35,7 +34,6 @@ public class MessageChunk implements InteractionCommand {
     public void execute() {
         
         MediatorHelper.panelConsoles().messageChunk(this.text);
-        
         MediatorHelper.tabConsoles().highlightTab("Chunk");
     }
 }

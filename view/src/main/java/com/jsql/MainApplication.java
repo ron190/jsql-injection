@@ -35,12 +35,8 @@ public class MainApplication {
         }
         
         injectionModel = new InjectionModel();
-        
-        if (!"true".equals(System.getenv("FROM_CI_PIPELINE"))) {
-            
-            injectionModel.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();
-        }
-        
+        injectionModel.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();
+
         MainApplication.apply4K();
     }
     
@@ -96,13 +92,11 @@ public class MainApplication {
         
         injectionModel.displayVersion();
         
-        // Check application status
-        if (!injectionModel.getMediatorUtils().getProxyUtil().isLive(ShowOnConsole.YES)) {
+        if (injectionModel.getMediatorUtils().getProxyUtil().isNotLive(ShowOnConsole.YES)) {
             return;
         }
         
         if (injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingUpdate()) {
-            
             injectionModel.getMediatorUtils().getGitUtil().checkUpdate(ShowOnConsole.NO);
         }
         

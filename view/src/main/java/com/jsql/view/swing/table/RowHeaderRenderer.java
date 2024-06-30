@@ -19,7 +19,6 @@ public class RowHeaderRenderer extends DefaultTableCellRenderer {
         
         // Report #218: ignore if value is null
         if (value != null) {
-            
             this.setText(value.toString());
         }
         

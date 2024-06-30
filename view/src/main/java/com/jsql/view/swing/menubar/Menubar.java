@@ -239,13 +239,10 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("CONSOLE_JAVA_LABEL", this.javaDebugMenu);
 
         for (var menuItem: new JCheckBoxMenuItem[]{ this.chunkMenu, binaryMenu, networkMenu, this.javaDebugMenu }) {
-            
             menuItem.setUI(
                 new BasicCheckBoxMenuItemUI() {
-                    
                     @Override
                     protected void doClick(MenuSelectionManager msm) {
-                        
                         this.menuItem.doClick(0);
                     }
                 }
@@ -253,49 +250,33 @@ public class Menubar extends JMenuBar {
         }
 
         this.chunkMenu.addActionListener(actionEvent -> {
-            
             if (this.chunkMenu.isSelected()) {
-                
                 MediatorHelper.panelConsoles().insertChunkTab();
-                
             } else {
-                
                 MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(UiUtil.ICON_CHUNK));
             }
         });
         
         binaryMenu.addActionListener(actionEvent -> {
-            
             if (binaryMenu.isSelected()) {
-                
                 MediatorHelper.panelConsoles().insertBooleanTab();
-                
             } else {
-                
                 MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(UiUtil.ICON_BINARY));
             }
         });
         
         networkMenu.addActionListener(actionEvent -> {
-            
             if (networkMenu.isSelected()) {
-                
                 MediatorHelper.panelConsoles().insertNetworkTab();
-                
             } else {
-                
                 MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(UiUtil.ICON_HEADER));
             }
         });
         
         this.javaDebugMenu.addActionListener(actionEvent -> {
-            
             if (this.javaDebugMenu.isSelected()) {
-                
                 MediatorHelper.panelConsoles().insertJavaTab();
-                
             } else {
-                
                 MediatorHelper.tabConsoles().remove(MediatorHelper.tabConsoles().indexOfTab(UiUtil.ICON_CUP));
             }
         });
@@ -383,11 +364,9 @@ public class Menubar extends JMenuBar {
         itemSqlEngine.addActionListener(actionEvent -> {
             
             for (var i = 0; i < MediatorHelper.tabResults().getTabCount() ; i++) {
-                
                 if (titleTabSqlEngine.equals(MediatorHelper.tabResults().getTitleAt(i))) {
                     
                     MediatorHelper.tabResults().setSelectedIndex(i);
-                    
                     return;
                 }
             }
@@ -426,11 +405,9 @@ public class Menubar extends JMenuBar {
         itemPreferences.addActionListener(actionEvent -> {
             
             for (var i = 0; i < MediatorHelper.tabResults().getTabCount() ; i++) {
-                
                 if (titleTabPreferences.equals(MediatorHelper.tabResults().getTitleAt(i))) {
                     
                     MediatorHelper.tabResults().setSelectedIndex(i);
-                    
                     return;
                 }
             }
@@ -688,7 +665,6 @@ public class Menubar extends JMenuBar {
             private final Language language;
             
             ActionTranslate(Language language) {
-                
                 this.language = language;
             }
             
@@ -822,11 +798,9 @@ public class Menubar extends JMenuBar {
             new SimpleEntry<>(this.itemIntoFinnish, Language.FI),
             new SimpleEntry<>(itemIntoOther, Language.OT)
         )
-        .forEach(
-            entry -> entry.getKey().addActionListener(
-                new ActionTranslate(entry.getValue())
-            )
-        );
+        .forEach(entry -> entry.getKey().addActionListener(
+            new ActionTranslate(entry.getValue())
+        ));
         
         return menuI18nContribution;
     }
@@ -885,7 +859,6 @@ public class Menubar extends JMenuBar {
             );
 
             if (StringUtils.isNotEmpty(textarea.getText()) && result == JOptionPane.YES_OPTION) {
-                
                 MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
             }
         });
@@ -904,13 +877,9 @@ public class Menubar extends JMenuBar {
         I18nViewUtil.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
         itemCopy.addActionListener(actionEvent -> {
-            
             if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {
-                
                 ((PanelTable) MediatorHelper.tabResults().getSelectedComponent()).copyTable();
-                
             } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {
-                
                 ((JTextArea) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).copy();
             }
         });
@@ -921,13 +890,10 @@ public class Menubar extends JMenuBar {
         itemSelectAll.addActionListener(actionEvent -> {
             
             if (MediatorHelper.tabResults().getSelectedComponent() instanceof PanelTable) {
-                
                 ((PanelTable) MediatorHelper.tabResults().getSelectedComponent()).selectTable();
-                
             } else if (MediatorHelper.tabResults().getSelectedComponent() instanceof JScrollPane) {
                 
                 // Textarea need focus to select all
-                
                 ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
                 ((JTextArea) ((JScrollPane) MediatorHelper.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();
             }
@@ -980,11 +946,8 @@ public class Menubar extends JMenuBar {
 
         // IllegalArgumentException #92981 on revalidate()
         try {
-            // Fix glitches on Linux
-            MediatorHelper.frame().revalidate();
-            
+            MediatorHelper.frame().revalidate();  // Fix glitches on Linux
         } catch (IllegalArgumentException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
@@ -1009,13 +972,10 @@ public class Menubar extends JMenuBar {
             splitPaneLeftRight.setRightComponent(componentLeft);
             
             if (isStartup) {
-                
                 splitPaneLeftRight.setDividerLocation(
                     splitPaneLeftRight.getDividerLocation()
                 );
-                
             } else {
-                
                 splitPaneLeftRight.setDividerLocation(
                     splitPaneLeftRight.getWidth() -
                     splitPaneLeftRight.getDividerLocation()
@@ -1033,38 +993,22 @@ public class Menubar extends JMenuBar {
             String textI18n = I18nViewUtil.valueByKey(key, newLocale);
             
             for (Object componentSwing: I18nViewUtil.componentsByKey(key)) {
-                
                 if (componentSwing instanceof JTextFieldPlaceholder) {
-                    
                     // Textfield does not need <html> tags for asian fonts
                     ((JTextFieldPlaceholder) componentSwing).setPlaceholderText(I18nUtil.valueByKey(key));
-                    
                 } else if (componentSwing instanceof JToolTipI18n) {
-                    
                     ((JToolTipI18n) componentSwing).setText(textI18n);
-                    
                 } else if (componentSwing instanceof JLabel) {
-                    
                     ((JLabel) componentSwing).setText(textI18n);
-                    
                 } else if (componentSwing instanceof JCheckBoxMenuItem) {
-                    
                     ((JCheckBoxMenuItem) componentSwing).setText(textI18n);
-                    
                 } else if (componentSwing instanceof JMenuItem) {
-                    
                     ((JMenuItem) componentSwing).setText(textI18n);
-                    
                 } else if (componentSwing instanceof JButtonStateful) {
-                    
                     ((JButtonStateful) componentSwing).setText(textI18n);
-                    
                 } else if (componentSwing instanceof NodeModelEmpty) {
-                    
                     ((NodeModelEmpty) componentSwing).setText(textI18n);
-                    
                 } else {
-                        
                     ((JTextComponent) componentSwing).setText(textI18n);
                 }
             }

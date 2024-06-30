@@ -18,6 +18,9 @@ public class TamperingUtil {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
+    public static String TAG_OPENED = "<tampering>";
+    public static String TAG_CLOSED = "</tampering>";
+
     private boolean isBase64 = false;
     private boolean isVersionComment = false;
     private boolean isFunctionComment = false;
@@ -36,13 +39,11 @@ public class TamperingUtil {
     private static final ScriptEngineManager SCRIPT_ENGINE_MANAGER = new ScriptEngineManager();
 
     private static String eval(String sqlQuery, String jsTampering) {
-        
 
         Object resultSqlTampered;
 
         try {
             if (StringUtils.isEmpty(jsTampering)) {
-
                 throw new ScriptException("Tampering context is empty");
             }
 
@@ -81,9 +82,9 @@ public class TamperingUtil {
         String sqlQuery;
         String trail;
 
-        // Transform only SQL query without HTTP parameters and syntax changed, like
-        // p=1'+[sql]
-        var matcherSql = Pattern.compile("(?s)(.*<tampering>)(.*)(</tampering>.*)").matcher(sqlQueryDefault);
+        // Transform only SQL query without HTTP parameters and syntax changed, like p=1'+[sql]
+        String regexToMatchTamperTags = String.format("(?s)(.*%s)(.*)(%s.*)", TAG_OPENED, TAG_CLOSED);
+        var matcherSql = Pattern.compile(regexToMatchTamperTags).matcher(sqlQueryDefault);
 
         if (matcherSql.find()) {
 
@@ -92,12 +93,10 @@ public class TamperingUtil {
             trail = matcherSql.group(3);
 
         } else {
-
             return sqlQueryDefault;
         }
 
         if (this.isEval) {
-
             sqlQuery = eval(sqlQuery, this.customTamper);
         }
 
@@ -110,12 +109,11 @@ public class TamperingUtil {
 
         sqlQuery = lead + sqlQuery + trail;
 
-        sqlQuery = sqlQuery.replaceAll("(?i)<tampering>", StringUtils.EMPTY);
-        sqlQuery = sqlQuery.replaceAll("(?i)</tampering>", StringUtils.EMPTY);
+        String regexToremoveTamperTags = String.format("(?i)%s|%s", TAG_OPENED, TAG_CLOSED);
+        sqlQuery = sqlQuery.replaceAll(regexToremoveTamperTags, StringUtils.EMPTY);
 
         // Empty when checking character insertion
         if (StringUtils.isEmpty(sqlQuery)) {
-
             return StringUtils.EMPTY;
         }
 
@@ -123,15 +121,10 @@ public class TamperingUtil {
 
         // Dependency to: EQUAL_TO_LIKE
         if (this.isSpaceToDashComment) {
-
             sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_DASH_COMMENT.instance().getJavascript());
-
         } else if (this.isSpaceToMultilineComment) {
-
             sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getJavascript());
-
         } else if (this.isSpaceToSharpComment) {
-
             sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_SHARP_COMMENT.instance().getJavascript());
         }
 
@@ -144,13 +137,13 @@ public class TamperingUtil {
     private String transform(String sqlQuery, boolean shouldApply, TamperingType tamperingType) {
 
         if (shouldApply) {
-
             return eval(sqlQuery, tamperingType.instance().getJavascript());
         }
 
         return sqlQuery;
     }
-    
+
+
     // Builder
 
     public TamperingUtil withBase64() {

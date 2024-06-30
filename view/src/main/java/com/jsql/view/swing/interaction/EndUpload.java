@@ -18,16 +18,12 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class EndUpload implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
     public EndUpload(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        
         MediatorHelper.managerUpload().endProcess();
     }
 }

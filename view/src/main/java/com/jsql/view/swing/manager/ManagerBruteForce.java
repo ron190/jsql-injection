@@ -171,9 +171,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
         var firstLine = new JPanel(new BorderLayout());
 
         this.hash = new JPopupTextField(I18nUtil.valueByKey("BRUTEFORCE_HASH_LABEL")).getProxy();
-        
         this.hash.setName("managerBruterHash");
-        
         this.hash.setToolTipText(I18nUtil.valueByKey("BRUTEFORCE_HASH_TOOLTIP"));
         
         firstLine.add(this.hash, BorderLayout.CENTER);

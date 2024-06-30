@@ -151,7 +151,7 @@ public class ProxyUtil {
      * @param showOnConsole whether the message should be presented to the user
      * @return true if enabled proxies are up
      */
-    public boolean isLive(ShowOnConsole showOnConsole) {
+    public boolean isNotLive(ShowOnConsole showOnConsole) {
         
         var isLive = true;
         
@@ -171,7 +171,7 @@ public class ProxyUtil {
             isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttps(), this.getProxyPortHttps(), "HTTPS");
         }
         
-        return isLive;
+        return !isLive;
     }
     
     private boolean isSocketOn(ShowOnConsole showOnConsole, String address, String port, String protocol) {
@@ -194,9 +194,7 @@ public class ProxyUtil {
     }
     
     private void logStatus(ShowOnConsole showOnConsole, String address, String port, String protocol) {
-        
         if (showOnConsole == ShowOnConsole.YES) {
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
                 "Connection successful to {} proxy {}:{}",
@@ -208,7 +206,6 @@ public class ProxyUtil {
     }
     
     private void logStatus(ShowOnConsole showOnConsole, String address, String port, String protocol, Exception e) {
-        
         if (showOnConsole == ShowOnConsole.YES) {
             
             String message = Optional.ofNullable(e.getMessage()).orElse(StringUtils.EMPTY);

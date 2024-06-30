@@ -11,29 +11,23 @@ public class I18nViewUtil {
      */
     private static final Map<String, List<Object>> componentsLocalized = new HashMap<>();
     
-    /**
-     * Initialize the list of graphical components
-     */
+    // Initialize the list of graphical components
     static {
-        
         for (String keyI18n: I18nUtil.getLocaleRoot().keySet()) {
-            
             I18nViewUtil.componentsLocalized.put(keyI18n, new ArrayList<>());
         }
     }
-    
-    // Utility class
+
     private I18nViewUtil() {
-        // Ignore
+        // Utility class
     }
     
     /**
      * Return the i18n keys of components whose text is replaced
      * when the translation changes.
-     * @return a list of key names of a i18n key in the properties
+     * @return a set of key names of a i18n key in the properties
      */
     public static Set<String> keys() {
-        
         return I18nViewUtil.componentsLocalized.keySet();
     }
     
@@ -44,7 +38,6 @@ public class I18nViewUtil {
      * @return a list of graphical components
      */
     public static List<Object> componentsByKey(String key) {
-        
         return I18nViewUtil.componentsLocalized.get(key);
     }
     
@@ -55,7 +48,6 @@ public class I18nViewUtil {
      * @param component graphical component which will receive the translated text
      */
     public static void addComponentForKey(String key, Object component) {
-        
         I18nViewUtil.componentsLocalized.get(key).add(component);
     }
     
@@ -69,14 +61,12 @@ public class I18nViewUtil {
         String result;
         
         if (I18nUtil.isAsian(I18nUtil.getLocaleDefault())) {
-            
             result = String.format(
                 "<html><span style=\"font-family:'%s'\">%s</span></html>",
                 UiUtil.FONT_NAME_MONO_ASIAN,
                 I18nUtil.valueByKey(key)
             );
         } else {
-            
             result = I18nUtil.valueByKey(key);
         }
         
@@ -84,13 +74,9 @@ public class I18nViewUtil {
     }
     
     public static String valueByKey(String key, Locale newLocale) {
-        
         if (I18nUtil.isAsian(newLocale)) {
-            
             return I18nViewUtil.valueByKey(key);
-            
         } else {
-            
             return I18nUtil.valueByKey(key);
         }
     }

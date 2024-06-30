@@ -25,18 +25,7 @@ public class JTextPanePlaceholder extends JTextPane {
      * Text to display when empty.
      */
     private final String placeholderText;
-    
-    /**
-     * Create a textfield with hint and default value.
-     * @param placeholder Text displayed when empty
-     * @param value Default value
-     */
-    public JTextPanePlaceholder(String placeholder, String value) {
-        
-        this(placeholder);
-        this.setText(value);
-    }
-    
+
     /**
      * Create a textfield with hint.
      * @param placeholder Text displayed when empty
@@ -44,13 +33,11 @@ public class JTextPanePlaceholder extends JTextPane {
     public JTextPanePlaceholder(String placeholder) {
         
         this.placeholderText = placeholder;
-        
         UiUtil.initialize(this);
     }
 
     @Override
     public void paint(Graphics g) {
-        
         // Fix #4012: ArrayIndexOutOfBoundsException on paint()
         // Fix #38546: ConcurrentModificationException on getText()
         // Fix #37872: IndexOutOfBoundsException on getText()
@@ -60,11 +47,9 @@ public class JTextPanePlaceholder extends JTextPane {
             super.paint(g);
             
             if (StringUtils.isEmpty(Jsoup.parse(this.getText()).text().trim())) {
-                
                 UiUtil.drawPlaceholder(this, g, this.placeholderText);
             }
         } catch (IllegalArgumentException | ConcurrentModificationException | IndexOutOfBoundsException | ClassCastException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }

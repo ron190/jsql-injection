@@ -360,7 +360,6 @@ public class SQLToken extends Token {
                 s += "Bit-strings can only contain 0 and 1: " + this.contents;
                 break;
             }
-
         } else {
             s = null;
         }
@@ -368,7 +367,7 @@ public class SQLToken extends Token {
     }
 
     /**
-     * get a representation of this token as a human readable string. The format
+     * get a representation of this token as a human-readable string. The format
      * of this string is subject to change and should only be used for debugging
      * purposes.
      *

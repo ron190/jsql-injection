@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class Test implements Serializable {
 
-    private List<String> falses = Arrays.asList(
+    private List<String> falsy = Arrays.asList(
         "true = false",
         "true %21= true",
         "false %21= false",
@@ -19,7 +19,7 @@ public class Test implements Serializable {
         "2 %21= 2"
     );
             
-    private List<String> trues = Arrays.asList(
+    private List<String> truthy = Arrays.asList(
         "true = true",
         "false = false",
         "true %21= false",
@@ -32,20 +32,20 @@ public class Test implements Serializable {
     private String bit = StringUtils.EMPTY;
     private String length = StringUtils.EMPTY;
 
-    public List<String> getTrues() {
-        return this.trues;
+    public List<String> getTruthy() {
+        return this.truthy;
     }
 
-    public void setTrues(List<String> trues) {
-        this.trues = trues;
+    public void setTruthy(List<String> truthy) {
+        this.truthy = truthy;
     }
 
-    public List<String> getFalses() {
-        return this.falses;
+    public List<String> getFalsy() {
+        return this.falsy;
     }
 
-    public void setFalses(List<String> falses) {
-        this.falses = falses;
+    public void setFalsy(List<String> falsy) {
+        this.falsy = falsy;
     }
 
     public String getInitialization() {
@@ -73,24 +73,24 @@ public class Test implements Serializable {
     }
 
     public String getTruthyAsString() {
-        return this.trues.stream()
+        return this.truthy.stream()
             .collect(
                 Collectors.joining(System.lineSeparator())
             );
     }
     
     public void setTruthy(String truthy) {
-        this.trues = Arrays.asList(truthy.split("[\r\n]+"));
+        this.truthy = Arrays.asList(truthy.split("[\r\n]+"));
     }
     
     public String getFalsyAsString() {
-        return this.falses.stream()
+        return this.falsy.stream()
             .collect(
                 Collectors.joining(System.lineSeparator())
             );
     }
     
     public void setFalsy(String falsy) {
-        this.falses = Arrays.asList(falsy.split("[\r\n]+"));
+        this.falsy = Arrays.asList(falsy.split("[\r\n]+"));
     }
 }

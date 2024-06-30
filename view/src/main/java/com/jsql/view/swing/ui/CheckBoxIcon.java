@@ -45,7 +45,7 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
                 g.drawRect(0, 0, w - 1, h - 1);
             }
             
-            g.setColor( MetalLookAndFeel.getControlInfo() );
+            g.setColor(MetalLookAndFeel.getControlInfo());
             
         } else {
             
@@ -56,7 +56,6 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
         g.translate(-x, -y);
         
         if (model.isSelected()) {
-            
             this.drawCheck(g, x, y);
         }
     }

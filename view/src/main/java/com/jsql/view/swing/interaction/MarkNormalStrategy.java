@@ -19,9 +19,6 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkNormalStrategy implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
     public MarkNormalStrategy(Object[] interactionParams) {
         // Do nothing
     }
@@ -30,7 +27,6 @@ public class MarkNormalStrategy implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getNormal();
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategy(strategy);
     }
 }

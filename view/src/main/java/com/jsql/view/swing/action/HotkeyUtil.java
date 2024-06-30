@@ -31,11 +31,8 @@ public final class HotkeyUtil {
     private static final String STR_CTRL_SHIFT_TAB = "ctrl shift TAB";
     private static final String STR_SELECT_TAB = "actionString-selectTab";
     
-    /**
-     * Utility class without constructor.
-     */
     private HotkeyUtil() {
-        //not called
+        // Utility class
     }
     
     /**
@@ -46,9 +43,7 @@ public final class HotkeyUtil {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
             "permanentFocusOwner",
             propertyChangeEvent -> {
-                
                 if (propertyChangeEvent.getNewValue() instanceof JTextField) {
-                    
                     SwingUtilities.invokeLater(() -> {
                         
                         JTextField textField = (JTextField) propertyChangeEvent.getNewValue();
@@ -94,17 +89,13 @@ public final class HotkeyUtil {
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                
                 if (valuesTabbedPane.getTabCount() > 0) {
                     
                     int selectedIndex = valuesTabbedPane.getSelectedIndex();
                     
                     if (selectedIndex + 1 < valuesTabbedPane.getTabCount()) {
-                        
                         valuesTabbedPane.setSelectedIndex(selectedIndex + 1);
-                        
                     } else {
-                        
                         valuesTabbedPane.setSelectedIndex(0);
                     }
                 }
@@ -115,17 +106,13 @@ public final class HotkeyUtil {
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                
                 if (valuesTabbedPane.getTabCount() > 0) {
                     
                     int selectedIndex = valuesTabbedPane.getSelectedIndex();
                     
                     if (selectedIndex - 1 > -1) {
-                        
                         valuesTabbedPane.setSelectedIndex(selectedIndex - 1);
-                        
                     } else {
-                        
                         valuesTabbedPane.setSelectedIndex(valuesTabbedPane.getTabCount() - 1);
                     }
                 }
@@ -161,10 +148,8 @@ public final class HotkeyUtil {
             
             final int currentTabFinal = currentTab;
             actionMap.put(STR_SELECT_TAB + currentTab, new AbstractAction() {
-                
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    
                     MediatorHelper.tabManagers().setSelectedIndex(currentTabFinal - 1);
                 }
             });
@@ -184,7 +169,6 @@ public final class HotkeyUtil {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
             "permanentFocusOwner",
             propertyChangeEvent -> SwingUtilities.invokeLater(() -> {
-                
                 if (
                     // Fix #40924: NullPointerException on MediatorGui.panelAddressBar()
                     MediatorHelper.panelAddressBar() != null

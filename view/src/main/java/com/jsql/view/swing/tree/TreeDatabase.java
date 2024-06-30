@@ -53,78 +53,53 @@ public class TreeDatabase extends JTree {
 
     public void reset() {
         
-        // Tree model for refreshing the tree
-        DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();
-        // The tree root
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
+        DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();  // Tree model for refreshing the tree
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();  // The tree root
 
-        // Remove tree nodes
-        root.removeAllChildren();
-        // Refresh the root
-        treeModel.nodeChanged(root);
-        // Refresh the tree
-        treeModel.reload();
+        root.removeAllChildren();  // Remove tree nodes
+        treeModel.nodeChanged(root);  // Refresh the root
+        treeModel.reload();  // Refresh the tree
         
         this.setRootVisible(true);
     }
     
     public void addColumns(List<Column> columns) {
         
-        // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();
-
-        // The table to update
-        DefaultMutableTreeNode tableNode = null;
+        DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();  // Tree model, update the tree (refresh, add node, etc.)
+        DefaultMutableTreeNode tableNode = null;  // The table to update
 
         // Loop into the list of columns
         for (Column column: columns) {
             
-            // Create a node model with the column element
-            AbstractNodeModel newTreeNodeModel = new NodeModelColumn(column);
-
-            // Create the node
-            var newNode = new DefaultMutableTreeNode(newTreeNodeModel);
-            
-            // Get the parent table
-            tableNode = this.getTreeNodeModels().get(column.getParent());
+            AbstractNodeModel newTreeNodeModel = new NodeModelColumn(column);  // Create a node model with the column element
+            var newNode = new DefaultMutableTreeNode(newTreeNodeModel);  // Create the node
+            tableNode = this.getTreeNodeModels().get(column.getParent());  // Get the parent table
             
             // Fix #1805 : NullPointerException on tableNode.getChildCount()
             if (tableNode != null) {
-                
-                // Add the column to the table
-                treeModel.insertNodeInto(newNode, tableNode, tableNode.getChildCount());
+                treeModel.insertNodeInto(newNode, tableNode, tableNode.getChildCount());  // Add the column to the table
             }
         }
 
         if (tableNode != null) {
             
-            // Open the table node
-            this.expandPath(new TreePath(tableNode.getPath()));
-            
-            // The table has just been search (avoid double check)
-            ((AbstractNodeModel) tableNode.getUserObject()).setLoaded(true);
+            this.expandPath(new TreePath(tableNode.getPath()));  // Open the table node
+            ((AbstractNodeModel) tableNode.getUserObject()).setLoaded(true);  // The table has just been search (avoid double check)
         }
     }
     
     public void addDatabases(List<Database> databases) {
         
-        // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();
-
-        // First node in tree
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
+        DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();  // Tree model, update the tree (refresh, add node, etc.)
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();  // First node in tree
 
         // Loop into the list of databases
         for (Database database: databases) {
-            
-            // Create a node model with the database element
-            AbstractNodeModel newTreeNodeModel = new NodeModelDatabase(database);
-            // Create the node
-            var newNode = new DefaultMutableTreeNode(newTreeNodeModel);
-            // Save the node
-            this.getTreeNodeModels().put(database, newNode);
-            // Add the node to the tree
-            root.add(newNode);
+
+            AbstractNodeModel newTreeNodeModel = new NodeModelDatabase(database);  // Create a node model with the database element
+            var newNode = new DefaultMutableTreeNode(newTreeNodeModel);  // Create the node
+            this.getTreeNodeModels().put(database, newNode);  // Save the node
+            root.add(newNode);  // Add the node to the tree
         }
 
         // Refresh the tree
@@ -137,46 +112,29 @@ public class TreeDatabase extends JTree {
     
     public void addTables(List<Table> tables) {
         
-        // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();
-
-        // The database to update
-        DefaultMutableTreeNode databaseNode = null;
+        DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();  // Tree model, update the tree (refresh, add node, etc.)
+        DefaultMutableTreeNode databaseNode = null;  // The database to update
 
         // Loop into the list of tables
         for (Table table: tables) {
-            
-            // Create a node model with the table element
-            AbstractNodeModel newTreeNodeModel = new NodeModelTable(table);
-            
-            // Create the node
-            var newNode = new DefaultMutableTreeNode(newTreeNodeModel);
-            
-            // Save the node
-            this.getTreeNodeModels().put(table, newNode);
 
-            // Get the parent database
-            databaseNode = this.getTreeNodeModels().get(table.getParent());
+            AbstractNodeModel newTreeNodeModel = new NodeModelTable(table);  // Create a node model with the table element
+            var newNode = new DefaultMutableTreeNode(newTreeNodeModel);  // Create the node
+            this.getTreeNodeModels().put(table, newNode);  // Save the node
+            databaseNode = this.getTreeNodeModels().get(table.getParent());  // Get the parent database
             
             // Report NullPointerException #1670
             if (databaseNode != null) {
-                
-                // Add the table to the database
-                treeModel.insertNodeInto(newNode, databaseNode, databaseNode.getChildCount());
-                
+                treeModel.insertNodeInto(newNode, databaseNode, databaseNode.getChildCount());  // Add the table to the database
             } else {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing database for table {}.", () -> table);
             }
         }
 
         if (databaseNode != null) {
             
-            // Open the database node
-            this.expandPath(new TreePath(databaseNode.getPath()));
-            
-            // The database has just been search (avoid double check)
-            ((AbstractNodeModel) databaseNode.getUserObject()).setLoaded(true);
+            this.expandPath(new TreePath(databaseNode.getPath()));  // Open the database node
+            ((AbstractNodeModel) databaseNode.getUserObject()).setLoaded(true);  // The database has just been search (avoid double check)
         }
     }
     
@@ -187,22 +145,16 @@ public class TreeDatabase extends JTree {
         
         if (node != null) {
             
-            // Get the node
-            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
-            
-            // Update the progress value of the model, end the progress
-            progressingTreeNodeModel.setIndexProgress(table.getChildCount());
-            
-            // Mark the node model as 'no stop/pause/resume button'
-            progressingTreeNodeModel.setRunning(false);
-            
+            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();  // Get the node
+            progressingTreeNodeModel.setIndexProgress(table.getChildCount());  // Update the progress value of the model, end the progress
+            progressingTreeNodeModel.setRunning(false);  // Mark the node model as 'no stop/pause/resume button'
             MediatorHelper.tabResults().createValuesTab(data, columnNames, table);
         }
     }
     
-    public void endIndeterminateProgess(AbstractElementDatabase dataElementDatabase) {
+    public void endIndeterminateProgress(AbstractElementDatabase dataElementDatabase) {
         
-        // Tree model, update the tree (refresh, add node, etc)
+        // Tree model, update the tree (refresh, add node, etc.)
         DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();
 
         DefaultMutableTreeNode nodeModel = this.getTreeNodeModels().get(dataElementDatabase);
@@ -210,23 +162,16 @@ public class TreeDatabase extends JTree {
         // Fix #1806 : NullPointerException on ...odels().get(dataElementDatabase).getUserObject()
         if (nodeModel != null) {
             
-            // Get the node
-            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) nodeModel.getUserObject();
-            
-            // Mark the node model as 'no loading bar'
-            progressingTreeNodeModel.setProgressing(false);
-            
-            // Mark the node model as 'no stop/pause/resume button'
-            progressingTreeNodeModel.setRunning(false);
-            
-            // Update the node
-            treeModel.nodeChanged(nodeModel);
+            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) nodeModel.getUserObject();  // Get the node
+            progressingTreeNodeModel.setProgressing(false);  // Mark the node model as 'no loading bar'
+            progressingTreeNodeModel.setRunning(false);  // Mark the node model as 'no stop/pause/resume button'
+            treeModel.nodeChanged(nodeModel);  // Update the node
         }
     }
     
-    public void endProgess(AbstractElementDatabase dataElementDatabase) {
+    public void endProgress(AbstractElementDatabase dataElementDatabase) {
         
-        // Tree model, update the tree (refresh, add node, etc)
+        // Tree model, update the tree (refresh, add node, etc.)
         DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();
 
         // Report NullPointerException #1671
@@ -234,87 +179,58 @@ public class TreeDatabase extends JTree {
         
         if (node != null) {
             
-            // Get the node
-            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
-            
-            // Mark the node model as 'no progress bar'
-            progressingTreeNodeModel.setLoading(false);
-            
-            // Mark the node model as 'no stop/pause/resume button'
-            progressingTreeNodeModel.setRunning(false);
-            
-            // Reset the progress value of the model
-            progressingTreeNodeModel.setIndexProgress(0);
-            
-            // Update the node and progress bar
-            treeModel.nodeChanged(node);
+            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();  // Get the node
+            progressingTreeNodeModel.setLoading(false);  // Mark the node model as 'no progress bar'
+            progressingTreeNodeModel.setRunning(false);  // Mark the node model as 'no stop/pause/resume button'
+            progressingTreeNodeModel.setIndexProgress(0);  // Reset the progress value of the model
+            treeModel.nodeChanged(node);  // Update the node and progress bar
         }
     }
     
-    public void startIndeterminateProgess(AbstractElementDatabase dataElementDatabase) {
+    public void startIndeterminateProgress(AbstractElementDatabase dataElementDatabase) {
         
         DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);
         
         // Fix #45540: NullPointerException on node.getUserObject()
         if (node != null) {
             
-            // Get the node
-            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
-            
-            // Mark the node model as 'loading'
-            progressingTreeNodeModel.setProgressing(true);
-            
-            // Tree model, update the tree (refresh, add node, etc)
-            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();
-            
-            // Update the node
-            treeModel.nodeChanged(node);
+            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();  // Get the node
+            progressingTreeNodeModel.setProgressing(true);  // Mark the node model as 'loading'
+            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();  // Tree model, update the tree (refresh, add node, etc.)
+            treeModel.nodeChanged(node);  // Update the node
         }
     }
     
-    public void startProgess(AbstractElementDatabase dataElementDatabase) {
+    public void startProgress(AbstractElementDatabase dataElementDatabase) {
         
         DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);
         
         // Fix rare #73981
         if (node != null) {
             
-            // Get the node
-            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
+            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();  // Get the node
             
             // Fix rare Unhandled NullPointerException #66340
             if (progressingTreeNodeModel != null) {
-                
-                // Mark the node model as 'display progress bar'
-                progressingTreeNodeModel.setLoading(true);
+                progressingTreeNodeModel.setLoading(true);  // Mark the node model as 'display progress bar'
             }
-            
-            // Tree model, update the tree (refresh, add node, etc)
-            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();
-    
-            // Update the node
-            treeModel.nodeChanged(node);
+
+            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();  // Tree model, update the tree (refresh, add node, etc.)
+            treeModel.nodeChanged(node);  // Update the node
         }
     }
     
-    public void updateProgess(AbstractElementDatabase dataElementDatabase, int dataCount) {
+    public void updateProgress(AbstractElementDatabase dataElementDatabase, int dataCount) {
         
         DefaultMutableTreeNode node = this.getTreeNodeModels().get(dataElementDatabase);
         
-        // Fix Report #1368: ignore if no element database
+        // Fix Report #1368: ignore if no element database, usually for mock (eg. metadata, file, shell, list databases)
         if (node != null) {
             
-            // Get the node
-            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
-            
-            // Update the progress value of the model
-            progressingTreeNodeModel.setIndexProgress(dataCount);
-            
-            // Tree model, update the tree (refresh, add node, etc)
-            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();
-            
-            // Update the node
-            treeModel.nodeChanged(node);
+            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();  // Get the node
+            progressingTreeNodeModel.setIndexProgress(dataCount);  // Update the progress value of the model
+            DefaultTreeModel treeModel = (DefaultTreeModel) this.getModel();  // Tree model, update the tree (refresh, add node, etc.)
+            treeModel.nodeChanged(node);  // Update the node
         }
     }
     

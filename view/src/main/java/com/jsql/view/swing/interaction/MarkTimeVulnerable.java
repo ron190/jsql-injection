@@ -19,10 +19,7 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkTimeVulnerable implements InteractionCommand {
     
-    /**
-     * @param nullParam
-     */
-    public MarkTimeVulnerable(Object[] nullParam) {
+    public MarkTimeVulnerable(Object[] interactionParams) {
         // Do nothing
     }
 
@@ -30,7 +27,6 @@ public class MarkTimeVulnerable implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getTime();
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategyVulnerable(strategy);
     }
 }

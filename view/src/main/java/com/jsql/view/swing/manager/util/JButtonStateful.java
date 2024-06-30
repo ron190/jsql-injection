@@ -16,7 +16,6 @@ public class JButtonStateful extends JButton {
     public JButtonStateful(String defaultText) {
         
         super(I18nViewUtil.valueByKey(defaultText));
-        
         this.defaultText = defaultText;
     }
     

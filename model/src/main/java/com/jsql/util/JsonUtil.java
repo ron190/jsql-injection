@@ -26,7 +26,6 @@ public class JsonUtil {
     private final InjectionModel injectionModel;
     
     public JsonUtil(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
 
@@ -40,7 +39,6 @@ public class JsonUtil {
             isJson = true;
             
         } catch (JSONException exceptionJSONObject) {
-            
             try {
                 // Test for JSON Array
                 new JSONArray(param);
@@ -55,24 +53,16 @@ public class JsonUtil {
     }
 
     public static Object getJson(String param) {
-        
-        // Will test if current value is a JSON entity
-        Object jsonEntity;
+
+        Object jsonEntity;  // Will test if current value is a JSON entity
         
         try {
-            // Test for JSON Object
-            jsonEntity = new JSONObject(param);
-            
+            jsonEntity = new JSONObject(param);  // Test for JSON Object
         } catch (JSONException exceptionJSONObject) {
-            
             try {
-                // Test for JSON Array
-                jsonEntity = new JSONArray(param);
-                
+                jsonEntity = new JSONArray(param);  // Test for JSON Array
             } catch (JSONException exceptionJSONArray) {
-                
-                // Not a JSON entity
-                jsonEntity = new Object();
+                jsonEntity = new Object();  // Not a JSON entity
             }
         }
         
@@ -84,11 +74,8 @@ public class JsonUtil {
         List<SimpleEntry<String, String>> attributesXPath = new ArrayList<>();
         
         if (jsonEntity instanceof JSONObject) {
-            
             JsonUtil.scanJsonObject(jsonEntity, parentName, parentXPath, attributesXPath);
-            
         } else if (jsonEntity instanceof JSONArray) {
-            
             JsonUtil.scanJsonArray(jsonEntity, parentName, parentXPath, attributesXPath);
         }
         
@@ -106,20 +93,15 @@ public class JsonUtil {
             
             // Not possible to make generic with scanJsonObject() because of JSONArray.put(int) != JSONObject.put(String)
             if (value instanceof JSONArray || value instanceof JSONObject) {
-                
                 attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));
-                
             } else if (value instanceof String) {
                 
                 SimpleEntry<String, String> stringValue = new SimpleEntry<>(xpath, (String) value);
                 attributesXPath.add(stringValue);
                 
                 if (parentXPath == null) {
-                    
                     jsonArrayEntity.put(i, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY));
-                    
                 } else if (stringValue.equals(parentXPath)) {
-                    
                     jsonArrayEntity.put(i, value + InjectionModel.STAR);
                 }
             }
@@ -140,20 +122,15 @@ public class JsonUtil {
             
             // Not possible to make generic with scanJsonObject() because of JSONArray.put(int) != JSONObject.put(String)
             if (value instanceof JSONArray || value instanceof JSONObject) {
-                
                 attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));
-                
             } else if (value instanceof String) {
                 
                 SimpleEntry<String, String> stringValue = new SimpleEntry<>(xpath, (String) value);
                 attributesXPath.add(stringValue);
                 
                 if (parentXPath == null) {
-                    
                     jsonObjectEntity.put(key, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY));
-                    
                 } else if (stringValue.equals(parentXPath)) {
-                    
                     jsonObjectEntity.put(key, value + InjectionModel.STAR);
                 }
             }
@@ -176,14 +153,10 @@ public class JsonUtil {
         // Loop through each JSON values
         for (SimpleEntry<String, String> parentXPath: attributesJson) {
             
-            // Erase previously defined *
-            JsonUtil.createEntries(jsonEntity, "root", null);
-            
-            // Add * to current parameter's value
-            JsonUtil.createEntries(jsonEntity, "root", parentXPath);
-            
-            // Replace param value by marked one.
-            paramStar.setValue(jsonEntity.toString());
+            JsonUtil.createEntries(jsonEntity, "root", null);  // Erase previously defined *
+            JsonUtil.createEntries(jsonEntity, "root", parentXPath);  // Add * to current parameter's value
+
+            paramStar.setValue(jsonEntity.toString());  // Replace param value by marked one
             
             try {
                 LOGGER.log(
@@ -210,36 +183,22 @@ public class JsonUtil {
                         "No injection found for JSON %s parameter %s=%s",
                         methodInjection.name(),
                         parentXPath.getKey(),
-                        parentXPath.getValue().replace(
-                            InjectionModel.STAR,
-                            StringUtils.EMPTY
-                        )
+                        parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
                     )
                 );
-                
             } finally {
                 
                 // Erase * at the end of each params
                 // TODO useless
-                methodInjection
-                .getParams()
-                .forEach(e ->
-                    e.setValue(
-                        e.getValue().replaceAll(
-                            Pattern.quote(InjectionModel.STAR) +"$",
-                            StringUtils.EMPTY
-                        )
-                    )
-                );
+                methodInjection.getParams()
+                    .forEach(e -> e.setValue(
+                        e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", StringUtils.EMPTY)
+                    ));
                 
                 // Erase * from JSON if failure
                 if (!hasFoundInjection) {
-                    
                     paramStar.setValue(
-                        paramStar.getValue().replace(
-                            InjectionModel.STAR,
-                            StringUtils.EMPTY
-                        )
+                        paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)
                     );
                 }
             }

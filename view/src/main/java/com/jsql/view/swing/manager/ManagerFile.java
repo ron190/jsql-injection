@@ -81,13 +81,11 @@ public class ManagerFile extends AbstractManagerList {
             if (this.listFile.getSelectedValuesList().isEmpty()) {
                 
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Select at least one file to read in the list");
-                
                 return;
             }
 
             new Thread(
                 () -> {
-                
                     if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {
                         
                         ManagerFile.this.run.setText(I18nViewUtil.valueByKey("FILE_RUN_BUTTON_STOP"));
@@ -107,10 +105,8 @@ public class ManagerFile extends AbstractManagerList {
                             Thread.currentThread().interrupt();
                             
                         } catch (Exception e) {
-                            
                             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e, e);
                         }
-                        
                     } else {
                         
                         MediatorHelper.model().getResourceAccess().stopSearchingFile();

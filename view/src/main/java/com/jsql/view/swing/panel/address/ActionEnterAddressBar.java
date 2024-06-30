@@ -13,10 +13,8 @@ public class ActionEnterAddressBar extends ActionStart {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
         // No injection running
         if (this.panelAddressBar.getAddressMenuBar().getButtonInUrl().getState() == StateButton.STARTABLE) {
-            
             this.startInjection();
         }
     }

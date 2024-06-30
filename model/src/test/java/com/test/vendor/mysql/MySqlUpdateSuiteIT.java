@@ -22,7 +22,13 @@ public class MySqlUpdateSuiteIT extends ConcreteMySqlErrorSuiteIT {
         );
 
         model.setIsScanning(true);
-        
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()

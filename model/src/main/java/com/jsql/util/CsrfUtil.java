@@ -27,14 +27,12 @@ public class CsrfUtil {
     private final InjectionModel injectionModel;
     
     public CsrfUtil(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
 
     public void parseForCsrfToken(String pageSource, Map<String, String> headers) {
         
         this.parseCsrfFromCookie(headers);
-        
         this.parseCsrfFromHtml(pageSource);
     }
 
@@ -56,7 +54,6 @@ public class CsrfUtil {
         );
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
-            
             tags.add(
                 String.format(
                     "[name='%s']",
@@ -95,16 +92,13 @@ public class CsrfUtil {
                 !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
                 && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
             ) {
-                
                 this.tokenCsrf = tokenCsrfFound;
                 LOGGER.log(
                     LogLevelUtil.CONSOLE_SUCCESS,
                     "Csrf token added to query and header: {}",
                     tokenCsrfFound::getValue
                 );
-                
             } else {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);
             }
         }
@@ -155,11 +149,8 @@ public class CsrfUtil {
                 !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()
                 && this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCsrf()
             ) {
-                
                 this.tokenCsrf = headerCsrf;
-                
             } else {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, MSG_ENABLE_CSRF);
             }
         }
@@ -168,7 +159,6 @@ public class CsrfUtil {
     public void addHeaderToken(Builder httpRequest) {
         
         if (this.tokenCsrf == null) {
-            
              return;
         }
 
@@ -176,7 +166,6 @@ public class CsrfUtil {
         httpRequest.setHeader("X-CSRF-TOKEN", this.tokenCsrf.getValue());
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
-
             httpRequest.setHeader(
                 this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),
                 this.tokenCsrf.getValue()
@@ -187,7 +176,6 @@ public class CsrfUtil {
     public void addRequestToken(StringBuilder httpRequest) {
 
         if (this.tokenCsrf == null) {
-            
             return;
         }
 
@@ -207,7 +195,6 @@ public class CsrfUtil {
         );
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
-            
             httpRequest.append(
                 String.format(
                     "%s=%s&",
@@ -223,7 +210,6 @@ public class CsrfUtil {
         String urlInjectionFixed = urlInjection;
 
         if (this.tokenCsrf == null) {
-            
             return urlInjectionFixed;
         }
 
@@ -239,7 +225,6 @@ public class CsrfUtil {
         );
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCsrfUserTag()) {
-
             urlInjectionFixed += String.format(
                 "&%s=%s",
                 this.injectionModel.getMediatorUtils().getPreferencesUtil().csrfUserTagOutput(),

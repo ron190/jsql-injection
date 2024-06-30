@@ -237,14 +237,14 @@ strategy:
 
  boolean:
   test:
-   falses:
+   falsy:
     - 1 = 0
     - "'a' %21= 'a'"
     - "'b' %21= 'b'"
     - 1 = 2
     - 1 %21= 1
     - 2 %21= 2
-   trues:
+   truthy:
     - 0 = 0
     - "'a' %21= 'b'"
     - "'a' = 'a'"

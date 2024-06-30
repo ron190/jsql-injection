@@ -24,6 +24,28 @@ public abstract class AbstractElementDatabase {
      * Label of the current element.
      */
     protected String elementValue;
+
+    /**
+     * Used by non-progressing threads like File, metadata and shells.
+     * Required for suspendable concurrent map tracking.
+     */
+    public static final AbstractElementDatabase MOCK = new AbstractElementDatabase() {
+
+        @Override
+        public AbstractElementDatabase getParent() {
+            return null;
+        }
+
+        @Override
+        public int getChildCount() {
+            return 0;
+        }
+
+        @Override
+        public String getLabelCount() {
+            return null;
+        }
+    };
     
     /**
      * Traverse upward, and return the parent.

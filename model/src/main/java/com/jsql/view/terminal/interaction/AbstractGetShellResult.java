@@ -22,16 +22,12 @@ public class AbstractGetShellResult implements InteractionCommand {
 
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    /**
-     * @param interactionParams The unique identifier of the terminal and the command's result to display
-     */
     public AbstractGetShellResult(Object[] interactionParams) {
         // nothing
     }
 
     @Override
     public void execute() {
-
         LOGGER.info(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
     }
 }

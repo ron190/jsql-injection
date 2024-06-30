@@ -17,17 +17,13 @@ import com.jsql.view.swing.util.MediatorHelper;
  * Mark the injection as using a user profile vulnerable to file I/O.
  */
 public class MarkFileSystemVulnerable implements InteractionCommand {
-    
-    /**
-     * @param nullParam
-     */
-    public MarkFileSystemVulnerable(Object[] nullParam) {
+
+    public MarkFileSystemVulnerable(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        
         MediatorHelper.tabManagers().markFileSystemVulnerable();
     }
 }

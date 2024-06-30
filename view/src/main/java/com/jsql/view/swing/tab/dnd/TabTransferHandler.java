@@ -37,7 +37,6 @@ public class TabTransferHandler extends TransferHandler {
     protected Transferable createTransferable(JComponent c) {
         
         if (c instanceof DnDTabbedPane) {
-            
             this.source = (DnDTabbedPane) c;
         }
 
@@ -45,25 +44,19 @@ public class TabTransferHandler extends TransferHandler {
             
             @Override
             public DataFlavor[] getTransferDataFlavors() {
-                
-                return new DataFlavor[] {TabTransferHandler.this.localObjectFlavor};
+                return new DataFlavor[] { TabTransferHandler.this.localObjectFlavor };
             }
             
             @Override
             public boolean isDataFlavorSupported(DataFlavor flavor) {
-                
                 return Objects.equals(TabTransferHandler.this.localObjectFlavor, flavor);
             }
             
             @Override
             public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
-                
                 if (this.isDataFlavorSupported(flavor)) {
-                    
                     return new DnDTabData(TabTransferHandler.this.source);
-                    
                 } else {
-                    
                     throw new UnsupportedFlavorException(flavor);
                 }
             }
@@ -91,11 +84,8 @@ public class TabTransferHandler extends TransferHandler {
         boolean isAreaContains = target.getTabAreaBounds().contains(pt) && idx >= 0;
         
         if (target.equals(this.source)) {
-            
             isDroppable = isAreaContains && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
-            
         } else {
-            
             isDroppable = Optional.ofNullable(this.source).map(c -> !c.isAncestorOf(target)).orElse(false) && isAreaContains;
         }
 
@@ -121,22 +111,18 @@ public class TabTransferHandler extends TransferHandler {
         g2.dispose();
         
         if (rect.x < 0) {
-            
             rect.translate(-rect.x, 0);
         }
         
         if (rect.y < 0) {
-            
             rect.translate(0, -rect.y);
         }
         
         if (rect.x + rect.width > image.getWidth()) {
-            
             rect.width = image.getWidth() - rect.x;
         }
         
         if (rect.y + rect.height > image.getHeight()) {
-            
             rect.height = image.getHeight() - rect.y;
         }
         
@@ -152,7 +138,6 @@ public class TabTransferHandler extends TransferHandler {
             c.getRootPane().setGlassPane(new GhostGlassPane(src));
             
             if (src.dragTabIndex < 0) {
-                
                 return TransferHandler.NONE;
             }
             
@@ -169,7 +154,6 @@ public class TabTransferHandler extends TransferHandler {
     public boolean importData(TransferHandler.TransferSupport support) {
         
         if (!this.canImport(support)) {
-            
             return false;
         }
 
@@ -182,18 +166,14 @@ public class TabTransferHandler extends TransferHandler {
             int index = dl.getIndex();
             
             if (target.equals(src)) {
-                
                 src.convertTab(src.dragTabIndex, index);
-                
             } else {
-                
                 src.exportTab(src.dragTabIndex, target, index);
             }
             
             return true;
             
         } catch (UnsupportedFlavorException | IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         

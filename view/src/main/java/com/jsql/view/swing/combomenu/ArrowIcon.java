@@ -24,7 +24,6 @@ public class ArrowIcon implements Icon, SwingConstants {
     private final BasicArrowButton iconRenderer;
 
     public ArrowIcon(int direction, boolean isPressedView) {
-        
         this(DEFAULT_SIZE, direction, isPressedView);
     }
 
@@ -44,18 +43,14 @@ public class ArrowIcon implements Icon, SwingConstants {
         // Implementation by sun.awt.image
         try {
             this.iconRenderer.paintTriangle(g, x, y + 3, this.size, this.direction, this.isEnabled);
-            
         } catch(ClassCastException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 
     @Override
     public int getIconWidth() {
-        
         switch (this.direction) {
-        
             case NORTH:
             case SOUTH: return this.iconSize;
             case EAST:
@@ -66,9 +61,7 @@ public class ArrowIcon implements Icon, SwingConstants {
 
     @Override
     public int getIconHeight() {
-        
         switch (this.direction) {
-        
             case NORTH:
             case SOUTH: return this.size;
             case EAST:

@@ -28,13 +28,11 @@ public class EndProgress implements InteractionCommand {
      * @param interactionParams Element to update
      */
     public EndProgress(Object[] interactionParams) {
-        
         this.dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
     }
 
     @Override
     public void execute() {
-
-        MediatorHelper.treeDatabase().endProgess(this.dataElementDatabase);
+        MediatorHelper.treeDatabase().endProgress(this.dataElementDatabase);
     }
 }

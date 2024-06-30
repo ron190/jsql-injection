@@ -67,7 +67,6 @@ public class NetworkTable extends JTable {
         this.setModel(new DefaultTableModel() {
             
             private final String[] columns = {
-                    
                 I18nUtil.valueByKey("NETWORK_TAB_URL_COLUMN"),
                 String.format(
                     "%s (KB)",
@@ -79,13 +78,11 @@ public class NetworkTable extends JTable {
 
             @Override
             public int getColumnCount() {
-                
                 return this.columns.length;
             }
 
             @Override
             public String getColumnName(int index) {
-                
                 return this.columns[index];
             }
         });

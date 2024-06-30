@@ -16,7 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Define a Table, e.g is sent to the view by the model after injection.
+ * Define a Table, e.g. is sent to the view by the model after injection.
  * Allow to traverse upward to its corresponding database.
  */
 public class Table extends AbstractElementDatabase {
@@ -49,27 +49,24 @@ public class Table extends AbstractElementDatabase {
     // Return the parent database.
     @Override
     public AbstractElementDatabase getParent() {
-        
         return this.parentDatabase;
     }
     
     // Return the number of rows in the table.
     @Override
     public int getChildCount() {
-        
         return Integer.parseInt(this.rowCount);
     }
 
     /**
      * A readable label for the table, with number of rows, displayed
      * by the view. If parent database is the system information_schema, number
-     * of rows is unknown, e.g my_table (7 rows).
+     * of rows is unknown, e.g. my_table (7 rows).
      */
     @Override
     public String getLabelCount() {
         
-        String nbRow =
-            "information_schema".equals(this.parentDatabase.toString())
+        String nbRow = "information_schema".equals(this.parentDatabase.toString())
             ? "?"
             : this.rowCount;
         
@@ -78,10 +75,8 @@ public class Table extends AbstractElementDatabase {
         
         try {
             if (Integer.parseInt(this.rowCount) > 1) {
-                
                 sPlural = "s";
             }
-            
         } catch (NumberFormatException e) {
             
             this.rowCount = "0";

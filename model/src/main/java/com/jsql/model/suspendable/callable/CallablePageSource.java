@@ -69,7 +69,7 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     }
 
     
-    // Getters and setters
+    // Getters
 
     public String getQuery() {
         return this.query;

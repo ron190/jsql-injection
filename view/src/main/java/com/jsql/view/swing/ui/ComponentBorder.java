@@ -12,7 +12,7 @@ import java.awt.*;
  * the space reserved for painting the Border of a component.
  *
  * This class takes advantage of the knowledge that all Swing components are
- * also Containers. By default the layout manager is null, so we should be
+ * also Containers. By default, the layout manager is null, so we should be
  * able to place a child component anywhere in the parent component. In order
  * to prevent the child component from painting over top of the parent
  * component a Border is added to the parent component such that the insets of
@@ -150,9 +150,6 @@ public class ComponentBorder implements Border {
         this.gap = gap;
     }
 
-    //
-    // Implement the Border interface
-    //
     @Override
     public Insets getBorderInsets(Component c) {
         return this.borderInsets;
@@ -170,9 +167,8 @@ public class ComponentBorder implements Border {
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         
-        float x2 =
-            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
-            ? (0 + this.component.getWidth()) * this.component.getAlignmentX() + x
+        float x2 = ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))
+            ? this.component.getWidth() * this.component.getAlignmentX() + x
             : (width - this.component.getWidth()) * this.component.getAlignmentX() + x;
         
         float y2 = (height - this.component.getHeight()) * this.component.getAlignmentY() + y;
@@ -199,9 +195,7 @@ public class ComponentBorder implements Border {
         var current = parent.getBorder();
 
         if (current == null) {
-            
             parent.setBorder(this);
-            
         } else {
             
             var compound = new CompoundBorder(current, this);
@@ -254,7 +248,6 @@ public class ComponentBorder implements Border {
         }
 
         if (this.adjustInsets) {
-            
             this.adjustBorderInsets();
         }
     }

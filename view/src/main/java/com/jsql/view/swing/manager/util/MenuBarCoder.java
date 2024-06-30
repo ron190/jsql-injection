@@ -38,10 +38,8 @@ public class MenuBarCoder extends JMenuBar {
             int countItems = menuContainingItems.getItemCount();
             
             for (var i = 0 ; i < countItems ; i++) {
-                
                 this.setListener(menuContainingItems.getItem(i), listener);
             }
-            
         } else if (item != null) { // null means separator
             item.addActionListener(listener);
         }

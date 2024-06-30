@@ -9,7 +9,6 @@ public abstract class ConcreteOracleSuiteIT extends AbstractTestSuite {
     }
     
     public void config() {
-        
         /*
             Oracle Database 19c (19.3.0) Enterprise Edition and Standard Edition 2
 

@@ -16,7 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Define a Database, e.g is sent to the view by the model after injection.
+ * Define a Database, e.g. is sent to the view by the model after injection.
  */
 public class Database extends AbstractElementDatabase {
     
@@ -43,20 +43,18 @@ public class Database extends AbstractElementDatabase {
     // A database has no parent.
     @Override
     public AbstractElementDatabase getParent() {
-        
         return null;
     }
     
     // Return the number of tables in the table.
     @Override
     public int getChildCount() {
-        
         return Integer.parseInt(this.tableCount);
     }
 
     /**
      * A readable label for the database, with number of tables,
-     * displayed by the view, e.g my_database (7 tables).
+     * displayed by the view, e.g. my_database (7 tables).
      */
     @Override
     public String getLabelCount() {
@@ -66,10 +64,8 @@ public class Database extends AbstractElementDatabase {
         
         try {
             if (Integer.parseInt(this.tableCount) > 1) {
-                
                 sPlural = "s";
             }
-            
         } catch (NumberFormatException e) {
             
             this.tableCount = "0";

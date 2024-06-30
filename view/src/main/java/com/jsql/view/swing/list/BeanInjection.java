@@ -40,9 +40,7 @@ public class BeanInjection {
                 .filter(m -> m.name().equalsIgnoreCase(nameMethod))
                 .findAny()
                 .orElse(MediatorHelper.model().getMediatorMethod().getQuery());
-            
         } catch (IllegalArgumentException | NoSuchElementException e) {
-            
             this.method = MediatorHelper.model().getMediatorMethod().getQuery();
         }
         
@@ -54,9 +52,7 @@ public class BeanInjection {
                 .filter(v -> v.toString().equals(vendor))
                 .findAny()
                 .orElse(MediatorHelper.model().getMediatorVendor().getAuto());
-            
         } catch (IllegalArgumentException | NoSuchElementException e) {
-            
             this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();
         }
         

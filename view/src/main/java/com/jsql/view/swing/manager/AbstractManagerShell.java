@@ -66,14 +66,10 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             var reader = new BufferedReader(inputStreamReader)
         ) {
             String line;
-            
             while ((line = reader.readLine()) != null) {
-                
                 itemsList.add(new ItemList(line));
             }
-            
         } catch (IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
@@ -107,7 +103,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         this.add(southPanel, BorderLayout.SOUTH);
     }
     
-    protected abstract void createPayload(String pathShell, String urlShell) throws JSqlException, InterruptedException;
+    protected abstract void createPayload(String pathShell, String urlShell) throws JSqlException;
 
     private JPanel initializeRunButtonPanel() {
 
@@ -162,7 +158,6 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             String refUrlShell = AbstractManagerShell.this.textfieldUrlShell.getText();
             
             if (!refUrlShell.isEmpty() && !refUrlShell.matches("(?i)^https?://.*")) {
-                
                 if (!refUrlShell.matches("(?i)^\\w+://.*")) {
                     
                     LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Undefined shell URL protocol, forcing to [http://]");
@@ -176,10 +171,8 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             }
             
             if (StringUtils.isNotEmpty(refUrlShell)) {
-                
                 try {
                     new URI(refUrlShell);
-                    
                 } catch (URISyntaxException e) {
                     
                     LOGGER.log(
@@ -193,31 +186,20 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             String urlShellFinal = refUrlShell;
 
             AbstractManagerShell.this.getListPaths()
-            .getSelectedValuesList()
-            .forEach(pathShell -> new Thread(
-                () -> {
-                    
-                    try {
-                        AbstractManagerShell.this.createPayload(pathShell.toString(), urlShellFinal);
-                        
-                    } catch (JSqlException e) {
-                        
-                        LOGGER.log(
-                            LogLevelUtil.CONSOLE_ERROR,
-                            String.format("Payload creation error: %s", e.getMessage())
-                        );
-                        
-                    } catch (InterruptedException e) {
-                        
-                        LOGGER.log(
-                            LogLevelUtil.CONSOLE_ERROR,
-                            String.format("Payload creation error: %s", e.getMessage())
-                        );
-                        Thread.currentThread().interrupt();
-                    }
-                },
-                "ThreadGetShell"
-            ).start());
+                .getSelectedValuesList()
+                .forEach(pathShell -> new Thread(
+                    () -> {
+                        try {
+                            AbstractManagerShell.this.createPayload(pathShell.toString(), urlShellFinal);
+                        } catch (JSqlException e) {
+                            LOGGER.log(
+                                LogLevelUtil.CONSOLE_ERROR,
+                                String.format("Payload creation error: %s", e.getMessage())
+                            );
+                        }
+                    },
+                    "ThreadGetShell"
+                ).start());
         }
     }
 }

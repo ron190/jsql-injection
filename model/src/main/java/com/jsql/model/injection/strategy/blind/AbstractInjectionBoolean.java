@@ -13,7 +13,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean<T>> {
@@ -78,7 +81,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     public String inject(String sqlQuery, AbstractSuspendable suspendable) throws StoppedByUserSlidingException {
 
         // List of the characters, each one represented by an array of 8 bits
-        // e.g SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
+        // e.g. SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
         List<char[]> bytes = new ArrayList<>();
         
         // Cursor for current character position
@@ -122,16 +125,13 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                     countTasksSubmitted.set(0);
                     break;
                 }
-                
             } catch (InterruptedException e) {
                 
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
                 Thread.currentThread().interrupt();
                 
             } catch (ExecutionException e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-                
             } catch (InjectionFailureException e) {
                 
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());
@@ -147,7 +147,6 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         var result = new StringBuilder();
 
         for (char[] c: bytes) {
-
             try {
                 var charCode = Integer.parseInt(new String(c), 2);
                 var str = Character.toString((char) charCode);
@@ -203,19 +202,10 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         
         // Await for termination
         var isTerminated = false;
-        
-        try {
-            taskExecutor.shutdown();
-            isTerminated = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);
-            
-        } catch (InterruptedException e) {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-            Thread.currentThread().interrupt();
-        }
+
+        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
         
         if (!isTerminated) {
-            
             // awaitTermination timed out, interrupt everything
             taskExecutor.shutdownNow();
         }
@@ -224,7 +214,6 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         var result = new StringBuilder();
         
         for (char[] c: bytes) {
-            
             try {
                 var charCode = Integer.parseInt(new String(c), 2);
                 var str = Character.toString((char) charCode);

@@ -64,12 +64,9 @@ public class ManagerUpload extends AbstractManagerList {
             String line;
             
             while ((line = reader.readLine()) != null) {
-                
                 pathsList.add(new ItemList(line));
             }
-            
         } catch (IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
@@ -143,7 +140,6 @@ public class ManagerUpload extends AbstractManagerList {
         if (ManagerUpload.this.getListPaths().getSelectedValuesList().isEmpty()) {
             
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Select directory(ies) to upload a file into");
-            
             return;
         }
 
@@ -156,14 +152,12 @@ public class ManagerUpload extends AbstractManagerList {
             int returnVal = filechooser.showOpenDialog(MediatorHelper.frame());
             
             if (returnVal != JFileChooser.APPROVE_OPTION) {
-                
                 return;
             }
                 
             this.uploadFiles(shellURL, filechooser);
             
         } catch (NullPointerException | ClassCastException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
@@ -182,20 +176,16 @@ public class ManagerUpload extends AbstractManagerList {
                         MediatorHelper.model().getResourceAccess().uploadFile(path.toString(), shellURL.getText(), file);
                         
                     } catch (JSqlException e) {
-                        
                         LOGGER.log(
                             LogLevelUtil.CONSOLE_ERROR,
                             String.format("Payload creation error: %s", e.getMessage())
                         );
-                        
                     } catch (IOException e) {
-                        
                         LOGGER.log(
                             LogLevelUtil.CONSOLE_ERROR,
                             String.format("Posting file failed: %s", e.getMessage()),
                             e
                         );
-                        
                     } catch (InterruptedException e) {
 
                         LOGGER.log(LogLevelUtil.IGNORE, e, e);

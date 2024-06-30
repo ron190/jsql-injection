@@ -95,10 +95,8 @@ public class JPopupMenuComponent extends JPopupMenu {
     }
     
     private class PopupMenuOrientedListener implements PopupMenuListener {
-        
         @Override
         public void popupMenuWillBecomeVisible(PopupMenuEvent event) {
-            
             // Fix #47018: NullPointerException on getLocation()
             try {
                 JPopupMenuComponent.this.setLocation(MouseInfo.getPointerInfo().getLocation());
@@ -109,9 +107,7 @@ public class JPopupMenuComponent extends JPopupMenu {
                     : MouseInfo.getPointerInfo().getLocation().x,
                     MouseInfo.getPointerInfo().getLocation().y
                 );
-                
             } catch (NullPointerException e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }

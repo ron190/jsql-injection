@@ -41,13 +41,9 @@ public class NodeModelDatabase extends AbstractNodeModel {
 
     @Override
     protected Icon getLeafIcon(boolean leaf) {
-        
         if (leaf) {
-            
             return UiUtil.ICON_DATABASE_GO;
-            
         } else {
-            
             return UiUtil.ICON_DATABASE;
         }
     }
@@ -60,20 +56,16 @@ public class NodeModelDatabase extends AbstractNodeModel {
         }
     
         MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();
-        
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();
         
         // Fix #90522: ArrayIndexOutOfBoundsException on reload()
         try {
             treeModel.reload(MediatorHelper.treeDatabase().getTreeNodeModels().get(this.getElementDatabase()));
-            
         } catch (ArrayIndexOutOfBoundsException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         new SwingWorker<>() {
-            
             @Override
             protected Object doInBackground() throws Exception {
                 
@@ -88,7 +80,6 @@ public class NodeModelDatabase extends AbstractNodeModel {
 
     @Override
     public boolean isPopupDisplayable() {
-        
         return this.isLoaded() || !this.isLoaded() && this.isRunning();
     }
 

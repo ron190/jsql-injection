@@ -29,6 +29,7 @@ public class JdbcRestController {
     
     @RequestMapping("/altibase")
     public Greeting greetingAltibase(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+
         Class.forName("Altibase.jdbc.driver.AltibaseDriver");
         // docker run -it altibase/altibase
 
@@ -44,18 +45,18 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+            greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
+
         } catch (Exception e) {
-            
             greeting = this.initializeErrorMessage(e);
         }
-        
-        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
-        
+
         return greeting;
     }
     
     @RequestMapping("/ctreeace")
     public Greeting greetingCTreeAce(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+
         // c-treeACE-Express.windows.64bit.v11.5.1.64705.190310.ACE.msi
         Class.forName("ctree.jdbc.ctreeDriver");
 
@@ -71,18 +72,18 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+            greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
+
         } catch (Exception e) {
-            
             greeting = this.initializeErrorMessage(e);
         }
-        
-        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
-        
+
         return greeting;
     }
     
     @RequestMapping("/exasol")
     public Greeting greetingExasol(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+
         Class.forName("com.exasol.jdbc.EXADriver");
         // docker run --name exasoldb -p 8563:8563 --detach --privileged --stop-timeout 120  exasol/docker-db
         
@@ -98,18 +99,18 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+            greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
+
         } catch (Exception e) {
-            
             greeting = this.initializeErrorMessage(e);
         }
-        
-        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
-        
+
         return greeting;
     }
     
     @RequestMapping("/ignite")
     public Greeting greetingIgnite(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+
         Class.forName("org.apache.ignite.IgniteJdbcThinDriver");
         // docker run -d -p 10800:10800 apacheignite/ignite
         
@@ -125,18 +126,18 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+            greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
+
         } catch (Exception e) {
-            
             greeting = this.initializeErrorMessage(e);
         }
-        
-        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
-        
+
         return greeting;
     }
     
     @RequestMapping("/frontbase")
     public Greeting greetingFrontbase(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+
         /* FrontBase-8.2.18-WinNT.zip
          * sql92.exe
          * sql92#1> create database firstdb;
@@ -163,18 +164,18 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+            greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
+
         } catch (Exception e) {
-            
             greeting = this.initializeErrorMessage(e);
         }
-        
-        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
-        
+
         return greeting;
     }
     
     @RequestMapping("/iris")
     public Greeting greetingIris(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+
         Class.forName("com.intersystems.jdbc.IRISDriver");
         
         Greeting greeting = null;
@@ -189,18 +190,18 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+            greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
+
         } catch (Exception e) {
-            
             greeting = this.initializeErrorMessage(e);
         }
-        
-        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
-        
+
         return greeting;
     }
     
     @RequestMapping("/monetdb")
     public Greeting greetingMonetDB(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+
         Class.forName("nl.cwi.monetdb.jdbc.MonetDriver");
         
         Greeting greeting = null;
@@ -215,18 +216,18 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+            greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
+
         } catch (Exception e) {
-            
             greeting = this.initializeErrorMessage(e);
         }
-        
-        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
-        
+
         return greeting;
     }
     
     @RequestMapping("/mimersql")
     public Greeting greetingMimerSQL(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+
         Class.forName("com.mimer.jdbc.Driver");
         
         Greeting greeting = null;
@@ -241,18 +242,19 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+            greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
+
         } catch (Exception e) {
-            
             greeting = this.initializeErrorMessage(e);
         }
-        
-        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
-        
+
+
         return greeting;
     }
     
     @RequestMapping("/presto")
     public Greeting greetingPresto(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+
         Class.forName("com.facebook.presto.jdbc.PrestoDriver");
         
         Greeting greeting = null;
@@ -267,18 +269,19 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
+            greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
+
         } catch (Exception e) {
-            
             greeting = this.initializeErrorMessage(e);
         }
-        
-        greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
-        
+
+
         return greeting;
     }
     
     @RequestMapping("/firebird")
     public Greeting greetingFirebird(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+
         // Service Firebird Server - DefaultInstance
         Class.forName("org.firebirdsql.jdbc.FBDriver");
         
@@ -294,10 +297,9 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            
             greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
+
         } catch (Exception e) {
-            
             greeting = this.initializeErrorMessage(e);
         }
         
@@ -306,6 +308,7 @@ public class JdbcRestController {
     
     @RequestMapping("/netezza")
     public Greeting greetingNetezza(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+
         Class.forName("org.netezza.Driver");
         
         Greeting greeting;
@@ -320,10 +323,9 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            
             greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
+
         } catch (Exception e) {
-            
             greeting = this.initializeErrorMessage(e);
         }
         
@@ -332,6 +334,7 @@ public class JdbcRestController {
     
     @RequestMapping("/oracle")
     public Greeting greetingOracle(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+
         Class.forName("oracle.jdbc.OracleDriver");
         
         Greeting greeting;
@@ -346,10 +349,9 @@ public class JdbcRestController {
             while(rs.next()) {
                 result.append(rs.getString(1));
             }
-            
             greeting = new Greeting(template + StringEscapeUtils.unescapeJava(result.toString()));
+
         } catch (Exception e) {
-            
             greeting = this.initializeErrorMessage(e);
         }
         
@@ -362,22 +364,20 @@ public class JdbcRestController {
         Greeting greeting;
         
         try (org.neo4j.driver.Session session = this.driver.session()) {
+
             Result result = session.run("MATCH (n:Person) where 1="+ name +" RETURN n.name, n.from, n.title, n.hobby");
             
-            String a = result.stream().map(driverRecord ->
-            
-                driverRecord
-                .keys()
-                .stream()
-                .map(key -> key + "=" + driverRecord.get(key))
-                .collect(Collectors.joining(", ", "{", "}"))
-                
-            ).collect(Collectors.joining());
+            String a = result.stream()
+                .map(driverRecord -> driverRecord
+                    .keys()
+                    .stream()
+                    .map(key -> key + "=" + driverRecord.get(key))
+                    .collect(Collectors.joining(", ", "{", "}"))
+                ).collect(Collectors.joining());
             
             greeting = new Greeting(template+ StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(a)));
             
         } catch (Exception e) {
-            
             greeting = this.initializeErrorMessage(e);
         }
         

@@ -13,7 +13,6 @@ import java.awt.*;
 public class CreateTabHelper {
 
     protected CreateTabHelper() {
-        
         CreateTabHelper.initializeSplitOrientation();
     }
     
@@ -28,11 +27,8 @@ public class CreateTabHelper {
             int dividerLocation = splitPaneLeftRight.getDividerLocation();
             
             if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {
-                
                 splitPaneLeftRight.setLeftComponent(MediatorHelper.tabResults());
-                
             } else {
-                
                 splitPaneLeftRight.setRightComponent(MediatorHelper.tabResults());
             }
             

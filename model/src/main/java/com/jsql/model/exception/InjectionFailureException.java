@@ -12,23 +12,20 @@ package com.jsql.model.exception;
 
 /**
  * Exception class thrown during initial step of injection (aka preparation).
- * Concerns every steps before the user can interact
+ * Concerns every step before the user can interact
  * with database elements (database, table, column)
  */
 public class InjectionFailureException extends AbstractSlidingException {
     
     public InjectionFailureException() {
-        
         super("Execution stopped");
     }
     
     public InjectionFailureException(String message) {
-        
         super(message);
     }
 
     public InjectionFailureException(String message, Throwable e) {
-        
         super(message, e);
     }
 }

@@ -38,7 +38,9 @@ public class ActionSaveTab extends AbstractAction {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    private final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+    private final ReplaceFileChooser replaceFileChooser = new ReplaceFileChooser(
+        MediatorHelper.model().getMediatorUtils().getPreferencesUtil().getPathFile()
+    );
 
     public ActionSaveTab() {
         
@@ -50,7 +52,7 @@ public class ActionSaveTab extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        this.filechooser.setDialogTitle("Save Tab As");
+        this.replaceFileChooser.setDialogTitle("Save Tab As");
 
         var componentResult = MediatorHelper.tabResults().getSelectedComponent();
         
@@ -75,19 +77,16 @@ public class ActionSaveTab extends AbstractAction {
             return;
         }
         
-        int stateSave = this.filechooser.showSaveDialog(MediatorHelper.frame());
+        int stateSave = this.replaceFileChooser.showSaveDialog(MediatorHelper.frame());
         
         if (stateSave == JFileChooser.APPROVE_OPTION) {
             
-            var folderSelectedFile = this.filechooser.getCurrentDirectory().toString();
+            var folderSelectedFile = this.replaceFileChooser.getCurrentDirectory().toString();
             MediatorHelper.model().getMediatorUtils().getPreferencesUtil().set(folderSelectedFile);
             
             if (textarea instanceof JTextComponent) {
-                
                 this.saveTextToFile((JTextComponent) textarea);
-                
             } else if (textarea instanceof JTable) {
-                
                 this.saveTableToFile((JTable) textarea);
             }
         }
@@ -95,14 +94,13 @@ public class ActionSaveTab extends AbstractAction {
 
     private void saveTableToFile(JTable tableResults) {
         
-        var fileSelected = this.filechooser.getSelectedFile();
+        var fileSelected = this.replaceFileChooser.getSelectedFile();
         
         try (var fileWriterExcel = new FileWriter(fileSelected, StandardCharsets.UTF_8)) {
             
             var tableModel = tableResults.getModel();
             
             for (var i = 2 ; i < tableModel.getColumnCount() ; i++) {
-                
                 fileWriterExcel.write(tableModel.getColumnName(i) + "\t");
             }
             
@@ -114,15 +112,12 @@ public class ActionSaveTab extends AbstractAction {
                     
                     // Cell empty when string was too long to be injected (columnTooLong|cellEmpty|cellEmpty).
                     if (tableModel.getValueAt(i, j) == null) {
-                        
                         fileWriterExcel.write("\t");
-                        
                     } else {
                         
                         // Encode line break.
                         var line = tableModel.getValueAt(i, j).toString();
-                        line =
-                            line
+                        line = line
                             .replace("\n", "\\n")
                             .replace("\t", "\\t");
                         line = line + "\t";
@@ -132,9 +127,7 @@ public class ActionSaveTab extends AbstractAction {
                 
                 fileWriterExcel.write("\n");
             }
-            
         } catch (IOException e) {
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 String.format("Error writing to %s", fileSelected.getName()),
@@ -145,16 +138,14 @@ public class ActionSaveTab extends AbstractAction {
 
     private void saveTextToFile(JTextComponent textarea) {
         
-        var fileSelected = this.filechooser.getSelectedFile();
+        var fileSelected = this.replaceFileChooser.getSelectedFile();
         
         try (
             var fileWriter = new FileWriter(fileSelected, StandardCharsets.UTF_8);
             var fileOut = new BufferedWriter(fileWriter)
         ) {
             textarea.write(fileOut);
-            
         } catch (IOException e) {
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 String.format("Error writing to %s", fileSelected.getName()),

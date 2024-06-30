@@ -20,6 +20,11 @@ public class SqliteNormalSuiteIT extends ConcreteSqliteSuiteIT {
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
             "http://localhost:8080/normal?tenant=sqlite&name="
         );
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true);
         
         model
         .getMediatorUtils()

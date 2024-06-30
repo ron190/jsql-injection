@@ -19,9 +19,6 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkTimeStrategy implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
     public MarkTimeStrategy(Object[] interactionParams) {
         // Do nothing
     }
@@ -30,7 +27,6 @@ public class MarkTimeStrategy implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getTime();
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategy(strategy);
     }
 }

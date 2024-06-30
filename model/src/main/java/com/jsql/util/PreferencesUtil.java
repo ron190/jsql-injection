@@ -17,7 +17,7 @@ public class PreferencesUtil {
 
     private boolean isCheckingUpdate = true;
 
-    // True if bugs are sent to Github.
+    // True if bugs are sent to GitHub.
     private boolean isReportingBugs = true;
     
     private boolean is4K = false;
@@ -89,71 +89,71 @@ public class PreferencesUtil {
     public void loadSavedPreferences() {
         
         // Use Preferences API to persist proxy configuration
-        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
+        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
         
-        this.pathFile = prefs.get("pathFile", SystemUtils.USER_DIR);
+        this.pathFile = preferences.get("pathFile", SystemUtils.USER_DIR);
         
-        this.isCheckingUpdate = prefs.getBoolean("isCheckingUpdate", true);
-        this.isReportingBugs = prefs.getBoolean("isReportingBugs", true);
+        this.isCheckingUpdate = preferences.getBoolean("isCheckingUpdate", true);
+        this.isReportingBugs = preferences.getBoolean("isReportingBugs", true);
         
-        this.isFollowingRedirection = prefs.getBoolean("isFollowingRedirection", false);
-        this.isHttp2Disabled = prefs.getBoolean("isHttp2Disabled", false);
-        this.isNotInjectingMetadata = prefs.getBoolean("isNotInjectingMetadata", false);
-        this.isNotSearchingCharInsertion = prefs.getBoolean("isNotSearchingCharInsertion", false);
-        this.isNotShowingVulnReport = prefs.getBoolean("isNotShowingVulnReport", false);
+        this.isFollowingRedirection = preferences.getBoolean("isFollowingRedirection", false);
+        this.isHttp2Disabled = preferences.getBoolean("isHttp2Disabled", false);
+        this.isNotInjectingMetadata = preferences.getBoolean("isNotInjectingMetadata", false);
+        this.isNotSearchingCharInsertion = preferences.getBoolean("isNotSearchingCharInsertion", false);
+        this.isNotShowingVulnReport = preferences.getBoolean("isNotShowingVulnReport", false);
 
-        this.isCheckingAllParam = prefs.getBoolean("isCheckingAllParam", false);
-        this.isCheckingAllURLParam = prefs.getBoolean("isCheckingAllURLParam", false);
-        this.isCheckingAllRequestParam = prefs.getBoolean("isCheckingAllRequestParam", false);
-        this.isCheckingAllHeaderParam = prefs.getBoolean("isCheckingAllHeaderParam", false);
-        this.isCheckingAllBase64Param = prefs.getBoolean("isCheckingAllBase64Param", false);
-        this.isCheckingAllJsonParam = prefs.getBoolean("isCheckingAllJsonParam", false);
-        this.isCheckingAllCookieParam = prefs.getBoolean("isCheckingAllCookieParam", false);
-        this.isCheckingAllSoapParam = prefs.getBoolean("isCheckingAllSoapParam", false);
+        this.isCheckingAllParam = preferences.getBoolean("isCheckingAllParam", false);
+        this.isCheckingAllURLParam = preferences.getBoolean("isCheckingAllURLParam", false);
+        this.isCheckingAllRequestParam = preferences.getBoolean("isCheckingAllRequestParam", false);
+        this.isCheckingAllHeaderParam = preferences.getBoolean("isCheckingAllHeaderParam", false);
+        this.isCheckingAllBase64Param = preferences.getBoolean("isCheckingAllBase64Param", false);
+        this.isCheckingAllJsonParam = preferences.getBoolean("isCheckingAllJsonParam", false);
+        this.isCheckingAllCookieParam = preferences.getBoolean("isCheckingAllCookieParam", false);
+        this.isCheckingAllSoapParam = preferences.getBoolean("isCheckingAllSoapParam", false);
         
-        this.isPerfIndexDisabled = prefs.getBoolean("isPerfIndexDisabled", false);
-        this.isDefaultStrategy = prefs.getBoolean("isDefaultStrategy", false);
-        this.isZipStrategy = prefs.getBoolean("isZipStrategy", false);
-        this.isDiosStrategy = prefs.getBoolean("isDiosStrategy", false);
-        this.isUrlEncodingDisabled = prefs.getBoolean("isUrlEncodingDisabled", false);
-        this.isUrlRandomSuffixDisabled = prefs.getBoolean("isUrlRandomSuffixDisabled", false);
+        this.isPerfIndexDisabled = preferences.getBoolean("isPerfIndexDisabled", false);
+        this.isDefaultStrategy = preferences.getBoolean("isDefaultStrategy", false);
+        this.isZipStrategy = preferences.getBoolean("isZipStrategy", false);
+        this.isDiosStrategy = preferences.getBoolean("isDiosStrategy", false);
+        this.isUrlEncodingDisabled = preferences.getBoolean("isUrlEncodingDisabled", false);
+        this.isUrlRandomSuffixDisabled = preferences.getBoolean("isUrlRandomSuffixDisabled", false);
 
-        this.isParsingForm = prefs.getBoolean("isParsingForm", false);
-        this.isNotTestingConnection = prefs.getBoolean("isNotTestingConnection", false);
-        this.isNotProcessingCookies = prefs.getBoolean("isNotProcessingCookies", false);
-        this.isProcessingCsrf = prefs.getBoolean("isProcessingCsrf", false);
+        this.isParsingForm = preferences.getBoolean("isParsingForm", false);
+        this.isNotTestingConnection = preferences.getBoolean("isNotTestingConnection", false);
+        this.isNotProcessingCookies = preferences.getBoolean("isNotProcessingCookies", false);
+        this.isProcessingCsrf = preferences.getBoolean("isProcessingCsrf", false);
         
-        this.isTamperingBase64 = prefs.getBoolean("isTamperingBase64", false);
-        this.isTamperingEqualToLike = prefs.getBoolean("isTamperingEqualToLike", false);
-        this.isTamperingFunctionComment = prefs.getBoolean("isTamperingFunctionComment", false);
-        this.isTamperingVersionComment = prefs.getBoolean("isTamperingVersionComment", false);
-        this.isTamperingRandomCase = prefs.getBoolean("isTamperingRandomCase", false);
-        this.isTamperingEval = prefs.getBoolean("isTamperingEval", false);
-        this.isTamperingSpaceToDashComment = prefs.getBoolean("isTamperingSpaceToDashComment", false);
-        this.isTamperingSpaceToMultilineComment = prefs.getBoolean("isTamperingSpaceToMultilineComment", false);
-        this.isTamperingSpaceToSharpComment = prefs.getBoolean("isTamperingSpaceToSharpComment", false);
+        this.isTamperingBase64 = preferences.getBoolean("isTamperingBase64", false);
+        this.isTamperingEqualToLike = preferences.getBoolean("isTamperingEqualToLike", false);
+        this.isTamperingFunctionComment = preferences.getBoolean("isTamperingFunctionComment", false);
+        this.isTamperingVersionComment = preferences.getBoolean("isTamperingVersionComment", false);
+        this.isTamperingRandomCase = preferences.getBoolean("isTamperingRandomCase", false);
+        this.isTamperingEval = preferences.getBoolean("isTamperingEval", false);
+        this.isTamperingSpaceToDashComment = preferences.getBoolean("isTamperingSpaceToDashComment", false);
+        this.isTamperingSpaceToMultilineComment = preferences.getBoolean("isTamperingSpaceToMultilineComment", false);
+        this.isTamperingSpaceToSharpComment = preferences.getBoolean("isTamperingSpaceToSharpComment", false);
         
-        this.is4K = prefs.getBoolean("is4K", false);
-        this.isCsrfUserTag = prefs.getBoolean("isCsrfUserTag", false);
-        this.csrfUserTag = prefs.get("csrfUserTag", "");
-        this.csrfUserTagOutput = prefs.get("csrfUserTagOutput", "");
-        this.isLimitingThreads = prefs.getBoolean("isLimitingThreads", true);
-        this.countLimitingThreads = prefs.getInt("countLimitingThreads", 5);
-        this.isConnectionTimeout = prefs.getBoolean("isConnectionTimeout", false);
-        this.countConnectionTimeout = prefs.getInt("countConnectionTimeout", 15);
-        this.isUnicodeDecodeDisabled = prefs.getBoolean("isUnicodeDecodeDisabled", false);
-        this.isUrlDecodeDisabled = prefs.getBoolean("isUrlDecodeDisabled", false);
-        this.countNormalIndex = prefs.getInt("countNormalIndex", 50);
-        this.isLimitingNormalIndex = prefs.getBoolean("isLimitingNormalIndex", false);
-        this.countSleepTimeStrategy = prefs.getInt("countSleepTimeStrategy", 5);
-        this.isLimitingSleepTimeStrategy = prefs.getBoolean("isLimitingSleepTimeStrategy", false);
+        this.is4K = preferences.getBoolean("is4K", false);
+        this.isCsrfUserTag = preferences.getBoolean("isCsrfUserTag", false);
+        this.csrfUserTag = preferences.get("csrfUserTag", "");
+        this.csrfUserTagOutput = preferences.get("csrfUserTagOutput", "");
+        this.isLimitingThreads = preferences.getBoolean("isLimitingThreads", true);
+        this.countLimitingThreads = preferences.getInt("countLimitingThreads", 5);
+        this.isConnectionTimeout = preferences.getBoolean("isConnectionTimeout", false);
+        this.countConnectionTimeout = preferences.getInt("countConnectionTimeout", 15);
+        this.isUnicodeDecodeDisabled = preferences.getBoolean("isUnicodeDecodeDisabled", false);
+        this.isUrlDecodeDisabled = preferences.getBoolean("isUrlDecodeDisabled", false);
+        this.countNormalIndex = preferences.getInt("countNormalIndex", 50);
+        this.isLimitingNormalIndex = preferences.getBoolean("isLimitingNormalIndex", false);
+        this.countSleepTimeStrategy = preferences.getInt("countSleepTimeStrategy", 5);
+        this.isLimitingSleepTimeStrategy = preferences.getBoolean("isLimitingSleepTimeStrategy", false);
 
-        this.isStrategyTimeDisabled = prefs.getBoolean("isStrategyTimeDisabled", false);
-        this.isStrategyBlindDisabled = prefs.getBoolean("isStrategyBlindDisabled", false);
-        this.isStrategyMultibitDisabled = prefs.getBoolean("isStrategyMultibitDisabled", false);
-        this.isStrategyStackedDisabled = prefs.getBoolean("isStrategyStackedDisabled", false);
-        this.isStrategyErrorDisabled = prefs.getBoolean("isStrategyErrorDisabled", false);
-        this.isStrategyNormalDisabled = prefs.getBoolean("isStrategyNormalDisabled", false);
+        this.isStrategyTimeDisabled = preferences.getBoolean("isStrategyTimeDisabled", false);
+        this.isStrategyBlindDisabled = preferences.getBoolean("isStrategyBlindDisabled", false);
+        this.isStrategyMultibitDisabled = preferences.getBoolean("isStrategyMultibitDisabled", false);
+        this.isStrategyStackedDisabled = preferences.getBoolean("isStrategyStackedDisabled", false);
+        this.isStrategyErrorDisabled = preferences.getBoolean("isStrategyErrorDisabled", false);
+        this.isStrategyNormalDisabled = preferences.getBoolean("isStrategyNormalDisabled", false);
     }
     
     /**
@@ -233,8 +233,8 @@ public class PreferencesUtil {
         
         this.pathFile = path;
         
-        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-        prefs.put("pathFile", this.pathFile);
+        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
+        preferences.put("pathFile", this.pathFile);
     }
     
     

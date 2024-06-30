@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 public class Crc16Helper {
     
     private Crc16Helper() {
-        
+        // Util class
     }
     
     public static String generateCRC16(String baseString) {

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A label to mimic a radiobox contained in a group.
+ * A label to mimic a radio button contained in a group.
  * Display as underlined if label is selected.
  */
 public abstract class AbstractRadioLink extends JLabel {
@@ -25,7 +25,6 @@ public abstract class AbstractRadioLink extends JLabel {
         this(string);
         
         if (isSelected) {
-            
             this.setUnderlined();
         }
     }
@@ -71,29 +70,13 @@ public abstract class AbstractRadioLink extends JLabel {
         
         this.setFont(font.deriveFont(attributes));
     }
-
-    /**
-     * Change font of radio label to default.
-     */
-    public void removeFont() {
-        
-        var font = this.getFont();
-        Map<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
-        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
-        
-        this.setFont(font.deriveFont(attributes));
-    }
     
     public void setSelected() {
         
         for (JLabel label: this.getGroup()) {
-            
             if (this != label) {
-                
                 label.setFont(UiUtil.FONT_NON_MONO);
-                
             } else {
-                
                 this.action();
             }
         }

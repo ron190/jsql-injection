@@ -19,9 +19,6 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkTimeInvulnerable implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
     public MarkTimeInvulnerable(Object[] interactionParams) {
         // Do nothing
     }
@@ -30,7 +27,6 @@ public class MarkTimeInvulnerable implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getTime();
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategyInvulnerable(strategy);
     }
 }

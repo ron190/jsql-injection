@@ -128,7 +128,6 @@ public class MediatorVendor {
                         !"CONSTRAINT".equals(columnName)
                         && !"UNIQUE".equals(columnName)
                     ) {
-
                         // Generate pattern \4\5\4\6 for injection parsing
                         resultSqlite.append((char) 4).append(columnName).append((char) 5).append("0").append((char) 4).append((char) 6);
                     }
@@ -181,7 +180,6 @@ public class MediatorVendor {
     }
     
     public boolean isSqlite() {
-        
         return this.getVendor() == this.getSqlite();
     }
     
@@ -198,7 +196,6 @@ public class MediatorVendor {
                 () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER"),
                 () -> this.injectionModel.getMediatorVendor().getVendorByUser()
             );
-            
         } else {
             
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Fingerprinting database...");
@@ -207,15 +204,13 @@ public class MediatorVendor {
             String pageSource = this.injectionModel.injectWithoutIndex(insertionCharacter, "test#vendor");
                 
             var mediatorVendor = this.injectionModel.getMediatorVendor();
-            Vendor[] vendorsWithoutAuto = mediatorVendor
-                .getVendors()
+            Vendor[] vendorsWithoutAuto = mediatorVendor.getVendors()
                 .stream()
                 .filter(v -> v != mediatorVendor.getAuto())
                 .toArray(Vendor[]::new);
             
             // Test each vendor
             for (Vendor vendorTest: vendorsWithoutAuto) {
-                
                 if (pageSource.matches("(?si)"+ vendorTest.instance().fingerprintErrorsAsRegex())) {
                     
                     vendorFound = vendorTest;
@@ -233,11 +228,15 @@ public class MediatorVendor {
         }
 
         this.injectionModel.appendAnalysisReport(
-            "# Date: " + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
-            + "\n# Tested on: " + String.format("%s (v%s)", SystemUtils.OS_NAME, SystemUtils.OS_VERSION)
-            + "\n# Tool: jSQL Injection v" + this.injectionModel.getVersionJsql() + " ("+ this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().get("github.url") +")"
-            + "\n# Database: " + vendorFound
-            + "\n\n## Vulnerability details"
+            "<span style=color:rgb(0,0,255)># Date: " + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
+            + "<br># Tested on: " + String.format("%s (v%s)", SystemUtils.OS_NAME, SystemUtils.OS_VERSION)
+            + "<br># Tool: jSQL Injection v" + this.injectionModel.getVersionJsql()
+                + " (<a href="+this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")+">"
+                + this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")
+                + "</a>)"
+            + "<br># Database: " + vendorFound
+            + "<br><br>## Vulnerability details</span>",
+            true
         );
 
         var requestSetVendor = new Request();
@@ -264,7 +263,6 @@ public class MediatorVendor {
                 () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND"),
                 () -> this.injectionModel.getMediatorVendor().getMySQL()
             );
-            
         } else {
             
             LOGGER.log(

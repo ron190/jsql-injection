@@ -43,12 +43,9 @@ public class PanelUserAgent extends JPanel {
 
             String line;
             while ((line = reader.readLine()) != null) {
-
                 jsonScan.append(line).append(System.lineSeparator());
             }
-
         } catch (IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
@@ -56,10 +53,8 @@ public class PanelUserAgent extends JPanel {
         this.textfieldCustomUserAgent.setText(jsonScan.toString());
         MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(jsonScan.toString());
         this.textfieldCustomUserAgent.getDocument().addDocumentListener(new DocumentListenerEditing() {
-
             @Override
             public void process() {
-                
                 MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(
                     PanelUserAgent.this.textfieldCustomUserAgent.getText()
                 );

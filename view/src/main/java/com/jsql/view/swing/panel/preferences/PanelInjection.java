@@ -134,9 +134,7 @@ public class PanelInjection extends JPanel {
         
         int countSleepTimeStrategy = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countSleepTimeStrategy();
         var spinnerSleepTimeStrategy = new SpinnerNumberModel(
-            countSleepTimeStrategy <= 0
-            ? 15
-            : countSleepTimeStrategy,
+            countSleepTimeStrategy <= 0 ? 15 : countSleepTimeStrategy,
             1,
             30,
             1
@@ -165,9 +163,7 @@ public class PanelInjection extends JPanel {
         
         int countNormalIndex = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countNormalIndex();
         var spinnerCountNormalIndex = new SpinnerNumberModel(
-            countNormalIndex <= 0
-            ? 50
-            : countNormalIndex,
+            countNormalIndex <= 0 ? 50 : countNormalIndex,
             1,
             200,
             1
@@ -212,7 +208,6 @@ public class PanelInjection extends JPanel {
         ActionListener actionListenerCheckingAllParam = actionEvent -> {
             
             if (actionEvent.getSource() != this.checkboxIsCheckingAllParam) {
-                
                 this.checkboxIsCheckingAllParam.setSelected(!this.checkboxIsCheckingAllParam.isSelected());
             }
             

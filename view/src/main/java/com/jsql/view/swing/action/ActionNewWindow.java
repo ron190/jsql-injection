@@ -73,9 +73,7 @@ public class ActionNewWindow extends AbstractAction {
         
         try {
             processBuilder.start();
-            
         } catch (IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }

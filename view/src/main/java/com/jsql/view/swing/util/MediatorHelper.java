@@ -35,12 +35,9 @@ public final class MediatorHelper {
     private static ManagerFile managerFile;
     private static ManagerUpload managerUpload;
     private static ManagerBruteForce managerBruteForce;
-    
-    /**
-     * Utility class.
-     */
+
     private MediatorHelper() {
-        //not called
+        // Utility class
     }
 
     public static InjectionModel model() {

@@ -25,7 +25,8 @@ public class Request {
      * List of custom parameters.
      */
     private Object[] parameters;
-    
+
+
     // Getter and setter
 
     public Interaction getMessage() {

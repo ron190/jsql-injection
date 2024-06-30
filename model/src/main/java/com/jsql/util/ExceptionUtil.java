@@ -16,8 +16,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
- * Utility class managing an exception reporting mechanism.
- * It uses Github as the issue webtracker.
+ * Utility class managing exception reporting to GitHub.
  */
 public class ExceptionUtil {
     
@@ -34,7 +33,7 @@ public class ExceptionUtil {
     
     /**
      * Handler class processing errors on top of the JVM in order to send
-     * a report to Github automatically.
+     * a report to GitHub automatically.
      */
     public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
@@ -46,6 +45,7 @@ public class ExceptionUtil {
                 () -> String.format("Unhandled Exception on %s", thread.getName()),
                 throwable
             );
+
             // Display to stdout
             LOGGER.log(
                 Level.ERROR,
@@ -93,9 +93,7 @@ public class ExceptionUtil {
                             throwable
                         );
                     }
-
                 } catch (NoSuchAlgorithmException e) {
-
                     LOGGER.log(LogLevelUtil.IGNORE, e);
                 }
             }
@@ -104,7 +102,7 @@ public class ExceptionUtil {
     
     /**
      * Add the error reporting mechanism on top of the JVM in order to
-     * intercept and process the error to Github.
+     * intercept and process the error to GitHub.
      */
     public void setUncaughtExceptionHandler() {
         
@@ -117,7 +115,6 @@ public class ExceptionUtil {
                 // We are in the event dispatching thread
                 Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())
             );
-            
         } catch (InvocationTargetException | InterruptedException e) {
             
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);

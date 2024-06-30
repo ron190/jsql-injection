@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -61,13 +60,12 @@ public class Base16 extends BaseNCodec {
      * alphabet but fall within the bounds of the array are translated to -1.
      */
     private static final byte[] UPPER_CASE_DECODE_TABLE = {
-            
-            //  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00-0f
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10-1f
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 20-2f
-             0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1, // 30-3f 0-9
-            -1, 10, 11, 12, 13, 14, 15                                      // 40-46 A-F
+        //  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00-0f
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10-1f
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 20-2f
+         0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1, // 30-3f 0-9
+        -1, 10, 11, 12, 13, 14, 15                                      // 40-46 A-F
     };
 
     /**
@@ -75,9 +73,8 @@ public class Base16 extends BaseNCodec {
      * equivalents as specified in Table 5 of RFC 4648.
      */
     private static final byte[] UPPER_CASE_ENCODE_TABLE = {
-            
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'A', 'B', 'C', 'D', 'E', 'F'
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        'A', 'B', 'C', 'D', 'E', 'F'
     };
 
     /**
@@ -86,15 +83,14 @@ public class Base16 extends BaseNCodec {
      * alphabet but fall within the bounds of the array are translated to -1.
      */
     private static final byte[] LOWER_CASE_DECODE_TABLE = {
-            
-            //  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00-0f
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10-1f
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 20-2f
-             0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1, // 30-3f 0-9
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 40-4f
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 50-5f
-            -1, 10, 11, 12, 13, 14, 15                                      // 60-66 a-f
+        //  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00-0f
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10-1f
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 20-2f
+         0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1, // 30-3f 0-9
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 40-4f
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 50-5f
+        -1, 10, 11, 12, 13, 14, 15                                      // 60-66 a-f
     };
 
     /**
@@ -102,9 +98,8 @@ public class Base16 extends BaseNCodec {
      * lower-case equivalents.
      */
     private static final byte[] LOWER_CASE_ENCODE_TABLE = {
-            
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'a', 'b', 'c', 'd', 'e', 'f'
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        'a', 'b', 'c', 'd', 'e', 'f'
     };
 
     /** Mask used to extract 4 bits, used when decoding character. */
@@ -133,7 +128,6 @@ public class Base16 extends BaseNCodec {
      * @param lowerCase if {@code true} then use a lower-case Base16 alphabet.
      */
     public Base16(final boolean lowerCase) {
-        
         this(lowerCase, DECODING_POLICY_DEFAULT);
     }
 
@@ -168,7 +162,6 @@ public class Base16 extends BaseNCodec {
             
             context.eof = true;
             if (context.ibitWorkArea != 0) {
-                
                 this.validateTrailingCharacter();
             }
             
@@ -223,12 +216,10 @@ public class Base16 extends BaseNCodec {
         
         int decoded = -1;
         if ((octet & 0xff) < this.decodeTable.length) {
-            
             decoded = this.decodeTable[octet];
         }
 
         if (decoded == -1) {
-            
             throw new IllegalArgumentException("Invalid octet in encoded value: " + (int)octet);
         }
 
@@ -239,7 +230,6 @@ public class Base16 extends BaseNCodec {
     public void encode(final byte[] data, final int offset, final int length, final Context context) {
         
         if (context.eof) {
-            
             return;
         }
 
@@ -251,7 +241,6 @@ public class Base16 extends BaseNCodec {
 
         final int size = length * BYTES_PER_ENCODED_BLOCK;
         if (size < 0) {
-            
             throw new IllegalArgumentException("Input length exceeds maximum size for encoded data: " + length);
         }
 
@@ -269,7 +258,7 @@ public class Base16 extends BaseNCodec {
     }
 
     /**
-     * Returns whether or not the {@code octet} is in the Base16 alphabet.
+     * Returns whether the {@code octet} is in the Base16 alphabet.
      *
      * @param octet The value to test.
      *
@@ -277,7 +266,6 @@ public class Base16 extends BaseNCodec {
      */
     @Override
     public boolean isInAlphabet(final byte octet) {
-        
         return (octet & 0xff) < this.decodeTable.length && this.decodeTable[octet] != -1;
     }
 
@@ -288,12 +276,12 @@ public class Base16 extends BaseNCodec {
      * @throws IllegalArgumentException if strict decoding is enabled
      */
     private void validateTrailingCharacter() {
-        
         if (this.isStrictDecoding()) {
-            
-            throw new IllegalArgumentException("Strict decoding: Last encoded character is a valid base 16 alphabet" +
-                    "character but not a possible encoding. " +
-                    "Decoding requires at least two characters to create one byte.");
+            throw new IllegalArgumentException(
+                "Strict decoding: Last encoded character is a valid base 16 alphabet" +
+                "character but not a possible encoding. " +
+                "Decoding requires at least two characters to create one byte."
+            );
         }
     }
 }

@@ -33,7 +33,7 @@ package com.jsql.view.swing.sql.lexer.syntax;
 import java.io.IOException;
 
 /**
- * JavaScriptLexer is a java script lexer.  Created with JFlex.  An example of how it is used:
+ * JavaScriptLexer is a JavaScript lexer.  Created with JFlex.  An example of how it is used:
  *  <CODE>
  *  <PRE>
  *  JavaScriptLexer shredder = new JavaScriptLexer(System.in);
@@ -65,7 +65,7 @@ public class JavaScriptLexer implements Lexer {
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
    * ZZ_LEXSTATE[l+1] is the state in the DFA for the lexical state l
    *                  at the beginning of a line
-   * l is of the form l = 2*k, k a non negative integer
+   * l is of the form l = 2*k, k a non-negative integer
    */
   private static final int ZZ_LEXSTATE[] = {
      0, 0
@@ -1083,7 +1083,6 @@ public Token getNextToken() throws IOException {
             zzMarkedPosL = zzCurrentPosL;
             if ( (zzAttributes & 8) == 8 ) break zzForAction;
           }
-
         }
       }
 
@@ -1973,6 +1972,4 @@ public Token getNextToken() throws IOException {
       }
     }
   }
-
-
 }

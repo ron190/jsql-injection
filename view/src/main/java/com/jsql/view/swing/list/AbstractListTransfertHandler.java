@@ -47,7 +47,6 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
     
     @Override
     public int getSourceActions(JComponent c) {
-        
         return TransferHandler.COPY_OR_MOVE;
     }
     
@@ -66,20 +65,16 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
     @SuppressWarnings("unchecked")
     @Override
     protected void exportDone(JComponent c, Transferable data, int action) {
-        
         if (action == TransferHandler.MOVE) {
             
             JList<ItemList> list = (JList<ItemList>) c;
             DefaultListModel<ItemList> model = (DefaultListModel<ItemList>) list.getModel();
             
             for (ItemList itemPath: this.dragPaths) {
-                
                 // Unhandled ArrayIndexOutOfBoundsException #56115 on remove()
                 try {
                     model.remove(model.indexOf(itemPath));
-                    
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
                 }
             }
@@ -90,7 +85,6 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
 
     @Override
     public boolean canImport(TransferSupport support) {
-        
         return
             support.isDataFlavorSupported(DataFlavor.stringFlavor)
             || support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
@@ -108,29 +102,20 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
         
         //This is a drop
         if (support.isDrop()) {
-            
             if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                
                 this.parseStringDrop(support, list, listModel);
-                
             } else if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                
                 this.parseFileDrop(support, list);
             }
-            
         } else {
             
             //This is a paste
             var transferableFromClipboard = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
             
             if (transferableFromClipboard != null) {
-
                 if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                    
                     this.parseStringPaste(list, listModel, transferableFromClipboard);
-                    
                 } else if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                    
                     this.parseFilePaste(list, transferableFromClipboard);
                 }
             }
@@ -142,34 +127,26 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
     @SuppressWarnings("unchecked")
     private void parseFileDrop(TransferSupport support, DnDList list) {
         
-        JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
-        int childIndex = dl.getIndex();
+        JList.DropLocation dropLocation = (JList.DropLocation) support.getDropLocation();
+        int childIndex = dropLocation.getIndex();
 
         try {
             list.dropPasteFile(
                 (List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor),
                 childIndex
             );
-            
         } catch (UnsupportedFlavorException | IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
 
     private void parseStringPaste(DnDList list, DefaultListModel<ItemList> listModel, Transferable transferableFromClipboard) {
-        
         try {
             String clipboardText = (String) transferableFromClipboard.getTransferData(DataFlavor.stringFlavor);
-
             var selectedIndexPaste = Math.max(list.getSelectedIndex(), 0);
-            
             list.clearSelection();
-
             List<Integer> selectedIndexes = this.initializeStringPaste(clipboardText, selectedIndexPaste, listModel);
-
             var selectedIndexesPasted = new int[selectedIndexes.size()];
-            
             var i = 0;
             
             for (Integer selectedIndex: selectedIndexes) {
@@ -185,9 +162,7 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
                     list.getMaxSelectionIndex()
                 )
             );
-            
         } catch (NullPointerException | UnsupportedFlavorException | IOException e) {
-            
             // Fix #8831: Multiple Exception on scrollRectToVisible()
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
@@ -195,7 +170,6 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
 
     @SuppressWarnings("unchecked")
     private void parseFilePaste(DnDList list, Transferable transferableFromClipboard) {
-        
         try {
             var selectedIndex = Math.max(list.getSelectedIndex(), 0);
             list.clearSelection();
@@ -204,7 +178,6 @@ public abstract class AbstractListTransfertHandler extends TransferHandler {
                 selectedIndex
             );
         } catch (UnsupportedFlavorException | IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }

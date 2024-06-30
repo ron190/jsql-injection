@@ -18,7 +18,6 @@ public class SilentDeleteTextAction extends TextAction {
     public SilentDeleteTextAction(String name, Action deleteAction) {
         
         super(name);
-        
         this.deleteAction = deleteAction;
     }
     
@@ -34,10 +33,8 @@ public class SilentDeleteTextAction extends TextAction {
             int mark = caret.getMark();
             
             if (DefaultEditorKit.deletePrevCharAction.equals(this.getValue(Action.NAME))) {
-                
                 // @see javax/swing/text/DefaultEditorKit.java DeletePrevCharAction
                 if (dot == 0 && mark == 0) {
-                    
                     return;
                 }
             } else {
@@ -46,7 +43,6 @@ public class SilentDeleteTextAction extends TextAction {
                 var doc = target.getDocument();
                 
                 if (dot == mark && doc.getLength() == dot) {
-                    
                     return;
                 }
             }

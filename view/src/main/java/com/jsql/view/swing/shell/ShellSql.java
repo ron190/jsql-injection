@@ -36,7 +36,6 @@ public class ShellSql extends AbstractShell {
 
     @Override
     public void action(String cmd, UUID terminalID, String wbhPath, String... arg) {
-        
         MediatorHelper.model().getResourceAccess().runSqlShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
     }
 }

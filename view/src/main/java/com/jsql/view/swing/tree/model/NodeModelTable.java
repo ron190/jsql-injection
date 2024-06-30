@@ -40,30 +40,23 @@ public class NodeModelTable extends AbstractNodeModel {
      * @param table Element table coming from model
      */
     public NodeModelTable(Table table) {
-        
         super(table);
     }
 
     @Override
     protected Icon getLeafIcon(boolean leaf) {
-        
         if (leaf) {
-            
             return UiUtil.ICON_TABLE_GO;
-            
         } else {
-            
             return UiUtil.ICON_TABLE;
         }
     }
 
     @Override
     protected void displayProgress(PanelNode panelNode, DefaultMutableTreeNode currentNode) {
-        
         if ("information_schema".equals(this.getParent().toString())) {
             
             panelNode.showLoader();
-            
             AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
             
             if (suspendableTask != null && suspendableTask.isPaused()) {
@@ -72,9 +65,7 @@ public class NodeModelTable extends AbstractNodeModel {
                 animatedGifPaused.setImageObserver(new ImageObserverAnimated(MediatorHelper.treeDatabase(), currentNode));
                 panelNode.setLoaderIcon(animatedGifPaused);
             }
-            
         } else {
-            
             super.displayProgress(panelNode, currentNode);
         }
     }
@@ -82,8 +73,7 @@ public class NodeModelTable extends AbstractNodeModel {
     @Override
     public void runAction() {
         
-        // Prevent double thread run
-        if (this.isRunning()) {
+        if (this.isRunning()) {  // Prevent double thread run
             return;
         }
             
@@ -253,7 +243,6 @@ public class NodeModelTable extends AbstractNodeModel {
     
     @Override
     public boolean isPopupDisplayable() {
-        
         return this.isLoaded() || !this.isLoaded() && this.isRunning();
     }
 }

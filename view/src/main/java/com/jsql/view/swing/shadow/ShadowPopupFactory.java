@@ -78,7 +78,7 @@ public final class ShadowPopupFactory extends PopupFactory {
 
     /**
      * The PopupFactory used before this PopupFactory has been installed
-     * in {@code #install}. Used to restored the original state
+     * in {@code #install}. Used to restore the original state
      * in {@code #uninstall}.
      */
     private final PopupFactory storedFactory;
@@ -102,7 +102,7 @@ public final class ShadowPopupFactory extends PopupFactory {
      * a NullPointerException when we call {@code #getPopup}.<p>
      *
      * The Mac case shows that we may have problems replacing
-     * non PopupFactory instances. Therefore we should consider
+     * non PopupFactory instances. Therefore, we should consider
      * replacing only instances of PopupFactory.
      *
      * @see #uninstall()
@@ -110,14 +110,12 @@ public final class ShadowPopupFactory extends PopupFactory {
     public static void install() {
         
         if (SystemUtils.IS_OS_MAC) {
-            
             return;
         }
 
         var factory = PopupFactory.getSharedInstance();
         
         if (factory instanceof ShadowPopupFactory) {
-            
             return;
         }
 
@@ -135,14 +133,12 @@ public final class ShadowPopupFactory extends PopupFactory {
         var factory = PopupFactory.getSharedInstance();
         
         if (!(factory instanceof ShadowPopupFactory)) {
-            
             return;
         }
 
         PopupFactory stored = ((ShadowPopupFactory) factory).storedFactory;
         PopupFactory.setSharedInstance(stored);
     }
-
 
     /**
      * Creates a {@code Popup} for the Component {@code owner}
@@ -156,7 +152,7 @@ public final class ShadowPopupFactory extends PopupFactory {
      * {@code Popup} creates to. A null {@code owner} implies there
      * is no valid parent. {@code x} and
      * {@code y} specify the preferred initial location to place
-     * the {@code Popup} at. Based on screen size, or other paramaters,
+     * the {@code Popup} at. Based on screen size, or other parameters,
      * the {@code Popup} may not display at {@code x} and
      * {@code y}.<p>
      *

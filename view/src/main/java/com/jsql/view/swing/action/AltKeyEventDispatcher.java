@@ -23,25 +23,20 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
         // => AltGr:press Alt:press AltGr:release Alt:release
         // AltGr keycode is the same as Ctrl
         if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
-            
             this.wasAltGraphPressed = true;
         }
         
-        boolean isAltDPressed =
-            keyEvent.isAltDown()
+        boolean isAltDPressed = keyEvent.isAltDown()
             && keyEvent.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D);
         
-        boolean isAltReleased =
-            keyEvent.getKeyCode() == KeyEvent.VK_ALT
+        boolean isAltReleased = keyEvent.getKeyCode() == KeyEvent.VK_ALT
             && keyEvent.getModifiersEx() == (InputEvent.ALT_DOWN_MASK & KeyEvent.KEY_RELEASED);
         
-        boolean isAltPressed =
-            keyEvent.isAltDown()
+        boolean isAltPressed = keyEvent.isAltDown()
             && keyEvent.getKeyCode() == KeyEvent.VK_ALT
             && !this.wasAltGraphPressed;
         
-        boolean wasAltPressedAlready =
-            !this.wasAltDPressed
+        boolean wasAltPressedAlready = !this.wasAltDPressed
             && !this.wasAltPressed
             && !this.wasAltGraphPressed;
         
@@ -75,17 +70,13 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
         
         // Avoid flickering and AltGr pollution
         if (wasAltPressedAlready) {
-            
             if (MenuSelectionManager.defaultManager().getSelectedPath().length > 0) {
-                
                 MenuSelectionManager.defaultManager().clearSelectedPath();
-                
             } else if (!MediatorHelper.panelAddressBar().isAdvanceActivated()) {
                 
                 MediatorHelper.menubar().setVisible(!MediatorHelper.menubar().isVisible());
                 this.wasAltGraphPressed = false;
             }
-            
         } else {
             
             this.wasAltDPressed = false;

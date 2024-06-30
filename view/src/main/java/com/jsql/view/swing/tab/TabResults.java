@@ -15,6 +15,7 @@ import com.jsql.util.I18nUtil;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.action.HotkeyUtil;
+import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.scrollpane.LightScrollPaneShell;
 import com.jsql.view.swing.shell.ShellSql;
@@ -31,7 +32,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -53,27 +56,51 @@ public class TabResults extends DnDTabbedPane {
     public TabResults() {
         
         this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-
         this.setTransferHandler(new TabTransferHandler());
 
-        // Add hotkeys to rootpane ctrl-tab, ctrl-shift-tab, ctrl-w
+        // Add hotkeys to root-pane ctrl-tab, ctrl-shift-tab, ctrl-w
         HotkeyUtil.addShortcut(this);
     }
 
     public void createFileTab(String label, String content, String path) {
 
-        this.createReportTab(label, content, path);
-        MediatorHelper.tabManagers().createFileTab(path, label);
+        JTextArea fileText = new JPopupTextArea().getProxy();
+        fileText.setText(content);
+        fileText.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));
+        fileText.setCaretPosition(0);
+
+        this.createTextTab(label, path, fileText);
+        MediatorHelper.tabManagers().addToLists(path, label);
     }
 
     public void createReportTab(String label, String content, String path) {
 
-        JTextArea fileText = new JPopupTextArea().getProxy();
-        fileText.setText(content);
-        fileText.setFont(new Font(UiUtil.FONT_NAME_MONO_NON_ASIAN, Font.PLAIN, 14));
-        var scroller = new LightScrollPane(1, 0, 0, 0, fileText);
+        JEditorPane editorPane = new JEditorPane();
+        editorPane.setContentType("text/html");
+        editorPane.setText("<html><span style=\"white-space: nowrap; font-family:'"+ UiUtil.FONT_NAME_MONO_NON_ASIAN +"'\">" + content + "</span></html>");
+        editorPane.setDragEnabled(true);
+        editorPane.setEditable(false);
+        editorPane.setCaretPosition(0);
 
-        fileText.setCaretPosition(0);
+        editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));
+
+        editorPane.addHyperlinkListener(linkEvent -> {
+            if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {
+                try {
+                    Desktop.getDesktop().browse(linkEvent.getURL().toURI());
+                } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
+                    LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Browsing to Url failed", e);
+                }
+            }
+        });
+
+        this.createTextTab(label, path, editorPane);
+    }
+
+    public void createTextTab(String label, String path, JComponent componentText) {
+
+        var scroller = new LightScrollPane(1, 0, 0, 0, componentText);
+
         this.addTab(label + StringUtils.SPACE, scroller);
 
         // Focus on the new tab
@@ -89,7 +116,6 @@ public class TabResults extends DnDTabbedPane {
     }
     
     public void createShell(String url, String path) {
-        
         try {
             var terminalID = UUID.randomUUID();
             var terminal = new ShellWeb(terminalID, url);
@@ -121,22 +147,18 @@ public class TabResults extends DnDTabbedPane {
             terminal.requestFocusInWindow();
             
         } catch (MalformedURLException | URISyntaxException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect shell Url", e);
         }
     }
     
     public void createSQLShellTab(String url, String user, String pass, String path) {
-        
         try {
             var terminalID = UUID.randomUUID();
-            
             var terminal = new ShellSql(terminalID, url, user, pass);
-            
+
             MediatorHelper.frame().getConsoles().put(terminalID, terminal);
     
             LightScrollPane scroller = new LightScrollPaneShell(terminal);
-            
             this.addTab("SQL shell ", scroller);
     
             // Focus on the new tab
@@ -161,7 +183,6 @@ public class TabResults extends DnDTabbedPane {
             terminal.requestFocusInWindow();
             
         } catch (MalformedURLException | URISyntaxException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect shell Url", e);
         }
     }

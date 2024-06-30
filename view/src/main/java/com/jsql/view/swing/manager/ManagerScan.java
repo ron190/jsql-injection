@@ -79,7 +79,6 @@ public class ManagerScan extends AbstractManagerList {
         dndListScan.addListSelectionListener(e -> {
             
             if (dndListScan.getSelectedValue() == null) {
-                
                 return;
             }
             
@@ -91,26 +90,18 @@ public class ManagerScan extends AbstractManagerList {
             
             String requestType = beanInjection.getRequestType();
             if (requestType != null && !requestType.isEmpty()) {
-                
                 MediatorHelper.panelAddressBar().getRadioRequest().setText(requestType);
-                
             } else {
-                
                 MediatorHelper.panelAddressBar().getRadioRequest().setText("GET");
             }
             
             AbstractMethodInjection method = beanInjection.getMethodInstance();
             
             if (method == MediatorHelper.model().getMediatorMethod().getHeader()) {
-                
                 MediatorHelper.panelAddressBar().getRadioHeader().setSelected();
-                
             } else if (method == MediatorHelper.model().getMediatorMethod().getRequest()) {
-                
                 MediatorHelper.panelAddressBar().getRadioRequest().setSelected();
-                
             } else {
-                
                 MediatorHelper.panelAddressBar().getRadioQueryString().setSelected();
             }
         });
@@ -153,12 +144,9 @@ public class ManagerScan extends AbstractManagerList {
             
             String line;
             while ((line = reader.readLine()) != null) {
-                
                 jsonScan.append(line);
             }
-            
         } catch (IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
@@ -182,9 +170,7 @@ public class ManagerScan extends AbstractManagerList {
                 
                 itemsList.add(new ItemListScan(beanInjection));
             }
-            
         } catch (JSONException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
@@ -209,7 +195,6 @@ public class ManagerScan extends AbstractManagerList {
             if (dndListScan.getSelectedValuesList().isEmpty()) {
                 
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Select URL(s) to scan");
-                
                 return;
             }
             
@@ -224,7 +209,6 @@ public class ManagerScan extends AbstractManagerList {
                         
                         DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) dndListScan.getModel();
                         for (var i = 0 ; i < listModel.getSize() ; i++) {
-                            
                             listModel.get(i).reset();
                         }
                         
@@ -261,7 +245,6 @@ public class ManagerScan extends AbstractManagerList {
         // wait for ending of ongoing interaction between two injections
         try {
             Thread.sleep(500);
-            
         } catch (InterruptedException e) {
             
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -281,7 +264,6 @@ public class ManagerScan extends AbstractManagerList {
             
             var urlItemListScan = (ItemListScan) urlItemList;
             if (MediatorHelper.model().isStoppedByUser() || MediatorHelper.model().getResourceAccess().isScanStopped()) {
-                
                 break;
             }
             
@@ -291,6 +273,7 @@ public class ManagerScan extends AbstractManagerList {
                 .stream()
                 .filter(v -> v.toString().equalsIgnoreCase(urlItemListScan.getBeanInjection().getVendor()))
                 .findAny();
+
             MediatorHelper.model().getMediatorVendor().setVendorByUser(vendor.orElse(MediatorHelper.model().getMediatorVendor().getAuto()));
 
             MediatorHelper.model().getMediatorUtils().getParameterUtil().controlInput(
@@ -304,7 +287,6 @@ public class ManagerScan extends AbstractManagerList {
             
             try {
                 Thread.sleep(500);
-                
             } catch (InterruptedException e) {
                 
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);

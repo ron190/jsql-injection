@@ -21,6 +21,12 @@ public class MySqlInsideSuiteIT extends ConcreteMySqlErrorSuiteIT {
             "http://localhost:8080/inside?tenant=mysql-error&name="
         );
 
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
+
         model.setIsScanning(true);
         
         model

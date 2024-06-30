@@ -30,15 +30,12 @@ public class HashBruter extends Bruter {
         for (int size = this.minLength; size <= this.maxLength; size++) {
             
             if (this.found || this.done) {
-                
                 break;
             }
             
             while (this.paused) {
-                
                 try {
                     Thread.sleep(500);
-                    
                 } catch (InterruptedException e) {
                     
                     LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -48,11 +45,8 @@ public class HashBruter extends Bruter {
             
             try {
                 this.generateAllPossibleCombinations(StringUtils.EMPTY, size);
-                
             } catch (NoSuchAlgorithmException e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-                
             } catch (InterruptedException e) {
                 
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -66,12 +60,10 @@ public class HashBruter extends Bruter {
     private void generateAllPossibleCombinations(String baseString, int length) throws NoSuchAlgorithmException, InterruptedException {
         
         while (this.paused) {
-            
             Thread.sleep(500);
         }
         
         if (!this.found || !this.done) {
-            
             if (baseString.length() == length) {
                 
                 switch (this.type.toLowerCase()) {
@@ -95,7 +87,6 @@ public class HashBruter extends Bruter {
                 this.count++;
                 
             } else if (baseString.length() < length) {
-                
                 for (String element: this.characters) {
                     this.generateAllPossibleCombinations(baseString + element, length);
                 }

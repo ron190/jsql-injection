@@ -37,9 +37,7 @@ public class BorderRoundBlu extends AbstractBorder {
             // Fix #42289: UnsatisfiedLinkError on fill()
             try {
                 g2.fill(corner);
-                
             } catch (NoClassDefFoundError | UnsatisfiedLinkError e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
@@ -49,9 +47,7 @@ public class BorderRoundBlu extends AbstractBorder {
         // Fix #55411: NoClassDefFoundError on draw()
         try {
             g2.draw(round);
-            
         } catch (NoClassDefFoundError e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
             
@@ -60,7 +56,6 @@ public class BorderRoundBlu extends AbstractBorder {
     
     @Override
     public Insets getBorderInsets(Component c) {
-        
         return new Insets(4, 8, 4, 8);
     }
     

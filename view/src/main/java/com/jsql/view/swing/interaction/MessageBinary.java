@@ -27,7 +27,6 @@ public class MessageBinary implements InteractionCommand {
      * @param interactionParams Text to append
      */
     public MessageBinary(Object[] interactionParams) {
-        
         this.text = (String) interactionParams[0];
     }
 
@@ -35,7 +34,6 @@ public class MessageBinary implements InteractionCommand {
     public void execute() {
         
         MediatorHelper.panelConsoles().messageBinary(this.text);
-        
         MediatorHelper.tabConsoles().highlightTab("Boolean");
     }
 }

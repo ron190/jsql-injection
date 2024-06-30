@@ -26,17 +26,10 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.Map;
 
-/**
- * Append a text to the tab Header.
- */
 public class MessageHeader implements InteractionCommand {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
-    // The text to append to the tab
     private final String url;
     private final String post;
     private final Map<String, String> header;
@@ -47,9 +40,6 @@ public class MessageHeader implements InteractionCommand {
     private final String metadataStrategy;
     private final AbstractCallableBoolean<?> metadataBoolean;
 
-    /**
-     * @param interactionParams Text to append
-     */
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
         
@@ -78,7 +68,6 @@ public class MessageHeader implements InteractionCommand {
         
         try {
             model.addRow(new Object[] {
-                    
                 this.url,
                 this.size,
                 this.metadataStrategy,
@@ -93,7 +82,6 @@ public class MessageHeader implements InteractionCommand {
             MediatorHelper.tabConsoles().highlightTab("Network");
             
         } catch(NullPointerException | IndexOutOfBoundsException e) {
-            
             // Fix #4658, #2224, #1797 on model.addRow()
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }

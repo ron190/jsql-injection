@@ -7,7 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-//TODO Time not working
+// TODO Time not working
 public class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIT {
 
     @Override

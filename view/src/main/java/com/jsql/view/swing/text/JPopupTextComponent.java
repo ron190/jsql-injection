@@ -44,7 +44,6 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
         super(proxy);
 
         this.getProxy().setComponentPopupMenu(new JPopupMenuText(this.getProxy()));
-
         this.getProxy().setDragEnabled(true);
 
         var undoRedoManager = new UndoManager();
@@ -60,23 +59,17 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
 
     private void initializeUndo(final UndoManager undo) {
         
-        // Create an undo action and add it to the text component
-        final var undoIdentifier = "Undo";
+        final var undoIdentifier = "Undo";  // Create an undo action and add it to the text component
         
         this.getProxy().getActionMap().put(undoIdentifier, new AbstractAction(undoIdentifier) {
-            
             @Override
             public void actionPerformed(ActionEvent evt) {
-                
                 // Unhandled ArrayIndexOutOfBoundsException #92146 on undo()
                 try {
                     if (undo.canUndo()) {
-                        
                         undo.undo();
                     }
-                    
                 } catch (ArrayIndexOutOfBoundsException | CannotUndoException e) {
-                    
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 }
             }
@@ -88,22 +81,16 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
 
     private void initializeRedo(final UndoManager undo) {
         
-        // Create a redo action and add it to the text component
-        final var redoIdentifier = "Redo";
+        final var redoIdentifier = "Redo";  // Create a redo action and add it to the text component
         
         this.getProxy().getActionMap().put(redoIdentifier, new AbstractAction(redoIdentifier) {
-            
             @Override
             public void actionPerformed(ActionEvent evt) {
-                
                 try {
                     if (undo.canRedo()) {
-                        
                         undo.redo();
                     }
-                    
                 } catch (CannotRedoException e) {
-                    
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 }
             }
@@ -115,8 +102,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
 
     private void makeDeleteSilent() {
         
-        // Silent delete
-        var actionMap = this.getProxy().getActionMap();
+        var actionMap = this.getProxy().getActionMap();  // Silent delete
 
         String key = DefaultEditorKit.deletePrevCharAction;
         actionMap.put(key, new SilentDeleteTextAction(key, actionMap.get(key)));

@@ -28,7 +28,6 @@ public class Db2ErrorSuiteIT extends ConcreteDb2SuiteIT {
         .getPreferencesUtil()
         .withIsNotSearchingCharInsertion(true)
         .withIsStrategyBlindDisabled(true)
-        .withIsStrategyTimeDisabled(true)
         .withIsStrategyStackedDisabled(true)
         .withIsStrategyMultibitDisabled(true);
 

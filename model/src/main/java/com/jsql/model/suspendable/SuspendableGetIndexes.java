@@ -10,7 +10,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.concurrent.*;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
 import java.util.regex.Pattern;
 
 /**
@@ -47,7 +50,6 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
         // 7330+1 allows to exclude false positive when page contains injection URL
         // Search if the source contains 1337[index]7331
         for (nbIndex = 1 ; nbIndex <= countNormalIndex ; nbIndex++) {
-            
             taskCompletionService.submit(
                 new CallablePageSource(
                     this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),
@@ -93,20 +95,15 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                     break;
                 }
             }
-            
-            // End the job
-            taskExecutor.shutdown();
-            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
-                taskExecutor.shutdownNow();
-            }
-            
+
+            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+
         } catch (InterruptedException e) {
-            
+
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
-            
+
         } catch (ExecutionException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 

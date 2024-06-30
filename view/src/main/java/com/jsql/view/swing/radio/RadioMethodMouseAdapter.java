@@ -30,13 +30,9 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
         if (radio.isActivable() && SwingUtilities.isLeftMouseButton(e)) {
             
             for (JLabel label: radio.getGroup()) {
-                
                 if (e.getComponent() != label) {
-                    
                     label.setFont(UiUtil.FONT_NON_MONO);
-                    
                 } else {
-                    
                     radio.action();
                 }
             }

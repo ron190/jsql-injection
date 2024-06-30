@@ -35,13 +35,11 @@ public class UpdateProgress implements InteractionCommand {
     public UpdateProgress(Object[] interactionParams) {
         
         this.dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
-
         this.dataCount = (Integer) interactionParams[1];
     }
 
     @Override
     public void execute() {
-        
-        MediatorHelper.treeDatabase().updateProgess(this.dataElementDatabase, this.dataCount);
+        MediatorHelper.treeDatabase().updateProgress(this.dataElementDatabase, this.dataCount);
     }
 }

@@ -55,7 +55,6 @@ public class SoapUtil {
                 return this.isTextNodeInjectable(doc, doc.getDocumentElement());
                 
             } catch (Exception e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "SOAP not detected");
             }
         }
@@ -86,12 +85,10 @@ public class SoapUtil {
             var currentNode = nodeList.item(i);
             
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
-                
                 //calls this method for all the children which is Element
                 if (this.isTextNodeInjectable(doc, currentNode)) {
                     return true;
                 }
-                
             } else if (currentNode.getNodeType() == Node.TEXT_NODE) {
                 
                 SoapUtil.removeInjectionPoint(doc, doc.getDocumentElement());
@@ -111,9 +108,7 @@ public class SoapUtil {
                     if (this.injectionModel.getMediatorMethod().getRequest().testParameters()) {
                         return true;
                     }
-
                 } catch (JSqlException e) {
-                    
                     // Injection failure
                     LOGGER.log(
                         LogLevelUtil.CONSOLE_ERROR,
@@ -139,12 +134,9 @@ public class SoapUtil {
             var currentNode = nodeList.item(i);
             
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
-                
                 //calls this method for all the children which is Element
                 SoapUtil.removeInjectionPoint(doc, currentNode);
-                
             } else if (currentNode.getNodeType() == Node.TEXT_NODE) {
-                
                 currentNode.setTextContent(
                     currentNode
                     .getTextContent()

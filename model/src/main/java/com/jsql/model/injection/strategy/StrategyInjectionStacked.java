@@ -25,7 +25,6 @@ public class StrategyInjectionStacked extends AbstractStrategy {
     private String performanceLength = "0";
 
     public StrategyInjectionStacked(InjectionModel injectionModel) {
-        
         super(injectionModel);
     }
 
@@ -34,18 +33,16 @@ public class StrategyInjectionStacked extends AbstractStrategy {
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyStackedDisabled()) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Skipping strategy Stacked disabled");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());
             return;
         }
 
         // Reset applicability of new Vendor
         this.isApplicable = false;
-
         var strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
-
         var configurationYaml = strategyYaml.getConfiguration();
 
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Stacked...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} {}...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"), this::getName);
 
         boolean methodIsApplicable = this.isApplicable(configurationYaml, strategyYaml.getStacked());
 
@@ -80,7 +77,6 @@ public class StrategyInjectionStacked extends AbstractStrategy {
             this.allow();
 
         } else {
-
             this.unallow();
         }
     }
@@ -130,9 +126,9 @@ public class StrategyInjectionStacked extends AbstractStrategy {
     public void allow(int... i) {
 
         this.injectionModel.appendAnalysisReport(
-            "### Strategy: Stacked\n"
+            "<span style=color:rgb(0,0,255)>### Strategy: " + getName() + "</span>"
             + this.injectionModel.getReportWithoutIndex(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked("<query>", "0", true),
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked("<span style=color:rgb(0,128,0)>&lt;query&gt;</span>", "0", true),
                 "metadataInjectionProcess"
             )
         );
@@ -141,13 +137,11 @@ public class StrategyInjectionStacked extends AbstractStrategy {
 
     @Override
     public void unallow(int... i) {
-        
         this.markVulnerability(Interaction.MARK_STACKED_INVULNERABLE);
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
-        
         return this.injectionModel.injectWithoutIndex(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked(sqlQuery, startPosition, false),
             metadataInjectionProcess
@@ -156,7 +150,6 @@ public class StrategyInjectionStacked extends AbstractStrategy {
 
     @Override
     public void activateWhenApplicable() {
-
         if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
 
             LOGGER.log(

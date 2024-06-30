@@ -22,13 +22,11 @@ public class TamperingMouseAdapter extends MouseAdapter {
     public void mouseEntered(MouseEvent me) {
         
         this.eval = this.textPaneEval.getText();
-        
         this.textPaneEval.setText(this.tampering.instance().getJavascript().trim());
     }
     
     @Override
     public void mouseExited(MouseEvent e) {
-        
         this.textPaneEval.setText(this.eval);
     }
     
@@ -36,7 +34,6 @@ public class TamperingMouseAdapter extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
         
         this.eval = this.tampering.instance().getJavascript().trim();
-        
         this.textPaneEval.setText(this.eval);
     }
 }

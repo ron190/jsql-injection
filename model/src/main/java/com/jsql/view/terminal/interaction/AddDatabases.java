@@ -35,8 +35,6 @@ public class AddDatabases implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public AddDatabases(Object[] interactionParams) {
-        
-        // Get list of databases from the model
         this.databases = (List<Database>) interactionParams[0];
     }
 
@@ -45,9 +43,7 @@ public class AddDatabases implements InteractionCommand {
         
         LOGGER.info(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
         
-        // Loop into the list of databases
         for (Database database: this.databases) {
-            
             LOGGER.debug(database);
         }
     }

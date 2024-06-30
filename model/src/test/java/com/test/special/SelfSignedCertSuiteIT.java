@@ -21,6 +21,12 @@ public class SelfSignedCertSuiteIT extends ConcreteMySqlSuiteIT {
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
             "https://localhost:8443/normal?tenant=mysql&name="
         );
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model.setIsScanning(true);
         

@@ -53,7 +53,6 @@ public class CountryRepository {
                 template + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results)),
                 StandardCharsets.UTF_8
             ));
-            
         } catch (Exception e) {
             
             // Required by multiple columns
@@ -62,8 +61,7 @@ public class CountryRepository {
             // Required by transaction rollback
             throw e;
         }
-        
-        
+
         return country;
 	}
 

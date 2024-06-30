@@ -93,9 +93,7 @@ public class MenuActionNewValue implements ActionListener {
                 },
                 I18nUtil.valueByKey("LIST_ADD_VALUE_CANCEL")
             );
-            
         } catch (NullPointerException | IllegalArgumentException | ClassCastException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
@@ -108,11 +106,8 @@ public class MenuActionNewValue implements ActionListener {
         int firstIndex = lastIndex;
         
         if (ManagerScan.NAME.equals(this.myList.getName())) {
-            
             lastIndex = this.addToScanList(textarea, lastIndex);
-            
         } else {
-            
             lastIndex = this.addToList(textarea, lastIndex);
         }
 
@@ -132,9 +127,7 @@ public class MenuActionNewValue implements ActionListener {
         int lastIndex = index;
         
         for (String newItem: textarea.getText().split("\\n")) {
-            
             if (StringUtils.isNotEmpty(newItem)) {
-                
                 ((DefaultListModel<ItemList>) this.myList.getModel()).add(
                     lastIndex++,
                     new ItemList(newItem.replace("\\", "/"))
@@ -148,11 +141,9 @@ public class MenuActionNewValue implements ActionListener {
     private int addToScanList(final JTextArea textarea, int index) {
         
         int lastIndex = index;
-        
         List<ItemListScan> listParsedItems = ListTransfertHandlerScan.parse(textarea.getText().replace("\\", "/"));
         
         for (ItemListScan item: listParsedItems) {
-            
             ((DefaultListModel<ItemList>) this.myList.getModel()).add(lastIndex++, item);
         }
         

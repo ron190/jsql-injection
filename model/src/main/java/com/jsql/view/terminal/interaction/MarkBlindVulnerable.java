@@ -22,16 +22,12 @@ public class MarkBlindVulnerable implements InteractionCommand {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    /**
-     * @param interactionParams
-     */
     public MarkBlindVulnerable(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        
         LOGGER.info(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
     }
 }

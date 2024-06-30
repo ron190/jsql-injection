@@ -31,13 +31,11 @@ public class AddTables implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public AddTables(Object[] interactionParams) {
-        
         this.tables = (List<Table>) interactionParams[0];
     }
 
     @Override
     public void execute() {
-        
         MediatorHelper.treeDatabase().addTables(this.tables);
     }
 }

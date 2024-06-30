@@ -19,7 +19,6 @@ public class MultipartUtil {
     private final InjectionModel injectionModel;
 
     public MultipartUtil(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
 
@@ -78,7 +77,6 @@ public class MultipartUtil {
             return this.injectionModel.getMediatorMethod().getRequest().testParameters();
 
         } catch (JSqlException e) {
-
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 String.format(

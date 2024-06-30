@@ -28,7 +28,6 @@ public class DigestUtil {
     private final InjectionModel injectionModel;
 
     public DigestUtil(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
 
@@ -83,9 +82,7 @@ public class DigestUtil {
                     "Digest username=\"%s\",realm=\"%s\",nonce=\"%s\",uri=\"%s\",cnonce=\"%s\",nc=%s,response=\"%s\",qop=\"%s\"",
                     username, realm, nonce, path, cnonce, nc, response, qop
                 );
-
             } catch (MalformedURLException | URISyntaxException e) {
-
                 LOGGER.error("Incorrect URL", e);
             }
         }
@@ -94,7 +91,6 @@ public class DigestUtil {
     public void addHeaderToken(Builder httpRequest) {
         
         if (this.tokenDigest == null) {
-
              return;
         }
 

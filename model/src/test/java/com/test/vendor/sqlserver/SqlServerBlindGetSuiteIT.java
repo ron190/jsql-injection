@@ -26,7 +26,8 @@ public class SqlServerBlindGetSuiteIT extends ConcreteSqlServerSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withNotInjectingMetadata();
+        .withNotInjectingMetadata()
+        .withIsStrategyTimeDisabled(true);
         
         model
         .getMediatorUtils()

@@ -15,7 +15,9 @@ public class Neo4jNormalGetSuiteIT extends ConcreteNeo4jSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/neo4j?name=1");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/neo4j?name=1"
+        );
 
         model
         .getMediatorUtils()

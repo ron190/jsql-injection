@@ -41,17 +41,13 @@ public class CenterRendererWithColor extends CenterRenderer {
     }
 
     private static void setColor(boolean isSelected, AbstractCallableBoolean<?> callableBoolean, Component component) {
-
         if (callableBoolean.isTrue()) {
-
             if (isSelected) {
                 component.setBackground(new Color(215, 255, 215));
             } else {
                 component.setBackground(new Color(235, 255, 235));
             }
-
         } else {
-
             if (isSelected) {
                 component.setBackground(new Color(255, 215, 215));
             } else {

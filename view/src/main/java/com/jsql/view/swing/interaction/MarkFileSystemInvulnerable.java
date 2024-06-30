@@ -18,16 +18,12 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkFileSystemInvulnerable implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
     public MarkFileSystemInvulnerable(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        
         MediatorHelper.tabManagers().markFileSystemInvulnerable();
     }
 }

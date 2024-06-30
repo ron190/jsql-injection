@@ -27,7 +27,6 @@ public class StrategyInjectionError extends AbstractStrategy {
     private int indexErrorStrategy = 0;
 
     public StrategyInjectionError(InjectionModel injectionModel) {
-        
         super(injectionModel);
     }
 
@@ -41,12 +40,17 @@ public class StrategyInjectionError extends AbstractStrategy {
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyErrorDisabled()) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Skipping strategy Error disabled");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());
             return;
 
         } else if (strategyYaml.getError().getMethod().isEmpty()) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "No Error strategy for {}", this.injectionModel.getMediatorVendor().getVendor());
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_ERROR,
+                AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
+                getName(),
+                this.injectionModel.getMediatorVendor().getVendor()
+            );
             return;
         }
 
@@ -65,9 +69,7 @@ public class StrategyInjectionError extends AbstractStrategy {
                 Matcher regexSearch = this.getPerformance(errorMethod);
                 
                 if (regexSearch.find()) {
-                    
                     errorCapacity = this.getCapacity(indexErrorMethod, errorCapacity, errorMethod, regexSearch);
-                    
                 } else {
                     
                     LOGGER.log(
@@ -82,11 +84,8 @@ public class StrategyInjectionError extends AbstractStrategy {
             }
             
             if (methodIsApplicable) {
-                
                 this.allow(indexErrorMethod);
-                
             } else {
-                
                 this.unallow(indexErrorMethod);
             }
             
@@ -132,7 +131,6 @@ public class StrategyInjectionError extends AbstractStrategy {
         while (regexSearch.find()) {
             
             if (errorCapacityImproved < regexSearch.group(1).length()) {
-                
                 this.indexErrorStrategy = indexErrorMethod;
             }
             
@@ -156,15 +154,15 @@ public class StrategyInjectionError extends AbstractStrategy {
     public void allow(int... indexError) {
 
         this.injectionModel.appendAnalysisReport(
-            "### Strategy: " + getName() + " " + this.injectionModel.getMediatorVendor().getVendor().instance()
-                .getModelYaml()
-                .getStrategy()
-                .getError()
-                .getMethod()
-                .get(indexError[0])
-                .getName()
-            + "\n" + this.injectionModel.getReportWithoutIndex(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlError("<query>", "0", indexError[0], true),
+            "<span style=color:rgb(0,0,255)>### Strategy: " + getName() + ":" + this.injectionModel.getMediatorVendor().getVendor().instance()
+            .getModelYaml()
+            .getStrategy()
+            .getError()
+            .getMethod()
+            .get(indexError[0])
+            .getName()
+            + "</span>"+ this.injectionModel.getReportWithoutIndex(
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlError("<span style=color:rgb(0,128,0)>&lt;query&gt;</span>", "0", indexError[0], true),
                 "metadataInjectionProcess"
             )
         );
@@ -173,13 +171,11 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     @Override
     public void unallow(int... indexError) {
-        
         this.markVulnerability(Interaction.MARK_ERROR_INVULNERABLE, indexError[0]);
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
-        
         return this.injectionModel.injectWithoutIndex(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition, this.indexErrorStrategy, false),
             metadataInjectionProcess
@@ -188,7 +184,6 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     @Override
     public void activateWhenApplicable() {
-
         if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
 
             LOGGER.log(
@@ -197,12 +192,12 @@ public class StrategyInjectionError extends AbstractStrategy {
                 () -> I18nUtil.valueByKey("LOG_USING_STRATEGY"),
                 this::getName,
                 () -> this.injectionModel.getMediatorVendor().getVendor().instance()
-                    .getModelYaml()
-                    .getStrategy()
-                    .getError()
-                    .getMethod()
-                    .get(this.indexErrorStrategy)
-                    .getName()
+                .getModelYaml()
+                .getStrategy()
+                .getError()
+                .getMethod()
+                .get(this.indexErrorStrategy)
+                .getName()
             );
             this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());
 

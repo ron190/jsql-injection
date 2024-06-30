@@ -36,7 +36,6 @@ public class ShellWeb extends AbstractShell {
 
     @Override
     public void action(String command, UUID terminalID, String urlShell, String... arg) {
-        
         MediatorHelper.model().getResourceAccess().runWebShell(command, terminalID, urlShell);
     }
 }

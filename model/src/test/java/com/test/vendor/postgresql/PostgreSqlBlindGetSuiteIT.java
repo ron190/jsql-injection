@@ -20,6 +20,11 @@ public class PostgreSqlBlindGetSuiteIT extends ConcretePostgreSqlSuiteIT {
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
             "http://localhost:8080/blind?tenant=postgresql&name=1'*"
         );
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyTimeDisabled(true);
         
         model.setIsScanning(true);
 

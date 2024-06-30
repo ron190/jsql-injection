@@ -121,7 +121,6 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
     }
 
     private class SplitPaneWithZeroSizeDividerUI extends BasicSplitPaneUI {
-        
         @Override
         public BasicSplitPaneDivider createDefaultDivider() {
             return new ZeroSizeDivider(this);
@@ -147,7 +146,6 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
             g.setColor(this.getBackground());
             
             if (this.orientation == HORIZONTAL_SPLIT) {
-                
                 // Fix #38925: ClassCastException on drawLine()
                 try {
                     g.drawLine(
@@ -156,14 +154,10 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
                         JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
                         this.getHeight() - 1
                     );
-                    
                 } catch (ClassCastException e) {
-                    
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                 }
-                
             } else {
-                
                 g.drawLine(
                     0,
                     JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
@@ -175,13 +169,11 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
 
         @Override
         protected void dragDividerTo(int location) {
-            
             super.dragDividerTo(location + JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);
         }
 
         @Override
         protected void finishDraggingTo(int location) {
-            
             super.finishDraggingTo(location + JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);
         }
     }

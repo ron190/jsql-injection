@@ -24,12 +24,10 @@ public class HashUtil {
     }
     
     public static String toCrc16(String text) {
-        
         return Crc16Helper.generateCRC16(text);
     }
     
     public static String toCrc64(String text) {
-        
         return Crc64Helper.generateCRC64(text.getBytes(StandardCharsets.UTF_8));
     }
     
@@ -102,7 +100,6 @@ public class HashUtil {
         var buf = new StringBuilder();
 
         for (byte b : block) {
-
             HashUtil.byte2hex(b, buf);
         }
         

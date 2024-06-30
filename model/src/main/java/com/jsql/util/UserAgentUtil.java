@@ -7,6 +7,7 @@ public class UserAgentUtil {
     private String customUserAgent = null;
 
     public UserAgentUtil withCustomUserAgent(String customUserAgent) {
+
         this.isCustomUserAgent = true;
         this.customUserAgent = customUserAgent;
         return this;

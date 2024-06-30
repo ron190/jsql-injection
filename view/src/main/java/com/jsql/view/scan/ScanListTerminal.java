@@ -21,9 +21,7 @@ import com.jsql.view.interaction.SubscriberInteraction;
  * - at the bottom: information labels.
  */
 public class ScanListTerminal extends SubscriberInteraction {
-    
     public ScanListTerminal() {
-        
         super("com.jsql.view.scan.interaction");
     }
 }

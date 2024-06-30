@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 
 /**
  * Listener to check or uncheck every children menu items.
- * Usually required from a table node to un/check every columns
+ * Usually required from a table node to un/check every column
  */
 public class ActionCheckbox implements ActionListener {
     
@@ -27,11 +27,8 @@ public class ActionCheckbox implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         
         DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) this.path.getLastPathComponent();
-        
         AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
-        
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();
-
         int tableChildCount = treeModel.getChildCount(currentTableNode);
         
         for (var i = 0 ; i < tableChildCount ; i++) {

@@ -5,40 +5,39 @@ class TamperingUtilSpock extends Specification {
     
     def tamperingUtil
     String result
-    
 
     def 'Check Base64'() {
         
         when: tamperingUtil.withBase64()
-        and: result = tamperingUtil.tamper('<tampering>'+ '123abc' +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + '123abc' + TamperingUtil.TAG_CLOSED)
         then: result == 'MTIzYWJj'
     }
 
     def 'Check VersionComment'() {
         
         when: tamperingUtil.withVersionComment()
-        and: result = tamperingUtil.tamper('<tampering>'+ 'aconcat(b c,d,`e`)f,%2b,0x06' +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + 'aconcat(b c,d,`e`)f,%2b,0x06' + TamperingUtil.TAG_CLOSED)
         then: result == '/*!aconcat*/(b c,d,`e`)f,%2b,0x06'
     }
 
     def 'Check FunctionComment'() {
         
         when: tamperingUtil.withFunctionComment()
-        and: result = tamperingUtil.tamper('<tampering>'+ 'aconcat(b)' +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + 'aconcat(b)' + TamperingUtil.TAG_CLOSED)
         then: result == 'aconcat/**/(b)'
     }
 
     def 'Check EqualToLike'() {
         
         when: tamperingUtil.withEqualToLike()
-        and: result = tamperingUtil.tamper('<tampering>'+ 'a=b' +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + 'a=b' + TamperingUtil.TAG_CLOSED)
         then: result == 'a+like+b'
     }
 
     def 'Check RandomCase'() {
         
         when: tamperingUtil.withRandomCase()
-        and: result = tamperingUtil.tamper('<tampering>'+ 'abcdefghijklmnopqrstuvwxyz' +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + 'abcdefghijklmnopqrstuvwxyz' + TamperingUtil.TAG_CLOSED)
         then:
             ![
                 'abcdefghijklmnopqrstuvwxyz',
@@ -51,21 +50,21 @@ class TamperingUtilSpock extends Specification {
     def 'Check StringToChar ab'() {
         
         when: tamperingUtil.withStringToChar()
-        and: result = tamperingUtil.tamper('<tampering>'+ "'ab'" +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + "'ab'" + TamperingUtil.TAG_CLOSED)
         then: result == 'concat(char(97),char(98))'
     }
 
     def 'Check HexToChar AB'() {
         
         when: tamperingUtil.withHexToChar()
-        and: result = tamperingUtil.tamper('<tampering>'+ '0x4142' +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + '0x4142' + TamperingUtil.TAG_CLOSED)
         then: result == 'concat(char(65),char(66))'
     }
 
     def 'Check QuoteToUtf8'() {
         
         when: tamperingUtil.withQuoteToUtf8()
-        and: result = tamperingUtil.tamper('<tampering>'+ "'" +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + "'" + TamperingUtil.TAG_CLOSED)
         then: result == '%ef%bc%87'
     }
     
@@ -75,14 +74,14 @@ class TamperingUtilSpock extends Specification {
     def 'Check VersionComment+FunctionComment'() {
         
         when: tamperingUtil.withVersionComment().withFunctionComment()
-        and: result = tamperingUtil.tamper('<tampering>'+ 'aconcat(b)' +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + 'aconcat(b)' + TamperingUtil.TAG_CLOSED)
         then: result == 'aconcat/**/(b)'
     }
     
     def 'Check VersionComment+FunctionComment+HexToChar'() {
         
         when: tamperingUtil.withVersionComment().withFunctionComment().withHexToChar()
-        and: result = tamperingUtil.tamper('<tampering>'+ 'aconcat(0x4142)' +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + 'aconcat(0x4142)' + TamperingUtil.TAG_CLOSED)
         then: result == 'aconcat/**/(concat/**/(char/**/(65),char/**/(66)))'
     }
     
@@ -92,21 +91,21 @@ class TamperingUtilSpock extends Specification {
     def 'Check SpaceToMultilineComment'() {
         
         when: tamperingUtil.withSpaceToMultilineComment()
-        and: result = tamperingUtil.tamper('<tampering>'+ 'a+b' +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + 'a+b' + TamperingUtil.TAG_CLOSED)
         then: result == 'a/**/b'
     }
     
     def 'Check SpaceToDashComment'() {
         
         when: tamperingUtil.withSpaceToDashComment()
-        and: result = tamperingUtil.tamper('<tampering>'+ 'a+b' +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + 'a+b' + TamperingUtil.TAG_CLOSED)
         then: result == 'a--%0Ab'
     }
     
     def 'Check SpaceToSharpComment'() {
         
         when: tamperingUtil.withSpaceToSharpComment()
-        and: result = tamperingUtil.tamper('<tampering>'+ 'a+b' +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + 'a+b' + TamperingUtil.TAG_CLOSED)
         then: result == 'a%23%0Ab'
     }
     
@@ -115,7 +114,7 @@ class TamperingUtilSpock extends Specification {
     
     def 'Check no tampering'() {
         
-        when: result = tamperingUtil.tamper('<tampering>'+ 'abc' +'</tampering>')
+        when: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + 'abc' + TamperingUtil.TAG_CLOSED)
         then: result == 'abc'
     }
     
@@ -127,7 +126,7 @@ class TamperingUtilSpock extends Specification {
                 return sql.replace(/a/, 'b')
             }            
         '''
-        and: result = tamperingUtil.tamper('<tampering>'+ 'a' +'</tampering>')
+        and: result = tamperingUtil.tamper(TamperingUtil.TAG_OPENED + 'a' + TamperingUtil.TAG_CLOSED)
         then: result == 'b'
     }
     

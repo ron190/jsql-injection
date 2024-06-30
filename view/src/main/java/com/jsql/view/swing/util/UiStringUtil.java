@@ -8,16 +8,14 @@ import java.nio.charset.StandardCharsets;
 public class UiStringUtil {
 
     private UiStringUtil() {
-        // Util
+        // Utility class
     }
     
     public static String detectUtf8Html(String text) {
-        
         return UiStringUtil.detectUtf8Html(text, false);
     }
     
     public static String detectUtf8HtmlNoWrap(String text) {
-        
         return UiStringUtil.detectUtf8Html(text, true);
     }
     
@@ -25,7 +23,6 @@ public class UiStringUtil {
         
         // Fix #35217: NullPointerException on getBytes()
         if (text == null) {
-            
             return StringUtils.EMPTY;
         }
         
@@ -40,14 +37,11 @@ public class UiStringUtil {
         );
         
         detector.dataEnd();
-        
         String encoding = detector.getDetectedCharset();
-        
         String result = text;
         
         // Confirm UTF8
         if (encoding != null) {
-            
             result = String.format(
                 "<html><span style=\"font-family:'%s';%s\">%s</span></html>",
                 UiUtil.FONT_NAME_MONO_ASIAN,

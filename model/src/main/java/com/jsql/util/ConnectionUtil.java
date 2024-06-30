@@ -69,14 +69,12 @@ public class ConnectionUtil {
     private final CookieManager cookieManager = new CookieManager();
     
     public ConnectionUtil(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
     
     public HttpClient getHttpClient() {
         
-        var httpClientBuilder = HttpClient
-            .newBuilder()
+        var httpClientBuilder = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(this.getTimeout()))
             .sslContext(this.injectionModel.getMediatorUtils().getCertificateUtil().getSslContext())
             .followRedirects(
@@ -86,22 +84,17 @@ public class ConnectionUtil {
             );
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isHttp2Disabled()) {
-            
             httpClientBuilder.version(Version.HTTP_1_1);
         }
         
         if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotProcessingCookies()) {
-            
             httpClientBuilder.cookieHandler(this.cookieManager);
         }
         
         if (this.injectionModel.getMediatorUtils().getAuthenticationUtil().isAuthentEnabled()) {
-            
             httpClientBuilder.authenticator(new Authenticator() {
-              
               @Override
               protected PasswordAuthentication getPasswordAuthentication() {
-                  
                   return new PasswordAuthentication(
                       ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getUsernameAuthentication(),
                       ConnectionUtil.this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPasswordAuthentication().toCharArray()
@@ -126,17 +119,14 @@ public class ConnectionUtil {
     
     public static Map<String, String> getHeadersMap(HttpHeaders httpHeaders) {
         
-        Map<String, String> unsortedMap = httpHeaders
-            .map()
+        Map<String, String> unsortedMap = httpHeaders.map()
             .entrySet()
             .stream()
             .sorted(Entry.comparingByKey())
-            .map(entrySet ->
-                new AbstractMap.SimpleEntry<>(
-                    entrySet.getKey(),
-                    String.join(", ", entrySet.getValue())
-                )
-            )
+            .map(entrySet -> new AbstractMap.SimpleEntry<>(
+                entrySet.getKey(),
+                String.join(", ", entrySet.getValue())
+            ))
             .collect(Collectors.toMap(
                 AbstractMap.SimpleEntry::getKey,
                 AbstractMap.SimpleEntry::getValue
@@ -159,7 +149,6 @@ public class ConnectionUtil {
         var testUrl = this.getUrlBase().replaceAll("\\?$", "");
 
         if (StringUtils.isNotEmpty(queryString)) {
-        
             testUrl += "?"+ queryString;
         }
 
@@ -196,13 +185,12 @@ public class ConnectionUtil {
         this.injectionModel.getMediatorUtils().getDigestUtil().addHeaderToken(httpRequest);
 
         httpRequest.method(
-            this.injectionModel.getMediatorUtils().getConnectionUtil().getTypeRequest(),
+            this.typeRequest,
             BodyPublishers.ofString(body)
         );
 
         // Add headers if exists (Authorization:Basic, etc)
         for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()) {
-            
             HeaderUtil.sanitizeHeaders(httpRequest, header);
         }
 
@@ -233,7 +221,6 @@ public class ConnectionUtil {
         }
 
         if (httpResponse.statusCode() >= 400 && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
-
             throw new InjectionFailureException(String.format("Connection failed: problem when calling %s", httpResponse.uri().toURL()));
         }
     }
@@ -246,8 +233,7 @@ public class ConnectionUtil {
         String pageSource = StringUtils.EMPTY;
         
         try {
-            var httpRequest = HttpRequest
-                .newBuilder()
+            var httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(this.getTimeout()))
                 .build();
@@ -271,9 +257,7 @@ public class ConnectionUtil {
             msgHeader.put(Header.HEADER, ConnectionUtil.getHeadersMap(httpRequest.headers()));
             
         } catch (IOException e) {
-
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-            
         } catch (InterruptedException e) {
             
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -299,17 +283,14 @@ public class ConnectionUtil {
      * @return the source page of the URL
      */
     public String getSourceLineFeed(String url) {
-        
         return this.getSource(url, true);
     }
     
     public String getSource(String url) {
-        
         return this.getSource(url, false);
     }
 
     public void setCustomUserAgent(Builder httpRequest) {
-        
         if (this.injectionModel.getMediatorUtils().getUserAgentUtil().isCustomUserAgent()) {
             
             String agents = this.injectionModel.getMediatorUtils().getUserAgentUtil().getCustomUserAgent();

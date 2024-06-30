@@ -17,10 +17,18 @@ public class MultipartSuiteIT extends ConcreteMySqlSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/multipart?tenant=mysql");
-        model.getMediatorUtils().getParameterUtil().initializeRequest("--boundary\\nContent-Disposition: form-data; name=\"name\"\\n\\n'*\\n--boundary--");
+        model.getMediatorUtils().getParameterUtil().initializeRequest(
+            "--boundary\\nContent-Disposition: form-data; name=\"name\"\\n\\n'*\\n--boundary--"
+        );
         model.getMediatorUtils().getParameterUtil().initializeHeader("Content-Type: multipart/form-data;boundary=boundary");
 
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model
         .getMediatorUtils()

@@ -93,7 +93,6 @@ public class JTextPaneAppender extends AbstractAppender {
         // Avoid errors which might occur in headless mode
         // or logging that occurs before consoles are available
         if (consoleTextPane == null || javaTextPane == null) {
-            
             return;
         }
         
@@ -108,23 +107,14 @@ public class JTextPaneAppender extends AbstractAppender {
             String message = messageLogEvent[0];
             
             if (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {
-                
                 javaTextPane.append(message, ATTRIBUTE_WARN);
-                
             } else if (level == LogLevelUtil.CONSOLE_ERROR.intLevel()) {
-                
                 consoleTextPane.append(message, ATTRIBUTE_WARN);
-                
             } else if (level == LogLevelUtil.CONSOLE_INFORM.intLevel()) {
-                
                 consoleTextPane.append(message, ATTRIBUTE_INFORM);
-                
             } else if (level == LogLevelUtil.CONSOLE_SUCCESS.intLevel()) {
-                
                 consoleTextPane.append(message, ATTRIBUTE_SUCCESS);
-                
             } else if (level != LogLevelUtil.IGNORE.intLevel() && level != Level.ERROR.intLevel()) {  // ignore & stdout when unhandled exception
-                
                 consoleTextPane.append(message, ATTRIBUTE_ALL);
             }
         });
@@ -135,7 +125,6 @@ public class JTextPaneAppender extends AbstractAppender {
      * @param javaConsole
      */
     public static void register(JavaConsoleAdapter javaConsole) {
-        
         JTextPaneAppender.javaTextPane = javaConsole;
     }
 
@@ -144,7 +133,6 @@ public class JTextPaneAppender extends AbstractAppender {
      * @param consoleColored
      */
     public static void register(SimpleConsoleAdapter consoleColored) {
-        
         JTextPaneAppender.consoleTextPane = consoleColored;
     }
 }

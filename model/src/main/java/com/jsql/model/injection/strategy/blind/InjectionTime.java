@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Time attack using parallel threads.
@@ -43,19 +42,22 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         
         // No blind
         if (this.falseTests.isEmpty() || this.injectionModel.isStoppedByUser()) {
-            
             return;
         }
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagFalse");
-
         Collection<CallableTime> callablesFalseTest = new ArrayList<>();
         
         for (String falseTest: this.falseTests) {
-            
-            callablesFalseTest.add(new CallableTime(falseTest, injectionModel, this, booleanMode, "time#falsy"));
+            callablesFalseTest.add(new CallableTime(
+                falseTest,
+                injectionModel,
+                this,
+                booleanMode,
+                "time#falsy"
+            ));
         }
         
         // If one FALSE query makes less than X seconds,
@@ -63,14 +65,8 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         // Allow the user to stop the loop
         try {
             List<Future<CallableTime>> futuresFalseTest = taskExecutor.invokeAll(callablesFalseTest);
-            
-            taskExecutor.shutdown();
-            
-            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
-                
-                taskExecutor.shutdownNow();
-            }
-        
+            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
+
             for (Future<CallableTime> futureFalseTest: futuresFalseTest) {
                 
                 if (this.injectionModel.isStoppedByUser()) {
@@ -84,9 +80,7 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
                 }
             }
         } catch (ExecutionException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-            
         } catch (InterruptedException e) {
 
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -101,12 +95,16 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagTrue");
-
         Collection<CallableTime> callablesTrueTest = new ArrayList<>();
         
         for (String trueTest: this.trueTests) {
-            
-            callablesTrueTest.add(new CallableTime(trueTest, this.injectionModel, this, booleanMode, "time#truthy"));
+            callablesTrueTest.add(new CallableTime(
+                trueTest,
+                this.injectionModel,
+                this,
+                booleanMode,
+                "time#truthy"
+            ));
         }
 
         // If one TRUE query makes more than X seconds,
@@ -114,12 +112,8 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         // Allow the user to stop the loop
         try {
             List<Future<CallableTime>> futuresTrueTest = taskExecutor.invokeAll(callablesTrueTest);
-            
-            taskExecutor.shutdown();
-            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
-                
-                taskExecutor.shutdownNow();
-            }
+
+            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
         
             for (Future<CallableTime> futureTrueTest: futuresTrueTest) {
                 
@@ -133,11 +127,8 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
                     return;
                 }
             }
-            
         } catch (ExecutionException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-            
         } catch (InterruptedException e) {
 
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -147,15 +138,21 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
 
     @Override
     public CallableTime getCallableBitTest(String sqlQuery, int indexCharacter, int bit) {
-
-        return new CallableTime(sqlQuery, indexCharacter, bit, this.injectionModel, this, this.booleanMode, "bit#" + indexCharacter + "~" + bit);
+        return new CallableTime(
+            sqlQuery,
+            indexCharacter,
+            bit,
+            this.injectionModel,
+            this,
+            this.booleanMode,
+            "bit#" + indexCharacter + "~" + bit
+        );
     }
 
     @Override
     public boolean isInjectable() throws StoppedByUserSlidingException {
         
         if (this.injectionModel.isStoppedByUser()) {
-            
             throw new StoppedByUserSlidingException();
         }
         
@@ -169,9 +166,7 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         
         try {
             timeTest.call();
-            
         } catch (Exception e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
@@ -180,7 +175,6 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
 
     @Override
     public String getInfoMessage() {
-        
         return "- Strategy Time: query True when delaying for 5s\n\n";
     }
 }

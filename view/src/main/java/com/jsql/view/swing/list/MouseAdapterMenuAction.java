@@ -72,9 +72,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                     : mouseEvent.getX(),
                     mouseEvent.getY()
                 );
-                
             } catch (IllegalComponentStateException e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
             
@@ -146,9 +144,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             // Fix #42831: ClassCastException on showOpenDialog()
             try {
                 choice = importFileDialog.showOpenDialog(this.dndList.getTopLevelAncestor());
-                
             } catch (ClassCastException | NullPointerException e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
             
@@ -166,7 +162,6 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             var action = this.dndList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
             
             if (action != null) {
-                
                 action.actionPerformed(
                     new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
                 );
@@ -178,7 +173,6 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             var action = this.dndList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));
             
             if (action != null) {
-                
                 action.actionPerformed(
                     new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
                 );
@@ -190,7 +184,6 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             var action = this.dndList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));
             
             if (action != null) {
-                
                 action.actionPerformed(
                     new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
                 );
@@ -198,18 +191,14 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         });
 
         mnDelete.addActionListener(actionEvent -> this.dndList.removeSelectedItem());
-
         mnExport.addActionListener(new MenuActionExport(this.dndList));
-
         mnRestoreDefault.addActionListener(actionEvent -> this.dndList.restore());
-
         mnSelectAll.addActionListener(actionEvent -> {
             
             var start = 0;
             int end = this.dndList.getModel().getSize() - 1;
             
             if (end >= 0) {
-                
                 this.dndList.setSelectionInterval(start, end);
             }
         });
@@ -240,7 +229,6 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             var containsIndex = false;
             
             for (int currentIndex: this.dndList.getSelectedIndices()) {
-                
                 if (currentIndex == clickIndex) {
                     
                     containsIndex = true;
@@ -249,7 +237,6 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             }
             
             if (!containsIndex) {
-                
                 this.dndList.setSelectedIndex(clickIndex);
             }
         }

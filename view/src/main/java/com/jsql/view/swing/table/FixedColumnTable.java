@@ -48,10 +48,8 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         //  Use the existing table to create a new table sharing
         //  the DataModel and ListSelectionModel
         this.fixedTable = new JTable() {
-            
             @Override
             public boolean isCellEditable(int row,int column) {
-                
                 return false;
             }
         };
@@ -62,19 +60,16 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
             
             @Override
             public int getColumnCount() {
-                
                 return 2;
             }
 
             @Override
             public boolean isCellEditable(int row, int col) {
-                
                 return false;
             }
 
             @Override
             public int getRowCount() {
-                
                 return FixedColumnTable.this.mainTable.getRowCount();
             }
 
@@ -84,11 +79,8 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
                 Class<?> columnClass;
                 
                 if (colNum == 0) {
-                    
                     columnClass = String.class;
-                    
                 } else {
-                    
                     columnClass = super.getColumnClass(colNum);
                 }
                 
@@ -191,12 +183,10 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         
         //  Keep the fixed table in sync with the main table
         if ("selectionModel".equals(e.getPropertyName())) {
-            
             this.fixedTable.setSelectionModel(this.mainTable.getSelectionModel());
         }
 
         if ("model".equals(e.getPropertyName())) {
-            
             this.fixedTable.setModel(this.mainTable.getModel());
         }
     }

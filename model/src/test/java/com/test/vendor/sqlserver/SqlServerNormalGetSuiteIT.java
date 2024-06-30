@@ -20,6 +20,12 @@ public class SqlServerNormalGetSuiteIT extends ConcreteSqlServerSuiteIT {
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
             "http://localhost:8080/normal?tenant=sqlserver&name="
         );
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model
         .getMediatorUtils()

@@ -22,16 +22,12 @@ public class MarkTimeVulnerable implements InteractionCommand {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    /**
-     * @param nullParam
-     */
-    public MarkTimeVulnerable(Object[] nullParam) {
+    public MarkTimeVulnerable(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        
         LOGGER.info(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
     }
 }

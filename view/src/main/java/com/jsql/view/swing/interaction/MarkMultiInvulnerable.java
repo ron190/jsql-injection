@@ -19,9 +19,6 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkMultiInvulnerable implements InteractionCommand {
 
-    /**
-     * @param interactionParams
-     */
     public MarkMultiInvulnerable(Object[] interactionParams) {
         // Do nothing
     }
@@ -30,7 +27,6 @@ public class MarkMultiInvulnerable implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getMultibit();
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategyInvulnerable(strategy);
     }
 }

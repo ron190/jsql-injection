@@ -55,8 +55,9 @@ public class HttpHeader {
     public String toString() {
         return this.url;
     }
-    
-    // Getter and setter
+
+
+    // Getter
     
     public String getUrl() {
         return this.url;

@@ -178,12 +178,9 @@ public class JFrameView extends JFrame {
         var mainPanel = new JPanel(new GridLayout(1, 0));
         this.splitHorizontalTopBottom = new SplitHorizontalTopBottom();
         mainPanel.add(this.splitHorizontalTopBottom);
-        
-        // Textfields at the top
-        var panelAddressBar = new PanelAddressBar();
-        
-        // Tab manager use proxy tabs dependency
-        JTabbedPane tabManagers = new TabManagers();
+
+        var panelAddressBar = new PanelAddressBar();  // Textfields at the top
+        JTabbedPane tabManagers = new TabManagers();  // Tab manager use proxy tabs dependency
 
         this.add(tabManagers);
         this.add(panelAddressBar);

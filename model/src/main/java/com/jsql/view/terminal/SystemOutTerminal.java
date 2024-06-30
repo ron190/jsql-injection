@@ -16,9 +16,7 @@ import com.jsql.view.interaction.SubscriberInteraction;
  * View in the MVC pattern for integration test, process actions sent by the model.<br>
  */
 public class SystemOutTerminal extends SubscriberInteraction {
-
     public SystemOutTerminal() {
-        
         super("com.jsql.view.terminal.interaction");
     }
 }

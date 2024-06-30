@@ -57,13 +57,10 @@ public class RequestPanel extends JPanel {
         }
         
         for (AbstractButton radioButton: Collections.list(buttonGroup.getElements())) {
-            
             radioButton.setUI(
                 new BasicRadioButtonMenuItemUI() {
-                    
                     @Override
                     protected void doClick(MenuSelectionManager msm) {
-                        
                         this.menuItem.doClick(0);
                     }
                 }
@@ -80,14 +77,12 @@ public class RequestPanel extends JPanel {
         buttonGroup.add(radioCustomMethod);
         
         radioCustomMethod.addActionListener(actionEvent -> {
-            
             if (StringUtils.isNotEmpty(inputCustomMethod.getText())) {
                 
-                this.typeRequest = (inputCustomMethod.getText());
+                this.typeRequest = inputCustomMethod.getText();
                 panelAddressBar.getRadioRequest().setText(this.typeRequest);
                 
             } else {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Define label of Custom request method");
             }
         });
@@ -104,11 +99,8 @@ public class RequestPanel extends JPanel {
                 popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));
                 
                 if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {
-                    
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
-                    
                 } else {
-                    
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
                 }
                 

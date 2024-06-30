@@ -41,54 +41,34 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
 
         // setBackground
         if (isSelected) {
-            
             if (list.isFocusOwner()) {
-                
                 renderer.setBackground(UiUtil.COLOR_FOCUS_GAINED);
-                
             } else {
-                
                 renderer.setBackground(UiUtil.COLOR_FOCUS_LOST);
             }
-            
         } else {
-            
             renderer.setBackground(Color.WHITE);
         }
         
         // setForeground
         if (value.getIsVulnerable()) {
-            
             renderer.setForeground(UiUtil.COLOR_GREEN);
-            
         } else if (value.getIsDatabaseConfirmed()) {
-            
             renderer.setForeground(Color.BLUE);
-            
         } else {
-            
-            // Hardcode black for Mac default is white
-            renderer.setForeground(Color.BLACK);
+            renderer.setForeground(Color.BLACK);  // Hardcode black for Mac default is white
         }
 
         // setBorder
         if (isSelected) {
-            
             if (list.isFocusOwner()) {
-                
                 renderer.setBorder(UiUtil.BORDER_FOCUS_GAINED);
-                
             } else {
-                
                 renderer.setBorder(UiUtil.BORDER_FOCUS_LOST);
             }
-            
         } else if (isFocused) {
-            
             renderer.setBorder(BorderFactory.createCompoundBorder(new BorderList(), BorderFactory.createEmptyBorder(0, 1, 0, 0)));
-            
         } else {
-            
             renderer.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }
 

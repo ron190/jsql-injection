@@ -27,7 +27,6 @@ public class TabConsoles extends TabbedPaneWheeled {
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     public TabConsoles() {
-
         this.setName("tabConsoles");
     }
 
@@ -47,9 +46,7 @@ public class TabConsoles extends TabbedPaneWheeled {
             // Unhandled ClassCastException #91158 on setFont()
             try {
                 tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
-                
             } catch (ClassCastException e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }

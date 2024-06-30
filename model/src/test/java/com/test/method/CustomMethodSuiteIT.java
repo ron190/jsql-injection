@@ -1,12 +1,14 @@
-package com.test.special;
+package com.test.method;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
+import com.test.vendor.mysql.ConcreteMySqlErrorSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
-public class JsonCheckAllParamSuiteIT extends ConcreteMySqlSuiteIT {
+public class CustomMethodSuiteIT extends ConcreteMySqlErrorSuiteIT {
+
+    public static String CUSTOM_METHOD = "CUSTOM-JSQL";
     
     @Override
     public void setupInjection() throws Exception {
@@ -16,26 +18,22 @@ public class JsonCheckAllParamSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/json");
-        model.getMediatorUtils().getParameterUtil().initializeRequest(
-            "tenant=mysql&name={\"c\": 1, \"b\": {\"b\": [1, true, null, {\"a\": {\"a\": \"0'\"}}]}}"
-        );
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/custom?name=");
+        model.getMediatorUtils().getParameterUtil().initializeRequest("tenant=mysql-error");
 
         model.setIsScanning(true);
-        
+
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withCheckingAllRequestParam()
-        .withCheckingAllJsonParam()
         .withIsStrategyBlindDisabled(true)
         .withIsStrategyTimeDisabled(true);
-
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
-        .withMethodInjection(model.getMediatorMethod().getRequest())
-        .withTypeRequest("POST");
+        .withMethodInjection(model.getMediatorMethod().getQuery())
+        .withTypeRequest(CustomMethodSuiteIT.CUSTOM_METHOD);
         
         model.beginInjection();
     }

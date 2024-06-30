@@ -18,16 +18,13 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkErrorStrategy implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
+
     public MarkErrorStrategy(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().markError();
     }
 }

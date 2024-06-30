@@ -24,17 +24,11 @@ import java.util.Map;
  */
 public class MarkErrorVulnerable implements InteractionCommand {
     
-    /**
-     * Log4j logger sent to view.
-     */
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private final int indexMethodError;
     private final InjectionModel injectionModel;
     
-    /**
-     * @param interactionParams
-     */
     @SuppressWarnings("unchecked")
     public MarkErrorVulnerable(Object[] interactionParams) {
         
@@ -45,7 +39,6 @@ public class MarkErrorVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        
         LOGGER.info(
             () -> AnsiColorUtil.addGreenColor(
                 this.injectionModel

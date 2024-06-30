@@ -17,7 +17,9 @@ public class MySqlDeleteSuiteIgnoreIT extends ConcreteMySqlErrorSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/delete?tenant=mysql-error&name=");
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/delete?tenant=mysql-error&name="
+        );
 
         model.setIsScanning(true);
         

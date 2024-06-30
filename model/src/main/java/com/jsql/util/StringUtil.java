@@ -61,17 +61,15 @@ public final class StringUtil {
         }
         
         protected void encode(char c, StringBuilder buff) {
-            
             buff
             .append(this.prefix)
             .append(Integer.toString(c, this.radix))
             .append(this.suffix);
         }
     }
-    
-    // Utility class.
+
     private StringUtil() {
-        // not called
+        // Utility class
     }
     
     /**
@@ -80,7 +78,6 @@ public final class StringUtil {
      * @return string encoded in html entities
      */
     public static String decimalHtmlEncode(String text) {
-        
         return decimalHtmlEncode(text, false);
     }
     
@@ -89,14 +86,11 @@ public final class StringUtil {
         var result = StringUtil.encode(text);
         
         if (isRaw) {
-            
             return result
                 .replace("<", "&lt;")
                 .replace(">", "&gt;")
                 .replace("&", "&amp;");
-            
         } else {
-            
             return result;
         }
     }
@@ -112,13 +106,9 @@ public final class StringUtil {
         var buff = new StringBuilder();
         
         for (var i = 0 ; i < text.length() ; i++) {
-            
             if (text.charAt(i) > 128) {
-                
                 StringUtil.DECIMAL_HTML_ENCODER.encode(text.charAt(i), buff);
-                
             } else {
-                
                 buff.append(text.charAt(i));
             }
         }
@@ -136,7 +126,6 @@ public final class StringUtil {
         var bytes = new byte[hex.length() / 2];
         
         for (var i = 0 ; i < bytes.length ; i++) {
-            
             bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
         
@@ -146,7 +135,6 @@ public final class StringUtil {
     public static boolean isUtf8(String text) {
         
         if (text == null) {
-            
             return false;
         }
         
@@ -161,7 +149,6 @@ public final class StringUtil {
     public static String detectUtf8(String text) {
         
         if (text == null) {
-            
             return org.apache.commons.lang3.StringUtils.EMPTY;
         }
         
@@ -175,13 +162,11 @@ public final class StringUtil {
             encoding = detector.getDetectedCharset();
             
         } catch (ArrayIndexOutOfBoundsException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
         
         String result = text;
         if (encoding != null) {
-            
             result = new String(text.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
         }
         
@@ -201,12 +186,10 @@ public final class StringUtil {
     }
     
     public static String base58Encode(String s) {
-        
         return Base58.encode(StringUtils.getBytesUtf8(s));
     }
     
     public static String base58Decode(String s) {
-        
         return StringUtils.newStringUtf8(Base58.decode(s));
     }
     
@@ -228,7 +211,6 @@ public final class StringUtil {
      * @return Base64 decoded string
      */
     public static String base64Decode(String s) {
-        
         // org.apache.commons.codec.binary.Base64 fails on RlRQIHVzZXI6IG
         // Use java.util.Base64 instead
         return StringUtils.newStringUtf8(Base64.getDecoder().decode(s));
@@ -240,7 +222,6 @@ public final class StringUtil {
      * @return Base64 encoded string
      */
     public static String base64Encode(String s) {
-        
         // org.apache.commons.codec.binary.Base64 fails on RlRQIHVzZXI6IG
         // Use java.util.Base64 instead
         return Base64.getEncoder().encodeToString(StringUtils.getBytesUtf8(s));
@@ -294,7 +275,6 @@ public final class StringUtil {
     }
     
     public static String toHex(String text) {
-        
         return Hex.encodeHexString(text.getBytes(StandardCharsets.UTF_8)).trim();
     }
     
@@ -321,17 +301,14 @@ public final class StringUtil {
     }
     
     public static String toBase64Zip(String text) throws IOException {
-        
         return StringUtil.base64Encode(StringUtil.compress(text));
     }
     
     public static String fromBase64Zip(String text) throws IOException {
-        
         return StringUtil.decompress(StringUtil.base64Decode(text));
     }
     
     public static String toHtml(String text) {
-        
         return StringEscapeUtils.escapeHtml4(text)
             .replace("<", "&lt;")
             .replace(">", "&gt;")
@@ -339,24 +316,20 @@ public final class StringUtil {
     }
     
     public static String fromHtml(String text) {
-        
         return StringEscapeUtils.unescapeHtml4(text)
             .replace("<", "&lt;")
             .replace(">", "&gt;");
     }
     
     public static String toUrl(String text) {
-        
         return URLEncoder.encode(text, StandardCharsets.UTF_8);
     }
     
     public static String fromUrl(String text) {
-        
         return URLDecoder.decode(text, StandardCharsets.UTF_8);
     }
     
     public static String cleanSql(String query) {
-        
         return removeSqlComment(query)
             .replaceAll("(?s)([^\\s\\w])(\\s+)", "$1")  // Remove spaces after a word
             .replaceAll("(?s)(\\s+)([^\\s\\w])", "$2")  // Remove spaces before a word
@@ -370,7 +343,6 @@ public final class StringUtil {
      * JavaScript: (?!\/\*!.*\*\/|\/\*\*\/)\/\*.*\*\/
      */
     public static String removeSqlComment(String query) {
-
         return query.replaceAll(
             "(?s)(?!/\\*\\*/|/\\*!.*\\*/)/\\*.*?\\*/",
             org.apache.commons.lang3.StringUtils.EMPTY

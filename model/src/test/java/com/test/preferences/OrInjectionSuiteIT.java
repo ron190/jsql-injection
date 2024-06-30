@@ -21,6 +21,12 @@ public class OrInjectionSuiteIT extends ConcreteMySqlErrorSuiteIT {
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
             "http://localhost:8080/errors?tenant=mysql-error&name="
         );
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model.setIsScanning(true);
         

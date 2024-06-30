@@ -200,9 +200,7 @@ public class AddressMenuBar extends JMenuBar {
                 itemRadioVendor.addActionListener(actionEvent -> {
                     
                     this.menuStrategy.setText(methodError.getName());
-                    
                     MediatorHelper.model().getMediatorStrategy().setStrategy(MediatorHelper.model().getMediatorStrategy().getError());
-                    
                     MediatorHelper.model().getMediatorStrategy().getError().setIndexErrorStrategy(indexErrorFinal);
                 });
 
@@ -214,14 +212,12 @@ public class AddressMenuBar extends JMenuBar {
     public void reset() {
         
         if (MediatorHelper.model().getMediatorVendor().getVendorByUser() == MediatorHelper.model().getMediatorVendor().getAuto()) {
-            
             this.menuVendor.setText(MediatorHelper.model().getMediatorVendor().getAuto().toString());
         }
         
         this.menuStrategy.setText("Strategy auto");
         
         for (var i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
-            
             this.menuStrategy.getItem(i).setEnabled(false);
         }
         
@@ -232,12 +228,10 @@ public class AddressMenuBar extends JMenuBar {
     public void setVendor(Vendor vendor) {
         
         this.menuVendor.setText(vendor.toString());
-        
         this.initErrorMethods(vendor);
     }
     
     public void resetLabelStrategy() {
-        
         for (var i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
             
             this.menuStrategy.getItem(i).setEnabled(false);
@@ -250,24 +244,19 @@ public class AddressMenuBar extends JMenuBar {
         this.menuStrategy.setText(strategy.toString());
         
         for (var i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
-            
             if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {
                 
                 this.menuStrategy.getItem(i).setSelected(true);
-                
                 break;
             }
         }
     }
     
     public void markStrategyInvulnerable(AbstractStrategy strategy) {
-        
         for (var i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
-            
             if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {
                 
                 this.menuStrategy.getItem(i).setEnabled(false);
-                
                 break;
             }
         }
@@ -281,17 +270,13 @@ public class AddressMenuBar extends JMenuBar {
         // Fix #40352: NullPointerException on ?
         try {
             for (var i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
-                
                 if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {
-                    
+
                     ((JMenu) this.menuStrategy.getItem(i)).getItem(indexMethodError).setEnabled(false);
-                    
                     break;
                 }
             }
-            
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
@@ -307,7 +292,6 @@ public class AddressMenuBar extends JMenuBar {
         String nameError = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();
         
         for (var i = 0 ; i < menuError.getItemCount() ; i++) {
-            
             // Fix #44635: ArrayIndexOutOfBoundsException on getItem()
             try {
                 if (menuError.getItem(i).getText().equals(nameError)) {
@@ -317,9 +301,7 @@ public class AddressMenuBar extends JMenuBar {
                     
                     break;
                 }
-                
             } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
@@ -348,7 +330,6 @@ public class AddressMenuBar extends JMenuBar {
                 
                 // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
                 if (0 <= indexMethodError && indexMethodError < menuError.getItemCount()) {
-                    
                     menuError.getItem(indexMethodError).setEnabled(true);
                 }
                 
@@ -358,13 +339,10 @@ public class AddressMenuBar extends JMenuBar {
     }
     
     public void markStrategyVulnerable(AbstractStrategy strategy) {
-        
         for (var i = 0 ; i < this.menuStrategy.getItemCount() ; i++) {
-            
             if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {
                 
                 this.menuStrategy.getItem(i).setEnabled(true);
-                
                 break;
             }
         }

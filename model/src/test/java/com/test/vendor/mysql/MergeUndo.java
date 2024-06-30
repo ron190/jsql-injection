@@ -70,7 +70,6 @@ public class MergeUndo extends JEditorPane {
         public boolean canRedo() {
             return this.edits.size()>0 && this.isUnDone;
         }
- 
     }
     private class UndoManager extends AbstractUndoableEdit implements UndoableEditListener {
         private String lastEditName=null;

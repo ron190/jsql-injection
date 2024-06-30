@@ -19,7 +19,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     // List of differences found between the reference page, and the current page
     private LinkedList<Diff> diffsWithReference = new LinkedList<>();
     
-    private static final DiffMatchPatch DIFFMATCHPATCH = new DiffMatchPatch();
+    private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();
 
     private final InjectionBlind injectionBlind;
     
@@ -38,9 +38,17 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     }
     
     /**
-     * Constructor for bit test.
+     * Constructor for bits test.
      */
-    public CallableBlind(String sqlQuery, int indexCharacter, int bit, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode, String metadataInjectionProcess) {
+    public CallableBlind(
+        String sqlQuery,
+        int indexCharacter,
+        int bit,
+        InjectionModel injectionModel,
+        InjectionBlind injectionBlind,
+        BooleanMode blindMode,
+        String metadataInjectionProcess
+    ) {
         
         this(sqlQuery, injectionModel, injectionBlind, blindMode, metadataInjectionProcess);
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestBlind(sqlQuery, indexCharacter, bit, blindMode);
@@ -60,11 +68,9 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
         // Fix #95426: ConcurrentModificationException on iterator.next()
         List<Diff> falseDiffs = new CopyOnWriteArrayList<>(this.injectionBlind.getFalseDiffs());
         for (Diff falseDiff: falseDiffs) {
-
             // Fix #4386: NullPointerException on contains()
             // diffsWithReference is initialized to an empty new LinkedList<>()
             if (this.diffsWithReference.contains(falseDiff)) {
-
                 return false;
             }
         }
@@ -82,9 +88,9 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
         
         String result = this.injectionBlind.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
         
-        this.diffsWithReference = DIFFMATCHPATCH.diffMain(this.injectionBlind.getSourceReferencePage(), result, true);
+        this.diffsWithReference = DIFF_MATCH_PATCH.diffMain(this.injectionBlind.getSourceReferencePage(), result, true);
         
-        DIFFMATCHPATCH.diffCleanupEfficiency(this.diffsWithReference);
+        DIFF_MATCH_PATCH.diffCleanupEfficiency(this.diffsWithReference);
         
         return this;
     }

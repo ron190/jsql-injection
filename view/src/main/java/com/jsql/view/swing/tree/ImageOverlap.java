@@ -32,7 +32,7 @@ public class ImageOverlap extends ImageIcon {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     /**
-     * The path of icon displayed on the bottom right corner.
+     * The path of icon displayed in the bottom right corner.
      */
     private final String iconPathOverlap;
 
@@ -44,7 +44,6 @@ public class ImageOverlap extends ImageIcon {
     public ImageOverlap(String main, String iconPathOverlap) {
         
         super(Objects.requireNonNull(ImageOverlap.class.getClassLoader().getResource(main)));
-
         this.iconPathOverlap = iconPathOverlap;
     }
 
@@ -54,17 +53,17 @@ public class ImageOverlap extends ImageIcon {
         super.paintIcon(c, g, x, y);
         
         try {
-            BufferedImage im2 = ImageIO.read(Objects.requireNonNull(ImageOverlap.class.getClassLoader().getResource(this.iconPathOverlap)));
-            
-            g.drawImage(
-                im2,
-                (this.getIconWidth() - im2.getWidth()) / 2,
-                (this.getIconHeight() - im2.getHeight()) / 2,
-                null
+            BufferedImage bufferedImage = ImageIO.read(
+                Objects.requireNonNull(ImageOverlap.class.getClassLoader().getResource(this.iconPathOverlap))
             );
             
+            g.drawImage(
+                bufferedImage,
+                (this.getIconWidth() - bufferedImage.getWidth()) / 2,
+                (this.getIconHeight() - bufferedImage.getHeight()) / 2,
+                null
+            );
         } catch (IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }

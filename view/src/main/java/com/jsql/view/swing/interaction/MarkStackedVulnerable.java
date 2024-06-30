@@ -19,10 +19,7 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkStackedVulnerable implements InteractionCommand {
 
-    /**
-     * @param nullParam
-     */
-    public MarkStackedVulnerable(Object[] nullParam) {
+    public MarkStackedVulnerable(Object[] interactionParams) {
         // Do nothing
     }
 
@@ -30,7 +27,6 @@ public class MarkStackedVulnerable implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getStacked();
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategyVulnerable(strategy);
     }
 }

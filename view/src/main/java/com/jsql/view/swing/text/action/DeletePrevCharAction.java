@@ -14,13 +14,11 @@ public class DeletePrevCharAction extends AbstractCharAction {
      * Creates this object with the appropriate identifier.
      */
     public DeletePrevCharAction() {
-        
         super(DefaultEditorKit.deletePrevCharAction);
     }
 
     @Override
     protected void delete(Document doc, int dot) throws BadLocationException {
-        
         if (dot > 0) {
             
             var delChars = 1;
@@ -32,7 +30,6 @@ public class DeletePrevCharAction extends AbstractCharAction {
                 var c1 = dotChars.charAt(1);
 
                 if (c0 >= '\uD800' && c0 <= '\uDBFF' && c1 >= '\uDC00' && c1 <= '\uDFFF') {
-                    
                     delChars = 2;
                 }
             }

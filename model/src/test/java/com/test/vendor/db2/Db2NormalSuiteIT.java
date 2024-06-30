@@ -27,7 +27,6 @@ public class Db2NormalSuiteIT extends ConcreteDb2SuiteIT {
         .getPreferencesUtil()
         .withIsNotSearchingCharInsertion(true)
         .withIsStrategyBlindDisabled(true)
-        .withIsStrategyTimeDisabled(true)
         .withIsStrategyStackedDisabled(true)
         .withIsStrategyMultibitDisabled(true);
 

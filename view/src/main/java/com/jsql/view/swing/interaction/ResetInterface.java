@@ -18,16 +18,12 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class ResetInterface implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
     public ResetInterface(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        
         MediatorHelper.frame().resetInterface();
     }
 }

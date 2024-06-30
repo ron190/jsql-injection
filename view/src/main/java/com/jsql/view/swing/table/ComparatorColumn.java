@@ -14,7 +14,7 @@ import java.util.Comparator;
 
 /**
  * Comparator for table column values ; column with only int data is sorted like 3 lt 20 lt 100,
- * column with string will sort like 100 gt 20 gt 3 gt a.
+ * column with string will sort like 100 gt 20 gt 3 gt abc.
  */
 public class ComparatorColumn<T> implements Comparator<T> {
     
@@ -36,40 +36,25 @@ public class ComparatorColumn<T> implements Comparator<T> {
 
         try {
             Long.parseLong(valueCellLeft);
-            
         } catch (NumberFormatException e) {
-            
             isFirstNumber = false;
         }
         
         try {
             Long.parseLong(valueCellRight);
-            
         } catch (NumberFormatException e) {
-            
             isSecondNumber = false;
         }
         
         int sortOrder;
         if (isFirstNumber && isSecondNumber) {
-            
-            // or Sort by Number
-            sortOrder = Long.valueOf(valueCellLeft).compareTo(Long.valueOf(valueCellRight));
-            
+            sortOrder = Long.valueOf(valueCellLeft).compareTo(Long.valueOf(valueCellRight));  // or Sort by Number
         } else if (isFirstNumber) {
-            
-            // or Sort by Number first
-            sortOrder = -1;
-            
+            sortOrder = -1;  // or Sort by Number first
         } else if (isSecondNumber) {
-            
-            // or Sort by Letter first
-            sortOrder = 1;
-            
+            sortOrder = 1;  // or Sort by Letter first
         } else {
-            
-            // Sort by Letter
-            sortOrder = valueCellLeft.compareToIgnoreCase(valueCellRight);
+            sortOrder = valueCellLeft.compareToIgnoreCase(valueCellRight);  // Sort by Letter
         }
         
         return sortOrder;

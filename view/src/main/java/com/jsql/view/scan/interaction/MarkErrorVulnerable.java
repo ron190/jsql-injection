@@ -24,9 +24,6 @@ public class MarkErrorVulnerable implements InteractionCommand {
     
     private final String url;
     
-    /**
-     * @param interactionParams
-     */
     @SuppressWarnings("unchecked")
     public MarkErrorVulnerable(Object[] interactionParams) {
 
@@ -38,7 +35,6 @@ public class MarkErrorVulnerable implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();
-        
         MediatorHelper.managerScan().highlight(this.url, strategy.toString());
     }
 }

@@ -44,15 +44,6 @@ public class ButtonAddressBar extends JButton {
     }
 
     /**
-     * Return the current state of current process.
-     * @return State of process
-     */
-    public StateButton getState() {
-        
-        return this.state;
-    }
-
-    /**
      * Replace button with Stop icon ; user can stop current process.
      */
     public void setInjectionReady() {
@@ -94,5 +85,13 @@ public class ButtonAddressBar extends JButton {
         this.setRolloverEnabled(false);
         this.setIcon(UiUtil.ICON_LOADER_GIF);
         this.setEnabled(false);
+    }
+
+    /**
+     * Return the current state of current process.
+     * @return State of process
+     */
+    public StateButton getState() {
+        return this.state;
     }
 }

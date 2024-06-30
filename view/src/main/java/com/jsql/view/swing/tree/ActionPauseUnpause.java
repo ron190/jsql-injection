@@ -38,11 +38,8 @@ public class ActionPauseUnpause implements ActionListener {
         }
         
         if (suspendableTask.isPaused()) {
-            
             suspendableTask.unpause();
-            
         } else {
-            
             suspendableTask.pause();
         }
     }

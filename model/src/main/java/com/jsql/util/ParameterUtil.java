@@ -53,7 +53,6 @@ public class ParameterUtil {
     private final InjectionModel injectionModel;
     
     public ParameterUtil(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
     
@@ -75,18 +74,14 @@ public class ParameterUtil {
                
             // Keep single check
             if (urlQueryFixed.isEmpty()) {
-
                 throw new MalformedURLException("empty URL");
-
             } else if (!urlQueryFixed.matches("(?i)^https?://.*")) {
-
                 if (!urlQueryFixed.matches("(?i)^\\w+://.*")) {
                     
                     LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Undefined URL protocol, forcing to [http://]");
                     urlQueryFixed = "http://"+ urlQueryFixed;
                     
                 } else {
-                    
                     throw new MalformedURLException("unknown URL protocol");
                 }
             }
@@ -109,11 +104,8 @@ public class ParameterUtil {
             this.injectionModel.getMediatorUtils().getConnectionUtil().setTypeRequest(typeRequest);
             
             if (isScanning) {
-                
                 this.injectionModel.beginInjection();
-                
             } else {
-                
                 // Start the model injection process in a thread
                 new Thread(
                     this.injectionModel::beginInjection,
@@ -121,7 +113,6 @@ public class ParameterUtil {
                 )
                 .start();
             }
-            
         } catch (IllegalArgumentException | MalformedURLException | URISyntaxException e) {
             
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Incorrect Url: {}", e.getMessage());
@@ -179,17 +170,12 @@ public class ParameterUtil {
         var nbStarInParameter = 0;
         
         if (this.getQueryStringFromEntries().contains(InjectionModel.STAR)) {
-            
             nbStarInParameter++;
         }
-        
         if (this.getRequestFromEntries().contains(InjectionModel.STAR)) {
-            
             nbStarInParameter++;
         }
-        
         if (this.getHeaderFromEntries().contains(InjectionModel.STAR)) {
-            
             nbStarInParameter++;
         }
         
@@ -200,7 +186,6 @@ public class ParameterUtil {
             || StringUtils.countMatches(this.getRequestFromEntries(), "*") > 1
             || StringUtils.countMatches(this.getHeaderFromEntries(), "*") > 1
         ) {
-            
             throw new InjectionFailureException("Character insertion [*] must be used once in Query String, Request or Header parameters");
         }
     }
@@ -215,23 +200,18 @@ public class ParameterUtil {
             && methodInjection != this.injectionModel.getMediatorMethod().getQuery()
             && !isCheckingAllParam
         ) {
-            
             throw new InjectionFailureException("Select method GET to use character [*] or remove [*] from GET parameters");
-            
         } else if (
             this.getRequestFromEntries().contains(InjectionModel.STAR)
             && methodInjection != this.injectionModel.getMediatorMethod().getRequest()
             && !isCheckingAllParam
         ) {
-            
             throw new InjectionFailureException("Select a Request method (like POST) to use [*], or remove [*] from Request parameters");
-            
         } else if (
             this.getHeaderFromEntries().contains(InjectionModel.STAR)
             && methodInjection != this.injectionModel.getMediatorMethod().getHeader()
             && !isCheckingAllParam
         ) {
-            
             throw new InjectionFailureException("Select method Header to use character [*] or remove [*] from Header parameters");
         }
     }
@@ -247,21 +227,16 @@ public class ParameterUtil {
             && this.getListQueryString().isEmpty()
             && !this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
         ) {
-            
             throw new InjectionFailureException("No query string");
-        
         } else if (
             methodInjection == this.injectionModel.getMediatorMethod().getRequest()
             && this.getListRequest().isEmpty()
         ) {
-            
             throw new InjectionFailureException("Incorrect Request format");
-            
         } else if (
             methodInjection == this.injectionModel.getMediatorMethod().getHeader()
             && this.getListHeader().isEmpty()
         ) {
-            
             throw new InjectionFailureException("Incorrect Header format");
         }
     }
@@ -271,9 +246,7 @@ public class ParameterUtil {
         String characterInsertionByUser;
 
         if (parameterToInject == null) {
-            
             characterInsertionByUser = InjectionModel.STAR;
-            
         } else {
             
             characterInsertionByUser = parameterToInject.getValue();
@@ -292,7 +265,6 @@ public class ParameterUtil {
             StringUtils.isEmpty(urlQuery)
             || StringUtils.isEmpty(url.getHost())
         ) {
-            
             throw new MalformedURLException("empty URL");
         }
         
@@ -305,22 +277,18 @@ public class ParameterUtil {
         var regexQueryString = Pattern.compile("(.*\\?)(.*)").matcher(urlQuery);
         
         if (!regexQueryString.find()) {
-            
             return;
         }
         
         this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(regexQueryString.group(1));
         
         if (StringUtils.isNotEmpty(url.getQuery())) {
-            
             this.listQueryString = Pattern.compile("&")
                 .splitAsStream(url.getQuery())
-                .map(s -> Arrays.copyOf(s.split("="), 2))
-                .map(o -> new SimpleEntry<>(
-                    o[0],
-                    o[1] == null
-                    ? StringUtils.EMPTY
-                    : o[1]
+                .map(keyValue -> Arrays.copyOf(keyValue.split("="), 2))
+                .map(keyValue -> new SimpleEntry<>(
+                    keyValue[0],
+                    keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]
                 ))
                 .collect(Collectors.toList());
         }
@@ -332,25 +300,19 @@ public class ParameterUtil {
         this.listRequest.clear();
 
         if (StringUtils.isNotEmpty(rawRequest)) {
-
             if (isMultipartRequest()) {
                 // Pass request containing star * param without any parsing
-                this.listRequest = new ArrayList<>(
-                    List.of(new SimpleEntry<>(
-                        rawRequest,
-                        ""
-                    ))
-                );
+                this.listRequest = new ArrayList<>(List.of(new SimpleEntry<>(
+                    rawRequest,
+                    ""
+                )));
             } else {
-                this.listRequest = Pattern
-                    .compile("&")
+                this.listRequest = Pattern.compile("&")
                     .splitAsStream(rawRequest)
-                    .map(s -> Arrays.copyOf(s.split("="), 2))
-                    .map(o -> new SimpleEntry<>(
-                        o[0],
-                        o[1] == null
-                        ? StringUtils.EMPTY
-                        : o[1]
+                    .map(keyValue -> Arrays.copyOf(keyValue.split("="), 2))
+                    .map(keyValue -> new SimpleEntry<>(
+                        keyValue[0],
+                        keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]
                     ))
                     .collect(Collectors.toList());
             }
@@ -363,31 +325,18 @@ public class ParameterUtil {
         this.listHeader.clear();
 
         if (StringUtils.isNotEmpty(rawHeader)) {
-            
-            this.listHeader =
-                Pattern
-                .compile("\\\\r\\\\n")
+            this.listHeader = Pattern.compile("\\\\r\\\\n")
                 .splitAsStream(rawHeader)
-                .map(commaEntry ->
-                    Arrays.copyOf(
-                        commaEntry.split(":"),
-                        2
-                    )
-                )
-                .map(arrayEntry ->
-                    new SimpleEntry<>(
-                        arrayEntry[0],
-                        arrayEntry[1] == null
-                        ? StringUtils.EMPTY
-                        : arrayEntry[1]
-                    )
-                )
+                .map(keyValue -> Arrays.copyOf(keyValue.split(":"), 2))
+                .map(keyValue -> new SimpleEntry<>(
+                    keyValue[0],
+                    keyValue[1] == null ? StringUtils.EMPTY : keyValue[1]
+                ))
                 .collect(Collectors.toList());
         }
     }
     
     public String getQueryStringFromEntries() {
-        
         return this.listQueryString.stream()
             .filter(Objects::nonNull)
             .map(entry -> {
@@ -405,36 +354,28 @@ public class ParameterUtil {
     }
 
     public String getRequestFromEntries() {
-
         return this.listRequest.stream()
             .filter(Objects::nonNull)
-            .map(entry ->
-                String.format(
-                    FORMAT_KEY_VALUE,
-                    entry.getKey(),
-                    StringUtils.isEmpty(entry.getValue()) ? "" : entry.getValue()
-                )
-            )
+            .map(entry -> String.format(
+                FORMAT_KEY_VALUE,
+                entry.getKey(),
+                StringUtils.isEmpty(entry.getValue()) ? "" : entry.getValue()
+            ))
             .collect(Collectors.joining("&"));
     }
     
     public String getHeaderFromEntries() {
-        
-        return this.listHeader
-            .stream()
+        return this.listHeader.stream()
             .filter(Objects::nonNull)
-            .map(entry ->
-                String.format(
-                    "%s:%s",
-                    entry.getKey(),
-                    entry.getValue()
-                )
-            )
+            .map(entry -> String.format(
+                "%s:%s",
+                entry.getKey(),
+                entry.getValue()
+            ))
             .collect(Collectors.joining("\\r\\n"));
     }
 
     public boolean isRequestSoap() {
-        
         return this.rawRequest
             .trim()
             .matches("^(<soapenv:|<\\?xml).*");

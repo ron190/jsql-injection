@@ -24,7 +24,6 @@ public class ReplaceFileChooser extends JFileChooser {
      * @param s
      */
     public ReplaceFileChooser(String s) {
-        
         // Unhandled NoSuchMethodError #82561 on constructor: NoSuchMethodError
         // Unhandled InternalError #93015 on constructor: InvocationTargetException
         super(s);
@@ -36,7 +35,6 @@ public class ReplaceFileChooser extends JFileChooser {
         var file = this.getSelectedFile();
         
         if (this.getDialogType() == SAVE_DIALOG) {
-            
             if (file.exists()) {
                 
                 int result = JOptionPane.showConfirmDialog(
@@ -67,9 +65,7 @@ public class ReplaceFileChooser extends JFileChooser {
                     default:
                         break;
                 }
-                
             } else {
-                
                 super.approveSelection();
             }
         }

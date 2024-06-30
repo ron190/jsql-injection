@@ -59,11 +59,8 @@ public class MediatorStrategy {
         var strategyMode = "default";
         
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isDiosStrategy()) {
-            
             strategyMode = "dios";
-            
         } else if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isZipStrategy()) {
-            
             strategyMode = "zip";
         }
         
@@ -84,13 +81,9 @@ public class MediatorStrategy {
         String result = urlBase;
         
         if (urlBase.contains(InjectionModel.STAR)) {
-            
             if (!isUsingIndex) {
-                
                 result = urlBase.replace(InjectionModel.STAR, this.encodePath(sqlTrail));
-                
             } else {
-                
                 result = urlBase.replace(
                     InjectionModel.STAR,
                     this.encodePath(
@@ -169,17 +162,11 @@ public class MediatorStrategy {
                 ? characterInsertionByUser
                 : new SuspendableGetCharInsertion(this.injectionModel).run(characterInsertionByUser);
             
-            if (characterInsertion.contains(InjectionModel.STAR)) {
-                
-                // When injecting all parameters or JSON
+            if (characterInsertion.contains(InjectionModel.STAR)) {  // When injecting all parameters or JSON
                 parameterToInject.setValue(characterInsertion);
-                
-            } else {
-                
-                // When injecting last parameter
+            } else {  // When injecting last parameter
                 parameterToInject.setValue(characterInsertion.replaceAll("(\\w)$", "$1+") + InjectionModel.STAR);
             }
-
         } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)) {
 
             String characterInsertion = new SuspendableGetCharInsertion(this.injectionModel).run("");
@@ -197,14 +184,14 @@ public class MediatorStrategy {
 
         if (parameterToInject != null) {
 
-            // Multibit requires '0'  TODO char insertion 0' should also work on "where x='$param'"
+            // Multibit requires '0'
+            // TODO char insertion 0' should also work on "where x='$param'"
             var backupCharacterInsertion = parameterToInject.getValue();
             parameterToInject.setValue(InjectionModel.STAR);
             this.multibit.checkApplicability();
             parameterToInject.setValue(backupCharacterInsertion);
 
         } else {
-
             this.multibit.checkApplicability();
         }
 
@@ -225,7 +212,6 @@ public class MediatorStrategy {
             // Restore initial parameter value on injection failure
             // Only when not true STAR injection
             if (parameterOriginalValue != null) {
-                
                 parameterToInject.setValue(parameterOriginalValue.replace(InjectionModel.STAR, StringUtils.EMPTY));
             }
 

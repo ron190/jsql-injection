@@ -32,7 +32,6 @@ public class PropertiesUtil {
             this.getProperties().load(input);
             
         } catch (IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }

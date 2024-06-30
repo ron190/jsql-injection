@@ -24,9 +24,6 @@ public class MarkBlindVulnerable implements InteractionCommand {
 
     private final String url;
     
-    /**
-     * @param interactionParams
-     */
     @SuppressWarnings("unchecked")
     public MarkBlindVulnerable(Object[] interactionParams) {
 
@@ -38,7 +35,6 @@ public class MarkBlindVulnerable implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getBlind();
-        
         MediatorHelper.managerScan().highlight(this.url, strategy.toString());
     }
 }

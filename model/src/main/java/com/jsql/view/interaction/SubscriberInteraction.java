@@ -30,7 +30,6 @@ public class SubscriberInteraction implements Subscriber<Request> {
     private Subscription subscription;
     
     public SubscriberInteraction(String packageInteraction) {
-        
         this.packageInteraction = packageInteraction;
     }
     
@@ -72,10 +71,7 @@ public class SubscriberInteraction implements Subscriber<Request> {
                 interactionCommand.execute();
                 
             } catch (ClassNotFoundException e) {
-                
-                // Ignore unused interaction message
-                LOGGER.log(LogLevelUtil.IGNORE, e);
-                
+                LOGGER.log(LogLevelUtil.IGNORE, e);  // Ignore unused interaction message
             } catch (
                 InstantiationException
                 | IllegalAccessException
@@ -92,7 +88,6 @@ public class SubscriberInteraction implements Subscriber<Request> {
 
     @Override
     public void onError(Throwable e) {
-
         LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
     }
 

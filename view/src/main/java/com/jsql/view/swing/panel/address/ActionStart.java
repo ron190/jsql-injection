@@ -24,22 +24,16 @@ public class ActionStart implements ActionListener {
     protected final PanelAddressBar panelAddressBar;
     
     public ActionStart(PanelAddressBar panelAddressBar) {
-        
         this.panelAddressBar = panelAddressBar;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
         // No injection running
         if (this.panelAddressBar.getAddressMenuBar().getButtonInUrl().getState() == StateButton.STARTABLE) {
-            
             this.startInjection();
-
         } else if (this.panelAddressBar.getAddressMenuBar().getButtonInUrl().getState() == StateButton.STOPPABLE) {
-            
-            // Injection currently running, stop the process
-            this.stopInjection();
+            this.stopInjection();  // Injection currently running, stop the process
         }
     }
     
@@ -49,7 +43,6 @@ public class ActionStart implements ActionListener {
         
         // Ask the user confirmation if injection already built
         if (MediatorHelper.model().shouldErasePreviousInjection()) {
-            
             // Fix #93469: IllegalArgumentException on showConfirmDialog()
             // Fix #33930: ClassCastException on showConfirmDialog()
             // Implementation by sun.awt.image
@@ -60,9 +53,7 @@ public class ActionStart implements ActionListener {
                     I18nUtil.valueByKey("DIALOG_NEW_INJECTION_TITLE"),
                     JOptionPane.OK_CANCEL_OPTION
                 );
-                
             } catch (IllegalArgumentException | ClassCastException e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }

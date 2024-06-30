@@ -39,19 +39,13 @@ public class CreateValuesTab extends CreateTabHelper implements InteractionComma
      */
     public CreateValuesTab(Object[] interactionParams) {
         
-        // Array of column names, displayed in header table
-        this.columnNames = (String[]) interactionParams[0];
-        
-        // 2D array of values
-        this.data = (String[][]) interactionParams[1];
-        
-        // The table containing the data
-        this.table = (AbstractElementDatabase) interactionParams[2];
+        this.columnNames = (String[]) interactionParams[0];  // Array of column names, displayed in header table
+        this.data = (String[][]) interactionParams[1];  // 2D array of values
+        this.table = (AbstractElementDatabase) interactionParams[2];  // The table containing the data
     }
 
     @Override
     public void execute() {
-        
         MediatorHelper.treeDatabase().createValuesTab(this.data, this.columnNames, this.table);
     }
 }

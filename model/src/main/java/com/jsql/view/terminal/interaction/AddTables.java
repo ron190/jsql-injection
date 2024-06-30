@@ -35,8 +35,6 @@ public class AddTables implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public AddTables(Object[] interactionParams) {
-        
-        // Get list of tables from the model
         this.tables = (List<Table>) interactionParams[0];
     }
 
@@ -47,7 +45,6 @@ public class AddTables implements InteractionCommand {
         
         // Loop into the list of tables
         for (Table table: this.tables) {
-            
             LOGGER.debug(table);
         }
     }

@@ -10,13 +10,13 @@
     <artifactId>model</artifactId>
 
     <repositories>
+        <repository>
+            <id>cubrid-repository</id>
+            <url>http://maven.cubrid.org/</url>
+        </repository>
         <!--         <repository> -->
         <!--             <id>default</id> -->
         <!--             <url>https://repo.maven.apache.org/maven2/</url> -->
-        <!--         </repository> -->
-        <!--         <repository> -->
-        <!--             <id>cubrid-repository</id> -->
-        <!--             <url>http://maven.cubrid.org/</url> -->
         <!--         </repository> -->
         <!--         <repository> -->
         <!--             <id>jspresso-repository</id> -->
@@ -46,6 +46,7 @@
         <bootstrap.version>5.3.3</bootstrap.version>
         <!-- required since commons-text:1.11.0 not working -->
         <commons-lang3.version>3.14.0</commons-lang3.version>
+        <cubrid-jdbc.version>11.2.0.0035</cubrid-jdbc.version>
         <dnsjava.version>3.5.3</dnsjava.version>
         <gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
@@ -555,6 +556,12 @@
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
             <version>${sqlite-jdbc.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>cubrid</groupId>
+            <artifactId>cubrid-jdbc</artifactId>
+            <version>${cubrid-jdbc.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -39,7 +39,6 @@ public class HeaderUtil {
     private final InjectionModel injectionModel;
     
     public HeaderUtil(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
 
@@ -109,13 +108,10 @@ public class HeaderUtil {
         }
 
         this.checkResponse(responseCode, mapResponseHeaders);
-        
         this.checkStatus(httpResponse);
         
         this.injectionModel.getMediatorUtils().getFormUtil().parseForms(httpResponse.statusCode(), pageSource);
-
         this.injectionModel.getMediatorUtils().getCsrfUtil().parseForCsrfToken(pageSource, mapResponseHeaders);
-
         this.injectionModel.getMediatorUtils().getDigestUtil().parseWwwAuthenticate(mapResponseHeaders);
 
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
@@ -148,24 +144,17 @@ public class HeaderUtil {
     }
 
     private void checkStatus(HttpResponse<String> response) {
-
         if (response.statusCode() >= 400) {
-
             if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isNotTestingConnection()) {
-
                 LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "Connection test disabled, skipping error {}...", response.statusCode());
-
             } else {
-
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Try with option 'Disable connection test' to skip HTTP error {}", response.statusCode());
             }
         }
     }
 
     private void checkResponse(String responseCode, Map<String, String> mapResponse) {
-        
         if (this.isBasicAuth(responseCode, mapResponse)) {
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 "Basic Authentication detected: "
@@ -173,95 +162,67 @@ public class HeaderUtil {
                 + "or add header 'Authorization: Basic b3N..3Jk', with b3N..3Jk as "
                 + "'osUserName:osPassword' encoded in Base64 (use the Coder in jSQL to encode the string)."
             );
-        
         } else if (this.isNtlm(responseCode, mapResponse)) {
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 "NTLM Authentication detected: "
                 + "set authentication in preferences, "
                 + "or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
             );
-        
         } else if (this.isDigest(responseCode, mapResponse)) {
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 "Digest Authentication detected: set authentication in preferences."
             );
-        
         } else if (this.isNegotiate(responseCode, mapResponse)) {
-            
             LOGGER.log(
                 LogLevelUtil.CONSOLE_ERROR,
                 "Negotiate Authentication detected: "
                 + "add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
             );
-            
         } else if (Pattern.matches("1\\d\\d", responseCode)) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} {} Informational", FOUND_STATUS_HTTP, responseCode);
-            
         } else if (Pattern.matches("2\\d\\d", responseCode)) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, "{} {} Success", FOUND_STATUS_HTTP, responseCode);
-            
         } else if (Pattern.matches("3\\d\\d", responseCode)) {
             
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{} {} Redirection", FOUND_STATUS_HTTP, responseCode);
             
             if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isFollowingRedirection()) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "If injection fails retry with option 'Follow HTTP redirection' activated");
-                
             } else {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Redirecting to the next page...");
             }
-            
         } else if (Pattern.matches(REGEX_HTTP_STATUS, responseCode)) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{} {} Client Error", FOUND_STATUS_HTTP, responseCode);
-            
         } else if (Pattern.matches("5\\d\\d", responseCode)) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "{} {} Server Error", FOUND_STATUS_HTTP, responseCode);
-            
         } else {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} {} Unknown", FOUND_STATUS_HTTP, responseCode);
         }
     }
     
     private boolean isNegotiate(String responseCode, Map<String, String> mapResponse) {
-        
-        return
-            Pattern.matches(REGEX_HTTP_STATUS, responseCode)
+        return Pattern.matches(REGEX_HTTP_STATUS, responseCode)
             && mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)
             && "Negotiate".equals(mapResponse.get(WWW_AUTHENTICATE_RESPONSE));
     }
 
     private boolean isDigest(String responseCode, Map<String, String> mapResponse) {
-        
-        return
-            Pattern.matches(REGEX_HTTP_STATUS, responseCode)
+        return Pattern.matches(REGEX_HTTP_STATUS, responseCode)
             && mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)
             && mapResponse.get(WWW_AUTHENTICATE_RESPONSE) != null
             && mapResponse.get(WWW_AUTHENTICATE_RESPONSE).startsWith("Digest ");
     }
 
     private boolean isNtlm(String responseCode, Map<String, String> mapResponse) {
-        
-        return
-            Pattern.matches(REGEX_HTTP_STATUS, responseCode)
+        return Pattern.matches(REGEX_HTTP_STATUS, responseCode)
             && mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)
             && "NTLM".equals(mapResponse.get(WWW_AUTHENTICATE_RESPONSE));
     }
 
     private boolean isBasicAuth(String responseCode, Map<String, String> mapResponse) {
-        
-        return
-            Pattern.matches(REGEX_HTTP_STATUS, responseCode)
+        return Pattern.matches(REGEX_HTTP_STATUS, responseCode)
             && mapResponse.containsKey(WWW_AUTHENTICATE_RESPONSE)
             && mapResponse.get(WWW_AUTHENTICATE_RESPONSE) != null
             && mapResponse.get(WWW_AUTHENTICATE_RESPONSE).startsWith("Basic ");

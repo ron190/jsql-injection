@@ -34,11 +34,9 @@ public class JPopupComponent<T extends JComponent> extends JComponent implements
     public JPopupComponent(final T proxy) {
         
         this.proxy = proxy;
-        
         this.proxy.setComponentPopupMenu(new JPopupMenuComponent(this.proxy));
         
         this.proxy.addMouseListener(new MouseAdapter() {
-            
             @Override
             public void mousePressed(MouseEvent e) {
                 
@@ -46,7 +44,6 @@ public class JPopupComponent<T extends JComponent> extends JComponent implements
 
                 // Left button will unselect text after selectAll, so only for right click
                 if (SwingUtilities.isRightMouseButton(e)) {
-                    
                     JPopupComponent.this.proxy.requestFocusInWindow();
                 }
             }

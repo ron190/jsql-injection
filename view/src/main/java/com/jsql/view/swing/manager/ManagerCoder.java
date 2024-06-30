@@ -55,19 +55,16 @@ public class ManagerCoder extends JPanel implements Manager {
         private final String nameMethod;
         
         ChangeMenuListener(String nameMethod) {
-            
             this.nameMethod = nameMethod;
         }
         
         @Override
         public void stateChanged(ChangeEvent e) {
-            
             if (e.getSource() instanceof JMenuItem) {
                 
                 JMenuItem item = (JMenuItem) e.getSource();
                 
                 if (item.isSelected() || item.isArmed()) {
-                    
                     ManagerCoder.this.actionCoder.actionPerformed(this.nameMethod);
                 }
             }
@@ -88,10 +85,8 @@ public class ManagerCoder extends JPanel implements Manager {
         this.textInput.setName("textInputManagerCoder");
         
         this.textInput.getDocument().addDocumentListener(new DocumentListenerEditing() {
-            
             @Override
             public void process() {
-                
                 ManagerCoder.this.actionCoder.actionPerformed();
             }
         });
@@ -196,7 +191,6 @@ public class ManagerCoder extends JPanel implements Manager {
         this.menuMethod.setName("menuMethodManagerCoder");
         
         for (JMenu menu: mapMenus.values()) {
-            
             comboMenu.add(menu);
         }
 

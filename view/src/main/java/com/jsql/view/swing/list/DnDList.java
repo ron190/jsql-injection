@@ -59,7 +59,6 @@ public class DnDList extends JList<ItemList> {
         this.listModel = new DefaultListModel<>();
 
         for (ItemList path: newList) {
-            
             this.listModel.addElement(path);
         }
 
@@ -87,25 +86,20 @@ public class DnDList extends JList<ItemList> {
                 
             @Override
             public void focusLost(FocusEvent arg0) {
-                
                 DnDList.this.repaint();
             }
             
             @Override
             public void focusGained(FocusEvent arg0) {
-                
                 DnDList.this.repaint();
             }
         });
         
         // Allows deleting values
         this.addKeyListener(new KeyAdapter() {
-            
             @Override
             public void keyPressed(KeyEvent arg0) {
-                
                 if (arg0.getKeyCode() == KeyEvent.VK_DELETE) {
-                    
                     DnDList.this.removeSelectedItem();
                 }
             }
@@ -118,12 +112,10 @@ public class DnDList extends JList<ItemList> {
         var listActionMap = this.getActionMap();
         
         listActionMap.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
-            
             @Override
             public void actionPerformed(ActionEvent e) {
                 
                 if (DnDList.this.getSelectedValuesList().isEmpty()) {
-                    
                     return;
                 }
                 
@@ -135,11 +127,8 @@ public class DnDList extends JList<ItemList> {
                     int valueIndex = DnDList.this.listModel.indexOf(value);
 
                     if (valueIndex < DnDList.this.listModel.size() - 1) {
-                        
                         siblings.add(DnDList.this.listModel.get(valueIndex + 1));
-                        
                     } else if (valueIndex > 0) {
-                        
                         siblings.add(DnDList.this.listModel.get(valueIndex - 1));
                     }
                 }
@@ -147,7 +136,6 @@ public class DnDList extends JList<ItemList> {
                 TransferHandler.getCutAction().actionPerformed(e);
                 
                 for (ItemList sibling: siblings) {
-                    
                     DnDList.this.setSelectedValue(sibling, true);
                 }
             }
@@ -170,7 +158,6 @@ public class DnDList extends JList<ItemList> {
     public void removeSelectedItem() {
         
         if (this.getSelectedValuesList().isEmpty()) {
-            
             return;
         }
 
@@ -182,11 +169,8 @@ public class DnDList extends JList<ItemList> {
             this.listModel.removeElement(itemSelected);
             
             if (indexOfItemSelected == this.listModel.getSize()) {
-                
                 this.setSelectedIndex(indexOfItemSelected - 1);
-                
             } else {
-                
                 this.setSelectedIndex(indexOfItemSelected);
             }
         }
@@ -198,7 +182,6 @@ public class DnDList extends JList<ItemList> {
             );
             
             if (rectangle != null) {
-                
                 this.scrollRectToVisible(
                     this.getCellBounds(
                         this.getMinSelectionIndex(),
@@ -206,9 +189,7 @@ public class DnDList extends JList<ItemList> {
                     )
                 );
             }
-            
         } catch (NullPointerException e) {
-            
             // Report NullPointerException #1571 : manual scroll elsewhere then run action
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
@@ -222,7 +203,6 @@ public class DnDList extends JList<ItemList> {
     public void dropPasteFile(final List<File> filesToImport, int position) {
         
         if (filesToImport.isEmpty()) {
-            
             return;
         }
         
@@ -244,9 +224,7 @@ public class DnDList extends JList<ItemList> {
                         JOptionPane.ERROR_MESSAGE,
                         UiUtil.ICON_ERROR
                     );
-                    
                 } catch (ClassCastException e) {
-                    
                     LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
                 }
                 
@@ -274,7 +252,6 @@ public class DnDList extends JList<ItemList> {
         int startPosition = position;
 
         if (answer != JOptionPane.YES_OPTION && answer != JOptionPane.NO_OPTION) {
-            
             return;
         }
         
@@ -294,13 +271,10 @@ public class DnDList extends JList<ItemList> {
         int endPosition = startPosition;
         
         for (File file: filesToImport) {
-            
             endPosition = this.initializeItems(endPosition, file);
         }
-        
 
         if (!this.listModel.isEmpty()) {
-            
             DnDList.this.setSelectionInterval(startPosition, endPosition - 1);
         }
         
@@ -311,9 +285,7 @@ public class DnDList extends JList<ItemList> {
                     DnDList.this.getMaxSelectionIndex()
                 )
             );
-            
         } catch (NullPointerException e) {
-            
             // Report NullPointerException #1571 : manual scroll elsewhere then run action
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
         }
@@ -330,20 +302,16 @@ public class DnDList extends JList<ItemList> {
             
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                
                 if (
                     StringUtils.isNotEmpty(line)
                     // Fix Report #60
                     && 0 <= endPosition
                     && endPosition <= this.listModel.size()
                 ) {
-                    
                     this.addItem(endPosition++, line);
                 }
             }
-            
         } catch (IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
         }
         
@@ -355,13 +323,11 @@ public class DnDList extends JList<ItemList> {
         this.listModel.clear();
         
         for (ItemList path: this.defaultList) {
-            
             this.listModel.addElement(path);
         }
     }
     
     public void addItem(int endPosition, String line) {
-        
         this.listModel.add(endPosition, new ItemList(line.replace("\\", "/")));
     }
 }

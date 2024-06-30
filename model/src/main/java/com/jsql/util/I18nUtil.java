@@ -28,10 +28,9 @@ public class I18nUtil {
      * Bundle of i18n keys and translated text for the current system language
      */
     private static ResourceBundle localeDefault = ResourceBundle.getBundle("i18n.jsql", Locale.getDefault());
-    
-    // Utility class
+
     private I18nUtil() {
-        // not used
+        // Utility class
     }
     
     /**
@@ -40,14 +39,12 @@ public class I18nUtil {
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
-        
         return (String) I18nUtil.localeDefault.getObject(key);
     }
     
     /**
      * Verify if there is a language properties file corresponding to the current system language.
      * If not then it invites the user to use the translation process.
-     * @throws URISyntaxException
      */
     public static void checkCurrentLanguage() {
         
@@ -74,8 +71,7 @@ public class I18nUtil {
     }
     
     public static boolean isAsian(Locale newLocale) {
-        return
-            Locale.forLanguageTag("zh").getLanguage().equals(newLocale.getLanguage())
+        return Locale.forLanguageTag("zh").getLanguage().equals(newLocale.getLanguage())
             || Locale.forLanguageTag("ko").getLanguage().equals(newLocale.getLanguage())
             || Locale.forLanguageTag("ja").getLanguage().equals(newLocale.getLanguage());
     }

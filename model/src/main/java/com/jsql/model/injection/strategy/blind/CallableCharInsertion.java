@@ -17,7 +17,7 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
     // List of differences found between the reference page, and the present page
     private LinkedList<Diff> opcodes = new LinkedList<>();
     
-    private final DiffMatchPatch diffMatchPatch = new DiffMatchPatch();
+    private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();
 
     private final InjectionCharInsertion injectionCharInsertion;
     
@@ -47,9 +47,7 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
         // Fix #95422: ConcurrentModificationException on iterator.next()
         List<Diff> copyTrueMarks = new CopyOnWriteArrayList<>(this.injectionCharInsertion.getConstantTrueMark());
         for (Diff trueDiff: copyTrueMarks) {
-
             if (!this.opcodes.contains(trueDiff)) {
-
                 return false;
             }
         }
@@ -67,9 +65,9 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
         
         String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
         
-        this.opcodes = this.diffMatchPatch.diffMain(this.injectionCharInsertion.getBlankFalseMark(), source, false);
+        this.opcodes = this.DIFF_MATCH_PATCH.diffMain(this.injectionCharInsertion.getBlankFalseMark(), source, false);
         
-        this.diffMatchPatch.diffCleanupEfficiency(this.opcodes);
+        this.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.opcodes);
         
         return this;
     }

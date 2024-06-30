@@ -34,7 +34,6 @@ public class StrategyInjectionTime extends AbstractStrategy {
     private InjectionTime injectionTime;
     
     public StrategyInjectionTime(InjectionModel injectionModel) {
-        
         super(injectionModel);
     }
 
@@ -43,14 +42,18 @@ public class StrategyInjectionTime extends AbstractStrategy {
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyTimeDisabled()) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Skipping strategy Time disabled");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());
             return;
 
         } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanTime())) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "No Time strategy known for {}", this.injectionModel.getMediatorVendor().getVendor());
+            LOGGER.log(
+                LogLevelUtil.CONSOLE_ERROR,
+                AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
+                getName(),
+                this.injectionModel.getMediatorVendor().getVendor()
+            );
             return;
-
         }
 
         checkInjection(BooleanMode.STACKED);
@@ -68,7 +71,6 @@ public class StrategyInjectionTime extends AbstractStrategy {
             this.injectionModel.sendToViews(requestMessageBinary);
 
         } else {
-
             this.unallow();
         }
     }
@@ -102,10 +104,10 @@ public class StrategyInjectionTime extends AbstractStrategy {
     public void allow(int... i) {
 
         this.injectionModel.appendAnalysisReport(
-            "### Strategy: Time\n"
+            "<span style=color:rgb(0,0,255)>### Strategy: " + getName() + "</span>"
             + this.injectionModel.getReportWithoutIndex(
                 this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(
-                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime("<query>", "0", true),
+                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime("<span style=color:rgb(0,128,0)>&lt;query&gt;</span>", "0", true),
                     this.injectionTime.getBooleanMode()
                 ),
                 "metadataInjectionProcess",
@@ -117,13 +119,11 @@ public class StrategyInjectionTime extends AbstractStrategy {
 
     @Override
     public void unallow(int... i) {
-        
         this.markVulnerability(Interaction.MARK_TIME_INVULNERABLE);
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
-        
         return this.injectionTime.inject(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(sqlQuery, startPosition, false),
             stoppable
@@ -132,7 +132,6 @@ public class StrategyInjectionTime extends AbstractStrategy {
 
     @Override
     public void activateWhenApplicable() {
-
         if (this.injectionModel.getMediatorStrategy().getStrategy() == null && this.isApplicable()) {
 
             LOGGER.log(

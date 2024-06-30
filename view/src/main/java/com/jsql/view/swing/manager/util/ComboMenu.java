@@ -16,7 +16,7 @@ public class ComboMenu extends JMenu {
         
         this.iconRenderer = new ArrowIcon(SwingConstants.SOUTH, true);
         this.setBorderPainted(false);
-        this.setIcon(new BlankIcon(null, 11));
+        this.setIcon(new BlankIcon());
         this.setHorizontalTextPosition(SwingConstants.RIGHT);
     }
 

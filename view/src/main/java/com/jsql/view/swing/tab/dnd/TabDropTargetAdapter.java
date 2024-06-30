@@ -22,7 +22,6 @@ public class TabDropTargetAdapter extends DropTargetAdapter {
     public void drop(DropTargetDropEvent dtde) {
         
         var c = dtde.getDropTargetContext().getComponent();
-        
         this.clearDropLocationPaint(c);
     }
     
@@ -30,13 +29,11 @@ public class TabDropTargetAdapter extends DropTargetAdapter {
     public void dragExit(DropTargetEvent dte) {
         
         var c = dte.getDropTargetContext().getComponent();
-        
         this.clearDropLocationPaint(c);
     }
     
     @Override
     public void dragEnter(DropTargetDragEvent dtde) {
-        
         dtde.getDropTargetContext().getComponent();
     }
 }

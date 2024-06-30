@@ -25,7 +25,6 @@ import java.awt.*;
 public class ManagerSqlShell extends AbstractManagerShell {
     
     private final JTextField username = new JPopupTextField(I18nUtil.valueByKey("SQL_SHELL_USERNAME_LABEL")).getProxy();
-    
     private final JTextField password = new JPopupTextField(I18nUtil.valueByKey("SQL_SHELL_PASSWORD_LABEL")).getProxy();
     
     /**
@@ -52,8 +51,7 @@ public class ManagerSqlShell extends AbstractManagerShell {
         panelPassword.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
         panelPassword.add(this.password);
         
-        layout
-        .setHorizontalGroup(
+        layout.setHorizontalGroup(
             layout
             .createSequentialGroup()
             .addGroup(
@@ -67,8 +65,7 @@ public class ManagerSqlShell extends AbstractManagerShell {
             )
         );
 
-        layout
-        .setVerticalGroup(
+        layout.setVerticalGroup(
             layout
             .createSequentialGroup()
             .addGroup(
@@ -87,8 +84,7 @@ public class ManagerSqlShell extends AbstractManagerShell {
     }
 
     @Override
-    protected void createPayload(String shellPath, String shellURL) throws JSqlException, InterruptedException {
-        
+    protected void createPayload(String shellPath, String shellURL) throws JSqlException {
         MediatorHelper.model().getResourceAccess().createSqlShell(shellPath, shellURL, this.username.getText(), this.password.getText());
     }
 }

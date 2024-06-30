@@ -38,27 +38,21 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
         
         // Unhandled InternalError #92917: Unable to Stroke shape (no dcpr in java.library.path)
         super.paintComponent(g);
-
         var url = UiUtil.URL_GLOBE;
         
         if (url == null) {
-            // Fix NullPointerException in constructor ImageIcon()
-            return;
+            return;  // Fix NullPointerException in constructor ImageIcon()
         }
         
         Image image = null;
         
         try {
             image = new ImageIcon(url).getImage();
-            
         } catch (IllegalArgumentException e) {
-            
-            // Exception if globe.png is unavailable
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);  // Exception if globe.png is unavailable
         }
 
         var border = UIManager.getBorder("TextField.border");
-
         int x = border.getBorderInsets(this).left;
         int y = (this.getHeight() - 16) / 2;
 
@@ -72,9 +66,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
                 y + 1,
                 this
             );
-            
         } catch (ClassCastException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }

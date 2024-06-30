@@ -65,10 +65,8 @@ public class JPopupMenuTable extends JPopupMenu {
             
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                
                 // Fix #67773: NullPointerException on getLocation()
                 if (MouseInfo.getPointerInfo() != null) {
-                    
                     JPopupMenuTable.this.setLocation(MouseInfo.getPointerInfo().getLocation());
                 }
             }
@@ -104,10 +102,8 @@ public class JPopupMenuTable extends JPopupMenu {
      * An action for Select All shortcut.
      */
     private class ActionSelectAll extends AbstractAction {
-        
         @Override
         public void actionPerformed(ActionEvent e) {
-            
             JPopupMenuTable.this.table.selectAll();
         }
     }
@@ -116,7 +112,6 @@ public class JPopupMenuTable extends JPopupMenu {
      * An action for Copy shortcut.
      */
     private class ActionCopy extends AbstractAction {
-        
         @Override
         public void actionPerformed(ActionEvent e) {
             

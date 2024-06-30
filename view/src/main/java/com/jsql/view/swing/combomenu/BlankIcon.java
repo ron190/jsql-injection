@@ -22,7 +22,6 @@ public class BlankIcon implements Icon {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        
         if (this.fillColor != null) {
             
             g.setColor(this.fillColor);

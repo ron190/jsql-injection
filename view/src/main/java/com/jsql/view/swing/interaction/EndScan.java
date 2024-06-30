@@ -18,16 +18,12 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class EndScan implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
     public EndScan(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        
         MediatorHelper.managerScan().endProcess();
     }
 }

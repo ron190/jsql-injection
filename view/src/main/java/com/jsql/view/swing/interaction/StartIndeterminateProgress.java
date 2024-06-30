@@ -29,13 +29,11 @@ public class StartIndeterminateProgress implements InteractionCommand {
      * @param interactionParams Element in the database tree to update
      */
     public StartIndeterminateProgress(Object[] interactionParams) {
-        
         this.dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
     }
 
     @Override
     public void execute() {
-        
-        MediatorHelper.treeDatabase().startIndeterminateProgess(this.dataElementDatabase);
+        MediatorHelper.treeDatabase().startIndeterminateProgress(this.dataElementDatabase);
     }
 }

@@ -8,8 +8,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit> {
@@ -29,18 +34,14 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
         super(injectionModel, blindMode);
         
         if (this.injectionModel.isStoppedByUser()) {
-
             return;
         }
 
         this.sourceReference = this.callUrl("8", "multi#ref");
-
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetMultibitIds");
-
         Collection<CallableMultibit> callablesId = new ArrayList<>();
 
         for (int i = 0; i < 8 ; i++) {
-
             callablesId.add(
                 new CallableMultibit(
                     ""+i,
@@ -52,13 +53,7 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
 
         try {
             List<Future<CallableMultibit>> futuresId = taskExecutor.invokeAll(callablesId);
-
-            taskExecutor.shutdown();
-
-            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
-
-                taskExecutor.shutdownNow();
-            }
+            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
 
             for (Future<CallableMultibit> futureId: futuresId) {
 
@@ -72,14 +67,10 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
             }
 
             for (List<Diff> diffById : diffsById) {
-
                 diffById.removeAll(this.diffsCommonWithAllIds);
             }
-
         } catch (ExecutionException e) {
-
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-
         } catch (InterruptedException e) {
 
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -118,7 +109,6 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
 
     @Override
     public String getInfoMessage() {
-
         return "- Strategy Multibit: query 3 bits when Diffs match index in " + this.diffsById + "\n\n";
     }
 
@@ -152,9 +142,7 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
 
         // Bits for current url
         char[] asciiCodeMask = bytes.get(currentCallable.getCurrentIndex() - 1);
-
         extractBitsFromBlock(currentCallable, asciiCodeMask);
-
         return asciiCodeMask;
     }
 
@@ -162,7 +150,6 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
      * Extract 3 bits from callable for specific block
      */
     private void extractBitsFromBlock(CallableMultibit currentCallable, char[] bits) {
-
         if (currentCallable.block == 1) {
             convertIdPageToBits(currentCallable.idPage, bits, 0, 1, 2);
         } else if (currentCallable.block == 2) {
@@ -187,7 +174,8 @@ public class InjectionMultibit extends AbstractInjectionBoolean<CallableMultibit
         bits[i3] = idPageBinaryPadded.charAt(2);
     }
 
-    // Getter and setter
+
+    // Getter
 
     public String getSourceReference() {
         return this.sourceReference;

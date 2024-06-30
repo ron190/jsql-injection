@@ -73,7 +73,7 @@ public class TabManagersProxy extends JTabbedPane {
         this.buildI18nTab("SCANLIST_TAB", UiUtil.ICON_SCANLIST, managerScanList);
     }
     
-    public void createFileTab(String path, String name) {
+    public void addToLists(String path, String name) {
         
         // Add the path String to the list of files only if there is no same StringObject value already
         this.managerWebShell.addToList(path.replace(name, StringUtils.EMPTY));
@@ -113,7 +113,6 @@ public class TabManagersProxy extends JTabbedPane {
     }
     
     private void buildI18nTab(String keyLabel, Icon icon, Component manager) {
-        
         this.addTab(I18nUtil.valueByKey(keyLabel), icon, manager);
     }
 }

@@ -17,9 +17,9 @@ import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -41,12 +41,12 @@ public final class ThreadUtil {
      * List of running jobs associated to a database injection task.
      * We can interact with those tasks in order to pause/resume and stop the process.
      */
-    private final Map<AbstractElementDatabase, AbstractSuspendable> suspendables = new HashMap<>();
+    // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()
+    private final Map<AbstractElementDatabase, AbstractSuspendable> suspendables = new ConcurrentHashMap<>(new HashMap<>());
 
     private final InjectionModel injectionModel;
     
     public ThreadUtil(InjectionModel injectionModel) {
-        
         this.injectionModel = injectionModel;
     }
 
@@ -57,7 +57,6 @@ public final class ThreadUtil {
      * @param suspendable active job to act on
      */
     public void put(AbstractElementDatabase elementDatabase, AbstractSuspendable suspendable) {
-        
         this.suspendables.put(elementDatabase, suspendable);
     }
     
@@ -69,7 +68,6 @@ public final class ThreadUtil {
      * @return job currently running
      */
     public AbstractSuspendable get(AbstractElementDatabase elementDatabase) {
-        
         return this.suspendables.get(elementDatabase);
     }
     
@@ -79,7 +77,6 @@ public final class ThreadUtil {
      * @param elementDatabase component associated to thread
      */
     public void remove(AbstractElementDatabase elementDatabase) {
-        
         this.suspendables.remove(elementDatabase);
     }
     
@@ -89,16 +86,8 @@ public final class ThreadUtil {
      */
     public void reset() {
         
-        // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()
-        // TODO Use CopyOnWriteArrayList to prevent ConcurrentModificationException
-        try {
-            this.suspendables.values().forEach(AbstractSuspendable::stop);
-            this.suspendables.clear();
-            
-        } catch (ConcurrentModificationException e) {
-            
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-        }
+        this.suspendables.values().forEach(AbstractSuspendable::stop);
+        this.suspendables.clear();
     }
     
     public ExecutorService getExecutor(String nameThread) {
@@ -111,7 +100,6 @@ public final class ThreadUtil {
             taskExecutor = Executors.newFixedThreadPool(countThreads, new ThreadFactoryCallable(nameThread));
             
         } else {
-            
             taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable(nameThread));
         }
         
@@ -120,12 +108,16 @@ public final class ThreadUtil {
 
     public void shutdown(ExecutorService taskExecutor) {
 
+        int timeout = 15;
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isConnectionTimeout()) {
+            timeout = this.injectionModel.getMediatorUtils().getPreferencesUtil().countConnectionTimeout();
+        }
+
         try {
             taskExecutor.shutdown();
-            if (!taskExecutor.awaitTermination(0, TimeUnit.SECONDS)) {
+            if (!taskExecutor.awaitTermination(timeout, TimeUnit.SECONDS)) {
                 taskExecutor.shutdownNow();
             }
-
         } catch (InterruptedException e) {
 
             LOGGER.log(LogLevelUtil.IGNORE, e, e);

@@ -18,7 +18,7 @@ import java.util.concurrent.SubmissionPublisher;
 /**
  * Define the features of the injection model :<br>
  * - stop the preparation of injection,<br>
- * - Callable for parallelizing HTTP tasks,<br>
+ * - Callable for parallelize HTTP tasks,<br>
  * - communication with view, via Observable.
  */
 public abstract class AbstractModelObservable extends SubmissionPublisher<Request> {
@@ -28,7 +28,7 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
      * During the preparation, several methods will
      * check if the execution must be stopped.
      */
-    private boolean isStoppedByUser = false;
+    protected boolean isStoppedByUser = false;
 
     /**
      * Function header for the inject() methods, definition needed by call(),
@@ -46,37 +46,31 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
     );
     
     /**
-     * Inject without the need of index like in "select 1,2,..."<br>
+     * Inject without the need of index like in "select 1,2,...".<br>
      * Used for example by: first index test (getVisibleIndex), Error test, and Error, Blind, Time strategies.
      * @return source code of current page
      */
     public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess) {
-        
         return this.inject(dataInjection, false, metadataInjectionProcess, null, false);
     }
 
     public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
-        
         return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, false);
     }
 
     public String injectWithIndexes(String dataInjection, String metadataInjectionProcess) {
-        
         return this.inject(dataInjection, true, metadataInjectionProcess, null, false);
     }
 
     public String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess) {
-
         return this.inject(dataInjection, false, metadataInjectionProcess, null, true);
     }
 
     public String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
-
         return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, true);
     }
 
     public String getReportWithIndexes(String dataInjection, String metadataInjectionProcess) {
-
         return this.inject(dataInjection, true, metadataInjectionProcess, null, true);
     }
 
@@ -85,7 +79,6 @@ public abstract class AbstractModelObservable extends SubmissionPublisher<Reques
      * @param request The event bean corresponding to the interaction
      */
     public void sendToViews(final Request request) {
-        
         AbstractModelObservable.this.submit(request);
     }
 

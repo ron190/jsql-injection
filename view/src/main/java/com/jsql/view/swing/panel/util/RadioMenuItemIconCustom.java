@@ -26,11 +26,8 @@ public class RadioMenuItemIconCustom implements Icon, UIResource, Serializable {
         if (isEnabled) {
             
             if (isPressed || isArmed) {
-                
                 g.setColor(MetalLookAndFeel.getPrimaryControl());
-                
             } else {
-                
                 g.setColor(MetalLookAndFeel.getControlHighlight());
             }
             
@@ -39,18 +36,14 @@ public class RadioMenuItemIconCustom implements Icon, UIResource, Serializable {
             g.drawLine(8, 8, 8, 8);
 
             if (isPressed || isArmed) {
-                
                 g.setColor(MetalLookAndFeel.getControlInfo());
-                
             } else {
-                
                 g.setColor(MetalLookAndFeel.getControlDarkShadow());
             }
-            
         } else {
-            
             g.setColor( MetalLookAndFeel.getMenuDisabledForeground() );
         }
+
         g.drawLine(2, 0, 6, 0);
         g.drawLine(2, 8, 6, 8);
         g.drawLine(0, 2, 0, 6);
@@ -70,21 +63,15 @@ public class RadioMenuItemIconCustom implements Icon, UIResource, Serializable {
     private void drawSelected(Component c, Graphics g, ButtonModel model, boolean isEnabled, boolean isArmed) {
         
         if (isEnabled) {
-            
             if (
                 isArmed
                 || (c instanceof JMenu && model.isSelected())
             ) {
-                
                 g.setColor(MetalLookAndFeel.getMenuSelectedForeground());
-                
             } else {
-                
                 g.setColor(MetalLookAndFeel.getControlInfo());
             }
-            
         } else {
-            
             g.setColor(MetalLookAndFeel.getMenuDisabledForeground());
         }
         
@@ -97,19 +84,16 @@ public class RadioMenuItemIconCustom implements Icon, UIResource, Serializable {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        
         this.paintOceanIcon(c, g, x, y);
     }
 
     @Override
     public int getIconWidth() {
-        
         return new Dimension(10, 10).width;
     }
 
     @Override
     public int getIconHeight() {
-        
         return new Dimension(10, 10).height;
     }
 }

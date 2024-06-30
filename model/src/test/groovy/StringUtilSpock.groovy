@@ -64,7 +64,7 @@ class StringUtilSpock extends Specification {
             StringUtil.decimalHtmlEncode('<>&יאח', true) == '&amp;lt;&amp;gt;&amp;&amp;#233;&amp;#224;&amp;#231;'
             
             StringUtil.detectUtf8(null) == StringUtils.EMPTY
-            StringUtil.detectUtf8("יאחט") == new String("יאחט".bytes, StandardCharsets.UTF_8)
+            StringUtil.detectUtf8("יאחט") == new String("יאחט".getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8)
             StringUtil.detectUtf8("eace") == "eace"
     }
 }

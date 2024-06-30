@@ -77,7 +77,6 @@ public class ManagerAdminPage extends AbstractManagerList {
         this.run.setBackground(UiUtil.COLOR_FOCUS_GAINED);
         
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
-
         this.run.addActionListener(actionEvent -> this.runSearch());
 
         this.loader.setVisible(false);
@@ -115,11 +114,8 @@ public class ManagerAdminPage extends AbstractManagerList {
     private void searchAdminPages(String urlAddressBar) {
         
         if (ManagerAdminPage.this.run.getState() == StateButton.STARTABLE) {
-            
             if (StringUtils.isEmpty(urlAddressBar)) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Missing URL in address bar");
-                
             } else {
                 
                 LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking admin page(s)...");
@@ -127,19 +123,11 @@ public class ManagerAdminPage extends AbstractManagerList {
                 ManagerAdminPage.this.run.setState(StateButton.STOPPABLE);
                 ManagerAdminPage.this.loader.setVisible(true);
                 
-                try {
-                    MediatorHelper.model().getResourceAccess().createAdminPages(
-                        urlAddressBar,
-                        this.listFile.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList())
-                    );
-                    
-                } catch (InterruptedException e) {
-                    
-                    LOGGER.log(LogLevelUtil.IGNORE, e, e);
-                    Thread.currentThread().interrupt();
-                }
+                MediatorHelper.model().getResourceAccess().createAdminPages(
+                    urlAddressBar,
+                    this.listFile.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList())
+                );
             }
-            
         } else if (this.run.getState() == StateButton.STOPPABLE) {
             
             MediatorHelper.model().getResourceAccess().setSearchAdminStopped(true);

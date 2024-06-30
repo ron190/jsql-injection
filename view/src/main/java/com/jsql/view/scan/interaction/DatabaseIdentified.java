@@ -23,12 +23,8 @@ import java.util.Map;
 public class DatabaseIdentified implements InteractionCommand {
     
     private final String url;
-    
     private final Vendor vendor;
     
-    /**
-     * @param interactionParams
-     */
     @SuppressWarnings("unchecked")
     public DatabaseIdentified(Object[] interactionParams) {
         
@@ -39,7 +35,6 @@ public class DatabaseIdentified implements InteractionCommand {
 
     @Override
     public void execute() {
-        
         MediatorHelper.managerScan().highlight(this.url, this.vendor.toString());
     }
 }

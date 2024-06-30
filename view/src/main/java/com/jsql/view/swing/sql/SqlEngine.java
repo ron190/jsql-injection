@@ -31,9 +31,7 @@ import java.util.stream.Stream;
 public class SqlEngine extends JPanel implements Cleanable {
 
     private static ModelYaml modelYaml = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml();
-
     private static final JTabbedPane tabbedPaneError = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
-
     private static final Border borderRight = BorderFactory.createMatteBorder(0, 0, 0, 1, UiUtil.COLOR_COMPONENT_BORDER);
     
     private static final List<JTextPaneLexer> textPanesError = new ArrayList<>();
@@ -332,7 +330,6 @@ public class SqlEngine extends JPanel implements Cleanable {
         final var keyFieldSeparator = "SQLENGINE_FIELDS_SEPARATOR";
         
         JTabbedPane tabsStandard = new TabbedPaneWheeled(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
-        
         JTabbedPane tabsSchema = new TabbedPaneWheeled(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         
         Stream.of(
@@ -561,13 +558,13 @@ public class SqlEngine extends JPanel implements Cleanable {
         
         Stream.of("SQLENGINE_ORDER_BY")
         .forEach(keyI18n -> {
-            
+
             var label = new JLabel(I18nUtil.valueByKey(keyI18n));
             tabs.setTabComponentAt(
                 tabs.indexOfTab(I18nUtil.valueByKey(keyI18n)),
                 label
             );
-            
+
             I18nViewUtil.addComponentForKey(keyI18n, label);
         });
         
@@ -650,8 +647,8 @@ public class SqlEngine extends JPanel implements Cleanable {
         SqlEngine.getTextPanes().forEach(textPaneLexer -> textPaneLexer.setText(StringUtils.EMPTY));
         
         Stream.of(TextareaWithColor.values())
-        .forEach(entry ->
-            entry.getText().setText(
+        .forEach(entry -> entry.getText()
+            .setText(
                 entry.getText()
                 .getSupplierGetter()
                 .get()
@@ -670,7 +667,6 @@ public class SqlEngine extends JPanel implements Cleanable {
         SqlEngine.tabbedPaneError.removeAll();
         
         if (SqlEngine.modelYaml.getStrategy().getError() == null) {
-            
             return;
         }
             
@@ -720,7 +716,6 @@ public class SqlEngine extends JPanel implements Cleanable {
      */
     @Override
     public void clean() {
-        
         SqlEngine.getTextPanes().forEach(UiUtil::stopDocumentColorer);
     }
     
@@ -737,10 +732,8 @@ public class SqlEngine extends JPanel implements Cleanable {
         textPane.setStyledDocument(document);
         
         document.addDocumentListener(new DocumentListenerEditing() {
-            
             @Override
             public void process() {
-                
                 textPane.setAttribute();
             }
         });
@@ -751,11 +744,10 @@ public class SqlEngine extends JPanel implements Cleanable {
      * @return the merged list
      */
     private static List<JTextPaneLexer> getTextPanes() {
-        
         return Stream.concat(
             SqlEngine.textPanesError.stream(),
             Stream.of(TextareaWithColor.values())
-            .map(TextareaWithColor::getText)
+                .map(TextareaWithColor::getText)
         )
         .collect(Collectors.toList());
     }

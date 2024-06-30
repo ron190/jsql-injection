@@ -12,7 +12,7 @@ package com.jsql.model.exception;
 
 /**
  * Exception class thrown during normal injection process,
- * concerns every steps when user interact with
+ * concerns every step when user interact with
  * database elements (database, table, column).
  */
 public class StoppedByUserSlidingException extends AbstractSlidingException {
@@ -20,17 +20,14 @@ public class StoppedByUserSlidingException extends AbstractSlidingException {
     private static final String STR_STOPPED_BY_USER = "Stopped by user";
 
     public StoppedByUserSlidingException() {
-        
         super(STR_STOPPED_BY_USER);
     }
     
     public StoppedByUserSlidingException(String slidingWindowAllRows) {
-        
         super(STR_STOPPED_BY_USER, slidingWindowAllRows);
     }
 
     public StoppedByUserSlidingException(String slidingWindowAllRows, String slidingWindowCurrentRows) {
-        
         super(STR_STOPPED_BY_USER, slidingWindowAllRows, slidingWindowCurrentRows);
     }
 }

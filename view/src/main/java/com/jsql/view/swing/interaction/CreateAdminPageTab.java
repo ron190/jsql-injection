@@ -52,7 +52,6 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
      * @param interactionParams Url of the webpage
      */
     public CreateAdminPageTab(Object[] interactionParams) {
-        
         this.url = (String) interactionParams[0];
     }
 
@@ -84,13 +83,9 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
                     .addTags("center", "div", "span")
                     .addAttributes(":all", "style")
             );
-            
         } catch (IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Failure opening page: {}", e.getMessage());
-            
         } catch (ExceptionInInitializerError | NoClassDefFoundError e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
@@ -102,9 +97,7 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
         // Fix #94242: IndexOutOfBoundsException on setText()
         try {
             browser.setText(htmlSource);
-            
         } catch (IndexOutOfBoundsException | EmptyStackException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
@@ -147,7 +140,6 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             
             @Override
             public void focusGained(FocusEvent arg0) {
-                
                 browser.getCaret().setVisible(true);
                 browser.getCaret().setSelectionVisible(true);
             }
@@ -161,22 +153,18 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
                 browser.requestFocusInWindow();
                 
                 if (evt.isPopupTrigger()) {
-                    
                     menu.show(evt.getComponent(), evt.getX(), evt.getY());
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent evt) {
-                
                 if (evt.isPopupTrigger()) {
                     
                     // Fix #45348: IllegalComponentStateException on show()
                     try {
                         menu.show(evt.getComponent(), evt.getX(), evt.getY());
-                        
                     } catch (IllegalComponentStateException e) {
-                        
                         LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                     }
                     

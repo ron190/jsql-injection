@@ -39,7 +39,6 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
     protected List<Integer> initializeStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel<ItemList> listModel) {
         
         int selectedIndexTo = selectedIndexFrom;
-        
         List<Integer> selectedIndexes = new ArrayList<>();
 
         for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(clipboardText)) {
@@ -55,7 +54,6 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
     protected String initializeTransferable() {
         
         List<JSONObject> jsons = new ArrayList<>();
-
         var stringTransferable = new StringBuilder();
         
         try {
@@ -68,7 +66,6 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
             stringTransferable.append(new JSONArray(jsons).toString(4));
             
         } catch (JSONException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);
         }
         
@@ -85,9 +82,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
 
         // DnD from list
         if (this.dragPaths != null && !this.dragPaths.isEmpty()) {
-            
             for (ItemList itemPath: this.dragPaths) {
-                
                 if (StringUtils.isNotEmpty(itemPath.toString())) {
                     
                     //! FUUuu
@@ -97,10 +92,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
                     listModel.add(indexDropLocation++, itemDrop);
                 }
             }
-            
-        } else {
-            
-            // DnD from outside
+        } else {  // DnD from outside
             try {
                 var importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
                 
@@ -109,9 +101,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
                     listSelectedIndices.add(indexDropLocation);
                     listModel.add(indexDropLocation++, itemListScan);
                 }
-                
             } catch (UnsupportedFlavorException | IOException e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
@@ -134,9 +124,7 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
         
         try {
             parseJsonArray(clipboardText, itemsParsed);
-            
         } catch (JSONException eJsonArray) {
-            
             parseJsonObject(clipboardText, itemsParsed);
         }
         
@@ -166,7 +154,6 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
     }
 
     private static void parseJsonObject(String clipboardText, List<ItemListScan> itemsParsed) {
-        
         try {
             var itemsJsonObject = new JSONObject(clipboardText);
             
@@ -183,7 +170,6 @@ public class ListTransfertHandlerScan extends AbstractListTransfertHandler {
             itemsParsed.add(newItem);
             
         } catch (JSONException e) {
-            
             for (String url: clipboardText.split("\\n")) {
                 
                 var beanInjection = new BeanInjection(url);

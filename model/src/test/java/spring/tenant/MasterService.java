@@ -33,15 +33,14 @@ public class MasterService {
             )
         );
         
-        properties
-        .forEach(props -> {
+        properties.forEach(props -> {
             
             DatasourceConnectionProviderImpl connectionProvider = new DatasourceConnectionProviderImpl();
             
             DriverManagerDataSource dataSource = new DriverManagerDataSource();
-            dataSource.setUrl(props.getProperty("hibernate.connection.url"));
-            dataSource.setUsername(props.getProperty("hibernate.connection.username"));
-            dataSource.setPassword(props.getProperty("hibernate.connection.password"));
+            dataSource.setUrl(props.getProperty(Environment.URL));
+            dataSource.setUsername(props.getProperty(Environment.USER));
+            dataSource.setPassword(props.getProperty(Environment.PASS));
             
             connectionProvider.configure(Map.of(
                 Environment.DATASOURCE, dataSource
@@ -52,7 +51,6 @@ public class MasterService {
     }
     
     public HashMap<String, ConnectionProvider> getDataSourceHashMap() {
-        
         return this.hashMap;
     }
 }

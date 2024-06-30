@@ -24,9 +24,7 @@ public class SetVendor implements InteractionCommand {
 
     private final Vendor vendor;
     
-    /**
-     * @param interactionParams
-     */
+    @SuppressWarnings("unchecked")
     public SetVendor(Object[] interactionParams) {
 
         Map<Header, Object> params = (Map<Header, Object>) interactionParams[0];
@@ -35,7 +33,6 @@ public class SetVendor implements InteractionCommand {
 
     @Override
     public void execute() {
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().setVendor(this.vendor);
     }
 }

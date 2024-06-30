@@ -1,6 +1,7 @@
 package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
@@ -66,25 +67,18 @@ public class CallableFile implements Callable<CallableFile> {
                 sourcePage,
                 false,
                 1,
-                null,
+                AbstractElementDatabase.MOCK,
                 "file"
             );
-            
         } catch (InjectionFailureException e) {
-            
             // Usually thrown if File does not exist
-            
             LOGGER.log(LogLevelUtil.IGNORE, e);
-            
         } catch (StoppedByUserSlidingException e) {
             
             // Get partial source
             if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {
-                
                 resultToParse = e.getSlidingWindowAllRows();
-                
             } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {
-                
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
             
@@ -97,7 +91,7 @@ public class CallableFile implements Callable<CallableFile> {
     }
     
     
-    // Getters and setters
+    // Getters
     
     public String getPathFile() {
         return this.pathFile;

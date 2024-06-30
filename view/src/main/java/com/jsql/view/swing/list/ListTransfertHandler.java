@@ -38,7 +38,6 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
         var stringTransferable = new StringBuilder();
 
         for (ItemList itemPath: this.dragPaths) {
-            
             stringTransferable.append(itemPath).append("\n");
         }
         
@@ -55,11 +54,8 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
 
         // DnD from list
         if (this.dragPaths != null && !this.dragPaths.isEmpty()) {
-            
             this.addFromList(listModel, childIndex, listSelectedIndices);
-            
         } else {
-            
             this.addFromOutside(support, listModel, childIndex, listSelectedIndices);
         }
 
@@ -76,23 +72,19 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
     }
 
     private void addFromOutside(TransferSupport support, DefaultListModel<ItemList> listModel, int childIndexFrom, List<Integer> listSelectedIndices) {
-        
         try {
             int childIndexTo = childIndexFrom;
             
             var importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
             
             for (String value: importString.split("\\n")) {
-                
                 if (StringUtils.isNotEmpty(value)) {
                     
                     listSelectedIndices.add(childIndexTo);
                     listModel.add(childIndexTo++, new ItemList(value.replace("\\", "/")));
                 }
             }
-            
         } catch (UnsupportedFlavorException | IOException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
@@ -102,7 +94,6 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
         int childIndexTo = childIndexFrom;
         
         for (ItemList value: this.dragPaths) {
-            
             if (StringUtils.isNotEmpty(value.toString())) {
                 
                 //! FUUuu
@@ -117,11 +108,9 @@ public class ListTransfertHandler extends AbstractListTransfertHandler {
     protected List<Integer> initializeStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel<ItemList> listModel) {
         
         int selectedIndexTo = selectedIndexFrom;
-
         List<Integer> selectedIndexes = new ArrayList<>();
 
         for (String line: clipboardText.split("\\n")) {
-            
             if (StringUtils.isNotEmpty(line)) {
                 
                 String newLine = line.replace("\\", "/");

@@ -1,6 +1,7 @@
 package spring.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.test.method.CustomMethodSuiteIT;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -52,8 +53,7 @@ public class HibernateRestController {
         boolean isBoolean,
         boolean isStacked
     ) {
-        if (name == null) {
-            // Empty when scanning
+        if (name == null) {  // Empty when scanning
             return null;
         }
 
@@ -97,8 +97,7 @@ public class HibernateRestController {
                 }
             }
         } catch (Exception e) {
-            // Hide useless SQL error messages except for error base injection
-            if (isError) {
+            if (isError) {  // Hide useless SQL error messages except for error base injection
                 return this.initializeErrorMessage(e);
             }
         }
@@ -122,6 +121,7 @@ public class HibernateRestController {
 
     @RequestMapping("/stacked")
     public Greeting endpointStacked(@RequestParam(value="name", defaultValue="World") String name, @RequestHeader Map<String, String> headers) {
+
         if (name.toLowerCase().contains("union")) {
             return null;
         }
@@ -206,6 +206,7 @@ public class HibernateRestController {
         consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.TEXT_PLAIN_VALUE }
     )
     public Greeting endpointJson(HttpServletRequest request) {
+
         String inject = request.getParameterMap().get("name")[0];
         inject = inject.replaceAll("\\\\:", ":");
         try {
@@ -216,6 +217,7 @@ public class HibernateRestController {
         inject = new JSONObject(inject).getJSONObject("b").getJSONArray("b").getJSONObject(3).getJSONObject("a").getString("a");
         inject = inject.replaceAll(":", "\\\\:");
         inject = inject.replace(":", "\\:");
+
         return getResponse(inject, "select First_Name from Student where '1' = '%s'", true, false, true, true, false, false);
     }
 
@@ -236,6 +238,7 @@ public class HibernateRestController {
         consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.TEXT_PLAIN_VALUE }
     )
     public Greeting endpointPost(HttpServletRequest request) {
+
         String inject = request.getParameterMap().get("name")[0];
         return getResponse(inject, "select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '%s'", true, false, true);
     }
@@ -246,6 +249,7 @@ public class HibernateRestController {
         consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }
     )
     public Greeting endpointPostMultipart(HttpServletRequest request) {
+
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         String name = String.join("", multipartRequest.getParameterValues("name"));
         return getResponse(name, "select 1,2,3,4,First_Name,5,6,7,8 from Student where '1' = '%s'", true, false, true);
@@ -253,6 +257,7 @@ public class HibernateRestController {
 
     @GetMapping("/cookie")
     public Greeting endpointCookie(HttpServletRequest request, @CookieValue(name = "name", required = false, defaultValue = "") String name) {
+
         // TODO Recent cookie RFC prevents ()<>@,;:\"/[]?={}
         String nameUrlDecoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
         return getResponse(nameUrlDecoded, "select 1,2,3,4,First_Name,5,6 from Student where '1' = '%s'", true, false, true);
@@ -276,8 +281,7 @@ public class HibernateRestController {
     @RequestMapping("/custom")
     public Greeting endpointCustom(HttpServletRequest request, @RequestParam(value="name", defaultValue="World") String name) {
         
-        if (!"CUSTOM-JSQL".equals(request.getMethod())) {
-            
+        if (!CustomMethodSuiteIT.CUSTOM_METHOD.equals(request.getMethod())) {
             return null;
         }
 
@@ -288,8 +292,7 @@ public class HibernateRestController {
     public Greeting endpointUserAgent(HttpServletRequest request, @RequestParam(value="name", defaultValue="World") String name) {
         
         if (
-            !Arrays
-            .asList("CUSTOM-USER-AGENT1", "CUSTOM-USER-AGENT2")
+            !Arrays.asList("CUSTOM-USER-AGENT1", "CUSTOM-USER-AGENT2")
             .contains(request.getHeader("User-Agent"))
         ) {
             return null;

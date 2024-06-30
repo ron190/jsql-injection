@@ -27,11 +27,8 @@ public enum TamperingType {
         var yaml = new Yaml();
         
         try (var inputStream = TamperingType.class.getClassLoader().getResourceAsStream("tamper/"+ fileYaml)) {
-        
             this.instanceModelYaml = yaml.loadAs(inputStream, ModelYamlTampering.class);
-            
         } catch (IOException e) {
-
             LogManager.getRootLogger().log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }

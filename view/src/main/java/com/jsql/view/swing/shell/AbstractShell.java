@@ -136,13 +136,11 @@ public abstract class AbstractShell extends JTextPane {
      * @param string Text to add
      */
     public void append(String string) {
-        
         try {
             var doc = this.getDocument();
             doc.insertString(doc.getLength(), string, null);
             
         } catch (BadLocationException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
@@ -172,18 +170,14 @@ public abstract class AbstractShell extends JTextPane {
      * @param isAddingPrompt Should we measure prompt length?
      */
     private void appendPrompt(String string, Color color, boolean isAddingPrompt) {
-        
         try {
             StyleConstants.setForeground(this.style, color);
             this.styledDocument.insertString(this.styledDocument.getLength(), string, this.style);
             
             if (isAddingPrompt) {
-                
                 this.prompt += string;
             }
-            
         } catch (BadLocationException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
@@ -193,7 +187,6 @@ public abstract class AbstractShell extends JTextPane {
      */
     @Override
     public boolean getScrollableTracksViewportWidth() {
-        
         return this.getUI().getPreferredSize(this).width <= this.getParent().getSize().width;
     }
 
@@ -217,17 +210,12 @@ public abstract class AbstractShell extends JTextPane {
         var doc = this.getDocument();
         
         if (offset < 0) {
-            
             throw new BadLocationException(errorMsg, -1);
-            
         } else if (offset > doc.getLength()) {
-            
             throw new BadLocationException(errorMsg, doc.getLength() + 1);
-            
         } else {
             
             var map = doc.getDefaultRootElement();
-            
             return map.getElementIndex(offset);
         }
     }
@@ -243,17 +231,12 @@ public abstract class AbstractShell extends JTextPane {
         var map = this.getDocument().getDefaultRootElement();
         
         if (line < 0) {
-            
             throw new BadLocationException("Negative line", -1);
-            
         } else if (line >= map.getElementCount()) {
-            
             throw new BadLocationException("No such line", this.getDocument().getLength() + 1);
-            
         } else {
             
             var lineElem = map.getElement(line);
-            
             return lineElem.getStartOffset();
         }
     }

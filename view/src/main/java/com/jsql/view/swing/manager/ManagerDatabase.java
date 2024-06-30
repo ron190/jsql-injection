@@ -128,20 +128,14 @@ public class ManagerDatabase extends JPanel implements Manager {
                 TreePath selPath = ManagerDatabase.this.tree.getPathForLocation(event.getX(), event.getY());
                 
                 if (selRow != -1 && event.getClickCount() == 2) {
-                    
                     // Fix ArrayIndexOutOfBoundsException on collapsePath()
                     try {
                         if (ManagerDatabase.this.tree.isExpanded(selPath)) {
-                            
                             ManagerDatabase.this.tree.collapsePath(selPath);
-                            
                         } else {
-                            
                             ManagerDatabase.this.tree.expandPath(selPath);
                         }
-                        
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        
                         LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
                     }
                 }

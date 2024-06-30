@@ -84,7 +84,7 @@ public class PanelTampering extends JPanel implements Cleanable {
             panelPreferences.getActionListenerSave().actionPerformed(null);
         });
         
-        var tooltipIsTamperingEval = "Custom tamper in JavaScript and Java, e.g sql.replace(/\\+/gm,'/**/')";
+        var tooltipIsTamperingEval = "Custom tamper in JavaScript and Java, e.g. sql.replace(/\\+/gm,'/**/')";
         this.checkboxIsTamperingEval.setToolTipText(tooltipIsTamperingEval);
         this.checkboxIsTamperingEval.setFocusable(false);
         
@@ -110,11 +110,8 @@ public class PanelTampering extends JPanel implements Cleanable {
         labelIsTamperingSpaceToMultilineComment.addActionListener(actionEvent -> {
             
             if (this.radioIsTamperingSpaceToMultilineComment.isSelected()) {
-                
                 groupSpaceToComment.clearSelection();
-                
             } else {
-                
                 this.radioIsTamperingSpaceToMultilineComment.setSelected(!this.radioIsTamperingSpaceToMultilineComment.isSelected());
             }
             
@@ -129,11 +126,8 @@ public class PanelTampering extends JPanel implements Cleanable {
         labelIsTamperingSpaceToDashComment.addActionListener(actionEvent -> {
             
             if (this.radioIsTamperingSpaceToDashComment.isSelected()) {
-                
                 groupSpaceToComment.clearSelection();
-                
             } else {
-                
                 this.radioIsTamperingSpaceToDashComment.setSelected(!this.radioIsTamperingSpaceToDashComment.isSelected());
             }
             
@@ -148,11 +142,8 @@ public class PanelTampering extends JPanel implements Cleanable {
         labelIsTamperingSpaceToSharpComment.addActionListener(actionEvent -> {
             
             if (this.radioIsTamperingSpaceToSharpComment.isSelected()) {
-                
                 groupSpaceToComment.clearSelection();
-                
             } else {
-                
                 this.radioIsTamperingSpaceToSharpComment.setSelected(!this.radioIsTamperingSpaceToSharpComment.isSelected());
             }
             
@@ -403,7 +394,6 @@ public class PanelTampering extends JPanel implements Cleanable {
 
     @Override
     public void clean() {
-        
         UiUtil.stopDocumentColorer(this.textPaneEval);
     }
     

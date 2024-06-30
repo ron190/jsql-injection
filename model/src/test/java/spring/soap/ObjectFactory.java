@@ -30,7 +30,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link GetCountryRequest }
-     * 
      */
     public GetCountryRequest createGetCountryRequest() {
         return new GetCountryRequest();
@@ -38,7 +37,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link GetCountryResponse }
-     * 
      */
     public GetCountryResponse createGetCountryResponse() {
         return new GetCountryResponse();
@@ -46,7 +44,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Country }
-     * 
      */
     public Country createCountry() {
         return new Country();

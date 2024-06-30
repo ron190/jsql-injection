@@ -18,16 +18,12 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class ResetStrategyLabel implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
     public ResetStrategyLabel(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().resetLabelStrategy();
     }
 }

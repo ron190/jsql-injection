@@ -14,19 +14,16 @@ public abstract class DocumentListenerEditing implements DocumentListener {
     
     @Override
     public void changedUpdate(DocumentEvent e) {
-        
         this.process();
     }
     
     @Override
     public void removeUpdate(DocumentEvent e) {
-        
         this.process();
     }
     
     @Override
     public void insertUpdate(DocumentEvent e) {
-        
         this.process();
     }
 }

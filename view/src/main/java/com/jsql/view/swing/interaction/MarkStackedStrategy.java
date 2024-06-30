@@ -19,9 +19,6 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkStackedStrategy implements InteractionCommand {
 
-    /**
-     * @param interactionParams
-     */
     public MarkStackedStrategy(Object[] interactionParams) {
         // Do nothing
     }
@@ -30,7 +27,6 @@ public class MarkStackedStrategy implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getStacked();
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategy(strategy);
     }
 }

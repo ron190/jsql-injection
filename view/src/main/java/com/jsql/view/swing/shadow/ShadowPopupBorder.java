@@ -97,14 +97,12 @@ public final class ShadowPopupBorder extends AbstractBorder {
             Image hShadowBg = (Image) popup.getClientProperty(ShadowPopupFactory.PROP_HORIZONTAL_BACKGROUND);
             
             if (hShadowBg != null) {
-                
                 g.drawImage(hShadowBg, x, y + height - 5, c);
             }
             
             Image vShadowBg = (Image) popup.getClientProperty(ShadowPopupFactory.PROP_VERTICAL_BACKGROUND);
             
             if (vShadowBg != null) {
-                
                 g.drawImage(vShadowBg, x + width - 5, y, c);
             }
     
@@ -116,7 +114,6 @@ public final class ShadowPopupBorder extends AbstractBorder {
             g.drawImage(shadow, x + width - 5, y + height - 5, x + width, y + height, 6, 6, 11, 11, null, c);
             
         } catch (ClassCastException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }
@@ -127,7 +124,6 @@ public final class ShadowPopupBorder extends AbstractBorder {
      */
     @Override
     public Insets getBorderInsets(Component c) {
-        
         return new Insets(0, 0, SHADOW_SIZE, SHADOW_SIZE);
     }
 

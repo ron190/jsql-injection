@@ -119,7 +119,6 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
         this.count = 0L;
         
         for (int i = 0; i < BLOCK_LENGTH; i++) {
-            
             this.buffer[i] = 0;
         }
     }
@@ -136,7 +135,6 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
         this.buffer[i] = b;
         
         if (i == BLOCK_LENGTH - 1) {
-            
             this.transform(this.buffer, 0);
         }
     }
@@ -158,7 +156,6 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
         
         // make sure we don't exceed input's allocated size/length
         if (offset < 0 || len < 0 || (long)offset + len > input.length) {
-            
             throw new ArrayIndexOutOfBoundsException();
         }
         
@@ -175,7 +172,6 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
             this.transform(this.buffer, 0);
 
             for (i = partLen; i + BLOCK_LENGTH - 1 < len; i+= BLOCK_LENGTH) {
-                
                 this.transform(input, offset + i);
             }
             
@@ -184,7 +180,6 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
         
         // buffer remaining input
         if (i < len) {
-            
             System.arraycopy(input, offset + i, this.buffer, bufferNdx, len - i);
         }
     }
@@ -211,7 +206,6 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
         // save number of bits, casting the long to an array of 8 bytes
         // save low-order byte first.
         for (int i = 0; i < 8; i++) {
-            
             tail[padLen + i] = (byte)((this.count * 8) >>> (8 * i));
         }
         
@@ -221,9 +215,7 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
         
         // cast this MD4's context (array of 4 ints) into an array of 16 bytes.
         for (int i = 0; i < 4; i++) {
-            
             for (int j = 0; j < 4; j++) {
-                
                 result[i * 4 + j] = (byte)(this.context[i] >>> (8 * j));
             }
         }

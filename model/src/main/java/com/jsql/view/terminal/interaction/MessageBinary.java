@@ -14,9 +14,6 @@ import com.jsql.view.interaction.InteractionCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * Append text to the tab Binary.
- */
 public class MessageBinary implements InteractionCommand {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
@@ -26,11 +23,7 @@ public class MessageBinary implements InteractionCommand {
      */
     private final String text;
 
-    /**
-     * @param interactionParams Text to append
-     */
     public MessageBinary(Object[] interactionParams) {
-        
         this.text = (String) interactionParams[0];
     }
 

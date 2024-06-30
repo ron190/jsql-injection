@@ -31,14 +31,12 @@ public class AddColumns implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public AddColumns(Object[] interactionParams) {
-        
         // Get list of columns from the model
         this.columns = (List<Column>) interactionParams[0];
     }
 
     @Override
     public void execute() {
-        
         MediatorHelper.treeDatabase().addColumns(this.columns);
     }
 }

@@ -27,7 +27,6 @@ public class CreateSQLShellTab extends CreateTabHelper implements InteractionCom
     private final String url;
     
     private final String user;
-    
     private final String pass;
 
     /**
@@ -43,7 +42,6 @@ public class CreateSQLShellTab extends CreateTabHelper implements InteractionCom
 
     @Override
     public void execute() {
-        
         MediatorHelper.tabResults().createSQLShellTab(this.url, this.user, this.pass, this.path);
     }
 }

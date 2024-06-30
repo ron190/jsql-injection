@@ -12,7 +12,7 @@ public class CallableMultibit extends AbstractCallableBoolean<CallableMultibit> 
 
     private LinkedList<Diff> diffsWithReference = new LinkedList<>();
 
-    private static final DiffMatchPatch DIFFMATCHPATCH = new DiffMatchPatch();
+    private static final DiffMatchPatch DIFF_MATCH_PATCH = new DiffMatchPatch();
 
     private final InjectionMultibit injectionMultibit;
 
@@ -26,7 +26,14 @@ public class CallableMultibit extends AbstractCallableBoolean<CallableMultibit> 
         this.isMultibit = true;
     }
 
-    public CallableMultibit(String sqlQuery, int indexCharacter, int block, InjectionModel injectionModel, InjectionMultibit injectionMultibit, String metadataInjectionProcess) {
+    public CallableMultibit(
+        String sqlQuery,
+        int indexCharacter,
+        int block,
+        InjectionModel injectionModel,
+        InjectionMultibit injectionMultibit,
+        String metadataInjectionProcess
+    ) {
 
         this(
             injectionModel.getMediatorVendor().getVendor().instance().sqlMultibit(
@@ -46,9 +53,9 @@ public class CallableMultibit extends AbstractCallableBoolean<CallableMultibit> 
 
         String result = this.injectionMultibit.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
 
-        this.diffsWithReference = DIFFMATCHPATCH.diffMain(this.injectionMultibit.getSourceReference(), result, true);
+        this.diffsWithReference = DIFF_MATCH_PATCH.diffMain(this.injectionMultibit.getSourceReference(), result, true);
 
-        DIFFMATCHPATCH.diffCleanupEfficiency(this.diffsWithReference);
+        DIFF_MATCH_PATCH.diffCleanupEfficiency(this.diffsWithReference);
 
         this.diffsWithReference.removeAll(this.injectionMultibit.getDiffsCommonWithAllIds());
 
@@ -63,8 +70,7 @@ public class CallableMultibit extends AbstractCallableBoolean<CallableMultibit> 
 
     @Override
     public boolean isTrue() {
-        // ignored
-        return false;
+        return false;  // ignored
     }
 
     public List<Diff> getDiffsWithReference() {

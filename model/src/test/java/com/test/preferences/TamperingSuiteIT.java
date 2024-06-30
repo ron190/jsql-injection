@@ -21,6 +21,12 @@ public class TamperingSuiteIT extends ConcreteMySqlSuiteIT {
 
         model
         .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
+
+        model
+        .getMediatorUtils()
         .getTamperingUtil()
         .withVersionComment()
         .withEqualToLike()

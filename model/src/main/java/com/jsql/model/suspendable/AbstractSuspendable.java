@@ -50,25 +50,23 @@ public abstract class AbstractSuspendable {
         
         // Make application loop until shouldPauseThread is set to false by another user action
         while (this.isPaused) {
-            
             try {
                 this.wait();
-                
             } catch (InterruptedException e) {
                 
                 LOGGER.log(LogLevelUtil.IGNORE, e, e);
                 Thread.currentThread().interrupt();
             }
         }
-        
-        // Return true if stop requested, return false otherwise
-        return this.isStopped || this.injectionModel.isStoppedByUser();
+
+        return this.isStopped || this.injectionModel.isStoppedByUser();  // Return true if stop requested, else return false
     }
     
     /**
      * Mark as stopped.
      */
     public void stop() {
+
         this.unpause();
         this.isStopped = true;
     }
@@ -86,9 +84,7 @@ public abstract class AbstractSuspendable {
     public void unpause() {
         
         this.isPaused = false;
-        
-        // Restart the action after an unpause
-        this.resume();
+        this.resume();  // Restart the action after unpause
     }
     
     /**

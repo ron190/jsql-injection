@@ -40,23 +40,19 @@ public class CoderListener implements ActionListener {
     private final ManagerCoder coderManager;
     
     public CoderListener(ManagerCoder coderManager) {
-        
         this.coderManager = coderManager;
     }
     
     public void actionPerformed() {
-        
         this.transform(this.coderManager.getMenuMethod().getText());
     }
     
     public void actionPerformed(String nameMethod) {
-        
         this.transform(nameMethod);
     }
     
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        
         this.transform(this.coderManager.getMenuMethod().getText());
     }
     
@@ -73,18 +69,15 @@ public class CoderListener implements ActionListener {
                 && !Arrays.asList("Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql").contains(nameMethod)
             ) {
                 result = "<span style=\"color:red;\">Empty string to convert</span>";
-                
             } else {
                 
-                result = ActionCoder
-                    .forName(nameMethod)
+                result = ActionCoder.forName(nameMethod)
                     .orElseThrow(() -> new NoSuchElementException("Unsupported encoding or decoding method"))
                     .run(textInput);
                 
                 // Prevent decoded HTML tags from result not rendered in Coder textPane
                 result = StringUtil.fromHtml(result);
             }
-            
         } catch (
             IllegalArgumentException
             | NoSuchAlgorithmException
@@ -93,7 +86,6 @@ public class CoderListener implements ActionListener {
         ) {
             
             result = String.format("<span style=\"color:red;\">Decoding failed: %s</span>", e.getMessage());
-            
             LOGGER.log(LogLevelUtil.IGNORE, e);
         }
         

@@ -6,9 +6,6 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.List;
-
 public class CheckAllRequestSuiteIT extends ConcreteMySqlSuiteIT {
     
     @Override
@@ -19,10 +16,7 @@ public class CheckAllRequestSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/post");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(
-            List.of(new SimpleEntry<>("tenant", "mysql"))
-        );
+        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/post?tenant=mysql");
         model.getMediatorUtils().getParameterUtil().initializeRequest("name=&fake=empty");
         
         model.setIsScanning(true);
@@ -30,7 +24,9 @@ public class CheckAllRequestSuiteIT extends ConcreteMySqlSuiteIT {
         model
         .getMediatorUtils()
         .getPreferencesUtil()
-        .withCheckingAllRequestParam();
+        .withCheckingAllRequestParam()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model
         .getMediatorUtils()

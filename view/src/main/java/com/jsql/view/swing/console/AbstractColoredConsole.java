@@ -60,7 +60,6 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
      * @param attribut Font
      */
     public void append(String message, SimpleAttributeSet attribut) {
-        
         try {
             boolean isCaretAtEnd = this.getProxy().getCaretPosition() == this.getProxy().getDocument().getLength();
             
@@ -85,18 +84,14 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
             );
             
             if (isCaretAtEnd || isScrollBarAtEnd) {
-                
                 scrollBar.setValue(scrollBar.getMaximum() + 1);
             }
 
             var foregroundColor = Color.BLACK;
             
             if (attribut == JTextPaneAppender.ATTRIBUTE_WARN) {
-                
                 foregroundColor = Color.RED;
-                
             } else if (attribut == JTextPaneAppender.ATTRIBUTE_SUCCESS) {
-                
                 foregroundColor = UiUtil.COLOR_GREEN;
             }
             
@@ -111,14 +106,11 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
                     tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
 
                     if (foregroundColor != Color.BLACK) {  // keep tab colored until user clicks
-
                         tabHeader.setForeground(foregroundColor);
                     }
                 }
             }
-            
         } catch (Exception e) {
-            
             // Report #863: exception during report of exception
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, message, e);
         }

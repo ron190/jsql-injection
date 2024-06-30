@@ -20,6 +20,12 @@ public class PostSuiteIT extends ConcreteMySqlSuiteIT {
         model.getMediatorUtils().getParameterUtil().initializeRequest("tenant=mysql&name=");
 
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
         
         model
         .getMediatorUtils()

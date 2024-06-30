@@ -13,7 +13,6 @@ public class Vendor {
     }
     
     public Vendor() {
-        
         this.labelVendor = "Database auto";
     }
 

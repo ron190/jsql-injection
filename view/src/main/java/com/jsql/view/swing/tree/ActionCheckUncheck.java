@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Check and unckeck column as checkbox.
+ * Check and uncheck column as checkbox.
  */
 public class ActionCheckUncheck implements ActionListener {
 
@@ -24,9 +24,9 @@ public class ActionCheckUncheck implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent actionEvent) {
         
-        Object source = e.getSource();
+        Object source = actionEvent.getSource();
         JCheckBox columnCheckBox = (JCheckBox) source;
         this.nodeModel.setSelected(columnCheckBox.isSelected());
 

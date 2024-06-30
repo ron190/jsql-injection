@@ -15,12 +15,12 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     /**
      * Time before the url call.
      */
-    private final Calendar calendar1 = Calendar.getInstance();
+    private final Calendar calendarOnStart = Calendar.getInstance();
     
     /**
      * Time at the end of the url call.
      */
-    private final Calendar calendar2 = Calendar.getInstance();
+    private final Calendar calendarOnEnd = Calendar.getInstance();
     
     /**
      * Current page loading time.
@@ -35,7 +35,13 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     /**
      * Constructor for preparation and blind confirmation.
      */
-    public CallableTime(String sqlQuery, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
+    public CallableTime(
+        String sqlQuery,
+        InjectionModel injectionModel,
+        InjectionTime injectionTime,
+        BooleanMode blindMode,
+        String metadataInjectionProcess
+    ) {
         
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
@@ -46,7 +52,15 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     /**
      * Constructor for bit test.
      */
-    public CallableTime(String sqlQuery, int indexCharacter, int bit, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode, String metadataInjectionProcess) {
+    public CallableTime(
+        String sqlQuery,
+        int indexCharacter,
+        int bit,
+        InjectionModel injectionModel,
+        InjectionTime injectionTime,
+        BooleanMode blindMode,
+        String metadataInjectionProcess
+    ) {
         
         this(sqlQuery, injectionModel, injectionTime, blindMode, metadataInjectionProcess);
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestTime(sqlQuery, indexCharacter, bit, blindMode);
@@ -72,14 +86,14 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     @Override
     public CallableTime call() {
         
-        this.calendar1.setTime(new Date());
+        this.calendarOnStart.setTime(new Date());
         this.injectionTime.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
-        this.calendar2.setTime(new Date());
+        this.calendarOnEnd.setTime(new Date());
         
-        long milliseconds1 = this.calendar1.getTimeInMillis();
-        long milliseconds2 = this.calendar2.getTimeInMillis();
+        long timeInMillisOnStart = this.calendarOnStart.getTimeInMillis();
+        long timeInMillisOnEnd = this.calendarOnEnd.getTimeInMillis();
         
-        long diff = milliseconds2 - milliseconds1;
+        long diff = timeInMillisOnEnd - timeInMillisOnStart;
         
         this.diffSeconds = diff / 1000;
         

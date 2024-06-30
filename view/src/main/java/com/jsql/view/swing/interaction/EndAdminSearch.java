@@ -18,16 +18,12 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class EndAdminSearch implements InteractionCommand {
     
-    /**
-     * @param interactionParams
-     */
     public EndAdminSearch(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        
         MediatorHelper.managerAdminPage().endProcess();
     }
 }

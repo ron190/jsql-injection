@@ -6,9 +6,6 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorSuiteIT;
 import org.junitpioneer.jupiter.RetryingTest;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
-
 public class BadValueErrorSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
     @Override
@@ -19,13 +16,17 @@ public class BadValueErrorSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initializeQueryString("http://localhost:8080/errors");
-        model.getMediatorUtils().getParameterUtil().setListQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql-error"),
-            new SimpleEntry<>("name", "---")
-        ));
-        
+        model.getMediatorUtils().getParameterUtil().initializeQueryString(
+            "http://localhost:8080/errors?tenant=mysql-error&name=---"
+        );
+
         model.setIsScanning(true);
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsStrategyBlindDisabled(true)
+        .withIsStrategyTimeDisabled(true);
 
         model
         .getMediatorUtils()

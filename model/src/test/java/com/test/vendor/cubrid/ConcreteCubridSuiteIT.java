@@ -2,9 +2,9 @@ package com.test.vendor.cubrid;
 
 import com.test.AbstractTestSuite;
 
-public abstract class ConcreteCubridSuiteIgnoreIT extends AbstractTestSuite {
+public abstract class ConcreteCubridSuiteIT extends AbstractTestSuite {
 
-    public ConcreteCubridSuiteIgnoreIT() {
+    public ConcreteCubridSuiteIT() {
         this.config();
     }
 

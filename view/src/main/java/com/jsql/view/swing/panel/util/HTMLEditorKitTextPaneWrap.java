@@ -9,10 +9,8 @@ import javax.swing.text.html.InlineView;
 import javax.swing.text.html.ParagraphView;
 
 public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
-
     @Override
     public ViewFactory getViewFactory() {
-
         return new HTMLFactory() {
 
             @Override
@@ -21,11 +19,8 @@ public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
                 View v = super.create(e);
                 
                 if (v instanceof InlineView) {
-                    
                     return this.getInlineView(e);
-                    
                 } else if (v instanceof ParagraphView) {
-                    
                     return this.getParagraphView(e);
                 }
                 
@@ -33,16 +28,13 @@ public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
             }
 
             private View getParagraphView(Element e) {
-                
                 return new ParagraphView(e) {
-
                     @Override
-                    protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements valueR) {
+                    protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements sizeRequirements) {
                         
-                        SizeRequirements r = valueR;
+                        SizeRequirements r = sizeRequirements;
                         
                         if (r == null) {
-                            
                             r = new SizeRequirements();
                         }
                         
@@ -62,12 +54,10 @@ public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
             }
 
             private View getInlineView(Element e) {
-                
                 return new InlineView(e) {
 
                     @Override
                     public int getBreakWeight(int axis, float pos, float len) {
-                        
                         return GoodBreakWeight;
                     }
 
@@ -80,7 +70,6 @@ public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
                             int p1 = this.getGlyphPainter().getBoundedPosition(this, p0, pos, len);
                             
                             if (p0 == this.getStartOffset() && p1 == this.getEndOffset()) {
-                                
                                 return this;
                             }
                             

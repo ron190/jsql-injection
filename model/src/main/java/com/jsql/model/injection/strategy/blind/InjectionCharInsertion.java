@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A blind attack class using concurrent threads.
@@ -27,7 +26,7 @@ public class InjectionCharInsertion {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    // Source code of the TRUE web page (usually ?id=1)
+    // Source code of the FALSE web page (eg. ?id=-123456789)
     private String blankFalseMark;
 
     /**
@@ -55,7 +54,6 @@ public class InjectionCharInsertion {
     public InjectionCharInsertion(InjectionModel injectionModel, String falseCharInsertion, String prefixSuffix) {
         
         this.injectionModel = injectionModel;
-        
         this.prefixSuffix = prefixSuffix;
         
         List<String> trueTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
@@ -63,7 +61,6 @@ public class InjectionCharInsertion {
         
         // No blind
         if (trueTest.isEmpty() || this.injectionModel.isStoppedByUser()) {
-            
             return;
         }
         
@@ -76,11 +73,9 @@ public class InjectionCharInsertion {
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableCharInsertionTagTrue");
-        
         Collection<CallableCharInsertion> listCallableTagTrue = new ArrayList<>();
         
         for (String urlTest: trueTest) {
-            
             listCallableTagTrue.add(
                 new CallableCharInsertion(
                     String.join(
@@ -100,13 +95,7 @@ public class InjectionCharInsertion {
         // Allow the user to stop the loop
         try {
             List<Future<CallableCharInsertion>> listTagTrue = taskExecutor.invokeAll(listCallableTagTrue);
-            
-            taskExecutor.shutdown();
-            
-            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
-                
-                taskExecutor.shutdownNow();
-            }
+            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
             
             for (var i = 1 ; i < listTagTrue.size() ; i++) {
                 
@@ -121,9 +110,7 @@ public class InjectionCharInsertion {
                 }
             }
         } catch (ExecutionException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-            
         } catch (InterruptedException e) {
             
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -138,11 +125,9 @@ public class InjectionCharInsertion {
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
-
         Collection<CallableCharInsertion> listCallableTagFalse = new ArrayList<>();
         
         for (String urlTest: this.falseTest) {
-            
             listCallableTagFalse.add(
                 new CallableCharInsertion(
                     String.join(
@@ -162,13 +147,7 @@ public class InjectionCharInsertion {
         // Allow the user to stop the loop.
         try {
             List<Future<CallableCharInsertion>> listTagFalse = taskExecutor.invokeAll(listCallableTagFalse);
-            
-            taskExecutor.shutdown();
-            
-            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
-                
-                taskExecutor.shutdownNow();
-            }
+            this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
         
             for (Future<CallableCharInsertion> falseTag: listTagFalse) {
                 
@@ -178,11 +157,8 @@ public class InjectionCharInsertion {
 
                 this.constantTrueMark.removeAll(falseTag.get().getOpcodes());
             }
-            
         } catch (ExecutionException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
-            
         } catch (InterruptedException e) {
 
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
@@ -193,7 +169,6 @@ public class InjectionCharInsertion {
     public boolean isInjectable() throws StoppedByUserSlidingException {
         
         if (this.injectionModel.isStoppedByUser()) {
-            
             throw new StoppedByUserSlidingException();
         }
         
@@ -210,9 +185,7 @@ public class InjectionCharInsertion {
         
         try {
             blindTest.call();
-            
         } catch (Exception e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
@@ -220,16 +193,15 @@ public class InjectionCharInsertion {
     }
     
     public String callUrl(String urlString, String metadataInjectionProcess) {
-        
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);
     }
 
     public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBoolean<?> callableBoolean) {
-
         return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);
     }
-    
-    // Getter and setter
+
+
+    // Getter
 
     public String getBlankFalseMark() {
         return this.blankFalseMark;

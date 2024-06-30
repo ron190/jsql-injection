@@ -19,10 +19,7 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkNormalVulnerable implements InteractionCommand {
     
-    /**
-     * @param nullParam
-     */
-    public MarkNormalVulnerable(Object[] nullParam) {
+    public MarkNormalVulnerable(Object[] interactionParams) {
         // Do nothing
     }
 
@@ -30,7 +27,6 @@ public class MarkNormalVulnerable implements InteractionCommand {
     public void execute() {
         
         AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getNormal();
-        
         MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategyVulnerable(strategy);
     }
 }

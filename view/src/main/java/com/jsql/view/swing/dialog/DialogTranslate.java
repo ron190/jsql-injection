@@ -112,7 +112,7 @@ public class DialogTranslate extends JDialog {
                 "Help the community and translate some buttons, menus, tabs and tooltips into ",
                 language.toString(),
                 ", ",
-                "then click on Send to forward your changes to the developer on Github.<br>",
+                "then click on Send to forward your changes to the developer on GitHub.<br>",
                 "<i>E.g. for French, change <b>CONTEXT_MENU_COPY = Copy</b> to <b>CONTEXT_MENU_COPY = Copier</b>, then click on Send. The list only displays what needs to be translated ",
                 "and is updated as soon as the developer processes your request.</i>",
                 "</html>"
@@ -174,10 +174,7 @@ public class DialogTranslate extends JDialog {
             String clientDescription = this.textToTranslate
                 .getText()
                 .replace("\\\\", "\\\\\\\\")
-                .replaceAll(
-                    "(?m)^#",
-                    "\\\\#"
-                )
+                .replaceAll("(?m)^#","\\\\#")
                 .replace("<", "\\<");
               
             MediatorHelper.model().getMediatorUtils().getGitUtil().sendReport(

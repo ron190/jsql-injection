@@ -52,7 +52,6 @@ public class CsrfWebSecurity {
      * The default is to ignore GET, HEAD, TRACE, OPTIONS and process all other requests.
      */
     private static final class DefaultRequiresCsrfMatcher implements RequestMatcher {
-
         @Override
         public boolean matches(HttpServletRequest request) {
             return true;

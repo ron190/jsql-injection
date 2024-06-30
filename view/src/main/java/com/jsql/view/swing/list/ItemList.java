@@ -19,14 +19,9 @@ public class ItemList {
      * Text displayed on item.
      */
     private String internalString;
-
     private String originalString;
 
-    /**
-     * 
-     */
     private boolean isVulnerable = false;
-    
     private Boolean isDatabaseConfirmed = false;
     
     /**

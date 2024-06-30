@@ -25,7 +25,6 @@ public abstract class AbstractCharAction extends TextAction {
      * Create this object with the appropriate identifier.
      */
     protected AbstractCharAction(String deleteAction) {
-        
         super(deleteAction);
     }
 
@@ -40,7 +39,6 @@ public abstract class AbstractCharAction extends TextAction {
         JTextComponent target = this.getTextComponent(event);
 
         if (target == null || !target.isEditable()) {
-            
             return;
         }
         
@@ -51,15 +49,11 @@ public abstract class AbstractCharAction extends TextAction {
             int mark = caret.getMark();
             
             if (dot != mark) {
-                
                 doc.remove(Math.min(dot, mark), Math.abs(dot - mark));
-                
             } else {
-                
                 this.delete(doc, dot);
             }
         } catch (BadLocationException e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
     }

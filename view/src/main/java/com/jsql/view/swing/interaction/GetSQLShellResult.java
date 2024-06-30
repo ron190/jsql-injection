@@ -15,9 +15,7 @@ package com.jsql.view.swing.interaction;
  * Append the result of a command in the terminal.
  */
 public class GetSQLShellResult extends AbstractGetShellResult {
-
     public GetSQLShellResult(Object[] interactionParams) {
-        
         super(interactionParams);
     }
 }

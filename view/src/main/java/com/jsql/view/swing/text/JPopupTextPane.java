@@ -25,12 +25,9 @@ public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements De
      * @param placeholder
      */
     public JPopupTextPane(String placeholder) {
-        
         this(new JTextPanePlaceholderConsole(placeholder) {
-            
             @Override
             public boolean isEditable() {
-                
                 return false;
             }
         });
@@ -44,7 +41,6 @@ public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements De
         super(proxy);
 
         this.getProxy().addFocusListener(new FocusAdapter() {
-            
             @Override
             public void focusGained(FocusEvent arg0) {
                 JPopupTextPane.this.getProxy().getCaret().setVisible(true);

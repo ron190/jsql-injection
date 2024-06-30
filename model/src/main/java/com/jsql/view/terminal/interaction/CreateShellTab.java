@@ -15,23 +15,16 @@ import com.jsql.view.interaction.InteractionCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * Create a new tab for the terminal.
- */
 public class CreateShellTab implements InteractionCommand {
 
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    /**
-     * @param interactionParams The local path and url for the shell
-     */
     public CreateShellTab(Object[] interactionParams) {
         // nothing
     }
 
     @Override
     public void execute() {
-
         LOGGER.info(() -> AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));
     }
 }

@@ -14,13 +14,11 @@ public class DeleteNextCharAction extends AbstractCharAction {
      * Create this object with the appropriate identifier.
      */
     public DeleteNextCharAction() {
-        
         super(DefaultEditorKit.deleteNextCharAction);
     }
 
     @Override
     protected void delete(Document doc, int dot) throws BadLocationException {
-        
         if (dot < doc.getLength()) {
             
             var delChars = 1;
@@ -32,7 +30,6 @@ public class DeleteNextCharAction extends AbstractCharAction {
                 var c1 = dotChars.charAt(1);
 
                 if (c0 >= '\uD800' && c0 <= '\uDBFF' && c1 >= '\uDC00' && c1 <= '\uDFFF') {
-                    
                     delChars = 2;
                 }
             }

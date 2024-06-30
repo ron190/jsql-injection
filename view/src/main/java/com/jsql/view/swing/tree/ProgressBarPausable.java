@@ -38,30 +38,27 @@ public class ProgressBarPausable extends JProgressBar {
     private boolean isIconDisplayed = false;
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics graphics) {
         
         // Fix #42285: InternalError on paint()
         try {
-            super.paint(g);
-            
+            super.paint(graphics);
         } catch (InternalError e) {
-            
             LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
         }
 
         if (this.isIconDisplayed) {
-            
             try {
-                BufferedImage im2 = ImageIO.read(Objects.requireNonNull(ProgressBarPausable.class.getClassLoader().getResource(UiUtil.PATH_PAUSE)));
-                g.drawImage(
-                    im2,
-                    (this.getWidth() - im2.getWidth()) / 2,
-                    (this.getHeight() - im2.getHeight()) / 2,
+                BufferedImage bufferedImage = ImageIO.read(
+                    Objects.requireNonNull(ProgressBarPausable.class.getClassLoader().getResource(UiUtil.PATH_PAUSE))
+                );
+                graphics.drawImage(
+                    bufferedImage,
+                    (this.getWidth() - bufferedImage.getWidth()) / 2,
+                    (this.getHeight() - bufferedImage.getHeight()) / 2,
                     null
                 );
-                
             } catch (IOException e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
@@ -71,7 +68,6 @@ public class ProgressBarPausable extends JProgressBar {
      * Activate pause state, hence display pause icon.
      */
     public void pause() {
-        
         this.isIconDisplayed = true;
     }
 }

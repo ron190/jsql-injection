@@ -28,7 +28,7 @@ public class Crc64Helper {
     private static final long[] LOOKUPTABLE;
     
     private Crc64Helper() {
-        
+        // Util class
     }
 
     static {
@@ -40,13 +40,9 @@ public class Crc64Helper {
             long v = i;
             
             for (int j = 0; j < 8; j++) {
-                
                 if ((v & 1) == 1) {
-                    
                     v = (v >>> 1) ^ POLY64REV;
-                    
                 } else {
-                    
                     v = v >>> 1;
                 }
             }

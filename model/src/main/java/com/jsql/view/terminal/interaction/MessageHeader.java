@@ -18,23 +18,16 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
-/**
- * Append a text to the tab Header.
- */
 public class MessageHeader implements InteractionCommand {
     
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    // The text to append to the tab
     private final String url;
     private final String post;
     private final Map<String, String> header;
     private final Map<String, String> response;
     private final String source;
 
-    /**
-     * @param interactionParams Text to append
-     */
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
         

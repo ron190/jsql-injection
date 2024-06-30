@@ -36,13 +36,10 @@ public class NodeModelColumn extends NodeModelEmpty {
     public Component getComponent(
         final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, boolean hasFocus
     ) {
-        
         var checkbox = new JCheckBox(this.toString(), this.isSelected());
-        
         checkbox.setText(UiStringUtil.detectUtf8HtmlNoWrap(this.toString()));
 
         if (isSelected) {
-            
             if (hasFocus) {
                 
                 checkbox.setBackground(UiUtil.COLOR_FOCUS_GAINED);

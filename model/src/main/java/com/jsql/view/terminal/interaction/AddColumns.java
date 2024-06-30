@@ -35,9 +35,7 @@ public class AddColumns implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public AddColumns(Object[] interactionParams) {
-        
-        // Get list of columns from the model
-        this.columns = (List<Column>) interactionParams[0];
+        this.columns = (List<Column>) interactionParams[0];  // Get list of columns from the model
     }
 
     @Override
@@ -47,7 +45,6 @@ public class AddColumns implements InteractionCommand {
         
         // Loop into the list of columns
         for (Column column: this.columns) {
-            
             LOGGER.debug(column);
         }
     }

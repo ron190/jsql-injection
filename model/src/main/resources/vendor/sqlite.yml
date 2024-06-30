@@ -155,14 +155,14 @@ strategy:
 
  boolean:
   test:
-   falses:
+   falsy:
     - 0 = 1
     - 0 %21= 0
     - 0.1 %21= 0.1
     - 1 = 2
     - 1 %21= 1
     - 2 %21= 2
-   trues:
+   truthy:
     - 1.2 = 1.2
     - 0.1 = 0.1
     - 0 %21= 1
@@ -182,9 +182,3 @@ strategy:
   modeAnd: and
   modeOr: or
   blind: ${boolean.mode} ${test}
-  time: |
-   ${boolean.mode} if(
-       ${test},
-       1,
-       sleep(${sleep_time})
-   )

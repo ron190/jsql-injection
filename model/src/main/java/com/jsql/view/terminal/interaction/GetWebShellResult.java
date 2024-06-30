@@ -15,9 +15,7 @@ package com.jsql.view.terminal.interaction;
  * Append the result of a command in the terminal.
  */
 public class GetWebShellResult extends AbstractGetShellResult {
-
     public GetWebShellResult(Object[] interactionParams) {
-        
         super(interactionParams);
     }
 }

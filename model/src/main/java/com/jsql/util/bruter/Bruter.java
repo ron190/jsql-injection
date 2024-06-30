@@ -36,7 +36,6 @@ public class Bruter {
     protected boolean paused = false;
 
     public long getRemainder() {
-        
         return this.getNumberOfPossibilities() - this.count;
     }
 
@@ -45,7 +44,6 @@ public class Bruter {
         long possibilities = 0;
         
         for (int i = this.minLength; i <= this.maxLength; i++) {
-            
             possibilities += (long) Math.pow(this.characters.size(), i);
         }
         
@@ -53,33 +51,25 @@ public class Bruter {
     }
 
     public void addLowerCaseLetters() {
-        
         for (var c = 'a'; c <= 'z'; c++) {
-            
             this.characters.add(String.valueOf(c));
         }
     }
 
     public void addDigits() {
-        
         for (var c = 0; c <= 9; c++) {
-            
             this.characters.add(String.valueOf(c));
         }
     }
 
     public void addUpperCaseLetters() {
-        
         for (var c = 'A'; c <= 'Z'; c++) {
-            
             this.characters.add(String.valueOf(c));
         }
     }
 
     public void addSpecialCharacters() {
-        
         for (char c: specialCharacters) {
-            
             this.characters.add(String.valueOf(c));
         }
     }
@@ -89,7 +79,6 @@ public class Bruter {
         char[] arrayChars = s.toCharArray();
         
         for (char arrayChar: arrayChars) {
-            
             this.characters.remove(Character.toString(arrayChar));
         }
     }
@@ -100,7 +89,6 @@ public class Bruter {
         
         try {
             i = (int) (this.count / this.calculateTimeDifference());
-            
         } catch (Exception e) {
             
             LOGGER.log(LogLevelUtil.IGNORE, e);
@@ -139,7 +127,6 @@ public class Bruter {
     }
 
     private long calculateTimeDifference() {
-        
         return (long) ((this.endtime - this.starttime) * (1 * Math.pow(10, -9)));
     }
     

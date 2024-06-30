@@ -30,8 +30,7 @@ public abstract class AbstractSlidingException extends JSqlException {
         
         this.slidingWindowCurrentRows = StringUtils.EMPTY;
         
-        this.slidingWindowAllRows =
-            StringUtils.isNotEmpty(slidingWindowAllRows)
+        this.slidingWindowAllRows = StringUtils.isNotEmpty(slidingWindowAllRows)
             ? slidingWindowAllRows
             : StringUtils.EMPTY;
     }
@@ -40,13 +39,11 @@ public abstract class AbstractSlidingException extends JSqlException {
         
         super(string);
         
-        this.slidingWindowAllRows =
-            StringUtils.isNotEmpty(slidingWindowAllRows)
+        this.slidingWindowAllRows = StringUtils.isNotEmpty(slidingWindowAllRows)
             ? slidingWindowAllRows
             : StringUtils.EMPTY;
         
-        this.slidingWindowCurrentRows =
-            StringUtils.isNotEmpty(slidingWindowCurrentRows)
+        this.slidingWindowCurrentRows = StringUtils.isNotEmpty(slidingWindowCurrentRows)
             ? slidingWindowCurrentRows
             : StringUtils.EMPTY;
     }

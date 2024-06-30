@@ -19,7 +19,7 @@ package com.jsql.view.swing.sql.lexer.syntax;
 
 /**
  * A JavaScriptToken is a token that is returned by a lexer that is lexing a javascript
- * source file.  It has several attributes describing the token:
+ * source file. It has several attributes describing the token:
  * The type of token, the text of the token, the line number on which it
  * occurred, the number of characters into the input at which it started, and
  * similarly, the number of characters into the input at which it ended. <br>
@@ -203,7 +203,7 @@ public class JavaScriptToken extends Token {
    */
   public JavaScriptToken(int ID, String contents, int lineNumber, int charBegin, int charEnd, int state) {
     this.ID = ID;
-    this.contents = new String(contents);
+    this.contents = contents;
     this.lineNumber = lineNumber;
     this.charBegin = charBegin;
     this.charEnd = charEnd;
@@ -215,7 +215,7 @@ public class JavaScriptToken extends Token {
      * returning this token.
      * Those who are interested in incremental tokenizing for performance
      * reasons will want to use this method to figure out where the tokenizer
-     * may be restarted.  The tokenizer starts in Token.INITIAL_STATE, so
+     * may be restarted. The tokenizer starts in Token.INITIAL_STATE, so
      * any time that it reports that it has returned to this state, the
      * tokenizer may be restarted from there.
      */
@@ -334,7 +334,7 @@ public int getCharEnd() {
    * @return true if this token is a comment, false otherwise
    */
   @Override
-public boolean isComment() {
+  public boolean isComment() {
       return((this.ID >> 8) == 0xD);
   }
 
@@ -356,13 +356,13 @@ public boolean isWhiteSpace() {
    * @return true if this token is an Error, false otherwise
    */
   @Override
-public boolean isError() {
+  public boolean isError() {
       return((this.ID >> 8) == 0xF);
   }
 
     /**
-     * A description of this token.  The description should
-     * be appropriate for syntax highlighting.  For example
+     * A description of this token. The description should
+     * be appropriate for syntax highlighting. For example
      * "comment" is returned for a comment.
      *
      * @return a description of this token.
@@ -393,10 +393,10 @@ public boolean isError() {
   /**
    * get a String that explains the error, if this token is an error.
    * 
-   * @return a  String that explains the error, if this token is an error, null otherwise.
+   * @return a String that explains the error, if this token is an error, null otherwise.
    */
   @Override
-public String errorString() {
+  public String errorString() {
       String s;
       if (this.isError()) {
           s = "Error on line " + this.lineNumber + ": ";
@@ -409,19 +409,15 @@ public String errorString() {
           break;
         case ERROR_MALFORMED_STRING:
         case ERROR_MALFORMED_UNCLOSED_STRING:
-              s += "Illegal character in " + this.contents;
-          break;
-        case ERROR_UNCLOSED_CHARACTER:
-              s += "\"'\" expected after " + this.contents;
-          break;
         case ERROR_MALFORMED_CHARACTER:
         case ERROR_MALFORMED_UNCLOSED_CHARACTER:
-              s += "Illegal character in " + this.contents;
-          break;
         case ERROR_INTEGER_DECIMIAL_SIZE:
         case ERROR_INTEGER_OCTAL_SIZE:
         case ERROR_FLOAT:
               s += "Illegal character in " + this.contents;
+          break;
+        case ERROR_UNCLOSED_CHARACTER:
+              s += "\"'\" expected after " + this.contents;
           break;
         case ERROR_INTEGER_HEXIDECIMAL_SIZE:
         case ERROR_LONG_DECIMIAL_SIZE:
@@ -435,7 +431,6 @@ public String errorString() {
               s += "*/ expected after " + this.contents;
           break;
         }
-              
       } else {
           s = null;
       }
@@ -443,16 +438,15 @@ public String errorString() {
   }
 
   /**
-   * get a representation of this token as a human readable string.
+   * get a representation of this token as a human-readable string.
    * The format of this string is subject to change and should only be used
    * for debugging purposes.
    *
    * @return a string representation of this token
    */
   @Override
-public String toString() {
-      return ("Token #" + Integer.toHexString(this.ID) + ": " + this.getDescription() + " Line " +
-          this.lineNumber + " from " +this.charBegin + " to " + this.charEnd + " : " + this.contents);
+  public String toString() {
+      return "Token #" + Integer.toHexString(this.ID) + ": " + this.getDescription() + " Line " +
+          this.lineNumber + " from " +this.charBegin + " to " + this.charEnd + " : " + this.contents;
   }
-  
 }

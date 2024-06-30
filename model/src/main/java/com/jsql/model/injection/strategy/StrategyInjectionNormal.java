@@ -30,7 +30,6 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     private String performanceLength = "0";
     
     public StrategyInjectionNormal(InjectionModel injectionModel) {
-        
         super(injectionModel);
     }
 
@@ -39,16 +38,15 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
         if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyNormalDisabled()) {
 
-            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, "Skipping strategy Normal disabled");
+            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());
             return;
         }
 
-        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} Normal...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"));
+        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "{} {}...", () -> I18nUtil.valueByKey("LOG_CHECKING_STRATEGY"), this::getName);
         this.injectionModel.setIndexesInUrl(new SuspendableGetIndexes(this.injectionModel).run());
 
         // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body
         if (StringUtils.isNotEmpty(this.injectionModel.getIndexesInUrl())) {
-            
             this.visibleIndex = this.getVisibleIndex(this.sourceIndexesFound);
         }
         
@@ -60,15 +58,15 @@ public class StrategyInjectionNormal extends AbstractStrategy {
             
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
-                "{} [Normal] at index [{}] using [{}] characters",
+                "{} [{}] at index [{}] using [{}] characters",
                 () -> I18nUtil.valueByKey("LOG_VULNERABLE"),
+                this::getName,
                 () -> this.visibleIndex,
                 () -> this.performanceLength
             );
             this.allow();
             
         } else {
-            
             this.unallow();
         }
     }
@@ -77,9 +75,9 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     public void allow(int... i) {
 
         this.injectionModel.appendAnalysisReport(
-            "### Strategy: Normal\n"
+            "<span style=color:rgb(0,0,255)>### Strategy: " + getName() + "</span>"
             + this.injectionModel.getReportWithIndexes(
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal("<query>", "0", true),
+                this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal("<span style=color:rgb(0,128,0)>&lt;query&gt;</span>", "0", true),
                 "metadataInjectionProcess"
             )
         );
@@ -88,13 +86,11 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     @Override
     public void unallow(int... i) {
-        
         this.markVulnerability(Interaction.MARK_NORMAL_INVULNERABLE);
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
-        
         return this.injectionModel.injectWithIndexes(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(sqlQuery, startPosition, false),
             metadataInjectionProcess
@@ -136,7 +132,6 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         
         List<String> foundIndexes = new ArrayList<>();
         while (regexSearch.find()) {
-            
             foundIndexes.add(regexSearch.group(1));
         }
 
@@ -163,7 +158,6 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         List<String[]> performanceResults = new ArrayList<>();
         
         while (regexSearch.find()) {
-            
             performanceResults.add(new String[]{regexSearch.group(1), regexSearch.group(2)});
         }
 
@@ -179,20 +173,16 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         var lengthFields = new Integer[performanceResults.size()][2];
         
         for (var i = 0; i < performanceResults.size(); i++) {
-            
             lengthFields[i] = new Integer[] {
                     
                 performanceResults.get(i)[1].length() + performanceResults.get(i)[0].length(),
-                
                 Integer.parseInt(performanceResults.get(i)[0])
             };
         }
 
         // Sort by length of #######...#######
         Arrays.sort(lengthFields, Comparator.comparing((Integer[] s) -> s[0]));
-        
         Integer[] bestLengthFields = lengthFields[lengthFields.length - 1];
-        
         this.performanceLength = bestLengthFields[0].toString();
 
         // Reduce all others indexes

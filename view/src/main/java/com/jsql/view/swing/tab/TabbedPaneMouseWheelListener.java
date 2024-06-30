@@ -9,7 +9,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 /**
- * Mousewheel allows to navigate to next/previous tab.
+ * Mouse wheel allows to navigate to next/previous tab.
  */
 public class TabbedPaneMouseWheelListener implements MouseWheelListener {
     
@@ -28,23 +28,17 @@ public class TabbedPaneMouseWheelListener implements MouseWheelListener {
         int maxIndex = tabPane.getTabCount() - 1;
         
         if ((selIndex == 0 && dir < 0) || (selIndex == maxIndex && dir > 0)) {
-            
             selIndex = maxIndex - selIndex;
-            
         } else {
-            
             selIndex += dir;
         }
         
         if (0 <= selIndex && selIndex < tabPane.getTabCount()) {
-            
             // Fix #54575: NullPointerException on setSelectedIndex()
             // Fix #90835: IllegalArgumentException on setSelectedIndex()
             try {
                 tabPane.setSelectedIndex(selIndex);
-                
             } catch (IllegalArgumentException | NullPointerException e) {
-                
                 LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
             }
         }
