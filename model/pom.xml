@@ -12,7 +12,7 @@
     <repositories>
         <repository>
             <id>cubrid-repository</id>
-            <url>http://maven.cubrid.org/</url>
+            <url>https://maven.cubrid.org/</url>
         </repository>
         <!--         <repository> -->
         <!--             <id>default</id> -->
