@@ -36,7 +36,7 @@
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <a name="DocPositionComparator" href="../../../../../../com/jsql/view/swing/sql/lexer/DocPositionComparator.html#DocPositionComparator">DocPositionComparator</a> instance = <strong class="jxr_keyword">new</strong> <a name="DocPositionComparator" href="../../../../../../com/jsql/view/swing/sql/lexer/DocPositionComparator.html#DocPositionComparator">DocPositionComparator</a>();
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <a name="DocPositionComparator" href="../../../../../../com/jsql/view/swing/sql/lexer/DocPositionComparator.html#DocPositionComparator">DocPositionComparator</a>() {
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>          
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>          <em class="jxr_comment">// Util class</em>
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      }
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>      <em class="jxr_javadoccomment">/**</em>
@@ -48,27 +48,22 @@
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>      @Override
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> equals(Object obj) {
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>          
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong> == obj;
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>      }
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>  
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment">     * Compare two DocPositions</em>
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <em class="jxr_javadoccomment">     * @param o1 first DocPosition</em>
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment">     * @param o2 second DocPosition</em>
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment">     * @return negative if first &lt; second, 0 if equal, positive if first &gt; second</em>
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>      @Override
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="DocPosition" href="../../../../../../com/jsql/view/swing/sql/lexer/DocPosition.html#DocPosition">DocPosition</a> o1, <a name="DocPosition" href="../../../../../../com/jsql/view/swing/sql/lexer/DocPosition.html#DocPosition">DocPosition</a> o2) {
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>          <a name="DocPosition" href="../../../../../../com/jsql/view/swing/sql/lexer/DocPosition.html#DocPosition">DocPosition</a> d1 = o1;
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>          <a name="DocPosition" href="../../../../../../com/jsql/view/swing/sql/lexer/DocPosition.html#DocPosition">DocPosition</a> d2 = o2;
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>          
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">return</strong> d1.getPosition() - d2.getPosition();
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>      }
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>  }
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>  
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong> == obj;
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>      }
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment">     * Compare two DocPositions</em>
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment">     * @param o1 first DocPosition</em>
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <em class="jxr_javadoccomment">     * @param o2 second DocPosition</em>
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment">     * @return negative if first &lt; second, 0 if equal, positive if first &gt; second</em>
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>      @Override
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare(<a name="DocPosition" href="../../../../../../com/jsql/view/swing/sql/lexer/DocPosition.html#DocPosition">DocPosition</a> o1, <a name="DocPosition" href="../../../../../../com/jsql/view/swing/sql/lexer/DocPosition.html#DocPosition">DocPosition</a> o2) {
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>          <strong class="jxr_keyword">return</strong> o1.getPosition() - o2.getPosition();
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      }
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  }
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>  
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>

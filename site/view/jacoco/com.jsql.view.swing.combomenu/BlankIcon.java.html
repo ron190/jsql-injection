@@ -11,8 +11,8 @@ public class BlankIcon implements Icon {
 
     public BlankIcon() {
         
-<span class="nc" id="L14">        this(null, 11);</span>
-<span class="nc" id="L15">    }</span>
+<span class="fc" id="L14">        this(null, 11);</span>
+<span class="fc" id="L15">    }</span>
 
 <span class="fc" id="L17">    public BlankIcon(Color color, int size) {</span>
 
@@ -22,22 +22,21 @@ public class BlankIcon implements Icon {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        
-<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        if (this.fillColor != null) {</span>
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        if (this.fillColor != null) {</span>
             
-<span class="nc" id="L28">            g.setColor(this.fillColor);</span>
-<span class="nc" id="L29">            g.drawRect(x, y, this.size-1, this.size-1);</span>
+<span class="nc" id="L27">            g.setColor(this.fillColor);</span>
+<span class="nc" id="L28">            g.drawRect(x, y, this.size-1, this.size-1);</span>
         }
-<span class="fc" id="L31">    }</span>
+<span class="fc" id="L30">    }</span>
 
     @Override
     public int getIconWidth() {
-<span class="fc" id="L35">        return this.size;</span>
+<span class="fc" id="L34">        return this.size;</span>
     }
 
     @Override
     public int getIconHeight() {
-<span class="fc" id="L40">        return this.size;</span>
+<span class="fc" id="L39">        return this.size;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -86,367 +86,346 @@ public class PanelConsoles extends JPanel {
 <span class="fc" id="L86">    public PanelConsoles() {</span>
         
 <span class="fc" id="L88">        this.javaTextPane.getProxy().setEditable(false);</span>
-
-<span class="fc" id="L90">        JTextPaneAppender.register(this.javaTextPane);</span>
+<span class="fc" id="L89">        JTextPaneAppender.register(this.javaTextPane);</span>
         
-<span class="fc" id="L92">        this.initializeSplit();</span>
+<span class="fc" id="L91">        this.initializeSplit();</span>
 
-<span class="fc" id="L94">        MediatorHelper.register(this.tabConsoles);</span>
+<span class="fc" id="L93">        MediatorHelper.register(this.tabConsoles);</span>
+<span class="fc" id="L94">        this.initializeTabsConsoles();</span>
+
+<span class="fc" id="L96">        this.setLayout(new OverlayLayout(this));</span>
+
+<span class="fc" id="L98">        JPanel expandPanel = this.initializeExpandPanel();</span>
         
-<span class="fc" id="L96">        this.initializeTabsConsoles();</span>
-
-<span class="fc" id="L98">        this.setLayout(new OverlayLayout(this));</span>
-
-<span class="fc" id="L100">        JPanel expandPanel = this.initializeExpandPanel();</span>
-        
-<span class="fc" id="L102">        this.add(expandPanel);</span>
-<span class="fc" id="L103">        this.add(this.tabConsoles);</span>
+<span class="fc" id="L100">        this.add(expandPanel);</span>
+<span class="fc" id="L101">        this.add(this.tabConsoles);</span>
 
         // Do Overlay
-<span class="fc" id="L106">        expandPanel.setAlignmentX(FlowLayout.TRAILING);</span>
-<span class="fc" id="L107">        expandPanel.setAlignmentY(Component.TOP_ALIGNMENT);</span>
-<span class="fc" id="L108">        this.tabConsoles.setAlignmentX(FlowLayout.LEADING);</span>
-<span class="fc" id="L109">        this.tabConsoles.setAlignmentY(Component.TOP_ALIGNMENT);</span>
-<span class="fc" id="L110">    }</span>
+<span class="fc" id="L104">        expandPanel.setAlignmentX(FlowLayout.TRAILING);</span>
+<span class="fc" id="L105">        expandPanel.setAlignmentY(Component.TOP_ALIGNMENT);</span>
+<span class="fc" id="L106">        this.tabConsoles.setAlignmentX(FlowLayout.LEADING);</span>
+<span class="fc" id="L107">        this.tabConsoles.setAlignmentY(Component.TOP_ALIGNMENT);</span>
+<span class="fc" id="L108">    }</span>
 
     private void initializeSplit() {
         
-<span class="fc" id="L114">        this.networkSplitPane = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);</span>
+<span class="fc" id="L112">        this.networkSplitPane = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);</span>
         
-<span class="fc" id="L116">        this.networkSplitPane.setResizeWeight(1);</span>
-<span class="fc" id="L117">        this.networkSplitPane.setDividerSize(0);</span>
-<span class="fc" id="L118">        this.networkSplitPane.setDividerLocation(600);</span>
-<span class="fc" id="L119">        this.networkSplitPane.setBorder(BorderFactory.createEmptyBorder());</span>
+<span class="fc" id="L114">        this.networkSplitPane.setResizeWeight(1);</span>
+<span class="fc" id="L115">        this.networkSplitPane.setDividerSize(0);</span>
+<span class="fc" id="L116">        this.networkSplitPane.setDividerLocation(600);</span>
+<span class="fc" id="L117">        this.networkSplitPane.setBorder(BorderFactory.createEmptyBorder());</span>
         
-<span class="fc" id="L121">        this.tabbedPaneNetworkTab = new TabbedPaneNetworkTab();</span>
+<span class="fc" id="L119">        this.tabbedPaneNetworkTab = new TabbedPaneNetworkTab();</span>
         
-<span class="fc" id="L123">        this.networkSplitPane.setRightComponent(this.tabbedPaneNetworkTab);</span>
+<span class="fc" id="L121">        this.networkSplitPane.setRightComponent(this.tabbedPaneNetworkTab);</span>
         
-<span class="fc" id="L125">        this.networkTable = new NetworkTable(this.tabbedPaneNetworkTab);</span>
+<span class="fc" id="L123">        this.networkTable = new NetworkTable(this.tabbedPaneNetworkTab);</span>
         
-<span class="fc" id="L127">        JScrollIndicator scrollerNetwork = this.initializeScrollerTable();</span>
-<span class="fc" id="L128">        this.networkSplitPane.setLeftComponent(scrollerNetwork);</span>
-<span class="fc" id="L129">    }</span>
+<span class="fc" id="L125">        JScrollIndicator scrollerNetwork = this.initializeScrollerTable();</span>
+<span class="fc" id="L126">        this.networkSplitPane.setLeftComponent(scrollerNetwork);</span>
+<span class="fc" id="L127">    }</span>
 
     private JScrollIndicator initializeScrollerTable() {
         
-<span class="fc" id="L133">        var scrollerNetwork = new JScrollIndicator(this.networkTable, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);</span>
-<span class="fc" id="L134">        scrollerNetwork.getScrollPane().setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));</span>
-<span class="fc" id="L135">        scrollerNetwork.getScrollPane().setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));</span>
+<span class="fc" id="L131">        var scrollerNetwork = new JScrollIndicator(this.networkTable, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);</span>
+<span class="fc" id="L132">        scrollerNetwork.getScrollPane().setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));</span>
+<span class="fc" id="L133">        scrollerNetwork.getScrollPane().setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));</span>
         
-<span class="fc" id="L137">        AdjustmentListener singleItemScroll = adjustmentEvent -&gt; {</span>
+<span class="fc" id="L135">        AdjustmentListener singleItemScroll = adjustmentEvent -&gt; {</span>
             
             // The user scrolled the List (using the bar, mouse wheel or something else):
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">            if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK) {</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">            if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK) {</span>
                 
                 // Jump to the next &quot;block&quot; (which is a row&quot;.
-<span class="fc" id="L143">                adjustmentEvent.getAdjustable().setBlockIncrement(100);</span>
-<span class="fc" id="L144">                adjustmentEvent.getAdjustable().setUnitIncrement(100);</span>
+<span class="fc" id="L141">                adjustmentEvent.getAdjustable().setBlockIncrement(100);</span>
+<span class="fc" id="L142">                adjustmentEvent.getAdjustable().setUnitIncrement(100);</span>
             }
-<span class="fc" id="L146">        };</span>
+<span class="fc" id="L144">        };</span>
 
-<span class="fc" id="L148">        scrollerNetwork.getScrollPane().getVerticalScrollBar().addAdjustmentListener(singleItemScroll);</span>
-<span class="fc" id="L149">        scrollerNetwork.getScrollPane().getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);</span>
+<span class="fc" id="L146">        scrollerNetwork.getScrollPane().getVerticalScrollBar().addAdjustmentListener(singleItemScroll);</span>
+<span class="fc" id="L147">        scrollerNetwork.getScrollPane().getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);</span>
         
-<span class="fc" id="L151">        return scrollerNetwork;</span>
+<span class="fc" id="L149">        return scrollerNetwork;</span>
     }
 
     private void initializeTabsConsoles() {
         
-<span class="fc" id="L156">        this.chunkTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole(&quot;Raw data extracted during injection&quot;)).getProxy();</span>
-<span class="fc" id="L157">        this.chunkTextArea.setEditable(false);</span>
+<span class="fc" id="L154">        this.chunkTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole(&quot;Raw data extracted during injection&quot;)).getProxy();</span>
+<span class="fc" id="L155">        this.chunkTextArea.setEditable(false);</span>
         
-<span class="fc" id="L159">        this.binaryTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole(&quot;Characters extracted during blind or time injection&quot;)).getProxy();</span>
-<span class="fc" id="L160">        this.binaryTextArea.setEditable(false);</span>
+<span class="fc" id="L157">        this.binaryTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole(&quot;Characters extracted during blind or time injection&quot;)).getProxy();</span>
+<span class="fc" id="L158">        this.binaryTextArea.setEditable(false);</span>
 
-<span class="fc" id="L162">        this.chunkTextArea.setLineWrap(true);</span>
-<span class="fc" id="L163">        this.binaryTextArea.setLineWrap(true);</span>
+<span class="fc" id="L160">        this.chunkTextArea.setLineWrap(true);</span>
+<span class="fc" id="L161">        this.binaryTextArea.setLineWrap(true);</span>
         
-<span class="fc" id="L165">        var consoleTextPane = new SimpleConsoleAdapter(&quot;Console&quot;, &quot;Event logging&quot;);</span>
+<span class="fc" id="L163">        var consoleTextPane = new SimpleConsoleAdapter(&quot;Console&quot;, &quot;Event logging&quot;);</span>
         
         // Object creation after customization
-<span class="fc" id="L168">        consoleTextPane.getProxy().setEditable(false);</span>
+<span class="fc" id="L166">        consoleTextPane.getProxy().setEditable(false);</span>
 
-<span class="fc" id="L170">        JTextPaneAppender.register(consoleTextPane);</span>
+<span class="fc" id="L168">        JTextPaneAppender.register(consoleTextPane);</span>
         
-<span class="fc" id="L172">        this.tabConsoles.setUI(new CustomMetalTabbedPaneUI() {</span>
+<span class="fc" id="L170">        this.tabConsoles.setUI(new CustomMetalTabbedPaneUI() {</span>
             
             @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-                
-<span class="fc" id="L176">                return Math.max(80, super.calculateTabWidth(tabPlacement, tabIndex, metrics));</span>
+<span class="fc" id="L173">                return Math.max(80, super.calculateTabWidth(tabPlacement, tabIndex, metrics));</span>
             }
         });
         
-<span class="fc" id="L180">        this.tabConsoles.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));</span>
+<span class="fc" id="L177">        this.tabConsoles.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));</span>
 
-<span class="fc" id="L182">        this.buildI18nTab(</span>
+<span class="fc" id="L179">        this.buildI18nTab(</span>
             &quot;CONSOLE_MAIN_LABEL&quot;,
             &quot;CONSOLE_MAIN_TOOLTIP&quot;,
             UiUtil.ICON_CONSOLE,
-<span class="fc" id="L186">            new LightScrollPane(1, 0, 0, 0, consoleTextPane.getProxy()),</span>
+<span class="fc" id="L183">            new LightScrollPane(1, 0, 0, 0, consoleTextPane.getProxy()),</span>
             0
         );
 
         // Order is important
-<span class="fc" id="L191">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
-<span class="pc bpc" id="L192" title="1 of 2 branches missed.">        if (preferences.getBoolean(UiUtil.JAVA_VISIBLE, false)) {</span>
-            
-<span class="nc" id="L194">            this.insertJavaTab();</span>
+<span class="fc" id="L188">        var preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">        if (preferences.getBoolean(UiUtil.JAVA_VISIBLE, false)) {</span>
+<span class="nc" id="L190">            this.insertJavaTab();</span>
         }
         
-<span class="pc bpc" id="L197" title="1 of 2 branches missed.">        if (preferences.getBoolean(UiUtil.NETWORK_VISIBLE, true)) {</span>
-            
-<span class="fc" id="L199">            this.insertNetworkTab();</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">        if (preferences.getBoolean(UiUtil.NETWORK_VISIBLE, true)) {</span>
+<span class="fc" id="L194">            this.insertNetworkTab();</span>
         }
         
-<span class="pc bpc" id="L202" title="1 of 2 branches missed.">        if (preferences.getBoolean(UiUtil.CHUNK_VISIBLE, true)) {</span>
-            
-<span class="fc" id="L204">            this.insertChunkTab();</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">        if (preferences.getBoolean(UiUtil.CHUNK_VISIBLE, true)) {</span>
+<span class="fc" id="L198">            this.insertChunkTab();</span>
         }
         
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">        if (preferences.getBoolean(UiUtil.BINARY_VISIBLE, true)) {</span>
-            
-<span class="fc" id="L209">            this.insertBooleanTab();</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">        if (preferences.getBoolean(UiUtil.BINARY_VISIBLE, true)) {</span>
+<span class="fc" id="L202">            this.insertBooleanTab();</span>
         }
 
         // Reset Font when tab is selected
-<span class="fc" id="L213">        this.tabConsoles.addChangeListener(changeEvent -&gt; {</span>
+<span class="fc" id="L206">        this.tabConsoles.addChangeListener(changeEvent -&gt; {</span>
             
-<span class="fc" id="L215">            JTabbedPane tabs = this.tabConsoles;</span>
+<span class="fc" id="L208">            JTabbedPane tabs = this.tabConsoles;</span>
             
-<span class="pc bpc" id="L217" title="1 of 2 branches missed.">            if (tabs.getSelectedIndex() &gt; -1) {</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">            if (tabs.getSelectedIndex() &gt; -1) {</span>
                 
-<span class="fc" id="L219">                var currentTabHeader = tabs.getTabComponentAt(tabs.getSelectedIndex());</span>
+<span class="fc" id="L212">                var currentTabHeader = tabs.getTabComponentAt(tabs.getSelectedIndex());</span>
                 
-<span class="pc bpc" id="L221" title="1 of 2 branches missed.">                if (currentTabHeader != null) {</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">                if (currentTabHeader != null) {</span>
                     
-<span class="fc" id="L223">                    currentTabHeader.setFont(currentTabHeader.getFont().deriveFont(Font.PLAIN));</span>
-<span class="fc" id="L224">                    currentTabHeader.setForeground(Color.BLACK);</span>
+<span class="fc" id="L216">                    currentTabHeader.setFont(currentTabHeader.getFont().deriveFont(Font.PLAIN));</span>
+<span class="fc" id="L217">                    currentTabHeader.setForeground(Color.BLACK);</span>
                 }
             }
-<span class="fc" id="L227">        });</span>
-<span class="fc" id="L228">    }</span>
+<span class="fc" id="L220">        });</span>
+<span class="fc" id="L221">    }</span>
 
     private JPanel initializeExpandPanel() {
-        
-<span class="fc" id="L232">        var buttonShowSouth = new BasicArrowButton(SwingConstants.SOUTH);</span>
-<span class="fc" id="L233">        buttonShowSouth.setName(&quot;buttonShowSouth&quot;);</span>
-        
-<span class="fc" id="L235">        buttonShowSouth.setBorderPainted(false);</span>
-<span class="fc" id="L236">        buttonShowSouth.setPreferredSize(new Dimension(buttonShowSouth.getPreferredSize().width, buttonShowSouth.getPreferredSize().height));</span>
-<span class="fc" id="L237">        buttonShowSouth.setMaximumSize(buttonShowSouth.getPreferredSize());</span>
-<span class="fc" id="L238">        buttonShowSouth.setOpaque(false);</span>
-<span class="fc" id="L239">        buttonShowSouth.setBorder(BorderFactory.createEmptyBorder());</span>
-<span class="fc" id="L240">        buttonShowSouth.addActionListener(SplitHorizontalTopBottom.getActionHideShowConsole());</span>
-        
-<span class="fc" id="L242">        this.buttonShowNorth.setBorderPainted(false);</span>
-<span class="fc" id="L243">        this.buttonShowNorth.setPreferredSize(new Dimension(this.buttonShowNorth.getPreferredSize().width, this.buttonShowNorth.getPreferredSize().height));</span>
-<span class="fc" id="L244">        this.buttonShowNorth.setMaximumSize(this.buttonShowNorth.getPreferredSize());</span>
-<span class="fc" id="L245">        this.buttonShowNorth.setOpaque(false);</span>
-<span class="fc" id="L246">        this.buttonShowNorth.setBorder(BorderFactory.createEmptyBorder());</span>
-<span class="fc" id="L247">        this.buttonShowNorth.addActionListener(SplitHorizontalTopBottom.getActionHideShowResult());</span>
-<span class="fc" id="L248">        this.buttonShowNorth.setName(&quot;buttonShowNorth&quot;);</span>
 
-<span class="fc" id="L250">        var arrowDownPanel = new JPanel();</span>
-<span class="fc" id="L251">        arrowDownPanel.setLayout(new BorderLayout());</span>
-<span class="fc" id="L252">        arrowDownPanel.setOpaque(false);</span>
+<span class="fc" id="L225">        var buttonShowSouth = new BasicArrowButton(SwingConstants.SOUTH);</span>
+<span class="fc" id="L226">        buttonShowSouth.setName(&quot;buttonShowSouth&quot;);</span>
+
+<span class="fc" id="L228">        buttonShowSouth.setBorderPainted(false);</span>
+<span class="fc" id="L229">        buttonShowSouth.setPreferredSize(new Dimension(buttonShowSouth.getPreferredSize().width, buttonShowSouth.getPreferredSize().height));</span>
+<span class="fc" id="L230">        buttonShowSouth.setMaximumSize(buttonShowSouth.getPreferredSize());</span>
+<span class="fc" id="L231">        buttonShowSouth.setOpaque(false);</span>
+<span class="fc" id="L232">        buttonShowSouth.setBorder(BorderFactory.createEmptyBorder());</span>
+<span class="fc" id="L233">        buttonShowSouth.addActionListener(SplitHorizontalTopBottom.getActionHideShowConsole());</span>
+        
+<span class="fc" id="L235">        this.buttonShowNorth.setBorderPainted(false);</span>
+<span class="fc" id="L236">        this.buttonShowNorth.setPreferredSize(new Dimension(this.buttonShowNorth.getPreferredSize().width, this.buttonShowNorth.getPreferredSize().height));</span>
+<span class="fc" id="L237">        this.buttonShowNorth.setMaximumSize(this.buttonShowNorth.getPreferredSize());</span>
+<span class="fc" id="L238">        this.buttonShowNorth.setOpaque(false);</span>
+<span class="fc" id="L239">        this.buttonShowNorth.setBorder(BorderFactory.createEmptyBorder());</span>
+<span class="fc" id="L240">        this.buttonShowNorth.addActionListener(SplitHorizontalTopBottom.getActionHideShowResult());</span>
+<span class="fc" id="L241">        this.buttonShowNorth.setName(&quot;buttonShowNorth&quot;);</span>
+
+<span class="fc" id="L243">        var arrowDownPanel = new JPanel();</span>
+<span class="fc" id="L244">        arrowDownPanel.setLayout(new BorderLayout());</span>
+<span class="fc" id="L245">        arrowDownPanel.setOpaque(false);</span>
         
         // Disable overlap with zerosizesplitter
-<span class="fc" id="L255">        arrowDownPanel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));</span>
-<span class="fc" id="L256">        arrowDownPanel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 26));</span>
-<span class="fc" id="L257">        arrowDownPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 26));</span>
+<span class="fc" id="L248">        arrowDownPanel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));</span>
+<span class="fc" id="L249">        arrowDownPanel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 26));</span>
+<span class="fc" id="L250">        arrowDownPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 26));</span>
 
-<span class="fc" id="L259">        var panelExpander = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L260">        panelExpander.setBorder(BorderFactory.createEmptyBorder());</span>
-<span class="fc" id="L261">        panelExpander.add(buttonShowSouth, BorderLayout.LINE_END);</span>
-<span class="fc" id="L262">        panelExpander.add(this.buttonShowNorth, BorderLayout.LINE_START);</span>
-<span class="fc" id="L263">        arrowDownPanel.add(panelExpander, BorderLayout.LINE_END);</span>
+<span class="fc" id="L252">        var panelExpander = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L253">        panelExpander.setBorder(BorderFactory.createEmptyBorder());</span>
+<span class="fc" id="L254">        panelExpander.add(buttonShowSouth, BorderLayout.LINE_END);</span>
+<span class="fc" id="L255">        panelExpander.add(this.buttonShowNorth, BorderLayout.LINE_START);</span>
+<span class="fc" id="L256">        arrowDownPanel.add(panelExpander, BorderLayout.LINE_END);</span>
         
-<span class="fc" id="L265">        return arrowDownPanel;</span>
+<span class="fc" id="L258">        return arrowDownPanel;</span>
     }
-    
+
     public void reset() {
         
-<span class="fc" id="L270">        this.networkTable.getListHttpHeader().clear();</span>
+<span class="fc" id="L263">        this.networkTable.getListHttpHeader().clear();</span>
         
         // Empty infos tabs
-<span class="fc" id="L273">        this.getChunkTab().setText(StringUtils.EMPTY);</span>
-<span class="fc" id="L274">        this.getBinaryTab().setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L266">        this.getChunkTab().setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L267">        this.getBinaryTab().setText(StringUtils.EMPTY);</span>
         
         // Fix #4657, Fix #1860: Multiple Exceptions on setRowCount()
         try {
-<span class="fc" id="L278">            ((DefaultTableModel) this.networkTable.getModel()).setRowCount(0);</span>
-            
-<span class="nc" id="L280">        } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
-            
-<span class="nc" id="L282">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L283">        }</span>
+<span class="fc" id="L271">            ((DefaultTableModel) this.networkTable.getModel()).setRowCount(0);</span>
+<span class="nc" id="L272">        } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L273">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L274">        }</span>
         
-<span class="fc" id="L285">        this.javaTextPane.getProxy().setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L276">        this.javaTextPane.getProxy().setText(StringUtils.EMPTY);</span>
         
-<span class="fc" id="L287">        this.tabbedPaneNetworkTab.reset();</span>
-<span class="fc" id="L288">    }</span>
+<span class="fc" id="L278">        this.tabbedPaneNetworkTab.reset();</span>
+<span class="fc" id="L279">    }</span>
 
     /**
      * Add Chunk console to bottom panel.
      */
     public void insertChunkTab() {
-        
-<span class="fc" id="L295">        this.buildI18nTab(</span>
+<span class="fc" id="L285">        this.buildI18nTab(</span>
             &quot;CONSOLE_CHUNK_LABEL&quot;,
             &quot;CONSOLE_CHUNK_TOOLTIP&quot;,
             UiUtil.ICON_CHUNK,
             new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.chunkTextArea),
             1
         );
-<span class="fc" id="L302">    }</span>
+<span class="fc" id="L292">    }</span>
 
     /**
      * Add Binary console to bottom panel.
      */
     public void insertBooleanTab() {
-        
-<span class="fc" id="L309">        this.buildI18nTab(</span>
+<span class="fc" id="L298">        this.buildI18nTab(</span>
             &quot;CONSOLE_BINARY_LABEL&quot;,
             &quot;CONSOLE_BINARY_TOOLTIP&quot;,
             UiUtil.ICON_BINARY,
             new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.binaryTextArea),
-<span class="pc bpc" id="L314" title="1 of 2 branches missed.">            1 + (MediatorHelper.menubar().getChunkMenu().isSelected() ? 1 : 0)</span>
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">            1 + (MediatorHelper.menubar().getChunkMenu().isSelected() ? 1 : 0)</span>
         );
-<span class="fc" id="L316">    }</span>
+<span class="fc" id="L305">    }</span>
 
     /**
      * Add Network tab to bottom panel.
      */
     public void insertNetworkTab() {
-        
-<span class="fc" id="L323">        this.buildI18nTab(</span>
+<span class="fc" id="L311">        this.buildI18nTab(</span>
             &quot;CONSOLE_NETWORK_LABEL&quot;,
             &quot;CONSOLE_NETWORK_TOOLTIP&quot;,
             UiUtil.ICON_HEADER,
             new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.networkSplitPane),
-<span class="pc bpc" id="L328" title="1 of 2 branches missed.">            this.tabConsoles.getTabCount() - (MediatorHelper.menubar().getJavaDebugMenu().isSelected() ? 1 : 0)</span>
+<span class="pc bpc" id="L316" title="1 of 2 branches missed.">            this.tabConsoles.getTabCount() - (MediatorHelper.menubar().getJavaDebugMenu().isSelected() ? 1 : 0)</span>
         );
-<span class="fc" id="L330">    }</span>
+<span class="fc" id="L318">    }</span>
 
     /**
      * Add Java console to bottom panel.
      */
     public void insertJavaTab() {
-        
-<span class="nc" id="L337">        this.buildI18nTab(</span>
+<span class="nc" id="L324">        this.buildI18nTab(</span>
             &quot;CONSOLE_JAVA_LABEL&quot;,
             &quot;CONSOLE_JAVA_TOOLTIP&quot;,
             UiUtil.ICON_CUP,
-<span class="nc" id="L341">            new LightScrollPane(1, 0, 0, 0, this.javaTextPane.getProxy()),</span>
-<span class="nc" id="L342">            this.tabConsoles.getTabCount()</span>
+<span class="nc" id="L328">            new LightScrollPane(1, 0, 0, 0, this.javaTextPane.getProxy()),</span>
+<span class="nc" id="L329">            this.tabConsoles.getTabCount()</span>
         );
-<span class="nc" id="L344">    }</span>
+<span class="nc" id="L331">    }</span>
     
     private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, Component manager, int position) {
         
-<span class="fc" id="L348">        final var refJToolTipI18n = new JToolTipI18n[]{ new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip)) };</span>
+<span class="fc" id="L335">        final var refJToolTipI18n = new JToolTipI18n[]{ new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip)) };</span>
         
-<span class="fc" id="L350">        var labelTab = new JLabel(I18nViewUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {</span>
-            
+<span class="fc" id="L337">        var labelTab = new JLabel(I18nViewUtil.valueByKey(keyLabel), icon, SwingConstants.CENTER) {</span>
             @Override
             public JToolTip createToolTip() {
                 
-<span class="nc" id="L355">                JToolTipI18n tipI18n = new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip));</span>
-<span class="nc" id="L356">                refJToolTipI18n[0] = tipI18n;</span>
+<span class="nc" id="L341">                JToolTipI18n tipI18n = new JToolTipI18n(I18nViewUtil.valueByKey(keyTooltip));</span>
+<span class="nc" id="L342">                refJToolTipI18n[0] = tipI18n;</span>
                 
-<span class="nc" id="L358">                return tipI18n;</span>
+<span class="nc" id="L344">                return tipI18n;</span>
             }
         };
         
-<span class="fc" id="L362">        labelTab.setName(keyLabel);</span>
-<span class="fc" id="L363">        labelTab.addMouseListener(new MouseAdapter() {</span>
-            
+<span class="fc" id="L348">        labelTab.setName(keyLabel);</span>
+<span class="fc" id="L349">        labelTab.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent event) {
                 
                 // Fix #90428: IllegalArgumentException in setSelectedComponent()
                 // ArrayIndexOutOfBoundsException #92973 on setSelectedComponent()
                 try {
-<span class="fc" id="L371">                    PanelConsoles.this.tabConsoles.setSelectedComponent(manager);</span>
-                    
-<span class="nc" id="L373">                } catch (IllegalArgumentException e) {</span>
-                    
-<span class="nc" id="L375">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L376">                }</span>
+<span class="fc" id="L356">                    PanelConsoles.this.tabConsoles.setSelectedComponent(manager);</span>
+<span class="nc" id="L357">                } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L358">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L359">                }</span>
                 
-<span class="fc" id="L378">                super.mousePressed(event);</span>
-<span class="fc" id="L379">            }</span>
+<span class="fc" id="L361">                super.mousePressed(event);</span>
+<span class="fc" id="L362">            }</span>
         });
         
-<span class="fc" id="L382">        this.tabConsoles.insertTab(I18nViewUtil.valueByKey(keyLabel), icon, manager, null, position);</span>
-<span class="fc" id="L383">        this.tabConsoles.setTabComponentAt(</span>
-<span class="fc" id="L384">            this.tabConsoles.indexOfTab(I18nViewUtil.valueByKey(keyLabel)),</span>
+<span class="fc" id="L365">        this.tabConsoles.insertTab(I18nViewUtil.valueByKey(keyLabel), icon, manager, null, position);</span>
+<span class="fc" id="L366">        this.tabConsoles.setTabComponentAt(</span>
+<span class="fc" id="L367">            this.tabConsoles.indexOfTab(I18nViewUtil.valueByKey(keyLabel)),</span>
             labelTab
         );
         
-<span class="fc" id="L388">        I18nViewUtil.addComponentForKey(keyLabel, labelTab);</span>
-<span class="fc" id="L389">        I18nViewUtil.addComponentForKey(keyTooltip, refJToolTipI18n[0]);</span>
-<span class="fc" id="L390">        labelTab.setToolTipText(I18nViewUtil.valueByKey(keyTooltip));</span>
-<span class="fc" id="L391">    }</span>
+<span class="fc" id="L371">        I18nViewUtil.addComponentForKey(keyLabel, labelTab);</span>
+<span class="fc" id="L372">        I18nViewUtil.addComponentForKey(keyTooltip, refJToolTipI18n[0]);</span>
+<span class="fc" id="L373">        labelTab.setToolTipText(I18nViewUtil.valueByKey(keyTooltip));</span>
+<span class="fc" id="L374">    }</span>
     
     public void messageChunk(String text) {
-        
         try {
-<span class="nc" id="L396">            this.chunkTextArea.append(text +&quot;\n&quot;);</span>
-<span class="nc" id="L397">            this.chunkTextArea.setCaretPosition(this.chunkTextArea.getDocument().getLength());</span>
+<span class="nc" id="L378">            this.chunkTextArea.append(text +&quot;\n&quot;);</span>
+<span class="nc" id="L379">            this.chunkTextArea.setCaretPosition(this.chunkTextArea.getDocument().getLength());</span>
             
-<span class="nc" id="L399">        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
-            
+<span class="nc" id="L381">        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
             // Fix #67063: NullPointerException on chunkTab.append()
             // Fix #4770 on chunkTab.append()
-<span class="nc" id="L403">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
-<span class="nc" id="L404">        }</span>
-<span class="nc" id="L405">    }</span>
+<span class="nc" id="L384">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="nc" id="L385">        }</span>
+<span class="nc" id="L386">    }</span>
     
     public void messageBinary(String text) {
-        
         try {
-<span class="nc" id="L410">            this.binaryTextArea.append(</span>
-<span class="nc" id="L411">                String.format(&quot;\t%s&quot;, text)</span>
+<span class="nc" id="L390">            this.binaryTextArea.append(</span>
+<span class="nc" id="L391">                String.format(&quot;\t%s&quot;, text)</span>
             );
-<span class="nc" id="L413">            this.binaryTextArea.setCaretPosition(this.binaryTextArea.getDocument().getLength());</span>
+<span class="nc" id="L393">            this.binaryTextArea.setCaretPosition(this.binaryTextArea.getDocument().getLength());</span>
         
-<span class="nc" id="L415">        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
-            
-<span class="nc" id="L417">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
-<span class="nc" id="L418">        }</span>
-<span class="nc" id="L419">    }</span>
+<span class="nc" id="L395">        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L396">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="nc" id="L397">        }</span>
+<span class="nc" id="L398">    }</span>
     
     
     // Getter and setter
 
     public JTextArea getChunkTab() {
-<span class="fc" id="L425">        return this.chunkTextArea;</span>
+<span class="fc" id="L404">        return this.chunkTextArea;</span>
     }
 
     public JSplitPaneWithZeroSizeDivider getNetworkSplitPane() {
-<span class="fc" id="L429">        return this.networkSplitPane;</span>
+<span class="fc" id="L408">        return this.networkSplitPane;</span>
     }
 
     public JTextArea getBinaryTab() {
-<span class="fc" id="L433">        return this.binaryTextArea;</span>
+<span class="fc" id="L412">        return this.binaryTextArea;</span>
     }
 
     public int getDividerLocation() {
-<span class="fc" id="L437">        return this.location;</span>
+<span class="fc" id="L416">        return this.location;</span>
     }
 
     public void setDividerLocation(int location) {
-<span class="fc" id="L441">        this.location = location;</span>
-<span class="fc" id="L442">    }</span>
+<span class="fc" id="L420">        this.location = location;</span>
+<span class="fc" id="L421">    }</span>
 
     public BasicArrowButton getButtonShowNorth() {
-<span class="fc" id="L445">        return this.buttonShowNorth;</span>
+<span class="fc" id="L424">        return this.buttonShowNorth;</span>
     }
 
     public NetworkTable getNetworkTable() {
-<span class="fc" id="L449">        return this.networkTable;</span>
+<span class="fc" id="L428">        return this.networkTable;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

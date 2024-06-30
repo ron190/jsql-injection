@@ -11,7 +11,7 @@
 package com.jsql.model.bean.database;
 
 /**
- * Define a Column, e.g is sent to the view by the model after injection.
+ * Define a Column, e.g. is sent to the view by the model after injection.
  * Allow to traverse upward to its corresponding table
  */
 public class Column extends AbstractElementDatabase {

@@ -179,79 +179,71 @@ public abstract class AbstractNodeModel {
         String textReload;
         
 <span class="fc bfc" id="L181" title="All 2 branches covered.">        if (this instanceof NodeModelDatabase) {</span>
-            
-<span class="fc" id="L183">            textReload = I18nViewUtil.valueByKey(&quot;RELOAD_TABLES&quot;);</span>
-            
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">        } else if (this instanceof NodeModelTable) {</span>
-            
-<span class="fc" id="L187">            textReload = I18nViewUtil.valueByKey(&quot;RELOAD_COLUMNS&quot;);</span>
-            
+<span class="fc" id="L182">            textReload = I18nViewUtil.valueByKey(&quot;RELOAD_TABLES&quot;);</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">        } else if (this instanceof NodeModelTable) {</span>
+<span class="fc" id="L184">            textReload = I18nViewUtil.valueByKey(&quot;RELOAD_COLUMNS&quot;);</span>
         } else {
-            
-<span class="nc" id="L191">            textReload = &quot;?&quot;;</span>
+<span class="nc" id="L186">            textReload = &quot;?&quot;;</span>
         }
         
-<span class="fc" id="L194">        JMenuItem menuItemReload = new JMenuItemWithMargin(textReload);</span>
+<span class="fc" id="L189">        JMenuItem menuItemReload = new JMenuItemWithMargin(textReload);</span>
 
-<span class="pc bpc" id="L196" title="1 of 2 branches missed.">        menuItemReload.setEnabled(!this.isRunning);</span>
-<span class="pc" id="L197">        menuItemReload.addActionListener(actionEvent -&gt; AbstractNodeModel.this.runAction());</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">        menuItemReload.setEnabled(!this.isRunning);</span>
+<span class="pc" id="L192">        menuItemReload.addActionListener(actionEvent -&gt; AbstractNodeModel.this.runAction());</span>
         
-<span class="fc" id="L199">        JMenuItem menuItemRename = new JMenuItemWithMargin(I18nViewUtil.valueByKey(&quot;RENAME_NODE&quot;));</span>
+<span class="fc" id="L194">        JMenuItem menuItemRename = new JMenuItemWithMargin(I18nViewUtil.valueByKey(&quot;RENAME_NODE&quot;));</span>
         
-<span class="pc bpc" id="L201" title="1 of 2 branches missed.">        menuItemRename.setEnabled(!this.isRunning);</span>
-<span class="fc" id="L202">        menuItemRename.addActionListener(actionEvent -&gt; {</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">        menuItemRename.setEnabled(!this.isRunning);</span>
+<span class="fc" id="L197">        menuItemRename.addActionListener(actionEvent -&gt; {</span>
             
-<span class="nc" id="L204">            AbstractNodeModel nodeModel = (AbstractNodeModel) currentTableNode.getUserObject();</span>
-<span class="nc" id="L205">            nodeModel.setIsEdited(true);</span>
+<span class="nc" id="L199">            AbstractNodeModel nodeModel = (AbstractNodeModel) currentTableNode.getUserObject();</span>
+<span class="nc" id="L200">            nodeModel.setIsEdited(true);</span>
             
-<span class="nc" id="L207">            AbstractNodeModel.this.getPanel().getLabel().setVisible(false);</span>
-<span class="nc" id="L208">            AbstractNodeModel.this.getPanel().getEditable().setVisible(true);</span>
+<span class="nc" id="L202">            AbstractNodeModel.this.getPanel().getLabel().setVisible(false);</span>
+<span class="nc" id="L203">            AbstractNodeModel.this.getPanel().getEditable().setVisible(true);</span>
             
-<span class="nc" id="L210">            MediatorHelper.treeDatabase().setSelectionPath(path);</span>
-<span class="nc" id="L211">        });</span>
+<span class="nc" id="L205">            MediatorHelper.treeDatabase().setSelectionPath(path);</span>
+<span class="nc" id="L206">        });</span>
         
-<span class="fc" id="L213">        popupMenu.add(new JSeparator());</span>
-<span class="fc" id="L214">        popupMenu.add(menuItemRename);</span>
-<span class="fc" id="L215">        popupMenu.add(menuItemReload);</span>
-<span class="fc" id="L216">    }</span>
+<span class="fc" id="L208">        popupMenu.add(new JSeparator());</span>
+<span class="fc" id="L209">        popupMenu.add(menuItemRename);</span>
+<span class="fc" id="L210">        popupMenu.add(menuItemReload);</span>
+<span class="fc" id="L211">    }</span>
 
     private void initializeItemLoadPause(
         DefaultMutableTreeNode currentTableNode,
         JPopupMenuCustomExtract popupMenu,
         AbstractSuspendable suspendableTask
     ) {
-        
-<span class="fc" id="L224">        JMenuItem menuItemLoad = new JMenuItemWithMargin(</span>
-<span class="pc bpc" id="L225" title="1 of 2 branches missed.">            this.isRunning</span>
-<span class="nc" id="L226">            ? I18nViewUtil.valueByKey(&quot;THREAD_STOP&quot;)</span>
-<span class="fc" id="L227">            : I18nViewUtil.valueByKey(&quot;THREAD_LOAD&quot;),</span>
+<span class="fc" id="L218">        JMenuItem menuItemLoad = new JMenuItemWithMargin(</span>
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">            this.isRunning</span>
+<span class="nc" id="L220">            ? I18nViewUtil.valueByKey(&quot;THREAD_STOP&quot;)</span>
+<span class="fc" id="L221">            : I18nViewUtil.valueByKey(&quot;THREAD_LOAD&quot;),</span>
             'o'
         );
         
-<span class="pc bpc" id="L231" title="2 of 4 branches missed.">        if (!this.isContainingSelection &amp;&amp; !this.isRunning) {</span>
-            
-<span class="fc" id="L233">            menuItemLoad.setEnabled(false);</span>
+<span class="pc bpc" id="L225" title="2 of 4 branches missed.">        if (!this.isContainingSelection &amp;&amp; !this.isRunning) {</span>
+<span class="fc" id="L226">            menuItemLoad.setEnabled(false);</span>
         }
         
-<span class="fc" id="L236">        menuItemLoad.addActionListener(new ActionLoadStop(this, currentTableNode));</span>
+<span class="fc" id="L229">        menuItemLoad.addActionListener(new ActionLoadStop(this, currentTableNode));</span>
 
-<span class="fc" id="L238">        JMenuItem menuItemPause = new JMenuItemWithMargin(</span>
+<span class="fc" id="L231">        JMenuItem menuItemPause = new JMenuItemWithMargin(</span>
             // Report #133: ignore if thread not found
-<span class="pc bpc" id="L240" title="3 of 4 branches missed.">            suspendableTask != null &amp;&amp; suspendableTask.isPaused()</span>
-<span class="nc" id="L241">            ? I18nViewUtil.valueByKey(&quot;THREAD_RESUME&quot;)</span>
-<span class="fc" id="L242">            : I18nViewUtil.valueByKey(&quot;THREAD_PAUSE&quot;),</span>
+<span class="pc bpc" id="L233" title="3 of 4 branches missed.">            suspendableTask != null &amp;&amp; suspendableTask.isPaused()</span>
+<span class="nc" id="L234">            ? I18nViewUtil.valueByKey(&quot;THREAD_RESUME&quot;)</span>
+<span class="fc" id="L235">            : I18nViewUtil.valueByKey(&quot;THREAD_PAUSE&quot;),</span>
             's'
         );
 
-<span class="pc bpc" id="L246" title="1 of 2 branches missed.">        if (!this.isRunning) {</span>
-            
-<span class="fc" id="L248">            menuItemPause.setEnabled(false);</span>
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">        if (!this.isRunning) {</span>
+<span class="fc" id="L240">            menuItemPause.setEnabled(false);</span>
         }
-<span class="fc" id="L250">        menuItemPause.addActionListener(new ActionPauseUnpause(this));</span>
+<span class="fc" id="L242">        menuItemPause.addActionListener(new ActionPauseUnpause(this));</span>
         
-<span class="fc" id="L252">        popupMenu.add(menuItemLoad);</span>
-<span class="fc" id="L253">        popupMenu.add(menuItemPause);</span>
-<span class="fc" id="L254">    }</span>
+<span class="fc" id="L244">        popupMenu.add(menuItemLoad);</span>
+<span class="fc" id="L245">        popupMenu.add(menuItemPause);</span>
+<span class="fc" id="L246">    }</span>
     
     /**
      * Draw the panel component based on node model.
@@ -269,103 +261,95 @@ public abstract class AbstractNodeModel {
         boolean isLeaf,
         boolean hasFocus
     ) {
-        
-<span class="fc" id="L273">        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;</span>
-<span class="fc" id="L274">        this.panelNode = new PanelNode(tree, currentNode);</span>
+<span class="fc" id="L264">        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;</span>
+<span class="fc" id="L265">        this.panelNode = new PanelNode(tree, currentNode);</span>
 
-<span class="fc" id="L276">        this.initializeIcon(isLeaf);</span>
+<span class="fc" id="L267">        this.initializeIcon(isLeaf);</span>
         
-<span class="fc" id="L278">        AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();</span>
+<span class="fc" id="L269">        AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();</span>
         
-<span class="fc" id="L280">        this.initializeEditable(nodeModel.isEdited);</span>
-<span class="fc" id="L281">        this.initializeLabel(isSelected, hasFocus, nodeModel.isEdited);</span>
-<span class="fc" id="L282">        this.initializeProgress(currentNode);</span>
+<span class="fc" id="L271">        this.initializeEditable(nodeModel.isEdited);</span>
+<span class="fc" id="L272">        this.initializeLabel(isSelected, hasFocus, nodeModel.isEdited);</span>
+<span class="fc" id="L273">        this.initializeProgress(currentNode);</span>
         
-<span class="fc" id="L284">        return this.panelNode;</span>
+<span class="fc" id="L275">        return this.panelNode;</span>
     }
 
     private void initializeIcon(boolean isLeaf) {
         
-<span class="fc" id="L289">        this.panelNode.showIcon();</span>
-<span class="fc" id="L290">        this.panelNode.setIcon(this.getLeafIcon(isLeaf));</span>
-<span class="fc" id="L291">    }</span>
+<span class="fc" id="L280">        this.panelNode.showIcon();</span>
+<span class="fc" id="L281">        this.panelNode.setIcon(this.getLeafIcon(isLeaf));</span>
+<span class="fc" id="L282">    }</span>
 
     private void initializeProgress(DefaultMutableTreeNode currentNode) {
         
-<span class="pc bpc" id="L295" title="1 of 2 branches missed.">        if (this.isLoading) {</span>
+<span class="pc bpc" id="L286" title="1 of 2 branches missed.">        if (this.isLoading) {</span>
             
-<span class="nc" id="L297">            this.displayProgress(this.panelNode, currentNode);</span>
-<span class="nc" id="L298">            this.panelNode.hideIcon();</span>
+<span class="nc" id="L288">            this.displayProgress(this.panelNode, currentNode);</span>
+<span class="nc" id="L289">            this.panelNode.hideIcon();</span>
             
-<span class="pc bpc" id="L300" title="1 of 2 branches missed.">        } else if (this.isProgressing) {</span>
+<span class="pc bpc" id="L291" title="1 of 2 branches missed.">        } else if (this.isProgressing) {</span>
             
-<span class="nc" id="L302">            this.panelNode.showLoader();</span>
-<span class="nc" id="L303">            this.panelNode.hideIcon();</span>
+<span class="nc" id="L293">            this.panelNode.showLoader();</span>
+<span class="nc" id="L294">            this.panelNode.hideIcon();</span>
 
-<span class="nc" id="L305">            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);</span>
-<span class="nc bnc" id="L306" title="All 4 branches missed.">            if (suspendableTask != null &amp;&amp; suspendableTask.isPaused()) {</span>
+<span class="nc" id="L296">            AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);</span>
+<span class="nc bnc" id="L297" title="All 4 branches missed.">            if (suspendableTask != null &amp;&amp; suspendableTask.isPaused()) {</span>
                 
-<span class="nc" id="L308">                ImageIcon animatedGIFPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);</span>
+<span class="nc" id="L299">                ImageIcon animatedGIFPaused = new ImageOverlap(UiUtil.PATH_PROGRESSBAR, UiUtil.PATH_PAUSE);</span>
                 
-<span class="nc" id="L310">                animatedGIFPaused.setImageObserver(</span>
+<span class="nc" id="L301">                animatedGIFPaused.setImageObserver(</span>
                     new ImageObserverAnimated(
-<span class="nc" id="L312">                        MediatorHelper.treeDatabase(),</span>
+<span class="nc" id="L303">                        MediatorHelper.treeDatabase(),</span>
                         currentNode
                     )
                 );
                 
-<span class="nc" id="L317">                this.panelNode.setLoaderIcon(animatedGIFPaused);</span>
+<span class="nc" id="L308">                this.panelNode.setLoaderIcon(animatedGIFPaused);</span>
             }
         }
-<span class="fc" id="L320">    }</span>
+<span class="fc" id="L311">    }</span>
 
     private void initializeLabel(final boolean isSelected, boolean hasFocus, boolean isEdited) {
         
         // Fix #90521: NullPointerException on setText()
         try {
-<span class="fc" id="L326">            this.panelNode.getLabel().setText(UiStringUtil.detectUtf8Html(this.toString()));</span>
-            
-<span class="nc" id="L328">        } catch (NullPointerException e) {</span>
-            
-<span class="nc" id="L330">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L331">        }</span>
+<span class="fc" id="L317">            this.panelNode.getLabel().setText(UiStringUtil.detectUtf8Html(this.toString()));</span>
+<span class="nc" id="L318">        } catch (NullPointerException e) {</span>
+<span class="nc" id="L319">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L320">        }</span>
         
-<span class="pc bpc" id="L333" title="1 of 2 branches missed.">        this.panelNode.getLabel().setVisible(!isEdited);</span>
+<span class="pc bpc" id="L322" title="1 of 2 branches missed.">        this.panelNode.getLabel().setVisible(!isEdited);</span>
 
-<span class="pc bpc" id="L335" title="1 of 2 branches missed.">        if (isSelected) {</span>
-            
-<span class="nc bnc" id="L337" title="All 2 branches missed.">            if (hasFocus) {</span>
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">        if (isSelected) {</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">            if (hasFocus) {</span>
                 
-<span class="nc" id="L339">                this.panelNode.getLabel().setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
-<span class="nc" id="L340">                this.panelNode.getLabel().setBorder(UiUtil.BORDER_FOCUS_GAINED);</span>
+<span class="nc" id="L327">                this.panelNode.getLabel().setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="nc" id="L328">                this.panelNode.getLabel().setBorder(UiUtil.BORDER_FOCUS_GAINED);</span>
                 
             } else {
                 
-<span class="nc" id="L344">                this.panelNode.getLabel().setBackground(UiUtil.COLOR_FOCUS_LOST);</span>
-<span class="nc" id="L345">                this.panelNode.getLabel().setBorder(UiUtil.BORDER_FOCUS_LOST);</span>
+<span class="nc" id="L332">                this.panelNode.getLabel().setBackground(UiUtil.COLOR_FOCUS_LOST);</span>
+<span class="nc" id="L333">                this.panelNode.getLabel().setBorder(UiUtil.BORDER_FOCUS_LOST);</span>
             }
-            
         } else {
             
-<span class="fc" id="L350">            this.panelNode.getLabel().setBackground(Color.WHITE);</span>
-<span class="fc" id="L351">            this.panelNode.getLabel().setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
+<span class="fc" id="L337">            this.panelNode.getLabel().setBackground(Color.WHITE);</span>
+<span class="fc" id="L338">            this.panelNode.getLabel().setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
         }
-<span class="fc" id="L353">    }</span>
+<span class="fc" id="L340">    }</span>
 
     private void initializeEditable(boolean isEdited) {
         
-<span class="pc bpc" id="L357" title="1 of 2 branches missed.">        if (StringUtil.isUtf8(this.getElementDatabase().toString())) {</span>
-            
-<span class="nc" id="L359">            this.panelNode.getEditable().setFont(UiUtil.FONT_MONO_ASIAN);</span>
-            
+<span class="pc bpc" id="L344" title="1 of 2 branches missed.">        if (StringUtil.isUtf8(this.getElementDatabase().toString())) {</span>
+<span class="nc" id="L345">            this.panelNode.getEditable().setFont(UiUtil.FONT_MONO_ASIAN);</span>
         } else {
-            
-<span class="fc" id="L363">            this.panelNode.getEditable().setFont(UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L347">            this.panelNode.getEditable().setFont(UiUtil.FONT_NON_MONO);</span>
         }
         
-<span class="fc" id="L366">        this.panelNode.getEditable().setText(StringUtil.detectUtf8(this.getElementDatabase().toString()));</span>
-<span class="fc" id="L367">        this.panelNode.getEditable().setVisible(isEdited);</span>
-<span class="fc" id="L368">    }</span>
+<span class="fc" id="L350">        this.panelNode.getEditable().setText(StringUtil.detectUtf8(this.getElementDatabase().toString()));</span>
+<span class="fc" id="L351">        this.panelNode.getEditable().setVisible(isEdited);</span>
+<span class="fc" id="L352">    }</span>
     
     /**
      * Update progressbar ; display the pause icon if node is paused.
@@ -374,24 +358,22 @@ public abstract class AbstractNodeModel {
      */
     protected void displayProgress(PanelNode panelNode, DefaultMutableTreeNode currentNode) {
         
-<span class="nc" id="L377">        int dataCount = this.elementDatabase.getChildCount();</span>
-<span class="nc" id="L378">        panelNode.getProgressBar().setMaximum(dataCount);</span>
-<span class="nc" id="L379">        panelNode.getProgressBar().setValue(this.indexProgress);</span>
-<span class="nc" id="L380">        panelNode.getProgressBar().setVisible(true);</span>
+<span class="nc" id="L361">        int dataCount = this.elementDatabase.getChildCount();</span>
+<span class="nc" id="L362">        panelNode.getProgressBar().setMaximum(dataCount);</span>
+<span class="nc" id="L363">        panelNode.getProgressBar().setValue(this.indexProgress);</span>
+<span class="nc" id="L364">        panelNode.getProgressBar().setVisible(true);</span>
         
         // Report #135: ignore if thread not found
-<span class="nc" id="L383">        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);</span>
+<span class="nc" id="L367">        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);</span>
         
-<span class="nc bnc" id="L385" title="All 4 branches missed.">        if (suspendableTask != null &amp;&amp; suspendableTask.isPaused()) {</span>
-            
-<span class="nc" id="L387">            panelNode.getProgressBar().pause();</span>
+<span class="nc bnc" id="L369" title="All 4 branches missed.">        if (suspendableTask != null &amp;&amp; suspendableTask.isPaused()) {</span>
+<span class="nc" id="L370">            panelNode.getProgressBar().pause();</span>
         }
-<span class="nc" id="L389">    }</span>
+<span class="nc" id="L372">    }</span>
     
     @Override
     public String toString() {
-        
-<span class="fc bfc" id="L394" title="All 2 branches covered.">        return this.elementDatabase != null ? this.elementDatabase.getLabelCount() : this.textEmptyNode;</span>
+<span class="fc bfc" id="L376" title="All 2 branches covered.">        return this.elementDatabase != null ? this.elementDatabase.getLabelCount() : this.textEmptyNode;</span>
     }
     
     
@@ -402,79 +384,79 @@ public abstract class AbstractNodeModel {
      * @return Parent
      */
     protected AbstractElementDatabase getParent() {
-<span class="nc" id="L405">        return this.elementDatabase.getParent();</span>
+<span class="nc" id="L387">        return this.elementDatabase.getParent();</span>
     }
 
     public AbstractElementDatabase getElementDatabase() {
-<span class="fc" id="L409">        return this.elementDatabase;</span>
+<span class="fc" id="L391">        return this.elementDatabase;</span>
     }
 
     public int getIndexProgress() {
-<span class="nc" id="L413">        return this.indexProgress;</span>
+<span class="nc" id="L395">        return this.indexProgress;</span>
     }
 
     public void setIndexProgress(int indexProgress) {
-<span class="fc" id="L417">        this.indexProgress = indexProgress;</span>
-<span class="fc" id="L418">    }</span>
+<span class="fc" id="L399">        this.indexProgress = indexProgress;</span>
+<span class="fc" id="L400">    }</span>
 
     public boolean isSelected() {
-<span class="fc" id="L421">        return this.isSelected;</span>
+<span class="fc" id="L403">        return this.isSelected;</span>
     }
 
     public void setSelected(boolean isSelected) {
-<span class="nc" id="L425">        this.isSelected = isSelected;</span>
-<span class="nc" id="L426">    }</span>
+<span class="nc" id="L407">        this.isSelected = isSelected;</span>
+<span class="nc" id="L408">    }</span>
 
     public boolean isRunning() {
-<span class="nc" id="L429">        return this.isRunning;</span>
+<span class="nc" id="L411">        return this.isRunning;</span>
     }
 
     public void setRunning(boolean isRunning) {
-<span class="fc" id="L433">        this.isRunning = isRunning;</span>
-<span class="fc" id="L434">    }</span>
+<span class="fc" id="L415">        this.isRunning = isRunning;</span>
+<span class="fc" id="L416">    }</span>
 
     public boolean isContainingSelection() {
-<span class="nc" id="L437">        return this.isContainingSelection;</span>
+<span class="nc" id="L419">        return this.isContainingSelection;</span>
     }
 
     public void setContainingSelection(boolean isContainingSelection) {
-<span class="nc" id="L441">        this.isContainingSelection = isContainingSelection;</span>
-<span class="nc" id="L442">    }</span>
+<span class="nc" id="L423">        this.isContainingSelection = isContainingSelection;</span>
+<span class="nc" id="L424">    }</span>
 
     public boolean isLoaded() {
-<span class="fc" id="L445">        return this.isLoaded;</span>
+<span class="fc" id="L427">        return this.isLoaded;</span>
     }
 
     public void setLoaded(boolean isLoaded) {
-<span class="fc" id="L449">        this.isLoaded = isLoaded;</span>
-<span class="fc" id="L450">    }</span>
+<span class="fc" id="L431">        this.isLoaded = isLoaded;</span>
+<span class="fc" id="L432">    }</span>
 
     public boolean isProgressing() {
-<span class="nc" id="L453">        return this.isProgressing;</span>
+<span class="nc" id="L435">        return this.isProgressing;</span>
     }
 
     public void setProgressing(boolean isProgressing) {
-<span class="nc" id="L457">        this.isProgressing = isProgressing;</span>
-<span class="nc" id="L458">    }</span>
+<span class="nc" id="L439">        this.isProgressing = isProgressing;</span>
+<span class="nc" id="L440">    }</span>
 
     public boolean isLoading() {
-<span class="nc" id="L461">        return this.isLoading;</span>
+<span class="nc" id="L443">        return this.isLoading;</span>
     }
 
     public void setLoading(boolean isLoading) {
-<span class="nc" id="L465">        this.isLoading = isLoading;</span>
-<span class="nc" id="L466">    }</span>
+<span class="nc" id="L447">        this.isLoading = isLoading;</span>
+<span class="nc" id="L448">    }</span>
 
     public PanelNode getPanel() {
-<span class="nc" id="L469">        return this.panelNode;</span>
+<span class="nc" id="L451">        return this.panelNode;</span>
     }
 
     public void setIsEdited(boolean isEdited) {
-<span class="nc" id="L473">        this.isEdited = isEdited;</span>
-<span class="nc" id="L474">    }</span>
+<span class="nc" id="L455">        this.isEdited = isEdited;</span>
+<span class="nc" id="L456">    }</span>
     
     public void setText(String textI18n) {
-<span class="fc" id="L477">        this.textEmptyNode = textI18n;</span>
-<span class="fc" id="L478">    }</span>
+<span class="fc" id="L459">        this.textEmptyNode = textI18n;</span>
+<span class="fc" id="L460">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

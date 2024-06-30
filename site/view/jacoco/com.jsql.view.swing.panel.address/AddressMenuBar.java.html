@@ -200,185 +200,163 @@ public class AddressMenuBar extends JMenuBar {
 <span class="fc" id="L200">                itemRadioVendor.addActionListener(actionEvent -&gt; {</span>
                     
 <span class="fc" id="L202">                    this.menuStrategy.setText(methodError.getName());</span>
-                    
-<span class="fc" id="L204">                    MediatorHelper.model().getMediatorStrategy().setStrategy(MediatorHelper.model().getMediatorStrategy().getError());</span>
-                    
-<span class="fc" id="L206">                    MediatorHelper.model().getMediatorStrategy().getError().setIndexErrorStrategy(indexErrorFinal);</span>
-<span class="fc" id="L207">                });</span>
+<span class="fc" id="L203">                    MediatorHelper.model().getMediatorStrategy().setStrategy(MediatorHelper.model().getMediatorStrategy().getError());</span>
+<span class="fc" id="L204">                    MediatorHelper.model().getMediatorStrategy().getError().setIndexErrorStrategy(indexErrorFinal);</span>
+<span class="fc" id="L205">                });</span>
 
-<span class="fc" id="L209">                indexError++;</span>
-<span class="fc" id="L210">            }</span>
+<span class="fc" id="L207">                indexError++;</span>
+<span class="fc" id="L208">            }</span>
         }
-<span class="fc" id="L212">    }</span>
+<span class="fc" id="L210">    }</span>
     
     public void reset() {
         
-<span class="pc bpc" id="L216" title="1 of 2 branches missed.">        if (MediatorHelper.model().getMediatorVendor().getVendorByUser() == MediatorHelper.model().getMediatorVendor().getAuto()) {</span>
-            
-<span class="fc" id="L218">            this.menuVendor.setText(MediatorHelper.model().getMediatorVendor().getAuto().toString());</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">        if (MediatorHelper.model().getMediatorVendor().getVendorByUser() == MediatorHelper.model().getMediatorVendor().getAuto()) {</span>
+<span class="fc" id="L215">            this.menuVendor.setText(MediatorHelper.model().getMediatorVendor().getAuto().toString());</span>
         }
         
-<span class="fc" id="L221">        this.menuStrategy.setText(&quot;Strategy auto&quot;);</span>
+<span class="fc" id="L218">        this.menuStrategy.setText(&quot;Strategy auto&quot;);</span>
         
-<span class="fc bfc" id="L223" title="All 2 branches covered.">        for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
-            
-<span class="fc" id="L225">            this.menuStrategy.getItem(i).setEnabled(false);</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
+<span class="fc" id="L221">            this.menuStrategy.getItem(i).setEnabled(false);</span>
         }
         
-<span class="fc" id="L228">        this.getMenuError().removeAll();</span>
-<span class="fc" id="L229">        this.groupStrategy.clearSelection();</span>
-<span class="fc" id="L230">    }</span>
+<span class="fc" id="L224">        this.getMenuError().removeAll();</span>
+<span class="fc" id="L225">        this.groupStrategy.clearSelection();</span>
+<span class="fc" id="L226">    }</span>
     
     public void setVendor(Vendor vendor) {
         
-<span class="fc" id="L234">        this.menuVendor.setText(vendor.toString());</span>
-        
-<span class="fc" id="L236">        this.initErrorMethods(vendor);</span>
-<span class="fc" id="L237">    }</span>
+<span class="fc" id="L230">        this.menuVendor.setText(vendor.toString());</span>
+<span class="fc" id="L231">        this.initErrorMethods(vendor);</span>
+<span class="fc" id="L232">    }</span>
     
     public void resetLabelStrategy() {
-        
-<span class="nc bnc" id="L241" title="All 2 branches missed.">        for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">        for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
             
-<span class="nc" id="L243">            this.menuStrategy.getItem(i).setEnabled(false);</span>
-<span class="nc" id="L244">            this.menuStrategy.getItem(i).setSelected(false);</span>
+<span class="nc" id="L237">            this.menuStrategy.getItem(i).setEnabled(false);</span>
+<span class="nc" id="L238">            this.menuStrategy.getItem(i).setSelected(false);</span>
         }
-<span class="nc" id="L246">    }</span>
+<span class="nc" id="L240">    }</span>
     
     public void markStrategy(AbstractStrategy strategy) {
         
-<span class="nc" id="L250">        this.menuStrategy.setText(strategy.toString());</span>
+<span class="nc" id="L244">        this.menuStrategy.setText(strategy.toString());</span>
         
-<span class="nc bnc" id="L252" title="All 2 branches missed.">        for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
-            
-<span class="nc bnc" id="L254" title="All 2 branches missed.">            if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">        for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">            if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {</span>
                 
-<span class="nc" id="L256">                this.menuStrategy.getItem(i).setSelected(true);</span>
-                
-<span class="nc" id="L258">                break;</span>
+<span class="nc" id="L249">                this.menuStrategy.getItem(i).setSelected(true);</span>
+<span class="nc" id="L250">                break;</span>
             }
         }
-<span class="nc" id="L261">    }</span>
+<span class="nc" id="L253">    }</span>
     
     public void markStrategyInvulnerable(AbstractStrategy strategy) {
-        
-<span class="nc bnc" id="L265" title="All 2 branches missed.">        for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
-            
-<span class="nc bnc" id="L267" title="All 2 branches missed.">            if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">        for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">            if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {</span>
                 
-<span class="nc" id="L269">                this.menuStrategy.getItem(i).setEnabled(false);</span>
-                
-<span class="nc" id="L271">                break;</span>
+<span class="nc" id="L259">                this.menuStrategy.getItem(i).setEnabled(false);</span>
+<span class="nc" id="L260">                break;</span>
             }
         }
-<span class="nc" id="L274">    }</span>
+<span class="nc" id="L263">    }</span>
     
     public void markErrorInvulnerable(int indexMethodError) {
         
-<span class="nc" id="L278">        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();</span>
+<span class="nc" id="L267">        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();</span>
         
         // Fix #36975: ArrayIndexOutOfBoundsException on getItem()
         // Fix #40352: NullPointerException on ?
         try {
-<span class="nc bnc" id="L283" title="All 2 branches missed.">            for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
-                
-<span class="nc bnc" id="L285" title="All 2 branches missed.">                if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {</span>
-                    
-<span class="nc" id="L287">                    ((JMenu) this.menuStrategy.getItem(i)).getItem(indexMethodError).setEnabled(false);</span>
-                    
-<span class="nc" id="L289">                    break;</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">            for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">                if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {</span>
+
+<span class="nc" id="L275">                    ((JMenu) this.menuStrategy.getItem(i)).getItem(indexMethodError).setEnabled(false);</span>
+<span class="nc" id="L276">                    break;</span>
                 }
             }
-            
-<span class="nc" id="L293">        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {</span>
-            
-<span class="nc" id="L295">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L296">        }</span>
-<span class="nc" id="L297">    }</span>
+<span class="nc" id="L279">        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {</span>
+<span class="nc" id="L280">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L281">        }</span>
+<span class="nc" id="L282">    }</span>
     
     public void markError() {
 
-<span class="nc" id="L301">        StrategyInjectionError strategy = MediatorHelper.model().getMediatorStrategy().getError();</span>
-<span class="nc" id="L302">        this.menuStrategy.setText(strategy.toString());</span>
+<span class="nc" id="L286">        StrategyInjectionError strategy = MediatorHelper.model().getMediatorStrategy().getError();</span>
+<span class="nc" id="L287">        this.menuStrategy.setText(strategy.toString());</span>
         
-<span class="nc" id="L304">        JMenu menuError = this.getMenuError();</span>
+<span class="nc" id="L289">        JMenu menuError = this.getMenuError();</span>
         
-<span class="nc" id="L306">        int indexError = strategy.getIndexErrorStrategy();</span>
-<span class="nc" id="L307">        String nameError = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();</span>
+<span class="nc" id="L291">        int indexError = strategy.getIndexErrorStrategy();</span>
+<span class="nc" id="L292">        String nameError = MediatorHelper.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();</span>
         
-<span class="nc bnc" id="L309" title="All 2 branches missed.">        for (var i = 0 ; i &lt; menuError.getItemCount() ; i++) {</span>
-            
+<span class="nc bnc" id="L294" title="All 2 branches missed.">        for (var i = 0 ; i &lt; menuError.getItemCount() ; i++) {</span>
             // Fix #44635: ArrayIndexOutOfBoundsException on getItem()
             try {
-<span class="nc bnc" id="L313" title="All 2 branches missed.">                if (menuError.getItem(i).getText().equals(nameError)) {</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">                if (menuError.getItem(i).getText().equals(nameError)) {</span>
                     
-<span class="nc" id="L315">                    menuError.getItem(i).setSelected(true);</span>
-<span class="nc" id="L316">                    this.menuStrategy.setText(nameError);</span>
+<span class="nc" id="L299">                    menuError.getItem(i).setSelected(true);</span>
+<span class="nc" id="L300">                    this.menuStrategy.setText(nameError);</span>
                     
-<span class="nc" id="L318">                    break;</span>
+<span class="nc" id="L302">                    break;</span>
                 }
-                
-<span class="nc" id="L321">            } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
-                
-<span class="nc" id="L323">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L324">            }</span>
+<span class="nc" id="L304">            } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L305">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L306">            }</span>
         }
-<span class="nc" id="L326">    }</span>
+<span class="nc" id="L308">    }</span>
 
     private JMenu getMenuError() {
         
-<span class="fc" id="L330">        return (JMenu) Arrays.stream(this.menuStrategy.getMenuComponents())</span>
-<span class="fc" id="L331">            .filter(c -&gt; ((JMenuItem) c).getText().equalsIgnoreCase(MediatorHelper.model().getMediatorStrategy().getError().getName()))</span>
-<span class="fc" id="L332">            .findFirst()</span>
-<span class="fc" id="L333">            .orElse(new JMenuItem(&quot;Mock&quot;));</span>
+<span class="fc" id="L312">        return (JMenu) Arrays.stream(this.menuStrategy.getMenuComponents())</span>
+<span class="fc" id="L313">            .filter(c -&gt; ((JMenuItem) c).getText().equalsIgnoreCase(MediatorHelper.model().getMediatorStrategy().getError().getName()))</span>
+<span class="fc" id="L314">            .findFirst()</span>
+<span class="fc" id="L315">            .orElse(new JMenuItem(&quot;Mock&quot;));</span>
     }
     
     public void markErrorVulnerable(int indexMethodError) {
         
-<span class="fc" id="L338">        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();</span>
+<span class="fc" id="L320">        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getError();</span>
         
-<span class="pc bpc" id="L340" title="1 of 2 branches missed.">        for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
+<span class="pc bpc" id="L322" title="1 of 2 branches missed.">        for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
             
-<span class="fc" id="L342">            JMenuItem menuItemStrategy = this.menuStrategy.getItem(i);</span>
+<span class="fc" id="L324">            JMenuItem menuItemStrategy = this.menuStrategy.getItem(i);</span>
             
-<span class="fc bfc" id="L344" title="All 2 branches covered.">            if (menuItemStrategy.getText().equals(strategy.toString())) {</span>
+<span class="fc bfc" id="L326" title="All 2 branches covered.">            if (menuItemStrategy.getText().equals(strategy.toString())) {</span>
                 
-<span class="fc" id="L346">                JMenu menuError = (JMenu) menuItemStrategy;</span>
-<span class="fc" id="L347">                menuError.setEnabled(true);</span>
+<span class="fc" id="L328">                JMenu menuError = (JMenu) menuItemStrategy;</span>
+<span class="fc" id="L329">                menuError.setEnabled(true);</span>
                 
                 // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
-<span class="pc bpc" id="L350" title="2 of 4 branches missed.">                if (0 &lt;= indexMethodError &amp;&amp; indexMethodError &lt; menuError.getItemCount()) {</span>
-                    
-<span class="fc" id="L352">                    menuError.getItem(indexMethodError).setEnabled(true);</span>
+<span class="pc bpc" id="L332" title="2 of 4 branches missed.">                if (0 &lt;= indexMethodError &amp;&amp; indexMethodError &lt; menuError.getItemCount()) {</span>
+<span class="fc" id="L333">                    menuError.getItem(indexMethodError).setEnabled(true);</span>
                 }
                 
                 break;
             }
         }
-<span class="fc" id="L358">    }</span>
+<span class="fc" id="L339">    }</span>
     
     public void markStrategyVulnerable(AbstractStrategy strategy) {
-        
-<span class="nc bnc" id="L362" title="All 2 branches missed.">        for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
-            
-<span class="nc bnc" id="L364" title="All 2 branches missed.">            if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">        for (var i = 0 ; i &lt; this.menuStrategy.getItemCount() ; i++) {</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">            if (this.menuStrategy.getItem(i).getText().equals(strategy.toString())) {</span>
                 
-<span class="nc" id="L366">                this.menuStrategy.getItem(i).setEnabled(true);</span>
-                
-<span class="nc" id="L368">                break;</span>
+<span class="nc" id="L345">                this.menuStrategy.getItem(i).setEnabled(true);</span>
+<span class="nc" id="L346">                break;</span>
             }
         }
-<span class="nc" id="L371">    }</span>
+<span class="nc" id="L349">    }</span>
     
     
     // Getter and setter
 
     public JLabel getLoader() {
-<span class="fc" id="L377">        return this.loader;</span>
+<span class="fc" id="L355">        return this.loader;</span>
     }
 
     public ButtonAddressBar getButtonInUrl() {
-<span class="fc" id="L381">        return this.buttonInUrl;</span>
+<span class="fc" id="L359">        return this.buttonInUrl;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

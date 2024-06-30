@@ -30,52 +30,48 @@ import java.util.Map;
 <span class="nc bnc" id="L30" title="All 4 branches missed.">        if (radio.isActivable() &amp;&amp; SwingUtilities.isLeftMouseButton(e)) {</span>
             
 <span class="nc bnc" id="L32" title="All 2 branches missed.">            for (JLabel label: radio.getGroup()) {</span>
-                
-<span class="nc bnc" id="L34" title="All 2 branches missed.">                if (e.getComponent() != label) {</span>
-                    
-<span class="nc" id="L36">                    label.setFont(UiUtil.FONT_NON_MONO);</span>
-                    
+<span class="nc bnc" id="L33" title="All 2 branches missed.">                if (e.getComponent() != label) {</span>
+<span class="nc" id="L34">                    label.setFont(UiUtil.FONT_NON_MONO);</span>
                 } else {
-                    
-<span class="nc" id="L40">                    radio.action();</span>
+<span class="nc" id="L36">                    radio.action();</span>
                 }
-<span class="nc" id="L42">            }</span>
+<span class="nc" id="L38">            }</span>
 
-<span class="nc" id="L44">            radio.setUnderlined();</span>
+<span class="nc" id="L40">            radio.setUnderlined();</span>
 
-<span class="nc" id="L46">            this.original = e.getComponent().getFont();</span>
-<span class="nc" id="L47">            radio.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));</span>
+<span class="nc" id="L42">            this.original = e.getComponent().getFont();</span>
+<span class="nc" id="L43">            radio.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));</span>
         }
-<span class="nc" id="L49">    }</span>
+<span class="nc" id="L45">    }</span>
 
     @Override
     public void mouseEntered(MouseEvent e) {
         
-<span class="nc" id="L54">        super.mouseEntered(e);</span>
+<span class="nc" id="L50">        super.mouseEntered(e);</span>
         
-<span class="nc" id="L56">        AbstractRadioLink radio = (AbstractRadioLink) e.getComponent();</span>
+<span class="nc" id="L52">        AbstractRadioLink radio = (AbstractRadioLink) e.getComponent();</span>
         
-<span class="nc" id="L58">        this.original = e.getComponent().getFont();</span>
+<span class="nc" id="L54">        this.original = e.getComponent().getFont();</span>
 
-<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (radio.isActivable()) {</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (radio.isActivable()) {</span>
             
-<span class="nc" id="L62">            var font = radio.getFont();</span>
-<span class="nc" id="L63">            Map&lt;TextAttribute, Object&gt; attributes = new HashMap&lt;&gt;(font.getAttributes());</span>
-<span class="nc" id="L64">            attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);</span>
-<span class="nc" id="L65">            radio.setFont(font.deriveFont(attributes));</span>
-<span class="nc" id="L66">            radio.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));</span>
+<span class="nc" id="L58">            var font = radio.getFont();</span>
+<span class="nc" id="L59">            Map&lt;TextAttribute, Object&gt; attributes = new HashMap&lt;&gt;(font.getAttributes());</span>
+<span class="nc" id="L60">            attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);</span>
+<span class="nc" id="L61">            radio.setFont(font.deriveFont(attributes));</span>
+<span class="nc" id="L62">            radio.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));</span>
         }
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L64">    }</span>
 
     @Override
     public void mouseExited(MouseEvent e) {
         
-<span class="nc" id="L73">        super.mouseExited(e);</span>
+<span class="nc" id="L69">        super.mouseExited(e);</span>
         
-<span class="nc" id="L75">        AbstractRadioLink radio = (AbstractRadioLink) e.getComponent();</span>
+<span class="nc" id="L71">        AbstractRadioLink radio = (AbstractRadioLink) e.getComponent();</span>
         
-<span class="nc" id="L77">        radio.setFont(this.original);</span>
-<span class="nc" id="L78">        radio.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));</span>
-<span class="nc" id="L79">    }</span>
+<span class="nc" id="L73">        radio.setFont(this.original);</span>
+<span class="nc" id="L74">        radio.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));</span>
+<span class="nc" id="L75">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -33,16 +33,14 @@ public class CreateValuesTab implements InteractionCommand {
      * @param interactionParams Names of columns, table's values and corresponding table
      */
 <span class="fc" id="L35">    public CreateValuesTab(Object[] interactionParams) {</span>
-        
-        // 2D array of values
-<span class="fc" id="L38">        this.data = (String[][]) interactionParams[1];</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L36">        this.data = (String[][]) interactionParams[1];  // 2D array of values</span>
+<span class="fc" id="L37">    }</span>
 
     @Override
     public void execute() {
         
-<span class="pc" id="L44">        LOGGER.debug(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
-<span class="pc" id="L45">        LOGGER.debug(() -&gt; Arrays.deepToString(this.data));</span>
-<span class="fc" id="L46">    }</span>
+<span class="pc" id="L42">        LOGGER.debug(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
+<span class="pc" id="L43">        LOGGER.debug(() -&gt; Arrays.deepToString(this.data));</span>
+<span class="fc" id="L44">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

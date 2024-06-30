@@ -11,30 +11,24 @@ public class I18nViewUtil {
      */
 <span class="fc" id="L12">    private static final Map&lt;String, List&lt;Object&gt;&gt; componentsLocalized = new HashMap&lt;&gt;();</span>
     
-    /**
-     * Initialize the list of graphical components
-     */
+    // Initialize the list of graphical components
     static {
-        
-<span class="fc bfc" id="L19" title="All 2 branches covered.">        for (String keyI18n: I18nUtil.getLocaleRoot().keySet()) {</span>
-            
-<span class="fc" id="L21">            I18nViewUtil.componentsLocalized.put(keyI18n, new ArrayList&lt;&gt;());</span>
-<span class="fc" id="L22">        }</span>
-<span class="fc" id="L23">    }</span>
-    
-    // Utility class
+<span class="fc bfc" id="L16" title="All 2 branches covered.">        for (String keyI18n: I18nUtil.getLocaleRoot().keySet()) {</span>
+<span class="fc" id="L17">            I18nViewUtil.componentsLocalized.put(keyI18n, new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L18">        }</span>
+<span class="fc" id="L19">    }</span>
+
     private I18nViewUtil() {
-        // Ignore
+        // Utility class
     }
     
     /**
      * Return the i18n keys of components whose text is replaced
      * when the translation changes.
-     * @return a list of key names of a i18n key in the properties
+     * @return a set of key names of a i18n key in the properties
      */
     public static Set&lt;String&gt; keys() {
-        
-<span class="fc" id="L37">        return I18nViewUtil.componentsLocalized.keySet();</span>
+<span class="fc" id="L31">        return I18nViewUtil.componentsLocalized.keySet();</span>
     }
     
     /**
@@ -44,8 +38,7 @@ public class I18nViewUtil {
      * @return a list of graphical components
      */
     public static List&lt;Object&gt; componentsByKey(String key) {
-        
-<span class="fc" id="L48">        return I18nViewUtil.componentsLocalized.get(key);</span>
+<span class="fc" id="L41">        return I18nViewUtil.componentsLocalized.get(key);</span>
     }
     
     /**
@@ -55,9 +48,8 @@ public class I18nViewUtil {
      * @param component graphical component which will receive the translated text
      */
     public static void addComponentForKey(String key, Object component) {
-        
-<span class="fc" id="L59">        I18nViewUtil.componentsLocalized.get(key).add(component);</span>
-<span class="fc" id="L60">    }</span>
+<span class="fc" id="L51">        I18nViewUtil.componentsLocalized.get(key).add(component);</span>
+<span class="fc" id="L52">    }</span>
     
     /**
      * Return the text corresponding to a i18n key in the properties.
@@ -68,30 +60,24 @@ public class I18nViewUtil {
         
         String result;
         
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (I18nUtil.isAsian(I18nUtil.getLocaleDefault())) {</span>
-            
-<span class="nc" id="L73">            result = String.format(</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        if (I18nUtil.isAsian(I18nUtil.getLocaleDefault())) {</span>
+<span class="nc" id="L64">            result = String.format(</span>
                 &quot;&lt;html&gt;&lt;span style=\&quot;font-family:'%s'\&quot;&gt;%s&lt;/span&gt;&lt;/html&gt;&quot;,
                 UiUtil.FONT_NAME_MONO_ASIAN,
-<span class="nc" id="L76">                I18nUtil.valueByKey(key)</span>
+<span class="nc" id="L67">                I18nUtil.valueByKey(key)</span>
             );
         } else {
-            
-<span class="fc" id="L80">            result = I18nUtil.valueByKey(key);</span>
+<span class="fc" id="L70">            result = I18nUtil.valueByKey(key);</span>
         }
         
-<span class="fc" id="L83">        return result;</span>
+<span class="fc" id="L73">        return result;</span>
     }
     
     public static String valueByKey(String key, Locale newLocale) {
-        
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (I18nUtil.isAsian(newLocale)) {</span>
-            
-<span class="nc" id="L90">            return I18nViewUtil.valueByKey(key);</span>
-            
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        if (I18nUtil.isAsian(newLocale)) {</span>
+<span class="nc" id="L78">            return I18nViewUtil.valueByKey(key);</span>
         } else {
-            
-<span class="fc" id="L94">            return I18nUtil.valueByKey(key);</span>
+<span class="fc" id="L80">            return I18nUtil.valueByKey(key);</span>
         }
     }
 }

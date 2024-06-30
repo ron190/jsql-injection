@@ -8,38 +8,33 @@ import javax.swing.*;
 public class JMenuItemWithMargin extends JMenuItem {
 
 <span class="fc" id="L10">    public JMenuItemWithMargin() {</span>
-        
-<span class="fc" id="L12">        this.setMargin();</span>
-<span class="fc" id="L13">    }</span>
+<span class="fc" id="L11">        this.setMargin();</span>
+<span class="fc" id="L12">    }</span>
 
     public JMenuItemWithMargin(String valueByKey, char c) {
         
-<span class="fc" id="L17">        super(valueByKey, c);</span>
-        
-<span class="fc" id="L19">        this.setMargin();</span>
-<span class="fc" id="L20">    }</span>
+<span class="fc" id="L16">        super(valueByKey, c);</span>
+<span class="fc" id="L17">        this.setMargin();</span>
+<span class="fc" id="L18">    }</span>
     
     public JMenuItemWithMargin(String valueByKey) {
         
-<span class="fc" id="L24">        super(valueByKey);</span>
-        
-<span class="fc" id="L26">        this.setMargin();</span>
-<span class="fc" id="L27">    }</span>
+<span class="fc" id="L22">        super(valueByKey);</span>
+<span class="fc" id="L23">        this.setMargin();</span>
+<span class="fc" id="L24">    }</span>
 
     public JMenuItemWithMargin(Action action) {
 
-<span class="fc" id="L31">        super(action);</span>
-        
-<span class="fc" id="L33">        this.setMargin();</span>
-<span class="fc" id="L34">    }</span>
+<span class="fc" id="L28">        super(action);</span>
+<span class="fc" id="L29">        this.setMargin();</span>
+<span class="fc" id="L30">    }</span>
 
     private void setMargin() {
         
         // Menu item on Mac has enough margin
-<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        if (!SystemUtils.IS_OS_MAC) {</span>
-            
-<span class="fc" id="L41">            this.setIcon(UiUtil.ICON_EMPTY);</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if (!SystemUtils.IS_OS_MAC) {</span>
+<span class="fc" id="L36">            this.setIcon(UiUtil.ICON_EMPTY);</span>
         }
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L38">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

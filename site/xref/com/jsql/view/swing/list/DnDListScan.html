@@ -26,16 +26,14 @@
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="DnDListScan" href="../../../../../com/jsql/view/swing/list/DnDListScan.html#DnDListScan">DnDListScan</a> <strong class="jxr_keyword">extends</strong> <a name="DnDList" href="../../../../../com/jsql/view/swing/list/DnDList.html#DnDList">DnDList</a> {
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>      
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>      <strong class="jxr_keyword">public</strong> <a name="DnDListScan" href="../../../../../com/jsql/view/swing/list/DnDListScan.html#DnDListScan">DnDListScan</a>(List&lt;ItemList&gt; newList) {
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>          
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>          <strong class="jxr_keyword">super</strong>(newList);
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>      }
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>      @Override
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addItem(<strong class="jxr_keyword">int</strong> endPosition, String line) {
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>          
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>          <strong class="jxr_keyword">this</strong>.listModel.add(endPosition, <strong class="jxr_keyword">new</strong> <a name="ItemListScan" href="../../../../../com/jsql/view/swing/list/ItemListScan.html#ItemListScan">ItemListScan</a>(<strong class="jxr_keyword">new</strong> <a name="BeanInjection" href="../../../../../com/jsql/view/swing/list/BeanInjection.html#BeanInjection">BeanInjection</a>(line.replace(<span class="jxr_string">"&#92;&#92;"</span>, <span class="jxr_string">"/"</span>))));
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>      }
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  }
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>          <strong class="jxr_keyword">super</strong>(newList);
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>      }
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>      @Override
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addItem(<strong class="jxr_keyword">int</strong> endPosition, String line) {
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>          <strong class="jxr_keyword">this</strong>.listModel.add(endPosition, <strong class="jxr_keyword">new</strong> <a name="ItemListScan" href="../../../../../com/jsql/view/swing/list/ItemListScan.html#ItemListScan">ItemListScan</a>(<strong class="jxr_keyword">new</strong> <a name="BeanInjection" href="../../../../../com/jsql/view/swing/list/BeanInjection.html#BeanInjection">BeanInjection</a>(line.replace(<span class="jxr_string">"&#92;&#92;"</span>, <span class="jxr_string">"/"</span>))));
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>      }
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>

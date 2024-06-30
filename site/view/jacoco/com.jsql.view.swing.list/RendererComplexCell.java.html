@@ -41,58 +41,38 @@ import java.awt.*;
 
         // setBackground
 <span class="fc bfc" id="L43" title="All 2 branches covered.">        if (isSelected) {</span>
-            
-<span class="fc bfc" id="L45" title="All 2 branches covered.">            if (list.isFocusOwner()) {</span>
-                
-<span class="fc" id="L47">                renderer.setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
-                
+<span class="fc bfc" id="L44" title="All 2 branches covered.">            if (list.isFocusOwner()) {</span>
+<span class="fc" id="L45">                renderer.setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
             } else {
-                
-<span class="fc" id="L51">                renderer.setBackground(UiUtil.COLOR_FOCUS_LOST);</span>
+<span class="fc" id="L47">                renderer.setBackground(UiUtil.COLOR_FOCUS_LOST);</span>
             }
-            
         } else {
-            
-<span class="fc" id="L56">            renderer.setBackground(Color.WHITE);</span>
+<span class="fc" id="L50">            renderer.setBackground(Color.WHITE);</span>
         }
         
         // setForeground
-<span class="pc bpc" id="L60" title="1 of 2 branches missed.">        if (value.getIsVulnerable()) {</span>
-            
-<span class="nc" id="L62">            renderer.setForeground(UiUtil.COLOR_GREEN);</span>
-            
-<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        } else if (value.getIsDatabaseConfirmed()) {</span>
-            
-<span class="nc" id="L66">            renderer.setForeground(Color.BLUE);</span>
-            
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (value.getIsVulnerable()) {</span>
+<span class="nc" id="L55">            renderer.setForeground(UiUtil.COLOR_GREEN);</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        } else if (value.getIsDatabaseConfirmed()) {</span>
+<span class="nc" id="L57">            renderer.setForeground(Color.BLUE);</span>
         } else {
-            
-            // Hardcode black for Mac default is white
-<span class="fc" id="L71">            renderer.setForeground(Color.BLACK);</span>
+<span class="fc" id="L59">            renderer.setForeground(Color.BLACK);  // Hardcode black for Mac default is white</span>
         }
 
         // setBorder
-<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (isSelected) {</span>
-            
-<span class="fc bfc" id="L77" title="All 2 branches covered.">            if (list.isFocusOwner()) {</span>
-                
-<span class="fc" id="L79">                renderer.setBorder(UiUtil.BORDER_FOCUS_GAINED);</span>
-                
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (isSelected) {</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">            if (list.isFocusOwner()) {</span>
+<span class="fc" id="L65">                renderer.setBorder(UiUtil.BORDER_FOCUS_GAINED);</span>
             } else {
-                
-<span class="fc" id="L83">                renderer.setBorder(UiUtil.BORDER_FOCUS_LOST);</span>
+<span class="fc" id="L67">                renderer.setBorder(UiUtil.BORDER_FOCUS_LOST);</span>
             }
-            
-<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        } else if (isFocused) {</span>
-            
-<span class="nc" id="L88">            renderer.setBorder(BorderFactory.createCompoundBorder(new BorderList(), BorderFactory.createEmptyBorder(0, 1, 0, 0)));</span>
-            
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        } else if (isFocused) {</span>
+<span class="nc" id="L70">            renderer.setBorder(BorderFactory.createCompoundBorder(new BorderList(), BorderFactory.createEmptyBorder(0, 1, 0, 0)));</span>
         } else {
-            
-<span class="fc" id="L92">            renderer.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
+<span class="fc" id="L72">            renderer.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
         }
 
-<span class="fc" id="L95">        return renderer;</span>
+<span class="fc" id="L75">        return renderer;</span>
     }
     
         private static class BorderList extends AbstractBorder {
@@ -100,9 +80,9 @@ import java.awt.*;
         @Override
         public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
             
-<span class="nc" id="L103">            Graphics2D g2D = (Graphics2D) g;</span>
-<span class="nc" id="L104">            g2D.setColor(Color.GRAY);</span>
-<span class="nc" id="L105">            g2D.setStroke(</span>
+<span class="nc" id="L83">            Graphics2D g2D = (Graphics2D) g;</span>
+<span class="nc" id="L84">            g2D.setColor(Color.GRAY);</span>
+<span class="nc" id="L85">            g2D.setStroke(</span>
                 new BasicStroke(
                     1,
                     BasicStroke.CAP_BUTT,
@@ -112,8 +92,8 @@ import java.awt.*;
                     0
                 )
             );
-<span class="nc" id="L115">            g2D.drawRect(x, y, w - 1, h - 1);</span>
-<span class="nc" id="L116">        }</span>
+<span class="nc" id="L95">            g2D.drawRect(x, y, w - 1, h - 1);</span>
+<span class="nc" id="L96">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

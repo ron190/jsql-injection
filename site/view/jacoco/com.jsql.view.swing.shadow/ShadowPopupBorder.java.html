@@ -97,29 +97,26 @@ import java.awt.*;
 <span class="fc" id="L97">            Image hShadowBg = (Image) popup.getClientProperty(ShadowPopupFactory.PROP_HORIZONTAL_BACKGROUND);</span>
             
 <span class="fc bfc" id="L99" title="All 2 branches covered.">            if (hShadowBg != null) {</span>
-                
-<span class="fc" id="L101">                g.drawImage(hShadowBg, x, y + height - 5, c);</span>
+<span class="fc" id="L100">                g.drawImage(hShadowBg, x, y + height - 5, c);</span>
             }
             
-<span class="fc" id="L104">            Image vShadowBg = (Image) popup.getClientProperty(ShadowPopupFactory.PROP_VERTICAL_BACKGROUND);</span>
+<span class="fc" id="L103">            Image vShadowBg = (Image) popup.getClientProperty(ShadowPopupFactory.PROP_VERTICAL_BACKGROUND);</span>
             
-<span class="fc bfc" id="L106" title="All 2 branches covered.">            if (vShadowBg != null) {</span>
-                
-<span class="fc" id="L108">                g.drawImage(vShadowBg, x + width - 5, y, c);</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">            if (vShadowBg != null) {</span>
+<span class="fc" id="L106">                g.drawImage(vShadowBg, x + width - 5, y, c);</span>
             }
     
             // draw drop shadow
-<span class="fc" id="L112">            g.drawImage(shadow, x +  5, y + height - 5, x + 10, y + height, 0, 6, 5, 11, null, c);</span>
-<span class="fc" id="L113">            g.drawImage(shadow, x + 10, y + height - 5, x + width - 5, y + height, 5, 6, 6, 11, null, c);</span>
-<span class="fc" id="L114">            g.drawImage(shadow, x + width - 5, y + 5, x + width, y + 10, 6, 0, 11, 5, null, c);</span>
-<span class="fc" id="L115">            g.drawImage(shadow, x + width - 5, y + 10, x + width, y + height - 5, 6, 5, 11, 6, null, c);</span>
-<span class="fc" id="L116">            g.drawImage(shadow, x + width - 5, y + height - 5, x + width, y + height, 6, 6, 11, 11, null, c);</span>
+<span class="fc" id="L110">            g.drawImage(shadow, x +  5, y + height - 5, x + 10, y + height, 0, 6, 5, 11, null, c);</span>
+<span class="fc" id="L111">            g.drawImage(shadow, x + 10, y + height - 5, x + width - 5, y + height, 5, 6, 6, 11, null, c);</span>
+<span class="fc" id="L112">            g.drawImage(shadow, x + width - 5, y + 5, x + width, y + 10, 6, 0, 11, 5, null, c);</span>
+<span class="fc" id="L113">            g.drawImage(shadow, x + width - 5, y + 10, x + width, y + height - 5, 6, 5, 11, 6, null, c);</span>
+<span class="fc" id="L114">            g.drawImage(shadow, x + width - 5, y + height - 5, x + width, y + height, 6, 6, 11, 11, null, c);</span>
             
-<span class="nc" id="L118">        } catch (ClassCastException e) {</span>
-            
-<span class="nc" id="L120">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L121">        }</span>
-<span class="fc" id="L122">    }</span>
+<span class="nc" id="L116">        } catch (ClassCastException e) {</span>
+<span class="nc" id="L117">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L118">        }</span>
+<span class="fc" id="L119">    }</span>
 
 
     /**
@@ -127,8 +124,7 @@ import java.awt.*;
      */
     @Override
     public Insets getBorderInsets(Component c) {
-        
-<span class="fc" id="L131">        return new Insets(0, 0, SHADOW_SIZE, SHADOW_SIZE);</span>
+<span class="fc" id="L127">        return new Insets(0, 0, SHADOW_SIZE, SHADOW_SIZE);</span>
     }
 
 
@@ -141,9 +137,9 @@ import java.awt.*;
     @Override
     public Insets getBorderInsets(Component c, Insets insets) {
         
-<span class="nc" id="L144">        insets.left = insets.top = 0;</span>
-<span class="nc" id="L145">        insets.right = insets.bottom = SHADOW_SIZE;</span>
-<span class="nc" id="L146">        return insets;</span>
+<span class="nc" id="L140">        insets.left = insets.top = 0;</span>
+<span class="nc" id="L141">        insets.right = insets.bottom = SHADOW_SIZE;</span>
+<span class="nc" id="L142">        return insets;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

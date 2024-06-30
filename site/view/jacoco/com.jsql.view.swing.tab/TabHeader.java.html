@@ -99,46 +99,44 @@ public class TabHeader extends JPanel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         
 <span class="nc bnc" id="L101" title="All 2 branches missed.">        if (SwingUtilities.isRightMouseButton(e)) {</span>
-            
-<span class="nc" id="L103">            return;</span>
+<span class="nc" id="L102">            return;</span>
         }
         
-<span class="nc" id="L106">        int closeTabNumber = MediatorHelper.tabResults().indexOfTabComponent(TabHeader.this);</span>
+<span class="nc" id="L105">        int closeTabNumber = MediatorHelper.tabResults().indexOfTabComponent(TabHeader.this);</span>
         
-<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (this.getCleanableTab() != null) {</span>
-            
-<span class="nc" id="L110">            this.getCleanableTab().clean();</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (this.getCleanableTab() != null) {</span>
+<span class="nc" id="L108">            this.getCleanableTab().clean();</span>
         }
         
-<span class="nc" id="L113">        ActionCloseTabResult.perform(closeTabNumber);</span>
-<span class="nc" id="L114">    }</span>
+<span class="nc" id="L111">        ActionCloseTabResult.perform(closeTabNumber);</span>
+<span class="nc" id="L112">    }</span>
 
     @Override
     public void mouseEntered(MouseEvent e) {
         // Do nothing
-<span class="nc" id="L119">    }</span>
+<span class="nc" id="L117">    }</span>
     
     @Override
     public void mouseExited(MouseEvent e) {
         // Do nothing
-<span class="nc" id="L124">    }</span>
+<span class="nc" id="L122">    }</span>
     
     @Override
     public void mousePressed(MouseEvent e) {
         // Do nothing
-<span class="nc" id="L129">    }</span>
+<span class="nc" id="L127">    }</span>
     
     @Override
     public void mouseReleased(MouseEvent e) {
         // Do nothing
-<span class="nc" id="L134">    }</span>
+<span class="nc" id="L132">    }</span>
 
     public JLabel getTabTitleLabel() {
-<span class="fc" id="L137">        return this.tabTitleLabel;</span>
+<span class="fc" id="L135">        return this.tabTitleLabel;</span>
     }
 
     public Cleanable getCleanableTab() {
-<span class="nc" id="L141">        return this.cleanableTab;</span>
+<span class="nc" id="L139">        return this.cleanableTab;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -4,7 +4,7 @@ import javax.swing.*;
 
 /**
  * Tooltip which text can be changed using setText() when switching i18n language.
- * Overriden method getTipText() provide text to Swing after i18n switch.
+ * Override method getTipText() provides text to Swing after i18n switch.
  */
 public class JToolTipI18n extends JToolTip {
     

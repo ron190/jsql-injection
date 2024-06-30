@@ -50,25 +50,26 @@ class Colorer extends Thread {
         private int adjustment;
 
 <span class="fc" id="L52">        public RecolorEvent(int position, int adjustment) {</span>
-<span class="fc" id="L53">            this.position = position;</span>
-<span class="fc" id="L54">            this.adjustment = adjustment;</span>
-<span class="fc" id="L55">        }</span>
+
+<span class="fc" id="L54">            this.position = position;</span>
+<span class="fc" id="L55">            this.adjustment = adjustment;</span>
+<span class="fc" id="L56">        }</span>
 
         public int getPosition() {
-<span class="fc" id="L58">            return this.position;</span>
+<span class="fc" id="L59">            return this.position;</span>
         }
 
         public void setPosition(int position) {
-<span class="nc" id="L62">            this.position = position;</span>
-<span class="nc" id="L63">        }</span>
+<span class="nc" id="L63">            this.position = position;</span>
+<span class="nc" id="L64">        }</span>
 
         public int getAdjustment() {
-<span class="fc" id="L66">            return this.adjustment;</span>
+<span class="fc" id="L67">            return this.adjustment;</span>
         }
 
         public void setAdjustment(int adjustment) {
-<span class="fc" id="L70">            this.adjustment = adjustment;</span>
-<span class="fc" id="L71">        }</span>
+<span class="fc" id="L71">            this.adjustment = adjustment;</span>
+<span class="fc" id="L72">        }</span>
     }
     
     /**
@@ -82,11 +83,11 @@ class Colorer extends Thread {
     /**
      * Keep a list of places in the file that it is safe to restart the
      * highlighting. This happens whenever the lexer reports that it has
-     * returned to its initial state. Since this list needs to be sorted and
+     * returned to its initial state. Since this list needs to be sorted, and
      * we need to be able to retrieve ranges from it, it is stored in a
      * balanced tree.
      */
-<span class="fc" id="L89">    private final TreeSet&lt;DocPosition&gt; iniPositions = new TreeSet&lt;&gt;(DocPositionComparator.instance);</span>
+<span class="fc" id="L90">    private final TreeSet&lt;DocPosition&gt; iniPositions = new TreeSet&lt;&gt;(DocPositionComparator.instance);</span>
 
     /**
      * As we go through and remove invalid positions we will also be finding
@@ -95,30 +96,30 @@ class Colorer extends Thread {
      * positions and simply add it to the list of positions once all the old
      * positions have been removed.
      */
-<span class="fc" id="L98">    private final HashSet&lt;DocPosition&gt; newPositions = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L99">    private final HashSet&lt;DocPosition&gt; newPositions = new HashSet&lt;&gt;();</span>
 
     /**
      * Vector that stores the communication between the two threads.
      */
-<span class="fc" id="L103">    private final LinkedList&lt;RecolorEvent&gt; events = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L104">    private final LinkedList&lt;RecolorEvent&gt; events = new LinkedList&lt;&gt;();</span>
 
     /**
      * When accessing the linked list, we need to create a critical section.
      * we will synchronize on this object to ensure that we don't get unsafe
      * thread behavior.
      */
-<span class="fc" id="L110">    private final Object eventsLock = new Object();</span>
+<span class="fc" id="L111">    private final Object eventsLock = new Object();</span>
 
     /**
      * The amount of change that has occurred before the place in the
      * document that we are currently highlighting (lastPosition).
      */
-<span class="fc" id="L116">    private volatile int change = 0;</span>
+<span class="fc" id="L117">    private volatile int change = 0;</span>
 
     /**
      * The last position colored
      */
-<span class="fc" id="L121">    private volatile int lastPosition = -1;</span>
+<span class="fc" id="L122">    private volatile int lastPosition = -1;</span>
 
     /**
      * Creates the coloring thread for the given document.
@@ -126,9 +127,10 @@ class Colorer extends Thread {
      * @param document The document to be colored.
      */
     public Colorer(HighlightedDocument document) {
-<span class="fc" id="L129">        super(&quot;ThreadColorer&quot;);</span>
-<span class="fc" id="L130">        this.document = new WeakReference&lt;&gt;(document);</span>
-<span class="fc" id="L131">    }</span>
+
+<span class="fc" id="L131">        super(&quot;ThreadColorer&quot;);</span>
+<span class="fc" id="L132">        this.document = new WeakReference&lt;&gt;(document);</span>
+<span class="fc" id="L133">    }</span>
 
     /**
      * Tell the Syntax Highlighting thread to take another look at this
@@ -140,56 +142,49 @@ class Colorer extends Thread {
         // figure out if this adjustment effects the current run.
         // if it does, then adjust the place in the document
         // that gets highlighted.
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">        if (position &lt; this.lastPosition) {</span>
-            
-<span class="nc bnc" id="L145" title="All 2 branches missed.">            if (this.lastPosition &lt; position - adjustment) {</span>
-                
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">        if (position &lt; this.lastPosition) {</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">            if (this.lastPosition &lt; position - adjustment) {</span>
 <span class="nc" id="L147">                this.change -= this.lastPosition - position;</span>
-                
             } else {
-                
-<span class="nc" id="L151">                this.change += adjustment;</span>
+<span class="nc" id="L149">                this.change += adjustment;</span>
             }
         }
         
-<span class="fc" id="L155">        synchronized (this.eventsLock) {</span>
+<span class="fc" id="L153">        synchronized (this.eventsLock) {</span>
             
-<span class="fc bfc" id="L157" title="All 2 branches covered.">            if(!this.events.isEmpty()) {</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">            if (!this.events.isEmpty()) {</span>
                 
                 // check whether to coalesce with current last element
-<span class="fc" id="L160">                RecolorEvent curLast = this.events.getLast();</span>
+<span class="fc" id="L158">                RecolorEvent curLast = this.events.getLast();</span>
                 
-<span class="pc bpc" id="L162" title="3 of 4 branches missed.">                if(adjustment &lt; 0 &amp;&amp; curLast.getAdjustment() &lt; 0) {</span>
-                    
+<span class="pc bpc" id="L160" title="3 of 4 branches missed.">                if (adjustment &lt; 0 &amp;&amp; curLast.getAdjustment() &lt; 0) {</span>
                     // both are removals
-<span class="nc bnc" id="L165" title="All 2 branches missed.">                    if(position == curLast.getPosition()) {</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">                    if (position == curLast.getPosition()) {</span>
                         
-<span class="nc" id="L167">                        curLast.setAdjustment(curLast.getAdjustment() + adjustment);</span>
-<span class="nc" id="L168">                        return;</span>
+<span class="nc" id="L164">                        curLast.setAdjustment(curLast.getAdjustment() + adjustment);</span>
+<span class="nc" id="L165">                        return;</span>
                     }
-                    
-<span class="pc bpc" id="L171" title="2 of 4 branches missed.">                } else if(adjustment &gt;= 0 &amp;&amp; curLast.getAdjustment() &gt;= 0) {</span>
-                    
+<span class="pc bpc" id="L167" title="2 of 4 branches missed.">                } else if (adjustment &gt;= 0 &amp;&amp; curLast.getAdjustment() &gt;= 0) {</span>
                     // both are insertions
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">                    if(position == curLast.getPosition() + curLast.getAdjustment()) {</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">                    if (position == curLast.getPosition() + curLast.getAdjustment()) {</span>
                         
-<span class="fc" id="L176">                        curLast.setAdjustment(curLast.getAdjustment() + adjustment);</span>
-<span class="fc" id="L177">                        return;</span>
+<span class="fc" id="L171">                        curLast.setAdjustment(curLast.getAdjustment() + adjustment);</span>
+<span class="fc" id="L172">                        return;</span>
                         
-<span class="nc bnc" id="L179" title="All 2 branches missed.">                    } else if(curLast.getPosition() == position + adjustment) {</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">                    } else if (curLast.getPosition() == position + adjustment) {</span>
                         
-<span class="nc" id="L181">                        curLast.setPosition(position);</span>
-<span class="nc" id="L182">                        curLast.setAdjustment(curLast.getAdjustment() + adjustment);</span>
+<span class="nc" id="L176">                        curLast.setPosition(position);</span>
+<span class="nc" id="L177">                        curLast.setAdjustment(curLast.getAdjustment() + adjustment);</span>
                         
-<span class="nc" id="L184">                        return;</span>
+<span class="nc" id="L179">                        return;</span>
                     }
                 }
             }
             
-<span class="fc" id="L189">            this.events.add(new RecolorEvent(position, adjustment));</span>
-<span class="fc" id="L190">            this.eventsLock.notifyAll();</span>
-<span class="fc" id="L191">        }</span>
-<span class="fc" id="L192">    }</span>
+<span class="fc" id="L184">            this.events.add(new RecolorEvent(position, adjustment));</span>
+<span class="fc" id="L185">            this.eventsLock.notifyAll();</span>
+<span class="fc" id="L186">        }</span>
+<span class="fc" id="L187">    }</span>
 
     /**
      * The colorer runs forever and may sleep for long periods of time. It
@@ -197,131 +192,123 @@ class Colorer extends Thread {
      */
     @Override
     public void run() {
-        
-<span class="pc bpc" id="L201" title="1 of 2 branches missed.">        while (this.document.get() != null) {</span>
-            
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        while (this.document.get() != null) {</span>
             try {
-<span class="fc" id="L204">                RecolorEvent re = new RecolorEvent(0, 0);</span>
-<span class="fc" id="L205">                synchronized (this.eventsLock) {</span>
+<span class="fc" id="L197">                RecolorEvent re = new RecolorEvent(0, 0);</span>
+<span class="fc" id="L198">                synchronized (this.eventsLock) {</span>
                     
                     // get the next event to process - stalling until the
                     // event becomes available
-<span class="pc bpc" id="L209" title="1 of 4 branches missed.">                    while(this.events.isEmpty() &amp;&amp; this.document.get() != null) {</span>
-                        
+<span class="pc bpc" id="L202" title="1 of 4 branches missed.">                    while(this.events.isEmpty() &amp;&amp; this.document.get() != null) {</span>
                         // stop waiting after a second in case document
                         // has been cleared.
-<span class="fc" id="L213">                        this.eventsLock.wait(1000);</span>
+<span class="fc" id="L205">                        this.eventsLock.wait(1000);</span>
                     }
                     
-<span class="pc bpc" id="L216" title="1 of 2 branches missed.">                    if (!this.events.isEmpty()) {</span>
-                        
-<span class="fc" id="L218">                        re = this.events.removeFirst();</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">                    if (!this.events.isEmpty()) {</span>
+<span class="fc" id="L209">                        re = this.events.removeFirst();</span>
                     }
-<span class="fc" id="L220">                }</span>
-<span class="fc" id="L221">                this.processEvent(re.getPosition(), re.getAdjustment());</span>
-<span class="fc" id="L222">                Thread.sleep(100);</span>
+<span class="fc" id="L211">                }</span>
+<span class="fc" id="L212">                this.processEvent(re.getPosition(), re.getAdjustment());</span>
+<span class="fc" id="L213">                Thread.sleep(100);</span>
                 
-<span class="nc" id="L224">            } catch(InterruptedException e) {</span>
+<span class="nc" id="L215">            } catch(InterruptedException e) {</span>
                 
-<span class="nc" id="L226">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L227">                Thread.currentThread().interrupt();</span>
-<span class="pc" id="L228">            }</span>
+<span class="nc" id="L217">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L218">                Thread.currentThread().interrupt();</span>
+<span class="pc" id="L219">            }</span>
         }
-<span class="nc" id="L230">    }</span>
+<span class="nc" id="L221">    }</span>
     
     private void processEvent(int position, int adjustment) {
         
-<span class="fc" id="L234">        HighlightedDocument doc = this.document.get();</span>
-<span class="pc bpc" id="L235" title="1 of 2 branches missed.">        if(doc == null) {</span>
-            
-<span class="nc" id="L237">            return;</span>
+<span class="fc" id="L225">        HighlightedDocument doc = this.document.get();</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">        if (doc == null) {</span>
+<span class="nc" id="L227">            return;</span>
         }
         
         // slurp everything up into local variables in case another
         // thread changes them during coloring process
-<span class="fc" id="L242">        AttributeSet globalStyle = doc.getGlobalStyle();</span>
-<span class="fc" id="L243">        Lexer syntaxLexer = doc.getSyntaxLexer();</span>
-<span class="fc" id="L244">        DocumentReader documentReader = doc.getDocumentReader();</span>
-<span class="fc" id="L245">        Object docLock = doc.getDocumentLock();</span>
+<span class="fc" id="L232">        AttributeSet globalStyle = doc.getGlobalStyle();</span>
+<span class="fc" id="L233">        Lexer syntaxLexer = doc.getSyntaxLexer();</span>
+<span class="fc" id="L234">        DocumentReader documentReader = doc.getDocumentReader();</span>
+<span class="fc" id="L235">        Object docLock = doc.getDocumentLock();</span>
 
-<span class="pc bpc" id="L247" title="1 of 2 branches missed.">        if (globalStyle != null) {</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">        if (globalStyle != null) {</span>
             
-<span class="nc" id="L249">            int start = Math.min(position, position + adjustment);</span>
-<span class="nc" id="L250">            int stop = Math.max(position, position + adjustment);</span>
+<span class="nc" id="L239">            int start = Math.min(position, position + adjustment);</span>
+<span class="nc" id="L240">            int stop = Math.max(position, position + adjustment);</span>
             
-<span class="nc" id="L252">            synchronized (docLock) {</span>
-                
-<span class="nc" id="L254">                doc.setCharacterAttributes(start, stop - start, globalStyle, true);</span>
-<span class="nc" id="L255">            }</span>
+<span class="nc" id="L242">            synchronized (docLock) {</span>
+<span class="nc" id="L243">                doc.setCharacterAttributes(start, stop - start, globalStyle, true);</span>
+<span class="nc" id="L244">            }</span>
             
-<span class="nc" id="L257">            return;</span>
+<span class="nc" id="L246">            return;</span>
         }
         
         SortedSet&lt;DocPosition&gt; workingSet;
         Iterator&lt;DocPosition&gt; workingIt;
-<span class="fc" id="L262">        DocPosition startRequest = new DocPosition(position);</span>
-<span class="fc" id="L263">        DocPosition endRequest = new DocPosition(position + Math.abs(adjustment));</span>
+<span class="fc" id="L251">        DocPosition startRequest = new DocPosition(position);</span>
+<span class="fc" id="L252">        DocPosition endRequest = new DocPosition(position + Math.abs(adjustment));</span>
         DocPosition dp;
-<span class="fc" id="L265">        DocPosition dpStart = null;</span>
+<span class="fc" id="L254">        DocPosition dpStart = null;</span>
         DocPosition dpEnd;
 
         // find the starting position. We must start at least one
         // token before the current position
         try {
             // all the good positions before
-<span class="fc" id="L272">            workingSet = this.iniPositions.headSet(startRequest);</span>
+<span class="fc" id="L261">            workingSet = this.iniPositions.headSet(startRequest);</span>
             // the last of the stuff before
-<span class="nc" id="L274">            dpStart = workingSet.last();</span>
+<span class="nc" id="L263">            dpStart = workingSet.last();</span>
             
-<span class="fc" id="L276">        } catch (NoSuchElementException e) {</span>
+<span class="fc" id="L265">        } catch (NoSuchElementException e) {</span>
             
             // if there were no good positions before the requested
             // start,
             // we can always start at the very beginning.
-<span class="fc" id="L281">            dpStart = new DocPosition(0);</span>
+<span class="fc" id="L270">            dpStart = new DocPosition(0);</span>
             
-<span class="fc" id="L283">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="nc" id="L284">        }</span>
+<span class="fc" id="L272">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="nc" id="L273">        }</span>
 
         // if stuff was removed, take any removed positions off the
         // list.
-<span class="pc bpc" id="L288" title="1 of 2 branches missed.">        if (adjustment &lt; 0) {</span>
+<span class="pc bpc" id="L277" title="1 of 2 branches missed.">        if (adjustment &lt; 0) {</span>
             
-<span class="nc" id="L290">            workingSet = this.iniPositions.subSet(startRequest, endRequest);</span>
-<span class="nc" id="L291">            workingIt = workingSet.iterator();</span>
+<span class="nc" id="L279">            workingSet = this.iniPositions.subSet(startRequest, endRequest);</span>
+<span class="nc" id="L280">            workingIt = workingSet.iterator();</span>
             
-<span class="nc bnc" id="L293" title="All 2 branches missed.">            while (workingIt.hasNext()) {</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">            while (workingIt.hasNext()) {</span>
                 
-<span class="nc" id="L295">                workingIt.next();</span>
-<span class="nc" id="L296">                workingIt.remove();</span>
+<span class="nc" id="L284">                workingIt.next();</span>
+<span class="nc" id="L285">                workingIt.remove();</span>
             }
         }
 
         // adjust the positions of everything after the
         // insertion/removal.
-<span class="fc" id="L302">        workingSet = this.iniPositions.tailSet(startRequest);</span>
-<span class="fc" id="L303">        workingIt = workingSet.iterator();</span>
-<span class="fc bfc" id="L304" title="All 2 branches covered.">        while (workingIt.hasNext()) {</span>
-            
-<span class="fc" id="L306">            workingIt.next().adjustPosition(adjustment);</span>
+<span class="fc" id="L291">        workingSet = this.iniPositions.tailSet(startRequest);</span>
+<span class="fc" id="L292">        workingIt = workingSet.iterator();</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">        while (workingIt.hasNext()) {</span>
+<span class="fc" id="L294">            workingIt.next().adjustPosition(adjustment);</span>
         }
 
         // now go through and highlight as much as needed
-<span class="fc" id="L310">        workingSet = this.iniPositions.tailSet(dpStart);</span>
-<span class="fc" id="L311">        workingIt = workingSet.iterator();</span>
-<span class="fc" id="L312">        dp = null;</span>
+<span class="fc" id="L298">        workingSet = this.iniPositions.tailSet(dpStart);</span>
+<span class="fc" id="L299">        workingIt = workingSet.iterator();</span>
+<span class="fc" id="L300">        dp = null;</span>
         
-<span class="fc bfc" id="L314" title="All 2 branches covered.">        if (workingIt.hasNext()) {</span>
-            
-<span class="fc" id="L316">            dp = workingIt.next();</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">        if (workingIt.hasNext()) {</span>
+<span class="fc" id="L303">            dp = workingIt.next();</span>
         }
         
         try {
             Token t;
-<span class="fc" id="L321">            boolean done = false;</span>
-<span class="fc" id="L322">            dpEnd = dpStart;</span>
+<span class="fc" id="L308">            boolean done = false;</span>
+<span class="fc" id="L309">            dpEnd = dpStart;</span>
             
-<span class="fc" id="L324">            synchronized (docLock) {</span>
+<span class="fc" id="L311">            synchronized (docLock) {</span>
                 
                 // we are playing some games with the lexer for
                 // efficiency.
@@ -336,12 +323,12 @@ class Colorer extends Thread {
                 // to be called but because the close() method has
                 // no effect on the
                 // DocumentReader, we can do this.
-<span class="fc" id="L339">                syntaxLexer.reset(documentReader, 0, dpStart</span>
-<span class="fc" id="L340">                        .getPosition(), 0);</span>
+<span class="fc" id="L326">                syntaxLexer.reset(documentReader, 0, dpStart</span>
+<span class="fc" id="L327">                        .getPosition(), 0);</span>
                 // After the lexer has been set up, scroll the
                 // reader so that it
                 // is in the correct spot as well.
-<span class="fc" id="L344">                documentReader.seek(dpStart.getPosition());</span>
+<span class="fc" id="L331">                documentReader.seek(dpStart.getPosition());</span>
                 // we will highlight tokens until we reach a good
                 // stopping place.
                 // the first obvious stopping place is the end of
@@ -349,29 +336,29 @@ class Colorer extends Thread {
                 // the lexer will return null at the end of the
                 // document and wee
                 // need to stop there.
-<span class="fc" id="L352">                t = syntaxLexer.getNextToken();</span>
-<span class="fc" id="L353">            }</span>
+<span class="fc" id="L339">                t = syntaxLexer.getNextToken();</span>
+<span class="fc" id="L340">            }</span>
             
-<span class="fc" id="L355">            this.newPositions.add(dpStart);</span>
+<span class="fc" id="L342">            this.newPositions.add(dpStart);</span>
             
-<span class="fc bfc" id="L357" title="All 4 branches covered.">            while (!done &amp;&amp; t != null) {</span>
+<span class="fc bfc" id="L344" title="All 4 branches covered.">            while (!done &amp;&amp; t != null) {</span>
                 // this is the actual command that colors the stuff.
                 // Color stuff with the description of the styles
                 // stored in tokenStyles.
-<span class="pc bpc" id="L361" title="1 of 2 branches missed.">                if (t.getCharEnd() &lt;= doc.getLength()) {</span>
+<span class="pc bpc" id="L348" title="1 of 2 branches missed.">                if (t.getCharEnd() &lt;= doc.getLength()) {</span>
                     
-<span class="fc" id="L363">                    doc.setCharacterAttributes(</span>
-<span class="fc" id="L364">                        t.getCharBegin() + this.change,</span>
-<span class="fc" id="L365">                        t.getCharEnd() - t.getCharBegin(),</span>
-<span class="fc" id="L366">                        TokenStyles.getStyle(t.getDescription()),</span>
+<span class="fc" id="L350">                    doc.setCharacterAttributes(</span>
+<span class="fc" id="L351">                        t.getCharBegin() + this.change,</span>
+<span class="fc" id="L352">                        t.getCharEnd() - t.getCharBegin(),</span>
+<span class="fc" id="L353">                        TokenStyles.getStyle(t.getDescription()),</span>
                         true
                     );
                     // record the position of the last bit of
                     // text that we colored
-<span class="fc" id="L371">                    dpEnd = new DocPosition(t.getCharEnd());</span>
+<span class="fc" id="L358">                    dpEnd = new DocPosition(t.getCharEnd());</span>
                 }
                 
-<span class="fc" id="L374">                this.lastPosition = t.getCharEnd() + this.change;</span>
+<span class="fc" id="L361">                this.lastPosition = t.getCharEnd() + this.change;</span>
                 
                 // The other more complicated reason for doing no
                 // more highlighting
@@ -386,24 +373,24 @@ class Colorer extends Thread {
                 // As long as that place is after the last changed
                 // text, everything
                 // from there on is fine already.
-<span class="pc bpc" id="L389" title="1 of 2 branches missed.">                if (t.getState() == Token.INITIAL_STATE) {</span>
+<span class="pc bpc" id="L376" title="1 of 2 branches missed.">                if (t.getState() == Token.INITIAL_STATE) {</span>
                     
                     // look at all the positions from last time that
                     // are less than or
                     // equal to the current position
-<span class="fc bfc" id="L394" title="All 4 branches covered.">                    while (dp != null &amp;&amp; dp.getPosition() &lt;= t.getCharEnd()) {</span>
+<span class="fc bfc" id="L381" title="All 4 branches covered.">                    while (dp != null &amp;&amp; dp.getPosition() &lt;= t.getCharEnd()) {</span>
                         
-<span class="pc bpc" id="L396" title="2 of 4 branches missed.">                        if (dp.getPosition() == t.getCharEnd() &amp;&amp; dp.getPosition() &gt;= endRequest.getPosition()) {</span>
+<span class="pc bpc" id="L383" title="2 of 4 branches missed.">                        if (dp.getPosition() == t.getCharEnd() &amp;&amp; dp.getPosition() &gt;= endRequest.getPosition()) {</span>
                             
                             // we have found a state that is the
                             // same
-<span class="fc" id="L400">                            done = true;</span>
-<span class="fc" id="L401">                            dp = null;</span>
+<span class="fc" id="L387">                            done = true;</span>
+<span class="fc" id="L388">                            dp = null;</span>
                             
-<span class="nc bnc" id="L403" title="All 2 branches missed.">                        } else if (workingIt.hasNext()) {</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">                        } else if (workingIt.hasNext()) {</span>
                             
                             // didn't find it, try again.
-<span class="nc" id="L406">                            dp = workingIt.next();</span>
+<span class="nc" id="L393">                            dp = workingIt.next();</span>
                             
                         } else {
                             
@@ -412,20 +399,19 @@ class Colorer extends Thread {
                             // time. This means that we will just
                             // continue
                             // until the end of the document.
-<span class="nc" id="L415">                            dp = null;</span>
+<span class="nc" id="L402">                            dp = null;</span>
                         }
                     }
                     
                     // so that we can do this check next time,
                     // record all the
                     // initial states from this time.
-<span class="fc" id="L422">                    this.newPositions.add(dpEnd);</span>
+<span class="fc" id="L409">                    this.newPositions.add(dpEnd);</span>
                 }
                 
-<span class="fc" id="L425">                synchronized (docLock) {</span>
-                    
-<span class="fc" id="L427">                    t = syntaxLexer.getNextToken();</span>
-<span class="fc" id="L428">                }</span>
+<span class="fc" id="L412">                synchronized (docLock) {</span>
+<span class="fc" id="L413">                    t = syntaxLexer.getNextToken();</span>
+<span class="fc" id="L414">                }</span>
             }
 
             // remove all the old initial positions from the place
@@ -433,44 +419,43 @@ class Colorer extends Thread {
             // we started doing the highlighting right up through
             // the last
             // bit of text we touched.
-<span class="fc" id="L436">            workingIt = this.iniPositions.subSet(dpStart, dpEnd).iterator();</span>
-<span class="pc bpc" id="L437" title="1 of 2 branches missed.">            while (workingIt.hasNext()) {</span>
+<span class="fc" id="L422">            workingIt = this.iniPositions.subSet(dpStart, dpEnd).iterator();</span>
+<span class="pc bpc" id="L423" title="1 of 2 branches missed.">            while (workingIt.hasNext()) {</span>
                 
-<span class="nc" id="L439">                workingIt.next();</span>
-<span class="nc" id="L440">                workingIt.remove();</span>
+<span class="nc" id="L425">                workingIt.next();</span>
+<span class="nc" id="L426">                workingIt.remove();</span>
             }
 
             // Remove all the positions that are after the end of
             // the file.:
-<span class="fc" id="L445">            workingIt = this.iniPositions.tailSet(new DocPosition(doc.getLength())).iterator();</span>
-<span class="fc bfc" id="L446" title="All 2 branches covered.">            while (workingIt.hasNext()) {</span>
+<span class="fc" id="L431">            workingIt = this.iniPositions.tailSet(new DocPosition(doc.getLength())).iterator();</span>
+<span class="fc bfc" id="L432" title="All 2 branches covered.">            while (workingIt.hasNext()) {</span>
                 
-<span class="fc" id="L448">                workingIt.next();</span>
-<span class="fc" id="L449">                workingIt.remove();</span>
+<span class="fc" id="L434">                workingIt.next();</span>
+<span class="fc" id="L435">                workingIt.remove();</span>
             }
 
             // and put the new initial positions that we have found
             // on the list.
-<span class="fc" id="L454">            this.iniPositions.addAll(this.newPositions);</span>
-<span class="fc" id="L455">            this.newPositions.clear();</span>
+<span class="fc" id="L440">            this.iniPositions.addAll(this.newPositions);</span>
+<span class="fc" id="L441">            this.newPositions.clear();</span>
             
-<span class="nc" id="L457">        } catch (IOException e) {</span>
-            
-<span class="nc" id="L459">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="fc" id="L460">        }</span>
+<span class="nc" id="L443">        } catch (IOException e) {</span>
+<span class="nc" id="L444">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="fc" id="L445">        }</span>
         
-<span class="fc" id="L462">        synchronized (docLock) {</span>
+<span class="fc" id="L447">        synchronized (docLock) {</span>
             
-<span class="fc" id="L464">            this.lastPosition = -1;</span>
-<span class="fc" id="L465">            this.change = 0;</span>
-<span class="fc" id="L466">        }</span>
-<span class="fc" id="L467">    }</span>
+<span class="fc" id="L449">            this.lastPosition = -1;</span>
+<span class="fc" id="L450">            this.change = 0;</span>
+<span class="fc" id="L451">        }</span>
+<span class="fc" id="L452">    }</span>
     
     /**
      * Stop the thread's method run()
      */
     public void stopThread() {
-<span class="nc" id="L473">        this.document.clear();</span>
-<span class="nc" id="L474">    }</span>
+<span class="nc" id="L458">        this.document.clear();</span>
+<span class="nc" id="L459">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

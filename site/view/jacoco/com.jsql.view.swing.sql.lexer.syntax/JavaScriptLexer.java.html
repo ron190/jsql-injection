@@ -33,7 +33,7 @@ package com.jsql.view.swing.sql.lexer.syntax;
 import java.io.IOException;
 
 /**
- * JavaScriptLexer is a java script lexer.  Created with JFlex.  An example of how it is used:
+ * JavaScriptLexer is a JavaScript lexer.  Created with JFlex.  An example of how it is used:
  *  &lt;CODE&gt;
  *  &lt;PRE&gt;
  *  JavaScriptLexer shredder = new JavaScriptLexer(System.in);
@@ -65,7 +65,7 @@ public class JavaScriptLexer implements Lexer {
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
    * ZZ_LEXSTATE[l+1] is the state in the DFA for the lexical state l
    *                  at the beginning of a line
-   * l is of the form l = 2*k, k a non negative integer
+   * l is of the form l = 2*k, k a non-negative integer
    */
 <span class="fc" id="L70">  private static final int ZZ_LEXSTATE[] = {</span>
      0, 0
@@ -1083,31 +1083,30 @@ public Token getNextToken() throws IOException {
 <span class="nc" id="L1083">            zzMarkedPosL = zzCurrentPosL;</span>
 <span class="nc bnc" id="L1084" title="All 2 branches missed.">            if ( (zzAttributes &amp; 8) == 8 ) break zzForAction;</span>
           }
-
-<span class="nc" id="L1087">        }</span>
+<span class="nc" id="L1086">        }</span>
       }
 
       // store back cached position
-<span class="fc" id="L1091">      this.zzMarkedPos = zzMarkedPosL;</span>
+<span class="fc" id="L1090">      this.zzMarkedPos = zzMarkedPosL;</span>
 
-<span class="pc bpc" id="L1093" title="2 of 4 branches missed.">      if (zzInput == YYEOF &amp;&amp; this.zzStartRead == this.zzCurrentPos) {</span>
-<span class="fc" id="L1094">        this.zzAtEOF = true;</span>
-<span class="fc" id="L1095">        return null;</span>
+<span class="pc bpc" id="L1092" title="2 of 4 branches missed.">      if (zzInput == YYEOF &amp;&amp; this.zzStartRead == this.zzCurrentPos) {</span>
+<span class="fc" id="L1093">        this.zzAtEOF = true;</span>
+<span class="fc" id="L1094">        return null;</span>
       }
       else {
-<span class="nc bnc" id="L1098" title="All 249 branches missed.">        switch (zzAction &lt; 0 ? zzAction : ZZ_ACTION[zzAction]) {</span>
+<span class="nc bnc" id="L1097" title="All 249 branches missed.">        switch (zzAction &lt; 0 ? zzAction : ZZ_ACTION[zzAction]) {</span>
           case 1:
-<span class="nc" id="L1100">            { this.lastToken = JavaScriptToken.ERROR_IDENTIFIER;</span>
-<span class="nc" id="L1101">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1102">    return (t);</span>
+<span class="nc" id="L1099">            { this.lastToken = JavaScriptToken.ERROR_IDENTIFIER;</span>
+<span class="nc" id="L1100">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1101">    return (t);</span>
             }
-<span class="nc" id="L1104">          case 124: break;</span>
+<span class="nc" id="L1103">          case 124: break;</span>
           case 2:
-<span class="nc" id="L1106">            { this.lastToken = JavaScriptToken.IDENTIFIER;</span>
-<span class="nc" id="L1107">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1108">    return (t);</span>
+<span class="nc" id="L1105">            { this.lastToken = JavaScriptToken.IDENTIFIER;</span>
+<span class="nc" id="L1106">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1107">    return (t);</span>
             }
-<span class="nc" id="L1110">          case 125: break;</span>
+<span class="nc" id="L1109">          case 125: break;</span>
           case 3:
             { /* At this point, the number we found could still be too large.
      * If it is too large, we need to return an error.
@@ -1118,192 +1117,192 @@ public Token getNextToken() throws IOException {
         /* bigger negatives are allowed than positives.  Thus
          * we have to be careful to make sure a neg sign is preserved
          */
-<span class="nc bnc" id="L1121" title="All 2 branches missed.">        if (this.lastToken == JavaScriptToken.OPERATOR_SUBTRACT) {</span>
-<span class="nc" id="L1122">            Integer.decode('-' + this.yytext());</span>
+<span class="nc bnc" id="L1120" title="All 2 branches missed.">        if (this.lastToken == JavaScriptToken.OPERATOR_SUBTRACT) {</span>
+<span class="nc" id="L1121">            Integer.decode('-' + this.yytext());</span>
         } else {
-<span class="nc" id="L1124">            Integer.decode(this.yytext());</span>
+<span class="nc" id="L1123">            Integer.decode(this.yytext());</span>
         }
-<span class="nc" id="L1126">        this.lastToken = JavaScriptToken.LITERAL_INTEGER_DECIMAL;</span>
-<span class="nc" id="L1127">    } catch (NumberFormatException e) {</span>
-<span class="nc" id="L1128">        this.lastToken = JavaScriptToken.ERROR_INTEGER_DECIMIAL_SIZE;</span>
-<span class="nc" id="L1129">    }</span>
-<span class="nc" id="L1130">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1131">    return (t);</span>
+<span class="nc" id="L1125">        this.lastToken = JavaScriptToken.LITERAL_INTEGER_DECIMAL;</span>
+<span class="nc" id="L1126">    } catch (NumberFormatException e) {</span>
+<span class="nc" id="L1127">        this.lastToken = JavaScriptToken.ERROR_INTEGER_DECIMIAL_SIZE;</span>
+<span class="nc" id="L1128">    }</span>
+<span class="nc" id="L1129">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1130">    return (t);</span>
             }
-<span class="nc" id="L1133">          case 126: break;</span>
+<span class="nc" id="L1132">          case 126: break;</span>
           case 4:
-<span class="nc" id="L1135">            { this.lastToken = JavaScriptToken.WHITE_SPACE;</span>
-<span class="nc" id="L1136">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1137">    return (t);</span>
+<span class="nc" id="L1134">            { this.lastToken = JavaScriptToken.WHITE_SPACE;</span>
+<span class="nc" id="L1135">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1136">    return (t);</span>
             }
-<span class="nc" id="L1139">          case 127: break;</span>
+<span class="nc" id="L1138">          case 127: break;</span>
           case 5:
-<span class="nc" id="L1141">            { this.lastToken = JavaScriptToken.OPERATOR_MOD;</span>
-<span class="nc" id="L1142">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1143">    return (t);</span>
+<span class="nc" id="L1140">            { this.lastToken = JavaScriptToken.OPERATOR_MOD;</span>
+<span class="nc" id="L1141">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1142">    return (t);</span>
             }
-<span class="nc" id="L1145">          case 128: break;</span>
+<span class="nc" id="L1144">          case 128: break;</span>
           case 6:
-<span class="nc" id="L1147">            { this.lastToken = JavaScriptToken.ERROR_MALFORMED_UNCLOSED_CHARACTER;</span>
-<span class="nc" id="L1148">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1149">    return (t);</span>
+<span class="nc" id="L1146">            { this.lastToken = JavaScriptToken.ERROR_MALFORMED_UNCLOSED_CHARACTER;</span>
+<span class="nc" id="L1147">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1148">    return (t);</span>
             }
-<span class="nc" id="L1151">          case 129: break;</span>
+<span class="nc" id="L1150">          case 129: break;</span>
           case 7:
             { /* most of these errors have to be caught down near the end of the file.
      * This way, previous expressions of the same length have precedence.
      * This is really useful for catching anything bad by just allowing it
      * to slip through the cracks.
      */
-<span class="nc" id="L1158">    this.lastToken = JavaScriptToken.ERROR_UNCLOSED_STRING;</span>
-<span class="nc" id="L1159">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1160">    return (t);</span>
+<span class="nc" id="L1157">    this.lastToken = JavaScriptToken.ERROR_UNCLOSED_STRING;</span>
+<span class="nc" id="L1158">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1159">    return (t);</span>
             }
-<span class="nc" id="L1162">          case 130: break;</span>
+<span class="nc" id="L1161">          case 130: break;</span>
           case 8:
-<span class="nc" id="L1164">            { this.lastToken = JavaScriptToken.OPERATOR_LESS_THAN;</span>
-<span class="nc" id="L1165">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1166">    return (t);</span>
+<span class="nc" id="L1163">            { this.lastToken = JavaScriptToken.OPERATOR_LESS_THAN;</span>
+<span class="nc" id="L1164">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1165">    return (t);</span>
             }
-<span class="nc" id="L1168">          case 131: break;</span>
+<span class="nc" id="L1167">          case 131: break;</span>
           case 9:
-<span class="nc" id="L1170">            { this.lastToken = JavaScriptToken.OPERATOR_LOGICAL_NOT;</span>
-<span class="nc" id="L1171">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1172">    return (t);</span>
+<span class="nc" id="L1169">            { this.lastToken = JavaScriptToken.OPERATOR_LOGICAL_NOT;</span>
+<span class="nc" id="L1170">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1171">    return (t);</span>
             }
-<span class="nc" id="L1174">          case 132: break;</span>
+<span class="nc" id="L1173">          case 132: break;</span>
           case 10:
-<span class="nc" id="L1176">            { this.lastToken = JavaScriptToken.OPERATOR_SUBTRACT;</span>
-<span class="nc" id="L1177">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1178">    return (t);</span>
+<span class="nc" id="L1175">            { this.lastToken = JavaScriptToken.OPERATOR_SUBTRACT;</span>
+<span class="nc" id="L1176">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1177">    return (t);</span>
             }
-<span class="nc" id="L1180">          case 133: break;</span>
+<span class="nc" id="L1179">          case 133: break;</span>
           case 11:
-<span class="nc" id="L1182">            { this.lastToken = JavaScriptToken.OPERATOR_DIVIDE;</span>
-<span class="nc" id="L1183">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1184">    return (t);</span>
+<span class="nc" id="L1181">            { this.lastToken = JavaScriptToken.OPERATOR_DIVIDE;</span>
+<span class="nc" id="L1182">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1183">    return (t);</span>
             }
-<span class="nc" id="L1186">          case 134: break;</span>
+<span class="nc" id="L1185">          case 134: break;</span>
           case 12:
-<span class="nc" id="L1188">            { this.lastToken = JavaScriptToken.OPERATOR_MULTIPLY;</span>
-<span class="nc" id="L1189">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1190">    return (t);</span>
+<span class="nc" id="L1187">            { this.lastToken = JavaScriptToken.OPERATOR_MULTIPLY;</span>
+<span class="nc" id="L1188">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1189">    return (t);</span>
             }
-<span class="nc" id="L1192">          case 135: break;</span>
+<span class="nc" id="L1191">          case 135: break;</span>
           case 13:
-<span class="nc" id="L1194">            { this.lastToken = JavaScriptToken.OPERATOR_ADD;</span>
-<span class="nc" id="L1195">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1196">    return (t);</span>
+<span class="nc" id="L1193">            { this.lastToken = JavaScriptToken.OPERATOR_ADD;</span>
+<span class="nc" id="L1194">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1195">    return (t);</span>
             }
-<span class="nc" id="L1198">          case 136: break;</span>
+<span class="nc" id="L1197">          case 136: break;</span>
           case 14:
-<span class="nc" id="L1200">            { this.lastToken = JavaScriptToken.SEPARATOR_PERIOD;</span>
-<span class="nc" id="L1201">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1202">    return (t);</span>
+<span class="nc" id="L1199">            { this.lastToken = JavaScriptToken.SEPARATOR_PERIOD;</span>
+<span class="nc" id="L1200">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1201">    return (t);</span>
             }
-<span class="nc" id="L1204">          case 137: break;</span>
+<span class="nc" id="L1203">          case 137: break;</span>
           case 15:
-<span class="nc" id="L1206">            { this.lastToken = JavaScriptToken.SEPARATOR_LPAREN;</span>
-<span class="nc" id="L1207">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1208">    return (t);</span>
+<span class="nc" id="L1205">            { this.lastToken = JavaScriptToken.SEPARATOR_LPAREN;</span>
+<span class="nc" id="L1206">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1207">    return (t);</span>
             }
-<span class="nc" id="L1210">          case 138: break;</span>
+<span class="nc" id="L1209">          case 138: break;</span>
           case 16:
-<span class="nc" id="L1212">            { this.lastToken = JavaScriptToken.SEPARATOR_RPAREN;</span>
-<span class="nc" id="L1213">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1214">    return (t);</span>
+<span class="nc" id="L1211">            { this.lastToken = JavaScriptToken.SEPARATOR_RPAREN;</span>
+<span class="nc" id="L1212">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1213">    return (t);</span>
             }
-<span class="nc" id="L1216">          case 139: break;</span>
+<span class="nc" id="L1215">          case 139: break;</span>
           case 17:
-<span class="nc" id="L1218">            { this.lastToken = JavaScriptToken.SEPARATOR_LBRACE;</span>
-<span class="nc" id="L1219">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1220">    return (t);</span>
+<span class="nc" id="L1217">            { this.lastToken = JavaScriptToken.SEPARATOR_LBRACE;</span>
+<span class="nc" id="L1218">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1219">    return (t);</span>
             }
-<span class="nc" id="L1222">          case 140: break;</span>
+<span class="nc" id="L1221">          case 140: break;</span>
           case 18:
-<span class="nc" id="L1224">            { this.lastToken = JavaScriptToken.SEPARATOR_RBRACE;</span>
-<span class="nc" id="L1225">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1226">    return (t);</span>
+<span class="nc" id="L1223">            { this.lastToken = JavaScriptToken.SEPARATOR_RBRACE;</span>
+<span class="nc" id="L1224">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1225">    return (t);</span>
             }
-<span class="nc" id="L1228">          case 141: break;</span>
+<span class="nc" id="L1227">          case 141: break;</span>
           case 19:
-<span class="nc" id="L1230">            { this.lastToken = JavaScriptToken.SEPARATOR_LBRACKET;</span>
-<span class="nc" id="L1231">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1232">    return (t);</span>
+<span class="nc" id="L1229">            { this.lastToken = JavaScriptToken.SEPARATOR_LBRACKET;</span>
+<span class="nc" id="L1230">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1231">    return (t);</span>
             }
-<span class="nc" id="L1234">          case 142: break;</span>
+<span class="nc" id="L1233">          case 142: break;</span>
           case 20:
-<span class="nc" id="L1236">            { this.lastToken = JavaScriptToken.SEPARATOR_RBRACKET;</span>
-<span class="nc" id="L1237">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1238">    return (t);</span>
+<span class="nc" id="L1235">            { this.lastToken = JavaScriptToken.SEPARATOR_RBRACKET;</span>
+<span class="nc" id="L1236">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1237">    return (t);</span>
             }
-<span class="nc" id="L1240">          case 143: break;</span>
+<span class="nc" id="L1239">          case 143: break;</span>
           case 21:
-<span class="nc" id="L1242">            { this.lastToken = JavaScriptToken.SEPARATOR_SEMICOLON;</span>
-<span class="nc" id="L1243">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1244">    return (t);</span>
+<span class="nc" id="L1241">            { this.lastToken = JavaScriptToken.SEPARATOR_SEMICOLON;</span>
+<span class="nc" id="L1242">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1243">    return (t);</span>
             }
-<span class="nc" id="L1246">          case 144: break;</span>
+<span class="nc" id="L1245">          case 144: break;</span>
           case 22:
-<span class="nc" id="L1248">            { this.lastToken = JavaScriptToken.SEPARATOR_COMMA;</span>
-<span class="nc" id="L1249">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1250">    return (t);</span>
+<span class="nc" id="L1247">            { this.lastToken = JavaScriptToken.SEPARATOR_COMMA;</span>
+<span class="nc" id="L1248">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1249">    return (t);</span>
             }
-<span class="nc" id="L1252">          case 145: break;</span>
+<span class="nc" id="L1251">          case 145: break;</span>
           case 23:
-<span class="nc" id="L1254">            { this.lastToken = JavaScriptToken.OPERATOR_ASSIGN;</span>
-<span class="nc" id="L1255">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1256">    return (t);</span>
+<span class="nc" id="L1253">            { this.lastToken = JavaScriptToken.OPERATOR_ASSIGN;</span>
+<span class="nc" id="L1254">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1255">    return (t);</span>
             }
-<span class="nc" id="L1258">          case 146: break;</span>
+<span class="nc" id="L1257">          case 146: break;</span>
           case 24:
-<span class="nc" id="L1260">            { this.lastToken = JavaScriptToken.OPERATOR_GREATER_THAN;</span>
-<span class="nc" id="L1261">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1262">    return (t);</span>
+<span class="nc" id="L1259">            { this.lastToken = JavaScriptToken.OPERATOR_GREATER_THAN;</span>
+<span class="nc" id="L1260">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1261">    return (t);</span>
             }
-<span class="nc" id="L1264">          case 147: break;</span>
+<span class="nc" id="L1263">          case 147: break;</span>
           case 25:
-<span class="nc" id="L1266">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_COMPLIMENT;</span>
-<span class="nc" id="L1267">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1268">    return (t);</span>
+<span class="nc" id="L1265">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_COMPLIMENT;</span>
+<span class="nc" id="L1266">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1267">    return (t);</span>
             }
-<span class="nc" id="L1270">          case 148: break;</span>
+<span class="nc" id="L1269">          case 148: break;</span>
           case 26:
-<span class="nc" id="L1272">            { this.lastToken = JavaScriptToken.OPERATOR_QUESTION;</span>
-<span class="nc" id="L1273">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1274">    return (t);</span>
+<span class="nc" id="L1271">            { this.lastToken = JavaScriptToken.OPERATOR_QUESTION;</span>
+<span class="nc" id="L1272">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1273">    return (t);</span>
             }
-<span class="nc" id="L1276">          case 149: break;</span>
+<span class="nc" id="L1275">          case 149: break;</span>
           case 27:
-<span class="nc" id="L1278">            { this.lastToken = JavaScriptToken.OPERATOR_COLON;</span>
-<span class="nc" id="L1279">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1280">    return (t);</span>
+<span class="nc" id="L1277">            { this.lastToken = JavaScriptToken.OPERATOR_COLON;</span>
+<span class="nc" id="L1278">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1279">    return (t);</span>
             }
-<span class="nc" id="L1282">          case 150: break;</span>
+<span class="nc" id="L1281">          case 150: break;</span>
           case 28:
-<span class="nc" id="L1284">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_AND;</span>
-<span class="nc" id="L1285">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1286">    return (t);</span>
+<span class="nc" id="L1283">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_AND;</span>
+<span class="nc" id="L1284">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1285">    return (t);</span>
             }
-<span class="nc" id="L1288">          case 151: break;</span>
+<span class="nc" id="L1287">          case 151: break;</span>
           case 29:
-<span class="nc" id="L1290">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_OR;</span>
-<span class="nc" id="L1291">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1292">    return (t);</span>
+<span class="nc" id="L1289">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_OR;</span>
+<span class="nc" id="L1290">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1291">    return (t);</span>
             }
-<span class="nc" id="L1294">          case 152: break;</span>
+<span class="nc" id="L1293">          case 152: break;</span>
           case 30:
-<span class="nc" id="L1296">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_XOR;</span>
-<span class="nc" id="L1297">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
-<span class="nc" id="L1298">    return (t);</span>
+<span class="nc" id="L1295">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_XOR;</span>
+<span class="nc" id="L1296">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));</span>
+<span class="nc" id="L1297">    return (t);</span>
             }
-<span class="nc" id="L1300">          case 153: break;</span>
+<span class="nc" id="L1299">          case 153: break;</span>
           case 31:
-<span class="nc" id="L1302">            { this.lastToken = JavaScriptToken.ERROR_FLOAT;</span>
-<span class="nc" id="L1303">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1304">    return (t);</span>
+<span class="nc" id="L1301">            { this.lastToken = JavaScriptToken.ERROR_FLOAT;</span>
+<span class="nc" id="L1302">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1303">    return (t);</span>
             }
-<span class="nc" id="L1306">          case 154: break;</span>
+<span class="nc" id="L1305">          case 154: break;</span>
           case 32:
             { /* Sun s java has a few bugs here.  Their MAX_FLOAT and MIN_FLOAT do not
      * quite match the spec.  Its not far off, so we will deal.  If they fix
@@ -1311,669 +1310,667 @@ public Token getNextToken() throws IOException {
      */
     Float f;
     try {
-<span class="nc" id="L1314">        f = Float.valueOf(this.yytext());</span>
-<span class="nc bnc" id="L1315" title="All 4 branches missed.">        if (f.isInfinite() || f.compareTo(0f) == 0) {</span>
-<span class="nc" id="L1316">            this.lastToken = JavaScriptToken.ERROR_FLOAT_SIZE;</span>
+<span class="nc" id="L1313">        f = Float.valueOf(this.yytext());</span>
+<span class="nc bnc" id="L1314" title="All 4 branches missed.">        if (f.isInfinite() || f.compareTo(0f) == 0) {</span>
+<span class="nc" id="L1315">            this.lastToken = JavaScriptToken.ERROR_FLOAT_SIZE;</span>
         } else {
-<span class="nc" id="L1318">            this.lastToken = JavaScriptToken.LITERAL_FLOATING_POINT;</span>
+<span class="nc" id="L1317">            this.lastToken = JavaScriptToken.LITERAL_FLOATING_POINT;</span>
         }
-<span class="nc" id="L1320">    } catch (NumberFormatException e) {</span>
-<span class="nc" id="L1321">        this.lastToken = JavaScriptToken.ERROR_FLOAT_SIZE;</span>
-<span class="nc" id="L1322">    }</span>
-<span class="nc" id="L1323">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1324">    return (t);</span>
+<span class="nc" id="L1319">    } catch (NumberFormatException e) {</span>
+<span class="nc" id="L1320">        this.lastToken = JavaScriptToken.ERROR_FLOAT_SIZE;</span>
+<span class="nc" id="L1321">    }</span>
+<span class="nc" id="L1322">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1323">    return (t);</span>
             }
-<span class="nc" id="L1326">          case 155: break;</span>
+<span class="nc" id="L1325">          case 155: break;</span>
           case 33:
             { try {
-<span class="nc bnc" id="L1329" title="All 2 branches missed.">        if (this.lastToken == JavaScriptToken.OPERATOR_SUBTRACT) {</span>
-<span class="nc" id="L1330">            Long.decode('-' + this.yytext().substring(0,this.yytext().length()-1));</span>
+<span class="nc bnc" id="L1328" title="All 2 branches missed.">        if (this.lastToken == JavaScriptToken.OPERATOR_SUBTRACT) {</span>
+<span class="nc" id="L1329">            Long.decode('-' + this.yytext().substring(0,this.yytext().length()-1));</span>
         } else {
-<span class="nc" id="L1332">            Long.decode(this.yytext().substring(0,this.yytext().length()-1));</span>
+<span class="nc" id="L1331">            Long.decode(this.yytext().substring(0,this.yytext().length()-1));</span>
         }
-<span class="nc" id="L1334">        this.lastToken = JavaScriptToken.LITERAL_LONG_DECIMAL;</span>
-<span class="nc" id="L1335">    } catch (NumberFormatException e) {</span>
-<span class="nc" id="L1336">        this.lastToken = JavaScriptToken.ERROR_LONG_DECIMIAL_SIZE;</span>
-<span class="nc" id="L1337">    }</span>
-<span class="nc" id="L1338">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1339">    return (t);</span>
+<span class="nc" id="L1333">        this.lastToken = JavaScriptToken.LITERAL_LONG_DECIMAL;</span>
+<span class="nc" id="L1334">    } catch (NumberFormatException e) {</span>
+<span class="nc" id="L1335">        this.lastToken = JavaScriptToken.ERROR_LONG_DECIMIAL_SIZE;</span>
+<span class="nc" id="L1336">    }</span>
+<span class="nc" id="L1337">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1338">    return (t);</span>
             }
-<span class="nc" id="L1341">          case 156: break;</span>
+<span class="nc" id="L1340">          case 156: break;</span>
           case 34:
             { Double d;
     try {
-<span class="nc" id="L1345">        d = Double.valueOf(this.yytext());</span>
-<span class="nc bnc" id="L1346" title="All 4 branches missed.">        if (d.isInfinite() || d.compareTo(0d) == 0) {</span>
-<span class="nc" id="L1347">            this.lastToken = JavaScriptToken.ERROR_DOUBLE_SIZE;</span>
+<span class="nc" id="L1344">        d = Double.valueOf(this.yytext());</span>
+<span class="nc bnc" id="L1345" title="All 4 branches missed.">        if (d.isInfinite() || d.compareTo(0d) == 0) {</span>
+<span class="nc" id="L1346">            this.lastToken = JavaScriptToken.ERROR_DOUBLE_SIZE;</span>
         } else {
-<span class="nc" id="L1349">            this.lastToken = JavaScriptToken.LITERAL_DOUBLE;</span>
+<span class="nc" id="L1348">            this.lastToken = JavaScriptToken.LITERAL_DOUBLE;</span>
         }
-<span class="nc" id="L1351">    } catch (NumberFormatException e) {</span>
-<span class="nc" id="L1352">        this.lastToken = JavaScriptToken.ERROR_DOUBLE_SIZE;</span>
-<span class="nc" id="L1353">    }</span>
-<span class="nc" id="L1354">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1355">    return (t);</span>
+<span class="nc" id="L1350">    } catch (NumberFormatException e) {</span>
+<span class="nc" id="L1351">        this.lastToken = JavaScriptToken.ERROR_DOUBLE_SIZE;</span>
+<span class="nc" id="L1352">    }</span>
+<span class="nc" id="L1353">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1354">    return (t);</span>
             }
-<span class="nc" id="L1357">          case 157: break;</span>
+<span class="nc" id="L1356">          case 157: break;</span>
           case 35:
             { /* An Octal number cannot be too big.  After removing
      * initial zeros, It can have 11 digits, the first
      * of which must be 3 or less.
      */
-<span class="nc" id="L1363">    this.lastToken = JavaScriptToken.LITERAL_INTEGER_OCTAL;</span>
+<span class="nc" id="L1362">    this.lastToken = JavaScriptToken.LITERAL_INTEGER_OCTAL;</span>
     int i;
-<span class="nc" id="L1365">    int length =this.yytext().length();</span>
-<span class="nc bnc" id="L1366" title="All 2 branches missed.">    for (i=1 ; i&lt;length-11; i++) {</span>
+<span class="nc" id="L1364">    int length =this.yytext().length();</span>
+<span class="nc bnc" id="L1365" title="All 2 branches missed.">    for (i=1 ; i&lt;length-11; i++) {</span>
         //check for initial zeros
-<span class="nc bnc" id="L1368" title="All 2 branches missed.">        if (this.yytext().charAt(i) != '0') {</span>
-<span class="nc" id="L1369">            this.lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;</span>
+<span class="nc bnc" id="L1367" title="All 2 branches missed.">        if (this.yytext().charAt(i) != '0') {</span>
+<span class="nc" id="L1368">            this.lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;</span>
         }
     }
-<span class="nc bnc" id="L1372" title="All 2 branches missed.">    if (length - i &gt; 11) {</span>
-<span class="nc" id="L1373">        this.lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;</span>
-<span class="nc bnc" id="L1374" title="All 2 branches missed.">    } else if (length - i == 11) {</span>
+<span class="nc bnc" id="L1371" title="All 2 branches missed.">    if (length - i &gt; 11) {</span>
+<span class="nc" id="L1372">        this.lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;</span>
+<span class="nc bnc" id="L1373" title="All 2 branches missed.">    } else if (length - i == 11) {</span>
         // if the rest of the number is as big as possible
         // the first digit can only be 3 or less
-<span class="nc bnc" id="L1377" title="All 4 branches missed.">        if (this.yytext().charAt(i) != '0' &amp;&amp; this.yytext().charAt(i) != '1' &amp;&amp;</span>
-<span class="nc bnc" id="L1378" title="All 4 branches missed.">        this.yytext().charAt(i) != '2' &amp;&amp; this.yytext().charAt(i) != '3') {</span>
-<span class="nc" id="L1379">            this.lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;</span>
+<span class="nc bnc" id="L1376" title="All 4 branches missed.">        if (this.yytext().charAt(i) != '0' &amp;&amp; this.yytext().charAt(i) != '1' &amp;&amp;</span>
+<span class="nc bnc" id="L1377" title="All 4 branches missed.">        this.yytext().charAt(i) != '2' &amp;&amp; this.yytext().charAt(i) != '3') {</span>
+<span class="nc" id="L1378">            this.lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;</span>
         }
     }
     // Otherwise, it should be OK
-<span class="nc" id="L1383">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1384">    return (t);</span>
+<span class="nc" id="L1382">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1383">    return (t);</span>
             }
-<span class="nc" id="L1386">          case 158: break;</span>
+<span class="nc" id="L1385">          case 158: break;</span>
           case 36:
             { /* catch the case of a zero in parsing, so that we do not incorrectly
      * give an error that a number was rounded to zero
      */
-<span class="nc" id="L1391">    this.lastToken = JavaScriptToken.LITERAL_FLOATING_POINT;</span>
-<span class="nc" id="L1392">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1393">    return (t);</span>
+<span class="nc" id="L1390">    this.lastToken = JavaScriptToken.LITERAL_FLOATING_POINT;</span>
+<span class="nc" id="L1391">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1392">    return (t);</span>
             }
-<span class="nc" id="L1395">          case 159: break;</span>
+<span class="nc" id="L1394">          case 159: break;</span>
           case 37:
-<span class="nc" id="L1397">            { this.lastToken = JavaScriptToken.LITERAL_DOUBLE;</span>
-<span class="nc" id="L1398">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1399">    return (t);</span>
+<span class="nc" id="L1396">            { this.lastToken = JavaScriptToken.LITERAL_DOUBLE;</span>
+<span class="nc" id="L1397">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1398">    return (t);</span>
             }
-<span class="nc" id="L1401">          case 160: break;</span>
+<span class="nc" id="L1400">          case 160: break;</span>
           case 38:
-<span class="nc" id="L1403">            { this.lastToken = JavaScriptToken.OPERATOR_MOD_ASSIGN;</span>
-<span class="nc" id="L1404">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1405">    return (t);</span>
+<span class="nc" id="L1402">            { this.lastToken = JavaScriptToken.OPERATOR_MOD_ASSIGN;</span>
+<span class="nc" id="L1403">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1404">    return (t);</span>
             }
-<span class="nc" id="L1407">          case 161: break;</span>
+<span class="nc" id="L1406">          case 161: break;</span>
           case 39:
-<span class="nc" id="L1409">            { this.lastToken = JavaScriptToken.ERROR_UNCLOSED_CHARACTER;</span>
-<span class="nc" id="L1410">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1411">    return (t);</span>
+<span class="nc" id="L1408">            { this.lastToken = JavaScriptToken.ERROR_UNCLOSED_CHARACTER;</span>
+<span class="nc" id="L1409">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1410">    return (t);</span>
             }
-<span class="nc" id="L1413">          case 162: break;</span>
+<span class="nc" id="L1412">          case 162: break;</span>
           case 40:
-<span class="nc" id="L1415">            { this.lastToken = JavaScriptToken.ERROR_MALFORMED_CHARACTER;</span>
-<span class="nc" id="L1416">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1417">    return (t);</span>
+<span class="nc" id="L1414">            { this.lastToken = JavaScriptToken.ERROR_MALFORMED_CHARACTER;</span>
+<span class="nc" id="L1415">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1416">    return (t);</span>
             }
-<span class="nc" id="L1419">          case 163: break;</span>
+<span class="nc" id="L1418">          case 163: break;</span>
           case 41:
-<span class="nc" id="L1421">            { this.lastToken = JavaScriptToken.ERROR_MALFORMED_UNCLOSED_STRING;</span>
-<span class="nc" id="L1422">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1423">    return (t);</span>
+<span class="nc" id="L1420">            { this.lastToken = JavaScriptToken.ERROR_MALFORMED_UNCLOSED_STRING;</span>
+<span class="nc" id="L1421">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1422">    return (t);</span>
             }
-<span class="nc" id="L1425">          case 164: break;</span>
+<span class="nc" id="L1424">          case 164: break;</span>
           case 42:
-<span class="nc" id="L1427">            { this.lastToken = JavaScriptToken.LITERAL_STRING;</span>
-<span class="nc" id="L1428">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1429">    return (t);</span>
+<span class="nc" id="L1426">            { this.lastToken = JavaScriptToken.LITERAL_STRING;</span>
+<span class="nc" id="L1427">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1428">    return (t);</span>
             }
-<span class="nc" id="L1431">          case 165: break;</span>
+<span class="nc" id="L1430">          case 165: break;</span>
           case 43:
-<span class="nc" id="L1433">            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_LEFT;</span>
-<span class="nc" id="L1434">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1435">    return (t);</span>
+<span class="nc" id="L1432">            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_LEFT;</span>
+<span class="nc" id="L1433">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1434">    return (t);</span>
             }
-<span class="nc" id="L1437">          case 166: break;</span>
+<span class="nc" id="L1436">          case 166: break;</span>
           case 44:
-<span class="nc" id="L1439">            { this.lastToken = JavaScriptToken.OPERATOR_LESS_THAN_OR_EQUAL;</span>
-<span class="nc" id="L1440">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1441">    return (t);</span>
+<span class="nc" id="L1438">            { this.lastToken = JavaScriptToken.OPERATOR_LESS_THAN_OR_EQUAL;</span>
+<span class="nc" id="L1439">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1440">    return (t);</span>
             }
-<span class="nc" id="L1443">          case 167: break;</span>
+<span class="nc" id="L1442">          case 167: break;</span>
           case 45:
-<span class="nc" id="L1445">            { this.lastToken = JavaScriptToken.OPERATOR_NOT_EQUAL;</span>
-<span class="nc" id="L1446">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1447">    return (t);</span>
+<span class="nc" id="L1444">            { this.lastToken = JavaScriptToken.OPERATOR_NOT_EQUAL;</span>
+<span class="nc" id="L1445">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1446">    return (t);</span>
             }
-<span class="nc" id="L1449">          case 168: break;</span>
+<span class="nc" id="L1448">          case 168: break;</span>
           case 46:
-<span class="nc" id="L1451">            { this.lastToken = JavaScriptToken.OPERATOR_DECREMENT;</span>
-<span class="nc" id="L1452">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1453">    return (t);</span>
+<span class="nc" id="L1450">            { this.lastToken = JavaScriptToken.OPERATOR_DECREMENT;</span>
+<span class="nc" id="L1451">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1452">    return (t);</span>
             }
-<span class="nc" id="L1455">          case 169: break;</span>
+<span class="nc" id="L1454">          case 169: break;</span>
           case 47:
-<span class="nc" id="L1457">            { this.lastToken = JavaScriptToken.OPERATOR_SUBTRACT_ASSIGN;</span>
-<span class="nc" id="L1458">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1459">    return (t);</span>
+<span class="nc" id="L1456">            { this.lastToken = JavaScriptToken.OPERATOR_SUBTRACT_ASSIGN;</span>
+<span class="nc" id="L1457">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1458">    return (t);</span>
             }
-<span class="nc" id="L1461">          case 170: break;</span>
+<span class="nc" id="L1460">          case 170: break;</span>
           case 48:
-<span class="nc" id="L1463">            { this.lastToken = JavaScriptToken.COMMENT_END_OF_LINE;</span>
-<span class="nc" id="L1464">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1465">    return (t);</span>
+<span class="nc" id="L1462">            { this.lastToken = JavaScriptToken.COMMENT_END_OF_LINE;</span>
+<span class="nc" id="L1463">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1464">    return (t);</span>
             }
-<span class="nc" id="L1467">          case 171: break;</span>
+<span class="nc" id="L1466">          case 171: break;</span>
           case 49:
-<span class="nc" id="L1469">            { this.lastToken = JavaScriptToken.ERROR_UNCLOSED_COMMENT;</span>
-<span class="nc" id="L1470">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1471">    return (t);</span>
+<span class="nc" id="L1468">            { this.lastToken = JavaScriptToken.ERROR_UNCLOSED_COMMENT;</span>
+<span class="nc" id="L1469">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1470">    return (t);</span>
             }
-<span class="nc" id="L1473">          case 172: break;</span>
+<span class="nc" id="L1472">          case 172: break;</span>
           case 50:
-<span class="nc" id="L1475">            { this.lastToken = JavaScriptToken.OPERATOR_DIVIDE_ASSIGN;</span>
-<span class="nc" id="L1476">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1477">    return (t);</span>
+<span class="nc" id="L1474">            { this.lastToken = JavaScriptToken.OPERATOR_DIVIDE_ASSIGN;</span>
+<span class="nc" id="L1475">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1476">    return (t);</span>
             }
-<span class="nc" id="L1479">          case 173: break;</span>
+<span class="nc" id="L1478">          case 173: break;</span>
           case 51:
-<span class="nc" id="L1481">            { this.lastToken = JavaScriptToken.OPERATOR_MULTIPLY_ASSIGN;</span>
-<span class="nc" id="L1482">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1483">    return (t);</span>
+<span class="nc" id="L1480">            { this.lastToken = JavaScriptToken.OPERATOR_MULTIPLY_ASSIGN;</span>
+<span class="nc" id="L1481">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1482">    return (t);</span>
             }
-<span class="nc" id="L1485">          case 174: break;</span>
+<span class="nc" id="L1484">          case 174: break;</span>
           case 52:
-<span class="nc" id="L1487">            { this.lastToken = JavaScriptToken.OPERATOR_INCREMENT;</span>
-<span class="nc" id="L1488">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1489">    return (t);</span>
+<span class="nc" id="L1486">            { this.lastToken = JavaScriptToken.OPERATOR_INCREMENT;</span>
+<span class="nc" id="L1487">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1488">    return (t);</span>
             }
-<span class="nc" id="L1491">          case 175: break;</span>
+<span class="nc" id="L1490">          case 175: break;</span>
           case 53:
-<span class="nc" id="L1493">            { this.lastToken = JavaScriptToken.OPERATOR_ADD_ASSIGN;</span>
-<span class="nc" id="L1494">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1495">    return (t);</span>
+<span class="nc" id="L1492">            { this.lastToken = JavaScriptToken.OPERATOR_ADD_ASSIGN;</span>
+<span class="nc" id="L1493">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1494">    return (t);</span>
             }
-<span class="nc" id="L1497">          case 176: break;</span>
+<span class="nc" id="L1496">          case 176: break;</span>
           case 54:
-<span class="nc" id="L1499">            { this.lastToken = JavaScriptToken.RESERVED_WORD_DO;</span>
-<span class="nc" id="L1500">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1501">    return (t);</span>
+<span class="nc" id="L1498">            { this.lastToken = JavaScriptToken.RESERVED_WORD_DO;</span>
+<span class="nc" id="L1499">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1500">    return (t);</span>
             }
-<span class="nc" id="L1503">          case 177: break;</span>
+<span class="nc" id="L1502">          case 177: break;</span>
           case 55:
-<span class="nc" id="L1505">            { this.lastToken = JavaScriptToken.OPERATOR_EQUAL;</span>
-<span class="nc" id="L1506">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1507">    return (t);</span>
+<span class="nc" id="L1504">            { this.lastToken = JavaScriptToken.OPERATOR_EQUAL;</span>
+<span class="nc" id="L1505">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1506">    return (t);</span>
             }
-<span class="nc" id="L1509">          case 178: break;</span>
+<span class="nc" id="L1508">          case 178: break;</span>
           case 56:
-<span class="nc" id="L1511">            { this.lastToken = JavaScriptToken.OPERATOR_GREATER_THAN_OR_EQUAL;</span>
-<span class="nc" id="L1512">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1513">    return (t);</span>
+<span class="nc" id="L1510">            { this.lastToken = JavaScriptToken.OPERATOR_GREATER_THAN_OR_EQUAL;</span>
+<span class="nc" id="L1511">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1512">    return (t);</span>
             }
-<span class="nc" id="L1515">          case 179: break;</span>
+<span class="nc" id="L1514">          case 179: break;</span>
           case 57:
-<span class="nc" id="L1517">            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT;</span>
-<span class="nc" id="L1518">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1519">    return (t);</span>
+<span class="nc" id="L1516">            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT;</span>
+<span class="nc" id="L1517">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1518">    return (t);</span>
             }
-<span class="nc" id="L1521">          case 180: break;</span>
+<span class="nc" id="L1520">          case 180: break;</span>
           case 58:
-<span class="nc" id="L1523">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_AND_ASSIGN;</span>
-<span class="nc" id="L1524">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1525">    return (t);</span>
+<span class="nc" id="L1522">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_AND_ASSIGN;</span>
+<span class="nc" id="L1523">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1524">    return (t);</span>
             }
-<span class="nc" id="L1527">          case 181: break;</span>
+<span class="nc" id="L1526">          case 181: break;</span>
           case 59:
-<span class="nc" id="L1529">            { this.lastToken = JavaScriptToken.OPERATOR_LOGICAL_AND;</span>
-<span class="nc" id="L1530">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1531">    return (t);</span>
+<span class="nc" id="L1528">            { this.lastToken = JavaScriptToken.OPERATOR_LOGICAL_AND;</span>
+<span class="nc" id="L1529">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1530">    return (t);</span>
             }
-<span class="nc" id="L1533">          case 182: break;</span>
+<span class="nc" id="L1532">          case 182: break;</span>
           case 60:
-<span class="nc" id="L1535">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_OR_ASSIGN;</span>
-<span class="nc" id="L1536">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1537">    return (t);</span>
+<span class="nc" id="L1534">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_OR_ASSIGN;</span>
+<span class="nc" id="L1535">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1536">    return (t);</span>
             }
-<span class="nc" id="L1539">          case 183: break;</span>
+<span class="nc" id="L1538">          case 183: break;</span>
           case 61:
-<span class="nc" id="L1541">            { this.lastToken = JavaScriptToken.OPERATOR_LOGICAL_OR;</span>
-<span class="nc" id="L1542">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1543">    return (t);</span>
+<span class="nc" id="L1540">            { this.lastToken = JavaScriptToken.OPERATOR_LOGICAL_OR;</span>
+<span class="nc" id="L1541">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1542">    return (t);</span>
             }
-<span class="nc" id="L1545">          case 184: break;</span>
+<span class="nc" id="L1544">          case 184: break;</span>
           case 62:
-<span class="nc" id="L1547">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_XOR_ASSIGN;</span>
-<span class="nc" id="L1548">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1549">    return (t);</span>
+<span class="nc" id="L1546">            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_XOR_ASSIGN;</span>
+<span class="nc" id="L1547">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1548">    return (t);</span>
             }
-<span class="nc" id="L1551">          case 185: break;</span>
+<span class="nc" id="L1550">          case 185: break;</span>
           case 63:
-<span class="nc" id="L1553">            { this.lastToken = JavaScriptToken.RESERVED_WORD_IN;</span>
-<span class="nc" id="L1554">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1555">    return (t);</span>
+<span class="nc" id="L1552">            { this.lastToken = JavaScriptToken.RESERVED_WORD_IN;</span>
+<span class="nc" id="L1553">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1554">    return (t);</span>
             }
-<span class="nc" id="L1557">          case 186: break;</span>
+<span class="nc" id="L1556">          case 186: break;</span>
           case 64:
-<span class="nc" id="L1559">            { this.lastToken = JavaScriptToken.RESERVED_WORD_IF;</span>
-<span class="nc" id="L1560">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+2, this.nextState));</span>
-<span class="nc" id="L1561">    return (t);</span>
+<span class="nc" id="L1558">            { this.lastToken = JavaScriptToken.RESERVED_WORD_IF;</span>
+<span class="nc" id="L1559">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+2, this.nextState));</span>
+<span class="nc" id="L1560">    return (t);</span>
             }
-<span class="nc" id="L1563">          case 187: break;</span>
+<span class="nc" id="L1562">          case 187: break;</span>
           case 65:
             { /* An Octal number cannot be too big.  After removing
      * initial zeros, It can have 23 digits, the first
      * of which must be 1 or less.  The last will be the L or l
      * at the end.
      */
-<span class="nc" id="L1570">    this.lastToken = JavaScriptToken.LITERAL_LONG_OCTAL;</span>
+<span class="nc" id="L1569">    this.lastToken = JavaScriptToken.LITERAL_LONG_OCTAL;</span>
     int i;
-<span class="nc" id="L1572">    int length =this.yytext().length();</span>
-<span class="nc bnc" id="L1573" title="All 2 branches missed.">    for (i=1 ; i&lt;length-23; i++) {</span>
+<span class="nc" id="L1571">    int length =this.yytext().length();</span>
+<span class="nc bnc" id="L1572" title="All 2 branches missed.">    for (i=1 ; i&lt;length-23; i++) {</span>
         //check for initial zeros
-<span class="nc bnc" id="L1575" title="All 2 branches missed.">        if (this.yytext().charAt(i) != '0') {</span>
-<span class="nc" id="L1576">            this.lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;</span>
+<span class="nc bnc" id="L1574" title="All 2 branches missed.">        if (this.yytext().charAt(i) != '0') {</span>
+<span class="nc" id="L1575">            this.lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;</span>
         }
     }
-<span class="nc bnc" id="L1579" title="All 2 branches missed.">    if (length - i &gt; 23) {</span>
-<span class="nc" id="L1580">        this.lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;</span>
-<span class="nc bnc" id="L1581" title="All 2 branches missed.">    } else if (length - i == 23) {</span>
+<span class="nc bnc" id="L1578" title="All 2 branches missed.">    if (length - i &gt; 23) {</span>
+<span class="nc" id="L1579">        this.lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;</span>
+<span class="nc bnc" id="L1580" title="All 2 branches missed.">    } else if (length - i == 23) {</span>
         // if the rest of the number is as big as possible
         // the first digit can only be 3 or less
-<span class="nc bnc" id="L1584" title="All 4 branches missed.">        if (this.yytext().charAt(i) != '0' &amp;&amp; this.yytext().charAt(i) != '1') {</span>
-<span class="nc" id="L1585">            this.lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;</span>
+<span class="nc bnc" id="L1583" title="All 4 branches missed.">        if (this.yytext().charAt(i) != '0' &amp;&amp; this.yytext().charAt(i) != '1') {</span>
+<span class="nc" id="L1584">            this.lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;</span>
         }
     }
     // Otherwise, it should be OK
-<span class="nc" id="L1589">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1590">    return (t);</span>
+<span class="nc" id="L1588">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1589">    return (t);</span>
             }
-<span class="nc" id="L1592">          case 188: break;</span>
+<span class="nc" id="L1591">          case 188: break;</span>
           case 66:
             { /* A Hex number cannot be too big.  After removing
      * initial zeros, It can have 8 digits
      */
-<span class="nc" id="L1597">    this.lastToken = JavaScriptToken.LITERAL_INTEGER_HEXIDECIMAL;</span>
+<span class="nc" id="L1596">    this.lastToken = JavaScriptToken.LITERAL_INTEGER_HEXIDECIMAL;</span>
     int i;
-<span class="nc" id="L1599">    int length =this.yytext().length();</span>
-<span class="nc bnc" id="L1600" title="All 2 branches missed.">    for (i=2 ; i&lt;length-8; i++) {</span>
+<span class="nc" id="L1598">    int length =this.yytext().length();</span>
+<span class="nc bnc" id="L1599" title="All 2 branches missed.">    for (i=2 ; i&lt;length-8; i++) {</span>
         //check for initial zeros
-<span class="nc bnc" id="L1602" title="All 2 branches missed.">        if (this.yytext().charAt(i) != '0') {</span>
-<span class="nc" id="L1603">            this.lastToken = JavaScriptToken.ERROR_INTEGER_HEXIDECIMAL_SIZE;</span>
+<span class="nc bnc" id="L1601" title="All 2 branches missed.">        if (this.yytext().charAt(i) != '0') {</span>
+<span class="nc" id="L1602">            this.lastToken = JavaScriptToken.ERROR_INTEGER_HEXIDECIMAL_SIZE;</span>
         }
     }
-<span class="nc bnc" id="L1606" title="All 2 branches missed.">    if (length - i &gt; 8) {</span>
-<span class="nc" id="L1607">        this.lastToken = JavaScriptToken.ERROR_INTEGER_HEXIDECIMAL_SIZE;</span>
+<span class="nc bnc" id="L1605" title="All 2 branches missed.">    if (length - i &gt; 8) {</span>
+<span class="nc" id="L1606">        this.lastToken = JavaScriptToken.ERROR_INTEGER_HEXIDECIMAL_SIZE;</span>
     }
-<span class="nc" id="L1609">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1610">    return (t);</span>
+<span class="nc" id="L1608">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1609">    return (t);</span>
             }
-<span class="nc" id="L1612">          case 189: break;</span>
+<span class="nc" id="L1611">          case 189: break;</span>
           case 67:
-<span class="nc" id="L1614">            { this.lastToken = JavaScriptToken.RESERVED_WORD_NEW;</span>
-<span class="nc" id="L1615">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));</span>
-<span class="nc" id="L1616">    return (t);</span>
+<span class="nc" id="L1613">            { this.lastToken = JavaScriptToken.RESERVED_WORD_NEW;</span>
+<span class="nc" id="L1614">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));</span>
+<span class="nc" id="L1615">    return (t);</span>
             }
-<span class="nc" id="L1618">          case 190: break;</span>
+<span class="nc" id="L1617">          case 190: break;</span>
           case 68:
-<span class="nc" id="L1620">            { this.lastToken = JavaScriptToken.RESERVED_WORD_FOR;</span>
-<span class="nc" id="L1621">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));</span>
-<span class="nc" id="L1622">    return (t);</span>
+<span class="nc" id="L1619">            { this.lastToken = JavaScriptToken.RESERVED_WORD_FOR;</span>
+<span class="nc" id="L1620">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));</span>
+<span class="nc" id="L1621">    return (t);</span>
             }
-<span class="nc" id="L1624">          case 191: break;</span>
+<span class="nc" id="L1623">          case 191: break;</span>
           case 69:
-<span class="nc" id="L1626">            { this.lastToken = JavaScriptToken.RESERVED_WORD_TRY;</span>
-<span class="nc" id="L1627">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));</span>
-<span class="nc" id="L1628">    return (t);</span>
+<span class="nc" id="L1625">            { this.lastToken = JavaScriptToken.RESERVED_WORD_TRY;</span>
+<span class="nc" id="L1626">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));</span>
+<span class="nc" id="L1627">    return (t);</span>
             }
-<span class="nc" id="L1630">          case 192: break;</span>
+<span class="nc" id="L1629">          case 192: break;</span>
           case 70:
-<span class="nc" id="L1632">            { this.lastToken = JavaScriptToken.LITERAL_CHARACTER;</span>
-<span class="nc" id="L1633">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1634">    return (t);</span>
+<span class="nc" id="L1631">            { this.lastToken = JavaScriptToken.LITERAL_CHARACTER;</span>
+<span class="nc" id="L1632">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1633">    return (t);</span>
             }
-<span class="nc" id="L1636">          case 193: break;</span>
+<span class="nc" id="L1635">          case 193: break;</span>
           case 71:
-<span class="nc" id="L1638">            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_LEFT_ASSIGN;</span>
-<span class="nc" id="L1639">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+3, this.nextState));</span>
-<span class="nc" id="L1640">    return (t);</span>
+<span class="nc" id="L1637">            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_LEFT_ASSIGN;</span>
+<span class="nc" id="L1638">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+3, this.nextState));</span>
+<span class="nc" id="L1639">    return (t);</span>
             }
-<span class="nc" id="L1642">          case 194: break;</span>
+<span class="nc" id="L1641">          case 194: break;</span>
           case 72:
-<span class="nc" id="L1644">            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT_ASSIGN;</span>
-<span class="nc" id="L1645">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+3, this.nextState));</span>
-<span class="nc" id="L1646">    return (t);</span>
+<span class="nc" id="L1643">            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT_ASSIGN;</span>
+<span class="nc" id="L1644">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+3, this.nextState));</span>
+<span class="nc" id="L1645">    return (t);</span>
             }
-<span class="nc" id="L1648">          case 195: break;</span>
+<span class="nc" id="L1647">          case 195: break;</span>
           case 73:
-<span class="nc" id="L1650">            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT_UNSIGNED;</span>
-<span class="nc" id="L1651">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+3, this.nextState));</span>
-<span class="nc" id="L1652">    return (t);</span>
+<span class="nc" id="L1649">            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT_UNSIGNED;</span>
+<span class="nc" id="L1650">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+3, this.nextState));</span>
+<span class="nc" id="L1651">    return (t);</span>
             }
-<span class="nc" id="L1654">          case 196: break;</span>
+<span class="nc" id="L1653">          case 196: break;</span>
           case 74:
-<span class="nc" id="L1656">            { this.lastToken = JavaScriptToken.RESERVED_WORD_INT;</span>
-<span class="nc" id="L1657">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));</span>
-<span class="nc" id="L1658">    return (t);</span>
+<span class="nc" id="L1655">            { this.lastToken = JavaScriptToken.RESERVED_WORD_INT;</span>
+<span class="nc" id="L1656">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));</span>
+<span class="nc" id="L1657">    return (t);</span>
             }
-<span class="nc" id="L1660">          case 197: break;</span>
+<span class="nc" id="L1659">          case 197: break;</span>
           case 75:
-<span class="nc" id="L1662">            { this.lastToken = JavaScriptToken.RESERVED_WORD_VAR;</span>
-<span class="nc" id="L1663">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));</span>
-<span class="nc" id="L1664">    return (t);</span>
+<span class="nc" id="L1661">            { this.lastToken = JavaScriptToken.RESERVED_WORD_VAR;</span>
+<span class="nc" id="L1662">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));</span>
+<span class="nc" id="L1663">    return (t);</span>
             }
-<span class="nc" id="L1666">          case 198: break;</span>
+<span class="nc" id="L1665">          case 198: break;</span>
           case 76:
             { /* A Hex long cannot be too big.  After removing
      * initial zeros, It can have 17 digits, the last of which is
      * the L or l
      */
-<span class="nc" id="L1672">    this.lastToken = JavaScriptToken.LITERAL_LONG_HEXIDECIMAL;</span>
+<span class="nc" id="L1671">    this.lastToken = JavaScriptToken.LITERAL_LONG_HEXIDECIMAL;</span>
     int i;
-<span class="nc" id="L1674">    int length =this.yytext().length();</span>
-<span class="nc bnc" id="L1675" title="All 2 branches missed.">    for (i=2 ; i&lt;length-17; i++) {</span>
+<span class="nc" id="L1673">    int length =this.yytext().length();</span>
+<span class="nc bnc" id="L1674" title="All 2 branches missed.">    for (i=2 ; i&lt;length-17; i++) {</span>
         //check for initial zeros
-<span class="nc bnc" id="L1677" title="All 2 branches missed.">        if (this.yytext().charAt(i) != '0') {</span>
-<span class="nc" id="L1678">            this.lastToken = JavaScriptToken.ERROR_LONG_HEXIDECIMAL_SIZE;</span>
+<span class="nc bnc" id="L1676" title="All 2 branches missed.">        if (this.yytext().charAt(i) != '0') {</span>
+<span class="nc" id="L1677">            this.lastToken = JavaScriptToken.ERROR_LONG_HEXIDECIMAL_SIZE;</span>
         }
     }
-<span class="nc bnc" id="L1681" title="All 2 branches missed.">    if (length - i &gt; 17) {</span>
-<span class="nc" id="L1682">        this.lastToken = JavaScriptToken.ERROR_LONG_HEXIDECIMAL_SIZE;</span>
+<span class="nc bnc" id="L1680" title="All 2 branches missed.">    if (length - i &gt; 17) {</span>
+<span class="nc" id="L1681">        this.lastToken = JavaScriptToken.ERROR_LONG_HEXIDECIMAL_SIZE;</span>
     }
-<span class="nc" id="L1684">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1685">    return (t);</span>
+<span class="nc" id="L1683">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1684">    return (t);</span>
             }
-<span class="nc" id="L1687">          case 199: break;</span>
+<span class="nc" id="L1686">          case 199: break;</span>
           case 77:
-<span class="nc" id="L1689">            { this.lastToken = JavaScriptToken.LITERAL_NULL;</span>
-<span class="nc" id="L1690">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
-<span class="nc" id="L1691">    return (t);</span>
+<span class="nc" id="L1688">            { this.lastToken = JavaScriptToken.LITERAL_NULL;</span>
+<span class="nc" id="L1689">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
+<span class="nc" id="L1690">    return (t);</span>
             }
-<span class="nc" id="L1693">          case 200: break;</span>
+<span class="nc" id="L1692">          case 200: break;</span>
           case 78:
-<span class="nc" id="L1695">            { this.lastToken = JavaScriptToken.RESERVED_WORD_BYTE;</span>
-<span class="nc" id="L1696">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
-<span class="nc" id="L1697">    return (t);</span>
+<span class="nc" id="L1694">            { this.lastToken = JavaScriptToken.RESERVED_WORD_BYTE;</span>
+<span class="nc" id="L1695">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
+<span class="nc" id="L1696">    return (t);</span>
             }
-<span class="nc" id="L1699">          case 201: break;</span>
+<span class="nc" id="L1698">          case 201: break;</span>
           case 79:
-<span class="nc" id="L1701">            { this.lastToken = JavaScriptToken.LITERAL_BOOLEAN;</span>
-<span class="nc" id="L1702">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
-<span class="nc" id="L1703">    return (t);</span>
+<span class="nc" id="L1700">            { this.lastToken = JavaScriptToken.LITERAL_BOOLEAN;</span>
+<span class="nc" id="L1701">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
+<span class="nc" id="L1702">    return (t);</span>
             }
-<span class="nc" id="L1705">          case 202: break;</span>
+<span class="nc" id="L1704">          case 202: break;</span>
           case 80:
-<span class="nc" id="L1707">            { this.lastToken = JavaScriptToken.RESERVED_WORD_THIS;</span>
-<span class="nc" id="L1708">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
-<span class="nc" id="L1709">    return (t);</span>
+<span class="nc" id="L1706">            { this.lastToken = JavaScriptToken.RESERVED_WORD_THIS;</span>
+<span class="nc" id="L1707">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
+<span class="nc" id="L1708">    return (t);</span>
             }
-<span class="nc" id="L1711">          case 203: break;</span>
+<span class="nc" id="L1710">          case 203: break;</span>
           case 81:
-<span class="nc" id="L1713">            { this.lastToken = JavaScriptToken.ERROR_MALFORMED_STRING;</span>
-<span class="nc" id="L1714">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1715">    return (t);</span>
+<span class="nc" id="L1712">            { this.lastToken = JavaScriptToken.ERROR_MALFORMED_STRING;</span>
+<span class="nc" id="L1713">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1714">    return (t);</span>
             }
-<span class="nc" id="L1717">          case 204: break;</span>
+<span class="nc" id="L1716">          case 204: break;</span>
           case 82:
-<span class="nc" id="L1719">            { this.lastToken = JavaScriptToken.COMMENT_TRADITIONAL;</span>
-<span class="nc" id="L1720">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
-<span class="nc" id="L1721">    return (t);</span>
+<span class="nc" id="L1718">            { this.lastToken = JavaScriptToken.COMMENT_TRADITIONAL;</span>
+<span class="nc" id="L1719">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));</span>
+<span class="nc" id="L1720">    return (t);</span>
             }
-<span class="nc" id="L1723">          case 205: break;</span>
+<span class="nc" id="L1722">          case 205: break;</span>
           case 83:
-<span class="nc" id="L1725">            { this.lastToken = JavaScriptToken.RESERVED_WORD_LONG;</span>
-<span class="nc" id="L1726">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
-<span class="nc" id="L1727">    return (t);</span>
+<span class="nc" id="L1724">            { this.lastToken = JavaScriptToken.RESERVED_WORD_LONG;</span>
+<span class="nc" id="L1725">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
+<span class="nc" id="L1726">    return (t);</span>
             }
-<span class="nc" id="L1729">          case 206: break;</span>
+<span class="nc" id="L1728">          case 206: break;</span>
           case 84:
-<span class="nc" id="L1731">            { this.lastToken = JavaScriptToken.RESERVED_WORD_ELSE;</span>
-<span class="nc" id="L1732">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
-<span class="nc" id="L1733">    return (t);</span>
+<span class="nc" id="L1730">            { this.lastToken = JavaScriptToken.RESERVED_WORD_ELSE;</span>
+<span class="nc" id="L1731">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
+<span class="nc" id="L1732">    return (t);</span>
             }
-<span class="nc" id="L1735">          case 207: break;</span>
+<span class="nc" id="L1734">          case 207: break;</span>
           case 85:
-<span class="nc" id="L1737">            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT_UNSIGNED_ASSIGN;</span>
-<span class="nc" id="L1738">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+4, this.nextState));</span>
-<span class="nc" id="L1739">    return (t);</span>
+<span class="nc" id="L1736">            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT_UNSIGNED_ASSIGN;</span>
+<span class="nc" id="L1737">    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+4, this.nextState));</span>
+<span class="nc" id="L1738">    return (t);</span>
             }
-<span class="nc" id="L1741">          case 208: break;</span>
+<span class="nc" id="L1740">          case 208: break;</span>
           case 86:
-<span class="nc" id="L1743">            { this.lastToken = JavaScriptToken.RESERVED_WORD_CASE;</span>
-<span class="nc" id="L1744">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
-<span class="nc" id="L1745">    return (t);</span>
+<span class="nc" id="L1742">            { this.lastToken = JavaScriptToken.RESERVED_WORD_CASE;</span>
+<span class="nc" id="L1743">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
+<span class="nc" id="L1744">    return (t);</span>
             }
-<span class="nc" id="L1747">          case 209: break;</span>
+<span class="nc" id="L1746">          case 209: break;</span>
           case 87:
-<span class="nc" id="L1749">            { this.lastToken = JavaScriptToken.RESERVED_WORD_CHAR;</span>
-<span class="nc" id="L1750">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
-<span class="nc" id="L1751">    return (t);</span>
+<span class="nc" id="L1748">            { this.lastToken = JavaScriptToken.RESERVED_WORD_CHAR;</span>
+<span class="nc" id="L1749">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
+<span class="nc" id="L1750">    return (t);</span>
             }
-<span class="nc" id="L1753">          case 210: break;</span>
+<span class="nc" id="L1752">          case 210: break;</span>
           case 88:
-<span class="nc" id="L1755">            { this.lastToken = JavaScriptToken.RESERVED_WORD_GOTO;</span>
-<span class="nc" id="L1756">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
-<span class="nc" id="L1757">    return (t);</span>
+<span class="nc" id="L1754">            { this.lastToken = JavaScriptToken.RESERVED_WORD_GOTO;</span>
+<span class="nc" id="L1755">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
+<span class="nc" id="L1756">    return (t);</span>
             }
-<span class="nc" id="L1759">          case 211: break;</span>
+<span class="nc" id="L1758">          case 211: break;</span>
           case 89:
-<span class="nc" id="L1761">            { this.lastToken = JavaScriptToken.RESERVED_WORD_VOID;</span>
-<span class="nc" id="L1762">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
-<span class="nc" id="L1763">    return (t);</span>
+<span class="nc" id="L1760">            { this.lastToken = JavaScriptToken.RESERVED_WORD_VOID;</span>
+<span class="nc" id="L1761">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
+<span class="nc" id="L1762">    return (t);</span>
             }
-<span class="nc" id="L1765">          case 212: break;</span>
+<span class="nc" id="L1764">          case 212: break;</span>
           case 90:
-<span class="nc" id="L1767">            { this.lastToken = JavaScriptToken.RESERVED_WORD_WITH;</span>
-<span class="nc" id="L1768">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
-<span class="nc" id="L1769">    return (t);</span>
+<span class="nc" id="L1766">            { this.lastToken = JavaScriptToken.RESERVED_WORD_WITH;</span>
+<span class="nc" id="L1767">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));</span>
+<span class="nc" id="L1768">    return (t);</span>
             }
-<span class="nc" id="L1771">          case 213: break;</span>
+<span class="nc" id="L1770">          case 213: break;</span>
           case 91:
-<span class="nc" id="L1773">            { this.lastToken = JavaScriptToken.RESERVED_WORD_BREAK;</span>
-<span class="nc" id="L1774">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
-<span class="nc" id="L1775">    return (t);</span>
+<span class="nc" id="L1772">            { this.lastToken = JavaScriptToken.RESERVED_WORD_BREAK;</span>
+<span class="nc" id="L1773">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
+<span class="nc" id="L1774">    return (t);</span>
             }
-<span class="nc" id="L1777">          case 214: break;</span>
+<span class="nc" id="L1776">          case 214: break;</span>
           case 92:
-<span class="nc" id="L1779">            { this.lastToken = JavaScriptToken.RESERVED_WORD_FLOAT;</span>
-<span class="nc" id="L1780">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
-<span class="nc" id="L1781">    return (t);</span>
+<span class="nc" id="L1778">            { this.lastToken = JavaScriptToken.RESERVED_WORD_FLOAT;</span>
+<span class="nc" id="L1779">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
+<span class="nc" id="L1780">    return (t);</span>
             }
-<span class="nc" id="L1783">          case 215: break;</span>
+<span class="nc" id="L1782">          case 215: break;</span>
           case 93:
-<span class="nc" id="L1785">            { this.lastToken = JavaScriptToken.LITERAL_BOOLEAN;</span>
-<span class="nc" id="L1786">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
-<span class="nc" id="L1787">    return (t);</span>
+<span class="nc" id="L1784">            { this.lastToken = JavaScriptToken.LITERAL_BOOLEAN;</span>
+<span class="nc" id="L1785">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
+<span class="nc" id="L1786">    return (t);</span>
             }
-<span class="nc" id="L1789">          case 216: break;</span>
+<span class="nc" id="L1788">          case 216: break;</span>
           case 94:
-<span class="nc" id="L1791">            { this.lastToken = JavaScriptToken.RESERVED_WORD_FINAL;</span>
-<span class="nc" id="L1792">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
-<span class="nc" id="L1793">    return (t);</span>
+<span class="nc" id="L1790">            { this.lastToken = JavaScriptToken.RESERVED_WORD_FINAL;</span>
+<span class="nc" id="L1791">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
+<span class="nc" id="L1792">    return (t);</span>
             }
-<span class="nc" id="L1795">          case 217: break;</span>
+<span class="nc" id="L1794">          case 217: break;</span>
           case 95:
-<span class="nc" id="L1797">            { this.lastToken = JavaScriptToken.RESERVED_WORD_THROW;</span>
-<span class="nc" id="L1798">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
-<span class="nc" id="L1799">    return (t);</span>
+<span class="nc" id="L1796">            { this.lastToken = JavaScriptToken.RESERVED_WORD_THROW;</span>
+<span class="nc" id="L1797">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
+<span class="nc" id="L1798">    return (t);</span>
             }
-<span class="nc" id="L1801">          case 218: break;</span>
+<span class="nc" id="L1800">          case 218: break;</span>
           case 96:
-<span class="nc" id="L1803">            { this.lastToken = JavaScriptToken.RESERVED_WORD_SUPER;</span>
-<span class="nc" id="L1804">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
-<span class="nc" id="L1805">    return (t);</span>
+<span class="nc" id="L1802">            { this.lastToken = JavaScriptToken.RESERVED_WORD_SUPER;</span>
+<span class="nc" id="L1803">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
+<span class="nc" id="L1804">    return (t);</span>
             }
-<span class="nc" id="L1807">          case 219: break;</span>
+<span class="nc" id="L1806">          case 219: break;</span>
           case 97:
-<span class="nc" id="L1809">            { this.lastToken = JavaScriptToken.RESERVED_WORD_SHORT;</span>
-<span class="nc" id="L1810">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
-<span class="nc" id="L1811">    return (t);</span>
+<span class="nc" id="L1808">            { this.lastToken = JavaScriptToken.RESERVED_WORD_SHORT;</span>
+<span class="nc" id="L1809">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
+<span class="nc" id="L1810">    return (t);</span>
             }
-<span class="nc" id="L1813">          case 220: break;</span>
+<span class="nc" id="L1812">          case 220: break;</span>
           case 98:
-<span class="nc" id="L1815">            { this.lastToken = JavaScriptToken.RESERVED_WORD_CLASS;</span>
-<span class="nc" id="L1816">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
-<span class="nc" id="L1817">    return (t);</span>
+<span class="nc" id="L1814">            { this.lastToken = JavaScriptToken.RESERVED_WORD_CLASS;</span>
+<span class="nc" id="L1815">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
+<span class="nc" id="L1816">    return (t);</span>
             }
-<span class="nc" id="L1819">          case 221: break;</span>
+<span class="nc" id="L1818">          case 221: break;</span>
           case 99:
-<span class="nc" id="L1821">            { this.lastToken = JavaScriptToken.RESERVED_WORD_CATCH;</span>
-<span class="nc" id="L1822">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
-<span class="nc" id="L1823">    return (t);</span>
+<span class="nc" id="L1820">            { this.lastToken = JavaScriptToken.RESERVED_WORD_CATCH;</span>
+<span class="nc" id="L1821">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
+<span class="nc" id="L1822">    return (t);</span>
             }
-<span class="nc" id="L1825">          case 222: break;</span>
+<span class="nc" id="L1824">          case 222: break;</span>
           case 100:
-<span class="nc" id="L1827">            { this.lastToken = JavaScriptToken.RESERVED_WORD_CONST;</span>
-<span class="nc" id="L1828">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
-<span class="nc" id="L1829">    return (t);</span>
+<span class="nc" id="L1826">            { this.lastToken = JavaScriptToken.RESERVED_WORD_CONST;</span>
+<span class="nc" id="L1827">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));</span>
+<span class="nc" id="L1828">    return (t);</span>
             }
-<span class="nc" id="L1831">          case 223: break;</span>
+<span class="nc" id="L1830">          case 223: break;</span>
           case 101:
-<span class="nc" id="L1833">            { this.lastToken = JavaScriptToken.RESERVED_WORD_TRANSIENT;</span>
-<span class="nc" id="L1834">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+9, this.nextState));</span>
-<span class="nc" id="L1835">    return (t);</span>
+<span class="nc" id="L1832">            { this.lastToken = JavaScriptToken.RESERVED_WORD_TRANSIENT;</span>
+<span class="nc" id="L1833">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+9, this.nextState));</span>
+<span class="nc" id="L1834">    return (t);</span>
             }
-<span class="nc" id="L1837">          case 224: break;</span>
+<span class="nc" id="L1836">          case 224: break;</span>
           case 102:
-<span class="nc" id="L1839">            { this.lastToken = JavaScriptToken.RESERVED_WORD_RETURN;</span>
-<span class="nc" id="L1840">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
-<span class="nc" id="L1841">    return (t);</span>
+<span class="nc" id="L1838">            { this.lastToken = JavaScriptToken.RESERVED_WORD_RETURN;</span>
+<span class="nc" id="L1839">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
+<span class="nc" id="L1840">    return (t);</span>
             }
-<span class="nc" id="L1843">          case 225: break;</span>
+<span class="nc" id="L1842">          case 225: break;</span>
           case 103:
-<span class="nc" id="L1845">            { this.lastToken = JavaScriptToken.RESERVED_WORD_NATIVE;</span>
-<span class="nc" id="L1846">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
-<span class="nc" id="L1847">    return (t);</span>
+<span class="nc" id="L1844">            { this.lastToken = JavaScriptToken.RESERVED_WORD_NATIVE;</span>
+<span class="nc" id="L1845">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
+<span class="nc" id="L1846">    return (t);</span>
             }
-<span class="nc" id="L1849">          case 226: break;</span>
+<span class="nc" id="L1848">          case 226: break;</span>
           case 104:
-<span class="nc" id="L1851">            { this.lastToken = JavaScriptToken.RESERVED_WORD_THROWS;</span>
-<span class="nc" id="L1852">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
-<span class="nc" id="L1853">    return (t);</span>
+<span class="nc" id="L1850">            { this.lastToken = JavaScriptToken.RESERVED_WORD_THROWS;</span>
+<span class="nc" id="L1851">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
+<span class="nc" id="L1852">    return (t);</span>
             }
-<span class="nc" id="L1855">          case 227: break;</span>
+<span class="nc" id="L1854">          case 227: break;</span>
           case 105:
-<span class="nc" id="L1857">            { this.lastToken = JavaScriptToken.RESERVED_WORD_DOUBLE;</span>
-<span class="nc" id="L1858">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
-<span class="nc" id="L1859">    return (t);</span>
+<span class="nc" id="L1856">            { this.lastToken = JavaScriptToken.RESERVED_WORD_DOUBLE;</span>
+<span class="nc" id="L1857">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
+<span class="nc" id="L1858">    return (t);</span>
             }
-<span class="nc" id="L1861">          case 228: break;</span>
+<span class="nc" id="L1860">          case 228: break;</span>
           case 106:
-<span class="nc" id="L1863">            { this.lastToken = JavaScriptToken.RESERVED_WORD_STATIC;</span>
-<span class="nc" id="L1864">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
-<span class="nc" id="L1865">    return (t);</span>
+<span class="nc" id="L1862">            { this.lastToken = JavaScriptToken.RESERVED_WORD_STATIC;</span>
+<span class="nc" id="L1863">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
+<span class="nc" id="L1864">    return (t);</span>
             }
-<span class="nc" id="L1867">          case 229: break;</span>
+<span class="nc" id="L1866">          case 229: break;</span>
           case 107:
-<span class="nc" id="L1869">            { this.lastToken = JavaScriptToken.RESERVED_WORD_SWITCH;</span>
-<span class="nc" id="L1870">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
-<span class="nc" id="L1871">    return (t);</span>
+<span class="nc" id="L1868">            { this.lastToken = JavaScriptToken.RESERVED_WORD_SWITCH;</span>
+<span class="nc" id="L1869">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
+<span class="nc" id="L1870">    return (t);</span>
             }
-<span class="nc" id="L1873">          case 230: break;</span>
+<span class="nc" id="L1872">          case 230: break;</span>
           case 108:
-<span class="nc" id="L1875">            { this.lastToken = JavaScriptToken.RESERVED_WORD_IMPORT;</span>
-<span class="nc" id="L1876">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
-<span class="nc" id="L1877">    return (t);</span>
+<span class="nc" id="L1874">            { this.lastToken = JavaScriptToken.RESERVED_WORD_IMPORT;</span>
+<span class="nc" id="L1875">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
+<span class="nc" id="L1876">    return (t);</span>
             }
-<span class="nc" id="L1879">          case 231: break;</span>
+<span class="nc" id="L1878">          case 231: break;</span>
           case 109:
-<span class="nc" id="L1881">            { this.lastToken = JavaScriptToken.RESERVED_WORD_PUBLIC;</span>
-<span class="nc" id="L1882">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
-<span class="nc" id="L1883">    return (t);</span>
+<span class="nc" id="L1880">            { this.lastToken = JavaScriptToken.RESERVED_WORD_PUBLIC;</span>
+<span class="nc" id="L1881">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));</span>
+<span class="nc" id="L1882">    return (t);</span>
             }
-<span class="nc" id="L1885">          case 232: break;</span>
+<span class="nc" id="L1884">          case 232: break;</span>
           case 110:
-<span class="nc" id="L1887">            { this.lastToken = JavaScriptToken.RESERVED_WORD_BOOLEAN;</span>
-<span class="nc" id="L1888">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
-<span class="nc" id="L1889">    return (t);</span>
+<span class="nc" id="L1886">            { this.lastToken = JavaScriptToken.RESERVED_WORD_BOOLEAN;</span>
+<span class="nc" id="L1887">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
+<span class="nc" id="L1888">    return (t);</span>
             }
-<span class="nc" id="L1891">          case 233: break;</span>
+<span class="nc" id="L1890">          case 233: break;</span>
           case 111:
-<span class="nc" id="L1893">            { this.lastToken = JavaScriptToken.RESERVED_WORD_FINALLY;</span>
-<span class="nc" id="L1894">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
-<span class="nc" id="L1895">    return (t);</span>
+<span class="nc" id="L1892">            { this.lastToken = JavaScriptToken.RESERVED_WORD_FINALLY;</span>
+<span class="nc" id="L1893">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
+<span class="nc" id="L1894">    return (t);</span>
             }
-<span class="nc" id="L1897">          case 234: break;</span>
+<span class="nc" id="L1896">          case 234: break;</span>
           case 112:
-<span class="nc" id="L1899">            { this.lastToken = JavaScriptToken.RESERVED_WORD_EXTENDS;</span>
-<span class="nc" id="L1900">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
-<span class="nc" id="L1901">    return (t);</span>
+<span class="nc" id="L1898">            { this.lastToken = JavaScriptToken.RESERVED_WORD_EXTENDS;</span>
+<span class="nc" id="L1899">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
+<span class="nc" id="L1900">    return (t);</span>
             }
-<span class="nc" id="L1903">          case 235: break;</span>
+<span class="nc" id="L1902">          case 235: break;</span>
           case 113:
-<span class="nc" id="L1905">            { this.lastToken = JavaScriptToken.RESERVED_WORD_DEFAULT;</span>
-<span class="nc" id="L1906">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
-<span class="nc" id="L1907">    return (t);</span>
+<span class="nc" id="L1904">            { this.lastToken = JavaScriptToken.RESERVED_WORD_DEFAULT;</span>
+<span class="nc" id="L1905">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
+<span class="nc" id="L1906">    return (t);</span>
             }
-<span class="nc" id="L1909">          case 236: break;</span>
+<span class="nc" id="L1908">          case 236: break;</span>
           case 114:
-<span class="nc" id="L1911">            { this.lastToken = JavaScriptToken.RESERVED_WORD_PRIVATE;</span>
-<span class="nc" id="L1912">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
-<span class="nc" id="L1913">    return (t);</span>
+<span class="nc" id="L1910">            { this.lastToken = JavaScriptToken.RESERVED_WORD_PRIVATE;</span>
+<span class="nc" id="L1911">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
+<span class="nc" id="L1912">    return (t);</span>
             }
-<span class="nc" id="L1915">          case 237: break;</span>
+<span class="nc" id="L1914">          case 237: break;</span>
           case 115:
-<span class="nc" id="L1917">            { this.lastToken = JavaScriptToken.RESERVED_WORD_PACKAGE;</span>
-<span class="nc" id="L1918">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
-<span class="nc" id="L1919">    return (t);</span>
+<span class="nc" id="L1916">            { this.lastToken = JavaScriptToken.RESERVED_WORD_PACKAGE;</span>
+<span class="nc" id="L1917">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
+<span class="nc" id="L1918">    return (t);</span>
             }
-<span class="nc" id="L1921">          case 238: break;</span>
+<span class="nc" id="L1920">          case 238: break;</span>
           case 116:
-<span class="nc" id="L1923">            { this.lastToken = JavaScriptToken.RESERVED_WORD_FUNCTION;</span>
-<span class="nc" id="L1924">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+8, this.nextState));</span>
-<span class="nc" id="L1925">    return (t);</span>
+<span class="nc" id="L1922">            { this.lastToken = JavaScriptToken.RESERVED_WORD_FUNCTION;</span>
+<span class="nc" id="L1923">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+8, this.nextState));</span>
+<span class="nc" id="L1924">    return (t);</span>
             }
-<span class="nc" id="L1927">          case 239: break;</span>
+<span class="nc" id="L1926">          case 239: break;</span>
           case 117:
-<span class="nc" id="L1929">            { this.lastToken = JavaScriptToken.RESERVED_WORD_ABSTRACT;</span>
-<span class="nc" id="L1930">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
-<span class="nc" id="L1931">    return (t);</span>
+<span class="nc" id="L1928">            { this.lastToken = JavaScriptToken.RESERVED_WORD_ABSTRACT;</span>
+<span class="nc" id="L1929">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));</span>
+<span class="nc" id="L1930">    return (t);</span>
             }
-<span class="nc" id="L1933">          case 240: break;</span>
+<span class="nc" id="L1932">          case 240: break;</span>
           case 118:
-<span class="nc" id="L1935">            { this.lastToken = JavaScriptToken.RESERVED_WORD_CONTINUE;</span>
-<span class="nc" id="L1936">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+8, this.nextState));</span>
-<span class="nc" id="L1937">    return (t);</span>
+<span class="nc" id="L1934">            { this.lastToken = JavaScriptToken.RESERVED_WORD_CONTINUE;</span>
+<span class="nc" id="L1935">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+8, this.nextState));</span>
+<span class="nc" id="L1936">    return (t);</span>
             }
-<span class="nc" id="L1939">          case 241: break;</span>
+<span class="nc" id="L1938">          case 241: break;</span>
           case 119:
-<span class="nc" id="L1941">            { this.lastToken = JavaScriptToken.RESERVED_WORD_INTERFACE;</span>
-<span class="nc" id="L1942">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+9, this.nextState));</span>
-<span class="nc" id="L1943">    return (t);</span>
+<span class="nc" id="L1940">            { this.lastToken = JavaScriptToken.RESERVED_WORD_INTERFACE;</span>
+<span class="nc" id="L1941">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+9, this.nextState));</span>
+<span class="nc" id="L1942">    return (t);</span>
             }
-<span class="nc" id="L1945">          case 242: break;</span>
+<span class="nc" id="L1944">          case 242: break;</span>
           case 120:
-<span class="nc" id="L1947">            { this.lastToken = JavaScriptToken.RESERVED_WORD_PROTECTED;</span>
-<span class="nc" id="L1948">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+9, this.nextState));</span>
-<span class="nc" id="L1949">    return (t);</span>
+<span class="nc" id="L1946">            { this.lastToken = JavaScriptToken.RESERVED_WORD_PROTECTED;</span>
+<span class="nc" id="L1947">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+9, this.nextState));</span>
+<span class="nc" id="L1948">    return (t);</span>
             }
-<span class="nc" id="L1951">          case 243: break;</span>
+<span class="nc" id="L1950">          case 243: break;</span>
           case 121:
-<span class="nc" id="L1953">            { this.lastToken = JavaScriptToken.RESERVED_WORD_INSTANCEOF;</span>
-<span class="nc" id="L1954">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+10, this.nextState));</span>
-<span class="nc" id="L1955">    return (t);</span>
+<span class="nc" id="L1952">            { this.lastToken = JavaScriptToken.RESERVED_WORD_INSTANCEOF;</span>
+<span class="nc" id="L1953">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+10, this.nextState));</span>
+<span class="nc" id="L1954">    return (t);</span>
             }
-<span class="nc" id="L1957">          case 244: break;</span>
+<span class="nc" id="L1956">          case 244: break;</span>
           case 122:
-<span class="nc" id="L1959">            { this.lastToken = JavaScriptToken.RESERVED_WORD_IMPLEMENTS;</span>
-<span class="nc" id="L1960">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+10, this.nextState));</span>
-<span class="nc" id="L1961">    return (t);</span>
+<span class="nc" id="L1958">            { this.lastToken = JavaScriptToken.RESERVED_WORD_IMPLEMENTS;</span>
+<span class="nc" id="L1959">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+10, this.nextState));</span>
+<span class="nc" id="L1960">    return (t);</span>
             }
-<span class="nc" id="L1963">          case 245: break;</span>
+<span class="nc" id="L1962">          case 245: break;</span>
           case 123:
-<span class="nc" id="L1965">            { this.lastToken = JavaScriptToken.RESERVED_WORD_SYNCHRONIZED;</span>
-<span class="nc" id="L1966">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+12, this.nextState));</span>
-<span class="nc" id="L1967">    return (t);</span>
+<span class="nc" id="L1964">            { this.lastToken = JavaScriptToken.RESERVED_WORD_SYNCHRONIZED;</span>
+<span class="nc" id="L1965">    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+12, this.nextState));</span>
+<span class="nc" id="L1966">    return (t);</span>
             }
-<span class="nc" id="L1969">          case 246: break;</span>
+<span class="nc" id="L1968">          case 246: break;</span>
           default:
-<span class="nc" id="L1971">            this.zzScanError(ZZ_NO_MATCH);</span>
+<span class="nc" id="L1970">            this.zzScanError(ZZ_NO_MATCH);</span>
         }
       }
-<span class="nc" id="L1974">    }</span>
+<span class="nc" id="L1973">    }</span>
   }
-
-
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

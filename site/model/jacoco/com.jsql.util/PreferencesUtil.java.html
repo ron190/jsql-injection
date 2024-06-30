@@ -17,7 +17,7 @@ import java.util.prefs.Preferences;
 
 <span class="fc" id="L18">    private boolean isCheckingUpdate = true;</span>
 
-    // True if bugs are sent to Github.
+    // True if bugs are sent to GitHub.
 <span class="fc" id="L21">    private boolean isReportingBugs = true;</span>
     
 <span class="fc" id="L23">    private boolean is4K = false;</span>
@@ -89,71 +89,71 @@ import java.util.prefs.Preferences;
     public void loadSavedPreferences() {
         
         // Use Preferences API to persist proxy configuration
-<span class="fc" id="L92">        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+<span class="fc" id="L92">        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
         
-<span class="fc" id="L94">        this.pathFile = prefs.get(&quot;pathFile&quot;, SystemUtils.USER_DIR);</span>
+<span class="fc" id="L94">        this.pathFile = preferences.get(&quot;pathFile&quot;, SystemUtils.USER_DIR);</span>
         
-<span class="fc" id="L96">        this.isCheckingUpdate = prefs.getBoolean(&quot;isCheckingUpdate&quot;, true);</span>
-<span class="fc" id="L97">        this.isReportingBugs = prefs.getBoolean(&quot;isReportingBugs&quot;, true);</span>
+<span class="fc" id="L96">        this.isCheckingUpdate = preferences.getBoolean(&quot;isCheckingUpdate&quot;, true);</span>
+<span class="fc" id="L97">        this.isReportingBugs = preferences.getBoolean(&quot;isReportingBugs&quot;, true);</span>
         
-<span class="fc" id="L99">        this.isFollowingRedirection = prefs.getBoolean(&quot;isFollowingRedirection&quot;, false);</span>
-<span class="fc" id="L100">        this.isHttp2Disabled = prefs.getBoolean(&quot;isHttp2Disabled&quot;, false);</span>
-<span class="fc" id="L101">        this.isNotInjectingMetadata = prefs.getBoolean(&quot;isNotInjectingMetadata&quot;, false);</span>
-<span class="fc" id="L102">        this.isNotSearchingCharInsertion = prefs.getBoolean(&quot;isNotSearchingCharInsertion&quot;, false);</span>
-<span class="fc" id="L103">        this.isNotShowingVulnReport = prefs.getBoolean(&quot;isNotShowingVulnReport&quot;, false);</span>
+<span class="fc" id="L99">        this.isFollowingRedirection = preferences.getBoolean(&quot;isFollowingRedirection&quot;, false);</span>
+<span class="fc" id="L100">        this.isHttp2Disabled = preferences.getBoolean(&quot;isHttp2Disabled&quot;, false);</span>
+<span class="fc" id="L101">        this.isNotInjectingMetadata = preferences.getBoolean(&quot;isNotInjectingMetadata&quot;, false);</span>
+<span class="fc" id="L102">        this.isNotSearchingCharInsertion = preferences.getBoolean(&quot;isNotSearchingCharInsertion&quot;, false);</span>
+<span class="fc" id="L103">        this.isNotShowingVulnReport = preferences.getBoolean(&quot;isNotShowingVulnReport&quot;, false);</span>
 
-<span class="fc" id="L105">        this.isCheckingAllParam = prefs.getBoolean(&quot;isCheckingAllParam&quot;, false);</span>
-<span class="fc" id="L106">        this.isCheckingAllURLParam = prefs.getBoolean(&quot;isCheckingAllURLParam&quot;, false);</span>
-<span class="fc" id="L107">        this.isCheckingAllRequestParam = prefs.getBoolean(&quot;isCheckingAllRequestParam&quot;, false);</span>
-<span class="fc" id="L108">        this.isCheckingAllHeaderParam = prefs.getBoolean(&quot;isCheckingAllHeaderParam&quot;, false);</span>
-<span class="fc" id="L109">        this.isCheckingAllBase64Param = prefs.getBoolean(&quot;isCheckingAllBase64Param&quot;, false);</span>
-<span class="fc" id="L110">        this.isCheckingAllJsonParam = prefs.getBoolean(&quot;isCheckingAllJsonParam&quot;, false);</span>
-<span class="fc" id="L111">        this.isCheckingAllCookieParam = prefs.getBoolean(&quot;isCheckingAllCookieParam&quot;, false);</span>
-<span class="fc" id="L112">        this.isCheckingAllSoapParam = prefs.getBoolean(&quot;isCheckingAllSoapParam&quot;, false);</span>
+<span class="fc" id="L105">        this.isCheckingAllParam = preferences.getBoolean(&quot;isCheckingAllParam&quot;, false);</span>
+<span class="fc" id="L106">        this.isCheckingAllURLParam = preferences.getBoolean(&quot;isCheckingAllURLParam&quot;, false);</span>
+<span class="fc" id="L107">        this.isCheckingAllRequestParam = preferences.getBoolean(&quot;isCheckingAllRequestParam&quot;, false);</span>
+<span class="fc" id="L108">        this.isCheckingAllHeaderParam = preferences.getBoolean(&quot;isCheckingAllHeaderParam&quot;, false);</span>
+<span class="fc" id="L109">        this.isCheckingAllBase64Param = preferences.getBoolean(&quot;isCheckingAllBase64Param&quot;, false);</span>
+<span class="fc" id="L110">        this.isCheckingAllJsonParam = preferences.getBoolean(&quot;isCheckingAllJsonParam&quot;, false);</span>
+<span class="fc" id="L111">        this.isCheckingAllCookieParam = preferences.getBoolean(&quot;isCheckingAllCookieParam&quot;, false);</span>
+<span class="fc" id="L112">        this.isCheckingAllSoapParam = preferences.getBoolean(&quot;isCheckingAllSoapParam&quot;, false);</span>
         
-<span class="fc" id="L114">        this.isPerfIndexDisabled = prefs.getBoolean(&quot;isPerfIndexDisabled&quot;, false);</span>
-<span class="fc" id="L115">        this.isDefaultStrategy = prefs.getBoolean(&quot;isDefaultStrategy&quot;, false);</span>
-<span class="fc" id="L116">        this.isZipStrategy = prefs.getBoolean(&quot;isZipStrategy&quot;, false);</span>
-<span class="fc" id="L117">        this.isDiosStrategy = prefs.getBoolean(&quot;isDiosStrategy&quot;, false);</span>
-<span class="fc" id="L118">        this.isUrlEncodingDisabled = prefs.getBoolean(&quot;isUrlEncodingDisabled&quot;, false);</span>
-<span class="fc" id="L119">        this.isUrlRandomSuffixDisabled = prefs.getBoolean(&quot;isUrlRandomSuffixDisabled&quot;, false);</span>
+<span class="fc" id="L114">        this.isPerfIndexDisabled = preferences.getBoolean(&quot;isPerfIndexDisabled&quot;, false);</span>
+<span class="fc" id="L115">        this.isDefaultStrategy = preferences.getBoolean(&quot;isDefaultStrategy&quot;, false);</span>
+<span class="fc" id="L116">        this.isZipStrategy = preferences.getBoolean(&quot;isZipStrategy&quot;, false);</span>
+<span class="fc" id="L117">        this.isDiosStrategy = preferences.getBoolean(&quot;isDiosStrategy&quot;, false);</span>
+<span class="fc" id="L118">        this.isUrlEncodingDisabled = preferences.getBoolean(&quot;isUrlEncodingDisabled&quot;, false);</span>
+<span class="fc" id="L119">        this.isUrlRandomSuffixDisabled = preferences.getBoolean(&quot;isUrlRandomSuffixDisabled&quot;, false);</span>
 
-<span class="fc" id="L121">        this.isParsingForm = prefs.getBoolean(&quot;isParsingForm&quot;, false);</span>
-<span class="fc" id="L122">        this.isNotTestingConnection = prefs.getBoolean(&quot;isNotTestingConnection&quot;, false);</span>
-<span class="fc" id="L123">        this.isNotProcessingCookies = prefs.getBoolean(&quot;isNotProcessingCookies&quot;, false);</span>
-<span class="fc" id="L124">        this.isProcessingCsrf = prefs.getBoolean(&quot;isProcessingCsrf&quot;, false);</span>
+<span class="fc" id="L121">        this.isParsingForm = preferences.getBoolean(&quot;isParsingForm&quot;, false);</span>
+<span class="fc" id="L122">        this.isNotTestingConnection = preferences.getBoolean(&quot;isNotTestingConnection&quot;, false);</span>
+<span class="fc" id="L123">        this.isNotProcessingCookies = preferences.getBoolean(&quot;isNotProcessingCookies&quot;, false);</span>
+<span class="fc" id="L124">        this.isProcessingCsrf = preferences.getBoolean(&quot;isProcessingCsrf&quot;, false);</span>
         
-<span class="fc" id="L126">        this.isTamperingBase64 = prefs.getBoolean(&quot;isTamperingBase64&quot;, false);</span>
-<span class="fc" id="L127">        this.isTamperingEqualToLike = prefs.getBoolean(&quot;isTamperingEqualToLike&quot;, false);</span>
-<span class="fc" id="L128">        this.isTamperingFunctionComment = prefs.getBoolean(&quot;isTamperingFunctionComment&quot;, false);</span>
-<span class="fc" id="L129">        this.isTamperingVersionComment = prefs.getBoolean(&quot;isTamperingVersionComment&quot;, false);</span>
-<span class="fc" id="L130">        this.isTamperingRandomCase = prefs.getBoolean(&quot;isTamperingRandomCase&quot;, false);</span>
-<span class="fc" id="L131">        this.isTamperingEval = prefs.getBoolean(&quot;isTamperingEval&quot;, false);</span>
-<span class="fc" id="L132">        this.isTamperingSpaceToDashComment = prefs.getBoolean(&quot;isTamperingSpaceToDashComment&quot;, false);</span>
-<span class="fc" id="L133">        this.isTamperingSpaceToMultilineComment = prefs.getBoolean(&quot;isTamperingSpaceToMultilineComment&quot;, false);</span>
-<span class="fc" id="L134">        this.isTamperingSpaceToSharpComment = prefs.getBoolean(&quot;isTamperingSpaceToSharpComment&quot;, false);</span>
+<span class="fc" id="L126">        this.isTamperingBase64 = preferences.getBoolean(&quot;isTamperingBase64&quot;, false);</span>
+<span class="fc" id="L127">        this.isTamperingEqualToLike = preferences.getBoolean(&quot;isTamperingEqualToLike&quot;, false);</span>
+<span class="fc" id="L128">        this.isTamperingFunctionComment = preferences.getBoolean(&quot;isTamperingFunctionComment&quot;, false);</span>
+<span class="fc" id="L129">        this.isTamperingVersionComment = preferences.getBoolean(&quot;isTamperingVersionComment&quot;, false);</span>
+<span class="fc" id="L130">        this.isTamperingRandomCase = preferences.getBoolean(&quot;isTamperingRandomCase&quot;, false);</span>
+<span class="fc" id="L131">        this.isTamperingEval = preferences.getBoolean(&quot;isTamperingEval&quot;, false);</span>
+<span class="fc" id="L132">        this.isTamperingSpaceToDashComment = preferences.getBoolean(&quot;isTamperingSpaceToDashComment&quot;, false);</span>
+<span class="fc" id="L133">        this.isTamperingSpaceToMultilineComment = preferences.getBoolean(&quot;isTamperingSpaceToMultilineComment&quot;, false);</span>
+<span class="fc" id="L134">        this.isTamperingSpaceToSharpComment = preferences.getBoolean(&quot;isTamperingSpaceToSharpComment&quot;, false);</span>
         
-<span class="fc" id="L136">        this.is4K = prefs.getBoolean(&quot;is4K&quot;, false);</span>
-<span class="fc" id="L137">        this.isCsrfUserTag = prefs.getBoolean(&quot;isCsrfUserTag&quot;, false);</span>
-<span class="fc" id="L138">        this.csrfUserTag = prefs.get(&quot;csrfUserTag&quot;, &quot;&quot;);</span>
-<span class="fc" id="L139">        this.csrfUserTagOutput = prefs.get(&quot;csrfUserTagOutput&quot;, &quot;&quot;);</span>
-<span class="fc" id="L140">        this.isLimitingThreads = prefs.getBoolean(&quot;isLimitingThreads&quot;, true);</span>
-<span class="fc" id="L141">        this.countLimitingThreads = prefs.getInt(&quot;countLimitingThreads&quot;, 5);</span>
-<span class="fc" id="L142">        this.isConnectionTimeout = prefs.getBoolean(&quot;isConnectionTimeout&quot;, false);</span>
-<span class="fc" id="L143">        this.countConnectionTimeout = prefs.getInt(&quot;countConnectionTimeout&quot;, 15);</span>
-<span class="fc" id="L144">        this.isUnicodeDecodeDisabled = prefs.getBoolean(&quot;isUnicodeDecodeDisabled&quot;, false);</span>
-<span class="fc" id="L145">        this.isUrlDecodeDisabled = prefs.getBoolean(&quot;isUrlDecodeDisabled&quot;, false);</span>
-<span class="fc" id="L146">        this.countNormalIndex = prefs.getInt(&quot;countNormalIndex&quot;, 50);</span>
-<span class="fc" id="L147">        this.isLimitingNormalIndex = prefs.getBoolean(&quot;isLimitingNormalIndex&quot;, false);</span>
-<span class="fc" id="L148">        this.countSleepTimeStrategy = prefs.getInt(&quot;countSleepTimeStrategy&quot;, 5);</span>
-<span class="fc" id="L149">        this.isLimitingSleepTimeStrategy = prefs.getBoolean(&quot;isLimitingSleepTimeStrategy&quot;, false);</span>
+<span class="fc" id="L136">        this.is4K = preferences.getBoolean(&quot;is4K&quot;, false);</span>
+<span class="fc" id="L137">        this.isCsrfUserTag = preferences.getBoolean(&quot;isCsrfUserTag&quot;, false);</span>
+<span class="fc" id="L138">        this.csrfUserTag = preferences.get(&quot;csrfUserTag&quot;, &quot;&quot;);</span>
+<span class="fc" id="L139">        this.csrfUserTagOutput = preferences.get(&quot;csrfUserTagOutput&quot;, &quot;&quot;);</span>
+<span class="fc" id="L140">        this.isLimitingThreads = preferences.getBoolean(&quot;isLimitingThreads&quot;, true);</span>
+<span class="fc" id="L141">        this.countLimitingThreads = preferences.getInt(&quot;countLimitingThreads&quot;, 5);</span>
+<span class="fc" id="L142">        this.isConnectionTimeout = preferences.getBoolean(&quot;isConnectionTimeout&quot;, false);</span>
+<span class="fc" id="L143">        this.countConnectionTimeout = preferences.getInt(&quot;countConnectionTimeout&quot;, 15);</span>
+<span class="fc" id="L144">        this.isUnicodeDecodeDisabled = preferences.getBoolean(&quot;isUnicodeDecodeDisabled&quot;, false);</span>
+<span class="fc" id="L145">        this.isUrlDecodeDisabled = preferences.getBoolean(&quot;isUrlDecodeDisabled&quot;, false);</span>
+<span class="fc" id="L146">        this.countNormalIndex = preferences.getInt(&quot;countNormalIndex&quot;, 50);</span>
+<span class="fc" id="L147">        this.isLimitingNormalIndex = preferences.getBoolean(&quot;isLimitingNormalIndex&quot;, false);</span>
+<span class="fc" id="L148">        this.countSleepTimeStrategy = preferences.getInt(&quot;countSleepTimeStrategy&quot;, 5);</span>
+<span class="fc" id="L149">        this.isLimitingSleepTimeStrategy = preferences.getBoolean(&quot;isLimitingSleepTimeStrategy&quot;, false);</span>
 
-<span class="fc" id="L151">        this.isStrategyTimeDisabled = prefs.getBoolean(&quot;isStrategyTimeDisabled&quot;, false);</span>
-<span class="fc" id="L152">        this.isStrategyBlindDisabled = prefs.getBoolean(&quot;isStrategyBlindDisabled&quot;, false);</span>
-<span class="fc" id="L153">        this.isStrategyMultibitDisabled = prefs.getBoolean(&quot;isStrategyMultibitDisabled&quot;, false);</span>
-<span class="fc" id="L154">        this.isStrategyStackedDisabled = prefs.getBoolean(&quot;isStrategyStackedDisabled&quot;, false);</span>
-<span class="fc" id="L155">        this.isStrategyErrorDisabled = prefs.getBoolean(&quot;isStrategyErrorDisabled&quot;, false);</span>
-<span class="fc" id="L156">        this.isStrategyNormalDisabled = prefs.getBoolean(&quot;isStrategyNormalDisabled&quot;, false);</span>
+<span class="fc" id="L151">        this.isStrategyTimeDisabled = preferences.getBoolean(&quot;isStrategyTimeDisabled&quot;, false);</span>
+<span class="fc" id="L152">        this.isStrategyBlindDisabled = preferences.getBoolean(&quot;isStrategyBlindDisabled&quot;, false);</span>
+<span class="fc" id="L153">        this.isStrategyMultibitDisabled = preferences.getBoolean(&quot;isStrategyMultibitDisabled&quot;, false);</span>
+<span class="fc" id="L154">        this.isStrategyStackedDisabled = preferences.getBoolean(&quot;isStrategyStackedDisabled&quot;, false);</span>
+<span class="fc" id="L155">        this.isStrategyErrorDisabled = preferences.getBoolean(&quot;isStrategyErrorDisabled&quot;, false);</span>
+<span class="fc" id="L156">        this.isStrategyNormalDisabled = preferences.getBoolean(&quot;isStrategyNormalDisabled&quot;, false);</span>
 <span class="fc" id="L157">    }</span>
     
     /**
@@ -233,8 +233,8 @@ import java.util.prefs.Preferences;
         
 <span class="nc" id="L234">        this.pathFile = path;</span>
         
-<span class="nc" id="L236">        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());</span>
-<span class="nc" id="L237">        prefs.put(&quot;pathFile&quot;, this.pathFile);</span>
+<span class="nc" id="L236">        Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());</span>
+<span class="nc" id="L237">        preferences.put(&quot;pathFile&quot;, this.pathFile);</span>
 <span class="nc" id="L238">    }</span>
     
     
@@ -369,7 +369,7 @@ import java.util.prefs.Preferences;
     }
     
     public boolean isConnectionTimeout() {
-<span class="nc" id="L372">        return this.isConnectionTimeout;</span>
+<span class="fc" id="L372">        return this.isConnectionTimeout;</span>
     }
     
     public boolean isUnicodeDecodeDisabled() {

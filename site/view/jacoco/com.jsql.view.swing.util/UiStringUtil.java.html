@@ -8,55 +8,49 @@ import java.nio.charset.StandardCharsets;
 public class UiStringUtil {
 
     private UiStringUtil() {
-        // Util
+        // Utility class
     }
     
     public static String detectUtf8Html(String text) {
-        
-<span class="fc" id="L16">        return UiStringUtil.detectUtf8Html(text, false);</span>
+<span class="fc" id="L15">        return UiStringUtil.detectUtf8Html(text, false);</span>
     }
     
     public static String detectUtf8HtmlNoWrap(String text) {
-        
-<span class="fc" id="L21">        return UiStringUtil.detectUtf8Html(text, true);</span>
+<span class="fc" id="L19">        return UiStringUtil.detectUtf8Html(text, true);</span>
     }
     
     public static String detectUtf8Html(String text, boolean nowrap) {
         
         // Fix #35217: NullPointerException on getBytes()
-<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (text == null) {</span>
-            
-<span class="nc" id="L29">            return StringUtils.EMPTY;</span>
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        if (text == null) {</span>
+<span class="nc" id="L26">            return StringUtils.EMPTY;</span>
         }
         
-<span class="fc" id="L32">        var detector = new UniversalDetector(null);</span>
+<span class="fc" id="L29">        var detector = new UniversalDetector(null);</span>
         
         // Decode bytes for potentially UTF8 chars
         // Required by asian and hindi chars, otherwise wrong display in database tree
-<span class="fc" id="L36">        detector.handleData(</span>
-<span class="fc" id="L37">            text.getBytes(StandardCharsets.UTF_8),</span>
+<span class="fc" id="L33">        detector.handleData(</span>
+<span class="fc" id="L34">            text.getBytes(StandardCharsets.UTF_8),</span>
             0,
-<span class="fc" id="L39">            text.length() - 1</span>
+<span class="fc" id="L36">            text.length() - 1</span>
         );
         
-<span class="fc" id="L42">        detector.dataEnd();</span>
-        
-<span class="fc" id="L44">        String encoding = detector.getDetectedCharset();</span>
-        
-<span class="fc" id="L46">        String result = text;</span>
+<span class="fc" id="L39">        detector.dataEnd();</span>
+<span class="fc" id="L40">        String encoding = detector.getDetectedCharset();</span>
+<span class="fc" id="L41">        String result = text;</span>
         
         // Confirm UTF8
-<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (encoding != null) {</span>
-            
-<span class="nc" id="L51">            result = String.format(</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (encoding != null) {</span>
+<span class="nc" id="L45">            result = String.format(</span>
                 &quot;&lt;html&gt;&lt;span style=\&quot;font-family:'%s';%s\&quot;&gt;%s&lt;/span&gt;&lt;/html&gt;&quot;,
                 UiUtil.FONT_NAME_MONO_ASIAN,
-<span class="nc bnc" id="L54" title="All 2 branches missed.">                nowrap ? &quot;white-space:nowrap;&quot; : StringUtils.EMPTY,</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">                nowrap ? &quot;white-space:nowrap;&quot; : StringUtils.EMPTY,</span>
                 text
             );
         }
         
-<span class="fc" id="L59">        return result;</span>
+<span class="fc" id="L53">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

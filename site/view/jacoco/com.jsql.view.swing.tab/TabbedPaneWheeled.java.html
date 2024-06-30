@@ -16,36 +16,35 @@ import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import javax.swing.*;
 
 /**
- * Tabs with mousewheel and right click action.
+ * Tabs with mouse-wheel and right click action.
  */
 public class TabbedPaneWheeled extends JTabbedPane {
     
     /**
-     * Create tabs with ctrl-TAB, mousewheel and new UI.
+     * Create tabs with ctrl-TAB, mouse-wheel and new UI.
      */
     public TabbedPaneWheeled() {
-        
-<span class="fc" id="L28">        this(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L27">        this(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);</span>
+<span class="fc" id="L28">    }</span>
 
     public TabbedPaneWheeled(int tabPlacement, int tabLayoutPolicy) {
         
-<span class="fc" id="L33">        super(tabPlacement, tabLayoutPolicy);</span>
+<span class="fc" id="L32">        super(tabPlacement, tabLayoutPolicy);</span>
         
         // UIManager.put() is not enough
-<span class="fc" id="L36">        this.setUI(new CustomMetalTabbedPaneUI());</span>
+<span class="fc" id="L35">        this.setUI(new CustomMetalTabbedPaneUI());</span>
         
-<span class="fc" id="L38">        this.addMouseWheelListener(new TabbedPaneMouseWheelListener());</span>
+<span class="fc" id="L37">        this.addMouseWheelListener(new TabbedPaneMouseWheelListener());</span>
         
         // Hotkeys ctrl-TAB, ctrl-shift-TAB
-<span class="fc" id="L41">        HotkeyUtil.addShortcut(this);</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L40">        HotkeyUtil.addShortcut(this);</span>
+<span class="fc" id="L41">    }</span>
 
     /**
      * Display popupmenu with a list of tabs.
      */
     public void addMouseClickMenu() {
-<span class="fc" id="L48">        this.addMouseListener(new TabMouseAdapter(this));</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L47">        this.addMouseListener(new TabMouseAdapter(this));</span>
+<span class="fc" id="L48">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

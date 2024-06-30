@@ -7,14 +7,12 @@ public class ThreadFactoryCallable implements ThreadFactory {
     private final String nameThread;
     
 <span class="fc" id="L9">    public ThreadFactoryCallable(String nameThread) {</span>
-        
-<span class="fc" id="L11">        this.nameThread = nameThread;</span>
-<span class="fc" id="L12">    }</span>
+<span class="fc" id="L10">        this.nameThread = nameThread;</span>
+<span class="fc" id="L11">    }</span>
     
     @Override
     public Thread newThread(Runnable runnable) {
-        
-<span class="fc" id="L17">        return new Thread(runnable, this.nameThread);</span>
+<span class="fc" id="L15">        return new Thread(runnable, this.nameThread);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

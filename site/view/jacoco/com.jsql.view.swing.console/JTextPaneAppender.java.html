@@ -93,59 +93,47 @@ public class JTextPaneAppender extends AbstractAppender {
         // Avoid errors which might occur in headless mode
         // or logging that occurs before consoles are available
 <span class="pc bpc" id="L95" title="2 of 4 branches missed.">        if (consoleTextPane == null || javaTextPane == null) {</span>
-            
-<span class="nc" id="L97">            return;</span>
+<span class="nc" id="L96">            return;</span>
         }
         
-<span class="fc" id="L100">        var messageLogEvent = new String[] {</span>
-<span class="fc" id="L101">            new String(this.getLayout().toByteArray(event), StandardCharsets.UTF_8)</span>
+<span class="fc" id="L99">        var messageLogEvent = new String[] {</span>
+<span class="fc" id="L100">            new String(this.getLayout().toByteArray(event), StandardCharsets.UTF_8)</span>
         };
         
-<span class="fc" id="L104">        var level = event.getLevel().intLevel();</span>
+<span class="fc" id="L103">        var level = event.getLevel().intLevel();</span>
         
-<span class="fc" id="L106">        SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="fc" id="L105">        SwingUtilities.invokeLater(() -&gt; {</span>
             
-<span class="fc" id="L108">            String message = messageLogEvent[0];</span>
+<span class="fc" id="L107">            String message = messageLogEvent[0];</span>
             
-<span class="fc bfc" id="L110" title="All 2 branches covered.">            if (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {</span>
-                
-<span class="fc" id="L112">                javaTextPane.append(message, ATTRIBUTE_WARN);</span>
-                
-<span class="fc bfc" id="L114" title="All 2 branches covered.">            } else if (level == LogLevelUtil.CONSOLE_ERROR.intLevel()) {</span>
-                
-<span class="fc" id="L116">                consoleTextPane.append(message, ATTRIBUTE_WARN);</span>
-                
-<span class="fc bfc" id="L118" title="All 2 branches covered.">            } else if (level == LogLevelUtil.CONSOLE_INFORM.intLevel()) {</span>
-                
-<span class="fc" id="L120">                consoleTextPane.append(message, ATTRIBUTE_INFORM);</span>
-                
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">            } else if (level == LogLevelUtil.CONSOLE_SUCCESS.intLevel()) {</span>
-                
-<span class="nc" id="L124">                consoleTextPane.append(message, ATTRIBUTE_SUCCESS);</span>
-                
-<span class="pc bpc" id="L126" title="2 of 4 branches missed.">            } else if (level != LogLevelUtil.IGNORE.intLevel() &amp;&amp; level != Level.ERROR.intLevel()) {  // ignore &amp; stdout when unhandled exception</span>
-                
-<span class="fc" id="L128">                consoleTextPane.append(message, ATTRIBUTE_ALL);</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">            if (level == LogLevelUtil.CONSOLE_JAVA.intLevel()) {</span>
+<span class="fc" id="L110">                javaTextPane.append(message, ATTRIBUTE_WARN);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">            } else if (level == LogLevelUtil.CONSOLE_ERROR.intLevel()) {</span>
+<span class="fc" id="L112">                consoleTextPane.append(message, ATTRIBUTE_WARN);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">            } else if (level == LogLevelUtil.CONSOLE_INFORM.intLevel()) {</span>
+<span class="fc" id="L114">                consoleTextPane.append(message, ATTRIBUTE_INFORM);</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">            } else if (level == LogLevelUtil.CONSOLE_SUCCESS.intLevel()) {</span>
+<span class="nc" id="L116">                consoleTextPane.append(message, ATTRIBUTE_SUCCESS);</span>
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">            } else if (level != LogLevelUtil.IGNORE.intLevel() &amp;&amp; level != Level.ERROR.intLevel()) {  // ignore &amp; stdout when unhandled exception</span>
+<span class="fc" id="L118">                consoleTextPane.append(message, ATTRIBUTE_ALL);</span>
             }
-<span class="fc" id="L130">        });</span>
-<span class="fc" id="L131">    }</span>
+<span class="fc" id="L120">        });</span>
+<span class="fc" id="L121">    }</span>
     
     /**
      * Register the java console.
      * @param javaConsole
      */
     public static void register(JavaConsoleAdapter javaConsole) {
-        
-<span class="fc" id="L139">        JTextPaneAppender.javaTextPane = javaConsole;</span>
-<span class="fc" id="L140">    }</span>
+<span class="fc" id="L128">        JTextPaneAppender.javaTextPane = javaConsole;</span>
+<span class="fc" id="L129">    }</span>
 
     /**
      * Register the default console.
      * @param consoleColored
      */
     public static void register(SimpleConsoleAdapter consoleColored) {
-        
-<span class="fc" id="L148">        JTextPaneAppender.consoleTextPane = consoleColored;</span>
-<span class="fc" id="L149">    }</span>
+<span class="fc" id="L136">        JTextPaneAppender.consoleTextPane = consoleColored;</span>
+<span class="fc" id="L137">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

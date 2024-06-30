@@ -12,7 +12,7 @@ package com.jsql.model.exception;
 
 /**
  * Exception class thrown during normal injection process,
- * concerns every steps when user interact with
+ * concerns every step when user interact with
  * database elements (database, table, column).
  */
 public class StoppedByUserSlidingException extends AbstractSlidingException {
@@ -20,18 +20,15 @@ public class StoppedByUserSlidingException extends AbstractSlidingException {
     private static final String STR_STOPPED_BY_USER = &quot;Stopped by user&quot;;
 
     public StoppedByUserSlidingException() {
-        
-<span class="nc" id="L24">        super(STR_STOPPED_BY_USER);</span>
-<span class="nc" id="L25">    }</span>
+<span class="nc" id="L23">        super(STR_STOPPED_BY_USER);</span>
+<span class="nc" id="L24">    }</span>
     
     public StoppedByUserSlidingException(String slidingWindowAllRows) {
-        
-<span class="nc" id="L29">        super(STR_STOPPED_BY_USER, slidingWindowAllRows);</span>
-<span class="nc" id="L30">    }</span>
+<span class="nc" id="L27">        super(STR_STOPPED_BY_USER, slidingWindowAllRows);</span>
+<span class="nc" id="L28">    }</span>
 
     public StoppedByUserSlidingException(String slidingWindowAllRows, String slidingWindowCurrentRows) {
-        
-<span class="nc" id="L34">        super(STR_STOPPED_BY_USER, slidingWindowAllRows, slidingWindowCurrentRows);</span>
-<span class="nc" id="L35">    }</span>
+<span class="nc" id="L31">        super(STR_STOPPED_BY_USER, slidingWindowAllRows, slidingWindowCurrentRows);</span>
+<span class="nc" id="L32">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

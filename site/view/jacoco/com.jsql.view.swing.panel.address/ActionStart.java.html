@@ -24,79 +24,70 @@ public class ActionStart implements ActionListener {
     protected final PanelAddressBar panelAddressBar;
     
 <span class="fc" id="L26">    public ActionStart(PanelAddressBar panelAddressBar) {</span>
-        
-<span class="fc" id="L28">        this.panelAddressBar = panelAddressBar;</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L27">        this.panelAddressBar = panelAddressBar;</span>
+<span class="fc" id="L28">    }</span>
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
         // No injection running
-<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if (this.panelAddressBar.getAddressMenuBar().getButtonInUrl().getState() == StateButton.STARTABLE) {</span>
-            
-<span class="fc" id="L37">            this.startInjection();</span>
-
-<span class="nc bnc" id="L39" title="All 2 branches missed.">        } else if (this.panelAddressBar.getAddressMenuBar().getButtonInUrl().getState() == StateButton.STOPPABLE) {</span>
-            
-            // Injection currently running, stop the process
-<span class="nc" id="L42">            this.stopInjection();</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">        if (this.panelAddressBar.getAddressMenuBar().getButtonInUrl().getState() == StateButton.STARTABLE) {</span>
+<span class="fc" id="L34">            this.startInjection();</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        } else if (this.panelAddressBar.getAddressMenuBar().getButtonInUrl().getState() == StateButton.STOPPABLE) {</span>
+<span class="nc" id="L36">            this.stopInjection();  // Injection currently running, stop the process</span>
         }
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L38">    }</span>
     
     protected void startInjection() {
         
-<span class="fc" id="L48">        int option = JOptionPane.OK_OPTION;</span>
+<span class="fc" id="L42">        int option = JOptionPane.OK_OPTION;</span>
         
         // Ask the user confirmation if injection already built
-<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if (MediatorHelper.model().shouldErasePreviousInjection()) {</span>
-            
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (MediatorHelper.model().shouldErasePreviousInjection()) {</span>
             // Fix #93469: IllegalArgumentException on showConfirmDialog()
             // Fix #33930: ClassCastException on showConfirmDialog()
             // Implementation by sun.awt.image
             try {
-<span class="nc" id="L57">                option = JOptionPane.showConfirmDialog(</span>
+<span class="nc" id="L50">                option = JOptionPane.showConfirmDialog(</span>
                     null,
-<span class="nc" id="L59">                    I18nUtil.valueByKey(&quot;DIALOG_NEW_INJECTION_TEXT&quot;),</span>
-<span class="nc" id="L60">                    I18nUtil.valueByKey(&quot;DIALOG_NEW_INJECTION_TITLE&quot;),</span>
+<span class="nc" id="L52">                    I18nUtil.valueByKey(&quot;DIALOG_NEW_INJECTION_TEXT&quot;),</span>
+<span class="nc" id="L53">                    I18nUtil.valueByKey(&quot;DIALOG_NEW_INJECTION_TITLE&quot;),</span>
                     JOptionPane.OK_CANCEL_OPTION
                 );
-                
-<span class="nc" id="L64">            } catch (IllegalArgumentException | ClassCastException e) {</span>
-                
-<span class="nc" id="L66">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L67">            }</span>
+<span class="nc" id="L56">            } catch (IllegalArgumentException | ClassCastException e) {</span>
+<span class="nc" id="L57">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L58">            }</span>
         }
 
         // Then start injection
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (option == JOptionPane.OK_OPTION) {</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        if (option == JOptionPane.OK_OPTION) {</span>
             
-<span class="fc" id="L73">            this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_STOP_TOOLTIP&quot;));</span>
-<span class="fc" id="L74">            this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setInjectionRunning();</span>
-<span class="fc" id="L75">            this.panelAddressBar.getAddressMenuBar().getLoader().setVisible(true);</span>
+<span class="fc" id="L64">            this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_STOP_TOOLTIP&quot;));</span>
+<span class="fc" id="L65">            this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setInjectionRunning();</span>
+<span class="fc" id="L66">            this.panelAddressBar.getAddressMenuBar().getLoader().setVisible(true);</span>
 
             // Erase everything in the view from a previous injection
-<span class="fc" id="L78">            var requests = new Request();</span>
-<span class="fc" id="L79">            requests.setMessage(Interaction.RESET_INTERFACE);</span>
-<span class="fc" id="L80">            MediatorHelper.model().sendToViews(requests);</span>
+<span class="fc" id="L69">            var requests = new Request();</span>
+<span class="fc" id="L70">            requests.setMessage(Interaction.RESET_INTERFACE);</span>
+<span class="fc" id="L71">            MediatorHelper.model().sendToViews(requests);</span>
 
-<span class="fc" id="L82">            MediatorHelper.model().getMediatorUtils().getParameterUtil().controlInput(</span>
-<span class="fc" id="L83">                this.panelAddressBar.getTextFieldAddress().getText().trim(),</span>
-<span class="fc" id="L84">                this.panelAddressBar.getTextFieldRequest().getText().trim(),</span>
-<span class="fc" id="L85">                this.panelAddressBar.getTextFieldHeader().getText().trim(),</span>
-<span class="fc" id="L86">                this.panelAddressBar.getMethodInjection(),</span>
-<span class="fc" id="L87">                this.panelAddressBar.getRequestPanel().getTypeRequest(),</span>
+<span class="fc" id="L73">            MediatorHelper.model().getMediatorUtils().getParameterUtil().controlInput(</span>
+<span class="fc" id="L74">                this.panelAddressBar.getTextFieldAddress().getText().trim(),</span>
+<span class="fc" id="L75">                this.panelAddressBar.getTextFieldRequest().getText().trim(),</span>
+<span class="fc" id="L76">                this.panelAddressBar.getTextFieldHeader().getText().trim(),</span>
+<span class="fc" id="L77">                this.panelAddressBar.getMethodInjection(),</span>
+<span class="fc" id="L78">                this.panelAddressBar.getRequestPanel().getTypeRequest(),</span>
                 false
             );
         }
-<span class="fc" id="L91">    }</span>
+<span class="fc" id="L82">    }</span>
     
     private void stopInjection() {
         
-<span class="nc" id="L95">        this.panelAddressBar.getAddressMenuBar().getLoader().setVisible(false);</span>
-<span class="nc" id="L96">        this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setInjectionStopping();</span>
-<span class="nc" id="L97">        this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_STOPPING_TOOLTIP&quot;));</span>
+<span class="nc" id="L86">        this.panelAddressBar.getAddressMenuBar().getLoader().setVisible(false);</span>
+<span class="nc" id="L87">        this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setInjectionStopping();</span>
+<span class="nc" id="L88">        this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setToolTipText(I18nUtil.valueByKey(&quot;BUTTON_STOPPING_TOOLTIP&quot;));</span>
         
-<span class="nc" id="L99">        MediatorHelper.model().setIsStoppedByUser(true);</span>
-<span class="nc" id="L100">    }</span>
+<span class="nc" id="L90">        MediatorHelper.model().setIsStoppedByUser(true);</span>
+<span class="nc" id="L91">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

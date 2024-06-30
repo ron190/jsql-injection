@@ -28,7 +28,7 @@ class DocPositionComparator implements Comparator&lt;DocPosition&gt; {
 <span class="fc" id="L28">    public static final DocPositionComparator instance = new DocPositionComparator();</span>
     
     private DocPositionComparator() {
-        
+        // Util class
     }
     
     /**
@@ -40,8 +40,7 @@ class DocPositionComparator implements Comparator&lt;DocPosition&gt; {
      */
     @Override
     public boolean equals(Object obj) {
-        
-<span class="nc bnc" id="L44" title="All 2 branches missed.">        return this == obj;</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        return this == obj;</span>
     }
 
     /**
@@ -53,11 +52,7 @@ class DocPositionComparator implements Comparator&lt;DocPosition&gt; {
      */
     @Override
     public int compare(DocPosition o1, DocPosition o2) {
-        
-<span class="fc" id="L57">        DocPosition d1 = o1;</span>
-<span class="fc" id="L58">        DocPosition d2 = o2;</span>
-        
-<span class="fc" id="L60">        return d1.getPosition() - d2.getPosition();</span>
+<span class="fc" id="L55">        return o1.getPosition() - o2.getPosition();</span>
     }
 }
 

@@ -40,63 +40,59 @@ public class BeanInjection {
 <span class="fc" id="L40">                .filter(m -&gt; m.name().equalsIgnoreCase(nameMethod))</span>
 <span class="fc" id="L41">                .findAny()</span>
 <span class="fc" id="L42">                .orElse(MediatorHelper.model().getMediatorMethod().getQuery());</span>
-            
-<span class="nc" id="L44">        } catch (IllegalArgumentException | NoSuchElementException e) {</span>
-            
-<span class="nc" id="L46">            this.method = MediatorHelper.model().getMediatorMethod().getQuery();</span>
-<span class="fc" id="L47">        }</span>
+<span class="nc" id="L43">        } catch (IllegalArgumentException | NoSuchElementException e) {</span>
+<span class="nc" id="L44">            this.method = MediatorHelper.model().getMediatorMethod().getQuery();</span>
+<span class="fc" id="L45">        }</span>
         
         try {
-<span class="fc" id="L50">            this.vendor = MediatorHelper.model()</span>
-<span class="fc" id="L51">                .getMediatorVendor()</span>
-<span class="fc" id="L52">                .getVendors()</span>
-<span class="fc" id="L53">                .stream()</span>
-<span class="fc" id="L54">                .filter(v -&gt; v.toString().equals(vendor))</span>
-<span class="fc" id="L55">                .findAny()</span>
-<span class="fc" id="L56">                .orElse(MediatorHelper.model().getMediatorVendor().getAuto());</span>
-            
-<span class="nc" id="L58">        } catch (IllegalArgumentException | NoSuchElementException e) {</span>
-            
-<span class="nc" id="L60">            this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();</span>
-<span class="fc" id="L61">        }</span>
+<span class="fc" id="L48">            this.vendor = MediatorHelper.model()</span>
+<span class="fc" id="L49">                .getMediatorVendor()</span>
+<span class="fc" id="L50">                .getVendors()</span>
+<span class="fc" id="L51">                .stream()</span>
+<span class="fc" id="L52">                .filter(v -&gt; v.toString().equals(vendor))</span>
+<span class="fc" id="L53">                .findAny()</span>
+<span class="fc" id="L54">                .orElse(MediatorHelper.model().getMediatorVendor().getAuto());</span>
+<span class="nc" id="L55">        } catch (IllegalArgumentException | NoSuchElementException e) {</span>
+<span class="nc" id="L56">            this.vendor = MediatorHelper.model().getMediatorVendor().getAuto();</span>
+<span class="fc" id="L57">        }</span>
         
-<span class="fc bfc" id="L63" title="All 2 branches covered.">        this.requestType = requestType.isEmpty()</span>
-<span class="fc" id="L64">            ? &quot;GET&quot;</span>
-<span class="fc" id="L65">            : requestType;</span>
-<span class="fc" id="L66">    }</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        this.requestType = requestType.isEmpty()</span>
+<span class="fc" id="L60">            ? &quot;GET&quot;</span>
+<span class="fc" id="L61">            : requestType;</span>
+<span class="fc" id="L62">    }</span>
     
     
     // Json getter for serialization
     
     public String getMethod() {
-<span class="fc" id="L72">        return this.method.name();</span>
+<span class="fc" id="L68">        return this.method.name();</span>
     }
     
     public String getVendor() {
-<span class="fc" id="L76">        return this.vendor.toString();</span>
+<span class="fc" id="L72">        return this.vendor.toString();</span>
     }
     
     
     // Getter and setter
 
     public String getUrl() {
-<span class="fc" id="L83">        return this.url;</span>
+<span class="fc" id="L79">        return this.url;</span>
     }
 
     public String getRequest() {
-<span class="fc" id="L87">        return this.request;</span>
+<span class="fc" id="L83">        return this.request;</span>
     }
 
     public String getHeader() {
-<span class="fc" id="L91">        return this.header;</span>
+<span class="fc" id="L87">        return this.header;</span>
     }
     
     public String getRequestType() {
-<span class="fc" id="L95">        return this.requestType;</span>
+<span class="fc" id="L91">        return this.requestType;</span>
     }
 
     public AbstractMethodInjection getMethodInstance() {
-<span class="fc" id="L99">        return this.method;</span>
+<span class="fc" id="L95">        return this.method;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

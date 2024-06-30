@@ -31,16 +31,14 @@ import java.util.stream.Collectors;
 <span class="fc" id="L31">    }</span>
     
     public String getErrorMessageAsString() {
-<span class="nc" id="L34">        return</span>
-            this.errorMessage
-<span class="nc" id="L36">            .stream()</span>
-<span class="nc" id="L37">            .collect(</span>
-<span class="nc" id="L38">                Collectors.joining(System.lineSeparator())</span>
+<span class="nc" id="L34">        return this.errorMessage.stream()</span>
+<span class="nc" id="L35">            .collect(</span>
+<span class="nc" id="L36">                Collectors.joining(System.lineSeparator())</span>
             );
     }
     
     public void setErrorMessageAsString(String errorMessage) {
-<span class="nc" id="L43">        this.errorMessage = Arrays.asList(errorMessage.split(&quot;[\r\n]+&quot;));</span>
-<span class="nc" id="L44">    }</span>
+<span class="nc" id="L41">        this.errorMessage = Arrays.asList(errorMessage.split(&quot;[\r\n]+&quot;));</span>
+<span class="nc" id="L42">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

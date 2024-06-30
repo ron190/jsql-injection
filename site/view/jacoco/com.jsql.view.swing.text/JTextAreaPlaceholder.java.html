@@ -25,46 +25,30 @@ public class JTextAreaPlaceholder extends JTextArea {
     private final String placeholderText;
     
     /**
-     * Create a textfield with hint and default value.
-     * @param placeholder Text displayed when empty
-     * @param value Default value
-     */
-    public JTextAreaPlaceholder(String placeholder, String value) {
-        
-<span class="nc" id="L34">        this(placeholder);</span>
-<span class="nc" id="L35">        this.setText(value);</span>
-<span class="nc" id="L36">    }</span>
-    
-    /**
      * Create a textfield with hint.
      * @param placeholder Text displayed when empty
      */
-<span class="fc" id="L42">    public JTextAreaPlaceholder(String placeholder) {</span>
+<span class="fc" id="L31">    public JTextAreaPlaceholder(String placeholder) {</span>
         
-<span class="fc" id="L44">        this.placeholderText = placeholder;</span>
-        
-<span class="fc" id="L46">        UiUtil.initialize(this);</span>
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L33">        this.placeholderText = placeholder;</span>
+<span class="fc" id="L34">        UiUtil.initialize(this);</span>
+<span class="fc" id="L35">    }</span>
 
     @Override
     public void paint(Graphics g) {
-        
         // Fix #6350: ArrayIndexOutOfBoundsException on paint()
         // Fix #90822: IllegalArgumentException on paint()
         // Fix #90761: StateInvariantError on paint()
         // StateInvariantError possible on jdk 8 when WrappedPlainView.drawLine in paint()
         try {
-<span class="fc" id="L57">            super.paint(g);</span>
+<span class="fc" id="L44">            super.paint(g);</span>
             
-<span class="fc bfc" id="L59" title="All 2 branches covered.">            if (StringUtils.isEmpty(this.getText())) {</span>
-                
-<span class="fc" id="L61">                UiUtil.drawPlaceholder(this, g, this.placeholderText);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">            if (StringUtils.isEmpty(this.getText())) {</span>
+<span class="fc" id="L47">                UiUtil.drawPlaceholder(this, g, this.placeholderText);</span>
             }
-            
-<span class="nc" id="L64">        } catch (IllegalArgumentException | NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
-            
-<span class="nc" id="L66">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L67">        }</span>
-<span class="fc" id="L68">    }</span>
+<span class="nc" id="L49">        } catch (IllegalArgumentException | NullPointerException | ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L50">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L51">        }</span>
+<span class="fc" id="L52">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

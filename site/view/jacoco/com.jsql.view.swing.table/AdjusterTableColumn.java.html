@@ -15,18 +15,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  Class to manage the widths of columns in a table.
+ * Class to manage the widths of columns in a table.
  *
- *  Various properties control how the width of the column is calculated.
- *  Another property controls whether column width calculation should be dynamic.
- *  Finally, various Actions will be added to the table to allow the user
- *  to customize the functionality.
+ * Various properties control how the width of the column is calculated.
+ * Another property controls whether column width calculation should be dynamic.
+ * Finally, various Actions will be added to the table to allow the user
+ * to customize the functionality.
  *
- *  This class was designed to be used with tables that use an auto resize mode
- *  of AUTO_RESIZE_OFF. With all other modes you are constrained as the width
- *  of the columns must fit inside the table. So if you increase one column, one
- *  or more of the other columns must decrease. Because of this the resize mode
- *  of RESIZE_ALL_COLUMNS will work the best.
+ * This class was designed to be used with tables that use an auto resize mode
+ * of AUTO_RESIZE_OFF. With all other modes you are constrained as the width
+ * of the columns must fit inside the table. So if you increase one column, one
+ * or more of the other columns must decrease. Because of this the resize mode
+ * of RESIZE_ALL_COLUMNS will work the best.
  */
 public class AdjusterTableColumn implements PropertyChangeListener, TableModelListener {
     
@@ -39,14 +39,14 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
 <span class="fc" id="L39">    private final Map&lt;TableColumn, Integer&gt; columnSizes = new HashMap&lt;&gt;();</span>
 
     /**
-     *  Specify the table and use default spacing
+     * Specify the table and use default spacing
      */
     public AdjusterTableColumn(JTable table) {
 <span class="fc" id="L45">        this(table, 6);</span>
 <span class="fc" id="L46">    }</span>
 
     /**
-     *  Specify the table and spacing
+     * Specify the table and spacing
      */
 <span class="fc" id="L51">    public AdjusterTableColumn(JTable tableAdjust, int spacing) {</span>
         
@@ -67,226 +67,215 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
         );
         
 <span class="fc" id="L69">        this.spacing = spacing;</span>
-<span class="fc" id="L70">        this.setColumnHeaderIncluded( true );</span>
-<span class="fc" id="L71">        this.setColumnDataIncluded( true );</span>
-<span class="fc" id="L72">        this.setOnlyAdjustLarger( true );</span>
-<span class="fc" id="L73">        this.setDynamicAdjustment( false );</span>
+<span class="fc" id="L70">        this.setColumnHeaderIncluded(true);</span>
+<span class="fc" id="L71">        this.setColumnDataIncluded(true);</span>
+<span class="fc" id="L72">        this.setOnlyAdjustLarger(true);</span>
+<span class="fc" id="L73">        this.setDynamicAdjustment(false);</span>
 <span class="fc" id="L74">        this.installActions();</span>
 <span class="fc" id="L75">    }</span>
 
     /**
-     *  Adjust the widths of all the columns in the table
+     * Adjust the widths of all the columns in the table
      */
     public void adjustColumns() {
         
 <span class="fc" id="L82">        TableColumnModel tcm = this.tableAdjust.getColumnModel();</span>
 
 <span class="fc bfc" id="L84" title="All 2 branches covered.">        for (var i = 0 ; i &lt; tcm.getColumnCount() ; i++) {</span>
-            
-<span class="fc" id="L86">            this.adjustColumn(i);</span>
+<span class="fc" id="L85">            this.adjustColumn(i);</span>
         }
-<span class="fc" id="L88">    }</span>
+<span class="fc" id="L87">    }</span>
 
     /**
-     *  Adjust the width of the specified column in the table
+     * Adjust the width of the specified column in the table
      */
     public void adjustColumn(final int column) {
         
-<span class="fc" id="L95">        var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);</span>
+<span class="fc" id="L94">        var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);</span>
 
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (! tableColumn.getResizable()) {</span>
-            
-<span class="nc" id="L99">            return;</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        if (!tableColumn.getResizable()) {</span>
+<span class="nc" id="L97">            return;</span>
         }
 
-<span class="fc" id="L102">        int columnHeaderWidth = this.getColumnHeaderWidth( column );</span>
-<span class="fc" id="L103">        int columnDataWidth   = this.getColumnDataWidth( column );</span>
-<span class="fc" id="L104">        int preferredWidth    = Math.max(columnHeaderWidth, columnDataWidth);</span>
+<span class="fc" id="L100">        int columnHeaderWidth = this.getColumnHeaderWidth(column);</span>
+<span class="fc" id="L101">        int columnDataWidth   = this.getColumnDataWidth(column);</span>
+<span class="fc" id="L102">        int preferredWidth    = Math.max(columnHeaderWidth, columnDataWidth);</span>
 
-<span class="fc" id="L106">        this.updateTableColumn(column, preferredWidth);</span>
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L104">        this.updateTableColumn(column, preferredWidth);</span>
+<span class="fc" id="L105">    }</span>
 
     /**
-     *  Calculated the width based on the column name
+     * Calculated the width based on the column name
      */
     private int getColumnHeaderWidth(int column) {
         
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (! this.isColumnHeaderIncluded) {</span>
-            
-<span class="nc" id="L116">            return 0;</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (!this.isColumnHeaderIncluded) {</span>
+<span class="nc" id="L113">            return 0;</span>
         }
 
-<span class="fc" id="L119">        var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);</span>
-<span class="fc" id="L120">        Object value = tableColumn.getHeaderValue();</span>
-<span class="fc" id="L121">        TableCellRenderer renderer = tableColumn.getHeaderRenderer();</span>
+<span class="fc" id="L116">        var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);</span>
+<span class="fc" id="L117">        Object value = tableColumn.getHeaderValue();</span>
+<span class="fc" id="L118">        TableCellRenderer renderer = tableColumn.getHeaderRenderer();</span>
 
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if (renderer == null) {</span>
-            
-<span class="fc" id="L125">            renderer = this.tableAdjust.getTableHeader().getDefaultRenderer();</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">        if (renderer == null) {</span>
+<span class="fc" id="L121">            renderer = this.tableAdjust.getTableHeader().getDefaultRenderer();</span>
         }
 
-<span class="fc" id="L128">        var c = renderer.getTableCellRendererComponent(this.tableAdjust, value, false, false, -1, column);</span>
+<span class="fc" id="L124">        var c = renderer.getTableCellRendererComponent(this.tableAdjust, value, false, false, -1, column);</span>
         
-<span class="fc" id="L130">        return c.getPreferredSize().width;</span>
+<span class="fc" id="L126">        return c.getPreferredSize().width;</span>
     }
 
     /**
-     *  Calculate the width based on the widest cell renderer for the
-     *  given column.
+     * Calculate the width based on the widest cell renderer for the
+     * given column.
      */
     private int getColumnDataWidth(int column) {
         
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">        if (! this.isColumnDataIncluded) {</span>
-            
-<span class="nc" id="L141">            return 0;</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if (!this.isColumnDataIncluded) {</span>
+<span class="nc" id="L136">            return 0;</span>
         }
 
-<span class="fc" id="L144">        var preferredWidth = 0;</span>
-<span class="fc" id="L145">        int maxWidth = this.tableAdjust.getColumnModel().getColumn(column).getMaxWidth();</span>
+<span class="fc" id="L139">        var preferredWidth = 0;</span>
+<span class="fc" id="L140">        int maxWidth = this.tableAdjust.getColumnModel().getColumn(column).getMaxWidth();</span>
 
-<span class="fc bfc" id="L147" title="All 2 branches covered.">        for (var row = 0 ; row &lt; this.tableAdjust.getRowCount() ; row++) {</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">        for (var row = 0 ; row &lt; this.tableAdjust.getRowCount() ; row++) {</span>
             
-<span class="fc" id="L149">            preferredWidth = Math.max(preferredWidth, this.getCellDataWidth(row, column));</span>
+<span class="fc" id="L144">            preferredWidth = Math.max(preferredWidth, this.getCellDataWidth(row, column));</span>
 
-            //  We've exceeded the maximum width, no need to check other rows
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">            if (preferredWidth &gt;= maxWidth) {</span>
-                
-<span class="nc" id="L154">                break;</span>
+            // We've exceeded the maximum width, no need to check other rows
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">            if (preferredWidth &gt;= maxWidth) {</span>
+<span class="nc" id="L148">                break;</span>
             }
         }
 
-<span class="fc" id="L158">        return preferredWidth;</span>
+<span class="fc" id="L152">        return preferredWidth;</span>
     }
 
     /**
-     *  Get the preferred width for the specified cell
+     * Get the preferred width for the specified cell
      */
     private int getCellDataWidth(int row, int column) {
         
-        //  Invoke the renderer for the cell to calculate the preferred width
-<span class="fc" id="L167">        TableCellRenderer cellRenderer = this.tableAdjust.getCellRenderer(row, column);</span>
-<span class="fc" id="L168">        Component c = this.tableAdjust.prepareRenderer(cellRenderer, row, column);</span>
+        // Invoke the renderer for the cell to calculate the preferred width
+<span class="fc" id="L161">        TableCellRenderer cellRenderer = this.tableAdjust.getCellRenderer(row, column);</span>
+<span class="fc" id="L162">        Component c = this.tableAdjust.prepareRenderer(cellRenderer, row, column);</span>
         
-<span class="fc" id="L170">        return c.getPreferredSize().width + this.tableAdjust.getIntercellSpacing().width;</span>
+<span class="fc" id="L164">        return c.getPreferredSize().width + this.tableAdjust.getIntercellSpacing().width;</span>
     }
 
     /**
-     *  Update the TableColumn with the newly calculated width
+     * Update the TableColumn with the newly calculated width
      */
     private void updateTableColumn(int column, int width) {
         
-<span class="fc" id="L178">        final var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);</span>
+<span class="fc" id="L172">        final var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);</span>
 
-<span class="pc bpc" id="L180" title="1 of 2 branches missed.">        if (! tableColumn.getResizable()) {</span>
-            
-<span class="nc" id="L182">            return;</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        if (!tableColumn.getResizable()) {</span>
+<span class="nc" id="L175">            return;</span>
         }
 
-<span class="fc" id="L185">        int calculatedWidth = width;</span>
-<span class="fc" id="L186">        calculatedWidth += this.spacing;</span>
+<span class="fc" id="L178">        int calculatedWidth = width;</span>
+<span class="fc" id="L179">        calculatedWidth += this.spacing;</span>
 
-        //  Don't shrink the column width
-<span class="pc bpc" id="L189" title="1 of 2 branches missed.">        if (this.isOnlyAdjustLarger) {</span>
-            
-<span class="fc" id="L191">            calculatedWidth = Math.max(calculatedWidth, tableColumn.getPreferredWidth());</span>
+        // Don't shrink the column width
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">        if (this.isOnlyAdjustLarger) {</span>
+<span class="fc" id="L183">            calculatedWidth = Math.max(calculatedWidth, tableColumn.getPreferredWidth());</span>
         }
 
-<span class="fc" id="L194">        this.columnSizes.put(tableColumn, tableColumn.getWidth());</span>
-<span class="fc" id="L195">        this.tableAdjust.getTableHeader().setResizingColumn(tableColumn);</span>
-<span class="fc" id="L196">        tableColumn.setWidth(calculatedWidth);</span>
-<span class="fc" id="L197">    }</span>
+<span class="fc" id="L186">        this.columnSizes.put(tableColumn, tableColumn.getWidth());</span>
+<span class="fc" id="L187">        this.tableAdjust.getTableHeader().setResizingColumn(tableColumn);</span>
+<span class="fc" id="L188">        tableColumn.setWidth(calculatedWidth);</span>
+<span class="fc" id="L189">    }</span>
 
     /**
-     *  Restore the widths of the columns in the table to its previous width
+     * Restore the widths of the columns in the table to its previous width
      */
     public void restoreColumns() {
         
-<span class="nc" id="L204">        TableColumnModel tcm = this.tableAdjust.getColumnModel();</span>
+<span class="nc" id="L196">        TableColumnModel tableColumnModel = this.tableAdjust.getColumnModel();</span>
 
-<span class="nc bnc" id="L206" title="All 2 branches missed.">        for (var i = 0 ; i &lt; tcm.getColumnCount() ; i++) {</span>
-            
-<span class="nc" id="L208">            this.restoreColumn(i);</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        for (var i = 0 ; i &lt; tableColumnModel.getColumnCount() ; i++) {</span>
+<span class="nc" id="L199">            this.restoreColumn(i);</span>
         }
-<span class="nc" id="L210">    }</span>
+<span class="nc" id="L201">    }</span>
 
     /**
-     *  Restore the width of the specified column to its previous width
+     * Restore the width of the specified column to its previous width
      */
     private void restoreColumn(int column) {
         
-<span class="nc" id="L217">        var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);</span>
-<span class="nc" id="L218">        Integer width = this.columnSizes.get(tableColumn);</span>
+<span class="nc" id="L208">        var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);</span>
+<span class="nc" id="L209">        Integer width = this.columnSizes.get(tableColumn);</span>
 
-<span class="nc bnc" id="L220" title="All 2 branches missed.">        if (width != null) {</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">        if (width != null) {</span>
             
-<span class="nc" id="L222">            this.tableAdjust.getTableHeader().setResizingColumn(tableColumn);</span>
-<span class="nc" id="L223">            tableColumn.setWidth( width );</span>
+<span class="nc" id="L213">            this.tableAdjust.getTableHeader().setResizingColumn(tableColumn);</span>
+<span class="nc" id="L214">            tableColumn.setWidth(width);</span>
         }
-<span class="nc" id="L225">    }</span>
+<span class="nc" id="L216">    }</span>
 
     /**
-     *    Indicates whether to include the header in the width calculation
+     * Indicates whether to include the header in the width calculation
      */
     public void setColumnHeaderIncluded(boolean isColumnHeaderIncluded) {
-<span class="fc" id="L231">        this.isColumnHeaderIncluded = isColumnHeaderIncluded;</span>
-<span class="fc" id="L232">    }</span>
+<span class="fc" id="L222">        this.isColumnHeaderIncluded = isColumnHeaderIncluded;</span>
+<span class="fc" id="L223">    }</span>
 
     /**
-     *    Indicates whether to include the model data in the width calculation
+     * Indicates whether to include the model data in the width calculation
      */
     public void setColumnDataIncluded(boolean isColumnDataIncluded) {
-<span class="fc" id="L238">        this.isColumnDataIncluded = isColumnDataIncluded;</span>
-<span class="fc" id="L239">    }</span>
+<span class="fc" id="L229">        this.isColumnDataIncluded = isColumnDataIncluded;</span>
+<span class="fc" id="L230">    }</span>
 
     /**
-     *    Indicates whether columns can only be increased in size
+     * Indicates whether columns can only be increased in size
      */
     public void setOnlyAdjustLarger(boolean isOnlyAdjustLarger) {
-<span class="fc" id="L245">        this.isOnlyAdjustLarger = isOnlyAdjustLarger;</span>
-<span class="fc" id="L246">    }</span>
+<span class="fc" id="L236">        this.isOnlyAdjustLarger = isOnlyAdjustLarger;</span>
+<span class="fc" id="L237">    }</span>
 
     /**
-     *  Indicate whether changes to the model should cause the width to be
-     *  dynamically recalculated.
+     * Indicate whether changes to the model should cause the width to be
+     * dynamically recalculated.
      */
     public void setDynamicAdjustment(boolean isDynamicAdjustment) {
         
-        //  May need to add or remove the TableModelListener when changed
-<span class="pc bpc" id="L255" title="1 of 2 branches missed.">        if (this.isDynamicAdjustment != isDynamicAdjustment) {</span>
-            
-<span class="nc bnc" id="L257" title="All 2 branches missed.">            if (isDynamicAdjustment) {</span>
+        // May need to add or remove the TableModelListener when changed
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">        if (this.isDynamicAdjustment != isDynamicAdjustment) {</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">            if (isDynamicAdjustment) {</span>
                 
-<span class="nc" id="L259">                this.tableAdjust.addPropertyChangeListener( this );</span>
-<span class="nc" id="L260">                this.tableAdjust.getModel().addTableModelListener( this );</span>
+<span class="nc" id="L249">                this.tableAdjust.addPropertyChangeListener(this);</span>
+<span class="nc" id="L250">                this.tableAdjust.getModel().addTableModelListener(this);</span>
                 
             } else {
                 
-<span class="nc" id="L264">                this.tableAdjust.removePropertyChangeListener( this );</span>
-<span class="nc" id="L265">                this.tableAdjust.getModel().removeTableModelListener( this );</span>
+<span class="nc" id="L254">                this.tableAdjust.removePropertyChangeListener(this);</span>
+<span class="nc" id="L255">                this.tableAdjust.getModel().removeTableModelListener(this);</span>
             }
         }
 
-<span class="fc" id="L269">        this.isDynamicAdjustment = isDynamicAdjustment;</span>
-<span class="fc" id="L270">    }</span>
+<span class="fc" id="L259">        this.isDynamicAdjustment = isDynamicAdjustment;</span>
+<span class="fc" id="L260">    }</span>
     
     /**
      * Implement the PropertyChangeListener
      */
     @Override
     public void propertyChange(PropertyChangeEvent e) {
-        
-        //  When the TableModel changes we need to update the listeners
-        //  and column widths
-<span class="nc bnc" id="L280" title="All 2 branches missed.">        if (&quot;model&quot;.equals(e.getPropertyName())) {</span>
+        // When the TableModel changes we need to update the listeners
+        // and column widths
+<span class="nc bnc" id="L269" title="All 2 branches missed.">        if (&quot;model&quot;.equals(e.getPropertyName())) {</span>
             
-<span class="nc" id="L282">            TableModel model = (TableModel)e.getOldValue();</span>
-<span class="nc" id="L283">            model.removeTableModelListener( this );</span>
+<span class="nc" id="L271">            TableModel model = (TableModel)e.getOldValue();</span>
+<span class="nc" id="L272">            model.removeTableModelListener(this);</span>
 
-<span class="nc" id="L285">            model = (TableModel)e.getNewValue();</span>
-<span class="nc" id="L286">            model.addTableModelListener( this );</span>
-<span class="nc" id="L287">            this.adjustColumns();</span>
+<span class="nc" id="L274">            model = (TableModel)e.getNewValue();</span>
+<span class="nc" id="L275">            model.addTableModelListener(this);</span>
+<span class="nc" id="L276">            this.adjustColumns();</span>
         }
-<span class="nc" id="L289">    }</span>
+<span class="nc" id="L278">    }</span>
     
     /**
      * Implement the TableModelListener
@@ -294,151 +283,133 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
     @Override
     public void tableChanged(TableModelEvent e) {
         
-<span class="nc bnc" id="L297" title="All 2 branches missed.">        if (! this.isColumnDataIncluded) {</span>
-<span class="nc" id="L298">            return;</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">        if (!this.isColumnDataIncluded) {</span>
+<span class="nc" id="L287">            return;</span>
         }
 
-        //  A cell has been updated
-<span class="nc bnc" id="L302" title="All 2 branches missed.">        if (e.getType() == TableModelEvent.UPDATE) {</span>
+        // A cell has been updated
+<span class="nc bnc" id="L291" title="All 2 branches missed.">        if (e.getType() == TableModelEvent.UPDATE) {</span>
             
-<span class="nc" id="L304">            int column = this.tableAdjust.convertColumnIndexToView(e.getColumn());</span>
+<span class="nc" id="L293">            int column = this.tableAdjust.convertColumnIndexToView(e.getColumn());</span>
 
-            //  Only need to worry about an increase in width for this cell
-<span class="nc bnc" id="L307" title="All 2 branches missed.">            if (this.isOnlyAdjustLarger) {</span>
+            // Only need to worry about an increase in width for this cell
+<span class="nc bnc" id="L296" title="All 2 branches missed.">            if (this.isOnlyAdjustLarger) {</span>
                 
-<span class="nc" id="L309">                int    row = e.getFirstRow();</span>
-<span class="nc" id="L310">                var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);</span>
+<span class="nc" id="L298">                int row = e.getFirstRow();</span>
+<span class="nc" id="L299">                var tableColumn = this.tableAdjust.getColumnModel().getColumn(column);</span>
 
-<span class="nc bnc" id="L312" title="All 2 branches missed.">                if (tableColumn.getResizable()) {</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">                if (tableColumn.getResizable()) {</span>
                     
-<span class="nc" id="L314">                    int width = this.getCellDataWidth(row, column);</span>
-<span class="nc" id="L315">                    this.updateTableColumn(column, width);</span>
+<span class="nc" id="L303">                    int width = this.getCellDataWidth(row, column);</span>
+<span class="nc" id="L304">                    this.updateTableColumn(column, width);</span>
                 }
-                
-<span class="nc" id="L318">            } else {</span>
-                
-                //    Could be an increase of decrease so check all rows
-<span class="nc" id="L321">                this.adjustColumn( column );</span>
+<span class="nc" id="L306">            } else {</span>
+<span class="nc" id="L307">                this.adjustColumn(column);  // Could be an increase of decrease so check all rows</span>
             }
-<span class="nc" id="L323">        } else {</span>
-            
-            //  The update affected more than one column so adjust all columns
-<span class="nc" id="L326">            this.adjustColumns();</span>
+<span class="nc" id="L309">        } else {</span>
+<span class="nc" id="L310">            this.adjustColumns();  // The update affected more than one column so adjust all columns</span>
         }
-<span class="nc" id="L328">    }</span>
+<span class="nc" id="L312">    }</span>
 
     /**
-     *  Install Actions to give user control of certain functionality.
+     * Install Actions to give user control of certain functionality.
      */
     private void installActions() {
         
-<span class="fc" id="L335">        this.installColumnAction(true,  true,  &quot;adjustColumn&quot;,   &quot;control ADD&quot;);</span>
-<span class="fc" id="L336">        this.installColumnAction(false, true,  &quot;adjustColumns&quot;,  &quot;control shift ADD&quot;);</span>
-<span class="fc" id="L337">        this.installColumnAction(true,  false, &quot;restoreColumn&quot;,  &quot;control SUBTRACT&quot;);</span>
-<span class="fc" id="L338">        this.installColumnAction(false, false, &quot;restoreColumns&quot;, &quot;control shift SUBTRACT&quot;);</span>
+<span class="fc" id="L319">        this.installColumnAction(true,  true,  &quot;adjustColumn&quot;,   &quot;control ADD&quot;);</span>
+<span class="fc" id="L320">        this.installColumnAction(false, true,  &quot;adjustColumns&quot;,  &quot;control shift ADD&quot;);</span>
+<span class="fc" id="L321">        this.installColumnAction(true,  false, &quot;restoreColumn&quot;,  &quot;control SUBTRACT&quot;);</span>
+<span class="fc" id="L322">        this.installColumnAction(false, false, &quot;restoreColumns&quot;, &quot;control shift SUBTRACT&quot;);</span>
 
-<span class="fc" id="L340">        this.installToggleAction(true,  false, &quot;toggleDynamic&quot;,  &quot;control MULTIPLY&quot;);</span>
-<span class="fc" id="L341">        this.installToggleAction(false, true,  &quot;toggleLarger&quot;,   &quot;control DIVIDE&quot;);</span>
-<span class="fc" id="L342">    }</span>
+<span class="fc" id="L324">        this.installToggleAction(true,  false, &quot;toggleDynamic&quot;,  &quot;control MULTIPLY&quot;);</span>
+<span class="fc" id="L325">        this.installToggleAction(false, true,  &quot;toggleLarger&quot;,   &quot;control DIVIDE&quot;);</span>
+<span class="fc" id="L326">    }</span>
 
     /**
-     *  Update the input and action maps with a new ColumnAction
+     * Update the input and action maps with a new ColumnAction
      */
     private void installColumnAction(boolean isSelectedColumn, boolean isAdjust, String key, String keyStroke) {
         
-<span class="fc" id="L349">        Action action = new ColumnAction(isSelectedColumn, isAdjust);</span>
-<span class="fc" id="L350">        var ks = KeyStroke.getKeyStroke( keyStroke );</span>
+<span class="fc" id="L333">        Action action = new ColumnAction(isSelectedColumn, isAdjust);</span>
+<span class="fc" id="L334">        var ks = KeyStroke.getKeyStroke(keyStroke);</span>
         
-<span class="fc" id="L352">        this.tableAdjust.getInputMap().put(ks, key);</span>
-<span class="fc" id="L353">        this.tableAdjust.getActionMap().put(key, action);</span>
-<span class="fc" id="L354">    }</span>
+<span class="fc" id="L336">        this.tableAdjust.getInputMap().put(ks, key);</span>
+<span class="fc" id="L337">        this.tableAdjust.getActionMap().put(key, action);</span>
+<span class="fc" id="L338">    }</span>
 
     /**
-     *  Update the input and action maps with new ToggleAction
+     * Update the input and action maps with new ToggleAction
      */
     private void installToggleAction(boolean isToggleDynamic, boolean isToggleLarger, String key, String keyStroke) {
         
-<span class="fc" id="L361">        Action action = new ToggleAction(isToggleDynamic, isToggleLarger);</span>
-<span class="fc" id="L362">        var ks = KeyStroke.getKeyStroke( keyStroke );</span>
+<span class="fc" id="L345">        Action action = new ToggleAction(isToggleDynamic, isToggleLarger);</span>
+<span class="fc" id="L346">        var ks = KeyStroke.getKeyStroke(keyStroke);</span>
         
-<span class="fc" id="L364">        this.tableAdjust.getInputMap().put(ks, key);</span>
-<span class="fc" id="L365">        this.tableAdjust.getActionMap().put(key, action);</span>
-<span class="fc" id="L366">    }</span>
+<span class="fc" id="L348">        this.tableAdjust.getInputMap().put(ks, key);</span>
+<span class="fc" id="L349">        this.tableAdjust.getActionMap().put(key, action);</span>
+<span class="fc" id="L350">    }</span>
 
     /**
-     *  Action to adjust or restore the width of a single column or all columns
+     * Action to adjust or restore the width of a single column or all columns
      */
-        class ColumnAction extends AbstractAction {
+    class ColumnAction extends AbstractAction {
         
         private final boolean isSelectedColumn;
         private final boolean isAdjust;
 
-<span class="fc" id="L376">        public ColumnAction(boolean isSelectedColumn, boolean isAdjust) {</span>
+<span class="fc" id="L360">        public ColumnAction(boolean isSelectedColumn, boolean isAdjust) {</span>
             
-<span class="fc" id="L378">            this.isSelectedColumn = isSelectedColumn;</span>
-<span class="fc" id="L379">            this.isAdjust = isAdjust;</span>
-<span class="fc" id="L380">        }</span>
+<span class="fc" id="L362">            this.isSelectedColumn = isSelectedColumn;</span>
+<span class="fc" id="L363">            this.isAdjust = isAdjust;</span>
+<span class="fc" id="L364">        }</span>
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
-            //  Handle selected column(s) width change actions
-<span class="nc bnc" id="L386" title="All 2 branches missed.">            if (this.isSelectedColumn) {</span>
+            // Handle selected column(s) width change actions
+<span class="nc bnc" id="L369" title="All 2 branches missed.">            if (this.isSelectedColumn) {</span>
                 
-<span class="nc" id="L388">                int[] columns = AdjusterTableColumn.this.tableAdjust.getSelectedColumns();</span>
+<span class="nc" id="L371">                int[] columns = AdjusterTableColumn.this.tableAdjust.getSelectedColumns();</span>
 
-<span class="nc bnc" id="L390" title="All 2 branches missed.">                for (int column: columns) {</span>
-                    
-<span class="nc bnc" id="L392" title="All 2 branches missed.">                    if (this.isAdjust) {</span>
-                        
-<span class="nc" id="L394">                        AdjusterTableColumn.this.adjustColumn(column);</span>
-                        
+<span class="nc bnc" id="L373" title="All 2 branches missed.">                for (int column: columns) {</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">                    if (this.isAdjust) {</span>
+<span class="nc" id="L375">                        AdjusterTableColumn.this.adjustColumn(column);</span>
                     } else {
-                        
-<span class="nc" id="L398">                        AdjusterTableColumn.this.restoreColumn(column);</span>
+<span class="nc" id="L377">                        AdjusterTableColumn.this.restoreColumn(column);</span>
                     }
                 }
-<span class="nc" id="L401">            } else {</span>
-                
-<span class="nc bnc" id="L403" title="All 2 branches missed.">                if (this.isAdjust) {</span>
-                    
-<span class="nc" id="L405">                    AdjusterTableColumn.this.adjustColumns();</span>
-                    
+<span class="nc" id="L380">            } else {</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">                if (this.isAdjust) {</span>
+<span class="nc" id="L382">                    AdjusterTableColumn.this.adjustColumns();</span>
                 } else {
-                    
-<span class="nc" id="L409">                    AdjusterTableColumn.this.restoreColumns();</span>
+<span class="nc" id="L384">                    AdjusterTableColumn.this.restoreColumns();</span>
                 }
             }
-<span class="nc" id="L412">        }</span>
+<span class="nc" id="L387">        }</span>
     }
 
     /**
-     *  Toggle properties of the TableColumnAdjuster so the user can
-     *  customize the functionality to their preferences
+     * Toggle properties of the TableColumnAdjuster so the user can
+     * customize the functionality to their preferences
      */
-        class ToggleAction extends AbstractAction {
+    class ToggleAction extends AbstractAction {
         
         private final boolean isToggleDynamic;
         private final boolean isToggleLarger;
 
-<span class="fc" id="L424">        public ToggleAction(boolean isToggleDynamic, boolean isToggleLarger) {</span>
+<span class="fc" id="L399">        public ToggleAction(boolean isToggleDynamic, boolean isToggleLarger) {</span>
             
-<span class="fc" id="L426">            this.isToggleDynamic = isToggleDynamic;</span>
-<span class="fc" id="L427">            this.isToggleLarger = isToggleLarger;</span>
-<span class="fc" id="L428">        }</span>
+<span class="fc" id="L401">            this.isToggleDynamic = isToggleDynamic;</span>
+<span class="fc" id="L402">            this.isToggleLarger = isToggleLarger;</span>
+<span class="fc" id="L403">        }</span>
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            
-<span class="nc bnc" id="L433" title="All 2 branches missed.">            if (this.isToggleDynamic) {</span>
-                
-<span class="nc bnc" id="L435" title="All 2 branches missed.">                AdjusterTableColumn.this.setDynamicAdjustment(! AdjusterTableColumn.this.isDynamicAdjustment);</span>
-                
-<span class="nc bnc" id="L437" title="All 2 branches missed.">            } else if (this.isToggleLarger) {</span>
-                
-<span class="nc bnc" id="L439" title="All 2 branches missed.">                AdjusterTableColumn.this.setOnlyAdjustLarger(! AdjusterTableColumn.this.isOnlyAdjustLarger);</span>
+<span class="nc bnc" id="L407" title="All 2 branches missed.">            if (this.isToggleDynamic) {</span>
+<span class="nc bnc" id="L408" title="All 2 branches missed.">                AdjusterTableColumn.this.setDynamicAdjustment(!AdjusterTableColumn.this.isDynamicAdjustment);</span>
+<span class="nc bnc" id="L409" title="All 2 branches missed.">            } else if (this.isToggleLarger) {</span>
+<span class="nc bnc" id="L410" title="All 2 branches missed.">                AdjusterTableColumn.this.setOnlyAdjustLarger(!AdjusterTableColumn.this.isOnlyAdjustLarger);</span>
             }
-<span class="nc" id="L441">        }</span>
+<span class="nc" id="L412">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

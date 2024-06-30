@@ -110,14 +110,12 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
 <span class="fc" id="L110">                .replaceAll(&quot;#{5,}&quot;, &quot;#*&quot;)</span>
 <span class="fc" id="L111">                .trim()</span>
             );
-            
-<span class="nc" id="L114">        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {</span>
-            
-<span class="nc" id="L116">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L117">        }</span>
+<span class="nc" id="L113">        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {</span>
+<span class="nc" id="L114">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L115">        }</span>
         
         // Reset EditorKit to disable previous document effect
-<span class="fc" id="L120">        this.textAreaNetworkTabPreview.getEditorKit().createDefaultDocument();</span>
+<span class="fc" id="L118">        this.textAreaNetworkTabPreview.getEditorKit().createDefaultDocument();</span>
         
         // Proxy is used by jsoup to display &lt;img&gt; tags
         // Previous test for 2xx Success and 3xx Redirection was Header only,
@@ -126,65 +124,58 @@ public class TabbedPaneNetworkTab extends TabbedPaneWheeled {
         // Fix #39841: RuntimeException on setText()
         // Fix #42523: ExceptionInInitializerError on clean()
         try {
-<span class="fc" id="L129">            this.textAreaNetworkTabPreview.setText(</span>
-                Jsoup
-<span class="fc" id="L131">                .clean(</span>
-<span class="fc" id="L132">                    String.format(</span>
+<span class="fc" id="L127">            this.textAreaNetworkTabPreview.setText(</span>
+<span class="fc" id="L128">                Jsoup.clean(</span>
+<span class="fc" id="L129">                    String.format(</span>
                         &quot;&lt;html&gt;%s&lt;/html&gt;&quot;,
-<span class="fc" id="L134">                        StringUtil.detectUtf8(networkData.getSource())</span>
+<span class="fc" id="L131">                        StringUtil.detectUtf8(networkData.getSource())</span>
                     )
-<span class="fc" id="L136">                    .replaceAll(</span>
+<span class="fc" id="L133">                    .replaceAll(</span>
                         &quot;&lt;img[^&gt;]*&gt;&quot;,
                         StringUtils.EMPTY
                     )
-<span class="fc" id="L140">                    .replaceAll(</span>
+<span class="fc" id="L137">                    .replaceAll(</span>
                         &quot;&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?.*&gt;&quot;,
                         StringUtils.EMPTY
                     )
-<span class="fc" id="L144">                    .replaceAll(</span>
+<span class="fc" id="L141">                    .replaceAll(</span>
                         &quot;&lt;input[^&gt;]*type=\&quot;?(submit|button)\&quot;?.*&gt;&quot;,
                         &quot;&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;&quot;
                     )
-<span class="fc" id="L148">                    .replaceAll(</span>
+<span class="fc" id="L145">                    .replaceAll(</span>
                         &quot;&lt;input[^&gt;]*&gt;&quot;,
                         &quot;&lt;div style=\&quot;text-align:center;border:1px solid black;width:100px;\&quot;&gt;input&lt;/div&gt;&quot;
                     ),
-<span class="fc" id="L152">                    Safelist.relaxed()</span>
-<span class="fc" id="L153">                        .addTags(&quot;center&quot;, &quot;div&quot;, &quot;span&quot;)</span>
-<span class="fc" id="L154">                        .addAttributes(&quot;:all&quot;, &quot;style&quot;)</span>
+<span class="fc" id="L149">                    Safelist.relaxed()</span>
+<span class="fc" id="L150">                        .addTags(&quot;center&quot;, &quot;div&quot;, &quot;span&quot;)</span>
+<span class="fc" id="L151">                        .addAttributes(&quot;:all&quot;, &quot;style&quot;)</span>
                 )
             );
-            
-<span class="nc" id="L158">        } catch (Exception | ExceptionInInitializerError e) {</span>
-            
-<span class="nc" id="L160">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L161">        }</span>
-<span class="fc" id="L162">    }</span>
+<span class="nc" id="L154">        } catch (Exception | ExceptionInInitializerError e) {</span>
+<span class="nc" id="L155">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L156">        }</span>
+<span class="fc" id="L157">    }</span>
     
     public void reset() {
         
-<span class="fc" id="L166">        this.textAreaNetworkTabUrl.setText(StringUtils.EMPTY);</span>
-<span class="fc" id="L167">        this.textAreaNetworkTabHeader.setText(StringUtils.EMPTY);</span>
-<span class="fc" id="L168">        this.textAreaNetworkTabParams.setText(StringUtils.EMPTY);</span>
-<span class="fc" id="L169">        this.textAreaNetworkTabResponse.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L161">        this.textAreaNetworkTabUrl.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L162">        this.textAreaNetworkTabHeader.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L163">        this.textAreaNetworkTabParams.setText(StringUtils.EMPTY);</span>
+<span class="fc" id="L164">        this.textAreaNetworkTabResponse.setText(StringUtils.EMPTY);</span>
         
         // Fix #54572: NullPointerException on setText()
         try {
-<span class="fc" id="L173">            this.textAreaNetworkTabSource.setText(StringUtils.EMPTY);</span>
-            
-<span class="nc" id="L175">        } catch (NullPointerException e) {</span>
-            
-<span class="nc" id="L177">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L178">        }</span>
+<span class="fc" id="L168">            this.textAreaNetworkTabSource.setText(StringUtils.EMPTY);</span>
+<span class="nc" id="L169">        } catch (NullPointerException e) {</span>
+<span class="nc" id="L170">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L171">        }</span>
         
         // Fix #41879: ArrayIndexOutOfBoundsException on setText()
         try {
-<span class="fc" id="L182">            this.textAreaNetworkTabPreview.setText(StringUtils.EMPTY);</span>
-            
-<span class="nc" id="L184">        } catch (ArrayIndexOutOfBoundsException e) {</span>
-            
-<span class="nc" id="L186">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L187">        }</span>
-<span class="fc" id="L188">    }</span>
+<span class="fc" id="L175">            this.textAreaNetworkTabPreview.setText(StringUtils.EMPTY);</span>
+<span class="nc" id="L176">        } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="nc" id="L177">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L178">        }</span>
+<span class="fc" id="L179">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

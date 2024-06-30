@@ -151,7 +151,7 @@ public class ProxyUtil {
      * @param showOnConsole whether the message should be presented to the user
      * @return true if enabled proxies are up
      */
-    public boolean isLive(ShowOnConsole showOnConsole) {
+    public boolean isNotLive(ShowOnConsole showOnConsole) {
         
 <span class="fc" id="L156">        var isLive = true;</span>
         
@@ -171,7 +171,7 @@ public class ProxyUtil {
 <span class="nc" id="L171">            isLive = this.isSocketOn(showOnConsole, this.getProxyAddressHttps(), this.getProxyPortHttps(), &quot;HTTPS&quot;);</span>
         }
         
-<span class="fc" id="L174">        return isLive;</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        return !isLive;</span>
     }
     
     private boolean isSocketOn(ShowOnConsole showOnConsole, String address, String port, String protocol) {
@@ -194,87 +194,84 @@ public class ProxyUtil {
     }
     
     private void logStatus(ShowOnConsole showOnConsole, String address, String port, String protocol) {
-        
-<span class="nc bnc" id="L198" title="All 2 branches missed.">        if (showOnConsole == ShowOnConsole.YES) {</span>
-            
-<span class="nc" id="L200">            LOGGER.log(</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        if (showOnConsole == ShowOnConsole.YES) {</span>
+<span class="nc" id="L198">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_SUCCESS,
                 &quot;Connection successful to {} proxy {}:{}&quot;,
-<span class="nc" id="L203">                () -&gt; protocol,</span>
-<span class="nc" id="L204">                () -&gt; address,</span>
-<span class="nc" id="L205">                () -&gt;port</span>
+<span class="nc" id="L201">                () -&gt; protocol,</span>
+<span class="nc" id="L202">                () -&gt; address,</span>
+<span class="nc" id="L203">                () -&gt;port</span>
             );
         }
-<span class="nc" id="L208">    }</span>
+<span class="nc" id="L206">    }</span>
     
     private void logStatus(ShowOnConsole showOnConsole, String address, String port, String protocol, Exception e) {
-        
-<span class="nc bnc" id="L212" title="All 2 branches missed.">        if (showOnConsole == ShowOnConsole.YES) {</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">        if (showOnConsole == ShowOnConsole.YES) {</span>
             
-<span class="nc" id="L214">            String message = Optional.ofNullable(e.getMessage()).orElse(StringUtils.EMPTY);</span>
+<span class="nc" id="L211">            String message = Optional.ofNullable(e.getMessage()).orElse(StringUtils.EMPTY);</span>
             
-<span class="nc" id="L216">            LOGGER.log(</span>
+<span class="nc" id="L213">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L218">                () -&gt; String.format(</span>
+<span class="nc" id="L215">                () -&gt; String.format(</span>
                     &quot;Connection to %s proxy %s:%s failed with error \&quot;%s\&quot;, verify your proxy settings&quot;,
                     protocol,
                     address,
                     port,
-<span class="nc" id="L223">                    message.replace(e.getClass().getName() +&quot;: &quot;, StringUtils.EMPTY)</span>
+<span class="nc" id="L220">                    message.replace(e.getClass().getName() +&quot;: &quot;, StringUtils.EMPTY)</span>
                 )
             );
         }
-<span class="nc" id="L227">    }</span>
+<span class="nc" id="L224">    }</span>
     
     
     // Getters and setters
     
     public String getProxyAddressHttp() {
-<span class="nc" id="L233">        return this.proxyAddressHttp;</span>
+<span class="nc" id="L230">        return this.proxyAddressHttp;</span>
     }
 
     public void setProxyAddressHttp(String proxyAddressHttp) {
-<span class="nc" id="L237">        this.proxyAddressHttp = proxyAddressHttp;</span>
-<span class="nc" id="L238">    }</span>
+<span class="nc" id="L234">        this.proxyAddressHttp = proxyAddressHttp;</span>
+<span class="nc" id="L235">    }</span>
 
     public String getProxyPortHttp() {
-<span class="nc" id="L241">        return this.proxyPortHttp;</span>
+<span class="nc" id="L238">        return this.proxyPortHttp;</span>
     }
 
     public void setProxyPortHttp(String proxyPortHttp) {
-<span class="nc" id="L245">        this.proxyPortHttp = proxyPortHttp;</span>
-<span class="nc" id="L246">    }</span>
+<span class="nc" id="L242">        this.proxyPortHttp = proxyPortHttp;</span>
+<span class="nc" id="L243">    }</span>
 
     public boolean isUsingProxyHttp() {
-<span class="fc" id="L249">        return this.isUsingProxyHttp;</span>
+<span class="fc" id="L246">        return this.isUsingProxyHttp;</span>
     }
 
     public void setUsingProxyHttp(boolean isUsingProxyHttp) {
-<span class="nc" id="L253">        this.isUsingProxyHttp = isUsingProxyHttp;</span>
-<span class="nc" id="L254">    }</span>
+<span class="nc" id="L250">        this.isUsingProxyHttp = isUsingProxyHttp;</span>
+<span class="nc" id="L251">    }</span>
 
     public String getProxyAddressHttps() {
-<span class="nc" id="L257">        return this.proxyAddressHttps;</span>
+<span class="nc" id="L254">        return this.proxyAddressHttps;</span>
     }
 
     public void setProxyAddressHttps(String proxyAddressHttps) {
-<span class="nc" id="L261">        this.proxyAddressHttps = proxyAddressHttps;</span>
-<span class="nc" id="L262">    }</span>
+<span class="nc" id="L258">        this.proxyAddressHttps = proxyAddressHttps;</span>
+<span class="nc" id="L259">    }</span>
 
     public String getProxyPortHttps() {
-<span class="nc" id="L265">        return this.proxyPortHttps;</span>
+<span class="nc" id="L262">        return this.proxyPortHttps;</span>
     }
 
     public void setProxyPortHttps(String proxyPortHttps) {
-<span class="nc" id="L269">        this.proxyPortHttps = proxyPortHttps;</span>
-<span class="nc" id="L270">    }</span>
+<span class="nc" id="L266">        this.proxyPortHttps = proxyPortHttps;</span>
+<span class="nc" id="L267">    }</span>
 
     public boolean isUsingProxyHttps() {
-<span class="fc" id="L273">        return this.isUsingProxyHttps;</span>
+<span class="fc" id="L270">        return this.isUsingProxyHttps;</span>
     }
 
     public void setUsingProxyHttps(boolean isUsingProxyHttps) {
-<span class="nc" id="L277">        this.isUsingProxyHttps = isUsingProxyHttps;</span>
-<span class="nc" id="L278">    }</span>
+<span class="nc" id="L274">        this.isUsingProxyHttps = isUsingProxyHttps;</span>
+<span class="nc" id="L275">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

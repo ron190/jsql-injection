@@ -27,16 +27,14 @@ public class MessageBinary implements InteractionCommand {
      * @param interactionParams Text to append
      */
 <span class="nc" id="L29">    public MessageBinary(Object[] interactionParams) {</span>
-        
-<span class="nc" id="L31">        this.text = (String) interactionParams[0];</span>
-<span class="nc" id="L32">    }</span>
+<span class="nc" id="L30">        this.text = (String) interactionParams[0];</span>
+<span class="nc" id="L31">    }</span>
 
     @Override
     public void execute() {
         
-<span class="nc" id="L37">        MediatorHelper.panelConsoles().messageBinary(this.text);</span>
-        
-<span class="nc" id="L39">        MediatorHelper.tabConsoles().highlightTab(&quot;Boolean&quot;);</span>
-<span class="nc" id="L40">    }</span>
+<span class="nc" id="L36">        MediatorHelper.panelConsoles().messageBinary(this.text);</span>
+<span class="nc" id="L37">        MediatorHelper.tabConsoles().highlightTab(&quot;Boolean&quot;);</span>
+<span class="nc" id="L38">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -60,68 +60,60 @@ public abstract class AbstractColoredConsole extends JPopupTextPane {
      * @param attribut Font
      */
     public void append(String message, SimpleAttributeSet attribut) {
-        
         try {
-<span class="pc bpc" id="L65" title="1 of 2 branches missed.">            boolean isCaretAtEnd = this.getProxy().getCaretPosition() == this.getProxy().getDocument().getLength();</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">            boolean isCaretAtEnd = this.getProxy().getCaretPosition() == this.getProxy().getDocument().getLength();</span>
             
-<span class="fc" id="L67">            JScrollPane scrollPane = (JScrollPane) this.getProxy().getParent().getParent();</span>
-<span class="fc" id="L68">            JScrollBar scrollBar = scrollPane.getVerticalScrollBar();</span>
-<span class="fc" id="L69">            int extent = scrollBar.getModel().getExtent();</span>
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">            boolean isScrollBarAtEnd = scrollBar.getValue() &gt;= scrollBar.getMaximum() - extent;</span>
+<span class="fc" id="L66">            JScrollPane scrollPane = (JScrollPane) this.getProxy().getParent().getParent();</span>
+<span class="fc" id="L67">            JScrollBar scrollBar = scrollPane.getVerticalScrollBar();</span>
+<span class="fc" id="L68">            int extent = scrollBar.getModel().getExtent();</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">            boolean isScrollBarAtEnd = scrollBar.getValue() &gt;= scrollBar.getMaximum() - extent;</span>
             
-<span class="fc" id="L72">            var logMessage = message.substring(15);</span>
-<span class="fc" id="L73">            var logTimestamp = message.substring(0, 15);</span>
+<span class="fc" id="L71">            var logMessage = message.substring(15);</span>
+<span class="fc" id="L72">            var logTimestamp = message.substring(0, 15);</span>
             
-<span class="fc" id="L75">            this.getProxy().getDocument().insertString(</span>
-<span class="fc" id="L76">                this.getProxy().getDocument().getLength(),</span>
-<span class="fc bfc" id="L77" title="All 2 branches covered.">                (this.getProxy().getDocument().getLength() == 0 ? StringUtils.EMPTY : &quot;\n&quot;) + logTimestamp,</span>
-<span class="fc" id="L78">                this.getColorAttribute()</span>
+<span class="fc" id="L74">            this.getProxy().getDocument().insertString(</span>
+<span class="fc" id="L75">                this.getProxy().getDocument().getLength(),</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">                (this.getProxy().getDocument().getLength() == 0 ? StringUtils.EMPTY : &quot;\n&quot;) + logTimestamp,</span>
+<span class="fc" id="L77">                this.getColorAttribute()</span>
             );
             
-<span class="fc" id="L81">            this.getProxy().getDocument().insertString(</span>
-<span class="fc" id="L82">                this.getProxy().getDocument().getLength(),</span>
+<span class="fc" id="L80">            this.getProxy().getDocument().insertString(</span>
+<span class="fc" id="L81">                this.getProxy().getDocument().getLength(),</span>
                 logMessage,
                 attribut
             );
             
-<span class="pc bpc" id="L87" title="3 of 4 branches missed.">            if (isCaretAtEnd || isScrollBarAtEnd) {</span>
-                
-<span class="fc" id="L89">                scrollBar.setValue(scrollBar.getMaximum() + 1);</span>
+<span class="pc bpc" id="L86" title="3 of 4 branches missed.">            if (isCaretAtEnd || isScrollBarAtEnd) {</span>
+<span class="fc" id="L87">                scrollBar.setValue(scrollBar.getMaximum() + 1);</span>
             }
 
-<span class="fc" id="L92">            var foregroundColor = Color.BLACK;</span>
+<span class="fc" id="L90">            var foregroundColor = Color.BLACK;</span>
             
-<span class="fc bfc" id="L94" title="All 2 branches covered.">            if (attribut == JTextPaneAppender.ATTRIBUTE_WARN) {</span>
-                
-<span class="fc" id="L96">                foregroundColor = Color.RED;</span>
-                
-<span class="pc bpc" id="L98" title="1 of 2 branches missed.">            } else if (attribut == JTextPaneAppender.ATTRIBUTE_SUCCESS) {</span>
-                
-<span class="nc" id="L100">                foregroundColor = UiUtil.COLOR_GREEN;</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">            if (attribut == JTextPaneAppender.ATTRIBUTE_WARN) {</span>
+<span class="fc" id="L93">                foregroundColor = Color.RED;</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">            } else if (attribut == JTextPaneAppender.ATTRIBUTE_SUCCESS) {</span>
+<span class="nc" id="L95">                foregroundColor = UiUtil.COLOR_GREEN;</span>
             }
             
-<span class="fc" id="L103">            int tabIndex = MediatorHelper.tabConsoles().indexOfTab(this.tabName);</span>
+<span class="fc" id="L98">            int tabIndex = MediatorHelper.tabConsoles().indexOfTab(this.tabName);</span>
             
-<span class="pc bpc" id="L105" title="2 of 4 branches missed.">            if (0 &lt;= tabIndex &amp;&amp; tabIndex &lt; MediatorHelper.tabConsoles().getTabCount()) {</span>
+<span class="pc bpc" id="L100" title="2 of 4 branches missed.">            if (0 &lt;= tabIndex &amp;&amp; tabIndex &lt; MediatorHelper.tabConsoles().getTabCount()) {</span>
                 
-<span class="fc" id="L107">                var tabHeader = MediatorHelper.tabConsoles().getTabComponentAt(tabIndex);</span>
+<span class="fc" id="L102">                var tabHeader = MediatorHelper.tabConsoles().getTabComponentAt(tabIndex);</span>
                 
-<span class="fc bfc" id="L109" title="All 2 branches covered.">                if (MediatorHelper.tabConsoles().getSelectedIndex() != tabIndex) {</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">                if (MediatorHelper.tabConsoles().getSelectedIndex() != tabIndex) {</span>
                     
-<span class="fc" id="L111">                    tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));</span>
+<span class="fc" id="L106">                    tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));</span>
 
-<span class="fc bfc" id="L113" title="All 2 branches covered.">                    if (foregroundColor != Color.BLACK) {  // keep tab colored until user clicks</span>
-
-<span class="fc" id="L115">                        tabHeader.setForeground(foregroundColor);</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">                    if (foregroundColor != Color.BLACK) {  // keep tab colored until user clicks</span>
+<span class="fc" id="L109">                        tabHeader.setForeground(foregroundColor);</span>
                     }
                 }
             }
-            
-<span class="fc" id="L120">        } catch (Exception e) {</span>
-            
+<span class="fc" id="L113">        } catch (Exception e) {</span>
             // Report #863: exception during report of exception
-<span class="fc" id="L123">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, message, e);</span>
-<span class="fc" id="L124">        }</span>
-<span class="fc" id="L125">    }</span>
+<span class="fc" id="L115">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, message, e);</span>
+<span class="fc" id="L116">        }</span>
+<span class="fc" id="L117">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

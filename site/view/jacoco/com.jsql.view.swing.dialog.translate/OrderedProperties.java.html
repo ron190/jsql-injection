@@ -60,15 +60,16 @@ public final class OrderedProperties {
      * See {@link Properties#getProperty(String, String)}.
      */
     public String getProperty(String key, String defaultValue) {
-<span class="nc" id="L63">        String value = this.properties.get(key);</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        return value == null ? defaultValue : value;</span>
+
+<span class="nc" id="L64">        String value = this.properties.get(key);</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        return value == null ? defaultValue : value;</span>
     }
 
     /**
      * See {@link Properties#setProperty(String, String)}.
      */
     public String setProperty(String key, String value) {
-<span class="nc" id="L71">        return this.properties.put(key, value);</span>
+<span class="nc" id="L72">        return this.properties.put(key, value);</span>
     }
 
     /**
@@ -80,7 +81,7 @@ public final class OrderedProperties {
      * @return the previous value of the property, or &lt;tt&gt;null&lt;/tt&gt; if there was no property with the specified key
      */
     public String removeProperty(String key) {
-<span class="nc" id="L83">        return this.properties.remove(key);</span>
+<span class="nc" id="L84">        return this.properties.remove(key);</span>
     }
 
     /**
@@ -89,42 +90,42 @@ public final class OrderedProperties {
      * @param key the key whose presence is to be tested
      */
     public boolean containsProperty(String key) {
-<span class="nc" id="L92">        return this.properties.containsKey(key);</span>
+<span class="nc" id="L93">        return this.properties.containsKey(key);</span>
     }
 
     /**
      * See {@link Properties#size()}.
      */
     public int size() {
-<span class="nc" id="L99">        return this.properties.size();</span>
+<span class="nc" id="L100">        return this.properties.size();</span>
     }
 
     /**
      * See {@link Properties#isEmpty()}.
      */
     public boolean isEmpty() {
-<span class="nc" id="L106">        return this.properties.isEmpty();</span>
+<span class="nc" id="L107">        return this.properties.isEmpty();</span>
     }
 
     /**
      * See {@link Properties#propertyNames()}.
      */
     public Enumeration&lt;String&gt; propertyNames() {
-<span class="nc" id="L113">        return new Vector&lt;&gt;(this.properties.keySet()).elements();</span>
+<span class="nc" id="L114">        return new Vector&lt;&gt;(this.properties.keySet()).elements();</span>
     }
 
     /**
      * See {@link Properties#stringPropertyNames()}.
      */
     public Set&lt;String&gt; stringPropertyNames() {
-<span class="nc" id="L120">        return new LinkedHashSet&lt;&gt;(this.properties.keySet());</span>
+<span class="nc" id="L121">        return new LinkedHashSet&lt;&gt;(this.properties.keySet());</span>
     }
 
     /**
      * See {@link Properties#entrySet()}.
      */
     public Set&lt;Map.Entry&lt;String, String&gt;&gt; entrySet() {
-<span class="fc" id="L127">        return new LinkedHashSet&lt;&gt;(this.properties.entrySet());</span>
+<span class="fc" id="L128">        return new LinkedHashSet&lt;&gt;(this.properties.entrySet());</span>
     }
 
     /**
@@ -132,97 +133,91 @@ public final class OrderedProperties {
      */
     public void load(InputStream stream) throws IOException {
         
-<span class="nc" id="L135">        var customProperties = new CustomProperties(this.properties);</span>
-<span class="nc" id="L136">        customProperties.load(stream);</span>
-<span class="nc" id="L137">    }</span>
+<span class="nc" id="L136">        var customProperties = new CustomProperties(this.properties);</span>
+<span class="nc" id="L137">        customProperties.load(stream);</span>
+<span class="nc" id="L138">    }</span>
 
     /**
      * See {@link Properties#load(Reader)}.
      */
     public void load(Reader reader) throws IOException {
         
-<span class="fc" id="L144">        var customProperties = new CustomProperties(this.properties);</span>
-<span class="fc" id="L145">        customProperties.load(reader);</span>
-<span class="fc" id="L146">    }</span>
+<span class="fc" id="L145">        var customProperties = new CustomProperties(this.properties);</span>
+<span class="fc" id="L146">        customProperties.load(reader);</span>
+<span class="fc" id="L147">    }</span>
 
     /**
      * See {@link Properties#loadFromXML(InputStream)}.
      */
     public void loadFromXML(InputStream stream) throws IOException {
         
-<span class="nc" id="L153">        var customProperties = new CustomProperties(this.properties);</span>
-<span class="nc" id="L154">        customProperties.loadFromXML(stream);</span>
-<span class="nc" id="L155">    }</span>
+<span class="nc" id="L154">        var customProperties = new CustomProperties(this.properties);</span>
+<span class="nc" id="L155">        customProperties.loadFromXML(stream);</span>
+<span class="nc" id="L156">    }</span>
 
     /**
      * See {@link Properties#store(OutputStream, String)}.
      */
     public void store(OutputStream stream, String comments) throws IOException {
         
-<span class="nc" id="L162">        var customProperties = new CustomProperties(this.properties);</span>
+<span class="nc" id="L163">        var customProperties = new CustomProperties(this.properties);</span>
         
-<span class="nc bnc" id="L164" title="All 2 branches missed.">        if (this.suppressDate) {</span>
-            
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        if (this.suppressDate) {</span>
 <span class="nc" id="L166">            customProperties.store(new DateSuppressingPropertiesBufferedWriter(new OutputStreamWriter(stream, StandardCharsets.ISO_8859_1)), comments);</span>
-            
         } else {
-            
-<span class="nc" id="L170">            customProperties.store(stream, comments);</span>
+<span class="nc" id="L168">            customProperties.store(stream, comments);</span>
         }
-<span class="nc" id="L172">    }</span>
+<span class="nc" id="L170">    }</span>
 
     /**
      * See {@link Properties#store(Writer, String)}.
      */
     public void store(Writer writer, String comments) throws IOException {
         
-<span class="nc" id="L179">        var customProperties = new CustomProperties(this.properties);</span>
+<span class="nc" id="L177">        var customProperties = new CustomProperties(this.properties);</span>
         
-<span class="nc bnc" id="L181" title="All 2 branches missed.">        if (this.suppressDate) {</span>
-            
-<span class="nc" id="L183">            customProperties.store(new DateSuppressingPropertiesBufferedWriter(writer), comments);</span>
-            
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (this.suppressDate) {</span>
+<span class="nc" id="L180">            customProperties.store(new DateSuppressingPropertiesBufferedWriter(writer), comments);</span>
         } else {
-            
-<span class="nc" id="L187">            customProperties.store(writer, comments);</span>
+<span class="nc" id="L182">            customProperties.store(writer, comments);</span>
         }
-<span class="nc" id="L189">    }</span>
+<span class="nc" id="L184">    }</span>
 
     /**
      * See {@link Properties#storeToXML(OutputStream, String)}.
      */
     public void storeToXML(OutputStream stream, String comment) throws IOException {
         
-<span class="nc" id="L196">        var customProperties = new CustomProperties(this.properties);</span>
-<span class="nc" id="L197">        customProperties.storeToXML(stream, comment);</span>
-<span class="nc" id="L198">    }</span>
+<span class="nc" id="L191">        var customProperties = new CustomProperties(this.properties);</span>
+<span class="nc" id="L192">        customProperties.storeToXML(stream, comment);</span>
+<span class="nc" id="L193">    }</span>
 
     /**
      * See {@link Properties#storeToXML(OutputStream, String, String)}.
      */
     public void storeToXML(OutputStream stream, String comment, String encoding) throws IOException {
         
-<span class="nc" id="L205">        var customProperties = new CustomProperties(this.properties);</span>
-<span class="nc" id="L206">        customProperties.storeToXML(stream, comment, encoding);</span>
-<span class="nc" id="L207">    }</span>
+<span class="nc" id="L200">        var customProperties = new CustomProperties(this.properties);</span>
+<span class="nc" id="L201">        customProperties.storeToXML(stream, comment, encoding);</span>
+<span class="nc" id="L202">    }</span>
 
     /**
      * See {@link Properties#list(PrintStream)}.
      */
     public void list(PrintStream stream) {
         
-<span class="nc" id="L214">        var customProperties = new CustomProperties(this.properties);</span>
-<span class="nc" id="L215">        customProperties.list(stream);</span>
-<span class="nc" id="L216">    }</span>
+<span class="nc" id="L209">        var customProperties = new CustomProperties(this.properties);</span>
+<span class="nc" id="L210">        customProperties.list(stream);</span>
+<span class="nc" id="L211">    }</span>
 
     /**
      * See {@link Properties#list(PrintWriter)}.
      */
     public void list(PrintWriter writer) {
         
-<span class="nc" id="L223">        var customProperties = new CustomProperties(this.properties);</span>
-<span class="nc" id="L224">        customProperties.list(writer);</span>
-<span class="nc" id="L225">    }</span>
+<span class="nc" id="L218">        var customProperties = new CustomProperties(this.properties);</span>
+<span class="nc" id="L219">        customProperties.list(writer);</span>
+<span class="nc" id="L220">    }</span>
 
     /**
      * Convert this instance to a {@link Properties} instance.
@@ -231,54 +226,53 @@ public final class OrderedProperties {
      */
     public Properties toJdkProperties() {
         
-<span class="nc" id="L234">        var jdkProperties = new Properties();</span>
+<span class="nc" id="L229">        var jdkProperties = new Properties();</span>
         
-<span class="nc bnc" id="L236" title="All 2 branches missed.">        for (Map.Entry&lt;String, String&gt; entry: this.entrySet()) {</span>
-            
-<span class="nc" id="L238">            jdkProperties.put(entry.getKey(), entry.getValue());</span>
-<span class="nc" id="L239">        }</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        for (Map.Entry&lt;String, String&gt; entry: this.entrySet()) {</span>
+<span class="nc" id="L232">            jdkProperties.put(entry.getKey(), entry.getValue());</span>
+<span class="nc" id="L233">        }</span>
         
-<span class="nc" id="L241">        return jdkProperties;</span>
+<span class="nc" id="L235">        return jdkProperties;</span>
     }
 
     @Override
     public boolean equals(Object other) {
         
-<span class="nc bnc" id="L247" title="All 2 branches missed.">        if (this == other) {</span>
-<span class="nc" id="L248">            return true;</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">        if (this == other) {</span>
+<span class="nc" id="L242">            return true;</span>
         }
 
-<span class="nc bnc" id="L251" title="All 2 branches missed.">        if (</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        if (</span>
             other == null
-<span class="nc bnc" id="L253" title="All 2 branches missed.">            || this.getClass() != other.getClass()</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">            || this.getClass() != other.getClass()</span>
         ) {
-<span class="nc" id="L255">            return false;</span>
+<span class="nc" id="L249">            return false;</span>
         }
 
-<span class="nc" id="L258">        OrderedProperties that = (OrderedProperties) other;</span>
+<span class="nc" id="L252">        OrderedProperties that = (OrderedProperties) other;</span>
         
-<span class="nc" id="L260">        return Arrays.equals(this.properties.entrySet().toArray(), that.properties.entrySet().toArray());</span>
+<span class="nc" id="L254">        return Arrays.equals(this.properties.entrySet().toArray(), that.properties.entrySet().toArray());</span>
     }
 
     @Override
     public int hashCode() {
-<span class="nc" id="L265">        return Arrays.hashCode(this.properties.entrySet().toArray());</span>
+<span class="nc" id="L259">        return Arrays.hashCode(this.properties.entrySet().toArray());</span>
     }
 
     @SuppressWarnings(&quot;unchecked&quot;)
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         
-<span class="nc" id="L271">        stream.defaultReadObject();</span>
-<span class="nc" id="L272">        this.properties = (Map&lt;String, String&gt;) stream.readObject();</span>
-<span class="nc" id="L273">        this.suppressDate = stream.readBoolean();</span>
-<span class="nc" id="L274">    }</span>
+<span class="nc" id="L265">        stream.defaultReadObject();</span>
+<span class="nc" id="L266">        this.properties = (Map&lt;String, String&gt;) stream.readObject();</span>
+<span class="nc" id="L267">        this.suppressDate = stream.readBoolean();</span>
+<span class="nc" id="L268">    }</span>
 
     /**
      * See {@link Properties#toString()}.
      */
     @Override
     public String toString() {
-<span class="nc" id="L281">        return this.properties.toString();</span>
+<span class="nc" id="L275">        return this.properties.toString();</span>
     }
 
     /**
@@ -294,29 +288,27 @@ public final class OrderedProperties {
     public static OrderedProperties copyOf(OrderedProperties source) {
         
         // create a copy that has the same behaviour
-<span class="nc" id="L297">        var builder = new OrderedPropertiesBuilder();</span>
-<span class="nc" id="L298">        builder.withSuppressDateInComment(source.suppressDate);</span>
+<span class="nc" id="L291">        var builder = new OrderedPropertiesBuilder();</span>
+<span class="nc" id="L292">        builder.withSuppressDateInComment(source.suppressDate);</span>
         
-<span class="nc bnc" id="L300" title="All 2 branches missed.">        if (source.properties instanceof TreeMap) {</span>
-            
-<span class="nc" id="L302">            builder.withOrdering(((TreeMap&lt;String, String&gt;) source.properties).comparator());</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">        if (source.properties instanceof TreeMap) {</span>
+<span class="nc" id="L295">            builder.withOrdering(((TreeMap&lt;String, String&gt;) source.properties).comparator());</span>
         }
         
-<span class="nc" id="L305">        OrderedProperties result = builder.build();</span>
+<span class="nc" id="L298">        OrderedProperties result = builder.build();</span>
 
         // copy the properties from the source to the target
-<span class="nc bnc" id="L308" title="All 2 branches missed.">        for (Map.Entry&lt;String, String&gt; entry: source.entrySet()) {</span>
-            
-<span class="nc" id="L310">            result.setProperty(entry.getKey(), entry.getValue());</span>
-<span class="nc" id="L311">        }</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">        for (Map.Entry&lt;String, String&gt; entry: source.entrySet()) {</span>
+<span class="nc" id="L302">            result.setProperty(entry.getKey(), entry.getValue());</span>
+<span class="nc" id="L303">        }</span>
         
-<span class="nc" id="L313">        return result;</span>
+<span class="nc" id="L305">        return result;</span>
     }
 
     /**
      * Builder for {@link OrderedProperties} instances.
      */
-<span class="nc" id="L319">    public static final class OrderedPropertiesBuilder {</span>
+<span class="nc" id="L311">    public static final class OrderedPropertiesBuilder {</span>
 
         private Comparator&lt;? super String&gt; comparator;
         private boolean suppressDate;
@@ -329,8 +321,8 @@ public final class OrderedProperties {
          */
         public OrderedPropertiesBuilder withOrdering(Comparator&lt;? super String&gt; comparator) {
             
-<span class="nc" id="L332">            this.comparator = comparator;</span>
-<span class="nc" id="L333">            return this;</span>
+<span class="nc" id="L324">            this.comparator = comparator;</span>
+<span class="nc" id="L325">            return this;</span>
         }
 
         /**
@@ -341,8 +333,8 @@ public final class OrderedProperties {
          */
         public OrderedPropertiesBuilder withSuppressDateInComment(boolean suppressDate) {
             
-<span class="nc" id="L344">            this.suppressDate = suppressDate;</span>
-<span class="nc" id="L345">            return this;</span>
+<span class="nc" id="L336">            this.suppressDate = suppressDate;</span>
+<span class="nc" id="L337">            return this;</span>
         }
 
         /**
@@ -351,12 +343,11 @@ public final class OrderedProperties {
          * @return the new instance
          */
         public OrderedProperties build() {
-            Map&lt;String, String&gt; properties =
-<span class="nc bnc" id="L355" title="All 2 branches missed.">                this.comparator != null</span>
-<span class="nc" id="L356">                ? new TreeMap&lt;&gt;(this.comparator)</span>
-<span class="nc" id="L357">                : new LinkedHashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">            Map&lt;String, String&gt; properties = this.comparator != null</span>
+<span class="nc" id="L347">                ? new TreeMap&lt;&gt;(this.comparator)</span>
+<span class="nc" id="L348">                : new LinkedHashMap&lt;&gt;();</span>
                     
-<span class="nc" id="L359">            return new OrderedProperties(properties, this.suppressDate);</span>
+<span class="nc" id="L350">            return new OrderedProperties(properties, this.suppressDate);</span>
         }
     }
 
@@ -368,43 +359,43 @@ public final class OrderedProperties {
 
         private final Map&lt;String, String&gt; targetProperties;
 
-<span class="fc" id="L371">        private CustomProperties(Map&lt;String, String&gt; targetProperties) {</span>
-<span class="fc" id="L372">            this.targetProperties = targetProperties;</span>
-<span class="fc" id="L373">        }</span>
+<span class="fc" id="L362">        private CustomProperties(Map&lt;String, String&gt; targetProperties) {</span>
+<span class="fc" id="L363">            this.targetProperties = targetProperties;</span>
+<span class="fc" id="L364">        }</span>
 
         @Override
         public synchronized Object get(Object key) {
-<span class="nc" id="L377">            return this.targetProperties.get(key);</span>
+<span class="nc" id="L368">            return this.targetProperties.get(key);</span>
         }
 
         @Override
         public synchronized Object put(Object key, Object value) {
-<span class="fc" id="L382">            return this.targetProperties.put((String) key, (String) value);</span>
+<span class="fc" id="L373">            return this.targetProperties.put((String) key, (String) value);</span>
         }
 
         @Override
         public String getProperty(String key) {
-<span class="nc" id="L387">            return this.targetProperties.get(key);</span>
+<span class="nc" id="L378">            return this.targetProperties.get(key);</span>
         }
 
         @Override
         public synchronized Enumeration&lt;Object&gt; keys() {
-<span class="nc" id="L392">            return new Vector&lt;Object&gt;(this.targetProperties.keySet()).elements();</span>
+<span class="nc" id="L383">            return new Vector&lt;Object&gt;(this.targetProperties.keySet()).elements();</span>
         }
 
         @Override
         public Set&lt;Object&gt; keySet() {
-<span class="nc" id="L397">            return new LinkedHashSet&lt;&gt;(this.targetProperties.keySet());</span>
+<span class="nc" id="L388">            return new LinkedHashSet&lt;&gt;(this.targetProperties.keySet());</span>
         }
         
         @Override
         public synchronized boolean equals(Object o) {
-<span class="nc bnc" id="L402" title="All 4 branches missed.">            return super.equals(o) &amp;&amp; o instanceof OrderedProperties;</span>
+<span class="nc bnc" id="L393" title="All 4 branches missed.">            return super.equals(o) &amp;&amp; o instanceof OrderedProperties;</span>
         }
         
         @Override
         public synchronized int hashCode() {
-<span class="nc" id="L407">            return super.hashCode();</span>
+<span class="nc" id="L398">            return super.hashCode();</span>
         }
     }
 
@@ -419,37 +410,30 @@ public final class OrderedProperties {
         private String previousComment;
 
         private DateSuppressingPropertiesBufferedWriter(Writer out) {
-            
-<span class="nc" id="L423">            super(out);</span>
-<span class="nc" id="L424">        }</span>
+<span class="nc" id="L413">            super(out);</span>
+<span class="nc" id="L414">        }</span>
 
         @Override
         public void write(String string) throws IOException {
-            
-<span class="nc bnc" id="L429" title="All 2 branches missed.">            if (this.currentComment != null) {</span>
+<span class="nc bnc" id="L418" title="All 2 branches missed.">            if (this.currentComment != null) {</span>
                 
-<span class="nc" id="L431">                this.currentComment.append(string);</span>
+<span class="nc" id="L420">                this.currentComment.append(string);</span>
                 
-<span class="nc bnc" id="L433" title="All 2 branches missed.">                if (string.endsWith(System.lineSeparator())) {</span>
+<span class="nc bnc" id="L422" title="All 2 branches missed.">                if (string.endsWith(System.lineSeparator())) {</span>
                     
-<span class="nc bnc" id="L435" title="All 2 branches missed.">                    if (this.previousComment != null) {</span>
-                        
-<span class="nc" id="L437">                        super.write(this.previousComment);</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">                    if (this.previousComment != null) {</span>
+<span class="nc" id="L425">                        super.write(this.previousComment);</span>
                     }
 
-<span class="nc" id="L440">                    this.previousComment = this.currentComment.toString();</span>
-<span class="nc" id="L441">                    this.currentComment = null;</span>
+<span class="nc" id="L428">                    this.previousComment = this.currentComment.toString();</span>
+<span class="nc" id="L429">                    this.currentComment = null;</span>
                 }
-                
-<span class="nc bnc" id="L444" title="All 2 branches missed.">            } else if (string.startsWith(&quot;#&quot;)) {</span>
-                
-<span class="nc" id="L446">                this.currentComment = new StringBuilder(string);</span>
-                
+<span class="nc bnc" id="L431" title="All 2 branches missed.">            } else if (string.startsWith(&quot;#&quot;)) {</span>
+<span class="nc" id="L432">                this.currentComment = new StringBuilder(string);</span>
             } else {
-                
-<span class="nc" id="L450">                super.write(string);</span>
+<span class="nc" id="L434">                super.write(string);</span>
             }
-<span class="nc" id="L452">        }</span>
+<span class="nc" id="L436">        }</span>
     }
 }
 

@@ -30,96 +30,87 @@ import java.security.NoSuchAlgorithmException;
 <span class="fc bfc" id="L30" title="All 2 branches covered.">        for (int size = this.minLength; size &lt;= this.maxLength; size++) {</span>
             
 <span class="pc bpc" id="L32" title="2 of 4 branches missed.">            if (this.found || this.done) {</span>
-                
-<span class="nc" id="L34">                break;</span>
+<span class="nc" id="L33">                break;</span>
             }
             
-<span class="pc bpc" id="L37" title="1 of 2 branches missed.">            while (this.paused) {</span>
-                
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">            while (this.paused) {</span>
                 try {
-<span class="nc" id="L40">                    Thread.sleep(500);</span>
+<span class="nc" id="L38">                    Thread.sleep(500);</span>
+<span class="nc" id="L39">                } catch (InterruptedException e) {</span>
                     
-<span class="nc" id="L42">                } catch (InterruptedException e) {</span>
-                    
-<span class="nc" id="L44">                    LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L45">                    Thread.currentThread().interrupt();</span>
-<span class="nc" id="L46">                }</span>
+<span class="nc" id="L41">                    LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L42">                    Thread.currentThread().interrupt();</span>
+<span class="nc" id="L43">                }</span>
             }
             
             try {
-<span class="fc" id="L50">                this.generateAllPossibleCombinations(StringUtils.EMPTY, size);</span>
+<span class="fc" id="L47">                this.generateAllPossibleCombinations(StringUtils.EMPTY, size);</span>
+<span class="nc" id="L48">            } catch (NoSuchAlgorithmException e) {</span>
+<span class="nc" id="L49">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L50">            } catch (InterruptedException e) {</span>
                 
-<span class="nc" id="L52">            } catch (NoSuchAlgorithmException e) {</span>
-                
-<span class="nc" id="L54">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-                
-<span class="nc" id="L56">            } catch (InterruptedException e) {</span>
-                
-<span class="nc" id="L58">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L59">                Thread.currentThread().interrupt();</span>
-<span class="pc" id="L60">            }</span>
+<span class="nc" id="L52">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L53">                Thread.currentThread().interrupt();</span>
+<span class="pc" id="L54">            }</span>
         }
         
-<span class="fc" id="L63">        this.done = true;</span>
-<span class="fc" id="L64">    }</span>
+<span class="fc" id="L57">        this.done = true;</span>
+<span class="fc" id="L58">    }</span>
 
     private void generateAllPossibleCombinations(String baseString, int length) throws NoSuchAlgorithmException, InterruptedException {
         
-<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        while (this.paused) {</span>
-            
-<span class="nc" id="L70">            Thread.sleep(500);</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        while (this.paused) {</span>
+<span class="nc" id="L63">            Thread.sleep(500);</span>
         }
         
-<span class="pc bpc" id="L73" title="1 of 4 branches missed.">        if (!this.found || !this.done) {</span>
-            
-<span class="fc bfc" id="L75" title="All 2 branches covered.">            if (baseString.length() == length) {</span>
+<span class="pc bpc" id="L66" title="1 of 4 branches missed.">        if (!this.found || !this.done) {</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            if (baseString.length() == length) {</span>
                 
-<span class="pc bpc" id="L77" title="6 of 7 branches missed.">                switch (this.type.toLowerCase()) {</span>
-<span class="nc" id="L78">                    case &quot;adler32&quot;: this.generatedHash = HashUtil.toAdler32(baseString); break;</span>
-<span class="nc" id="L79">                    case &quot;crc16&quot;:   this.generatedHash = Crc16Helper.generateCRC16(baseString); break;</span>
-<span class="nc" id="L80">                    case &quot;crc32&quot;:   this.generatedHash = HashUtil.toCrc32(baseString); break;</span>
-<span class="nc" id="L81">                    case &quot;crc64&quot;:   this.generatedHash = Crc64Helper.generateCRC64(baseString.getBytes(StandardCharsets.UTF_8)); break;</span>
-<span class="nc" id="L82">                    case &quot;mysql&quot;:   this.generatedHash = HashUtil.toMySql(baseString); break;</span>
-<span class="nc" id="L83">                    case &quot;md4&quot;:     this.generatedHash = HashUtil.toMd4(baseString); break;</span>
-<span class="fc" id="L84">                    default:        this.generatedHash = HashUtil.toHash(this.type, baseString); break;</span>
+<span class="pc bpc" id="L69" title="6 of 7 branches missed.">                switch (this.type.toLowerCase()) {</span>
+<span class="nc" id="L70">                    case &quot;adler32&quot;: this.generatedHash = HashUtil.toAdler32(baseString); break;</span>
+<span class="nc" id="L71">                    case &quot;crc16&quot;:   this.generatedHash = Crc16Helper.generateCRC16(baseString); break;</span>
+<span class="nc" id="L72">                    case &quot;crc32&quot;:   this.generatedHash = HashUtil.toCrc32(baseString); break;</span>
+<span class="nc" id="L73">                    case &quot;crc64&quot;:   this.generatedHash = Crc64Helper.generateCRC64(baseString.getBytes(StandardCharsets.UTF_8)); break;</span>
+<span class="nc" id="L74">                    case &quot;mysql&quot;:   this.generatedHash = HashUtil.toMySql(baseString); break;</span>
+<span class="nc" id="L75">                    case &quot;md4&quot;:     this.generatedHash = HashUtil.toMd4(baseString); break;</span>
+<span class="fc" id="L76">                    default:        this.generatedHash = HashUtil.toHash(this.type, baseString); break;</span>
                 }
                 
-<span class="fc" id="L87">                this.password = baseString;</span>
+<span class="fc" id="L79">                this.password = baseString;</span>
                 
-<span class="fc bfc" id="L89" title="All 2 branches covered.">                if (this.hash.equals(this.generatedHash)) {</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">                if (this.hash.equals(this.generatedHash)) {</span>
                     
-<span class="fc" id="L91">                    this.found = true;</span>
-<span class="fc" id="L92">                    this.done = true;</span>
+<span class="fc" id="L83">                    this.found = true;</span>
+<span class="fc" id="L84">                    this.done = true;</span>
                 }
                 
-<span class="fc" id="L95">                this.count++;</span>
+<span class="fc" id="L87">                this.count++;</span>
                 
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">            } else if (baseString.length() &lt; length) {</span>
-                
-<span class="fc bfc" id="L99" title="All 2 branches covered.">                for (String element: this.characters) {</span>
-<span class="fc" id="L100">                    this.generateAllPossibleCombinations(baseString + element, length);</span>
-<span class="fc" id="L101">                }</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">            } else if (baseString.length() &lt; length) {</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">                for (String element: this.characters) {</span>
+<span class="fc" id="L91">                    this.generateAllPossibleCombinations(baseString + element, length);</span>
+<span class="fc" id="L92">                }</span>
             }
         }
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L95">    }</span>
     
     
     // Getter and setter
 
     public String getPassword() {
-<span class="fc" id="L110">        return this.password;</span>
+<span class="fc" id="L101">        return this.password;</span>
     }
 
     public void setHash(String hash) {
-<span class="fc" id="L114">        this.hash = hash;</span>
-<span class="fc" id="L115">    }</span>
+<span class="fc" id="L105">        this.hash = hash;</span>
+<span class="fc" id="L106">    }</span>
 
     public void setType(String digestType) {
-<span class="fc" id="L118">        this.type = digestType;</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L109">        this.type = digestType;</span>
+<span class="fc" id="L110">    }</span>
 
     public String getGeneratedHash() {
-<span class="fc" id="L122">        return this.generatedHash;</span>
+<span class="fc" id="L113">        return this.generatedHash;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

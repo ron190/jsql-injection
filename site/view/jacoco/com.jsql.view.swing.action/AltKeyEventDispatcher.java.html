@@ -23,90 +23,81 @@ import java.awt.event.KeyEvent;
         // =&gt; AltGr:press Alt:press AltGr:release Alt:release
         // AltGr keycode is the same as Ctrl
 <span class="fc bfc" id="L25" title="All 2 branches covered.">        if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {</span>
-            
-<span class="fc" id="L27">            this.wasAltGraphPressed = true;</span>
+<span class="fc" id="L26">            this.wasAltGraphPressed = true;</span>
         }
         
-<span class="fc" id="L30">        boolean isAltDPressed =</span>
-<span class="pc bpc" id="L31" title="1 of 2 branches missed.">            keyEvent.isAltDown()</span>
-<span class="pc bnc" id="L32" title="All 2 branches missed.">            &amp;&amp; keyEvent.getKeyCode() == (KeyEvent.VK_ALT &amp; KeyEvent.VK_D);</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        boolean isAltDPressed = keyEvent.isAltDown()</span>
+<span class="pc bnc" id="L30" title="All 2 branches missed.">            &amp;&amp; keyEvent.getKeyCode() == (KeyEvent.VK_ALT &amp; KeyEvent.VK_D);</span>
         
-<span class="fc" id="L34">        boolean isAltReleased =</span>
-<span class="pc bpc" id="L35" title="1 of 2 branches missed.">            keyEvent.getKeyCode() == KeyEvent.VK_ALT</span>
-<span class="pc bnc" id="L36" title="All 2 branches missed.">            &amp;&amp; keyEvent.getModifiersEx() == (InputEvent.ALT_DOWN_MASK &amp; KeyEvent.KEY_RELEASED);</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        boolean isAltReleased = keyEvent.getKeyCode() == KeyEvent.VK_ALT</span>
+<span class="pc bnc" id="L33" title="All 2 branches missed.">            &amp;&amp; keyEvent.getModifiersEx() == (InputEvent.ALT_DOWN_MASK &amp; KeyEvent.KEY_RELEASED);</span>
         
-<span class="fc" id="L38">        boolean isAltPressed =</span>
-<span class="pc bpc" id="L39" title="1 of 2 branches missed.">            keyEvent.isAltDown()</span>
-<span class="pc bnc" id="L40" title="All 4 branches missed.">            &amp;&amp; keyEvent.getKeyCode() == KeyEvent.VK_ALT</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        boolean isAltPressed = keyEvent.isAltDown()</span>
+<span class="pc bnc" id="L36" title="All 4 branches missed.">            &amp;&amp; keyEvent.getKeyCode() == KeyEvent.VK_ALT</span>
             &amp;&amp; !this.wasAltGraphPressed;
         
-<span class="pc bpc" id="L43" title="2 of 6 branches missed.">        boolean wasAltPressedAlready =</span>
-            !this.wasAltDPressed
+<span class="pc bpc" id="L39" title="2 of 6 branches missed.">        boolean wasAltPressedAlready = !this.wasAltDPressed</span>
             &amp;&amp; !this.wasAltPressed
             &amp;&amp; !this.wasAltGraphPressed;
         
-<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        if (isAltDPressed) {</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        if (isAltDPressed) {</span>
             
-<span class="nc" id="L50">            this.selectAddressBar();</span>
+<span class="nc" id="L45">            this.selectAddressBar();</span>
+<span class="nc" id="L46">            shouldNotTakeFurtherAction = true;</span>
+            
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        } else if (isAltReleased) {</span>
+            
+<span class="nc" id="L50">            this.showMenuBar(wasAltPressedAlready);</span>
 <span class="nc" id="L51">            shouldNotTakeFurtherAction = true;</span>
             
-<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        } else if (isAltReleased) {</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        } else if (isAltPressed) {</span>
             
-<span class="nc" id="L55">            this.showMenuBar(wasAltPressedAlready);</span>
+<span class="nc" id="L55">            this.hideMenuBar();</span>
 <span class="nc" id="L56">            shouldNotTakeFurtherAction = true;</span>
-            
-<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        } else if (isAltPressed) {</span>
-            
-<span class="nc" id="L60">            this.hideMenuBar();</span>
-<span class="nc" id="L61">            shouldNotTakeFurtherAction = true;</span>
         }
         
-<span class="fc" id="L64">        return shouldNotTakeFurtherAction;</span>
+<span class="fc" id="L59">        return shouldNotTakeFurtherAction;</span>
     }
 
     private void selectAddressBar() {
         
-<span class="nc" id="L69">        MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();</span>
-<span class="nc" id="L70">        MediatorHelper.panelAddressBar().getTextFieldAddress().selectAll();</span>
-<span class="nc" id="L71">        this.wasAltDPressed = true;</span>
-<span class="nc" id="L72">    }</span>
+<span class="nc" id="L64">        MediatorHelper.panelAddressBar().getTextFieldAddress().requestFocusInWindow();</span>
+<span class="nc" id="L65">        MediatorHelper.panelAddressBar().getTextFieldAddress().selectAll();</span>
+<span class="nc" id="L66">        this.wasAltDPressed = true;</span>
+<span class="nc" id="L67">    }</span>
 
     private void showMenuBar(boolean wasAltPressedAlready) {
         
         // Avoid flickering and AltGr pollution
-<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (wasAltPressedAlready) {</span>
-            
-<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (MenuSelectionManager.defaultManager().getSelectedPath().length &gt; 0) {</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (wasAltPressedAlready) {</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">            if (MenuSelectionManager.defaultManager().getSelectedPath().length &gt; 0) {</span>
+<span class="nc" id="L74">                MenuSelectionManager.defaultManager().clearSelectedPath();</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">            } else if (!MediatorHelper.panelAddressBar().isAdvanceActivated()) {</span>
                 
-<span class="nc" id="L81">                MenuSelectionManager.defaultManager().clearSelectedPath();</span>
-                
-<span class="nc bnc" id="L83" title="All 2 branches missed.">            } else if (!MediatorHelper.panelAddressBar().isAdvanceActivated()) {</span>
-                
-<span class="nc bnc" id="L85" title="All 2 branches missed.">                MediatorHelper.menubar().setVisible(!MediatorHelper.menubar().isVisible());</span>
-<span class="nc" id="L86">                this.wasAltGraphPressed = false;</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">                MediatorHelper.menubar().setVisible(!MediatorHelper.menubar().isVisible());</span>
+<span class="nc" id="L78">                this.wasAltGraphPressed = false;</span>
             }
-            
         } else {
             
-<span class="nc" id="L91">            this.wasAltDPressed = false;</span>
-<span class="nc" id="L92">            this.wasAltPressed = false;</span>
-<span class="nc" id="L93">            this.wasAltGraphPressed = false;</span>
+<span class="nc" id="L82">            this.wasAltDPressed = false;</span>
+<span class="nc" id="L83">            this.wasAltPressed = false;</span>
+<span class="nc" id="L84">            this.wasAltGraphPressed = false;</span>
         }
-<span class="nc" id="L95">    }</span>
+<span class="nc" id="L86">    }</span>
 
     private void hideMenuBar() {
         
         // Avoid flickering and AltGr pollution
         if (
-<span class="nc bnc" id="L101" title="All 2 branches missed.">            !MediatorHelper.panelAddressBar().isAdvanceActivated()</span>
-<span class="nc bnc" id="L102" title="All 2 branches missed.">            &amp;&amp; MediatorHelper.menubar().isVisible()</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">            !MediatorHelper.panelAddressBar().isAdvanceActivated()</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            &amp;&amp; MediatorHelper.menubar().isVisible()</span>
         ) {
             
-<span class="nc" id="L105">            MenuSelectionManager.defaultManager().clearSelectedPath();</span>
-<span class="nc" id="L106">            MediatorHelper.menubar().setVisible(false);</span>
-<span class="nc" id="L107">            this.wasAltPressed = true;</span>
-<span class="nc" id="L108">            this.wasAltGraphPressed = false;</span>
+<span class="nc" id="L96">            MenuSelectionManager.defaultManager().clearSelectedPath();</span>
+<span class="nc" id="L97">            MediatorHelper.menubar().setVisible(false);</span>
+<span class="nc" id="L98">            this.wasAltPressed = true;</span>
+<span class="nc" id="L99">            this.wasAltGraphPressed = false;</span>
         }
-<span class="nc" id="L110">    }</span>
+<span class="nc" id="L101">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

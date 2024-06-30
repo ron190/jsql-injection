@@ -16,7 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Define a Table, e.g is sent to the view by the model after injection.
+ * Define a Table, e.g. is sent to the view by the model after injection.
  * Allow to traverse upward to its corresponding database.
  */
 public class Table extends AbstractElementDatabase {
@@ -49,47 +49,42 @@ public class Table extends AbstractElementDatabase {
     // Return the parent database.
     @Override
     public AbstractElementDatabase getParent() {
-        
-<span class="fc" id="L53">        return this.parentDatabase;</span>
+<span class="fc" id="L52">        return this.parentDatabase;</span>
     }
     
     // Return the number of rows in the table.
     @Override
     public int getChildCount() {
-        
-<span class="fc" id="L60">        return Integer.parseInt(this.rowCount);</span>
+<span class="fc" id="L58">        return Integer.parseInt(this.rowCount);</span>
     }
 
     /**
      * A readable label for the table, with number of rows, displayed
      * by the view. If parent database is the system information_schema, number
-     * of rows is unknown, e.g my_table (7 rows).
+     * of rows is unknown, e.g. my_table (7 rows).
      */
     @Override
     public String getLabelCount() {
         
-        String nbRow =
-<span class="fc bfc" id="L72" title="All 2 branches covered.">            &quot;information_schema&quot;.equals(this.parentDatabase.toString())</span>
-<span class="fc" id="L73">            ? &quot;?&quot;</span>
-<span class="fc" id="L74">            : this.rowCount;</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        String nbRow = &quot;information_schema&quot;.equals(this.parentDatabase.toString())</span>
+<span class="fc" id="L70">            ? &quot;?&quot;</span>
+<span class="fc" id="L71">            : this.rowCount;</span>
         
         // Report #138: detect incorrect number of rows
-<span class="fc" id="L77">        String sPlural = StringUtils.EMPTY;</span>
+<span class="fc" id="L74">        String sPlural = StringUtils.EMPTY;</span>
         
         try {
-<span class="fc bfc" id="L80" title="All 2 branches covered.">            if (Integer.parseInt(this.rowCount) &gt; 1) {</span>
-                
-<span class="fc" id="L82">                sPlural = &quot;s&quot;;</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">            if (Integer.parseInt(this.rowCount) &gt; 1) {</span>
+<span class="fc" id="L78">                sPlural = &quot;s&quot;;</span>
             }
+<span class="fc" id="L80">        } catch (NumberFormatException e) {</span>
             
-<span class="fc" id="L85">        } catch (NumberFormatException e) {</span>
-            
-<span class="fc" id="L87">            this.rowCount = &quot;0&quot;;</span>
-<span class="fc" id="L88">            nbRow = &quot;0&quot;;</span>
-<span class="fc" id="L89">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect number of rows.&quot;);</span>
-<span class="fc" id="L90">        }</span>
+<span class="fc" id="L82">            this.rowCount = &quot;0&quot;;</span>
+<span class="fc" id="L83">            nbRow = &quot;0&quot;;</span>
+<span class="fc" id="L84">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Incorrect number of rows.&quot;);</span>
+<span class="fc" id="L85">        }</span>
         
-<span class="fc" id="L92">        return String.format(</span>
+<span class="fc" id="L87">        return String.format(</span>
              &quot;%s (%s row%s)&quot;,
              this.elementValue,
              nbRow,

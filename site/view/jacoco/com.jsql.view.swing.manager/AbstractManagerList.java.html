@@ -89,29 +89,27 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         ) {
             String line;
 <span class="fc bfc" id="L91" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
-                
-<span class="fc" id="L93">                this.itemsList.add(new ItemList(line));</span>
+<span class="fc" id="L92">                this.itemsList.add(new ItemList(line));</span>
             }
-<span class="nc" id="L95">        } catch (IOException e) {</span>
-            
-<span class="nc" id="L97">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L98">        }</span>
+<span class="nc" id="L94">        } catch (IOException e) {</span>
+<span class="nc" id="L95">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L96">        }</span>
 
-<span class="fc" id="L100">        this.listFile = new DnDList(this.itemsList);</span>
+<span class="fc" id="L98">        this.listFile = new DnDList(this.itemsList);</span>
 
-<span class="fc" id="L102">        this.listFile.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));</span>
-<span class="fc" id="L103">        this.add(new LightScrollPane(0, 0, 0, 0, this.listFile), BorderLayout.CENTER);</span>
+<span class="fc" id="L100">        this.listFile.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));</span>
+<span class="fc" id="L101">        this.add(new LightScrollPane(0, 0, 0, 0, this.listFile), BorderLayout.CENTER);</span>
 
-<span class="fc" id="L105">        this.lastLine.setOpaque(false);</span>
-<span class="fc" id="L106">        this.lastLine.setLayout(new BoxLayout(this.lastLine, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L103">        this.lastLine.setOpaque(false);</span>
+<span class="fc" id="L104">        this.lastLine.setLayout(new BoxLayout(this.lastLine, BoxLayout.X_AXIS));</span>
 
-<span class="fc" id="L108">        this.lastLine.setBorder(</span>
-<span class="fc" id="L109">            BorderFactory.createCompoundBorder(</span>
-<span class="fc" id="L110">                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),</span>
-<span class="fc" id="L111">                BorderFactory.createEmptyBorder(1, 0, 1, 1)</span>
+<span class="fc" id="L106">        this.lastLine.setBorder(</span>
+<span class="fc" id="L107">            BorderFactory.createCompoundBorder(</span>
+<span class="fc" id="L108">                BorderFactory.createMatteBorder(0, 0, 0, 0, UiUtil.COLOR_COMPONENT_BORDER),</span>
+<span class="fc" id="L109">                BorderFactory.createEmptyBorder(1, 0, 1, 1)</span>
             )
         );
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L112">    }</span>
 
     /**
      * Add a new string to the list if it's not a duplicate.
@@ -119,106 +117,80 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      */
     public void addToList(String element) {
         
-<span class="fc" id="L122">        var isFound = false;</span>
-<span class="fc" id="L123">        DefaultListModel&lt;ItemList&gt; listModel = (DefaultListModel&lt;ItemList&gt;) this.listPaths.getModel();</span>
+<span class="fc" id="L120">        var isFound = false;</span>
+<span class="fc" id="L121">        DefaultListModel&lt;ItemList&gt; listModel = (DefaultListModel&lt;ItemList&gt;) this.listPaths.getModel();</span>
         
-<span class="fc bfc" id="L125" title="All 2 branches covered.">        for (var i = 0 ; i &lt; listModel.size() ; i++) {</span>
-            
-<span class="fc bfc" id="L127" title="All 2 branches covered.">            if (listModel.get(i).toString().equals(element)) {</span>
-                
-<span class="fc" id="L129">                isFound = true;</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        for (var i = 0 ; i &lt; listModel.size() ; i++) {</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">            if (listModel.get(i).toString().equals(element)) {</span>
+<span class="fc" id="L125">                isFound = true;</span>
             }
         }
         
-<span class="fc bfc" id="L133" title="All 2 branches covered.">        if (!isFound) {</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if (!isFound) {</span>
             
-<span class="fc" id="L135">            var itemList = new ItemList(element);</span>
-<span class="fc" id="L136">            listModel.addElement(itemList);</span>
+<span class="fc" id="L131">            var itemList = new ItemList(element);</span>
+<span class="fc" id="L132">            listModel.addElement(itemList);</span>
         }
-<span class="fc" id="L138">    }</span>
+<span class="fc" id="L134">    }</span>
     
-    public void addTag(String url, String tag) {
+    public void highlight(String url, String tag) {
         
-<span class="nc" id="L142">        ListModel&lt;ItemList&gt; listModel = this.listPaths.getModel();</span>
+<span class="nc" id="L138">        var itemLabel = String.format(&quot; [%s]&quot;, tag);</span>
+<span class="nc" id="L139">        ListModel&lt;ItemList&gt; listModel = this.listPaths.getModel();</span>
         
-<span class="nc bnc" id="L144" title="All 2 branches missed.">        for (var i = 0 ; i &lt; listModel.getSize() ; i++) {</span>
-            
-<span class="nc bnc" id="L146" title="All 2 branches missed.">            if (url.contains(listModel.getElementAt(i).getOriginalString())) {</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        for (var i = 0 ; i &lt; listModel.getSize() ; i++) {</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            if (url.contains(listModel.getElementAt(i).getOriginalString())) {</span>
                 
-<span class="nc" id="L148">                listModel.getElementAt(i).setIsDatabaseConfirmed(true);</span>
-<span class="nc" id="L149">                listModel.getElementAt(i).setInternalString(listModel.getElementAt(i).getInternalString() +&quot; [&quot;+tag+&quot;]&quot;);</span>
-                
-<span class="nc" id="L151">                ((DefaultListModel&lt;ItemList&gt;) listModel).setElementAt(listModel.getElementAt(i), i);</span>
-            }
-        }
-<span class="nc" id="L154">    }</span>
-    
-    public void highlight(String url, String strategy) {
-        
-<span class="nc" id="L158">        var itemLabel = String.format(</span>
-            &quot; [%s]&quot;,
-            strategy
-        );
-        
-<span class="nc" id="L163">        ListModel&lt;ItemList&gt; listModel = this.listPaths.getModel();</span>
-        
-<span class="nc bnc" id="L165" title="All 2 branches missed.">        for (var i = 0 ; i &lt; listModel.getSize() ; i++) {</span>
-            
-<span class="nc bnc" id="L167" title="All 2 branches missed.">            if (url.contains(listModel.getElementAt(i).getOriginalString())) {</span>
-                
-<span class="nc" id="L169">                listModel.getElementAt(i).setIsVulnerable(true);</span>
-<span class="nc" id="L170">                listModel.getElementAt(i).setInternalString(</span>
+<span class="nc" id="L144">                listModel.getElementAt(i).setIsVulnerable(true);</span>
+<span class="nc" id="L145">                listModel.getElementAt(i).setInternalString(</span>
                     listModel
-<span class="nc" id="L172">                    .getElementAt(i)</span>
-<span class="nc" id="L173">                    .getInternalString()</span>
-<span class="nc" id="L174">                    .replace(itemLabel, StringUtils.EMPTY)</span>
+<span class="nc" id="L147">                    .getElementAt(i)</span>
+<span class="nc" id="L148">                    .getInternalString()</span>
+<span class="nc" id="L149">                    .replace(itemLabel, StringUtils.EMPTY)</span>
                     + itemLabel
                 );
                 
-<span class="nc" id="L178">                ((DefaultListModel&lt;ItemList&gt;) listModel).setElementAt(listModel.getElementAt(i), i);</span>
+<span class="nc" id="L153">                ((DefaultListModel&lt;ItemList&gt;) listModel).setElementAt(listModel.getElementAt(i), i);</span>
             }
         }
-<span class="nc" id="L181">    }</span>
+<span class="nc" id="L156">    }</span>
     
     public void endProcess() {
         
-<span class="nc" id="L185">        this.run.setText(I18nViewUtil.valueByKey(this.defaultText));</span>
-<span class="nc" id="L186">        this.setButtonEnable(true);</span>
-<span class="nc" id="L187">        this.loader.setVisible(false);</span>
-<span class="nc" id="L188">        this.run.setState(StateButton.STARTABLE);</span>
-<span class="nc" id="L189">    }</span>
+<span class="nc" id="L160">        this.run.setText(I18nViewUtil.valueByKey(this.defaultText));</span>
+<span class="nc" id="L161">        this.setButtonEnable(true);</span>
+<span class="nc" id="L162">        this.loader.setVisible(false);</span>
+<span class="nc" id="L163">        this.run.setState(StateButton.STARTABLE);</span>
+<span class="nc" id="L164">    }</span>
 
     /**
      * Unselect every element of the list.
      */
     public void clearSelection() {
-        
-<span class="nc" id="L196">        this.listPaths.clearSelection();</span>
-<span class="nc" id="L197">    }</span>
+<span class="nc" id="L170">        this.listPaths.clearSelection();</span>
+<span class="nc" id="L171">    }</span>
 
     /**
      * Enable or disable the button.
      * @param isEnable The new state of the button
      */
     public void setButtonEnable(boolean isEnable) {
-        
-<span class="fc" id="L205">        this.run.setEnabled(isEnable);</span>
-<span class="fc" id="L206">    }</span>
+<span class="fc" id="L178">        this.run.setEnabled(isEnable);</span>
+<span class="fc" id="L179">    }</span>
 
     /**
      * Display another icon to the Privilege label.
      * @param icon The new icon
      */
     public void changePrivilegeIcon(Icon icon) {
-        
-<span class="fc" id="L214">        this.privilege.setIcon(icon);</span>
-<span class="fc" id="L215">    }</span>
+<span class="fc" id="L186">        this.privilege.setIcon(icon);</span>
+<span class="fc" id="L187">    }</span>
     
     
     // Getter and setter
 
     public DnDList getListPaths() {
-<span class="fc" id="L221">        return this.listPaths;</span>
+<span class="fc" id="L193">        return this.listPaths;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

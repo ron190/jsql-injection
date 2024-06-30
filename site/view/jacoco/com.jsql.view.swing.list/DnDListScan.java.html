@@ -18,14 +18,12 @@ import java.util.List;
 public class DnDListScan extends DnDList {
     
     public DnDListScan(List&lt;ItemList&gt; newList) {
-        
-<span class="fc" id="L22">        super(newList);</span>
-<span class="fc" id="L23">    }</span>
+<span class="fc" id="L21">        super(newList);</span>
+<span class="fc" id="L22">    }</span>
 
     @Override
     public void addItem(int endPosition, String line) {
-        
-<span class="nc" id="L28">        this.listModel.add(endPosition, new ItemListScan(new BeanInjection(line.replace(&quot;\\&quot;, &quot;/&quot;))));</span>
-<span class="nc" id="L29">    }</span>
+<span class="nc" id="L26">        this.listModel.add(endPosition, new ItemListScan(new BeanInjection(line.replace(&quot;\\&quot;, &quot;/&quot;))));</span>
+<span class="nc" id="L27">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

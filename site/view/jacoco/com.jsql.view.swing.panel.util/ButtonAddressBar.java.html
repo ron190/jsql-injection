@@ -44,43 +44,34 @@ public class ButtonAddressBar extends JButton {
 <span class="fc" id="L44">    }</span>
 
     /**
-     * Return the current state of current process.
-     * @return State of process
-     */
-    public StateButton getState() {
-        
-<span class="fc" id="L52">        return this.state;</span>
-    }
-
-    /**
      * Replace button with Stop icon ; user can stop current process.
      */
     public void setInjectionReady() {
         
-<span class="fc" id="L60">        this.state = StateButton.STARTABLE;</span>
-<span class="fc" id="L61">        this.setEnabled(true);</span>
+<span class="fc" id="L51">        this.state = StateButton.STARTABLE;</span>
+<span class="fc" id="L52">        this.setEnabled(true);</span>
         
         // turn on before rollovers work
-<span class="fc" id="L64">        this.setRolloverEnabled(true);</span>
-<span class="fc" id="L65">        this.setIcon(UiUtil.ICON_ARROW_DEFAULT);</span>
-<span class="fc" id="L66">        this.setRolloverIcon(UiUtil.ICON_ARROW_ROLLOVER);</span>
-<span class="fc" id="L67">        this.setPressedIcon(UiUtil.ICON_ARROW_PRESSED);</span>
-<span class="fc" id="L68">    }</span>
+<span class="fc" id="L55">        this.setRolloverEnabled(true);</span>
+<span class="fc" id="L56">        this.setIcon(UiUtil.ICON_ARROW_DEFAULT);</span>
+<span class="fc" id="L57">        this.setRolloverIcon(UiUtil.ICON_ARROW_ROLLOVER);</span>
+<span class="fc" id="L58">        this.setPressedIcon(UiUtil.ICON_ARROW_PRESSED);</span>
+<span class="fc" id="L59">    }</span>
 
     /**
      * Replace button with Stop icon ; user can stop current process.
      */
     public void setInjectionRunning() {
         
-<span class="fc" id="L75">        this.state = StateButton.STOPPABLE;</span>
-<span class="fc" id="L76">        this.setEnabled(true);</span>
+<span class="fc" id="L66">        this.state = StateButton.STOPPABLE;</span>
+<span class="fc" id="L67">        this.setEnabled(true);</span>
         
         // turn on before rollovers work
-<span class="fc" id="L79">        this.setRolloverEnabled(true);</span>
-<span class="fc" id="L80">        this.setIcon(UiUtil.IMG_STOP_DEFAULT);</span>
-<span class="fc" id="L81">        this.setRolloverIcon(UiUtil.IMG_STOP_ROLLOVER);</span>
-<span class="fc" id="L82">        this.setPressedIcon(UiUtil.IMG_STOP_PPRESSED);</span>
-<span class="fc" id="L83">    }</span>
+<span class="fc" id="L70">        this.setRolloverEnabled(true);</span>
+<span class="fc" id="L71">        this.setIcon(UiUtil.IMG_STOP_DEFAULT);</span>
+<span class="fc" id="L72">        this.setRolloverIcon(UiUtil.IMG_STOP_ROLLOVER);</span>
+<span class="fc" id="L73">        this.setPressedIcon(UiUtil.IMG_STOP_PPRESSED);</span>
+<span class="fc" id="L74">    }</span>
 
     /**
      * Replace button with an animated GIF until injection process
@@ -88,12 +79,20 @@ public class ButtonAddressBar extends JButton {
      */
     public void setInjectionStopping() {
         
-<span class="nc" id="L91">        this.state = StateButton.STOPPING;</span>
+<span class="nc" id="L82">        this.state = StateButton.STOPPING;</span>
         
         // turn on before rollovers work
-<span class="nc" id="L94">        this.setRolloverEnabled(false);</span>
-<span class="nc" id="L95">        this.setIcon(UiUtil.ICON_LOADER_GIF);</span>
-<span class="nc" id="L96">        this.setEnabled(false);</span>
-<span class="nc" id="L97">    }</span>
+<span class="nc" id="L85">        this.setRolloverEnabled(false);</span>
+<span class="nc" id="L86">        this.setIcon(UiUtil.ICON_LOADER_GIF);</span>
+<span class="nc" id="L87">        this.setEnabled(false);</span>
+<span class="nc" id="L88">    }</span>
+
+    /**
+     * Return the current state of current process.
+     * @return State of process
+     */
+    public StateButton getState() {
+<span class="fc" id="L95">        return this.state;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

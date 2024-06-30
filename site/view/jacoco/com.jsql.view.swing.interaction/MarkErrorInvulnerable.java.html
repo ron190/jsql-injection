@@ -23,20 +23,16 @@ public class MarkErrorInvulnerable implements InteractionCommand {
     
     private final int indexMethodError;
     
-    /**
-     * @param interactionParams
-     */
     @SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L30">    public MarkErrorInvulnerable(Object[] interactionParams) {</span>
+<span class="nc" id="L27">    public MarkErrorInvulnerable(Object[] interactionParams) {</span>
         
-<span class="nc" id="L32">        Map&lt;Header, Object&gt; mapHeader = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
-<span class="nc" id="L33">        this.indexMethodError = (int) mapHeader.get(Header.INDEX_ERROR_STRATEGY);</span>
-<span class="nc" id="L34">    }</span>
+<span class="nc" id="L29">        Map&lt;Header, Object&gt; mapHeader = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
+<span class="nc" id="L30">        this.indexMethodError = (int) mapHeader.get(Header.INDEX_ERROR_STRATEGY);</span>
+<span class="nc" id="L31">    }</span>
 
     @Override
     public void execute() {
-        
-<span class="nc" id="L39">        MediatorHelper.panelAddressBar().getAddressMenuBar().markErrorInvulnerable(this.indexMethodError);</span>
-<span class="nc" id="L40">    }</span>
+<span class="nc" id="L35">        MediatorHelper.panelAddressBar().getAddressMenuBar().markErrorInvulnerable(this.indexMethodError);</span>
+<span class="nc" id="L36">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

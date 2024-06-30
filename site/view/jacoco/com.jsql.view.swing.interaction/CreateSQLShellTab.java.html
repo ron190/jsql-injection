@@ -27,24 +27,22 @@ public class CreateSQLShellTab extends CreateTabHelper implements InteractionCom
     private final String url;
     
     private final String user;
-    
     private final String pass;
 
     /**
      * @param interactionParams The local path and url for the shell
      */
-<span class="fc" id="L36">    public CreateSQLShellTab(Object[] interactionParams) {</span>
+<span class="fc" id="L35">    public CreateSQLShellTab(Object[] interactionParams) {</span>
         
-<span class="fc" id="L38">        this.path = (String) interactionParams[0];</span>
-<span class="fc" id="L39">        this.url = (String) interactionParams[1];</span>
-<span class="fc" id="L40">        this.user = (String) interactionParams[2];</span>
-<span class="fc" id="L41">        this.pass = (String) interactionParams[3];</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L37">        this.path = (String) interactionParams[0];</span>
+<span class="fc" id="L38">        this.url = (String) interactionParams[1];</span>
+<span class="fc" id="L39">        this.user = (String) interactionParams[2];</span>
+<span class="fc" id="L40">        this.pass = (String) interactionParams[3];</span>
+<span class="fc" id="L41">    }</span>
 
     @Override
     public void execute() {
-        
-<span class="fc" id="L47">        MediatorHelper.tabResults().createSQLShellTab(this.url, this.user, this.pass, this.path);</span>
-<span class="fc" id="L48">    }</span>
+<span class="fc" id="L45">        MediatorHelper.tabResults().createSQLShellTab(this.url, this.user, this.pass, this.path);</span>
+<span class="fc" id="L46">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

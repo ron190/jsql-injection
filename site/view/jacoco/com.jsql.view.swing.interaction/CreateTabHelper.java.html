@@ -13,31 +13,27 @@ import java.awt.*;
 public class CreateTabHelper {
 
 <span class="fc" id="L15">    protected CreateTabHelper() {</span>
-        
-<span class="fc" id="L17">        CreateTabHelper.initializeSplitOrientation();</span>
-<span class="fc" id="L18">    }</span>
+<span class="fc" id="L16">        CreateTabHelper.initializeSplitOrientation();</span>
+<span class="fc" id="L17">    }</span>
     
     /**
      * Switch left component with right component when locale orientation requires this.
      */
     public static void initializeSplitOrientation() {
         
-<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (MediatorHelper.tabResults().getTabCount() == 0) {</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (MediatorHelper.tabResults().getTabCount() == 0) {</span>
             
-<span class="fc" id="L27">            JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight();</span>
-<span class="fc" id="L28">            int dividerLocation = splitPaneLeftRight.getDividerLocation();</span>
+<span class="fc" id="L26">            JSplitPane splitPaneLeftRight = MediatorHelper.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight();</span>
+<span class="fc" id="L27">            int dividerLocation = splitPaneLeftRight.getDividerLocation();</span>
             
-<span class="pc bpc" id="L30" title="1 of 2 branches missed.">            if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {</span>
-                
-<span class="nc" id="L32">                splitPaneLeftRight.setLeftComponent(MediatorHelper.tabResults());</span>
-                
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">            if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {</span>
+<span class="nc" id="L30">                splitPaneLeftRight.setLeftComponent(MediatorHelper.tabResults());</span>
             } else {
-                
-<span class="fc" id="L36">                splitPaneLeftRight.setRightComponent(MediatorHelper.tabResults());</span>
+<span class="fc" id="L32">                splitPaneLeftRight.setRightComponent(MediatorHelper.tabResults());</span>
             }
             
-<span class="fc" id="L39">            splitPaneLeftRight.setDividerLocation(dividerLocation);</span>
+<span class="fc" id="L35">            splitPaneLeftRight.setDividerLocation(dividerLocation);</span>
         }
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L37">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

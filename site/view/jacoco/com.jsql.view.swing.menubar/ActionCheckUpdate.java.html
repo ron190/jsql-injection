@@ -10,14 +10,12 @@ import java.awt.event.ActionListener;
 
     @Override
     public void run() {
-        
-<span class="nc" id="L14">        MediatorHelper.model().getMediatorUtils().getGitUtil().checkUpdate(ShowOnConsole.YES);</span>
-<span class="nc" id="L15">    }</span>
+<span class="nc" id="L13">        MediatorHelper.model().getMediatorUtils().getGitUtil().checkUpdate(ShowOnConsole.YES);</span>
+<span class="nc" id="L14">    }</span>
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-<span class="nc" id="L20">        new Thread(this, &quot;ThreadCheckUpdate&quot;).start();</span>
-<span class="nc" id="L21">    }</span>
+<span class="nc" id="L18">        new Thread(this, &quot;ThreadCheckUpdate&quot;).start();</span>
+<span class="nc" id="L19">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -47,24 +47,21 @@ public class JTextFieldPlaceholder extends JTextField {
         
         try {
 <span class="fc" id="L49">            super.paint(g);</span>
-            
-<span class="nc" id="L51">        } catch (ClassCastException e) {</span>
-            
-            // Fix #4301, ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData
-<span class="nc" id="L54">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L55">        }</span>
+<span class="nc" id="L50">        } catch (ClassCastException e) {  // Fix #4301, ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData</span>
+<span class="nc" id="L51">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L52">        }</span>
         
-<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (this.getText().isEmpty()) {</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (this.getText().isEmpty()) {</span>
             
-<span class="fc" id="L59">            int h = this.getHeight();</span>
-<span class="fc" id="L60">            var fm = g.getFontMetrics();</span>
+<span class="fc" id="L56">            int h = this.getHeight();</span>
+<span class="fc" id="L57">            var fm = g.getFontMetrics();</span>
 
-<span class="fc" id="L62">            UiUtil.drawPlaceholder(this, g, this.placeholderText, h / 2 + fm.getAscent() / 2 - 1);</span>
+<span class="fc" id="L59">            UiUtil.drawPlaceholder(this, g, this.placeholderText, h / 2 + fm.getAscent() / 2 - 1);</span>
         }
-<span class="fc" id="L64">    }</span>
+<span class="fc" id="L61">    }</span>
 
     public void setPlaceholderText(String placeholderText) {
-<span class="fc" id="L67">        this.placeholderText = placeholderText;</span>
-<span class="fc" id="L68">    }</span>
+<span class="fc" id="L64">        this.placeholderText = placeholderText;</span>
+<span class="fc" id="L65">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

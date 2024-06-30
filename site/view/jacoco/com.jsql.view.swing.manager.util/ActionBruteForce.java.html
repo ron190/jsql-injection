@@ -40,241 +40,219 @@ public class ActionBruteForce implements ActionListener, Runnable {
 <span class="fc" id="L40">    private boolean isStopped = false;</span>
     
 <span class="fc" id="L42">    public ActionBruteForce(ManagerBruteForce bruteForceManager) {</span>
-        
-<span class="fc" id="L44">        this.bruteForceManager = bruteForceManager;</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L43">        this.bruteForceManager = bruteForceManager;</span>
+<span class="fc" id="L44">    }</span>
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        
-<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (this.bruteForceManager.getRun().getState() == StateButton.STOPPABLE) {</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        if (this.bruteForceManager.getRun().getState() == StateButton.STOPPABLE) {</span>
             
-<span class="nc" id="L52">            this.bruteForceManager.getRun().setEnabled(false);</span>
-<span class="nc" id="L53">            this.isStopped = true;</span>
+<span class="nc" id="L50">            this.bruteForceManager.getRun().setEnabled(false);</span>
+<span class="nc" id="L51">            this.isStopped = true;</span>
             
         } else {
 
-<span class="nc bnc" id="L57" title="All 2 branches missed.">            if (StringUtils.isEmpty(this.bruteForceManager.getHash().getText())) {</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">            if (StringUtils.isEmpty(this.bruteForceManager.getHash().getText())) {</span>
                 
-<span class="nc" id="L59">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -&gt; I18nUtil.valueByKey(&quot;BRUTEFORCE_EMPTY_HASH&quot;));</span>
-<span class="nc" id="L60">                return;</span>
+<span class="nc" id="L57">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -&gt; I18nUtil.valueByKey(&quot;BRUTEFORCE_EMPTY_HASH&quot;));</span>
+<span class="nc" id="L58">                return;</span>
                 
-<span class="nc bnc" id="L62" title="All 2 branches missed.">            } else if (this.isRangeNotSelected()) {</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            } else if (this.isRangeNotSelected()) {</span>
                 
-<span class="nc" id="L64">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -&gt; I18nUtil.valueByKey(&quot;BRUTEFORCE_CHARACTER_RANGE&quot;));</span>
-<span class="nc" id="L65">                return;</span>
+<span class="nc" id="L62">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -&gt; I18nUtil.valueByKey(&quot;BRUTEFORCE_CHARACTER_RANGE&quot;));</span>
+<span class="nc" id="L63">                return;</span>
                 
-<span class="nc bnc" id="L67" title="All 2 branches missed.">            } else if (this.isLengthNotValid()) {</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">            } else if (this.isLengthNotValid()) {</span>
                 
-<span class="nc" id="L69">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -&gt; I18nUtil.valueByKey(&quot;BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH&quot;));</span>
-<span class="nc" id="L70">                return;</span>
+<span class="nc" id="L67">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -&gt; I18nUtil.valueByKey(&quot;BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH&quot;));</span>
+<span class="nc" id="L68">                return;</span>
             }
 
-<span class="nc" id="L73">            new Thread(this, &quot;ThreadDisplayBruteForce&quot;).start();</span>
+<span class="nc" id="L71">            new Thread(this, &quot;ThreadDisplayBruteForce&quot;).start();</span>
         }
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L73">    }</span>
 
     private boolean isLengthNotValid() {
-        
-<span class="nc" id="L79">        return</span>
-<span class="nc" id="L80">            Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString())</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">            &lt; Integer.parseInt(this.bruteForceManager.getMinimumLength().getValue().toString());</span>
+<span class="nc" id="L76">        return</span>
+<span class="nc" id="L77">            Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString())</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">            &lt; Integer.parseInt(this.bruteForceManager.getMinimumLength().getValue().toString());</span>
     }
 
     private boolean isRangeNotSelected() {
-        
-<span class="nc" id="L86">        return</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">            !this.bruteForceManager.getSpecialCharacters().isSelected()</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">            &amp;&amp; !this.bruteForceManager.getUpperCaseCharacters().isSelected()</span>
-<span class="nc bnc" id="L89" title="All 2 branches missed.">            &amp;&amp; !this.bruteForceManager.getLowerCaseCharacters().isSelected()</span>
-<span class="nc bnc" id="L90" title="All 2 branches missed.">            &amp;&amp; !this.bruteForceManager.getNumericCharacters().isSelected();</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        return !this.bruteForceManager.getSpecialCharacters().isSelected()</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">            &amp;&amp; !this.bruteForceManager.getUpperCaseCharacters().isSelected()</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            &amp;&amp; !this.bruteForceManager.getLowerCaseCharacters().isSelected()</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            &amp;&amp; !this.bruteForceManager.getNumericCharacters().isSelected();</span>
     }
 
     @Override
     public void run() {
         
         // Reset the panel
-<span class="nc" id="L97">        this.bruteForceManager.getRun().setText(I18nViewUtil.valueByKey(&quot;BRUTEFORCE_STOP&quot;));</span>
-<span class="nc" id="L98">        this.bruteForceManager.getRun().setState(StateButton.STOPPABLE);</span>
-<span class="nc" id="L99">        this.bruteForceManager.getLoader().setVisible(true);</span>
-<span class="nc" id="L100">        this.bruteForceManager.getResult().setText(null);</span>
+<span class="nc" id="L92">        this.bruteForceManager.getRun().setText(I18nViewUtil.valueByKey(&quot;BRUTEFORCE_STOP&quot;));</span>
+<span class="nc" id="L93">        this.bruteForceManager.getRun().setState(StateButton.STOPPABLE);</span>
+<span class="nc" id="L94">        this.bruteForceManager.getLoader().setVisible(true);</span>
+<span class="nc" id="L95">        this.bruteForceManager.getResult().setText(null);</span>
 
-        // Configure the hasher
-<span class="nc" id="L103">        final var hashBruter = new HashBruter();</span>
+<span class="nc" id="L97">        final var hashBruter = new HashBruter();</span>
 
-<span class="nc" id="L105">        this.initializeBruter(hashBruter);</span>
+<span class="nc" id="L99">        this.initializeBruter(hashBruter);</span>
 
         // Begin the reverse hashing process
-<span class="nc" id="L108">        new Thread(hashBruter::tryBruteForce, &quot;ThreadRunBruteForce&quot;).start();</span>
+<span class="nc" id="L102">        new Thread(hashBruter::tryBruteForce, &quot;ThreadRunBruteForce&quot;).start();</span>
 
-<span class="nc bnc" id="L110" title="All 6 branches missed.">        while (!hashBruter.isDone() &amp;&amp; !hashBruter.isFound() &amp;&amp; !this.isStopped) {</span>
+<span class="nc bnc" id="L104" title="All 6 branches missed.">        while (!hashBruter.isDone() &amp;&amp; !hashBruter.isFound() &amp;&amp; !this.isStopped) {</span>
             
-<span class="nc" id="L112">            hashBruter.setEndtime(System.nanoTime());</span>
+<span class="nc" id="L106">            hashBruter.setEndtime(System.nanoTime());</span>
 
             try {
-                // delay to update result panel
-<span class="nc" id="L116">                Thread.sleep(1000);</span>
+<span class="nc" id="L109">                Thread.sleep(1000);  // delay to update result panel</span>
+<span class="nc" id="L110">            } catch (InterruptedException e) {</span>
                 
-<span class="nc" id="L118">            } catch (InterruptedException e) {</span>
-                
-<span class="nc" id="L120">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L121">                Thread.currentThread().interrupt();</span>
-<span class="nc" id="L122">            }</span>
+<span class="nc" id="L112">                LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L113">                Thread.currentThread().interrupt();</span>
+<span class="nc" id="L114">            }</span>
             
-<span class="nc" id="L124">            int selectionStart = this.bruteForceManager.getResult().getSelectionStart();</span>
-<span class="nc" id="L125">            int selectionEnd = this.bruteForceManager.getResult().getSelectionEnd();</span>
+<span class="nc" id="L116">            int selectionStart = this.bruteForceManager.getResult().getSelectionStart();</span>
+<span class="nc" id="L117">            int selectionEnd = this.bruteForceManager.getResult().getSelectionEnd();</span>
             
-<span class="nc" id="L127">            this.updateResult(hashBruter);</span>
+<span class="nc" id="L119">            this.updateResult(hashBruter);</span>
 
-<span class="nc" id="L129">            this.bruteForceManager.getResult().setSelectionStart(selectionStart);</span>
-<span class="nc" id="L130">            this.bruteForceManager.getResult().setSelectionEnd(selectionEnd);</span>
+<span class="nc" id="L121">            this.bruteForceManager.getResult().setSelectionStart(selectionStart);</span>
+<span class="nc" id="L122">            this.bruteForceManager.getResult().setSelectionEnd(selectionEnd);</span>
             
-<span class="nc bnc" id="L132" title="All 2 branches missed.">            if (this.isStopped) {</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            if (this.isStopped) {</span>
                 
-<span class="nc" id="L134">                hashBruter.setIsDone(true);</span>
-<span class="nc" id="L135">                hashBruter.setFound(true);</span>
+<span class="nc" id="L126">                hashBruter.setIsDone(true);</span>
+<span class="nc" id="L127">                hashBruter.setFound(true);</span>
                 
-<span class="nc" id="L137">                break;</span>
+<span class="nc" id="L129">                break;</span>
             }
-<span class="nc" id="L139">        }</span>
+<span class="nc" id="L131">        }</span>
 
-<span class="nc" id="L141">        this.displayResult(hashBruter);</span>
+<span class="nc" id="L133">        this.displayResult(hashBruter);</span>
 
-<span class="nc" id="L143">        this.isStopped = false;</span>
-<span class="nc" id="L144">        this.bruteForceManager.getLoader().setVisible(false);</span>
-<span class="nc" id="L145">        this.bruteForceManager.getRun().setText(I18nViewUtil.valueByKey(&quot;BRUTEFORCE_START&quot;));</span>
-<span class="nc" id="L146">        this.bruteForceManager.getRun().setEnabled(true);</span>
-<span class="nc" id="L147">        this.bruteForceManager.getRun().setState(StateButton.STARTABLE);</span>
-<span class="nc" id="L148">    }</span>
+<span class="nc" id="L135">        this.isStopped = false;</span>
+<span class="nc" id="L136">        this.bruteForceManager.getLoader().setVisible(false);</span>
+<span class="nc" id="L137">        this.bruteForceManager.getRun().setText(I18nViewUtil.valueByKey(&quot;BRUTEFORCE_START&quot;));</span>
+<span class="nc" id="L138">        this.bruteForceManager.getRun().setEnabled(true);</span>
+<span class="nc" id="L139">        this.bruteForceManager.getRun().setState(StateButton.STARTABLE);</span>
+<span class="nc" id="L140">    }</span>
 
     private void updateResult(final HashBruter hashBruter) {
         
-<span class="nc" id="L152">        this.bruteForceManager.getResult().setText(I18nUtil.valueByKey(&quot;BRUTEFORCE_CURRENT_STRING&quot;) + &quot;: &quot; + hashBruter.getPassword());</span>
-<span class="nc" id="L153">        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey(&quot;BRUTEFORCE_CURRENT_HASH&quot;) + &quot;: &quot; + hashBruter.getGeneratedHash() + &quot;\n&quot;);</span>
-<span class="nc" id="L154">        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey(&quot;BRUTEFORCE_POSSIBILITIES&quot;) + &quot;: &quot; + hashBruter.getNumberOfPossibilities());</span>
-<span class="nc" id="L155">        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey(&quot;BRUTEFORCE_CHECKED_HASHES&quot;) + &quot;: &quot; + hashBruter.getCounter());</span>
-<span class="nc" id="L156">        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey(&quot;BRUTEFORCE_ESTIMATED&quot;) + &quot;: &quot; + hashBruter.getRemainder());</span>
-<span class="nc" id="L157">        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey(&quot;BRUTEFORCE_PERSECOND&quot;) + &quot;: &quot; + hashBruter.getPerSecond() + &quot;\n&quot;);</span>
-<span class="nc" id="L158">        this.append(this.bruteForceManager.getResult(), hashBruter.calculateTimeElapsed());</span>
+<span class="nc" id="L144">        this.bruteForceManager.getResult().setText(I18nUtil.valueByKey(&quot;BRUTEFORCE_CURRENT_STRING&quot;) + &quot;: &quot; + hashBruter.getPassword());</span>
+<span class="nc" id="L145">        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey(&quot;BRUTEFORCE_CURRENT_HASH&quot;) + &quot;: &quot; + hashBruter.getGeneratedHash() + &quot;\n&quot;);</span>
+<span class="nc" id="L146">        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey(&quot;BRUTEFORCE_POSSIBILITIES&quot;) + &quot;: &quot; + hashBruter.getNumberOfPossibilities());</span>
+<span class="nc" id="L147">        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey(&quot;BRUTEFORCE_CHECKED_HASHES&quot;) + &quot;: &quot; + hashBruter.getCounter());</span>
+<span class="nc" id="L148">        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey(&quot;BRUTEFORCE_ESTIMATED&quot;) + &quot;: &quot; + hashBruter.getRemainder());</span>
+<span class="nc" id="L149">        this.append(this.bruteForceManager.getResult(), I18nUtil.valueByKey(&quot;BRUTEFORCE_PERSECOND&quot;) + &quot;: &quot; + hashBruter.getPerSecond() + &quot;\n&quot;);</span>
+<span class="nc" id="L150">        this.append(this.bruteForceManager.getResult(), hashBruter.calculateTimeElapsed());</span>
 
-<span class="nc bnc" id="L160" title="All 2 branches missed.">        if (hashBruter.getPerSecond() != 0) {</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (hashBruter.getPerSecond() != 0) {</span>
             
-<span class="nc" id="L162">            float remainingDuration = Float.parseFloat(Long.toString(hashBruter.getRemainder())) / hashBruter.getPerSecond();</span>
+<span class="nc" id="L154">            float remainingDuration = Float.parseFloat(Long.toString(hashBruter.getRemainder())) / hashBruter.getPerSecond();</span>
             
-<span class="nc" id="L164">            this.append(this.bruteForceManager.getResult(), (</span>
-<span class="nc" id="L165">                I18nUtil.valueByKey(&quot;BRUTEFORCE_TRAVERSING_REMAINING&quot;) + &quot;: &quot;</span>
-<span class="nc" id="L166">                + Math.round(Math.floor(remainingDuration / 60f / 60.0f / 24f)) + I18nUtil.valueByKey(&quot;BRUTEFORCE_DAYS&quot;) + StringUtils.SPACE</span>
-<span class="nc" id="L167">                + Math.round(Math.floor(remainingDuration / 60f / 60f % 24))    + I18nUtil.valueByKey(&quot;BRUTEFORCE_HOURS&quot;) + StringUtils.SPACE</span>
-<span class="nc" id="L168">                + Math.round(Math.floor(remainingDuration / 60f % 60))          + I18nUtil.valueByKey(&quot;BRUTEFORCE_MINUTES&quot;) + StringUtils.SPACE</span>
-<span class="nc" id="L169">                + Math.round(remainingDuration % 60)                            + I18nUtil.valueByKey(&quot;BRUTEFORCE_SECONDS&quot;)</span>
+<span class="nc" id="L156">            this.append(this.bruteForceManager.getResult(), (</span>
+<span class="nc" id="L157">                I18nUtil.valueByKey(&quot;BRUTEFORCE_TRAVERSING_REMAINING&quot;) + &quot;: &quot;</span>
+<span class="nc" id="L158">                + Math.round(Math.floor(remainingDuration / 60f / 60.0f / 24f)) + I18nUtil.valueByKey(&quot;BRUTEFORCE_DAYS&quot;) + StringUtils.SPACE</span>
+<span class="nc" id="L159">                + Math.round(Math.floor(remainingDuration / 60f / 60f % 24))    + I18nUtil.valueByKey(&quot;BRUTEFORCE_HOURS&quot;) + StringUtils.SPACE</span>
+<span class="nc" id="L160">                + Math.round(Math.floor(remainingDuration / 60f % 60))          + I18nUtil.valueByKey(&quot;BRUTEFORCE_MINUTES&quot;) + StringUtils.SPACE</span>
+<span class="nc" id="L161">                + Math.round(remainingDuration % 60)                            + I18nUtil.valueByKey(&quot;BRUTEFORCE_SECONDS&quot;)</span>
             ));
         }
 
-<span class="nc" id="L173">        this.append(</span>
-<span class="nc" id="L174">            this.bruteForceManager.getResult(),</span>
-<span class="nc" id="L175">            String.format(</span>
+<span class="nc" id="L165">        this.append(</span>
+<span class="nc" id="L166">            this.bruteForceManager.getResult(),</span>
+<span class="nc" id="L167">            String.format(</span>
                 &quot;%s: %s%%&quot;,
-<span class="nc" id="L177">                I18nUtil.valueByKey(&quot;BRUTEFORCE_PERCENT_DONE&quot;),</span>
-<span class="nc" id="L178">                100 * (float) hashBruter.getCounter() / hashBruter.getNumberOfPossibilities()</span>
+<span class="nc" id="L169">                I18nUtil.valueByKey(&quot;BRUTEFORCE_PERCENT_DONE&quot;),</span>
+<span class="nc" id="L170">                100 * (float) hashBruter.getCounter() / hashBruter.getNumberOfPossibilities()</span>
             )
         );
-<span class="nc" id="L181">    }</span>
+<span class="nc" id="L173">    }</span>
 
     private void initializeBruter(final HashBruter hashBruter) {
         
-<span class="nc" id="L185">        hashBruter.setMinLength(Integer.parseInt(this.bruteForceManager.getMinimumLength().getValue().toString()));</span>
-<span class="nc" id="L186">        hashBruter.setMaxLength(Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString()));</span>
+<span class="nc" id="L177">        hashBruter.setMinLength(Integer.parseInt(this.bruteForceManager.getMinimumLength().getValue().toString()));</span>
+<span class="nc" id="L178">        hashBruter.setMaxLength(Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString()));</span>
 
-<span class="nc bnc" id="L188" title="All 2 branches missed.">        if (this.bruteForceManager.getSpecialCharacters().isSelected()) {</span>
-            
-<span class="nc" id="L190">            hashBruter.addSpecialCharacters();</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        if (this.bruteForceManager.getSpecialCharacters().isSelected()) {</span>
+<span class="nc" id="L181">            hashBruter.addSpecialCharacters();</span>
         }
         
-<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (this.bruteForceManager.getUpperCaseCharacters().isSelected()) {</span>
-            
-<span class="nc" id="L195">            hashBruter.addUpperCaseLetters();</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">        if (this.bruteForceManager.getUpperCaseCharacters().isSelected()) {</span>
+<span class="nc" id="L185">            hashBruter.addUpperCaseLetters();</span>
         }
         
-<span class="nc bnc" id="L198" title="All 2 branches missed.">        if (this.bruteForceManager.getLowerCaseCharacters().isSelected()) {</span>
-            
-<span class="nc" id="L200">            hashBruter.addLowerCaseLetters();</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        if (this.bruteForceManager.getLowerCaseCharacters().isSelected()) {</span>
+<span class="nc" id="L189">            hashBruter.addLowerCaseLetters();</span>
         }
         
-<span class="nc bnc" id="L203" title="All 2 branches missed.">        if (this.bruteForceManager.getNumericCharacters().isSelected()) {</span>
-            
-<span class="nc" id="L205">            hashBruter.addDigits();</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        if (this.bruteForceManager.getNumericCharacters().isSelected()) {</span>
+<span class="nc" id="L193">            hashBruter.addDigits();</span>
         }
         
-<span class="nc bnc" id="L208" title="All 2 branches missed.">        if (StringUtils.isNotEmpty(this.bruteForceManager.getExclude().getText())) {</span>
-            
-<span class="nc" id="L210">            hashBruter.excludeChars(this.bruteForceManager.getExclude().getText());</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (StringUtils.isNotEmpty(this.bruteForceManager.getExclude().getText())) {</span>
+<span class="nc" id="L197">            hashBruter.excludeChars(this.bruteForceManager.getExclude().getText());</span>
         }
 
-<span class="nc" id="L213">        hashBruter.setType((String) this.bruteForceManager.getHashTypes().getSelectedItem());</span>
-<span class="nc" id="L214">        hashBruter.setHash(</span>
+<span class="nc" id="L200">        hashBruter.setType((String) this.bruteForceManager.getHashTypes().getSelectedItem());</span>
+<span class="nc" id="L201">        hashBruter.setHash(</span>
             this.bruteForceManager
-<span class="nc" id="L216">            .getHash()</span>
-<span class="nc" id="L217">            .getText()</span>
-<span class="nc" id="L218">            .toUpperCase(Locale.ROOT)</span>
-<span class="nc" id="L219">            .replaceAll(</span>
-                &quot;[^a-zA-Z0-9]&quot;,
-                StringUtils.EMPTY
-            )
-<span class="nc" id="L223">            .trim()</span>
+<span class="nc" id="L203">            .getHash()</span>
+<span class="nc" id="L204">            .getText()</span>
+<span class="nc" id="L205">            .toUpperCase(Locale.ROOT)</span>
+<span class="nc" id="L206">            .replaceAll(&quot;[^a-zA-Z0-9]&quot;, StringUtils.EMPTY)</span>
+<span class="nc" id="L207">            .trim()</span>
         );
-<span class="nc" id="L225">    }</span>
+<span class="nc" id="L209">    }</span>
 
     private void displayResult(final HashBruter hashBruter) {
         
         // Display the result
-<span class="nc bnc" id="L230" title="All 2 branches missed.">        if (this.isStopped) {</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        if (this.isStopped) {</span>
+<span class="nc" id="L215">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -&gt; I18nUtil.valueByKey(&quot;BRUTEFORCE_ABORTED&quot;));</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">        } else if (hashBruter.isFound()) {</span>
             
-<span class="nc" id="L232">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -&gt; I18nUtil.valueByKey(&quot;BRUTEFORCE_ABORTED&quot;));</span>
-            
-<span class="nc bnc" id="L234" title="All 2 branches missed.">        } else if (hashBruter.isFound()) {</span>
-            
-<span class="nc" id="L236">            this.append(</span>
-<span class="nc" id="L237">                this.bruteForceManager.getResult(),</span>
-<span class="nc" id="L238">                String.format(</span>
+<span class="nc" id="L218">            this.append(</span>
+<span class="nc" id="L219">                this.bruteForceManager.getResult(),</span>
+<span class="nc" id="L220">                String.format(</span>
                     &quot;%n%s:%n%s =&gt; %s&quot;,
-<span class="nc" id="L240">                    I18nUtil.valueByKey(&quot;BRUTEFORCE_FOUND_HASH&quot;),</span>
-<span class="nc" id="L241">                    hashBruter.getGeneratedHash(),</span>
-<span class="nc" id="L242">                    hashBruter.getPassword()</span>
+<span class="nc" id="L222">                    I18nUtil.valueByKey(&quot;BRUTEFORCE_FOUND_HASH&quot;),</span>
+<span class="nc" id="L223">                    hashBruter.getGeneratedHash(),</span>
+<span class="nc" id="L224">                    hashBruter.getPassword()</span>
                 )
             );
 
-<span class="nc" id="L246">            LOGGER.log(</span>
+<span class="nc" id="L228">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_SUCCESS,
                 &quot;{}: {} =&gt; {}&quot;,
-<span class="nc" id="L249">                () -&gt; I18nUtil.valueByKey(&quot;BRUTEFORCE_FOUND_HASH&quot;),</span>
-<span class="nc" id="L250">                hashBruter::getGeneratedHash,</span>
-<span class="nc" id="L251">                hashBruter::getPassword</span>
+<span class="nc" id="L231">                () -&gt; I18nUtil.valueByKey(&quot;BRUTEFORCE_FOUND_HASH&quot;),</span>
+<span class="nc" id="L232">                hashBruter::getGeneratedHash,</span>
+<span class="nc" id="L233">                hashBruter::getPassword</span>
+            );
+<span class="nc bnc" id="L235" title="All 2 branches missed.">        } else if (hashBruter.isDone()) {</span>
+            
+<span class="nc" id="L237">            this.append(</span>
+<span class="nc" id="L238">                this.bruteForceManager.getResult(),</span>
+<span class="nc" id="L239">                &quot;\n&quot;+ I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_NOT_FOUND&quot;)</span>
             );
             
-<span class="nc bnc" id="L254" title="All 2 branches missed.">        } else if (hashBruter.isDone()) {</span>
-            
-<span class="nc" id="L256">            this.append(</span>
-<span class="nc" id="L257">                this.bruteForceManager.getResult(),</span>
-<span class="nc" id="L258">                &quot;\n&quot;+ I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_NOT_FOUND&quot;)</span>
-            );
-            
-<span class="nc" id="L261">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -&gt; I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_NOT_FOUND&quot;));</span>
+<span class="nc" id="L242">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, () -&gt; I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_NOT_FOUND&quot;));</span>
         }
-<span class="nc" id="L263">    }</span>
+<span class="nc" id="L244">    }</span>
     
     public void append(JTextPane textPane, String text) {
-        
         try {
-<span class="nc" id="L268">            textPane.getDocument().insertString(</span>
-<span class="nc" id="L269">                textPane.getDocument().getLength(),</span>
-<span class="nc bnc" id="L270" title="All 2 branches missed.">                (textPane.getDocument().getLength() == 0 ? StringUtils.EMPTY : &quot;\n&quot;) + text,</span>
+<span class="nc" id="L248">            textPane.getDocument().insertString(</span>
+<span class="nc" id="L249">                textPane.getDocument().getLength(),</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">                (textPane.getDocument().getLength() == 0 ? StringUtils.EMPTY : &quot;\n&quot;) + text,</span>
                 null
             );
-            
-<span class="nc" id="L274">        } catch (BadLocationException e) {</span>
-            
-<span class="nc" id="L276">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L277">        }</span>
-<span class="nc" id="L278">    }</span>
+<span class="nc" id="L253">        } catch (BadLocationException e) {</span>
+<span class="nc" id="L254">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L255">        }</span>
+<span class="nc" id="L256">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

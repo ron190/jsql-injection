@@ -78,7 +78,7 @@ public final class ShadowPopupFactory extends PopupFactory {
 
     /**
      * The PopupFactory used before this PopupFactory has been installed
-     * in {@code #install}. Used to restored the original state
+     * in {@code #install}. Used to restore the original state
      * in {@code #uninstall}.
      */
     private final PopupFactory storedFactory;
@@ -102,7 +102,7 @@ public final class ShadowPopupFactory extends PopupFactory {
      * a NullPointerException when we call {@code #getPopup}.&lt;p&gt;
      *
      * The Mac case shows that we may have problems replacing
-     * non PopupFactory instances. Therefore we should consider
+     * non PopupFactory instances. Therefore, we should consider
      * replacing only instances of PopupFactory.
      *
      * @see #uninstall()
@@ -110,19 +110,17 @@ public final class ShadowPopupFactory extends PopupFactory {
     public static void install() {
         
 <span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (SystemUtils.IS_OS_MAC) {</span>
-            
-<span class="nc" id="L114">            return;</span>
+<span class="nc" id="L113">            return;</span>
         }
 
-<span class="fc" id="L117">        var factory = PopupFactory.getSharedInstance();</span>
+<span class="fc" id="L116">        var factory = PopupFactory.getSharedInstance();</span>
         
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (factory instanceof ShadowPopupFactory) {</span>
-            
-<span class="nc" id="L121">            return;</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">        if (factory instanceof ShadowPopupFactory) {</span>
+<span class="nc" id="L119">            return;</span>
         }
 
-<span class="fc" id="L124">        PopupFactory.setSharedInstance(new ShadowPopupFactory(factory));</span>
-<span class="fc" id="L125">    }</span>
+<span class="fc" id="L122">        PopupFactory.setSharedInstance(new ShadowPopupFactory(factory));</span>
+<span class="fc" id="L123">    }</span>
 
     /**
      * Uninstalls the ShadowPopupFactory and restores the original
@@ -132,17 +130,15 @@ public final class ShadowPopupFactory extends PopupFactory {
      */
     public static void uninstall() {
         
-<span class="nc" id="L135">        var factory = PopupFactory.getSharedInstance();</span>
+<span class="nc" id="L133">        var factory = PopupFactory.getSharedInstance();</span>
         
-<span class="nc bnc" id="L137" title="All 2 branches missed.">        if (!(factory instanceof ShadowPopupFactory)) {</span>
-            
-<span class="nc" id="L139">            return;</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (!(factory instanceof ShadowPopupFactory)) {</span>
+<span class="nc" id="L136">            return;</span>
         }
 
-<span class="nc" id="L142">        PopupFactory stored = ((ShadowPopupFactory) factory).storedFactory;</span>
-<span class="nc" id="L143">        PopupFactory.setSharedInstance(stored);</span>
-<span class="nc" id="L144">    }</span>
-
+<span class="nc" id="L139">        PopupFactory stored = ((ShadowPopupFactory) factory).storedFactory;</span>
+<span class="nc" id="L140">        PopupFactory.setSharedInstance(stored);</span>
+<span class="nc" id="L141">    }</span>
 
     /**
      * Creates a {@code Popup} for the Component {@code owner}
@@ -156,7 +152,7 @@ public final class ShadowPopupFactory extends PopupFactory {
      * {@code Popup} creates to. A null {@code owner} implies there
      * is no valid parent. {@code x} and
      * {@code y} specify the preferred initial location to place
-     * the {@code Popup} at. Based on screen size, or other paramaters,
+     * the {@code Popup} at. Based on screen size, or other parameters,
      * the {@code Popup} may not display at {@code x} and
      * {@code y}.&lt;p&gt;
      *
@@ -176,9 +172,9 @@ public final class ShadowPopupFactory extends PopupFactory {
     @Override
     public Popup getPopup(Component owner, Component contents, int x, int y) {
         
-<span class="fc" id="L179">        var popup = super.getPopup(owner, contents, x, y);</span>
+<span class="fc" id="L175">        var popup = super.getPopup(owner, contents, x, y);</span>
         
-<span class="fc" id="L181">        return ShadowPopup.getInstance(owner, contents, x, y, popup);</span>
+<span class="fc" id="L177">        return ShadowPopup.getInstance(owner, contents, x, y, popup);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

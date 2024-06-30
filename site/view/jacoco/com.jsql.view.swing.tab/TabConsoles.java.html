@@ -27,32 +27,29 @@ public class TabConsoles extends TabbedPaneWheeled {
 <span class="fc" id="L27">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
 <span class="fc" id="L29">    public TabConsoles() {</span>
-
-<span class="fc" id="L31">        this.setName(&quot;tabConsoles&quot;);</span>
-<span class="fc" id="L32">    }</span>
+<span class="fc" id="L30">        this.setName(&quot;tabConsoles&quot;);</span>
+<span class="fc" id="L31">    }</span>
 
     public void highlightTab(String label) {
         
-<span class="fc" id="L36">        int tabIndex = this.indexOfTab(label);</span>
+<span class="fc" id="L35">        int tabIndex = this.indexOfTab(label);</span>
         
         // Highlight only if tab not selected and tab exists
-<span class="fc" id="L39">        if (</span>
-<span class="pc bpc" id="L40" title="1 of 4 branches missed.">            this.getSelectedIndex() != tabIndex</span>
+<span class="fc" id="L38">        if (</span>
+<span class="pc bpc" id="L39" title="1 of 4 branches missed.">            this.getSelectedIndex() != tabIndex</span>
             &amp;&amp; 0 &lt;= tabIndex
-<span class="pc bpc" id="L42" title="1 of 2 branches missed.">            &amp;&amp; tabIndex &lt; this.getTabCount()</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">            &amp;&amp; tabIndex &lt; this.getTabCount()</span>
         ) {
             
-<span class="fc" id="L45">            var tabHeader = this.getTabComponentAt(tabIndex);</span>
+<span class="fc" id="L44">            var tabHeader = this.getTabComponentAt(tabIndex);</span>
             
             // Unhandled ClassCastException #91158 on setFont()
             try {
-<span class="fc" id="L49">                tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));</span>
-                
-<span class="nc" id="L51">            } catch (ClassCastException e) {</span>
-                
-<span class="nc" id="L53">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L54">            }</span>
+<span class="fc" id="L48">                tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));</span>
+<span class="nc" id="L49">            } catch (ClassCastException e) {</span>
+<span class="nc" id="L50">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L51">            }</span>
         }
-<span class="fc" id="L56">    }</span>
+<span class="fc" id="L53">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

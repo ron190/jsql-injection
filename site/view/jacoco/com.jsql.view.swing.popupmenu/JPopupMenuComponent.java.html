@@ -95,36 +95,32 @@ public class JPopupMenuComponent extends JPopupMenu {
 <span class="fc" id="L95">    }</span>
     
 <span class="fc" id="L97">    private class PopupMenuOrientedListener implements PopupMenuListener {</span>
-        
         @Override
         public void popupMenuWillBecomeVisible(PopupMenuEvent event) {
-            
             // Fix #47018: NullPointerException on getLocation()
             try {
-<span class="nc" id="L104">                JPopupMenuComponent.this.setLocation(MouseInfo.getPointerInfo().getLocation());</span>
+<span class="nc" id="L102">                JPopupMenuComponent.this.setLocation(MouseInfo.getPointerInfo().getLocation());</span>
                 
-<span class="nc" id="L106">                JPopupMenuComponent.this.setLocation(</span>
-<span class="nc bnc" id="L107" title="All 2 branches missed.">                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
-<span class="nc" id="L108">                    ? MouseInfo.getPointerInfo().getLocation().x - JPopupMenuComponent.this.getWidth()</span>
-<span class="nc" id="L109">                    : MouseInfo.getPointerInfo().getLocation().x,</span>
-<span class="nc" id="L110">                    MouseInfo.getPointerInfo().getLocation().y</span>
+<span class="nc" id="L104">                JPopupMenuComponent.this.setLocation(</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
+<span class="nc" id="L106">                    ? MouseInfo.getPointerInfo().getLocation().x - JPopupMenuComponent.this.getWidth()</span>
+<span class="nc" id="L107">                    : MouseInfo.getPointerInfo().getLocation().x,</span>
+<span class="nc" id="L108">                    MouseInfo.getPointerInfo().getLocation().y</span>
                 );
-                
-<span class="nc" id="L113">            } catch (NullPointerException e) {</span>
-                
-<span class="nc" id="L115">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L116">            }</span>
-<span class="nc" id="L117">        }</span>
+<span class="nc" id="L110">            } catch (NullPointerException e) {</span>
+<span class="nc" id="L111">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L112">            }</span>
+<span class="nc" id="L113">        }</span>
         
         @Override
         public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
             // Do nothing
-<span class="nc" id="L122">        }</span>
+<span class="nc" id="L118">        }</span>
         
         @Override
         public void popupMenuCanceled(PopupMenuEvent e) {
             // Do nothing
-<span class="nc" id="L127">        }</span>
+<span class="nc" id="L123">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

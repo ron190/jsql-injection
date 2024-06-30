@@ -171,151 +171,149 @@ public class ManagerBruteForce extends JPanel implements Manager {
 <span class="fc" id="L171">        var firstLine = new JPanel(new BorderLayout());</span>
 
 <span class="fc" id="L173">        this.hash = new JPopupTextField(I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_LABEL&quot;)).getProxy();</span>
+<span class="fc" id="L174">        this.hash.setName(&quot;managerBruterHash&quot;);</span>
+<span class="fc" id="L175">        this.hash.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_TOOLTIP&quot;));</span>
         
-<span class="fc" id="L175">        this.hash.setName(&quot;managerBruterHash&quot;);</span>
+<span class="fc" id="L177">        firstLine.add(this.hash, BorderLayout.CENTER);</span>
         
-<span class="fc" id="L177">        this.hash.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_TOOLTIP&quot;));</span>
-        
-<span class="fc" id="L179">        firstLine.add(this.hash, BorderLayout.CENTER);</span>
-        
-<span class="fc" id="L181">        this.hash.setBorder(</span>
-<span class="fc" id="L182">            BorderFactory.createCompoundBorder(</span>
-<span class="fc" id="L183">                BorderFactory.createMatteBorder(1, 1, 1, 1, UiUtil.COLOR_DEFAULT_BACKGROUND),</span>
+<span class="fc" id="L179">        this.hash.setBorder(</span>
+<span class="fc" id="L180">            BorderFactory.createCompoundBorder(</span>
+<span class="fc" id="L181">                BorderFactory.createMatteBorder(1, 1, 1, 1, UiUtil.COLOR_DEFAULT_BACKGROUND),</span>
                 UiUtil.BORDER_BLU
             )
         );
         
-<span class="fc" id="L188">        return firstLine;</span>
+<span class="fc" id="L186">        return firstLine;</span>
     }
 
     private JPanel initializeSecondLine() {
         
-<span class="fc" id="L193">        final var secondLine = new JPanel();</span>
-<span class="fc" id="L194">        secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));</span>
-<span class="fc" id="L195">        secondLine.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));</span>
+<span class="fc" id="L191">        final var secondLine = new JPanel();</span>
+<span class="fc" id="L192">        secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L193">        secondLine.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));</span>
         
-<span class="fc" id="L197">        this.lowerCaseCharacters = new JCheckBox(&quot;a-z&quot;, true);</span>
-<span class="fc" id="L198">        this.upperCaseCharacters = new JCheckBox(&quot;A-Z&quot;, true);</span>
-<span class="fc" id="L199">        this.numericCharacters = new JCheckBox(&quot;0-9&quot;, true);</span>
-<span class="fc" id="L200">        this.specialCharacters = new JCheckBox(&quot;Special&quot;, true);</span>
+<span class="fc" id="L195">        this.lowerCaseCharacters = new JCheckBox(&quot;a-z&quot;, true);</span>
+<span class="fc" id="L196">        this.upperCaseCharacters = new JCheckBox(&quot;A-Z&quot;, true);</span>
+<span class="fc" id="L197">        this.numericCharacters = new JCheckBox(&quot;0-9&quot;, true);</span>
+<span class="fc" id="L198">        this.specialCharacters = new JCheckBox(&quot;Special&quot;, true);</span>
 
-<span class="fc" id="L202">        this.hashTypes = new JComboBox&lt;&gt;(</span>
+<span class="fc" id="L200">        this.hashTypes = new JComboBox&lt;&gt;(</span>
             new String[]{
                 &quot;Adler32&quot;, &quot;Crc16&quot;, &quot;Crc32&quot;, &quot;Crc64&quot;, &quot;Md2&quot;, &quot;Md4&quot;,
                 &quot;Md5&quot;, &quot;Sha-1&quot;, &quot;Sha-256&quot;, &quot;Sha-384&quot;, &quot;Sha-512&quot;, &quot;mysql&quot;
             }
         );
         
-<span class="fc" id="L209">        this.hashTypes.setSelectedIndex(6);</span>
-<span class="fc" id="L210">        this.hashTypes.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_TYPE_TOOLTIP&quot;));</span>
+<span class="fc" id="L207">        this.hashTypes.setSelectedIndex(6);</span>
+<span class="fc" id="L208">        this.hashTypes.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_HASH_TYPE_TOOLTIP&quot;));</span>
 
-<span class="fc" id="L212">        secondLine.add(this.hashTypes);</span>
-<span class="fc" id="L213">        secondLine.add(this.lowerCaseCharacters);</span>
-<span class="fc" id="L214">        secondLine.add(this.upperCaseCharacters);</span>
-<span class="fc" id="L215">        secondLine.add(this.numericCharacters);</span>
-<span class="fc" id="L216">        secondLine.add(this.specialCharacters);</span>
+<span class="fc" id="L210">        secondLine.add(this.hashTypes);</span>
+<span class="fc" id="L211">        secondLine.add(this.lowerCaseCharacters);</span>
+<span class="fc" id="L212">        secondLine.add(this.upperCaseCharacters);</span>
+<span class="fc" id="L213">        secondLine.add(this.numericCharacters);</span>
+<span class="fc" id="L214">        secondLine.add(this.specialCharacters);</span>
 
-<span class="fc" id="L218">        this.lowerCaseCharacters.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_LCASE_TOOLTIP&quot;));</span>
-<span class="fc" id="L219">        this.upperCaseCharacters.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_UCASE_TOOLTIP&quot;));</span>
-<span class="fc" id="L220">        this.numericCharacters.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_NUM_TOOLTIP&quot;));</span>
-<span class="fc" id="L221">        this.specialCharacters.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_SPEC_TOOLTIP&quot;));</span>
+<span class="fc" id="L216">        this.lowerCaseCharacters.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_LCASE_TOOLTIP&quot;));</span>
+<span class="fc" id="L217">        this.upperCaseCharacters.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_UCASE_TOOLTIP&quot;));</span>
+<span class="fc" id="L218">        this.numericCharacters.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_NUM_TOOLTIP&quot;));</span>
+<span class="fc" id="L219">        this.specialCharacters.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_SPEC_TOOLTIP&quot;));</span>
         
-<span class="fc" id="L223">        return secondLine;</span>
+<span class="fc" id="L221">        return secondLine;</span>
     }
 
     private JPanel initializeThirdLine() {
         
-<span class="fc" id="L228">        var thirdLine = new JPanel();</span>
-<span class="fc" id="L229">        thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));</span>
-<span class="fc" id="L230">        thirdLine.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));</span>
+<span class="fc" id="L226">        var thirdLine = new JPanel();</span>
+<span class="fc" id="L227">        thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L228">        thirdLine.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UiUtil.COLOR_DEFAULT_BACKGROUND));</span>
         
-<span class="fc" id="L232">        this.exclude = new JPopupTextField(I18nUtil.valueByKey(&quot;BRUTEFORCE_EXCLUDE_LABEL&quot;)).getProxy();</span>
-<span class="fc" id="L233">        this.exclude.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_EXCLUDE_TOOLTIP&quot;));</span>
-<span class="fc" id="L234">        this.exclude.setBorder(</span>
-<span class="fc" id="L235">            BorderFactory.createCompoundBorder(</span>
-<span class="fc" id="L236">                BorderFactory.createMatteBorder(1, 0, 1, 1, UiUtil.COLOR_DEFAULT_BACKGROUND),</span>
+<span class="fc" id="L230">        this.exclude = new JPopupTextField(I18nUtil.valueByKey(&quot;BRUTEFORCE_EXCLUDE_LABEL&quot;)).getProxy();</span>
+<span class="fc" id="L231">        this.exclude.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_EXCLUDE_TOOLTIP&quot;));</span>
+<span class="fc" id="L232">        this.exclude.setBorder(</span>
+<span class="fc" id="L233">            BorderFactory.createCompoundBorder(</span>
+<span class="fc" id="L234">                BorderFactory.createMatteBorder(1, 0, 1, 1, UiUtil.COLOR_DEFAULT_BACKGROUND),</span>
                 UiUtil.BORDER_BLU
             )
         );
-<span class="fc" id="L240">        thirdLine.add(this.exclude);</span>
+<span class="fc" id="L238">        thirdLine.add(this.exclude);</span>
 
-<span class="fc" id="L242">        this.minimumLength = new JSpinner();</span>
-<span class="fc" id="L243">        this.minimumLength.setModel(new SpinnerNumberModel(1, 1, 10000, 1));</span>
+<span class="fc" id="L240">        this.minimumLength = new JSpinner();</span>
+<span class="fc" id="L241">        this.minimumLength.setModel(new SpinnerNumberModel(1, 1, 10000, 1));</span>
         
-<span class="fc" id="L245">        this.maximumLength = new JSpinner();</span>
-<span class="fc" id="L246">        this.maximumLength.setModel(new SpinnerNumberModel(5, 1, 10000, 1));</span>
+<span class="fc" id="L243">        this.maximumLength = new JSpinner();</span>
+<span class="fc" id="L244">        this.maximumLength.setModel(new SpinnerNumberModel(5, 1, 10000, 1));</span>
         
-<span class="fc" id="L248">        this.minimumLength.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_MIN_TOOLTIP&quot;));</span>
-<span class="fc" id="L249">        this.maximumLength.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_MAX_TOOLTIP&quot;));</span>
+<span class="fc" id="L246">        this.minimumLength.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_MIN_TOOLTIP&quot;));</span>
+<span class="fc" id="L247">        this.maximumLength.setToolTipText(I18nUtil.valueByKey(&quot;BRUTEFORCE_MAX_TOOLTIP&quot;));</span>
         
-<span class="fc" id="L251">        this.minimumLength.setPreferredSize(new Dimension(38, (int) this.minimumLength.getPreferredSize().getHeight()));</span>
-<span class="fc" id="L252">        this.maximumLength.setPreferredSize(new Dimension(38, (int) this.maximumLength.getPreferredSize().getHeight()));</span>
-<span class="fc" id="L253">        this.minimumLength.setMaximumSize(new Dimension(38, (int) this.minimumLength.getPreferredSize().getHeight()));</span>
-<span class="fc" id="L254">        this.maximumLength.setMaximumSize(new Dimension(38, (int) this.maximumLength.getPreferredSize().getHeight()));</span>
-<span class="fc" id="L255">        this.minimumLength.setMinimumSize(new Dimension(38, (int) this.minimumLength.getPreferredSize().getHeight()));</span>
-<span class="fc" id="L256">        this.maximumLength.setMinimumSize(new Dimension(38, (int) this.maximumLength.getPreferredSize().getHeight()));</span>
+<span class="fc" id="L249">        this.minimumLength.setPreferredSize(new Dimension(38, (int) this.minimumLength.getPreferredSize().getHeight()));</span>
+<span class="fc" id="L250">        this.maximumLength.setPreferredSize(new Dimension(38, (int) this.maximumLength.getPreferredSize().getHeight()));</span>
+<span class="fc" id="L251">        this.minimumLength.setMaximumSize(new Dimension(38, (int) this.minimumLength.getPreferredSize().getHeight()));</span>
+<span class="fc" id="L252">        this.maximumLength.setMaximumSize(new Dimension(38, (int) this.maximumLength.getPreferredSize().getHeight()));</span>
+<span class="fc" id="L253">        this.minimumLength.setMinimumSize(new Dimension(38, (int) this.minimumLength.getPreferredSize().getHeight()));</span>
+<span class="fc" id="L254">        this.maximumLength.setMinimumSize(new Dimension(38, (int) this.maximumLength.getPreferredSize().getHeight()));</span>
 
-<span class="fc" id="L258">        var labelMin = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey(&quot;BRUTEFORCE_MIN_LABEL&quot;), SwingConstants.RIGHT);</span>
-<span class="fc" id="L259">        thirdLine.add(labelMin);</span>
-<span class="fc" id="L260">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_MIN_LABEL&quot;, labelMin);</span>
-<span class="fc" id="L261">        thirdLine.add(this.minimumLength);</span>
-<span class="fc" id="L262">        var labelMax = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey(&quot;BRUTEFORCE_MAX_LABEL&quot;), SwingConstants.RIGHT);</span>
-<span class="fc" id="L263">        thirdLine.add(labelMax);</span>
-<span class="fc" id="L264">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_MAX_LABEL&quot;, labelMax);</span>
-<span class="fc" id="L265">        thirdLine.add(this.maximumLength);</span>
+<span class="fc" id="L256">        var labelMin = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey(&quot;BRUTEFORCE_MIN_LABEL&quot;), SwingConstants.RIGHT);</span>
+<span class="fc" id="L257">        thirdLine.add(labelMin);</span>
+<span class="fc" id="L258">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_MIN_LABEL&quot;, labelMin);</span>
+<span class="fc" id="L259">        thirdLine.add(this.minimumLength);</span>
+<span class="fc" id="L260">        var labelMax = new JLabel(StringUtils.SPACE + I18nUtil.valueByKey(&quot;BRUTEFORCE_MAX_LABEL&quot;), SwingConstants.RIGHT);</span>
+<span class="fc" id="L261">        thirdLine.add(labelMax);</span>
+<span class="fc" id="L262">        I18nViewUtil.addComponentForKey(&quot;BRUTEFORCE_MAX_LABEL&quot;, labelMax);</span>
+<span class="fc" id="L263">        thirdLine.add(this.maximumLength);</span>
         
-<span class="fc" id="L267">        return thirdLine;</span>
+<span class="fc" id="L265">        return thirdLine;</span>
     }
 
     
     // Getter and setter
 
     public JButtonStateful getRun() {
-<span class="nc" id="L274">        return this.run;</span>
+<span class="nc" id="L272">        return this.run;</span>
     }
 
     public JTextField getHash() {
-<span class="nc" id="L278">        return this.hash;</span>
+<span class="nc" id="L276">        return this.hash;</span>
     }
 
     public JComboBox&lt;String&gt; getHashTypes() {
-<span class="nc" id="L282">        return this.hashTypes;</span>
+<span class="nc" id="L280">        return this.hashTypes;</span>
     }
 
     public JCheckBox getLowerCaseCharacters() {
-<span class="nc" id="L286">        return this.lowerCaseCharacters;</span>
+<span class="nc" id="L284">        return this.lowerCaseCharacters;</span>
     }
 
     public JCheckBox getUpperCaseCharacters() {
-<span class="nc" id="L290">        return this.upperCaseCharacters;</span>
+<span class="nc" id="L288">        return this.upperCaseCharacters;</span>
     }
 
     public JCheckBox getNumericCharacters() {
-<span class="nc" id="L294">        return this.numericCharacters;</span>
+<span class="nc" id="L292">        return this.numericCharacters;</span>
     }
 
     public JCheckBox getSpecialCharacters() {
-<span class="nc" id="L298">        return this.specialCharacters;</span>
+<span class="nc" id="L296">        return this.specialCharacters;</span>
     }
 
     public JTextField getExclude() {
-<span class="nc" id="L302">        return this.exclude;</span>
+<span class="nc" id="L300">        return this.exclude;</span>
     }
 
     public JSpinner getMinimumLength() {
-<span class="nc" id="L306">        return this.minimumLength;</span>
+<span class="nc" id="L304">        return this.minimumLength;</span>
     }
 
     public JSpinner getMaximumLength() {
-<span class="nc" id="L310">        return this.maximumLength;</span>
+<span class="nc" id="L308">        return this.maximumLength;</span>
     }
 
     public JTextPane getResult() {
-<span class="fc" id="L314">        return this.result;</span>
+<span class="fc" id="L312">        return this.result;</span>
     }
 
     public JLabel getLoader() {
-<span class="nc" id="L318">        return this.loader;</span>
+<span class="nc" id="L316">        return this.loader;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

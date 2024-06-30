@@ -14,31 +14,28 @@ public class DeleteNextCharAction extends AbstractCharAction {
      * Create this object with the appropriate identifier.
      */
     public DeleteNextCharAction() {
-        
-<span class="fc" id="L18">        super(DefaultEditorKit.deleteNextCharAction);</span>
-<span class="fc" id="L19">    }</span>
+<span class="fc" id="L17">        super(DefaultEditorKit.deleteNextCharAction);</span>
+<span class="fc" id="L18">    }</span>
 
     @Override
     protected void delete(Document doc, int dot) throws BadLocationException {
-        
-<span class="nc bnc" id="L24" title="All 2 branches missed.">        if (dot &lt; doc.getLength()) {</span>
+<span class="nc bnc" id="L22" title="All 2 branches missed.">        if (dot &lt; doc.getLength()) {</span>
             
-<span class="nc" id="L26">            var delChars = 1;</span>
+<span class="nc" id="L24">            var delChars = 1;</span>
 
-<span class="nc bnc" id="L28" title="All 2 branches missed.">            if (dot &lt; doc.getLength() - 1) {</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">            if (dot &lt; doc.getLength() - 1) {</span>
                 
-<span class="nc" id="L30">                String dotChars = doc.getText(dot, 2);</span>
-<span class="nc" id="L31">                var c0 = dotChars.charAt(0);</span>
-<span class="nc" id="L32">                var c1 = dotChars.charAt(1);</span>
+<span class="nc" id="L28">                String dotChars = doc.getText(dot, 2);</span>
+<span class="nc" id="L29">                var c0 = dotChars.charAt(0);</span>
+<span class="nc" id="L30">                var c1 = dotChars.charAt(1);</span>
 
-<span class="nc bnc" id="L34" title="All 8 branches missed.">                if (c0 &gt;= '\uD800' &amp;&amp; c0 &lt;= '\uDBFF' &amp;&amp; c1 &gt;= '\uDC00' &amp;&amp; c1 &lt;= '\uDFFF') {</span>
-                    
-<span class="nc" id="L36">                    delChars = 2;</span>
+<span class="nc bnc" id="L32" title="All 8 branches missed.">                if (c0 &gt;= '\uD800' &amp;&amp; c0 &lt;= '\uDBFF' &amp;&amp; c1 &gt;= '\uDC00' &amp;&amp; c1 &lt;= '\uDFFF') {</span>
+<span class="nc" id="L33">                    delChars = 2;</span>
                 }
             }
 
-<span class="nc" id="L40">            doc.remove(dot, delChars);</span>
+<span class="nc" id="L37">            doc.remove(dot, delChars);</span>
         }
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L39">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

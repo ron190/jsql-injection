@@ -26,226 +26,185 @@ public class JsonUtil {
     private final InjectionModel injectionModel;
     
 <span class="fc" id="L28">    public JsonUtil(InjectionModel injectionModel) {</span>
-        
-<span class="fc" id="L30">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L31">    }</span>
+<span class="fc" id="L29">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L30">    }</span>
 
     public static boolean isJson(String param) {
         
-<span class="fc" id="L35">        var isJson = false;</span>
+<span class="fc" id="L34">        var isJson = false;</span>
         
         try {
             // Test for JSON Object
-<span class="fc" id="L39">            new JSONObject(param);</span>
-<span class="fc" id="L40">            isJson = true;</span>
+<span class="fc" id="L38">            new JSONObject(param);</span>
+<span class="fc" id="L39">            isJson = true;</span>
             
-<span class="fc" id="L42">        } catch (JSONException exceptionJSONObject) {</span>
-            
+<span class="fc" id="L41">        } catch (JSONException exceptionJSONObject) {</span>
             try {
                 // Test for JSON Array
-<span class="fc" id="L46">                new JSONArray(param);</span>
-<span class="fc" id="L47">                isJson = true;</span>
+<span class="fc" id="L44">                new JSONArray(param);</span>
+<span class="fc" id="L45">                isJson = true;</span>
                 
-<span class="fc" id="L49">            } catch (JSONException exceptionJSONArray) {</span>
+<span class="fc" id="L47">            } catch (JSONException exceptionJSONArray) {</span>
                 // Not a JSON entity
-<span class="fc" id="L51">            }</span>
-<span class="fc" id="L52">        }</span>
+<span class="fc" id="L49">            }</span>
+<span class="fc" id="L50">        }</span>
         
-<span class="fc" id="L54">        return isJson;</span>
+<span class="fc" id="L52">        return isJson;</span>
     }
 
     public static Object getJson(String param) {
-        
-        // Will test if current value is a JSON entity
-        Object jsonEntity;
+
+        Object jsonEntity;  // Will test if current value is a JSON entity
         
         try {
-            // Test for JSON Object
-<span class="fc" id="L64">            jsonEntity = new JSONObject(param);</span>
-            
-<span class="fc" id="L66">        } catch (JSONException exceptionJSONObject) {</span>
-            
+<span class="fc" id="L60">            jsonEntity = new JSONObject(param);  // Test for JSON Object</span>
+<span class="fc" id="L61">        } catch (JSONException exceptionJSONObject) {</span>
             try {
-                // Test for JSON Array
-<span class="fc" id="L70">                jsonEntity = new JSONArray(param);</span>
-                
-<span class="fc" id="L72">            } catch (JSONException exceptionJSONArray) {</span>
-                
-                // Not a JSON entity
-<span class="fc" id="L75">                jsonEntity = new Object();</span>
-<span class="fc" id="L76">            }</span>
-<span class="fc" id="L77">        }</span>
+<span class="fc" id="L63">                jsonEntity = new JSONArray(param);  // Test for JSON Array</span>
+<span class="fc" id="L64">            } catch (JSONException exceptionJSONArray) {</span>
+<span class="fc" id="L65">                jsonEntity = new Object();  // Not a JSON entity</span>
+<span class="fc" id="L66">            }</span>
+<span class="fc" id="L67">        }</span>
         
-<span class="fc" id="L79">        return jsonEntity;</span>
+<span class="fc" id="L69">        return jsonEntity;</span>
     }
 
     public static List&lt;SimpleEntry&lt;String, String&gt;&gt; createEntries(Object jsonEntity, String parentName, SimpleEntry&lt;String, String&gt; parentXPath) {
         
-<span class="fc" id="L84">        List&lt;SimpleEntry&lt;String, String&gt;&gt; attributesXPath = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L74">        List&lt;SimpleEntry&lt;String, String&gt;&gt; attributesXPath = new ArrayList&lt;&gt;();</span>
         
-<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (jsonEntity instanceof JSONObject) {</span>
-            
-<span class="fc" id="L88">            JsonUtil.scanJsonObject(jsonEntity, parentName, parentXPath, attributesXPath);</span>
-            
-<span class="fc bfc" id="L90" title="All 2 branches covered.">        } else if (jsonEntity instanceof JSONArray) {</span>
-            
-<span class="fc" id="L92">            JsonUtil.scanJsonArray(jsonEntity, parentName, parentXPath, attributesXPath);</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (jsonEntity instanceof JSONObject) {</span>
+<span class="fc" id="L77">            JsonUtil.scanJsonObject(jsonEntity, parentName, parentXPath, attributesXPath);</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        } else if (jsonEntity instanceof JSONArray) {</span>
+<span class="fc" id="L79">            JsonUtil.scanJsonArray(jsonEntity, parentName, parentXPath, attributesXPath);</span>
         }
         
-<span class="fc" id="L95">        return attributesXPath;</span>
+<span class="fc" id="L82">        return attributesXPath;</span>
     }
 
     private static void scanJsonArray(Object jsonEntity, String parentName, SimpleEntry&lt;String, String&gt; parentXPath, List&lt;SimpleEntry&lt;String, String&gt;&gt; attributesXPath) {
         
-<span class="fc" id="L100">        var jsonArrayEntity = (JSONArray) jsonEntity;</span>
+<span class="fc" id="L87">        var jsonArrayEntity = (JSONArray) jsonEntity;</span>
         
-<span class="fc bfc" id="L102" title="All 2 branches covered.">        for (var i = 0; i &lt; jsonArrayEntity.length(); i++) {</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        for (var i = 0; i &lt; jsonArrayEntity.length(); i++) {</span>
             
-<span class="fc" id="L104">            Object value = jsonArrayEntity.get(i);</span>
-<span class="fc" id="L105">            String xpath = parentName +&quot;[&quot;+ i +&quot;]&quot;;</span>
+<span class="fc" id="L91">            Object value = jsonArrayEntity.get(i);</span>
+<span class="fc" id="L92">            String xpath = parentName +&quot;[&quot;+ i +&quot;]&quot;;</span>
             
             // Not possible to make generic with scanJsonObject() because of JSONArray.put(int) != JSONObject.put(String)
-<span class="fc bfc" id="L108" title="All 4 branches covered.">            if (value instanceof JSONArray || value instanceof JSONObject) {</span>
+<span class="fc bfc" id="L95" title="All 4 branches covered.">            if (value instanceof JSONArray || value instanceof JSONObject) {</span>
+<span class="fc" id="L96">                attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">            } else if (value instanceof String) {</span>
                 
-<span class="fc" id="L110">                attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));</span>
+<span class="fc" id="L99">                SimpleEntry&lt;String, String&gt; stringValue = new SimpleEntry&lt;&gt;(xpath, (String) value);</span>
+<span class="fc" id="L100">                attributesXPath.add(stringValue);</span>
                 
-<span class="fc bfc" id="L112" title="All 2 branches covered.">            } else if (value instanceof String) {</span>
-                
-<span class="fc" id="L114">                SimpleEntry&lt;String, String&gt; stringValue = new SimpleEntry&lt;&gt;(xpath, (String) value);</span>
-<span class="fc" id="L115">                attributesXPath.add(stringValue);</span>
-                
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">                if (parentXPath == null) {</span>
-                    
-<span class="fc" id="L119">                    jsonArrayEntity.put(i, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +&quot;$&quot;, StringUtils.EMPTY));</span>
-                    
-<span class="nc bnc" id="L121" title="All 2 branches missed.">                } else if (stringValue.equals(parentXPath)) {</span>
-                    
-<span class="nc" id="L123">                    jsonArrayEntity.put(i, value + InjectionModel.STAR);</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">                if (parentXPath == null) {</span>
+<span class="fc" id="L103">                    jsonArrayEntity.put(i, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +&quot;$&quot;, StringUtils.EMPTY));</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">                } else if (stringValue.equals(parentXPath)) {</span>
+<span class="nc" id="L105">                    jsonArrayEntity.put(i, value + InjectionModel.STAR);</span>
                 }
             }
         }
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L109">    }</span>
 
     private static void scanJsonObject(Object jsonEntity, String parentName, SimpleEntry&lt;String, String&gt; parentXPath, List&lt;SimpleEntry&lt;String, String&gt;&gt; attributesXPath) {
         
-<span class="fc" id="L131">        var jsonObjectEntity = (JSONObject) jsonEntity;</span>
+<span class="fc" id="L113">        var jsonObjectEntity = (JSONObject) jsonEntity;</span>
         
-<span class="fc" id="L133">        Iterator&lt;?&gt; keys = jsonObjectEntity.keys();</span>
+<span class="fc" id="L115">        Iterator&lt;?&gt; keys = jsonObjectEntity.keys();</span>
         
-<span class="fc bfc" id="L135" title="All 2 branches covered.">        while (keys.hasNext()) {</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        while (keys.hasNext()) {</span>
             
-<span class="fc" id="L137">            String key = (String) keys.next();</span>
-<span class="fc" id="L138">            var value = jsonObjectEntity.get(key);</span>
-<span class="fc" id="L139">            String xpath = parentName +&quot;.&quot;+ key;</span>
+<span class="fc" id="L119">            String key = (String) keys.next();</span>
+<span class="fc" id="L120">            var value = jsonObjectEntity.get(key);</span>
+<span class="fc" id="L121">            String xpath = parentName +&quot;.&quot;+ key;</span>
             
             // Not possible to make generic with scanJsonObject() because of JSONArray.put(int) != JSONObject.put(String)
-<span class="fc bfc" id="L142" title="All 4 branches covered.">            if (value instanceof JSONArray || value instanceof JSONObject) {</span>
+<span class="fc bfc" id="L124" title="All 4 branches covered.">            if (value instanceof JSONArray || value instanceof JSONObject) {</span>
+<span class="fc" id="L125">                attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">            } else if (value instanceof String) {</span>
                 
-<span class="fc" id="L144">                attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));</span>
+<span class="fc" id="L128">                SimpleEntry&lt;String, String&gt; stringValue = new SimpleEntry&lt;&gt;(xpath, (String) value);</span>
+<span class="fc" id="L129">                attributesXPath.add(stringValue);</span>
                 
-<span class="fc bfc" id="L146" title="All 2 branches covered.">            } else if (value instanceof String) {</span>
-                
-<span class="fc" id="L148">                SimpleEntry&lt;String, String&gt; stringValue = new SimpleEntry&lt;&gt;(xpath, (String) value);</span>
-<span class="fc" id="L149">                attributesXPath.add(stringValue);</span>
-                
-<span class="fc bfc" id="L151" title="All 2 branches covered.">                if (parentXPath == null) {</span>
-                    
-<span class="fc" id="L153">                    jsonObjectEntity.put(key, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +&quot;$&quot;, StringUtils.EMPTY));</span>
-                    
-<span class="fc bfc" id="L155" title="All 2 branches covered.">                } else if (stringValue.equals(parentXPath)) {</span>
-                    
-<span class="fc" id="L157">                    jsonObjectEntity.put(key, value + InjectionModel.STAR);</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">                if (parentXPath == null) {</span>
+<span class="fc" id="L132">                    jsonObjectEntity.put(key, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +&quot;$&quot;, StringUtils.EMPTY));</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">                } else if (stringValue.equals(parentXPath)) {</span>
+<span class="fc" id="L134">                    jsonObjectEntity.put(key, value + InjectionModel.STAR);</span>
                 }
             }
-<span class="fc" id="L160">        }</span>
-<span class="fc" id="L161">    }</span>
+<span class="fc" id="L137">        }</span>
+<span class="fc" id="L138">    }</span>
     
     public boolean testJsonParam(AbstractMethodInjection methodInjection, SimpleEntry&lt;String, String&gt; paramStar) {
         
-<span class="fc" id="L165">        var hasFoundInjection = false;</span>
+<span class="fc" id="L142">        var hasFoundInjection = false;</span>
         
         // Remove STAR at the end of parameter, STAR will be added inside json data instead
-<span class="fc" id="L168">        paramStar.setValue(paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));</span>
+<span class="fc" id="L145">        paramStar.setValue(paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY));</span>
         
         // Will test if current value is a JSON entity
-<span class="fc" id="L171">        Object jsonEntity = JsonUtil.getJson(paramStar.getValue());</span>
+<span class="fc" id="L148">        Object jsonEntity = JsonUtil.getJson(paramStar.getValue());</span>
         
         // Define a tree of JSON attributes with path as the key: root.a =&gt; value of a
-<span class="fc" id="L174">        List&lt;SimpleEntry&lt;String, String&gt;&gt; attributesJson = JsonUtil.createEntries(jsonEntity, &quot;root&quot;, null);</span>
+<span class="fc" id="L151">        List&lt;SimpleEntry&lt;String, String&gt;&gt; attributesJson = JsonUtil.createEntries(jsonEntity, &quot;root&quot;, null);</span>
         
         // Loop through each JSON values
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">        for (SimpleEntry&lt;String, String&gt; parentXPath: attributesJson) {</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        for (SimpleEntry&lt;String, String&gt; parentXPath: attributesJson) {</span>
             
-            // Erase previously defined *
-<span class="fc" id="L180">            JsonUtil.createEntries(jsonEntity, &quot;root&quot;, null);</span>
-            
-            // Add * to current parameter's value
-<span class="fc" id="L183">            JsonUtil.createEntries(jsonEntity, &quot;root&quot;, parentXPath);</span>
-            
-            // Replace param value by marked one.
-<span class="fc" id="L186">            paramStar.setValue(jsonEntity.toString());</span>
+<span class="fc" id="L156">            JsonUtil.createEntries(jsonEntity, &quot;root&quot;, null);  // Erase previously defined *</span>
+<span class="fc" id="L157">            JsonUtil.createEntries(jsonEntity, &quot;root&quot;, parentXPath);  // Add * to current parameter's value</span>
+
+<span class="fc" id="L159">            paramStar.setValue(jsonEntity.toString());  // Replace param value by marked one</span>
             
             try {
-<span class="fc" id="L189">                LOGGER.log(</span>
+<span class="fc" id="L162">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_INFORM,
                     &quot;Checking JSON {} parameter {}={}&quot;,
-<span class="fc" id="L192">                    methodInjection::name,</span>
-<span class="fc" id="L193">                    parentXPath::getKey,</span>
-<span class="fc" id="L194">                    () -&gt; parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+<span class="fc" id="L165">                    methodInjection::name,</span>
+<span class="fc" id="L166">                    parentXPath::getKey,</span>
+<span class="fc" id="L167">                    () -&gt; parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                 );
                 
                 // Test current JSON value marked with * for injection
                 // Keep original param
-<span class="fc" id="L199">                hasFoundInjection = this.injectionModel.getMediatorStrategy().testStrategies(paramStar);</span>
+<span class="fc" id="L172">                hasFoundInjection = this.injectionModel.getMediatorStrategy().testStrategies(paramStar);</span>
                 
                 // Injection successful
                 break;
                 
-<span class="nc" id="L204">            } catch (JSqlException e) {</span>
+<span class="nc" id="L177">            } catch (JSqlException e) {</span>
                 
                 // Injection failure
-<span class="nc" id="L207">                LOGGER.log(</span>
+<span class="nc" id="L180">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L209">                    String.format(</span>
+<span class="nc" id="L182">                    String.format(</span>
                         &quot;No injection found for JSON %s parameter %s=%s&quot;,
-<span class="nc" id="L211">                        methodInjection.name(),</span>
-<span class="nc" id="L212">                        parentXPath.getKey(),</span>
-<span class="nc" id="L213">                        parentXPath.getValue().replace(</span>
-                            InjectionModel.STAR,
-                            StringUtils.EMPTY
-                        )
+<span class="nc" id="L184">                        methodInjection.name(),</span>
+<span class="nc" id="L185">                        parentXPath.getKey(),</span>
+<span class="nc" id="L186">                        parentXPath.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                     )
                 );
-                
             } finally {
                 
                 // Erase * at the end of each params
                 // TODO useless
-<span class="fc" id="L224">                methodInjection</span>
-<span class="fc" id="L225">                .getParams()</span>
-<span class="fc" id="L226">                .forEach(e -&gt;</span>
-<span class="fc" id="L227">                    e.setValue(</span>
-<span class="fc" id="L228">                        e.getValue().replaceAll(</span>
-<span class="fc" id="L229">                            Pattern.quote(InjectionModel.STAR) +&quot;$&quot;,</span>
-                            StringUtils.EMPTY
-                        )
-                    )
-                );
+<span class="fc" id="L193">                methodInjection.getParams()</span>
+<span class="fc" id="L194">                    .forEach(e -&gt; e.setValue(</span>
+<span class="fc" id="L195">                        e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +&quot;$&quot;, StringUtils.EMPTY)</span>
+                    ));
                 
                 // Erase * from JSON if failure
-<span class="pc bpc" id="L236" title="1 of 2 branches missed.">                if (!hasFoundInjection) {</span>
-                    
-<span class="nc" id="L238">                    paramStar.setValue(</span>
-<span class="nc" id="L239">                        paramStar.getValue().replace(</span>
-                            InjectionModel.STAR,
-                            StringUtils.EMPTY
-                        )
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">                if (!hasFoundInjection) {</span>
+<span class="nc" id="L200">                    paramStar.setValue(</span>
+<span class="nc" id="L201">                        paramStar.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                     );
                 }
             }
-<span class="nc" id="L246">        }</span>
+<span class="nc" id="L205">        }</span>
         
-<span class="fc" id="L248">        return hasFoundInjection;</span>
+<span class="fc" id="L207">        return hasFoundInjection;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

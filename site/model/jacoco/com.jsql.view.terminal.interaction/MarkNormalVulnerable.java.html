@@ -20,22 +20,15 @@ import org.apache.logging.log4j.Logger;
  */
 public class MarkNormalVulnerable implements InteractionCommand {
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L26">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L23">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
-    /**
-     * @param nullParam
-     */
-<span class="fc" id="L31">    public MarkNormalVulnerable(Object[] nullParam) {</span>
+<span class="fc" id="L25">    public MarkNormalVulnerable(Object[] interactionParams) {</span>
         // Do nothing
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L27">    }</span>
 
     @Override
     public void execute() {
-        
-<span class="fc" id="L38">        LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L31">        LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
+<span class="fc" id="L32">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

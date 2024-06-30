@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Base16.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util.bruter</a> &gt; <span class="el_source">Base16.java</span></div><h1>Base16.java</h1><pre class="source lang-java linenums">
-/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Base16.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.util.bruter</a> &gt; <span class="el_source">Base16.java</span></div><h1>Base16.java</h1><pre class="source lang-java linenums">/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -60,24 +59,22 @@ public class Base16 extends BaseNCodec {
      * in Table 5 of RFC 4648) into their 4-bit positive integer equivalents. Characters that are not in the Base16
      * alphabet but fall within the bounds of the array are translated to -1.
      */
-<span class="fc" id="L63">    private static final byte[] UPPER_CASE_DECODE_TABLE = {</span>
-            
-            //  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00-0f
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10-1f
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 20-2f
-             0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1, // 30-3f 0-9
-            -1, 10, 11, 12, 13, 14, 15                                      // 40-46 A-F
+<span class="fc" id="L62">    private static final byte[] UPPER_CASE_DECODE_TABLE = {</span>
+        //  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00-0f
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10-1f
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 20-2f
+         0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1, // 30-3f 0-9
+        -1, 10, 11, 12, 13, 14, 15                                      // 40-46 A-F
     };
 
     /**
      * This array is a lookup table that translates 4-bit positive integer index values into their &quot;Base16 Alphabet&quot;
      * equivalents as specified in Table 5 of RFC 4648.
      */
-<span class="fc" id="L77">    private static final byte[] UPPER_CASE_ENCODE_TABLE = {</span>
-            
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'A', 'B', 'C', 'D', 'E', 'F'
+<span class="fc" id="L75">    private static final byte[] UPPER_CASE_ENCODE_TABLE = {</span>
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        'A', 'B', 'C', 'D', 'E', 'F'
     };
 
     /**
@@ -85,26 +82,24 @@ public class Base16 extends BaseNCodec {
      * into their 4-bit positive integer equivalents. Characters that are not in the Base16
      * alphabet but fall within the bounds of the array are translated to -1.
      */
-<span class="fc" id="L88">    private static final byte[] LOWER_CASE_DECODE_TABLE = {</span>
-            
-            //  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00-0f
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10-1f
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 20-2f
-             0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1, // 30-3f 0-9
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 40-4f
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 50-5f
-            -1, 10, 11, 12, 13, 14, 15                                      // 60-66 a-f
+<span class="fc" id="L85">    private static final byte[] LOWER_CASE_DECODE_TABLE = {</span>
+        //  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00-0f
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10-1f
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 20-2f
+         0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1, // 30-3f 0-9
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 40-4f
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 50-5f
+        -1, 10, 11, 12, 13, 14, 15                                      // 60-66 a-f
     };
 
     /**
      * This array is a lookup table that translates 4-bit positive integer index values into their &quot;Base16 Alphabet&quot;
      * lower-case equivalents.
      */
-<span class="fc" id="L104">    private static final byte[] LOWER_CASE_ENCODE_TABLE = {</span>
-            
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'a', 'b', 'c', 'd', 'e', 'f'
+<span class="fc" id="L100">    private static final byte[] LOWER_CASE_ENCODE_TABLE = {</span>
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        'a', 'b', 'c', 'd', 'e', 'f'
     };
 
     /** Mask used to extract 4 bits, used when decoding character. */
@@ -124,8 +119,8 @@ public class Base16 extends BaseNCodec {
      * Creates a Base16 codec used for decoding and encoding.
      */
     public Base16() {
-<span class="fc" id="L127">        this(false);</span>
-<span class="fc" id="L128">    }</span>
+<span class="fc" id="L122">        this(false);</span>
+<span class="fc" id="L123">    }</span>
 
     /**
      * Creates a Base16 codec used for decoding and encoding.
@@ -133,9 +128,8 @@ public class Base16 extends BaseNCodec {
      * @param lowerCase if {@code true} then use a lower-case Base16 alphabet.
      */
     public Base16(final boolean lowerCase) {
-        
-<span class="fc" id="L137">        this(lowerCase, DECODING_POLICY_DEFAULT);</span>
-<span class="fc" id="L138">    }</span>
+<span class="fc" id="L131">        this(lowerCase, DECODING_POLICY_DEFAULT);</span>
+<span class="fc" id="L132">    }</span>
 
     /**
      * Creates a Base16 codec used for decoding and encoding.
@@ -145,131 +139,126 @@ public class Base16 extends BaseNCodec {
      */
     public Base16(final boolean lowerCase, final CodecPolicy decodingPolicy) {
         
-<span class="fc" id="L148">        super(BYTES_PER_UNENCODED_BLOCK, BYTES_PER_ENCODED_BLOCK, 0, 0, PAD_DEFAULT, decodingPolicy);</span>
+<span class="fc" id="L142">        super(BYTES_PER_UNENCODED_BLOCK, BYTES_PER_ENCODED_BLOCK, 0, 0, PAD_DEFAULT, decodingPolicy);</span>
         
-<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        if (lowerCase) {</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (lowerCase) {</span>
             
-<span class="nc" id="L152">            this.encodeTable = LOWER_CASE_ENCODE_TABLE;</span>
-<span class="nc" id="L153">            this.decodeTable = LOWER_CASE_DECODE_TABLE;</span>
+<span class="nc" id="L146">            this.encodeTable = LOWER_CASE_ENCODE_TABLE;</span>
+<span class="nc" id="L147">            this.decodeTable = LOWER_CASE_DECODE_TABLE;</span>
             
         } else {
             
-<span class="fc" id="L157">            this.encodeTable = UPPER_CASE_ENCODE_TABLE;</span>
-<span class="fc" id="L158">            this.decodeTable = UPPER_CASE_DECODE_TABLE;</span>
+<span class="fc" id="L151">            this.encodeTable = UPPER_CASE_ENCODE_TABLE;</span>
+<span class="fc" id="L152">            this.decodeTable = UPPER_CASE_DECODE_TABLE;</span>
         }
-<span class="fc" id="L160">    }</span>
+<span class="fc" id="L154">    }</span>
 
     @Override
     public void decode(final byte[] data, int offsetInput, final int length, final Context context) {
         
-<span class="fc" id="L165">        int offset = offsetInput;</span>
+<span class="fc" id="L159">        int offset = offsetInput;</span>
         
-<span class="pc bpc" id="L167" title="1 of 4 branches missed.">        if (context.eof || length &lt; 0) {</span>
+<span class="pc bpc" id="L161" title="1 of 4 branches missed.">        if (context.eof || length &lt; 0) {</span>
             
-<span class="fc" id="L169">            context.eof = true;</span>
-<span class="pc bpc" id="L170" title="1 of 2 branches missed.">            if (context.ibitWorkArea != 0) {</span>
-                
-<span class="nc" id="L172">                this.validateTrailingCharacter();</span>
+<span class="fc" id="L163">            context.eof = true;</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">            if (context.ibitWorkArea != 0) {</span>
+<span class="nc" id="L165">                this.validateTrailingCharacter();</span>
             }
             
-<span class="fc" id="L175">            return;</span>
+<span class="fc" id="L168">            return;</span>
         }
 
-<span class="fc" id="L178">        final int dataLen = Math.min(data.length - offset, length);</span>
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        final int availableChars = (context.ibitWorkArea != 0 ? 1 : 0) + dataLen;</span>
+<span class="fc" id="L171">        final int dataLen = Math.min(data.length - offset, length);</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        final int availableChars = (context.ibitWorkArea != 0 ? 1 : 0) + dataLen;</span>
 
         // small optimisation to short-cut the rest of this method when it is fed byte-by-byte
-<span class="pc bpc" id="L182" title="3 of 4 branches missed.">        if (availableChars == 1 &amp;&amp; availableChars == dataLen) {</span>
+<span class="pc bpc" id="L175" title="3 of 4 branches missed.">        if (availableChars == 1 &amp;&amp; availableChars == dataLen) {</span>
             
-<span class="nc" id="L184">            context.ibitWorkArea = this.decodeOctet(data[offset]) + 1;   // store 1/2 byte for next invocation of decode, we offset by +1 as empty-value is 0</span>
-<span class="nc" id="L185">            return;</span>
+<span class="nc" id="L177">            context.ibitWorkArea = this.decodeOctet(data[offset]) + 1;   // store 1/2 byte for next invocation of decode, we offset by +1 as empty-value is 0</span>
+<span class="nc" id="L178">            return;</span>
         }
 
         // we must have an even number of chars to decode
-<span class="pc bpc" id="L189" title="1 of 2 branches missed.">        final int charsToProcess = availableChars % BYTES_PER_ENCODED_BLOCK == 0 ? availableChars : availableChars - 1;</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">        final int charsToProcess = availableChars % BYTES_PER_ENCODED_BLOCK == 0 ? availableChars : availableChars - 1;</span>
 
-<span class="fc" id="L191">        final byte[] buffer = this.ensureBufferSize(charsToProcess / BYTES_PER_ENCODED_BLOCK, context);</span>
+<span class="fc" id="L184">        final byte[] buffer = this.ensureBufferSize(charsToProcess / BYTES_PER_ENCODED_BLOCK, context);</span>
 
         int result;
-<span class="fc" id="L194">        var i = 0;</span>
-<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        if (dataLen &lt; availableChars) {</span>
+<span class="fc" id="L187">        var i = 0;</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        if (dataLen &lt; availableChars) {</span>
             
             // we have 1/2 byte from previous invocation to decode
-<span class="nc" id="L198">            result = (context.ibitWorkArea - 1) &lt;&lt; BITS_PER_ENCODED_BYTE;</span>
-<span class="nc" id="L199">            result |= this.decodeOctet(data[offset++]);</span>
-<span class="nc" id="L200">            i = 2;</span>
+<span class="nc" id="L191">            result = (context.ibitWorkArea - 1) &lt;&lt; BITS_PER_ENCODED_BYTE;</span>
+<span class="nc" id="L192">            result |= this.decodeOctet(data[offset++]);</span>
+<span class="nc" id="L193">            i = 2;</span>
 
-<span class="nc" id="L202">            buffer[context.pos++] = (byte)result;</span>
+<span class="nc" id="L195">            buffer[context.pos++] = (byte)result;</span>
 
             // reset to empty-value for next invocation!
-<span class="nc" id="L205">            context.ibitWorkArea = 0;</span>
+<span class="nc" id="L198">            context.ibitWorkArea = 0;</span>
         }
 
-<span class="fc bfc" id="L208" title="All 2 branches covered.">        while (i &lt; charsToProcess) {</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        while (i &lt; charsToProcess) {</span>
             
-<span class="fc" id="L210">            result = this.decodeOctet(data[offset++]) &lt;&lt; BITS_PER_ENCODED_BYTE;</span>
-<span class="fc" id="L211">            result |= this.decodeOctet(data[offset++]);</span>
-<span class="fc" id="L212">            i += 2;</span>
-<span class="fc" id="L213">            buffer[context.pos++] = (byte)result;</span>
+<span class="fc" id="L203">            result = this.decodeOctet(data[offset++]) &lt;&lt; BITS_PER_ENCODED_BYTE;</span>
+<span class="fc" id="L204">            result |= this.decodeOctet(data[offset++]);</span>
+<span class="fc" id="L205">            i += 2;</span>
+<span class="fc" id="L206">            buffer[context.pos++] = (byte)result;</span>
         }
 
         // we have one char of a hex-pair left over
-<span class="pc bpc" id="L217" title="1 of 2 branches missed.">        if (i &lt; dataLen) {</span>
-<span class="nc" id="L218">            context.ibitWorkArea = this.decodeOctet(data[i]) + 1;   // store 1/2 byte for next invocation of decode, we offset by +1 as empty-value is 0</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">        if (i &lt; dataLen) {</span>
+<span class="nc" id="L211">            context.ibitWorkArea = this.decodeOctet(data[i]) + 1;   // store 1/2 byte for next invocation of decode, we offset by +1 as empty-value is 0</span>
         }
-<span class="fc" id="L220">    }</span>
+<span class="fc" id="L213">    }</span>
 
     private int decodeOctet(final byte octet) {
         
-<span class="fc" id="L224">        int decoded = -1;</span>
-<span class="pc bpc" id="L225" title="1 of 2 branches missed.">        if ((octet &amp; 0xff) &lt; this.decodeTable.length) {</span>
-            
-<span class="fc" id="L227">            decoded = this.decodeTable[octet];</span>
+<span class="fc" id="L217">        int decoded = -1;</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">        if ((octet &amp; 0xff) &lt; this.decodeTable.length) {</span>
+<span class="fc" id="L219">            decoded = this.decodeTable[octet];</span>
         }
 
-<span class="pc bpc" id="L230" title="1 of 2 branches missed.">        if (decoded == -1) {</span>
-            
-<span class="nc" id="L232">            throw new IllegalArgumentException(&quot;Invalid octet in encoded value: &quot; + (int)octet);</span>
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">        if (decoded == -1) {</span>
+<span class="nc" id="L223">            throw new IllegalArgumentException(&quot;Invalid octet in encoded value: &quot; + (int)octet);</span>
         }
 
-<span class="fc" id="L235">        return decoded;</span>
+<span class="fc" id="L226">        return decoded;</span>
     }
 
     @Override
     public void encode(final byte[] data, final int offset, final int length, final Context context) {
         
-<span class="pc bpc" id="L241" title="1 of 2 branches missed.">        if (context.eof) {</span>
-            
-<span class="nc" id="L243">            return;</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">        if (context.eof) {</span>
+<span class="nc" id="L233">            return;</span>
         }
 
-<span class="fc bfc" id="L246" title="All 2 branches covered.">        if (length &lt; 0) {</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">        if (length &lt; 0) {</span>
             
-<span class="fc" id="L248">            context.eof = true;</span>
-<span class="fc" id="L249">            return;</span>
+<span class="fc" id="L238">            context.eof = true;</span>
+<span class="fc" id="L239">            return;</span>
         }
 
-<span class="fc" id="L252">        final int size = length * BYTES_PER_ENCODED_BLOCK;</span>
-<span class="pc bpc" id="L253" title="1 of 2 branches missed.">        if (size &lt; 0) {</span>
-            
-<span class="nc" id="L255">            throw new IllegalArgumentException(&quot;Input length exceeds maximum size for encoded data: &quot; + length);</span>
+<span class="fc" id="L242">        final int size = length * BYTES_PER_ENCODED_BLOCK;</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        if (size &lt; 0) {</span>
+<span class="nc" id="L244">            throw new IllegalArgumentException(&quot;Input length exceeds maximum size for encoded data: &quot; + length);</span>
         }
 
-<span class="fc" id="L258">        final byte[] buffer = this.ensureBufferSize(size, context);</span>
+<span class="fc" id="L247">        final byte[] buffer = this.ensureBufferSize(size, context);</span>
 
-<span class="fc" id="L260">        final int end = offset + length;</span>
-<span class="fc bfc" id="L261" title="All 2 branches covered.">        for (int i = offset; i &lt; end; i++) {</span>
+<span class="fc" id="L249">        final int end = offset + length;</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">        for (int i = offset; i &lt; end; i++) {</span>
             
-<span class="fc" id="L263">            final int value = data[i];</span>
-<span class="fc" id="L264">            final int high = (value &gt;&gt; BITS_PER_ENCODED_BYTE) &amp; MASK_4BITS;</span>
-<span class="fc" id="L265">            final int low = value &amp; MASK_4BITS;</span>
-<span class="fc" id="L266">            buffer[context.pos++] = this.encodeTable[high];</span>
-<span class="fc" id="L267">            buffer[context.pos++] = this.encodeTable[low];</span>
+<span class="fc" id="L252">            final int value = data[i];</span>
+<span class="fc" id="L253">            final int high = (value &gt;&gt; BITS_PER_ENCODED_BYTE) &amp; MASK_4BITS;</span>
+<span class="fc" id="L254">            final int low = value &amp; MASK_4BITS;</span>
+<span class="fc" id="L255">            buffer[context.pos++] = this.encodeTable[high];</span>
+<span class="fc" id="L256">            buffer[context.pos++] = this.encodeTable[low];</span>
         }
-<span class="fc" id="L269">    }</span>
+<span class="fc" id="L258">    }</span>
 
     /**
-     * Returns whether or not the {@code octet} is in the Base16 alphabet.
+     * Returns whether the {@code octet} is in the Base16 alphabet.
      *
      * @param octet The value to test.
      *
@@ -277,8 +266,7 @@ public class Base16 extends BaseNCodec {
      */
     @Override
     public boolean isInAlphabet(final byte octet) {
-        
-<span class="nc bnc" id="L281" title="All 4 branches missed.">        return (octet &amp; 0xff) &lt; this.decodeTable.length &amp;&amp; this.decodeTable[octet] != -1;</span>
+<span class="nc bnc" id="L269" title="All 4 branches missed.">        return (octet &amp; 0xff) &lt; this.decodeTable.length &amp;&amp; this.decodeTable[octet] != -1;</span>
     }
 
     /**
@@ -288,14 +276,14 @@ public class Base16 extends BaseNCodec {
      * @throws IllegalArgumentException if strict decoding is enabled
      */
     private void validateTrailingCharacter() {
-        
-<span class="nc bnc" id="L292" title="All 2 branches missed.">        if (this.isStrictDecoding()) {</span>
-            
-<span class="nc" id="L294">            throw new IllegalArgumentException(&quot;Strict decoding: Last encoded character is a valid base 16 alphabet&quot; +</span>
-                    &quot;character but not a possible encoding. &quot; +
-                    &quot;Decoding requires at least two characters to create one byte.&quot;);
+<span class="nc bnc" id="L279" title="All 2 branches missed.">        if (this.isStrictDecoding()) {</span>
+<span class="nc" id="L280">            throw new IllegalArgumentException(</span>
+                &quot;Strict decoding: Last encoded character is a valid base 16 alphabet&quot; +
+                &quot;character but not a possible encoding. &quot; +
+                &quot;Decoding requires at least two characters to create one byte.&quot;
+            );
         }
-<span class="nc" id="L298">    }</span>
+<span class="nc" id="L286">    }</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

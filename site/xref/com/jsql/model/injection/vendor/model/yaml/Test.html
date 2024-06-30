@@ -18,7 +18,7 @@
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="Test" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Test.html#Test">Test</a> <strong class="jxr_keyword">implements</strong> Serializable {
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>      <strong class="jxr_keyword">private</strong> List&lt;String&gt; falses = Arrays.asList(
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>      <strong class="jxr_keyword">private</strong> List&lt;String&gt; falsy = Arrays.asList(
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>          <span class="jxr_string">"true = false"</span>,
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>          <span class="jxr_string">"true %21= true"</span>,
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>          <span class="jxr_string">"false %21= false"</span>,
@@ -27,7 +27,7 @@
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>          <span class="jxr_string">"2 %21= 2"</span>
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>      );
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>              
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>      <strong class="jxr_keyword">private</strong> List&lt;String&gt; trues = Arrays.asList(
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>      <strong class="jxr_keyword">private</strong> List&lt;String&gt; truthy = Arrays.asList(
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>          <span class="jxr_string">"true = true"</span>,
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>          <span class="jxr_string">"false = false"</span>,
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>          <span class="jxr_string">"true %21= false"</span>,
@@ -40,20 +40,20 @@
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">private</strong> String bit = StringUtils.EMPTY;
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">private</strong> String length = StringUtils.EMPTY;
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">public</strong> List&lt;String&gt; getTrues() {
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.trues;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">public</strong> List&lt;String&gt; getTruthy() {
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.truthy;
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>      }
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setTrues(List&lt;String&gt; trues) {
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>          <strong class="jxr_keyword">this</strong>.trues = trues;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setTruthy(List&lt;String&gt; truthy) {
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>          <strong class="jxr_keyword">this</strong>.truthy = truthy;
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>      }
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">public</strong> List&lt;String&gt; getFalses() {
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.falses;
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">public</strong> List&lt;String&gt; getFalsy() {
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.falsy;
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      }
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setFalses(List&lt;String&gt; falses) {
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>          <strong class="jxr_keyword">this</strong>.falses = falses;
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setFalsy(List&lt;String&gt; falsy) {
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>          <strong class="jxr_keyword">this</strong>.falsy = falsy;
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      }
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">public</strong> String getInitialization() {
@@ -81,25 +81,25 @@
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>      }
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">public</strong> String getTruthyAsString() {
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.trues.stream()
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.truthy.stream()
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>              .collect(
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>                  Collectors.joining(System.lineSeparator())
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>              );
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>      }
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>      
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setTruthy(String truthy) {
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>          <strong class="jxr_keyword">this</strong>.trues = Arrays.asList(truthy.split(<span class="jxr_string">"[\r\n]+"</span>));
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>          <strong class="jxr_keyword">this</strong>.truthy = Arrays.asList(truthy.split(<span class="jxr_string">"[\r\n]+"</span>));
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      }
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>      
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>      <strong class="jxr_keyword">public</strong> String getFalsyAsString() {
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.falses.stream()
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.falsy.stream()
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>              .collect(
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>                  Collectors.joining(System.lineSeparator())
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>              );
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>      }
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>      
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setFalsy(String falsy) {
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">this</strong>.falses = Arrays.asList(falsy.split(<span class="jxr_string">"[\r\n]+"</span>));
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">this</strong>.falsy = Arrays.asList(falsy.split(<span class="jxr_string">"[\r\n]+"</span>));
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>      }
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>  }
 </pre>
