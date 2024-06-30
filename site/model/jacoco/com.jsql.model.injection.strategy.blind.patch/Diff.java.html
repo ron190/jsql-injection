@@ -23,10 +23,11 @@ public class Diff implements Comparable&lt;Diff&gt; {
      * @param text The text being applied.
      */
 <span class="fc" id="L25">    public Diff(Operation operation, String text) {</span>
+
         // Construct a diff with the specified operation and text.
-<span class="fc" id="L27">        this.operation = operation;</span>
-<span class="fc" id="L28">        this.text = text;</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L28">        this.operation = operation;</span>
+<span class="fc" id="L29">        this.text = text;</span>
+<span class="fc" id="L30">    }</span>
 
     /**
      * Display a human-readable version of this Diff.
@@ -34,8 +35,9 @@ public class Diff implements Comparable&lt;Diff&gt; {
      */
     @Override
     public String toString() {
-<span class="fc" id="L37">        String prettyText = this.text.replace('\n', '\u00b6');</span>
-<span class="fc" id="L38">        return &quot;Diff(&quot; + this.operation + &quot;,\&quot;&quot; + prettyText + &quot;\&quot;)&quot;;</span>
+
+<span class="fc" id="L39">        String prettyText = this.text.replace('\n', '\u00b6');</span>
+<span class="fc" id="L40">        return &quot;Diff(&quot; + this.operation + &quot;,\&quot;&quot; + prettyText + &quot;\&quot;)&quot;;</span>
     }
 
     /**
@@ -45,10 +47,11 @@ public class Diff implements Comparable&lt;Diff&gt; {
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L48">        final int prime = 31;</span>
-<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        int result = this.operation == null ? 0 : this.operation.hashCode();</span>
-<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        result += prime * (this.text == null ? 0 : this.text.hashCode());</span>
-<span class="fc" id="L51">        return result;</span>
+
+<span class="fc" id="L51">        final int prime = 31;</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        int result = this.operation == null ? 0 : this.operation.hashCode();</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        result += prime * (this.text == null ? 0 : this.text.hashCode());</span>
+<span class="fc" id="L54">        return result;</span>
     }
 
     /**
@@ -58,51 +61,51 @@ public class Diff implements Comparable&lt;Diff&gt; {
      */
     @Override
     public boolean equals(Object obj) {
-<span class="fc bfc" id="L61" title="All 2 branches covered.">        if (this == obj) {</span>
-<span class="fc" id="L62">            return true;</span>
+
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L66">            return true;</span>
         }
-<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (obj == null) {</span>
-<span class="nc" id="L65">            return false;</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L69">            return false;</span>
         }
-<span class="pc bpc" id="L67" title="1 of 2 branches missed.">        if (this.getClass() != obj.getClass()) {</span>
-<span class="nc" id="L68">            return false;</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (this.getClass() != obj.getClass()) {</span>
+<span class="nc" id="L72">            return false;</span>
         }
-<span class="fc" id="L70">        Diff other = (Diff) obj;</span>
-<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (this.operation != other.operation) {</span>
-<span class="fc" id="L72">            return false;</span>
+
+<span class="fc" id="L75">        Diff other = (Diff) obj;</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (this.operation != other.operation) {</span>
+<span class="fc" id="L77">            return false;</span>
         }
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (this.text == null) {</span>
-<span class="nc bnc" id="L75" title="All 2 branches missed.">            if (other.text != null) {</span>
-<span class="nc" id="L76">                return false;</span>
-            }
-<span class="fc bfc" id="L78" title="All 2 branches covered.">        } else if (!this.text.equals(other.text)) {</span>
-<span class="fc" id="L79">            return false;</span>
+
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        if (this.text == null) {</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">            return other.text == null;</span>
+        } else {
+<span class="fc" id="L83">            return this.text.equals(other.text);</span>
         }
-<span class="fc" id="L81">        return true;</span>
     }
 
     @Override
     public int compareTo(Diff arg0) {
-<span class="nc bnc" id="L86" title="All 2 branches missed.">        return this.toString().equals(arg0.toString()) ? 0 : 1;</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        return this.toString().equals(arg0.toString()) ? 0 : 1;</span>
     }
-    
+
+
     // Getter and setter
 
     public Operation getOperation() {
-<span class="fc" id="L92">        return this.operation;</span>
+<span class="fc" id="L96">        return this.operation;</span>
     }
 
     public void setOperation(Operation operation) {
-<span class="nc" id="L96">        this.operation = operation;</span>
-<span class="nc" id="L97">    }</span>
+<span class="nc" id="L100">        this.operation = operation;</span>
+<span class="nc" id="L101">    }</span>
 
     public String getText() {
-<span class="fc" id="L100">        return this.text;</span>
+<span class="fc" id="L104">        return this.text;</span>
     }
 
     public void setText(String text) {
-<span class="fc" id="L104">        this.text = text;</span>
-<span class="fc" id="L105">    }</span>
-    
+<span class="fc" id="L108">        this.text = text;</span>
+<span class="fc" id="L109">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 <span class="fc" id="L11">public class Test implements Serializable {</span>
 
-<span class="fc" id="L13">    private List&lt;String&gt; falses = Arrays.asList(</span>
+<span class="fc" id="L13">    private List&lt;String&gt; falsy = Arrays.asList(</span>
         &quot;true = false&quot;,
         &quot;true %21= true&quot;,
         &quot;false %21= false&quot;,
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
         &quot;2 %21= 2&quot;
     );
             
-<span class="fc" id="L22">    private List&lt;String&gt; trues = Arrays.asList(</span>
+<span class="fc" id="L22">    private List&lt;String&gt; truthy = Arrays.asList(</span>
         &quot;true = true&quot;,
         &quot;false = false&quot;,
         &quot;true %21= false&quot;,
@@ -32,20 +32,20 @@ import java.util.stream.Collectors;
 <span class="fc" id="L32">    private String bit = StringUtils.EMPTY;</span>
 <span class="fc" id="L33">    private String length = StringUtils.EMPTY;</span>
 
-    public List&lt;String&gt; getTrues() {
-<span class="fc" id="L36">        return this.trues;</span>
+    public List&lt;String&gt; getTruthy() {
+<span class="fc" id="L36">        return this.truthy;</span>
     }
 
-    public void setTrues(List&lt;String&gt; trues) {
-<span class="fc" id="L40">        this.trues = trues;</span>
+    public void setTruthy(List&lt;String&gt; truthy) {
+<span class="fc" id="L40">        this.truthy = truthy;</span>
 <span class="fc" id="L41">    }</span>
 
-    public List&lt;String&gt; getFalses() {
-<span class="fc" id="L44">        return this.falses;</span>
+    public List&lt;String&gt; getFalsy() {
+<span class="fc" id="L44">        return this.falsy;</span>
     }
 
-    public void setFalses(List&lt;String&gt; falses) {
-<span class="fc" id="L48">        this.falses = falses;</span>
+    public void setFalsy(List&lt;String&gt; falsy) {
+<span class="fc" id="L48">        this.falsy = falsy;</span>
 <span class="fc" id="L49">    }</span>
 
     public String getInitialization() {
@@ -73,25 +73,25 @@ import java.util.stream.Collectors;
 <span class="nc" id="L73">    }</span>
 
     public String getTruthyAsString() {
-<span class="nc" id="L76">        return this.trues.stream()</span>
+<span class="nc" id="L76">        return this.truthy.stream()</span>
 <span class="nc" id="L77">            .collect(</span>
 <span class="nc" id="L78">                Collectors.joining(System.lineSeparator())</span>
             );
     }
     
     public void setTruthy(String truthy) {
-<span class="nc" id="L83">        this.trues = Arrays.asList(truthy.split(&quot;[\r\n]+&quot;));</span>
+<span class="nc" id="L83">        this.truthy = Arrays.asList(truthy.split(&quot;[\r\n]+&quot;));</span>
 <span class="nc" id="L84">    }</span>
     
     public String getFalsyAsString() {
-<span class="nc" id="L87">        return this.falses.stream()</span>
+<span class="nc" id="L87">        return this.falsy.stream()</span>
 <span class="nc" id="L88">            .collect(</span>
 <span class="nc" id="L89">                Collectors.joining(System.lineSeparator())</span>
             );
     }
     
     public void setFalsy(String falsy) {
-<span class="nc" id="L94">        this.falses = Arrays.asList(falsy.split(&quot;[\r\n]+&quot;));</span>
+<span class="nc" id="L94">        this.falsy = Arrays.asList(falsy.split(&quot;[\r\n]+&quot;));</span>
 <span class="nc" id="L95">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

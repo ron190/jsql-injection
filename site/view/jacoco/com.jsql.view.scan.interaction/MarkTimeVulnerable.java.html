@@ -24,22 +24,18 @@ public class MarkTimeVulnerable implements InteractionCommand {
 
     private final String url;
     
-    /**
-     * @param interactionParams
-     */
     @SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L31">    public MarkTimeVulnerable(Object[] interactionParams) {</span>
+<span class="nc" id="L28">    public MarkTimeVulnerable(Object[] interactionParams) {</span>
 
-<span class="nc" id="L33">        Map&lt;Header, Object&gt; params = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
-<span class="nc" id="L34">        this.url = (String) params.get(Header.URL);</span>
-<span class="nc" id="L35">    }</span>
+<span class="nc" id="L30">        Map&lt;Header, Object&gt; params = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
+<span class="nc" id="L31">        this.url = (String) params.get(Header.URL);</span>
+<span class="nc" id="L32">    }</span>
 
     @Override
     public void execute() {
         
-<span class="nc" id="L40">        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getTime();</span>
-        
-<span class="nc" id="L42">        MediatorHelper.managerScan().highlight(this.url, strategy.toString());</span>
-<span class="nc" id="L43">    }</span>
+<span class="nc" id="L37">        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getTime();</span>
+<span class="nc" id="L38">        MediatorHelper.managerScan().highlight(this.url, strategy.toString());</span>
+<span class="nc" id="L39">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

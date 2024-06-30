@@ -22,22 +22,19 @@ import java.awt.dnd.DropTargetEvent;
     public void drop(DropTargetDropEvent dtde) {
         
 <span class="nc" id="L24">        var c = dtde.getDropTargetContext().getComponent();</span>
-        
-<span class="nc" id="L26">        this.clearDropLocationPaint(c);</span>
-<span class="nc" id="L27">    }</span>
+<span class="nc" id="L25">        this.clearDropLocationPaint(c);</span>
+<span class="nc" id="L26">    }</span>
     
     @Override
     public void dragExit(DropTargetEvent dte) {
         
-<span class="nc" id="L32">        var c = dte.getDropTargetContext().getComponent();</span>
-        
-<span class="nc" id="L34">        this.clearDropLocationPaint(c);</span>
-<span class="nc" id="L35">    }</span>
+<span class="nc" id="L31">        var c = dte.getDropTargetContext().getComponent();</span>
+<span class="nc" id="L32">        this.clearDropLocationPaint(c);</span>
+<span class="nc" id="L33">    }</span>
     
     @Override
     public void dragEnter(DropTargetDragEvent dtde) {
-        
-<span class="nc" id="L40">        dtde.getDropTargetContext().getComponent();</span>
-<span class="nc" id="L41">    }</span>
+<span class="nc" id="L37">        dtde.getDropTargetContext().getComponent();</span>
+<span class="nc" id="L38">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -14,7 +14,7 @@ import java.util.Comparator;
 
 /**
  * Comparator for table column values ; column with only int data is sorted like 3 lt 20 lt 100,
- * column with string will sort like 100 gt 20 gt 3 gt a.
+ * column with string will sort like 100 gt 20 gt 3 gt abc.
  */
 <span class="fc" id="L19">public class ComparatorColumn&lt;T&gt; implements Comparator&lt;T&gt; {</span>
     
@@ -36,43 +36,28 @@ import java.util.Comparator;
 
         try {
 <span class="nc" id="L38">            Long.parseLong(valueCellLeft);</span>
-            
-<span class="nc" id="L40">        } catch (NumberFormatException e) {</span>
-            
-<span class="nc" id="L42">            isFirstNumber = false;</span>
-<span class="nc" id="L43">        }</span>
+<span class="nc" id="L39">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L40">            isFirstNumber = false;</span>
+<span class="nc" id="L41">        }</span>
         
         try {
-<span class="nc" id="L46">            Long.parseLong(valueCellRight);</span>
-            
-<span class="nc" id="L48">        } catch (NumberFormatException e) {</span>
-            
-<span class="nc" id="L50">            isSecondNumber = false;</span>
-<span class="nc" id="L51">        }</span>
+<span class="nc" id="L44">            Long.parseLong(valueCellRight);</span>
+<span class="nc" id="L45">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L46">            isSecondNumber = false;</span>
+<span class="nc" id="L47">        }</span>
         
         int sortOrder;
-<span class="nc bnc" id="L54" title="All 4 branches missed.">        if (isFirstNumber &amp;&amp; isSecondNumber) {</span>
-            
-            // or Sort by Number
-<span class="nc" id="L57">            sortOrder = Long.valueOf(valueCellLeft).compareTo(Long.valueOf(valueCellRight));</span>
-            
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        } else if (isFirstNumber) {</span>
-            
-            // or Sort by Number first
-<span class="nc" id="L62">            sortOrder = -1;</span>
-            
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        } else if (isSecondNumber) {</span>
-            
-            // or Sort by Letter first
-<span class="nc" id="L67">            sortOrder = 1;</span>
-            
+<span class="nc bnc" id="L50" title="All 4 branches missed.">        if (isFirstNumber &amp;&amp; isSecondNumber) {</span>
+<span class="nc" id="L51">            sortOrder = Long.valueOf(valueCellLeft).compareTo(Long.valueOf(valueCellRight));  // or Sort by Number</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        } else if (isFirstNumber) {</span>
+<span class="nc" id="L53">            sortOrder = -1;  // or Sort by Number first</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        } else if (isSecondNumber) {</span>
+<span class="nc" id="L55">            sortOrder = 1;  // or Sort by Letter first</span>
         } else {
-            
-            // Sort by Letter
-<span class="nc" id="L72">            sortOrder = valueCellLeft.compareToIgnoreCase(valueCellRight);</span>
+<span class="nc" id="L57">            sortOrder = valueCellLeft.compareToIgnoreCase(valueCellRight);  // Sort by Letter</span>
         }
         
-<span class="nc" id="L75">        return sortOrder;</span>
+<span class="nc" id="L60">        return sortOrder;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

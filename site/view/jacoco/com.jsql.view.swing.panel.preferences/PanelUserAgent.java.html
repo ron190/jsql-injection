@@ -43,93 +43,88 @@ public class PanelUserAgent extends JPanel {
 
             String line;
 <span class="fc bfc" id="L45" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
-
-<span class="fc" id="L47">                jsonScan.append(line).append(System.lineSeparator());</span>
+<span class="fc" id="L46">                jsonScan.append(line).append(System.lineSeparator());</span>
             }
-
-<span class="nc" id="L50">        } catch (IOException e) {</span>
-            
-<span class="nc" id="L52">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L53">        }</span>
+<span class="nc" id="L48">        } catch (IOException e) {</span>
+<span class="nc" id="L49">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L50">        }</span>
         
-<span class="fc" id="L55">        this.textfieldCustomUserAgent.getCaret().setBlinkRate(500);</span>
-<span class="fc" id="L56">        this.textfieldCustomUserAgent.setText(jsonScan.toString());</span>
-<span class="fc" id="L57">        MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(jsonScan.toString());</span>
-<span class="fc" id="L58">        this.textfieldCustomUserAgent.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
-
+<span class="fc" id="L52">        this.textfieldCustomUserAgent.getCaret().setBlinkRate(500);</span>
+<span class="fc" id="L53">        this.textfieldCustomUserAgent.setText(jsonScan.toString());</span>
+<span class="fc" id="L54">        MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(jsonScan.toString());</span>
+<span class="fc" id="L55">        this.textfieldCustomUserAgent.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
             @Override
             public void process() {
-                
-<span class="nc" id="L63">                MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(</span>
-<span class="nc" id="L64">                    PanelUserAgent.this.textfieldCustomUserAgent.getText()</span>
+<span class="nc" id="L58">                MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setCustomUserAgent(</span>
+<span class="nc" id="L59">                    PanelUserAgent.this.textfieldCustomUserAgent.getText()</span>
                 );
-<span class="nc" id="L66">            }</span>
+<span class="nc" id="L61">            }</span>
         });
         
-<span class="fc" id="L69">        this.checkboxIsCustomUserAgent.setFocusable(false);</span>
-<span class="fc" id="L70">        var labelIsCheckingUpdate = new JButton(&quot;Customize User Agent (randomize multiple agents)&quot;);</span>
+<span class="fc" id="L64">        this.checkboxIsCustomUserAgent.setFocusable(false);</span>
+<span class="fc" id="L65">        var labelIsCheckingUpdate = new JButton(&quot;Customize User Agent (randomize multiple agents)&quot;);</span>
         
-<span class="fc" id="L72">        labelIsCheckingUpdate.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L67">        labelIsCheckingUpdate.addActionListener(actionEvent -&gt; {</span>
             
-<span class="nc bnc" id="L74" title="All 2 branches missed.">            this.checkboxIsCustomUserAgent.setSelected(!this.checkboxIsCustomUserAgent.isSelected());</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            this.checkboxIsCustomUserAgent.setSelected(!this.checkboxIsCustomUserAgent.isSelected());</span>
             
-<span class="nc" id="L76">            MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setIsCustomUserAgent(</span>
-<span class="nc" id="L77">                this.checkboxIsCustomUserAgent.isSelected()</span>
+<span class="nc" id="L71">            MediatorHelper.model().getMediatorUtils().getUserAgentUtil().setIsCustomUserAgent(</span>
+<span class="nc" id="L72">                this.checkboxIsCustomUserAgent.isSelected()</span>
             );
-<span class="nc" id="L79">        });</span>
+<span class="nc" id="L74">        });</span>
         
-<span class="fc" id="L81">        var textAreaIsTamperingEval = new LightScrollPane(this.textfieldCustomUserAgent);</span>
-<span class="fc" id="L82">        textAreaIsTamperingEval.setBorder(UiUtil.BORDER_FOCUS_LOST);</span>
-<span class="fc" id="L83">        this.textfieldCustomUserAgent.setMinimumSize(new Dimension(40000, 100));</span>
+<span class="fc" id="L76">        var textAreaIsTamperingEval = new LightScrollPane(this.textfieldCustomUserAgent);</span>
+<span class="fc" id="L77">        textAreaIsTamperingEval.setBorder(UiUtil.BORDER_FOCUS_LOST);</span>
+<span class="fc" id="L78">        this.textfieldCustomUserAgent.setMinimumSize(new Dimension(40000, 100));</span>
         
-<span class="fc" id="L85">        var emptyLabelSessionManagement = new JLabel();</span>
+<span class="fc" id="L80">        var emptyLabelSessionManagement = new JLabel();</span>
         
-<span class="fc" id="L87">        Stream.of(labelIsCheckingUpdate)</span>
-<span class="fc" id="L88">        .forEach(label -&gt; {</span>
+<span class="fc" id="L82">        Stream.of(labelIsCheckingUpdate)</span>
+<span class="fc" id="L83">        .forEach(label -&gt; {</span>
             
-<span class="fc" id="L90">            label.setHorizontalAlignment(SwingConstants.LEFT);</span>
-<span class="fc" id="L91">            label.setBorderPainted(false);</span>
-<span class="fc" id="L92">            label.setContentAreaFilled(false);</span>
-<span class="fc" id="L93">        });</span>
+<span class="fc" id="L85">            label.setHorizontalAlignment(SwingConstants.LEFT);</span>
+<span class="fc" id="L86">            label.setBorderPainted(false);</span>
+<span class="fc" id="L87">            label.setContentAreaFilled(false);</span>
+<span class="fc" id="L88">        });</span>
         
-<span class="fc" id="L95">        var groupLayout = new GroupLayout(this);</span>
-<span class="fc" id="L96">        this.setLayout(groupLayout);</span>
+<span class="fc" id="L90">        var groupLayout = new GroupLayout(this);</span>
+<span class="fc" id="L91">        this.setLayout(groupLayout);</span>
         
-<span class="fc" id="L98">        groupLayout</span>
-<span class="fc" id="L99">        .setHorizontalGroup(</span>
+<span class="fc" id="L93">        groupLayout</span>
+<span class="fc" id="L94">        .setHorizontalGroup(</span>
             groupLayout
-<span class="fc" id="L101">            .createSequentialGroup()</span>
-<span class="fc" id="L102">            .addGroup(</span>
+<span class="fc" id="L96">            .createSequentialGroup()</span>
+<span class="fc" id="L97">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L104">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
-<span class="fc" id="L105">                .addComponent(this.checkboxIsCustomUserAgent)</span>
-<span class="fc" id="L106">                .addComponent(emptyLabelSessionManagement)</span>
+<span class="fc" id="L99">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
+<span class="fc" id="L100">                .addComponent(this.checkboxIsCustomUserAgent)</span>
+<span class="fc" id="L101">                .addComponent(emptyLabelSessionManagement)</span>
             )
-<span class="fc" id="L108">            .addGroup(</span>
+<span class="fc" id="L103">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L110">                .createParallelGroup()</span>
-<span class="fc" id="L111">                .addComponent(labelIsCheckingUpdate)</span>
-<span class="fc" id="L112">                .addComponent(textAreaIsTamperingEval)</span>
+<span class="fc" id="L105">                .createParallelGroup()</span>
+<span class="fc" id="L106">                .addComponent(labelIsCheckingUpdate)</span>
+<span class="fc" id="L107">                .addComponent(textAreaIsTamperingEval)</span>
             )
         );
 
-<span class="fc" id="L116">        groupLayout</span>
-<span class="fc" id="L117">        .setVerticalGroup(</span>
+<span class="fc" id="L111">        groupLayout</span>
+<span class="fc" id="L112">        .setVerticalGroup(</span>
             groupLayout
-<span class="fc" id="L119">            .createSequentialGroup()</span>
-<span class="fc" id="L120">            .addGroup(</span>
+<span class="fc" id="L114">            .createSequentialGroup()</span>
+<span class="fc" id="L115">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L122">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L123">                .addComponent(this.checkboxIsCustomUserAgent)</span>
-<span class="fc" id="L124">                .addComponent(labelIsCheckingUpdate)</span>
+<span class="fc" id="L117">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L118">                .addComponent(this.checkboxIsCustomUserAgent)</span>
+<span class="fc" id="L119">                .addComponent(labelIsCheckingUpdate)</span>
             )
-<span class="fc" id="L126">            .addGroup(</span>
+<span class="fc" id="L121">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L128">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L129">                .addComponent(emptyLabelSessionManagement)</span>
-<span class="fc" id="L130">                .addComponent(textAreaIsTamperingEval)</span>
+<span class="fc" id="L123">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L124">                .addComponent(emptyLabelSessionManagement)</span>
+<span class="fc" id="L125">                .addComponent(textAreaIsTamperingEval)</span>
             )
         );
-<span class="fc" id="L133">    }</span>
+<span class="fc" id="L128">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

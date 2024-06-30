@@ -1394,217 +1394,215 @@ public class SQLLexer implements Lexer {
 <span class="fc" id="L1394">                            break zzForAction;</span>
                         }
                     }
-
-<span class="fc" id="L1398">                }</span>
+<span class="fc" id="L1397">                }</span>
             }
 
             // store back cached position
-<span class="fc" id="L1402">            this.zzMarkedPos = zzMarkedPosL;</span>
+<span class="fc" id="L1401">            this.zzMarkedPos = zzMarkedPosL;</span>
 
-<span class="fc bfc" id="L1404" title="All 4 branches covered.">            if (zzInput == YYEOF &amp;&amp; this.zzStartRead == this.zzCurrentPos) {</span>
-<span class="fc" id="L1405">                this.zzAtEOF = true;</span>
-<span class="pc bpc" id="L1406" title="2 of 3 branches missed.">                switch (this.zzLexicalState) {</span>
+<span class="fc bfc" id="L1403" title="All 4 branches covered.">            if (zzInput == YYEOF &amp;&amp; this.zzStartRead == this.zzCurrentPos) {</span>
+<span class="fc" id="L1404">                this.zzAtEOF = true;</span>
+<span class="pc bpc" id="L1405" title="2 of 3 branches missed.">                switch (this.zzLexicalState) {</span>
                 case COMMENT: {
-<span class="nc" id="L1408">                    this.nextState = YYINITIAL;</span>
-<span class="nc" id="L1409">                    this.lastToken = SQLToken.ERROR_UNCLOSED_COMMENT;</span>
-<span class="nc" id="L1410">                    SQLToken t = new SQLToken(this.lastToken, this.commentBuffer.toString(), this.commentStartLine, this.commentStartChar,</span>
-<span class="nc" id="L1411">                            this.commentStartChar + this.commentBuffer.length(), this.nextState);</span>
-<span class="nc" id="L1412">                    this.yybegin(this.nextState);</span>
-<span class="nc" id="L1413">                    return t;</span>
+<span class="nc" id="L1407">                    this.nextState = YYINITIAL;</span>
+<span class="nc" id="L1408">                    this.lastToken = SQLToken.ERROR_UNCLOSED_COMMENT;</span>
+<span class="nc" id="L1409">                    SQLToken t = new SQLToken(this.lastToken, this.commentBuffer.toString(), this.commentStartLine, this.commentStartChar,</span>
+<span class="nc" id="L1410">                            this.commentStartChar + this.commentBuffer.length(), this.nextState);</span>
+<span class="nc" id="L1411">                    this.yybegin(this.nextState);</span>
+<span class="nc" id="L1412">                    return t;</span>
                 }
                 case 964:
-<span class="nc" id="L1416">                    break;</span>
+<span class="nc" id="L1415">                    break;</span>
                 default:
-<span class="fc" id="L1418">                    return null;</span>
+<span class="fc" id="L1417">                    return null;</span>
                 }
             } else {
-<span class="pc bpc" id="L1421" title="25 of 39 branches missed.">                switch (zzAction &lt; 0 ? zzAction : ZZ_ACTION[zzAction]) {</span>
+<span class="pc bpc" id="L1420" title="25 of 39 branches missed.">                switch (zzAction &lt; 0 ? zzAction : ZZ_ACTION[zzAction]) {</span>
                 case 1: {
-<span class="fc" id="L1423">                    this.nextState = YYINITIAL;</span>
-<span class="fc" id="L1424">                    this.lastToken = SQLToken.WHITE_SPACE;</span>
-<span class="fc" id="L1425">                    String text = this.yytext();</span>
-<span class="fc" id="L1426">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="fc" id="L1427">                    this.yybegin(this.nextState);</span>
-<span class="fc" id="L1428">                    return t;</span>
+<span class="fc" id="L1422">                    this.nextState = YYINITIAL;</span>
+<span class="fc" id="L1423">                    this.lastToken = SQLToken.WHITE_SPACE;</span>
+<span class="fc" id="L1424">                    String text = this.yytext();</span>
+<span class="fc" id="L1425">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="fc" id="L1426">                    this.yybegin(this.nextState);</span>
+<span class="fc" id="L1427">                    return t;</span>
                 }
                 case 19:
-<span class="nc" id="L1431">                    break;</span>
+<span class="nc" id="L1430">                    break;</span>
                 case 2: {
-<span class="fc" id="L1433">                    this.nextState = COMMENT;</span>
-<span class="fc" id="L1434">                    this.commentBuffer.append(this.yytext());</span>
-<span class="fc" id="L1435">                    this.yybegin(this.nextState);</span>
+<span class="fc" id="L1432">                    this.nextState = COMMENT;</span>
+<span class="fc" id="L1433">                    this.commentBuffer.append(this.yytext());</span>
+<span class="fc" id="L1434">                    this.yybegin(this.nextState);</span>
                 }
                 case 20:
-<span class="fc" id="L1438">                    break;</span>
+<span class="fc" id="L1437">                    break;</span>
                 case 3: {
-<span class="fc" id="L1440">                    this.nextState = YYINITIAL;</span>
-<span class="fc" id="L1441">                    this.lastToken = SQLToken.IDENTIFIER;</span>
-<span class="fc" id="L1442">                    String text = this.yytext();</span>
-<span class="fc" id="L1443">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="fc" id="L1444">                    this.yybegin(this.nextState);</span>
-<span class="fc" id="L1445">                    return t;</span>
+<span class="fc" id="L1439">                    this.nextState = YYINITIAL;</span>
+<span class="fc" id="L1440">                    this.lastToken = SQLToken.IDENTIFIER;</span>
+<span class="fc" id="L1441">                    String text = this.yytext();</span>
+<span class="fc" id="L1442">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="fc" id="L1443">                    this.yybegin(this.nextState);</span>
+<span class="fc" id="L1444">                    return t;</span>
                 }
                 case 21:
-<span class="nc" id="L1448">                    break;</span>
+<span class="nc" id="L1447">                    break;</span>
                 case 4: {
-<span class="fc" id="L1450">                    this.nextState = YYINITIAL;</span>
-<span class="fc" id="L1451">                    this.lastToken = SQLToken.RESERVED_WORD;</span>
-<span class="fc" id="L1452">                    String text = this.yytext();</span>
-<span class="fc" id="L1453">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="fc" id="L1454">                    this.yybegin(this.nextState);</span>
-<span class="fc" id="L1455">                    return t;</span>
+<span class="fc" id="L1449">                    this.nextState = YYINITIAL;</span>
+<span class="fc" id="L1450">                    this.lastToken = SQLToken.RESERVED_WORD;</span>
+<span class="fc" id="L1451">                    String text = this.yytext();</span>
+<span class="fc" id="L1452">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="fc" id="L1453">                    this.yybegin(this.nextState);</span>
+<span class="fc" id="L1454">                    return t;</span>
                 }
                 case 22:
-<span class="nc" id="L1458">                    break;</span>
+<span class="nc" id="L1457">                    break;</span>
                 case 5: {
-<span class="fc" id="L1460">                    this.nextState = YYINITIAL;</span>
-<span class="fc" id="L1461">                    this.lastToken = SQLToken.ERROR;</span>
-<span class="fc" id="L1462">                    String text = this.yytext();</span>
-<span class="fc" id="L1463">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="fc" id="L1464">                    this.yybegin(this.nextState);</span>
-<span class="fc" id="L1465">                    return t;</span>
+<span class="fc" id="L1459">                    this.nextState = YYINITIAL;</span>
+<span class="fc" id="L1460">                    this.lastToken = SQLToken.ERROR;</span>
+<span class="fc" id="L1461">                    String text = this.yytext();</span>
+<span class="fc" id="L1462">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="fc" id="L1463">                    this.yybegin(this.nextState);</span>
+<span class="fc" id="L1464">                    return t;</span>
                 }
                 case 23:
-<span class="nc" id="L1468">                    break;</span>
+<span class="nc" id="L1467">                    break;</span>
                 case 6: {
-<span class="fc" id="L1470">                    this.nextState = YYINITIAL;</span>
-<span class="fc" id="L1471">                    this.lastToken = SQLToken.OPERATOR;</span>
-<span class="fc" id="L1472">                    String text = this.yytext();</span>
-<span class="fc" id="L1473">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="fc" id="L1474">                    this.yybegin(this.nextState);</span>
-<span class="fc" id="L1475">                    return t;</span>
+<span class="fc" id="L1469">                    this.nextState = YYINITIAL;</span>
+<span class="fc" id="L1470">                    this.lastToken = SQLToken.OPERATOR;</span>
+<span class="fc" id="L1471">                    String text = this.yytext();</span>
+<span class="fc" id="L1472">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="fc" id="L1473">                    this.yybegin(this.nextState);</span>
+<span class="fc" id="L1474">                    return t;</span>
                 }
                 case 24:
-<span class="nc" id="L1478">                    break;</span>
+<span class="nc" id="L1477">                    break;</span>
                 case 7: {
-<span class="fc" id="L1480">                    this.nextState = YYINITIAL;</span>
-<span class="fc" id="L1481">                    this.lastToken = SQLToken.LITERAL_INTEGER;</span>
-<span class="fc" id="L1482">                    String text = this.yytext();</span>
-<span class="fc" id="L1483">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="fc" id="L1484">                    this.yybegin(this.nextState);</span>
-<span class="fc" id="L1485">                    return t;</span>
+<span class="fc" id="L1479">                    this.nextState = YYINITIAL;</span>
+<span class="fc" id="L1480">                    this.lastToken = SQLToken.LITERAL_INTEGER;</span>
+<span class="fc" id="L1481">                    String text = this.yytext();</span>
+<span class="fc" id="L1482">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="fc" id="L1483">                    this.yybegin(this.nextState);</span>
+<span class="fc" id="L1484">                    return t;</span>
                 }
                 case 25:
-<span class="nc" id="L1488">                    break;</span>
+<span class="nc" id="L1487">                    break;</span>
                 case 8: {
-<span class="fc" id="L1490">                    this.nextState = YYINITIAL;</span>
-<span class="fc" id="L1491">                    this.lastToken = SQLToken.SEPARATOR;</span>
-<span class="fc" id="L1492">                    String text = this.yytext();</span>
-<span class="fc" id="L1493">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="fc" id="L1494">                    this.yybegin(this.nextState);</span>
-<span class="fc" id="L1495">                    return t;</span>
+<span class="fc" id="L1489">                    this.nextState = YYINITIAL;</span>
+<span class="fc" id="L1490">                    this.lastToken = SQLToken.SEPARATOR;</span>
+<span class="fc" id="L1491">                    String text = this.yytext();</span>
+<span class="fc" id="L1492">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="fc" id="L1493">                    this.yybegin(this.nextState);</span>
+<span class="fc" id="L1494">                    return t;</span>
                 }
                 case 26:
-<span class="nc" id="L1498">                    break;</span>
+<span class="nc" id="L1497">                    break;</span>
                 case 9: {
-<span class="fc" id="L1500">                    this.commentNestCount--;</span>
-<span class="fc" id="L1501">                    this.commentBuffer.append(this.yytext());</span>
-<span class="pc bpc" id="L1502" title="1 of 2 branches missed.">                    if (this.commentNestCount == 0) {</span>
-<span class="fc" id="L1503">                        this.nextState = YYINITIAL;</span>
-<span class="fc" id="L1504">                        this.lastToken = SQLToken.COMMENT_TRADITIONAL;</span>
-<span class="fc" id="L1505">                        SQLToken t = new SQLToken(this.lastToken, this.commentBuffer.toString(), this.commentStartLine,</span>
-<span class="fc" id="L1506">                                this.commentStartChar, this.commentStartChar + this.commentBuffer.length(), this.nextState);</span>
-<span class="fc" id="L1507">                        this.yybegin(this.nextState);</span>
-<span class="fc" id="L1508">                        return t;</span>
+<span class="fc" id="L1499">                    this.commentNestCount--;</span>
+<span class="fc" id="L1500">                    this.commentBuffer.append(this.yytext());</span>
+<span class="pc bpc" id="L1501" title="1 of 2 branches missed.">                    if (this.commentNestCount == 0) {</span>
+<span class="fc" id="L1502">                        this.nextState = YYINITIAL;</span>
+<span class="fc" id="L1503">                        this.lastToken = SQLToken.COMMENT_TRADITIONAL;</span>
+<span class="fc" id="L1504">                        SQLToken t = new SQLToken(this.lastToken, this.commentBuffer.toString(), this.commentStartLine,</span>
+<span class="fc" id="L1505">                                this.commentStartChar, this.commentStartChar + this.commentBuffer.length(), this.nextState);</span>
+<span class="fc" id="L1506">                        this.yybegin(this.nextState);</span>
+<span class="fc" id="L1507">                        return t;</span>
                     }
                 }
                 case 27:
-<span class="nc" id="L1512">                    break;</span>
+<span class="nc" id="L1511">                    break;</span>
                 case 10: {
-<span class="fc" id="L1514">                    this.nextState = YYINITIAL;</span>
-<span class="fc" id="L1515">                    this.lastToken = SQLToken.COMMENT_END_OF_LINE;</span>
-<span class="fc" id="L1516">                    String text = this.yytext();</span>
-<span class="fc" id="L1517">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="fc" id="L1518">                    this.yybegin(this.nextState);</span>
-<span class="fc" id="L1519">                    return t;</span>
+<span class="fc" id="L1513">                    this.nextState = YYINITIAL;</span>
+<span class="fc" id="L1514">                    this.lastToken = SQLToken.COMMENT_END_OF_LINE;</span>
+<span class="fc" id="L1515">                    String text = this.yytext();</span>
+<span class="fc" id="L1516">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="fc" id="L1517">                    this.yybegin(this.nextState);</span>
+<span class="fc" id="L1518">                    return t;</span>
                 }
                 case 28:
-<span class="nc" id="L1522">                    break;</span>
+<span class="nc" id="L1521">                    break;</span>
                 case 11: {
-<span class="nc" id="L1524">                    this.nextState = YYINITIAL;</span>
-<span class="nc" id="L1525">                    this.lastToken = SQLToken.LITERAL_FLOAT;</span>
-<span class="nc" id="L1526">                    String text = this.yytext();</span>
-<span class="nc" id="L1527">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="nc" id="L1528">                    this.yybegin(this.nextState);</span>
-<span class="nc" id="L1529">                    return t;</span>
+<span class="nc" id="L1523">                    this.nextState = YYINITIAL;</span>
+<span class="nc" id="L1524">                    this.lastToken = SQLToken.LITERAL_FLOAT;</span>
+<span class="nc" id="L1525">                    String text = this.yytext();</span>
+<span class="nc" id="L1526">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="nc" id="L1527">                    this.yybegin(this.nextState);</span>
+<span class="nc" id="L1528">                    return t;</span>
                 }
                 case 29:
-<span class="nc" id="L1532">                    break;</span>
+<span class="nc" id="L1531">                    break;</span>
                 case 12: {
-<span class="fc" id="L1534">                    this.nextState = YYINITIAL;</span>
-<span class="fc" id="L1535">                    this.lastToken = SQLToken.LITERAL_STRING;</span>
-<span class="fc" id="L1536">                    String text = this.yytext();</span>
-<span class="fc" id="L1537">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="fc" id="L1538">                    this.yybegin(this.nextState);</span>
-<span class="fc" id="L1539">                    return t;</span>
+<span class="fc" id="L1533">                    this.nextState = YYINITIAL;</span>
+<span class="fc" id="L1534">                    this.lastToken = SQLToken.LITERAL_STRING;</span>
+<span class="fc" id="L1535">                    String text = this.yytext();</span>
+<span class="fc" id="L1536">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="fc" id="L1537">                    this.yybegin(this.nextState);</span>
+<span class="fc" id="L1538">                    return t;</span>
                 }
                 case 30:
-<span class="nc" id="L1542">                    break;</span>
+<span class="nc" id="L1541">                    break;</span>
                 case 13: {
-<span class="fc" id="L1544">                    this.nextState = YYINITIAL;</span>
-<span class="fc" id="L1545">                    this.lastToken = SQLToken.ERROR_UNCLOSED_STRING;</span>
-<span class="fc" id="L1546">                    String text = this.yytext();</span>
-<span class="fc" id="L1547">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="fc" id="L1548">                    this.yybegin(this.nextState);</span>
-<span class="fc" id="L1549">                    return t;</span>
+<span class="fc" id="L1543">                    this.nextState = YYINITIAL;</span>
+<span class="fc" id="L1544">                    this.lastToken = SQLToken.ERROR_UNCLOSED_STRING;</span>
+<span class="fc" id="L1545">                    String text = this.yytext();</span>
+<span class="fc" id="L1546">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="fc" id="L1547">                    this.yybegin(this.nextState);</span>
+<span class="fc" id="L1548">                    return t;</span>
                 }
                 case 31:
-<span class="nc" id="L1552">                    break;</span>
+<span class="nc" id="L1551">                    break;</span>
                 case 14: {
-<span class="fc" id="L1554">                    this.nextState = COMMENT;</span>
-<span class="fc" id="L1555">                    this.commentBuffer.setLength(0);</span>
-<span class="fc" id="L1556">                    this.commentBuffer.append(this.yytext());</span>
-<span class="fc" id="L1557">                    this.commentNestCount = 1;</span>
-<span class="fc" id="L1558">                    this.commentStartLine = this.yyline;</span>
-<span class="fc" id="L1559">                    this.commentStartChar = this.yychar;</span>
-<span class="fc" id="L1560">                    this.yybegin(this.nextState);</span>
+<span class="fc" id="L1553">                    this.nextState = COMMENT;</span>
+<span class="fc" id="L1554">                    this.commentBuffer.setLength(0);</span>
+<span class="fc" id="L1555">                    this.commentBuffer.append(this.yytext());</span>
+<span class="fc" id="L1556">                    this.commentNestCount = 1;</span>
+<span class="fc" id="L1557">                    this.commentStartLine = this.yyline;</span>
+<span class="fc" id="L1558">                    this.commentStartChar = this.yychar;</span>
+<span class="fc" id="L1559">                    this.yybegin(this.nextState);</span>
                 }
                 case 32:
-<span class="fc" id="L1563">                    break;</span>
+<span class="fc" id="L1562">                    break;</span>
                 case 15: {
-<span class="nc" id="L1565">                    this.nextState = COMMENT;</span>
-<span class="nc" id="L1566">                    this.commentBuffer.append(this.yytext());</span>
-<span class="nc" id="L1567">                    this.commentNestCount++;</span>
-<span class="nc" id="L1568">                    this.yybegin(this.nextState);</span>
+<span class="nc" id="L1564">                    this.nextState = COMMENT;</span>
+<span class="nc" id="L1565">                    this.commentBuffer.append(this.yytext());</span>
+<span class="nc" id="L1566">                    this.commentNestCount++;</span>
+<span class="nc" id="L1567">                    this.yybegin(this.nextState);</span>
                 }
                 case 33:
-<span class="nc" id="L1571">                    break;</span>
+<span class="nc" id="L1570">                    break;</span>
                 case 16: {
-<span class="nc" id="L1573">                    this.nextState = YYINITIAL;</span>
-<span class="nc" id="L1574">                    this.lastToken = SQLToken.ERROR_UNCLOSED_BIT_STRING;</span>
-<span class="nc" id="L1575">                    String text = this.yytext();</span>
-<span class="nc" id="L1576">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="nc" id="L1577">                    this.yybegin(this.nextState);</span>
-<span class="nc" id="L1578">                    return t;</span>
+<span class="nc" id="L1572">                    this.nextState = YYINITIAL;</span>
+<span class="nc" id="L1573">                    this.lastToken = SQLToken.ERROR_UNCLOSED_BIT_STRING;</span>
+<span class="nc" id="L1574">                    String text = this.yytext();</span>
+<span class="nc" id="L1575">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="nc" id="L1576">                    this.yybegin(this.nextState);</span>
+<span class="nc" id="L1577">                    return t;</span>
                 }
                 case 34:
-<span class="nc" id="L1581">                    break;</span>
+<span class="nc" id="L1580">                    break;</span>
                 case 17: {
-<span class="nc" id="L1583">                    this.nextState = YYINITIAL;</span>
-<span class="nc" id="L1584">                    this.lastToken = SQLToken.ERROR_BAD_BIT_STRING;</span>
-<span class="nc" id="L1585">                    String text = this.yytext();</span>
-<span class="nc" id="L1586">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="nc" id="L1587">                    this.yybegin(this.nextState);</span>
-<span class="nc" id="L1588">                    return t;</span>
+<span class="nc" id="L1582">                    this.nextState = YYINITIAL;</span>
+<span class="nc" id="L1583">                    this.lastToken = SQLToken.ERROR_BAD_BIT_STRING;</span>
+<span class="nc" id="L1584">                    String text = this.yytext();</span>
+<span class="nc" id="L1585">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="nc" id="L1586">                    this.yybegin(this.nextState);</span>
+<span class="nc" id="L1587">                    return t;</span>
                 }
                 case 35:
-<span class="nc" id="L1591">                    break;</span>
+<span class="nc" id="L1590">                    break;</span>
                 case 18: {
-<span class="nc" id="L1593">                    this.nextState = YYINITIAL;</span>
-<span class="nc" id="L1594">                    this.lastToken = SQLToken.LITERAL_BIT_STRING;</span>
-<span class="nc" id="L1595">                    String text = this.yytext();</span>
-<span class="nc" id="L1596">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
-<span class="nc" id="L1597">                    this.yybegin(this.nextState);</span>
-<span class="nc" id="L1598">                    return t;</span>
+<span class="nc" id="L1592">                    this.nextState = YYINITIAL;</span>
+<span class="nc" id="L1593">                    this.lastToken = SQLToken.LITERAL_BIT_STRING;</span>
+<span class="nc" id="L1594">                    String text = this.yytext();</span>
+<span class="nc" id="L1595">                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);</span>
+<span class="nc" id="L1596">                    this.yybegin(this.nextState);</span>
+<span class="nc" id="L1597">                    return t;</span>
                 }
                 case 36:
-<span class="nc" id="L1601">                    break;</span>
+<span class="nc" id="L1600">                    break;</span>
                 default:
-<span class="nc" id="L1603">                    this.zzScanError(ZZ_NO_MATCH);</span>
+<span class="nc" id="L1602">                    this.zzScanError(ZZ_NO_MATCH);</span>
                 }
             }
-<span class="fc" id="L1606">        }</span>
+<span class="fc" id="L1605">        }</span>
     }
-
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

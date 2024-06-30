@@ -19,7 +19,7 @@ package com.jsql.view.swing.sql.lexer.syntax;
 
 /**
  * A JavaScriptToken is a token that is returned by a lexer that is lexing a javascript
- * source file.  It has several attributes describing the token:
+ * source file. It has several attributes describing the token:
  * The type of token, the text of the token, the line number on which it
  * occurred, the number of characters into the input at which it started, and
  * similarly, the number of characters into the input at which it ended. &lt;br&gt;
@@ -203,7 +203,7 @@ public class JavaScriptToken extends Token {
    */
 <span class="nc" id="L204">  public JavaScriptToken(int ID, String contents, int lineNumber, int charBegin, int charEnd, int state) {</span>
 <span class="nc" id="L205">    this.ID = ID;</span>
-<span class="nc" id="L206">    this.contents = new String(contents);</span>
+<span class="nc" id="L206">    this.contents = contents;</span>
 <span class="nc" id="L207">    this.lineNumber = lineNumber;</span>
 <span class="nc" id="L208">    this.charBegin = charBegin;</span>
 <span class="nc" id="L209">    this.charEnd = charEnd;</span>
@@ -215,7 +215,7 @@ public class JavaScriptToken extends Token {
      * returning this token.
      * Those who are interested in incremental tokenizing for performance
      * reasons will want to use this method to figure out where the tokenizer
-     * may be restarted.  The tokenizer starts in Token.INITIAL_STATE, so
+     * may be restarted. The tokenizer starts in Token.INITIAL_STATE, so
      * any time that it reports that it has returned to this state, the
      * tokenizer may be restarted from there.
      */
@@ -334,7 +334,7 @@ public int getCharEnd() {
    * @return true if this token is a comment, false otherwise
    */
   @Override
-public boolean isComment() {
+  public boolean isComment() {
 <span class="nc bnc" id="L338" title="All 2 branches missed.">      return((this.ID &gt;&gt; 8) == 0xD);</span>
   }
 
@@ -356,13 +356,13 @@ public boolean isWhiteSpace() {
    * @return true if this token is an Error, false otherwise
    */
   @Override
-public boolean isError() {
+  public boolean isError() {
 <span class="nc bnc" id="L360" title="All 2 branches missed.">      return((this.ID &gt;&gt; 8) == 0xF);</span>
   }
 
     /**
-     * A description of this token.  The description should
-     * be appropriate for syntax highlighting.  For example
+     * A description of this token. The description should
+     * be appropriate for syntax highlighting. For example
      * &quot;comment&quot; is returned for a comment.
      *
      * @return a description of this token.
@@ -393,14 +393,14 @@ public boolean isError() {
   /**
    * get a String that explains the error, if this token is an error.
    * 
-   * @return a  String that explains the error, if this token is an error, null otherwise.
+   * @return a String that explains the error, if this token is an error, null otherwise.
    */
   @Override
-public String errorString() {
+  public String errorString() {
       String s;
 <span class="nc bnc" id="L401" title="All 2 branches missed.">      if (this.isError()) {</span>
 <span class="nc" id="L402">          s = &quot;Error on line &quot; + this.lineNumber + &quot;: &quot;;</span>
-<span class="nc bnc" id="L403" title="All 9 branches missed.">          switch (this.ID) {</span>
+<span class="nc bnc" id="L403" title="All 7 branches missed.">          switch (this.ID) {</span>
           case ERROR_IDENTIFIER:
 <span class="nc" id="L405">              s += &quot;Unrecognized Identifier: &quot; + this.contents;</span>
 <span class="nc" id="L406">          break;</span>
@@ -409,51 +409,45 @@ public String errorString() {
 <span class="nc" id="L409">          break;</span>
         case ERROR_MALFORMED_STRING:
         case ERROR_MALFORMED_UNCLOSED_STRING:
-<span class="nc" id="L412">              s += &quot;Illegal character in &quot; + this.contents;</span>
-<span class="nc" id="L413">          break;</span>
-        case ERROR_UNCLOSED_CHARACTER:
-<span class="nc" id="L415">              s += &quot;\&quot;'\&quot; expected after &quot; + this.contents;</span>
-<span class="nc" id="L416">          break;</span>
         case ERROR_MALFORMED_CHARACTER:
         case ERROR_MALFORMED_UNCLOSED_CHARACTER:
-<span class="nc" id="L419">              s += &quot;Illegal character in &quot; + this.contents;</span>
-<span class="nc" id="L420">          break;</span>
         case ERROR_INTEGER_DECIMIAL_SIZE:
         case ERROR_INTEGER_OCTAL_SIZE:
         case ERROR_FLOAT:
-<span class="nc" id="L424">              s += &quot;Illegal character in &quot; + this.contents;</span>
-<span class="nc" id="L425">          break;</span>
+<span class="nc" id="L417">              s += &quot;Illegal character in &quot; + this.contents;</span>
+<span class="nc" id="L418">          break;</span>
+        case ERROR_UNCLOSED_CHARACTER:
+<span class="nc" id="L420">              s += &quot;\&quot;'\&quot; expected after &quot; + this.contents;</span>
+<span class="nc" id="L421">          break;</span>
         case ERROR_INTEGER_HEXIDECIMAL_SIZE:
         case ERROR_LONG_DECIMIAL_SIZE:
         case ERROR_LONG_OCTAL_SIZE:
         case ERROR_LONG_HEXIDECIMAL_SIZE:
         case ERROR_FLOAT_SIZE:
         case ERROR_DOUBLE_SIZE:
-<span class="nc" id="L432">              s += &quot;Literal out of bounds: &quot; + this.contents;</span>
-<span class="nc" id="L433">          break;</span>
+<span class="nc" id="L428">              s += &quot;Literal out of bounds: &quot; + this.contents;</span>
+<span class="nc" id="L429">          break;</span>
         case ERROR_UNCLOSED_COMMENT:
-<span class="nc" id="L435">              s += &quot;*/ expected after &quot; + this.contents;</span>
-<span class="nc" id="L436">          break;</span>
+<span class="nc" id="L431">              s += &quot;*/ expected after &quot; + this.contents;</span>
+<span class="nc" id="L432">          break;</span>
         }
-              
       } else {
-<span class="nc" id="L440">          s = null;</span>
+<span class="nc" id="L435">          s = null;</span>
       }
-<span class="nc" id="L442">      return (s);</span>
+<span class="nc" id="L437">      return (s);</span>
   }
 
   /**
-   * get a representation of this token as a human readable string.
+   * get a representation of this token as a human-readable string.
    * The format of this string is subject to change and should only be used
    * for debugging purposes.
    *
    * @return a string representation of this token
    */
   @Override
-public String toString() {
-<span class="nc" id="L454">      return (&quot;Token #&quot; + Integer.toHexString(this.ID) + &quot;: &quot; + this.getDescription() + &quot; Line &quot; +</span>
-          this.lineNumber + &quot; from &quot; +this.charBegin + &quot; to &quot; + this.charEnd + &quot; : &quot; + this.contents);
+  public String toString() {
+<span class="nc" id="L449">      return &quot;Token #&quot; + Integer.toHexString(this.ID) + &quot;: &quot; + this.getDescription() + &quot; Line &quot; +</span>
+          this.lineNumber + &quot; from &quot; +this.charBegin + &quot; to &quot; + this.charEnd + &quot; : &quot; + this.contents;
   }
-  
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -70,20 +70,21 @@
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>              frameWithTextarea.setVisible(!frameWithTextarea.isVisible());
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>          });
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          frameWithTextarea
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>              .getRootPane()
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>              .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>              .put(
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>                  KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>                  <span class="jxr_string">"Cancel"</span>
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>              );
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>          frameWithTextarea.getRootPane().getActionMap().put(<span class="jxr_string">"Cancel"</span>, <strong class="jxr_keyword">new</strong> AbstractAction() {
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> actionPerformed(ActionEvent e) {
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>                  frameWithTextarea.dispose();
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>              }
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          });
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>      }
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>  }
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>          frameWithTextarea.getRootPane()
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>              .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>              .put(
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>                  KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>                  <span class="jxr_string">"Cancel"</span>
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>              );
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>          frameWithTextarea.getRootPane()
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>              .getActionMap()
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>              .put(<span class="jxr_string">"Cancel"</span>, <strong class="jxr_keyword">new</strong> AbstractAction() {
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>                  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> actionPerformed(ActionEvent e) {
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>                      frameWithTextarea.dispose();
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>                  }
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>              });
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>      }
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>

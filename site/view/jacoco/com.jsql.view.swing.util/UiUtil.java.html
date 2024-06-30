@@ -196,7 +196,7 @@ public class UiUtil {
     public static final String JAVA_VISIBLE = &quot;java_visible&quot;;
     
     private UiUtil() {
-        //not called
+        // Utility class
     }
     
     /**
@@ -227,191 +227,188 @@ public class UiUtil {
 
     private static void loadFonts() {
         
-<span class="fc" id="L230">        var ge = GraphicsEnvironment.getLocalGraphicsEnvironment();</span>
+<span class="fc" id="L230">        var graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();</span>
         
 <span class="fc" id="L232">        try (InputStream fontStream = new BufferedInputStream(Objects.requireNonNull(UiUtil.class.getClassLoader().getResourceAsStream(&quot;swing/font/UbuntuMono-R-ctrlchar.ttf&quot;)))) {</span>
             
 <span class="fc" id="L234">            var ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);</span>
-<span class="fc" id="L235">            ge.registerFont(ubuntuFont);</span>
+<span class="fc" id="L235">            graphicsEnvironment.registerFont(ubuntuFont);</span>
             
 <span class="nc" id="L237">        } catch (FontFormatException | IOException e) {</span>
-            
-<span class="nc" id="L239">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Loading Font Ubuntu Mono with control characters failed&quot;, e);</span>
-<span class="fc" id="L240">        }</span>
-<span class="fc" id="L241">    }</span>
+<span class="nc" id="L238">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Loading Font Ubuntu Mono with control characters failed&quot;, e);</span>
+<span class="fc" id="L239">        }</span>
+<span class="fc" id="L240">    }</span>
 
     private static void configureText() {
         
         // Custom text component
         // Admin page
-<span class="fc" id="L247">        UIManager.put(&quot;TextPane.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
-<span class="fc" id="L248">        UIManager.put(TEXTPANE_FONT, UiUtil.FONT_MONO_NON_ASIAN);</span>
-<span class="fc" id="L249">        UIManager.put(&quot;TextPane.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L246">        UIManager.put(&quot;TextPane.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L247">        UIManager.put(TEXTPANE_FONT, UiUtil.FONT_MONO_NON_ASIAN);</span>
+<span class="fc" id="L248">        UIManager.put(&quot;TextPane.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
         
-<span class="fc" id="L251">        UIManager.put(&quot;TextField.border&quot;, UiUtil.BORDER_BLU);</span>
-<span class="fc" id="L252">        UIManager.put(&quot;TextField.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L250">        UIManager.put(&quot;TextField.border&quot;, UiUtil.BORDER_BLU);</span>
+<span class="fc" id="L251">        UIManager.put(&quot;TextField.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
         
-<span class="fc" id="L254">        UIManager.put(&quot;EditorPane.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L253">        UIManager.put(&quot;EditorPane.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
         
-<span class="fc" id="L256">        UIManager.put(&quot;TextArea.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
-<span class="fc" id="L257">        UIManager.put(&quot;TextArea.font&quot;, UiUtil.FONT_MONO_NON_ASIAN);</span>
+<span class="fc" id="L255">        UIManager.put(&quot;TextArea.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L256">        UIManager.put(&quot;TextArea.font&quot;, UiUtil.FONT_MONO_NON_ASIAN);</span>
 
         // Custom Label
-<span class="fc" id="L260">        UIManager.put(&quot;Label.font&quot;, UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L261">        UIManager.put(&quot;Label.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
-<span class="fc" id="L262">    }</span>
+<span class="fc" id="L259">        UIManager.put(&quot;Label.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L260">        UIManager.put(&quot;Label.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L261">    }</span>
 
     private static void configureButton() {
         
-<span class="fc" id="L266">        UIManager.put(&quot;Button.font&quot;, UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L267">        UIManager.put(&quot;CheckBox.font&quot;, UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L268">        UIManager.put(&quot;RadioButton.font&quot;, UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L269">        UIManager.put(&quot;TitledBorder.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L265">        UIManager.put(&quot;Button.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L266">        UIManager.put(&quot;CheckBox.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L267">        UIManager.put(&quot;RadioButton.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L268">        UIManager.put(&quot;TitledBorder.font&quot;, UiUtil.FONT_NON_MONO);</span>
 
-<span class="fc" id="L271">        UIManager.put(&quot;Spinner.arrowButtonBorder&quot;, UiUtil.BORDER_BLU);</span>
-<span class="fc" id="L272">        UIManager.put(&quot;Spinner.border&quot;, BorderFactory.createLineBorder(UiUtil.COLOR_COMPONENT_BORDER, 1, false));</span>
-<span class="fc" id="L273">        UIManager.put(&quot;Spinner.disableOnBoundaryValues&quot;, Boolean.TRUE);</span>
+<span class="fc" id="L270">        UIManager.put(&quot;Spinner.arrowButtonBorder&quot;, UiUtil.BORDER_BLU);</span>
+<span class="fc" id="L271">        UIManager.put(&quot;Spinner.border&quot;, BorderFactory.createLineBorder(UiUtil.COLOR_COMPONENT_BORDER, 1, false));</span>
+<span class="fc" id="L272">        UIManager.put(&quot;Spinner.disableOnBoundaryValues&quot;, Boolean.TRUE);</span>
         
         // Custom button
         // Change border of button in default Save as, Confirm dialogs
-<span class="fc" id="L277">        UIManager.put(&quot;Button.border&quot;, UiUtil.BORDER_BLU);</span>
-<span class="fc" id="L278">        UIManager.put(&quot;Button.select&quot;, new Color(155, 193, 232));</span>
+<span class="fc" id="L276">        UIManager.put(&quot;Button.border&quot;, UiUtil.BORDER_BLU);</span>
+<span class="fc" id="L277">        UIManager.put(&quot;Button.select&quot;, new Color(155, 193, 232));</span>
         
         // Change border of button in Save as dialog
-<span class="fc" id="L281">        UIManager.put(&quot;ToggleButton.border&quot;, UiUtil.BORDER_BLU);</span>
+<span class="fc" id="L280">        UIManager.put(&quot;ToggleButton.border&quot;, UiUtil.BORDER_BLU);</span>
         
-<span class="fc" id="L283">        UIManager.put(&quot;Button.defaultButtonFollowsFocus&quot;, Boolean.TRUE);</span>
-<span class="fc" id="L284">    }</span>
+<span class="fc" id="L282">        UIManager.put(&quot;Button.defaultButtonFollowsFocus&quot;, Boolean.TRUE);</span>
+<span class="fc" id="L283">    }</span>
 
     private static void configureToolTip() {
         
         // Custom tooltip
         // timer before showing tooltip
-<span class="fc" id="L290">        ToolTipManager.sharedInstance().setInitialDelay(750);</span>
+<span class="fc" id="L289">        ToolTipManager.sharedInstance().setInitialDelay(750);</span>
         // timer before closing automatically tooltip
-<span class="fc" id="L292">        ToolTipManager.sharedInstance().setDismissDelay(30000);</span>
+<span class="fc" id="L291">        ToolTipManager.sharedInstance().setDismissDelay(30000);</span>
         // timer used when mouse move to another component, show tooltip immediately if timer is not expired
-<span class="fc" id="L294">        ToolTipManager.sharedInstance().setReshowDelay(1);</span>
+<span class="fc" id="L293">        ToolTipManager.sharedInstance().setReshowDelay(1);</span>
 
-<span class="fc" id="L296">        UIManager.put(&quot;ToolTip.background&quot;, new Color(255, 255, 225));</span>
-<span class="fc" id="L297">        UIManager.put(&quot;ToolTip.backgroundInactive&quot;, new Color(255, 255, 225));</span>
-<span class="fc" id="L298">        UIManager.put(&quot;ToolTip.foreground&quot;, Color.BLACK);</span>
-<span class="fc" id="L299">        UIManager.put(&quot;ToolTip.foregroundInactive&quot;, Color.BLACK);</span>
-<span class="fc" id="L300">        UIManager.put(&quot;ToolTip.font&quot;, UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L301">    }</span>
+<span class="fc" id="L295">        UIManager.put(&quot;ToolTip.background&quot;, new Color(255, 255, 225));</span>
+<span class="fc" id="L296">        UIManager.put(&quot;ToolTip.backgroundInactive&quot;, new Color(255, 255, 225));</span>
+<span class="fc" id="L297">        UIManager.put(&quot;ToolTip.foreground&quot;, Color.BLACK);</span>
+<span class="fc" id="L298">        UIManager.put(&quot;ToolTip.foregroundInactive&quot;, Color.BLACK);</span>
+<span class="fc" id="L299">        UIManager.put(&quot;ToolTip.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L300">    }</span>
 
     private static void configureTabbedPane() {
         
         // Custom tab
-<span class="fc" id="L306">        UIManager.put(&quot;TabbedPane.contentAreaColor&quot;, UiUtil.FONT_MONO_NON_ASIAN);</span>
-<span class="fc" id="L307">        UIManager.put(&quot;TabbedPane.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L305">        UIManager.put(&quot;TabbedPane.contentAreaColor&quot;, UiUtil.FONT_MONO_NON_ASIAN);</span>
+<span class="fc" id="L306">        UIManager.put(&quot;TabbedPane.font&quot;, UiUtil.FONT_NON_MONO);</span>
         // margin of current tab panel
-<span class="fc" id="L309">        UIManager.put(&quot;TabbedPane.contentBorderInsets&quot;, new Insets(0, 0, 0, 0));</span>
+<span class="fc" id="L308">        UIManager.put(&quot;TabbedPane.contentBorderInsets&quot;, new Insets(0, 0, 0, 0));</span>
         // margin above tabs
-<span class="fc" id="L311">        UIManager.put(&quot;TabbedPane.tabAreaInsets&quot;, new Insets(3, 2, 0, 2));</span>
+<span class="fc" id="L310">        UIManager.put(&quot;TabbedPane.tabAreaInsets&quot;, new Insets(3, 2, 0, 2));</span>
         // margin around tab name
-<span class="fc" id="L313">        UIManager.put(&quot;TabbedPane.tabInsets&quot;, new Insets(2, 3 + 5, 2, 3));</span>
+<span class="fc" id="L312">        UIManager.put(&quot;TabbedPane.tabInsets&quot;, new Insets(2, 3 + 5, 2, 3));</span>
         // lighter unselected tab border
-<span class="fc" id="L315">        UIManager.put(&quot;TabbedPane.darkShadow&quot;, new Color(190,198,205));</span>
-<span class="fc" id="L316">    }</span>
+<span class="fc" id="L314">        UIManager.put(&quot;TabbedPane.darkShadow&quot;, new Color(190,198,205));</span>
+<span class="fc" id="L315">    }</span>
 
     private static void configureMenu() {
         
         // Prevent green glitch on Mac menu
-<span class="pc bpc" id="L321" title="1 of 2 branches missed.">        if (!SystemUtils.IS_OS_MAC) {</span>
+<span class="pc bpc" id="L320" title="1 of 2 branches missed.">        if (!SystemUtils.IS_OS_MAC) {</span>
             
             // No bold for menu + round corner
-<span class="fc" id="L324">            UIManager.put(&quot;Menu.font&quot;, UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L325">            UIManager.put(&quot;Menu.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
-<span class="fc" id="L326">            UIManager.put(&quot;Menu.borderPainted&quot;, false);</span>
-<span class="fc" id="L327">            UIManager.put(&quot;PopupMenu.font&quot;, UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L328">            UIManager.put(&quot;RadioButtonMenuItem.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
-<span class="fc" id="L329">            UIManager.put(&quot;RadioButtonMenuItem.font&quot;, UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L330">            UIManager.put(&quot;RadioButtonMenuItem.borderPainted&quot;, false);</span>
-<span class="fc" id="L331">            UIManager.put(&quot;MenuItem.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
-<span class="fc" id="L332">            UIManager.put(&quot;MenuItem.font&quot;, UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L333">            UIManager.put(&quot;MenuItem.borderPainted&quot;, false);</span>
-<span class="fc" id="L334">            UIManager.put(&quot;MenuItem.disabledAreNavigable&quot;, Boolean.TRUE);</span>
+<span class="fc" id="L323">            UIManager.put(&quot;Menu.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L324">            UIManager.put(&quot;Menu.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L325">            UIManager.put(&quot;Menu.borderPainted&quot;, false);</span>
+<span class="fc" id="L326">            UIManager.put(&quot;PopupMenu.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L327">            UIManager.put(&quot;RadioButtonMenuItem.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L328">            UIManager.put(&quot;RadioButtonMenuItem.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L329">            UIManager.put(&quot;RadioButtonMenuItem.borderPainted&quot;, false);</span>
+<span class="fc" id="L330">            UIManager.put(&quot;MenuItem.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L331">            UIManager.put(&quot;MenuItem.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L332">            UIManager.put(&quot;MenuItem.borderPainted&quot;, false);</span>
+<span class="fc" id="L333">            UIManager.put(&quot;MenuItem.disabledAreNavigable&quot;, Boolean.TRUE);</span>
             
-<span class="fc" id="L336">            UIManager.put(&quot;CheckBoxMenuItem.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
-<span class="fc" id="L337">            UIManager.put(&quot;CheckBoxMenuItem.font&quot;, UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L338">            UIManager.put(&quot;CheckBoxMenuItem.borderPainted&quot;, false);</span>
-<span class="fc" id="L339">            UIManager.put(&quot;CheckBoxMenuItem.checkIcon&quot;, new CheckBoxIcon());</span>
+<span class="fc" id="L335">            UIManager.put(&quot;CheckBoxMenuItem.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L336">            UIManager.put(&quot;CheckBoxMenuItem.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L337">            UIManager.put(&quot;CheckBoxMenuItem.borderPainted&quot;, false);</span>
+<span class="fc" id="L338">            UIManager.put(&quot;CheckBoxMenuItem.checkIcon&quot;, new CheckBoxIcon());</span>
         }
-<span class="fc" id="L341">    }</span>
+<span class="fc" id="L340">    }</span>
 
     private static void configureTable() {
         
         // Custom table
-<span class="fc" id="L346">        UIManager.put(&quot;Table.font&quot;, UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L347">        UIManager.put(&quot;TableHeader.font&quot;, UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L348">        UIManager.put(&quot;Table.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L345">        UIManager.put(&quot;Table.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L346">        UIManager.put(&quot;TableHeader.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L347">        UIManager.put(&quot;Table.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
         
-<span class="fc" id="L350">        UIManager.put(&quot;Table.focusCellHighlightBorder&quot;,</span>
-<span class="fc" id="L351">            BorderFactory.createCompoundBorder(</span>
-<span class="fc" id="L352">                new AbstractBorder() {</span>
+<span class="fc" id="L349">        UIManager.put(&quot;Table.focusCellHighlightBorder&quot;,</span>
+<span class="fc" id="L350">            BorderFactory.createCompoundBorder(</span>
+<span class="fc" id="L351">                new AbstractBorder() {</span>
                     
                     @Override
                     public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
                         
-<span class="fc" id="L357">                        Graphics2D g2D = (Graphics2D) g;</span>
-<span class="fc" id="L358">                        g2D.setColor(Color.GRAY);</span>
-<span class="fc" id="L359">                        g2D.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{1}, 0));</span>
+<span class="fc" id="L356">                        Graphics2D g2D = (Graphics2D) g;</span>
+<span class="fc" id="L357">                        g2D.setColor(Color.GRAY);</span>
+<span class="fc" id="L358">                        g2D.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{1}, 0));</span>
                         
                         // Fix #42291: InternalError on drawRect()
                         try {
-<span class="fc" id="L363">                            g2D.drawRect(x, y, w - 1, h - 1);</span>
-                            
-<span class="nc" id="L365">                        } catch (InternalError e) {</span>
-                            
-<span class="nc" id="L367">                            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L368">                        }</span>
-<span class="fc" id="L369">                    }</span>
+<span class="fc" id="L362">                            g2D.drawRect(x, y, w - 1, h - 1);</span>
+<span class="nc" id="L363">                        } catch (InternalError e) {</span>
+<span class="nc" id="L364">                            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L365">                        }</span>
+<span class="fc" id="L366">                    }</span>
                 },
-<span class="fc" id="L371">                BorderFactory.createEmptyBorder(0, 1, 0, 0)</span>
+<span class="fc" id="L368">                BorderFactory.createEmptyBorder(0, 1, 0, 0)</span>
             )
         );
-<span class="fc" id="L374">    }</span>
+<span class="fc" id="L371">    }</span>
 
     private static void configureTree() {
         
         // Custom tree
-<span class="fc" id="L379">        UIManager.put(&quot;Tree.expandedIcon&quot;, new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/icons/expanded.png&quot;))));</span>
-<span class="fc" id="L380">        UIManager.put(&quot;Tree.collapsedIcon&quot;, new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/icons/collapsed.png&quot;))));</span>
-<span class="fc" id="L381">        UIManager.put(&quot;Tree.lineTypeDashed&quot;, true);</span>
+<span class="fc" id="L376">        UIManager.put(&quot;Tree.expandedIcon&quot;, new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/icons/expanded.png&quot;))));</span>
+<span class="fc" id="L377">        UIManager.put(&quot;Tree.collapsedIcon&quot;, new ImageIcon(Objects.requireNonNull(UiUtil.class.getClassLoader().getResource(&quot;swing/images/icons/collapsed.png&quot;))));</span>
+<span class="fc" id="L378">        UIManager.put(&quot;Tree.lineTypeDashed&quot;, true);</span>
         
         // No default icon for tree nodes
-<span class="fc" id="L384">        UIManager.put(&quot;Tree.leafIcon&quot;, new ImageIcon());</span>
-<span class="fc" id="L385">        UIManager.put(&quot;Tree.openIcon&quot;, new ImageIcon());</span>
-<span class="fc" id="L386">        UIManager.put(&quot;Tree.closedIcon&quot;, new ImageIcon());</span>
-<span class="fc" id="L387">    }</span>
+<span class="fc" id="L381">        UIManager.put(&quot;Tree.leafIcon&quot;, new ImageIcon());</span>
+<span class="fc" id="L382">        UIManager.put(&quot;Tree.openIcon&quot;, new ImageIcon());</span>
+<span class="fc" id="L383">        UIManager.put(&quot;Tree.closedIcon&quot;, new ImageIcon());</span>
+<span class="fc" id="L384">    }</span>
 
     private static void configureComboBox() {
         
         // Custom ComboBox
-<span class="fc" id="L392">        UIManager.put(&quot;ComboBox.font&quot;, UiUtil.FONT_NON_MONO);</span>
-<span class="fc" id="L393">        UIManager.put(&quot;ComboBox.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L389">        UIManager.put(&quot;ComboBox.font&quot;, UiUtil.FONT_NON_MONO);</span>
+<span class="fc" id="L390">        UIManager.put(&quot;ComboBox.selectionBackground&quot;, UiUtil.COLOR_FOCUS_GAINED);</span>
         
         // Use ColorUIResource to preserve the background color for arrow
-<span class="fc" id="L396">        UIManager.put(&quot;ComboBox.background&quot;, new ColorUIResource(Color.WHITE));</span>
-<span class="fc" id="L397">        UIManager.put(&quot;ComboBox.border&quot;, UiUtil.BORDER_BLU);</span>
-<span class="fc" id="L398">        UIManager.put(&quot;ComboBoxUI&quot;, CustomBasicComboBoxUI.class.getName());</span>
-<span class="fc" id="L399">    }</span>
+<span class="fc" id="L393">        UIManager.put(&quot;ComboBox.background&quot;, new ColorUIResource(Color.WHITE));</span>
+<span class="fc" id="L394">        UIManager.put(&quot;ComboBox.border&quot;, UiUtil.BORDER_BLU);</span>
+<span class="fc" id="L395">        UIManager.put(&quot;ComboBoxUI&quot;, CustomBasicComboBoxUI.class.getName());</span>
+<span class="fc" id="L396">    }</span>
 
     private static void configureProgressBar() {
         
         // Custom progress bar
-<span class="fc" id="L404">        UIManager.put(&quot;ProgressBar.border&quot;, BorderFactory.createCompoundBorder(</span>
-<span class="fc" id="L405">            BorderFactory.createEmptyBorder(3, 0, 4, 0),</span>
-<span class="fc" id="L406">            BorderFactory.createCompoundBorder(</span>
-<span class="fc" id="L407">                BorderFactory.createLineBorder(Color.GRAY),</span>
-<span class="fc" id="L408">                BorderFactory.createLineBorder(Color.WHITE)</span>
+<span class="fc" id="L401">        UIManager.put(&quot;ProgressBar.border&quot;, BorderFactory.createCompoundBorder(</span>
+<span class="fc" id="L402">            BorderFactory.createEmptyBorder(3, 0, 4, 0),</span>
+<span class="fc" id="L403">            BorderFactory.createCompoundBorder(</span>
+<span class="fc" id="L404">                BorderFactory.createLineBorder(Color.GRAY),</span>
+<span class="fc" id="L405">                BorderFactory.createLineBorder(Color.WHITE)</span>
             )
         ));
         
-<span class="fc" id="L412">        UIManager.put(&quot;ProgressBar.foreground&quot;, new Color(136, 183, 104));</span>
-<span class="fc" id="L413">        UIManager.put(&quot;ProgressBar.background&quot;, UIManager.get(&quot;Tree.background&quot;));</span>
-<span class="fc" id="L414">    }</span>
+<span class="fc" id="L409">        UIManager.put(&quot;ProgressBar.foreground&quot;, new Color(136, 183, 104));</span>
+<span class="fc" id="L410">        UIManager.put(&quot;ProgressBar.background&quot;, UIManager.get(&quot;Tree.background&quot;));</span>
+<span class="fc" id="L411">    }</span>
 
     /**
      * Icons for application window.
@@ -419,88 +416,86 @@ public class UiUtil {
      */
     public static List&lt;Image&gt; getIcons() {
         
-<span class="fc" id="L422">        List&lt;Image&gt; images = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L419">        List&lt;Image&gt; images = new ArrayList&lt;&gt;();</span>
         
         // Fix #2154: NoClassDefFoundError on read()
         try {
-<span class="fc" id="L426">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_128)));</span>
-<span class="fc" id="L427">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_96)));</span>
-<span class="fc" id="L428">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_32)));</span>
-<span class="fc" id="L429">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_16)));</span>
+<span class="fc" id="L423">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_128)));</span>
+<span class="fc" id="L424">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_96)));</span>
+<span class="fc" id="L425">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_32)));</span>
+<span class="fc" id="L426">            images.add(ImageIO.read(Objects.requireNonNull(UiUtil.URL_ICON_16)));</span>
             
-<span class="nc" id="L431">        } catch (NoClassDefFoundError | IOException e) {</span>
-            
-<span class="nc" id="L433">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L434">        }</span>
+<span class="nc" id="L428">        } catch (NoClassDefFoundError | IOException e) {</span>
+<span class="nc" id="L429">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L430">        }</span>
         
-<span class="fc" id="L436">        return images;</span>
+<span class="fc" id="L432">        return images;</span>
     }
     
     public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText) {
-        
-<span class="fc" id="L441">        drawPlaceholder(textComponent, g, placeholderText, g.getFontMetrics().getAscent() + 2);</span>
-<span class="fc" id="L442">    }</span>
+<span class="fc" id="L436">        drawPlaceholder(textComponent, g, placeholderText, g.getFontMetrics().getAscent() + 2);</span>
+<span class="fc" id="L437">    }</span>
     
     public static void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText, int y) {
         
-<span class="fc" id="L446">        int w = textComponent.getWidth();</span>
+<span class="fc" id="L441">        int w = textComponent.getWidth();</span>
         
-<span class="fc" id="L448">        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);</span>
+<span class="fc" id="L443">        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);</span>
         
-<span class="fc" id="L450">        var ins = textComponent.getInsets();</span>
-<span class="fc" id="L451">        var fm = g.getFontMetrics();</span>
+<span class="fc" id="L445">        var ins = textComponent.getInsets();</span>
+<span class="fc" id="L446">        var fm = g.getFontMetrics();</span>
         
-<span class="fc" id="L453">        int c0 = textComponent.getBackground().getRGB();</span>
-<span class="fc" id="L454">        int c1 = textComponent.getForeground().getRGB();</span>
-<span class="fc" id="L455">        var m = 0xfefefefe;</span>
-<span class="fc" id="L456">        int c2 = ((c0 &amp; m) &gt;&gt;&gt; 1) + ((c1 &amp; m) &gt;&gt;&gt; 1);</span>
+<span class="fc" id="L448">        int c0 = textComponent.getBackground().getRGB();</span>
+<span class="fc" id="L449">        int c1 = textComponent.getForeground().getRGB();</span>
+<span class="fc" id="L450">        var m = 0xfefefefe;</span>
+<span class="fc" id="L451">        int c2 = ((c0 &amp; m) &gt;&gt;&gt; 1) + ((c1 &amp; m) &gt;&gt;&gt; 1);</span>
         
-<span class="fc" id="L458">        g.setColor(new Color(c2, true));</span>
-<span class="fc" id="L459">        g.setFont(textComponent.getFont().deriveFont(Font.ITALIC));</span>
+<span class="fc" id="L453">        g.setColor(new Color(c2, true));</span>
+<span class="fc" id="L454">        g.setFont(textComponent.getFont().deriveFont(Font.ITALIC));</span>
 
-<span class="fc" id="L461">        g.drawString(</span>
+<span class="fc" id="L456">        g.drawString(</span>
             placeholderText,
-<span class="pc bpc" id="L463" title="1 of 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(textComponent.getComponentOrientation())</span>
-<span class="nc" id="L464">            ? w - (fm.stringWidth(placeholderText) + ins.left + 2)</span>
-<span class="fc" id="L465">            : ins.left + 2,</span>
+<span class="pc bpc" id="L458" title="1 of 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(textComponent.getComponentOrientation())</span>
+<span class="nc" id="L459">            ? w - (fm.stringWidth(placeholderText) + ins.left + 2)</span>
+<span class="fc" id="L460">            : ins.left + 2,</span>
             y
         );
-<span class="fc" id="L468">    }</span>
+<span class="fc" id="L463">    }</span>
     
     public static void initialize(JTextComponent component) {
 
-<span class="fc" id="L472">        component.setCaret(new DefaultCaret() {</span>
+<span class="fc" id="L467">        component.setCaret(new DefaultCaret() {</span>
             
             @Override
             public void setSelectionVisible(boolean visible) {
                 
-<span class="fc" id="L477">                super.setSelectionVisible(true);</span>
-<span class="fc" id="L478">            }</span>
+<span class="fc" id="L472">                super.setSelectionVisible(true);</span>
+<span class="fc" id="L473">            }</span>
         });
 
         // Side effect: disable caret blink, editable texts must restore blink rate
-<span class="fc" id="L482">        component.addFocusListener(new FocusListener() {</span>
+<span class="fc" id="L477">        component.addFocusListener(new FocusListener() {</span>
 
             @Override
             public void focusLost(FocusEvent e) {
 
-<span class="fc" id="L487">                component.setSelectionColor(UiUtil.COLOR_FOCUS_LOST);</span>
-<span class="fc" id="L488">                component.revalidate();</span>
-<span class="fc" id="L489">                component.repaint();</span>
-<span class="fc" id="L490">            }</span>
+<span class="fc" id="L482">                component.setSelectionColor(UiUtil.COLOR_FOCUS_LOST);</span>
+<span class="fc" id="L483">                component.revalidate();</span>
+<span class="fc" id="L484">                component.repaint();</span>
+<span class="fc" id="L485">            }</span>
 
             @Override
             public void focusGained(FocusEvent e) {
 
-<span class="fc" id="L495">                component.setSelectionColor(UiUtil.COLOR_FOCUS_GAINED);</span>
-<span class="fc" id="L496">                component.revalidate();</span>
-<span class="fc" id="L497">                component.repaint();</span>
-<span class="fc" id="L498">            }</span>
+<span class="fc" id="L490">                component.setSelectionColor(UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="fc" id="L491">                component.revalidate();</span>
+<span class="fc" id="L492">                component.repaint();</span>
+<span class="fc" id="L493">            }</span>
         });
         
-<span class="fc" id="L501">        component.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());</span>
-<span class="fc" id="L502">        component.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeleteNextCharAction());</span>
-<span class="fc" id="L503">    }</span>
+<span class="fc" id="L496">        component.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());</span>
+<span class="fc" id="L497">        component.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeleteNextCharAction());</span>
+<span class="fc" id="L498">    }</span>
     
     /**
      * End the thread doing coloring.
@@ -508,11 +503,11 @@ public class UiUtil {
      */
     public static void stopDocumentColorer(JTextPane textPane) {
         
-<span class="pc bpc" id="L511" title="1 of 2 branches missed.">        if (textPane.getStyledDocument() instanceof HighlightedDocument) {</span>
+<span class="pc bpc" id="L506" title="1 of 2 branches missed.">        if (textPane.getStyledDocument() instanceof HighlightedDocument) {</span>
             
-<span class="nc" id="L513">            HighlightedDocument oldDocument = (HighlightedDocument) textPane.getStyledDocument();</span>
-<span class="nc" id="L514">            oldDocument.stopColorer();</span>
+<span class="nc" id="L508">            HighlightedDocument oldDocument = (HighlightedDocument) textPane.getStyledDocument();</span>
+<span class="nc" id="L509">            oldDocument.stopColorer();</span>
         }
-<span class="fc" id="L516">    }</span>
+<span class="fc" id="L511">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

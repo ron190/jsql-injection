@@ -40,70 +40,62 @@ public class CoderListener implements ActionListener {
     private final ManagerCoder coderManager;
     
 <span class="fc" id="L42">    public CoderListener(ManagerCoder coderManager) {</span>
-        
-<span class="fc" id="L44">        this.coderManager = coderManager;</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L43">        this.coderManager = coderManager;</span>
+<span class="fc" id="L44">    }</span>
     
     public void actionPerformed() {
-        
-<span class="fc" id="L49">        this.transform(this.coderManager.getMenuMethod().getText());</span>
-<span class="fc" id="L50">    }</span>
+<span class="fc" id="L47">        this.transform(this.coderManager.getMenuMethod().getText());</span>
+<span class="fc" id="L48">    }</span>
     
     public void actionPerformed(String nameMethod) {
-        
-<span class="fc" id="L54">        this.transform(nameMethod);</span>
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L51">        this.transform(nameMethod);</span>
+<span class="fc" id="L52">    }</span>
     
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        
-<span class="nc" id="L60">        this.transform(this.coderManager.getMenuMethod().getText());</span>
-<span class="nc" id="L61">    }</span>
+<span class="nc" id="L56">        this.transform(this.coderManager.getMenuMethod().getText());</span>
+<span class="nc" id="L57">    }</span>
     
     private void transform(String labelMethodMenu) {
 
-<span class="fc" id="L65">        String nameMethod = labelMethodMenu.replace(&quot;Hash to &quot;, StringUtils.EMPTY);</span>
+<span class="fc" id="L61">        String nameMethod = labelMethodMenu.replace(&quot;Hash to &quot;, StringUtils.EMPTY);</span>
         
         String result;
-<span class="fc" id="L68">        String textInput = this.coderManager.getTextInput().getText();</span>
+<span class="fc" id="L64">        String textInput = this.coderManager.getTextInput().getText();</span>
         
         try {
-<span class="fc" id="L71">            if (</span>
-<span class="pc bpc" id="L72" title="1 of 2 branches missed.">                StringUtils.isEmpty(textInput)</span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">                &amp;&amp; !Arrays.asList(&quot;Md2&quot;, &quot;Md4&quot;, &quot;Md5&quot;, &quot;Sha-1&quot;, &quot;Sha-256&quot;, &quot;Sha-384&quot;, &quot;Sha-512&quot;, &quot;Mysql&quot;).contains(nameMethod)</span>
+<span class="fc" id="L67">            if (</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">                StringUtils.isEmpty(textInput)</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">                &amp;&amp; !Arrays.asList(&quot;Md2&quot;, &quot;Md4&quot;, &quot;Md5&quot;, &quot;Sha-1&quot;, &quot;Sha-256&quot;, &quot;Sha-384&quot;, &quot;Sha-512&quot;, &quot;Mysql&quot;).contains(nameMethod)</span>
             ) {
-<span class="nc" id="L75">                result = &quot;&lt;span style=\&quot;color:red;\&quot;&gt;Empty string to convert&lt;/span&gt;&quot;;</span>
-                
+<span class="nc" id="L71">                result = &quot;&lt;span style=\&quot;color:red;\&quot;&gt;Empty string to convert&lt;/span&gt;&quot;;</span>
             } else {
                 
-<span class="fc" id="L79">                result = ActionCoder</span>
-<span class="fc" id="L80">                    .forName(nameMethod)</span>
-<span class="pc" id="L81">                    .orElseThrow(() -&gt; new NoSuchElementException(&quot;Unsupported encoding or decoding method&quot;))</span>
-<span class="fc" id="L82">                    .run(textInput);</span>
+<span class="fc" id="L74">                result = ActionCoder.forName(nameMethod)</span>
+<span class="pc" id="L75">                    .orElseThrow(() -&gt; new NoSuchElementException(&quot;Unsupported encoding or decoding method&quot;))</span>
+<span class="fc" id="L76">                    .run(textInput);</span>
                 
                 // Prevent decoded HTML tags from result not rendered in Coder textPane
-<span class="fc" id="L85">                result = StringUtil.fromHtml(result);</span>
+<span class="fc" id="L79">                result = StringUtil.fromHtml(result);</span>
             }
-            
-<span class="nc" id="L88">        } catch (</span>
+<span class="nc" id="L81">        } catch (</span>
             IllegalArgumentException
             | NoSuchAlgorithmException
             | IOException
             | DecoderException e
         ) {
             
-<span class="nc" id="L95">            result = String.format(&quot;&lt;span style=\&quot;color:red;\&quot;&gt;Decoding failed: %s&lt;/span&gt;&quot;, e.getMessage());</span>
-            
-<span class="nc" id="L97">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="fc" id="L98">        }</span>
+<span class="nc" id="L88">            result = String.format(&quot;&lt;span style=\&quot;color:red;\&quot;&gt;Decoding failed: %s&lt;/span&gt;&quot;, e.getMessage());</span>
+<span class="nc" id="L89">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="fc" id="L90">        }</span>
         
-<span class="fc" id="L100">        this.coderManager.getResult().setText(</span>
-<span class="fc" id="L101">            String.format(</span>
+<span class="fc" id="L92">        this.coderManager.getResult().setText(</span>
+<span class="fc" id="L93">            String.format(</span>
                 &quot;&lt;html&gt;&lt;span style=\&quot;font-family:'%s'\&quot;&gt;%s&lt;/span&gt;&lt;/html&gt;&quot;,
                 UiUtil.FONT_NAME_MONO_NON_ASIAN,
                 result
             )
         );
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L99">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

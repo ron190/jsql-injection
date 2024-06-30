@@ -30,53 +30,49 @@ public class SubscriberInteraction implements Subscriber&lt;Request&gt; {
     private Subscription subscription;
     
 <span class="fc" id="L32">    public SubscriberInteraction(String packageInteraction) {</span>
-        
-<span class="fc" id="L34">        this.packageInteraction = packageInteraction;</span>
-<span class="fc" id="L35">    }</span>
+<span class="fc" id="L33">        this.packageInteraction = packageInteraction;</span>
+<span class="fc" id="L34">    }</span>
     
     @Override
     public void onSubscribe(Subscription subscription) {
         
-<span class="fc" id="L40">        this.subscription = subscription;</span>
-<span class="fc" id="L41">        subscription.request(1);</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L39">        this.subscription = subscription;</span>
+<span class="fc" id="L40">        subscription.request(1);</span>
+<span class="fc" id="L41">    }</span>
 
     @Override
     public void onNext(Request request) {
         
-<span class="fc" id="L47">        subscription.request(1);</span>
+<span class="fc" id="L46">        subscription.request(1);</span>
         
-<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (Interaction.UNSUBSCRIBE.equals(request.getMessage())) {</span>
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        if (Interaction.UNSUBSCRIBE.equals(request.getMessage())) {</span>
             
-<span class="nc" id="L51">            subscription.cancel();</span>
-<span class="nc" id="L52">            return;</span>
+<span class="nc" id="L50">            subscription.cancel();</span>
+<span class="nc" id="L51">            return;</span>
         }
         
         // Display model thread name in logs instead of the observer name
-<span class="fc" id="L56">        String nameThread = Thread.currentThread().getName();</span>
+<span class="fc" id="L55">        String nameThread = Thread.currentThread().getName();</span>
         
-<span class="fc" id="L58">        SwingUtilities.invokeLater(() -&gt; {</span>
+<span class="fc" id="L57">        SwingUtilities.invokeLater(() -&gt; {</span>
             
-<span class="fc" id="L60">            Thread.currentThread().setName(&quot;from &quot; + nameThread);</span>
+<span class="fc" id="L59">            Thread.currentThread().setName(&quot;from &quot; + nameThread);</span>
             
             try {
-<span class="fc" id="L63">                Class&lt;?&gt; cl = Class.forName(this.packageInteraction +&quot;.&quot;+ request.getMessage());</span>
-<span class="fc" id="L64">                var types = new Class[]{ Object[].class };</span>
-<span class="fc" id="L65">                Constructor&lt;?&gt; constructor = cl.getConstructor(types);</span>
+<span class="fc" id="L62">                Class&lt;?&gt; cl = Class.forName(this.packageInteraction +&quot;.&quot;+ request.getMessage());</span>
+<span class="fc" id="L63">                var types = new Class[]{ Object[].class };</span>
+<span class="fc" id="L64">                Constructor&lt;?&gt; constructor = cl.getConstructor(types);</span>
     
-<span class="fc" id="L67">                InteractionCommand interactionCommand = (InteractionCommand) constructor.newInstance(</span>
+<span class="fc" id="L66">                InteractionCommand interactionCommand = (InteractionCommand) constructor.newInstance(</span>
                     new Object[] {
-<span class="fc" id="L69">                        request.getParameters()</span>
+<span class="fc" id="L68">                        request.getParameters()</span>
                     }
                 );
-<span class="fc" id="L72">                interactionCommand.execute();</span>
+<span class="fc" id="L71">                interactionCommand.execute();</span>
                 
-<span class="fc" id="L74">            } catch (ClassNotFoundException e) {</span>
-                
-                // Ignore unused interaction message
-<span class="fc" id="L77">                LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-                
-<span class="nc" id="L79">            } catch (</span>
+<span class="fc" id="L73">            } catch (ClassNotFoundException e) {</span>
+<span class="fc" id="L74">                LOGGER.log(LogLevelUtil.IGNORE, e);  // Ignore unused interaction message</span>
+<span class="nc" id="L75">            } catch (</span>
                 InstantiationException
                 | IllegalAccessException
                 | NoSuchMethodException
@@ -85,20 +81,19 @@ public class SubscriberInteraction implements Subscriber&lt;Request&gt; {
                 | InvocationTargetException
                 e
             ) {
-<span class="nc" id="L88">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L89">            }</span>
-<span class="fc" id="L90">        });</span>
-<span class="fc" id="L91">    }</span>
+<span class="nc" id="L84">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L85">            }</span>
+<span class="fc" id="L86">        });</span>
+<span class="fc" id="L87">    }</span>
 
     @Override
     public void onError(Throwable e) {
-
-<span class="nc" id="L96">        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L97">    }</span>
+<span class="nc" id="L91">        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L92">    }</span>
 
     @Override
     public void onComplete() {
         // Nothing
-<span class="nc" id="L102">    }</span>
+<span class="nc" id="L97">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

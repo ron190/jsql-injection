@@ -35,21 +35,17 @@ public class AddDatabases implements InteractionCommand {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
 <span class="fc" id="L37">    public AddDatabases(Object[] interactionParams) {</span>
-        
-        // Get list of databases from the model
-<span class="fc" id="L40">        this.databases = (List&lt;Database&gt;) interactionParams[0];</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L38">        this.databases = (List&lt;Database&gt;) interactionParams[0];</span>
+<span class="fc" id="L39">    }</span>
 
     @Override
     public void execute() {
         
-<span class="fc" id="L46">        LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
+<span class="fc" id="L44">        LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
         
-        // Loop into the list of databases
-<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (Database database: this.databases) {</span>
-            
-<span class="fc" id="L51">            LOGGER.debug(database);</span>
-<span class="fc" id="L52">        }</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        for (Database database: this.databases) {</span>
+<span class="fc" id="L47">            LOGGER.debug(database);</span>
+<span class="fc" id="L48">        }</span>
+<span class="fc" id="L49">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -9,7 +9,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 /**
- * Mousewheel allows to navigate to next/previous tab.
+ * Mouse wheel allows to navigate to next/previous tab.
  */
 <span class="fc" id="L14">public class TabbedPaneMouseWheelListener implements MouseWheelListener {</span>
     
@@ -28,26 +28,20 @@ import java.awt.event.MouseWheelListener;
 <span class="nc" id="L28">        int maxIndex = tabPane.getTabCount() - 1;</span>
         
 <span class="nc bnc" id="L30" title="All 8 branches missed.">        if ((selIndex == 0 &amp;&amp; dir &lt; 0) || (selIndex == maxIndex &amp;&amp; dir &gt; 0)) {</span>
-            
-<span class="nc" id="L32">            selIndex = maxIndex - selIndex;</span>
-            
+<span class="nc" id="L31">            selIndex = maxIndex - selIndex;</span>
         } else {
-            
-<span class="nc" id="L36">            selIndex += dir;</span>
+<span class="nc" id="L33">            selIndex += dir;</span>
         }
         
-<span class="nc bnc" id="L39" title="All 4 branches missed.">        if (0 &lt;= selIndex &amp;&amp; selIndex &lt; tabPane.getTabCount()) {</span>
-            
+<span class="nc bnc" id="L36" title="All 4 branches missed.">        if (0 &lt;= selIndex &amp;&amp; selIndex &lt; tabPane.getTabCount()) {</span>
             // Fix #54575: NullPointerException on setSelectedIndex()
             // Fix #90835: IllegalArgumentException on setSelectedIndex()
             try {
-<span class="nc" id="L44">                tabPane.setSelectedIndex(selIndex);</span>
-                
-<span class="nc" id="L46">            } catch (IllegalArgumentException | NullPointerException e) {</span>
-                
-<span class="nc" id="L48">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L49">            }</span>
+<span class="nc" id="L40">                tabPane.setSelectedIndex(selIndex);</span>
+<span class="nc" id="L41">            } catch (IllegalArgumentException | NullPointerException e) {</span>
+<span class="nc" id="L42">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L43">            }</span>
         }
-<span class="nc" id="L51">    }</span>
+<span class="nc" id="L45">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -35,21 +35,18 @@ public class AddTables implements InteractionCommand {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
 <span class="fc" id="L37">    public AddTables(Object[] interactionParams) {</span>
-        
-        // Get list of tables from the model
-<span class="fc" id="L40">        this.tables = (List&lt;Table&gt;) interactionParams[0];</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L38">        this.tables = (List&lt;Table&gt;) interactionParams[0];</span>
+<span class="fc" id="L39">    }</span>
 
     @Override
     public void execute() {
         
-<span class="fc" id="L46">        LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
+<span class="fc" id="L44">        LOGGER.info(() -&gt; AnsiColorUtil.addGreenColor(this.getClass().getSimpleName()));</span>
         
         // Loop into the list of tables
-<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (Table table: this.tables) {</span>
-            
-<span class="fc" id="L51">            LOGGER.debug(table);</span>
-<span class="fc" id="L52">        }</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        for (Table table: this.tables) {</span>
+<span class="fc" id="L48">            LOGGER.debug(table);</span>
+<span class="fc" id="L49">        }</span>
+<span class="fc" id="L50">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

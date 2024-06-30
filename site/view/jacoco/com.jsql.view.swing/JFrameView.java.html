@@ -178,54 +178,51 @@ public class JFrameView extends JFrame {
 <span class="fc" id="L178">        var mainPanel = new JPanel(new GridLayout(1, 0));</span>
 <span class="fc" id="L179">        this.splitHorizontalTopBottom = new SplitHorizontalTopBottom();</span>
 <span class="fc" id="L180">        mainPanel.add(this.splitHorizontalTopBottom);</span>
-        
-        // Textfields at the top
-<span class="fc" id="L183">        var panelAddressBar = new PanelAddressBar();</span>
-        
-        // Tab manager use proxy tabs dependency
-<span class="fc" id="L186">        JTabbedPane tabManagers = new TabManagers();</span>
 
-<span class="fc" id="L188">        this.add(tabManagers);</span>
-<span class="fc" id="L189">        this.add(panelAddressBar);</span>
-<span class="fc" id="L190">        MediatorHelper.register(panelAddressBar);</span>
+<span class="fc" id="L182">        var panelAddressBar = new PanelAddressBar();  // Textfields at the top</span>
+<span class="fc" id="L183">        JTabbedPane tabManagers = new TabManagers();  // Tab manager use proxy tabs dependency</span>
 
-<span class="fc" id="L192">        this.add(mainPanel);</span>
+<span class="fc" id="L185">        this.add(tabManagers);</span>
+<span class="fc" id="L186">        this.add(panelAddressBar);</span>
+<span class="fc" id="L187">        MediatorHelper.register(panelAddressBar);</span>
+
+<span class="fc" id="L189">        this.add(mainPanel);</span>
         
-<span class="fc" id="L194">        menubar.switchLocale(Locale.ENGLISH, I18nUtil.getLocaleDefault(), true);</span>
-<span class="fc" id="L195">    }</span>
+<span class="fc" id="L191">        menubar.switchLocale(Locale.ENGLISH, I18nUtil.getLocaleDefault(), true);</span>
+<span class="fc" id="L192">    }</span>
 
     // Empty the interface
     public void resetInterface() {
         
-<span class="fc" id="L200">        MediatorHelper.panelAddressBar().getAddressMenuBar().reset();</span>
+<span class="fc" id="L197">        MediatorHelper.panelAddressBar().getAddressMenuBar().reset();</span>
         
-<span class="fc" id="L202">        MediatorHelper.treeDatabase().getTreeNodeModels().clear();</span>
-<span class="fc" id="L203">        this.mapShells.clear();</span>
+<span class="fc" id="L199">        MediatorHelper.treeDatabase().getTreeNodeModels().clear();</span>
+<span class="fc" id="L200">        this.mapShells.clear();</span>
         
-<span class="fc" id="L205">        MediatorHelper.panelConsoles().reset();</span>
-<span class="fc" id="L206">        MediatorHelper.treeDatabase().reset();</span>
+<span class="fc" id="L202">        MediatorHelper.panelConsoles().reset();</span>
+<span class="fc" id="L203">        MediatorHelper.treeDatabase().reset();</span>
         
-<span class="fc bfc" id="L208" title="All 2 branches covered.">        for (var i = 0 ; i &lt; MediatorHelper.tabConsoles().getTabCount() ; i++) {</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        for (var i = 0 ; i &lt; MediatorHelper.tabConsoles().getTabCount() ; i++) {</span>
             
-<span class="fc" id="L210">            var tabComponent = MediatorHelper.tabConsoles().getTabComponentAt(i);</span>
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">            if (tabComponent != null) {</span>
+<span class="fc" id="L207">            var tabComponent = MediatorHelper.tabConsoles().getTabComponentAt(i);</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">            if (tabComponent != null) {</span>
                 
-<span class="fc" id="L213">                tabComponent.setFont(tabComponent.getFont().deriveFont(Font.PLAIN));</span>
+<span class="fc" id="L210">                tabComponent.setFont(tabComponent.getFont().deriveFont(Font.PLAIN));</span>
             }
         }
         
-<span class="fc" id="L217">        Stream.of(</span>
-<span class="fc" id="L218">            MediatorHelper.managerUpload(),</span>
-<span class="fc" id="L219">            MediatorHelper.managerFile(),</span>
-<span class="fc" id="L220">            MediatorHelper.managerWebshell(),</span>
-<span class="fc" id="L221">            MediatorHelper.managerSqlshell()</span>
+<span class="fc" id="L214">        Stream.of(</span>
+<span class="fc" id="L215">            MediatorHelper.managerUpload(),</span>
+<span class="fc" id="L216">            MediatorHelper.managerFile(),</span>
+<span class="fc" id="L217">            MediatorHelper.managerWebshell(),</span>
+<span class="fc" id="L218">            MediatorHelper.managerSqlshell()</span>
         )
-<span class="fc" id="L223">        .forEach(managerList -&gt; {</span>
+<span class="fc" id="L220">        .forEach(managerList -&gt; {</span>
             
-<span class="fc" id="L225">            managerList.setButtonEnable(false);</span>
-<span class="fc" id="L226">            managerList.changePrivilegeIcon(UiUtil.ICON_SQUARE_GREY);</span>
-<span class="fc" id="L227">        });</span>
-<span class="fc" id="L228">    }</span>
+<span class="fc" id="L222">            managerList.setButtonEnable(false);</span>
+<span class="fc" id="L223">            managerList.changePrivilegeIcon(UiUtil.ICON_SQUARE_GREY);</span>
+<span class="fc" id="L224">        });</span>
+<span class="fc" id="L225">    }</span>
     
     
     // Getters and setters
@@ -235,15 +232,15 @@ public class JFrameView extends JFrame {
      * @return Map of key/value UUID =&gt; Terminal
      */
     public final Map&lt;UUID, AbstractShell&gt; getConsoles() {
-<span class="fc" id="L238">        return this.mapShells;</span>
+<span class="fc" id="L235">        return this.mapShells;</span>
     }
 
     public SubscriberInteraction getSubscriber() {
-<span class="fc" id="L242">        return this.subscriber;</span>
+<span class="fc" id="L239">        return this.subscriber;</span>
     }
 
     public SplitHorizontalTopBottom getSplitHorizontalTopBottom() {
-<span class="fc" id="L246">        return this.splitHorizontalTopBottom;</span>
+<span class="fc" id="L243">        return this.splitHorizontalTopBottom;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

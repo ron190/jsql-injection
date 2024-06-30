@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 
 /**
  * Listener to check or uncheck every children menu items.
- * Usually required from a table node to un/check every columns
+ * Usually required from a table node to un/check every column
  */
 public class ActionCheckbox implements ActionListener {
     
@@ -27,27 +27,24 @@ public class ActionCheckbox implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         
 <span class="nc" id="L29">        DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) this.path.getLastPathComponent();</span>
+<span class="nc" id="L30">        AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();</span>
+<span class="nc" id="L31">        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();</span>
+<span class="nc" id="L32">        int tableChildCount = treeModel.getChildCount(currentTableNode);</span>
         
-<span class="nc" id="L31">        AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();</span>
-        
-<span class="nc" id="L33">        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();</span>
-
-<span class="nc" id="L35">        int tableChildCount = treeModel.getChildCount(currentTableNode);</span>
-        
-<span class="nc bnc" id="L37" title="All 2 branches missed.">        for (var i = 0 ; i &lt; tableChildCount ; i++) {</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        for (var i = 0 ; i &lt; tableChildCount ; i++) {</span>
             
-<span class="nc" id="L39">            DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);</span>
+<span class="nc" id="L36">            DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);</span>
             
-<span class="nc bnc" id="L41" title="All 2 branches missed.">            if (currentChild.getUserObject() instanceof AbstractNodeModel) {</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">            if (currentChild.getUserObject() instanceof AbstractNodeModel) {</span>
                 
-<span class="nc" id="L43">                AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();</span>
-<span class="nc" id="L44">                columnTreeNodeModel.setSelected(this.isCheckboxesSelected);</span>
+<span class="nc" id="L40">                AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();</span>
+<span class="nc" id="L41">                columnTreeNodeModel.setSelected(this.isCheckboxesSelected);</span>
                 
-<span class="nc" id="L46">                currentTableModel.setContainingSelection(this.isCheckboxesSelected);</span>
+<span class="nc" id="L43">                currentTableModel.setContainingSelection(this.isCheckboxesSelected);</span>
             }
         }
 
-<span class="nc" id="L50">        treeModel.nodeChanged(currentTableNode);</span>
-<span class="nc" id="L51">    }</span>
+<span class="nc" id="L47">        treeModel.nodeChanged(currentTableNode);</span>
+<span class="nc" id="L48">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

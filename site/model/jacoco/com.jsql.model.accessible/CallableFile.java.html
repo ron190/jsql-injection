@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CallableFile.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">model</a> &gt; <a href="index.source.html" class="el_package">com.jsql.model.accessible</a> &gt; <span class="el_source">CallableFile.java</span></div><h1>CallableFile.java</h1><pre class="source lang-java linenums">package com.jsql.model.accessible;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
@@ -20,7 +21,7 @@ public class CallableFile implements Callable&lt;CallableFile&gt; {
     /**
      * Log4j logger sent to view.
      */
-<span class="fc" id="L23">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L24">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     /**
      * Path to the file to read.
@@ -30,7 +31,7 @@ public class CallableFile implements Callable&lt;CallableFile&gt; {
     /**
      * Source of file.
      */
-<span class="fc" id="L33">    private String sourceFile = StringUtils.EMPTY;</span>
+<span class="fc" id="L34">    private String sourceFile = StringUtils.EMPTY;</span>
     
     /**
      * Suspendable task that reads lines of the file by injection.
@@ -43,12 +44,12 @@ public class CallableFile implements Callable&lt;CallableFile&gt; {
      * Create Callable to read a file.
      * @param pathFile
      */
-<span class="fc" id="L46">    public CallableFile(String pathFile, InjectionModel injectionModel) {</span>
+<span class="fc" id="L47">    public CallableFile(String pathFile, InjectionModel injectionModel) {</span>
         
-<span class="fc" id="L48">        this.pathFile = pathFile;</span>
-<span class="fc" id="L49">        this.injectionModel= injectionModel;</span>
-<span class="fc" id="L50">        this.suspendableReadFile = new SuspendableGetRows(injectionModel);</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L49">        this.pathFile = pathFile;</span>
+<span class="fc" id="L50">        this.injectionModel= injectionModel;</span>
+<span class="fc" id="L51">        this.suspendableReadFile = new SuspendableGetRows(injectionModel);</span>
+<span class="fc" id="L52">    }</span>
     
     /**
      * Read a file on the server using SQL injection.
@@ -57,58 +58,51 @@ public class CallableFile implements Callable&lt;CallableFile&gt; {
     @Override
     public CallableFile call() throws Exception {
         
-<span class="fc" id="L60">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
+<span class="fc" id="L61">        var sourcePage = new String[]{ StringUtils.EMPTY };</span>
 
-<span class="fc" id="L62">        String resultToParse = StringUtils.EMPTY;</span>
+<span class="fc" id="L63">        String resultToParse = StringUtils.EMPTY;</span>
         try {
-<span class="fc" id="L64">            resultToParse = this.suspendableReadFile.run(</span>
-<span class="fc" id="L65">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(this.pathFile),</span>
+<span class="fc" id="L65">            resultToParse = this.suspendableReadFile.run(</span>
+<span class="fc" id="L66">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlFileRead(this.pathFile),</span>
                 sourcePage,
-<span class="fc" id="L67">                false,</span>
-<span class="fc" id="L68">                1,</span>
-                null,
+<span class="fc" id="L68">                false,</span>
+<span class="fc" id="L69">                1,</span>
+                AbstractElementDatabase.MOCK,
                 &quot;file&quot;
             );
-            
 <span class="nc" id="L73">        } catch (InjectionFailureException e) {</span>
-            
             // Usually thrown if File does not exist
-            
-<span class="nc" id="L77">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-            
-<span class="nc" id="L79">        } catch (StoppedByUserSlidingException e) {</span>
+<span class="nc" id="L75">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="nc" id="L76">        } catch (StoppedByUserSlidingException e) {</span>
             
             // Get partial source
-<span class="nc bnc" id="L82" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {</span>
-                
-<span class="nc" id="L84">                resultToParse = e.getSlidingWindowAllRows();</span>
-                
-<span class="nc bnc" id="L86" title="All 2 branches missed.">            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
-                
-<span class="nc" id="L88">                resultToParse = e.getSlidingWindowCurrentRows();</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {</span>
+<span class="nc" id="L80">                resultToParse = e.getSlidingWindowAllRows();</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">            } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
+<span class="nc" id="L82">                resultToParse = e.getSlidingWindowCurrentRows();</span>
             }
             
-<span class="nc" id="L91">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="pc" id="L92">        }</span>
+<span class="nc" id="L85">            LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="pc" id="L86">        }</span>
         
-<span class="fc" id="L94">        this.sourceFile = resultToParse;</span>
+<span class="fc" id="L88">        this.sourceFile = resultToParse;</span>
         
-<span class="fc" id="L96">        return this;</span>
+<span class="fc" id="L90">        return this;</span>
     }
     
     
-    // Getters and setters
+    // Getters
     
     public String getPathFile() {
-<span class="fc" id="L103">        return this.pathFile;</span>
+<span class="fc" id="L97">        return this.pathFile;</span>
     }
 
     public String getSourceFile() {
-<span class="fc" id="L107">        return this.sourceFile;</span>
+<span class="fc" id="L101">        return this.sourceFile;</span>
     }
 
     public SuspendableGetRows getSuspendableReadFile() {
-<span class="fc" id="L111">        return this.suspendableReadFile;</span>
+<span class="fc" id="L105">        return this.suspendableReadFile;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

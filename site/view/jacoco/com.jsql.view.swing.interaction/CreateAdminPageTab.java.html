@@ -52,14 +52,13 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
      * @param interactionParams Url of the webpage
      */
 <span class="fc" id="L54">    public CreateAdminPageTab(Object[] interactionParams) {</span>
-        
-<span class="fc" id="L56">        this.url = (String) interactionParams[0];</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L55">        this.url = (String) interactionParams[0];</span>
+<span class="fc" id="L56">    }</span>
 
     @Override
     public void execute() {
         
-<span class="fc" id="L62">        String htmlSource = StringUtils.EMPTY;</span>
+<span class="fc" id="L61">        String htmlSource = StringUtils.EMPTY;</span>
         
         // Fix #4081: SocketTimeoutException on get()
         // Fix #44642: NoClassDefFoundError on get()
@@ -68,158 +67,147 @@ public class CreateAdminPageTab extends CreateTabHelper implements InteractionCo
             // Previous test for 2xx Success and 3xx Redirection was Header only,
             // now get the HTML content.
             // Proxy is used by jsoup
-<span class="fc" id="L71">            htmlSource = Jsoup.clean(</span>
-<span class="fc" id="L72">                Jsoup.connect(this.url)</span>
+<span class="fc" id="L70">            htmlSource = Jsoup.clean(</span>
+<span class="fc" id="L71">                Jsoup.connect(this.url)</span>
                     // Prevent exception on UnsupportedMimeTypeException: Unhandled content type. Must be text/*, application/xml, or application/*+xml
-<span class="fc" id="L74">                    .ignoreContentType(true)</span>
+<span class="fc" id="L73">                    .ignoreContentType(true)</span>
                     // Prevent exception on HTTP errors
-<span class="fc" id="L76">                    .ignoreHttpErrors(true)</span>
-<span class="fc" id="L77">                    .get()</span>
-<span class="fc" id="L78">                    .html()</span>
-<span class="fc" id="L79">                    .replaceAll(&quot;&lt;img[^&gt;]*&gt;&quot;, StringUtils.EMPTY)</span>
-<span class="fc" id="L80">                    .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?[^&gt;]*&gt;&quot;, StringUtils.EMPTY)</span>
-<span class="fc" id="L81">                    .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?(submit|button)\&quot;?[^&gt;]*&gt;&quot;, &quot;&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;&quot;)</span>
-<span class="fc" id="L82">                    .replaceAll(&quot;&lt;input[^&gt;]*&gt;&quot;, &quot;&lt;div style=\&quot;text-align:center;border:1px solid black;width:100px;\&quot;&gt;input&lt;/div&gt;&quot;),</span>
-<span class="fc" id="L83">                Safelist.relaxed()</span>
-<span class="fc" id="L84">                    .addTags(&quot;center&quot;, &quot;div&quot;, &quot;span&quot;)</span>
-<span class="fc" id="L85">                    .addAttributes(&quot;:all&quot;, &quot;style&quot;)</span>
+<span class="fc" id="L75">                    .ignoreHttpErrors(true)</span>
+<span class="fc" id="L76">                    .get()</span>
+<span class="fc" id="L77">                    .html()</span>
+<span class="fc" id="L78">                    .replaceAll(&quot;&lt;img[^&gt;]*&gt;&quot;, StringUtils.EMPTY)</span>
+<span class="fc" id="L79">                    .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?hidden\&quot;?[^&gt;]*&gt;&quot;, StringUtils.EMPTY)</span>
+<span class="fc" id="L80">                    .replaceAll(&quot;&lt;input[^&gt;]*type=\&quot;?(submit|button)\&quot;?[^&gt;]*&gt;&quot;, &quot;&lt;div style=\&quot;background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\&quot;&gt;button&lt;/div&gt;&quot;)</span>
+<span class="fc" id="L81">                    .replaceAll(&quot;&lt;input[^&gt;]*&gt;&quot;, &quot;&lt;div style=\&quot;text-align:center;border:1px solid black;width:100px;\&quot;&gt;input&lt;/div&gt;&quot;),</span>
+<span class="fc" id="L82">                Safelist.relaxed()</span>
+<span class="fc" id="L83">                    .addTags(&quot;center&quot;, &quot;div&quot;, &quot;span&quot;)</span>
+<span class="fc" id="L84">                    .addAttributes(&quot;:all&quot;, &quot;style&quot;)</span>
             );
-            
-<span class="nc" id="L88">        } catch (IOException e) {</span>
-            
-<span class="nc" id="L90">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Failure opening page: {}&quot;, e.getMessage());</span>
-            
-<span class="nc" id="L92">        } catch (ExceptionInInitializerError | NoClassDefFoundError e) {</span>
-            
-<span class="nc" id="L94">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="pc" id="L95">        }</span>
+<span class="nc" id="L86">        } catch (IOException e) {</span>
+<span class="nc" id="L87">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Failure opening page: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L88">        } catch (ExceptionInInitializerError | NoClassDefFoundError e) {</span>
+<span class="nc" id="L89">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="pc" id="L90">        }</span>
 
-<span class="fc" id="L97">        final var browser = new JTextPane();</span>
-<span class="fc" id="L98">        browser.setContentType(&quot;text/html&quot;);</span>
-<span class="fc" id="L99">        browser.setEditable(false);</span>
+<span class="fc" id="L92">        final var browser = new JTextPane();</span>
+<span class="fc" id="L93">        browser.setContentType(&quot;text/html&quot;);</span>
+<span class="fc" id="L94">        browser.setEditable(false);</span>
         
         // Fix #43220: EmptyStackException on setText()
         // Fix #94242: IndexOutOfBoundsException on setText()
         try {
-<span class="fc" id="L104">            browser.setText(htmlSource);</span>
-            
-<span class="nc" id="L106">        } catch (IndexOutOfBoundsException | EmptyStackException e) {</span>
-            
-<span class="nc" id="L108">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L109">        }</span>
+<span class="fc" id="L99">            browser.setText(htmlSource);</span>
+<span class="nc" id="L100">        } catch (IndexOutOfBoundsException | EmptyStackException e) {</span>
+<span class="nc" id="L101">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L102">        }</span>
 
-<span class="fc" id="L111">        final var menu = new JPopupMenu();</span>
+<span class="fc" id="L104">        final var menu = new JPopupMenu();</span>
         
-<span class="fc" id="L113">        JMenuItem itemCopyUrl = new JMenuItemWithMargin(I18nUtil.valueByKey(&quot;CONTEXT_MENU_COPY_PAGE_URL&quot;));</span>
-<span class="fc" id="L114">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_COPY_PAGE_URL&quot;, itemCopyUrl);</span>
+<span class="fc" id="L106">        JMenuItem itemCopyUrl = new JMenuItemWithMargin(I18nUtil.valueByKey(&quot;CONTEXT_MENU_COPY_PAGE_URL&quot;));</span>
+<span class="fc" id="L107">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_COPY_PAGE_URL&quot;, itemCopyUrl);</span>
         
-<span class="fc" id="L116">        JMenuItem itemCopy = new JMenuItemWithMargin();</span>
-<span class="fc" id="L117">        itemCopy.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));</span>
-<span class="fc" id="L118">        itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));</span>
-<span class="fc" id="L119">        itemCopy.setMnemonic('C');</span>
-<span class="fc" id="L120">        itemCopy.setText(I18nUtil.valueByKey(&quot;CONTEXT_MENU_COPY&quot;));</span>
-<span class="fc" id="L121">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_COPY&quot;, itemCopy);</span>
+<span class="fc" id="L109">        JMenuItem itemCopy = new JMenuItemWithMargin();</span>
+<span class="fc" id="L110">        itemCopy.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));</span>
+<span class="fc" id="L111">        itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L112">        itemCopy.setMnemonic('C');</span>
+<span class="fc" id="L113">        itemCopy.setText(I18nUtil.valueByKey(&quot;CONTEXT_MENU_COPY&quot;));</span>
+<span class="fc" id="L114">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_COPY&quot;, itemCopy);</span>
         
-<span class="fc" id="L123">        JMenuItem itemSelectAll = new JMenuItemWithMargin();</span>
-<span class="fc" id="L124">        itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));</span>
-<span class="fc" id="L125">        itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));</span>
-<span class="fc" id="L126">        itemSelectAll.setText(I18nUtil.valueByKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;));</span>
-<span class="fc" id="L127">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;, itemSelectAll);</span>
-<span class="fc" id="L128">        itemSelectAll.setMnemonic('A');</span>
+<span class="fc" id="L116">        JMenuItem itemSelectAll = new JMenuItemWithMargin();</span>
+<span class="fc" id="L117">        itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));</span>
+<span class="fc" id="L118">        itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));</span>
+<span class="fc" id="L119">        itemSelectAll.setText(I18nUtil.valueByKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;));</span>
+<span class="fc" id="L120">        I18nViewUtil.addComponentForKey(&quot;CONTEXT_MENU_SELECT_ALL&quot;, itemSelectAll);</span>
+<span class="fc" id="L121">        itemSelectAll.setMnemonic('A');</span>
         
-<span class="fc" id="L130">        menu.add(itemCopyUrl);</span>
-<span class="fc" id="L131">        menu.add(new JSeparator());</span>
-<span class="fc" id="L132">        menu.add(itemCopy);</span>
-<span class="fc" id="L133">        menu.add(itemSelectAll);</span>
+<span class="fc" id="L123">        menu.add(itemCopyUrl);</span>
+<span class="fc" id="L124">        menu.add(new JSeparator());</span>
+<span class="fc" id="L125">        menu.add(itemCopy);</span>
+<span class="fc" id="L126">        menu.add(itemSelectAll);</span>
         
-<span class="fc" id="L135">        menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));</span>
+<span class="fc" id="L128">        menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));</span>
 
-<span class="fc" id="L137">        itemCopyUrl.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L130">        itemCopyUrl.addActionListener(actionEvent -&gt; {</span>
             
-<span class="nc" id="L139">            var stringSelection = new StringSelection(CreateAdminPageTab.this.url);</span>
-<span class="nc" id="L140">            var clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();</span>
-<span class="nc" id="L141">            clipboard.setContents(stringSelection, null);</span>
-<span class="nc" id="L142">        });</span>
+<span class="nc" id="L132">            var stringSelection = new StringSelection(CreateAdminPageTab.this.url);</span>
+<span class="nc" id="L133">            var clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();</span>
+<span class="nc" id="L134">            clipboard.setContents(stringSelection, null);</span>
+<span class="nc" id="L135">        });</span>
 
-<span class="pc" id="L144">        itemSelectAll.addActionListener(actionEvent -&gt; browser.selectAll());</span>
+<span class="pc" id="L137">        itemSelectAll.addActionListener(actionEvent -&gt; browser.selectAll());</span>
         
-<span class="fc" id="L146">        browser.addFocusListener(new FocusAdapter() {</span>
+<span class="fc" id="L139">        browser.addFocusListener(new FocusAdapter() {</span>
             
             @Override
             public void focusGained(FocusEvent arg0) {
-                
-<span class="fc" id="L151">                browser.getCaret().setVisible(true);</span>
-<span class="fc" id="L152">                browser.getCaret().setSelectionVisible(true);</span>
-<span class="fc" id="L153">            }</span>
+<span class="fc" id="L143">                browser.getCaret().setVisible(true);</span>
+<span class="fc" id="L144">                browser.getCaret().setSelectionVisible(true);</span>
+<span class="fc" id="L145">            }</span>
         });
         
-<span class="fc" id="L156">        browser.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L148">        browser.addMouseListener(new MouseAdapter() {</span>
             
             @Override
             public void mousePressed(MouseEvent evt) {
                 
-<span class="nc" id="L161">                browser.requestFocusInWindow();</span>
+<span class="nc" id="L153">                browser.requestFocusInWindow();</span>
                 
-<span class="nc bnc" id="L163" title="All 2 branches missed.">                if (evt.isPopupTrigger()) {</span>
-                    
-<span class="nc" id="L165">                    menu.show(evt.getComponent(), evt.getX(), evt.getY());</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                if (evt.isPopupTrigger()) {</span>
+<span class="nc" id="L156">                    menu.show(evt.getComponent(), evt.getX(), evt.getY());</span>
                 }
-<span class="nc" id="L167">            }</span>
+<span class="nc" id="L158">            }</span>
 
             @Override
             public void mouseReleased(MouseEvent evt) {
-                
-<span class="nc bnc" id="L172" title="All 2 branches missed.">                if (evt.isPopupTrigger()) {</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">                if (evt.isPopupTrigger()) {</span>
                     
                     // Fix #45348: IllegalComponentStateException on show()
                     try {
-<span class="nc" id="L176">                        menu.show(evt.getComponent(), evt.getX(), evt.getY());</span>
-                        
-<span class="nc" id="L178">                    } catch (IllegalComponentStateException e) {</span>
-                        
-<span class="nc" id="L180">                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L181">                    }</span>
+<span class="nc" id="L166">                        menu.show(evt.getComponent(), evt.getX(), evt.getY());</span>
+<span class="nc" id="L167">                    } catch (IllegalComponentStateException e) {</span>
+<span class="nc" id="L168">                        LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L169">                    }</span>
                     
-<span class="nc" id="L183">                    menu.setLocation(</span>
-<span class="nc bnc" id="L184" title="All 2 branches missed.">                        ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
-<span class="nc" id="L185">                        ? evt.getXOnScreen() - menu.getWidth()</span>
-<span class="nc" id="L186">                        : evt.getXOnScreen(),</span>
-<span class="nc" id="L187">                        evt.getYOnScreen()</span>
+<span class="nc" id="L171">                    menu.setLocation(</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">                        ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
+<span class="nc" id="L173">                        ? evt.getXOnScreen() - menu.getWidth()</span>
+<span class="nc" id="L174">                        : evt.getXOnScreen(),</span>
+<span class="nc" id="L175">                        evt.getYOnScreen()</span>
                     );
                 }
-<span class="nc" id="L190">            }</span>
+<span class="nc" id="L178">            }</span>
         });
 
-<span class="fc" id="L193">        final var scroller = new LightScrollPane(1, 0, 0, 0, browser);</span>
-<span class="fc" id="L194">        MediatorHelper.tabResults().addTab(this.url.replaceAll(&quot;.*/&quot;, StringUtils.EMPTY) + StringUtils.SPACE, scroller);</span>
+<span class="fc" id="L181">        final var scroller = new LightScrollPane(1, 0, 0, 0, browser);</span>
+<span class="fc" id="L182">        MediatorHelper.tabResults().addTab(this.url.replaceAll(&quot;.*/&quot;, StringUtils.EMPTY) + StringUtils.SPACE, scroller);</span>
 
         // Focus on the new tab
-<span class="fc" id="L197">        MediatorHelper.tabResults().setSelectedComponent(scroller);</span>
+<span class="fc" id="L185">        MediatorHelper.tabResults().setSelectedComponent(scroller);</span>
 
         // Create a custom tab header with close button
-<span class="fc" id="L200">        var header = new TabHeader(</span>
-<span class="fc" id="L201">            this.url.replaceAll(</span>
+<span class="fc" id="L188">        var header = new TabHeader(</span>
+<span class="fc" id="L189">            this.url.replaceAll(</span>
                 &quot;.*/&quot;,
                 StringUtils.EMPTY
             ),
             UiUtil.ICON_ADMIN_SERVER
         );
 
-<span class="fc" id="L208">        MediatorHelper.tabResults().setToolTipTextAt(</span>
-<span class="fc" id="L209">            MediatorHelper.tabResults().indexOfComponent(scroller),</span>
-<span class="fc" id="L210">            String.format(&quot;&lt;html&gt;%s&lt;/html&gt;&quot;, this.url)</span>
+<span class="fc" id="L196">        MediatorHelper.tabResults().setToolTipTextAt(</span>
+<span class="fc" id="L197">            MediatorHelper.tabResults().indexOfComponent(scroller),</span>
+<span class="fc" id="L198">            String.format(&quot;&lt;html&gt;%s&lt;/html&gt;&quot;, this.url)</span>
         );
 
         // Apply the custom header to the tab
-<span class="fc" id="L214">        MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);</span>
+<span class="fc" id="L202">        MediatorHelper.tabResults().setTabComponentAt(MediatorHelper.tabResults().indexOfComponent(scroller), header);</span>
 
         // Give focus to the admin page
-<span class="fc" id="L217">        browser.requestFocusInWindow();</span>
+<span class="fc" id="L205">        browser.requestFocusInWindow();</span>
 
         // Get back to the top
-<span class="fc" id="L220">        SwingUtilities.invokeLater(() -&gt;</span>
-<span class="fc" id="L221">            scroller.scrollPane.getViewport().setViewPosition(new Point(0, 0))</span>
+<span class="fc" id="L208">        SwingUtilities.invokeLater(() -&gt;</span>
+<span class="fc" id="L209">            scroller.scrollPane.getViewport().setViewPosition(new Point(0, 0))</span>
         );
-<span class="fc" id="L223">    }</span>
+<span class="fc" id="L211">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

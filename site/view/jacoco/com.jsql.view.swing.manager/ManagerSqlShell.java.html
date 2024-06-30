@@ -25,71 +25,67 @@ import java.awt.*;
 public class ManagerSqlShell extends AbstractManagerShell {
     
 <span class="fc" id="L27">    private final JTextField username = new JPopupTextField(I18nUtil.valueByKey(&quot;SQL_SHELL_USERNAME_LABEL&quot;)).getProxy();</span>
-    
-<span class="fc" id="L29">    private final JTextField password = new JPopupTextField(I18nUtil.valueByKey(&quot;SQL_SHELL_PASSWORD_LABEL&quot;)).getProxy();</span>
+<span class="fc" id="L28">    private final JTextField password = new JPopupTextField(I18nUtil.valueByKey(&quot;SQL_SHELL_PASSWORD_LABEL&quot;)).getProxy();</span>
     
     /**
      * Build the manager panel.
      */
-<span class="fc" id="L34">    public ManagerSqlShell() {</span>
+<span class="fc" id="L33">    public ManagerSqlShell() {</span>
 
-<span class="fc" id="L36">        this.run.setText(&quot;Create SQL shell(s)&quot;);</span>
+<span class="fc" id="L35">        this.run.setText(&quot;Create SQL shell(s)&quot;);</span>
         
-<span class="fc" id="L38">        var userPassPanel = new JPanel();</span>
+<span class="fc" id="L37">        var userPassPanel = new JPanel();</span>
         
-<span class="fc" id="L40">        var layout = new GroupLayout(userPassPanel);</span>
-<span class="fc" id="L41">        userPassPanel.setLayout(layout);</span>
-<span class="fc" id="L42">        userPassPanel.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
-<span class="fc" id="L43">        userPassPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
+<span class="fc" id="L39">        var layout = new GroupLayout(userPassPanel);</span>
+<span class="fc" id="L40">        userPassPanel.setLayout(layout);</span>
+<span class="fc" id="L41">        userPassPanel.setAlignmentX(Component.LEFT_ALIGNMENT);</span>
+<span class="fc" id="L42">        userPassPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
         
-<span class="fc" id="L45">        this.username.setToolTipText(I18nUtil.valueByKey(&quot;SQL_SHELL_USERNAME_TOOLTIP&quot;));</span>
-<span class="fc" id="L46">        this.password.setToolTipText(I18nUtil.valueByKey(&quot;SQL_SHELL_PASSWORD_TOOLTIP&quot;));</span>
+<span class="fc" id="L44">        this.username.setToolTipText(I18nUtil.valueByKey(&quot;SQL_SHELL_USERNAME_TOOLTIP&quot;));</span>
+<span class="fc" id="L45">        this.password.setToolTipText(I18nUtil.valueByKey(&quot;SQL_SHELL_PASSWORD_TOOLTIP&quot;));</span>
         
-<span class="fc" id="L48">        this.username.setBorder(UiUtil.BORDER_BLU);</span>
-<span class="fc" id="L49">        this.password.setBorder(UiUtil.BORDER_BLU);</span>
+<span class="fc" id="L47">        this.username.setBorder(UiUtil.BORDER_BLU);</span>
+<span class="fc" id="L48">        this.password.setBorder(UiUtil.BORDER_BLU);</span>
         
-<span class="fc" id="L51">        var panelPassword = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L52">        panelPassword.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));</span>
-<span class="fc" id="L53">        panelPassword.add(this.password);</span>
+<span class="fc" id="L50">        var panelPassword = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L51">        panelPassword.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));</span>
+<span class="fc" id="L52">        panelPassword.add(this.password);</span>
         
-<span class="fc" id="L55">        layout</span>
-<span class="fc" id="L56">        .setHorizontalGroup(</span>
+<span class="fc" id="L54">        layout.setHorizontalGroup(</span>
             layout
-<span class="fc" id="L58">            .createSequentialGroup()</span>
-<span class="fc" id="L59">            .addGroup(</span>
+<span class="fc" id="L56">            .createSequentialGroup()</span>
+<span class="fc" id="L57">            .addGroup(</span>
                 layout
-<span class="fc" id="L61">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
+<span class="fc" id="L59">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
             )
-<span class="fc" id="L63">            .addGroup(</span>
-<span class="fc" id="L64">                layout.createParallelGroup()</span>
-<span class="fc" id="L65">                .addComponent(this.username)</span>
-<span class="fc" id="L66">                .addComponent(panelPassword)</span>
+<span class="fc" id="L61">            .addGroup(</span>
+<span class="fc" id="L62">                layout.createParallelGroup()</span>
+<span class="fc" id="L63">                .addComponent(this.username)</span>
+<span class="fc" id="L64">                .addComponent(panelPassword)</span>
             )
         );
 
-<span class="fc" id="L70">        layout</span>
-<span class="fc" id="L71">        .setVerticalGroup(</span>
+<span class="fc" id="L68">        layout.setVerticalGroup(</span>
             layout
-<span class="fc" id="L73">            .createSequentialGroup()</span>
-<span class="fc" id="L74">            .addGroup(</span>
+<span class="fc" id="L70">            .createSequentialGroup()</span>
+<span class="fc" id="L71">            .addGroup(</span>
                 layout
-<span class="fc" id="L76">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L77">                .addComponent(this.username)</span>
+<span class="fc" id="L73">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L74">                .addComponent(this.username)</span>
             )
-<span class="fc" id="L79">            .addGroup(</span>
+<span class="fc" id="L76">            .addGroup(</span>
                 layout
-<span class="fc" id="L81">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L82">                .addComponent(panelPassword)</span>
+<span class="fc" id="L78">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L79">                .addComponent(panelPassword)</span>
             )
         );
         
-<span class="fc" id="L86">        this.add(userPassPanel, BorderLayout.NORTH);</span>
-<span class="fc" id="L87">    }</span>
+<span class="fc" id="L83">        this.add(userPassPanel, BorderLayout.NORTH);</span>
+<span class="fc" id="L84">    }</span>
 
     @Override
-    protected void createPayload(String shellPath, String shellURL) throws JSqlException, InterruptedException {
-        
-<span class="nc" id="L92">        MediatorHelper.model().getResourceAccess().createSqlShell(shellPath, shellURL, this.username.getText(), this.password.getText());</span>
-<span class="nc" id="L93">    }</span>
+    protected void createPayload(String shellPath, String shellURL) throws JSqlException {
+<span class="nc" id="L88">        MediatorHelper.model().getResourceAccess().createSqlShell(shellPath, shellURL, this.username.getText(), this.password.getText());</span>
+<span class="nc" id="L89">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -67,11 +67,10 @@ public class NetworkTable extends JTable {
 <span class="fc" id="L67">        this.setModel(new DefaultTableModel() {</span>
             
 <span class="fc" id="L69">            private final String[] columns = {</span>
-                    
-<span class="fc" id="L71">                I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;),</span>
-<span class="fc" id="L72">                String.format(</span>
+<span class="fc" id="L70">                I18nUtil.valueByKey(&quot;NETWORK_TAB_URL_COLUMN&quot;),</span>
+<span class="fc" id="L71">                String.format(</span>
                     &quot;%s (KB)&quot;,
-<span class="fc" id="L74">                    I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;)</span>
+<span class="fc" id="L73">                    I18nUtil.valueByKey(&quot;NETWORK_TAB_SIZE_COLUMN&quot;)</span>
                 ),
                 &quot;Strategy&quot;,
                 &quot;Metadata&quot;
@@ -79,79 +78,77 @@ public class NetworkTable extends JTable {
 
             @Override
             public int getColumnCount() {
-                
-<span class="fc" id="L83">                return this.columns.length;</span>
+<span class="fc" id="L81">                return this.columns.length;</span>
             }
 
             @Override
             public String getColumnName(int index) {
-                
-<span class="fc" id="L89">                return this.columns[index];</span>
+<span class="fc" id="L86">                return this.columns[index];</span>
             }
         });
 
-<span class="fc" id="L93">        this.getColumnModel().getColumn(0).setCellRenderer(new TooltipCellRenderer());</span>
+<span class="fc" id="L90">        this.getColumnModel().getColumn(0).setCellRenderer(new TooltipCellRenderer());</span>
 
-<span class="fc" id="L95">        DefaultTableCellRenderer centerHorizontalAlignment = new CenterRenderer();</span>
-<span class="fc" id="L96">        this.getColumnModel().getColumn(1).setCellRenderer(centerHorizontalAlignment);</span>
-<span class="fc" id="L97">        this.getColumnModel().getColumn(2).setCellRenderer(centerHorizontalAlignment);</span>
-<span class="fc" id="L98">        this.getColumnModel().getColumn(3).setCellRenderer(new CenterRendererWithColor());</span>
+<span class="fc" id="L92">        DefaultTableCellRenderer centerHorizontalAlignment = new CenterRenderer();</span>
+<span class="fc" id="L93">        this.getColumnModel().getColumn(1).setCellRenderer(centerHorizontalAlignment);</span>
+<span class="fc" id="L94">        this.getColumnModel().getColumn(2).setCellRenderer(centerHorizontalAlignment);</span>
+<span class="fc" id="L95">        this.getColumnModel().getColumn(3).setCellRenderer(new CenterRendererWithColor());</span>
         
-<span class="fc" id="L100">        this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), null);</span>
-<span class="fc" id="L101">        this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), null);</span>
+<span class="fc" id="L97">        this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), null);</span>
+<span class="fc" id="L98">        this.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), null);</span>
         
-<span class="fc" id="L103">        Set&lt;AWTKeyStroke&gt; forward = new HashSet&lt;&gt;(this.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));</span>
-<span class="fc" id="L104">        forward.add(KeyStroke.getKeyStroke(&quot;TAB&quot;));</span>
-<span class="fc" id="L105">        this.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forward);</span>
+<span class="fc" id="L100">        Set&lt;AWTKeyStroke&gt; forward = new HashSet&lt;&gt;(this.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));</span>
+<span class="fc" id="L101">        forward.add(KeyStroke.getKeyStroke(&quot;TAB&quot;));</span>
+<span class="fc" id="L102">        this.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forward);</span>
         
-<span class="fc" id="L107">        Set&lt;AWTKeyStroke&gt; backward = new HashSet&lt;&gt;(this.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));</span>
-<span class="fc" id="L108">        backward.add(KeyStroke.getKeyStroke(&quot;shift TAB&quot;));</span>
-<span class="fc" id="L109">        this.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backward);</span>
+<span class="fc" id="L104">        Set&lt;AWTKeyStroke&gt; backward = new HashSet&lt;&gt;(this.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));</span>
+<span class="fc" id="L105">        backward.add(KeyStroke.getKeyStroke(&quot;shift TAB&quot;));</span>
+<span class="fc" id="L106">        this.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backward);</span>
         
-<span class="fc" id="L111">        final var tableCellRenderer = this.getTableHeader().getDefaultRenderer();</span>
-<span class="fc" id="L112">        this.getTableHeader().setDefaultRenderer(</span>
+<span class="fc" id="L108">        final var tableCellRenderer = this.getTableHeader().getDefaultRenderer();</span>
+<span class="fc" id="L109">        this.getTableHeader().setDefaultRenderer(</span>
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -&gt; {
                 
-<span class="fc" id="L115">                JLabel label = (JLabel) tableCellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);</span>
+<span class="fc" id="L112">                JLabel label = (JLabel) tableCellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);</span>
                 
-<span class="fc" id="L117">                label.setBorder(</span>
-<span class="fc" id="L118">                    BorderFactory.createCompoundBorder(</span>
-<span class="fc" id="L119">                        BorderFactory.createMatteBorder(0, 0, 1, 1, Color.LIGHT_GRAY),</span>
-<span class="fc" id="L120">                        BorderFactory.createEmptyBorder(0, 5, 0, 5)</span>
+<span class="fc" id="L114">                label.setBorder(</span>
+<span class="fc" id="L115">                    BorderFactory.createCompoundBorder(</span>
+<span class="fc" id="L116">                        BorderFactory.createMatteBorder(0, 0, 1, 1, Color.LIGHT_GRAY),</span>
+<span class="fc" id="L117">                        BorderFactory.createEmptyBorder(0, 5, 0, 5)</span>
                     )
                 );
                 
-<span class="fc" id="L124">                return label;</span>
+<span class="fc" id="L121">                return label;</span>
             }
         );
         
-<span class="fc" id="L128">        this.getColumnModel().getColumn(0).setPreferredWidth(300);</span>
-<span class="fc" id="L129">        this.getColumnModel().getColumn(1).setPreferredWidth(20);</span>
-<span class="fc" id="L130">        this.getColumnModel().getColumn(2).setPreferredWidth(50);</span>
-<span class="fc" id="L131">        this.getColumnModel().getColumn(3).setPreferredWidth(50);</span>
+<span class="fc" id="L125">        this.getColumnModel().getColumn(0).setPreferredWidth(300);</span>
+<span class="fc" id="L126">        this.getColumnModel().getColumn(1).setPreferredWidth(20);</span>
+<span class="fc" id="L127">        this.getColumnModel().getColumn(2).setPreferredWidth(50);</span>
+<span class="fc" id="L128">        this.getColumnModel().getColumn(3).setPreferredWidth(50);</span>
         
-<span class="fc" id="L133">        this.getSelectionModel().addListSelectionListener(event -&gt; {</span>
+<span class="fc" id="L130">        this.getSelectionModel().addListSelectionListener(event -&gt; {</span>
             
             // prevent double event
-<span class="pc bpc" id="L136" title="1 of 4 branches missed.">            if (!event.getValueIsAdjusting() &amp;&amp; this.getSelectedRow() &gt; -1) {</span>
+<span class="pc bpc" id="L133" title="1 of 4 branches missed.">            if (!event.getValueIsAdjusting() &amp;&amp; this.getSelectedRow() &gt; -1) {</span>
                 
-<span class="fc" id="L138">                var httpHeader = this.listHttpHeader.get(this.getSelectedRow());</span>
-<span class="fc" id="L139">                tabbedPaneNetworkTab.changeTextNetwork(httpHeader);</span>
+<span class="fc" id="L135">                var httpHeader = this.listHttpHeader.get(this.getSelectedRow());</span>
+<span class="fc" id="L136">                tabbedPaneNetworkTab.changeTextNetwork(httpHeader);</span>
             }
-<span class="fc" id="L141">        });</span>
-<span class="fc" id="L142">    }</span>
+<span class="fc" id="L138">        });</span>
+<span class="fc" id="L139">    }</span>
     
     @Override
     public boolean isCellEditable(int row, int column) {
-<span class="fc" id="L146">        return false;</span>
+<span class="fc" id="L143">        return false;</span>
     }
 
     public List&lt;HttpHeader&gt; getListHttpHeader() {
-<span class="fc" id="L150">        return this.listHttpHeader;</span>
+<span class="fc" id="L147">        return this.listHttpHeader;</span>
     }
     
     public void addHeader(HttpHeader header) {
-<span class="fc" id="L154">        this.listHttpHeader.add(header);</span>
-<span class="fc" id="L155">    }</span>
+<span class="fc" id="L151">        this.listHttpHeader.add(header);</span>
+<span class="fc" id="L152">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

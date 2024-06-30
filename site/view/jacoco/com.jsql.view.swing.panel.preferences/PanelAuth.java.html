@@ -52,17 +52,16 @@ public class PanelAuth extends JPanel {
 <span class="fc" id="L52">        var labelKerberosLoginConf = new JLabel(&quot;login.conf  &quot;);</span>
 <span class="fc" id="L53">        var labelKerberosKrb5Conf = new JLabel(&quot;krb5.conf  &quot;);</span>
 <span class="fc" id="L54">        final var labelUseKerberos = new JButton(&quot;Enable Kerberos&quot;);</span>
-<span class="fc" id="L55">        String tooltipUseKerberos =</span>
-            TAG_HTML_ON
+<span class="fc" id="L55">        String tooltipUseKerberos = TAG_HTML_ON</span>
             + &quot;Enable Kerberos authentication, then define path to &lt;b&gt;login.conf&lt;/b&gt; and &lt;b&gt;krb5.conf&lt;/b&gt;.&lt;br&gt;&quot;
             + &quot;Path to &lt;b&gt;.keytab&lt;/b&gt; file is defined in login.conf ; name of &lt;b&gt;principal&lt;/b&gt; must be correct.&lt;br&gt;&quot;
             + &quot;&lt;b&gt;Realm&lt;/b&gt; and &lt;b&gt;kdc&lt;/b&gt; are defined in krb5.conf.&lt;br&gt;&quot;
             + &quot;Finally use the &lt;b&gt;correct hostname&lt;/b&gt; in URL, e.g. http://servicename.corp.test/[..]&quot;
             + TAG_HTML_OFF;
-<span class="fc" id="L62">        labelUseKerberos.setToolTipText(tooltipUseKerberos);</span>
+<span class="fc" id="L61">        labelUseKerberos.setToolTipText(tooltipUseKerberos);</span>
         
         // Proxy setting: IP, port, checkbox to activate proxy
-<span class="fc" id="L65">        this.getTextKerberosLoginConf().setToolTipText(</span>
+<span class="fc" id="L64">        this.getTextKerberosLoginConf().setToolTipText(</span>
             TAG_HTML_ON
             + &quot;Define the path to &lt;b&gt;login.conf&lt;/b&gt;. Sample :&lt;br&gt;&quot;
             + &quot;&amp;emsp;&lt;b&gt;entry-name&lt;/b&gt; {&lt;br&gt;&quot;
@@ -75,7 +74,7 @@ public class PanelAuth extends JPanel {
             + &quot;&amp;emsp;}&lt;br&gt;&quot;
             + &quot;&lt;i&gt;Principal name is case sensitive ; entry-name is read automatically.&lt;/i&gt;&quot;
             + TAG_HTML_OFF);
-<span class="fc" id="L78">        this.getTextKerberosKrb5Conf().setToolTipText(</span>
+<span class="fc" id="L77">        this.getTextKerberosKrb5Conf().setToolTipText(</span>
             TAG_HTML_ON
             + &quot;Define the path to &lt;b&gt;krb5.conf&lt;/b&gt;. Sample :&lt;br&gt;&quot;
             + &quot;&amp;emsp;[libdefaults]&lt;br&gt;&quot;
@@ -87,182 +86,178 @@ public class PanelAuth extends JPanel {
             + &quot;&amp;emsp;&amp;emsp;}&lt;br&gt;&quot;
             + &quot;&lt;i&gt;Realm and kdc are case sensitives.&lt;/i&gt;&quot;
             + TAG_HTML_OFF);
-<span class="fc" id="L90">        this.getCheckboxUseKerberos().setToolTipText(tooltipUseKerberos);</span>
-<span class="fc" id="L91">        this.getCheckboxUseKerberos().setFocusable(false);</span>
+<span class="fc" id="L89">        this.getCheckboxUseKerberos().setToolTipText(tooltipUseKerberos);</span>
+<span class="fc" id="L90">        this.getCheckboxUseKerberos().setFocusable(false);</span>
         
-<span class="fc" id="L93">        labelUseKerberos.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L92">        labelUseKerberos.addActionListener(actionEvent -&gt; {</span>
             
-<span class="nc bnc" id="L95" title="All 2 branches missed.">            this.getCheckboxUseKerberos().setSelected(!this.getCheckboxUseKerberos().isSelected());</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (this.getCheckboxUseKerberos().isSelected()) {</span>
-                
-<span class="nc" id="L98">                this.getCheckboxUseDigestAuthentication().setSelected(false);</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            this.getCheckboxUseKerberos().setSelected(!this.getCheckboxUseKerberos().isSelected());</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">            if (this.getCheckboxUseKerberos().isSelected()) {</span>
+<span class="nc" id="L96">                this.getCheckboxUseDigestAuthentication().setSelected(false);</span>
             }
             
-<span class="nc" id="L101">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L102">        });</span>
+<span class="nc" id="L99">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="nc" id="L100">        });</span>
         
-<span class="fc" id="L104">        labelUseDigestAuthentication.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L102">        labelUseDigestAuthentication.addActionListener(actionEvent -&gt; {</span>
             
-<span class="nc bnc" id="L106" title="All 2 branches missed.">            this.getCheckboxUseDigestAuthentication().setSelected(!this.getCheckboxUseDigestAuthentication().isSelected());</span>
-<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (this.getCheckboxUseDigestAuthentication().isSelected()) {</span>
-                
-<span class="nc" id="L109">                this.getCheckboxUseKerberos().setSelected(false);</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            this.getCheckboxUseDigestAuthentication().setSelected(!this.getCheckboxUseDigestAuthentication().isSelected());</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">            if (this.getCheckboxUseDigestAuthentication().isSelected()) {</span>
+<span class="nc" id="L106">                this.getCheckboxUseKerberos().setSelected(false);</span>
             }
             
-<span class="nc" id="L112">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L113">        });</span>
+<span class="nc" id="L109">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="nc" id="L110">        });</span>
         
-<span class="fc" id="L115">        this.getTextKerberosKrb5Conf().setMaximumSize(new Dimension(400, 0));</span>
-<span class="fc" id="L116">        this.getTextKerberosLoginConf().setMaximumSize(new Dimension(400, 0));</span>
-<span class="fc" id="L117">        this.getTextDigestAuthenticationUsername().setMaximumSize(new Dimension(200, 0));</span>
-<span class="fc" id="L118">        this.getTextDigestAuthenticationPassword().setMaximumSize(new Dimension(200, 0));</span>
+<span class="fc" id="L112">        this.getTextKerberosKrb5Conf().setMaximumSize(new Dimension(400, 0));</span>
+<span class="fc" id="L113">        this.getTextKerberosLoginConf().setMaximumSize(new Dimension(400, 0));</span>
+<span class="fc" id="L114">        this.getTextDigestAuthenticationUsername().setMaximumSize(new Dimension(200, 0));</span>
+<span class="fc" id="L115">        this.getTextDigestAuthenticationPassword().setMaximumSize(new Dimension(200, 0));</span>
 
-<span class="fc" id="L120">        this.getTextKerberosLoginConf().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
-<span class="fc" id="L121">        this.getTextKerberosKrb5Conf().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
+<span class="fc" id="L117">        this.getTextKerberosLoginConf().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
+<span class="fc" id="L118">        this.getTextKerberosKrb5Conf().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
         
-<span class="fc" id="L123">        this.getTextDigestAuthenticationUsername().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
-<span class="fc" id="L124">        this.getTextDigestAuthenticationPassword().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
+<span class="fc" id="L120">        this.getTextDigestAuthenticationUsername().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
+<span class="fc" id="L121">        this.getTextDigestAuthenticationPassword().setFont(UiUtil.FONT_NON_MONO_BIG);</span>
         
-<span class="fc" id="L126">        Stream.of(</span>
-<span class="fc" id="L127">            this.getCheckboxUseDigestAuthentication(),</span>
-<span class="fc" id="L128">            this.getCheckboxUseKerberos()</span>
+<span class="fc" id="L123">        Stream.of(</span>
+<span class="fc" id="L124">            this.getCheckboxUseDigestAuthentication(),</span>
+<span class="fc" id="L125">            this.getCheckboxUseKerberos()</span>
         )
-<span class="fc" id="L130">        .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));</span>
+<span class="fc" id="L127">        .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));</span>
         
-<span class="fc" id="L132">        DocumentListener documentListenerSave = new DocumentListenerEditing() {</span>
-            
+<span class="fc" id="L129">        DocumentListener documentListenerSave = new DocumentListenerEditing() {</span>
             @Override
             public void process() {
-                
-<span class="nc" id="L137">                panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L138">            }</span>
+<span class="nc" id="L132">                panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="nc" id="L133">            }</span>
         };
 
-<span class="fc" id="L141">        Stream.of(</span>
-<span class="fc" id="L142">            this.getTextDigestAuthenticationPassword(),</span>
-<span class="fc" id="L143">            this.getTextDigestAuthenticationUsername(),</span>
-<span class="fc" id="L144">            this.getTextKerberosKrb5Conf(),</span>
-<span class="fc" id="L145">            this.getTextKerberosLoginConf()</span>
+<span class="fc" id="L136">        Stream.of(</span>
+<span class="fc" id="L137">            this.getTextDigestAuthenticationPassword(),</span>
+<span class="fc" id="L138">            this.getTextDigestAuthenticationUsername(),</span>
+<span class="fc" id="L139">            this.getTextKerberosKrb5Conf(),</span>
+<span class="fc" id="L140">            this.getTextKerberosLoginConf()</span>
         )
-<span class="fc" id="L147">        .forEach(textField -&gt; textField.getDocument().addDocumentListener(documentListenerSave));</span>
+<span class="fc" id="L142">        .forEach(textField -&gt; textField.getDocument().addDocumentListener(documentListenerSave));</span>
 
-<span class="fc" id="L149">        Stream.of(</span>
+<span class="fc" id="L144">        Stream.of(</span>
             labelUseDigestAuthentication,
             labelUseKerberos
         )
-<span class="fc" id="L153">        .forEach(label -&gt; {</span>
+<span class="fc" id="L148">        .forEach(label -&gt; {</span>
             
-<span class="fc" id="L155">            label.setHorizontalAlignment(SwingConstants.LEFT);</span>
-<span class="fc" id="L156">            label.setBorderPainted(false);</span>
-<span class="fc" id="L157">            label.setContentAreaFilled(false);</span>
-<span class="fc" id="L158">        });</span>
+<span class="fc" id="L150">            label.setHorizontalAlignment(SwingConstants.LEFT);</span>
+<span class="fc" id="L151">            label.setBorderPainted(false);</span>
+<span class="fc" id="L152">            label.setContentAreaFilled(false);</span>
+<span class="fc" id="L153">        });</span>
         
-<span class="fc" id="L160">        var labelMarginHidden = new JLabel();</span>
-<span class="fc" id="L161">        var labelMargin = new JLabel();</span>
-<span class="fc" id="L162">        labelMargin.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));</span>
+<span class="fc" id="L155">        var labelMarginHidden = new JLabel();</span>
+<span class="fc" id="L156">        var labelMargin = new JLabel();</span>
+<span class="fc" id="L157">        labelMargin.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));</span>
         
-<span class="fc" id="L164">        groupLayout</span>
-<span class="fc" id="L165">        .setHorizontalGroup(</span>
+<span class="fc" id="L159">        groupLayout</span>
+<span class="fc" id="L160">        .setHorizontalGroup(</span>
             groupLayout
-<span class="fc" id="L167">            .createSequentialGroup()</span>
-<span class="fc" id="L168">            .addGroup(</span>
+<span class="fc" id="L162">            .createSequentialGroup()</span>
+<span class="fc" id="L163">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L170">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
-<span class="fc" id="L171">                .addComponent(this.getCheckboxUseDigestAuthentication())</span>
-<span class="fc" id="L172">                .addComponent(labelDigestAuthenticationUsername)</span>
-<span class="fc" id="L173">                .addComponent(labelDigestAuthenticationPassword)</span>
-<span class="fc" id="L174">                .addComponent(labelMarginHidden)</span>
-<span class="fc" id="L175">                .addComponent(this.getCheckboxUseKerberos())</span>
-<span class="fc" id="L176">                .addComponent(labelKerberosLoginConf)</span>
-<span class="fc" id="L177">                .addComponent(labelKerberosKrb5Conf)</span>
+<span class="fc" id="L165">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
+<span class="fc" id="L166">                .addComponent(this.getCheckboxUseDigestAuthentication())</span>
+<span class="fc" id="L167">                .addComponent(labelDigestAuthenticationUsername)</span>
+<span class="fc" id="L168">                .addComponent(labelDigestAuthenticationPassword)</span>
+<span class="fc" id="L169">                .addComponent(labelMarginHidden)</span>
+<span class="fc" id="L170">                .addComponent(this.getCheckboxUseKerberos())</span>
+<span class="fc" id="L171">                .addComponent(labelKerberosLoginConf)</span>
+<span class="fc" id="L172">                .addComponent(labelKerberosKrb5Conf)</span>
             )
-<span class="fc" id="L179">            .addGroup(</span>
+<span class="fc" id="L174">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L181">                .createParallelGroup()</span>
-<span class="fc" id="L182">                .addComponent(labelUseDigestAuthentication)</span>
-<span class="fc" id="L183">                .addComponent(this.getTextDigestAuthenticationUsername())</span>
-<span class="fc" id="L184">                .addComponent(this.getTextDigestAuthenticationPassword())</span>
-<span class="fc" id="L185">                .addComponent(labelMargin)</span>
-<span class="fc" id="L186">                .addComponent(labelUseKerberos)</span>
-<span class="fc" id="L187">                .addComponent(this.getTextKerberosLoginConf())</span>
-<span class="fc" id="L188">                .addComponent(this.getTextKerberosKrb5Conf())</span>
+<span class="fc" id="L176">                .createParallelGroup()</span>
+<span class="fc" id="L177">                .addComponent(labelUseDigestAuthentication)</span>
+<span class="fc" id="L178">                .addComponent(this.getTextDigestAuthenticationUsername())</span>
+<span class="fc" id="L179">                .addComponent(this.getTextDigestAuthenticationPassword())</span>
+<span class="fc" id="L180">                .addComponent(labelMargin)</span>
+<span class="fc" id="L181">                .addComponent(labelUseKerberos)</span>
+<span class="fc" id="L182">                .addComponent(this.getTextKerberosLoginConf())</span>
+<span class="fc" id="L183">                .addComponent(this.getTextKerberosKrb5Conf())</span>
             )
         );
         
-<span class="fc" id="L192">        groupLayout</span>
-<span class="fc" id="L193">        .setVerticalGroup(</span>
+<span class="fc" id="L187">        groupLayout</span>
+<span class="fc" id="L188">        .setVerticalGroup(</span>
             groupLayout
-<span class="fc" id="L195">            .createSequentialGroup()</span>
-<span class="fc" id="L196">            .addGroup(</span>
+<span class="fc" id="L190">            .createSequentialGroup()</span>
+<span class="fc" id="L191">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L198">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L199">                .addComponent(this.getCheckboxUseDigestAuthentication())</span>
-<span class="fc" id="L200">                .addComponent(labelUseDigestAuthentication)</span>
+<span class="fc" id="L193">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L194">                .addComponent(this.getCheckboxUseDigestAuthentication())</span>
+<span class="fc" id="L195">                .addComponent(labelUseDigestAuthentication)</span>
             )
-<span class="fc" id="L202">            .addGroup(</span>
+<span class="fc" id="L197">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L204">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L205">                .addComponent(labelDigestAuthenticationUsername)</span>
-<span class="fc" id="L206">                .addComponent(this.getTextDigestAuthenticationUsername())</span>
+<span class="fc" id="L199">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L200">                .addComponent(labelDigestAuthenticationUsername)</span>
+<span class="fc" id="L201">                .addComponent(this.getTextDigestAuthenticationUsername())</span>
             )
-<span class="fc" id="L208">            .addGroup(</span>
+<span class="fc" id="L203">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L210">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L211">                .addComponent(labelDigestAuthenticationPassword)</span>
-<span class="fc" id="L212">                .addComponent(this.getTextDigestAuthenticationPassword())</span>
+<span class="fc" id="L205">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L206">                .addComponent(labelDigestAuthenticationPassword)</span>
+<span class="fc" id="L207">                .addComponent(this.getTextDigestAuthenticationPassword())</span>
             )
-<span class="fc" id="L214">            .addGroup(</span>
+<span class="fc" id="L209">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L216">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L217">                .addComponent(labelMarginHidden)</span>
-<span class="fc" id="L218">                .addComponent(labelMargin)</span>
+<span class="fc" id="L211">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L212">                .addComponent(labelMarginHidden)</span>
+<span class="fc" id="L213">                .addComponent(labelMargin)</span>
             )
-<span class="fc" id="L220">            .addGroup(</span>
+<span class="fc" id="L215">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L222">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L223">                .addComponent(this.getCheckboxUseKerberos())</span>
-<span class="fc" id="L224">                .addComponent(labelUseKerberos)</span>
+<span class="fc" id="L217">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L218">                .addComponent(this.getCheckboxUseKerberos())</span>
+<span class="fc" id="L219">                .addComponent(labelUseKerberos)</span>
             )
-<span class="fc" id="L226">            .addGroup(</span>
+<span class="fc" id="L221">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L228">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L229">                .addComponent(labelKerberosLoginConf)</span>
-<span class="fc" id="L230">                .addComponent(this.getTextKerberosLoginConf())</span>
+<span class="fc" id="L223">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L224">                .addComponent(labelKerberosLoginConf)</span>
+<span class="fc" id="L225">                .addComponent(this.getTextKerberosLoginConf())</span>
             )
-<span class="fc" id="L232">            .addGroup(</span>
+<span class="fc" id="L227">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L234">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L235">                .addComponent(labelKerberosKrb5Conf)</span>
-<span class="fc" id="L236">                .addComponent(this.getTextKerberosKrb5Conf())</span>
+<span class="fc" id="L229">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L230">                .addComponent(labelKerberosKrb5Conf)</span>
+<span class="fc" id="L231">                .addComponent(this.getTextKerberosKrb5Conf())</span>
             )
         );
-<span class="fc" id="L239">    }</span>
+<span class="fc" id="L234">    }</span>
     
     
     // Getter and setter
     
     public JCheckBox getCheckboxUseDigestAuthentication() {
-<span class="fc" id="L245">        return this.checkboxUseDigestAuthentication;</span>
+<span class="fc" id="L240">        return this.checkboxUseDigestAuthentication;</span>
     }
 
     public JTextField getTextDigestAuthenticationUsername() {
-<span class="fc" id="L249">        return this.textDigestAuthenticationUsername;</span>
+<span class="fc" id="L244">        return this.textDigestAuthenticationUsername;</span>
     }
 
     public JTextField getTextDigestAuthenticationPassword() {
-<span class="fc" id="L253">        return this.textDigestAuthenticationPassword;</span>
+<span class="fc" id="L248">        return this.textDigestAuthenticationPassword;</span>
     }
 
     public JCheckBox getCheckboxUseKerberos() {
-<span class="fc" id="L257">        return this.checkboxUseKerberos;</span>
+<span class="fc" id="L252">        return this.checkboxUseKerberos;</span>
     }
 
     public JTextField getTextKerberosKrb5Conf() {
-<span class="fc" id="L261">        return this.textKerberosKrb5Conf;</span>
+<span class="fc" id="L256">        return this.textKerberosKrb5Conf;</span>
     }
 
     public JTextField getTextKerberosLoginConf() {
-<span class="fc" id="L265">        return this.textKerberosLoginConf;</span>
+<span class="fc" id="L260">        return this.textKerberosLoginConf;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

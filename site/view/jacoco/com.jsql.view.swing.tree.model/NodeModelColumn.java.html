@@ -36,32 +36,29 @@ public class NodeModelColumn extends NodeModelEmpty {
     public Component getComponent(
         final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, boolean hasFocus
     ) {
-        
-<span class="fc" id="L40">        var checkbox = new JCheckBox(this.toString(), this.isSelected());</span>
-        
-<span class="fc" id="L42">        checkbox.setText(UiStringUtil.detectUtf8HtmlNoWrap(this.toString()));</span>
+<span class="fc" id="L39">        var checkbox = new JCheckBox(this.toString(), this.isSelected());</span>
+<span class="fc" id="L40">        checkbox.setText(UiStringUtil.detectUtf8HtmlNoWrap(this.toString()));</span>
 
-<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (isSelected) {</span>
-            
-<span class="nc bnc" id="L46" title="All 2 branches missed.">            if (hasFocus) {</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        if (isSelected) {</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">            if (hasFocus) {</span>
                 
-<span class="nc" id="L48">                checkbox.setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
-<span class="nc" id="L49">                checkbox.setBorder(UiUtil.BORDER_FOCUS_GAINED);</span>
+<span class="nc" id="L45">                checkbox.setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="nc" id="L46">                checkbox.setBorder(UiUtil.BORDER_FOCUS_GAINED);</span>
                 
             } else {
                 
-<span class="nc" id="L53">                checkbox.setBackground(UiUtil.COLOR_FOCUS_LOST);</span>
-<span class="nc" id="L54">                checkbox.setBorder(UiUtil.BORDER_FOCUS_LOST);</span>
+<span class="nc" id="L50">                checkbox.setBackground(UiUtil.COLOR_FOCUS_LOST);</span>
+<span class="nc" id="L51">                checkbox.setBorder(UiUtil.BORDER_FOCUS_LOST);</span>
             }
         } else {
             
-<span class="fc" id="L58">            checkbox.setBackground(Color.WHITE);</span>
-<span class="fc" id="L59">            checkbox.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
+<span class="fc" id="L55">            checkbox.setBackground(Color.WHITE);</span>
+<span class="fc" id="L56">            checkbox.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
         }
         
-<span class="fc" id="L62">        checkbox.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));</span>
+<span class="fc" id="L59">        checkbox.setComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));</span>
         
-<span class="fc" id="L64">        return checkbox;</span>
+<span class="fc" id="L61">        return checkbox;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

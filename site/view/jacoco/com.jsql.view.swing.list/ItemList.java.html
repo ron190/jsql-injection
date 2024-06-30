@@ -19,71 +19,66 @@ public class ItemList {
      * Text displayed on item.
      */
     private String internalString;
-
     private String originalString;
 
-    /**
-     * 
-     */
-<span class="fc" id="L28">    private boolean isVulnerable = false;</span>
-    
-<span class="fc" id="L30">    private Boolean isDatabaseConfirmed = false;</span>
+<span class="fc" id="L24">    private boolean isVulnerable = false;</span>
+<span class="fc" id="L25">    private Boolean isDatabaseConfirmed = false;</span>
     
     /**
      * Create a JList item.
      * @param newString
      */
-<span class="fc" id="L36">    public ItemList(String newString) {</span>
+<span class="fc" id="L31">    public ItemList(String newString) {</span>
         
-<span class="fc" id="L38">        this.internalString = newString;</span>
-<span class="fc" id="L39">        this.originalString = newString;</span>
-<span class="fc" id="L40">    }</span>
+<span class="fc" id="L33">        this.internalString = newString;</span>
+<span class="fc" id="L34">        this.originalString = newString;</span>
+<span class="fc" id="L35">    }</span>
     
     public void reset() {
         
-<span class="nc" id="L44">        this.internalString = this.originalString;</span>
-<span class="nc" id="L45">        this.isVulnerable = false;</span>
-<span class="nc" id="L46">        this.isDatabaseConfirmed = false;</span>
-<span class="nc" id="L47">    }</span>
+<span class="nc" id="L39">        this.internalString = this.originalString;</span>
+<span class="nc" id="L40">        this.isVulnerable = false;</span>
+<span class="nc" id="L41">        this.isDatabaseConfirmed = false;</span>
+<span class="nc" id="L42">    }</span>
     
     @Override
     public String toString() {
-<span class="fc" id="L51">        return this.internalString;</span>
+<span class="fc" id="L46">        return this.internalString;</span>
     }
     
     
     // Getter and setter
 
     public String getInternalString() {
-<span class="nc" id="L58">        return this.internalString;</span>
+<span class="nc" id="L53">        return this.internalString;</span>
     }
 
     public void setInternalString(String internalString) {
-<span class="nc" id="L62">        this.internalString = internalString;</span>
-<span class="nc" id="L63">    }</span>
+<span class="nc" id="L57">        this.internalString = internalString;</span>
+<span class="nc" id="L58">    }</span>
 
     public boolean getIsVulnerable() {
-<span class="fc" id="L66">        return this.isVulnerable;</span>
+<span class="fc" id="L61">        return this.isVulnerable;</span>
     }
 
     public void setIsVulnerable(boolean isVulnerable) {
-<span class="nc" id="L70">        this.isVulnerable = isVulnerable;</span>
-<span class="nc" id="L71">    }</span>
+<span class="nc" id="L65">        this.isVulnerable = isVulnerable;</span>
+<span class="nc" id="L66">    }</span>
 
     public boolean getIsDatabaseConfirmed() {
-<span class="fc" id="L74">        return this.isDatabaseConfirmed;</span>
+<span class="fc" id="L69">        return this.isDatabaseConfirmed;</span>
     }
 
     public void setIsDatabaseConfirmed(boolean isDatabaseConfirmed) {
-<span class="nc" id="L78">        this.isDatabaseConfirmed = isDatabaseConfirmed;</span>
-<span class="nc" id="L79">    }</span>
+<span class="nc" id="L73">        this.isDatabaseConfirmed = isDatabaseConfirmed;</span>
+<span class="nc" id="L74">    }</span>
     
     public String getOriginalString() {
-<span class="nc" id="L82">        return this.originalString;</span>
+<span class="nc" id="L77">        return this.originalString;</span>
     }
 
     public void setOriginalString(String originalString) {
-<span class="nc" id="L86">        this.originalString = originalString;</span>
-<span class="nc" id="L87">    }</span>
+<span class="nc" id="L81">        this.originalString = originalString;</span>
+<span class="nc" id="L82">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

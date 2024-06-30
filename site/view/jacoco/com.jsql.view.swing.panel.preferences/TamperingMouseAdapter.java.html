@@ -22,22 +22,19 @@ public class TamperingMouseAdapter extends MouseAdapter {
     public void mouseEntered(MouseEvent me) {
         
 <span class="nc" id="L24">        this.eval = this.textPaneEval.getText();</span>
-        
-<span class="nc" id="L26">        this.textPaneEval.setText(this.tampering.instance().getJavascript().trim());</span>
-<span class="nc" id="L27">    }</span>
+<span class="nc" id="L25">        this.textPaneEval.setText(this.tampering.instance().getJavascript().trim());</span>
+<span class="nc" id="L26">    }</span>
     
     @Override
     public void mouseExited(MouseEvent e) {
-        
-<span class="nc" id="L32">        this.textPaneEval.setText(this.eval);</span>
-<span class="nc" id="L33">    }</span>
+<span class="nc" id="L30">        this.textPaneEval.setText(this.eval);</span>
+<span class="nc" id="L31">    }</span>
     
     @Override
     public void mouseClicked(MouseEvent e) {
         
-<span class="nc" id="L38">        this.eval = this.tampering.instance().getJavascript().trim();</span>
-        
-<span class="nc" id="L40">        this.textPaneEval.setText(this.eval);</span>
-<span class="nc" id="L41">    }</span>
+<span class="nc" id="L36">        this.eval = this.tampering.instance().getJavascript().trim();</span>
+<span class="nc" id="L37">        this.textPaneEval.setText(this.eval);</span>
+<span class="nc" id="L38">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

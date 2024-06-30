@@ -91,37 +91,31 @@ public class MenuActionExport implements ActionListener {
                         default:
                             break;
                     }
-                    
-<span class="nc" id="L95">                } else {</span>
-                    
-<span class="nc" id="L97">                    super.approveSelection();</span>
+<span class="nc" id="L94">                } else {</span>
+<span class="nc" id="L95">                    super.approveSelection();</span>
                 }
-<span class="nc" id="L99">            }</span>
+<span class="nc" id="L97">            }</span>
         };
         
-<span class="nc" id="L102">        importFileDialog.setDialogTitle(I18nUtil.valueByKey(&quot;LIST_EXPORT_TITLE&quot;));</span>
-<span class="nc" id="L103">        int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());</span>
+<span class="nc" id="L100">        importFileDialog.setDialogTitle(I18nUtil.valueByKey(&quot;LIST_EXPORT_TITLE&quot;));</span>
+<span class="nc" id="L101">        int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());</span>
         
-<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (choice != JFileChooser.APPROVE_OPTION) {</span>
-            
-<span class="nc" id="L107">            return;</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (choice != JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc" id="L104">            return;</span>
         }
 
         try (
-<span class="nc" id="L111">            var file = new FileOutputStream(importFileDialog.getSelectedFile());</span>
-<span class="nc" id="L112">            var out = new PrintStream(file, false, StandardCharsets.UTF_8)</span>
+<span class="nc" id="L108">            var file = new FileOutputStream(importFileDialog.getSelectedFile());</span>
+<span class="nc" id="L109">            var out = new PrintStream(file, false, StandardCharsets.UTF_8)</span>
         ) {
-<span class="nc" id="L114">            int len = this.myList.getModel().getSize();</span>
+<span class="nc" id="L111">            int len = this.myList.getModel().getSize();</span>
             
-<span class="nc bnc" id="L116" title="All 2 branches missed.">            for (var i = 0 ; i &lt; len ; i++) {</span>
-                
-<span class="nc" id="L118">                out.println(this.myList.getModel().getElementAt(i).toString());</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            for (var i = 0 ; i &lt; len ; i++) {</span>
+<span class="nc" id="L114">                out.println(this.myList.getModel().getElementAt(i).toString());</span>
             }
-            
-<span class="nc" id="L121">        } catch (IOException e) {</span>
-            
-<span class="nc" id="L123">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L124">        }</span>
-<span class="nc" id="L125">    }</span>
+<span class="nc" id="L116">        } catch (IOException e) {</span>
+<span class="nc" id="L117">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L118">        }</span>
+<span class="nc" id="L119">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -56,19 +56,18 @@ public class TabMouseAdapter extends MouseAdapter {
 <span class="nc" id="L56">                itemMenu.addActionListener(actionEvent -&gt; this.tabbedPaneWheeled.setSelectedIndex(positionFinal));</span>
                 
 <span class="nc" id="L58">            } catch (SerializationException e) {</span>
-                
-<span class="nc" id="L60">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L61">            }</span>
+<span class="nc" id="L59">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L60">            }</span>
         }
 
-<span class="nc" id="L64">        menu.show(componentSource, event.getX(), event.getY());</span>
+<span class="nc" id="L63">        menu.show(componentSource, event.getX(), event.getY());</span>
         
-<span class="nc" id="L66">        menu.setLocation(</span>
-<span class="nc bnc" id="L67" title="All 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
-<span class="nc" id="L68">            ? event.getXOnScreen() - menu.getWidth()</span>
-<span class="nc" id="L69">            : event.getXOnScreen(),</span>
-<span class="nc" id="L70">            event.getYOnScreen()</span>
+<span class="nc" id="L65">        menu.setLocation(</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
+<span class="nc" id="L67">            ? event.getXOnScreen() - menu.getWidth()</span>
+<span class="nc" id="L68">            : event.getXOnScreen(),</span>
+<span class="nc" id="L69">            event.getYOnScreen()</span>
         );
-<span class="nc" id="L72">    }</span>
+<span class="nc" id="L71">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

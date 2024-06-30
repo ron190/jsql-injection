@@ -81,7 +81,7 @@
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">this</strong>.buildI18nTab(<span class="jxr_string">"SCANLIST_TAB"</span>, UiUtil.ICON_SCANLIST, managerScanList);
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>      }
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>      
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> createFileTab(String path, String name) {
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addToLists(String path, String name) {
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>          <em class="jxr_comment">// Add the path String to the list of files only if there is no same StringObject value already</em>
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>          <strong class="jxr_keyword">this</strong>.managerWebShell.addToList(path.replace(name, StringUtils.EMPTY));
@@ -121,10 +121,9 @@
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>     }
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>     
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> buildI18nTab(String keyLabel, Icon icon, Component manager) {
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>         
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>         <strong class="jxr_keyword">this</strong>.addTab(I18nUtil.valueByKey(keyLabel), icon, manager);
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>     }
-<a class="jxr_linenumber" name="L119" href="#L119">119</a> }
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>         <strong class="jxr_keyword">this</strong>.addTab(I18nUtil.valueByKey(keyLabel), icon, manager);
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>     }
+<a class="jxr_linenumber" name="L118" href="#L118">118</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>

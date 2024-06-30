@@ -18,7 +18,7 @@ import java.util.concurrent.SubmissionPublisher;
 /**
  * Define the features of the injection model :&lt;br&gt;
  * - stop the preparation of injection,&lt;br&gt;
- * - Callable for parallelizing HTTP tasks,&lt;br&gt;
+ * - Callable for parallelize HTTP tasks,&lt;br&gt;
  * - communication with view, via Observable.
  */
 <span class="fc" id="L24">public abstract class AbstractModelObservable extends SubmissionPublisher&lt;Request&gt; {</span>
@@ -28,7 +28,7 @@ import java.util.concurrent.SubmissionPublisher;
      * During the preparation, several methods will
      * check if the execution must be stopped.
      */
-<span class="fc" id="L31">    private boolean isStoppedByUser = false;</span>
+<span class="fc" id="L31">    protected boolean isStoppedByUser = false;</span>
 
     /**
      * Function header for the inject() methods, definition needed by call(),
@@ -46,38 +46,32 @@ import java.util.concurrent.SubmissionPublisher;
     );
     
     /**
-     * Inject without the need of index like in &quot;select 1,2,...&quot;&lt;br&gt;
+     * Inject without the need of index like in &quot;select 1,2,...&quot;.&lt;br&gt;
      * Used for example by: first index test (getVisibleIndex), Error test, and Error, Blind, Time strategies.
      * @return source code of current page
      */
     public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess) {
-        
-<span class="fc" id="L55">        return this.inject(dataInjection, false, metadataInjectionProcess, null, false);</span>
+<span class="fc" id="L54">        return this.inject(dataInjection, false, metadataInjectionProcess, null, false);</span>
     }
 
     public String injectWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBoolean&lt;?&gt; callableBoolean) {
-        
-<span class="fc" id="L60">        return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, false);</span>
+<span class="fc" id="L58">        return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, false);</span>
     }
 
     public String injectWithIndexes(String dataInjection, String metadataInjectionProcess) {
-        
-<span class="fc" id="L65">        return this.inject(dataInjection, true, metadataInjectionProcess, null, false);</span>
+<span class="fc" id="L62">        return this.inject(dataInjection, true, metadataInjectionProcess, null, false);</span>
     }
 
     public String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess) {
-
-<span class="fc" id="L70">        return this.inject(dataInjection, false, metadataInjectionProcess, null, true);</span>
+<span class="fc" id="L66">        return this.inject(dataInjection, false, metadataInjectionProcess, null, true);</span>
     }
 
     public String getReportWithoutIndex(String dataInjection, String metadataInjectionProcess, AbstractCallableBoolean&lt;?&gt; callableBoolean) {
-
-<span class="fc" id="L75">        return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, true);</span>
+<span class="fc" id="L70">        return this.inject(dataInjection, false, metadataInjectionProcess, callableBoolean, true);</span>
     }
 
     public String getReportWithIndexes(String dataInjection, String metadataInjectionProcess) {
-
-<span class="fc" id="L80">        return this.inject(dataInjection, true, metadataInjectionProcess, null, true);</span>
+<span class="fc" id="L74">        return this.inject(dataInjection, true, metadataInjectionProcess, null, true);</span>
     }
 
     /**
@@ -85,19 +79,18 @@ import java.util.concurrent.SubmissionPublisher;
      * @param request The event bean corresponding to the interaction
      */
     public void sendToViews(final Request request) {
-        
-<span class="fc" id="L89">        AbstractModelObservable.this.submit(request);</span>
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L82">        AbstractModelObservable.this.submit(request);</span>
+<span class="fc" id="L83">    }</span>
 
     
     // Getters and setters
     
     public boolean isStoppedByUser() {
-<span class="fc" id="L96">        return this.isStoppedByUser;</span>
+<span class="fc" id="L89">        return this.isStoppedByUser;</span>
     }
 
     public void setIsStoppedByUser(boolean processStopped) {
-<span class="fc" id="L100">        this.isStoppedByUser = processStopped;</span>
-<span class="fc" id="L101">    }</span>
+<span class="fc" id="L93">        this.isStoppedByUser = processStopped;</span>
+<span class="fc" id="L94">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

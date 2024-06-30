@@ -53,7 +53,7 @@
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>                  g.drawRect(0, 0, w - 1, h - 1);
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>              }
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>              
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>              g.setColor( MetalLookAndFeel.getControlInfo() );
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>              g.setColor(MetalLookAndFeel.getControlInfo());
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>              
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>          } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>              
@@ -64,33 +64,32 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          g.translate(-x, -y);
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">if</strong> (model.isSelected()) {
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>              
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>              <strong class="jxr_keyword">this</strong>.drawCheck(g, x, y);
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>          }
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>      }
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>      
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> drawCheck(Graphics g, <strong class="jxr_keyword">int</strong> x, <strong class="jxr_keyword">int</strong> y) {
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>          g.fillRect(x + 3, y + 5, 2, CheckBoxIcon.CONTROL_SIZE - 8);
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>          g.drawLine(x + CheckBoxIcon.CONTROL_SIZE - 4, y + 3, x + 5, y + CheckBoxIcon.CONTROL_SIZE - 6);
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>          g.drawLine(x + CheckBoxIcon.CONTROL_SIZE - 4, y + 4, x + 5, y + CheckBoxIcon.CONTROL_SIZE - 5);
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>      }
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>  
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>      @Override
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> paintIcon(Component c, Graphics g, <strong class="jxr_keyword">int</strong> x, <strong class="jxr_keyword">int</strong> y) {
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">this</strong>.paintOceanIcon(c, g, x, y);
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>      }
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>  
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>      @Override
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> getIconWidth() {
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>          <strong class="jxr_keyword">return</strong> CheckBoxIcon.CONTROL_SIZE;
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>      }
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>  
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>      @Override
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> getIconHeight() {
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>          <strong class="jxr_keyword">return</strong> CheckBoxIcon.CONTROL_SIZE;
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>      }
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>  }
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>              <strong class="jxr_keyword">this</strong>.drawCheck(g, x, y);
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          }
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>      }
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>      
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> drawCheck(Graphics g, <strong class="jxr_keyword">int</strong> x, <strong class="jxr_keyword">int</strong> y) {
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>          
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>          g.fillRect(x + 3, y + 5, 2, CheckBoxIcon.CONTROL_SIZE - 8);
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>          g.drawLine(x + CheckBoxIcon.CONTROL_SIZE - 4, y + 3, x + 5, y + CheckBoxIcon.CONTROL_SIZE - 6);
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          g.drawLine(x + CheckBoxIcon.CONTROL_SIZE - 4, y + 4, x + 5, y + CheckBoxIcon.CONTROL_SIZE - 5);
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>      }
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>  
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>      @Override
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> paintIcon(Component c, Graphics g, <strong class="jxr_keyword">int</strong> x, <strong class="jxr_keyword">int</strong> y) {
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">this</strong>.paintOceanIcon(c, g, x, y);
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>      }
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>  
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>      @Override
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> getIconWidth() {
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">return</strong> CheckBoxIcon.CONTROL_SIZE;
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>      }
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>  
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>      @Override
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> getIconHeight() {
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>          <strong class="jxr_keyword">return</strong> CheckBoxIcon.CONTROL_SIZE;
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>      }
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>

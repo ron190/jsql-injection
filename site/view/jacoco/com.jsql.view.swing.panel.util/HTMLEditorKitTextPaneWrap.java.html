@@ -9,85 +9,74 @@ import javax.swing.text.html.InlineView;
 import javax.swing.text.html.ParagraphView;
 
 <span class="fc" id="L11">public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {</span>
-
     @Override
     public ViewFactory getViewFactory() {
-
-<span class="fc" id="L16">        return new HTMLFactory() {</span>
+<span class="fc" id="L14">        return new HTMLFactory() {</span>
 
             @Override
             public View create(Element e) {
                 
-<span class="fc" id="L21">                View v = super.create(e);</span>
+<span class="fc" id="L19">                View v = super.create(e);</span>
                 
-<span class="fc bfc" id="L23" title="All 2 branches covered.">                if (v instanceof InlineView) {</span>
-                    
-<span class="fc" id="L25">                    return this.getInlineView(e);</span>
-                    
-<span class="fc bfc" id="L27" title="All 2 branches covered.">                } else if (v instanceof ParagraphView) {</span>
-                    
-<span class="fc" id="L29">                    return this.getParagraphView(e);</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">                if (v instanceof InlineView) {</span>
+<span class="fc" id="L22">                    return this.getInlineView(e);</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">                } else if (v instanceof ParagraphView) {</span>
+<span class="fc" id="L24">                    return this.getParagraphView(e);</span>
                 }
                 
-<span class="fc" id="L32">                return v;</span>
+<span class="fc" id="L27">                return v;</span>
             }
 
             private View getParagraphView(Element e) {
-                
-<span class="fc" id="L37">                return new ParagraphView(e) {</span>
-
+<span class="fc" id="L31">                return new ParagraphView(e) {</span>
                     @Override
-                    protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements valueR) {
+                    protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements sizeRequirements) {
                         
-<span class="fc" id="L42">                        SizeRequirements r = valueR;</span>
+<span class="fc" id="L35">                        SizeRequirements r = sizeRequirements;</span>
                         
-<span class="fc bfc" id="L44" title="All 2 branches covered.">                        if (r == null) {</span>
-                            
-<span class="fc" id="L46">                            r = new SizeRequirements();</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">                        if (r == null) {</span>
+<span class="fc" id="L38">                            r = new SizeRequirements();</span>
                         }
                         
-<span class="fc" id="L49">                        float pref = this.layoutPool.getPreferredSpan(axis);</span>
-<span class="fc" id="L50">                        float min = this.layoutPool.getMinimumSpan(axis);</span>
+<span class="fc" id="L41">                        float pref = this.layoutPool.getPreferredSpan(axis);</span>
+<span class="fc" id="L42">                        float min = this.layoutPool.getMinimumSpan(axis);</span>
                         
                         // Don't include insets, Box.getXXXSpan will include
                         // them.
-<span class="fc" id="L54">                        r.minimum = (int) min;</span>
-<span class="fc" id="L55">                        r.preferred = Math.max(r.minimum, (int) pref);</span>
-<span class="fc" id="L56">                        r.maximum = Integer.MAX_VALUE;</span>
-<span class="fc" id="L57">                        r.alignment = 0.5f;</span>
+<span class="fc" id="L46">                        r.minimum = (int) min;</span>
+<span class="fc" id="L47">                        r.preferred = Math.max(r.minimum, (int) pref);</span>
+<span class="fc" id="L48">                        r.maximum = Integer.MAX_VALUE;</span>
+<span class="fc" id="L49">                        r.alignment = 0.5f;</span>
                         
-<span class="fc" id="L59">                        return r;</span>
+<span class="fc" id="L51">                        return r;</span>
                     }
                 };
             }
 
             private View getInlineView(Element e) {
-                
-<span class="fc" id="L66">                return new InlineView(e) {</span>
+<span class="fc" id="L57">                return new InlineView(e) {</span>
 
                     @Override
                     public int getBreakWeight(int axis, float pos, float len) {
-                        
-<span class="fc" id="L71">                        return GoodBreakWeight;</span>
+<span class="fc" id="L61">                        return GoodBreakWeight;</span>
                     }
 
                     @Override
                     public View breakView(int axis, int p0, float pos, float len) {
                         
-<span class="pc bpc" id="L77" title="1 of 2 branches missed.">                        if (axis == View.X_AXIS) {</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">                        if (axis == View.X_AXIS) {</span>
                             
-<span class="fc" id="L79">                            this.checkPainter();</span>
-<span class="fc" id="L80">                            int p1 = this.getGlyphPainter().getBoundedPosition(this, p0, pos, len);</span>
+<span class="fc" id="L69">                            this.checkPainter();</span>
+<span class="fc" id="L70">                            int p1 = this.getGlyphPainter().getBoundedPosition(this, p0, pos, len);</span>
                             
-<span class="pc bpc" id="L82" title="2 of 4 branches missed.">                            if (p0 == this.getStartOffset() &amp;&amp; p1 == this.getEndOffset()) {</span>
-                                
-<span class="nc" id="L84">                                return this;</span>
+<span class="pc bpc" id="L72" title="2 of 4 branches missed.">                            if (p0 == this.getStartOffset() &amp;&amp; p1 == this.getEndOffset()) {</span>
+<span class="nc" id="L73">                                return this;</span>
                             }
                             
-<span class="fc" id="L87">                            return this.createFragment(p0, p1);</span>
+<span class="fc" id="L76">                            return this.createFragment(p0, p1);</span>
                         }
                         
-<span class="nc" id="L90">                        return this;</span>
+<span class="nc" id="L79">                        return this;</span>
                     }
                 };
             }

@@ -78,97 +78,93 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
 <span class="nc" id="L78">            this.nodeModel = (AbstractNodeModel) currentNodeModel;</span>
             
 <span class="nc bnc" id="L80" title="All 2 branches missed.">            if (componentRenderer instanceof JCheckBox) {</span>
-                
-<span class="nc" id="L82">                ((JCheckBox) componentRenderer).addActionListener(</span>
+<span class="nc" id="L81">                ((JCheckBox) componentRenderer).addActionListener(</span>
                     new ActionCheckUncheck(this.nodeModel, currentNode)
                 );
             }
-            
-<span class="nc" id="L87">        } catch (Exception e) {</span>
-            
-<span class="nc" id="L89">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L90">        }</span>
+<span class="nc" id="L85">        } catch (Exception e) {</span>
+<span class="nc" id="L86">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L87">        }</span>
 
-<span class="nc" id="L92">        return componentRenderer;</span>
+<span class="nc" id="L89">        return componentRenderer;</span>
     }
 
     @Override
     public Object getCellEditorValue() {
-<span class="nc" id="L97">        return this.nodeModel;</span>
+<span class="nc" id="L94">        return this.nodeModel;</span>
     }
     
     @Override
-    public void valueChanged(TreeSelectionEvent arg0) {
+    public void valueChanged(TreeSelectionEvent treeSelectionEvent) {
         
-<span class="nc" id="L103">        DefaultMutableTreeNode node = (DefaultMutableTreeNode) MediatorHelper.treeDatabase().getLastSelectedPathComponent();</span>
+<span class="nc" id="L100">        DefaultMutableTreeNode node = (DefaultMutableTreeNode) MediatorHelper.treeDatabase().getLastSelectedPathComponent();</span>
 
         // Get rid of java.lang.NullPointerException
-<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (node == null) {</span>
-<span class="nc" id="L107">            return;</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (node == null) {</span>
+<span class="nc" id="L104">            return;</span>
         }
 
-<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (node.getUserObject() instanceof AbstractNodeModel) {</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (node.getUserObject() instanceof AbstractNodeModel) {</span>
             
-<span class="nc" id="L112">            AbstractNodeModel dataModel = (AbstractNodeModel) node.getUserObject();</span>
-<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (!dataModel.isLoaded()) {</span>
-                
-<span class="nc" id="L115">                dataModel.runAction();</span>
+<span class="nc" id="L109">            AbstractNodeModel dataModel = (AbstractNodeModel) node.getUserObject();</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">            if (!dataModel.isLoaded()) {</span>
+<span class="nc" id="L111">                dataModel.runAction();</span>
             }
         }
-<span class="nc" id="L118">    }</span>
+<span class="nc" id="L114">    }</span>
 
     /**
      * Fix compatibility issue with right click on Linux.
-     * @param e Mouse event
+     * @param mouseEvent Mouse event
      */
-    private void showPopup(MouseEvent e) {
+    private void showPopup(MouseEvent mouseEvent) {
         
-<span class="fc bfc" id="L126" title="All 2 branches covered.">        if (!e.isPopupTrigger()) {</span>
-<span class="fc" id="L127">            return;</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (!mouseEvent.isPopupTrigger()) {</span>
+<span class="fc" id="L123">            return;</span>
         }
         
-<span class="fc" id="L130">        JTree tree = (JTree) e.getSource();</span>
-<span class="fc" id="L131">        TreePath path = tree.getPathForLocation(e.getX(), e.getY());</span>
+<span class="fc" id="L126">        JTree tree = (JTree) mouseEvent.getSource();</span>
+<span class="fc" id="L127">        TreePath path = tree.getPathForLocation(mouseEvent.getX(), mouseEvent.getY());</span>
         
-<span class="pc bpc" id="L133" title="1 of 2 branches missed.">        if (path == null) {</span>
-<span class="nc" id="L134">            return;</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        if (path == null) {</span>
+<span class="nc" id="L130">            return;</span>
         }
 
-<span class="fc" id="L137">        DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();</span>
+<span class="fc" id="L133">        DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();</span>
 
-<span class="pc bpc" id="L139" title="1 of 2 branches missed.">        if (currentTableNode.getUserObject() instanceof AbstractNodeModel) {</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if (currentTableNode.getUserObject() instanceof AbstractNodeModel) {</span>
             
-<span class="fc" id="L141">            AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();</span>
+<span class="fc" id="L137">            AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();</span>
             
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">            if (currentTableModel.isPopupDisplayable()) {</span>
-<span class="fc" id="L144">                currentTableModel.showPopup(currentTableNode, path, e);</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">            if (currentTableModel.isPopupDisplayable()) {</span>
+<span class="fc" id="L140">                currentTableModel.showPopup(currentTableNode, path, mouseEvent);</span>
             }
         }
-<span class="fc" id="L147">    }</span>
+<span class="fc" id="L143">    }</span>
 
     @Override
     public void mousePressed(MouseEvent e) {
-<span class="fc" id="L151">        this.showPopup(e);</span>
-<span class="fc" id="L152">    }</span>
+<span class="fc" id="L147">        this.showPopup(e);</span>
+<span class="fc" id="L148">    }</span>
     
     @Override
     public void mouseReleased(MouseEvent e) {
-<span class="fc" id="L156">        this.showPopup(e);</span>
-<span class="fc" id="L157">    }</span>
+<span class="fc" id="L152">        this.showPopup(e);</span>
+<span class="fc" id="L153">    }</span>
 
     @Override
     public void mouseClicked(MouseEvent e) {
         // Do nothing
-<span class="nc" id="L162">    }</span>
+<span class="nc" id="L158">    }</span>
     
     @Override
     public void mouseEntered(MouseEvent e) {
         // Do nothing
-<span class="fc" id="L167">    }</span>
+<span class="fc" id="L163">    }</span>
     
     @Override
     public void mouseExited(MouseEvent e) {
         // Do nothing
-<span class="fc" id="L172">    }</span>
+<span class="fc" id="L168">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

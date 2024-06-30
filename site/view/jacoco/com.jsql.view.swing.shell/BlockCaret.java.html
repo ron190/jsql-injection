@@ -33,96 +33,89 @@ public class BlockCaret extends DefaultCaret {
      * Create a caret shaped for terminal.
      */
 <span class="fc" id="L35">    public BlockCaret() {</span>
-        
-        // half a second
-<span class="fc" id="L38">        this.setBlinkRate(500);</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L36">        this.setBlinkRate(500);  // half a second</span>
+<span class="fc" id="L37">    }</span>
 
     @Override
     protected synchronized void damage(Rectangle r) {
         
-<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (r == null) {</span>
-            
-<span class="nc" id="L46">            return;</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        if (r == null) {</span>
+<span class="nc" id="L43">            return;</span>
         }
 
         // give values to x,y,width,height (inherited from java.awt.Rectangle)
-<span class="fc" id="L50">        this.x = r.x;</span>
-<span class="fc" id="L51">        this.y = r.y;</span>
-<span class="fc" id="L52">        this.height = r.height;</span>
+<span class="fc" id="L47">        this.x = r.x;</span>
+<span class="fc" id="L48">        this.y = r.y;</span>
+<span class="fc" id="L49">        this.height = r.height;</span>
         
         // A value for width was probably set by paint(), which we leave alone.
         // But the first call to damage() precedes the first call to paint(), so
         // in this case we must be prepared to set a valid width, or else
         // paint()
         // will receive a bogus clip area and caret will not get drawn properly.
-<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (this.width &lt;= 0) {</span>
-            
-<span class="fc" id="L61">            this.width = this.getComponent().getWidth();</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (this.width &lt;= 0) {</span>
+<span class="fc" id="L57">            this.width = this.getComponent().getWidth();</span>
         }
 
         //Calls getComponent().repaint(x, y, width, height) to erase
-<span class="fc" id="L65">        this.repaint();</span>
+<span class="fc" id="L61">        this.repaint();</span>
         
         // previous location of caret. Sometimes one call isn't enough.
-<span class="fc" id="L68">        this.repaint();</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L64">        this.repaint();</span>
+<span class="fc" id="L65">    }</span>
 
     @Override
     public void paint(Graphics g) {
         
-<span class="fc" id="L74">        JTextComponent comp = this.getComponent();</span>
+<span class="fc" id="L70">        JTextComponent comp = this.getComponent();</span>
 
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (comp == null) {</span>
-            
-<span class="nc" id="L78">            return;</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        if (comp == null) {</span>
+<span class="nc" id="L73">            return;</span>
         }
 
-<span class="fc" id="L81">        int dot = this.getDot();</span>
-<span class="fc" id="L82">        Rectangle r = null;</span>
+<span class="fc" id="L76">        int dot = this.getDot();</span>
+<span class="fc" id="L77">        Rectangle r = null;</span>
         char dotChar;
         
         try {
-<span class="fc" id="L86">            r = comp.modelToView(dot);</span>
+<span class="fc" id="L81">            r = comp.modelToView(dot);</span>
             
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">            if (r == null) {</span>
-<span class="nc" id="L89">                return;</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">            if (r == null) {</span>
+<span class="nc" id="L84">                return;</span>
             }
             
-<span class="fc" id="L92">            dotChar = comp.getText(dot, 1).charAt(0);</span>
+<span class="fc" id="L87">            dotChar = comp.getText(dot, 1).charAt(0);</span>
             
-<span class="nc" id="L94">        } catch (BadLocationException e) {</span>
+<span class="nc" id="L89">        } catch (BadLocationException e) {</span>
             
-<span class="nc" id="L96">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L97">            return;</span>
-<span class="fc" id="L98">        }</span>
+<span class="nc" id="L91">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L92">            return;</span>
+<span class="fc" id="L93">        }</span>
 
-<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (Character.isWhitespace(dotChar)) {</span>
-            
-<span class="fc" id="L102">            dotChar = '_';</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        if (Character.isWhitespace(dotChar)) {</span>
+<span class="fc" id="L96">            dotChar = '_';</span>
         }
 
-<span class="fc bfc" id="L105" title="All 4 branches covered.">        if (this.x != r.x || this.y != r.y) {</span>
+<span class="fc bfc" id="L99" title="All 4 branches covered.">        if (this.x != r.x || this.y != r.y) {</span>
             
             // paint() has been called directly, without a previous call to
             // damage(), so do some cleanup. (This happens, for example, when
             // the text component is resized.)
-<span class="fc" id="L110">            this.damage(r);</span>
+<span class="fc" id="L104">            this.damage(r);</span>
             
-<span class="fc" id="L112">            return;</span>
+<span class="fc" id="L106">            return;</span>
         }
 
-<span class="fc" id="L115">        g.setColor(new Color(0, 255, 0));</span>
+<span class="fc" id="L109">        g.setColor(new Color(0, 255, 0));</span>
 
         // do this to draw in XOR mode
-<span class="fc" id="L118">        g.setXORMode(comp.getBackground());</span>
+<span class="fc" id="L112">        g.setXORMode(comp.getBackground());</span>
 
-<span class="fc" id="L120">        this.width = g.getFontMetrics().charWidth(dotChar);</span>
+<span class="fc" id="L114">        this.width = g.getFontMetrics().charWidth(dotChar);</span>
         
-<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (this.isVisible()) {</span>
-            
-<span class="fc" id="L124">            g.fillRect(r.x, r.y, this.width, r.height);</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (this.isVisible()) {</span>
+<span class="fc" id="L117">            g.fillRect(r.x, r.y, this.width, r.height);</span>
         }
-<span class="fc" id="L126">    }</span>
+<span class="fc" id="L119">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

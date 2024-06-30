@@ -26,44 +26,39 @@ public class JPopupTextArea extends JPopupTextComponent&lt;JTextArea&gt; impleme
      * Build new instance of readonly JTextArea to decorate.
      */
     public JPopupTextArea() {
-        
-<span class="fc" id="L30">        this(StringUtils.EMPTY);</span>
-<span class="fc" id="L31">    }</span>
+<span class="fc" id="L29">        this(StringUtils.EMPTY);</span>
+<span class="fc" id="L30">    }</span>
     
     /**
      * Build new instance of readonly JTextArea to decorate
      * with a default placeholder.
      */
     public JPopupTextArea(String placeholder) {
-        
-<span class="fc" id="L39">        this(new JTextAreaPlaceholder(placeholder) {</span>
-            
+<span class="fc" id="L37">        this(new JTextAreaPlaceholder(placeholder) {</span>
             @Override
             public boolean isEditable() {
-                
-<span class="fc" id="L44">                return false;</span>
+<span class="fc" id="L40">                return false;</span>
             }
         });
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L43">    }</span>
 
     /**
      * Build new instance of JTextArea to decorate.
      */
     public JPopupTextArea(JTextArea proxy) {
         
-<span class="fc" id="L54">        super(proxy);</span>
+<span class="fc" id="L50">        super(proxy);</span>
 
-<span class="fc" id="L56">        this.getProxy().addFocusListener(new FocusAdapter() {</span>
-            
+<span class="fc" id="L52">        this.getProxy().addFocusListener(new FocusAdapter() {</span>
             @Override
             public void focusGained(FocusEvent arg0) {
-<span class="fc" id="L60">                JPopupTextArea.this.getProxy().getCaret().setVisible(true);</span>
-<span class="fc" id="L61">                JPopupTextArea.this.getProxy().getCaret().setSelectionVisible(true);</span>
-<span class="fc" id="L62">            }</span>
+<span class="fc" id="L55">                JPopupTextArea.this.getProxy().getCaret().setVisible(true);</span>
+<span class="fc" id="L56">                JPopupTextArea.this.getProxy().getCaret().setSelectionVisible(true);</span>
+<span class="fc" id="L57">            }</span>
         });
 
-<span class="fc" id="L65">        this.getProxy().setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));</span>
-<span class="fc" id="L66">        this.getProxy().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L60">        this.getProxy().setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));</span>
+<span class="fc" id="L61">        this.getProxy().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));</span>
+<span class="fc" id="L62">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

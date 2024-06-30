@@ -24,42 +24,35 @@ import java.util.Map;
  */
 public class MarkErrorInvulnerable implements InteractionCommand {
     
-    /**
-     * Log4j logger sent to view.
-     */
-<span class="fc" id="L30">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L27">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     private final int indexMethodError;
     private final InjectionModel injectionModel;
     
-    /**
-     * @param interactionParams
-     */
     @SuppressWarnings(&quot;unchecked&quot;)
-<span class="fc" id="L39">    public MarkErrorInvulnerable(Object[] interactionParams) {</span>
+<span class="fc" id="L33">    public MarkErrorInvulnerable(Object[] interactionParams) {</span>
         
-<span class="fc" id="L41">        Map&lt;Header, Object&gt; mapHeader = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
-<span class="fc" id="L42">        this.indexMethodError = (int) mapHeader.get(Header.INDEX_ERROR_STRATEGY);</span>
-<span class="fc" id="L43">        this.injectionModel = (InjectionModel) mapHeader.get(Header.INJECTION_MODEL);</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L35">        Map&lt;Header, Object&gt; mapHeader = (Map&lt;Header, Object&gt;) interactionParams[0];</span>
+<span class="fc" id="L36">        this.indexMethodError = (int) mapHeader.get(Header.INDEX_ERROR_STRATEGY);</span>
+<span class="fc" id="L37">        this.injectionModel = (InjectionModel) mapHeader.get(Header.INJECTION_MODEL);</span>
+<span class="fc" id="L38">    }</span>
 
     @Override
     public void execute() {
-        
-<span class="fc" id="L49">        LOGGER.debug(</span>
-<span class="nc" id="L50">            () -&gt; AnsiColorUtil.addRedColor(</span>
+<span class="fc" id="L42">        LOGGER.debug(</span>
+<span class="nc" id="L43">            () -&gt; AnsiColorUtil.addRedColor(</span>
                 this.injectionModel
-<span class="nc" id="L52">                .getMediatorVendor()</span>
-<span class="nc" id="L53">                .getVendor()</span>
-<span class="nc" id="L54">                .instance()</span>
-<span class="nc" id="L55">                .getModelYaml()</span>
-<span class="nc" id="L56">                .getStrategy()</span>
-<span class="nc" id="L57">                .getError()</span>
-<span class="nc" id="L58">                .getMethod()</span>
-<span class="nc" id="L59">                .get(this.indexMethodError)</span>
-<span class="nc" id="L60">                .getName()</span>
+<span class="nc" id="L45">                .getMediatorVendor()</span>
+<span class="nc" id="L46">                .getVendor()</span>
+<span class="nc" id="L47">                .instance()</span>
+<span class="nc" id="L48">                .getModelYaml()</span>
+<span class="nc" id="L49">                .getStrategy()</span>
+<span class="nc" id="L50">                .getError()</span>
+<span class="nc" id="L51">                .getMethod()</span>
+<span class="nc" id="L52">                .get(this.indexMethodError)</span>
+<span class="nc" id="L53">                .getName()</span>
             )
         );
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L56">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

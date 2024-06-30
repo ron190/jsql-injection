@@ -34,28 +34,25 @@ public class JPopupComponent&lt;T extends JComponent&gt; extends JComponent impl
 <span class="fc" id="L34">    public JPopupComponent(final T proxy) {</span>
         
 <span class="fc" id="L36">        this.proxy = proxy;</span>
+<span class="fc" id="L37">        this.proxy.setComponentPopupMenu(new JPopupMenuComponent(this.proxy));</span>
         
-<span class="fc" id="L38">        this.proxy.setComponentPopupMenu(new JPopupMenuComponent(this.proxy));</span>
-        
-<span class="fc" id="L40">        this.proxy.addMouseListener(new MouseAdapter() {</span>
-            
+<span class="fc" id="L39">        this.proxy.addMouseListener(new MouseAdapter() {</span>
             @Override
             public void mousePressed(MouseEvent e) {
                 
-<span class="nc" id="L45">                super.mousePressed(e);</span>
+<span class="nc" id="L43">                super.mousePressed(e);</span>
 
                 // Left button will unselect text after selectAll, so only for right click
-<span class="nc bnc" id="L48" title="All 2 branches missed.">                if (SwingUtilities.isRightMouseButton(e)) {</span>
-                    
-<span class="nc" id="L50">                    JPopupComponent.this.proxy.requestFocusInWindow();</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">                if (SwingUtilities.isRightMouseButton(e)) {</span>
+<span class="nc" id="L47">                    JPopupComponent.this.proxy.requestFocusInWindow();</span>
                 }
-<span class="nc" id="L52">            }</span>
+<span class="nc" id="L49">            }</span>
         });
-<span class="fc" id="L54">    }</span>
+<span class="fc" id="L51">    }</span>
 
     @Override
     public T getProxy() {
-<span class="fc" id="L58">        return this.proxy;</span>
+<span class="fc" id="L55">        return this.proxy;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

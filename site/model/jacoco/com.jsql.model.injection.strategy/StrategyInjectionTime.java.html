@@ -34,96 +34,96 @@ public class StrategyInjectionTime extends AbstractStrategy {
     private InjectionTime injectionTime;
     
     public StrategyInjectionTime(InjectionModel injectionModel) {
-        
-<span class="fc" id="L38">        super(injectionModel);</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L37">        super(injectionModel);</span>
+<span class="fc" id="L38">    }</span>
 
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
 
-<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyTimeDisabled()) {</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isStrategyTimeDisabled()) {</span>
 
-<span class="fc" id="L46">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;Skipping strategy Time disabled&quot;);</span>
-<span class="fc" id="L47">            return;</span>
+<span class="fc" id="L45">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, AbstractStrategy.FORMAT_SKIP_STRATEGY_DISABLED, getName());</span>
+<span class="fc" id="L46">            return;</span>
 
-<span class="fc bfc" id="L49" title="All 2 branches covered.">        } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanTime())) {</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        } else if (StringUtils.isEmpty(this.injectionModel.getMediatorVendor().getVendor().instance().sqlBooleanTime())) {</span>
 
-<span class="fc" id="L51">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, &quot;No Time strategy known for {}&quot;, this.injectionModel.getMediatorVendor().getVendor());</span>
-<span class="fc" id="L52">            return;</span>
-
+<span class="fc" id="L50">            LOGGER.log(</span>
+                LogLevelUtil.CONSOLE_ERROR,
+                AbstractStrategy.FORMAT_STRATEGY_NOT_IMPLEMENTED,
+<span class="fc" id="L53">                getName(),</span>
+<span class="fc" id="L54">                this.injectionModel.getMediatorVendor().getVendor()</span>
+            );
+<span class="fc" id="L56">            return;</span>
         }
 
-<span class="fc" id="L56">        checkInjection(BooleanMode.STACKED);</span>
-<span class="fc" id="L57">        checkInjection(BooleanMode.NO_MODE);</span>
-<span class="fc" id="L58">        checkInjection(BooleanMode.OR);</span>
-<span class="fc" id="L59">        checkInjection(BooleanMode.AND);</span>
+<span class="fc" id="L59">        checkInjection(BooleanMode.STACKED);</span>
+<span class="fc" id="L60">        checkInjection(BooleanMode.NO_MODE);</span>
+<span class="fc" id="L61">        checkInjection(BooleanMode.OR);</span>
+<span class="fc" id="L62">        checkInjection(BooleanMode.AND);</span>
 
-<span class="fc bfc" id="L61" title="All 2 branches covered.">        if (this.isApplicable) {</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (this.isApplicable) {</span>
 
-<span class="fc" id="L63">            this.allow();</span>
+<span class="fc" id="L66">            this.allow();</span>
 
-<span class="fc" id="L65">            var requestMessageBinary = new Request();</span>
-<span class="fc" id="L66">            requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);</span>
-<span class="fc" id="L67">            requestMessageBinary.setParameters(this.injectionTime.getInfoMessage());</span>
-<span class="fc" id="L68">            this.injectionModel.sendToViews(requestMessageBinary);</span>
+<span class="fc" id="L68">            var requestMessageBinary = new Request();</span>
+<span class="fc" id="L69">            requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);</span>
+<span class="fc" id="L70">            requestMessageBinary.setParameters(this.injectionTime.getInfoMessage());</span>
+<span class="fc" id="L71">            this.injectionModel.sendToViews(requestMessageBinary);</span>
 
-<span class="fc" id="L70">        } else {</span>
-
-<span class="fc" id="L72">            this.unallow();</span>
+<span class="fc" id="L73">        } else {</span>
+<span class="nc" id="L74">            this.unallow();</span>
         }
-<span class="fc" id="L74">    }</span>
+<span class="fc" id="L76">    }</span>
 
     private void checkInjection(BooleanMode booleanMode) throws StoppedByUserSlidingException {
 
-<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (this.isApplicable) {</span>
-<span class="fc" id="L79">            return;</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (this.isApplicable) {</span>
+<span class="fc" id="L81">            return;</span>
         }
 
-<span class="fc" id="L82">        LOGGER.log(</span>
+<span class="fc" id="L84">        LOGGER.log(</span>
             LogLevelUtil.CONSOLE_DEFAULT,
             &quot;{} Time with {}...&quot;,
-<span class="fc" id="L85">            () -&gt; I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY),</span>
-<span class="fc" id="L86">            () -&gt; booleanMode</span>
+<span class="fc" id="L87">            () -&gt; I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY),</span>
+<span class="fc" id="L88">            () -&gt; booleanMode</span>
         );
-<span class="fc" id="L88">        this.injectionTime = new InjectionTime(this.injectionModel, booleanMode);</span>
-<span class="fc" id="L89">        this.isApplicable = this.injectionTime.isInjectable();</span>
+<span class="fc" id="L90">        this.injectionTime = new InjectionTime(this.injectionModel, booleanMode);</span>
+<span class="fc" id="L91">        this.isApplicable = this.injectionTime.isInjectable();</span>
 
-<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (this.isApplicable) {</span>
-<span class="fc" id="L92">            LOGGER.log(</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (this.isApplicable) {</span>
+<span class="fc" id="L94">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_SUCCESS,
                 &quot;{} Time injection with {}&quot;,
-<span class="fc" id="L95">                () -&gt; I18nUtil.valueByKey(KEY_LOG_VULNERABLE),</span>
-<span class="fc" id="L96">                () -&gt; booleanMode</span>
+<span class="fc" id="L97">                () -&gt; I18nUtil.valueByKey(KEY_LOG_VULNERABLE),</span>
+<span class="fc" id="L98">                () -&gt; booleanMode</span>
             );
         }
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L101">    }</span>
     
     @Override
     public void allow(int... i) {
 
-<span class="fc" id="L104">        this.injectionModel.appendAnalysisReport(</span>
-            &quot;### Strategy: Time\n&quot;
-<span class="fc" id="L106">            + this.injectionModel.getReportWithoutIndex(</span>
-<span class="fc" id="L107">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(</span>
-<span class="fc" id="L108">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(&quot;&lt;query&gt;&quot;, &quot;0&quot;, true),</span>
-<span class="fc" id="L109">                    this.injectionTime.getBooleanMode()</span>
+<span class="fc" id="L106">        this.injectionModel.appendAnalysisReport(</span>
+<span class="fc" id="L107">            &quot;&lt;span style=color:rgb(0,0,255)&gt;### Strategy: &quot; + getName() + &quot;&lt;/span&gt;&quot;</span>
+<span class="fc" id="L108">            + this.injectionModel.getReportWithoutIndex(</span>
+<span class="fc" id="L109">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(</span>
+<span class="fc" id="L110">                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(&quot;&lt;span style=color:rgb(0,128,0)&gt;&amp;lt;query&amp;gt;&lt;/span&gt;&quot;, &quot;0&quot;, true),</span>
+<span class="fc" id="L111">                    this.injectionTime.getBooleanMode()</span>
                 ),
                 &quot;metadataInjectionProcess&quot;,
                 null
             )
         );
-<span class="fc" id="L115">        this.markVulnerability(Interaction.MARK_TIME_VULNERABLE);</span>
-<span class="fc" id="L116">    }</span>
+<span class="fc" id="L117">        this.markVulnerability(Interaction.MARK_TIME_VULNERABLE);</span>
+<span class="fc" id="L118">    }</span>
 
     @Override
     public void unallow(int... i) {
-        
-<span class="fc" id="L121">        this.markVulnerability(Interaction.MARK_TIME_INVULNERABLE);</span>
-<span class="fc" id="L122">    }</span>
+<span class="nc" id="L122">        this.markVulnerability(Interaction.MARK_TIME_INVULNERABLE);</span>
+<span class="nc" id="L123">    }</span>
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) throws StoppedByUserSlidingException {
-        
 <span class="fc" id="L127">        return this.injectionTime.inject(</span>
 <span class="fc" id="L128">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(sqlQuery, startPosition, false),</span>
             stoppable
@@ -132,32 +132,31 @@ public class StrategyInjectionTime extends AbstractStrategy {
 
     @Override
     public void activateWhenApplicable() {
+<span class="fc bfc" id="L135" title="All 4 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
 
-<span class="fc bfc" id="L136" title="All 4 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
-
-<span class="fc" id="L138">            LOGGER.log(</span>
+<span class="fc" id="L137">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 &quot;{} [{}] with [{}]&quot;,
-<span class="fc" id="L141">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
+<span class="fc" id="L140">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
                 this::getName,
-<span class="fc" id="L143">                () -&gt; this.injectionTime.getBooleanMode().name()</span>
+<span class="fc" id="L142">                () -&gt; this.injectionTime.getBooleanMode().name()</span>
             );
-<span class="fc" id="L145">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getTime());</span>
+<span class="fc" id="L144">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getTime());</span>
 
-<span class="fc" id="L147">            var requestMarkTimeStrategy = new Request();</span>
-<span class="fc" id="L148">            requestMarkTimeStrategy.setMessage(Interaction.MARK_TIME_STRATEGY);</span>
-<span class="fc" id="L149">            this.injectionModel.sendToViews(requestMarkTimeStrategy);</span>
+<span class="fc" id="L146">            var requestMarkTimeStrategy = new Request();</span>
+<span class="fc" id="L147">            requestMarkTimeStrategy.setMessage(Interaction.MARK_TIME_STRATEGY);</span>
+<span class="fc" id="L148">            this.injectionModel.sendToViews(requestMarkTimeStrategy);</span>
         }
-<span class="fc" id="L151">    }</span>
+<span class="fc" id="L150">    }</span>
     
     @Override
     public String getPerformanceLength() {
-<span class="fc" id="L155">        return VendorYaml.DEFAULT_CAPACITY;</span>
+<span class="fc" id="L154">        return VendorYaml.DEFAULT_CAPACITY;</span>
     }
     
     @Override
     public String getName() {
-<span class="fc" id="L160">        return &quot;Time&quot;;</span>
+<span class="fc" id="L159">        return &quot;Time&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

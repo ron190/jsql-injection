@@ -62,18 +62,19 @@ public class ButtonExpandText extends JButton {
 <span class="nc bnc" id="L62" title="All 2 branches missed.">            frameWithTextarea.setVisible(!frameWithTextarea.isVisible());</span>
 <span class="nc" id="L63">        });</span>
 
-<span class="fc" id="L65">        frameWithTextarea</span>
-<span class="fc" id="L66">            .getRootPane()</span>
-<span class="fc" id="L67">            .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)</span>
-<span class="fc" id="L68">            .put(</span>
-<span class="fc" id="L69">                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),</span>
+<span class="fc" id="L65">        frameWithTextarea.getRootPane()</span>
+<span class="fc" id="L66">            .getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)</span>
+<span class="fc" id="L67">            .put(</span>
+<span class="fc" id="L68">                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),</span>
                 &quot;Cancel&quot;
             );
-<span class="fc" id="L72">        frameWithTextarea.getRootPane().getActionMap().put(&quot;Cancel&quot;, new AbstractAction() {</span>
-            public void actionPerformed(ActionEvent e) {
-<span class="nc" id="L74">                frameWithTextarea.dispose();</span>
-<span class="nc" id="L75">            }</span>
-        });
-<span class="fc" id="L77">    }</span>
+<span class="fc" id="L71">        frameWithTextarea.getRootPane()</span>
+<span class="fc" id="L72">            .getActionMap()</span>
+<span class="fc" id="L73">            .put(&quot;Cancel&quot;, new AbstractAction() {</span>
+                public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L75">                    frameWithTextarea.dispose();</span>
+<span class="nc" id="L76">                }</span>
+            });
+<span class="fc" id="L78">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

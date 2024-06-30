@@ -12,24 +12,21 @@ package com.jsql.model.exception;
 
 /**
  * Exception class thrown during initial step of injection (aka preparation).
- * Concerns every steps before the user can interact
+ * Concerns every step before the user can interact
  * with database elements (database, table, column)
  */
 public class InjectionFailureException extends AbstractSlidingException {
     
     public InjectionFailureException() {
-        
-<span class="nc" id="L22">        super(&quot;Execution stopped&quot;);</span>
-<span class="nc" id="L23">    }</span>
+<span class="nc" id="L21">        super(&quot;Execution stopped&quot;);</span>
+<span class="nc" id="L22">    }</span>
     
     public InjectionFailureException(String message) {
-        
-<span class="fc" id="L27">        super(message);</span>
-<span class="fc" id="L28">    }</span>
+<span class="fc" id="L25">        super(message);</span>
+<span class="fc" id="L26">    }</span>
 
     public InjectionFailureException(String message, Throwable e) {
-        
-<span class="nc" id="L32">        super(message, e);</span>
-<span class="nc" id="L33">    }</span>
+<span class="fc" id="L29">        super(message, e);</span>
+<span class="fc" id="L30">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

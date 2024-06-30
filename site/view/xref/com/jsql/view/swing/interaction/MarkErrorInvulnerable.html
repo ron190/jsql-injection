@@ -31,22 +31,18 @@
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>      
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> indexMethodError;
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>      
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <em class="jxr_javadoccomment">     * @param interactionParams</em>
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>      @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">public</strong> <a name="MarkErrorInvulnerable" href="../../../../../com/jsql/view/swing/interaction/MarkErrorInvulnerable.html#MarkErrorInvulnerable">MarkErrorInvulnerable</a>(Object[] interactionParams) {
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>          
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>          Map&lt;Header, Object&gt; mapHeader = (Map&lt;Header, Object&gt;) interactionParams[0];
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>          <strong class="jxr_keyword">this</strong>.indexMethodError = (<strong class="jxr_keyword">int</strong>) mapHeader.get(Header.INDEX_ERROR_STRATEGY);
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      }
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>      @Override
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() {
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>          MediatorHelper.panelAddressBar().getAddressMenuBar().markErrorInvulnerable(<strong class="jxr_keyword">this</strong>.indexMethodError);
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>      }
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  }
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>      @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>      <strong class="jxr_keyword">public</strong> <a name="MarkErrorInvulnerable" href="../../../../../com/jsql/view/swing/interaction/MarkErrorInvulnerable.html#MarkErrorInvulnerable">MarkErrorInvulnerable</a>(Object[] interactionParams) {
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>          
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>          Map&lt;Header, Object&gt; mapHeader = (Map&lt;Header, Object&gt;) interactionParams[0];
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>          <strong class="jxr_keyword">this</strong>.indexMethodError = (<strong class="jxr_keyword">int</strong>) mapHeader.get(Header.INDEX_ERROR_STRATEGY);
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>      }
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      @Override
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> execute() {
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>          MediatorHelper.panelAddressBar().getAddressMenuBar().markErrorInvulnerable(<strong class="jxr_keyword">this</strong>.indexMethodError);
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>      }
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>

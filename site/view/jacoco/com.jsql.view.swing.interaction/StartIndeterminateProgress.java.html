@@ -29,14 +29,12 @@ public class StartIndeterminateProgress implements InteractionCommand {
      * @param interactionParams Element in the database tree to update
      */
 <span class="nc" id="L31">    public StartIndeterminateProgress(Object[] interactionParams) {</span>
-        
-<span class="nc" id="L33">        this.dataElementDatabase = (AbstractElementDatabase) interactionParams[0];</span>
-<span class="nc" id="L34">    }</span>
+<span class="nc" id="L32">        this.dataElementDatabase = (AbstractElementDatabase) interactionParams[0];</span>
+<span class="nc" id="L33">    }</span>
 
     @Override
     public void execute() {
-        
-<span class="nc" id="L39">        MediatorHelper.treeDatabase().startIndeterminateProgess(this.dataElementDatabase);</span>
-<span class="nc" id="L40">    }</span>
+<span class="nc" id="L37">        MediatorHelper.treeDatabase().startIndeterminateProgress(this.dataElementDatabase);</span>
+<span class="nc" id="L38">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

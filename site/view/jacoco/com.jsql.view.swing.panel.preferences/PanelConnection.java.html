@@ -34,146 +34,146 @@ public class PanelConnection extends JPanel {
         
 <span class="fc" id="L35">        this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));</span>
         
-<span class="fc" id="L37">        var tooltipIsFollowingRedirection = &quot;&lt;html&gt;HTTP 3XX response indicates page's location has changed.&lt;br&gt;Redirect automatically to the new location.&lt;/html&gt;&quot;;</span>
-<span class="fc" id="L38">        this.checkboxIsFollowingRedirection.setToolTipText(tooltipIsFollowingRedirection);</span>
-<span class="fc" id="L39">        this.checkboxIsFollowingRedirection.setFocusable(false);</span>
-<span class="fc" id="L40">        var labelIsFollowingRedirection = new JButton(&quot;Follow redirection&quot;);</span>
-<span class="fc" id="L41">        labelIsFollowingRedirection.setToolTipText(tooltipIsFollowingRedirection);</span>
-<span class="fc" id="L42">        labelIsFollowingRedirection.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L37">        var tooltipIsFollowingRedirection = &quot;&lt;html&gt;HTTP 3XX response indicates page's location has changed.&lt;br&gt;&quot; +</span>
+            &quot;Redirect automatically to the new location.&lt;/html&gt;&quot;;
+<span class="fc" id="L39">        this.checkboxIsFollowingRedirection.setToolTipText(tooltipIsFollowingRedirection);</span>
+<span class="fc" id="L40">        this.checkboxIsFollowingRedirection.setFocusable(false);</span>
+<span class="fc" id="L41">        var labelIsFollowingRedirection = new JButton(&quot;Follow redirection&quot;);</span>
+<span class="fc" id="L42">        labelIsFollowingRedirection.setToolTipText(tooltipIsFollowingRedirection);</span>
+<span class="fc" id="L43">        labelIsFollowingRedirection.addActionListener(actionEvent -&gt; {</span>
             
-<span class="fc bfc" id="L44" title="All 2 branches covered.">            this.checkboxIsFollowingRedirection.setSelected(!this.checkboxIsFollowingRedirection.isSelected());</span>
-<span class="fc" id="L45">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="fc" id="L46">        });</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">            this.checkboxIsFollowingRedirection.setSelected(!this.checkboxIsFollowingRedirection.isSelected());</span>
+<span class="fc" id="L46">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="fc" id="L47">        });</span>
         
-<span class="fc" id="L48">        var tooltipIsHttp2Disabled = &quot;&lt;html&gt;Some website works with HTTP/1.1 only.&lt;br&gt;Disable HTTP/2 in favor of HTTP/1.1.&lt;/html&gt;&quot;;</span>
-<span class="fc" id="L49">        this.checkboxIsHttp2Disabled.setToolTipText(tooltipIsHttp2Disabled);</span>
-<span class="fc" id="L50">        this.checkboxIsHttp2Disabled.setFocusable(false);</span>
-<span class="fc" id="L51">        var labelIsHttp2Disabled = new JButton(&quot;Disable HTTP/2&quot;);</span>
-<span class="fc" id="L52">        labelIsHttp2Disabled.setToolTipText(tooltipIsHttp2Disabled);</span>
-<span class="fc" id="L53">        labelIsHttp2Disabled.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L49">        var tooltipIsHttp2Disabled = &quot;&lt;html&gt;Some website works with HTTP/1.1 only.&lt;br&gt;Disable HTTP/2 in favor of HTTP/1.1.&lt;/html&gt;&quot;;</span>
+<span class="fc" id="L50">        this.checkboxIsHttp2Disabled.setToolTipText(tooltipIsHttp2Disabled);</span>
+<span class="fc" id="L51">        this.checkboxIsHttp2Disabled.setFocusable(false);</span>
+<span class="fc" id="L52">        var labelIsHttp2Disabled = new JButton(&quot;Disable HTTP/2&quot;);</span>
+<span class="fc" id="L53">        labelIsHttp2Disabled.setToolTipText(tooltipIsHttp2Disabled);</span>
+<span class="fc" id="L54">        labelIsHttp2Disabled.addActionListener(actionEvent -&gt; {</span>
             
-<span class="nc bnc" id="L55" title="All 2 branches missed.">            this.checkboxIsHttp2Disabled.setSelected(!this.checkboxIsHttp2Disabled.isSelected());</span>
-<span class="nc" id="L56">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L57">        });</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">            this.checkboxIsHttp2Disabled.setSelected(!this.checkboxIsHttp2Disabled.isSelected());</span>
+<span class="nc" id="L57">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="nc" id="L58">        });</span>
         
-<span class="fc" id="L59">        var tooltipIsUnicodeDecodeDisabled = &quot;&lt;html&gt;Unicode entities \\uXXXX are decoded to raw characters by default.&lt;br&gt;Check to disable this behavior.&lt;/html&gt;&quot;;</span>
-<span class="fc" id="L60">        this.checkboxIsUnicodeDecodeDisabled.setToolTipText(tooltipIsUnicodeDecodeDisabled);</span>
-<span class="fc" id="L61">        this.checkboxIsUnicodeDecodeDisabled.setFocusable(false);</span>
-<span class="fc" id="L62">        var labelIsUnicodeDecodeDisabled = new JButton(&quot;Disable Unicode decoding in response&quot;);</span>
-<span class="fc" id="L63">        labelIsUnicodeDecodeDisabled.setToolTipText(tooltipIsUnicodeDecodeDisabled);</span>
-<span class="fc" id="L64">        labelIsUnicodeDecodeDisabled.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L60">        var tooltipIsUnicodeDecodeDisabled = &quot;&lt;html&gt;Unicode entities \\uXXXX are decoded to raw characters by default.&lt;br&gt;&quot; +</span>
+            &quot;Check to disable this behavior.&lt;/html&gt;&quot;;
+<span class="fc" id="L62">        this.checkboxIsUnicodeDecodeDisabled.setToolTipText(tooltipIsUnicodeDecodeDisabled);</span>
+<span class="fc" id="L63">        this.checkboxIsUnicodeDecodeDisabled.setFocusable(false);</span>
+<span class="fc" id="L64">        var labelIsUnicodeDecodeDisabled = new JButton(&quot;Disable Unicode decoding in response&quot;);</span>
+<span class="fc" id="L65">        labelIsUnicodeDecodeDisabled.setToolTipText(tooltipIsUnicodeDecodeDisabled);</span>
+<span class="fc" id="L66">        labelIsUnicodeDecodeDisabled.addActionListener(actionEvent -&gt; {</span>
             
-<span class="fc bfc" id="L66" title="All 2 branches covered.">            this.checkboxIsUnicodeDecodeDisabled.setSelected(!this.checkboxIsUnicodeDecodeDisabled.isSelected());</span>
-<span class="fc" id="L67">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="fc" id="L68">        });</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">            this.checkboxIsUnicodeDecodeDisabled.setSelected(!this.checkboxIsUnicodeDecodeDisabled.isSelected());</span>
+<span class="fc" id="L69">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="fc" id="L70">        });</span>
         
-<span class="fc" id="L70">        var tooltipIsUrlDecodeDisabled = &quot;&lt;html&gt;Url entities %XX are decoded to raw characters by default.&lt;br&gt;Check to disable this behavior.&lt;/html&gt;&quot;;</span>
-<span class="fc" id="L71">        this.checkboxIsUrlDecodeDisabled.setToolTipText(tooltipIsUrlDecodeDisabled);</span>
-<span class="fc" id="L72">        this.checkboxIsUrlDecodeDisabled.setFocusable(false);</span>
-<span class="fc" id="L73">        var labelIsUrlDecodeDisabled = new JButton(&quot;Disable Url decoding in response&quot;);</span>
-<span class="fc" id="L74">        labelIsUrlDecodeDisabled.setToolTipText(tooltipIsUrlDecodeDisabled);</span>
-<span class="fc" id="L75">        labelIsUrlDecodeDisabled.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L72">        var tooltipIsUrlDecodeDisabled = &quot;&lt;html&gt;Url entities %XX are decoded to raw characters by default.&lt;br&gt;&quot; +</span>
+            &quot;Check to disable this behavior.&lt;/html&gt;&quot;;
+<span class="fc" id="L74">        this.checkboxIsUrlDecodeDisabled.setToolTipText(tooltipIsUrlDecodeDisabled);</span>
+<span class="fc" id="L75">        this.checkboxIsUrlDecodeDisabled.setFocusable(false);</span>
+<span class="fc" id="L76">        var labelIsUrlDecodeDisabled = new JButton(&quot;Disable Url decoding in response&quot;);</span>
+<span class="fc" id="L77">        labelIsUrlDecodeDisabled.setToolTipText(tooltipIsUrlDecodeDisabled);</span>
+<span class="fc" id="L78">        labelIsUrlDecodeDisabled.addActionListener(actionEvent -&gt; {</span>
             
-<span class="nc bnc" id="L77" title="All 2 branches missed.">            this.checkboxIsUrlDecodeDisabled.setSelected(!this.checkboxIsUrlDecodeDisabled.isSelected());</span>
-<span class="nc" id="L78">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L79">        });</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">            this.checkboxIsUrlDecodeDisabled.setSelected(!this.checkboxIsUrlDecodeDisabled.isSelected());</span>
+<span class="nc" id="L81">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="nc" id="L82">        });</span>
         
-<span class="fc" id="L81">        var tooltipTestConnection =</span>
-                &quot;&lt;html&gt;Connectivity to target is checked first to stop when target is dead, like with 404 Not Found.&lt;br&gt;&quot;
-                + &quot;Check option to process with injection whatever problem exists.&lt;/html&gt;&quot;;
-<span class="fc" id="L84">        this.checkboxIsNotTestingConnection.setToolTipText(tooltipTestConnection);</span>
-<span class="fc" id="L85">        this.checkboxIsNotTestingConnection.setFocusable(false);</span>
-<span class="fc" id="L86">        var labelIsNotTestingConnection = new JButton(&quot;Disable connection test&quot;);</span>
-<span class="fc" id="L87">        labelIsNotTestingConnection.setToolTipText(tooltipTestConnection);</span>
-<span class="fc" id="L88">        labelIsNotTestingConnection.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L84">        var tooltipTestConnection = &quot;&lt;html&gt;Connectivity to target is checked first to stop when target is dead, like with 404 Not Found.&lt;br&gt;&quot;</span>
+            + &quot;Check option to process with injection whatever problem exists.&lt;/html&gt;&quot;;
+<span class="fc" id="L86">        this.checkboxIsNotTestingConnection.setToolTipText(tooltipTestConnection);</span>
+<span class="fc" id="L87">        this.checkboxIsNotTestingConnection.setFocusable(false);</span>
+<span class="fc" id="L88">        var labelIsNotTestingConnection = new JButton(&quot;Disable connection test&quot;);</span>
+<span class="fc" id="L89">        labelIsNotTestingConnection.setToolTipText(tooltipTestConnection);</span>
+<span class="fc" id="L90">        labelIsNotTestingConnection.addActionListener(actionEvent -&gt; {</span>
             
-<span class="fc bfc" id="L90" title="All 2 branches covered.">            this.checkboxIsNotTestingConnection.setSelected(!this.checkboxIsNotTestingConnection.isSelected());</span>
-<span class="fc" id="L91">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="fc" id="L92">        });</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">            this.checkboxIsNotTestingConnection.setSelected(!this.checkboxIsNotTestingConnection.isSelected());</span>
+<span class="fc" id="L93">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="fc" id="L94">        });</span>
         
-<span class="fc" id="L94">        var tooltipIsNotProcessingCookies = &quot;&lt;html&gt;Cookies persist data between connections.&lt;br&gt;Sometimes persisted data like user's session is messing with injection and have to be ignored.&lt;/html&gt;&quot;;</span>
-<span class="fc" id="L95">        this.checkboxIsNotProcessingCookies.setToolTipText(tooltipIsNotProcessingCookies);</span>
-<span class="fc" id="L96">        this.checkboxIsNotProcessingCookies.setFocusable(false);</span>
-<span class="fc" id="L97">        var labelIsNotProcessingCookies = new JButton(&quot;Disable session cookies&quot;);</span>
-<span class="fc" id="L98">        labelIsNotProcessingCookies.setToolTipText(tooltipIsNotProcessingCookies);</span>
+<span class="fc" id="L96">        var tooltipIsNotProcessingCookies = &quot;&lt;html&gt;Cookies persist data between connections.&lt;br&gt;&quot; +</span>
+            &quot;Sometimes persisted data like user's session is messing with injection and have to be ignored.&lt;/html&gt;&quot;;
+<span class="fc" id="L98">        this.checkboxIsNotProcessingCookies.setToolTipText(tooltipIsNotProcessingCookies);</span>
+<span class="fc" id="L99">        this.checkboxIsNotProcessingCookies.setFocusable(false);</span>
+<span class="fc" id="L100">        var labelIsNotProcessingCookies = new JButton(&quot;Disable session cookies&quot;);</span>
+<span class="fc" id="L101">        labelIsNotProcessingCookies.setToolTipText(tooltipIsNotProcessingCookies);</span>
         
-<span class="fc" id="L100">        var tooltipIsLimitingThreads =</span>
-            &quot;&lt;html&gt;Various tasks are processed in parallel to save time.&lt;br&gt;&quot;
+<span class="fc" id="L103">        var tooltipIsLimitingThreads = &quot;&lt;html&gt;Various tasks are processed in parallel to save time.&lt;br&gt;&quot;</span>
             + &quot;Target that detects too much calls during a period can close the connection,&lt;br&gt;&quot;
             + &quot;in that case it helps lowering threads or keeping a single thread.&lt;/html&gt;&quot;;
-<span class="fc" id="L104">        this.checkboxIsLimitingThreads.setToolTipText(tooltipIsLimitingThreads);</span>
-<span class="fc" id="L105">        this.checkboxIsLimitingThreads.setFocusable(false);</span>
-<span class="fc" id="L106">        var labelIsLimitingThreads = new JButton(&quot;Limit processing to&quot;);</span>
-<span class="fc" id="L107">        labelIsLimitingThreads.setToolTipText(tooltipIsLimitingThreads);</span>
-<span class="fc" id="L108">        labelIsLimitingThreads.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L106">        this.checkboxIsLimitingThreads.setToolTipText(tooltipIsLimitingThreads);</span>
+<span class="fc" id="L107">        this.checkboxIsLimitingThreads.setFocusable(false);</span>
+<span class="fc" id="L108">        var labelIsLimitingThreads = new JButton(&quot;Limit processing to&quot;);</span>
+<span class="fc" id="L109">        labelIsLimitingThreads.setToolTipText(tooltipIsLimitingThreads);</span>
+<span class="fc" id="L110">        labelIsLimitingThreads.addActionListener(actionEvent -&gt; {</span>
             
-<span class="fc bfc" id="L110" title="All 2 branches covered.">            this.checkboxIsLimitingThreads.setSelected(!this.checkboxIsLimitingThreads.isSelected());</span>
-<span class="fc" id="L111">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="fc" id="L112">        });</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">            this.checkboxIsLimitingThreads.setSelected(!this.checkboxIsLimitingThreads.isSelected());</span>
+<span class="fc" id="L113">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="fc" id="L114">        });</span>
         
-<span class="fc" id="L114">        var tooltipIsConnectionTimeout = &quot;End connection when target takes this long to answer, it can be lowered down to save time in some cases.&quot;;</span>
-<span class="fc" id="L115">        this.checkboxIsConnectionTimeout.setToolTipText(tooltipIsConnectionTimeout);</span>
-<span class="fc" id="L116">        this.checkboxIsConnectionTimeout.setFocusable(false);</span>
-<span class="fc" id="L117">        var labelIsConnectionTimeout = new JButton(&quot;Timeout after&quot;);</span>
-<span class="fc" id="L118">        labelIsConnectionTimeout.setToolTipText(tooltipIsConnectionTimeout);</span>
-<span class="fc" id="L119">        labelIsConnectionTimeout.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L116">        var tooltipIsConnectionTimeout = &quot;End connection when target takes this long to answer, it can be lowered down to save time in some cases.&quot;;</span>
+<span class="fc" id="L117">        this.checkboxIsConnectionTimeout.setToolTipText(tooltipIsConnectionTimeout);</span>
+<span class="fc" id="L118">        this.checkboxIsConnectionTimeout.setFocusable(false);</span>
+<span class="fc" id="L119">        var labelIsConnectionTimeout = new JButton(&quot;Timeout after&quot;);</span>
+<span class="fc" id="L120">        labelIsConnectionTimeout.setToolTipText(tooltipIsConnectionTimeout);</span>
+<span class="fc" id="L121">        labelIsConnectionTimeout.addActionListener(actionEvent -&gt; {</span>
             
-<span class="fc bfc" id="L121" title="All 2 branches covered.">            this.checkboxIsConnectionTimeout.setSelected(!this.checkboxIsConnectionTimeout.isSelected());</span>
-<span class="fc" id="L122">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="fc" id="L123">        });</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">            this.checkboxIsConnectionTimeout.setSelected(!this.checkboxIsConnectionTimeout.isSelected());</span>
+<span class="fc" id="L124">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="fc" id="L125">        });</span>
         
-<span class="fc" id="L125">        var tooltipProcessCsrf = &quot;&lt;html&gt;Search for common CSRF tokens in response header and body.&lt;br&gt;Inject back the value in the query, header and request body.&lt;/html&gt;&quot;;</span>
-<span class="fc" id="L126">        this.checkboxIsProcessingCsrf.setToolTipText(tooltipProcessCsrf);</span>
-<span class="fc" id="L127">        this.checkboxIsProcessingCsrf.setFocusable(false);</span>
-<span class="fc" id="L128">        var labelIsProcessingCsrf = new JButton(&quot;Process CSRF token (search for XSRF-TOKEN/.../_csrf ; then set X-XSRF-TOKEN/.../_csrf)&quot;);</span>
-<span class="fc" id="L129">        labelIsProcessingCsrf.setToolTipText(tooltipProcessCsrf);</span>
-<span class="fc" id="L130">        labelIsProcessingCsrf.addActionListener(actionEvent -&gt; {</span>
+<span class="fc" id="L127">        var tooltipProcessCsrf = &quot;&lt;html&gt;Search for common CSRF tokens in response header and body.&lt;br&gt;&quot; +</span>
+            &quot;Inject back the value in the query, header and request body.&lt;/html&gt;&quot;;
+<span class="fc" id="L129">        this.checkboxIsProcessingCsrf.setToolTipText(tooltipProcessCsrf);</span>
+<span class="fc" id="L130">        this.checkboxIsProcessingCsrf.setFocusable(false);</span>
+<span class="fc" id="L131">        var labelIsProcessingCsrf = new JButton(&quot;Process CSRF token (search for XSRF-TOKEN/.../_csrf ; then set X-XSRF-TOKEN/.../_csrf)&quot;);</span>
+<span class="fc" id="L132">        labelIsProcessingCsrf.setToolTipText(tooltipProcessCsrf);</span>
+<span class="fc" id="L133">        labelIsProcessingCsrf.addActionListener(actionEvent -&gt; {</span>
             
-<span class="fc bfc" id="L132" title="All 2 branches covered.">            this.checkboxIsProcessingCsrf.setSelected(!this.checkboxIsProcessingCsrf.isSelected());</span>
-<span class="fc" id="L133">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="fc" id="L134">        });</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">            this.checkboxIsProcessingCsrf.setSelected(!this.checkboxIsProcessingCsrf.isSelected());</span>
+<span class="fc" id="L136">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="fc" id="L137">        });</span>
         
-<span class="fc" id="L136">        var panelConnectionTimeout = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L137">        panelConnectionTimeout.add(labelIsConnectionTimeout, BorderLayout.WEST);</span>
-<span class="fc" id="L138">        panelConnectionTimeout.add(this.spinnerConnectionTimeout, BorderLayout.CENTER);</span>
-<span class="fc" id="L139">        panelConnectionTimeout.add(new JLabel(&quot; s ; default 15s&quot;), BorderLayout.EAST);</span>
-<span class="fc" id="L140">        panelConnectionTimeout.setMaximumSize(new Dimension(125, this.spinnerConnectionTimeout.getPreferredSize().height));</span>
-<span class="pc" id="L141">        this.spinnerConnectionTimeout.addChangeListener(e -&gt; panelPreferences.getActionListenerSave().actionPerformed(null));</span>
+<span class="fc" id="L139">        var panelConnectionTimeout = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L140">        panelConnectionTimeout.add(labelIsConnectionTimeout, BorderLayout.WEST);</span>
+<span class="fc" id="L141">        panelConnectionTimeout.add(this.spinnerConnectionTimeout, BorderLayout.CENTER);</span>
+<span class="fc" id="L142">        panelConnectionTimeout.add(new JLabel(&quot; s ; default 15s&quot;), BorderLayout.EAST);</span>
+<span class="fc" id="L143">        panelConnectionTimeout.setMaximumSize(new Dimension(125, this.spinnerConnectionTimeout.getPreferredSize().height));</span>
+<span class="pc" id="L144">        this.spinnerConnectionTimeout.addChangeListener(e -&gt; panelPreferences.getActionListenerSave().actionPerformed(null));</span>
         
-<span class="fc" id="L143">        int countConnectionTimeout = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countConnectionTimeout();</span>
-<span class="fc" id="L144">        var spinnerConnectionModel = new SpinnerNumberModel(</span>
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">            countConnectionTimeout &lt;= 0</span>
-<span class="nc" id="L146">            ? 15</span>
-<span class="fc" id="L147">            : countConnectionTimeout,</span>
+<span class="fc" id="L146">        int countConnectionTimeout = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countConnectionTimeout();</span>
+<span class="fc" id="L147">        var spinnerConnectionModel = new SpinnerNumberModel(</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">            countConnectionTimeout &lt;= 0 ? 15 : countConnectionTimeout,</span>
             1,
             30,
             1
         );
-<span class="fc" id="L152">        this.spinnerConnectionTimeout.setModel(spinnerConnectionModel);</span>
-<span class="fc" id="L153">        this.spinnerConnectionTimeout.setUI(new BasicColoredSpinnerUI());</span>
-<span class="fc" id="L154">        this.spinnerConnectionTimeout.addMouseWheelListener(new SpinnerMouseWheelListener());</span>
+<span class="fc" id="L153">        this.spinnerConnectionTimeout.setModel(spinnerConnectionModel);</span>
+<span class="fc" id="L154">        this.spinnerConnectionTimeout.setUI(new BasicColoredSpinnerUI());</span>
+<span class="fc" id="L155">        this.spinnerConnectionTimeout.addMouseWheelListener(new SpinnerMouseWheelListener());</span>
         
-<span class="fc" id="L156">        var panelThreadCount = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L157">        panelThreadCount.add(labelIsLimitingThreads, BorderLayout.WEST);</span>
-<span class="fc" id="L158">        panelThreadCount.add(this.spinnerLimitingThreads, BorderLayout.CENTER);</span>
-<span class="fc" id="L159">        panelThreadCount.add(new JLabel(&quot; thread(s) ; default 5 threads&quot;), BorderLayout.EAST);</span>
-<span class="fc" id="L160">        panelThreadCount.setMaximumSize(new Dimension(125, this.spinnerLimitingThreads.getPreferredSize().height));</span>
-<span class="pc" id="L161">        this.spinnerLimitingThreads.addChangeListener(e -&gt; panelPreferences.getActionListenerSave().actionPerformed(null));</span>
+<span class="fc" id="L157">        var panelThreadCount = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L158">        panelThreadCount.add(labelIsLimitingThreads, BorderLayout.WEST);</span>
+<span class="fc" id="L159">        panelThreadCount.add(this.spinnerLimitingThreads, BorderLayout.CENTER);</span>
+<span class="fc" id="L160">        panelThreadCount.add(new JLabel(&quot; thread(s) ; default 5 threads&quot;), BorderLayout.EAST);</span>
+<span class="fc" id="L161">        panelThreadCount.setMaximumSize(new Dimension(125, this.spinnerLimitingThreads.getPreferredSize().height));</span>
+<span class="pc" id="L162">        this.spinnerLimitingThreads.addChangeListener(e -&gt; panelPreferences.getActionListenerSave().actionPerformed(null));</span>
         
-<span class="fc" id="L163">        int countLimitingThreads = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countLimitingThreads();</span>
-<span class="fc" id="L164">        var spinnerNumberModel = new SpinnerNumberModel(</span>
-<span class="pc bpc" id="L165" title="1 of 2 branches missed.">            countLimitingThreads &lt;= 0</span>
-<span class="nc" id="L166">            ? 10</span>
-<span class="fc" id="L167">            : countLimitingThreads,</span>
+<span class="fc" id="L164">        int countLimitingThreads = MediatorHelper.model().getMediatorUtils().getPreferencesUtil().countLimitingThreads();</span>
+<span class="fc" id="L165">        var spinnerNumberModel = new SpinnerNumberModel(</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">            countLimitingThreads &lt;= 0 ? 10 : countLimitingThreads,</span>
             1,
             100,
             1
         );
-<span class="fc" id="L172">        this.spinnerLimitingThreads.setModel(spinnerNumberModel);</span>
-<span class="fc" id="L173">        this.spinnerLimitingThreads.setUI(new BasicColoredSpinnerUI());</span>
-<span class="fc" id="L174">        this.spinnerLimitingThreads.addMouseWheelListener(new SpinnerMouseWheelListener());</span>
+<span class="fc" id="L171">        this.spinnerLimitingThreads.setModel(spinnerNumberModel);</span>
+<span class="fc" id="L172">        this.spinnerLimitingThreads.setUI(new BasicColoredSpinnerUI());</span>
+<span class="fc" id="L173">        this.spinnerLimitingThreads.addMouseWheelListener(new SpinnerMouseWheelListener());</span>
         
-<span class="fc" id="L176">        var tooltipIsCsrfUserTag = &quot;&lt;html&gt;Process custom CSRF.&lt;br&gt;Read value from input token and write value to output token.&lt;/html&gt;&quot;;</span>
+<span class="fc" id="L175">        var tooltipIsCsrfUserTag = &quot;&lt;html&gt;Process custom CSRF.&lt;br&gt;&quot; +</span>
+            &quot;Read value from input token and write value to output token.&lt;/html&gt;&quot;;
 <span class="fc" id="L177">        this.checkboxIsCsrfUserTag.setToolTipText(tooltipIsCsrfUserTag);</span>
 <span class="fc" id="L178">        this.checkboxIsCsrfUserTag.setFocusable(false);</span>
 <span class="fc" id="L179">        var labelIsCsrfUserTag = new JButton(&quot;Custom CSRF ; Input token&quot;);</span>
@@ -201,56 +201,52 @@ public class PanelConnection extends JPanel {
 <span class="fc" id="L201">        this.textfieldCustomCsrfInputToken.setHorizontalAlignment(SwingConstants.RIGHT);</span>
 <span class="fc" id="L202">        this.textfieldCustomCsrfOutputToken.setHorizontalAlignment(SwingConstants.RIGHT);</span>
 <span class="fc" id="L203">        this.textfieldCustomCsrfInputToken.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
-            
             @Override
             public void process() {
-                
-<span class="nc" id="L208">                panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L209">            }</span>
+<span class="nc" id="L206">                panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="nc" id="L207">            }</span>
         });
-<span class="fc" id="L211">        this.textfieldCustomCsrfOutputToken.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
-            
+<span class="fc" id="L209">        this.textfieldCustomCsrfOutputToken.getDocument().addDocumentListener(new DocumentListenerEditing() {</span>
             @Override
             public void process() {
-                
-<span class="nc" id="L216">                panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="nc" id="L217">            }</span>
+<span class="nc" id="L212">                panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="nc" id="L213">            }</span>
         });
         
-<span class="fc" id="L220">        ActionListener actionListenerNotProcessingCookies = actionEvent -&gt; {</span>
+<span class="fc" id="L216">        ActionListener actionListenerNotProcessingCookies = actionEvent -&gt; {</span>
             
-<span class="fc bfc" id="L222" title="All 2 branches covered.">            this.checkboxIsNotProcessingCookies.setSelected(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">            this.checkboxIsNotProcessingCookies.setSelected(!this.checkboxIsNotProcessingCookies.isSelected());</span>
             
-<span class="fc bfc" id="L224" title="All 2 branches covered.">            this.checkboxIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="fc bfc" id="L225" title="All 2 branches covered.">            labelIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">            this.checkboxIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">            labelIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
             
-<span class="fc bfc" id="L227" title="All 2 branches covered.">            this.textfieldCustomCsrfInputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="fc bfc" id="L228" title="All 2 branches covered.">            this.textfieldCustomCsrfOutputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="fc bfc" id="L229" title="All 2 branches covered.">            this.checkboxIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="fc bfc" id="L230" title="All 2 branches covered.">            labelIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="fc bfc" id="L231" title="All 2 branches covered.">            labelIsCsrfUserTagOutput.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">            this.textfieldCustomCsrfInputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="fc bfc" id="L224" title="All 2 branches covered.">            this.textfieldCustomCsrfOutputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">            this.checkboxIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">            labelIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">            labelIsCsrfUserTagOutput.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
             
-<span class="fc" id="L233">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
-<span class="fc" id="L234">        };</span>
+<span class="fc" id="L229">            panelPreferences.getActionListenerSave().actionPerformed(null);</span>
+<span class="fc" id="L230">        };</span>
         
-<span class="fc" id="L236">        labelIsNotProcessingCookies.addActionListener(actionListenerNotProcessingCookies);</span>
+<span class="fc" id="L232">        labelIsNotProcessingCookies.addActionListener(actionListenerNotProcessingCookies);</span>
         
-<span class="pc bpc" id="L238" title="1 of 2 branches missed.">        labelIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">        labelIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
         
-<span class="pc bpc" id="L240" title="1 of 2 branches missed.">        this.textfieldCustomCsrfInputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="pc bpc" id="L241" title="1 of 2 branches missed.">        this.textfieldCustomCsrfOutputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="pc bpc" id="L242" title="1 of 2 branches missed.">        this.checkboxIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        this.checkboxIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="pc bpc" id="L244" title="1 of 2 branches missed.">        labelIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
-<span class="pc bpc" id="L245" title="1 of 2 branches missed.">        labelIsCsrfUserTagOutput.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">        this.textfieldCustomCsrfInputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">        this.textfieldCustomCsrfOutputToken.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">        this.checkboxIsProcessingCsrf.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">        this.checkboxIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">        labelIsCsrfUserTag.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">        labelIsCsrfUserTagOutput.setEnabled(!this.checkboxIsNotProcessingCookies.isSelected());</span>
         
-<span class="fc" id="L247">        var emptyLabelSessionManagement = new JLabel();</span>
-<span class="fc" id="L248">        var labelSessionManagement = new JLabel(&quot;&lt;html&gt;&lt;br /&gt;&lt;b&gt;Session and Cookie management&lt;/b&gt;&lt;/html&gt;&quot;);</span>
+<span class="fc" id="L243">        var emptyLabelSessionManagement = new JLabel();</span>
+<span class="fc" id="L244">        var labelSessionManagement = new JLabel(&quot;&lt;html&gt;&lt;br /&gt;&lt;b&gt;Session and Cookie management&lt;/b&gt;&lt;/html&gt;&quot;);</span>
         
-<span class="fc" id="L250">        var groupLayout = new GroupLayout(this);</span>
-<span class="fc" id="L251">        this.setLayout(groupLayout);</span>
+<span class="fc" id="L246">        var groupLayout = new GroupLayout(this);</span>
+<span class="fc" id="L247">        this.setLayout(groupLayout);</span>
         
-<span class="fc" id="L253">        Stream.of(</span>
+<span class="fc" id="L249">        Stream.of(</span>
             this.checkboxIsFollowingRedirection,
             this.checkboxIsHttp2Disabled,
             this.checkboxIsUnicodeDecodeDisabled,
@@ -262,32 +258,32 @@ public class PanelConnection extends JPanel {
             this.checkboxIsLimitingThreads,
             this.checkboxIsConnectionTimeout
         )
-<span class="fc" id="L265">        .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));</span>
+<span class="fc" id="L261">        .forEach(button -&gt; button.addActionListener(panelPreferences.getActionListenerSave()));</span>
         
-<span class="fc" id="L267">        this.checkboxIsFollowingRedirection.setName(&quot;checkboxIsFollowingRedirection&quot;);</span>
-<span class="fc" id="L268">        this.checkboxIsHttp2Disabled.setName(&quot;checkboxIsHttp2Disabled&quot;);</span>
-<span class="fc" id="L269">        this.checkboxIsUnicodeDecodeDisabled.setName(&quot;checkboxIsUnicodeDecodeDisabled&quot;);</span>
-<span class="fc" id="L270">        this.checkboxIsUrlDecodeDisabled.setName(&quot;checkboxIsUrlDecodeDisabled&quot;);</span>
-<span class="fc" id="L271">        this.checkboxIsNotTestingConnection.setName(&quot;checkboxIsNotTestingConnection&quot;);</span>
-<span class="fc" id="L272">        this.checkboxIsProcessingCsrf.setName(&quot;checkboxIsProcessingCsrf&quot;);</span>
-<span class="fc" id="L273">        this.checkboxIsCsrfUserTag.setName(&quot;checkboxIsCsrfUserTag&quot;);</span>
-<span class="fc" id="L274">        this.checkboxIsNotProcessingCookies.setName(&quot;checkboxIsNotProcessingCookies&quot;);</span>
-<span class="fc" id="L275">        this.checkboxIsLimitingThreads.setName(&quot;checkboxIsLimitingThreads&quot;);</span>
-<span class="fc" id="L276">        this.checkboxIsConnectionTimeout.setName(&quot;checkboxIsConnectionTimeout&quot;);</span>
+<span class="fc" id="L263">        this.checkboxIsFollowingRedirection.setName(&quot;checkboxIsFollowingRedirection&quot;);</span>
+<span class="fc" id="L264">        this.checkboxIsHttp2Disabled.setName(&quot;checkboxIsHttp2Disabled&quot;);</span>
+<span class="fc" id="L265">        this.checkboxIsUnicodeDecodeDisabled.setName(&quot;checkboxIsUnicodeDecodeDisabled&quot;);</span>
+<span class="fc" id="L266">        this.checkboxIsUrlDecodeDisabled.setName(&quot;checkboxIsUrlDecodeDisabled&quot;);</span>
+<span class="fc" id="L267">        this.checkboxIsNotTestingConnection.setName(&quot;checkboxIsNotTestingConnection&quot;);</span>
+<span class="fc" id="L268">        this.checkboxIsProcessingCsrf.setName(&quot;checkboxIsProcessingCsrf&quot;);</span>
+<span class="fc" id="L269">        this.checkboxIsCsrfUserTag.setName(&quot;checkboxIsCsrfUserTag&quot;);</span>
+<span class="fc" id="L270">        this.checkboxIsNotProcessingCookies.setName(&quot;checkboxIsNotProcessingCookies&quot;);</span>
+<span class="fc" id="L271">        this.checkboxIsLimitingThreads.setName(&quot;checkboxIsLimitingThreads&quot;);</span>
+<span class="fc" id="L272">        this.checkboxIsConnectionTimeout.setName(&quot;checkboxIsConnectionTimeout&quot;);</span>
 
-<span class="fc" id="L278">        labelIsFollowingRedirection.setName(&quot;labelIsFollowingRedirection&quot;);</span>
-<span class="fc" id="L279">        labelIsHttp2Disabled.setName(&quot;labelIsHttp2Disabled&quot;);</span>
-<span class="fc" id="L280">        labelIsUnicodeDecodeDisabled.setName(&quot;labelIsUnicodeDecodeDisabled&quot;);</span>
-<span class="fc" id="L281">        labelIsUrlDecodeDisabled.setName(&quot;labelIsUrlDecodeDisabled&quot;);</span>
-<span class="fc" id="L282">        labelIsNotTestingConnection.setName(&quot;labelIsNotTestingConnection&quot;);</span>
-<span class="fc" id="L283">        labelIsProcessingCsrf.setName(&quot;labelIsProcessingCsrf&quot;);</span>
-<span class="fc" id="L284">        labelIsCsrfUserTag.setName(&quot;labelIsCsrfUserTag&quot;);</span>
-<span class="fc" id="L285">        labelIsCsrfUserTagOutput.setName(&quot;labelIsCsrfUserTagOutput&quot;);</span>
-<span class="fc" id="L286">        labelIsNotProcessingCookies.setName(&quot;labelIsNotProcessingCookies&quot;);</span>
-<span class="fc" id="L287">        labelIsLimitingThreads.setName(&quot;labelIsLimitingThreads&quot;);</span>
-<span class="fc" id="L288">        labelIsConnectionTimeout.setName(&quot;labelIsConnectionTimeout&quot;);</span>
+<span class="fc" id="L274">        labelIsFollowingRedirection.setName(&quot;labelIsFollowingRedirection&quot;);</span>
+<span class="fc" id="L275">        labelIsHttp2Disabled.setName(&quot;labelIsHttp2Disabled&quot;);</span>
+<span class="fc" id="L276">        labelIsUnicodeDecodeDisabled.setName(&quot;labelIsUnicodeDecodeDisabled&quot;);</span>
+<span class="fc" id="L277">        labelIsUrlDecodeDisabled.setName(&quot;labelIsUrlDecodeDisabled&quot;);</span>
+<span class="fc" id="L278">        labelIsNotTestingConnection.setName(&quot;labelIsNotTestingConnection&quot;);</span>
+<span class="fc" id="L279">        labelIsProcessingCsrf.setName(&quot;labelIsProcessingCsrf&quot;);</span>
+<span class="fc" id="L280">        labelIsCsrfUserTag.setName(&quot;labelIsCsrfUserTag&quot;);</span>
+<span class="fc" id="L281">        labelIsCsrfUserTagOutput.setName(&quot;labelIsCsrfUserTagOutput&quot;);</span>
+<span class="fc" id="L282">        labelIsNotProcessingCookies.setName(&quot;labelIsNotProcessingCookies&quot;);</span>
+<span class="fc" id="L283">        labelIsLimitingThreads.setName(&quot;labelIsLimitingThreads&quot;);</span>
+<span class="fc" id="L284">        labelIsConnectionTimeout.setName(&quot;labelIsConnectionTimeout&quot;);</span>
         
-<span class="fc" id="L290">        Stream.of(</span>
+<span class="fc" id="L286">        Stream.of(</span>
             labelIsFollowingRedirection,
             labelIsHttp2Disabled,
             labelIsUnicodeDecodeDisabled,
@@ -300,181 +296,181 @@ public class PanelConnection extends JPanel {
             labelIsLimitingThreads,
             labelIsConnectionTimeout
         )
-<span class="fc" id="L303">        .forEach(label -&gt; {</span>
+<span class="fc" id="L299">        .forEach(label -&gt; {</span>
             
-<span class="fc" id="L305">            label.setHorizontalAlignment(SwingConstants.LEFT);</span>
-<span class="fc" id="L306">            label.setBorderPainted(false);</span>
-<span class="fc" id="L307">            label.setContentAreaFilled(false);</span>
-<span class="fc" id="L308">        });</span>
+<span class="fc" id="L301">            label.setHorizontalAlignment(SwingConstants.LEFT);</span>
+<span class="fc" id="L302">            label.setBorderPainted(false);</span>
+<span class="fc" id="L303">            label.setContentAreaFilled(false);</span>
+<span class="fc" id="L304">        });</span>
         
-<span class="fc" id="L310">        groupLayout</span>
-<span class="fc" id="L311">        .setHorizontalGroup(</span>
+<span class="fc" id="L306">        groupLayout</span>
+<span class="fc" id="L307">        .setHorizontalGroup(</span>
             groupLayout
-<span class="fc" id="L313">            .createSequentialGroup()</span>
-<span class="fc" id="L314">            .addGroup(</span>
+<span class="fc" id="L309">            .createSequentialGroup()</span>
+<span class="fc" id="L310">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L316">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
-<span class="fc" id="L317">                .addComponent(this.checkboxIsFollowingRedirection)</span>
-<span class="fc" id="L318">                .addComponent(this.checkboxIsHttp2Disabled)</span>
-<span class="fc" id="L319">                .addComponent(this.checkboxIsUnicodeDecodeDisabled)</span>
-<span class="fc" id="L320">                .addComponent(this.checkboxIsUrlDecodeDisabled)</span>
-<span class="fc" id="L321">                .addComponent(this.checkboxIsNotTestingConnection)</span>
-<span class="fc" id="L322">                .addComponent(this.checkboxIsLimitingThreads)</span>
-<span class="fc" id="L323">                .addComponent(this.checkboxIsConnectionTimeout)</span>
-<span class="fc" id="L324">                .addComponent(emptyLabelSessionManagement)</span>
-<span class="fc" id="L325">                .addComponent(this.checkboxIsNotProcessingCookies)</span>
-<span class="fc" id="L326">                .addComponent(this.checkboxIsProcessingCsrf)</span>
-<span class="fc" id="L327">                .addComponent(this.checkboxIsCsrfUserTag)</span>
+<span class="fc" id="L312">                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)</span>
+<span class="fc" id="L313">                .addComponent(this.checkboxIsFollowingRedirection)</span>
+<span class="fc" id="L314">                .addComponent(this.checkboxIsHttp2Disabled)</span>
+<span class="fc" id="L315">                .addComponent(this.checkboxIsUnicodeDecodeDisabled)</span>
+<span class="fc" id="L316">                .addComponent(this.checkboxIsUrlDecodeDisabled)</span>
+<span class="fc" id="L317">                .addComponent(this.checkboxIsNotTestingConnection)</span>
+<span class="fc" id="L318">                .addComponent(this.checkboxIsLimitingThreads)</span>
+<span class="fc" id="L319">                .addComponent(this.checkboxIsConnectionTimeout)</span>
+<span class="fc" id="L320">                .addComponent(emptyLabelSessionManagement)</span>
+<span class="fc" id="L321">                .addComponent(this.checkboxIsNotProcessingCookies)</span>
+<span class="fc" id="L322">                .addComponent(this.checkboxIsProcessingCsrf)</span>
+<span class="fc" id="L323">                .addComponent(this.checkboxIsCsrfUserTag)</span>
             )
-<span class="fc" id="L329">            .addGroup(</span>
+<span class="fc" id="L325">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L331">                .createParallelGroup()</span>
-<span class="fc" id="L332">                .addComponent(labelIsFollowingRedirection)</span>
-<span class="fc" id="L333">                .addComponent(labelIsHttp2Disabled)</span>
-<span class="fc" id="L334">                .addComponent(labelIsUnicodeDecodeDisabled)</span>
-<span class="fc" id="L335">                .addComponent(labelIsUrlDecodeDisabled)</span>
-<span class="fc" id="L336">                .addComponent(labelIsNotTestingConnection)</span>
-<span class="fc" id="L337">                .addComponent(panelThreadCount)</span>
-<span class="fc" id="L338">                .addComponent(panelConnectionTimeout)</span>
-<span class="fc" id="L339">                .addComponent(labelSessionManagement)</span>
-<span class="fc" id="L340">                .addComponent(labelIsNotProcessingCookies)</span>
-<span class="fc" id="L341">                .addComponent(labelIsProcessingCsrf)</span>
-<span class="fc" id="L342">                .addComponent(panelCsrfUserTag)</span>
+<span class="fc" id="L327">                .createParallelGroup()</span>
+<span class="fc" id="L328">                .addComponent(labelIsFollowingRedirection)</span>
+<span class="fc" id="L329">                .addComponent(labelIsHttp2Disabled)</span>
+<span class="fc" id="L330">                .addComponent(labelIsUnicodeDecodeDisabled)</span>
+<span class="fc" id="L331">                .addComponent(labelIsUrlDecodeDisabled)</span>
+<span class="fc" id="L332">                .addComponent(labelIsNotTestingConnection)</span>
+<span class="fc" id="L333">                .addComponent(panelThreadCount)</span>
+<span class="fc" id="L334">                .addComponent(panelConnectionTimeout)</span>
+<span class="fc" id="L335">                .addComponent(labelSessionManagement)</span>
+<span class="fc" id="L336">                .addComponent(labelIsNotProcessingCookies)</span>
+<span class="fc" id="L337">                .addComponent(labelIsProcessingCsrf)</span>
+<span class="fc" id="L338">                .addComponent(panelCsrfUserTag)</span>
             )
         );
 
-<span class="fc" id="L346">        groupLayout</span>
-<span class="fc" id="L347">        .setVerticalGroup(</span>
+<span class="fc" id="L342">        groupLayout</span>
+<span class="fc" id="L343">        .setVerticalGroup(</span>
             groupLayout
-<span class="fc" id="L349">            .createSequentialGroup()</span>
+<span class="fc" id="L345">            .createSequentialGroup()</span>
 
-<span class="fc" id="L351">            .addGroup(</span>
+<span class="fc" id="L347">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L353">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L354">                .addComponent(this.checkboxIsFollowingRedirection)</span>
-<span class="fc" id="L355">                .addComponent(labelIsFollowingRedirection)</span>
+<span class="fc" id="L349">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L350">                .addComponent(this.checkboxIsFollowingRedirection)</span>
+<span class="fc" id="L351">                .addComponent(labelIsFollowingRedirection)</span>
             )
-<span class="fc" id="L357">            .addGroup(</span>
+<span class="fc" id="L353">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L359">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L360">                .addComponent(this.checkboxIsHttp2Disabled)</span>
-<span class="fc" id="L361">                .addComponent(labelIsHttp2Disabled)</span>
+<span class="fc" id="L355">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L356">                .addComponent(this.checkboxIsHttp2Disabled)</span>
+<span class="fc" id="L357">                .addComponent(labelIsHttp2Disabled)</span>
             )
-<span class="fc" id="L363">            .addGroup(</span>
+<span class="fc" id="L359">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L365">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L366">                .addComponent(this.checkboxIsUnicodeDecodeDisabled)</span>
-<span class="fc" id="L367">                .addComponent(labelIsUnicodeDecodeDisabled)</span>
+<span class="fc" id="L361">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L362">                .addComponent(this.checkboxIsUnicodeDecodeDisabled)</span>
+<span class="fc" id="L363">                .addComponent(labelIsUnicodeDecodeDisabled)</span>
             )
-<span class="fc" id="L369">            .addGroup(</span>
+<span class="fc" id="L365">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L371">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L372">                .addComponent(this.checkboxIsUrlDecodeDisabled)</span>
-<span class="fc" id="L373">                .addComponent(labelIsUrlDecodeDisabled)</span>
+<span class="fc" id="L367">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L368">                .addComponent(this.checkboxIsUrlDecodeDisabled)</span>
+<span class="fc" id="L369">                .addComponent(labelIsUrlDecodeDisabled)</span>
             )
-<span class="fc" id="L375">            .addGroup(</span>
+<span class="fc" id="L371">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L377">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L378">                .addComponent(this.checkboxIsNotTestingConnection)</span>
-<span class="fc" id="L379">                .addComponent(labelIsNotTestingConnection)</span>
+<span class="fc" id="L373">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L374">                .addComponent(this.checkboxIsNotTestingConnection)</span>
+<span class="fc" id="L375">                .addComponent(labelIsNotTestingConnection)</span>
             )
-<span class="fc" id="L381">            .addGroup(</span>
+<span class="fc" id="L377">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L383">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L384">                .addComponent(this.checkboxIsLimitingThreads)</span>
-<span class="fc" id="L385">                .addComponent(panelThreadCount)</span>
+<span class="fc" id="L379">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L380">                .addComponent(this.checkboxIsLimitingThreads)</span>
+<span class="fc" id="L381">                .addComponent(panelThreadCount)</span>
             )
-<span class="fc" id="L387">            .addGroup(</span>
+<span class="fc" id="L383">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L389">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L390">                .addComponent(this.checkboxIsConnectionTimeout)</span>
-<span class="fc" id="L391">                .addComponent(panelConnectionTimeout)</span>
+<span class="fc" id="L385">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L386">                .addComponent(this.checkboxIsConnectionTimeout)</span>
+<span class="fc" id="L387">                .addComponent(panelConnectionTimeout)</span>
             )
 
-<span class="fc" id="L394">            .addGroup(</span>
+<span class="fc" id="L390">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L396">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L397">                .addComponent(emptyLabelSessionManagement)</span>
-<span class="fc" id="L398">                .addComponent(labelSessionManagement)</span>
+<span class="fc" id="L392">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L393">                .addComponent(emptyLabelSessionManagement)</span>
+<span class="fc" id="L394">                .addComponent(labelSessionManagement)</span>
             )
-<span class="fc" id="L400">            .addGroup(</span>
+<span class="fc" id="L396">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L402">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L403">                .addComponent(this.checkboxIsNotProcessingCookies)</span>
-<span class="fc" id="L404">                .addComponent(labelIsNotProcessingCookies)</span>
+<span class="fc" id="L398">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L399">                .addComponent(this.checkboxIsNotProcessingCookies)</span>
+<span class="fc" id="L400">                .addComponent(labelIsNotProcessingCookies)</span>
             )
-<span class="fc" id="L406">            .addGroup(</span>
+<span class="fc" id="L402">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L408">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L409">                .addComponent(this.checkboxIsProcessingCsrf)</span>
-<span class="fc" id="L410">                .addComponent(labelIsProcessingCsrf)</span>
+<span class="fc" id="L404">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L405">                .addComponent(this.checkboxIsProcessingCsrf)</span>
+<span class="fc" id="L406">                .addComponent(labelIsProcessingCsrf)</span>
             )
-<span class="fc" id="L412">            .addGroup(</span>
+<span class="fc" id="L408">            .addGroup(</span>
                 groupLayout
-<span class="fc" id="L414">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
-<span class="fc" id="L415">                .addComponent(this.checkboxIsCsrfUserTag)</span>
-<span class="fc" id="L416">                .addComponent(panelCsrfUserTag)</span>
+<span class="fc" id="L410">                .createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="fc" id="L411">                .addComponent(this.checkboxIsCsrfUserTag)</span>
+<span class="fc" id="L412">                .addComponent(panelCsrfUserTag)</span>
             )
         );
-<span class="fc" id="L419">    }</span>
+<span class="fc" id="L415">    }</span>
 
     
     // Getter and setter
     
     public JCheckBox getCheckboxIsFollowingRedirection() {
-<span class="fc" id="L425">        return this.checkboxIsFollowingRedirection;</span>
+<span class="fc" id="L421">        return this.checkboxIsFollowingRedirection;</span>
     }
     
     public JCheckBox getCheckboxIsHttp2Disabled() {
-<span class="fc" id="L429">        return this.checkboxIsHttp2Disabled;</span>
+<span class="fc" id="L425">        return this.checkboxIsHttp2Disabled;</span>
     }
     
     public JCheckBox getCheckboxIsUnicodeDecodeDisabled() {
-<span class="fc" id="L433">        return this.checkboxIsUnicodeDecodeDisabled;</span>
+<span class="fc" id="L429">        return this.checkboxIsUnicodeDecodeDisabled;</span>
     }
     
     public JCheckBox getCheckboxIsUrlDecodeDisabled() {
-<span class="fc" id="L437">        return this.checkboxIsUrlDecodeDisabled;</span>
+<span class="fc" id="L433">        return this.checkboxIsUrlDecodeDisabled;</span>
     }
     
     public JCheckBox getCheckboxIsNotTestingConnection() {
-<span class="fc" id="L441">        return this.checkboxIsNotTestingConnection;</span>
+<span class="fc" id="L437">        return this.checkboxIsNotTestingConnection;</span>
     }
     
     public JCheckBox getCheckboxIsNotProcessingCookies() {
-<span class="fc" id="L445">        return this.checkboxIsNotProcessingCookies;</span>
+<span class="fc" id="L441">        return this.checkboxIsNotProcessingCookies;</span>
     }
     
     public JCheckBox getCheckboxProcessCsrf() {
-<span class="fc" id="L449">        return this.checkboxIsProcessingCsrf;</span>
+<span class="fc" id="L445">        return this.checkboxIsProcessingCsrf;</span>
     }
     
     public JCheckBox getCheckboxIsLimitingThreads() {
-<span class="fc" id="L453">        return this.checkboxIsLimitingThreads;</span>
+<span class="fc" id="L449">        return this.checkboxIsLimitingThreads;</span>
     }
     
     public JSpinner getSpinnerLimitingThreads() {
-<span class="fc" id="L457">        return this.spinnerLimitingThreads;</span>
+<span class="fc" id="L453">        return this.spinnerLimitingThreads;</span>
     }
     
     public JCheckBox getCheckboxIsConnectionTimeout() {
-<span class="fc" id="L461">        return this.checkboxIsConnectionTimeout;</span>
+<span class="fc" id="L457">        return this.checkboxIsConnectionTimeout;</span>
     }
     
     public JSpinner getSpinnerConnectionTimeout() {
-<span class="fc" id="L465">        return this.spinnerConnectionTimeout;</span>
+<span class="fc" id="L461">        return this.spinnerConnectionTimeout;</span>
     }
     
     public JCheckBox getCheckboxIsCsrfUserTag() {
-<span class="fc" id="L469">        return this.checkboxIsCsrfUserTag;</span>
+<span class="fc" id="L465">        return this.checkboxIsCsrfUserTag;</span>
     }
     
     public JTextField getTextfieldCsrfUserTag() {
-<span class="fc" id="L473">        return this.textfieldCustomCsrfInputToken;</span>
+<span class="fc" id="L469">        return this.textfieldCustomCsrfInputToken;</span>
     }
     
     public JTextField getTextfieldCsrfUserTagOutput() {
-<span class="fc" id="L477">        return this.textfieldCustomCsrfOutputToken;</span>
+<span class="fc" id="L473">        return this.textfieldCustomCsrfOutputToken;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

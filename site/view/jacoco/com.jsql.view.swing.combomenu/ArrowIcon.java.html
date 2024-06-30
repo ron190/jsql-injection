@@ -24,18 +24,17 @@ public class ArrowIcon implements Icon, SwingConstants {
     private final BasicArrowButton iconRenderer;
 
     public ArrowIcon(int direction, boolean isPressedView) {
-        
-<span class="fc" id="L28">        this(DEFAULT_SIZE, direction, isPressedView);</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L27">        this(DEFAULT_SIZE, direction, isPressedView);</span>
+<span class="fc" id="L28">    }</span>
 
-<span class="fc" id="L31">    public ArrowIcon(int iconSize, int direction, boolean isEnabled) {</span>
+<span class="fc" id="L30">    public ArrowIcon(int iconSize, int direction, boolean isEnabled) {</span>
         
-<span class="fc" id="L33">        this.size = iconSize / 2;</span>
-<span class="fc" id="L34">        this.iconSize = iconSize;</span>
-<span class="fc" id="L35">        this.direction = direction;</span>
-<span class="fc" id="L36">        this.isEnabled = isEnabled;</span>
-<span class="fc" id="L37">        this.iconRenderer = new BasicArrowButton(direction);</span>
-<span class="fc" id="L38">    }</span>
+<span class="fc" id="L32">        this.size = iconSize / 2;</span>
+<span class="fc" id="L33">        this.iconSize = iconSize;</span>
+<span class="fc" id="L34">        this.direction = direction;</span>
+<span class="fc" id="L35">        this.isEnabled = isEnabled;</span>
+<span class="fc" id="L36">        this.iconRenderer = new BasicArrowButton(direction);</span>
+<span class="fc" id="L37">    }</span>
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -43,37 +42,31 @@ public class ArrowIcon implements Icon, SwingConstants {
         // Fix #4731: ClassCastException on paintTriangle()
         // Implementation by sun.awt.image
         try {
-<span class="fc" id="L46">            this.iconRenderer.paintTriangle(g, x, y + 3, this.size, this.direction, this.isEnabled);</span>
-            
-<span class="nc" id="L48">        } catch(ClassCastException e) {</span>
-            
-<span class="nc" id="L50">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L51">        }</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L45">            this.iconRenderer.paintTriangle(g, x, y + 3, this.size, this.direction, this.isEnabled);</span>
+<span class="nc" id="L46">        } catch(ClassCastException e) {</span>
+<span class="nc" id="L47">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L48">        }</span>
+<span class="fc" id="L49">    }</span>
 
     @Override
     public int getIconWidth() {
-        
-<span class="nc bnc" id="L57" title="All 2 branches missed.">        switch (this.direction) {</span>
-        
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        switch (this.direction) {</span>
             case NORTH:
-<span class="nc" id="L60">            case SOUTH: return this.iconSize;</span>
+<span class="nc" id="L55">            case SOUTH: return this.iconSize;</span>
             case EAST:
             case WEST:
-<span class="nc" id="L63">            default: return this.size;</span>
+<span class="nc" id="L58">            default: return this.size;</span>
         }
     }
 
     @Override
     public int getIconHeight() {
-        
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        switch (this.direction) {</span>
-        
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        switch (this.direction) {</span>
             case NORTH:
-<span class="fc" id="L73">            case SOUTH: return this.size;</span>
+<span class="fc" id="L66">            case SOUTH: return this.size;</span>
             case EAST:
             case WEST:
-<span class="nc" id="L76">            default: return this.iconSize;</span>
+<span class="nc" id="L69">            default: return this.iconSize;</span>
         }
     }
 }

@@ -57,85 +57,77 @@ public class RequestPanel extends JPanel {
         }
         
 <span class="fc bfc" id="L59" title="All 2 branches covered.">        for (AbstractButton radioButton: Collections.list(buttonGroup.getElements())) {</span>
-            
-<span class="fc" id="L61">            radioButton.setUI(</span>
-<span class="fc" id="L62">                new BasicRadioButtonMenuItemUI() {</span>
-                    
+<span class="fc" id="L60">            radioButton.setUI(</span>
+<span class="fc" id="L61">                new BasicRadioButtonMenuItemUI() {</span>
                     @Override
                     protected void doClick(MenuSelectionManager msm) {
-                        
-<span class="nc" id="L67">                        this.menuItem.doClick(0);</span>
-<span class="nc" id="L68">                    }</span>
+<span class="nc" id="L64">                        this.menuItem.doClick(0);</span>
+<span class="nc" id="L65">                    }</span>
                 }
             );
-<span class="fc" id="L71">        }</span>
+<span class="fc" id="L68">        }</span>
         
-<span class="fc" id="L73">        var panelCustomMethod = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L74">        final JTextField inputCustomMethod = new JPopupTextField(&quot;CUSTOM&quot;).getProxy();</span>
+<span class="fc" id="L70">        var panelCustomMethod = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L71">        final JTextField inputCustomMethod = new JPopupTextField(&quot;CUSTOM&quot;).getProxy();</span>
 
-<span class="fc" id="L76">        final var radioCustomMethod = new JRadioButton();</span>
-<span class="fc" id="L77">        radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
-<span class="fc" id="L78">        radioCustomMethod.setIcon(new RadioMenuItemIconCustom());</span>
+<span class="fc" id="L73">        final var radioCustomMethod = new JRadioButton();</span>
+<span class="fc" id="L74">        radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
+<span class="fc" id="L75">        radioCustomMethod.setIcon(new RadioMenuItemIconCustom());</span>
         
-<span class="fc" id="L80">        buttonGroup.add(radioCustomMethod);</span>
+<span class="fc" id="L77">        buttonGroup.add(radioCustomMethod);</span>
         
-<span class="fc" id="L82">        radioCustomMethod.addActionListener(actionEvent -&gt; {</span>
-            
-<span class="nc bnc" id="L84" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(inputCustomMethod.getText())) {</span>
+<span class="fc" id="L79">        radioCustomMethod.addActionListener(actionEvent -&gt; {</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(inputCustomMethod.getText())) {</span>
                 
-<span class="nc" id="L86">                this.typeRequest = (inputCustomMethod.getText());</span>
-<span class="nc" id="L87">                panelAddressBar.getRadioRequest().setText(this.typeRequest);</span>
+<span class="nc" id="L82">                this.typeRequest = inputCustomMethod.getText();</span>
+<span class="nc" id="L83">                panelAddressBar.getRadioRequest().setText(this.typeRequest);</span>
                 
             } else {
-                
-<span class="nc" id="L91">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Define label of Custom request method&quot;);</span>
+<span class="nc" id="L86">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Define label of Custom request method&quot;);</span>
             }
-<span class="nc" id="L93">        });</span>
+<span class="nc" id="L88">        });</span>
       
-<span class="fc" id="L95">        panelCustomMethod.add(radioCustomMethod, BorderLayout.LINE_START);</span>
-<span class="fc" id="L96">        panelCustomMethod.add(inputCustomMethod, BorderLayout.CENTER);</span>
-<span class="fc" id="L97">        popup.insert(panelCustomMethod, popup.getComponentCount());</span>
+<span class="fc" id="L90">        panelCustomMethod.add(radioCustomMethod, BorderLayout.LINE_START);</span>
+<span class="fc" id="L91">        panelCustomMethod.add(inputCustomMethod, BorderLayout.CENTER);</span>
+<span class="fc" id="L92">        popup.insert(panelCustomMethod, popup.getComponentCount());</span>
         
-<span class="fc" id="L99">        buttonRequestMethod.addMouseListener(new MouseAdapter() {</span>
+<span class="fc" id="L94">        buttonRequestMethod.addMouseListener(new MouseAdapter() {</span>
             
             @Override
             public void mousePressed(MouseEvent e) {
                 
-<span class="nc" id="L104">                popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));</span>
+<span class="nc" id="L99">                popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()));</span>
                 
-<span class="nc bnc" id="L106" title="All 2 branches missed.">                if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {</span>
-                    
-<span class="nc" id="L108">                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));</span>
-                    
+<span class="nc bnc" id="L101" title="All 2 branches missed.">                if (ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {</span>
+<span class="nc" id="L102">                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));</span>
                 } else {
-                    
-<span class="nc" id="L112">                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
+<span class="nc" id="L104">                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));</span>
                 }
                 
-<span class="nc" id="L115">                popup.show(</span>
-<span class="nc" id="L116">                    e.getComponent(),</span>
-<span class="nc bnc" id="L117" title="All 2 branches missed.">                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
-<span class="nc" id="L118">                    ? e.getComponent().getX() - e.getComponent().getWidth() - popup.getWidth()</span>
-<span class="nc" id="L119">                    : e.getComponent().getX(),</span>
-<span class="nc" id="L120">                    e.getComponent().getY() + e.getComponent().getWidth()</span>
+<span class="nc" id="L107">                popup.show(</span>
+<span class="nc" id="L108">                    e.getComponent(),</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
+<span class="nc" id="L110">                    ? e.getComponent().getX() - e.getComponent().getWidth() - popup.getWidth()</span>
+<span class="nc" id="L111">                    : e.getComponent().getX(),</span>
+<span class="nc" id="L112">                    e.getComponent().getY() + e.getComponent().getWidth()</span>
                 );
                 
-<span class="nc" id="L123">                popup.setLocation(</span>
-<span class="nc bnc" id="L124" title="All 2 branches missed.">                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
-<span class="nc" id="L125">                    ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popup.getWidth()</span>
-<span class="nc" id="L126">                    : e.getComponent().getLocationOnScreen().x,</span>
-<span class="nc" id="L127">                    e.getComponent().getLocationOnScreen().y + e.getComponent().getWidth()</span>
+<span class="nc" id="L115">                popup.setLocation(</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">                    ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
+<span class="nc" id="L117">                    ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popup.getWidth()</span>
+<span class="nc" id="L118">                    : e.getComponent().getLocationOnScreen().x,</span>
+<span class="nc" id="L119">                    e.getComponent().getLocationOnScreen().y + e.getComponent().getWidth()</span>
                 );
-<span class="nc" id="L129">            }</span>
+<span class="nc" id="L121">            }</span>
         });
-<span class="fc" id="L131">    }</span>
+<span class="fc" id="L123">    }</span>
 
     public String getTypeRequest() {
-<span class="fc" id="L134">        return this.typeRequest;</span>
+<span class="fc" id="L126">        return this.typeRequest;</span>
     }
 
     public void setTypeRequest(String typeRequest) {
-<span class="nc" id="L138">        this.typeRequest = typeRequest;</span>
-<span class="nc" id="L139">    }</span>
+<span class="nc" id="L130">        this.typeRequest = typeRequest;</span>
+<span class="nc" id="L131">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -36,21 +36,20 @@
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      @Override
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> run() {
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>          
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>          <strong class="jxr_keyword">if</strong> (!MediatorHelper.model().getMediatorUtils().getProxyUtil().isLive(ShowOnConsole.YES)) {
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>              
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>              <strong class="jxr_keyword">return</strong>;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>          }
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>          LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_IP_ADDRESS_CHECK"</span>));
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>          String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource(<span class="jxr_string">"http://checkip.amazonaws.com"</span>);
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          LOGGER.log(
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>              LogLevelUtil.CONSOLE_INFORM,
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>              <span class="jxr_string">"{} {}"</span>,
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>              () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_IP_ADDRESS_IS"</span>),
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>              () -&gt; addressIp
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>          );
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>      }
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  }
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>          <strong class="jxr_keyword">if</strong> (MediatorHelper.model().getMediatorUtils().getProxyUtil().isNotLive(ShowOnConsole.YES)) {
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>              <strong class="jxr_keyword">return</strong>;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>          }
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>          LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_IP_ADDRESS_CHECK"</span>));
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>          String addressIp = MediatorHelper.model().getMediatorUtils().getConnectionUtil().getSource(<span class="jxr_string">"http://checkip.amazonaws.com"</span>);
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>          LOGGER.log(
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>              LogLevelUtil.CONSOLE_INFORM,
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>              <span class="jxr_string">"{} {}"</span>,
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>              () -&gt; I18nUtil.valueByKey(<span class="jxr_string">"LOG_IP_ADDRESS_IS"</span>),
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>              () -&gt; addressIp
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>          );
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      }
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>

@@ -30,42 +30,48 @@ public class Patch {
      */
     @Override
     public String toString() {
+
         String coords1;
         String coords2;
-<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (this.length1 == 0) {</span>
-<span class="nc" id="L36">            coords1 = this.start1 + &quot;,0&quot;;</span>
-<span class="nc bnc" id="L37" title="All 2 branches missed.">        } else if (this.length1 == 1) {</span>
-<span class="nc" id="L38">            coords1 = Integer.toString(this.start1 + 1);</span>
+
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (this.length1 == 0) {</span>
+<span class="nc" id="L38">            coords1 = this.start1 + &quot;,0&quot;;</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        } else if (this.length1 == 1) {</span>
+<span class="nc" id="L40">            coords1 = Integer.toString(this.start1 + 1);</span>
         } else {
-<span class="nc" id="L40">            coords1 = (this.start1 + 1) + &quot;,&quot; + this.length1;</span>
+<span class="nc" id="L42">            coords1 = (this.start1 + 1) + &quot;,&quot; + this.length1;</span>
         }
-<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (this.length2 == 0) {</span>
-<span class="nc" id="L43">            coords2 = this.start2 + &quot;,0&quot;;</span>
-<span class="nc bnc" id="L44" title="All 2 branches missed.">        } else if (this.length2 == 1) {</span>
-<span class="nc" id="L45">            coords2 = Integer.toString(this.start2 + 1);</span>
+
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        if (this.length2 == 0) {</span>
+<span class="nc" id="L46">            coords2 = this.start2 + &quot;,0&quot;;</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        } else if (this.length2 == 1) {</span>
+<span class="nc" id="L48">            coords2 = Integer.toString(this.start2 + 1);</span>
         } else {
-<span class="nc" id="L47">            coords2 = (this.start2 + 1) + &quot;,&quot; + this.length2;</span>
+<span class="nc" id="L50">            coords2 = (this.start2 + 1) + &quot;,&quot; + this.length2;</span>
         }
-<span class="nc" id="L49">        StringBuilder text = new StringBuilder();</span>
-<span class="nc" id="L50">        text.append(&quot;@@ -&quot;).append(coords1).append(&quot; +&quot;).append(coords2)</span>
-<span class="nc" id="L51">        .append(&quot; @@\n&quot;);</span>
+
+<span class="nc" id="L53">        StringBuilder text = new StringBuilder();</span>
+<span class="nc" id="L54">        text.append(&quot;@@ -&quot;).append(coords1).append(&quot; +&quot;).append(coords2)</span>
+<span class="nc" id="L55">        .append(&quot; @@\n&quot;);</span>
+
         // Escape the body of the patch with %xx notation.
-<span class="nc bnc" id="L53" title="All 2 branches missed.">        for (Diff aDiff : this.diffs) {</span>
-<span class="nc bnc" id="L54" title="All 4 branches missed.">            switch (aDiff.getOperation()) {</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        for (Diff aDiff : this.diffs) {</span>
+<span class="nc bnc" id="L59" title="All 4 branches missed.">            switch (aDiff.getOperation()) {</span>
             case INSERT:
-<span class="nc" id="L56">                text.append('+');</span>
-<span class="nc" id="L57">                break;</span>
+<span class="nc" id="L61">                text.append('+');</span>
+<span class="nc" id="L62">                break;</span>
             case DELETE:
-<span class="nc" id="L59">                text.append('-');</span>
-<span class="nc" id="L60">                break;</span>
+<span class="nc" id="L64">                text.append('-');</span>
+<span class="nc" id="L65">                break;</span>
             case EQUAL:
-<span class="nc" id="L62">                text.append(' ');</span>
+<span class="nc" id="L67">                text.append(' ');</span>
                 break;
             }
-<span class="nc" id="L65">            text.append(URLEncoder.encode(aDiff.getText(), StandardCharsets.UTF_8).replace('+', ' '))</span>
-<span class="nc" id="L66">            .append(&quot;\n&quot;);</span>
-<span class="nc" id="L67">        }</span>
-<span class="nc" id="L68">        return unescapeForEncodeUriCompatability(text.toString());</span>
+<span class="nc" id="L70">            text.append(URLEncoder.encode(aDiff.getText(), StandardCharsets.UTF_8).replace('+', ' '))</span>
+<span class="nc" id="L71">            .append(&quot;\n&quot;);</span>
+<span class="nc" id="L72">        }</span>
+
+<span class="nc" id="L74">        return unescapeForEncodeUriCompatability(text.toString());</span>
     }
     
     /**
@@ -82,52 +88,51 @@ public class Patch {
      * @return The escaped string.
      */
     public static String unescapeForEncodeUriCompatability(String str) {
-<span class="nc" id="L85">        return str.replace(&quot;%21&quot;, &quot;!&quot;).replace(&quot;%7E&quot;, &quot;~&quot;)</span>
-<span class="nc" id="L86">                .replace(&quot;%27&quot;, &quot;'&quot;).replace(&quot;%28&quot;, &quot;(&quot;).replace(&quot;%29&quot;, &quot;)&quot;)</span>
-<span class="nc" id="L87">                .replace(&quot;%3B&quot;, &quot;;&quot;).replace(&quot;%2F&quot;, &quot;/&quot;).replace(&quot;%3F&quot;, &quot;?&quot;)</span>
-<span class="nc" id="L88">                .replace(&quot;%3A&quot;, &quot;:&quot;).replace(&quot;%40&quot;, &quot;@&quot;).replace(&quot;%26&quot;, &quot;&amp;&quot;)</span>
-<span class="nc" id="L89">                .replace(&quot;%3D&quot;, &quot;=&quot;).replace(&quot;%2B&quot;, &quot;+&quot;).replace(&quot;%24&quot;, &quot;$&quot;)</span>
-<span class="nc" id="L90">                .replace(&quot;%2C&quot;, &quot;,&quot;).replace(&quot;%23&quot;, &quot;#&quot;);</span>
+<span class="nc" id="L91">        return str.replace(&quot;%21&quot;, &quot;!&quot;).replace(&quot;%7E&quot;, &quot;~&quot;)</span>
+<span class="nc" id="L92">            .replace(&quot;%27&quot;, &quot;'&quot;).replace(&quot;%28&quot;, &quot;(&quot;).replace(&quot;%29&quot;, &quot;)&quot;)</span>
+<span class="nc" id="L93">            .replace(&quot;%3B&quot;, &quot;;&quot;).replace(&quot;%2F&quot;, &quot;/&quot;).replace(&quot;%3F&quot;, &quot;?&quot;)</span>
+<span class="nc" id="L94">            .replace(&quot;%3A&quot;, &quot;:&quot;).replace(&quot;%40&quot;, &quot;@&quot;).replace(&quot;%26&quot;, &quot;&amp;&quot;)</span>
+<span class="nc" id="L95">            .replace(&quot;%3D&quot;, &quot;=&quot;).replace(&quot;%2B&quot;, &quot;+&quot;).replace(&quot;%24&quot;, &quot;$&quot;)</span>
+<span class="nc" id="L96">            .replace(&quot;%2C&quot;, &quot;,&quot;).replace(&quot;%23&quot;, &quot;#&quot;);</span>
     }
     
     // Getter and setter
 
     public LinkedList&lt;Diff&gt; getDiffs() {
-<span class="nc" id="L96">        return this.diffs;</span>
+<span class="nc" id="L102">        return this.diffs;</span>
     }
 
     public int getStart1() {
-<span class="nc" id="L100">        return this.start1;</span>
+<span class="nc" id="L106">        return this.start1;</span>
     }
 
     public void setStart1(int start1) {
-<span class="nc" id="L104">        this.start1 = start1;</span>
-<span class="nc" id="L105">    }</span>
+<span class="nc" id="L110">        this.start1 = start1;</span>
+<span class="nc" id="L111">    }</span>
 
     public int getStart2() {
-<span class="nc" id="L108">        return this.start2;</span>
+<span class="nc" id="L114">        return this.start2;</span>
     }
 
     public void setStart2(int start2) {
-<span class="nc" id="L112">        this.start2 = start2;</span>
-<span class="nc" id="L113">    }</span>
+<span class="nc" id="L118">        this.start2 = start2;</span>
+<span class="nc" id="L119">    }</span>
 
     public int getLength1() {
-<span class="nc" id="L116">        return this.length1;</span>
+<span class="nc" id="L122">        return this.length1;</span>
     }
 
     public void setLength1(int length1) {
-<span class="nc" id="L120">        this.length1 = length1;</span>
-<span class="nc" id="L121">    }</span>
+<span class="nc" id="L126">        this.length1 = length1;</span>
+<span class="nc" id="L127">    }</span>
 
     public int getLength2() {
-<span class="nc" id="L124">        return this.length2;</span>
+<span class="nc" id="L130">        return this.length2;</span>
     }
 
     public int setLength2(int length2) {
-<span class="nc" id="L128">        this.length2 = length2;</span>
-<span class="nc" id="L129">        return length2;</span>
+<span class="nc" id="L134">        this.length2 = length2;</span>
+<span class="nc" id="L135">        return length2;</span>
     }
-    
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

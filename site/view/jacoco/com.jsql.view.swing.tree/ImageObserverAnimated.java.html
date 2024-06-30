@@ -39,20 +39,18 @@ public class ImageObserverAnimated implements ImageObserver {
 <span class="fc" id="L39">    }</span>
 
     @Override
-    public boolean imageUpdate(Image img, int flags, int x, int y, int w, int h) {
+    public boolean imageUpdate(Image image, int flags, int x, int y, int w, int h) {
         
 <span class="nc bnc" id="L44" title="All 2 branches missed.">        if ((flags &amp; (FRAMEBITS | ALLBITS)) != 0) {</span>
             
-<span class="nc" id="L46">            Rectangle rect = this.tree.getPathBounds(this.path);</span>
+<span class="nc" id="L46">            Rectangle rectangle = this.tree.getPathBounds(this.path);</span>
             
-<span class="nc bnc" id="L48" title="All 2 branches missed.">            if (rect != null) {</span>
-                
-                // Unhandled StackOverflowError #92723
-<span class="nc" id="L51">                this.tree.repaint(rect);</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">            if (rectangle != null) {</span>
+<span class="nc" id="L49">                this.tree.repaint(rectangle);  // Unhandled StackOverflowError #92723</span>
             }
         }
         
-<span class="nc bnc" id="L55" title="All 2 branches missed.">        return (flags &amp; (ALLBITS | ABORT)) == 0;</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        return (flags &amp; (ALLBITS | ABORT)) == 0;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

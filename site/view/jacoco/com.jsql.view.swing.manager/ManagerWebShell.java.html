@@ -23,9 +23,8 @@ public class ManagerWebShell extends AbstractManagerShell {
 <span class="fc" id="L23">    }</span>
     
     @Override
-    protected void createPayload(String pathShell, String urlShell) throws JSqlException, InterruptedException {
-        
-<span class="nc" id="L28">        MediatorHelper.model().getResourceAccess().createWebShell(pathShell, urlShell);</span>
-<span class="nc" id="L29">    }</span>
+    protected void createPayload(String pathShell, String urlShell) throws JSqlException {
+<span class="nc" id="L27">        MediatorHelper.model().getResourceAccess().createWebShell(pathShell, urlShell);</span>
+<span class="nc" id="L28">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

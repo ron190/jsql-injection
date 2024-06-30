@@ -12,55 +12,48 @@ import java.awt.event.ActionEvent;
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-<span class="nc" id="L16">        ActionCloseTabResult.perform(MediatorHelper.tabResults().getSelectedIndex());</span>
-<span class="nc" id="L17">    }</span>
+<span class="nc" id="L15">        ActionCloseTabResult.perform(MediatorHelper.tabResults().getSelectedIndex());</span>
+<span class="nc" id="L16">    }</span>
     
     public static void perform(int closeTabNumber) {
-        
-<span class="nc bnc" id="L21" title="All 2 branches missed.">        if (MediatorHelper.tabResults().getTabCount() &gt; 0) {</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">        if (MediatorHelper.tabResults().getTabCount() &gt; 0) {</span>
             
-<span class="nc" id="L23">            var tab = MediatorHelper.tabResults().getTabComponentAt(closeTabNumber);</span>
+<span class="nc" id="L21">            var tab = MediatorHelper.tabResults().getTabComponentAt(closeTabNumber);</span>
             
             // Stop syntax color highlighter
-<span class="nc bnc" id="L26" title="All 2 branches missed.">            if (</span>
+<span class="nc bnc" id="L24" title="All 2 branches missed.">            if (</span>
                 tab instanceof TabHeader
-<span class="nc bnc" id="L28" title="All 2 branches missed.">                &amp;&amp; ((TabHeader) tab).getCleanableTab() != null</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">                &amp;&amp; ((TabHeader) tab).getCleanableTab() != null</span>
             ) {
-                
-<span class="nc" id="L31">                ((TabHeader) tab).getCleanableTab().clean();</span>
+<span class="nc" id="L28">                ((TabHeader) tab).getCleanableTab().clean();</span>
             }
 
-<span class="nc" id="L34">            MediatorHelper.tabResults().removeTabAt(closeTabNumber);</span>
+<span class="nc" id="L31">            MediatorHelper.tabResults().removeTabAt(closeTabNumber);</span>
             
-<span class="nc" id="L36">            ActionCloseTabResult.displayPlaceholder();</span>
+<span class="nc" id="L33">            ActionCloseTabResult.displayPlaceholder();</span>
         }
-<span class="nc" id="L38">    }</span>
+<span class="nc" id="L35">    }</span>
     
     private static void displayPlaceholder() {
-        
-<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (MediatorHelper.tabResults().getTabCount() == 0) {</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (MediatorHelper.tabResults().getTabCount() == 0) {</span>
             
-<span class="nc" id="L44">            var splitPaneTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();</span>
-<span class="nc" id="L45">            JSplitPane splitPaneLeftRight = splitPaneTopBottom.getSplitVerticalLeftRight();</span>
+<span class="nc" id="L40">            var splitPaneTopBottom = MediatorHelper.frame().getSplitHorizontalTopBottom();</span>
+<span class="nc" id="L41">            JSplitPane splitPaneLeftRight = splitPaneTopBottom.getSplitVerticalLeftRight();</span>
             
-<span class="nc" id="L47">            int i = splitPaneLeftRight.getDividerLocation();</span>
+<span class="nc" id="L43">            int i = splitPaneLeftRight.getDividerLocation();</span>
             
-<span class="nc bnc" id="L49" title="All 2 branches missed.">            if (ComponentOrientation.LEFT_TO_RIGHT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {</span>
-                
-<span class="nc" id="L51">                splitPaneLeftRight.setRightComponent(</span>
-<span class="nc" id="L52">                    splitPaneTopBottom.getLabelPlaceholderResult()</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            if (ComponentOrientation.LEFT_TO_RIGHT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))) {</span>
+<span class="nc" id="L46">                splitPaneLeftRight.setRightComponent(</span>
+<span class="nc" id="L47">                    splitPaneTopBottom.getLabelPlaceholderResult()</span>
                 );
-                
             } else {
-                
-<span class="nc" id="L57">                splitPaneLeftRight.setLeftComponent(</span>
-<span class="nc" id="L58">                    splitPaneTopBottom.getLabelPlaceholderResult()</span>
+<span class="nc" id="L50">                splitPaneLeftRight.setLeftComponent(</span>
+<span class="nc" id="L51">                    splitPaneTopBottom.getLabelPlaceholderResult()</span>
                 );
             }
             
-<span class="nc" id="L62">            splitPaneLeftRight.setDividerLocation(i);</span>
+<span class="nc" id="L55">            splitPaneLeftRight.setDividerLocation(i);</span>
         }
-<span class="nc" id="L64">    }</span>
+<span class="nc" id="L57">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

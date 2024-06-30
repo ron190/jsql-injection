@@ -3,18 +3,15 @@
 public class JSqlException extends Exception {
     
     public JSqlException(String message) {
-        
-<span class="fc" id="L7">        super(message);</span>
-<span class="fc" id="L8">    }</span>
+<span class="fc" id="L6">        super(message);</span>
+<span class="fc" id="L7">    }</span>
 
     public JSqlException(String message, Throwable e) {
-        
-<span class="nc" id="L12">        super(message, e);</span>
-<span class="nc" id="L13">    }</span>
+<span class="fc" id="L10">        super(message, e);</span>
+<span class="fc" id="L11">    }</span>
 
     public JSqlException(Throwable e) {
-
-<span class="nc" id="L17">        super(null, e);  // get only original implicit reason</span>
-<span class="nc" id="L18">    }</span>
+<span class="nc" id="L14">        super(null, e);  // get only original implicit reason</span>
+<span class="nc" id="L15">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

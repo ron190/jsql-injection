@@ -18,10 +18,11 @@
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>      @GetMapping(<span class="jxr_string">"/greeting"</span>)
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>      <strong class="jxr_keyword">public</strong> String greeting(@RequestParam(name=<span class="jxr_string">"name"</span>, required=false, defaultValue=<span class="jxr_string">"World"</span>) String name, Model model) {
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>          model.addAttribute(<span class="jxr_string">"name"</span>, name);
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>          <strong class="jxr_keyword">return</strong> <span class="jxr_string">"greeting"</span>;
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>      }
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  }
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>          model.addAttribute(<span class="jxr_string">"name"</span>, name);
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>          <strong class="jxr_keyword">return</strong> <span class="jxr_string">"greeting"</span>;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>      }
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>

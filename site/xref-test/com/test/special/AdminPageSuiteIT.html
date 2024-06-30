@@ -22,16 +22,15 @@
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setupInjection() {
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>          <strong class="jxr_keyword">this</strong>.injectionModel = <strong class="jxr_keyword">new</strong> InjectionModel();
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>  
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>          <strong class="jxr_keyword">this</strong>.injectionModel.subscribe(<strong class="jxr_keyword">new</strong> SystemOutTerminal());
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>      }
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>      
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>      @RepeatedTest(3)
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>      <strong class="jxr_keyword">void</strong> listAdminPages() <strong class="jxr_keyword">throws</strong> InterruptedException {
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>          <strong class="jxr_keyword">int</strong> pagesFound = <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().createAdminPages(<span class="jxr_string">"http://localhost:8080"</span>, List.of(<span class="jxr_string">"greeting"</span>));
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>          Assertions.assertEquals(1, pagesFound);
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>      }
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  }
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>          <strong class="jxr_keyword">this</strong>.injectionModel.subscribe(<strong class="jxr_keyword">new</strong> SystemOutTerminal());
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>      }
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>      
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>      @RepeatedTest(3)
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>      <strong class="jxr_keyword">void</strong> listAdminPages() {
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>          <strong class="jxr_keyword">int</strong> pagesFound = <strong class="jxr_keyword">this</strong>.injectionModel.getResourceAccess().createAdminPages(<span class="jxr_string">"http://localhost:8080"</span>, List.of(<span class="jxr_string">"greeting"</span>));
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>          Assertions.assertEquals(1, pagesFound);
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>      }
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>

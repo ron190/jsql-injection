@@ -14,29 +14,22 @@ import com.jsql.view.interaction.InteractionCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * Append text to the tab Binary.
- */
 public class MessageBinary implements InteractionCommand {
     
-<span class="fc" id="L22">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L19">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
 
     /**
      * Text to append to the Binary log area.
      */
     private final String text;
 
-    /**
-     * @param interactionParams Text to append
-     */
-<span class="fc" id="L32">    public MessageBinary(Object[] interactionParams) {</span>
-        
-<span class="fc" id="L34">        this.text = (String) interactionParams[0];</span>
-<span class="fc" id="L35">    }</span>
+<span class="fc" id="L26">    public MessageBinary(Object[] interactionParams) {</span>
+<span class="fc" id="L27">        this.text = (String) interactionParams[0];</span>
+<span class="fc" id="L28">    }</span>
 
     @Override
     public void execute() {
-<span class="fc" id="L39">        LOGGER.info(this.text::trim);</span>
-<span class="fc" id="L40">    }</span>
+<span class="fc" id="L32">        LOGGER.info(this.text::trim);</span>
+<span class="fc" id="L33">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

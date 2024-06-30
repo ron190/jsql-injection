@@ -368,26 +368,25 @@
 <a class="jxr_linenumber" name="L360" href="#L360">360</a>                 s += <span class="jxr_string">"Bit-strings can only contain 0 and 1: "</span> + <strong class="jxr_keyword">this</strong>.contents;
 <a class="jxr_linenumber" name="L361" href="#L361">361</a>                 <strong class="jxr_keyword">break</strong>;
 <a class="jxr_linenumber" name="L362" href="#L362">362</a>             }
-<a class="jxr_linenumber" name="L363" href="#L363">363</a> 
-<a class="jxr_linenumber" name="L364" href="#L364">364</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L365" href="#L365">365</a>             s = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L366" href="#L366">366</a>         }
-<a class="jxr_linenumber" name="L367" href="#L367">367</a>         <strong class="jxr_keyword">return</strong> s;
-<a class="jxr_linenumber" name="L368" href="#L368">368</a>     }
-<a class="jxr_linenumber" name="L369" href="#L369">369</a> 
-<a class="jxr_linenumber" name="L370" href="#L370">370</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L371" href="#L371">371</a> <em class="jxr_javadoccomment">     * get a representation of this token as a human readable string. The format</em>
-<a class="jxr_linenumber" name="L372" href="#L372">372</a> <em class="jxr_javadoccomment">     * of this string is subject to change and should only be used for debugging</em>
-<a class="jxr_linenumber" name="L373" href="#L373">373</a> <em class="jxr_javadoccomment">     * purposes.</em>
-<a class="jxr_linenumber" name="L374" href="#L374">374</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L375" href="#L375">375</a> <em class="jxr_javadoccomment">     * @return a string representation of this token</em>
-<a class="jxr_linenumber" name="L376" href="#L376">376</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L377" href="#L377">377</a>     @Override
-<a class="jxr_linenumber" name="L378" href="#L378">378</a>     <strong class="jxr_keyword">public</strong> String toString() {
-<a class="jxr_linenumber" name="L379" href="#L379">379</a>         <strong class="jxr_keyword">return</strong> <span class="jxr_string">"Token #"</span> + Integer.toHexString(<strong class="jxr_keyword">this</strong>.id) + <span class="jxr_string">": "</span> + <strong class="jxr_keyword">this</strong>.getDescription() + <span class="jxr_string">" Line "</span> + <strong class="jxr_keyword">this</strong>.lineNumber + <span class="jxr_string">" from "</span>
-<a class="jxr_linenumber" name="L380" href="#L380">380</a>                 + <strong class="jxr_keyword">this</strong>.charBegin + <span class="jxr_string">" to "</span> + <strong class="jxr_keyword">this</strong>.charEnd + <span class="jxr_string">" : "</span> + <strong class="jxr_keyword">this</strong>.contents;
-<a class="jxr_linenumber" name="L381" href="#L381">381</a>     }
-<a class="jxr_linenumber" name="L382" href="#L382">382</a> }
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L364" href="#L364">364</a>             s = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L365" href="#L365">365</a>         }
+<a class="jxr_linenumber" name="L366" href="#L366">366</a>         <strong class="jxr_keyword">return</strong> s;
+<a class="jxr_linenumber" name="L367" href="#L367">367</a>     }
+<a class="jxr_linenumber" name="L368" href="#L368">368</a> 
+<a class="jxr_linenumber" name="L369" href="#L369">369</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L370" href="#L370">370</a> <em class="jxr_javadoccomment">     * get a representation of this token as a human-readable string. The format</em>
+<a class="jxr_linenumber" name="L371" href="#L371">371</a> <em class="jxr_javadoccomment">     * of this string is subject to change and should only be used for debugging</em>
+<a class="jxr_linenumber" name="L372" href="#L372">372</a> <em class="jxr_javadoccomment">     * purposes.</em>
+<a class="jxr_linenumber" name="L373" href="#L373">373</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L374" href="#L374">374</a> <em class="jxr_javadoccomment">     * @return a string representation of this token</em>
+<a class="jxr_linenumber" name="L375" href="#L375">375</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L376" href="#L376">376</a>     @Override
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>     <strong class="jxr_keyword">public</strong> String toString() {
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>         <strong class="jxr_keyword">return</strong> <span class="jxr_string">"Token #"</span> + Integer.toHexString(<strong class="jxr_keyword">this</strong>.id) + <span class="jxr_string">": "</span> + <strong class="jxr_keyword">this</strong>.getDescription() + <span class="jxr_string">" Line "</span> + <strong class="jxr_keyword">this</strong>.lineNumber + <span class="jxr_string">" from "</span>
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>                 + <strong class="jxr_keyword">this</strong>.charBegin + <span class="jxr_string">" to "</span> + <strong class="jxr_keyword">this</strong>.charEnd + <span class="jxr_string">" : "</span> + <strong class="jxr_keyword">this</strong>.contents;
+<a class="jxr_linenumber" name="L380" href="#L380">380</a>     }
+<a class="jxr_linenumber" name="L381" href="#L381">381</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>

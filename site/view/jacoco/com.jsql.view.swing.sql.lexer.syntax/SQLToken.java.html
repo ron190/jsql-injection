@@ -360,15 +360,14 @@ public class SQLToken extends Token {
 <span class="nc" id="L360">                s += &quot;Bit-strings can only contain 0 and 1: &quot; + this.contents;</span>
 <span class="nc" id="L361">                break;</span>
             }
-
         } else {
-<span class="nc" id="L365">            s = null;</span>
+<span class="nc" id="L364">            s = null;</span>
         }
-<span class="nc" id="L367">        return s;</span>
+<span class="nc" id="L366">        return s;</span>
     }
 
     /**
-     * get a representation of this token as a human readable string. The format
+     * get a representation of this token as a human-readable string. The format
      * of this string is subject to change and should only be used for debugging
      * purposes.
      *
@@ -376,7 +375,7 @@ public class SQLToken extends Token {
      */
     @Override
     public String toString() {
-<span class="nc" id="L379">        return &quot;Token #&quot; + Integer.toHexString(this.id) + &quot;: &quot; + this.getDescription() + &quot; Line &quot; + this.lineNumber + &quot; from &quot;</span>
+<span class="nc" id="L378">        return &quot;Token #&quot; + Integer.toHexString(this.id) + &quot;: &quot; + this.getDescription() + &quot; Line &quot; + this.lineNumber + &quot; from &quot;</span>
                 + this.charBegin + &quot; to &quot; + this.charEnd + &quot; : &quot; + this.contents;
     }
 }

@@ -20,18 +20,16 @@ import javax.swing.*;
 public class JPopupTextField extends JPopupTextComponent&lt;JTextField&gt; implements DecoratorJComponent&lt;JTextField&gt; {
     
     public JPopupTextField(String placeholder) {
-        
-<span class="fc" id="L24">        this(new JTextFieldPlaceholder(placeholder));</span>
-<span class="fc" id="L25">    }</span>
+<span class="fc" id="L23">        this(new JTextFieldPlaceholder(placeholder));</span>
+<span class="fc" id="L24">    }</span>
 
     /**
      * Build new instance of JTextField to decorate with default text.
      * @param value Text to display
      */
     public JPopupTextField(String placeholder, String value) {
-        
-<span class="fc" id="L33">        this(new JTextFieldPlaceholder(placeholder, value));</span>
-<span class="fc" id="L34">    }</span>
+<span class="fc" id="L31">        this(new JTextFieldPlaceholder(placeholder, value));</span>
+<span class="fc" id="L32">    }</span>
 
     /**
      * Decorate a provided JTextField.
@@ -39,14 +37,14 @@ public class JPopupTextField extends JPopupTextComponent&lt;JTextField&gt; imple
      */
     public JPopupTextField(JTextField proxy) {
         
-<span class="fc" id="L42">        super(proxy);</span>
+<span class="fc" id="L40">        super(proxy);</span>
 
-<span class="fc" id="L44">        this.getProxy().setBorder(</span>
-<span class="fc" id="L45">            BorderFactory.createCompoundBorder(</span>
-<span class="fc" id="L46">                BorderFactory.createLineBorder(UiUtil.COLOR_DEFAULT_BACKGROUND, 2),</span>
+<span class="fc" id="L42">        this.getProxy().setBorder(</span>
+<span class="fc" id="L43">            BorderFactory.createCompoundBorder(</span>
+<span class="fc" id="L44">                BorderFactory.createLineBorder(UiUtil.COLOR_DEFAULT_BACKGROUND, 2),</span>
                 UiUtil.BORDER_BLU
             )
         );
-<span class="fc" id="L50">    }</span>
+<span class="fc" id="L48">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

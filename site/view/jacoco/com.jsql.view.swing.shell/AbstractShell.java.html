@@ -136,16 +136,14 @@ public abstract class AbstractShell extends JTextPane {
      * @param string Text to add
      */
     public void append(String string) {
-        
         try {
-<span class="fc" id="L141">            var doc = this.getDocument();</span>
-<span class="fc" id="L142">            doc.insertString(doc.getLength(), string, null);</span>
+<span class="fc" id="L140">            var doc = this.getDocument();</span>
+<span class="fc" id="L141">            doc.insertString(doc.getLength(), string, null);</span>
             
-<span class="nc" id="L144">        } catch (BadLocationException e) {</span>
-            
-<span class="nc" id="L146">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L147">        }</span>
-<span class="fc" id="L148">    }</span>
+<span class="nc" id="L143">        } catch (BadLocationException e) {</span>
+<span class="nc" id="L144">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L145">        }</span>
+<span class="fc" id="L146">    }</span>
     
     /**
      * Append prompt to textpane, measure prompt the first time is used.
@@ -153,17 +151,17 @@ public abstract class AbstractShell extends JTextPane {
      */
     public void displayPrompt(boolean isAddingPrompt) {
         
-<span class="fc" id="L156">        StyleConstants.setUnderline(this.style, true);</span>
-<span class="fc" id="L157">        this.appendPrompt(&quot;jsql&quot;, Color.LIGHT_GRAY, isAddingPrompt);</span>
-<span class="fc" id="L158">        StyleConstants.setUnderline(this.style, false);</span>
+<span class="fc" id="L154">        StyleConstants.setUnderline(this.style, true);</span>
+<span class="fc" id="L155">        this.appendPrompt(&quot;jsql&quot;, Color.LIGHT_GRAY, isAddingPrompt);</span>
+<span class="fc" id="L156">        StyleConstants.setUnderline(this.style, false);</span>
 
-<span class="fc" id="L160">        this.appendPrompt(StringUtils.SPACE + this.labelShell, Color.LIGHT_GRAY, isAddingPrompt);</span>
-<span class="fc" id="L161">        this.appendPrompt(&quot;[&quot;, new Color(50, 191, 50), isAddingPrompt);</span>
-<span class="fc" id="L162">        this.appendPrompt(this.host, new Color(191, 191, 25), isAddingPrompt);</span>
-<span class="fc" id="L163">        this.appendPrompt(&quot;]&quot;, new Color(50, 191, 50), isAddingPrompt);</span>
-<span class="fc" id="L164">        this.appendPrompt(&quot; &gt;&quot;, new Color(191, 100, 100), isAddingPrompt);</span>
-<span class="fc" id="L165">        this.appendPrompt(StringUtils.SPACE, Color.LIGHT_GRAY, isAddingPrompt);</span>
-<span class="fc" id="L166">    }</span>
+<span class="fc" id="L158">        this.appendPrompt(StringUtils.SPACE + this.labelShell, Color.LIGHT_GRAY, isAddingPrompt);</span>
+<span class="fc" id="L159">        this.appendPrompt(&quot;[&quot;, new Color(50, 191, 50), isAddingPrompt);</span>
+<span class="fc" id="L160">        this.appendPrompt(this.host, new Color(191, 191, 25), isAddingPrompt);</span>
+<span class="fc" id="L161">        this.appendPrompt(&quot;]&quot;, new Color(50, 191, 50), isAddingPrompt);</span>
+<span class="fc" id="L162">        this.appendPrompt(&quot; &gt;&quot;, new Color(191, 100, 100), isAddingPrompt);</span>
+<span class="fc" id="L163">        this.appendPrompt(StringUtils.SPACE, Color.LIGHT_GRAY, isAddingPrompt);</span>
+<span class="fc" id="L164">    }</span>
 
     /**
      * Add a colored string to the textpane, measure prompt at the same time.
@@ -172,29 +170,24 @@ public abstract class AbstractShell extends JTextPane {
      * @param isAddingPrompt Should we measure prompt length?
      */
     private void appendPrompt(String string, Color color, boolean isAddingPrompt) {
-        
         try {
-<span class="fc" id="L177">            StyleConstants.setForeground(this.style, color);</span>
-<span class="fc" id="L178">            this.styledDocument.insertString(this.styledDocument.getLength(), string, this.style);</span>
+<span class="fc" id="L174">            StyleConstants.setForeground(this.style, color);</span>
+<span class="fc" id="L175">            this.styledDocument.insertString(this.styledDocument.getLength(), string, this.style);</span>
             
-<span class="fc bfc" id="L180" title="All 2 branches covered.">            if (isAddingPrompt) {</span>
-                
-<span class="fc" id="L182">                this.prompt += string;</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">            if (isAddingPrompt) {</span>
+<span class="fc" id="L178">                this.prompt += string;</span>
             }
-            
-<span class="nc" id="L185">        } catch (BadLocationException e) {</span>
-            
-<span class="nc" id="L187">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L188">        }</span>
-<span class="fc" id="L189">    }</span>
+<span class="nc" id="L180">        } catch (BadLocationException e) {</span>
+<span class="nc" id="L181">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L182">        }</span>
+<span class="fc" id="L183">    }</span>
 
     /**
      * NoWrap.
      */
     @Override
     public boolean getScrollableTracksViewportWidth() {
-        
-<span class="pc bpc" id="L197" title="1 of 2 branches missed.">        return this.getUI().getPreferredSize(this).width &lt;= this.getParent().getSize().width;</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">        return this.getUI().getPreferredSize(this).width &lt;= this.getParent().getSize().width;</span>
     }
 
     /**
@@ -203,7 +196,7 @@ public abstract class AbstractShell extends JTextPane {
     @Override
     public synchronized void addMouseMotionListener(MouseMotionListener l) {
         // Do nothing
-<span class="fc" id="L206">    }</span>
+<span class="fc" id="L199">    }</span>
 
     /**
      * Get index of line for current offset (generally cursor position).
@@ -213,22 +206,17 @@ public abstract class AbstractShell extends JTextPane {
      */
     public int getLineOfOffset(int offset) throws BadLocationException {
         
-<span class="fc" id="L216">        var errorMsg = &quot;Can't translate offset to line&quot;;</span>
-<span class="fc" id="L217">        var doc = this.getDocument();</span>
+<span class="fc" id="L209">        var errorMsg = &quot;Can't translate offset to line&quot;;</span>
+<span class="fc" id="L210">        var doc = this.getDocument();</span>
         
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        if (offset &lt; 0) {</span>
-            
-<span class="nc" id="L221">            throw new BadLocationException(errorMsg, -1);</span>
-            
-<span class="pc bpc" id="L223" title="1 of 2 branches missed.">        } else if (offset &gt; doc.getLength()) {</span>
-            
-<span class="nc" id="L225">            throw new BadLocationException(errorMsg, doc.getLength() + 1);</span>
-            
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">        if (offset &lt; 0) {</span>
+<span class="nc" id="L213">            throw new BadLocationException(errorMsg, -1);</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">        } else if (offset &gt; doc.getLength()) {</span>
+<span class="nc" id="L215">            throw new BadLocationException(errorMsg, doc.getLength() + 1);</span>
         } else {
             
-<span class="fc" id="L229">            var map = doc.getDefaultRootElement();</span>
-            
-<span class="fc" id="L231">            return map.getElementIndex(offset);</span>
+<span class="fc" id="L218">            var map = doc.getDefaultRootElement();</span>
+<span class="fc" id="L219">            return map.getElementIndex(offset);</span>
         }
     }
 
@@ -240,21 +228,16 @@ public abstract class AbstractShell extends JTextPane {
      */
     public int getLineStartOffset(int line) throws BadLocationException {
         
-<span class="fc" id="L243">        var map = this.getDocument().getDefaultRootElement();</span>
+<span class="fc" id="L231">        var map = this.getDocument().getDefaultRootElement();</span>
         
-<span class="pc bpc" id="L245" title="1 of 2 branches missed.">        if (line &lt; 0) {</span>
-            
-<span class="nc" id="L247">            throw new BadLocationException(&quot;Negative line&quot;, -1);</span>
-            
-<span class="pc bpc" id="L249" title="1 of 2 branches missed.">        } else if (line &gt;= map.getElementCount()) {</span>
-            
-<span class="nc" id="L251">            throw new BadLocationException(&quot;No such line&quot;, this.getDocument().getLength() + 1);</span>
-            
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">        if (line &lt; 0) {</span>
+<span class="nc" id="L234">            throw new BadLocationException(&quot;Negative line&quot;, -1);</span>
+<span class="pc bpc" id="L235" title="1 of 2 branches missed.">        } else if (line &gt;= map.getElementCount()) {</span>
+<span class="nc" id="L236">            throw new BadLocationException(&quot;No such line&quot;, this.getDocument().getLength() + 1);</span>
         } else {
             
-<span class="fc" id="L255">            var lineElem = map.getElement(line);</span>
-            
-<span class="fc" id="L257">            return lineElem.getStartOffset();</span>
+<span class="fc" id="L239">            var lineElem = map.getElement(line);</span>
+<span class="fc" id="L240">            return lineElem.getStartOffset();</span>
         }
     }
 
@@ -262,19 +245,19 @@ public abstract class AbstractShell extends JTextPane {
     // Getter and setter
     
     public boolean[] getIsEdited() {
-<span class="fc" id="L265">        return this.isEdited;</span>
+<span class="fc" id="L248">        return this.isEdited;</span>
     }
 
     public UUID getUuidShell() {
-<span class="fc" id="L269">        return this.uuidShell;</span>
+<span class="fc" id="L252">        return this.uuidShell;</span>
     }
 
     public String getUrlShell() {
-<span class="fc" id="L273">        return this.urlShell;</span>
+<span class="fc" id="L256">        return this.urlShell;</span>
     }
 
     public String getPrompt() {
-<span class="fc" id="L277">        return this.prompt;</span>
+<span class="fc" id="L260">        return this.prompt;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -117,16 +117,15 @@ public class ActionListenerSave implements ActionListener {
         
 <span class="pc bpc" id="L118" title="1 of 2 branches missed.">        if (</span>
             isRestartRequired
-            &amp;&amp; JOptionPane
-<span class="nc bnc" id="L121" title="All 2 branches missed.">                .showConfirmDialog(</span>
-<span class="nc" id="L122">                    MediatorHelper.frame(),</span>
-                    &quot;File krb5.conf has changed, please restart.&quot;,
-                    &quot;Restart&quot;,
-                    JOptionPane.YES_NO_OPTION
-                ) == JOptionPane.YES_OPTION
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            &amp;&amp; JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(</span>
+<span class="nc" id="L121">                MediatorHelper.frame(),</span>
+                &quot;File krb5.conf has changed, please restart.&quot;,
+                &quot;Restart&quot;,
+                JOptionPane.YES_NO_OPTION
+            )
         ) {
-<span class="nc" id="L128">            new ActionNewWindow().actionPerformed(null);</span>
+<span class="nc" id="L127">            new ActionNewWindow().actionPerformed(null);</span>
         }
-<span class="fc" id="L130">    }</span>
+<span class="fc" id="L129">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

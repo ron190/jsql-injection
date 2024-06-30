@@ -45,7 +45,7 @@ import java.io.Serializable;
 <span class="nc" id="L45">                g.drawRect(0, 0, w - 1, h - 1);</span>
             }
             
-<span class="nc" id="L48">            g.setColor( MetalLookAndFeel.getControlInfo() );</span>
+<span class="nc" id="L48">            g.setColor(MetalLookAndFeel.getControlInfo());</span>
             
         } else {
             
@@ -56,31 +56,30 @@ import java.io.Serializable;
 <span class="nc" id="L56">        g.translate(-x, -y);</span>
         
 <span class="nc bnc" id="L58" title="All 2 branches missed.">        if (model.isSelected()) {</span>
-            
-<span class="nc" id="L60">            this.drawCheck(g, x, y);</span>
+<span class="nc" id="L59">            this.drawCheck(g, x, y);</span>
         }
-<span class="nc" id="L62">    }</span>
+<span class="nc" id="L61">    }</span>
     
     protected void drawCheck(Graphics g, int x, int y) {
         
-<span class="nc" id="L66">        g.fillRect(x + 3, y + 5, 2, CheckBoxIcon.CONTROL_SIZE - 8);</span>
-<span class="nc" id="L67">        g.drawLine(x + CheckBoxIcon.CONTROL_SIZE - 4, y + 3, x + 5, y + CheckBoxIcon.CONTROL_SIZE - 6);</span>
-<span class="nc" id="L68">        g.drawLine(x + CheckBoxIcon.CONTROL_SIZE - 4, y + 4, x + 5, y + CheckBoxIcon.CONTROL_SIZE - 5);</span>
-<span class="nc" id="L69">    }</span>
+<span class="nc" id="L65">        g.fillRect(x + 3, y + 5, 2, CheckBoxIcon.CONTROL_SIZE - 8);</span>
+<span class="nc" id="L66">        g.drawLine(x + CheckBoxIcon.CONTROL_SIZE - 4, y + 3, x + 5, y + CheckBoxIcon.CONTROL_SIZE - 6);</span>
+<span class="nc" id="L67">        g.drawLine(x + CheckBoxIcon.CONTROL_SIZE - 4, y + 4, x + 5, y + CheckBoxIcon.CONTROL_SIZE - 5);</span>
+<span class="nc" id="L68">    }</span>
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-<span class="nc" id="L73">        this.paintOceanIcon(c, g, x, y);</span>
-<span class="nc" id="L74">    }</span>
+<span class="nc" id="L72">        this.paintOceanIcon(c, g, x, y);</span>
+<span class="nc" id="L73">    }</span>
 
     @Override
     public int getIconWidth() {
-<span class="nc" id="L78">        return CheckBoxIcon.CONTROL_SIZE;</span>
+<span class="nc" id="L77">        return CheckBoxIcon.CONTROL_SIZE;</span>
     }
 
     @Override
     public int getIconHeight() {
-<span class="nc" id="L83">        return CheckBoxIcon.CONTROL_SIZE;</span>
+<span class="nc" id="L82">        return CheckBoxIcon.CONTROL_SIZE;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

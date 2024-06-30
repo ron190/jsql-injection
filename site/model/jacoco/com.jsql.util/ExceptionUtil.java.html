@@ -16,36 +16,36 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
- * Utility class managing an exception reporting mechanism.
- * It uses Github as the issue webtracker.
+ * Utility class managing exception reporting to GitHub.
  */
 public class ExceptionUtil {
     
-<span class="fc" id="L24">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L23">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     private final InjectionModel injectionModel;
     
-<span class="fc" id="L28">    private final Set&lt;String&gt; exceptionsMd5Cached = new CopyOnWriteArraySet&lt;&gt;();</span>
+<span class="fc" id="L27">    private final Set&lt;String&gt; exceptionsMd5Cached = new CopyOnWriteArraySet&lt;&gt;();</span>
     
-<span class="fc" id="L30">    public ExceptionUtil(InjectionModel injectionModel) {</span>
+<span class="fc" id="L29">    public ExceptionUtil(InjectionModel injectionModel) {</span>
         
-<span class="fc" id="L32">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L31">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L32">    }</span>
     
     /**
      * Handler class processing errors on top of the JVM in order to send
-     * a report to Github automatically.
+     * a report to GitHub automatically.
      */
-<span class="nc" id="L39">    public class ExceptionHandler implements Thread.UncaughtExceptionHandler {</span>
+<span class="nc" id="L38">    public class ExceptionHandler implements Thread.UncaughtExceptionHandler {</span>
 
         @Override
         public void uncaughtException(Thread thread, Throwable throwable) {
             
-<span class="nc" id="L44">            LOGGER.log(</span>
+<span class="nc" id="L43">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_JAVA,
-<span class="nc" id="L46">                () -&gt; String.format(&quot;Unhandled Exception on %s&quot;, thread.getName()),</span>
+<span class="nc" id="L45">                () -&gt; String.format(&quot;Unhandled Exception on %s&quot;, thread.getName()),</span>
                 throwable
             );
+
             // Display to stdout
 <span class="nc" id="L50">            LOGGER.log(</span>
                 Level.ERROR,
@@ -93,36 +93,33 @@ public class ExceptionUtil {
                             throwable
                         );
                     }
-
-<span class="nc" id="L97">                } catch (NoSuchAlgorithmException e) {</span>
-
-<span class="nc" id="L99">                    LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="nc" id="L100">                }</span>
+<span class="nc" id="L96">                } catch (NoSuchAlgorithmException e) {</span>
+<span class="nc" id="L97">                    LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="nc" id="L98">                }</span>
             }
-<span class="nc" id="L102">        }</span>
+<span class="nc" id="L100">        }</span>
     }
     
     /**
      * Add the error reporting mechanism on top of the JVM in order to
-     * intercept and process the error to Github.
+     * intercept and process the error to GitHub.
      */
     public void setUncaughtExceptionHandler() {
         
         // Regular Exception
-<span class="nc" id="L112">        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());</span>
+<span class="nc" id="L110">        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());</span>
 
         // Event dispatching thread Exception
         try {
-<span class="nc" id="L116">            SwingUtilities.invokeAndWait(() -&gt;</span>
+<span class="nc" id="L114">            SwingUtilities.invokeAndWait(() -&gt;</span>
                 // We are in the event dispatching thread
-<span class="nc" id="L118">                Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())</span>
+<span class="nc" id="L116">                Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())</span>
             );
+<span class="nc" id="L118">        } catch (InvocationTargetException | InterruptedException e) {</span>
             
-<span class="nc" id="L121">        } catch (InvocationTargetException | InterruptedException e) {</span>
-            
-<span class="nc" id="L123">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L124">            Thread.currentThread().interrupt();</span>
-<span class="nc" id="L125">        }</span>
-<span class="nc" id="L126">    }</span>
+<span class="nc" id="L120">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L121">            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L122">        }</span>
+<span class="nc" id="L123">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

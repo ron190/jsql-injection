@@ -19,19 +19,15 @@ import com.jsql.view.swing.util.MediatorHelper;
  */
 public class MarkStackedStrategy implements InteractionCommand {
 
-    /**
-     * @param interactionParams
-     */
-<span class="nc" id="L25">    public MarkStackedStrategy(Object[] interactionParams) {</span>
+<span class="nc" id="L22">    public MarkStackedStrategy(Object[] interactionParams) {</span>
         // Do nothing
-<span class="nc" id="L27">    }</span>
+<span class="nc" id="L24">    }</span>
 
     @Override
     public void execute() {
         
-<span class="nc" id="L32">        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getStacked();</span>
-        
-<span class="nc" id="L34">        MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategy(strategy);</span>
-<span class="nc" id="L35">    }</span>
+<span class="nc" id="L29">        AbstractStrategy strategy = MediatorHelper.model().getMediatorStrategy().getStacked();</span>
+<span class="nc" id="L30">        MediatorHelper.panelAddressBar().getAddressMenuBar().markStrategy(strategy);</span>
+<span class="nc" id="L31">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

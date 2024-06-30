@@ -25,9 +25,8 @@ public abstract class AbstractCharAction extends TextAction {
      * Create this object with the appropriate identifier.
      */
     protected AbstractCharAction(String deleteAction) {
-        
-<span class="fc" id="L29">        super(deleteAction);</span>
-<span class="fc" id="L30">    }</span>
+<span class="fc" id="L28">        super(deleteAction);</span>
+<span class="fc" id="L29">    }</span>
 
     protected abstract void delete(Document doc, int dot) throws BadLocationException;
 
@@ -37,31 +36,26 @@ public abstract class AbstractCharAction extends TextAction {
     @Override
     public void actionPerformed(ActionEvent event) {
         
-<span class="nc" id="L40">        JTextComponent target = this.getTextComponent(event);</span>
+<span class="nc" id="L39">        JTextComponent target = this.getTextComponent(event);</span>
 
-<span class="nc bnc" id="L42" title="All 4 branches missed.">        if (target == null || !target.isEditable()) {</span>
-            
-<span class="nc" id="L44">            return;</span>
+<span class="nc bnc" id="L41" title="All 4 branches missed.">        if (target == null || !target.isEditable()) {</span>
+<span class="nc" id="L42">            return;</span>
         }
         
         try {
-<span class="nc" id="L48">            var doc = target.getDocument();</span>
-<span class="nc" id="L49">            var caret = target.getCaret();</span>
-<span class="nc" id="L50">            int dot = caret.getDot();</span>
-<span class="nc" id="L51">            int mark = caret.getMark();</span>
+<span class="nc" id="L46">            var doc = target.getDocument();</span>
+<span class="nc" id="L47">            var caret = target.getCaret();</span>
+<span class="nc" id="L48">            int dot = caret.getDot();</span>
+<span class="nc" id="L49">            int mark = caret.getMark();</span>
             
-<span class="nc bnc" id="L53" title="All 2 branches missed.">            if (dot != mark) {</span>
-                
-<span class="nc" id="L55">                doc.remove(Math.min(dot, mark), Math.abs(dot - mark));</span>
-                
+<span class="nc bnc" id="L51" title="All 2 branches missed.">            if (dot != mark) {</span>
+<span class="nc" id="L52">                doc.remove(Math.min(dot, mark), Math.abs(dot - mark));</span>
             } else {
-                
-<span class="nc" id="L59">                this.delete(doc, dot);</span>
+<span class="nc" id="L54">                this.delete(doc, dot);</span>
             }
-<span class="nc" id="L61">        } catch (BadLocationException e) {</span>
-            
-<span class="nc" id="L63">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L64">        }</span>
-<span class="nc" id="L65">    }</span>
+<span class="nc" id="L56">        } catch (BadLocationException e) {</span>
+<span class="nc" id="L57">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L58">        }</span>
+<span class="nc" id="L59">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

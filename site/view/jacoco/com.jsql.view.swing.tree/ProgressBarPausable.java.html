@@ -38,41 +38,37 @@ import java.util.Objects;
 <span class="fc" id="L38">    private boolean isIconDisplayed = false;</span>
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics graphics) {
         
         // Fix #42285: InternalError on paint()
         try {
-<span class="nc" id="L45">            super.paint(g);</span>
-            
-<span class="nc" id="L47">        } catch (InternalError e) {</span>
-            
-<span class="nc" id="L49">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L50">        }</span>
+<span class="nc" id="L45">            super.paint(graphics);</span>
+<span class="nc" id="L46">        } catch (InternalError e) {</span>
+<span class="nc" id="L47">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L48">        }</span>
 
-<span class="nc bnc" id="L52" title="All 2 branches missed.">        if (this.isIconDisplayed) {</span>
-            
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (this.isIconDisplayed) {</span>
             try {
-<span class="nc" id="L55">                BufferedImage im2 = ImageIO.read(Objects.requireNonNull(ProgressBarPausable.class.getClassLoader().getResource(UiUtil.PATH_PAUSE)));</span>
-<span class="nc" id="L56">                g.drawImage(</span>
-                    im2,
-<span class="nc" id="L58">                    (this.getWidth() - im2.getWidth()) / 2,</span>
-<span class="nc" id="L59">                    (this.getHeight() - im2.getHeight()) / 2,</span>
+<span class="nc" id="L52">                BufferedImage bufferedImage = ImageIO.read(</span>
+<span class="nc" id="L53">                    Objects.requireNonNull(ProgressBarPausable.class.getClassLoader().getResource(UiUtil.PATH_PAUSE))</span>
+                );
+<span class="nc" id="L55">                graphics.drawImage(</span>
+                    bufferedImage,
+<span class="nc" id="L57">                    (this.getWidth() - bufferedImage.getWidth()) / 2,</span>
+<span class="nc" id="L58">                    (this.getHeight() - bufferedImage.getHeight()) / 2,</span>
                     null
                 );
-                
-<span class="nc" id="L63">            } catch (IOException e) {</span>
-                
-<span class="nc" id="L65">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L66">            }</span>
+<span class="nc" id="L61">            } catch (IOException e) {</span>
+<span class="nc" id="L62">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L63">            }</span>
         }
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L65">    }</span>
 
     /**
      * Activate pause state, hence display pause icon.
      */
     public void pause() {
-        
-<span class="nc" id="L75">        this.isIconDisplayed = true;</span>
-<span class="nc" id="L76">    }</span>
+<span class="nc" id="L71">        this.isIconDisplayed = true;</span>
+<span class="nc" id="L72">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

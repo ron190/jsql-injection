@@ -81,46 +81,42 @@ public class ManagerFile extends AbstractManagerList {
 <span class="nc bnc" id="L81" title="All 2 branches missed.">            if (this.listFile.getSelectedValuesList().isEmpty()) {</span>
                 
 <span class="nc" id="L83">                LOGGER.log(LogLevelUtil.CONSOLE_ERROR, &quot;Select at least one file to read in the list&quot;);</span>
-                
-<span class="nc" id="L85">                return;</span>
+<span class="nc" id="L84">                return;</span>
             }
 
-<span class="nc" id="L88">            new Thread(</span>
+<span class="nc" id="L87">            new Thread(</span>
                 () -&gt; {
-                
-<span class="nc bnc" id="L91" title="All 2 branches missed.">                    if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">                    if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {</span>
                         
-<span class="nc" id="L93">                        ManagerFile.this.run.setText(I18nViewUtil.valueByKey(&quot;FILE_RUN_BUTTON_STOP&quot;));</span>
-<span class="nc" id="L94">                        ManagerFile.this.run.setState(StateButton.STOPPABLE);</span>
-<span class="nc" id="L95">                        ManagerFile.this.loader.setVisible(true);</span>
+<span class="nc" id="L91">                        ManagerFile.this.run.setText(I18nViewUtil.valueByKey(&quot;FILE_RUN_BUTTON_STOP&quot;));</span>
+<span class="nc" id="L92">                        ManagerFile.this.run.setState(StateButton.STOPPABLE);</span>
+<span class="nc" id="L93">                        ManagerFile.this.loader.setVisible(true);</span>
                         
-<span class="nc" id="L97">                        MediatorHelper.managerWebshell().clearSelection();</span>
-<span class="nc" id="L98">                        MediatorHelper.managerSqlshell().clearSelection();</span>
+<span class="nc" id="L95">                        MediatorHelper.managerWebshell().clearSelection();</span>
+<span class="nc" id="L96">                        MediatorHelper.managerSqlshell().clearSelection();</span>
                         
                         try {
-<span class="nc" id="L101">                            List&lt;String&gt; filePaths = this.listFile.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList());</span>
-<span class="nc" id="L102">                            MediatorHelper.model().getResourceAccess().readFile(filePaths);</span>
+<span class="nc" id="L99">                            List&lt;String&gt; filePaths = this.listFile.getSelectedValuesList().stream().map(ItemList::toString).collect(Collectors.toList());</span>
+<span class="nc" id="L100">                            MediatorHelper.model().getResourceAccess().readFile(filePaths);</span>
                             
-<span class="nc" id="L104">                        } catch (InterruptedException e) {</span>
+<span class="nc" id="L102">                        } catch (InterruptedException e) {</span>
                             
-<span class="nc" id="L106">                            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
-<span class="nc" id="L107">                            Thread.currentThread().interrupt();</span>
+<span class="nc" id="L104">                            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
+<span class="nc" id="L105">                            Thread.currentThread().interrupt();</span>
                             
-<span class="nc" id="L109">                        } catch (Exception e) {</span>
-                            
-<span class="nc" id="L111">                            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e, e);</span>
-<span class="nc" id="L112">                        }</span>
-                        
+<span class="nc" id="L107">                        } catch (Exception e) {</span>
+<span class="nc" id="L108">                            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e, e);</span>
+<span class="nc" id="L109">                        }</span>
                     } else {
                         
-<span class="nc" id="L116">                        MediatorHelper.model().getResourceAccess().stopSearchingFile();</span>
-<span class="nc" id="L117">                        ManagerFile.this.run.setEnabled(false);</span>
-<span class="nc" id="L118">                        ManagerFile.this.run.setState(StateButton.STOPPING);</span>
+<span class="nc" id="L112">                        MediatorHelper.model().getResourceAccess().stopSearchingFile();</span>
+<span class="nc" id="L113">                        ManagerFile.this.run.setEnabled(false);</span>
+<span class="nc" id="L114">                        ManagerFile.this.run.setState(StateButton.STOPPING);</span>
                     }
-<span class="nc" id="L120">                },</span>
+<span class="nc" id="L116">                },</span>
                 &quot;ThreadReadFile&quot;
-<span class="nc" id="L122">            ).start();</span>
-<span class="nc" id="L123">        });</span>
-<span class="fc" id="L124">    }</span>
+<span class="nc" id="L118">            ).start();</span>
+<span class="nc" id="L119">        });</span>
+<span class="fc" id="L120">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

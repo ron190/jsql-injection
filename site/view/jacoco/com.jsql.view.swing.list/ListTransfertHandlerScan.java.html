@@ -39,159 +39,145 @@ import java.util.List;
     protected List&lt;Integer&gt; initializeStringPaste(String clipboardText, int selectedIndexFrom, DefaultListModel&lt;ItemList&gt; listModel) {
         
 <span class="fc" id="L41">        int selectedIndexTo = selectedIndexFrom;</span>
-        
-<span class="fc" id="L43">        List&lt;Integer&gt; selectedIndexes = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L42">        List&lt;Integer&gt; selectedIndexes = new ArrayList&lt;&gt;();</span>
 
-<span class="fc bfc" id="L45" title="All 2 branches covered.">        for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(clipboardText)) {</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(clipboardText)) {</span>
 
-<span class="fc" id="L47">            selectedIndexes.add(selectedIndexTo);</span>
-<span class="fc" id="L48">            listModel.add(selectedIndexTo++, itemListScan);</span>
-<span class="fc" id="L49">        }</span>
+<span class="fc" id="L46">            selectedIndexes.add(selectedIndexTo);</span>
+<span class="fc" id="L47">            listModel.add(selectedIndexTo++, itemListScan);</span>
+<span class="fc" id="L48">        }</span>
         
-<span class="fc" id="L51">        return selectedIndexes;</span>
+<span class="fc" id="L50">        return selectedIndexes;</span>
     }
 
     @Override
     protected String initializeTransferable() {
         
-<span class="fc" id="L57">        List&lt;JSONObject&gt; jsons = new ArrayList&lt;&gt;();</span>
-
-<span class="fc" id="L59">        var stringTransferable = new StringBuilder();</span>
+<span class="fc" id="L56">        List&lt;JSONObject&gt; jsons = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L57">        var stringTransferable = new StringBuilder();</span>
         
         try {
-<span class="fc bfc" id="L62" title="All 2 branches covered.">            for (ItemList itemPath: this.dragPaths) {</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            for (ItemList itemPath: this.dragPaths) {</span>
                 
-<span class="fc" id="L64">                ItemListScan itemScanPath = (ItemListScan) itemPath;</span>
-<span class="fc" id="L65">                jsons.add(new JSONObject(itemScanPath.getBeanInjectionToJSON()));</span>
-<span class="fc" id="L66">            }</span>
+<span class="fc" id="L62">                ItemListScan itemScanPath = (ItemListScan) itemPath;</span>
+<span class="fc" id="L63">                jsons.add(new JSONObject(itemScanPath.getBeanInjectionToJSON()));</span>
+<span class="fc" id="L64">            }</span>
             
-<span class="fc" id="L68">            stringTransferable.append(new JSONArray(jsons).toString(4));</span>
+<span class="fc" id="L66">            stringTransferable.append(new JSONArray(jsons).toString(4));</span>
             
-<span class="nc" id="L70">        } catch (JSONException e) {</span>
-            
-<span class="nc" id="L72">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
-<span class="fc" id="L73">        }</span>
+<span class="nc" id="L68">        } catch (JSONException e) {</span>
+<span class="nc" id="L69">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e.getMessage(), e);</span>
+<span class="fc" id="L70">        }</span>
         
-<span class="fc" id="L75">        return stringTransferable.toString();</span>
+<span class="fc" id="L72">        return stringTransferable.toString();</span>
     }
 
     @Override
     protected void parseStringDrop(TransferSupport support, DnDList list, DefaultListModel&lt;ItemList&gt; listModel) {
         
-<span class="fc" id="L81">        var dropLocation = (JList.DropLocation) support.getDropLocation();</span>
-<span class="fc" id="L82">        int indexDropLocation = dropLocation.getIndex();</span>
+<span class="fc" id="L78">        var dropLocation = (JList.DropLocation) support.getDropLocation();</span>
+<span class="fc" id="L79">        int indexDropLocation = dropLocation.getIndex();</span>
 
-<span class="fc" id="L84">        List&lt;Integer&gt; listSelectedIndices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L81">        List&lt;Integer&gt; listSelectedIndices = new ArrayList&lt;&gt;();</span>
 
         // DnD from list
-<span class="pc bpc" id="L87" title="2 of 4 branches missed.">        if (this.dragPaths != null &amp;&amp; !this.dragPaths.isEmpty()) {</span>
-            
-<span class="fc bfc" id="L89" title="All 2 branches covered.">            for (ItemList itemPath: this.dragPaths) {</span>
-                
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">                if (StringUtils.isNotEmpty(itemPath.toString())) {</span>
+<span class="pc bpc" id="L84" title="2 of 4 branches missed.">        if (this.dragPaths != null &amp;&amp; !this.dragPaths.isEmpty()) {</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">            for (ItemList itemPath: this.dragPaths) {</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">                if (StringUtils.isNotEmpty(itemPath.toString())) {</span>
                     
                     //! FUUuu
-<span class="fc" id="L94">                    ItemListScan itemDrag = (ItemListScan) itemPath;</span>
-<span class="fc" id="L95">                    var itemDrop = new ItemListScan(itemDrag.getBeanInjection());</span>
-<span class="fc" id="L96">                    listSelectedIndices.add(indexDropLocation);</span>
-<span class="fc" id="L97">                    listModel.add(indexDropLocation++, itemDrop);</span>
+<span class="fc" id="L89">                    ItemListScan itemDrag = (ItemListScan) itemPath;</span>
+<span class="fc" id="L90">                    var itemDrop = new ItemListScan(itemDrag.getBeanInjection());</span>
+<span class="fc" id="L91">                    listSelectedIndices.add(indexDropLocation);</span>
+<span class="fc" id="L92">                    listModel.add(indexDropLocation++, itemDrop);</span>
                 }
-<span class="fc" id="L99">            }</span>
-            
-        } else {
-            
-            // DnD from outside
+<span class="fc" id="L94">            }</span>
+        } else {  // DnD from outside
             try {
-<span class="nc" id="L105">                var importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);</span>
+<span class="nc" id="L97">                var importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);</span>
                 
-<span class="nc bnc" id="L107" title="All 2 branches missed.">                for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(importString)) {</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">                for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(importString)) {</span>
                     
-<span class="nc" id="L109">                    listSelectedIndices.add(indexDropLocation);</span>
-<span class="nc" id="L110">                    listModel.add(indexDropLocation++, itemListScan);</span>
-<span class="nc" id="L111">                }</span>
-                
-<span class="nc" id="L113">            } catch (UnsupportedFlavorException | IOException e) {</span>
-                
-<span class="nc" id="L115">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L116">            }</span>
+<span class="nc" id="L101">                    listSelectedIndices.add(indexDropLocation);</span>
+<span class="nc" id="L102">                    listModel.add(indexDropLocation++, itemListScan);</span>
+<span class="nc" id="L103">                }</span>
+<span class="nc" id="L104">            } catch (UnsupportedFlavorException | IOException e) {</span>
+<span class="nc" id="L105">                LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L106">            }</span>
         }
 
-<span class="fc" id="L119">        var selectedIndices = new int[listSelectedIndices.size()];</span>
-<span class="fc" id="L120">        var i = 0;</span>
+<span class="fc" id="L109">        var selectedIndices = new int[listSelectedIndices.size()];</span>
+<span class="fc" id="L110">        var i = 0;</span>
         
-<span class="fc bfc" id="L122" title="All 2 branches covered.">        for (Integer integer: listSelectedIndices) {</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        for (Integer integer: listSelectedIndices) {</span>
             
-<span class="fc" id="L124">            selectedIndices[i] = integer;</span>
-<span class="fc" id="L125">            i++;</span>
-<span class="fc" id="L126">        }</span>
+<span class="fc" id="L114">            selectedIndices[i] = integer;</span>
+<span class="fc" id="L115">            i++;</span>
+<span class="fc" id="L116">        }</span>
         
-<span class="fc" id="L128">        list.setSelectedIndices(selectedIndices);</span>
-<span class="fc" id="L129">    }</span>
+<span class="fc" id="L118">        list.setSelectedIndices(selectedIndices);</span>
+<span class="fc" id="L119">    }</span>
     
     public static List&lt;ItemListScan&gt; parse(String clipboardText) {
         
-<span class="fc" id="L133">        List&lt;ItemListScan&gt; itemsParsed = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L123">        List&lt;ItemListScan&gt; itemsParsed = new ArrayList&lt;&gt;();</span>
         
         try {
-<span class="fc" id="L136">            parseJsonArray(clipboardText, itemsParsed);</span>
-            
-<span class="fc" id="L138">        } catch (JSONException eJsonArray) {</span>
-            
-<span class="fc" id="L140">            parseJsonObject(clipboardText, itemsParsed);</span>
-<span class="fc" id="L141">        }</span>
+<span class="fc" id="L126">            parseJsonArray(clipboardText, itemsParsed);</span>
+<span class="fc" id="L127">        } catch (JSONException eJsonArray) {</span>
+<span class="fc" id="L128">            parseJsonObject(clipboardText, itemsParsed);</span>
+<span class="fc" id="L129">        }</span>
         
-<span class="fc" id="L143">        return itemsParsed;</span>
+<span class="fc" id="L131">        return itemsParsed;</span>
     }
 
     private static void parseJsonArray(String clipboardText, List&lt;ItemListScan&gt; itemsParsed) {
         
-<span class="fc" id="L148">        var itemsJsonArray = new JSONArray(clipboardText);</span>
+<span class="fc" id="L136">        var itemsJsonArray = new JSONArray(clipboardText);</span>
         
-<span class="fc bfc" id="L150" title="All 2 branches covered.">        for (var i = 0; i &lt; itemsJsonArray.length(); i++) {</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        for (var i = 0; i &lt; itemsJsonArray.length(); i++) {</span>
             
-<span class="fc" id="L152">            var itemJsonObject = itemsJsonArray.getJSONObject(i);</span>
+<span class="fc" id="L140">            var itemJsonObject = itemsJsonArray.getJSONObject(i);</span>
             
-<span class="fc" id="L154">            var beanInjection = new BeanInjection(</span>
-<span class="fc" id="L155">                itemJsonObject.optString(&quot;url&quot;, StringUtils.EMPTY),</span>
-<span class="fc" id="L156">                itemJsonObject.optString(&quot;request&quot;, StringUtils.EMPTY),</span>
-<span class="fc" id="L157">                itemJsonObject.optString(&quot;header&quot;, StringUtils.EMPTY),</span>
-<span class="fc" id="L158">                itemJsonObject.optString(&quot;method&quot;, StringUtils.EMPTY),</span>
-<span class="fc" id="L159">                itemJsonObject.optString(&quot;vendor&quot;, StringUtils.EMPTY),</span>
-<span class="fc" id="L160">                itemJsonObject.optString(&quot;requestType&quot;, StringUtils.EMPTY)</span>
+<span class="fc" id="L142">            var beanInjection = new BeanInjection(</span>
+<span class="fc" id="L143">                itemJsonObject.optString(&quot;url&quot;, StringUtils.EMPTY),</span>
+<span class="fc" id="L144">                itemJsonObject.optString(&quot;request&quot;, StringUtils.EMPTY),</span>
+<span class="fc" id="L145">                itemJsonObject.optString(&quot;header&quot;, StringUtils.EMPTY),</span>
+<span class="fc" id="L146">                itemJsonObject.optString(&quot;method&quot;, StringUtils.EMPTY),</span>
+<span class="fc" id="L147">                itemJsonObject.optString(&quot;vendor&quot;, StringUtils.EMPTY),</span>
+<span class="fc" id="L148">                itemJsonObject.optString(&quot;requestType&quot;, StringUtils.EMPTY)</span>
             );
             
-<span class="fc" id="L163">            var newItem = new ItemListScan(beanInjection);</span>
-<span class="fc" id="L164">            itemsParsed.add(newItem);</span>
+<span class="fc" id="L151">            var newItem = new ItemListScan(beanInjection);</span>
+<span class="fc" id="L152">            itemsParsed.add(newItem);</span>
         }
-<span class="fc" id="L166">    }</span>
+<span class="fc" id="L154">    }</span>
 
     private static void parseJsonObject(String clipboardText, List&lt;ItemListScan&gt; itemsParsed) {
-        
         try {
-<span class="nc" id="L171">            var itemsJsonObject = new JSONObject(clipboardText);</span>
+<span class="nc" id="L158">            var itemsJsonObject = new JSONObject(clipboardText);</span>
             
-<span class="nc" id="L173">            var beanInjection = new BeanInjection(</span>
-<span class="nc" id="L174">                itemsJsonObject.optString(&quot;url&quot;, StringUtils.EMPTY),</span>
-<span class="nc" id="L175">                itemsJsonObject.optString(&quot;request&quot;, StringUtils.EMPTY),</span>
-<span class="nc" id="L176">                itemsJsonObject.optString(&quot;header&quot;, StringUtils.EMPTY),</span>
-<span class="nc" id="L177">                itemsJsonObject.optString(&quot;method&quot;, StringUtils.EMPTY),</span>
-<span class="nc" id="L178">                itemsJsonObject.optString(&quot;vendor&quot;, StringUtils.EMPTY),</span>
-<span class="nc" id="L179">                itemsJsonObject.optString(&quot;requestType&quot;, StringUtils.EMPTY)</span>
+<span class="nc" id="L160">            var beanInjection = new BeanInjection(</span>
+<span class="nc" id="L161">                itemsJsonObject.optString(&quot;url&quot;, StringUtils.EMPTY),</span>
+<span class="nc" id="L162">                itemsJsonObject.optString(&quot;request&quot;, StringUtils.EMPTY),</span>
+<span class="nc" id="L163">                itemsJsonObject.optString(&quot;header&quot;, StringUtils.EMPTY),</span>
+<span class="nc" id="L164">                itemsJsonObject.optString(&quot;method&quot;, StringUtils.EMPTY),</span>
+<span class="nc" id="L165">                itemsJsonObject.optString(&quot;vendor&quot;, StringUtils.EMPTY),</span>
+<span class="nc" id="L166">                itemsJsonObject.optString(&quot;requestType&quot;, StringUtils.EMPTY)</span>
             );
             
-<span class="nc" id="L182">            var newItem = new ItemListScan(beanInjection);</span>
-<span class="nc" id="L183">            itemsParsed.add(newItem);</span>
+<span class="nc" id="L169">            var newItem = new ItemListScan(beanInjection);</span>
+<span class="nc" id="L170">            itemsParsed.add(newItem);</span>
             
-<span class="fc" id="L185">        } catch (JSONException e) {</span>
-            
-<span class="fc bfc" id="L187" title="All 2 branches covered.">            for (String url: clipboardText.split(&quot;\\n&quot;)) {</span>
+<span class="fc" id="L172">        } catch (JSONException e) {</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">            for (String url: clipboardText.split(&quot;\\n&quot;)) {</span>
                 
-<span class="fc" id="L189">                var beanInjection = new BeanInjection(url);</span>
+<span class="fc" id="L175">                var beanInjection = new BeanInjection(url);</span>
                 
-<span class="fc" id="L191">                var newItem = new ItemListScan(beanInjection);</span>
-<span class="fc" id="L192">                itemsParsed.add(newItem);</span>
+<span class="fc" id="L177">                var newItem = new ItemListScan(beanInjection);</span>
+<span class="fc" id="L178">                itemsParsed.add(newItem);</span>
             }
-<span class="nc" id="L194">        }</span>
-<span class="fc" id="L195">    }</span>
+<span class="nc" id="L180">        }</span>
+<span class="fc" id="L181">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

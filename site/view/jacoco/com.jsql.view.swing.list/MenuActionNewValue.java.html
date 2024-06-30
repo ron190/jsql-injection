@@ -93,70 +93,61 @@ public class MenuActionNewValue implements ActionListener {
                 },
 <span class="nc" id="L94">                I18nUtil.valueByKey(&quot;LIST_ADD_VALUE_CANCEL&quot;)</span>
             );
-            
-<span class="nc" id="L97">        } catch (NullPointerException | IllegalArgumentException | ClassCastException e) {</span>
-            
-<span class="nc" id="L99">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="nc" id="L100">        }</span>
+<span class="nc" id="L96">        } catch (NullPointerException | IllegalArgumentException | ClassCastException e) {</span>
+<span class="nc" id="L97">            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="nc" id="L98">        }</span>
 
-<span class="nc bnc" id="L102" title="All 4 branches missed.">        if (StringUtils.isEmpty(textarea.getText()) || result != JOptionPane.YES_OPTION) {</span>
-<span class="nc" id="L103">            return;</span>
+<span class="nc bnc" id="L100" title="All 4 branches missed.">        if (StringUtils.isEmpty(textarea.getText()) || result != JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L101">            return;</span>
         }
 
-<span class="nc" id="L106">        var lastIndex = Math.max(this.myList.getSelectedIndex(), 0);</span>
+<span class="nc" id="L104">        var lastIndex = Math.max(this.myList.getSelectedIndex(), 0);</span>
 
-<span class="nc" id="L108">        int firstIndex = lastIndex;</span>
+<span class="nc" id="L106">        int firstIndex = lastIndex;</span>
         
-<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (ManagerScan.NAME.equals(this.myList.getName())) {</span>
-            
-<span class="nc" id="L112">            lastIndex = this.addToScanList(textarea, lastIndex);</span>
-            
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (ManagerScan.NAME.equals(this.myList.getName())) {</span>
+<span class="nc" id="L109">            lastIndex = this.addToScanList(textarea, lastIndex);</span>
         } else {
-            
-<span class="nc" id="L116">            lastIndex = this.addToList(textarea, lastIndex);</span>
+<span class="nc" id="L111">            lastIndex = this.addToList(textarea, lastIndex);</span>
         }
 
-<span class="nc" id="L119">        this.myList.setSelectionInterval(firstIndex, lastIndex - 1);</span>
-<span class="nc" id="L120">        this.myList.scrollRectToVisible(</span>
-<span class="nc" id="L121">            this.myList.getCellBounds(</span>
-<span class="nc" id="L122">                this.myList.getMinSelectionIndex(),</span>
-<span class="nc" id="L123">                this.myList.getMaxSelectionIndex()</span>
+<span class="nc" id="L114">        this.myList.setSelectionInterval(firstIndex, lastIndex - 1);</span>
+<span class="nc" id="L115">        this.myList.scrollRectToVisible(</span>
+<span class="nc" id="L116">            this.myList.getCellBounds(</span>
+<span class="nc" id="L117">                this.myList.getMinSelectionIndex(),</span>
+<span class="nc" id="L118">                this.myList.getMaxSelectionIndex()</span>
             )
         );
 
-<span class="nc" id="L127">        textarea.setText(null);</span>
-<span class="nc" id="L128">    }</span>
+<span class="nc" id="L122">        textarea.setText(null);</span>
+<span class="nc" id="L123">    }</span>
 
     private int addToList(final JTextArea textarea, int index) {
         
-<span class="nc" id="L132">        int lastIndex = index;</span>
+<span class="nc" id="L127">        int lastIndex = index;</span>
         
-<span class="nc bnc" id="L134" title="All 2 branches missed.">        for (String newItem: textarea.getText().split(&quot;\\n&quot;)) {</span>
-            
-<span class="nc bnc" id="L136" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(newItem)) {</span>
-                
-<span class="nc" id="L138">                ((DefaultListModel&lt;ItemList&gt;) this.myList.getModel()).add(</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        for (String newItem: textarea.getText().split(&quot;\\n&quot;)) {</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(newItem)) {</span>
+<span class="nc" id="L131">                ((DefaultListModel&lt;ItemList&gt;) this.myList.getModel()).add(</span>
                     lastIndex++,
-<span class="nc" id="L140">                    new ItemList(newItem.replace(&quot;\\&quot;, &quot;/&quot;))</span>
+<span class="nc" id="L133">                    new ItemList(newItem.replace(&quot;\\&quot;, &quot;/&quot;))</span>
                 );
             }
         }
         
-<span class="nc" id="L145">        return lastIndex;</span>
+<span class="nc" id="L138">        return lastIndex;</span>
     }
 
     private int addToScanList(final JTextArea textarea, int index) {
         
-<span class="nc" id="L150">        int lastIndex = index;</span>
+<span class="nc" id="L143">        int lastIndex = index;</span>
+<span class="nc" id="L144">        List&lt;ItemListScan&gt; listParsedItems = ListTransfertHandlerScan.parse(textarea.getText().replace(&quot;\\&quot;, &quot;/&quot;));</span>
         
-<span class="nc" id="L152">        List&lt;ItemListScan&gt; listParsedItems = ListTransfertHandlerScan.parse(textarea.getText().replace(&quot;\\&quot;, &quot;/&quot;));</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        for (ItemListScan item: listParsedItems) {</span>
+<span class="nc" id="L147">            ((DefaultListModel&lt;ItemList&gt;) this.myList.getModel()).add(lastIndex++, item);</span>
+<span class="nc" id="L148">        }</span>
         
-<span class="nc bnc" id="L154" title="All 2 branches missed.">        for (ItemListScan item: listParsedItems) {</span>
-            
-<span class="nc" id="L156">            ((DefaultListModel&lt;ItemList&gt;) this.myList.getModel()).add(lastIndex++, item);</span>
-<span class="nc" id="L157">        }</span>
-        
-<span class="nc" id="L159">        return lastIndex;</span>
+<span class="nc" id="L150">        return lastIndex;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -40,51 +40,50 @@ public class NodeModelEmpty extends AbstractNodeModel {
     public Component getComponent(
         final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, boolean hasFocus
     ) {
+<span class="fc" id="L43">        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;</span>
+<span class="fc" id="L44">        var panelEmpty = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L45">        var labelEmpty = new JLabel(currentNode.getUserObject().toString());</span>
+<span class="fc" id="L46">        panelEmpty.add(labelEmpty);</span>
+<span class="fc" id="L47">        labelEmpty.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
         
-<span class="fc" id="L44">        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;</span>
-<span class="fc" id="L45">        var panelEmpty = new JPanel(new BorderLayout());</span>
-<span class="fc" id="L46">        var labelEmpty = new JLabel(currentNode.getUserObject().toString());</span>
-<span class="fc" id="L47">        panelEmpty.add(labelEmpty);</span>
-<span class="fc" id="L48">        labelEmpty.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
-        
-<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        if (isSelected) {</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (isSelected) {</span>
             
-<span class="nc" id="L52">            panelEmpty.setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
-<span class="nc" id="L53">            labelEmpty.setBorder(UiUtil.BORDER_FOCUS_GAINED);</span>
+<span class="nc" id="L51">            panelEmpty.setBackground(UiUtil.COLOR_FOCUS_GAINED);</span>
+<span class="nc" id="L52">            labelEmpty.setBorder(UiUtil.BORDER_FOCUS_GAINED);</span>
             
         } else {
             
-<span class="fc" id="L57">            panelEmpty.setBackground(Color.WHITE);</span>
-<span class="fc" id="L58">            labelEmpty.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
+<span class="fc" id="L56">            panelEmpty.setBackground(Color.WHITE);</span>
+<span class="fc" id="L57">            labelEmpty.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));</span>
         }
 
-<span class="fc" id="L61">        return panelEmpty;</span>
+<span class="fc" id="L60">        return panelEmpty;</span>
     }
 
     @Override
     protected Icon getLeafIcon(boolean leaf) {
         // No icon for default node
-<span class="nc" id="L67">        return null;</span>
+<span class="nc" id="L66">        return null;</span>
     }
     
     @Override
     public void runAction() {
         // Not used
-<span class="nc" id="L73">    }</span>
+<span class="nc" id="L72">    }</span>
     
     @Override
     protected void buildMenu(JPopupMenuCustomExtract tablePopupMenu, TreePath path) {
         // Not used
-<span class="nc" id="L78">    }</span>
+<span class="nc" id="L77">    }</span>
     
     @Override
     public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
         // Not used
-<span class="nc" id="L83">    }</span>
+<span class="nc" id="L82">    }</span>
     
     @Override
     public boolean isPopupDisplayable() {
-<span class="nc" id="L87">        return false;</span>
+<span class="nc" id="L86">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

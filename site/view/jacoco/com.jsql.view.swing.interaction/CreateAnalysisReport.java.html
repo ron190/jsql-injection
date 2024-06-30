@@ -20,18 +20,17 @@ public class CreateAnalysisReport extends CreateTabHelper implements Interaction
 
     private final String content;
 
-    /**
-     * @param interactionParams
-     */
-<span class="nc" id="L26">    public CreateAnalysisReport(Object[] interactionParams) {</span>
-
-<span class="nc" id="L28">        this.content = (String) interactionParams[0];</span>
-<span class="nc" id="L29">    }</span>
+<span class="nc" id="L23">    public CreateAnalysisReport(Object[] interactionParams) {</span>
+<span class="nc" id="L24">        this.content = (String) interactionParams[0];</span>
+<span class="nc" id="L25">    }</span>
 
     @Override
     public void execute() {
-
-<span class="nc" id="L34">        MediatorHelper.tabResults().createReportTab(&quot;Vulnerability report&quot;, this.content.trim(), &quot;Analysis report with all payloads detected&quot;);</span>
-<span class="nc" id="L35">    }</span>
+<span class="nc" id="L29">        MediatorHelper.tabResults().createReportTab(</span>
+            &quot;Vulnerability report&quot;,
+<span class="nc" id="L31">            this.content.trim(),</span>
+            &quot;Analysis report with all payloads detected&quot;
+        );
+<span class="nc" id="L34">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

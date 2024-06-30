@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Radio label for HTTP method (GET, POST, etc).
+ * Radio label for HTTP method (GET, POST, etc.).
  */
 public class RadioLinkMethod extends AbstractRadioLink {
     
@@ -18,19 +18,6 @@ public class RadioLinkMethod extends AbstractRadioLink {
 <span class="fc" id="L18">    private static final List&lt;JLabel&gt; groupMethod = new ArrayList&lt;&gt;();</span>
 
     private final AbstractMethodInjection methodInjection;
-    
-    /**
-     * A default radio label.
-     * @param string Text for radio label
-     * @param methodInjection
-     */
-    public RadioLinkMethod(String string, AbstractMethodInjection methodInjection) {
-        
-<span class="nc" id="L29">        super(string);</span>
-        
-<span class="nc" id="L31">        this.init();</span>
-<span class="nc" id="L32">        this.methodInjection = methodInjection;</span>
-<span class="nc" id="L33">    }</span>
 
     /**
      * A default radio label selected.
@@ -40,31 +27,29 @@ public class RadioLinkMethod extends AbstractRadioLink {
      */
     public RadioLinkMethod(String string, boolean isSelected, AbstractMethodInjection method) {
         
-<span class="fc" id="L43">        super(string, isSelected);</span>
+<span class="fc" id="L30">        super(string, isSelected);</span>
         
-<span class="fc" id="L45">        this.init();</span>
-<span class="fc" id="L46">        this.methodInjection = method;</span>
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L32">        this.init();</span>
+<span class="fc" id="L33">        this.methodInjection = method;</span>
+<span class="fc" id="L34">    }</span>
 
     /**
      * Add radio to the radio group.
      */
     private void init() {
         
-<span class="fc" id="L54">        this.addMouseListener(new RadioMethodMouseAdapter());</span>
-<span class="fc" id="L55">        RadioLinkMethod.groupMethod.add(this);</span>
-<span class="fc" id="L56">    }</span>
+<span class="fc" id="L41">        this.addMouseListener(new RadioMethodMouseAdapter());</span>
+<span class="fc" id="L42">        RadioLinkMethod.groupMethod.add(this);</span>
+<span class="fc" id="L43">    }</span>
 
     @Override
     public void action() {
-        
-<span class="fc" id="L61">        MediatorHelper.panelAddressBar().setMethodInjection(this.methodInjection);</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L47">        MediatorHelper.panelAddressBar().setMethodInjection(this.methodInjection);</span>
+<span class="fc" id="L48">    }</span>
 
     @Override
     public List&lt;JLabel&gt; getGroup() {
-        
-<span class="fc" id="L67">        return RadioLinkMethod.groupMethod;</span>
+<span class="fc" id="L52">        return RadioLinkMethod.groupMethod;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

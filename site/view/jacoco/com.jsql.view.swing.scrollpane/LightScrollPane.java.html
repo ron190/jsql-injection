@@ -44,32 +44,31 @@ public class LightScrollPane extends JComponent {
     public LightScrollPane(int top, int left, int bottom, int right, JComponent c) {
         
 <span class="fc" id="L46">        this(c);</span>
-
-<span class="fc" id="L48">        this.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, UiUtil.COLOR_COMPONENT_BORDER));</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L47">        this.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, UiUtil.COLOR_COMPONENT_BORDER));</span>
+<span class="fc" id="L48">    }</span>
     
-<span class="fc" id="L51">    public LightScrollPane(JComponent component) {</span>
+<span class="fc" id="L50">    public LightScrollPane(JComponent component) {</span>
         
-<span class="fc" id="L53">        this.scrollPane = new JScrollPanePixelBorder(component);</span>
-<span class="fc" id="L54">        this.scrollPane.setBorder(BorderFactory.createEmptyBorder());</span>
+<span class="fc" id="L52">        this.scrollPane = new JScrollPanePixelBorder(component);</span>
+<span class="fc" id="L53">        this.scrollPane.setBorder(BorderFactory.createEmptyBorder());</span>
         
-<span class="fc" id="L56">        this.verticalScrollBar = this.scrollPane.getVerticalScrollBar();</span>
-<span class="fc" id="L57">        this.verticalScrollBar.setVisible(false);</span>
-<span class="fc" id="L58">        this.verticalScrollBar.setOpaque(false);</span>
-<span class="fc" id="L59">        this.verticalScrollBar.setUI(new MyScrollBarUI());</span>
+<span class="fc" id="L55">        this.verticalScrollBar = this.scrollPane.getVerticalScrollBar();</span>
+<span class="fc" id="L56">        this.verticalScrollBar.setVisible(false);</span>
+<span class="fc" id="L57">        this.verticalScrollBar.setOpaque(false);</span>
+<span class="fc" id="L58">        this.verticalScrollBar.setUI(new MyScrollBarUI());</span>
 
-<span class="fc" id="L61">        this.horizontalScrollBar = this.scrollPane.getHorizontalScrollBar();</span>
-<span class="fc" id="L62">        this.horizontalScrollBar.setVisible(false);</span>
-<span class="fc" id="L63">        this.horizontalScrollBar.setOpaque(false);</span>
-<span class="fc" id="L64">        this.horizontalScrollBar.setUI(new MyScrollBarUI());</span>
+<span class="fc" id="L60">        this.horizontalScrollBar = this.scrollPane.getHorizontalScrollBar();</span>
+<span class="fc" id="L61">        this.horizontalScrollBar.setVisible(false);</span>
+<span class="fc" id="L62">        this.horizontalScrollBar.setOpaque(false);</span>
+<span class="fc" id="L63">        this.horizontalScrollBar.setUI(new MyScrollBarUI());</span>
 
-<span class="fc" id="L66">        var layeredPane = new JLayeredPane();</span>
-<span class="fc" id="L67">        layeredPane.setLayer(this.verticalScrollBar, JLayeredPane.PALETTE_LAYER);</span>
-<span class="fc" id="L68">        layeredPane.setLayer(this.horizontalScrollBar, JLayeredPane.PALETTE_LAYER);</span>
+<span class="fc" id="L65">        var layeredPane = new JLayeredPane();</span>
+<span class="fc" id="L66">        layeredPane.setLayer(this.verticalScrollBar, JLayeredPane.PALETTE_LAYER);</span>
+<span class="fc" id="L67">        layeredPane.setLayer(this.horizontalScrollBar, JLayeredPane.PALETTE_LAYER);</span>
 
-<span class="fc" id="L70">        this.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);</span>
-<span class="fc" id="L71">        this.scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);</span>
-<span class="fc" id="L72">        this.scrollPane.setLayout(new ScrollPaneLayout() {</span>
+<span class="fc" id="L69">        this.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);</span>
+<span class="fc" id="L70">        this.scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);</span>
+<span class="fc" id="L71">        this.scrollPane.setLayout(new ScrollPaneLayout() {</span>
             
             @Override
             public void layoutContainer(Container parent) {
@@ -78,168 +77,162 @@ public class LightScrollPane extends JComponent {
                 // Fix #48549: IllegalStateException on setBounds()
                 // Implementation by sun.swing.SwingUtilities2.getFontMetrics()
                 try {
-<span class="fc" id="L81">                    this.viewport.setBounds(0, 0, LightScrollPane.this.getWidth(), LightScrollPane.this.getHeight() - 1);</span>
-                    
-<span class="nc" id="L83">                } catch (NullPointerException e) {</span>
-                    
-<span class="nc" id="L85">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
-<span class="fc" id="L86">                }</span>
+<span class="fc" id="L80">                    this.viewport.setBounds(0, 0, LightScrollPane.this.getWidth(), LightScrollPane.this.getHeight() - 1);</span>
+<span class="nc" id="L81">                } catch (NullPointerException e) {</span>
+<span class="nc" id="L82">                    LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);</span>
+<span class="fc" id="L83">                }</span>
                 
-<span class="fc" id="L88">                SwingUtilities.invokeLater(() -&gt; LightScrollPane.this.displayScrollBarsIfNecessary(this.viewport));</span>
-<span class="fc" id="L89">            }</span>
+<span class="fc" id="L85">                SwingUtilities.invokeLater(() -&gt; LightScrollPane.this.displayScrollBarsIfNecessary(this.viewport));</span>
+<span class="fc" id="L86">            }</span>
         });
         
-<span class="fc" id="L92">        layeredPane.add(this.horizontalScrollBar);</span>
-<span class="fc" id="L93">        layeredPane.add(this.verticalScrollBar);</span>
-<span class="fc" id="L94">        layeredPane.add(this.scrollPane);</span>
+<span class="fc" id="L89">        layeredPane.add(this.horizontalScrollBar);</span>
+<span class="fc" id="L90">        layeredPane.add(this.verticalScrollBar);</span>
+<span class="fc" id="L91">        layeredPane.add(this.scrollPane);</span>
 
-<span class="fc" id="L96">        this.setLayout(new BorderLayout() {</span>
+<span class="fc" id="L93">        this.setLayout(new BorderLayout() {</span>
             
             @Override
             public void layoutContainer(Container target) {
                 
-<span class="fc" id="L101">                super.layoutContainer(target);</span>
-<span class="fc" id="L102">                int width = LightScrollPane.this.getWidth();</span>
-<span class="fc" id="L103">                int height = LightScrollPane.this.getHeight();</span>
+<span class="fc" id="L98">                super.layoutContainer(target);</span>
+<span class="fc" id="L99">                int width = LightScrollPane.this.getWidth();</span>
+<span class="fc" id="L100">                int height = LightScrollPane.this.getHeight();</span>
                 
-<span class="fc" id="L105">                LightScrollPane.this.scrollPane.setBounds(0, 0, width, height);</span>
+<span class="fc" id="L102">                LightScrollPane.this.scrollPane.setBounds(0, 0, width, height);</span>
 
-<span class="fc" id="L107">                int scrollBarSize = THUMB_SIZE;</span>
+<span class="fc" id="L104">                int scrollBarSize = THUMB_SIZE;</span>
                 int cornerOffset =
-<span class="fc bfc" id="L109" title="All 2 branches covered.">                    LightScrollPane.this.verticalScrollBar.isVisible()</span>
-<span class="fc bfc" id="L110" title="All 2 branches covered.">                    &amp;&amp; LightScrollPane.this.horizontalScrollBar.isVisible()</span>
-<span class="fc" id="L111">                    ? scrollBarSize</span>
-<span class="fc" id="L112">                    : 0;</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">                    LightScrollPane.this.verticalScrollBar.isVisible()</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">                    &amp;&amp; LightScrollPane.this.horizontalScrollBar.isVisible()</span>
+<span class="fc" id="L108">                    ? scrollBarSize</span>
+<span class="fc" id="L109">                    : 0;</span>
                 
-<span class="fc bfc" id="L114" title="All 2 branches covered.">                if (LightScrollPane.this.verticalScrollBar.isVisible()) {</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">                if (LightScrollPane.this.verticalScrollBar.isVisible()) {</span>
                     
-<span class="fc" id="L116">                    LightScrollPane.this.verticalScrollBar.setBounds(</span>
-<span class="pc bpc" id="L117" title="1 of 2 branches missed.">                        LightScrollPane.this.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT</span>
-<span class="nc" id="L118">                        ? 0</span>
-<span class="fc" id="L119">                        : width - scrollBarSize,</span>
+<span class="fc" id="L113">                    LightScrollPane.this.verticalScrollBar.setBounds(</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">                        LightScrollPane.this.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT</span>
+<span class="nc" id="L115">                        ? 0</span>
+<span class="fc" id="L116">                        : width - scrollBarSize,</span>
                         0,
                         scrollBarSize,
                         height - cornerOffset
                     );
                 }
                 
-<span class="fc bfc" id="L126" title="All 2 branches covered.">                if (LightScrollPane.this.horizontalScrollBar.isVisible()) {</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">                if (LightScrollPane.this.horizontalScrollBar.isVisible()) {</span>
                     
-<span class="fc" id="L128">                    LightScrollPane.this.horizontalScrollBar.setBounds(</span>
+<span class="fc" id="L125">                    LightScrollPane.this.horizontalScrollBar.setBounds(</span>
                         0,
                         height - scrollBarSize,
                         width - cornerOffset,
                         scrollBarSize
                     );
                 }
-<span class="fc" id="L135">            }</span>
+<span class="fc" id="L132">            }</span>
         });
-<span class="fc" id="L137">        this.add(layeredPane, BorderLayout.CENTER);</span>
-<span class="fc" id="L138">        layeredPane.setBackground(Color.BLUE);</span>
-<span class="fc" id="L139">    }</span>
+<span class="fc" id="L134">        this.add(layeredPane, BorderLayout.CENTER);</span>
+<span class="fc" id="L135">        layeredPane.setBackground(Color.BLUE);</span>
+<span class="fc" id="L136">    }</span>
 
     private void displayScrollBarsIfNecessary(JViewport viewPort) {
         
-<span class="fc" id="L143">        this.displayVerticalScrollBarIfNecessary(viewPort);</span>
-<span class="fc" id="L144">        this.displayHorizontalScrollBarIfNecessary(viewPort);</span>
-<span class="fc" id="L145">    }</span>
+<span class="fc" id="L140">        this.displayVerticalScrollBarIfNecessary(viewPort);</span>
+<span class="fc" id="L141">        this.displayHorizontalScrollBarIfNecessary(viewPort);</span>
+<span class="fc" id="L142">    }</span>
 
     private void displayVerticalScrollBarIfNecessary(JViewport viewPort) {
         
-<span class="fc" id="L149">        Rectangle viewRect = viewPort.getViewRect();</span>
-<span class="fc" id="L150">        Dimension viewSize = viewPort.getViewSize();</span>
-<span class="fc bfc" id="L151" title="All 2 branches covered.">        boolean isDisplayingVerticalScrollBar = viewSize.getHeight() &gt; viewRect.getHeight();</span>
+<span class="fc" id="L146">        Rectangle viewRect = viewPort.getViewRect();</span>
+<span class="fc" id="L147">        Dimension viewSize = viewPort.getViewSize();</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        boolean isDisplayingVerticalScrollBar = viewSize.getHeight() &gt; viewRect.getHeight();</span>
         
-<span class="fc" id="L153">        this.verticalScrollBar.setVisible(isDisplayingVerticalScrollBar);</span>
-<span class="fc" id="L154">    }</span>
+<span class="fc" id="L150">        this.verticalScrollBar.setVisible(isDisplayingVerticalScrollBar);</span>
+<span class="fc" id="L151">    }</span>
 
     private void displayHorizontalScrollBarIfNecessary(JViewport viewPort) {
         
-<span class="fc" id="L158">        Rectangle viewRect = viewPort.getViewRect();</span>
-<span class="fc" id="L159">        Dimension viewSize = viewPort.getViewSize();</span>
-<span class="fc bfc" id="L160" title="All 2 branches covered.">        boolean isDisplayingHorizontalScrollBar = viewSize.getWidth() &gt; viewRect.getWidth();</span>
+<span class="fc" id="L155">        Rectangle viewRect = viewPort.getViewRect();</span>
+<span class="fc" id="L156">        Dimension viewSize = viewPort.getViewSize();</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">        boolean isDisplayingHorizontalScrollBar = viewSize.getWidth() &gt; viewRect.getWidth();</span>
         
-<span class="fc" id="L162">        this.horizontalScrollBar.setVisible(isDisplayingHorizontalScrollBar);</span>
-<span class="fc" id="L163">    }</span>
+<span class="fc" id="L159">        this.horizontalScrollBar.setVisible(isDisplayingHorizontalScrollBar);</span>
+<span class="fc" id="L160">    }</span>
 
     private static class MyScrollBarButton extends JButton {
-        
-<span class="fc" id="L167">        private MyScrollBarButton() {</span>
-<span class="fc" id="L168">            this.setOpaque(false);</span>
-<span class="fc" id="L169">            this.setFocusable(false);</span>
-<span class="fc" id="L170">            this.setFocusPainted(false);</span>
-<span class="fc" id="L171">            this.setBorderPainted(false);</span>
-<span class="fc" id="L172">            this.setBorder(BorderFactory.createEmptyBorder());</span>
-<span class="fc" id="L173">        }</span>
+<span class="fc" id="L163">        private MyScrollBarButton() {</span>
+
+<span class="fc" id="L165">            this.setOpaque(false);</span>
+<span class="fc" id="L166">            this.setFocusable(false);</span>
+<span class="fc" id="L167">            this.setFocusPainted(false);</span>
+<span class="fc" id="L168">            this.setBorderPainted(false);</span>
+<span class="fc" id="L169">            this.setBorder(BorderFactory.createEmptyBorder());</span>
+<span class="fc" id="L170">        }</span>
     }
 
-<span class="fc" id="L176">    private class MyScrollBarUI extends BasicScrollBarUI {</span>
+<span class="fc" id="L173">    private class MyScrollBarUI extends BasicScrollBarUI {</span>
         
         @Override
         protected JButton createDecreaseButton(int orientation) {
-<span class="fc" id="L180">            return new MyScrollBarButton();</span>
+<span class="fc" id="L177">            return new MyScrollBarButton();</span>
         }
 
         @Override
         protected JButton createIncreaseButton(int orientation) {
-<span class="fc" id="L185">            return new MyScrollBarButton();</span>
+<span class="fc" id="L182">            return new MyScrollBarButton();</span>
         }
 
         @Override
         protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
             // Nothing
-<span class="fc" id="L191">        }</span>
+<span class="fc" id="L188">        }</span>
 
         @Override
         protected Dimension getMinimumThumbSize() {
-<span class="fc" id="L195">            return new Dimension(THUMB_SIZE, 24 + 2*2);</span>
+<span class="fc" id="L192">            return new Dimension(THUMB_SIZE, 24 + 2*2);</span>
         }
         
         @Override
         protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
             
-<span class="pc bpc" id="L201" title="1 of 2 branches missed.">            int alpha = this.isThumbRollover() ? LightScrollPane.this.scrollBarAlphaRollover : LightScrollPane.this.scrollBarAlpha;</span>
-<span class="fc" id="L202">            int orientation = this.scrollbar.getOrientation();</span>
-<span class="fc" id="L203">            int x = thumbBounds.x + THUMB_BORDER_SIZE;</span>
-<span class="fc" id="L204">            int y = thumbBounds.y + THUMB_BORDER_SIZE;</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">            int alpha = this.isThumbRollover() ? LightScrollPane.this.scrollBarAlphaRollover : LightScrollPane.this.scrollBarAlpha;</span>
+<span class="fc" id="L199">            int orientation = this.scrollbar.getOrientation();</span>
+<span class="fc" id="L200">            int x = thumbBounds.x + THUMB_BORDER_SIZE;</span>
+<span class="fc" id="L201">            int y = thumbBounds.y + THUMB_BORDER_SIZE;</span>
 
-            int width =
-<span class="fc bfc" id="L207" title="All 2 branches covered.">                orientation == Adjustable.VERTICAL</span>
-<span class="fc" id="L208">                ? THUMB_SIZE</span>
-<span class="fc" id="L209">                : thumbBounds.width - THUMB_BORDER_SIZE * 2</span>
-            ;
-<span class="fc" id="L211">            width = Math.max(width, THUMB_SIZE);</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">            int width = orientation == Adjustable.VERTICAL</span>
+<span class="fc" id="L204">                ? THUMB_SIZE</span>
+<span class="fc" id="L205">                : thumbBounds.width - THUMB_BORDER_SIZE * 2;</span>
 
-            int height =
-<span class="fc bfc" id="L214" title="All 2 branches covered.">                orientation == Adjustable.VERTICAL</span>
-<span class="fc" id="L215">                ? thumbBounds.height - THUMB_BORDER_SIZE * 2</span>
-<span class="fc" id="L216">                : THUMB_SIZE</span>
-            ;
-<span class="fc" id="L218">            height = Math.max(height, THUMB_SIZE);</span>
+<span class="fc" id="L207">            width = Math.max(width, THUMB_SIZE);</span>
 
-<span class="fc" id="L220">            var graphics2D = (Graphics2D) g.create();</span>
-<span class="fc" id="L221">            graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">            int height = orientation == Adjustable.VERTICAL</span>
+<span class="fc" id="L210">                ? thumbBounds.height - THUMB_BORDER_SIZE * 2</span>
+<span class="fc" id="L211">                : THUMB_SIZE;</span>
+
+<span class="fc" id="L213">            height = Math.max(height, THUMB_SIZE);</span>
+
+<span class="fc" id="L215">            var graphics2D = (Graphics2D) g.create();</span>
+<span class="fc" id="L216">            graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);</span>
             
-            // Fix Mac OS Color.DARK_GRAY and alpha incompatibility
+            // Fix macOS Color.DARK_GRAY and alpha incompatibility
             Color colorThumbAlpha;
             
             try {
-<span class="fc" id="L227">                colorThumbAlpha = new Color(LightScrollPane.this.colorThumb.getRed(), LightScrollPane.this.colorThumb.getGreen(), LightScrollPane.this.colorThumb.getBlue(), alpha);</span>
+<span class="fc" id="L222">                colorThumbAlpha = new Color(LightScrollPane.this.colorThumb.getRed(), LightScrollPane.this.colorThumb.getGreen(), LightScrollPane.this.colorThumb.getBlue(), alpha);</span>
+<span class="nc" id="L223">            } catch (NullPointerException e) {</span>
                 
-<span class="nc" id="L229">            } catch (NullPointerException e) {</span>
-                
-<span class="nc" id="L231">                colorThumbAlpha = Color.GRAY;</span>
-                
-<span class="nc" id="L233">                LOGGER.log(LogLevelUtil.IGNORE, e);</span>
-<span class="fc" id="L234">            }</span>
+<span class="nc" id="L225">                colorThumbAlpha = Color.GRAY;</span>
+<span class="nc" id="L226">                LOGGER.log(LogLevelUtil.IGNORE, e);</span>
+<span class="fc" id="L227">            }</span>
             
-<span class="fc" id="L236">            graphics2D.setColor(colorThumbAlpha);</span>
+<span class="fc" id="L229">            graphics2D.setColor(colorThumbAlpha);</span>
             
             // Unhandled NoClassDefFoundError #65554: Could not initialize class sun.dc.pr.Rasterizer
-<span class="fc" id="L239">            graphics2D.fillRect(x, y, width, height);</span>
+<span class="fc" id="L232">            graphics2D.fillRect(x, y, width, height);</span>
             
-<span class="fc" id="L241">            graphics2D.dispose();</span>
-<span class="fc" id="L242">        }</span>
+<span class="fc" id="L234">            graphics2D.dispose();</span>
+<span class="fc" id="L235">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

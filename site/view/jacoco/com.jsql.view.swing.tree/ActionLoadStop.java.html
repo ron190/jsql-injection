@@ -43,75 +43,68 @@ public class ActionLoadStop implements ActionListener {
 <span class="nc" id="L43">        final List&lt;Column&gt; columnsToSearch = this.getSelectedColumns();</span>
 
 <span class="nc bnc" id="L45" title="All 4 branches missed.">        if (!this.nodeModel.isRunning() &amp;&amp; columnsToSearch.isEmpty()) {</span>
-            
-<span class="nc" id="L47">            return;</span>
+<span class="nc" id="L46">            return;</span>
         }
 
-<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (!this.nodeModel.isRunning()) {</span>
-            
-<span class="nc" id="L52">            this.startListValues(columnsToSearch);</span>
-            
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (!this.nodeModel.isRunning()) {</span>
+<span class="nc" id="L50">            this.startListValues(columnsToSearch);</span>
         } else {
-            
-<span class="nc" id="L56">            this.stopAbstractNode();</span>
+<span class="nc" id="L52">            this.stopAbstractNode();</span>
         }
         
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        this.nodeModel.setRunning(!this.nodeModel.isRunning());</span>
-<span class="nc" id="L60">    }</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        this.nodeModel.setRunning(!this.nodeModel.isRunning());</span>
+<span class="nc" id="L56">    }</span>
 
     private void startListValues(final List&lt;Column&gt; columnsToSearch) {
-        
-<span class="nc" id="L64">        new SwingWorker&lt;&gt;() {</span>
-            
+<span class="nc" id="L59">        new SwingWorker&lt;&gt;() {</span>
             @Override
             protected Object doInBackground() throws Exception {
                 
-<span class="nc" id="L69">                Thread.currentThread().setName(&quot;SwingWorkerActionLoadStop&quot;);</span>
-<span class="nc" id="L70">                MediatorHelper.model().getDataAccess().listValues(columnsToSearch);</span>
+<span class="nc" id="L63">                Thread.currentThread().setName(&quot;SwingWorkerActionLoadStop&quot;);</span>
+<span class="nc" id="L64">                MediatorHelper.model().getDataAccess().listValues(columnsToSearch);</span>
                 
-<span class="nc" id="L72">                return null;</span>
+<span class="nc" id="L66">                return null;</span>
             }
-<span class="nc" id="L74">        }.execute();</span>
-<span class="nc" id="L75">    }</span>
+<span class="nc" id="L68">        }.execute();</span>
+<span class="nc" id="L69">    }</span>
 
     private void stopAbstractNode() {
         
-<span class="nc" id="L79">        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());</span>
+<span class="nc" id="L73">        AbstractSuspendable suspendableTask = MediatorHelper.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());</span>
         
         // Fix #21394: NullPointerException on stop()
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (suspendableTask != null) {</span>
-<span class="nc" id="L83">            suspendableTask.stop();</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (suspendableTask != null) {</span>
+<span class="nc" id="L77">            suspendableTask.stop();</span>
         }
         
-<span class="nc" id="L86">        this.nodeModel.setIndexProgress(0);</span>
-<span class="nc" id="L87">        this.nodeModel.setProgressing(false);</span>
-<span class="nc" id="L88">        this.nodeModel.setLoading(false);</span>
+<span class="nc" id="L80">        this.nodeModel.setIndexProgress(0);</span>
+<span class="nc" id="L81">        this.nodeModel.setProgressing(false);</span>
+<span class="nc" id="L82">        this.nodeModel.setLoading(false);</span>
         
-<span class="nc" id="L90">        MediatorHelper.model().getMediatorUtils().getThreadUtil().remove(this.nodeModel.getElementDatabase());</span>
-<span class="nc" id="L91">    }</span>
+<span class="nc" id="L84">        MediatorHelper.model().getMediatorUtils().getThreadUtil().remove(this.nodeModel.getElementDatabase());</span>
+<span class="nc" id="L85">    }</span>
 
     private List&lt;Column&gt; getSelectedColumns() {
         
-<span class="nc" id="L95">        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();</span>
-<span class="nc" id="L96">        DefaultMutableTreeNode tableNode = this.currentTableNode;</span>
-<span class="nc" id="L97">        final List&lt;Column&gt; columnsToSearch = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L89">        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorHelper.treeDatabase().getModel();</span>
+<span class="nc" id="L90">        DefaultMutableTreeNode tableNode = this.currentTableNode;</span>
+<span class="nc" id="L91">        final List&lt;Column&gt; columnsToSearch = new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L99">        int tableChildCount = treeModel.getChildCount(tableNode);</span>
-<span class="nc bnc" id="L100" title="All 2 branches missed.">        for (var i = 0 ; i &lt; tableChildCount ; i++) {</span>
+<span class="nc" id="L93">        int tableChildCount = treeModel.getChildCount(tableNode);</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        for (var i = 0 ; i &lt; tableChildCount ; i++) {</span>
             
-<span class="nc" id="L102">            DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);</span>
+<span class="nc" id="L96">            DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);</span>
             
-<span class="nc bnc" id="L104" title="All 2 branches missed.">            if (currentChild.getUserObject() instanceof AbstractNodeModel) {</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            if (currentChild.getUserObject() instanceof AbstractNodeModel) {</span>
                 
-<span class="nc" id="L106">                AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();</span>
-<span class="nc bnc" id="L107" title="All 2 branches missed.">                if (columnTreeNodeModel.isSelected()) {</span>
-                    
-<span class="nc" id="L109">                    columnsToSearch.add((Column) columnTreeNodeModel.getElementDatabase());</span>
+<span class="nc" id="L100">                AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">                if (columnTreeNodeModel.isSelected()) {</span>
+<span class="nc" id="L102">                    columnsToSearch.add((Column) columnTreeNodeModel.getElementDatabase());</span>
                 }
             }
         }
         
-<span class="nc" id="L114">        return columnsToSearch;</span>
+<span class="nc" id="L107">        return columnsToSearch;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

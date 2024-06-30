@@ -12,7 +12,7 @@ import java.awt.*;
  * the space reserved for painting the Border of a component.
  *
  * This class takes advantage of the knowledge that all Swing components are
- * also Containers. By default the layout manager is null, so we should be
+ * also Containers. By default, the layout manager is null, so we should be
  * able to place a child component anywhere in the parent component. In order
  * to prevent the child component from painting over top of the parent
  * component a Border is added to the parent component such that the insets of
@@ -150,17 +150,14 @@ public class ComponentBorder implements Border {
 <span class="nc" id="L150">        this.gap = gap;</span>
 <span class="nc" id="L151">    }</span>
 
-    //
-    // Implement the Border interface
-    //
     @Override
     public Insets getBorderInsets(Component c) {
-<span class="fc" id="L158">        return this.borderInsets;</span>
+<span class="fc" id="L155">        return this.borderInsets;</span>
     }
 
     @Override
     public boolean isBorderOpaque() {
-<span class="nc" id="L163">        return false;</span>
+<span class="nc" id="L160">        return false;</span>
     }
 
     /**
@@ -170,15 +167,14 @@ public class ComponentBorder implements Border {
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         
-        float x2 =
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">            ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
-<span class="nc" id="L175">            ? (0 + this.component.getWidth()) * this.component.getAlignmentX() + x</span>
-<span class="fc" id="L176">            : (width - this.component.getWidth()) * this.component.getAlignmentX() + x;</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">        float x2 = ComponentOrientation.RIGHT_TO_LEFT.equals(ComponentOrientation.getOrientation(I18nUtil.getLocaleDefault()))</span>
+<span class="nc" id="L171">            ? this.component.getWidth() * this.component.getAlignmentX() + x</span>
+<span class="fc" id="L172">            : (width - this.component.getWidth()) * this.component.getAlignmentX() + x;</span>
         
-<span class="fc" id="L178">        float y2 = (height - this.component.getHeight()) * this.component.getAlignmentY() + y;</span>
+<span class="fc" id="L174">        float y2 = (height - this.component.getHeight()) * this.component.getAlignmentY() + y;</span>
         
-<span class="fc" id="L180">        this.component.setLocation((int) x2 + this.addX, (int) y2 + this.addY);</span>
-<span class="fc" id="L181">    }</span>
+<span class="fc" id="L176">        this.component.setLocation((int) x2 + this.addX, (int) y2 + this.addY);</span>
+<span class="fc" id="L177">    }</span>
 
     /**
      * Install this Border on the specified component by replacing the
@@ -191,26 +187,24 @@ public class ComponentBorder implements Border {
      */
     public void install(JComponent parent) {
         
-<span class="fc" id="L194">        this.parent = parent;</span>
+<span class="fc" id="L190">        this.parent = parent;</span>
 
-<span class="fc" id="L196">        this.determineInsetsAndAlignment();</span>
+<span class="fc" id="L192">        this.determineInsetsAndAlignment();</span>
 
         // Add this Border to the parent
-<span class="fc" id="L199">        var current = parent.getBorder();</span>
+<span class="fc" id="L195">        var current = parent.getBorder();</span>
 
-<span class="pc bpc" id="L201" title="1 of 2 branches missed.">        if (current == null) {</span>
-            
-<span class="nc" id="L203">            parent.setBorder(this);</span>
-            
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">        if (current == null) {</span>
+<span class="nc" id="L198">            parent.setBorder(this);</span>
         } else {
             
-<span class="fc" id="L207">            var compound = new CompoundBorder(current, this);</span>
-<span class="fc" id="L208">            parent.setBorder(compound);</span>
+<span class="fc" id="L201">            var compound = new CompoundBorder(current, this);</span>
+<span class="fc" id="L202">            parent.setBorder(compound);</span>
         }
 
         // Add component to the parent
-<span class="fc" id="L212">        parent.add(this.component);</span>
-<span class="fc" id="L213">    }</span>
+<span class="fc" id="L206">        parent.add(this.component);</span>
+<span class="fc" id="L207">    }</span>
 
     /**
      * The insets need to be determined so they are included in the preferred
@@ -221,43 +215,42 @@ public class ComponentBorder implements Border {
      */
     private void determineInsetsAndAlignment() {
         
-<span class="fc" id="L224">        this.borderInsets = new Insets(0, 0, 0, 0);</span>
+<span class="fc" id="L218">        this.borderInsets = new Insets(0, 0, 0, 0);</span>
 
         // The insets will only be updated for the edge the component will be
         // displayed on.
         //
         // The X, Y alignment of the component is controlled by both the edge
         // and alignment parameters
-<span class="pc bpc" id="L231" title="1 of 2 branches missed.">        if (this.edge == Edge.TOP) {</span>
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">        if (this.edge == Edge.TOP) {</span>
             
-<span class="nc" id="L233">            this.borderInsets.top = this.component.getPreferredSize().height + this.gap;</span>
+<span class="nc" id="L227">            this.borderInsets.top = this.component.getPreferredSize().height + this.gap;</span>
+<span class="nc" id="L228">            this.component.setAlignmentX(this.alignment);</span>
+<span class="nc" id="L229">            this.component.setAlignmentY(0.0f);</span>
+            
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">        } else if (this.edge == Edge.BOTTOM) {</span>
+            
+<span class="nc" id="L233">            this.borderInsets.bottom = this.component.getPreferredSize().height + this.gap;</span>
 <span class="nc" id="L234">            this.component.setAlignmentX(this.alignment);</span>
-<span class="nc" id="L235">            this.component.setAlignmentY(0.0f);</span>
+<span class="nc" id="L235">            this.component.setAlignmentY(1.0f);</span>
             
-<span class="pc bpc" id="L237" title="1 of 2 branches missed.">        } else if (this.edge == Edge.BOTTOM) {</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">        } else if (this.edge == Edge.LEFT) {</span>
             
-<span class="nc" id="L239">            this.borderInsets.bottom = this.component.getPreferredSize().height + this.gap;</span>
-<span class="nc" id="L240">            this.component.setAlignmentX(this.alignment);</span>
-<span class="nc" id="L241">            this.component.setAlignmentY(1.0f);</span>
+<span class="nc" id="L239">            this.borderInsets.left = this.component.getPreferredSize().width + this.gap;</span>
+<span class="nc" id="L240">            this.component.setAlignmentX(0.0f);</span>
+<span class="nc" id="L241">            this.component.setAlignmentY(this.alignment);</span>
             
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        } else if (this.edge == Edge.LEFT) {</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        } else if (this.edge == Edge.RIGHT) {</span>
             
-<span class="nc" id="L245">            this.borderInsets.left = this.component.getPreferredSize().width + this.gap;</span>
-<span class="nc" id="L246">            this.component.setAlignmentX(0.0f);</span>
-<span class="nc" id="L247">            this.component.setAlignmentY(this.alignment);</span>
-            
-<span class="pc bpc" id="L249" title="1 of 2 branches missed.">        } else if (this.edge == Edge.RIGHT) {</span>
-            
-<span class="fc" id="L251">            this.borderInsets.right = this.component.getPreferredSize().width + this.gap;</span>
-<span class="fc" id="L252">            this.component.setAlignmentX(1.0f);</span>
-<span class="fc" id="L253">            this.component.setAlignmentY(this.alignment);</span>
+<span class="fc" id="L245">            this.borderInsets.right = this.component.getPreferredSize().width + this.gap;</span>
+<span class="fc" id="L246">            this.component.setAlignmentX(1.0f);</span>
+<span class="fc" id="L247">            this.component.setAlignmentY(this.alignment);</span>
         }
 
-<span class="pc bpc" id="L256" title="1 of 2 branches missed.">        if (this.adjustInsets) {</span>
-            
-<span class="fc" id="L258">            this.adjustBorderInsets();</span>
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">        if (this.adjustInsets) {</span>
+<span class="fc" id="L251">            this.adjustBorderInsets();</span>
         }
-<span class="fc" id="L260">    }</span>
+<span class="fc" id="L253">    }</span>
 
     /**
      * The complimentary edges of the Border may need to be adjusted to allow
@@ -265,37 +258,37 @@ public class ComponentBorder implements Border {
      */
     private void adjustBorderInsets() {
         
-<span class="fc" id="L268">        var parentInsets = this.parent.getInsets();</span>
+<span class="fc" id="L261">        var parentInsets = this.parent.getInsets();</span>
 
         // May need to adjust the height of the parent component to fit
         // the component in the Border
-<span class="pc bpc" id="L272" title="3 of 4 branches missed.">        if (this.edge == Edge.RIGHT || this.edge == Edge.LEFT) {</span>
+<span class="pc bpc" id="L265" title="3 of 4 branches missed.">        if (this.edge == Edge.RIGHT || this.edge == Edge.LEFT) {</span>
             
-<span class="fc" id="L274">            int parentHeight = this.parent.getPreferredSize().height - parentInsets.top - parentInsets.bottom;</span>
-<span class="fc" id="L275">            int diff = this.component.getHeight() - parentHeight;</span>
+<span class="fc" id="L267">            int parentHeight = this.parent.getPreferredSize().height - parentInsets.top - parentInsets.bottom;</span>
+<span class="fc" id="L268">            int diff = this.component.getHeight() - parentHeight;</span>
 
-<span class="fc bfc" id="L277" title="All 2 branches covered.">            if (diff &gt; 0) {</span>
-<span class="fc" id="L278">                int topDiff = (int) (diff * this.alignment);</span>
-<span class="fc" id="L279">                int bottomDiff = diff - topDiff;</span>
-<span class="fc" id="L280">                this.borderInsets.top += topDiff;</span>
-<span class="fc" id="L281">                this.borderInsets.bottom += bottomDiff;</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">            if (diff &gt; 0) {</span>
+<span class="fc" id="L271">                int topDiff = (int) (diff * this.alignment);</span>
+<span class="fc" id="L272">                int bottomDiff = diff - topDiff;</span>
+<span class="fc" id="L273">                this.borderInsets.top += topDiff;</span>
+<span class="fc" id="L274">                this.borderInsets.bottom += bottomDiff;</span>
             }
         }
 
         // May need to adjust the width of the parent component to fit
         // the component in the Border
-<span class="pc bpc" id="L287" title="2 of 4 branches missed.">        if (this.edge == Edge.TOP || this.edge == Edge.BOTTOM) {</span>
+<span class="pc bpc" id="L280" title="2 of 4 branches missed.">        if (this.edge == Edge.TOP || this.edge == Edge.BOTTOM) {</span>
             
-<span class="nc" id="L289">            int parentWidth = this.parent.getPreferredSize().width - parentInsets.left - parentInsets.right;</span>
-<span class="nc" id="L290">            int diff = this.component.getWidth() - parentWidth;</span>
+<span class="nc" id="L282">            int parentWidth = this.parent.getPreferredSize().width - parentInsets.left - parentInsets.right;</span>
+<span class="nc" id="L283">            int diff = this.component.getWidth() - parentWidth;</span>
 
-<span class="nc bnc" id="L292" title="All 2 branches missed.">            if (diff &gt; 0) {</span>
-<span class="nc" id="L293">                int leftDiff = (int) (diff * this.alignment);</span>
-<span class="nc" id="L294">                int rightDiff = diff - leftDiff;</span>
-<span class="nc" id="L295">                this.borderInsets.left += leftDiff;</span>
-<span class="nc" id="L296">                this.borderInsets.right += rightDiff;</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">            if (diff &gt; 0) {</span>
+<span class="nc" id="L286">                int leftDiff = (int) (diff * this.alignment);</span>
+<span class="nc" id="L287">                int rightDiff = diff - leftDiff;</span>
+<span class="nc" id="L288">                this.borderInsets.left += leftDiff;</span>
+<span class="nc" id="L289">                this.borderInsets.right += rightDiff;</span>
             }
         }
-<span class="fc" id="L299">    }</span>
+<span class="fc" id="L292">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

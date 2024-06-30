@@ -73,7 +73,7 @@ public class TabManagersProxy extends JTabbedPane {
 <span class="fc" id="L73">        this.buildI18nTab(&quot;SCANLIST_TAB&quot;, UiUtil.ICON_SCANLIST, managerScanList);</span>
 <span class="fc" id="L74">    }</span>
     
-    public void createFileTab(String path, String name) {
+    public void addToLists(String path, String name) {
         
         // Add the path String to the list of files only if there is no same StringObject value already
 <span class="fc" id="L79">        this.managerWebShell.addToList(path.replace(name, StringUtils.EMPTY));</span>
@@ -113,8 +113,7 @@ public class TabManagersProxy extends JTabbedPane {
 <span class="nc" id="L113">    }</span>
     
     private void buildI18nTab(String keyLabel, Icon icon, Component manager) {
-        
-<span class="fc" id="L117">        this.addTab(I18nUtil.valueByKey(keyLabel), icon, manager);</span>
-<span class="fc" id="L118">    }</span>
+<span class="fc" id="L116">        this.addTab(I18nUtil.valueByKey(keyLabel), icon, manager);</span>
+<span class="fc" id="L117">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
