@@ -374,16 +374,16 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
 <span class="fc" id="L374">            request.setParameters(msgHeader);</span>
 <span class="fc" id="L375">            this.sendToViews(request);</span>
             
-<span class="fc" id="L377">        } catch (IOException e) {</span>
-<span class="fc" id="L378">            LOGGER.log(</span>
+<span class="nc" id="L377">        } catch (IOException e) {</span>
+<span class="nc" id="L378">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
-<span class="fc" id="L380">                String.format(&quot;Error during connection: %s&quot;, e.getMessage())</span>
+<span class="nc" id="L380">                String.format(&quot;Error during connection: %s&quot;, e.getMessage())</span>
             );
 <span class="fc" id="L382">        } catch (InterruptedException e) {</span>
             
 <span class="fc" id="L384">            LOGGER.log(LogLevelUtil.IGNORE, e, e);</span>
 <span class="fc" id="L385">            Thread.currentThread().interrupt();</span>
-<span class="fc" id="L386">        }</span>
+<span class="pc" id="L386">        }</span>
 
         // return the source code of the page
 <span class="fc" id="L389">        return pageSource;</span>

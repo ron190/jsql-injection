@@ -7,6 +7,7 @@ com.test.special
 com.test.vendor.cubrid
 com.test.vendor.db2
 com.test.vendor.derby
+com.test.vendor.firebird
 com.test.vendor.h2
 com.test.vendor.hsqldb
 com.test.vendor.mysql

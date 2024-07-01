@@ -18,11 +18,11 @@ public abstract class AbstractSlidingException extends JSqlException {
     
     protected AbstractSlidingException(String message, Throwable e) {
         
-<span class="fc" id="L21">        super(message, e);</span>
+<span class="nc" id="L21">        super(message, e);</span>
         
-<span class="fc" id="L23">        this.slidingWindowAllRows = StringUtils.EMPTY;</span>
-<span class="fc" id="L24">        this.slidingWindowCurrentRows = StringUtils.EMPTY;</span>
-<span class="fc" id="L25">    }</span>
+<span class="nc" id="L23">        this.slidingWindowAllRows = StringUtils.EMPTY;</span>
+<span class="nc" id="L24">        this.slidingWindowCurrentRows = StringUtils.EMPTY;</span>
+<span class="nc" id="L25">    }</span>
     
     protected AbstractSlidingException(String string, String slidingWindowAllRows) {
         
@@ -49,11 +49,11 @@ public abstract class AbstractSlidingException extends JSqlException {
 <span class="nc" id="L49">    }</span>
 
     public String getSlidingWindowCurrentRows() {
-<span class="fc" id="L52">        return this.slidingWindowCurrentRows;</span>
+<span class="nc" id="L52">        return this.slidingWindowCurrentRows;</span>
     }
     
     public String getSlidingWindowAllRows() {
-<span class="fc" id="L56">        return this.slidingWindowAllRows;</span>
+<span class="nc" id="L56">        return this.slidingWindowAllRows;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

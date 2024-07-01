@@ -173,13 +173,13 @@ public abstract class AbstractInjectionBoolean&lt;T extends AbstractCallableBool
 <span class="fc bfc" id="L173" title="All 2 branches covered.">        if (asciiCodeBinary.matches(&quot;^[01]{8}$&quot;)) {</span>
             
 <span class="fc" id="L175">            var asciiCode = Integer.parseInt(asciiCodeBinary, 2);</span>
-<span class="pc bpc" id="L176" title="2 of 4 branches missed.">            if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000</span>
+<span class="pc bpc" id="L176" title="1 of 4 branches missed.">            if (asciiCode == 127 || asciiCode == 0) {  // Stop if many 11111111, 01111111 or 00000000</span>
                 
-<span class="nc bnc" id="L178" title="All 4 branches missed.">                if (countTasksSubmitted.get() != 0 &amp;&amp; countBadAsciiCode.get() &gt; 15) {</span>
+<span class="pc bpc" id="L178" title="2 of 4 branches missed.">                if (countTasksSubmitted.get() != 0 &amp;&amp; countBadAsciiCode.get() &gt; 15) {</span>
 <span class="nc" id="L179">                    throw new InjectionFailureException(&quot;Boolean false positive, stopping...&quot;);</span>
                 }
                 
-<span class="nc" id="L182">                countBadAsciiCode.incrementAndGet();</span>
+<span class="fc" id="L182">                countBadAsciiCode.incrementAndGet();</span>
             }
 
 <span class="fc" id="L185">            currentCallable.charText = Character.toString((char) asciiCode);</span>
@@ -200,32 +200,24 @@ public abstract class AbstractInjectionBoolean&lt;T extends AbstractCallableBool
 
     private String stop(List&lt;char[]&gt; bytes, ExecutorService taskExecutor) {
         
-        // Await for termination
-<span class="fc" id="L204">        var isTerminated = false;</span>
-
-<span class="fc" id="L206">        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
-        
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">        if (!isTerminated) {</span>
-            // awaitTermination timed out, interrupt everything
-<span class="fc" id="L210">            taskExecutor.shutdownNow();</span>
-        }
+<span class="fc" id="L203">        this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);</span>
 
         // Get current progress and display
-<span class="fc" id="L214">        var result = new StringBuilder();</span>
+<span class="fc" id="L206">        var result = new StringBuilder();</span>
         
-<span class="fc bfc" id="L216" title="All 2 branches covered.">        for (char[] c: bytes) {</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        for (char[] c: bytes) {</span>
             try {
-<span class="fc" id="L218">                var charCode = Integer.parseInt(new String(c), 2);</span>
-<span class="fc" id="L219">                var str = Character.toString((char) charCode);</span>
-<span class="fc" id="L220">                result.append(str);</span>
+<span class="fc" id="L210">                var charCode = Integer.parseInt(new String(c), 2);</span>
+<span class="fc" id="L211">                var str = Character.toString((char) charCode);</span>
+<span class="fc" id="L212">                result.append(str);</span>
                 
-<span class="fc" id="L222">            } catch (NumberFormatException err) {</span>
+<span class="fc" id="L214">            } catch (NumberFormatException err) {</span>
                 // Byte string not fully constructed : 0x1x010x
                 // Ignore
-<span class="fc" id="L225">            }</span>
-<span class="fc" id="L226">        }</span>
+<span class="fc" id="L217">            }</span>
+<span class="fc" id="L218">        }</span>
         
-<span class="fc" id="L228">        return result.toString();</span>
+<span class="fc" id="L220">        return result.toString();</span>
     }
 
     /**
@@ -234,15 +226,15 @@ public abstract class AbstractInjectionBoolean&lt;T extends AbstractCallableBool
      * @return Source code
      */
     public String callUrl(String urlString, String metadataInjectionProcess) {
-<span class="fc" id="L237">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);</span>
+<span class="fc" id="L229">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess);</span>
     }
 
     public String callUrl(String urlString, String metadataInjectionProcess, AbstractCallableBoolean&lt;?&gt; callableBoolean) {
-<span class="fc" id="L241">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);</span>
+<span class="fc" id="L233">        return this.injectionModel.injectWithoutIndex(urlString, metadataInjectionProcess, callableBoolean);</span>
     }
 
     public BooleanMode getBooleanMode() {
-<span class="fc" id="L245">        return this.booleanMode;</span>
+<span class="fc" id="L237">        return this.booleanMode;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
