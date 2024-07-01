@@ -29,7 +29,8 @@ public class MasterService {
                 SpringTargetApplication.propsSqlite,
                 SpringTargetApplication.propsDb2,
                 SpringTargetApplication.propsHsqldb,
-                SpringTargetApplication.propsDerby
+                SpringTargetApplication.propsDerby,
+                SpringTargetApplication.propsFirebird
             )
         );
         

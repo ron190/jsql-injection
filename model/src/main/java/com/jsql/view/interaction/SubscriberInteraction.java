@@ -64,7 +64,7 @@ public class SubscriberInteraction implements Subscriber<Request> {
                 Constructor<?> constructor = cl.getConstructor(types);
     
                 InteractionCommand interactionCommand = (InteractionCommand) constructor.newInstance(
-                    new Object[] {
+                    (Object[]) new Object[] {  // cast for sonar disambiguation
                         request.getParameters()
                     }
                 );

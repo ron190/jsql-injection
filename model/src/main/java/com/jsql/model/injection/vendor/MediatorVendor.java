@@ -48,6 +48,7 @@ public class MediatorVendor {
     private final Vendor cubrid;
     private final Vendor db2;
     private final Vendor derby;
+    private final Vendor firebird;
     private final Vendor h2;
     private final Vendor hsqldb;
     private final Vendor mySQL;
@@ -71,7 +72,6 @@ public class MediatorVendor {
         Vendor cockroachDB = new Vendor(new VendorYaml("cockroachdb.yml", injectionModel));
         Vendor exasol = new Vendor(new VendorYaml("exasol.yml", injectionModel));
         Vendor frontbase = new Vendor(new VendorYaml("frontbase.yml", injectionModel));
-        Vendor firebird = new Vendor(new VendorYaml("firebird.yml", injectionModel));
         Vendor hana = new Vendor(new VendorYaml("hana.yml", injectionModel));
         Vendor informix = new Vendor(new VendorYaml("informix.yml", injectionModel));
         Vendor ingres = new Vendor(new VendorYaml("ingres.yml", injectionModel));
@@ -92,6 +92,7 @@ public class MediatorVendor {
         this.cubrid = new Vendor(new VendorYaml("cubrid.yml", injectionModel));
         this.db2 = new Vendor(new VendorYaml("db2.yml", injectionModel));
         this.derby = new Vendor(new VendorYaml("derby.yml", injectionModel));
+        this.firebird = new Vendor(new VendorYaml("firebird.yml", injectionModel));
         this.h2 = new Vendor(new VendorYaml("h2.yml", injectionModel));
         this.hsqldb = new Vendor(new VendorYaml("hsqldb.yml", injectionModel));
         this.mySQL = new Vendor(new VendorYaml("mysql.yml", injectionModel));
@@ -148,7 +149,7 @@ public class MediatorVendor {
             this.db2,
             this.derby,
             exasol,
-            firebird,
+            this.firebird,
             frontbase,
             this.h2,
             hana,
@@ -235,7 +236,7 @@ public class MediatorVendor {
                 + this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")
                 + "</a>)"
             + "<br># Database: " + vendorFound
-            + "<br><br>## Vulnerability details</span>",
+            + "<br><br>## Vulnerability summary</span>",
             true
         );
 
@@ -357,5 +358,9 @@ public class MediatorVendor {
 
     public Vendor getOracle() {
         return this.oracle;
+    }
+
+    public Vendor getFirebird() {
+        return firebird;
     }
 }

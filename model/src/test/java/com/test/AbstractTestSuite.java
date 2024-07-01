@@ -107,25 +107,21 @@ public abstract class AbstractTestSuite {
             Statement statementValues = connection.createStatement();
             ResultSet resultSetValues = statementValues.executeQuery(this.jdbcQueryForValues)
         ) {
-            
             while (resultSetDatabase.next()) {
                 
                 String dbName = resultSetDatabase.getString(this.jdbcColumnForDatabaseName);
                 this.databasesFromJdbc.add(dbName);
             }
-            
             while (resultSetTable.next()) {
                 
                 String tableName = resultSetTable.getString(this.jdbcColumnForTableName);
                 this.tablesFromJdbc.add(tableName);
             }
-            
             while (resultSetColumn.next()) {
                 
                 String colName = resultSetColumn.getString(this.jdbcColumnForColumnName);
                 this.columnsFromJdbc.add(colName);
             }
-
             while (resultSetValues.next()) {
                 
                 String value = resultSetValues.getString(this.jsqlColumnName);

@@ -2,6 +2,10 @@ vendor: Altibase
 # docker run -it altibase/altibase
 # jdbc:Altibase://localhost:20300/mydb
 # sys manager
+# isql -s 127.0.0.1 -u sys -p manager -sysdba
+# startup service
+# Connecting to the DB server...............................Startup Failure. Check
+# Your Environment.
 
 resource: 
  info: |

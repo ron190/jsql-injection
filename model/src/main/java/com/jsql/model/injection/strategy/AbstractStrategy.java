@@ -19,7 +19,7 @@ public abstract class AbstractStrategy {
 
     protected static final String KEY_LOG_CHECKING_STRATEGY = "LOG_CHECKING_STRATEGY";
     protected static final String KEY_LOG_VULNERABLE = "LOG_VULNERABLE";
-    protected static final String FORMAT_STRATEGY_NOT_IMPLEMENTED = "No strategy {} implemented for {}, share on GitHub if you know this strategy exists";
+    protected static final String FORMAT_STRATEGY_NOT_IMPLEMENTED = "Strategy [{}] for [{}] missing, share your implementation on GitHub";
     protected static final String FORMAT_SKIP_STRATEGY_DISABLED = "Skipping strategy {} disabled";
 
     /**

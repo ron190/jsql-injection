@@ -200,15 +200,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
 
     private String stop(List<char[]> bytes, ExecutorService taskExecutor) {
         
-        // Await for termination
-        var isTerminated = false;
-
         this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
-        
-        if (!isTerminated) {
-            // awaitTermination timed out, interrupt everything
-            taskExecutor.shutdownNow();
-        }
 
         // Get current progress and display
         var result = new StringBuilder();

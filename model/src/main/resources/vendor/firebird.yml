@@ -2,15 +2,19 @@ vendor: Firebird
 # Service Firebird Server - DefaultInstance
 # jdbc:firebirdsql://127.0.0.1:3050/E:/Dev/Firebird/Firebird-2.5.9.27139-0_x64/examples/empbuild/EMPLOYEE.FDB
 # sysdba masterkey
+# docker run --name firebird -p 3050:3050 -d controlsoft/firebird -v C:\Users\Watthieu-x64\Downloads\empbuild:/databases
+# jdbc:firebirdsql://127.0.0.1:3050//databases/EMPLOYEE.FDB <= //databases important
+# docker run --name firebird -p 3050:3050 -d -e FIREBIRD_DATABASE=EMPLOYEE.FDB -e FIREBIRD_USER=sysdba2 -e FIREBIRD_PASSWORD=test jacobalberty/firebird
+# User=sysdba2, URL=jdbc:firebirdsql://127.0.0.1:3050//firebird/data/EMPLOYEE.FDB
 
 resource:
  info: |
   select
-      rdb$get_context('system', 'engine_version')
+      rdb$get_context('SYSTEM', 'ENGINE_VERSION')
       || '${enclose_value_sql}'
-      || rdb$get_context('system', 'db_name')
+      || rdb$get_context('SYSTEM', 'DB_NAME')
       || '${enclose_value_sql}'
-      || rdb$get_context('system', 'current_user')
+      || rdb$get_context('SYSTEM', 'CURRENT_USER')
       || '${trail_sql}'
   from rdb$database
 
@@ -23,7 +27,7 @@ resource:
     */
    select
        '${enclose_value_sql}'
-       || rdb$get_context('system', 'db_name')
+       || rdb$get_context('SYSTEM', 'DB_NAME')
        || '${separator_qte_sql}0${enclose_value_sql}${trail_sql}'
    from rdb$database
    ${limit}

@@ -81,9 +81,8 @@ public class TabResults extends DnDTabbedPane {
         editorPane.setDragEnabled(true);
         editorPane.setEditable(false);
         editorPane.setCaretPosition(0);
-
+        editorPane.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
         editorPane.setComponentPopupMenu(new JPopupMenuText(editorPane));
-
         editorPane.addHyperlinkListener(linkEvent -> {
             if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {
                 try {

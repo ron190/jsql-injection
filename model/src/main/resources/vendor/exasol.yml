@@ -1,7 +1,8 @@
 vendor: Exasol
-# docker run --name exasoldb -p 8563:8563 --detach --privileged --stop-timeout 120  exasol/docker-db
+# docker run --name exasoldb -p 8563:8563 --detach --privileged --stop-timeout 120 exasol/docker-db
 # jdbc:exa:127.0.0.1:8563
 # sys exasol
+# 3.5Go
 
 resource:
  info: |
