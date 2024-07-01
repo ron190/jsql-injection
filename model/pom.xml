@@ -46,7 +46,7 @@
         <bootstrap.version>5.3.3</bootstrap.version>
         <!-- required since commons-text:1.11.0 not working -->
         <commons-lang3.version>3.14.0</commons-lang3.version>
-        <cubrid-jdbc.version>11.2.0.0035</cubrid-jdbc.version>
+        <cubrid-jdbc.version>11.2.1.0038</cubrid-jdbc.version>
         <dnsjava.version>3.5.3</dnsjava.version>
         <gmavenplus-plugin.version>3.0.2</gmavenplus-plugin.version>
         <graphql-java-tools.version>5.2.4</graphql-java-tools.version>
