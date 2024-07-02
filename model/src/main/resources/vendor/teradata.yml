@@ -1,6 +1,4 @@
 vendor: Teradata
-# jdbc:teradata://127.0.0.1
-# dbc dbc
 
 resource:
  info: |

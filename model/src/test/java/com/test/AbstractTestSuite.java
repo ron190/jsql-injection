@@ -30,6 +30,15 @@ import java.util.stream.Stream;
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
 public abstract class AbstractTestSuite {
+
+    static {
+        try {  // ensure driver is loaded
+            Class.forName("com.mimer.jdbc.Driver");
+            Class.forName("nl.cwi.monetdb.jdbc.MonetDriver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
     
     protected static final Logger LOGGER = LogManager.getRootLogger();
 

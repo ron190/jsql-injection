@@ -27,7 +27,7 @@ public class CountryRepository {
     @Autowired
     private SessionFactory sessionFactory;
     
-    private static final String template = "Hello, s!";
+    private static final String TEMPLATE = "Hello, s!";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Transactional
@@ -50,7 +50,7 @@ public class CountryRepository {
 
             // TODO Encode XML invalid chars
             country.setName(URLEncoder.encode(
-                template + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results)),
+                TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results)),
                 StandardCharsets.UTF_8
             ));
         } catch (Exception e) {
@@ -71,6 +71,6 @@ public class CountryRepository {
         
         LOGGER.debug(stacktrace);
 
-        return new Greeting(template + "#" + StringEscapeUtils.unescapeJava(stacktrace));
+        return new Greeting(TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));
     }
 }

@@ -1,6 +1,4 @@
 vendor: MaxDB
-# jdbc:sapdb://127.0.0.1/MAXDB
-# DBADMIN TEST
 
 resource:
  info: |

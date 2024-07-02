@@ -18,8 +18,8 @@ public class TamperingUtil {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
-    public static String TAG_OPENED = "<tampering>";
-    public static String TAG_CLOSED = "</tampering>";
+    public static final String TAG_OPENED = "<tampering>";
+    public static final String TAG_CLOSED = "</tampering>";
 
     private boolean isBase64 = false;
     private boolean isVersionComment = false;

@@ -1,10 +1,4 @@
 vendor: Iris
-# docker run --name my-iris -d --publish 1972:1972 --publish 52773:52773 store/intersystems/iris-community:2020.3.0.221.0
-# http://127.0.0.1:52773/csp/sys/UtilHome.csp
-# usr pwd: _SYSTEM SYS
-# Change pwd
-# jdbc:IRIS://127.0.0.1:1972/USER
-# _SYSTEM Mw7SUqLPFbZWUu4
 
 resource:
  info: |

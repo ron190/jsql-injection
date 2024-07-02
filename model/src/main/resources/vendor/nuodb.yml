@@ -1,6 +1,4 @@
 vendor: NuoDB
-# jdbc:com.nuodb://127.0.0.1/test
-# dba nuodb
 
 resource:
  info: |

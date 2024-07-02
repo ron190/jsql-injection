@@ -39,8 +39,10 @@ public class HttpServer {
         Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
         connector.setPort(httpPort);
 
-        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory(){
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
+            @Override
             protected void postProcessContext(Context context) {
+
                 ((StandardJarScanner)context.getJarScanner()).setScanManifest(false);
                 context.setAddWebinfClassesResources(true);
                 context.setReloadable(true);

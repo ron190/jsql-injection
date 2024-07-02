@@ -1,7 +1,4 @@
 vendor: MimerSQL
-# docker run -p 1360:1360 -d mimersql/mimersql_v11.0:latest
-# jdbc:mimer://127.0.0.1:1360/mimerdb
-# SYSADM SYSADM
 
 resource:
  info: |

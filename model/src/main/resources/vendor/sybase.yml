@@ -1,6 +1,4 @@
 vendor: Sybase
-# jdbc:sybase:Tds:Laptop_Name:5000
-# sa testtest
 
 resource:
  info: |

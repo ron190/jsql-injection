@@ -1,16 +1,5 @@
 vendor: Frontbase
-# FrontBase-8.2.18-WinNT.zip                   
-# sql92.exe                                    
-# sql92#1> create database firstdb;            
-#  sql92#2>    connect to firstdb user _system;
-#  Auto committing is on: SET COMMIT TRUE;     
-#  firstdb@localhost#3>    create user test;   
-#  firstdb@localhost#4>    commit;             
-#  Service FBExec                              
-#  Service FrontBase firstdb                   
-#  jdbc:FrontBase://127.0.0.1/firstdb          
-#  _system                                     
- 
+
 resource:
  info: |
   'version()'

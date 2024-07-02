@@ -57,6 +57,8 @@ public class MediatorVendor {
     private final Vendor postgreSQL;
     private final Vendor sqlite;
     private final Vendor sqlServer;
+    private final Vendor monetDb;
+    private final Vendor mimer;
 
     private final List<Vendor> vendors;
     
@@ -79,8 +81,6 @@ public class MediatorVendor {
         Vendor maxDB = new Vendor(new VendorYaml("maxdb.yml", injectionModel));
         Vendor mckoi = new Vendor(new VendorYaml("mckoi.yml", injectionModel));
         Vendor memSQL = new Vendor(new VendorYaml("memsql.yml", injectionModel));
-        Vendor mimerSQL = new Vendor(new VendorYaml("mimersql.yml", injectionModel));
-        Vendor monetDB = new Vendor(new VendorYaml("monetdb.yml", injectionModel));
         Vendor netezza = new Vendor(new VendorYaml("netezza.yml", injectionModel));
         Vendor nuoDB = new Vendor(new VendorYaml("nuodb.yml", injectionModel));
         Vendor presto = new Vendor(new VendorYaml("presto.yml", injectionModel));
@@ -95,6 +95,8 @@ public class MediatorVendor {
         this.firebird = new Vendor(new VendorYaml("firebird.yml", injectionModel));
         this.h2 = new Vendor(new VendorYaml("h2.yml", injectionModel));
         this.hsqldb = new Vendor(new VendorYaml("hsqldb.yml", injectionModel));
+        this.mimer = new Vendor(new VendorYaml("mimersql.yml", injectionModel));
+        this.monetDb = new Vendor(new VendorYaml("monetdb.yml", injectionModel));
         this.mySQL = new Vendor(new VendorYaml("mysql.yml", injectionModel));
         this.neo4j = new Vendor(new VendorYaml("neo4j.yml", injectionModel));
         this.oracle = new Vendor(new VendorYaml("oracle.yml", injectionModel));
@@ -160,8 +162,8 @@ public class MediatorVendor {
             maxDB,
             mckoi,
             memSQL,
-            mimerSQL,
-            monetDB,
+            this.mimer,
+            this.monetDb,
             this.mySQL,
             this.neo4j,
             netezza,
@@ -362,5 +364,13 @@ public class MediatorVendor {
 
     public Vendor getFirebird() {
         return firebird;
+    }
+
+    public Vendor getMonetDb() {
+        return monetDb;
+    }
+
+    public Vendor getMimer() {
+        return mimer;
     }
 }

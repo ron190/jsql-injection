@@ -1,0 +1,3 @@
+FROM mimersql/mimersql_v11.0:v11.0.7a
+
+EXPOSE 1360

@@ -1,5 +1,4 @@
 vendor: Derby
-# jdbc:derby://localhost:1527/E:\Dev\db-derby-10.11.1.1-bin\demo\databases\toursdb
 
 resource:
  info: |

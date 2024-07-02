@@ -1,7 +1,4 @@
 vendor: Netezza
-# NetezzaSoftwareEmulator_7.2.1.ova
-# jdbc:netezza://127.0.0.1:5480/SYSTEM
-# admin password
 
 resource:
  info: |

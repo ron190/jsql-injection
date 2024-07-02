@@ -1,6 +1,4 @@
 vendor: HSQLDB
-# jdbc:hsqldb:hsql://127.0.0.1:9001/mainDb
-# sa
 
 resource:
  info: |

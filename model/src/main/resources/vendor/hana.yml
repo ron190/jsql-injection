@@ -1,6 +1,4 @@
 vendor: Hana
-# jdbc:sap://127.0.0.1:30115
-# XSA_ADMIN 1anaHEXH
 
 resource:
  info: |

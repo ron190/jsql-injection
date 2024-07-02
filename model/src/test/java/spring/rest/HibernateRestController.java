@@ -32,7 +32,7 @@ import java.util.Map;
 @RestController
 public class HibernateRestController {
 
-    private static final String template = "Hello, s!";
+    private static final String TEMPLATE = "Hello, s!";
     private static final Logger LOGGER = LogManager.getRootLogger();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -82,7 +82,7 @@ public class HibernateRestController {
                             hasMoreResultSets = stmt.getMoreResults();
                         }
                         return new Greeting(
-                            template + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+                            TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
                         );
                     }
                 } else {
@@ -91,7 +91,7 @@ public class HibernateRestController {
                         return new Greeting(
                             isBoolean
                             ? results.isEmpty() ? "true" : "false"
-                            : template + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+                            : TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
                         );
                     }
                 }
@@ -109,7 +109,7 @@ public class HibernateRestController {
 
         String stacktrace = ExceptionUtils.getStackTrace(e);
         LOGGER.debug(stacktrace);
-        return new Greeting(template + "#" + StringEscapeUtils.unescapeJava(stacktrace));
+        return new Greeting(TEMPLATE + "#" + StringEscapeUtils.unescapeJava(stacktrace));
     }
 
     // Visible injection
@@ -258,7 +258,6 @@ public class HibernateRestController {
     @GetMapping("/cookie")
     public Greeting endpointCookie(HttpServletRequest request, @CookieValue(name = "name", required = false, defaultValue = "") String name) {
 
-        // TODO Recent cookie RFC prevents ()<>@,;:\"/[]?={}
         String nameUrlDecoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
         return getResponse(nameUrlDecoded, "select 1,2,3,4,First_Name,5,6 from Student where '1' = '%s'", true, false, true);
     }

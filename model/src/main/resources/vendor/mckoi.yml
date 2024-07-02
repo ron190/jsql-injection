@@ -1,9 +1,4 @@
 vendor: Mckoi
-# java -jar mckoidb.jar -create "admin_user" "aupass00"
-# E:\Dev\mckoi1.0.6>java -cp mckoidb.jar com.mckoi.tools.JDBCQueryTool -url "jdbc:mckoi:local://./db.conf" -u "admin_user" -p "aupass00"
-# java -jar mckoidb.jar
-# jdbc:mckoi://127.0.0.1
-# admin_user aupass00
 
 resource:
  info: |

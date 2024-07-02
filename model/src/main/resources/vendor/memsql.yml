@@ -1,5 +1,4 @@
 vendor: MemSQL
-# docker pull memsql/quickstart
 
 resource:
  info: |

@@ -1,7 +1,4 @@
 vendor: C-treeACE
-# c-treeACE-Express.windows.64bit.v11.5.1.64705.190310.ACE.msi
-# jdbc:ctree://localhost:6597/ctreeSQL
-# ADMIN ADMIN
 
 resource:
  info: |

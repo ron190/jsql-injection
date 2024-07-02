@@ -30,9 +30,6 @@ public abstract class ConcreteOracleSuiteIT extends AbstractTestSuite {
             Password1_One
          */
         
-        // ORA-12519, TNS:no appropriate service handler found
-        // select * from v$resource_limit where resource_name = 'processes';
-        
         this.jdbcURL = "jdbc:oracle:thin:@localhost:11521:ORCLCDB";
         this.jdbcUser = "system";
         this.jdbcPass = "Password1_One";

@@ -1,7 +1,4 @@
 vendor: Presto
-# docker run -p 8080:8080 --name presto prestosql/presto
-# jdbc:presto://127.0.0.1:8078/system
-# test
 
 resource:
  info: |

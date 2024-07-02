@@ -1,5 +1,4 @@
 vendor: Informix
-# jdbc:informix-sqli://fe80::1125:78c0:ef17:8ab5:7360:user=informix;password=test;INFORMIXSERVER=ol_informix1210_2
 
 resource:
  info: |

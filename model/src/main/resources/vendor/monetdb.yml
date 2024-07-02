@@ -1,7 +1,4 @@
 vendor: MonetDB
-# docker run -d -P -p 50000:50000 --name monetdb-r monetdb/monetdb-r-docker
-# jdbc:monetdb://127.0.0.1:50001/db
-# monetdb monetdb
 
 resource:
  info: |

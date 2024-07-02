@@ -1,5 +1,4 @@
 vendor: Ingres
-# jdbc:ingres://localhost:II7/demodb
 
 resource:
  info: |

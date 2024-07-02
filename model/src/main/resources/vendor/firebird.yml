@@ -1,11 +1,4 @@
 vendor: Firebird
-# Service Firebird Server - DefaultInstance
-# jdbc:firebirdsql://127.0.0.1:3050/E:/Dev/Firebird/Firebird-2.5.9.27139-0_x64/examples/empbuild/EMPLOYEE.FDB
-# sysdba masterkey
-# docker run --name firebird -p 3050:3050 -d controlsoft/firebird -v C:\Users\Watthieu-x64\Downloads\empbuild:/databases
-# jdbc:firebirdsql://127.0.0.1:3050//databases/EMPLOYEE.FDB <= //databases important
-# docker run --name firebird -p 3050:3050 -d -e FIREBIRD_DATABASE=EMPLOYEE.FDB -e FIREBIRD_USER=sysdba2 -e FIREBIRD_PASSWORD=test jacobalberty/firebird
-# User=sysdba2, URL=jdbc:firebirdsql://127.0.0.1:3050//firebird/data/EMPLOYEE.FDB
 
 resource:
  info: |

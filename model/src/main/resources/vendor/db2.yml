@@ -1,6 +1,4 @@
 vendor: DB2
-# jdbc:db2://localhost:50000/testdb
-# db2inst1 test
 
 resource:
  info: |

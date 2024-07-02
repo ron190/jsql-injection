@@ -65,9 +65,13 @@ public class CallableCharInsertion extends AbstractCallableBoolean<CallableCharI
         
         String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);
         
-        this.opcodes = this.DIFF_MATCH_PATCH.diffMain(this.injectionCharInsertion.getBlankFalseMark(), source, false);
-        
-        this.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.opcodes);
+        this.opcodes = CallableCharInsertion.DIFF_MATCH_PATCH.diffMain(
+            this.injectionCharInsertion.getBlankFalseMark(),
+            source,
+            false
+        );
+
+        CallableCharInsertion.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.opcodes);
         
         return this;
     }

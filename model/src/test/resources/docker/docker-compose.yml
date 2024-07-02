@@ -113,5 +113,27 @@ services:
     networks:
       - jsql-network
 
+  monetdb:
+    ports:
+      - "50001:50000"
+    build:
+      context: .
+      dockerfile: Dockerfile.monetdb
+    container_name: jsql-monetdb
+    networks:
+      - jsql-network
+
+  mimer:
+    ports:
+      - "1360:1360"
+    build:
+      context: .
+      dockerfile: Dockerfile.mimer
+    environment:
+      MIMER_SYSADM_PASSWORD: SYSADM
+    container_name: jsql-mimer
+    networks:
+      - jsql-network
+
 networks:
   jsql-network:

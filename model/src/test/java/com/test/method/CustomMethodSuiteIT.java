@@ -8,7 +8,7 @@ import org.junitpioneer.jupiter.RetryingTest;
 
 public class CustomMethodSuiteIT extends ConcreteMySqlErrorSuiteIT {
 
-    public static String CUSTOM_METHOD = "CUSTOM-JSQL";
+    public static final String CUSTOM_METHOD = "CUSTOM-JSQL";
     
     @Override
     public void setupInjection() throws Exception {

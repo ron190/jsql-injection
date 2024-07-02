@@ -1,6 +1,4 @@
 vendor: H2
-# jdbc:h2:tcp://127.0.0.1/mem:public;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;
-# sa
 
 resource:
  info: |

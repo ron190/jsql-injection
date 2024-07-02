@@ -14,6 +14,10 @@
             <id>cubrid-repository</id>
             <url>https://maven.cubrid.org/</url>
         </repository>
+        <repository>
+            <id>monetdb-repository</id>
+            <url>https://clojars.org/repo/</url>
+        </repository>
         <!--         <repository> -->
         <!--             <id>default</id> -->
         <!--             <url>https://repo.maven.apache.org/maven2/</url> -->
@@ -32,10 +36,6 @@
         <!--         <repository> -->
         <!--             <id>oracle-repository</id> -->
         <!--             <url>http://maven.geomajas.org/</url> -->
-        <!--         </repository> -->
-        <!--         <repository> -->
-        <!--             <id>monetdb-repository</id> -->
-        <!--             <url>https://clojars.org/repo/</url> -->
         <!--         </repository> -->
     </repositories>
 
@@ -65,6 +65,8 @@
         <junit-pioneer.version>2.2.0</junit-pioneer.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <maven-failsafe-plugin.version>3.3.0</maven-failsafe-plugin.version>
+        <mimjdbc.version>3.42.3</mimjdbc.version>
+        <monetdb-jdbc.version>2.29</monetdb-jdbc.version>
         <mssql-jdbc.version>12.4.2.jre8</mssql-jdbc.version>
         <mysql-connector-j.version>8.4.0</mysql-connector-j.version>
         <nashorn-core.version>15.4</nashorn-core.version>
@@ -76,7 +78,7 @@
         <postgresql.version>42.7.3</postgresql.version>
         <snakeyaml.version>2.2</snakeyaml.version>
         <sockjs-client.version>1.5.1</sockjs-client.version>
-        <spock-core.version>2.4-M1-groovy-4.0</spock-core.version>
+        <spock-core.version>2.4-M4-groovy-4.0</spock-core.version>
         <spring-boot-dependencies.version>3.3.1</spring-boot-dependencies.version>
         <sqlite-jdbc.version>3.46.0.0</sqlite-jdbc.version>
         <sqlite-dialect.version>0.1.4</sqlite-dialect.version>
@@ -610,6 +612,18 @@
             <version>${jaybird.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.mimer.jdbc</groupId>
+            <artifactId>mimjdbc</artifactId>
+            <version>${mimjdbc.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>monetdb</groupId>
+            <artifactId>monetdb-jdbc</artifactId>
+            <version>${monetdb-jdbc.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <!--         <dependency> -->
         <!--             <groupId>altibase</groupId> -->
@@ -640,13 +654,6 @@
         <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/intersystems-jdbc-3.1.0.jar</systemPath> -->
         <!--         </dependency> -->
         <!--         <dependency> -->
-        <!--             <groupId>mimersql</groupId> -->
-        <!--             <artifactId>mimersql</artifactId> -->
-        <!--             <scope>system</scope> -->
-        <!--             <version>3.40</version> -->
-        <!--             <systemPath>${project.basedir}/src/test/resources/jdbc/mimjdbc3.jar</systemPath> -->
-        <!--         </dependency> -->
-        <!--         <dependency> -->
         <!--             <groupId>netezza</groupId> -->
         <!--             <artifactId>netezza</artifactId> -->
         <!--             <scope>system</scope> -->
@@ -660,17 +667,10 @@
         <!--             <scope>test</scope> -->
         <!--         </dependency> -->
         <!--         <dependency> -->
-        <!--             <groupId>monetdb</groupId> -->
-        <!--             <artifactId>monetdb-jdbc</artifactId> -->
-        <!--             <version>2.29</version> -->
-        <!--             <scope>test</scope> -->
-        <!--         </dependency> -->
-        <!--         <dependency> -->
         <!--             <groupId>com.facebook.presto</groupId> -->
         <!--             <artifactId>presto-jdbc</artifactId> -->
         <!--             <version>0.243.2</version> -->
         <!--             <scope>test</scope> -->
         <!--         </dependency> -->
-
     </dependencies>
 </project>

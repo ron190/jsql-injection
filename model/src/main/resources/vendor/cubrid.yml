@@ -1,5 +1,4 @@
 vendor: CUBRID
-# jdbc:cubrid:localhost:33000:demodb:::
 
 resource:
  info: |
