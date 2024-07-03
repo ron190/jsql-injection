@@ -137,7 +137,7 @@ public abstract class AbstractTestSuite {
                 this.valuesFromJdbc.add(value);
             }
         } catch (SQLException e) {
-            LOGGER.log(LogLevelUtil.CONSOLE_JAVA, e, e);
+            LOGGER.error(e, e);
         }
     }
 

@@ -31,14 +31,14 @@ public class JdbcRestController {
     // Integration tests on docker
 
     @RequestMapping("/monetdb")
-    public Greeting greetingMonetDB(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+    public Greeting greetingMonetDB(@RequestParam(value="name", defaultValue="World") String name) {
 
         Greeting greeting;
         String inject = name.replace(":", "\\:");
         StringBuilder result = new StringBuilder();
 
         try (
-            Connection con = DriverManager.getConnection("jdbc:monetdb://jsql-monetdb:50001/db", "monetdb", "monetdb");
+            Connection con = DriverManager.getConnection("jdbc:monetdb://jsql-monetdb:50001/db?debug=true", "monetdb", "monetdb");
             PreparedStatement pstmt = con.prepareStatement("select name from schemas where '1' = '"+ inject +"'")
         ) {
             ResultSet rs = pstmt.executeQuery();
@@ -80,7 +80,7 @@ public class JdbcRestController {
     }
 
     @RequestMapping("/mimer")
-    public Greeting greetingMimerSQL(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
+    public Greeting greetingMimerSQL(@RequestParam(value="name", defaultValue="World") String name) {
 
         Greeting greeting;
         String inject = name.replace(":", "\\:");

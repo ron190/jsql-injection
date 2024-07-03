@@ -6,7 +6,7 @@ public abstract class ConcreteMonetDbSuiteIT extends AbstractTestSuite {
 
     public ConcreteMonetDbSuiteIT() {
 
-        this.jdbcURL = "jdbc:monetdb://jsql-monetdb:50001/db";
+        this.jdbcURL = "jdbc:monetdb://jsql-monetdb:50001/db?debug=true";
         this.jdbcUser = "monetdb";
         this.jdbcPass = "monetdb";
 
