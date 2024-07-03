@@ -1,3 +1,3 @@
-FROM monetdb/monetdb-r-docker
+FROM topaztechnology/monetdb
 
 EXPOSE 50000
