@@ -6,7 +6,7 @@ public abstract class ConcreteMonetDbSuiteIT extends AbstractTestSuite {
 
     public ConcreteMonetDbSuiteIT() {
 
-        this.jdbcURL = "jdbc:monetdb://127.0.0.1:50001/db";
+        this.jdbcURL = "jdbc:monetdb://jsql-monetdb:50001/db";
         this.jdbcUser = "monetdb";
         this.jdbcPass = "monetdb";
 
@@ -15,8 +15,8 @@ public abstract class ConcreteMonetDbSuiteIT extends AbstractTestSuite {
         this.jsqlColumnName = "name";
         
         this.jdbcColumnForDatabaseName = "name";
-        this.jdbcColumnForTableName = "name";  // prevent tabulation
-        this.jdbcColumnForColumnName = "name";  // prevent tabulation
+        this.jdbcColumnForTableName = "name";
+        this.jdbcColumnForColumnName = "name";
         
         this.jdbcQueryForDatabaseNames = "select name from sys.schemas";
         this.jdbcQueryForTableNames = "select t.name from tables t inner join schemas s on t.schema_id = s.id where s.name = 'sys'";
