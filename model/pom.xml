@@ -66,7 +66,7 @@
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <maven-failsafe-plugin.version>3.3.0</maven-failsafe-plugin.version>
         <mimjdbc.version>3.42.3</mimjdbc.version>
-        <monetdb-jdbc.version>2.29</monetdb-jdbc.version>
+        <monetdb-jdbc.version>11.19.15</monetdb-jdbc.version>
         <mssql-jdbc.version>12.4.2.jre8</mssql-jdbc.version>
         <mysql-connector-j.version>8.4.0</mysql-connector-j.version>
         <nashorn-core.version>15.4</nashorn-core.version>
