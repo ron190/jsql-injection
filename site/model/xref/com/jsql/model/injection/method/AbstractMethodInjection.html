@@ -158,7 +158,7 @@
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>         <em class="jxr_comment">// When option 'Inject JSON' is selected and there's a JSON entity to inject</em>
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>         <em class="jxr_comment">// then loop through each paths to add * at the end of value and test each strategies.</em>
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>         <em class="jxr_comment">// Marks * are erased between each tests.</em>
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam() &amp;&amp; !attributesJson.isEmpty()) {
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">if</strong> (!attributesJson.isEmpty() &amp;&amp; <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam()) {
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>             hasFoundInjection = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getJsonUtil().testJsonParam(<strong class="jxr_keyword">this</strong>, paramStar);
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>             hasFoundInjection = <strong class="jxr_keyword">this</strong>.testJsonlessParam(paramStar);  <em class="jxr_comment">// Standard non JSON injection</em>

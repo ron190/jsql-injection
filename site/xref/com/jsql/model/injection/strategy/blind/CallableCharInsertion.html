@@ -73,17 +73,21 @@
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          String source = <strong class="jxr_keyword">this</strong>.injectionCharInsertion.callUrl(<strong class="jxr_keyword">this</strong>.booleanUrl, <strong class="jxr_keyword">this</strong>.metadataInjectionProcess, <strong class="jxr_keyword">this</strong>);
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>          <strong class="jxr_keyword">this</strong>.opcodes = <strong class="jxr_keyword">this</strong>.DIFF_MATCH_PATCH.diffMain(<strong class="jxr_keyword">this</strong>.injectionCharInsertion.getBlankFalseMark(), source, false);
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>          
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">this</strong>.DIFF_MATCH_PATCH.diffCleanupEfficiency(<strong class="jxr_keyword">this</strong>.opcodes);
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>          
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>      }
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>      
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">public</strong> List&lt;Diff&gt; getOpcodes() {
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.opcodes;
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>          <strong class="jxr_keyword">this</strong>.opcodes = CallableCharInsertion.DIFF_MATCH_PATCH.diffMain(
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>              <strong class="jxr_keyword">this</strong>.injectionCharInsertion.getBlankFalseMark(),
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>              source,
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>              false
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          );
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>  
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          CallableCharInsertion.DIFF_MATCH_PATCH.diffCleanupEfficiency(<strong class="jxr_keyword">this</strong>.opcodes);
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>          
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>;
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      }
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>  }
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>      
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>      <strong class="jxr_keyword">public</strong> List&lt;Diff&gt; getOpcodes() {
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.opcodes;
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>      }
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>
