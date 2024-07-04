@@ -38,26 +38,23 @@
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_comment">            Password1_One</em>
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_comment">         */</em>
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>          
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>          <em class="jxr_comment">// ORA-12519, TNS:no appropriate service handler found</em>
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>          <em class="jxr_comment">// select * from v$resource_limit where resource_name = 'processes';</em>
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>          
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">this</strong>.jdbcURL = <span class="jxr_string">"jdbc:oracle:thin:@localhost:11521:ORCLCDB"</span>;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>          <strong class="jxr_keyword">this</strong>.jdbcUser = <span class="jxr_string">"system"</span>;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          <strong class="jxr_keyword">this</strong>.jdbcPass = <span class="jxr_string">"Password1_One"</span>;
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>          <strong class="jxr_keyword">this</strong>.jsqlDatabaseName = <span class="jxr_string">"SYSTEM"</span>;
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>          <strong class="jxr_keyword">this</strong>.jsqlTableName = <span class="jxr_string">"STUDENT"</span>;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>          <strong class="jxr_keyword">this</strong>.jsqlColumnName = <span class="jxr_string">"STUDENT_ID"</span>;
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>          
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>          <strong class="jxr_keyword">this</strong>.jdbcColumnForDatabaseName = <span class="jxr_string">"owner"</span>;
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          <strong class="jxr_keyword">this</strong>.jdbcColumnForTableName = <span class="jxr_string">"table_name"</span>;
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>          <strong class="jxr_keyword">this</strong>.jdbcColumnForColumnName = <span class="jxr_string">"column_name"</span>;
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>          
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForDatabaseNames = <span class="jxr_string">"SELECT owner FROM all_tables"</span>;
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForTableNames = <span class="jxr_string">"SELECT table_name FROM all_tables where owner='SYSTEM'"</span>;
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForColumnNames = <span class="jxr_string">"SELECT column_name FROM all_tab_columns where owner='SYSTEM' and table_name='STUDENT'"</span>;
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForValues = <span class="jxr_string">"SELECT STUDENT_ID FROM SYSTEM.STUDENT"</span>;
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>      }
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  }
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>          <strong class="jxr_keyword">this</strong>.jdbcURL = <span class="jxr_string">"jdbc:oracle:thin:@localhost:11521:ORCLCDB"</span>;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>          <strong class="jxr_keyword">this</strong>.jdbcUser = <span class="jxr_string">"system"</span>;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>          <strong class="jxr_keyword">this</strong>.jdbcPass = <span class="jxr_string">"Password1_One"</span>;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">this</strong>.jsqlDatabaseName = <span class="jxr_string">"SYSTEM"</span>;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>          <strong class="jxr_keyword">this</strong>.jsqlTableName = <span class="jxr_string">"STUDENT"</span>;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          <strong class="jxr_keyword">this</strong>.jsqlColumnName = <span class="jxr_string">"STUDENT_ID"</span>;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>          
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>          <strong class="jxr_keyword">this</strong>.jdbcColumnForDatabaseName = <span class="jxr_string">"owner"</span>;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>          <strong class="jxr_keyword">this</strong>.jdbcColumnForTableName = <span class="jxr_string">"table_name"</span>;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>          <strong class="jxr_keyword">this</strong>.jdbcColumnForColumnName = <span class="jxr_string">"column_name"</span>;
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>          
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForDatabaseNames = <span class="jxr_string">"SELECT owner FROM all_tables"</span>;
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForTableNames = <span class="jxr_string">"SELECT table_name FROM all_tables where owner='SYSTEM'"</span>;
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForColumnNames = <span class="jxr_string">"SELECT column_name FROM all_tab_columns where owner='SYSTEM' and table_name='STUDENT'"</span>;
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>          <strong class="jxr_keyword">this</strong>.jdbcQueryForValues = <span class="jxr_string">"SELECT STUDENT_ID FROM SYSTEM.STUDENT"</span>;
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      }
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>

@@ -65,15 +65,19 @@ public class CallableCharInsertion extends AbstractCallableBoolean&lt;CallableCh
         
 <span class="fc" id="L66">        String source = this.injectionCharInsertion.callUrl(this.booleanUrl, this.metadataInjectionProcess, this);</span>
         
-<span class="fc" id="L68">        this.opcodes = this.DIFF_MATCH_PATCH.diffMain(this.injectionCharInsertion.getBlankFalseMark(), source, false);</span>
+<span class="fc" id="L68">        this.opcodes = CallableCharInsertion.DIFF_MATCH_PATCH.diffMain(</span>
+<span class="fc" id="L69">            this.injectionCharInsertion.getBlankFalseMark(),</span>
+            source,
+            false
+        );
+
+<span class="fc" id="L74">        CallableCharInsertion.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.opcodes);</span>
         
-<span class="fc" id="L70">        this.DIFF_MATCH_PATCH.diffCleanupEfficiency(this.opcodes);</span>
-        
-<span class="fc" id="L72">        return this;</span>
+<span class="fc" id="L76">        return this;</span>
     }
     
     public List&lt;Diff&gt; getOpcodes() {
-<span class="fc" id="L76">        return this.opcodes;</span>
+<span class="fc" id="L80">        return this.opcodes;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

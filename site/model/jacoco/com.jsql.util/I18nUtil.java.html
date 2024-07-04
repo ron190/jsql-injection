@@ -3,7 +3,6 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -17,17 +16,17 @@ import java.util.ResourceBundle;
  */
 public class I18nUtil {
     
-<span class="fc" id="L20">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
+<span class="fc" id="L19">    private static final Logger LOGGER = LogManager.getRootLogger();</span>
     
     /**
      * Bundle of standard i18n keys and translated text for root language English
      */
-<span class="fc" id="L25">    private static final ResourceBundle LOCALE_ROOT = ResourceBundle.getBundle(&quot;i18n.jsql&quot;, Locale.ROOT);</span>
+<span class="fc" id="L24">    private static final ResourceBundle LOCALE_ROOT = ResourceBundle.getBundle(&quot;i18n.jsql&quot;, Locale.ROOT);</span>
     
     /**
      * Bundle of i18n keys and translated text for the current system language
      */
-<span class="fc" id="L30">    private static ResourceBundle localeDefault = ResourceBundle.getBundle(&quot;i18n.jsql&quot;, Locale.getDefault());</span>
+<span class="fc" id="L29">    private static ResourceBundle localeDefault = ResourceBundle.getBundle(&quot;i18n.jsql&quot;, Locale.getDefault());</span>
 
     private I18nUtil() {
         // Utility class
@@ -39,7 +38,7 @@ public class I18nUtil {
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
-<span class="fc" id="L42">        return (String) I18nUtil.localeDefault.getObject(key);</span>
+<span class="fc" id="L41">        return (String) I18nUtil.localeDefault.getObject(key);</span>
     }
     
     /**
@@ -48,15 +47,15 @@ public class I18nUtil {
      */
     public static void checkCurrentLanguage() {
         
-<span class="nc" id="L51">        URL path = I18nUtil.class.getClassLoader().getResource(&quot;i18n/jsql_&quot;+ Locale.getDefault().getLanguage() +&quot;.properties&quot;);</span>
+<span class="nc" id="L50">        URL path = I18nUtil.class.getClassLoader().getResource(&quot;i18n/jsql_&quot;+ Locale.getDefault().getLanguage() +&quot;.properties&quot;);</span>
         
-<span class="nc bnc" id="L53" title="All 4 branches missed.">        if (!&quot;en&quot;.equals(Locale.getDefault().getLanguage()) &amp;&amp; path == null) {</span>
+<span class="nc bnc" id="L52" title="All 4 branches missed.">        if (!&quot;en&quot;.equals(Locale.getDefault().getLanguage()) &amp;&amp; path == null) {</span>
             
-<span class="nc" id="L55">            String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);</span>
+<span class="nc" id="L54">            String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);</span>
             
-<span class="nc" id="L57">            LOGGER.log(</span>
+<span class="nc" id="L56">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_SUCCESS,
-<span class="nc" id="L59">                () -&gt; String.join(</span>
+<span class="nc" id="L58">                () -&gt; String.join(</span>
                     &quot;&quot;,
                     &quot;Please contribute and translate parts of jSQL Injection into &quot;,
                     languageHost,
@@ -68,27 +67,27 @@ public class I18nUtil {
                 )
             );
         }
-<span class="nc" id="L71">    }</span>
+<span class="nc" id="L70">    }</span>
     
     public static boolean isAsian(Locale newLocale) {
-<span class="fc bfc" id="L74" title="All 2 branches covered.">        return Locale.forLanguageTag(&quot;zh&quot;).getLanguage().equals(newLocale.getLanguage())</span>
-<span class="fc bfc" id="L75" title="All 2 branches covered.">            || Locale.forLanguageTag(&quot;ko&quot;).getLanguage().equals(newLocale.getLanguage())</span>
-<span class="fc bfc" id="L76" title="All 2 branches covered.">            || Locale.forLanguageTag(&quot;ja&quot;).getLanguage().equals(newLocale.getLanguage());</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        return Locale.forLanguageTag(&quot;zh&quot;).getLanguage().equals(newLocale.getLanguage())</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">            || Locale.forLanguageTag(&quot;ko&quot;).getLanguage().equals(newLocale.getLanguage())</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">            || Locale.forLanguageTag(&quot;ja&quot;).getLanguage().equals(newLocale.getLanguage());</span>
     }
     
     
     // Getters and setters
     
     public static void setLocaleDefault(ResourceBundle localeDefault) {
-<span class="nc" id="L83">        I18nUtil.localeDefault = localeDefault;</span>
-<span class="nc" id="L84">    }</span>
+<span class="nc" id="L82">        I18nUtil.localeDefault = localeDefault;</span>
+<span class="nc" id="L83">    }</span>
     
     public static Locale getLocaleDefault() {
-<span class="nc" id="L87">        return I18nUtil.localeDefault.getLocale();</span>
+<span class="nc" id="L86">        return I18nUtil.localeDefault.getLocale();</span>
     }
 
     public static ResourceBundle getLocaleRoot() {
-<span class="nc" id="L91">        return LOCALE_ROOT;</span>
+<span class="nc" id="L90">        return LOCALE_ROOT;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
