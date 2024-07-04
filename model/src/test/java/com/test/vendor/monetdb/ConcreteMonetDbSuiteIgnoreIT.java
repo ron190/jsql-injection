@@ -2,11 +2,11 @@ package com.test.vendor.monetdb;
 
 import com.test.AbstractTestSuite;
 
-public abstract class ConcreteMonetDbSuiteIT extends AbstractTestSuite {
+public abstract class ConcreteMonetDbSuiteIgnoreIT extends AbstractTestSuite {
 
-    public ConcreteMonetDbSuiteIT() {
+    public ConcreteMonetDbSuiteIgnoreIT() {
 
-        this.jdbcURL = "jdbc:monetdb://jsql-monetdb:50001/db?debug=true";
+        this.jdbcURL = "jdbc:monetdb://jsql-monetdb:50001/db";
         this.jdbcUser = "monetdb";
         this.jdbcPass = "monetdb";
 

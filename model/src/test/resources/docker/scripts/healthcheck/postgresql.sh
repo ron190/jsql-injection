@@ -16,4 +16,3 @@ until docker exec -i jsql-postgresql psql -h "127.0.0.1" -U "postgres" -c "selec
 done
   
 >&2 echo "PostgreSQL is up - executing command"
- 
