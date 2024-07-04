@@ -150,7 +150,7 @@ public abstract class AbstractMethodInjection implements Serializable {
         // When option 'Inject JSON' is selected and there's a JSON entity to inject
         // then loop through each paths to add * at the end of value and test each strategies.
         // Marks * are erased between each tests.
-<span class="fc bfc" id="L153" title="All 4 branches covered.">        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam() &amp;&amp; !attributesJson.isEmpty()) {</span>
+<span class="pc bpc" id="L153" title="1 of 4 branches missed.">        if (!attributesJson.isEmpty() &amp;&amp; this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllJsonParam()) {</span>
 <span class="fc" id="L154">            hasFoundInjection = this.injectionModel.getMediatorUtils().getJsonUtil().testJsonParam(this, paramStar);</span>
         } else {
 <span class="fc" id="L156">            hasFoundInjection = this.testJsonlessParam(paramStar);  // Standard non JSON injection</span>

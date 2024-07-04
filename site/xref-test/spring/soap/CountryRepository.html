@@ -35,7 +35,7 @@
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>      @Autowired
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">private</strong> SessionFactory sessionFactory;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String template = <span class="jxr_string">"Hello, s!"</span>;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String TEMPLATE = <span class="jxr_string">"Hello, s!"</span>;
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> ObjectMapper objectMapper = <strong class="jxr_keyword">new</strong> ObjectMapper();
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      @Transactional
@@ -58,7 +58,7 @@
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>              <em class="jxr_comment">// TODO Encode XML invalid chars</em>
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>              country.setName(URLEncoder.encode(
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>                  template + StringEscapeUtils.unescapeJava(<strong class="jxr_keyword">this</strong>.objectMapper.writeValueAsString(results)),
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>                  TEMPLATE + StringEscapeUtils.unescapeJava(<strong class="jxr_keyword">this</strong>.objectMapper.writeValueAsString(results)),
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>                  StandardCharsets.UTF_8
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>              ));
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          } <strong class="jxr_keyword">catch</strong> (Exception e) {
@@ -79,7 +79,7 @@
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>          
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>          LOGGER.debug(stacktrace);
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(template + <span class="jxr_string">"#"</span> + StringEscapeUtils.unescapeJava(stacktrace));
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(TEMPLATE + <span class="jxr_string">"#"</span> + StringEscapeUtils.unescapeJava(stacktrace));
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>      }
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  }
 </pre>

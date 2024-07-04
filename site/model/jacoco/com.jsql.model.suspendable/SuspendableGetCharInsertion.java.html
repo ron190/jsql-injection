@@ -120,10 +120,10 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
     private void setVendor(MediatorVendor mediatorVendor, List&lt;Vendor&gt; vendorsOrderByMatch) {
 <span class="fc" id="L121">        if (</span>
 <span class="fc bfc" id="L122" title="All 2 branches covered.">            vendorsOrderByMatch.size() == 1</span>
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">            &amp;&amp; vendorsOrderByMatch.get(0) != mediatorVendor.getVendor()</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">            &amp;&amp; vendorsOrderByMatch.get(0) != mediatorVendor.getVendor()</span>
         ) {
 <span class="fc" id="L125">            mediatorVendor.setVendor(vendorsOrderByMatch.get(0));</span>
-<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        } else if (vendorsOrderByMatch.size() &gt; 1) {</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        } else if (vendorsOrderByMatch.size() &gt; 1) {</span>
 <span class="fc bfc" id="L127" title="All 2 branches covered.">            if (vendorsOrderByMatch.contains(mediatorVendor.getPostgreSQL())) {</span>
 <span class="fc" id="L128">                mediatorVendor.setVendor(mediatorVendor.getPostgreSQL());</span>
 <span class="pc bpc" id="L129" title="1 of 2 branches missed.">            } else if (vendorsOrderByMatch.contains(mediatorVendor.getMySQL())) {</span>
