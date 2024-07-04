@@ -6,7 +6,7 @@
             </Pattern>
         </encoder>
     </appender>
-    <root level="DEBUG" additivity="false">
+    <root level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
     </root>
     <!-- Disable massive SQL error logging during injection -->
