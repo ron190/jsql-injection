@@ -84,7 +84,7 @@
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>                  String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, <span class="jxr_string">"&#92;&#92;d+"</span>);
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>                  <strong class="jxr_keyword">if</strong> (Pattern.compile(<span class="jxr_string">"(?s).*"</span>+ regexAllIndexes +<span class="jxr_string">".*"</span>).matcher(currentCallable.getContent()).matches()) {
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>                      
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>                      <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().getNormal().setSourceIndexesFound(currentCallable.getContent());
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>                      <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorStrategy().getSpecificNormal().setSourceIndexesFound(currentCallable.getContent());
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>                      initialQuery = currentCallable.getQuery().replace(<span class="jxr_string">"0%2b1"</span>, <span class="jxr_string">"1"</span>);
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>                      
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>                      <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {

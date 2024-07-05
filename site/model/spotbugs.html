@@ -85,7 +85,7 @@
 <th>Missing Classes</th></tr>
 <tr class="b">
 <td>181</td>
-<td>146</td>
+<td>147</td>
 <td>0</td>
 <td>0</td></tr></table></section><section>
 <h1>Files</h1>
@@ -128,7 +128,7 @@
 <td>1</td></tr>
 <tr class="a">
 <td><a href="#com.jsql.model.injection.strategy.MediatorStrategy">com.jsql.model.injection.strategy.MediatorStrategy</a></td>
-<td>10</td></tr>
+<td>11</td></tr>
 <tr class="b">
 <td><a href="#com.jsql.model.injection.strategy.blind.CallableBlind">com.jsql.model.injection.strategy.blind.CallableBlind</a></td>
 <td>2</td></tr>
@@ -628,19 +628,19 @@
 <td>com.jsql.model.injection.strategy.MediatorStrategy.getBlind() may expose internal representation by returning MediatorStrategy.blind</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L237">237</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L241">241</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>com.jsql.model.injection.strategy.MediatorStrategy.getError() may expose internal representation by returning MediatorStrategy.error</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L233">233</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L237">237</a></td>
 <td>Medium</td></tr>
 <tr class="b">
 <td>com.jsql.model.injection.strategy.MediatorStrategy.getMultibit() may expose internal representation by returning MediatorStrategy.multibit</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L241">241</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L245">245</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>com.jsql.model.injection.strategy.MediatorStrategy.getNormal() may expose internal representation by returning MediatorStrategy.normal</td>
@@ -649,40 +649,46 @@
 <td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L229">229</a></td>
 <td>Medium</td></tr>
 <tr class="b">
-<td>com.jsql.model.injection.strategy.MediatorStrategy.getStacked() may expose internal representation by returning MediatorStrategy.stacked</td>
+<td>com.jsql.model.injection.strategy.MediatorStrategy.getSpecificNormal() may expose internal representation by returning MediatorStrategy.normal</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L249">249</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L233">233</a></td>
 <td>Medium</td></tr>
 <tr class="a">
-<td>com.jsql.model.injection.strategy.MediatorStrategy.getStrategies() may expose internal representation by returning MediatorStrategy.strategies</td>
+<td>com.jsql.model.injection.strategy.MediatorStrategy.getStacked() may expose internal representation by returning MediatorStrategy.stacked</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
 <td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L253">253</a></td>
 <td>Medium</td></tr>
 <tr class="b">
-<td>com.jsql.model.injection.strategy.MediatorStrategy.getStrategy() may expose internal representation by returning MediatorStrategy.strategy</td>
+<td>com.jsql.model.injection.strategy.MediatorStrategy.getStrategies() may expose internal representation by returning MediatorStrategy.strategies</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
 <td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L257">257</a></td>
 <td>Medium</td></tr>
 <tr class="a">
+<td>com.jsql.model.injection.strategy.MediatorStrategy.getStrategy() may expose internal representation by returning MediatorStrategy.strategy</td>
+<td>MALICIOUS_CODE</td>
+<td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L261">261</a></td>
+<td>Medium</td></tr>
+<tr class="b">
 <td>com.jsql.model.injection.strategy.MediatorStrategy.getTime() may expose internal representation by returning MediatorStrategy.time</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L245">245</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L249">249</a></td>
 <td>Medium</td></tr>
-<tr class="b">
+<tr class="a">
 <td>new com.jsql.model.injection.strategy.MediatorStrategy(InjectionModel) may expose internal representation by storing an externally mutable object into MediatorStrategy.injectionModel</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
 <td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L43">43</a></td>
 <td>Medium</td></tr>
-<tr class="a">
+<tr class="b">
 <td>com.jsql.model.injection.strategy.MediatorStrategy.setStrategy(AbstractStrategy) may expose internal representation by storing an externally mutable object into MediatorStrategy.strategy</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L261">261</a></td>
+<td><a href="./xref/com/jsql/model/injection/strategy/MediatorStrategy.html#L265">265</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.injection.strategy.blind.CallableBlind"></a><section>
 <h2>com.jsql.model.injection.strategy.blind.CallableBlind</h2>
 <table class="table table-striped">
@@ -852,13 +858,13 @@
 <td>com.jsql.model.injection.vendor.MediatorVendor.getVendors() may expose internal representation by returning MediatorVendor.vendors</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP">EI_EXPOSE_REP</a></td>
-<td><a href="./xref/com/jsql/model/injection/vendor/MediatorVendor.html#L345">345</a></td>
+<td><a href="./xref/com/jsql/model/injection/vendor/MediatorVendor.html#L346">346</a></td>
 <td>Medium</td></tr>
 <tr class="a">
 <td>new com.jsql.model.injection.vendor.MediatorVendor(InjectionModel) may expose internal representation by storing an externally mutable object into MediatorVendor.injectionModel</td>
 <td>MALICIOUS_CODE</td>
 <td><a class="externalLink" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#EI_EXPOSE_REP2">EI_EXPOSE_REP2</a></td>
-<td><a href="./xref/com/jsql/model/injection/vendor/MediatorVendor.html#L70">70</a></td>
+<td><a href="./xref/com/jsql/model/injection/vendor/MediatorVendor.html#L71">71</a></td>
 <td>Medium</td></tr></table></section><a name="com.jsql.model.injection.vendor.model.VendorYaml"></a><section>
 <h2>com.jsql.model.injection.vendor.model.VendorYaml</h2>
 <table class="table table-striped">

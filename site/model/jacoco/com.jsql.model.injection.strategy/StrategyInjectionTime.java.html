@@ -85,7 +85,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
             LogLevelUtil.CONSOLE_DEFAULT,
             &quot;{} [{}] with [{}]...&quot;,
 <span class="fc" id="L87">            () -&gt; I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY),</span>
-<span class="fc" id="L88">            () -&gt; getName(),</span>
+            this::getName,
 <span class="fc" id="L89">            () -&gt; booleanMode</span>
         );
 <span class="fc" id="L91">        this.injectionTime = new InjectionTime(this.injectionModel, booleanMode);</span>
@@ -96,7 +96,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
                 LogLevelUtil.CONSOLE_SUCCESS,
                 &quot;{} [{}] injection with [{}]&quot;,
 <span class="fc" id="L98">                () -&gt; I18nUtil.valueByKey(KEY_LOG_VULNERABLE),</span>
-<span class="fc" id="L99">                () -&gt; getName(),</span>
+                this::getName,
 <span class="fc" id="L100">                () -&gt; booleanMode</span>
             );
         }
