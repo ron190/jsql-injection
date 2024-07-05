@@ -83,7 +83,7 @@ view,com.jsql.view.swing.panel.split,ActionHideShowConsole,0,67,2,8,0,22,2,5,0,2
 view,com.jsql.view.swing.panel.split,SplitHorizontalTopBottom,5,206,0,0,2,50,2,6,2,6
 view,com.jsql.view.swing.panel.split,ActionHideShowResult,22,30,6,2,7,10,4,2,0,2
 view,com.jsql.view.swing.panel.address,ActionStart,46,83,5,3,13,23,5,4,1,4
-view,com.jsql.view.swing.panel.address,AddressMenuBar,227,514,28,20,49,108,25,19,8,12
+view,com.jsql.view.swing.panel.address,AddressMenuBar,227,516,28,20,49,108,25,19,8,12
 view,com.jsql.view.swing.panel.address,RequestPanel,33,202,2,4,10,34,4,5,3,3
 view,com.jsql.view.swing.panel.address,AddressMenuBar.new JRadioButtonMenuItem() {...},24,13,0,0,6,1,1,1,1,1
 view,com.jsql.view.swing.panel.address,ActionEnterAddressBar,10,4,2,0,3,2,2,1,1,1

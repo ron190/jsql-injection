@@ -829,7 +829,7 @@ public class ResourceAccess {
     public List&lt;String&gt; readFile(List&lt;String&gt; pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
 
 <span class="fc" id="L831">        if (</span>
-<span class="fc bfc" id="L832" title="All 2 branches covered.">            this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getMySQL()</span>
+<span class="fc bfc" id="L832" title="All 2 branches covered.">            this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getMysql()</span>
 <span class="pc bpc" id="L833" title="1 of 2 branches missed.">            &amp;&amp; this.isReadingNotAllowed()</span>
         ) {
 <span class="nc" id="L835">            return Collections.emptyList();</span>

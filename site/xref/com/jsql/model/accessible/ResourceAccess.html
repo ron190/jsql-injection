@@ -837,7 +837,7 @@
 <a class="jxr_linenumber" name="L829" href="#L829">829</a>     <strong class="jxr_keyword">public</strong> List&lt;String&gt; readFile(List&lt;String&gt; pathsFiles) <strong class="jxr_keyword">throws</strong> JSqlException, InterruptedException, ExecutionException {
 <a class="jxr_linenumber" name="L830" href="#L830">830</a> 
 <a class="jxr_linenumber" name="L831" href="#L831">831</a>         <strong class="jxr_keyword">if</strong> (
-<a class="jxr_linenumber" name="L832" href="#L832">832</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor() == <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getMySQL()
+<a class="jxr_linenumber" name="L832" href="#L832">832</a>             <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor() == <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getMysql()
 <a class="jxr_linenumber" name="L833" href="#L833">833</a>             &amp;&amp; <strong class="jxr_keyword">this</strong>.isReadingNotAllowed()
 <a class="jxr_linenumber" name="L834" href="#L834">834</a>         ) {
 <a class="jxr_linenumber" name="L835" href="#L835">835</a>             <strong class="jxr_keyword">return</strong> Collections.emptyList();

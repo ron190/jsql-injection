@@ -19,8 +19,9 @@ public abstract class AbstractStrategy {
 
     protected static final String KEY_LOG_CHECKING_STRATEGY = &quot;LOG_CHECKING_STRATEGY&quot;;
     protected static final String KEY_LOG_VULNERABLE = &quot;LOG_VULNERABLE&quot;;
-    protected static final String FORMAT_STRATEGY_NOT_IMPLEMENTED = &quot;Strategy [{}] for [{}] missing, please share your implementation on GitHub page&quot;;
-    protected static final String FORMAT_SKIP_STRATEGY_DISABLED = &quot;Skipping strategy {} disabled&quot;;
+    protected static final String FORMAT_STRATEGY_NOT_IMPLEMENTED = &quot;Strategy [{}] for [{}] missing, please share your implementation&quot;;
+    protected static final String FORMAT_SKIP_STRATEGY_DISABLED = &quot;Skipping strategy [{}] disabled&quot;;
+    protected static final String FORMAT_CHECKING_STRATEGY = &quot;{} [{}]...&quot;;
 
     /**
      * i.e, 2 in &quot;[..]union select 1,2,[..]&quot;, if 2 is found in HTML body.
@@ -31,18 +32,18 @@ public abstract class AbstractStrategy {
      * HTML body of page successfully responding to
      * multiple fields selection (select 1,2,3,..).
      */
-<span class="fc" id="L34">    protected String sourceIndexesFound = StringUtils.EMPTY;</span>
+<span class="fc" id="L35">    protected String sourceIndexesFound = StringUtils.EMPTY;</span>
     
     /**
      * True if injection can be used, false otherwise.
      */
-<span class="fc" id="L39">    protected boolean isApplicable = false;</span>
+<span class="fc" id="L40">    protected boolean isApplicable = false;</span>
 
     protected final InjectionModel injectionModel;
     
-<span class="fc" id="L43">    protected AbstractStrategy(InjectionModel injectionModel) {</span>
-<span class="fc" id="L44">        this.injectionModel = injectionModel;</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L44">    protected AbstractStrategy(InjectionModel injectionModel) {</span>
+<span class="fc" id="L45">        this.injectionModel = injectionModel;</span>
+<span class="fc" id="L46">    }</span>
 
     /**
      * Test if this strategy can be used to inject SQL.
@@ -83,49 +84,49 @@ public abstract class AbstractStrategy {
     
     public void markVulnerability(Interaction message, int... indexErrorStrategy) {
         
-<span class="fc" id="L86">        var request = new Request();</span>
-<span class="fc" id="L87">        request.setMessage(message);</span>
+<span class="fc" id="L87">        var request = new Request();</span>
+<span class="fc" id="L88">        request.setMessage(message);</span>
         
-<span class="fc" id="L89">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
-<span class="fc" id="L90">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
+<span class="fc" id="L90">        Map&lt;Header, Object&gt; msgHeader = new EnumMap&lt;&gt;(Header.class);</span>
+<span class="fc" id="L91">        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());</span>
         
         // Ellipse default to non null array
-<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (indexErrorStrategy.length &gt; 0) {</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        if (indexErrorStrategy.length &gt; 0) {</span>
             
-<span class="fc" id="L95">            msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);</span>
-<span class="fc" id="L96">            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);</span>
+<span class="fc" id="L96">            msgHeader.put(Header.INDEX_ERROR_STRATEGY, indexErrorStrategy[0]);</span>
+<span class="fc" id="L97">            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);</span>
         }
 
-<span class="fc" id="L99">        request.setParameters(msgHeader);</span>
-<span class="fc" id="L100">        this.injectionModel.sendToViews(request);</span>
-<span class="fc" id="L101">    }</span>
+<span class="fc" id="L100">        request.setParameters(msgHeader);</span>
+<span class="fc" id="L101">        this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L102">    }</span>
     
     @Override
     public String toString() {
-<span class="fc" id="L105">        return this.getName();</span>
+<span class="fc" id="L106">        return this.getName();</span>
     }
 
 
     // Getter and setter
     
     public boolean isApplicable() {
-<span class="fc" id="L112">        return this.isApplicable;</span>
+<span class="fc" id="L113">        return this.isApplicable;</span>
     }
     
     public void setApplicable(boolean isApplicable) {
-<span class="fc" id="L116">        this.isApplicable = isApplicable;</span>
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L117">        this.isApplicable = isApplicable;</span>
+<span class="fc" id="L118">    }</span>
     
     public String getVisibleIndex() {
-<span class="fc" id="L120">        return this.visibleIndex;</span>
+<span class="fc" id="L121">        return this.visibleIndex;</span>
     }
 
     public void setVisibleIndex(String visibleIndex) {
-<span class="fc" id="L124">        this.visibleIndex = visibleIndex;</span>
-<span class="fc" id="L125">    }</span>
+<span class="fc" id="L125">        this.visibleIndex = visibleIndex;</span>
+<span class="fc" id="L126">    }</span>
 
     public void setSourceIndexesFound(String sourceIndexesFound) {
-<span class="fc" id="L128">        this.sourceIndexesFound = sourceIndexesFound;</span>
-<span class="fc" id="L129">    }</span>
+<span class="fc" id="L129">        this.sourceIndexesFound = sourceIndexesFound;</span>
+<span class="fc" id="L130">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

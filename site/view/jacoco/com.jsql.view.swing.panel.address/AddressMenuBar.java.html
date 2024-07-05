@@ -140,7 +140,7 @@ public class AddressMenuBar extends JMenuBar {
 
 <span class="fc" id="L141">        this.menuVendor = new ComboMenu(MediatorHelper.model().getMediatorVendor().getAuto().toString());</span>
 <span class="fc" id="L142">        this.menuVendor.setName(&quot;menuVendor&quot;);</span>
-<span class="fc" id="L143">        this.menuVendor.getPopupMenu().setLayout(new GridLayout(MediatorHelper.model().getMediatorVendor().getVendors().size() / 2, 2));</span>
+<span class="fc" id="L143">        this.menuVendor.getPopupMenu().setLayout(new GridLayout((MediatorHelper.model().getMediatorVendor().getVendors().size() + 1) / 2, 2));</span>
 
 <span class="fc" id="L145">        var groupVendor = new ButtonGroup();</span>
 

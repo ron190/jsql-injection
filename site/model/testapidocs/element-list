@@ -10,6 +10,7 @@ com.test.vendor.derby
 com.test.vendor.firebird
 com.test.vendor.h2
 com.test.vendor.hsqldb
+com.test.vendor.mckoi
 com.test.vendor.mimer
 com.test.vendor.monetdb
 com.test.vendor.mysql
