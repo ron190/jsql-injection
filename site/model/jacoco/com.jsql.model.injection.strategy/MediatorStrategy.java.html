@@ -88,7 +88,7 @@ public class MediatorStrategy {
                     InjectionModel.STAR,
 <span class="fc" id="L89">                    this.encodePath(</span>
 <span class="fc" id="L90">                        this.injectionModel.getIndexesInUrl().replaceAll(</span>
-<span class="fc" id="L91">                            String.format(VendorYaml.FORMAT_INDEX, this.normal.getVisibleIndex()),</span>
+<span class="fc" id="L91">                            String.format(VendorYaml.FORMAT_INDEX, this.getSpecificNormal().getVisibleIndex()),</span>
 <span class="fc" id="L92">                            Matcher.quoteReplacement(sqlTrail)  // Oracle column can contain regex char $ =&gt; quoteReplacement()</span>
                         )
                     )
@@ -229,36 +229,40 @@ public class MediatorStrategy {
 <span class="fc" id="L229">        return this.normal;</span>
     }
 
+    public StrategyInjectionNormal getSpecificNormal() {
+<span class="fc" id="L233">        return (StrategyInjectionNormal) this.normal;</span>
+    }
+
     public StrategyInjectionError getError() {
-<span class="fc" id="L233">        return this.error;</span>
+<span class="fc" id="L237">        return this.error;</span>
     }
 
     public AbstractStrategy getBlind() {
-<span class="fc" id="L237">        return this.blind;</span>
+<span class="fc" id="L241">        return this.blind;</span>
     }
 
     public AbstractStrategy getMultibit() {
-<span class="fc" id="L241">        return this.multibit;</span>
+<span class="fc" id="L245">        return this.multibit;</span>
     }
 
     public AbstractStrategy getTime() {
-<span class="fc" id="L245">        return this.time;</span>
+<span class="fc" id="L249">        return this.time;</span>
     }
 
     public AbstractStrategy getStacked() {
-<span class="fc" id="L249">        return this.stacked;</span>
+<span class="fc" id="L253">        return this.stacked;</span>
     }
 
     public List&lt;AbstractStrategy&gt; getStrategies() {
-<span class="nc" id="L253">        return this.strategies;</span>
+<span class="nc" id="L257">        return this.strategies;</span>
     }
 
     public AbstractStrategy getStrategy() {
-<span class="fc" id="L257">        return this.strategy;</span>
+<span class="fc" id="L261">        return this.strategy;</span>
     }
 
     public void setStrategy(AbstractStrategy strategy) {
-<span class="fc" id="L261">        this.strategy = strategy;</span>
-<span class="fc" id="L262">    }</span>
+<span class="fc" id="L265">        this.strategy = strategy;</span>
+<span class="fc" id="L266">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

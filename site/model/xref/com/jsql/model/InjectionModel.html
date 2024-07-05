@@ -129,7 +129,7 @@
 <a class="jxr_linenumber" name="L121" href="#L121">121</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> resetModel() {
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>         
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>         <strong class="jxr_keyword">this</strong>.mediatorStrategy.getNormal().setVisibleIndex(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         <strong class="jxr_keyword">this</strong>.mediatorStrategy.getSpecificNormal().setVisibleIndex(<strong class="jxr_keyword">null</strong>);
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>         
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>         <strong class="jxr_keyword">this</strong>.mediatorStrategy.getNormal().setApplicable(false);
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>         <strong class="jxr_keyword">this</strong>.mediatorStrategy.getError().setApplicable(false);
@@ -603,7 +603,7 @@
 <a class="jxr_linenumber" name="L595" href="#L595">595</a>             <em class="jxr_comment">// Concat indexes found for Normal strategy to params</em>
 <a class="jxr_linenumber" name="L596" href="#L596">596</a>             <em class="jxr_comment">// and use visible Index for injection</em>
 <a class="jxr_linenumber" name="L597" href="#L597">597</a>             query = paramLead + <strong class="jxr_keyword">this</strong>.indexesInUrl.replaceAll(
-<a class="jxr_linenumber" name="L598" href="#L598">598</a>                 String.format(VendorYaml.FORMAT_INDEX, <strong class="jxr_keyword">this</strong>.mediatorStrategy.getNormal().getVisibleIndex()),
+<a class="jxr_linenumber" name="L598" href="#L598">598</a>                 String.format(VendorYaml.FORMAT_INDEX, <strong class="jxr_keyword">this</strong>.mediatorStrategy.getSpecificNormal().getVisibleIndex()),
 <a class="jxr_linenumber" name="L599" href="#L599">599</a>                 <em class="jxr_comment">// Oracle column often contains $, which is reserved for regex.</em>
 <a class="jxr_linenumber" name="L600" href="#L600">600</a>                 <em class="jxr_comment">// =&gt; need to be escape with quoteReplacement()</em>
 <a class="jxr_linenumber" name="L601" href="#L601">601</a>                 Matcher.quoteReplacement(sqlTrail)
@@ -635,7 +635,7 @@
 <a class="jxr_linenumber" name="L627" href="#L627">627</a>             query = paramLead.replace(
 <a class="jxr_linenumber" name="L628" href="#L628">628</a>                 InjectionModel.STAR,
 <a class="jxr_linenumber" name="L629" href="#L629">629</a>                 <strong class="jxr_keyword">this</strong>.indexesInUrl.replace(
-<a class="jxr_linenumber" name="L630" href="#L630">630</a>                     String.format(VendorYaml.FORMAT_INDEX, <strong class="jxr_keyword">this</strong>.mediatorStrategy.getNormal().getVisibleIndex()),
+<a class="jxr_linenumber" name="L630" href="#L630">630</a>                     String.format(VendorYaml.FORMAT_INDEX, <strong class="jxr_keyword">this</strong>.mediatorStrategy.getSpecificNormal().getVisibleIndex()),
 <a class="jxr_linenumber" name="L631" href="#L631">631</a>                     sqlTrail
 <a class="jxr_linenumber" name="L632" href="#L632">632</a>                 )
 <a class="jxr_linenumber" name="L633" href="#L633">633</a>                 + <strong class="jxr_keyword">this</strong>.mediatorVendor.getVendor().instance().endingComment()

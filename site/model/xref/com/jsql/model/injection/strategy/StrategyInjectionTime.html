@@ -93,7 +93,7 @@
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>              LogLevelUtil.CONSOLE_DEFAULT,
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>              <span class="jxr_string">"{} [{}] with [{}]..."</span>,
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>              () -&gt; I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY),
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>              () -&gt; getName(),
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>              <strong class="jxr_keyword">this</strong>::getName,
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>              () -&gt; booleanMode
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>          );
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>          <strong class="jxr_keyword">this</strong>.injectionTime = <strong class="jxr_keyword">new</strong> <a name="InjectionTime" href="../../../../../com/jsql/model/injection/strategy/blind/InjectionTime.html#InjectionTime">InjectionTime</a>(<strong class="jxr_keyword">this</strong>.injectionModel, booleanMode);
@@ -104,7 +104,7 @@
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>                  LogLevelUtil.CONSOLE_SUCCESS,
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>                  <span class="jxr_string">"{} [{}] injection with [{}]"</span>,
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>                  () -&gt; I18nUtil.valueByKey(KEY_LOG_VULNERABLE),
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>                  () -&gt; getName(),
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>                  <strong class="jxr_keyword">this</strong>::getName,
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>                 () -&gt; booleanMode
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>             );
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>         }
