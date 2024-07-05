@@ -83,8 +83,9 @@ public class StrategyInjectionTime extends AbstractStrategy {
 
         LOGGER.log(
             LogLevelUtil.CONSOLE_DEFAULT,
-            "{} Time with {}...",
+            "{} [{}] with [{}]...",
             () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY),
+            () -> getName(),
             () -> booleanMode
         );
         this.injectionTime = new InjectionTime(this.injectionModel, booleanMode);
@@ -93,8 +94,9 @@ public class StrategyInjectionTime extends AbstractStrategy {
         if (this.isApplicable) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
-                "{} Time injection with {}",
+                "{} [{}] injection with [{}]",
                 () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE),
+                () -> getName(),
                 () -> booleanMode
             );
         }

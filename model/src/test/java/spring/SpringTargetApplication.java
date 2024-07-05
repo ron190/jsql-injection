@@ -1,6 +1,11 @@
 package spring;
 
 import com.jsql.util.LogLevelUtil;
+import com.mckoi.database.control.DBController;
+import com.mckoi.database.control.DBSystem;
+import com.mckoi.database.control.DefaultDBConfig;
+import com.mckoi.database.control.TCPJDBCServer;
+import com.mckoi.debug.Lvl;
 import jakarta.annotation.PreDestroy;
 import org.apache.derby.drda.NetworkServerControl;
 import org.apache.logging.log4j.LogManager;
@@ -22,9 +27,13 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.core.io.ClassPathResource;
 import spring.rest.Student;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -35,12 +44,23 @@ import java.util.stream.Stream;
 @SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class)
 @EntityScan({"spring.rest"})
 public class SpringTargetApplication {
-    
+
+    static {
+        try {  // ensure driver is loaded
+            Class.forName("com.mimer.jdbc.Driver");
+            Class.forName("nl.cwi.monetdb.jdbc.MonetDriver");
+            Class.forName("com.mckoi.JDBCDriver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final Logger LOGGER = LogManager.getRootLogger();
     
     private static NetworkServerControl serverDerby;
     private static org.hsqldb.server.Server serverHsqldb;
     private static Server serverH2;
+    private static TCPJDBCServer serverMckoi;
 
     public static final Properties propsH2 = new Properties();
     public static final Properties propsMysql = new Properties();
@@ -86,7 +106,8 @@ public class SpringTargetApplication {
         initializeH2();
         initializeNeo4j();
         initializeDerby();
-        
+        initializeMckoi();
+
         ArrayList<Properties> properties = new ArrayList<>(
             Arrays.asList(
                 SpringTargetApplication.propsH2,
@@ -149,8 +170,37 @@ public class SpringTargetApplication {
         serverHsqldb.start();
     }
 
+    private static void initializeMckoi() throws SQLException, IOException {
+
+        DefaultDBConfig config = new DefaultDBConfig(File.createTempFile("mckoi.config", null));
+        config.setMinimumDebugLevel(Lvl.ERROR);
+
+        DBSystem database;
+        DBController controller = DBController.getDefault();
+        boolean isDatabaseExists = controller.databaseExists(config);
+        if (!isDatabaseExists) {
+            database = controller.createDatabase(config, "user", "password");
+        } else {
+            database = controller.startDatabase(config);
+        }
+
+        serverMckoi = new TCPJDBCServer(database);
+        serverMckoi.start();
+
+        if (!isDatabaseExists) {
+            try (
+                Connection con = DriverManager.getConnection("jdbc:mckoi://127.0.0.1/APP", "user", "password");
+                PreparedStatement pstmt = con.prepareStatement("CREATE TABLE APP.pwn (dataz text)");
+                PreparedStatement pstmtinsert = con.prepareStatement("INSERT INTO APP.pwn (dataz) VALUES ('jsql data')")
+            ) {
+                pstmt.execute();
+                pstmtinsert.executeUpdate();
+            }
+        }
+    }
+
     private static void initializeH2() throws SQLException {
-        
+
         serverH2 = Server.createTcpServer();
         serverH2.start();
     }
@@ -184,9 +234,9 @@ public class SpringTargetApplication {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        
+
         initializeDatabases();
-        
+
         SpringApplication.run(SpringTargetApplication.class, args);
     }
     
@@ -198,5 +248,6 @@ public class SpringTargetApplication {
         serverDerby.shutdown();
         serverH2.stop();
         serverHsqldb.stop();
+        serverMckoi.stop();
     }
 }

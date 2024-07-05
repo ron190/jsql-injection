@@ -48,7 +48,7 @@ public class MySqlReadFileSuiteIT extends ConcreteMySqlSuiteIT {
         List<String> contents = this.injectionModel.getResourceAccess()
             .readFile(Collections.singletonList("/var/lib/mysql-files/file-injection.txt"));
 
-        LOGGER.info("ReadFile: found {} to find {}", String.join(",", contents).trim(), "inside");
+        LOGGER.info("ReadFile: found {}, to find {}", String.join(",", contents).trim(), "inside");
 
         Assertions.assertEquals("inside", String.join(",", contents).trim());
     }

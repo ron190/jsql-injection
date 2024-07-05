@@ -104,6 +104,31 @@ public class JdbcRestController {
     }
 
 
+    @RequestMapping("/mckoi")
+    public Greeting greetingMckoi(@RequestParam(value="name", defaultValue="World") String name) {
+
+        Greeting greeting;
+        String inject = name.replace(":", "\\:");
+        StringBuilder result = new StringBuilder();
+
+        try (
+            Connection con = DriverManager.getConnection("jdbc:mckoi://127.0.0.1", "user", "password");
+            PreparedStatement pstmt = con.prepareStatement("select name from SYS_INFO.sUSRSchemaInfo where 1 = "+ inject)
+        ) {
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+                result.append(rs.getString(1));
+            }
+            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
+
+        } catch (Exception e) {
+            greeting = this.initializeErrorMessage(e);
+        }
+
+        return greeting;
+    }
+
+
     // Other
 
     @RequestMapping("/altibase")
@@ -230,10 +255,10 @@ public class JdbcRestController {
         // FrontBase-8.2.18-WinNT.zip
         // sql92.exe
         // create database firstdb;
-        // connect to firstdb user _system;
-        //  Auto committing is on: SET COMMIT TRUE;
-        //      create user test;
-        //      commit;
+        // connect to firstdb user _system
+        //  Auto committing is on: SET COMMIT TRUE
+        //      create user test
+        //      commit
         //  Service FBExec
         //  Service FrontBase firstdb
         //  jdbc:FrontBase://127.0.0.1/firstdb
@@ -263,7 +288,8 @@ public class JdbcRestController {
     
     @RequestMapping("/iris")
     public Greeting greetingIris(@RequestParam(value="name", defaultValue="World") String name) throws ClassNotFoundException {
-        // docker run --name my-iris -d --publish 1972:1972 --publish 52773:52773 store/intersystems/iris-community:2020.3.0.221.0
+        // docker run --name my-iris -d --publish 1972:1972 --publish 52773:52773 intersystems/iris-community:2020.3.0.221.0
+        // [ERROR] Error - cannot write to /home/irisowner/irissys.
         // http://127.0.0.1:52773/csp/sys/UtilHome.csp
         // usr pwd: _SYSTEM SYS
         // Change pwd
@@ -417,9 +443,6 @@ public class JdbcRestController {
 // java -jar mckoidb.jar
 // jdbc:mckoi://127.0.0.1
 // admin_user aupass00
-
-    // memsql
-// docker pull memsql/quickstart
 
     //nuodb
 // jdbc:com.nuodb://127.0.0.1/test

@@ -19,12 +19,12 @@ public class DigestSuiteIT extends ConcreteMySqlErrorSuiteIT {
      * https://gist.github.com/usamadar/2912088
      * https://stackoverflow.com/questions/2152573/java-client-program-to-send-digest-authentication-request-using-httpclient-api
      * https://stackoverflow.com/questions/73264239/digest-authentication-java-net-http-httpclient/74903645#74903645
-     * < Set-Cookie: JSESSIONID=D7F3C20D780A2FD2552EA30990E891DC; Path=/; HttpOnly
-     * < WWW-Authenticate: Digest realm="Digest Realm", qop="auth", nonce="MTY5MDA4NjM0MDUxMzozZTljM2M5NjU1NTgzZWQwMDI2OGVhNjc4ZTNhNTgxZA=="
+     * &lt; Set-Cookie: JSESSIONID=D7F3C20D780A2FD2552EA30990E891DC; Path=/; HttpOnly
+     * &lt; WWW-Authenticate: Digest realm="Digest Realm", qop="auth", nonce="MTY5MDA4NjM0MDUxMzozZTljM2M5NjU1NTgzZWQwMDI2OGVhNjc4ZTNhNTgxZA=="
      * HA1 = MD5(username:realm:password)
      * HA2 = MD5(method:digestURI)
      * response = MD5(HA1:nonce:nonceCount:cnonce:qop:HA2)
-     * > Authorization: Digest username="login-digest",realm="Digest Realm",nonce="MTY5MDA4NjM0MDUxMzozZTljM2M5NjU1NTgzZWQwMDI2OGVhNjc4ZTNhNTgxZA==",uri="/digest?tenant=mysql&name=",cnonce="2ecb0e39da79fcb5aa6ffb1bd45cb3bb",nc=00000001,response="e5703ca7433d944525a40f49c5501155",qop="auth"
+     * > Authorization: Digest username="login-digest",realm="Digest Realm",nonce="MTY5MDA4NjM0MDUxMzozZTljM2M5NjU1NTgzZWQwMDI2OGVhNjc4ZTNhNTgxZA==",uri="/digest?tenant=mysql&amp;name=",cnonce="2ecb0e39da79fcb5aa6ffb1bd45cb3bb",nc=00000001,response="e5703ca7433d944525a40f49c5501155",qop="auth"
      */
 
     @Override

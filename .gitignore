@@ -17,3 +17,4 @@ derby.log
 .flattened-pom.xml
 pom.xml.versionsBackup
 model/src/test/resources/jdbc/
+model/data

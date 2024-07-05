@@ -39,7 +39,7 @@ public class PostgreSqlReadFileSuiteIT extends ConcretePostgreSqlSuiteIT {
         .withIsStrategyMultibitDisabled(true)
         .withIsStrategyErrorDisabled(true);
 
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPostgreSQL());
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPostgresql());
         model.beginInjection();
     }
     
@@ -49,7 +49,7 @@ public class PostgreSqlReadFileSuiteIT extends ConcretePostgreSqlSuiteIT {
         List<String> contents = this.injectionModel.getResourceAccess()
             .readFile(Collections.singletonList("PG_VERSION"));
 
-        LOGGER.info("ReadFile: found {} to find {}", String.join(",", contents).trim(), "9.6");
+        LOGGER.info("ReadFile: found {}, to find {}", String.join(",", contents).trim(), "9.6");
 
         Assertions.assertEquals("9.6", String.join(",", contents).trim());
     }

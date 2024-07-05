@@ -35,7 +35,7 @@ public class SqlServerBlindGetSuiteIT extends ConcreteSqlServerSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlServer());
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlserver());
         model.beginInjection();
     }
 

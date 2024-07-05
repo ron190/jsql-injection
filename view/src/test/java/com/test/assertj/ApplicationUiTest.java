@@ -279,7 +279,7 @@ class ApplicationUiTest {
         var request = new Request();
         request.setMessage(Interaction.SET_VENDOR);
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.VENDOR, MediatorHelper.model().getMediatorVendor().getMySQL());
+        msgHeader.put(Header.VENDOR, MediatorHelper.model().getMediatorVendor().getMysql());
         request.setParameters(msgHeader);
         MediatorHelper.model().sendToViews(request);
 
@@ -287,7 +287,7 @@ class ApplicationUiTest {
         msgHeader.put(Header.URL, "");
         msgHeader.put(Header.INDEX_ERROR_STRATEGY, 0);
         msgHeader.put(Header.INJECTION_MODEL, MediatorHelper.model());
-        msgHeader.put(Header.VENDOR, MediatorHelper.model().getMediatorVendor().getMySQL());
+        msgHeader.put(Header.VENDOR, MediatorHelper.model().getMediatorVendor().getMysql());
 
         var requestError = new Request();
         requestError.setMessage(Interaction.MARK_ERROR_VULNERABLE);

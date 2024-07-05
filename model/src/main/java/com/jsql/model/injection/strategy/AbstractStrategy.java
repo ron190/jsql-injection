@@ -19,8 +19,9 @@ public abstract class AbstractStrategy {
 
     protected static final String KEY_LOG_CHECKING_STRATEGY = "LOG_CHECKING_STRATEGY";
     protected static final String KEY_LOG_VULNERABLE = "LOG_VULNERABLE";
-    protected static final String FORMAT_STRATEGY_NOT_IMPLEMENTED = "Strategy [{}] for [{}] missing, please share your implementation on GitHub page";
-    protected static final String FORMAT_SKIP_STRATEGY_DISABLED = "Skipping strategy {} disabled";
+    protected static final String FORMAT_STRATEGY_NOT_IMPLEMENTED = "Strategy [{}] for [{}] missing, please share your implementation";
+    protected static final String FORMAT_SKIP_STRATEGY_DISABLED = "Skipping strategy [{}] disabled";
+    protected static final String FORMAT_CHECKING_STRATEGY = "{} [{}]...";
 
     /**
      * i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body.

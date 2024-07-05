@@ -39,7 +39,7 @@ public class PostgreSqlBlindGetSuiteIT extends ConcretePostgreSqlSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPostgreSQL());
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPostgresql());
         model.beginInjection();
     }
     

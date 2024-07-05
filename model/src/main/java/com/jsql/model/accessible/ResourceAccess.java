@@ -829,7 +829,7 @@ public class ResourceAccess {
     public List<String> readFile(List<String> pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
 
         if (
-            this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getMySQL()
+            this.injectionModel.getMediatorVendor().getVendor() == this.injectionModel.getMediatorVendor().getMysql()
             && this.isReadingNotAllowed()
         ) {
             return Collections.emptyList();

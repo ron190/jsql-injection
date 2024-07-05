@@ -49,7 +49,7 @@ public class MySqlReadFileLampSuiteIT extends ConcreteMySqlSuiteIT {
             Collections.singletonList("/var/www/html/php/get.php")
         );
 
-        LOGGER.info("ReadFile: found {} to find {}", String.join(",", contents).trim(), "<?php");
+        LOGGER.info("ReadFile: found {}, to find {}", String.join(",", contents).trim(), "<?php");
 
         Assertions.assertTrue(String.join(",", contents).trim().contains("<?php"));
     }

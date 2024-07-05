@@ -83,8 +83,9 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
         LOGGER.log(
             LogLevelUtil.CONSOLE_DEFAULT,
-            "{} Blind with {}...",
+            "{} [{}] with [{}]...",
             () -> I18nUtil.valueByKey(KEY_LOG_CHECKING_STRATEGY),
+            () -> getName(),
             () -> booleanMode
         );
         this.injectionBlind = new InjectionBlind(this.injectionModel, booleanMode);
@@ -93,8 +94,9 @@ public class StrategyInjectionBlind extends AbstractStrategy {
         if (this.isApplicable) {
             LOGGER.log(
                 LogLevelUtil.CONSOLE_SUCCESS,
-                "{} Blind injection with {}",
+                "{} [{}] injection with [{}]",
                 () -> I18nUtil.valueByKey(KEY_LOG_VULNERABLE),
+                () -> getName(),
                 () -> booleanMode
             );
         }

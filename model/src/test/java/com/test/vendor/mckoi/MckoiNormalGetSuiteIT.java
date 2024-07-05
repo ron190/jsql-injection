@@ -1,4 +1,4 @@
-package com.test.vendor.sqlserver;
+package com.test.vendor.mckoi;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -7,9 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
-// TODO Time not working
-public class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIT {
-
+public class MckoiNormalGetSuiteIT extends ConcreteMckoiSuiteIT {
+    
     @Override
     public void setupInjection() throws Exception {
         
@@ -19,19 +18,40 @@ public class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIT {
         model.subscribe(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/time?tenant=sqlserver&name=1'"
+            "http://localhost:8080/mckoi?name=2+*"
         );
-        
-        model.setIsScanning(true);
-        
+
+        model
+        .getMediatorUtils()
+        .getPreferencesUtil()
+        .withIsNotSearchingCharInsertion(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
-        
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlserver());
+
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMckoi());
         model.beginInjection();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listDatabases() throws JSqlException {
+        super.listDatabases();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listTables() throws JSqlException {
+        super.listTables();
+    }
+    
+    @Override
+    @RetryingTest(3)
+    public void listColumns() throws JSqlException {
+        super.listColumns();
     }
     
     @Override
@@ -43,7 +63,7 @@ public class SqlServerTimeGetSuiteIgnoreIT extends ConcreteSqlServerSuiteIT {
     @AfterEach
     public void afterEach() {
         Assertions.assertEquals(
-            this.injectionModel.getMediatorStrategy().getTime(),
+            this.injectionModel.getMediatorStrategy().getNormal(),
             this.injectionModel.getMediatorStrategy().getStrategy()
         );
     }

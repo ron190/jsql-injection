@@ -29,7 +29,7 @@ public class MonetDbNormalGetSuiteIgnoreIT extends ConcreteMonetDbSuiteIgnoreIT 
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
 
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMonetDb());
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getMonetdb());
         model.beginInjection();
     }
     

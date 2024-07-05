@@ -624,6 +624,12 @@
             <version>${monetdb-jdbc.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.mckoi</groupId>
+            <artifactId>mckoisqldb</artifactId>
+            <version>1.0.5</version>
+            <scope>test</scope>
+        </dependency>
 
         <!--         <dependency> -->
         <!--             <groupId>altibase</groupId> -->

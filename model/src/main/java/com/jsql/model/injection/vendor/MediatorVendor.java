@@ -51,14 +51,15 @@ public class MediatorVendor {
     private final Vendor firebird;
     private final Vendor h2;
     private final Vendor hsqldb;
-    private final Vendor mySQL;
+    private final Vendor mckoi;
+    private final Vendor mimer;
+    private final Vendor monetdb;
+    private final Vendor mysql;
     private final Vendor neo4j;
     private final Vendor oracle;
-    private final Vendor postgreSQL;
+    private final Vendor postgresql;
     private final Vendor sqlite;
-    private final Vendor sqlServer;
-    private final Vendor monetDb;
-    private final Vendor mimer;
+    private final Vendor sqlserver;
 
     private final List<Vendor> vendors;
     
@@ -70,19 +71,17 @@ public class MediatorVendor {
         
         Vendor access = new Vendor(new VendorYaml("access.yml", injectionModel));
         Vendor altibase = new Vendor(new VendorYaml("altibase.yml", injectionModel));
-        Vendor ctreeACE = new Vendor(new VendorYaml("ctreeace.yml", injectionModel));
-        Vendor cockroachDB = new Vendor(new VendorYaml("cockroachdb.yml", injectionModel));
+        Vendor ctreeace = new Vendor(new VendorYaml("ctreeace.yml", injectionModel));
+        Vendor cockroachdb = new Vendor(new VendorYaml("cockroachdb.yml", injectionModel));
         Vendor exasol = new Vendor(new VendorYaml("exasol.yml", injectionModel));
         Vendor frontbase = new Vendor(new VendorYaml("frontbase.yml", injectionModel));
         Vendor hana = new Vendor(new VendorYaml("hana.yml", injectionModel));
         Vendor informix = new Vendor(new VendorYaml("informix.yml", injectionModel));
         Vendor ingres = new Vendor(new VendorYaml("ingres.yml", injectionModel));
         Vendor iris = new Vendor(new VendorYaml("iris.yml", injectionModel));
-        Vendor maxDB = new Vendor(new VendorYaml("maxdb.yml", injectionModel));
-        Vendor mckoi = new Vendor(new VendorYaml("mckoi.yml", injectionModel));
-        Vendor memSQL = new Vendor(new VendorYaml("memsql.yml", injectionModel));
+        Vendor maxdb = new Vendor(new VendorYaml("maxdb.yml", injectionModel));
         Vendor netezza = new Vendor(new VendorYaml("netezza.yml", injectionModel));
-        Vendor nuoDB = new Vendor(new VendorYaml("nuodb.yml", injectionModel));
+        Vendor nuodb = new Vendor(new VendorYaml("nuodb.yml", injectionModel));
         Vendor presto = new Vendor(new VendorYaml("presto.yml", injectionModel));
         Vendor sybase = new Vendor(new VendorYaml("sybase.yml", injectionModel));
         Vendor teradata = new Vendor(new VendorYaml("teradata.yml", injectionModel));
@@ -95,12 +94,13 @@ public class MediatorVendor {
         this.firebird = new Vendor(new VendorYaml("firebird.yml", injectionModel));
         this.h2 = new Vendor(new VendorYaml("h2.yml", injectionModel));
         this.hsqldb = new Vendor(new VendorYaml("hsqldb.yml", injectionModel));
+        this.mckoi = new Vendor(new VendorYaml("mckoi.yml", injectionModel));
         this.mimer = new Vendor(new VendorYaml("mimersql.yml", injectionModel));
-        this.monetDb = new Vendor(new VendorYaml("monetdb.yml", injectionModel));
-        this.mySQL = new Vendor(new VendorYaml("mysql.yml", injectionModel));
+        this.monetdb = new Vendor(new VendorYaml("monetdb.yml", injectionModel));
+        this.mysql = new Vendor(new VendorYaml("mysql.yml", injectionModel));
         this.neo4j = new Vendor(new VendorYaml("neo4j.yml", injectionModel));
         this.oracle = new Vendor(new VendorYaml("oracle.yml", injectionModel));
-        this.postgreSQL = new Vendor(new VendorYaml("postgresql.yml", injectionModel));
+        this.postgresql = new Vendor(new VendorYaml("postgresql.yml", injectionModel));
         this.sqlite = new Vendor(new VendorYaml("sqlite.yml", injectionModel)) {
 
             @Override
@@ -139,14 +139,14 @@ public class MediatorVendor {
                 return resultSqlite.toString();
             }
         };
-        this.sqlServer = new Vendor(new VendorYaml("sqlserver.yml", injectionModel));
+        this.sqlserver = new Vendor(new VendorYaml("sqlserver.yml", injectionModel));
 
         this.vendors = Arrays.asList(
             this.auto,
             access,
             altibase,
-            ctreeACE,
-            cockroachDB,
+            ctreeace,
+            cockroachdb,
             this.cubrid,
             this.db2,
             this.derby,
@@ -159,26 +159,25 @@ public class MediatorVendor {
             informix,
             ingres,
             iris,
-            maxDB,
-            mckoi,
-            memSQL,
+            maxdb,
+            this.mckoi,
             this.mimer,
-            this.monetDb,
-            this.mySQL,
+            this.monetdb,
+            this.mysql,
             this.neo4j,
             netezza,
-            nuoDB,
+            nuodb,
             this.oracle,
-            this.postgreSQL,
+            this.postgresql,
             presto,
             this.sqlite,
-            this.sqlServer,
+            this.sqlserver,
             sybase,
             teradata,
             vertica
         );
         
-        this.setVendor(this.mySQL);
+        this.setVendor(this.mysql);
         this.vendorByUser = this.auto;
     }
     
@@ -259,12 +258,12 @@ public class MediatorVendor {
         
         if (vendorFixed == null) {
             
-            vendorFixed = this.injectionModel.getMediatorVendor().getMySQL();
+            vendorFixed = this.injectionModel.getMediatorVendor().getMysql();
             LOGGER.log(
                 LogLevelUtil.CONSOLE_INFORM,
                 MediatorVendor.LOG_VENDOR,
                 () -> I18nUtil.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND"),
-                () -> this.injectionModel.getMediatorVendor().getMySQL()
+                () -> this.injectionModel.getMediatorVendor().getMysql()
             );
         } else {
             
@@ -306,20 +305,20 @@ public class MediatorVendor {
         return this.h2;
     }
 
-    public Vendor getPostgreSQL() {
-        return this.postgreSQL;
+    public Vendor getPostgresql() {
+        return this.postgresql;
     }
 
-    public Vendor getMySQL() {
-        return this.mySQL;
+    public Vendor getMysql() {
+        return this.mysql;
     }
 
     public Vendor getSqlite() {
         return this.sqlite;
     }
 
-    public Vendor getSqlServer() {
-        return this.sqlServer;
+    public Vendor getSqlserver() {
+        return this.sqlserver;
     }
 
     public Vendor getNeo4j() {
@@ -366,11 +365,15 @@ public class MediatorVendor {
         return firebird;
     }
 
-    public Vendor getMonetDb() {
-        return monetDb;
+    public Vendor getMonetdb() {
+        return monetdb;
     }
 
     public Vendor getMimer() {
         return mimer;
+    }
+
+    public Vendor getMckoi() {
+        return mckoi;
     }
 }

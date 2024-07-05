@@ -63,6 +63,7 @@ public class SubscriberInteraction implements Subscriber<Request> {
                 var types = new Class[]{ Object[].class };
                 Constructor<?> constructor = cl.getConstructor(types);
     
+                @SuppressWarnings("java:S1905")
                 InteractionCommand interactionCommand = (InteractionCommand) constructor.newInstance(
                     (Object[]) new Object[] {  // cast for sonar disambiguation
                         request.getParameters()

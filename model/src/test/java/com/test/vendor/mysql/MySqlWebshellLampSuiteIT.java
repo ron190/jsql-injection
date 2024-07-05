@@ -53,7 +53,7 @@ public class MySqlWebshellLampSuiteIT extends ConcreteMySqlSuiteIT {
             "http://jsql-lamp:8079/."+ this.injectionModel.getVersionJsql() +".jw.php"
         );
 
-        LOGGER.info("Webshell: found {} to find {}", resultCommand.trim(), "Linux");
+        LOGGER.info("Webshell: found {}, to find {}", resultCommand.trim(), "Linux");
 
         Assertions.assertEquals("Linux", resultCommand.trim());
     }

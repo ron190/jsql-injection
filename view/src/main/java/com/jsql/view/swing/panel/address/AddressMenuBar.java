@@ -140,7 +140,7 @@ public class AddressMenuBar extends JMenuBar {
 
         this.menuVendor = new ComboMenu(MediatorHelper.model().getMediatorVendor().getAuto().toString());
         this.menuVendor.setName("menuVendor");
-        this.menuVendor.getPopupMenu().setLayout(new GridLayout(MediatorHelper.model().getMediatorVendor().getVendors().size() / 2, 2));
+        this.menuVendor.getPopupMenu().setLayout(new GridLayout((MediatorHelper.model().getMediatorVendor().getVendors().size() + 1) / 2, 2));
 
         var groupVendor = new ButtonGroup();
 

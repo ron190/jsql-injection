@@ -24,8 +24,8 @@ resource:
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-           (select name s from sys_info.sUSRSchemaInfo) t,
-           (select name s from sys_info.sUSRSchemaInfo) t1
+           (select name s from SYS_INFO.sUSRSchemaInfo) t,
+           (select name s from SYS_INFO.sUSRSchemaInfo) t1
        where t.s >= t1.s
        group by t.s
        ${limit}
@@ -43,8 +43,8 @@ resource:
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-           (select name s from sys_info.sUSRTableInfo where "schema" = '${database}') t,
-           (select name s from sys_info.sUSRTableInfo where "schema" = '${database}') t1
+           (select name s from SYS_INFO.sUSRTableInfo where "schema" = '${database}') t,
+           (select name s from SYS_INFO.sUSRTableInfo where "schema" = '${database}') t1
        where t.s >= t1.s
        group by t.s
        ${limit}
@@ -62,8 +62,8 @@ resource:
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-           (select "column" s from sys_info.sUSRTableColumns where "schema" = '${database}' and "table" = '${table}') t,
-           (select "column" s from sys_info.sUSRTableColumns where "schema" = '${database}' and "table" = '${table}') t1
+           (select "column" s from SYS_INFO.sUSRTableColumns where "schema" = '${database}' and "table" = '${table}') t,
+           (select "column" s from SYS_INFO.sUSRTableColumns where "schema" = '${database}' and "table" = '${table}') t1
        where t.s >= t1.s
        group by t.s
        ${limit}
@@ -107,7 +107,7 @@ strategy:
   limit: having count(*) between ${limit.value} and ${limit.value}
   failsafe: select cast(x.rrr as char)rr from (select 1337${indice}7330%2b1 rrr)x
   # No method repeat() found
-  calibrator: '%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'
+  calibrator: "'%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'"
   limitBoundary: 1
   fingerprint:
    errorMessage:

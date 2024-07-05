@@ -124,10 +124,10 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         ) {
             mediatorVendor.setVendor(vendorsOrderByMatch.get(0));
         } else if (vendorsOrderByMatch.size() > 1) {
-            if (vendorsOrderByMatch.contains(mediatorVendor.getPostgreSQL())) {
-                mediatorVendor.setVendor(mediatorVendor.getPostgreSQL());
-            } else if (vendorsOrderByMatch.contains(mediatorVendor.getMySQL())) {
-                mediatorVendor.setVendor(mediatorVendor.getMySQL());
+            if (vendorsOrderByMatch.contains(mediatorVendor.getPostgresql())) {
+                mediatorVendor.setVendor(mediatorVendor.getPostgresql());
+            } else if (vendorsOrderByMatch.contains(mediatorVendor.getMysql())) {
+                mediatorVendor.setVendor(mediatorVendor.getMysql());
             } else {
                 mediatorVendor.setVendor(vendorsOrderByMatch.get(0));
             }

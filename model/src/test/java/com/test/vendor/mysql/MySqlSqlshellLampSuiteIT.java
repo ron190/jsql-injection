@@ -55,7 +55,7 @@ public class MySqlSqlshellLampSuiteIT extends ConcreteMySqlSuiteIT {
             "password"
         );
 
-        LOGGER.info("Sqlshell: found {} to find {}", resultCommand.trim(), "5.7.42-0ubuntu0.18.04.1");
+        LOGGER.info("Sqlshell: found {}, to find {}", resultCommand.trim(), "5.7.42-0ubuntu0.18.04.1");
 
         Assertions.assertTrue(resultCommand.trim().contains("5.7.42-0ubuntu0.18.04.1"));
     }

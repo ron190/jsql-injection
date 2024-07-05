@@ -23,7 +23,7 @@ public class MySqlSelectSuiteIT extends ConcreteMySqlSuiteIT {
 
         model.setIsScanning(true);
 
-        model.getMediatorVendor().getMySQL().instance().getModelYaml().getStrategy().getConfiguration().setEndingComment("");
+        model.getMediatorVendor().getMysql().instance().getModelYaml().getStrategy().getConfiguration().setEndingComment("");
 
         model
         .getMediatorUtils()

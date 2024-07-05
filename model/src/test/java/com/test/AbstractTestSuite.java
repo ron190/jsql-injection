@@ -6,7 +6,6 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.util.LogLevelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.awaitility.Awaitility;
@@ -30,15 +29,6 @@ import java.util.stream.Stream;
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
 public abstract class AbstractTestSuite {
-
-    static {
-        try {  // ensure driver is loaded
-            Class.forName("com.mimer.jdbc.Driver");
-            Class.forName("nl.cwi.monetdb.jdbc.MonetDriver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
     
     protected static final Logger LOGGER = LogManager.getRootLogger();
 
@@ -157,7 +147,7 @@ public abstract class AbstractTestSuite {
             setValuesFromInjection.addAll(databases);
             setValuesFromJdbc.addAll(AbstractTestSuite.this.databasesFromJdbc);
 
-            LOGGER.info("ListDatabases: found {} to find {}", setValuesFromInjection, setValuesFromJdbc);
+            LOGGER.info("ListDatabases: found {}, to find {}", setValuesFromInjection, setValuesFromJdbc);
 
             Assertions.assertTrue(
                 !setValuesFromInjection.isEmpty()
@@ -192,7 +182,7 @@ public abstract class AbstractTestSuite {
             setValuesFromInjection.addAll(tables);
             setValuesFromJdbc.addAll(AbstractTestSuite.this.tablesFromJdbc);
 
-            LOGGER.info("Tables: found {} to find {}", setValuesFromInjection, setValuesFromJdbc);
+            LOGGER.info("Tables: found {}, to find {}", setValuesFromInjection, setValuesFromJdbc);
             Assertions.assertTrue(
                 !setValuesFromInjection.isEmpty()
                 && !setValuesFromJdbc.isEmpty()
@@ -230,7 +220,7 @@ public abstract class AbstractTestSuite {
             setValuesFromInjection.addAll(columns);
             setValuesFromJdbc.addAll(this.parse(AbstractTestSuite.this.columnsFromJdbc));
 
-            LOGGER.info("listColumns: found {} to find {}", setValuesFromInjection, setValuesFromJdbc);
+            LOGGER.info("listColumns: found {}, to find {}", setValuesFromInjection, setValuesFromJdbc);
             Assertions.assertTrue(
                 !setValuesFromInjection.isEmpty()
                 && !setValuesFromJdbc.isEmpty()
@@ -289,7 +279,7 @@ public abstract class AbstractTestSuite {
                 .replaceAll("\n", "[n]")
                 .replaceAll("\r", "[r]");
             
-            LOGGER.info("Values: found {} to find {}", logValuesFromInjection, logValuesFromJdbc);
+            LOGGER.info("Values: found {}, to find {}", logValuesFromInjection, logValuesFromJdbc);
 
             Assertions.assertTrue(
                 !setValuesFromInjection.isEmpty()

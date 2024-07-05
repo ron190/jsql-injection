@@ -127,7 +127,8 @@ strategy:
    errorMessage:
     - presto
    orderByErrorMessage:
-    - ORDER BY position 1337 is not in select list
+#    Collision with postgres
+#    - ORDER BY position 1337 is not in select list
 
  normal:
   indices: union select ${indices}
