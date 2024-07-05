@@ -420,7 +420,7 @@
 <a class="jxr_linenumber" name="L412" href="#L412">412</a>         <strong class="jxr_keyword">return</strong> greeting;
 <a class="jxr_linenumber" name="L413" href="#L413">413</a>     }
 <a class="jxr_linenumber" name="L414" href="#L414">414</a>     
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>     <em class="jxr_comment">// TODO</em>
+<a class="jxr_linenumber" name="L415" href="#L415">415</a> 
 <a class="jxr_linenumber" name="L416" href="#L416">416</a>     <em class="jxr_comment">// missing cockroachdb: docker fails</em>
 <a class="jxr_linenumber" name="L417" href="#L417">417</a> <em class="jxr_comment">// docker pull cockroachdb/cockroach:beta-20170406</em>
 <a class="jxr_linenumber" name="L418" href="#L418">418</a> <em class="jxr_comment">// docker network create -d bridge roachnet</em>
@@ -435,46 +435,43 @@
 <a class="jxr_linenumber" name="L427" href="#L427">427</a> <em class="jxr_comment">// jdbc:sap://127.0.0.1:30115</em>
 <a class="jxr_linenumber" name="L428" href="#L428">428</a> <em class="jxr_comment">// XSA_ADMIN 1anaHEXH</em>
 <a class="jxr_linenumber" name="L429" href="#L429">429</a> 
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>     <em class="jxr_comment">// missing informix: services but no connection</em>
-<a class="jxr_linenumber" name="L431" href="#L431">431</a> <em class="jxr_comment">// jdbc:informix-sqli://fe80::1125:78c0:ef17:8ab5:7360:user=informix;password=test;INFORMIXSERVER=ol_informix1210_2</em>
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>     <em class="jxr_comment">// missing ingress: missing services</em>
+<a class="jxr_linenumber" name="L431" href="#L431">431</a> <em class="jxr_comment">// jdbc:ingres://localhost:II7/demodb</em>
 <a class="jxr_linenumber" name="L432" href="#L432">432</a> 
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>     <em class="jxr_comment">// missing ingress: missing services</em>
-<a class="jxr_linenumber" name="L434" href="#L434">434</a> <em class="jxr_comment">// jdbc:ingres://localhost:II7/demodb</em>
-<a class="jxr_linenumber" name="L435" href="#L435">435</a> 
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>     <em class="jxr_comment">// missing maxdb: broken installation</em>
-<a class="jxr_linenumber" name="L437" href="#L437">437</a> <em class="jxr_comment">// jdbc:sapdb://127.0.0.1/MAXDB</em>
-<a class="jxr_linenumber" name="L438" href="#L438">438</a> <em class="jxr_comment">// DBADMIN TEST</em>
-<a class="jxr_linenumber" name="L439" href="#L439">439</a> 
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>     <em class="jxr_comment">// mckoi: no error on wrong order column</em>
-<a class="jxr_linenumber" name="L441" href="#L441">441</a> <em class="jxr_comment">// java -jar mckoidb.jar -create "admin_user" "aupass00"</em>
-<a class="jxr_linenumber" name="L442" href="#L442">442</a> <em class="jxr_comment">// E:\Dev\mckoi1.0.6&gt;java -cp mckoidb.jar com.mckoi.tools.JDBCQueryTool -url "jdbc:mckoi:local://./db.conf" -u "admin_user" -p "aupass00"</em>
-<a class="jxr_linenumber" name="L443" href="#L443">443</a> <em class="jxr_comment">// java -jar mckoidb.jar</em>
-<a class="jxr_linenumber" name="L444" href="#L444">444</a> <em class="jxr_comment">// jdbc:mckoi://127.0.0.1</em>
-<a class="jxr_linenumber" name="L445" href="#L445">445</a> <em class="jxr_comment">// admin_user aupass00</em>
-<a class="jxr_linenumber" name="L446" href="#L446">446</a> 
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>     <em class="jxr_comment">//nuodb</em>
-<a class="jxr_linenumber" name="L448" href="#L448">448</a> <em class="jxr_comment">// jdbc:com.nuodb://127.0.0.1/test</em>
-<a class="jxr_linenumber" name="L449" href="#L449">449</a> <em class="jxr_comment">// dba nuodb</em>
-<a class="jxr_linenumber" name="L450" href="#L450">450</a> 
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>     <em class="jxr_comment">//sybase</em>
-<a class="jxr_linenumber" name="L452" href="#L452">452</a> <em class="jxr_comment">//# jdbc:sybase:Tds:Laptop_Name:5000</em>
-<a class="jxr_linenumber" name="L453" href="#L453">453</a> <em class="jxr_comment">//# sa testtest</em>
-<a class="jxr_linenumber" name="L454" href="#L454">454</a> 
-<a class="jxr_linenumber" name="L455" href="#L455">455</a>     <em class="jxr_comment">// teradata</em>
-<a class="jxr_linenumber" name="L456" href="#L456">456</a> <em class="jxr_comment">//# jdbc:teradata://127.0.0.1</em>
-<a class="jxr_linenumber" name="L457" href="#L457">457</a> <em class="jxr_comment">//# dbc dbc</em>
-<a class="jxr_linenumber" name="L458" href="#L458">458</a> 
-<a class="jxr_linenumber" name="L459" href="#L459">459</a>     <em class="jxr_comment">// vertica</em>
-<a class="jxr_linenumber" name="L460" href="#L460">460</a> <em class="jxr_comment">//# jdbc:vertica://127.0.0.1:5433/</em>
-<a class="jxr_linenumber" name="L461" href="#L461">461</a> <em class="jxr_comment">//# dbadmin password</em>
-<a class="jxr_linenumber" name="L462" href="#L462">462</a> 
-<a class="jxr_linenumber" name="L463" href="#L463">463</a>     <strong class="jxr_keyword">private</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> initializeErrorMessage(Exception e) {
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>         
-<a class="jxr_linenumber" name="L465" href="#L465">465</a>         String stacktrace = ExceptionUtils.getStackTrace(e);
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>         LOGGER.debug(stacktrace);
-<a class="jxr_linenumber" name="L467" href="#L467">467</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(TEMPLATE + <span class="jxr_string">"#"</span> + StringEscapeUtils.unescapeJava(stacktrace));
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>     }
-<a class="jxr_linenumber" name="L469" href="#L469">469</a> }
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>     <em class="jxr_comment">// missing maxdb: broken installation</em>
+<a class="jxr_linenumber" name="L434" href="#L434">434</a> <em class="jxr_comment">// jdbc:sapdb://127.0.0.1/MAXDB</em>
+<a class="jxr_linenumber" name="L435" href="#L435">435</a> <em class="jxr_comment">// DBADMIN TEST</em>
+<a class="jxr_linenumber" name="L436" href="#L436">436</a> 
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>     <em class="jxr_comment">// mckoi: no error on wrong order column</em>
+<a class="jxr_linenumber" name="L438" href="#L438">438</a> <em class="jxr_comment">// java -jar mckoidb.jar -create "admin_user" "aupass00"</em>
+<a class="jxr_linenumber" name="L439" href="#L439">439</a> <em class="jxr_comment">// E:\Dev\mckoi1.0.6&gt;java -cp mckoidb.jar com.mckoi.tools.JDBCQueryTool -url "jdbc:mckoi:local://./db.conf" -u "admin_user" -p "aupass00"</em>
+<a class="jxr_linenumber" name="L440" href="#L440">440</a> <em class="jxr_comment">// java -jar mckoidb.jar</em>
+<a class="jxr_linenumber" name="L441" href="#L441">441</a> <em class="jxr_comment">// jdbc:mckoi://127.0.0.1</em>
+<a class="jxr_linenumber" name="L442" href="#L442">442</a> <em class="jxr_comment">// admin_user aupass00</em>
+<a class="jxr_linenumber" name="L443" href="#L443">443</a> 
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>     <em class="jxr_comment">//nuodb</em>
+<a class="jxr_linenumber" name="L445" href="#L445">445</a> <em class="jxr_comment">// jdbc:com.nuodb://127.0.0.1/test</em>
+<a class="jxr_linenumber" name="L446" href="#L446">446</a> <em class="jxr_comment">// dba nuodb</em>
+<a class="jxr_linenumber" name="L447" href="#L447">447</a> 
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>     <em class="jxr_comment">//sybase</em>
+<a class="jxr_linenumber" name="L449" href="#L449">449</a> <em class="jxr_comment">//# jdbc:sybase:Tds:Laptop_Name:5000</em>
+<a class="jxr_linenumber" name="L450" href="#L450">450</a> <em class="jxr_comment">//# sa testtest</em>
+<a class="jxr_linenumber" name="L451" href="#L451">451</a> 
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>     <em class="jxr_comment">// teradata</em>
+<a class="jxr_linenumber" name="L453" href="#L453">453</a> <em class="jxr_comment">//# jdbc:teradata://127.0.0.1</em>
+<a class="jxr_linenumber" name="L454" href="#L454">454</a> <em class="jxr_comment">//# dbc dbc</em>
+<a class="jxr_linenumber" name="L455" href="#L455">455</a> 
+<a class="jxr_linenumber" name="L456" href="#L456">456</a>     <em class="jxr_comment">// vertica</em>
+<a class="jxr_linenumber" name="L457" href="#L457">457</a> <em class="jxr_comment">//# jdbc:vertica://127.0.0.1:5433/</em>
+<a class="jxr_linenumber" name="L458" href="#L458">458</a> <em class="jxr_comment">//# dbadmin password</em>
+<a class="jxr_linenumber" name="L459" href="#L459">459</a> 
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>     <strong class="jxr_keyword">private</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a> initializeErrorMessage(Exception e) {
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>         
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>         String stacktrace = ExceptionUtils.getStackTrace(e);
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>         LOGGER.debug(stacktrace);
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Greeting" href="../../spring/rest/Greeting.html#Greeting">Greeting</a>(TEMPLATE + <span class="jxr_string">"#"</span> + StringEscapeUtils.unescapeJava(stacktrace));
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>     }
+<a class="jxr_linenumber" name="L466" href="#L466">466</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>

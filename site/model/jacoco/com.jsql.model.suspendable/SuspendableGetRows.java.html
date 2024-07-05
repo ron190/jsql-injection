@@ -67,8 +67,8 @@ public class SuspendableGetRows extends AbstractSuspendable {
 <span class="fc" id="L67">        AbstractStrategy strategy = this.injectionModel.getMediatorStrategy().getStrategy();</span>
         
         // Fix #14417
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        if (strategy == null) {</span>
-<span class="nc" id="L71">            return StringUtils.EMPTY;</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (strategy == null) {</span>
+<span class="fc" id="L71">            return StringUtils.EMPTY;</span>
         }
         
         // Stop injection if all rows are found, skip rows and characters collected
@@ -93,7 +93,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 <span class="fc" id="L93">            Matcher regexTrailOnlyFound = this.parseTrailOnlyFound(sourcePage[0]);</span>
             
 <span class="fc" id="L95">            if (</span>
-<span class="pc bpc" id="L96" title="1 of 6 branches missed.">                (!regexLeadFound.find() || regexTrailOnlyFound.find())</span>
+<span class="fc bfc" id="L96" title="All 6 branches covered.">                (!regexLeadFound.find() || regexTrailOnlyFound.find())</span>
                 &amp;&amp; isMultipleRows
 <span class="pc bpc" id="L98" title="1 of 2 branches missed.">                &amp;&amp; StringUtils.isNotEmpty(slidingWindowAllRows.toString())</span>
             ) {
@@ -116,7 +116,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 <span class="fc" id="L116">                slidingWindowCurrentRow.append(currentChunk);</span>
 <span class="fc" id="L117">                this.sendChunk(currentChunk);</span>
                 
-<span class="nc" id="L119">            } catch (IllegalArgumentException | IllegalStateException | OutOfMemoryError e) {</span>
+<span class="fc" id="L119">            } catch (IllegalArgumentException | IllegalStateException | OutOfMemoryError e) {</span>
 <span class="nc" id="L120">                this.endInjection(elementDatabase, e);</span>
 <span class="fc" id="L121">            }</span>
 
@@ -282,25 +282,25 @@ public class SuspendableGetRows extends AbstractSuspendable {
         
         // Premature end of results
         // if it's not the root (empty tree)
-<span class="nc bnc" id="L285" title="All 2 branches missed.">        if (searchName != null) {</span>
+<span class="pc bpc" id="L285" title="1 of 2 branches missed.">        if (searchName != null) {</span>
             
-<span class="nc" id="L287">            var request = new Request();</span>
-<span class="nc" id="L288">            request.setMessage(Interaction.END_PROGRESS);</span>
-<span class="nc" id="L289">            request.setParameters(searchName);</span>
-<span class="nc" id="L290">            this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L287">            var request = new Request();</span>
+<span class="fc" id="L288">            request.setMessage(Interaction.END_PROGRESS);</span>
+<span class="fc" id="L289">            request.setParameters(searchName);</span>
+<span class="fc" id="L290">            this.injectionModel.sendToViews(request);</span>
         }
 
-<span class="nc" id="L293">        var messageError = new StringBuilder(&quot;Fetching fails: no data to parse&quot;);</span>
+<span class="fc" id="L293">        var messageError = new StringBuilder(&quot;Fetching fails: no data to parse&quot;);</span>
         
-<span class="nc bnc" id="L295" title="All 2 branches missed.">        if (searchName != null) {</span>
-<span class="nc" id="L296">            messageError.append(&quot; for &quot;).append(StringUtil.detectUtf8(searchName.toString()));</span>
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">        if (searchName != null) {</span>
+<span class="fc" id="L296">            messageError.append(&quot; for &quot;).append(StringUtil.detectUtf8(searchName.toString()));</span>
         }
         
-<span class="nc bnc" id="L299" title="All 4 branches missed.">        if (searchName instanceof Table &amp;&amp; searchName.getChildCount() &gt; 0) {</span>
+<span class="pc bpc" id="L299" title="3 of 4 branches missed.">        if (searchName instanceof Table &amp;&amp; searchName.getChildCount() &gt; 0) {</span>
 <span class="nc" id="L300">            messageError.append(&quot;, check Network tab for logs&quot;);</span>
         }
         
-<span class="nc" id="L303">        throw new InjectionFailureException(messageError.toString(), e);</span>
+<span class="fc" id="L303">        throw new InjectionFailureException(messageError.toString(), e);</span>
     }
 
     private void sendChunk(String currentChunk) {

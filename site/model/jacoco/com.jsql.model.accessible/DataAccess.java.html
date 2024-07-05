@@ -119,15 +119,15 @@ public class DataAccess {
                 AbstractElementDatabase.MOCK,
                 &quot;metadata&quot;
             );
-<span class="nc" id="L122">        } catch (AbstractSlidingException e) {</span>
-<span class="nc" id="L123">            resultToParse = getPartialResultAndLog(e, resultToParse);</span>
+<span class="fc" id="L122">        } catch (AbstractSlidingException e) {</span>
+<span class="fc" id="L123">            resultToParse = getPartialResultAndLog(e, resultToParse);</span>
 <span class="nc" id="L124">        } catch (Exception e) {  // Catch all exceptions but prevent detecting bug</span>
 <span class="nc" id="L125">            LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage(), e);</span>
-<span class="pc" id="L126">        }</span>
+<span class="fc" id="L126">        }</span>
 
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(resultToParse)) {</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        if (StringUtils.isEmpty(resultToParse)) {</span>
             
-<span class="nc" id="L130">            this.injectionModel.sendResponseFromSite(&quot;Incorrect metadata&quot;, sourcePage[0].trim());</span>
+<span class="fc" id="L130">            this.injectionModel.sendResponseFromSite(&quot;Incorrect metadata&quot;, sourcePage[0].trim());</span>
         }
         
         try {
@@ -145,13 +145,13 @@ public class DataAccess {
             
 <span class="fc" id="L146">            LOGGER.log(LogLevelUtil.CONSOLE_SUCCESS, infos);</span>
             
-<span class="nc" id="L148">        } catch (ArrayIndexOutOfBoundsException e) {</span>
+<span class="fc" id="L148">        } catch (ArrayIndexOutOfBoundsException e) {</span>
 
-<span class="nc" id="L150">            LOGGER.log(</span>
+<span class="fc" id="L150">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L152">                String.format(&quot;%s: %s&quot;, I18nUtil.valueByKey(&quot;LOG_DB_METADATA_INCORRECT&quot;), resultToParse)</span>
+<span class="fc" id="L152">                String.format(&quot;%s: %s&quot;, I18nUtil.valueByKey(&quot;LOG_DB_METADATA_INCORRECT&quot;), resultToParse)</span>
             );
-<span class="nc" id="L154">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, I18nUtil.valueByKey(&quot;LOG_DB_METADATA_WARN&quot;));</span>
+<span class="fc" id="L154">            LOGGER.log(LogLevelUtil.CONSOLE_INFORM, I18nUtil.valueByKey(&quot;LOG_DB_METADATA_WARN&quot;));</span>
 <span class="fc" id="L155">        }</span>
 <span class="fc" id="L156">    }</span>
 
@@ -195,8 +195,8 @@ public class DataAccess {
             )
 <span class="fc" id="L196">            .matcher(resultToParse);</span>
 
-<span class="pc bpc" id="L198" title="1 of 2 branches missed.">        if (!regexSearch.find()) {</span>
-<span class="nc" id="L199">            throw new InjectionFailureException(&quot;No match while injecting databases&quot;);</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        if (!regexSearch.find()) {</span>
+<span class="fc" id="L199">            throw new InjectionFailureException(&quot;No match while injecting databases&quot;);</span>
         }
         
 <span class="fc" id="L202">        regexSearch.reset();</span>
@@ -466,16 +466,16 @@ public class DataAccess {
 
     private static String getPartialResultAndLog(AbstractSlidingException e, String resultToParse) {
 
-<span class="nc" id="L469">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());</span>
+<span class="fc" id="L469">        LOGGER.log(LogLevelUtil.CONSOLE_ERROR, e.getMessage());</span>
 
         // Get pieces of data already retrieved instead of losing them
-<span class="nc bnc" id="L472" title="All 2 branches missed.">        if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {</span>
+<span class="pc bpc" id="L472" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(e.getSlidingWindowAllRows())) {</span>
 <span class="nc" id="L473">            resultToParse = e.getSlidingWindowAllRows();</span>
-<span class="nc bnc" id="L474" title="All 2 branches missed.">        } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
+<span class="pc bpc" id="L474" title="1 of 2 branches missed.">        } else if (StringUtils.isNotEmpty(e.getSlidingWindowCurrentRows())) {</span>
 <span class="nc" id="L475">            resultToParse = e.getSlidingWindowCurrentRows();</span>
         }
 
-<span class="nc" id="L478">        return resultToParse;</span>
+<span class="fc" id="L478">        return resultToParse;</span>
     }
 
     private String[][] getTable(List&lt;String&gt; columnsName, List&lt;List&lt;String&gt;&gt; values) {
