@@ -20,7 +20,7 @@
         </repository>
         <repository>
             <id>sybase-repository</id>
-            <url>http://maven.jumpmind.com/repo/</url>
+            <url>https://maven.jumpmind.com/repo/</url>
         </repository>
         <!--         <repository> -->
         <!--             <id>default</id> -->
