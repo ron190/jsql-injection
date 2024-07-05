@@ -18,6 +18,10 @@
             <id>monetdb-repository</id>
             <url>https://clojars.org/repo/</url>
         </repository>
+        <repository>
+            <id>sybase-repository</id>
+            <url>http://maven.jumpmind.com/repo/</url>
+        </repository>
         <!--         <repository> -->
         <!--             <id>default</id> -->
         <!--             <url>https://repo.maven.apache.org/maven2/</url> -->
@@ -85,6 +89,7 @@
         <sqlite-jdbc.version>3.46.0.0</sqlite-jdbc.version>
         <sqlite-dialect.version>0.1.4</sqlite-dialect.version>
         <stomp-websocket.version>2.3.4</stomp-websocket.version>
+        <sybase-jconn4.version>16.0</sybase-jconn4.version>
     </properties>
 
     <dependencyManagement>
@@ -638,8 +643,12 @@
             <version>${informix.jdbc.version}</version>
             <scope>test</scope>
         </dependency>
-
-
+        <dependency>
+            <groupId>jdbc.sybase</groupId>
+            <artifactId>jconn4</artifactId>
+            <version>${sybase-jconn4.version}</version>
+            <scope>test</scope>
+        </dependency>
         <!--         <dependency> -->
         <!--             <groupId>altibase</groupId> -->
         <!--             <artifactId>altibase-connector-java</artifactId> -->

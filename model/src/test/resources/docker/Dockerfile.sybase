@@ -1,0 +1,3 @@
+FROM ifnazar/sybase_15_7
+
+EXPOSE 5000

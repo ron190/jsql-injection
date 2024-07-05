@@ -431,23 +431,14 @@ public class JdbcRestController {
 // jdbc:ingres://localhost:II7/demodb
 
     // missing maxdb: broken installation
+// no docker
 // jdbc:sapdb://127.0.0.1/MAXDB
 // DBADMIN TEST
 
-    // mckoi: no error on wrong order column
-// java -jar mckoidb.jar -create "admin_user" "aupass00"
-// E:\Dev\mckoi1.0.6>java -cp mckoidb.jar com.mckoi.tools.JDBCQueryTool -url "jdbc:mckoi:local://./db.conf" -u "admin_user" -p "aupass00"
-// java -jar mckoidb.jar
-// jdbc:mckoi://127.0.0.1
-// admin_user aupass00
-
     //nuodb
+// license
 // jdbc:com.nuodb://127.0.0.1/test
 // dba nuodb
-
-    //sybase
-//# jdbc:sybase:Tds:Laptop_Name:5000
-//# sa testtest
 
     // teradata
 //# jdbc:teradata://127.0.0.1

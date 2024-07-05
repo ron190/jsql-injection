@@ -147,5 +147,17 @@ services:
     networks:
       - jsql-network
 
+  sybase:
+    ports:
+      - "5000:5000"
+    build:
+      context: .
+      dockerfile: Dockerfile.sybase
+    container_name: jsql-sybase
+    networks:
+      - jsql-network
+    command: bash /sybase/start
+    hostname: dksybase
+
 networks:
   jsql-network:

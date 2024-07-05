@@ -61,6 +61,7 @@ public class MediatorVendor {
     private final Vendor postgresql;
     private final Vendor sqlite;
     private final Vendor sqlserver;
+    private final Vendor sybase;
 
     private final List<Vendor> vendors;
     
@@ -83,7 +84,6 @@ public class MediatorVendor {
         Vendor netezza = new Vendor(new VendorYaml("netezza.yml", injectionModel));
         Vendor nuodb = new Vendor(new VendorYaml("nuodb.yml", injectionModel));
         Vendor presto = new Vendor(new VendorYaml("presto.yml", injectionModel));
-        Vendor sybase = new Vendor(new VendorYaml("sybase.yml", injectionModel));
         Vendor teradata = new Vendor(new VendorYaml("teradata.yml", injectionModel));
         Vendor vertica = new Vendor(new VendorYaml("vertica.yml", injectionModel));
 
@@ -141,6 +141,7 @@ public class MediatorVendor {
             }
         };
         this.sqlserver = new Vendor(new VendorYaml("sqlserver.yml", injectionModel));
+        this.sybase = new Vendor(new VendorYaml("sybase.yml", injectionModel));
 
         this.vendors = Arrays.asList(
             this.auto,
@@ -173,7 +174,7 @@ public class MediatorVendor {
             presto,
             this.sqlite,
             this.sqlserver,
-            sybase,
+            this.sybase,
             teradata,
             vertica
         );
@@ -380,5 +381,9 @@ public class MediatorVendor {
 
     public Vendor getInformix() {
         return informix;
+    }
+
+    public Vendor getSybase() {
+        return sybase;
     }
 }
