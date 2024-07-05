@@ -2,7 +2,8 @@ package com.test.vendor.sqlite;
 
 import com.jsql.model.accessible.DataAccess;
 import com.test.AbstractTestSuite;
-import org.apache.commons.lang3.StringUtils;
+import org.hibernate.cfg.Environment;
+import spring.SpringTargetApplication;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,11 +18,11 @@ public abstract class ConcreteSqliteSuiteIT extends AbstractTestSuite {
     }
     
     public void config() {
-        
-        // TODO Use same hibernate properties
-        this.jdbcURL = "jdbc:sqlite:jsql-sqlite-its.db";
-        this.jdbcUser = StringUtils.EMPTY;
-        this.jdbcPass = StringUtils.EMPTY;
+
+        this.jdbcURL = SpringTargetApplication.propsSqlite.getProperty(Environment.URL);
+        this.jdbcUser = SpringTargetApplication.propsSqlite.getProperty(Environment.USER);
+        this.jdbcPass = SpringTargetApplication.propsSqlite.getProperty(Environment.PASS);
+
         this.jsqlDatabaseName = "musicstore";
         this.jsqlTableName = "Student";
         this.jsqlColumnName = "Student_Id";

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 
+@SuppressWarnings("java:S2699")
 public class CubridNormalSuiteIT extends ConcreteCubridSuiteIT {
 
     @Override

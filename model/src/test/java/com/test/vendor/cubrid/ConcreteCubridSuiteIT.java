@@ -1,6 +1,8 @@
 package com.test.vendor.cubrid;
 
 import com.test.AbstractTestSuite;
+import org.hibernate.cfg.Environment;
+import spring.SpringTargetApplication;
 
 public abstract class ConcreteCubridSuiteIT extends AbstractTestSuite {
 
@@ -9,10 +11,11 @@ public abstract class ConcreteCubridSuiteIT extends AbstractTestSuite {
     }
 
     public void config() {
-        
-        this.jdbcURL = "jdbc:cubrid:jsql-cubrid:33000:demodb:::";
-        this.jdbcUser = "";
-        this.jdbcPass = "";
+
+        this.jdbcURL = SpringTargetApplication.propsCubrid.getProperty(Environment.URL);
+        this.jdbcUser = SpringTargetApplication.propsCubrid.getProperty(Environment.USER);
+        this.jdbcPass = SpringTargetApplication.propsCubrid.getProperty(Environment.PASS);
+
         this.jsqlDatabaseName = "PUBLIC";
         this.jsqlTableName = "student";
         this.jsqlColumnName = "Student_Id";

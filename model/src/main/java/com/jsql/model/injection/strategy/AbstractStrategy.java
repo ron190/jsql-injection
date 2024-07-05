@@ -24,17 +24,6 @@ public abstract class AbstractStrategy {
     protected static final String FORMAT_CHECKING_STRATEGY = "{} [{}]...";
 
     /**
-     * i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body.
-     */
-    protected String visibleIndex;  // TODO Should be in Normal
-    
-    /**
-     * HTML body of page successfully responding to
-     * multiple fields selection (select 1,2,3,..).
-     */
-    protected String sourceIndexesFound = StringUtils.EMPTY;
-    
-    /**
      * True if injection can be used, false otherwise.
      */
     protected boolean isApplicable = false;
@@ -115,17 +104,5 @@ public abstract class AbstractStrategy {
     
     public void setApplicable(boolean isApplicable) {
         this.isApplicable = isApplicable;
-    }
-    
-    public String getVisibleIndex() {
-        return this.visibleIndex;
-    }
-
-    public void setVisibleIndex(String visibleIndex) {
-        this.visibleIndex = visibleIndex;
-    }
-
-    public void setSourceIndexesFound(String sourceIndexesFound) {
-        this.sourceIndexesFound = sourceIndexesFound;
     }
 }

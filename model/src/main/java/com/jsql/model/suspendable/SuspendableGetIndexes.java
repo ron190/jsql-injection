@@ -76,7 +76,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable {
                 String regexAllIndexes = String.format(VendorYaml.FORMAT_INDEX, "\\d+");
                 if (Pattern.compile("(?s).*"+ regexAllIndexes +".*").matcher(currentCallable.getContent()).matches()) {
                     
-                    this.injectionModel.getMediatorStrategy().getNormal().setSourceIndexesFound(currentCallable.getContent());
+                    this.injectionModel.getMediatorStrategy().getSpecificNormal().setSourceIndexesFound(currentCallable.getContent());
                     initialQuery = currentCallable.getQuery().replace("0%2b1", "1");
                     
                     if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isPerfIndexDisabled()) {

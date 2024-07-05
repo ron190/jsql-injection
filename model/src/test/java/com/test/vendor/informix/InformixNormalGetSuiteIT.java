@@ -1,14 +1,13 @@
-package com.test.vendor.db2;
+package com.test.vendor.informix;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junitpioneer.jupiter.RetryingTest;
 
-@SuppressWarnings("java:S2699")
-public class Db2NormalSuiteIT extends ConcreteDb2SuiteIT {
+public class InformixNormalGetSuiteIT extends ConcreteInformixSuiteIT {
     
     @Override
     public void setupInjection() throws Exception {
@@ -18,49 +17,40 @@ public class Db2NormalSuiteIT extends ConcreteDb2SuiteIT {
 
         model.subscribe(new SystemOutTerminal());
 
-        // Slow fingerprinting => star
         model.getMediatorUtils().getParameterUtil().initializeQueryString(
-            "http://localhost:8080/normal?tenant=db2&name='"
+            "http://localhost:8080/normal?tenant=informix&name='*"
         );
-
-        model
-        .getMediatorUtils()
-        .getPreferencesUtil()
-        .withIsNotSearchingCharInsertion(true)
-        .withIsStrategyBlindDisabled(true)
-        .withIsStrategyStackedDisabled(true)
-        .withIsStrategyMultibitDisabled(true);
-
+        
         model
         .getMediatorUtils()
         .getConnectionUtil()
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getDb2());
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getInformix());
         model.beginInjection();
     }
     
     @Override
-    @RepeatedTest(3)
+    @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }
     
     @Override
-    @RepeatedTest(3)
+    @RetryingTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
     }
     
     @Override
-    @RepeatedTest(3)
+    @RetryingTest(3)
     public void listColumns() throws JSqlException {
         super.listColumns();
     }
     
     @Override
-    @RepeatedTest(3)
+    @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }

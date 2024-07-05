@@ -1,15 +1,17 @@
 package com.test.vendor.hsqldb;
 
 import com.test.AbstractTestSuite;
-import org.apache.commons.lang3.StringUtils;
+import org.hibernate.cfg.Environment;
+import spring.SpringTargetApplication;
 
 public abstract class ConcreteHsqldbSuiteIT extends AbstractTestSuite {
 
     public ConcreteHsqldbSuiteIT() {
-        
-        this.jdbcURL = "jdbc:hsqldb:hsql://127.0.0.1:9002/mainDb";
-        this.jdbcUser = "sa";
-        this.jdbcPass = StringUtils.EMPTY;
+
+        this.jdbcURL = SpringTargetApplication.propsHsqldb.getProperty(Environment.URL);
+        this.jdbcUser = SpringTargetApplication.propsHsqldb.getProperty(Environment.USER);
+        this.jdbcPass = SpringTargetApplication.propsHsqldb.getProperty(Environment.PASS);
+
         this.jsqlDatabaseName = "PUBLIC";
         this.jsqlTableName = "STUDENT";
         this.jsqlColumnName = "STUDENT_ID";

@@ -54,6 +54,7 @@
         <groovy-test-junit5.version>4.0.13</groovy-test-junit5.version>
         <h2.version>2.2.224</h2.version>
         <hsqldb.version>2.7.3</hsqldb.version>
+        <informix.jdbc.version>4.50.10.2</informix.jdbc.version>
         <javafaker.version>1.0.2</javafaker.version>
         <jaxb-api.version>2.1</jaxb-api.version>
         <jaybird.version>5.0.5.java11</jaybird.version>
@@ -65,6 +66,7 @@
         <junit-pioneer.version>2.2.0</junit-pioneer.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
         <maven-failsafe-plugin.version>3.3.0</maven-failsafe-plugin.version>
+        <mckoisqldb.version>1.0.5</mckoisqldb.version>
         <mimjdbc.version>3.42.3</mimjdbc.version>
         <monetdb-jdbc.version>2.29</monetdb-jdbc.version>
         <mssql-jdbc.version>12.4.2.jre8</mssql-jdbc.version>
@@ -627,9 +629,16 @@
         <dependency>
             <groupId>com.mckoi</groupId>
             <artifactId>mckoisqldb</artifactId>
-            <version>1.0.5</version>
+            <version>${mckoisqldb.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.ibm.informix</groupId>
+            <artifactId>jdbc</artifactId>
+            <version>${informix.jdbc.version}</version>
+            <scope>test</scope>
+        </dependency>
+
 
         <!--         <dependency> -->
         <!--             <groupId>altibase</groupId> -->

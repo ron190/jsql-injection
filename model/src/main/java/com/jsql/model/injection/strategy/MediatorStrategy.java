@@ -88,7 +88,7 @@ public class MediatorStrategy {
                     InjectionModel.STAR,
                     this.encodePath(
                         this.injectionModel.getIndexesInUrl().replaceAll(
-                            String.format(VendorYaml.FORMAT_INDEX, this.normal.getVisibleIndex()),
+                            String.format(VendorYaml.FORMAT_INDEX, this.getSpecificNormal().getVisibleIndex()),
                             Matcher.quoteReplacement(sqlTrail)  // Oracle column can contain regex char $ => quoteReplacement()
                         )
                     )
@@ -227,6 +227,10 @@ public class MediatorStrategy {
 
     public AbstractStrategy getNormal() {
         return this.normal;
+    }
+
+    public StrategyInjectionNormal getSpecificNormal() {
+        return (StrategyInjectionNormal) this.normal;
     }
 
     public StrategyInjectionError getError() {

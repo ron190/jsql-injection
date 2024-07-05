@@ -1,14 +1,17 @@
 package com.test.vendor.firebird;
 
 import com.test.AbstractTestSuite;
+import org.hibernate.cfg.Environment;
+import spring.SpringTargetApplication;
 
 public abstract class ConcreteFirebirdSuiteIT extends AbstractTestSuite {
 
     public ConcreteFirebirdSuiteIT() {
 
-        this.jdbcURL = "jdbc:firebirdsql://jsql-firebird//firebird/data/EMPLOYEE.FDB?defaultHoldable";  // defaultHoldable: allows multiple queries
-        this.jdbcUser = "sysdba2";
-        this.jdbcPass = "test";
+        this.jdbcURL = SpringTargetApplication.propsFirebird.getProperty(Environment.URL);
+        this.jdbcUser = SpringTargetApplication.propsFirebird.getProperty(Environment.USER);
+        this.jdbcPass = SpringTargetApplication.propsFirebird.getProperty(Environment.PASS);
+
         this.jsqlDatabaseName = "ADMIN";
         this.jsqlTableName = "STUDENT";
         this.jsqlColumnName = "FIRST_NAME";

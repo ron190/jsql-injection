@@ -1,6 +1,8 @@
 package com.test.vendor.mysql;
 
 import com.test.AbstractTestSuite;
+import org.hibernate.cfg.Environment;
+import spring.SpringTargetApplication;
 
 public abstract class ConcreteMySqlSuiteIT extends AbstractTestSuite {
 
@@ -9,10 +11,11 @@ public abstract class ConcreteMySqlSuiteIT extends AbstractTestSuite {
     }
     
     public void config() {
-        
-        this.jdbcURL = "jdbc:mysql://jsql-mysql/musicstore";
-        this.jdbcUser = "root";
-        this.jdbcPass = "my-secret-pw";
+
+        this.jdbcURL = SpringTargetApplication.propsMysql.getProperty(Environment.URL);
+        this.jdbcUser = SpringTargetApplication.propsMysql.getProperty(Environment.USER);
+        this.jdbcPass = SpringTargetApplication.propsMysql.getProperty(Environment.PASS);
+
         this.jsqlDatabaseName = "musicstore";
         this.jsqlTableName = "Student";
         this.jsqlColumnName = "Student_Id";

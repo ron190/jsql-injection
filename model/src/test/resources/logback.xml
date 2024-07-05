@@ -12,4 +12,6 @@
     <!-- Disable massive SQL error logging during injection -->
     <!-- Detailed Exception must also be in try/catch -->
     <logger name="org.hibernate" level="OFF" additivity="false" />
+    <!-- Hide informix warnings about selected database and transactions -->
+    <logger name="com.mchange.v2.c3p0.SQLWarnings" level="OFF" additivity="false" />
 </configuration>

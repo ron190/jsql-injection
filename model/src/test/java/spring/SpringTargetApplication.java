@@ -73,6 +73,7 @@ public class SpringTargetApplication {
     public static final Properties propsHsqldb = new Properties();
     public static final Properties propsDerby = new Properties();
     public static final Properties propsFirebird = new Properties();
+    public static final Properties propsInformix = new Properties();
 
     static {
         
@@ -89,7 +90,8 @@ public class SpringTargetApplication {
             new SimpleEntry<>(propsDb2, "hibernate/hibernate.db2.properties"),
             new SimpleEntry<>(propsHsqldb, "hibernate/hibernate.hsqldb.properties"),
             new SimpleEntry<>(propsDerby, "hibernate/hibernate.derby.properties"),
-            new SimpleEntry<>(propsFirebird, "hibernate/hibernate.firebird.properties")
+            new SimpleEntry<>(propsFirebird, "hibernate/hibernate.firebird.properties"),
+            new SimpleEntry<>(propsInformix, "hibernate/hibernate.informix.properties")
         )
         .forEach(simpleEntry -> {
             try (InputStream inputStream = classloader.getResourceAsStream(simpleEntry.getValue())) {
@@ -120,7 +122,8 @@ public class SpringTargetApplication {
                 SpringTargetApplication.propsDb2,
                 SpringTargetApplication.propsHsqldb,
                 SpringTargetApplication.propsDerby,
-                SpringTargetApplication.propsFirebird
+                SpringTargetApplication.propsFirebird,
+                SpringTargetApplication.propsInformix
             )
         );
         

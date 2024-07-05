@@ -1,14 +1,17 @@
 package com.test.vendor.derby;
 
 import com.test.AbstractTestSuite;
+import org.hibernate.cfg.Environment;
+import spring.SpringTargetApplication;
 
 public abstract class ConcreteDerbySuiteIT extends AbstractTestSuite {
 
     public ConcreteDerbySuiteIT() {
-        
-        this.jdbcURL = "jdbc:derby://127.0.0.1:1527/memory:testdb";
-        this.jdbcUser = "admin";
-        this.jdbcPass = "admin";
+
+        this.jdbcURL = SpringTargetApplication.propsDerby.getProperty(Environment.URL);
+        this.jdbcUser = SpringTargetApplication.propsDerby.getProperty(Environment.USER);
+        this.jdbcPass = SpringTargetApplication.propsDerby.getProperty(Environment.PASS);
+
         this.jsqlDatabaseName = "ADMIN";
         this.jsqlTableName = "STUDENT";
         this.jsqlColumnName = "FIRST_NAME";

@@ -18,3 +18,4 @@ derby.log
 pom.xml.versionsBackup
 model/src/test/resources/jdbc/
 model/data
+data/

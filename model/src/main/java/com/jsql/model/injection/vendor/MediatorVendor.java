@@ -51,6 +51,7 @@ public class MediatorVendor {
     private final Vendor firebird;
     private final Vendor h2;
     private final Vendor hsqldb;
+    private final Vendor informix;
     private final Vendor mckoi;
     private final Vendor mimer;
     private final Vendor monetdb;
@@ -76,7 +77,6 @@ public class MediatorVendor {
         Vendor exasol = new Vendor(new VendorYaml("exasol.yml", injectionModel));
         Vendor frontbase = new Vendor(new VendorYaml("frontbase.yml", injectionModel));
         Vendor hana = new Vendor(new VendorYaml("hana.yml", injectionModel));
-        Vendor informix = new Vendor(new VendorYaml("informix.yml", injectionModel));
         Vendor ingres = new Vendor(new VendorYaml("ingres.yml", injectionModel));
         Vendor iris = new Vendor(new VendorYaml("iris.yml", injectionModel));
         Vendor maxdb = new Vendor(new VendorYaml("maxdb.yml", injectionModel));
@@ -94,6 +94,7 @@ public class MediatorVendor {
         this.firebird = new Vendor(new VendorYaml("firebird.yml", injectionModel));
         this.h2 = new Vendor(new VendorYaml("h2.yml", injectionModel));
         this.hsqldb = new Vendor(new VendorYaml("hsqldb.yml", injectionModel));
+        this.informix = new Vendor(new VendorYaml("informix.yml", injectionModel));
         this.mckoi = new Vendor(new VendorYaml("mckoi.yml", injectionModel));
         this.mimer = new Vendor(new VendorYaml("mimersql.yml", injectionModel));
         this.monetdb = new Vendor(new VendorYaml("monetdb.yml", injectionModel));
@@ -156,7 +157,7 @@ public class MediatorVendor {
             this.h2,
             hana,
             this.hsqldb,
-            informix,
+            this.informix,
             ingres,
             iris,
             maxdb,
@@ -375,5 +376,9 @@ public class MediatorVendor {
 
     public Vendor getMckoi() {
         return mckoi;
+    }
+
+    public Vendor getInformix() {
+        return informix;
     }
 }

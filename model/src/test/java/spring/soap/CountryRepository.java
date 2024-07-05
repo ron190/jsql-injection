@@ -37,7 +37,6 @@ public class CountryRepository {
 
         Session session = this.sessionFactory.getCurrentSession();
 
-        // TODO Decode XML invalid chars
         String nameUrlDecoded = URLDecoder.decode(name, StandardCharsets.UTF_8);
 
         try {
@@ -48,7 +47,6 @@ public class CountryRepository {
             
             List<Object> results = query.getResultList();
 
-            // TODO Encode XML invalid chars
             country.setName(URLEncoder.encode(
                 TEMPLATE + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results)),
                 StandardCharsets.UTF_8

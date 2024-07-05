@@ -30,7 +30,8 @@ public class MasterService {
                 SpringTargetApplication.propsDb2,
                 SpringTargetApplication.propsHsqldb,
                 SpringTargetApplication.propsDerby,
-                SpringTargetApplication.propsFirebird
+                SpringTargetApplication.propsFirebird,
+                SpringTargetApplication.propsInformix
             )
         );
         

@@ -1,14 +1,17 @@
 package com.test.vendor.sqlserver;
 
 import com.test.AbstractTestSuite;
+import org.hibernate.cfg.Environment;
+import spring.SpringTargetApplication;
 
 public abstract class ConcreteSqlServerSuiteIT extends AbstractTestSuite {
 
     public ConcreteSqlServerSuiteIT() {
-        
-        this.jdbcURL = "jdbc:sqlserver://jsql-sqlserver:1433;trustServerCertificate=true";
-        this.jdbcUser = "sa";
-        this.jdbcPass = "yourStrong(!)Password";
+
+        this.jdbcURL = SpringTargetApplication.propsSqlServer.getProperty(Environment.URL);
+        this.jdbcUser = SpringTargetApplication.propsSqlServer.getProperty(Environment.USER);
+        this.jdbcPass = SpringTargetApplication.propsSqlServer.getProperty(Environment.PASS);
+
         this.jsqlDatabaseName = "master";
         this.jsqlTableName = "student";
         this.jsqlColumnName = "Student_Id";

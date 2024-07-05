@@ -317,7 +317,7 @@ public class VendorYaml implements AbstractVendor {
 
         String visibleIndex = String.format(
             VendorYaml.FORMAT_INDEX,
-            this.injectionModel.getMediatorStrategy().getNormal().getVisibleIndex()
+            this.injectionModel.getMediatorStrategy().getSpecificNormal().getVisibleIndex()
         );
 
         return this.injectionModel.getIndexesInUrl()

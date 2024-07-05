@@ -121,7 +121,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
      */
     public void resetModel() {
         
-        this.mediatorStrategy.getNormal().setVisibleIndex(null);
+        this.mediatorStrategy.getSpecificNormal().setVisibleIndex(null);
         
         this.mediatorStrategy.getNormal().setApplicable(false);
         this.mediatorStrategy.getError().setApplicable(false);
@@ -595,7 +595,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             // Concat indexes found for Normal strategy to params
             // and use visible Index for injection
             query = paramLead + this.indexesInUrl.replaceAll(
-                String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getNormal().getVisibleIndex()),
+                String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificNormal().getVisibleIndex()),
                 // Oracle column often contains $, which is reserved for regex.
                 // => need to be escape with quoteReplacement()
                 Matcher.quoteReplacement(sqlTrail)
@@ -627,7 +627,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             query = paramLead.replace(
                 InjectionModel.STAR,
                 this.indexesInUrl.replace(
-                    String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getNormal().getVisibleIndex()),
+                    String.format(VendorYaml.FORMAT_INDEX, this.mediatorStrategy.getSpecificNormal().getVisibleIndex()),
                     sqlTrail
                 )
                 + this.mediatorVendor.getVendor().instance().endingComment()

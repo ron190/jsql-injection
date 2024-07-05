@@ -135,5 +135,17 @@ services:
     networks:
       - jsql-network
 
+  informix:
+    ports:
+      - "9088:9088"
+    build:
+      context: .
+      dockerfile: Dockerfile.informix
+    environment:
+      LICENSE: accept
+    container_name: jsql-informix
+    networks:
+      - jsql-network
+
 networks:
   jsql-network:

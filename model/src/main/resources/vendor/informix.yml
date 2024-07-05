@@ -25,8 +25,8 @@ resource:
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-           (select distinct name from sysdatabases) t,
-           (select distinct name from sysdatabases) t1
+           (select distinct name from sysmaster:informix.sysdatabases) t,
+           (select distinct name from sysmaster:informix.sysdatabases) t1
        where t.name >= t1.name
        group by 1
        ${limit}
@@ -44,8 +44,8 @@ resource:
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-           (select distinct tabname from ${database}:systables) t,
-           (select distinct tabname from ${database}:systables) t1
+           (select distinct tabname from ${database}:informix.systables) t,
+           (select distinct tabname from ${database}:informix.systables) t1
        where t.tabname >= t1.tabname
        group by 1
        ${limit}
@@ -63,8 +63,8 @@ resource:
            || '${separator_qte_sql}0${enclose_value_sql}'
            rr
        from
-           (select distinct colname from ${database}:syscolumns c join ${database}:systables t on c.tabid = t.tabid where tabname = '${table}') t,
-           (select distinct colname from ${database}:syscolumns c join ${database}:systables t on c.tabid = t.tabid where tabname = '${table}') t1
+           (select distinct colname from ${database}:informix.syscolumns c join ${database}:informix.systables t on c.tabid = t.tabid where tabname = '${table}') t,
+           (select distinct colname from ${database}:informix.syscolumns c join ${database}:informix.systables t on c.tabid = t.tabid where tabname = '${table}') t1
        where t.colname >= t1.colname
        group by 1
        ${limit}

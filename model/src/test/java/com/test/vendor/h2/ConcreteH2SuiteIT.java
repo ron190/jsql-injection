@@ -1,15 +1,17 @@
 package com.test.vendor.h2;
 
 import com.test.AbstractTestSuite;
-import org.apache.commons.lang3.StringUtils;
+import org.hibernate.cfg.Environment;
+import spring.SpringTargetApplication;
 
 public abstract class ConcreteH2SuiteIT extends AbstractTestSuite {
 
     public ConcreteH2SuiteIT() {
-        
-        this.jdbcURL = "jdbc:h2:tcp://127.0.0.1/mem:public;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;";
-        this.jdbcUser = "sa";
-        this.jdbcPass = StringUtils.EMPTY;
+
+        this.jdbcURL = SpringTargetApplication.propsH2.getProperty(Environment.URL);
+        this.jdbcUser = SpringTargetApplication.propsH2.getProperty(Environment.USER);
+        this.jdbcPass = SpringTargetApplication.propsH2.getProperty(Environment.PASS);
+
         this.jsqlDatabaseName = "PUBLIC";
         this.jsqlTableName = "STUDENT";
         this.jsqlColumnName = "STUDENT_ID";

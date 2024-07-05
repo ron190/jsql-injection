@@ -412,7 +412,7 @@ public class JdbcRestController {
         return greeting;
     }
     
-    // TODO
+
     // missing cockroachdb: docker fails
 // docker pull cockroachdb/cockroach:beta-20170406
 // docker network create -d bridge roachnet
@@ -426,9 +426,6 @@ public class JdbcRestController {
     // missing hana: docker fails 13.9GB image
 // jdbc:sap://127.0.0.1:30115
 // XSA_ADMIN 1anaHEXH
-
-    // missing informix: services but no connection
-// jdbc:informix-sqli://fe80::1125:78c0:ef17:8ab5:7360:user=informix;password=test;INFORMIXSERVER=ol_informix1210_2
 
     // missing ingress: missing services
 // jdbc:ingres://localhost:II7/demodb

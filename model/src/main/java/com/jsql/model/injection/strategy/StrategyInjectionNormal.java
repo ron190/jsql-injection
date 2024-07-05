@@ -27,6 +27,17 @@ public class StrategyInjectionNormal extends AbstractStrategy {
      */
     private static final Logger LOGGER = LogManager.getRootLogger();
 
+    /**
+     * i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body.
+     */
+    protected String visibleIndex;
+
+    /**
+     * HTML body of page successfully responding to
+     * multiple fields selection (select 1,2,3,..).
+     */
+    protected String sourceIndexesFound = StringUtils.EMPTY;
+
     private String performanceLength = "0";
     
     public StrategyInjectionNormal(InjectionModel injectionModel) {
@@ -213,5 +224,17 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     @Override
     public String getName() {
         return "Normal";
+    }
+
+    public String getVisibleIndex() {
+        return this.visibleIndex;
+    }
+
+    public void setVisibleIndex(String visibleIndex) {
+        this.visibleIndex = visibleIndex;
+    }
+
+    public void setSourceIndexesFound(String sourceIndexesFound) {
+        this.sourceIndexesFound = sourceIndexesFound;
     }
 }
