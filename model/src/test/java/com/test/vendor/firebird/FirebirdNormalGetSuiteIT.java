@@ -5,7 +5,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junitpioneer.jupiter.RetryingTest;
 
 public class FirebirdNormalGetSuiteIT extends ConcreteFirebirdSuiteIT {
     
@@ -32,25 +32,25 @@ public class FirebirdNormalGetSuiteIT extends ConcreteFirebirdSuiteIT {
     }
     
     @Override
-    @RepeatedTest(3)
+    @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
     }
     
     @Override
-    @RepeatedTest(3)
+    @RetryingTest(3)
     public void listTables() throws JSqlException {
         super.listTables();
     }
     
     @Override
-    @RepeatedTest(3)
+    @RetryingTest(3)
     public void listColumns() throws JSqlException {
         super.listColumns();
     }
     
     @Override
-    @RepeatedTest(3)
+    @RetryingTest(3)
     public void listValues() throws JSqlException {
         super.listValues();
     }
