@@ -42,138 +42,143 @@ public class StrategyInjectionStacked extends AbstractStrategy {
 <span class="fc" id="L42">        var strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();</span>
 <span class="fc" id="L43">        var configurationYaml = strategyYaml.getConfiguration();</span>
 
-<span class="fc" id="L45">        LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;{} {}...&quot;, () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING_STRATEGY&quot;), this::getName);</span>
+<span class="fc" id="L45">        LOGGER.log(</span>
+            LogLevelUtil.CONSOLE_DEFAULT,
+            AbstractStrategy.FORMAT_CHECKING_STRATEGY,
+<span class="fc" id="L48">            () -&gt; I18nUtil.valueByKey(&quot;LOG_CHECKING_STRATEGY&quot;),</span>
+            this::getName
+        );
 
-<span class="fc" id="L47">        boolean methodIsApplicable = this.isApplicable(configurationYaml, strategyYaml.getStacked());</span>
+<span class="fc" id="L52">        boolean methodIsApplicable = this.isApplicable(configurationYaml, strategyYaml.getStacked());</span>
 
-<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (methodIsApplicable) {</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (methodIsApplicable) {</span>
 
-<span class="fc" id="L51">            Matcher regexSearch = this.getPerformance(configurationYaml, strategyYaml.getStacked());</span>
+<span class="fc" id="L56">            Matcher regexSearch = this.getPerformance(configurationYaml, strategyYaml.getStacked());</span>
 
-<span class="pc bpc" id="L53" title="1 of 2 branches missed.">            if (!regexSearch.find()) {</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">            if (!regexSearch.find()) {</span>
 
-<span class="nc" id="L55">                LOGGER.log(</span>
+<span class="nc" id="L60">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_ERROR,
                     &quot;{} {} but injectable size is incorrect&quot;,
-<span class="nc" id="L58">                    () -&gt; I18nUtil.valueByKey(&quot;LOG_VULNERABLE&quot;),</span>
-<span class="nc" id="L59">                    () -&gt; &quot;Stacked&quot;</span>
+<span class="nc" id="L63">                    () -&gt; I18nUtil.valueByKey(&quot;LOG_VULNERABLE&quot;),</span>
+<span class="nc" id="L64">                    () -&gt; &quot;Stacked&quot;</span>
                 );
 
-<span class="nc" id="L62">                methodIsApplicable = false;</span>
+<span class="nc" id="L67">                methodIsApplicable = false;</span>
             } else {
-<span class="fc" id="L64">                this.performanceLength = &quot;&quot; + regexSearch.group(1).length();</span>
+<span class="fc" id="L69">                this.performanceLength = &quot;&quot; + regexSearch.group(1).length();</span>
             }
         }
 
-<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (methodIsApplicable) {</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (methodIsApplicable) {</span>
 
-<span class="fc" id="L70">            LOGGER.log(</span>
+<span class="fc" id="L75">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_SUCCESS,
                 &quot;{} Stacked injection using [{}] characters&quot;,
-<span class="fc" id="L73">                () -&gt; I18nUtil.valueByKey(&quot;LOG_VULNERABLE&quot;),</span>
-<span class="fc" id="L74">                () -&gt; this.performanceLength</span>
+<span class="fc" id="L78">                () -&gt; I18nUtil.valueByKey(&quot;LOG_VULNERABLE&quot;),</span>
+<span class="fc" id="L79">                () -&gt; this.performanceLength</span>
             );
 
-<span class="fc" id="L77">            this.allow();</span>
+<span class="fc" id="L82">            this.allow();</span>
 
         } else {
-<span class="fc" id="L80">            this.unallow();</span>
+<span class="fc" id="L85">            this.unallow();</span>
         }
-<span class="fc" id="L82">    }</span>
+<span class="fc" id="L87">    }</span>
 
     private boolean isApplicable(Configuration configurationYaml, String stacked) {
         
-<span class="fc" id="L86">        var methodIsApplicable = false;</span>
-<span class="fc" id="L87">        var indexZeroToFind = &quot;0&quot;;</span>
+<span class="fc" id="L91">        var methodIsApplicable = false;</span>
+<span class="fc" id="L92">        var indexZeroToFind = &quot;0&quot;;</span>
       
-<span class="fc" id="L89">        String performanceSourcePage = this.injectionModel.injectWithoutIndex(</span>
-<span class="fc" id="L90">            VendorYaml.replaceTags(</span>
+<span class="fc" id="L94">        String performanceSourcePage = this.injectionModel.injectWithoutIndex(</span>
+<span class="fc" id="L95">            VendorYaml.replaceTags(</span>
                 stacked
-<span class="fc" id="L92">                .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())</span>
-<span class="fc" id="L93">                .replace(VendorYaml.INJECTION, configurationYaml.getFailsafe().replace(VendorYaml.INDICE,indexZeroToFind))</span>
-<span class="fc" id="L94">                .replace(VendorYaml.WINDOW_CHAR, &quot;1&quot;)</span>
-<span class="fc" id="L95">                .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)</span>
+<span class="fc" id="L97">                .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())</span>
+<span class="fc" id="L98">                .replace(VendorYaml.INJECTION, configurationYaml.getFailsafe().replace(VendorYaml.INDICE,indexZeroToFind))</span>
+<span class="fc" id="L99">                .replace(VendorYaml.WINDOW_CHAR, &quot;1&quot;)</span>
+<span class="fc" id="L100">                .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)</span>
             ),
             &quot;stacked#confirm&quot;
         );
    
-<span class="fc" id="L100">        String regexIndexZero = String.format(VendorYaml.FORMAT_INDEX, indexZeroToFind);</span>
-<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (performanceSourcePage.matches(&quot;(?s).*&quot;+ regexIndexZero +&quot;.*&quot;)) {</span>
-<span class="fc" id="L102">            methodIsApplicable = true;</span>
-<span class="fc" id="L103">            this.isApplicable = true;</span>
+<span class="fc" id="L105">        String regexIndexZero = String.format(VendorYaml.FORMAT_INDEX, indexZeroToFind);</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (performanceSourcePage.matches(&quot;(?s).*&quot;+ regexIndexZero +&quot;.*&quot;)) {</span>
+<span class="fc" id="L107">            methodIsApplicable = true;</span>
+<span class="fc" id="L108">            this.isApplicable = true;</span>
         }
         
-<span class="fc" id="L106">        return methodIsApplicable;</span>
+<span class="fc" id="L111">        return methodIsApplicable;</span>
     }
 
     private Matcher getPerformance(Configuration configurationYaml, String stacked) {
         
-<span class="fc" id="L111">        String performanceSourcePage = this.injectionModel.injectWithoutIndex(</span>
-<span class="fc" id="L112">            VendorYaml.replaceTags(</span>
+<span class="fc" id="L116">        String performanceSourcePage = this.injectionModel.injectWithoutIndex(</span>
+<span class="fc" id="L117">            VendorYaml.replaceTags(</span>
                 stacked
-<span class="fc" id="L114">                .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())</span>
-<span class="fc" id="L115">                .replace(VendorYaml.INJECTION, configurationYaml.getCalibrator())</span>
-<span class="fc" id="L116">                .replace(VendorYaml.WINDOW_CHAR, &quot;1&quot;)</span>
-<span class="fc" id="L117">                .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)</span>
+<span class="fc" id="L119">                .replace(VendorYaml.WINDOW, configurationYaml.getSlidingWindow())</span>
+<span class="fc" id="L120">                .replace(VendorYaml.INJECTION, configurationYaml.getCalibrator())</span>
+<span class="fc" id="L121">                .replace(VendorYaml.WINDOW_CHAR, &quot;1&quot;)</span>
+<span class="fc" id="L122">                .replace(VendorYaml.CAPACITY, VendorYaml.DEFAULT_CAPACITY)</span>
             ),
             &quot;stacked#size&quot;
         );
         
-<span class="fc" id="L122">        return Pattern.compile(&quot;(?s)&quot;+ DataAccess.LEAD +&quot;(#+)&quot;).matcher(performanceSourcePage);</span>
+<span class="fc" id="L127">        return Pattern.compile(&quot;(?s)&quot;+ DataAccess.LEAD +&quot;(#+)&quot;).matcher(performanceSourcePage);</span>
     }
 
     @Override
     public void allow(int... i) {
 
-<span class="fc" id="L128">        this.injectionModel.appendAnalysisReport(</span>
-<span class="fc" id="L129">            &quot;&lt;span style=color:rgb(0,0,255)&gt;### Strategy: &quot; + getName() + &quot;&lt;/span&gt;&quot;</span>
-<span class="fc" id="L130">            + this.injectionModel.getReportWithoutIndex(</span>
-<span class="fc" id="L131">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked(&quot;&lt;span style=color:rgb(0,128,0)&gt;&amp;lt;query&amp;gt;&lt;/span&gt;&quot;, &quot;0&quot;, true),</span>
+<span class="fc" id="L133">        this.injectionModel.appendAnalysisReport(</span>
+<span class="fc" id="L134">            &quot;&lt;span style=color:rgb(0,0,255)&gt;### Strategy: &quot; + getName() + &quot;&lt;/span&gt;&quot;</span>
+<span class="fc" id="L135">            + this.injectionModel.getReportWithoutIndex(</span>
+<span class="fc" id="L136">                this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked(&quot;&lt;span style=color:rgb(0,128,0)&gt;&amp;lt;query&amp;gt;&lt;/span&gt;&quot;, &quot;0&quot;, true),</span>
                 &quot;metadataInjectionProcess&quot;
             )
         );
-<span class="fc" id="L135">        this.markVulnerability(Interaction.MARK_STACKED_VULNERABLE);</span>
-<span class="fc" id="L136">    }</span>
-
-    @Override
-    public void unallow(int... i) {
-<span class="fc" id="L140">        this.markVulnerability(Interaction.MARK_STACKED_INVULNERABLE);</span>
+<span class="fc" id="L140">        this.markVulnerability(Interaction.MARK_STACKED_VULNERABLE);</span>
 <span class="fc" id="L141">    }</span>
 
     @Override
+    public void unallow(int... i) {
+<span class="fc" id="L145">        this.markVulnerability(Interaction.MARK_STACKED_INVULNERABLE);</span>
+<span class="fc" id="L146">    }</span>
+
+    @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable, String metadataInjectionProcess) {
-<span class="fc" id="L145">        return this.injectionModel.injectWithoutIndex(</span>
-<span class="fc" id="L146">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked(sqlQuery, startPosition, false),</span>
+<span class="fc" id="L150">        return this.injectionModel.injectWithoutIndex(</span>
+<span class="fc" id="L151">            this.injectionModel.getMediatorVendor().getVendor().instance().sqlStacked(sqlQuery, startPosition, false),</span>
             metadataInjectionProcess
         );
     }
 
     @Override
     public void activateWhenApplicable() {
-<span class="fc bfc" id="L153" title="All 4 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
+<span class="fc bfc" id="L158" title="All 4 branches covered.">        if (this.injectionModel.getMediatorStrategy().getStrategy() == null &amp;&amp; this.isApplicable()) {</span>
 
-<span class="fc" id="L155">            LOGGER.log(</span>
+<span class="fc" id="L160">            LOGGER.log(</span>
                 LogLevelUtil.CONSOLE_INFORM,
                 &quot;{} [{}]&quot;,
-<span class="fc" id="L158">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
+<span class="fc" id="L163">                () -&gt; I18nUtil.valueByKey(&quot;LOG_USING_STRATEGY&quot;),</span>
                 this::getName
             );
-<span class="fc" id="L161">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getStacked());</span>
+<span class="fc" id="L166">            this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getStacked());</span>
 
-<span class="fc" id="L163">            var request = new Request();</span>
-<span class="fc" id="L164">            request.setMessage(Interaction.MARK_STACKED_STRATEGY);</span>
-<span class="fc" id="L165">            this.injectionModel.sendToViews(request);</span>
+<span class="fc" id="L168">            var request = new Request();</span>
+<span class="fc" id="L169">            request.setMessage(Interaction.MARK_STACKED_STRATEGY);</span>
+<span class="fc" id="L170">            this.injectionModel.sendToViews(request);</span>
         }
-<span class="fc" id="L167">    }</span>
+<span class="fc" id="L172">    }</span>
 
     @Override
     public String getPerformanceLength() {
-<span class="fc" id="L171">        return this.performanceLength;</span>
+<span class="fc" id="L176">        return this.performanceLength;</span>
     }
 
     @Override
     public String getName() {
-<span class="fc" id="L176">        return &quot;Stacked&quot;;</span>
+<span class="fc" id="L181">        return &quot;Stacked&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

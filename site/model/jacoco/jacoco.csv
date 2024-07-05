@@ -12,19 +12,19 @@ model,com.jsql.model.accessible,CallableHttpHead,62,142,2,2,12,40,3,6,1,6
 model,com.jsql.model.accessible,DataAccess,186,787,9,19,45,153,11,18,4,11
 model,com.jsql.model.accessible,ResourceAccess,639,1333,49,71,146,284,53,47,15,25
 model,com.jsql.model.accessible,CallableFile,26,84,4,0,8,19,2,6,0,6
-model,com.jsql.model.injection.strategy,StrategyInjectionTime,10,251,1,13,3,56,2,21,1,15
+model,com.jsql.model.injection.strategy,StrategyInjectionTime,10,267,1,13,3,58,2,23,1,17
 model,com.jsql.model.injection.strategy,AbstractStrategy,0,84,0,2,0,24,0,9,0,8
 model,com.jsql.model.injection.strategy,MediatorStrategy,3,445,2,24,1,99,3,25,1,14
 model,com.jsql.model.injection.strategy,StrategyInjectionMultibit,0,197,0,8,0,40,0,16,0,12
-model,com.jsql.model.injection.strategy,StrategyInjectionError,31,396,1,21,7,88,4,27,3,17
-model,com.jsql.model.injection.strategy,StrategyInjectionBlind,0,261,0,14,0,59,0,23,0,16
-model,com.jsql.model.injection.strategy,StrategyInjectionNormal,7,422,3,21,2,70,3,25,0,16
-model,com.jsql.model.injection.strategy,StrategyInjectionStacked,22,283,1,13,4,63,3,21,2,15
+model,com.jsql.model.injection.strategy,StrategyInjectionError,31,401,1,21,7,89,4,27,3,17
+model,com.jsql.model.injection.strategy,StrategyInjectionBlind,0,277,0,14,0,61,0,25,0,18
+model,com.jsql.model.injection.strategy,StrategyInjectionNormal,7,422,3,21,2,71,3,25,0,16
+model,com.jsql.model.injection.strategy,StrategyInjectionStacked,22,283,1,13,4,64,3,21,2,15
 model,com.jsql.model,AbstractModelObservable,0,66,0,0,0,13,0,10,0,10
 model,com.jsql.model,InjectionModel,177,1279,18,68,41,289,20,61,7,31
 model,com.jsql.model,MediatorUtils,6,137,0,0,2,59,2,39,2,39
 model,com.jsql.model.injection.vendor,MediatorVendor.new Vendor() {...},0,85,2,6,0,17,2,4,0,2
-model,com.jsql.model.injection.vendor,MediatorVendor,6,857,0,12,2,116,2,39,2,33
+model,com.jsql.model.injection.vendor,MediatorVendor,6,849,0,12,2,116,2,40,2,34
 model,com.jsql.util.tampering,TamperingType,6,106,0,0,2,19,0,3,0,3
 model,com.jsql.util.tampering,ModelYamlTampering,9,22,0,0,3,10,3,6,3,6
 model,com.jsql.model.exception,LoopDetectedSlidingException,6,0,0,0,2,0,1,0,1,0
@@ -115,7 +115,7 @@ model,com.jsql.util.bruter,ActionCoder,254,0,0,0,40,0,4,0,4,0
 model,com.jsql.model.suspendable,SuspendableGetRows,121,623,21,33,33,151,17,28,1,17
 model,com.jsql.model.suspendable,SuspendableGetIndexes,43,133,3,9,10,28,3,7,0,4
 model,com.jsql.model.suspendable,AbstractSuspendable,21,42,3,3,8,16,5,6,2,6
-model,com.jsql.model.suspendable,SuspendableGetCharInsertion,53,529,4,38,11,120,6,35,2,18
+model,com.jsql.model.suspendable,SuspendableGetCharInsertion,73,509,9,33,15,116,9,32,2,18
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5

@@ -287,7 +287,7 @@
 <a class="jxr_linenumber" name="L279" href="#L279">279</a>         <strong class="jxr_keyword">var</strong> request = <strong class="jxr_keyword">new</strong> Request();
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>         request.setMessage(Interaction.SET_VENDOR);
 <a class="jxr_linenumber" name="L281" href="#L281">281</a>         Map&lt;Header, Object&gt; msgHeader = <strong class="jxr_keyword">new</strong> EnumMap&lt;&gt;(Header.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>         msgHeader.put(Header.VENDOR, MediatorHelper.model().getMediatorVendor().getMySQL());
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>         msgHeader.put(Header.VENDOR, MediatorHelper.model().getMediatorVendor().getMysql());
 <a class="jxr_linenumber" name="L283" href="#L283">283</a>         request.setParameters(msgHeader);
 <a class="jxr_linenumber" name="L284" href="#L284">284</a>         MediatorHelper.model().sendToViews(request);
 <a class="jxr_linenumber" name="L285" href="#L285">285</a> 
@@ -295,7 +295,7 @@
 <a class="jxr_linenumber" name="L287" href="#L287">287</a>         msgHeader.put(Header.URL, <span class="jxr_string">""</span>);
 <a class="jxr_linenumber" name="L288" href="#L288">288</a>         msgHeader.put(Header.INDEX_ERROR_STRATEGY, 0);
 <a class="jxr_linenumber" name="L289" href="#L289">289</a>         msgHeader.put(Header.INJECTION_MODEL, MediatorHelper.model());
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>         msgHeader.put(Header.VENDOR, MediatorHelper.model().getMediatorVendor().getMySQL());
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>         msgHeader.put(Header.VENDOR, MediatorHelper.model().getMediatorVendor().getMysql());
 <a class="jxr_linenumber" name="L291" href="#L291">291</a> 
 <a class="jxr_linenumber" name="L292" href="#L292">292</a>         <strong class="jxr_keyword">var</strong> requestError = <strong class="jxr_keyword">new</strong> Request();
 <a class="jxr_linenumber" name="L293" href="#L293">293</a>         requestError.setMessage(Interaction.MARK_ERROR_VULNERABLE);
