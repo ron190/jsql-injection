@@ -67,8 +67,8 @@ public class SuspendableGetRows extends AbstractSuspendable {
 <span class="fc" id="L67">        AbstractStrategy strategy = this.injectionModel.getMediatorStrategy().getStrategy();</span>
         
         // Fix #14417
-<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (strategy == null) {</span>
-<span class="fc" id="L71">            return StringUtils.EMPTY;</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        if (strategy == null) {</span>
+<span class="nc" id="L71">            return StringUtils.EMPTY;</span>
         }
         
         // Stop injection if all rows are found, skip rows and characters collected
