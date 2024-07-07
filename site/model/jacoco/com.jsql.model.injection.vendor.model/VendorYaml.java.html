@@ -577,7 +577,7 @@ public class VendorYaml implements AbstractVendor {
     
     @Override
     public String fingerprintErrorsAsRegex() {
-<span class="fc" id="L580">        return StringUtils.join(</span>
+<span class="fc" id="L580">        return &quot;(?si)&quot;+ StringUtils.join(</span>
 <span class="fc" id="L581">            this.modelYaml.getStrategy().getConfiguration().getFingerprint()</span>
 <span class="fc" id="L582">            .getErrorMessage()</span>
 <span class="fc" id="L583">            .stream()</span>

@@ -585,7 +585,7 @@
 <a class="jxr_linenumber" name="L577" href="#L577">577</a>     
 <a class="jxr_linenumber" name="L578" href="#L578">578</a>     @Override
 <a class="jxr_linenumber" name="L579" href="#L579">579</a>     <strong class="jxr_keyword">public</strong> String fingerprintErrorsAsRegex() {
-<a class="jxr_linenumber" name="L580" href="#L580">580</a>         <strong class="jxr_keyword">return</strong> StringUtils.join(
+<a class="jxr_linenumber" name="L580" href="#L580">580</a>         <strong class="jxr_keyword">return</strong> <span class="jxr_string">"(?si)"</span>+ StringUtils.join(
 <a class="jxr_linenumber" name="L581" href="#L581">581</a>             <strong class="jxr_keyword">this</strong>.modelYaml.getStrategy().getConfiguration().getFingerprint()
 <a class="jxr_linenumber" name="L582" href="#L582">582</a>             .getErrorMessage()
 <a class="jxr_linenumber" name="L583" href="#L583">583</a>             .stream()
