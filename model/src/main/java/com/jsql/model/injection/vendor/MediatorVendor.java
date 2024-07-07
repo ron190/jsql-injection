@@ -62,6 +62,7 @@ public class MediatorVendor {
     private final Vendor sqlite;
     private final Vendor sqlserver;
     private final Vendor sybase;
+    private final Vendor vertica;
 
     private final List<Vendor> vendors;
     
@@ -84,7 +85,6 @@ public class MediatorVendor {
         Vendor nuodb = new Vendor(new VendorYaml("nuodb.yml", injectionModel));
         Vendor presto = new Vendor(new VendorYaml("presto.yml", injectionModel));
         Vendor teradata = new Vendor(new VendorYaml("teradata.yml", injectionModel));
-        Vendor vertica = new Vendor(new VendorYaml("vertica.yml", injectionModel));
 
         this.auto = new Vendor();
         this.cubrid = new Vendor(new VendorYaml("cubrid.yml", injectionModel));
@@ -141,6 +141,7 @@ public class MediatorVendor {
         };
         this.sqlserver = new Vendor(new VendorYaml("sqlserver.yml", injectionModel));
         this.sybase = new Vendor(new VendorYaml("sybase.yml", injectionModel));
+        this.vertica = new Vendor(new VendorYaml("vertica.yml", injectionModel));
 
         this.vendors = Arrays.asList(
             this.auto,
@@ -174,7 +175,7 @@ public class MediatorVendor {
             this.sqlserver,
             this.sybase,
             teradata,
-            vertica
+            this.vertica
         );
         
         this.setVendor(this.mysql);
@@ -383,5 +384,9 @@ public class MediatorVendor {
 
     public Vendor getSybase() {
         return sybase;
+    }
+
+    public Vendor getVertica() {
+        return vertica;
     }
 }

@@ -90,6 +90,7 @@
         <sqlite-dialect.version>0.1.4</sqlite-dialect.version>
         <stomp-websocket.version>2.3.4</stomp-websocket.version>
         <sybase-jconn4.version>16.0</sybase-jconn4.version>
+        <vertica-jdbc.version>24.2.0-2</vertica-jdbc.version>
     </properties>
 
     <dependencyManagement>
@@ -647,6 +648,12 @@
             <groupId>jdbc.sybase</groupId>
             <artifactId>jconn4</artifactId>
             <version>${sybase-jconn4.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vertica.jdbc</groupId>
+            <artifactId>vertica-jdbc</artifactId>
+            <version>${vertica-jdbc.version}</version>
             <scope>test</scope>
         </dependency>
         <!--         <dependency> -->

@@ -97,7 +97,8 @@ strategy:
   endingComment: --+-
   fingerprint:
    errorMessage:
-    - Derby database
+    - derby database
+    - javadb
    orderByErrorMessage:
     - Column position '1337' is out of range for the query expression
 

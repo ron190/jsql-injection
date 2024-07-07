@@ -127,6 +127,30 @@ public class JdbcRestController {
         return greeting;
     }
 
+    @RequestMapping("/vertica")
+    public Greeting greetingVertica(@RequestParam(value="name", defaultValue="World") String name) {
+
+        Greeting greeting;
+        String inject = name.replace(":", "\\:");
+        StringBuilder result = new StringBuilder();
+
+        try (
+            Connection con = DriverManager.getConnection("jdbc:vertica://jsql-vertica:5433/", "dbadmin", "password");
+            PreparedStatement pstmt = con.prepareStatement("select table_schema from v_catalog.tables where 1 = "+ inject)
+        ) {
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()) {
+                result.append(rs.getString(1));
+            }
+            greeting = new Greeting(TEMPLATE + StringEscapeUtils.unescapeJava(result.toString()));
+
+        } catch (Exception e) {
+            greeting = this.initializeErrorMessage(e);
+        }
+
+        return greeting;
+    }
+
 
     // Other
 

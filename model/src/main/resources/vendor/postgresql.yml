@@ -147,13 +147,18 @@ strategy:
     - "ERROR: unterminated quoted identifier at or near"
     - "Query failed: ERROR:  unterminated quoted string at or near"
     - function\\.pg
-    - PostgreSQL
+    - cratedb
     - cockroachdb
     - enterprisedb
     - greenplum
+    - opengauss
+    - postgresql
+    - redshift
     - timescaleDB
+    - yugabytedb
    orderByErrorMessage:
-    - ORDER BY position 1337 is not in select list
+    # Collision with vertica
+    - (?<!Vertica.*)ORDER BY position 1337 is not in select list
 
  normal:
   indices: union select ${indices}

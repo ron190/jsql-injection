@@ -159,5 +159,15 @@ services:
     command: bash /sybase/start
     hostname: dksybase
 
+  vertica:
+    ports:
+      - "5433:5433"
+    build:
+      context: .
+      dockerfile: Dockerfile.vertica
+    container_name: jsql-vertica
+    networks:
+      - jsql-network
+
 networks:
   jsql-network:
