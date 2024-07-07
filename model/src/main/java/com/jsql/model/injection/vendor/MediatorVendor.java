@@ -213,7 +213,7 @@ public class MediatorVendor {
             
             // Test each vendor
             for (Vendor vendorTest: vendorsWithoutAuto) {
-                if (pageSource.matches("(?si)"+ vendorTest.instance().fingerprintErrorsAsRegex())) {
+                if (pageSource.matches(vendorTest.instance().fingerprintErrorsAsRegex())) {
                     
                     vendorFound = vendorTest;
                     LOGGER.log(

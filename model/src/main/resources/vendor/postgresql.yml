@@ -148,12 +148,12 @@ strategy:
     - "Query failed: ERROR:  unterminated quoted string at or near"
     - function\\.pg
     - PostgreSQL
-   orderByErrorMessage:
-    - ORDER BY position 1337 is not in select list
     - cockroachdb
     - enterprisedb
     - greenplum
     - timescaleDB
+   orderByErrorMessage:
+    - ORDER BY position 1337 is not in select list
 
  normal:
   indices: union select ${indices}
