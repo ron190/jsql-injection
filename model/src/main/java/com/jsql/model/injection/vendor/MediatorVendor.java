@@ -74,7 +74,6 @@ public class MediatorVendor {
         Vendor access = new Vendor(new VendorYaml("access.yml", injectionModel));
         Vendor altibase = new Vendor(new VendorYaml("altibase.yml", injectionModel));
         Vendor ctreeace = new Vendor(new VendorYaml("ctreeace.yml", injectionModel));
-        Vendor cockroachdb = new Vendor(new VendorYaml("cockroachdb.yml", injectionModel));
         Vendor exasol = new Vendor(new VendorYaml("exasol.yml", injectionModel));
         Vendor frontbase = new Vendor(new VendorYaml("frontbase.yml", injectionModel));
         Vendor hana = new Vendor(new VendorYaml("hana.yml", injectionModel));
@@ -148,7 +147,6 @@ public class MediatorVendor {
             access,
             altibase,
             ctreeace,
-            cockroachdb,
             this.cubrid,
             this.db2,
             this.derby,

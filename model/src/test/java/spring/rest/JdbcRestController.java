@@ -103,7 +103,6 @@ public class JdbcRestController {
         return greeting;
     }
 
-
     @RequestMapping("/mckoi")
     public Greeting greetingMckoi(@RequestParam(value="name", defaultValue="World") String name) {
 
@@ -412,16 +411,6 @@ public class JdbcRestController {
         return greeting;
     }
     
-
-    // missing cockroachdb: docker fails
-// docker pull cockroachdb/cockroach:beta-20170406
-// docker network create -d bridge roachnet
-// docker run -d ^
-//  --name=roach1 ^
-//  --hostname=roach1 ^
-//  --net=roachnet ^
-//  -p 26257:26257 -p 8080:8080  ^
-//  cockroachdb/cockroach start --insecure
 
     // missing hana: docker fails 13.9GB image
 // jdbc:sap://127.0.0.1:30115

@@ -150,6 +150,10 @@ strategy:
     - PostgreSQL
    orderByErrorMessage:
     - ORDER BY position 1337 is not in select list
+    - cockroachdb
+    - enterprisedb
+    - greenplum
+    - timescaleDB
 
  normal:
   indices: union select ${indices}

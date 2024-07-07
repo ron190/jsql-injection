@@ -1,8 +1,9 @@
 {
     "version": "0.100",
     "news": [
-        "[New release v0.100, contribution by @DelvinBa] A vuln report opens now on scan, therefore review and share the detected payloads more easily on bug bounty and CVE platforms",
-        "[Contribute] Injection strategies can be missing or improved for common engines like SQLite or H2, contribute and also add a Star to GitHub at https://github.com/ron190/jsql-injection",
-        "[Test reports] Auto-generated reports are now published in the wiki, review Maven site and reports at https://ron190.github.io/jsql-injection/site/index.html"
+        "[Pinned] You use jSQL for CTFs, university study, or security research? Please consider adding a Star to GitHub at https://github.com/ron190/jsql-injection",
+        "[Contribute] Injection strategies can be missing or improved even for common engines like SQLite, share your knowledge to improve jSQL",
+        "[Strategy DNS] Participate in implementing out-of-band DNS injection with Docker and open a pull request on GitHub",
+        "[Benchmark] Enhance the tool usability, use jSQL on challenge platforms like TryHackMe and HackTheBox and report your experience on GitHub"
     ]
 }

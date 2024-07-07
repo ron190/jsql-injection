@@ -7,7 +7,6 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.EnumMap;
 import java.util.Map;

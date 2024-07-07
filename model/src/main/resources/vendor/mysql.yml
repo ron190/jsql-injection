@@ -239,8 +239,13 @@ strategy:
     - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.*' at line \\d+
     - Unknown column '.*' in 'where clause'
     # Other
-    - MySQL
-    - MariaDB
+    - mysql
+    - mariadb
+    - tidb
+    - percona
+    - drizzle
+    - clustrix
+    - memsql
    orderByErrorMessage:
     - Unknown column '1337' in 'order clause'
 
