@@ -13,14 +13,22 @@ env:
 jobs:
 
   build-jdk11:
-    uses: ./.github/workflows/run-build-jdk11.yml
-    with:  # TODO Should reference ev.DOCKER_RESOURCES
-      DOCKER_RESOURCES: ./model/src/test/resources/docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/workflows/run-build-jdk11.yml
+        env:  # required by with
+          DOCKER_RESOURCES: ${{ env.DOCKER_RESOURCES }}
+        with:
+          DOCKER_RESOURCES: ${{ env.DOCKER_RESOURCES }}
 
   build-additional:
-    uses: ./.github/workflows/run-build-additional.yml
-    with:  # TODO Should reference ev.DOCKER_RESOURCES
-      DOCKER_RESOURCES: ./model/src/test/resources/docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/workflows/run-build-additional.yml
+        env:  # required by with
+          DOCKER_RESOURCES: ${{ env.DOCKER_RESOURCES }}
+        with:
+          DOCKER_RESOURCES: ${{ env.DOCKER_RESOURCES }}
 
   codeql:
     uses: ./.github/workflows/run-codeql.yml
