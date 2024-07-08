@@ -31,14 +31,15 @@ jobs:
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
 
-  codeql:
-    uses: ./.github/workflows/codeql.yml
-
   build:
+    needs: set-global-env-var
     uses: ./.github/workflows/build.yml
     with:
       DOCKER_RESOURCES: ${{ needs.set-global-env-var.outputs.DOCKER_RESOURCES }}
     secrets: inherit
+
+  codeql:
+    uses: ./.github/workflows/codeql.yml
 
   release:
     needs: [build-jdk11, build, build-additional, codeql]
