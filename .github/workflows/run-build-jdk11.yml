@@ -1,5 +1,9 @@
 on:
   workflow_call:
+    inputs:
+      DOCKER_RESOURCES:
+        type: string
+        required: true
 
 jobs:
   build-jdk11:
@@ -9,6 +13,7 @@ jobs:
       JSQL_DOCKERFILE: 3.8.1-jdk-11-slim
       MAVEN_NASHORN: -Dnashorn.args=--no-deprecation-warning
       MAVEN_BYTEBUDDY: ""
+      DOCKER_RESOURCES: ${{ inputs.DOCKER_RESOURCES }}
     steps:
 
       - name: Checkout code

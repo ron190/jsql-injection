@@ -14,9 +14,13 @@ jobs:
 
   build-jdk11:
     uses: ./.github/workflows/run-build-jdk11.yml
+    with:
+      DOCKER_RESOURCES: {{ env.DOCKER_RESOURCES }}
 
   build-additional:
     uses: ./.github/workflows/run-build-additional.yml
+    with:
+      DOCKER_RESOURCES: {{ env.DOCKER_RESOURCES }}
 
   codeql:
     uses: ./.github/workflows/run-codeql.yml
@@ -149,6 +153,5 @@ jobs:
 
   release:
     needs: [build-jdk11, build, build-additional, codeql]
-    name: Publish
     uses: ./.github/workflows/release.yml
     secrets: inherit
