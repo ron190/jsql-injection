@@ -1,7 +1,19 @@
+inputs:
+  DOCKER_RESOURCES:
+    type: string
+    required: true
+  CODECOV_TOKEN:
+    type: string
+    required: true
+  CODACY_PROJECT_TOKEN:
+    type: string
+    required: true
+
 runs:
   using: "composite"
   steps:
     - name: Copy files and coverage reports from container
+      shell: bash
       # Sonar scans unmerged reports, Codacy/Codecov requires scanning each files (or reports merged)
       run: |
         mkdir -p shared-resources/site shared-resources/model shared-resources/view
@@ -11,16 +23,19 @@ runs:
         docker cp docker_jsql-container:pom.xml shared-resources
 
     - name: Codecov scan
+      shell: bash
       env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        CODECOV_TOKEN: ${{ inputs.CODECOV_TOKEN }}
       run: cd shared-resources && bash <(curl -s https://codecov.io/bash) || true
 
     - name: Codacy scan
+      shell: bash
       env:
-        CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        CODACY_PROJECT_TOKEN: ${{ inputs.CODACY_PROJECT_TOKEN }}
       run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
 
     - name: Publish Maven site
+      shell: bash
       run: |
         git checkout docs
         git config user.name "Github Actions"

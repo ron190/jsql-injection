@@ -123,6 +123,10 @@ jobs:
     - name: Coverage and site
       uses: ./.github/workflows/publish-scan/
       if: ${{ env.IS_PUBLISHING == 'true' }}
+      with:
+        DOCKER_RESOURCES: ./model/src/test/resources/docker
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
   release:
     needs: [build-jdk11, build, build-additional, codeql]
