@@ -29,7 +29,7 @@
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>          DriverManager.setLogWriter(<strong class="jxr_keyword">null</strong>);
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>          
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>          SpringTargetApplication.propertiesByEngine.stream()
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>          .filter(propertyByEngine -&gt; System.getProperty(<span class="jxr_string">"profileId"</span>).equals(
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>          .filter(propertyByEngine -&gt; System.getProperty(<span class="jxr_string">"profileId"</span>, <span class="jxr_string">"tests"</span>).equals(
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>              propertyByEngine.getKey().getProperty(<span class="jxr_string">"jsql.profile"</span>, <span class="jxr_string">"tests"</span>)  <em class="jxr_comment">// undefined by default</em>
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>          ))
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>          .map(AbstractMap.SimpleEntry::getKey).forEach(props -&gt; {

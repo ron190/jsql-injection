@@ -1,7 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.LinesToCharsResult,0,12,0,0,0,5,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.patch,Patch,208,0,14,0,46,0,20,0,12,0
-model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3192,2109,399,288,653,459,245,148,23,20
+model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch,3165,2136,397,290,647,465,244,149,23,20
 model,com.jsql.model.injection.strategy.blind.patch,DiffMatchPatch.Operation,0,21,0,0,0,2,0,1,0,1
 model,com.jsql.model.injection.strategy.blind.patch,Diff,29,83,9,9,6,23,9,9,2,7
 model,com.jsql.model.bean.util,Header,0,75,0,0,0,13,0,1,0,1
@@ -36,7 +36,7 @@ model,com.jsql.view.terminal,SystemOutTerminal,0,4,0,0,0,2,0,1,0,1
 model,com.jsql.view.interaction,SubscriberInteraction,17,77,1,1,7,23,3,5,2,5
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionMonobit,0,137,0,4,0,16,0,5,0,3
 model,com.jsql.model.injection.strategy.blind,InjectionTime,47,209,7,19,18,41,7,12,0,6
-model,com.jsql.model.injection.strategy.blind,AbstractInjectionBoolean,38,272,5,15,11,64,5,14,0,9
+model,com.jsql.model.injection.strategy.blind,AbstractInjectionBoolean,48,262,8,12,13,62,6,13,0,9
 model,com.jsql.model.injection.strategy.blind,CallableCharInsertion,0,76,0,4,0,19,0,7,0,5
 model,com.jsql.model.injection.strategy.blind,InjectionBlind,44,243,7,19,17,45,7,14,0,8
 model,com.jsql.model.injection.strategy.blind,AbstractInjectionBoolean.BooleanMode,0,27,0,0,0,2,0,1,0,1
