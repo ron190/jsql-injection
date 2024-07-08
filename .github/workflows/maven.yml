@@ -14,13 +14,13 @@ jobs:
 
   build-jdk11:
     uses: ./.github/workflows/run-build-jdk11.yml
-    with:
-      DOCKER_RESOURCES: $DOCKER_RESOURCES
+    with:  # TODO Should reference ev.DOCKER_RESOURCES
+      DOCKER_RESOURCES: ./model/src/test/resources/docker
 
   build-additional:
     uses: ./.github/workflows/run-build-additional.yml
-    with:
-      DOCKER_RESOURCES: $DOCKER_RESOURCES
+    with:  # TODO Should reference ev.DOCKER_RESOURCES
+      DOCKER_RESOURCES: ./model/src/test/resources/docker
 
   codeql:
     uses: ./.github/workflows/run-codeql.yml
