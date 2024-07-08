@@ -1,6 +1,5 @@
 package spring.tenant;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
@@ -22,8 +21,8 @@ public class MasterService {
         DriverManager.setLogWriter(null);
         
         SpringTargetApplication.propertiesByEngine.stream()
-        .filter(propertyByEngine -> System.getProperty("profileId", StringUtils.EMPTY).equals(
-            propertyByEngine.getKey().getProperty("jsql.profile", StringUtils.EMPTY)
+        .filter(propertyByEngine -> System.getProperty("profileId").equals(
+            propertyByEngine.getKey().getProperty("jsql.profile", "tests")  // undefined by default
         ))
         .map(AbstractMap.SimpleEntry::getKey).forEach(props -> {
             
