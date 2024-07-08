@@ -1,42 +1,45 @@
-name: Coverage and site
+on:
+  workflow_call:
 
-runs:
-  using: composite
-  steps:
-    - name: Copy files and coverage reports from container
-      # Sonar scans unmerged reports, Codacy/Codecov requires scanning each files (or reports merged)
-      run: |
-        mkdir -p shared-resources/site shared-resources/model shared-resources/view
-        docker cp docker_jsql-container:target/site/. shared-resources/site
-        docker cp docker_jsql-container:view/. shared-resources/view
-        docker cp docker_jsql-container:model/. shared-resources/model
-        docker cp docker_jsql-container:pom.xml shared-resources
+jobs:
+  publish:
+    name: Coverage and site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy files and coverage reports from container
+        # Sonar scans unmerged reports, Codacy/Codecov requires scanning each files (or reports merged)
+        run: |
+          mkdir -p shared-resources/site shared-resources/model shared-resources/view
+          docker cp docker_jsql-container:target/site/. shared-resources/site
+          docker cp docker_jsql-container:view/. shared-resources/view
+          docker cp docker_jsql-container:model/. shared-resources/model
+          docker cp docker_jsql-container:pom.xml shared-resources
 
-    - name: Codecov scan
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      run: cd shared-resources && bash <(curl -s https://codecov.io/bash) || true
+      - name: Codecov scan
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: cd shared-resources && bash <(curl -s https://codecov.io/bash) || true
 
-    - name: Codacy scan
-      env:
-        CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-      run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
+      - name: Codacy scan
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
 
-    - name: Publish Maven site
-      run: |
-        git checkout docs
-        git config user.name "Github Actions"
-        git config user.email no-response@github.com    
-        git pull -s ours  # ignore remote changes when updated by parallel jobs
-        
-        rm -r site/ || echo 'Folder(s) not found'
-        cp -r "shared-resources/site/." "site/"
-        for i in view model; do
-        mkdir -p "site/$i/" && cp -r "shared-resources/$i/target/site/." "site/$i/"
-        mkdir -p "site/$i/pit-reports/" && cp -r "shared-resources/$i/target/pit-reports/." "site/$i/pit-reports/"
-        done;
-        
-        git add -f site/
-        
-        git commit -m "Publish Maven site"
-        git push --force  # failed to push some refs
+      - name: Publish Maven site
+        run: |
+          git checkout docs
+          git config user.name "Github Actions"
+          git config user.email no-response@github.com    
+          git pull -s ours  # ignore remote changes when updated by parallel jobs
+          
+          rm -r site/ || echo 'Folder(s) not found'
+          cp -r "shared-resources/site/." "site/"
+          for i in view model; do
+          mkdir -p "site/$i/" && cp -r "shared-resources/$i/target/site/." "site/$i/"
+          mkdir -p "site/$i/pit-reports/" && cp -r "shared-resources/$i/target/pit-reports/." "site/$i/pit-reports/"
+          done;
+          
+          git add -f site/
+          
+          git commit -m "Publish Maven site"
+          git push --force  # failed to push some refs
