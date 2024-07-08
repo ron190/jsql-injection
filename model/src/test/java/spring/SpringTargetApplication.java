@@ -105,12 +105,15 @@ public class SpringTargetApplication {
     }
 
     public static void initializeDatabases() throws Exception {
-        
-        initializeHsqldb();
-        initializeH2();
-        initializeNeo4j();
-        initializeDerby();
-        initializeMckoi();
+
+        if (!"tests-additional".equals(System.getProperty("profileId", StringUtils.EMPTY))) {
+
+            initializeHsqldb();
+            initializeH2();
+            initializeNeo4j();
+            initializeDerby();
+            initializeMckoi();
+        }
 
         SpringTargetApplication.propertiesByEngine.parallelStream()
         .filter(propertyByEngine -> System.getProperty("profileId", StringUtils.EMPTY).equals(
@@ -232,12 +235,14 @@ public class SpringTargetApplication {
     
     @PreDestroy
     public void onDestroy() throws Exception {
-        
-        LOGGER.info("Ending in-memory databases...");
-        
-        serverDerby.shutdown();
-        serverH2.stop();
-        serverHsqldb.stop();
-        serverMckoi.stop();
+
+        if (!"tests-additional".equals(System.getProperty("profileId", StringUtils.EMPTY))) {
+
+            LOGGER.info("Ending in-memory databases...");
+            serverDerby.shutdown();
+            serverH2.stop();
+            serverHsqldb.stop();
+            serverMckoi.stop();
+        }
     }
 }

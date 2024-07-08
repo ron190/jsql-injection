@@ -14,10 +14,3 @@ cat <<EOF | sudo docker exec -i jsql-mysql-5-5-40 /bin/bash
     SET GLOBAL table_open_cache = 524288;
   '
 EOF
-
-# Check SQL Server connection
-sudo docker exec -i jsql-sqlserver /opt/mssql-tools/bin/sqlcmd \
-  -S "tcp:127.0.0.1,1434" \
-  -U SA \
-  -P "yourStrong(!)Password" \
-  -Q "select @@version"
