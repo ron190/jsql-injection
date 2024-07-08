@@ -1326,14 +1326,14 @@ import java.util.regex.Pattern;
 <span class="fc" id="L1326">                    thisDiff = pointer.next(); // Walk past nextDiff.</span>
 <span class="pc bpc" id="L1327" title="1 of 2 branches missed.">                    nextDiff = pointer.hasNext() ? pointer.next() : null;</span>
 <span class="fc" id="L1328">                    changes = true;</span>
-<span class="fc bfc" id="L1329" title="All 2 branches covered.">                } else if (thisDiff.getText().startsWith(nextDiff.getText())) {</span>
+<span class="pc bpc" id="L1329" title="1 of 2 branches missed.">                } else if (thisDiff.getText().startsWith(nextDiff.getText())) {</span>
                     // Shift the edit over the next equality.
-<span class="fc" id="L1331">                    prevDiff.setText(prevDiff.getText() + nextDiff.getText());</span>
-<span class="fc" id="L1332">                    thisDiff.setText(thisDiff.getText().substring(nextDiff.getText().length())</span>
-<span class="fc" id="L1333">                            + nextDiff.getText());</span>
-<span class="fc" id="L1334">                    pointer.remove(); // Delete nextDiff.</span>
-<span class="pc bpc" id="L1335" title="1 of 2 branches missed.">                    nextDiff = pointer.hasNext() ? pointer.next() : null;</span>
-<span class="fc" id="L1336">                    changes = true;</span>
+<span class="nc" id="L1331">                    prevDiff.setText(prevDiff.getText() + nextDiff.getText());</span>
+<span class="nc" id="L1332">                    thisDiff.setText(thisDiff.getText().substring(nextDiff.getText().length())</span>
+<span class="nc" id="L1333">                            + nextDiff.getText());</span>
+<span class="nc" id="L1334">                    pointer.remove(); // Delete nextDiff.</span>
+<span class="nc bnc" id="L1335" title="All 2 branches missed.">                    nextDiff = pointer.hasNext() ? pointer.next() : null;</span>
+<span class="nc" id="L1336">                    changes = true;</span>
                 }
             }
 <span class="fc" id="L1339">            prevDiff = thisDiff;</span>
