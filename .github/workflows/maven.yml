@@ -122,7 +122,6 @@ jobs:
 
     - uses: ./.github/workflows/publish-scan.yml
       if: ${{ env.IS_PUBLISHING == 'true' }}
-      secrets: inherit
 
   release:
     needs: [build-jdk11, build, build-additional, codeql]
