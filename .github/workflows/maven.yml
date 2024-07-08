@@ -3,9 +3,6 @@ on:
     branches: [ master ]
     
 env:
-  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   MAVEN_NASHORN: ""
   MAVEN_BYTEBUDDY: ""
   DOCKER_RESOURCES: ./model/src/test/resources/docker
@@ -13,17 +10,17 @@ env:
 jobs:
 
   build-jdk11:
-    uses: ./.github/workflows/run-build-jdk11.yml
+    uses: ./.github/workflows/build-jdk11.yml
     with:
       DOCKER_RESOURCES: ./model/src/test/resources/docker
 
   build-additional:
-    uses: ./.github/workflows/run-build-additional.yml
+    uses: ./.github/workflows/build-additional.yml
     with:
       DOCKER_RESOURCES: ./model/src/test/resources/docker
 
   codeql:
-    uses: ./.github/workflows/run-codeql.yml
+    uses: ./.github/workflows/codeql.yml
 
   build:
     name: Tests on Docker
@@ -33,14 +30,17 @@ jobs:
       matrix:
         include:
         - jdk: 3.8.6-eclipse-temurin-18
-          nashorn: ""
-          bytebuddy: ""
+          nashorn: ''
+          bytebuddy: ''
+          isPublishing: 'true'
         - jdk: 3.9.3-eclipse-temurin-20
-          nashorn: ""
-          bytebuddy: ""
+          nashorn: ''
+          bytebuddy: ''
+          isPublishing: 'false'
         - jdk: 3.9.7-eclipse-temurin-21
-          nashorn: ""
-          bytebuddy: "-Dnet.bytebuddy.experimental=true"
+          nashorn: ''
+          bytebuddy: '-Dnet.bytebuddy.experimental=true'
+          isPublishing: 'false'
 # Groovy not compatible jdk22: gmavenplus-plugin JsonUtilSpock.groovy Unsupported class file major version 66
 #        - jdk: 3.9.7-eclipse-temurin-22
 #          nashorn: ""
@@ -50,6 +50,7 @@ jobs:
       MAVEN_NASHORN: ${{ matrix.nashorn }}
       # experimental enabled on jdk21 to prevent 'Mockito cannot mock this class: class org.jsoup.nodes.Document'
       MAVEN_BYTEBUDDY: ${{ matrix.bytebuddy }}
+      IS_PUBLISHING: ${{ matrix.isPublishing }}
     steps:
     
     - name: Checkout code
@@ -92,6 +93,8 @@ jobs:
       run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
 
     - name: Unit and integration tests with Sonar scan
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       # profile to skipITs/skipTests (env var MAVEN_OPS not working)
       # mvn goal site last to apply skin to generated reports
       # remove goal pmd:pmd: random StackOverflowError
@@ -117,39 +120,9 @@ jobs:
     - name: Databases statistics
       run: $DOCKER_RESOURCES/scripts/verify.sh
 
-    - name: Copy files and coverage reports from container
-      # Sonar scans unmerged reports, Codacy/Codecov requires scanning each files (or reports merged)
-      run: |
-        mkdir -p shared-resources/site shared-resources/model shared-resources/view
-        docker cp docker_jsql-container:target/site/. shared-resources/site
-        docker cp docker_jsql-container:view/. shared-resources/view
-        docker cp docker_jsql-container:model/. shared-resources/model
-        docker cp docker_jsql-container:pom.xml shared-resources
-
-    - name: Codecov scan
-      run: cd shared-resources && bash <(curl -s https://codecov.io/bash) || true
-
-    - name: Codacy scan
-      run: cd shared-resources && bash <(curl -Ls https://coverage.codacy.com/get.sh) || true
-
-    - name: Publish coverage
-      run: |
-        git checkout docs
-        git config user.name "Github Actions"
-        git config user.email no-response@github.com    
-        git pull -s ours  # ignore remote changes when updated by parallel jobs
-        
-        rm -r site/ || echo 'Folder(s) not found'
-        cp -r "shared-resources/site/." "site/"
-        for i in view model; do
-          mkdir -p "site/$i/" && cp -r "shared-resources/$i/target/site/." "site/$i/"
-          mkdir -p "site/$i/pit-reports/" && cp -r "shared-resources/$i/target/pit-reports/." "site/$i/pit-reports/"
-        done;
-        
-        git add -f site/
-        
-        git commit -m "Publish reports"
-        git push --force  # failed to push some refs
+    - uses: ./.github/workflows/publish-scan.yml
+      if: ${{ env.IS_PUBLISHING == 'true' }}
+      secrets: inherit
 
   release:
     needs: [build-jdk11, build, build-additional, codeql]
