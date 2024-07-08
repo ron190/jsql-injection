@@ -1,0 +1,40 @@
+on:
+  workflow_call:
+
+jobs:
+  build-jdk11:
+    name: Test view on Docker (jdk-11)
+    runs-on: ubuntu-latest
+    env:
+      JSQL_DOCKERFILE: 3.8.1-jdk-11-slim
+      MAVEN_NASHORN: -Dnashorn.args=--no-deprecation-warning
+      MAVEN_BYTEBUDDY: ""
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Disable shallow clone to prevent Sonar warning
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 18
+
+      - name: Set Maven dependencies cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
+      - name: Install Maven dependencies
+        run: mvn clean install -DskipTests dependency:tree
+
+      - name: Build project container
+        run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
+
+      - name: Unit tests
+        run: $DOCKER_RESOURCES/scripts/run-on-docker-no-network.sh 'cd view/ && mvn clean install -P tests'

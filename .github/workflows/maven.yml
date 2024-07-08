@@ -13,41 +13,13 @@ env:
 jobs:
 
   build-jdk11:
-    name: Test view on Docker (jdk-11)
-    runs-on: ubuntu-latest
-    env:
-      JSQL_DOCKERFILE: 3.8.1-jdk-11-slim
-      MAVEN_NASHORN: -Dnashorn.args=--no-deprecation-warning
-      MAVEN_BYTEBUDDY: ""
-    steps:
+    uses: ./.github/workflows/run-build-jdk11.yml
 
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          # Disable shallow clone to prevent Sonar warning
-          fetch-depth: 0
+  build-additional:
+    uses: ./.github/workflows/run-build-additional.yml
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 18
-
-      - name: Set Maven dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-maven-
-
-      - name: Install Maven dependencies
-        run: mvn clean install -DskipTests dependency:tree
-
-      - name: Build project container
-        run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
-
-      - name: Unit tests
-        run: $DOCKER_RESOURCES/scripts/run-on-docker-no-network.sh 'cd view/ && mvn clean install -P tests'
+  codeql:
+    uses: ./.github/workflows/run-codeql.yml
 
   build:
     name: Tests on Docker
@@ -174,64 +146,6 @@ jobs:
         
         git commit -m "Publish reports"
         git push --force  # failed to push some refs
-
-  build-additional:
-    name: Tests additional engines on Docker
-    runs-on: ubuntu-latest
-    env:
-      JSQL_DOCKERFILE: 3.8.6-eclipse-temurin-18
-      MAVEN_NASHORN: ""
-      MAVEN_BYTEBUDDY: ""
-    steps:
-
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        # Disable shallow clone to prevent Sonar warning
-        fetch-depth: 0
-
-    - name: Set up JDK
-      uses: actions/setup-java@v4
-      with:
-        distribution: temurin
-        java-version: 18
-
-    - name: Set Maven dependencies cache
-      uses: actions/cache@v4
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-maven-
-
-    - name: Install Maven dependencies
-      run: mvn clean install -DskipTests dependency:tree
-
-    - name: Run databases and LAMP
-      run: |
-        docker-compose -f $DOCKER_RESOURCES/docker-compose-additional.yml build --parallel
-        docker-compose -f $DOCKER_RESOURCES/docker-compose-additional.yml up -d
-
-    - name: List images and containers
-      run: docker images && docker container ls
-
-    - name: Database health checks and configuration
-      run: |
-        $DOCKER_RESOURCES/scripts/healthcheck/healthcheck-additional.sh
-
-    - name: Build project container
-      run: docker build -t jsql:latest --build-arg JSQL_DOCKERFILE -f $DOCKER_RESOURCES/Dockerfile.jsql .
-
-    - name: Unit and integration tests with Sonar scan
-      run: |
-        $DOCKER_RESOURCES/scripts/run-on-docker.sh '
-          mvn clean install \
-            --no-transfer-progress \
-            -P tests-additional
-        '
-
-  codeql:
-    name: CodeQL
-    uses: ./.github/workflows/run-codeql.yml
 
   release:
     needs: [build-jdk11, build, build-additional, codeql]
