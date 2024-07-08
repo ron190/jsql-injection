@@ -129,7 +129,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
             // =&gt; \4xxxxxxxx\500\4\6\4...\4\1\3\3\7
 <span class="fc bfc" id="L130" title="All 2 branches covered.">            if (</span>
                 countChunkRows &gt; 0
-<span class="fc bfc" id="L132" title="All 2 branches covered.">                || slidingWindowCurrentRow.toString().matches(&quot;(?s).*&quot;+ TRAIL_RGX +&quot;.*&quot;)</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">                || slidingWindowCurrentRow.toString().matches(&quot;(?s).*&quot;+ TRAIL_RGX +&quot;.*&quot;)</span>
             ) {
                 
 <span class="fc" id="L135">                this.scrapeTrailJunk(slidingWindowCurrentRow);</span>

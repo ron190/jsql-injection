@@ -22,6 +22,7 @@ com.test.vendor.postgresql
 com.test.vendor.sqlite
 com.test.vendor.sqlserver
 com.test.vendor.sybase
+com.test.vendor.vertica
 spring
 spring.page
 spring.rest
