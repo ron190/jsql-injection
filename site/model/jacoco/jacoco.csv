@@ -21,10 +21,10 @@ model,com.jsql.model.injection.strategy,StrategyInjectionBlind,0,271,0,14,0,59,0
 model,com.jsql.model.injection.strategy,StrategyInjectionNormal,7,436,3,21,2,77,3,28,0,19
 model,com.jsql.model.injection.strategy,StrategyInjectionStacked,22,283,1,13,4,64,3,21,2,15
 model,com.jsql.model,AbstractModelObservable,0,66,0,0,0,13,0,10,0,10
-model,com.jsql.model,InjectionModel,152,1304,18,68,35,295,19,62,6,32
+model,com.jsql.model,InjectionModel,166,1290,18,68,38,292,19,62,6,32
 model,com.jsql.model,MediatorUtils,6,137,0,0,2,59,2,39,2,39
 model,com.jsql.model.injection.vendor,MediatorVendor.new Vendor() {...},0,85,2,6,0,17,2,4,0,2
-model,com.jsql.model.injection.vendor,MediatorVendor,6,842,0,12,2,117,2,42,2,36
+model,com.jsql.model.injection.vendor,MediatorVendor,18,835,0,12,6,114,6,39,6,33
 model,com.jsql.util.tampering,TamperingType,6,106,0,0,2,19,0,3,0,3
 model,com.jsql.util.tampering,ModelYamlTampering,9,22,0,0,3,10,3,6,3,6
 model,com.jsql.model.exception,LoopDetectedSlidingException,6,0,0,0,2,0,1,0,1,0
@@ -112,10 +112,10 @@ model,com.jsql.util.bruter,Bruter,32,389,0,12,13,56,7,23,7,17
 model,com.jsql.util.bruter,BaseNCodec,295,205,56,12,57,43,51,11,17,11
 model,com.jsql.util.bruter,Base16,107,1042,20,20,18,52,18,11,2,7
 model,com.jsql.util.bruter,ActionCoder,254,0,0,0,40,0,4,0,4,0
-model,com.jsql.model.suspendable,SuspendableGetRows,74,670,17,37,22,162,15,30,0,18
+model,com.jsql.model.suspendable,SuspendableGetRows,74,670,18,36,22,162,16,29,0,18
 model,com.jsql.model.suspendable,SuspendableGetIndexes,43,133,3,9,10,28,3,7,0,4
 model,com.jsql.model.suspendable,AbstractSuspendable,21,42,3,3,8,16,5,6,2,6
-model,com.jsql.model.suspendable,SuspendableGetCharInsertion,73,509,9,33,15,116,9,32,2,18
+model,com.jsql.model.suspendable,SuspendableGetCharInsertion,70,512,7,35,14,117,8,33,2,18
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
 model,com.jsql.model.injection.method,MediatorMethod.new AbstractMethodInjection() {...},0,27,0,0,0,5,0,5,0,5
