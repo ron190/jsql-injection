@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, 2023, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2013, 2022, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -157,7 +157,7 @@ function show(tableId, selected, columns) {
 }
 
 function updateTabs(tableId, selected) {
-    document.getElementById(tableId + '.tabpanel')
+    document.querySelector('div#' + tableId +' .summary-table')
         .setAttribute('aria-labelledby', selected);
     document.querySelectorAll('button[id^="' + tableId + '"]')
         .forEach(function(tab, index) {
@@ -202,7 +202,26 @@ function indexFilesLoaded() {
 // Copy the contents of the local snippet to the clipboard
 function copySnippet(button) {
     copyToClipboard(button.nextElementSibling.innerText);
-    switchCopyLabel(button, button.firstElementChild);
+    switchCopyLabel(button.firstElementChild, button.parentElement);
+}
+// Copy the link to the adjacent header to the clipboard
+function copyUrl(button) {
+    var id;
+    var header = button.parentElement;
+    if (header.hasAttribute("id")) {
+        id = header.getAttribute("id");
+    } else if (header.parentElement.tagName === 'SECTION' && header.parentElement.hasAttribute("id")) {
+        id = header.parentElement.getAttribute("id");
+    } else if (header.firstElementChild && header.firstElementChild.tagName === "A"
+                                        && header.firstElementChild.hasAttribute("id")) {
+        id = header.firstElementChild.getAttribute("id");
+    }
+    var url = document.location.href;
+    if (url.indexOf("#") > -1) {
+        url = url.substring(0, url.indexOf("#"));
+    }
+    copyToClipboard(url + "#" + id);
+    switchCopyLabel(button.lastElementChild, button.parentElement);
 }
 function copyToClipboard(content) {
     var textarea = document.createElement("textarea");
@@ -213,19 +232,15 @@ function copyToClipboard(content) {
     document.execCommand("copy");
     document.body.removeChild(textarea);
 }
-function switchCopyLabel(button, span) {
+function switchCopyLabel(span, parent) {
     var copied = span.getAttribute("data-copied");
-    button.classList.add("visible");
-    var initialLabel = span.innerHTML;
-    span.innerHTML = copied;
-    setTimeout(function() {
-        button.classList.remove("visible");
-        setTimeout(function() {
-            if (initialLabel !== copied) {
-                span.innerHTML = initialLabel;
-            }
-        }, 100);
-    }, 1900);
+    if (span.innerHTML !== copied) {
+        var initialLabel = span.innerHTML;
+        span.innerHTML = copied;
+        parent.onmouseleave = parent.ontouchend = function() {
+            span.innerHTML = initialLabel;
+        };
+    }
 }
 // Workaround for scroll position not being included in browser history (8249133)
 document.addEventListener("DOMContentLoaded", function(e) {
