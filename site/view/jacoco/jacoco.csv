@@ -31,10 +31,10 @@ view,com.jsql.view.swing.table,AdjusterTableColumn,135,339,24,12,42,82,20,18,4,1
 view,com.jsql.view.swing.table,PanelTable.new DocumentListener() {...},34,12,2,0,10,1,5,1,4,1
 view,com.jsql.view.swing.table,PanelTable.new JTable() {...},2,8,0,0,1,1,1,1,1,1
 view,com.jsql.view.swing.table,PanelTable.new MouseAdapter() {...},43,6,2,0,10,1,2,1,1,1
-view,com.jsql.view.swing.menubar,Menubar.new MouseAdapter() {...},8,9,0,0,3,1,1,1,1,1
+view,com.jsql.view.swing.menubar,Menubar.new MouseAdapter() {...},17,0,0,0,4,0,2,0,2,0
 view,com.jsql.view.swing.menubar,Menubar.new BasicCheckBoxMenuItemUI() {...},5,6,0,0,2,1,1,1,1,1
 view,com.jsql.view.swing.menubar,JMenuItemWithMargin,0,30,1,1,0,15,1,5,0,5
-view,com.jsql.view.swing.menubar,Menubar,319,2676,32,30,60,422,47,44,26,34
+view,com.jsql.view.swing.menubar,Menubar,416,2579,34,28,76,406,48,43,27,33
 view,com.jsql.view.swing.menubar,Menubar.new ActionListener() {...},0,42,1,1,0,10,1,2,0,2
 view,com.jsql.view.swing.menubar,ActionCheckUpdate,13,3,0,0,4,1,2,1,2,1
 view,com.jsql.view.swing.action,HotkeyUtil,0,219,1,7,0,54,1,11,0,8
@@ -351,7 +351,7 @@ view,com.jsql.view.swing.manager.util,MenuBarCoder.MenuItemListener,15,6,0,0,4,1
 view,com.jsql.view.swing.shell,ShellSql,14,9,0,0,2,3,1,1,1,1
 view,com.jsql.view.swing.shell,KeyAdapterTerminal.new SwingWorker() {...},0,48,0,2,0,11,0,3,0,2
 view,com.jsql.view.swing.shell,KeyAdapterTerminal,145,268,21,37,26,61,16,23,1,9
-view,com.jsql.view.swing.shell,BlockCaret,10,111,3,13,6,32,3,9,0,4
+view,com.jsql.view.swing.shell,BlockCaret,9,112,2,14,5,33,2,10,0,4
 view,com.jsql.view.swing.shell,AbstractShell,44,284,5,7,8,67,5,15,0,14
 view,com.jsql.view.swing.shell,ShellWeb,0,17,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.shell,EmptyFocus,23,9,0,0,10,5,4,2,4,2

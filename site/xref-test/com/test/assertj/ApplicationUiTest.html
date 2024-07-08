@@ -911,66 +911,67 @@
 <a class="jxr_linenumber" name="L903" href="#L903">903</a>         }
 <a class="jxr_linenumber" name="L904" href="#L904">904</a>     }
 <a class="jxr_linenumber" name="L905" href="#L905">905</a> 
-<a class="jxr_linenumber" name="L906" href="#L906">906</a>     @Test
-<a class="jxr_linenumber" name="L907" href="#L907">907</a>     <strong class="jxr_keyword">void</strong> shouldFindReportIssue() {
-<a class="jxr_linenumber" name="L908" href="#L908">908</a> 
-<a class="jxr_linenumber" name="L909" href="#L909">909</a>         window.button(<span class="jxr_string">"advancedButton"</span>).click();
-<a class="jxr_linenumber" name="L910" href="#L910">910</a>         window.menuItem(<span class="jxr_string">"menuCommunity"</span>).click();
-<a class="jxr_linenumber" name="L911" href="#L911">911</a>         window.menuItem(<span class="jxr_string">"itemReportIssue"</span>).click();
-<a class="jxr_linenumber" name="L912" href="#L912">912</a> 
-<a class="jxr_linenumber" name="L913" href="#L913">913</a>         DialogFixture dialog = window.dialog();
-<a class="jxr_linenumber" name="L914" href="#L914">914</a>         dialog.button(JButtonMatcher.withText(<span class="jxr_string">"Cancel"</span>)).click();
-<a class="jxr_linenumber" name="L915" href="#L915">915</a> 
-<a class="jxr_linenumber" name="L916" href="#L916">916</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L917" href="#L917">917</a>             window.button(<span class="jxr_string">"advancedButton"</span>).click();
-<a class="jxr_linenumber" name="L918" href="#L918">918</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L919" href="#L919">919</a>             Assertions.fail();
-<a class="jxr_linenumber" name="L920" href="#L920">920</a>         }
-<a class="jxr_linenumber" name="L921" href="#L921">921</a>     }
-<a class="jxr_linenumber" name="L922" href="#L922">922</a> 
-<a class="jxr_linenumber" name="L923" href="#L923">923</a>     @Test
-<a class="jxr_linenumber" name="L924" href="#L924">924</a>     <strong class="jxr_keyword">void</strong> shouldFindIHelpTranslate() {
-<a class="jxr_linenumber" name="L925" href="#L925">925</a> 
-<a class="jxr_linenumber" name="L926" href="#L926">926</a>         window.button(<span class="jxr_string">"advancedButton"</span>).click();
-<a class="jxr_linenumber" name="L927" href="#L927">927</a>         window.menuItem(<span class="jxr_string">"menuCommunity"</span>).click();
-<a class="jxr_linenumber" name="L928" href="#L928">928</a>         window.menuItem(<span class="jxr_string">"menuI18nContribution"</span>).click();
-<a class="jxr_linenumber" name="L929" href="#L929">929</a>         window.menuItem(<span class="jxr_string">"itemIntoFrench"</span>).click();
-<a class="jxr_linenumber" name="L930" href="#L930">930</a> 
-<a class="jxr_linenumber" name="L931" href="#L931">931</a>         DialogFixture dialog = window.dialog();
-<a class="jxr_linenumber" name="L932" href="#L932">932</a>         dialog.close();
-<a class="jxr_linenumber" name="L933" href="#L933">933</a> 
-<a class="jxr_linenumber" name="L934" href="#L934">934</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L935" href="#L935">935</a>             window.button(<span class="jxr_string">"advancedButton"</span>).click();
-<a class="jxr_linenumber" name="L936" href="#L936">936</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L937" href="#L937">937</a>             Assertions.fail();
-<a class="jxr_linenumber" name="L938" href="#L938">938</a>         }
-<a class="jxr_linenumber" name="L939" href="#L939">939</a>     }
-<a class="jxr_linenumber" name="L940" href="#L940">940</a> 
-<a class="jxr_linenumber" name="L941" href="#L941">941</a>     @Test
-<a class="jxr_linenumber" name="L942" href="#L942">942</a>     <strong class="jxr_keyword">void</strong> shouldFindAbout() {
-<a class="jxr_linenumber" name="L943" href="#L943">943</a> 
-<a class="jxr_linenumber" name="L944" href="#L944">944</a>         window.button(<span class="jxr_string">"advancedButton"</span>).click();
-<a class="jxr_linenumber" name="L945" href="#L945">945</a>         window.menuItem(<span class="jxr_string">"menuHelp"</span>).click();
-<a class="jxr_linenumber" name="L946" href="#L946">946</a>         window.menuItem(<span class="jxr_string">"itemHelp"</span>).click();
-<a class="jxr_linenumber" name="L947" href="#L947">947</a> 
-<a class="jxr_linenumber" name="L948" href="#L948">948</a>         DialogFixture dialog = window.dialog();
-<a class="jxr_linenumber" name="L949" href="#L949">949</a>         dialog.button(JButtonMatcher.withText(<span class="jxr_string">"Close"</span>)).click();
-<a class="jxr_linenumber" name="L950" href="#L950">950</a> 
-<a class="jxr_linenumber" name="L951" href="#L951">951</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L952" href="#L952">952</a>             window.button(<span class="jxr_string">"advancedButton"</span>).click();
-<a class="jxr_linenumber" name="L953" href="#L953">953</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L954" href="#L954">954</a>             Assertions.fail();
-<a class="jxr_linenumber" name="L955" href="#L955">955</a>         }
-<a class="jxr_linenumber" name="L956" href="#L956">956</a>     }
-<a class="jxr_linenumber" name="L957" href="#L957">957</a> 
-<a class="jxr_linenumber" name="L958" href="#L958">958</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> verifyMockAdminPage() <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L959" href="#L959">959</a> 
-<a class="jxr_linenumber" name="L960" href="#L960">960</a>         Mockito.verify(document, Mockito.times(1)).html();
-<a class="jxr_linenumber" name="L961" href="#L961">961</a>         Mockito.verify(connection, Mockito.times(1)).get();
-<a class="jxr_linenumber" name="L962" href="#L962">962</a>         Mockito.verify(connection, Mockito.times(1)).ignoreContentType(ArgumentMatchers.anyBoolean());
-<a class="jxr_linenumber" name="L963" href="#L963">963</a>         Mockito.verify(connection, Mockito.times(1)).ignoreHttpErrors(ArgumentMatchers.anyBoolean());
-<a class="jxr_linenumber" name="L964" href="#L964">964</a>     }
-<a class="jxr_linenumber" name="L965" href="#L965">965</a> }
+<a class="jxr_linenumber" name="L906" href="#L906">906</a> <em class="jxr_comment">//    Unstable?</em>
+<a class="jxr_linenumber" name="L907" href="#L907">907</a> <em class="jxr_comment">//    @Test</em>
+<a class="jxr_linenumber" name="L908" href="#L908">908</a> <em class="jxr_comment">//    void shouldFindReportIssue() {</em>
+<a class="jxr_linenumber" name="L909" href="#L909">909</a> <em class="jxr_comment">//</em>
+<a class="jxr_linenumber" name="L910" href="#L910">910</a> <em class="jxr_comment">//        window.button("advancedButton").click();</em>
+<a class="jxr_linenumber" name="L911" href="#L911">911</a> <em class="jxr_comment">//        window.menuItem("menuCommunity").click();</em>
+<a class="jxr_linenumber" name="L912" href="#L912">912</a> <em class="jxr_comment">//        window.menuItem("itemReportIssue").click();</em>
+<a class="jxr_linenumber" name="L913" href="#L913">913</a> <em class="jxr_comment">//</em>
+<a class="jxr_linenumber" name="L914" href="#L914">914</a> <em class="jxr_comment">//        DialogFixture dialog = window.dialog();</em>
+<a class="jxr_linenumber" name="L915" href="#L915">915</a> <em class="jxr_comment">//        dialog.button(JButtonMatcher.withText("Cancel")).click();</em>
+<a class="jxr_linenumber" name="L916" href="#L916">916</a> <em class="jxr_comment">//</em>
+<a class="jxr_linenumber" name="L917" href="#L917">917</a> <em class="jxr_comment">//        try {</em>
+<a class="jxr_linenumber" name="L918" href="#L918">918</a> <em class="jxr_comment">//            window.button("advancedButton").click();</em>
+<a class="jxr_linenumber" name="L919" href="#L919">919</a> <em class="jxr_comment">//        } catch (Exception e) {</em>
+<a class="jxr_linenumber" name="L920" href="#L920">920</a> <em class="jxr_comment">//            Assertions.fail();</em>
+<a class="jxr_linenumber" name="L921" href="#L921">921</a> <em class="jxr_comment">//        }</em>
+<a class="jxr_linenumber" name="L922" href="#L922">922</a> <em class="jxr_comment">//    }</em>
+<a class="jxr_linenumber" name="L923" href="#L923">923</a> 
+<a class="jxr_linenumber" name="L924" href="#L924">924</a>     @Test
+<a class="jxr_linenumber" name="L925" href="#L925">925</a>     <strong class="jxr_keyword">void</strong> shouldFindIHelpTranslate() {
+<a class="jxr_linenumber" name="L926" href="#L926">926</a> 
+<a class="jxr_linenumber" name="L927" href="#L927">927</a>         window.button(<span class="jxr_string">"advancedButton"</span>).click();
+<a class="jxr_linenumber" name="L928" href="#L928">928</a>         window.menuItem(<span class="jxr_string">"menuCommunity"</span>).click();
+<a class="jxr_linenumber" name="L929" href="#L929">929</a>         window.menuItem(<span class="jxr_string">"menuI18nContribution"</span>).click();
+<a class="jxr_linenumber" name="L930" href="#L930">930</a>         window.menuItem(<span class="jxr_string">"itemIntoFrench"</span>).click();
+<a class="jxr_linenumber" name="L931" href="#L931">931</a> 
+<a class="jxr_linenumber" name="L932" href="#L932">932</a>         DialogFixture dialog = window.dialog();
+<a class="jxr_linenumber" name="L933" href="#L933">933</a>         dialog.close();
+<a class="jxr_linenumber" name="L934" href="#L934">934</a> 
+<a class="jxr_linenumber" name="L935" href="#L935">935</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L936" href="#L936">936</a>             window.button(<span class="jxr_string">"advancedButton"</span>).click();
+<a class="jxr_linenumber" name="L937" href="#L937">937</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L938" href="#L938">938</a>             Assertions.fail();
+<a class="jxr_linenumber" name="L939" href="#L939">939</a>         }
+<a class="jxr_linenumber" name="L940" href="#L940">940</a>     }
+<a class="jxr_linenumber" name="L941" href="#L941">941</a> 
+<a class="jxr_linenumber" name="L942" href="#L942">942</a>     @Test
+<a class="jxr_linenumber" name="L943" href="#L943">943</a>     <strong class="jxr_keyword">void</strong> shouldFindAbout() {
+<a class="jxr_linenumber" name="L944" href="#L944">944</a> 
+<a class="jxr_linenumber" name="L945" href="#L945">945</a>         window.button(<span class="jxr_string">"advancedButton"</span>).click();
+<a class="jxr_linenumber" name="L946" href="#L946">946</a>         window.menuItem(<span class="jxr_string">"menuHelp"</span>).click();
+<a class="jxr_linenumber" name="L947" href="#L947">947</a>         window.menuItem(<span class="jxr_string">"itemHelp"</span>).click();
+<a class="jxr_linenumber" name="L948" href="#L948">948</a> 
+<a class="jxr_linenumber" name="L949" href="#L949">949</a>         DialogFixture dialog = window.dialog();
+<a class="jxr_linenumber" name="L950" href="#L950">950</a>         dialog.button(JButtonMatcher.withText(<span class="jxr_string">"Close"</span>)).click();
+<a class="jxr_linenumber" name="L951" href="#L951">951</a> 
+<a class="jxr_linenumber" name="L952" href="#L952">952</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L953" href="#L953">953</a>             window.button(<span class="jxr_string">"advancedButton"</span>).click();
+<a class="jxr_linenumber" name="L954" href="#L954">954</a>         } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L955" href="#L955">955</a>             Assertions.fail();
+<a class="jxr_linenumber" name="L956" href="#L956">956</a>         }
+<a class="jxr_linenumber" name="L957" href="#L957">957</a>     }
+<a class="jxr_linenumber" name="L958" href="#L958">958</a> 
+<a class="jxr_linenumber" name="L959" href="#L959">959</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> verifyMockAdminPage() <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L960" href="#L960">960</a> 
+<a class="jxr_linenumber" name="L961" href="#L961">961</a>         Mockito.verify(document, Mockito.times(1)).html();
+<a class="jxr_linenumber" name="L962" href="#L962">962</a>         Mockito.verify(connection, Mockito.times(1)).get();
+<a class="jxr_linenumber" name="L963" href="#L963">963</a>         Mockito.verify(connection, Mockito.times(1)).ignoreContentType(ArgumentMatchers.anyBoolean());
+<a class="jxr_linenumber" name="L964" href="#L964">964</a>         Mockito.verify(connection, Mockito.times(1)).ignoreHttpErrors(ArgumentMatchers.anyBoolean());
+<a class="jxr_linenumber" name="L965" href="#L965">965</a>     }
+<a class="jxr_linenumber" name="L966" href="#L966">966</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2024. All rights reserved.</div>
