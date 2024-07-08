@@ -120,7 +120,8 @@ jobs:
     - name: Databases statistics
       run: $DOCKER_RESOURCES/scripts/verify.sh
 
-    - uses: ./.github/workflows/publish-scan.yml
+    - name: Coverage and site
+      uses: ./.github/workflows/publish-scan/
       if: ${{ env.IS_PUBLISHING == 'true' }}
 
   release:
