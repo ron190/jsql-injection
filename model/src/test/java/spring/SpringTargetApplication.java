@@ -7,6 +7,7 @@ import com.mckoi.database.control.DefaultDBConfig;
 import com.mckoi.database.control.TCPJDBCServer;
 import com.mckoi.debug.Lvl;
 import jakarta.annotation.PreDestroy;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.derby.drda.NetworkServerControl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,10 +37,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
-import java.util.stream.Stream;
 
 @SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class)
 @EntityScan({"spring.rest"})
@@ -76,26 +76,26 @@ public class SpringTargetApplication {
     public static final Properties propsInformix = new Properties();
     public static final Properties propsSybase = new Properties();
 
+    public static final List<SimpleEntry<Properties, String>> propertiesByEngine = Arrays.asList(
+        new SimpleEntry<>(propsH2, "hibernate/hibernate.h2.properties"),
+        new SimpleEntry<>(propsMysql, "hibernate/hibernate.mysql.properties"),
+        new SimpleEntry<>(propsMysqlError, "hibernate/hibernate.mysql-5-5-40.properties"),
+        new SimpleEntry<>(propsPostgreSql, "hibernate/hibernate.postgresql.properties"),
+        new SimpleEntry<>(propsSqlServer, "hibernate/hibernate.sqlserver.properties"),
+        new SimpleEntry<>(propsCubrid, "hibernate/hibernate.cubrid.properties"),
+        new SimpleEntry<>(propsSqlite, "hibernate/hibernate.sqlite.properties"),
+        new SimpleEntry<>(propsDb2, "hibernate/hibernate.db2.properties"),
+        new SimpleEntry<>(propsHsqldb, "hibernate/hibernate.hsqldb.properties"),
+        new SimpleEntry<>(propsDerby, "hibernate/hibernate.derby.properties"),
+        new SimpleEntry<>(propsFirebird, "hibernate/hibernate.firebird.properties"),
+        new SimpleEntry<>(propsInformix, "hibernate/hibernate.informix.properties"),
+        new SimpleEntry<>(propsSybase, "hibernate/hibernate.sybase.properties")
+    );
+
     static {
-        
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
-        Stream.of(
-            new SimpleEntry<>(propsH2, "hibernate/hibernate.h2.properties"),
-            new SimpleEntry<>(propsMysql, "hibernate/hibernate.mysql.properties"),
-            new SimpleEntry<>(propsMysqlError, "hibernate/hibernate.mysql-5-5-40.properties"),
-            new SimpleEntry<>(propsPostgreSql, "hibernate/hibernate.postgresql.properties"),
-            new SimpleEntry<>(propsSqlServer, "hibernate/hibernate.sqlserver.properties"),
-            new SimpleEntry<>(propsCubrid, "hibernate/hibernate.cubrid.properties"),
-            new SimpleEntry<>(propsSqlite, "hibernate/hibernate.sqlite.properties"),
-            new SimpleEntry<>(propsDb2, "hibernate/hibernate.db2.properties"),
-            new SimpleEntry<>(propsHsqldb, "hibernate/hibernate.hsqldb.properties"),
-            new SimpleEntry<>(propsDerby, "hibernate/hibernate.derby.properties"),
-            new SimpleEntry<>(propsFirebird, "hibernate/hibernate.firebird.properties"),
-            new SimpleEntry<>(propsInformix, "hibernate/hibernate.informix.properties"),
-            new SimpleEntry<>(propsSybase, "hibernate/hibernate.sybase.properties")
-        )
-        .forEach(simpleEntry -> {
+        propertiesByEngine.forEach(simpleEntry -> {
             try (InputStream inputStream = classloader.getResourceAsStream(simpleEntry.getValue())) {
                 simpleEntry.getKey().load(inputStream);
             } catch (IOException e) {
@@ -112,30 +112,14 @@ public class SpringTargetApplication {
         initializeDerby();
         initializeMckoi();
 
-        ArrayList<Properties> properties = new ArrayList<>(
-            Arrays.asList(
-                SpringTargetApplication.propsH2,
-                SpringTargetApplication.propsMysql,
-                SpringTargetApplication.propsMysqlError,
-                SpringTargetApplication.propsPostgreSql,
-                SpringTargetApplication.propsSqlServer,
-                SpringTargetApplication.propsCubrid,
-                SpringTargetApplication.propsSqlite,
-                SpringTargetApplication.propsDb2,
-                SpringTargetApplication.propsHsqldb,
-                SpringTargetApplication.propsDerby,
-                SpringTargetApplication.propsFirebird,
-                SpringTargetApplication.propsInformix,
-                SpringTargetApplication.propsSybase
-            )
-        );
-        
-        properties
-        .parallelStream()
-        .forEach(props -> {
+        SpringTargetApplication.propertiesByEngine.parallelStream()
+        .filter(propertyByEngine -> System.getProperty("profileId", StringUtils.EMPTY).equals(
+            propertyByEngine.getKey().getProperty("jsql.profile", StringUtils.EMPTY)
+        ))
+        .forEach(propertyByEngine -> {
             
             Configuration configuration = new Configuration();
-            configuration.addProperties(props).configure("hibernate/hibernate.cfg.xml");
+            configuration.addProperties(propertyByEngine.getKey()).configure("hibernate/hibernate.cfg.xml");
             configuration.addAnnotatedClass(Student.class);
             
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());

@@ -1,5 +1,6 @@
 package spring.tenant;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
@@ -7,7 +8,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import spring.SpringTargetApplication;
 
 import java.sql.DriverManager;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MasterService {
     
@@ -17,26 +20,12 @@ public class MasterService {
         
         // Remove annoying logs from jdbc driver
         DriverManager.setLogWriter(null);
-
-        ArrayList<Properties> properties = new ArrayList<>(
-            Arrays.asList(
-                SpringTargetApplication.propsH2,
-                SpringTargetApplication.propsMysql,
-                SpringTargetApplication.propsMysqlError,
-                SpringTargetApplication.propsPostgreSql,
-                SpringTargetApplication.propsSqlServer,
-                SpringTargetApplication.propsCubrid,
-                SpringTargetApplication.propsSqlite,
-                SpringTargetApplication.propsDb2,
-                SpringTargetApplication.propsHsqldb,
-                SpringTargetApplication.propsDerby,
-                SpringTargetApplication.propsFirebird,
-                SpringTargetApplication.propsInformix,
-                SpringTargetApplication.propsSybase
-            )
-        );
         
-        properties.forEach(props -> {
+        SpringTargetApplication.propertiesByEngine.stream()
+        .filter(propertyByEngine -> System.getProperty("profileId", StringUtils.EMPTY).equals(
+            propertyByEngine.getKey().getProperty("jsql.profile", StringUtils.EMPTY)
+        ))
+        .map(AbstractMap.SimpleEntry::getKey).forEach(props -> {
             
             DatasourceConnectionProviderImpl connectionProvider = new DatasourceConnectionProviderImpl();
             

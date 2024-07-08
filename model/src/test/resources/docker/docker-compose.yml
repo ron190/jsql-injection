@@ -1,6 +1,76 @@
 version: "3.7"
 services:
 
+
+  cubrid:
+    ports:
+      - "33000:33000"
+    build:
+      context: .
+      dockerfile: Dockerfile.cubrid
+    container_name: jsql-cubrid
+    networks:
+      - jsql-network
+
+  firebird:
+    ports:
+      - "3050:3050"
+    build:
+      context: .
+      dockerfile: Dockerfile.firebird
+    environment:
+      FIREBIRD_DATABASE: EMPLOYEE.FDB
+      FIREBIRD_USER: sysdba2
+      FIREBIRD_PASSWORD: test
+    container_name: jsql-firebird
+    networks:
+      - jsql-network
+
+  informix:
+    ports:
+      - "9088:9088"
+    build:
+      context: .
+      dockerfile: Dockerfile.informix
+    environment:
+      LICENSE: accept
+    container_name: jsql-informix
+    networks:
+      - jsql-network
+
+  lamp:
+    container_name: jsql-lamp
+    build:
+      context: .
+      dockerfile: Dockerfile.lamp
+    ports:
+      - "8079:80"
+      - "3308:3308"
+    networks:
+      - jsql-network
+
+  mimer:
+    ports:
+      - "1360:1360"
+    build:
+      context: .
+      dockerfile: Dockerfile.mimer
+    environment:
+      MIMER_SYSADM_PASSWORD: SYSADM
+    container_name: jsql-mimer
+    networks:
+      - jsql-network
+
+  #  monetdb:
+  #    ports:
+  #      - "50001:50000"
+  #    build:
+  #      context: .
+  #      dockerfile: Dockerfile.monetdb
+  #    container_name: jsql-monetdb
+  #    networks:
+  #      - jsql-network
+
   mysql:
     ports:
       - "3306:3306"
@@ -25,32 +95,6 @@ services:
     networks:
       - jsql-network
 
-  postgresql:
-    ports:
-      - "5432:5432"
-    build:
-      context: .
-      dockerfile: Dockerfile.postgresql
-    environment:
-      POSTGRES_PASSWORD: my-secret-pw
-    container_name: jsql-postgresql
-    networks:
-      - jsql-network
-
-  sqlserver:
-    ports:
-      - "1434:1434"
-      - "1433:1433"
-    build:
-      context: .
-      dockerfile: Dockerfile.sqlserver
-    environment:
-      SA_PASSWORD: yourStrong(!)Password
-      ACCEPT_EULA: Y
-    container_name: jsql-sqlserver
-    networks:
-      - jsql-network
-
   neo4j:
     ports:
       - "7687:7687"
@@ -63,109 +107,15 @@ services:
     networks:
       - jsql-network
 
-  cubrid:
+  postgresql:
     ports:
-      - "33000:33000"
+      - "5432:5432"
     build:
       context: .
-      dockerfile: Dockerfile.cubrid
-    container_name: jsql-cubrid
-    networks:
-      - jsql-network
-
-  db2:
-    ports:
-      - "50000:50000"
-    privileged: true
-    build:
-      context: .
-      dockerfile: Dockerfile.db2
+      dockerfile: Dockerfile.postgresql
     environment:
-      LICENSE: accept
-      DB2INST1_PASSWORD: test
-      DBNAME: testdb
-    container_name: jsql-db2
-    networks:
-      - jsql-network
-
-  lamp:
-    container_name: jsql-lamp
-    build:
-      context: .
-      dockerfile: Dockerfile.lamp
-    ports:
-      - "8079:80"
-      - "3308:3308"
-    networks:
-      - jsql-network
-
-  firebird:
-    ports:
-      - "3050:3050"
-    build:
-      context: .
-      dockerfile: Dockerfile.firebird
-    environment:
-      FIREBIRD_DATABASE: EMPLOYEE.FDB
-      FIREBIRD_USER: sysdba2
-      FIREBIRD_PASSWORD: test
-    container_name: jsql-firebird
-    networks:
-      - jsql-network
-
-#  monetdb:
-#    ports:
-#      - "50001:50000"
-#    build:
-#      context: .
-#      dockerfile: Dockerfile.monetdb
-#    container_name: jsql-monetdb
-#    networks:
-#      - jsql-network
-
-  mimer:
-    ports:
-      - "1360:1360"
-    build:
-      context: .
-      dockerfile: Dockerfile.mimer
-    environment:
-      MIMER_SYSADM_PASSWORD: SYSADM
-    container_name: jsql-mimer
-    networks:
-      - jsql-network
-
-  informix:
-    ports:
-      - "9088:9088"
-    build:
-      context: .
-      dockerfile: Dockerfile.informix
-    environment:
-      LICENSE: accept
-    container_name: jsql-informix
-    networks:
-      - jsql-network
-
-  sybase:
-    ports:
-      - "5000:5000"
-    build:
-      context: .
-      dockerfile: Dockerfile.sybase
-    container_name: jsql-sybase
-    networks:
-      - jsql-network
-    command: bash /sybase/start
-    hostname: dksybase
-
-  vertica:
-    ports:
-      - "5433:5433"
-    build:
-      context: .
-      dockerfile: Dockerfile.vertica
-    container_name: jsql-vertica
+      POSTGRES_PASSWORD: my-secret-pw
+    container_name: jsql-postgresql
     networks:
       - jsql-network
 

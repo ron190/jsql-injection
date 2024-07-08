@@ -55,6 +55,13 @@
                 <skipITs>false</skipITs>
             </properties>
         </profile>
+        <profile>
+            <id>tests-additional</id>
+            <properties>
+                <skipTests>false</skipTests>
+                <skipITs>false</skipITs>
+            </properties>
+        </profile>
     </profiles>
     
     <dependencyManagement>

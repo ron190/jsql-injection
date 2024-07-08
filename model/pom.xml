@@ -196,11 +196,11 @@
                     <argLine>@{argLine} ${MAVEN_NASHORN} ${MAVEN_BYTEBUDDY}</argLine>
                     <!-- Set number of retry, allows 1st test to run Spring then run other tests -->
                     <rerunFailingTestsCount>3</rerunFailingTestsCount>
-                    <includes>
-                        <include>**/*SuiteIT.java</include>
-                    </includes>
                     <!-- Display each method time metrics on a test class -->
                     <reportFormat>plain</reportFormat>
+                    <systemPropertyVariables>
+                        <profileId>${project.activeProfiles[0].id}</profileId>
+                    </systemPropertyVariables>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -213,6 +213,51 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*SuiteIT.java</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/*SqlServer*SuiteIT.java</exclude>
+                                <exclude>**/*Db2*SuiteIT.java</exclude>
+                                <exclude>**/*Vertica*SuiteIT.java</exclude>
+                                <exclude>**/*Sybase*SuiteIT.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>tests-additional</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*SqlServer*SuiteIT.java</include>
+                                <include>**/*Db2*SuiteIT.java</include>
+                                <include>**/*Vertica*SuiteIT.java</include>
+                                <include>**/*Sybase*SuiteIT.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <reporting>
         <plugins>
