@@ -1,7 +1,4 @@
 inputs:
-  DOCKER_RESOURCES:
-    type: string
-    required: true
   CODECOV_TOKEN:
     type: string
     required: true

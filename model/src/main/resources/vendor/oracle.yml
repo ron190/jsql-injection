@@ -12,8 +12,7 @@ resource:
   from v%24instance
 
  schema:
-  # TODO Use sys.stragg instead of xmlagg
-  # select sys.stragg (distinct username||chr(32)) from all_users
+  # sliding window issue with sys.stragg() and listagg(): missing values
   database: |
    select
        utl_raw.cast_to_varchar2(

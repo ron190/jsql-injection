@@ -116,7 +116,7 @@ public class SpringTargetApplication {
         }
 
         SpringTargetApplication.propertiesByEngine.parallelStream()
-        .filter(propertyByEngine -> System.getProperty("profileId").equals(
+        .filter(propertyByEngine -> System.getProperty("profileId", "tests").equals(
             propertyByEngine.getKey().getProperty("jsql.profile", "tests")  // undefined by default
         ))
         .forEach(propertyByEngine -> {

@@ -21,7 +21,7 @@ public class MasterService {
         DriverManager.setLogWriter(null);
         
         SpringTargetApplication.propertiesByEngine.stream()
-        .filter(propertyByEngine -> System.getProperty("profileId").equals(
+        .filter(propertyByEngine -> System.getProperty("profileId", "tests").equals(
             propertyByEngine.getKey().getProperty("jsql.profile", "tests")  // undefined by default
         ))
         .map(AbstractMap.SimpleEntry::getKey).forEach(props -> {
