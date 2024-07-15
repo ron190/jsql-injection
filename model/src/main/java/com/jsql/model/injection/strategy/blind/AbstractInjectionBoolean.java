@@ -28,11 +28,11 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     
     // Every FALSE SQL statements will be checked,
     // more statements means a more robust application
-    protected final List<String> falseTests;
+    protected final List<String> falsy;
     
     // Every TRUE SQL statements will be checked,
     // more statements means a more robust application
-    protected final List<String> trueTests;
+    protected final List<String> truthy;
     
     public enum BooleanMode {
         AND, OR, STACKED, NO_MODE
@@ -46,8 +46,8 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         
         this.injectionModel = injectionModel;
         this.booleanMode = booleanMode;
-        this.falseTests = this.injectionModel.getMediatorVendor().getVendor().instance().getListFalseTest();
-        this.trueTests = this.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
+        this.falsy = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsy();
+        this.truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthy();
     }
 
     /**

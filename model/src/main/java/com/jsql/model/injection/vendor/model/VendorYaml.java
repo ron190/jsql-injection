@@ -34,9 +34,10 @@ public class VendorYaml implements AbstractVendor {
     /**
      * SQL characters marking the end of the result of an injection.
      * Process stops when this schema is encountered:
-     * <pre>SQLix01x03x03x07
+     * <pre>SqLix01x03x03x07
      */
     public static final String LEAD_HEX = "0x53714c69";
+    public static final String LEAD_PIPE = "Sq'||'Li";
     public static final String TRAIL_SQL = "%01%03%03%07";
     public static final String TRAIL_HEX = "0x01030307";
 
@@ -99,7 +100,7 @@ public class VendorYaml implements AbstractVendor {
 
     public static final String INJECTION = "${injection}";
 
-    private static final String TEST = "${test}";
+    public static final String TEST = "${test}";
 
     private static final String FILEPATH = "${filepath}";
     private static final String FILEPATH_HEX = "${filepath.hex}";
@@ -600,7 +601,8 @@ public class VendorYaml implements AbstractVendor {
             .replace("${trail_sql}", TRAIL_SQL)
             .replace("${trail_hex}", TRAIL_HEX)
             .replace("${lead}", LEAD)
-            .replace("${lead_hex}", LEAD_HEX);
+            .replace("${lead_hex}", LEAD_HEX)
+            .replace("${lead_pipe}", LEAD_PIPE);
     }
 
     /**
@@ -636,12 +638,12 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public List<String> getListFalseTest() {
+    public List<String> getFalsy() {
         return this.modelYaml.getStrategy().getBoolean().getTest().getFalsy();
     }
 
     @Override
-    public List<String> getListTrueTest() {
+    public List<String> getTruthy() {
         return this.modelYaml.getStrategy().getBoolean().getTest().getTruthy();
     }
 

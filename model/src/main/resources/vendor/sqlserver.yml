@@ -210,6 +210,7 @@ strategy:
     - SQL Server
    orderByErrorMessage:
     - The ORDER BY position number 1337 is out of range of the number of items in the select list
+   vendorSpecific: iif(${test}, 'a', 'b')='a'
 
  normal:
   indices: union select ${indices}

@@ -3,8 +3,9 @@ package com.jsql.model.injection.strategy.blind;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
+import com.jsql.model.injection.vendor.model.Vendor;
+import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.util.LogLevelUtil;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,11 +17,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-/**
- * A blind attack class using concurrent threads.
- */
-public class InjectionCharInsertion {
-    
+public class InjectionVendor {
+
     /**
      * Log4j logger sent to view.
      */
@@ -29,33 +27,16 @@ public class InjectionCharInsertion {
     // Source code of the FALSE web page (eg. ?id=-123456789)
     private String blankFalseMark;
 
-    /**
-     * List of string differences found in all the FALSE queries, compared
-     * to the reference page (aka opcodes). Each FALSE pages should contain
-     * at least one same string, which shouldn't be present in all
-     * the TRUE queries.
-     */
     private List<Diff> constantTrueMark = new ArrayList<>();
-    
+
     protected final InjectionModel injectionModel;
 
-    private final String prefixSuffix;
-    
-    private static final String PREFIX = "prefix";
-
     private final List<String> falsy;
-    
-    /**
-     * Create blind attack initialization.
-     * If every false test are not in true mark and every true test are in
-     * true test, then blind attack is confirmed.
-     * @param prefixSuffix
-     */
-    public InjectionCharInsertion(InjectionModel injectionModel, String falseCharInsertion, String prefixSuffix) {
-        
+
+    public InjectionVendor(InjectionModel injectionModel, String vendorSpecificWithMode, Vendor vendor) {
+
         this.injectionModel = injectionModel;
-        this.prefixSuffix = prefixSuffix;
-        
+
         List<String> truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthy();
         this.falsy = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsy();
         
@@ -66,26 +47,21 @@ public class InjectionCharInsertion {
         
         // Call the SQL request which must be FALSE (usually ?id=-123456879)
         this.blankFalseMark = this.callUrl(
-            falseCharInsertion,
-            "prefix:" + prefixSuffix.replace(PREFIX, StringUtils.EMPTY)
+            StringUtils.EMPTY,
+            "vendor:" + vendor
         );
 
         // Concurrent calls to the FALSE statements,
         // it will use inject() from the model
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableCharInsertionTagTrue");
-        Collection<CallableCharInsertion> listCallableTagTrue = new ArrayList<>();
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableVendorTagTrue");
+        Collection<CallableVendor> listCallableTagTrue = new ArrayList<>();
         
         for (String urlTest: truthy) {
             listCallableTagTrue.add(
-                new CallableCharInsertion(
-                    String.join(
-                        StringUtils.SPACE,
-                        prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "345")),
-                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
-                        urlTest
-                    ),
+                new CallableVendor(
+                    vendorSpecificWithMode.replace(VendorYaml.TEST, urlTest),
                     this,
-                    "prefix#true"
+                    "vendor#true"
                 )
             );
         }
@@ -94,7 +70,7 @@ public class InjectionCharInsertion {
         // keep only opcodes found in each and every FALSE pages.
         // Allow the user to stop the loop
         try {
-            List<Future<CallableCharInsertion>> listTagTrue = taskExecutor.invokeAll(listCallableTagTrue);
+            List<Future<CallableVendor>> listTagTrue = taskExecutor.invokeAll(listCallableTagTrue);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
             
             for (var i = 1 ; i < listTagTrue.size() ; i++) {
@@ -117,27 +93,22 @@ public class InjectionCharInsertion {
             Thread.currentThread().interrupt();
         }
         
-        this.initializeFalseMarks();
+        this.initializeFalseMarks(vendorSpecificWithMode);
     }
     
-    private void initializeFalseMarks() {
+    private void initializeFalseMarks(String vendorSpecificWithMode) {
         
         // Concurrent calls to the TRUE statements,
         // it will use inject() from the model.
-        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagTrue");
-        Collection<CallableCharInsertion> listCallableTagFalse = new ArrayList<>();
+        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableVendorTagFalse");
+        Collection<CallableVendor> listCallableTagFalse = new ArrayList<>();
         
         for (String urlTest: this.falsy) {
             listCallableTagFalse.add(
-                new CallableCharInsertion(
-                    String.join(
-                        StringUtils.SPACE,
-                        this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "345")),
-                        this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
-                        urlTest
-                    ),
+                new CallableVendor(
+                    vendorSpecificWithMode.replace(VendorYaml.TEST, urlTest),
                     this,
-                    "prefix#false"
+                    "vendor#false"
                 )
             );
         }
@@ -146,10 +117,10 @@ public class InjectionCharInsertion {
         // a significant FALSE statement shouldn't contain any TRUE opcode.
         // Allow the user to stop the loop.
         try {
-            List<Future<CallableCharInsertion>> listTagFalse = taskExecutor.invokeAll(listCallableTagFalse);
+            List<Future<CallableVendor>> listTagFalse = taskExecutor.invokeAll(listCallableTagFalse);
             this.injectionModel.getMediatorUtils().getThreadUtil().shutdown(taskExecutor);
         
-            for (Future<CallableCharInsertion> falseTag: listTagFalse) {
+            for (Future<CallableVendor> falseTag: listTagFalse) {
                 
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
@@ -166,21 +137,16 @@ public class InjectionCharInsertion {
         }
     }
 
-    public boolean isInjectable() throws StoppedByUserSlidingException {
+    public boolean isInjectable(String vendorSpecificWithMode) throws StoppedByUserSlidingException {
         
         if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
-        
-        var blindTest = new CallableCharInsertion(
-            String.join(
-                StringUtils.SPACE,
-                this.prefixSuffix.replace(PREFIX, RandomStringUtils.random(10, "678")),
-                this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getBoolean().getModeOr(),
-                this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization()
-            ),
+
+        var blindTest = new CallableVendor(
+            vendorSpecificWithMode.replace(VendorYaml.TEST, this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization()),
             this,
-            "prefix#confirm"
+            "vendor#confirm"
         );
         
         try {

@@ -40,6 +40,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Stream;
 
 @SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class)
 @EntityScan({"spring.rest"})
@@ -106,7 +107,7 @@ public class SpringTargetApplication {
 
     public static void initializeDatabases() throws Exception {
 
-        if (!"tests-additional".equals(System.getProperty("profileId", StringUtils.EMPTY))) {
+        if (System.getProperty("profileId") == null || "tests".equals(System.getProperty("profileId"))) {
 
             initializeHsqldb();
             initializeH2();
@@ -115,10 +116,7 @@ public class SpringTargetApplication {
             initializeMckoi();
         }
 
-        SpringTargetApplication.propertiesByEngine.parallelStream()
-        .filter(propertyByEngine -> System.getProperty("profileId", "tests").equals(
-            propertyByEngine.getKey().getProperty("jsql.profile", "tests")  // undefined by default
-        ))
+        getPropertiesFilterByProfile()
         .forEach(propertyByEngine -> {
             
             Configuration configuration = new Configuration();
@@ -221,6 +219,13 @@ public class SpringTargetApplication {
         driver.close();
     }
 
+    public static Stream<SimpleEntry<Properties, String>> getPropertiesFilterByProfile() {
+        return SpringTargetApplication.propertiesByEngine.parallelStream().filter(propertyByEngine ->
+            System.getProperty("profileId") == null
+            || propertyByEngine.getKey().getProperty("jsql.profile").equals(System.getProperty("profileId"))
+        );
+    }
+
     /**
      * For debug purpose only.
      * @param args
@@ -236,7 +241,7 @@ public class SpringTargetApplication {
     @PreDestroy
     public void onDestroy() throws Exception {
 
-        if (!"tests-additional".equals(System.getProperty("profileId", StringUtils.EMPTY))) {
+        if (System.getProperty("profileId") == null || "tests".equals(System.getProperty("profileId"))) {
 
             LOGGER.info("Ending in-memory databases...");
             serverDerby.shutdown();

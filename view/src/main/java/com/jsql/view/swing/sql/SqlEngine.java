@@ -120,16 +120,7 @@ public class SqlEngine extends JPanel implements Cleanable {
             v -> modelYaml.getResource().setInfo(v),
             () -> modelYaml.getResource().getInfo()
         )),
-        
-        TRUTHY(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getBoolean().getTest().setTruthy(v),
-            () -> modelYaml.getStrategy().getBoolean().getTest().getTruthyAsString()
-        )),
-        FALSY(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getBoolean().getTest().setFalsy(v),
-            () -> modelYaml.getStrategy().getBoolean().getTest().getFalsyAsString()
-        )),
-         
+
         // Configuration
         SLIDING_WINDOW(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getConfiguration().setSlidingWindow(v),
@@ -155,14 +146,6 @@ public class SqlEngine extends JPanel implements Cleanable {
             v -> modelYaml.getStrategy().getConfiguration().setLimitBoundary(v),
             () -> modelYaml.getStrategy().getConfiguration().getLimitBoundary()
         )),
-        ORDER_BY_ERROR_MESSAGE(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setOrderByErrorMessage(v),
-            () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
-        )),
-        INCORRECT_STRING_ERROR_MESSAGE(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setErrorMessageAsString(v),
-            () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getErrorMessageAsString()
-        )),
         
         // Normal
         INDICES(new JTextPaneLexer(
@@ -172,10 +155,6 @@ public class SqlEngine extends JPanel implements Cleanable {
         CAPACITY(new JTextPaneLexer(
             v -> modelYaml.getStrategy().getNormal().setCapacity(v),
             () -> modelYaml.getStrategy().getNormal().getCapacity()
-        )),
-        ORDER_BY(new JTextPaneLexer(
-            v -> modelYaml.getStrategy().getNormal().setOrderBy(v),
-            () -> modelYaml.getStrategy().getNormal().getOrderBy()
         )),
 
         STACKED(new JTextPaneLexer(
@@ -229,7 +208,33 @@ public class SqlEngine extends JPanel implements Cleanable {
         FILE_WRITE_PATH(new JTextPaneLexer(
             v -> modelYaml.getResource().getFile().getWrite().setPath(v),
             () -> modelYaml.getResource().getFile().getWrite().getPath()
-        ))
+        )),
+
+        // Fingerprint
+        TRUTHY(new JTextPaneLexer(
+            v -> modelYaml.getStrategy().getBoolean().getTest().setTruthy(v),
+            () -> modelYaml.getStrategy().getBoolean().getTest().getTruthyAsString()
+        )),
+        FALSY(new JTextPaneLexer(
+            v -> modelYaml.getStrategy().getBoolean().getTest().setFalsy(v),
+            () -> modelYaml.getStrategy().getBoolean().getTest().getFalsyAsString()
+        )),
+        INCORRECT_STRING_ERROR_MESSAGE(new JTextPaneLexer(
+            v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setErrorMessageAsString(v),
+            () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getErrorMessageAsString()
+        )),
+        ORDER_BY_ERROR_MESSAGE(new JTextPaneLexer(
+            v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setOrderByErrorMessage(v),
+            () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getOrderByErrorMessage()
+        )),
+        ORDER_BY(new JTextPaneLexer(
+            v -> modelYaml.getStrategy().getNormal().setOrderBy(v),
+            () -> modelYaml.getStrategy().getNormal().getOrderBy()
+        )),
+        VENDOR_SPECIFIC(new JTextPaneLexer(
+            v -> modelYaml.getStrategy().getConfiguration().getFingerprint().setVendorSpecific(v),
+            () -> modelYaml.getStrategy().getConfiguration().getFingerprint().getVendorSpecific()
+        )),
         ;
         
         final JTextPaneLexer text;
@@ -553,11 +558,11 @@ public class SqlEngine extends JPanel implements Cleanable {
         tabs.addTab(I18nUtil.valueByKey("SQLENGINE_ORDER_BY"), new LightScrollPane(1, 0, 1, 0, TextareaWithColor.ORDER_BY.getText()));
         tabs.addTab("Order by error", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.ORDER_BY_ERROR_MESSAGE.getText()));
         tabs.addTab("String error", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.INCORRECT_STRING_ERROR_MESSAGE.getText()));
+        tabs.addTab("Vendor specific", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.VENDOR_SPECIFIC.getText()));
         tabs.addTab("Truthy", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.TRUTHY.getText()));
         tabs.addTab("Falsy", new LightScrollPane(1, 0, 1, 0, TextareaWithColor.FALSY.getText()));
         
-        Stream.of("SQLENGINE_ORDER_BY")
-        .forEach(keyI18n -> {
+        Stream.of("SQLENGINE_ORDER_BY").forEach(keyI18n -> {
 
             var label = new JLabel(I18nUtil.valueByKey(keyI18n));
             tabs.setTabComponentAt(

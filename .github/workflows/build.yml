@@ -16,15 +16,9 @@ jobs:
           - jdk: 3.8.6-eclipse-temurin-18
             nashorn: ''
             bytebuddy: ''
-            isPublishing: 'true'
-          - jdk: 3.9.3-eclipse-temurin-20
-            nashorn: ''
-            bytebuddy: ''
-            isPublishing: 'false'
           - jdk: 3.9.7-eclipse-temurin-21
             nashorn: ''
             bytebuddy: '-Dnet.bytebuddy.experimental=true'
-            isPublishing: 'false'
     # Groovy not compatible jdk22: gmavenplus-plugin JsonUtilSpock.groovy Unsupported class file major version 66
     #        - jdk: 3.9.7-eclipse-temurin-22
     #          nashorn: ""
@@ -34,7 +28,6 @@ jobs:
       MAVEN_NASHORN: ${{ matrix.nashorn }}
       # experimental enabled on jdk21 to prevent 'Mockito cannot mock this class: class org.jsoup.nodes.Document'
       MAVEN_BYTEBUDDY: ${{ matrix.bytebuddy }}
-      IS_PUBLISHING: ${{ matrix.isPublishing }}
       DOCKER_RESOURCES: ${{ inputs.DOCKER_RESOURCES }}
     steps:
 
@@ -107,7 +100,7 @@ jobs:
 
       - name: Coverage and site
         uses: ./.github/workflows/publish-scan/
-        if: env.IS_PUBLISHING == 'true'
+        if: matrix.jdk == '3.8.6-eclipse-temurin-18'
         with:  # composite cannot use secrets directly
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}

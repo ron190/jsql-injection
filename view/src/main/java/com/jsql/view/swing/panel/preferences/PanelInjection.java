@@ -98,7 +98,7 @@ public class PanelInjection extends JPanel {
             "Default is searching for the prefix but can be disabled to save time when prefix is already set by the user.</html>";
         this.checkboxIsNotSearchingCharInsertion.setToolTipText(tooltipIsNotSearchingCharInsertion);
         this.checkboxIsNotSearchingCharInsertion.setFocusable(false);
-        var labelIsNotSearchingCharInsertion = new JButton("Disable search for injection prefix");
+        var labelIsNotSearchingCharInsertion = new JButton("Disable search for character insertion");
         labelIsNotSearchingCharInsertion.setToolTipText(tooltipIsNotSearchingCharInsertion);
         labelIsNotSearchingCharInsertion.addActionListener(actionEvent -> {
 

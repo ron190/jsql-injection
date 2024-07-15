@@ -33,7 +33,29 @@
     },
     {
         "url": "http://openvpn_address/run#level4_tryhackme_com/room/sqlinjectionlm",
-        "request": "level=4&sql= select+1+from+analytics_referrers+where+domain%3D1+",
+        "request": "level=4&sql=select+1+from+analytics_referrers+where+domain%3D1+",
+        "requestType": "POST",
+        "method": "REQUEST"
+    },
+    {
+        "url": "http://openvpn_address/blood/nl-search.php#tryhackme_com/room/sqlmap",
+        "header": "blood_group=",
+        "requestType": "POST",
+        "method": "REQUEST"
+    },
+    {
+        "url": "http://openvpn_address/terms-and-conditions#tryhackme.com/room/sqhell",
+        "header": "X-Forwarded-For:1'*"
+    },
+    {
+        "url": "http://openvpn_address/user?id=1#tryhackme.com/room/sqhell",
+    },
+    {
+        "url": "http://openvpn_address/post?id=2#tryhackme.com/room/sqhell",
+    },
+    {
+        "url": "http://openvpn_address/login#tryhackme_com/room/sqhell",
+        "header": "username=&password=",
         "requestType": "POST",
         "method": "REQUEST"
     },
@@ -98,6 +120,30 @@
         "requestType": "POST",
         "method": "REQUEST",
         "header": "Authorization: Basic GET_BASE64_PASSWORD_FROM_NATAS16"
+    },
+    {
+        "url": "https://burp-lab1.web-security-academy_net/filter?category=",
+        "header": "Cookie: session=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE"
+    },
+    {
+        "url": "https://burp-lab3.web-security-academy_net/filter?category=",
+        "header": "Cookie: session=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE"
+    },
+    {
+        "url": "https://burp-lab4.web-security-academy_net/filter?category=",
+        "header": "Cookie: session=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE"
+    },
+    {
+        "url": "https://burp-lab5.web-security-academy_net/filter?category=",
+        "header": "Cookie: session=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE"
+    },
+    {
+        "url": "https://burp-lab6.web-security-academy_net/filter?category=",
+        "header": "Cookie: session=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE"
+    },
+    {
+        "url": "https://burp-lab9.web-security-academy_net/filter?category=",
+        "header": "Cookie: session=LOG_IN_WITH_BROWSER_THEN_GET_COOKIE"
     },
     {
         "url": "http://localhost/DVWA-2.0.1/vulnerabilities/sqli/?id=&Submit=Submit",

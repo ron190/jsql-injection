@@ -20,11 +20,7 @@ public class MasterService {
         // Remove annoying logs from jdbc driver
         DriverManager.setLogWriter(null);
         
-        SpringTargetApplication.propertiesByEngine.stream()
-        .filter(propertyByEngine -> System.getProperty("profileId", "tests").equals(
-            propertyByEngine.getKey().getProperty("jsql.profile", "tests")  // undefined by default
-        ))
-        .map(AbstractMap.SimpleEntry::getKey).forEach(props -> {
+        SpringTargetApplication.getPropertiesFilterByProfile().map(AbstractMap.SimpleEntry::getKey).forEach(props -> {
             
             DatasourceConnectionProviderImpl connectionProvider = new DatasourceConnectionProviderImpl();
             

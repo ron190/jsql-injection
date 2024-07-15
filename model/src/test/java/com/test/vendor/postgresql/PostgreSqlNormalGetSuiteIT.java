@@ -33,7 +33,6 @@ public class PostgreSqlNormalGetSuiteIT extends ConcretePostgreSqlSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
 
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPostgresql());
         model.beginInjection();
     }
     

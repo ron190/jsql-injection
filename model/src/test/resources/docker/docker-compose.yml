@@ -1,7 +1,6 @@
 version: "3.7"
 services:
 
-
   cubrid:
     ports:
       - "33000:33000"

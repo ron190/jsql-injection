@@ -47,7 +47,7 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         super(injectionModel, blindMode);
         
         // No blind
-        if (this.falseTests.isEmpty() || this.injectionModel.isStoppedByUser()) {
+        if (this.falsy.isEmpty() || this.injectionModel.isStoppedByUser()) {
             return;
         }
         
@@ -59,7 +59,7 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetBlindTagFalse");
         Collection<CallableBlind> callablesFalseTest = new ArrayList<>();
         
-        for (String falseTest: this.falseTests) {
+        for (String falseTest: this.falsy) {
             callablesFalseTest.add(new CallableBlind(
                 falseTest,
                 injectionModel,
@@ -111,7 +111,7 @@ public class InjectionBlind extends AbstractInjectionMonobit<CallableBlind> {
 
         Collection<CallableBlind> callablesTrueTest = new ArrayList<>();
         
-        for (String trueTest: this.trueTests) {
+        for (String trueTest: this.truthy) {
             callablesTrueTest.add(new CallableBlind(
                 trueTest,
                 injectionModel,

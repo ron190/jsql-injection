@@ -13,6 +13,7 @@ public class Fingerprint implements Serializable {
 
     private List<String> errorMessage = new ArrayList<>();
     private String orderByErrorMessage = StringUtils.EMPTY;
+    private String vendorSpecific = StringUtils.EMPTY;
 
     public List<String> getErrorMessage() {
         return this.errorMessage;
@@ -39,5 +40,13 @@ public class Fingerprint implements Serializable {
     
     public void setErrorMessageAsString(String errorMessage) {
         this.errorMessage = Arrays.asList(errorMessage.split("[\r\n]+"));
+    }
+
+    public String getVendorSpecific() {
+        return vendorSpecific;
+    }
+
+    public void setVendorSpecific(String vendorSpecific) {
+        this.vendorSpecific = vendorSpecific;
     }
 }

@@ -27,6 +27,9 @@ public class CookiesUtil {
     public boolean testParameters(boolean hasFoundInjection) {
 
         if (!hasFoundInjection) {
+            if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam()) {
+                return false;
+            }
             LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, "Checking cookies params...");
         } else {
             return true;

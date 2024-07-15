@@ -4,6 +4,8 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySqlErrorSuiteIT;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junitpioneer.jupiter.RetryingTest;
 
 public class SoapSuiteIT extends ConcreteMySqlErrorSuiteIT {
@@ -30,9 +32,11 @@ public class SoapSuiteIT extends ConcreteMySqlErrorSuiteIT {
         model.getMediatorUtils().getPreferencesUtil()
         .withNotTestingConnection()  // Expected error 500 on connection test (SQL failure)
         .withCheckingAllSoapParam()
+        .withIsNotSearchingCharInsertion(true)
         .withIsStrategyBlindDisabled(true)
-        .withIsStrategyTimeDisabled(true);
-        
+        .withIsStrategyTimeDisabled(true)
+        .withIsStrategyMultibitDisabled(true);
+
         model.setIsScanning(true);
         
         model
@@ -48,5 +52,13 @@ public class SoapSuiteIT extends ConcreteMySqlErrorSuiteIT {
     @RetryingTest(3)
     public void listDatabases() throws JSqlException {
         super.listDatabases();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Assertions.assertEquals(
+            this.injectionModel.getMediatorStrategy().getNormal(),
+            this.injectionModel.getMediatorStrategy().getStrategy()
+        );
     }
 }

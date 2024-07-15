@@ -16,6 +16,7 @@ import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.JSqlException;
+import com.jsql.model.exception.JSqlRuntimeException;
 import com.jsql.model.injection.method.AbstractMethodInjection;
 import com.jsql.model.injection.method.MediatorMethod;
 import com.jsql.model.injection.strategy.MediatorStrategy;
@@ -207,7 +208,7 @@ public class InjectionModel extends AbstractModelObservable implements Serializa
             LOGGER.log(LogLevelUtil.IGNORE, e, e);
             Thread.currentThread().interrupt();
             
-        } catch (JSqlException | IOException e) {  // Catch expected exceptions only
+        } catch (JSqlRuntimeException | JSqlException | IOException e) {  // Catch expected exceptions only
 
             if (e.getMessage() == null) {
                 LOGGER.log(LogLevelUtil.CONSOLE_ERROR, "Unexpected: {}", getImplicitReason(e));

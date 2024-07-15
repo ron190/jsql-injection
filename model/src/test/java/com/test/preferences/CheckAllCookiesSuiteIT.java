@@ -25,8 +25,9 @@ public class CheckAllCookiesSuiteIT extends ConcreteMySqlSuiteIT {
         .getMediatorUtils()
         .getPreferencesUtil()
         .withIsStrategyBlindDisabled(true)
-        .withIsStrategyTimeDisabled(true);
-        
+        .withIsStrategyTimeDisabled(true)
+        .withIsCheckingAllCookieParam(true);
+
         model
         .getMediatorUtils()
         .getConnectionUtil()

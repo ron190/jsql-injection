@@ -37,8 +37,8 @@ public interface AbstractVendor {
     String sqlFileRead(String path);
     String sqlTextIntoFile(String body, String path);
 
-    List<String> getListFalseTest();
-    List<String> getListTrueTest();
+    List<String> getFalsy();
+    List<String> getTruthy();
 
     String sqlTestBooleanInitialization();
     String sqlTestBlind(String check, BooleanMode blindMode);

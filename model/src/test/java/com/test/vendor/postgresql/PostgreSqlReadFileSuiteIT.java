@@ -39,7 +39,6 @@ public class PostgreSqlReadFileSuiteIT extends ConcretePostgreSqlSuiteIT {
         .withIsStrategyMultibitDisabled(true)
         .withIsStrategyErrorDisabled(true);
 
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPostgresql());
         model.beginInjection();
     }
     

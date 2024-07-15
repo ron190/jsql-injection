@@ -121,7 +121,7 @@ strategy:
    select
        /* Coalesce appends trail when end of string (${lead}${trail}).
           TODO Cleaner lead (similar to 0+1) */
-       'Sq' || 'Li'
+       '${lead_pipe}'
        || coalesce(
            substr(
                (${injection}),
@@ -159,10 +159,11 @@ strategy:
    orderByErrorMessage:
     # Collision with vertica
     - (?<!Vertica.*)ORDER BY position 1337 is not in select list
+   vendorSpecific: case when ${test} then'a'else'b'end='a'::text
 
  normal:
   indices: union select ${indices}
-  capacity: (select '${lead}' || ${indice} || ${calibrator})
+  capacity: (select '${lead_pipe}' || ${indice} || ${calibrator})
   orderBy: order by 1337
 
  boolean:

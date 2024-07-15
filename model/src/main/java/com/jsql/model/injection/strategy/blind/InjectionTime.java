@@ -41,7 +41,7 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         super(injectionModel, booleanMode);
         
         // No blind
-        if (this.falseTests.isEmpty() || this.injectionModel.isStoppedByUser()) {
+        if (this.falsy.isEmpty() || this.injectionModel.isStoppedByUser()) {
             return;
         }
 
@@ -50,7 +50,7 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagFalse");
         Collection<CallableTime> callablesFalseTest = new ArrayList<>();
         
-        for (String falseTest: this.falseTests) {
+        for (String falseTest: this.falsy) {
             callablesFalseTest.add(new CallableTime(
                 falseTest,
                 injectionModel,
@@ -97,7 +97,7 @@ public class InjectionTime extends AbstractInjectionMonobit<CallableTime> {
         ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor("CallableGetTimeTagTrue");
         Collection<CallableTime> callablesTrueTest = new ArrayList<>();
         
-        for (String trueTest: this.trueTests) {
+        for (String trueTest: this.truthy) {
             callablesTrueTest.add(new CallableTime(
                 trueTest,
                 this.injectionModel,

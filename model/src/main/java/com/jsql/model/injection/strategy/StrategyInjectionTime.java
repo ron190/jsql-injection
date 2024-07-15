@@ -56,10 +56,10 @@ public class StrategyInjectionTime extends AbstractStrategy {
             return;
         }
 
-        checkInjection(BooleanMode.STACKED);
-        checkInjection(BooleanMode.NO_MODE);
         checkInjection(BooleanMode.OR);
         checkInjection(BooleanMode.AND);
+        checkInjection(BooleanMode.STACKED);
+        checkInjection(BooleanMode.NO_MODE);
 
         if (this.isApplicable) {
 

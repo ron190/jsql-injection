@@ -32,7 +32,6 @@ public class SqliteNormalSuiteIT extends ConcreteSqliteSuiteIT {
         .withMethodInjection(model.getMediatorMethod().getQuery())
         .withTypeRequest("GET");
         
-        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlite());
         model.beginInjection();
     }
     

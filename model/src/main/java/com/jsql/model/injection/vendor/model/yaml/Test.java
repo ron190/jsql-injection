@@ -11,18 +11,18 @@ import java.util.stream.Collectors;
 public class Test implements Serializable {
 
     private List<String> falsy = Arrays.asList(
-        "true = false",
-        "true %21= true",
-        "false %21= false",
+        "'a' = 'b'",
+        "'a' %21= 'a'",
+        "'b' %21= 'b'",
         "1 = 2",
         "1 %21= 1",
         "2 %21= 2"
     );
             
     private List<String> truthy = Arrays.asList(
-        "true = true",
-        "false = false",
-        "true %21= false",
+        "'a' = 'a'",
+        "'b' = 'b'",
+        "'a' %21= 'b'",
         "1 = 1",
         "2 = 2",
         "1 %21= 2"

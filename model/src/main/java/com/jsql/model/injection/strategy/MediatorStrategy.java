@@ -4,6 +4,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.vendor.model.VendorYaml;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
+import com.jsql.model.suspendable.SuspendableGetVendor;
 import com.jsql.util.LogLevelUtil;
 import com.jsql.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -175,6 +176,10 @@ public class MediatorStrategy {
                 // Space %20 for URL, do not use +
                 urlBase.replace(InjectionModel.STAR, characterInsertion.replaceAll("(\\w)$", "$1%20") + InjectionModel.STAR)
             );
+        }
+
+        if (this.injectionModel.getMediatorVendor().getVendorByUser() == this.injectionModel.getMediatorVendor().getAuto()) {
+            new SuspendableGetVendor(this.injectionModel).run();
         }
 
         // Test each injection strategies: time < blind < error < normal
