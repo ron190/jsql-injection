@@ -124,6 +124,7 @@
                     <targetTests>
                         <param>*Spock</param>
                     </targetTests>
+                    <failWhenNoMutations>false</failWhenNoMutations>
                 </configuration>
             </plugin>
             <plugin>
