@@ -1,5 +1,5 @@
 {
-    "version": "0.100",
+    "version": "0.101",
     "news": [
         "[Pinned] You use jSQL for CTFs, university study, or security research? Please consider adding a Star to GitHub at https://github.com/ron190/jsql-injection",
         "[Contribute] Injection strategies can be missing or improved even for common engines like SQLite, share your knowledge to improve jSQL",
