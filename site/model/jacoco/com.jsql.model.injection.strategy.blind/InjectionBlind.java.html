@@ -47,7 +47,7 @@ public class InjectionBlind extends AbstractInjectionMonobit&lt;CallableBlind&gt
 <span class="fc" id="L47">        super(injectionModel, blindMode);</span>
         
         // No blind
-<span class="pc bpc" id="L50" title="2 of 4 branches missed.">        if (this.falseTests.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
+<span class="pc bpc" id="L50" title="2 of 4 branches missed.">        if (this.falsy.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
 <span class="nc" id="L51">            return;</span>
         }
         
@@ -59,7 +59,7 @@ public class InjectionBlind extends AbstractInjectionMonobit&lt;CallableBlind&gt
 <span class="fc" id="L59">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindTagFalse&quot;);</span>
 <span class="fc" id="L60">        Collection&lt;CallableBlind&gt; callablesFalseTest = new ArrayList&lt;&gt;();</span>
         
-<span class="fc bfc" id="L62" title="All 2 branches covered.">        for (String falseTest: this.falseTests) {</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        for (String falseTest: this.falsy) {</span>
 <span class="fc" id="L63">            callablesFalseTest.add(new CallableBlind(</span>
                 falseTest,
                 injectionModel,
@@ -111,7 +111,7 @@ public class InjectionBlind extends AbstractInjectionMonobit&lt;CallableBlind&gt
 
 <span class="fc" id="L112">        Collection&lt;CallableBlind&gt; callablesTrueTest = new ArrayList&lt;&gt;();</span>
         
-<span class="fc bfc" id="L114" title="All 2 branches covered.">        for (String trueTest: this.trueTests) {</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        for (String trueTest: this.truthy) {</span>
 <span class="fc" id="L115">            callablesTrueTest.add(new CallableBlind(</span>
                 trueTest,
                 injectionModel,

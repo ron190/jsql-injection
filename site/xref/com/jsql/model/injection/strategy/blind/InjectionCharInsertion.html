@@ -51,7 +51,7 @@
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>      
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String PREFIX = <span class="jxr_string">"prefix"</span>;
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; falseTest;
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; falsy;
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment">     * Create blind attack initialization.</em>
@@ -64,11 +64,11 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">this</strong>.injectionModel = injectionModel;
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">this</strong>.prefixSuffix = prefixSuffix;
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>          List&lt;String&gt; trueTest = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">this</strong>.falseTest = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getListFalseTest();
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          List&lt;String&gt; truthy = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getTruthy();
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">this</strong>.falsy = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getFalsy();
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          <em class="jxr_comment">// No blind</em>
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>          <strong class="jxr_keyword">if</strong> (trueTest.isEmpty() || <strong class="jxr_keyword">this</strong>.injectionModel.isStoppedByUser()) {
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>          <strong class="jxr_keyword">if</strong> (truthy.isEmpty() || <strong class="jxr_keyword">this</strong>.injectionModel.isStoppedByUser()) {
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>              <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          }
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          
@@ -83,7 +83,7 @@
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          ExecutorService taskExecutor = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(<span class="jxr_string">"CallableCharInsertionTagTrue"</span>);
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>          Collection&lt;CallableCharInsertion&gt; listCallableTagTrue = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>          <strong class="jxr_keyword">for</strong> (String urlTest: trueTest) {
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>          <strong class="jxr_keyword">for</strong> (String urlTest: truthy) {
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>              listCallableTagTrue.add(
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>                  <strong class="jxr_keyword">new</strong> <a name="CallableCharInsertion" href="../../../../../../com/jsql/model/injection/strategy/blind/CallableCharInsertion.html#CallableCharInsertion">CallableCharInsertion</a>(
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>                      String.join(
@@ -135,7 +135,7 @@
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>         ExecutorService taskExecutor = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(<span class="jxr_string">"CallableGetBlindTagTrue"</span>);
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>         Collection&lt;CallableCharInsertion&gt; listCallableTagFalse = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>         
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>         <strong class="jxr_keyword">for</strong> (String urlTest: <strong class="jxr_keyword">this</strong>.falseTest) {
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>         <strong class="jxr_keyword">for</strong> (String urlTest: <strong class="jxr_keyword">this</strong>.falsy) {
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>             listCallableTagFalse.add(
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>                 <strong class="jxr_keyword">new</strong> <a name="CallableCharInsertion" href="../../../../../../com/jsql/model/injection/strategy/blind/CallableCharInsertion.html#CallableCharInsertion">CallableCharInsertion</a>(
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>                     String.join(

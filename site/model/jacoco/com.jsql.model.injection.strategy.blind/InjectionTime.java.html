@@ -41,7 +41,7 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
 <span class="fc" id="L41">        super(injectionModel, booleanMode);</span>
         
         // No blind
-<span class="pc bpc" id="L44" title="2 of 4 branches missed.">        if (this.falseTests.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
+<span class="pc bpc" id="L44" title="2 of 4 branches missed.">        if (this.falsy.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
 <span class="nc" id="L45">            return;</span>
         }
 
@@ -50,7 +50,7 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
 <span class="fc" id="L50">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetTimeTagFalse&quot;);</span>
 <span class="fc" id="L51">        Collection&lt;CallableTime&gt; callablesFalseTest = new ArrayList&lt;&gt;();</span>
         
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (String falseTest: this.falseTests) {</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (String falseTest: this.falsy) {</span>
 <span class="fc" id="L54">            callablesFalseTest.add(new CallableTime(</span>
                 falseTest,
                 injectionModel,
@@ -97,7 +97,7 @@ public class InjectionTime extends AbstractInjectionMonobit&lt;CallableTime&gt; 
 <span class="fc" id="L97">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetTimeTagTrue&quot;);</span>
 <span class="fc" id="L98">        Collection&lt;CallableTime&gt; callablesTrueTest = new ArrayList&lt;&gt;();</span>
         
-<span class="fc bfc" id="L100" title="All 2 branches covered.">        for (String trueTest: this.trueTests) {</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        for (String trueTest: this.truthy) {</span>
 <span class="fc" id="L101">            callablesTrueTest.add(new CallableTime(</span>
                 trueTest,
                 this.injectionModel,

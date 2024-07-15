@@ -43,7 +43,7 @@ public class InjectionCharInsertion {
     
     private static final String PREFIX = &quot;prefix&quot;;
 
-    private final List&lt;String&gt; falseTest;
+    private final List&lt;String&gt; falsy;
     
     /**
      * Create blind attack initialization.
@@ -56,11 +56,11 @@ public class InjectionCharInsertion {
 <span class="fc" id="L56">        this.injectionModel = injectionModel;</span>
 <span class="fc" id="L57">        this.prefixSuffix = prefixSuffix;</span>
         
-<span class="fc" id="L59">        List&lt;String&gt; trueTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();</span>
-<span class="fc" id="L60">        this.falseTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListFalseTest();</span>
+<span class="fc" id="L59">        List&lt;String&gt; truthy = this.injectionModel.getMediatorVendor().getVendor().instance().getTruthy();</span>
+<span class="fc" id="L60">        this.falsy = this.injectionModel.getMediatorVendor().getVendor().instance().getFalsy();</span>
         
         // No blind
-<span class="pc bpc" id="L63" title="2 of 4 branches missed.">        if (trueTest.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
+<span class="pc bpc" id="L63" title="2 of 4 branches missed.">        if (truthy.isEmpty() || this.injectionModel.isStoppedByUser()) {</span>
 <span class="nc" id="L64">            return;</span>
         }
         
@@ -75,7 +75,7 @@ public class InjectionCharInsertion {
 <span class="fc" id="L75">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableCharInsertionTagTrue&quot;);</span>
 <span class="fc" id="L76">        Collection&lt;CallableCharInsertion&gt; listCallableTagTrue = new ArrayList&lt;&gt;();</span>
         
-<span class="fc bfc" id="L78" title="All 2 branches covered.">        for (String urlTest: trueTest) {</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        for (String urlTest: truthy) {</span>
 <span class="fc" id="L79">            listCallableTagTrue.add(</span>
                 new CallableCharInsertion(
 <span class="fc" id="L81">                    String.join(</span>
@@ -127,7 +127,7 @@ public class InjectionCharInsertion {
 <span class="fc" id="L127">        ExecutorService taskExecutor = this.injectionModel.getMediatorUtils().getThreadUtil().getExecutor(&quot;CallableGetBlindTagTrue&quot;);</span>
 <span class="fc" id="L128">        Collection&lt;CallableCharInsertion&gt; listCallableTagFalse = new ArrayList&lt;&gt;();</span>
         
-<span class="fc bfc" id="L130" title="All 2 branches covered.">        for (String urlTest: this.falseTest) {</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">        for (String urlTest: this.falsy) {</span>
 <span class="fc" id="L131">            listCallableTagFalse.add(</span>
                 new CallableCharInsertion(
 <span class="fc" id="L133">                    String.join(</span>

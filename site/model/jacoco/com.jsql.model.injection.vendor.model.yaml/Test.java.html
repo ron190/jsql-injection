@@ -11,18 +11,18 @@ import java.util.stream.Collectors;
 <span class="fc" id="L11">public class Test implements Serializable {</span>
 
 <span class="fc" id="L13">    private List&lt;String&gt; falsy = Arrays.asList(</span>
-        &quot;true = false&quot;,
-        &quot;true %21= true&quot;,
-        &quot;false %21= false&quot;,
+        &quot;'a' = 'b'&quot;,
+        &quot;'a' %21= 'a'&quot;,
+        &quot;'b' %21= 'b'&quot;,
         &quot;1 = 2&quot;,
         &quot;1 %21= 1&quot;,
         &quot;2 %21= 2&quot;
     );
             
 <span class="fc" id="L22">    private List&lt;String&gt; truthy = Arrays.asList(</span>
-        &quot;true = true&quot;,
-        &quot;false = false&quot;,
-        &quot;true %21= false&quot;,
+        &quot;'a' = 'a'&quot;,
+        &quot;'b' = 'b'&quot;,
+        &quot;'a' %21= 'b'&quot;,
         &quot;1 = 1&quot;,
         &quot;2 = 2&quot;,
         &quot;1 %21= 2&quot;

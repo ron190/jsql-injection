@@ -19,18 +19,18 @@
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="Test" href="../../../../../../../com/jsql/model/injection/vendor/model/yaml/Test.html#Test">Test</a> <strong class="jxr_keyword">implements</strong> Serializable {
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>      <strong class="jxr_keyword">private</strong> List&lt;String&gt; falsy = Arrays.asList(
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>          <span class="jxr_string">"true = false"</span>,
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>          <span class="jxr_string">"true %21= true"</span>,
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>          <span class="jxr_string">"false %21= false"</span>,
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>          <span class="jxr_string">"'a' = 'b'"</span>,
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>          <span class="jxr_string">"'a' %21= 'a'"</span>,
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>          <span class="jxr_string">"'b' %21= 'b'"</span>,
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>          <span class="jxr_string">"1 = 2"</span>,
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>          <span class="jxr_string">"1 %21= 1"</span>,
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>          <span class="jxr_string">"2 %21= 2"</span>
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>      );
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>              
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>      <strong class="jxr_keyword">private</strong> List&lt;String&gt; truthy = Arrays.asList(
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>          <span class="jxr_string">"true = true"</span>,
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>          <span class="jxr_string">"false = false"</span>,
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>          <span class="jxr_string">"true %21= false"</span>,
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>          <span class="jxr_string">"'a' = 'a'"</span>,
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>          <span class="jxr_string">"'b' = 'b'"</span>,
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>          <span class="jxr_string">"'a' %21= 'b'"</span>,
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>          <span class="jxr_string">"1 = 1"</span>,
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>          <span class="jxr_string">"2 = 2"</span>,
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>          <span class="jxr_string">"1 %21= 2"</span>

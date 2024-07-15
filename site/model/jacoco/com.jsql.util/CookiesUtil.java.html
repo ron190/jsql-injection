@@ -27,59 +27,62 @@ public class CookiesUtil {
     public boolean testParameters(boolean hasFoundInjection) {
 
 <span class="fc bfc" id="L29" title="All 2 branches covered.">        if (!hasFoundInjection) {</span>
-<span class="fc" id="L30">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Checking cookies params...&quot;);</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">            if (!this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllCookieParam()) {</span>
+<span class="nc" id="L31">                return false;</span>
+            }
+<span class="fc" id="L33">            LOGGER.log(LogLevelUtil.CONSOLE_DEFAULT, &quot;Checking cookies params...&quot;);</span>
         } else {
-<span class="fc" id="L32">            return true;</span>
+<span class="fc" id="L35">            return true;</span>
         }
 
-<span class="fc" id="L35">        String rawHeader = this.injectionModel.getMediatorUtils().getParameterUtil().getRawHeader();</span>
+<span class="fc" id="L38">        String rawHeader = this.injectionModel.getMediatorUtils().getParameterUtil().getRawHeader();</span>
 
-<span class="fc" id="L37">        List&lt;AbstractMap.SimpleEntry&lt;String, String&gt;&gt; cookies = this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()</span>
-<span class="fc" id="L38">            .stream()</span>
-<span class="fc" id="L39">            .filter(entry -&gt; &quot;cookie&quot;.equalsIgnoreCase(entry.getKey()))</span>
-<span class="fc" id="L40">            .findFirst()</span>
-<span class="fc" id="L41">            .map(cookieHeader -&gt; cookieHeader.getValue().split(&quot;;&quot;))</span>
-<span class="fc" id="L42">            .stream()</span>
-<span class="fc" id="L43">            .flatMap(Stream::of)</span>
-<span class="pc bpc" id="L44" title="2 of 4 branches missed.">            .filter(cookie -&gt; cookie != null &amp;&amp; cookie.contains(&quot;=&quot;))</span>
-<span class="fc" id="L45">            .map(cookie -&gt; cookie.split(&quot;=&quot;, 2))</span>
-<span class="fc" id="L46">            .map(arrayEntry -&gt; new AbstractMap.SimpleEntry&lt;&gt;(</span>
-<span class="fc" id="L47">                arrayEntry[0].trim(),</span>
-<span class="pc bpc" id="L48" title="1 of 2 branches missed.">                arrayEntry[1] == null ? &quot;&quot; : arrayEntry[1].trim()</span>
+<span class="fc" id="L40">        List&lt;AbstractMap.SimpleEntry&lt;String, String&gt;&gt; cookies = this.injectionModel.getMediatorUtils().getParameterUtil().getListHeader()</span>
+<span class="fc" id="L41">            .stream()</span>
+<span class="fc" id="L42">            .filter(entry -&gt; &quot;cookie&quot;.equalsIgnoreCase(entry.getKey()))</span>
+<span class="fc" id="L43">            .findFirst()</span>
+<span class="fc" id="L44">            .map(cookieHeader -&gt; cookieHeader.getValue().split(&quot;;&quot;))</span>
+<span class="fc" id="L45">            .stream()</span>
+<span class="fc" id="L46">            .flatMap(Stream::of)</span>
+<span class="pc bpc" id="L47" title="2 of 4 branches missed.">            .filter(cookie -&gt; cookie != null &amp;&amp; cookie.contains(&quot;=&quot;))</span>
+<span class="fc" id="L48">            .map(cookie -&gt; cookie.split(&quot;=&quot;, 2))</span>
+<span class="fc" id="L49">            .map(arrayEntry -&gt; new AbstractMap.SimpleEntry&lt;&gt;(</span>
+<span class="fc" id="L50">                arrayEntry[0].trim(),</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">                arrayEntry[1] == null ? &quot;&quot; : arrayEntry[1].trim()</span>
             ))
-<span class="fc" id="L50">            .collect(Collectors.toList());</span>
+<span class="fc" id="L53">            .collect(Collectors.toList());</span>
 
-<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        for (AbstractMap.SimpleEntry&lt;String, String&gt; cookie: cookies) {</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        for (AbstractMap.SimpleEntry&lt;String, String&gt; cookie: cookies) {</span>
 
-<span class="fc" id="L54">            String keyValue = cookie.getKey() + &quot;=&quot; + cookie.getValue();</span>
-<span class="fc" id="L55">            String headerCookieWithStar = rawHeader.replace(keyValue, keyValue + InjectionModel.STAR);</span>
+<span class="fc" id="L57">            String keyValue = cookie.getKey() + &quot;=&quot; + cookie.getValue();</span>
+<span class="fc" id="L58">            String headerCookieWithStar = rawHeader.replace(keyValue, keyValue + InjectionModel.STAR);</span>
 
-<span class="fc" id="L57">            this.injectionModel.getMediatorUtils().getParameterUtil().initializeHeader(headerCookieWithStar);</span>
+<span class="fc" id="L60">            this.injectionModel.getMediatorUtils().getParameterUtil().initializeHeader(headerCookieWithStar);</span>
 
             try {
-<span class="fc" id="L60">                LOGGER.log(</span>
+<span class="fc" id="L63">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_DEFAULT,
                     &quot;Checking cookie {}={}&quot;,
-<span class="fc" id="L63">                    cookie::getKey,</span>
-<span class="fc" id="L64">                    () -&gt; cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+<span class="fc" id="L66">                    cookie::getKey,</span>
+<span class="fc" id="L67">                    () -&gt; cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                 );
 
-<span class="fc bfc" id="L67" title="All 2 branches covered.">                if (this.injectionModel.getMediatorMethod().getHeader().testParameters()) {</span>
-<span class="fc" id="L68">                    return true;</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">                if (this.injectionModel.getMediatorMethod().getHeader().testParameters()) {</span>
+<span class="fc" id="L71">                    return true;</span>
                 }
-<span class="nc" id="L70">            } catch (JSqlException e) {</span>
-<span class="nc" id="L71">                LOGGER.log(</span>
+<span class="nc" id="L73">            } catch (JSqlException e) {</span>
+<span class="nc" id="L74">                LOGGER.log(</span>
                     LogLevelUtil.CONSOLE_ERROR,
-<span class="nc" id="L73">                    String.format(</span>
+<span class="nc" id="L76">                    String.format(</span>
                         &quot;No Cookie injection for %s=%s&quot;,
-<span class="nc" id="L75">                        cookie.getKey(),</span>
-<span class="nc" id="L76">                        cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
+<span class="nc" id="L78">                        cookie.getKey(),</span>
+<span class="nc" id="L79">                        cookie.getValue().replace(InjectionModel.STAR, StringUtils.EMPTY)</span>
                     )
                 );
-<span class="fc" id="L79">            }</span>
-<span class="fc" id="L80">        }</span>
+<span class="fc" id="L82">            }</span>
+<span class="fc" id="L83">        }</span>
 
-<span class="nc" id="L82">        return false;</span>
+<span class="nc" id="L85">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

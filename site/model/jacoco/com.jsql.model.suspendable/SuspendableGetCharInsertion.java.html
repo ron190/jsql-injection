@@ -186,8 +186,8 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable {
         );
         
 <span class="fc" id="L188">        List&lt;String&gt; prefixQuotes = Arrays.asList(</span>
-            LABEL_PREFIX,
             LABEL_PREFIX +&quot;'&quot;,
+            LABEL_PREFIX,
             LABEL_PREFIX +&quot;`&quot;,  // TODO add ITs
             LABEL_PREFIX +&quot;\&quot;&quot;,
             LABEL_PREFIX +&quot;%bf'&quot;  // GBK slash encoding use case

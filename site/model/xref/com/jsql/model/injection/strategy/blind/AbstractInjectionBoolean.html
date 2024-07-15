@@ -36,11 +36,11 @@
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      <em class="jxr_comment">// Every FALSE SQL statements will be checked,</em>
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      <em class="jxr_comment">// more statements means a more robust application</em>
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; falseTests;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; falsy;
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>      <em class="jxr_comment">// Every TRUE SQL statements will be checked,</em>
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>      <em class="jxr_comment">// more statements means a more robust application</em>
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; trueTests;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; truthy;
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">public</strong> enum BooleanMode {
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>          AND, OR, STACKED, NO_MODE
@@ -54,8 +54,8 @@
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>          
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>          <strong class="jxr_keyword">this</strong>.injectionModel = injectionModel;
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>          <strong class="jxr_keyword">this</strong>.booleanMode = booleanMode;
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">this</strong>.falseTests = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getListFalseTest();
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">this</strong>.trueTests = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">this</strong>.falsy = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getFalsy();
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">this</strong>.truthy = <strong class="jxr_keyword">this</strong>.injectionModel.getMediatorVendor().getVendor().instance().getTruthy();
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      }
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      <em class="jxr_javadoccomment">/**</em>

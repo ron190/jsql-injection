@@ -116,8 +116,8 @@ view,com.jsql.view.swing.tab,TabManagers,0,163,0,0,0,29,0,3,0,3
 view,com.jsql.view.swing.tab,TabMouseAdapter,72,13,5,1,19,6,4,3,1,3
 view,com.jsql.view.swing.tab,TabManagers.new MouseAdapter() {...},0,22,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.tab,TabManagers.new CustomMetalTabbedPaneUI() {...},0,14,0,0,0,2,0,2,0,2
-view,com.jsql.view.swing.tab,TabManagers.new JLabel() {...},14,15,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.tab,TabResults,69,286,2,0,21,63,3,7,2,7
+view,com.jsql.view.swing.tab,TabManagers.new JLabel() {...},14,15,0,0,3,1,1,1,1,1
 view,com.jsql.view.swing.tab,TabHeader.new JLabel() {...},0,11,0,0,0,3,0,2,0,2
 view,com.jsql.view.swing.tab,TabManagersProxy.new MetalTabbedPaneUI() {...},0,8,0,0,0,2,0,2,0,2
 view,com.jsql.view.swing.tab,TabbedPaneWheeled,0,29,0,0,0,9,0,3,0,3
@@ -139,8 +139,8 @@ view,com.jsql.view.swing.tree,CheckBoxMenuItemIconCustom,194,0,16,0,44,0,13,0,5,
 view,com.jsql.view.swing.tree,ActionPauseUnpause,20,6,4,0,7,3,3,1,1,1
 view,com.jsql.view.swing.sql,SqlEngine.new BasicRadioButtonMenuItemUI() {...},5,3,0,0,2,1,1,1,1,1
 view,com.jsql.view.swing.sql,SqlEngine.new DocumentListenerEditing() {...},0,10,0,0,0,3,0,2,0,2
-view,com.jsql.view.swing.sql,SqlEngine,15,1583,1,9,7,256,3,29,2,25
-view,com.jsql.view.swing.sql,SqlEngine.TextareaWithColor,0,1022,0,0,0,137,0,91,0,91
+view,com.jsql.view.swing.sql,SqlEngine,15,1595,1,9,7,256,3,29,2,25
+view,com.jsql.view.swing.sql,SqlEngine.TextareaWithColor,0,1046,0,0,0,140,0,93,0,93
 view,com.jsql.view.swing.panel.preferences,TamperingMouseAdapter,33,12,0,0,8,5,3,1,3,1
 view,com.jsql.view.swing.panel.preferences,PanelInjection,193,1685,37,33,28,391,32,50,8,39
 view,com.jsql.view.swing.panel.preferences,PanelConnection.new DocumentListenerEditing() {...},6,9,0,0,2,1,1,1,1,1
@@ -156,8 +156,8 @@ view,com.jsql.view.swing.panel.preferences,PanelAuth.new DocumentListenerEditing
 view,com.jsql.view.swing.panel.preferences,PanelAuth,46,434,8,0,10,115,6,10,2,10
 view,com.jsql.view.swing.panel.preferences,ActionListenerSave,12,490,3,1,3,88,2,2,0,2
 view,com.jsql.view.swing.panel.preferences,PanelUserAgent.new DocumentListenerEditing() {...},9,6,0,0,3,1,1,1,1,1
-view,com.jsql.view.swing.panel.preferences,PanelUserAgent,24,186,2,2,6,54,2,4,1,3
 view,com.jsql.view.swing.panel.preferences,PanelGeneral,45,228,6,0,9,62,6,6,3,6
+view,com.jsql.view.swing.panel.preferences,PanelUserAgent,24,186,2,2,6,54,2,4,1,3
 view,com.jsql.view.swing.list,ListTransfertHandlerScan,85,264,5,15,21,62,4,14,0,8
 view,com.jsql.view.swing.list,DnDList.new FocusListener() {...},0,14,0,0,0,5,0,3,0,3
 view,com.jsql.view.swing.list,DnDList.new KeyAdapter() {...},0,14,0,2,0,4,0,3,0,2
@@ -320,8 +320,8 @@ view,com.jsql.view.swing.interaction,GetSQLShellResult,4,0,0,0,2,0,1,0,1,0
 view,com.jsql.view.swing.interaction,MarkErrorStrategy,7,0,0,0,4,0,2,0,2,0
 view,com.jsql.view.swing.interaction,MessageChunk,17,0,0,0,6,0,2,0,2,0
 view,com.jsql.view.swing.interaction,MessageHeader,6,159,0,0,2,26,0,3,0,3
-view,com.jsql.view.swing.interaction,CreateAnalysisReport,17,0,0,0,6,0,2,0,2,0
 view,com.jsql.view.swing.interaction,EndIndeterminateProgress,14,0,0,0,5,0,2,0,2,0
+view,com.jsql.view.swing.interaction,CreateAnalysisReport,17,0,0,0,6,0,2,0,2,0
 view,com.jsql.view.swing.interaction,StartIndeterminateProgress,14,0,0,0,5,0,2,0,2,0
 view,com.jsql.view.swing.interaction,MarkErrorVulnerable,0,21,0,0,0,6,0,2,0,2
 view,com.jsql.view.swing.interaction,CreateShellTab,0,22,0,0,0,6,0,2,0,2
@@ -351,7 +351,7 @@ view,com.jsql.view.swing.manager.util,MenuBarCoder.MenuItemListener,15,6,0,0,4,1
 view,com.jsql.view.swing.shell,ShellSql,14,9,0,0,2,3,1,1,1,1
 view,com.jsql.view.swing.shell,KeyAdapterTerminal.new SwingWorker() {...},0,48,0,2,0,11,0,3,0,2
 view,com.jsql.view.swing.shell,KeyAdapterTerminal,145,268,21,37,26,61,16,23,1,9
-view,com.jsql.view.swing.shell,BlockCaret,10,111,3,13,6,32,3,9,0,4
+view,com.jsql.view.swing.shell,BlockCaret,9,112,2,14,5,33,2,10,0,4
 view,com.jsql.view.swing.shell,AbstractShell,44,284,5,7,8,67,5,15,0,14
 view,com.jsql.view.swing.shell,ShellWeb,0,17,0,0,0,5,0,2,0,2
 view,com.jsql.view.swing.shell,EmptyFocus,23,9,0,0,10,5,4,2,4,2
