@@ -40,8 +40,8 @@ jobs:
 
       - name: Run databases and LAMP
         run: |
-          docker-compose -f $DOCKER_RESOURCES/docker-compose-additional.yml build --parallel
-          docker-compose -f $DOCKER_RESOURCES/docker-compose-additional.yml up -d
+          docker compose -f $DOCKER_RESOURCES/docker-compose-additional.yml build --parallel
+          docker compose -f $DOCKER_RESOURCES/docker-compose-additional.yml up -d
 
       - name: List images and containers
         run: docker images && docker container ls
